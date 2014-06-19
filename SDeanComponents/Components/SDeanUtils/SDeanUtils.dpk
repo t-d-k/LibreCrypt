@@ -1,0 +1,96 @@
+package SDeanUtils;
+
+{$R *.res}
+{$R 'SDUDirIterator_U.dcr'}
+{$R 'SDUFileIterator_U.dcr'}
+{$R 'SDUNamedPipe_U.dcr'}
+{$R 'SDUSystemTrayIcon.dcr'}
+{$R 'SDUStringGrid.dcr'}
+{$R 'SDUProgressDlg.dcr'}
+{$R 'SDUCheckLst.dcr'}
+{$R 'SDUBlocksPanel.dcr'}
+{$R 'SDUDiskPartitionsPanel.dcr'}
+{$R 'SDUSpin64Units.dcr'}
+{$R 'SDUFilenameEdit_U.dcr'}
+{$R 'SDUStdCtrls.dcr'}
+{$R 'SDUDropFiles.dcr'}
+{$R 'SDUClipbrd.dcr'}
+{$R 'SDUMultimediaKeys.dcr'}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'SDeanUtils: Sarah Dean - General Utility Classes and Components'}
+{$IMPLICITBUILD OFF}
+
+requires
+  vcl,
+  vclsmp,
+  rtl,
+  vclx,
+  xmlrtl;
+
+contains
+  SDUDirIterator_U in 'SDUDirIterator_U.pas',
+  SDUFileIterator_U in 'SDUFileIterator_U.pas',
+  SDUGeneral in 'SDUGeneral.pas',
+  SDUProgressDlg in 'SDUProgressDlg.pas' {SDUProgressDialog},
+  SDUNamedPipe_U in 'SDUNamedPipe_U.pas',
+  SDUBase64 in 'SDUBase64.pas',
+  SDULogger_U in 'SDULogger_U.pas',
+  Spin64 in 'Spin64.pas',
+  NetMsg in 'NetMsg.pas',
+  SDUEndianIntegers in 'SDUEndianIntegers.pas',
+  SDUSystemTrayIcon in 'SDUSystemTrayIcon.pas',
+  SDUSystemTrayIconShellAPI in 'SDUSystemTrayIconShellAPI.pas',
+  SDURegistry in 'SDURegistry.pas',
+  SDUDialogs in 'SDUDialogs.pas',
+  SDUStringGrid in 'SDUStringGrid.pas',
+  SDUCheckLst in 'SDUCheckLst.pas',
+  SDUWindows64 in 'SDUWindows64.pas',
+  SDUDiskPartitionsPanel in 'SDUDiskPartitionsPanel.pas',
+  SDUBlocksPanel in 'SDUBlocksPanel.pas',
+  SDUPartitionPropertiesDlg in 'SDUPartitionPropertiesDlg.pas',
+  SDUDiskPropertiesDlg in 'SDUDiskPropertiesDlg.pas',
+  MSntdll in 'MSntdll.pas',
+  SDUObjectManager in 'SDUObjectManager.pas',
+  SDUMRUList in 'SDUMRUList.pas',
+  SDUi18n in 'SDUi18n.pas',
+  SDUForms in 'SDUForms.pas',
+  SDUSpin64Units in 'SDUSpin64Units.pas' {SDUSpin64Unit},
+  SDUComCtrls in 'SDUComCtrls.pas',
+  SDUExtCtrls in 'SDUExtCtrls.pas',
+  SDUFrames in 'SDUFrames.pas' {SDUFrame: TFrame},
+  SDUFilenameEdit_U in 'SDUFilenameEdit_U.pas' {SDUFilenameEdit: TFrame},
+  SDUStdCtrls in 'SDUStdCtrls.pas',
+  SDUAboutDlg in 'SDUAboutDlg.pas' {SDUAboutDialog},
+  SDUClasses in 'SDUClasses.pas',
+  SDUSysUtils in 'SDUSysUtils.pas',
+  SDUGraphics in 'SDUGraphics.pas',
+  SDUDropFiles in 'SDUDropFiles.pas',
+  SDUWinHTTP in 'SDUWinHTTP.pas',
+  SDUWinHTTP_API in 'SDUWinHTTP_API.pas',
+  SDUMultimediaKeys in 'SDUMultimediaKeys.pas',
+  SDUClipbrd in 'SDUClipbrd.pas',
+  SDUWindows in 'SDUWindows.pas';
+
+end.
+
+

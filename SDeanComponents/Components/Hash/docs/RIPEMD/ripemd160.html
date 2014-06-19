@@ -1,0 +1,1307 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.06 [en] (Win95; I) [Netscape]">
+   <META NAME="Author" CONTENT="Antoon Bosselaers">
+   <META NAME="Description" CONTENT="Everything you always wanted to know about RIPEMD-160. Comparison to MD4, MD5, SHA-1.">
+   <META NAME="KeyWords" CONTENT="cryptography,hash functions,RIPEMD-160,RIPEMD-128,MD5,SHA-1">
+   <TITLE>The RIPEMD-160 page</TITLE>
+</HEAD>
+<BODY>
+
+<HR WIDTH="100%">
+<TABLE COLS=2 WIDTH="100%" >
+<TR>
+<TD><B><FONT SIZE=+3>The hash function RIPEMD-160</FONT></B></TD>
+
+<TD ALIGN=RIGHT><A HREF="http://www.kuleuven.ac.be/cwis/disclaim_en.htm"><IMG SRC="disclaim.gif" BORDER=0 HEIGHT=33 WIDTH=121></A></TD>
+</TR>
+</TABLE>
+
+<P>
+<HR WIDTH="100%">
+<DL>
+<LI>
+<FONT SIZE=+1><A HREF="#What">What is RIPEMD-160?</A></FONT></LI>
+
+<LI>
+<FONT SIZE=+1><A HREF="#Outline">Where do I find a description of RIPEMD-160?</A></FONT></LI>
+
+<LI>
+<FONT SIZE=+1><A HREF="#SHA-1">And what about SHA-1?</A></FONT></LI>
+
+<LI>
+<FONT SIZE=+1><A HREF="#Speed">How fast is RIPEMD-160?</A></FONT></LI>
+
+<LI>
+<FONT SIZE=+1><A HREF="#More">Patents, Object Identifiers, Bibliography.</A></FONT></LI>
+
+<LI>
+<FONT SIZE=+1><A HREF="#extensions">Optional extensions to 256 and 320
+bit hash results.</A></FONT></LI>
+
+<LI>
+<FONT SIZE=+1><A HREF="#MACs based on">MACs based on RIPEMD-160.</A></FONT><IMG SRC="new.gif" HEIGHT=12 WIDTH=23></LI>
+
+<OL>
+<LI>
+<FONT SIZE=+1><A HREF="#MDx-MAC">MDx-MAC for RIPEMD-160.</A></FONT></LI>
+
+<LI>
+<FONT SIZE=+1><A HREF="#HMAC">HMAC-RIPEMD-160: test vectors.</A></FONT></LI>
+</OL>
+
+<LI>
+<FONT SIZE=+1><A HREF="#mgf1">OAEP-encoding based on RIPEMD-160: test vectors</A></FONT><IMG SRC="new.gif" HEIGHT=12 WIDTH=23></LI>
+
+<LI>
+<FONT SIZE=+1><A HREF="#questions">Still more questions?</A></FONT></LI>
+
+<BR>
+<HR WIDTH="100%">
+<P><A NAME="What"></A><B><FONT SIZE=+1>What is RIPEMD-160?</FONT></B>
+<P>RIPEMD-160 is a 160-bit cryptographic hash function, designed by
+<A HREF="mailto:dobbertin@skom.rhein.de">Hans
+Dobbertin</A>, <A HREF="http://www.esat.kuleuven.ac.be/~bosselae">Antoon
+Bosselaers</A>, and <A HREF="http://www.esat.kuleuven.ac.be/~preneel">Bart
+Preneel</A>. It is intended to be used as a secure replacement for the
+128-bit hash functions MD4, MD5, and RIPEMD. MD4 and MD5 were developed
+by Ron Rivest for RSA Data Security, while RIPEMD was developed in the
+framework of the EU project <A HREF="http://www.igd.fhg.de/www/projects/wise/english/rd/3fw/RACE2/projects/1040.html">RIPE</A>
+(RACE Integrity Primitives Evaluation, 1988-1992). There are two good reasons
+to consider such a replacement:</DL>
+
+<UL>
+<LI>
+A 128-bit hash result does not offer sufficient protection anymore. A brute
+force collision search attack on a 128-bit hash result requires 2<SUP>64</SUP>
+or about 2.10<SUP>19</SUP> evaluations of the function. In 1994 Paul van
+Oorschot and Mike Wiener showed that this brute-force job can be done in
+less than a month with a $10 million investment (``Parallel collision search
+with applications to hash functions and discrete logarithms,'' <I>2nd ACM
+Conference on Computer and Communications Security,</I> ACM Press, 1994, pp.
+210-218). This cost is expected to halve every 18 months.</LI>
+
+<LI>
+In the first half of 1995 Hans Dobbertin found <A HREF="http://www.iacr.org/~iacr/jofc/byvolume.html#v10n1p4">collisions
+for a version of RIPEMD restricted to two rounds out of three</A>. Using
+similar techniques Hans produced in the Fall of 1995 <A HREF="http://www.iacr.org/~iacr/jofc/byvolume.html#v11n4p3">collisions
+for (all 3 rounds of) MD4</A>. The attack on MD4 requires only a few seconds
+on a PC, and still leaves some freedom as to the choice of the message,
+clearly ruling out MD4 as a collision resistant hash function. Shortly
+afterwards, in the Spring of 1996, Hans also found <A HREF="http://www.rsa.com/PUBS/crypto2n.pdf">collisions
+for the compression function of MD5</A>. Although not yet extended to collisions
+for MD5 itself, this attack casts serious doubts on the strength of MD5
+as a collision resistant hash function. RSA Data Security, for which Ron
+Rivest developed MD4 and MD5, <A HREF="ftp://ftp.rsa.com/pub/pdfs/bulletn4.pdf">recommend</A>
+that MD4 should not longer be used, and that MD5 should not be used for
+future applications that require the hash function to be collision-resistant.</LI>
+</UL>
+RIPEMD-160 is a strengthened version of RIPEMD with a 160-bit hash result,
+and is expected to be secure for the next ten years or more. The design
+philosophy is to build as much as possible on experience gained by evaluating
+MD4, MD5, and RIPEMD. Like its predecessors, RIPEMD-160 is tuned for 32-bit
+processors, which we feel will remain important in the coming decade.
+<P>RIPEMD-128 is a plug-in substitute for RIPEMD (or MD4 and MD5, for that
+matter) with a 128-bit result. In view of the result of Paul van Oorschot
+and Mike Wiener mentioned earlier, 128-bit hash results do not offer sufficient
+protection for the next ten years, and applications using 128-bit hash
+functions should consider upgrading to a 160-bit hash function.
+<P>RIPEMD-256 and RIPEMD-320 are optional extensions of, respectively,
+RIPEMD-128 and RIPEMD-160, and are intended for applications of hash functions
+that require a longer hash result without needing a larger security level.
+<P>
+<HR NOSHADE WIDTH="100%"><A NAME="Outline"></A><B><FONT SIZE=+1>Where do
+I find a description of RIPEMD-160?</FONT></B>
+<P>A full description and reference C software for the RIPEMD-160 and RIPEMD-128
+hash functions are available via <A HREF="ftp://ftp.esat.kuleuven.ac.be/pub/cosic/bosselae/ripemd/">anonymous
+ftp</A>. The implementations are written for the sole purpose of documentation.
+No optimization whatsoever is performed: only readability and portability
+were kept in mind. See the <A HREF="ftp://ftp.esat.kuleuven.ac.be/pub/cosic/bosselae/ripemd/README">README</A>
+file for more information.
+<UL>
+<LI>
+H. Dobbertin, A. Bosselaers, B. Preneel, <A HREF="ftp://ftp.esat.kuleuven.ac.be/pub/cosic/bosselae/ripemd/ripemd160.ps.gz">``RIPEMD-160,
+a strengthened version of RIPEMD.''</A> This article contains a description
+of both RIPEMD-160 and RIPEMD-128. It is an updated and corrected version
+of the article published in <I>Fast Software Encryption, LNCS 1039</I>,
+D. Gollmann, Ed., Springer-Verlag, 1996, pp. 71-82.
+See the <A HREF="#More">bibliography section</A> below for more
+descriptions.</LI>
+
+<LI>
+<A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/rmd160.c">rmd160.c</A>:
+source code for RIPEMD-160</LI>
+
+<LI>
+<A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/rmd160.h">rmd160.h</A>:
+include file for RIPEMD-160.</LI>
+
+<LI>
+<A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/rmd128.c">rmd128.c</A>:
+source code for RIPEMD-128</LI>
+
+<LI>
+<A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/rmd128.h">rmd128.h</A>:
+include file for RIPEMD-128.</LI>
+
+<LI>
+<A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/hashtest.c">hashtest.c</A>:
+driver for both RIPEMD-160 and RIPEMD-128.</LI>
+</UL>
+<A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/rmd160-3.gif">This
+figure</A> gives you a first idea of RIPEMD-160. Pseudocode for <A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/rmd160.txt">RIPEMD-160</A>
+and <A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/rmd128.txt">RIPEMD-128</A>
+are provided for, as well as test vectors, which are given in the table
+below. The messages are given in ASCII format, while the corresponding
+hash results are in hexadecimal format.
+<BR>&nbsp;
+<CENTER><TABLE BORDER >
+<TR>
+<TD>Message</TD>
+
+<TD>
+<CENTER>Hash result using RIPEMD-160</CENTER>
+</TD>
+
+<TD>
+<CENTER>Hash result using RIPEMD-128</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"" (empty string)</TD>
+
+<TD><TT>9c1185a5c5e9fc54612808977ee8f548b2258d31</TT></TD>
+
+<TD><TT>cdf26213a150dc3ecb610f18f6b38b46</TT></TD>
+</TR>
+
+<TR>
+<TD>"a"</TD>
+
+<TD><TT>0bdc9d2d256b3ee9daae347be6f4dc835a467ffe</TT></TD>
+
+<TD><TT>86be7afa339d0fc7cfc785e72f578d33</TT></TD>
+</TR>
+
+<TR>
+<TD>"abc"</TD>
+
+<TD><TT>8eb208f7e05d987a9b044a8e98c6b087f15a0bfc</TT></TD>
+
+<TD><TT>c14a12199c66e4ba84636b0f69144c77</TT></TD>
+</TR>
+
+<TR>
+<TD>"message digest"&nbsp;</TD>
+
+<TD><TT>5d0689ef49d2fae572b881b123a85ffa21595f36</TT></TD>
+
+<TD><TT>9e327b3d6e523062afc1132d7df9d1b8</TT></TD>
+</TR>
+
+<TR>
+<TD>"a...z"<SUP>1</SUP></TD>
+
+<TD><TT>f71c27109c692c1b56bbdceb5b9d2865b3708dbc</TT></TD>
+
+<TD><TT>fd2aa607f71dc8f510714922b371834e</TT></TD>
+</TR>
+
+<TR>
+<TD>"abcdbcde...nopq"<SUP>2</SUP></TD>
+
+<TD><TT>12a053384a9c0c88e405a06c27dcf49ada62eb2b</TT></TD>
+
+<TD><TT>a1aa0689d0fafa2ddc22e88b49133a06</TT></TD>
+</TR>
+
+<TR>
+<TD>"A...Za...z0...9"<SUP>3</SUP></TD>
+
+<TD><TT>b0e20b6e3116640286ed3a87a5713079b21f5189</TT></TD>
+
+<TD><TT>d1e959eb179c911faea4624c60c5c702</TT></TD>
+</TR>
+
+<TR>
+<TD>8 times "1234567890"</TD>
+
+<TD><TT>9b752e45573d4b39f4dbd3323cab82bf63326bfb</TT></TD>
+
+<TD><TT>3f45ef194732c2dbb2c4a2c769795fa3</TT></TD>
+</TR>
+
+<TR>
+<TD>1 million times "a"</TD>
+
+<TD><TT>52783243c1697bdbe16d37f97f68f08325dc1528</TT></TD>
+
+<TD><TT>4a7f5723f954eba1216c9d8f6320431f</TT></TD>
+</TR>
+</TABLE></CENTER>
+
+<OL>
+<LI>
+<FONT SIZE=-1>"abcdefghijklmnopqrstuvwxyz"</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>"abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"</FONT></LI>
+</OL>
+
+<HR NOSHADE WIDTH="100%"><A NAME="SHA-1"></A><B><FONT SIZE=+1>And what
+about SHA-1?</FONT></B>
+<P>An alternative to RIPEMD-160 is <A HREF="http://csrc.ncsl.nist.gov/fips/fip180-1.ps">SHA-1</A>.
+It also has a 160-bit hash result, and because of some of its properties
+it is quite likely that it is not vulnerable to the known attacks on the
+MD4-like hash functions. However, and in contrast to RIPEMD-160, both its
+design criteria and the attack on the first version are secret. A theoretical
+attack on the compression function of the first version with complexity
+2<SUP>61 </SUP>was found by Florent Chabaud and Antoine Joux, <A HREF="ftp://ftp.ens.fr/pub/dmi/users/chabaud/sha.ps">``Differential
+Collisions in SHA-0,''</A> <I>Advances in Cryptology - Crypto'98, LNCS
+1462</I>, H. Krawczyk, Ed., Springer-Verlag, 1998, pp. 56-71.
+<P>
+<HR NOSHADE WIDTH="100%"><A NAME="Speed"></A><B><FONT SIZE=+1>How fast
+is RIPEMD-160?</FONT></B>
+<P>The following table gives an idea of the performance of the different
+MD4-like hash functions. The implementations are written in 80x86 assembly
+language and are optimized for the Pentium processor. It is assumed that
+both code and data resides in the on-chip caches. Under these conditions
+the cycle figures are independent of the clock speed, and the throughput
+figures scale with the clock speed.
+<BR>&nbsp;
+<CENTER><TABLE BORDER WIDTH="350" frame="box" rules="groups" >
+<TR VALIGN=TOP>
+<TD>Algorithm</TD>
+
+<TD ALIGN=RIGHT>cycles</TD>
+
+<TD ALIGN=RIGHT>Mbit/sec</TD>
+
+<TD ALIGN=RIGHT>Mbyte/sec</TD>
+
+<TD ALIGN=CENTER>relative performance</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>MD4</TD>
+
+<TD ALIGN=RIGHT>241</TD>
+
+<TD ALIGN=RIGHT>191.2</TD>
+
+<TD ALIGN=RIGHT>23.90</TD>
+
+<TD ALIGN=CENTER>1.00</TD>
+
+<TD>
+<CENTER><!---<TD><IMG SRC="updated2.gif" ALT="UPDATED" HEIGHT=12 WIDTH=60></TD>
+---></CENTER>
+</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>MD5</TD>
+
+<TD ALIGN=RIGHT>337</TD>
+
+<TD ALIGN=RIGHT>136.7</TD>
+
+<TD ALIGN=RIGHT>17.09</TD>
+
+<TD ALIGN=CENTER>0.72</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>RIPEMD</TD>
+
+<TD ALIGN=RIGHT>480</TD>
+
+<TD ALIGN=RIGHT>96.0</TD>
+
+<TD ALIGN=RIGHT>12.00</TD>
+
+<TD ALIGN=CENTER>0.50</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>RIPEMD-128</TD>
+
+<TD ALIGN=RIGHT>592</TD>
+
+<TD ALIGN=RIGHT>77.8</TD>
+
+<TD ALIGN=RIGHT>9.73</TD>
+
+<TD ALIGN=CENTER>0.41</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>SHA-1</TD>
+
+<TD ALIGN=RIGHT>837</TD>
+
+<TD ALIGN=RIGHT>55.1</TD>
+
+<TD ALIGN=RIGHT>6.88</TD>
+
+<TD ALIGN=CENTER>0.29</TD>
+</TR>
+
+<TR VALIGN=TOP>
+<TD>RIPEMD-160</TD>
+
+<TD ALIGN=RIGHT>1013</TD>
+
+<TD ALIGN=RIGHT>45.5</TD>
+
+<TD ALIGN=RIGHT>5.68</TD>
+
+<TD ALIGN=CENTER>0.24</TD>
+</TR>
+
+<CAPTION ALIGN=BOTTOM><B>Table 1:</B> Performance of optimized assembly
+language implementations of MD4-like hash functions on a 90 MHz Pentium
+using a 32-bit flat memory model (i.e., running in native protected mode).&nbsp;</CAPTION>
+</TABLE></CENTER>
+
+<P>More information on these implementations can be found in: A. Bosselaers,
+R. Govaerts and J. Vandewalle, <A HREF="ftp://ftp.esat.kuleuven.ac.be/pub/COSIC/bosselae/pentium.ps.gz">``Fast
+hashing on the Pentium,''</A> <I>Advances in Cryptology, Proceedings Crypto'96,
+LNCS 1109</I>, N. Koblitz, Ed., Springer-Verlag, 1996, pp. 298-312, and
+in the short note <A HREF="ftp://ftp.esat.kuleuven.ac.be/pub/COSIC/bosselae/pentiumplus.ps.gz">``Even
+faster hashing on the Pentium,''</A> presented at the rump session of Eurocrypt'97.
+<P>
+<HR NOSHADE WIDTH="100%"><A NAME="More"></A><B><FONT SIZE=+1>Patents, Object
+Identifiers, Bibliography.</FONT></B>
+<P>The authors of RIPEMD-160 and RIPEMD-128 do <B>not hold any patents
+on the algorithms</B> (nor on the <A HREF="#extensions">optional extensions</A>),
+and are also <B>not aware of any patents on these algorithms</B>. Naturally,
+if you do decide to use either of them, <A HREF="mailto:antoon.bosselaers@esat.kuleuven.ac.be">we</A>
+would love to hear about it.
+<P>RIPEMD-160, RIPEMD-128 and the optional extension RIPEMD-256 have <A HREF="http://domen.uninett.no/~hta/ietf/oids.html">object
+identifiers</A> defined by the ISO-identified organization <A HREF="http://www.ldv.e-technik.tu-muenchen.de/teletrust/algorith.html">TeleTrusT</A>,
+both as hash algorithm and in combination with RSA.
+<BR>&nbsp;
+<CENTER><TABLE BORDER >
+<TR>
+<TD>ISO</TD>
+
+<TD>{<A HREF="http://www.alvestrand.no/objectid/1.html">1</A>}&nbsp;</TD>
+</TR>
+
+<TR>
+<TD>identified organization&nbsp;</TD>
+
+<TD>{<A HREF="http://www.alvestrand.no/objectid/1.3.html">1.3</A>}</TD>
+</TR>
+
+<TR>
+<TD>teletrust</TD>
+
+<TD>{<A HREF="http://www.alvestrand.no/objectid/1.3.36.html">1.3.36</A>}</TD>
+</TR>
+
+<TR>
+<TD>algorithm</TD>
+
+<TD>{<A HREF="http://www.alvestrand.no/objectid/1.3.36.3.html">1.3.36.3</A>}</TD>
+</TR>
+
+<TR>
+<TD>&nbsp;&nbsp; hashAlgorithm</TD>
+
+<TD>{<A HREF="http://www.alvestrand.no/objectid/1.3.36.3.2.html">1.3.36.3.2</A>}</TD>
+</TR>
+
+<TR>
+<TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ripemd160</TD>
+
+<TD>{<A HREF="http://www.alvestrand.no/objectid/1.3.36.3.2.1.html">1.3.36.3.2.1</A>}</TD>
+</TR>
+
+<TR>
+<TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ripemd128&nbsp;</TD>
+
+<TD>{<A HREF="http://www.alvestrand.no/objectid/1.3.36.3.2.2.html">1.3.36.3.2.2</A>}</TD>
+</TR>
+
+<TR>
+<TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ripemd256</TD>
+
+<TD>{<A HREF="http://www.alvestrand.no/objectid/1.3.36.3.2.3.html">1.3.36.3.2.3</A>}</TD>
+</TR>
+
+<TR>
+<TD>&nbsp;&nbsp; signatureAlgorithm&nbsp;</TD>
+
+<TD>{<A HREF="http://www.alvestrand.no/objectid/1.3.36.3.3.html">1.3.36.3.3</A>}</TD>
+</TR>
+
+<TR>
+<TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rsaSignature</TD>
+
+<TD>{<A HREF="http://www.alvestrand.no/objectid/1.3.36.3.3.1.html">1.3.36.3.3.1</A>}</TD>
+</TR>
+
+<TR>
+<TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rsaSignatureWithripemd160</TD>
+
+<TD>{<A HREF="http://www.alvestrand.no/objectid/1.3.36.3.3.1.2.html">1.3.36.3.3.1.2</A>}</TD>
+</TR>
+
+<TR>
+<TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rsaSignatureWithripemd128</TD>
+
+<TD>{<A HREF="http://www.alvestrand.no/objectid/1.3.36.3.3.1.3.html">1.3.36.3.3.1.3</A>}</TD>
+</TR>
+
+<TR>
+<TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rsaSignatureWithripemd256</TD>
+
+<TD>{<A HREF="http://www.alvestrand.no/objectid/1.3.36.3.3.1.4.html">1.3.36.3.3.1.4</A>}</TD>
+</TR>
+</TABLE></CENTER>
+
+<P>RIPEMD-160 is also part of the ISO/IEC international standard <A HREF="http://www.iso.ch/cate/d25428.html">ISO/IEC
+10118-3:1998</A> on dedicated hash functions, together with RIPEMD-128
+and SHA-1.
+<P>More information about RIPEMD-160 can, e.g., be found in the following
+publications:
+<OL>
+<LI>
+<A NAME="RMDdef"></A>H. Dobbertin, A. Bosselaers, B. Preneel, <A HREF="ftp://ftp.esat.kuleuven.ac.be/pub/cosic/bosselae/ripemd/ripemd160.ps.gz">``RIPEMD-160,
+a strengthened version of RIPEMD,'' </A><I>Fast Software Encryption, LNCS
+1039</I>, D. Gollmann, Ed., Springer-Verlag, 1996, pp. 71-82.</LI>
+
+<LI>
+<!--
+H. Dobbertin, ``Welche Hashfunktionen sind f&uuml;r Digitale Signaturen
+geeignet?,'' <I><A HREF="http://www.iig.uni-freiburg.de/gi/vis/ds96-ber.html">
+Digitale Signaturen. Grundlagen, Realisierungen, Rechtliche Aspekte, 
+Anwendungen</A></I>,
+P. Horster, Ed., DuD Fachbeitr&auml;ge, Verlag Vieweg, Braunschweig, 1996.</LI>
+-->H.
+Dobbertin, ``Digitale Fingerabdr&uuml;cke; Sichere Hashfunktionen f&uuml;r
+digitale Signaturen,'' <I>Datenschutz und Datensicherheit</I>, Vol. 21,
+No. 2, 1997, pp. 82-87.</LI>
+
+<LI>
+<A HREF="http://www.iso.ch/cate/d25428.html">ISO/IEC 10118-3:1998</A>,
+``Information technology - Security techniques - Hash-functions - Part
+3: Dedicated hash-functions,'' International Organization for Standardization,
+Geneva, Switzerland, 1998.</LI>
+
+<LI>
+A. Menezes, P. van Oorschot, S. Vanstone, <I><A HREF="http://www.cacr.math.uwaterloo.ca/hac/">Handbook
+of Applied Cryptography</A></I>, CRC press, 1996, Section 9.4.2, pp. 349-351.</LI>
+
+<LI>
+A. Bosselaers, H. Dobbertin, B. Preneel, ``The RIPEMD-160 cryptographic
+hash function,'' <A HREF="http://www.ddj.com/ddj/1997/1997.01/index.htm"><I>Dr.
+Dobb's Journal</I>, Vol. 22, No. 1, January 1997</A>, pp. 24-28.</LI>
+
+<LI>
+B. Preneel, A. Bosselaers, H. Dobbertin, <A HREF="ftp://ftp.rsa.com/pub/cryptobytes/crypto3n2.pdf">``The
+cryptographic hash function RIPEMD-160,''</A> <I>CryptoBytes</I>, Vol.
+3, No. 2, 1997, pp. 9-14.</LI>
+</OL>
+
+<HR NOSHADE WIDTH="100%"><A NAME="extensions"></A><B><FONT SIZE=+1>Optional
+extensions to 256 and 320 hash results: RIPEMD-256 and RIPEMD-320</FONT></B>
+<P>Some applications of hash functions require a longer hash result <B>without
+needing a larger security level. </B>To this end RIPEMD-256 and RIPEMD-320
+are constructed from, respectively, RIPEMD-128 and RIPEMD-160 by initializing
+the two parallel lines with different initial values, omitting the combination
+of the two lines at the end of every application of the compression function,
+and exchanging a chaining variable between the 2 parallel lines after each
+round. Remark that the security level of the 320-bit extension of RIPEMD-160
+is only guaranteed to be the same as that of RIPEMD-160 itself, and similarly
+for the 256-bit extension of RIPEMD-128 with respect to RIPEMD-128 itself.
+<P>Pseudocode for <A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/rmd256.txt">RIPEMD-256</A>
+and <A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/rmd320.txt">RIPEMD-320</A>
+are provided for, as well as test vectors, which are given in the tables
+below. The messages are given in ASCII format, while the corresponding
+hash results are in hexadecimal format.
+<BR>&nbsp;
+<CENTER><TABLE BORDER >
+<TR>
+<TD>Message</TD>
+
+<TD>
+<CENTER>Hash result using RIPEMD-256</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"" (empty string)</TD>
+
+<TD><TT>02ba4c4e5f8ecd1877fc52d64d30e37a2d9774fb1e5d026380ae0168e3c5522d</TT></TD>
+</TR>
+
+<TR>
+<TD>"a"</TD>
+
+<TD><TT>f9333e45d857f5d90a91bab70a1eba0cfb1be4b0783c9acfcd883a9134692925</TT></TD>
+</TR>
+
+<TR>
+<TD>"abc"</TD>
+
+<TD><TT>afbd6e228b9d8cbbcef5ca2d03e6dba10ac0bc7dcbe4680e1e42d2e975459b65</TT></TD>
+</TR>
+
+<TR>
+<TD>"message digest"&nbsp;</TD>
+
+<TD><TT>87e971759a1ce47a514d5c914c392c9018c7c46bc14465554afcdf54a5070c0e</TT></TD>
+</TR>
+
+<TR>
+<TD>"a...z"<SUP>1</SUP></TD>
+
+<TD><TT>649d3034751ea216776bf9a18acc81bc7896118a5197968782dd1fd97d8d5133</TT></TD>
+</TR>
+
+<TR>
+<TD>"abcdbcde...nopq"<SUP>2</SUP></TD>
+
+<TD><TT>3843045583aac6c8c8d9128573e7a9809afb2a0f34ccc36ea9e72f16f6368e3f</TT></TD>
+</TR>
+
+<TR>
+<TD>"A...Za...z0...9"<SUP>3</SUP></TD>
+
+<TD><TT>5740a408ac16b720b84424ae931cbb1fe363d1d0bf4017f1a89f7ea6de77a0b8</TT></TD>
+</TR>
+
+<TR>
+<TD>8 times "1234567890"</TD>
+
+<TD><TT>06fdcc7a409548aaf91368c06a6275b553e3f099bf0ea4edfd6778df89a890dd</TT></TD>
+</TR>
+
+<TR>
+<TD>1 million times "a"</TD>
+
+<TD><TT>ac953744e10e31514c150d4d8d7b677342e33399788296e43ae4850ce4f97978</TT></TD>
+</TR>
+</TABLE></CENTER>
+
+<CENTER><TABLE BORDER >
+<TR>
+<TD>Message</TD>
+
+<TD>
+<CENTER>Hash result using RIPEMD-320</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"" (empty string)</TD>
+
+<TD><TT>22d65d5661536cdc75c1fdf5c6de7b41b9f27325ebc61e8557177d705a0ec880151c3a32a00899b8</TT></TD>
+</TR>
+
+<TR>
+<TD>"a"</TD>
+
+<TD><TT>ce78850638f92658a5a585097579926dda667a5716562cfcf6fbe77f63542f99b04705d6970dff5d</TT></TD>
+</TR>
+
+<TR>
+<TD>"abc"</TD>
+
+<TD><TT>de4c01b3054f8930a79d09ae738e92301e5a17085beffdc1b8d116713e74f82fa942d64cdbc4682d</TT></TD>
+</TR>
+
+<TR>
+<TD>"message digest"&nbsp;</TD>
+
+<TD><TT>3a8e28502ed45d422f68844f9dd316e7b98533fa3f2a91d29f84d425c88d6b4eff727df66a7c0197</TT></TD>
+</TR>
+
+<TR>
+<TD>"a...z"<SUP>1</SUP></TD>
+
+<TD><TT>cabdb1810b92470a2093aa6bce05952c28348cf43ff60841975166bb40ed234004b8824463e6b009</TT></TD>
+</TR>
+
+<TR>
+<TD>"abcdbcde...nopq"<SUP>2</SUP></TD>
+
+<TD><TT>d034a7950cf722021ba4b84df769a5de2060e259df4c9bb4a4268c0e935bbc7470a969c9d072a1ac</TT></TD>
+</TR>
+
+<TR>
+<TD>"A...Za...z0...9"<SUP>3</SUP></TD>
+
+<TD><TT>ed544940c86d67f250d232c30b7b3e5770e0c60c8cb9a4cafe3b11388af9920e1b99230b843c86a4</TT></TD>
+</TR>
+
+<TR>
+<TD>8 times "1234567890"</TD>
+
+<TD><TT>557888af5f6d8ed62ab66945c6d2a0a47ecd5341e915eb8fea1d0524955f825dc717e4a008ab2d42</TT></TD>
+</TR>
+
+<TR>
+<TD>1 million times "a"</TD>
+
+<TD><TT>bdee37f4371e20646b8b0d862dda16292ae36f40965e8c8509e63d1dbddecc503e2b63eb9245bb66</TT></TD>
+</TR>
+</TABLE></CENTER>
+
+<OL>
+<LI>
+<FONT SIZE=-1>"abcdefghijklmnopqrstuvwxyz"</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>"abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"</FONT></LI>
+</OL>
+
+<HR NOSHADE WIDTH="100%"><A NAME="MACs based on"></A><B><FONT SIZE=+1>MACs
+based on RIPEMD-160.</FONT></B>
+<P>Two constructions of MACs based on a hash-function are currently being
+standardized within ISO/IEC (<A HREF="http://www.iso.ch/cate/d31136.html">DIS
+9797-2</A>). A reference implementation and test vectors are given for
+MDx-MAC based on RIPEMD-160/128, test vectors are given for HMAC based
+on RIPEMD-160/128.
+<P><A NAME="MDx-MAC"></A><B><FONT SIZE=+1>1. MDx-MAC for RIPEMD-160.</FONT></B>
+<P>At Crypto'95 Bart Preneel and Paul van Oorschot proposed a new generic
+construction (MDx-MAC) for transforming any secure hash function of the
+MD4-family into a secure MAC of equal or smaller bitlength and comparable
+speed. Reference C software for the MDx-MACs based on RIPEMD-160 and RIPEMD-128
+is now available via <A HREF="ftp://ftp.esat.kuleuven.ac.be/pub/cosic/bosselae/ripemd/">anonymous
+ftp</A>. Like for the corresponding hash functions the implementations
+are written for the sole purpose of documentation. No optimization whatsoever
+is performed: only readability and portability were kept in mind. See again
+the <A HREF="ftp://ftp.esat.kuleuven.ac.be/pub/COSIC/bosselae/ripemd/README">README</A>
+file for more information.
+<UL>
+<LI>
+B. Preneel and P.C. van Oorschot, <A HREF="ftp://ftp.esat.kuleuven.ac.be/pub/COSIC/preneel/mdxmac_crypto95.ps.gz">``MDx-MAX
+and building fast MACs from hash functions,''</A> <I>Advances in Cryptology
+- Crypto'95, LNCS 963</I>, D. Coppersmith, Ed., Springer-Verlag, 1995,
+pp. 1-14.</LI>
+
+<LI>
+B. Preneel and P.C. van Oorschot, <A HREF="http://www.patents.ibm.com/details?pn=US05664016__">``Method
+of building fast MACs from hash functions,''</A> U.S. Patent # 5,664,016,
+2 September 1997.</LI>
+
+<LI>
+<A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/rmd160mc.c">rmd160mc.c</A>:
+source code for RIPEMD160-MAC</LI>
+
+<LI>
+<A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/rmd160mc.h">rmd160mc.h</A>:
+include file for RIPEMD160-MAC.</LI>
+
+<LI>
+<A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/rmd128mc.c">rmd128mc.c</A>:
+source code for RIPEMD128-MAC</LI>
+
+<LI>
+<A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/rmd128mc.h">rmd128mc.h</A>:
+include file for RIPEMD128-MAC.</LI>
+
+<LI>
+<A HREF="http://www.esat.kuleuven.ac.be/~bosselae/ripemd/mactest.c">mactest.c</A>:
+driver for both RIPEMD160-MAC and RIPEMD128-MAC.</LI>
+</UL>
+The table below lists the constants T0, T1, and T2 for both RIPEMD160-MAC
+and RIPEMD128-MAC, all in hexadecimal format.
+<BR>&nbsp;
+<CENTER><TABLE BORDER >
+<TR>
+<TD>Constant</TD>
+
+<TD>
+<CENTER>RIPEMD160-MAC</CENTER>
+</TD>
+
+<TD>
+<CENTER>RIPEMD128-MAC</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>T0</TD>
+
+<TD><TT>1cc7086a046afa22353ae88f3d3daceb</TT></TD>
+
+<TD><TT>fd7ec18964c36d53fc18c31b72112aac</TT></TD>
+</TR>
+
+<TR>
+<TD>T1</TD>
+
+<TD><TT>e3fa02710e491d851151cc34e4718d41</TT></TD>
+
+<TD><TT>2538b78ec0e273949ee4c4457a77525c</TT></TD>
+</TR>
+
+<TR>
+<TD>T2</TD>
+
+<TD><TT>93987557c07b8102ba592949eb638f37</TT></TD>
+
+<TD><TT>f5c93ed85bd65f609a7eb182a85ba181</TT></TD>
+</TR>
+</TABLE></CENTER>
+
+<P>Test vectors for two different keys (both in hexadecimal format) are
+given in the table below. The messages are given in ASCII format, while
+the corresponding MAC results are in hexadecimal format (the full length
+result is given).
+<BR>&nbsp;
+<CENTER><TABLE BORDER >
+<TR>
+<TD>Message</TD>
+
+<TD>
+<CENTER>MAC result using RIPEMD160-MAC with key
+<BR><TT>00112233445566778899aabbccddeeff</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER>MAC result using RIPEMD160-MAC with key
+<BR><TT>0123456789abcdeffedcba9876543210</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"" (empty string)</TD>
+
+<TD><TT>b7f4508111eb8c3b5229c6aed406de9eca640133</TT></TD>
+
+<TD><TT>b45d6ca84cfb9020e0d5aba2a7609d3d81f3f57f</TT></TD>
+</TR>
+
+<TR>
+<TD>"a"</TD>
+
+<TD><TT>bc78f55933bceb1ee85a906f9e18374f23e310f9</TT></TD>
+
+<TD><TT>8844375992037d1bcd0d118ee548d70c3f19cbbb</TT></TD>
+</TR>
+
+<TR>
+<TD>"abc"</TD>
+
+<TD><TT>6300dc20e97a5aa29db9c7d607d23d126fa36863</TT></TD>
+
+<TD><TT>917c59b8ac7fc19dc25bef82766412fa16bbc6a7</TT></TD>
+</TR>
+
+<TR>
+<TD>"message digest"&nbsp;</TD>
+
+<TD><TT>3a2ac89b78eeab8759f5112bcad4cd405eeb5d35</TT></TD>
+
+<TD><TT>e0737cc7976d8f424390cb8798d623d751afe15a</TT></TD>
+</TR>
+
+<TR>
+<TD>"a...z"<SUP>1</SUP></TD>
+
+<TD><TT>16dc174925bbc27e0c93d426c346846f97f8bc69</TT></TD>
+
+<TD><TT>d57fae836870718efa4bd4a5f2f322a179a8735e</TT></TD>
+</TR>
+
+<TR>
+<TD>"abcdbcde...nopq"<SUP>2</SUP></TD>
+
+<TD><TT>e062210ba5c9c94737bf3a6e85b3b5664fbd1d4e</TT></TD>
+
+<TD><TT>42b20d4c8fd5e8672760cf83c0478d7bf8021404</TT></TD>
+</TR>
+
+<TR>
+<TD>"A...Za...z0...9"<SUP>3</SUP></TD>
+
+<TD><TT>9b462d5cbdae1485ffe10bc001ef9e3af6d128b5</TT></TD>
+
+<TD><TT>63dea9dd7b52cc8c058b2d55b63e1874f8d85c96</TT></TD>
+</TR>
+
+<TR>
+<TD>8 times "1234567890"</TD>
+
+<TD><TT>88e73a01a1de36c92d6f9e41f7278d407b4a4ccd</TT></TD>
+
+<TD><TT>10441df4f68ce8815818dc0fb370abf87bca4464</TT></TD>
+</TR>
+
+<TR>
+<TD>1 million times "a"</TD>
+
+<TD><TT>e7b128e4a1842b750f1e61a486c867c4887a4b21</TT></TD>
+
+<TD><TT>e06ad21d2af04dd4217ab03b1a578f036997d01a</TT></TD>
+</TR>
+</TABLE></CENTER>
+
+<CENTER><TABLE BORDER >
+<TR>
+<TD>Message</TD>
+
+<TD>
+<CENTER>MAC result using RIPEMD128-MAC with key
+<BR><TT>00112233445566778899aabbccddeeff</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER>MAC result using RIPEMD128-MAC with key
+<BR><TT>0123456789abcdeffedcba9876543210</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"" (empty string)</TD>
+
+<TD>
+<CENTER><TT>a47a64e9ede0741b3fdde33e5c1c6d78</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>35fa3ac39f50f2a4e3ffc7af5776b4eb</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"a"</TD>
+
+<TD>
+<CENTER><TT>51355051852fdc79fb228eac905633ad</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>a89e25e6796747b630a2a00b802ea53e</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"abc"</TD>
+
+<TD>
+<CENTER><TT>d83940daffbd4cbbe6ba30a6f9e63f5f</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>66339027a36608ebd932dd551616e7b2</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"message digest"&nbsp;</TD>
+
+<TD>
+<CENTER><TT>1a7cfe2bb26e973e213c1cb96fa4c2ef</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>1f8779bad84b50373931211a2761ead3</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"a...z"<SUP>1</SUP></TD>
+
+<TD>
+<CENTER><TT>798aeac6046b31907c197bd68e59d376</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>31bf5b5b7abac2567dc0e02f1c3a25d7</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"abcdbcde...nopq"<SUP>2</SUP></TD>
+
+<TD>
+<CENTER><TT>0b8e1d4a571f32657189e22a1f2f4a53</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>b5b8ba3b8ea895fbc83cb7588fbd2656</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"A...Za...z0...9"<SUP>3</SUP></TD>
+
+<TD>
+<CENTER><TT>b814730f482300c6e474fd255a66d680</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>8d27bbec257c848d5cf375eb5eda4cc7</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>8 times "1234567890"</TD>
+
+<TD>
+<CENTER><TT>9060a30758ebe3368d939ac168f1a9fd</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>b40b5bf6727de90b26f770850f059c89</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>1 million times "a"</TD>
+
+<TD>
+<CENTER><TT>20763fdedf01e56ff5756954302c7de0</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>76c7bc831b0bce593dfd44e8e054a373</TT></CENTER>
+</TD>
+</TR>
+</TABLE></CENTER>
+
+<OL>
+<LI>
+<FONT SIZE=-1>"abcdefghijklmnopqrstuvwxyz"</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>"abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"</FONT></LI>
+</OL>
+<A NAME="HMAC"></A><B><FONT SIZE=+1>2. HMAC-RIPEMD-160: testvectors.</FONT></B>
+<P>The HMAC-construction was proposed by Mihit Bellare, Ran Canetti, and
+Hugo Krawczyck, <A HREF="http://www-cse.ucsd.edu/users/mihir/papers/hmac.html">``Keying
+Hash Functions for Message Authentication,''</A> <I>Advances in Cryptology
+- Crypto'96, LNCS 1109</I>, N. Koblitz, Ed., Springer-Verlag, 1996, pp.
+1-15. Test vectors for two different keys (both in hexadecimal format)
+are given in the table below. The messages are given in ASCII format, while
+the corresponding MAC results are in hexadecimal format (the full length
+result is given). Keys are required to be at least the size of the hash
+result. Another source for test vectors is RFC 2286, ``Test cases for HMAC-RIPEMD160
+and HMAC-RIPEMD128,'' Internet Request for Comments 2286, J. Kapp, February
+1998.
+<BR>&nbsp;
+<CENTER><TABLE BORDER >
+<TR>
+<TD>Message</TD>
+
+<TD>
+<CENTER>MAC result using HMAC-RIPEMD160 with key
+<BR><TT>00112233445566778899aabbccddeeff01234567</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER>MAC result using HMAC-RIPEMD160 with key
+<BR><TT>0123456789abcdeffedcba987654321000112233</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"" (empty string)</TD>
+
+<TD><TT>cf387677bfda8483e63b57e06c3b5ecd8b7fc055</TT></TD>
+
+<TD><TT>fe69a66c7423eea9c8fa2eff8d9dafb4f17a62f5</TT></TD>
+</TR>
+
+<TR>
+<TD>"a"</TD>
+
+<TD><TT>0d351d71b78e36dbb7391c810a0d2b6240ddbafc</TT></TD>
+
+<TD><TT>85743e899bc82dbfa36faaa7a25b7cfd372432cd</TT></TD>
+</TR>
+
+<TR>
+<TD>"abc"</TD>
+
+<TD><TT>f7ef288cb1bbcc6160d76507e0a3bbf712fb67d6</TT></TD>
+
+<TD><TT>6e4afd501fa6b4a1823ca3b10bd9aa0ba97ba182</TT></TD>
+</TR>
+
+<TR>
+<TD>"message digest"&nbsp;</TD>
+
+<TD><TT>f83662cc8d339c227e600fcd636c57d2571b1c34</TT></TD>
+
+<TD><TT>2e066e624badb76a184c8f90fba053330e650e92</TT></TD>
+</TR>
+
+<TR>
+<TD>"a...z"<SUP>1</SUP></TD>
+
+<TD><TT>843d1c4eb880ac8ac0c9c95696507957d0155ddb</TT></TD>
+
+<TD><TT>07e942aa4e3cd7c04dedc1d46e2e8cc4c741b3d9</TT></TD>
+</TR>
+
+<TR>
+<TD>"abcdbcde...nopq"<SUP>2</SUP></TD>
+
+<TD><TT>60f5ef198a2dd5745545c1f0c47aa3fb5776f881</TT></TD>
+
+<TD><TT>b6582318ddcfb67a53a67d676b8ad869aded629a</TT></TD>
+</TR>
+
+<TR>
+<TD>"A...Za...z0...9"<SUP>3</SUP></TD>
+
+<TD><TT>e49c136a9e5627e0681b808a3b97e6a6e661ae79</TT></TD>
+
+<TD><TT>f1be3ee877703140d34f97ea1ab3a07c141333e2</TT></TD>
+</TR>
+
+<TR>
+<TD>8 times "1234567890"</TD>
+
+<TD><TT>31be3cc98cee37b79b0619e3e1c2be4f1aa56e6c</TT></TD>
+
+<TD><TT>85f164703e61a63131be7e45958e0794123904f9</TT></TD>
+</TR>
+
+<TR>
+<TD>1 million times "a"</TD>
+
+<TD><TT>c2aa88c6405658dc225e485488371fb2433fa735</TT></TD>
+
+<TD><TT>82a504a002ba6e6c67f3cd67cedb66dc169bab7a</TT></TD>
+</TR>
+</TABLE></CENTER>
+
+<CENTER><TABLE BORDER >
+<TR>
+<TD>Message</TD>
+
+<TD>
+<CENTER>MAC result using HMAC-RIPEMD128 with key
+<BR><TT>00112233445566778899aabbccddeeff</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER>MAC result using HMAC-RIPEMD128 with key
+<BR><TT>0123456789abcdeffedcba9876543210</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"" (empty string)</TD>
+
+<TD>
+<CENTER><TT>ad9db2c1e22af9ab5ca9dbe5a86f67dc</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>8931eeee56a6b257fd1ab5418183d826</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"a"</TD>
+
+<TD>
+<CENTER><TT>3bf448c762de00bcfa0310b11c0bde4c</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>dbbcf169ea7419d5ba7bd8eb3673ff2d</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"abc"</TD>
+
+<TD>
+<CENTER><TT>f34ec0945f02b70b8603f89e1ce4c78c</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>2c4cd07d3162d6a0e338004d6b6fbc9a</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"message digest"&nbsp;</TD>
+
+<TD>
+<CENTER><TT>e8503a8aec2289d82aa0d8d445a06bdd</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>75bfb25888f4bb77c77ae83ad0817447</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"a...z"<SUP>1</SUP></TD>
+
+<TD>
+<CENTER><TT>ee880b735ce3126065de1699cc136199</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>b1b5dc0fcb7258758855dd1840fcdce4</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"abcdbcde...nopq"<SUP>2</SUP></TD>
+
+<TD>
+<CENTER><TT>794daf2e3bdeea2538638a5ced154434</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>670d0f7a697b18f1a8ab7d2a2a00dbc1</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>"A...Za...z0...9"<SUP>3</SUP></TD>
+
+<TD>
+<CENTER><TT>3a06eef165b23625247800be23e232b6</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>54e315fdb34a61c0475392e5c7852998</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>8 times "1234567890"</TD>
+
+<TD>
+<CENTER><TT>9a4f0159c0952da43a8d466d46b0af58</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>ad04354d8aa2a623e72e3594ee3535c0</TT></CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>1 million times "a"</TD>
+
+<TD>
+<CENTER><TT>19b1b3af333b894dd86d09427116d0ad</TT></CENTER>
+</TD>
+
+<TD>
+<CENTER><TT>6f9b1c0fc06753618d6db4b007733795</TT></CENTER>
+</TD>
+</TR>
+</TABLE></CENTER>
+
+<OL>
+<LI>
+<FONT SIZE=-1>"abcdefghijklmnopqrstuvwxyz"</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>"abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"</FONT></LI>
+
+<BR><FONT SIZE=-1>"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"</FONT></OL>
+
+<HR NOSHADE WIDTH="100%"><A NAME="mgf1"></A><B><FONT SIZE=+1>OAEP-encoding
+based on RIPEMD-160: test vectors</FONT></B>
+<P>The OAEP (Optimal Asymmetric Encryption Padding) encoding method is
+parametrized by the choice of the hash function and mask generation function.
+This section lists test vectors for OAEP based on RIPEMD-160 and the mask
+generation function MGF1 as defined in <A HREF="http://www.rsa.com/rsalabs/pubs/PKCS/html/pkcs-1.html">PKCS
+#1 v2.0</A> and <A HREF="http://grouper.ieee.org/groups/1363/">IEEE P1363</A>
+with RIPEMD-160 as the hash function. Inputs to the OAEP encoding method
+are
+<UL>
+<LI>
+the message to be encoded</LI>
+
+<LI>
+a string detailing encoding parameters</LI>
+
+<LI>
+the intended length in bytes of the encoded message</LI>
+
+<LI>
+a random string of 20 bytes long</LI>
+</UL>
+All strings are given in hexadecimal format.
+<BR>&nbsp;
+<CENTER><TABLE BORDER >
+<TR>
+<TD>
+<CENTER>Encoding parameters</CENTER>
+</TD>
+
+<TD>
+<CENTER>OAEP-encoded message string for
+<BR>message to be encoded = <TT>54859b342c49ea2a</TT>,
+<BR>intended length of encoded message = 63 bytes,
+<BR>random string = <TT>aafd12f659cae63489b479e5076ddec2f06cb58f</TT>.</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>empty string</TD>
+
+<TD><TT>7dcfd33b1ca1107625a3fbd99075e7c8adc134bf3f5c201b7ad3e8b3ede0b481</TT>
+<BR><TT>36002dd2ec034f04cda492db86973642dd59f018b0908a6504b4f845be3236</TT></TD>
+</TR>
+
+<TR>
+<TD><TT>3bf4c66f209e05f2a86eae213322fbf9252d6408</TT></TD>
+
+<TD><TT>62732b7784ac93f3ed97ed1d89c7aedf1e98a21f171240b14fa63ee789e54e78</TT>
+<BR><TT>fc34dc63650b0395cda492db86973642dd59f018b0908a6504b4f845be3236</TT></TD>
+</TR>
+
+<TR>
+<TD><TT>2771857832caf8f054940134a736233269f00d42</TT></TD>
+
+<TD><TT>071c2309ec131348e4faeeb5a409135a9c728b72e42e655755cdca7764183c48</TT>
+<BR><TT>72204bb51c9bbb2ecda492db86973642dd59f018b0908a6504b4f845be3236</TT></TD>
+</TR>
+</TABLE></CENTER>
+
+<P>
+<HR NOSHADE WIDTH="100%"><A NAME="questions"></A><B><FONT SIZE=+1>Still
+more questions?</FONT></B>
+<P>Do not hesitate to contact us: <A HREF="mailto:dobbertin@skom.rhein.de">Hans
+Dobbertin</A>, <A HREF="mailto:antoon.bosselaers@esat.kuleuven.ac.be">Antoon
+Bosselaers</A>, or <A HREF="mailto:bart.preneel@esat.kuleuven.ac.be">Bart
+Preneel</A>
+<P>
+<HR>
+<P><B><FONT SIZE=+1>Back to:</FONT></B>
+<UL>
+<LI>
+<A HREF="http://www.esat.kuleuven.ac.be/~bosselae/">Antoon's homepage</A></LI>
+
+<LI>
+<A HREF="http://www.esat.kuleuven.ac.be/~preneel/">Bart's homepage</A></LI>
+
+<LI>
+<A HREF="http://www.esat.kuleuven.ac.be/cosic/cosic.html">COSIC's homepage</A></LI>
+</UL>
+
+<HR><FONT SIZE=-1>This page is maintained by <A HREF="mailto:antoon.bosselaers@esat.kuleuven.ac.be">Antoon
+Bosselaers</A> and was last updated on 17 August 1999.</FONT>
+</BODY>
+</HTML>

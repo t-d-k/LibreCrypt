@@ -1,0 +1,46 @@
+package SDeanFilesystem;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'Sarah Dean Filesystem components'}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  vcl,
+  SDeanUtils,
+  vclx,
+  VclSmp,
+  xmlrtl;
+
+contains
+  SDFilesystem in 'SDFilesystem.pas',
+  SDFilesystem_FAT in 'SDFilesystem_FAT.pas',
+  SDFilesystem_Local in 'SDFilesystem_Local.pas',
+  SDFilesystemCtrls in 'SDFilesystemCtrls.pas',
+  SDPartitionImage in 'SDPartitionImage.pas',
+  SDPartitionImage_File in 'SDPartitionImage_File.pas',
+  SDFATBootSectorPropertiesDlg in 'SDFATBootSectorPropertiesDlg.pas',
+  SDFilesystemCtrls_ColDetails in 'SDFilesystemCtrls_ColDetails.pas';
+
+end.

@@ -1,0 +1,34 @@
+# This file contains the HMAC test cases taken from RFC2202, ripped directly
+# from this file with minor layout modifications to allow for a more machine
+# readable foramt
+#
+# Lines starting with "#" should be considered comments, and ignored by
+# testing applications
+
+
+# Test Cases for FIPS-198a
+
+hash =          sha-1
+test_case =     1
+key =           0x00010203 04050607 08090a0b 0c0d0e0f 10111213 14151617 18191a1b 1c1d1e1f 20212223 24252627 28292a2b 2c2d2e2f 30313233 34353637 38393a3b 3c3d3e3f
+key_len =       64
+data =          "Sample #1"
+data_len =      9
+digest =        0x4f4ca3d5 d68ba7cc 0a1208c9 c61e9c5d a0403c0a
+
+hash =          sha-1
+test_case =     2
+key =           0x30313233 34353637 38393a3b 3c3d3e3f 40414243
+key_len =       20
+data =          "Sample #2"
+data_len =      9
+digest =        0x0922d340 5faa3d19 4f82a458 30737d5c c6c75d24
+
+hash =          sha-1
+test_case =     3
+key =           0x50515253 54555657 58595a5b 5c5d5e5f 60616263 64656667 68696a6b 6c6d6e6f 70717273 74757677 78797a7b 7c7d7e7f 80818283 84858687 88898a8b 8c8d8e8f 90919293 94959697 98999a9b 9c9d9e9f a0a1a2a3 a4a5a6a7 a8a9aaab acadaeaf b0b1b2b3
+key_len =       100
+data =          "Sample #3"
+data_len =      9
+digest =        0xbcf41eab 8bb2d802 f3d05caf 7cb092ec f8d1a3aa
+

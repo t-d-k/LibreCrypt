@@ -1,0 +1,165 @@
+# Hash Test Vectors
+# -----------------
+#
+# A copy of the various published test vectors for the hashing algorithms
+# are shown blow (Note: Omit the quotes when testing!):
+#
+# This file may be used as input to automatic verification tests;
+# the format of this file is:
+#
+#   <one or more blank lines>
+#   Test data : "<input data>"
+#   <hash><whitespace>: <prettyprinted hash value>
+#   <hash><whitespace>: <prettyprinted hash value>
+#   ...
+#   <hash><whitespace>: <prettyprinted hash value>
+#
+# Comments are prefixed with "#" and should be ignored
+# Input data is enclosed in quotes, except for "<1 million "a" characters>",
+# which denotes the hash input consists of a million "a" characters
+# A file with 1000000 "a" characters is stored in the file
+# "1_million_a_chars.dat".
+
+Test data : ""
+MD2       : 8350e5a3e24c153df2275c9f80692773
+MD4       : 31d6cfe0d16ae931b73c59d7e0c089c0
+MD5       : d41d8cd98f00b204e9800998ecf8427e
+RIPEMD-128: cdf26213a150dc3ecb610f18f6b38b46
+RIPEMD-160: 9c1185a5c5e9fc54612808977ee8f548b2258d31
+RIPEMD-256: 02ba4c4e5f8ecd1877fc52d64d30e37a2d9774fb1e5d026380ae0168e3c5522d
+RIPEMD-320: 22d65d5661536cdc75c1fdf5c6de7b41b9f27325ebc61e8557177d705a0ec880151c3a32a00899b8
+Tiger     : 3293AC630C13F0245F92BBB1766E16167A4E58492DDE73F3
+
+
+Test data : "a"
+MD2       : 32ec01ec4a6dac72c0ab96fb34c0b5d1
+MD4       : bde52cb31de33e46245e05fbdbd6fb24
+MD5       : 0cc175b9c0f1b6a831c399e269772661
+RIPEMD-128: 86be7afa339d0fc7cfc785e72f578d33
+RIPEMD-160: 0bdc9d2d256b3ee9daae347be6f4dc835a467ffe
+RIPEMD-256: f9333e45d857f5d90a91bab70a1eba0cfb1be4b0783c9acfcd883a9134692925
+RIPEMD-320: ce78850638f92658a5a585097579926dda667a5716562cfcf6fbe77f63542f99b04705d6970dff5d
+
+
+Test data : "abc"
+MD2       : da853b0d3f88d99b30283a69e6ded6bb
+MD4       : a448017aaf21d8525fc10ae87aa6729d
+MD5       : 900150983cd24fb0d6963f7d28e17f72
+SHA       : 0164b8a9 14cd2a5e 74c4f7ff 082c4d97 f1edf880
+SHA-1     : a9993e36 4706816a ba3e2571 7850c26c 9cd0d89d
+SHA-256   : ba7816bf 8f01cfea 414140de 5dae2223 b00361a3 96177a9c b410ff61 f20015ad
+SHA-384   : cb00753f45a35e8b b5a03d699ac65007 272c32ab0eded163 1a8b605a43ff5bed 8086072ba1e7cc23 58baeca134c825a7
+SHA-512   : ddaf35a193617aba cc417349ae204131 12e6fa4e89a97ea2 0a9eeee64b55d39a 2192992a274fc1a8 36ba3c23a3feebbd 454d4423643ce80e 2a9ac94fa54ca49f
+RIPEMD-128: c14a12199c66e4ba84636b0f69144c77
+RIPEMD-160: 8eb208f7e05d987a9b044a8e98c6b087f15a0bfc
+RIPEMD-256: afbd6e228b9d8cbbcef5ca2d03e6dba10ac0bc7dcbe4680e1e42d2e975459b65
+RIPEMD-320: de4c01b3054f8930a79d09ae738e92301e5a17085beffdc1b8d116713e74f82fa942d64cdbc4682d
+Tiger     : 2AAB1484E8C158F2BFB8C5FF41B57A525129131C957B5F93
+
+
+Test data : "message digest"
+MD2       : ab4f496bfb2a530b219ff33031fe06b0
+MD4       : d9130a8164549fe818874806e1c7014b
+MD5       : f96b697d7cb7938d525a2f31aaf161d0
+RIPEMD-128: 9e327b3d6e523062afc1132d7df9d1b8
+RIPEMD-160: 5d0689ef49d2fae572b881b123a85ffa21595f36
+RIPEMD-256: 87e971759a1ce47a514d5c914c392c9018c7c46bc14465554afcdf54a5070c0e
+RIPEMD-320: 3a8e28502ed45d422f68844f9dd316e7b98533fa3f2a91d29f84d425c88d6b4eff727df66a7c0197
+
+
+Test data : "abcdefghijklmnopqrstuvwxyz"
+MD2       : 4e8ddff3650292ab5a4108c3aa47940b
+MD4       : d79e1c308aa5bbcdeea8ed63df412da9
+MD5       : c3fcd3d76192e4007dfb496cca67e13b
+RIPEMD-128: fd2aa607f71dc8f510714922b371834e
+RIPEMD-160: f71c27109c692c1b56bbdceb5b9d2865b3708dbc
+RIPEMD-256: 649d3034751ea216776bf9a18acc81bc7896118a5197968782dd1fd97d8d5133
+RIPEMD-320: cabdb1810b92470a2093aa6bce05952c28348cf43ff60841975166bb40ed234004b8824463e6b009
+
+
+Test data : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+MD2       : da33def2a42df13975352846c30338cd
+MD4       : 043f8582f241db351ce627e153e7f0e4
+MD5       : d174ab98d277d9f5a5611c2c9f419d9f
+RIPEMD-128: d1e959eb179c911faea4624c60c5c702
+RIPEMD-160: b0e20b6e3116640286ed3a87a5713079b21f5189
+RIPEMD-256: 5740a408ac16b720b84424ae931cbb1fe363d1d0bf4017f1a89f7ea6de77a0b8
+RIPEMD-320: ed544940c86d67f250d232c30b7b3e5770e0c60c8cb9a4cafe3b11388af9920e1b99230b843c86a4
+
+
+Test data : "12345678901234567890123456789012345678901234567890123456789012345678901234567890"
+MD2       : d5976f79d83d3a0dc9806c3c66f3efd8
+MD4       : e33b4ddc9c38f2199c3e7b164fcc0536
+MD5       : 57edf4a22be3c955ac49da2e2107b67a
+RIPEMD-128: 3f45ef194732c2dbb2c4a2c769795fa3
+RIPEMD-160: 9b752e45573d4b39f4dbd3323cab82bf63326bfb
+RIPEMD-256: 06fdcc7a409548aaf91368c06a6275b553e3f099bf0ea4edfd6778df89a890dd
+RIPEMD-320: 557888af5f6d8ed62ab66945c6d2a0a47ecd5341e915eb8fea1d0524955f825dc717e4a008ab2d42
+
+
+Test data : "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"
+SHA       : d2516ee1 acfa5baf 33dfc1c4 71e43844 9ef134c8
+SHA-1     : 84983e44 1c3bd26e baae4aa1 f95129e5 e54670f1
+SHA-256   : 248d6a61 d20638b8 e5c02693 0c3e6039 a33ce459 64ff2167 f6ecedd4 19db06c1
+RIPEMD-128: a1aa0689d0fafa2ddc22e88b49133a06
+RIPEMD-160: 12a053384a9c0c88e405a06c27dcf49ada62eb2b
+RIPEMD-256: 3843045583aac6c8c8d9128573e7a9809afb2a0f34ccc36ea9e72f16f6368e3f
+RIPEMD-320: d034a7950cf722021ba4b84df769a5de2060e259df4c9bb4a4268c0e935bbc7470a969c9d072a1ac
+
+
+Test data : "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu"
+SHA-384   : 09330c33f71147e8 3d192fc782cd1b47 53111b173b3b05d2 2fa08086e3b0f712 fcc7c71a557e2db9 66c3e9fa91746039
+SHA-512   : 8e959b75dae313da 8cf4f72814fc143f 8f7779c6eb9f7fa1 7299aeadb6889018 501d289e4900f7e4 331b99dec4b5433a c7d329eeb6dd2654 5e96e55b874be909
+
+
+Test data : "This is message, length=32 bytes"
+GOST R 34.11-94: b1c466d3 7519b82e 8319819f f32595e0 47a28cb6 f83eff1c 6916a815 a637fffa
+
+
+Test data : "Suppose the original message has length = 50 bytes"
+GOST R 34.11-94: 471aba57 a60a770d 3a761306 35c1fbea 4ef14de5 1f78b4ae 57dd893b 62f55208
+
+
+Test data : <1 million "a" characters>
+SHA       : 3232affa 48628a26 653b5aaa 44541fd9 0d690603
+SHA-1     : 34aa973c d4c4daa4 f61eeb2b dbad2731 6534016f
+SHA-256   : cdc76e5c 9914fb92 81a1c7e2 84d73e67 f1809a48 a497200e 046d39cc c7112cd0
+SHA-384   : 9d0e1809716474cb 086e834e310a4a1c ed149e9c00f24852 7972cec5704c2a5b 07b8b3dc38ecc4eb ae97ddd87f3d8985
+SHA-512   : e718483d0ce76964 4e2e42c7bc15b463 8e1f98b13b204428 5632a803afa973eb de0ff244877ea60a 4cb0432ce577c31b eb009c5c2c49aa2e 4eadb217ad8cc09b
+RIPEMD-128: 4a7f5723f954eba1216c9d8f6320431f
+RIPEMD-160: 52783243c1697bdbe16d37f97f68f08325dc1528
+RIPEMD-256: ac953744e10e31514c150d4d8d7b677342e33399788296e43ae4850ce4f97978
+RIPEMD-320: bdee37f4371e20646b8b0d862dda16292ae36f40965e8c8509e63d1dbddecc503e2b63eb9245bb66
+
+
+Test data : "Tiger"
+Tiger     : DD00230799F5009FEC6DEBC838BB6A27DF2B9D6F110C7937
+
+
+Test data : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-"
+Tiger     : F71C8583902AFB879EDFE610F82C0D4786A3A534504486B5
+
+
+Test data : "ABCDEFGHIJKLMNOPQRSTUVWXYZ=abcdefghijklmnopqrstuvwxyz+0123456789"
+Tiger     : 48CEEB6308B87D46E95D656112CDF18D97915F9765658957
+
+
+Test data : "Tiger - A Fast New Hash Function, by Ross Anderson and Eli Biham"
+Tiger     : 8A866829040A410C729AD23F5ADA711603B3CDD357E4C15E
+
+
+Test data : "Tiger - A Fast New Hash Function, by Ross Anderson and Eli Biham, proceedings of Fast Software Encryption 3, Cambridge."
+Tiger     : CE55A6AFD591F5EBAC547FF84F89227F9331DAB0B611C889
+
+
+Test data : "Tiger - A Fast New Hash Function, by Ross Anderson and Eli Biham, proceedings of Fast Software Encryption 3, Cambridge, 1996."
+Tiger     : 631ABDD103EB9A3D245B6DFD4D77B257FC7439501D1568DD
+
+
+Test data : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-"
+Tiger     : C54034E5B43EB8005848A7E0AE6AAC76E4FF590AE715FD25
+
+
+Test data : <64K OF BINARY DATA>
+Tiger     : FDF4F5B35139F48E710E421BE5AF411DE1A8AAC333F26204
+

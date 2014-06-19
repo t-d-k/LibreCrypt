@@ -1,0 +1,44 @@
+package OTFETrueCrypt;
+
+{$R *.res}
+{$R 'OTFETrueCrypt_U.dcr'}
+{$ALIGN 8}
+{$ASSERTIONS OFF}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS OFF}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'OTFE: TrueCrypt Delphi Component'}
+{$IMPLICITBUILD OFF}
+
+requires
+  vcl,
+  vclx,
+  SDeanUtils,
+  OTFE,
+  Hash;
+
+contains
+  OTFETrueCrypt_U in 'OTFETrueCrypt_U.pas',
+  OTFETrueCryptStructures_U in 'OTFETrueCryptStructures_U.pas',
+  OTFETrueCryptPasswordEntry_U in 'OTFETrueCryptPasswordEntry_U.pas' {OTFETrueCryptPasswordEntry_F},
+  OTFETrueCryptMountDeviceNT_U in 'OTFETrueCryptMountDeviceNT_U.pas' {OTFETrueCryptMountDeviceNT_F},
+  OTFETrueCryptMountDevice9x_U in 'OTFETrueCryptMountDevice9x_U.pas' {OTFETrueCryptMountDevice9x_F},
+  OTFETrueCryptMountDevice_U in 'OTFETrueCryptMountDevice_U.pas';
+
+end.

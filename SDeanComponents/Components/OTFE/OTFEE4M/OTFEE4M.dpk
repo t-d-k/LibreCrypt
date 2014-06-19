@@ -1,0 +1,46 @@
+package OTFEE4M;
+
+{$R *.res}
+{$R 'OTFEE4M_U.dcr'}
+{$ALIGN 8}
+{$ASSERTIONS OFF}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS OFF}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'OTFE: E4M Delphi Component'}
+{$IMPLICITBUILD OFF}
+
+requires
+  vcl,
+  vclx,
+  SDeanUtils,
+  OTFE,
+  SDeanSecurity,
+  Hash;
+
+contains
+  OTFEE4M_U in 'OTFEE4M_U.pas',
+  OTFEE4MStructures_U in 'OTFEE4MStructures_U.pas',
+  OTFEE4MPasswordEntry_U in 'OTFEE4MPasswordEntry_U.pas' {OTFEE4MPasswordEntry_F},
+  OTFEE4MScramDiskPasswordEntry_U in 'OTFEE4MScramDiskPasswordEntry_U.pas' {OTFEE4MScramDiskPasswordEntry_F},
+  OTFEE4MMountDevice_U in 'OTFEE4MMountDevice_U.pas',
+  OTFEE4MMountDeviceNT_U in 'OTFEE4MMountDeviceNT_U.pas' {OTFEE4MMountDeviceNT_F},
+  OTFEE4MMountDevice9x_U in 'OTFEE4MMountDevice9x_U.pas' {OTFEE4MMountDevice9x_F};
+
+end.

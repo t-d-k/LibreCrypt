@@ -1,0 +1,29 @@
+Delphi 2006 and Delphi 2007 Windows Vista support
+=================================================
+
+
+Delphi 2007
+-----------
+
+http://www.stevetrefethen.com/blog/TheNewVCLPropertyTApplicationMainFormOnTaskbarInDelphi2007.aspx
+ - In your .dpr file, set "Application.MainFormOnTaskBar := TRUE" immediatly after "Application.Initialize"
+
+This should be the only change you need.
+
+
+Delphi 2006
+-----------
+
+Delphi 2006 files with Vista modifications taken from:
+
+http://www.installationexcellence.com/articles/VistaWithDelphi/Original/Index.html#Wheres_My_Induction
+http://www.installationexcellence.com/articles/VistaWithDelphi/Index.html
+ - changes needed for Delphi 2006 and Delphi 2007
+
+http://qc.borland.com/wc/qcmain.aspx?d=37403
+ - not needed for Delphi 2007
+
+To use, simply add this directory onto the start of your library path.
+
+ONLY ADD THIS PATH IF YOU'RE RUNNING Delphi 2006!
+

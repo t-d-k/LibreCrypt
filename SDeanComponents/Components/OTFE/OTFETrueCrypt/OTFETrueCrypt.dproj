@@ -1,0 +1,61 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{98ec70a7-ae88-464c-a80f-72361d8fc656}</ProjectGuid>
+    <MainSource>OTFETrueCrypt.dpk</MainSource>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+    <DCC_DependencyCheckOutputName>C:\Documents and Settings\All Users\Documents\RAD Studio\5.0\Bpl\OTFETrueCrypt.bpl</DCC_DependencyCheckOutputName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_AssertionsAtRuntime>False</DCC_AssertionsAtRuntime>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+    <DCC_Define>RELEASE</DCC_Define>
+    <DCC_UNSAFE_TYPE>True</DCC_UNSAFE_TYPE>
+    <DCC_UNSAFE_CODE>True</DCC_UNSAFE_CODE>
+    <DCC_UNSAFE_CAST>True</DCC_UNSAFE_CAST>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_AssertionsAtRuntime>False</DCC_AssertionsAtRuntime>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Delphi.Personality</Borland.Personality>
+    <Borland.ProjectType>Package</Borland.ProjectType>
+    <BorlandProject>
+<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><Package_Options><Package_Options Name="PackageDescription">OTFE: TrueCrypt Delphi Component</Package_Options><Package_Options Name="ImplicitBuild">False</Package_Options><Package_Options Name="DesigntimeOnly">False</Package_Options><Package_Options Name="RuntimeOnly">False</Package_Options></Package_Options><Language><Language Name="ProjectLang">$00000809</Language></Language><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">1</VersionInfo><VersionInfo Name="MinorVer">1</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">262</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">2057</VersionInfo><VersionInfo Name="CodePage">1252</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName">Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="FileDescription">TOTFETrueCrypt (TrueCrypt Delphi Component)</VersionInfoKeys><VersionInfoKeys Name="FileVersion">1.1.0.262</VersionInfoKeys><VersionInfoKeys Name="InternalName">OTFETrueCryptDelphiComponent</VersionInfoKeys><VersionInfoKeys Name="LegalCopyright">(c) Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename">OTFETrueCrypt.bpl</VersionInfoKeys><VersionInfoKeys Name="ProductName">OTFE TrueCrypt Delphi Component</VersionInfoKeys><VersionInfoKeys Name="ProductVersion">1.1.0</VersionInfoKeys><VersionInfoKeys Name="Comments">http://www.SDean12.org/</VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">OTFETrueCrypt.dpk</Source></Source></Delphi.Personality></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
+  <ItemGroup>
+    <DelphiCompile Include="OTFETrueCrypt.dpk">
+      <MainSource>MainSource</MainSource>
+    </DelphiCompile>
+    <DCCReference Include="C:\Documents and Settings\Administrator\Hash.dcp" />
+    <DCCReference Include="C:\Documents and Settings\Administrator\OTFE.dcp" />
+    <DCCReference Include="C:\Documents and Settings\Administrator\SDeanUtils.dcp" />
+    <DCCReference Include="C:\Documents and Settings\Administrator\vcl.dcp" />
+    <DCCReference Include="C:\Documents and Settings\Administrator\vclx.dcp" />
+    <DCCReference Include="OTFETrueCryptMountDevice9x_U.pas">
+      <Form>OTFETrueCryptMountDevice9x_F</Form>
+    </DCCReference>
+    <DCCReference Include="OTFETrueCryptMountDeviceNT_U.pas">
+      <Form>OTFETrueCryptMountDeviceNT_F</Form>
+    </DCCReference>
+    <DCCReference Include="OTFETrueCryptMountDevice_U.pas" />
+    <DCCReference Include="OTFETrueCryptPasswordEntry_U.pas">
+      <Form>OTFETrueCryptPasswordEntry_F</Form>
+    </DCCReference>
+    <DCCReference Include="OTFETrueCryptStructures_U.pas" />
+    <DCCReference Include="OTFETrueCrypt_U.dcr" />
+    <DCCReference Include="OTFETrueCrypt_U.dcr" />
+    <DCCReference Include="OTFETrueCrypt_U.pas" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,201 @@
+[Main Window]
+Create=1
+Visible=1
+State=2
+Left=0
+Top=0
+Width=1160
+Height=105
+MaxLeft=-1
+MaxTop=-1
+MaxWidth=1160
+MaxHeight=105
+ClientWidth=1152
+ClientHeight=78
+
+[PropertyInspector]
+Create=1
+Visible=1
+State=0
+Left=9
+Top=106
+Width=206
+Height=684
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=196
+ClientHeight=658
+TBDockHeight=556
+LRDockWidth=190
+Dockable=1
+SplitPos=85
+
+[BreakpointWindow]
+Column0Width=100
+Column1Width=75
+Column2Width=225
+Column3Width=40
+
+[ProjectManager]
+Create=1
+Visible=1
+State=0
+Left=823
+Top=125
+Width=312
+Height=686
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=304
+ClientHeight=662
+TBDockHeight=303
+LRDockWidth=336
+Dockable=1
+
+[Modules]
+Count=0
+EditWindowCount=0
+PackageWindowCount=9
+
+[E:\scram\DELPHI\my latest\source\Packages\TestApps\Hash\HashDemo.dpr]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\SDeanComponents.bpg]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\Components\SDeanUtils\SDeanUtils.dpk]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\Components\SDeanSecurity\KeyboardEntry\KeyboardEntry.dpk]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\Components\Hash\Hash.dpk]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\Components\OTFE\OTFE\OTFE.dpk]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\Components\OTFE\OTFEBestCrypt\OTFEBestCrypt.dpk]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\Components\OTFE\OTFEScramDisk\OTFEScramDisk.dpk]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\Components\OTFE\OTFEE4M\OTFEE4M.dpk]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\Components\OTFE\OTFEPGPDisk\OTFEPGPDisk.dpk]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\Components\OTFE\OTFEUnified\OTFEUnified.dpk]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\TestApps\SDeanUtils\SDeanUtilsTestApp\IteratorTestApp.dpr]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\TestApps\OTFES\OTFEBestCryptTestApp\OTFEBestCryptTestProject.dpr]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\TestApps\OTFES\OTFEE4MTestApp\OTFEE4MTestProject.dpr]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\TestApps\OTFES\OTFEPGPDiskTestApp\OTFEPGPDiskTestProject.dpr]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\TestApps\OTFES\OTFEScramDiskTestApp\OTFEScramDiskTestProject.dpr]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\TestApps\OTFES\OTFEUnifiedTestApp\OTFEUnifiedTestProject.dpr]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\Packages\TestApps\OTFES\OrigScramDiskDemo\sdDemo.dpr]
+FormState=0
+FormOnTop=0
+
+[E:\scram\DELPHI\my latest\source\STU source\SecureTrayUtil\MainApp\SecureTrayUtil.dpr]
+FormState=0
+FormOnTop=0
+
+[PackageWindow0]
+StatusBar=0
+SectionWidth0=150
+SectionWidth1=210
+Module=E:\scram\DELPHI\my latest\source\Packages\Components\SDeanUtils\SDeanUtils.dpk
+
+[PackageWindow1]
+StatusBar=0
+SectionWidth0=150
+SectionWidth1=210
+Module=E:\scram\DELPHI\my latest\source\Packages\Components\SDeanSecurity\KeyboardEntry\KeyboardEntry.dpk
+
+[PackageWindow2]
+StatusBar=0
+SectionWidth0=150
+SectionWidth1=210
+Module=E:\scram\DELPHI\my latest\source\Packages\Components\Hash\Hash.dpk
+
+[PackageWindow3]
+StatusBar=0
+SectionWidth0=150
+SectionWidth1=210
+Module=E:\scram\DELPHI\my latest\source\Packages\Components\OTFE\OTFE\OTFE.dpk
+
+[PackageWindow4]
+StatusBar=0
+SectionWidth0=150
+SectionWidth1=210
+Module=E:\scram\DELPHI\my latest\source\Packages\Components\OTFE\OTFEBestCrypt\OTFEBestCrypt.dpk
+
+[PackageWindow5]
+StatusBar=0
+SectionWidth0=150
+SectionWidth1=210
+Module=E:\scram\DELPHI\my latest\source\Packages\Components\OTFE\OTFEScramDisk\OTFEScramDisk.dpk
+
+[PackageWindow6]
+StatusBar=0
+SectionWidth0=150
+SectionWidth1=210
+Module=E:\scram\DELPHI\my latest\source\Packages\Components\OTFE\OTFEE4M\OTFEE4M.dpk
+
+[PackageWindow7]
+StatusBar=0
+SectionWidth0=150
+SectionWidth1=210
+Module=E:\scram\DELPHI\my latest\source\Packages\Components\OTFE\OTFEPGPDisk\OTFEPGPDisk.dpk
+
+[PackageWindow8]
+StatusBar=0
+SectionWidth0=150
+SectionWidth1=210
+Module=E:\scram\DELPHI\my latest\source\Packages\Components\OTFE\OTFEUnified\OTFEUnified.dpk
+
+[DockHosts]
+DockHostCount=0
+
+[Watches]
+Count=0
+
+[Breakpoints]
+Count=0
+
+[AddressBreakpoints]
+Count=0
+

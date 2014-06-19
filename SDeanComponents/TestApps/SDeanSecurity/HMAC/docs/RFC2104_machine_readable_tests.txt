@@ -1,0 +1,34 @@
+# This file contains the HMAC test cases taken from RFC2202, ripped directly
+# from this file with minor layout modifications to allow for a more machine
+# readable foramt
+#
+# Lines starting with "#" should be considered comments, and ignored by
+# testing applications
+
+
+# RFC2104 MD5 Test Cases
+
+hash =          md5
+test_case =     1
+key =           0x0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b
+key_len =       16
+data =          "Hi There"
+data_len =      8
+digest =        0x9294727a3638bb1c13f48ef8158bfc9d
+
+hash =          md5
+test_case =     2
+key =           "Jefe"
+key_len =       4
+data =          "what do ya want for nothing?"
+data_len =      28
+digest =        0x750c783e6ab0b503eaa86e310a5db738
+
+hash =          md5
+test_case =     3
+key =           0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+key_len =       16
+data =          0xdd repeated 50 times
+data_len =      50
+digest =        0x56be34521d144c88dbb8c733f0e8b3f6
+

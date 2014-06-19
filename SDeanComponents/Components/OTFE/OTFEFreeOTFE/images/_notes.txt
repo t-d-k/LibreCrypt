@@ -1,0 +1,4 @@
+All the icons in this directly have been loaded into the relevant forms/imagelists/resourcefiles via the Delphi IDE.
+
+The icons are included for reference only; they are not required in order to build the software.
+

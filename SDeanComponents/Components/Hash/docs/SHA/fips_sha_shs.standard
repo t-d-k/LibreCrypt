@@ -1,0 +1,699 @@
+                          Federal Information
+                  Processing Standards Publication YY
+
+                   DRAFT    1992 January 22     DRAFT
+
+
+                         Specifications for a
+
+
+                       SECURE HASH STANDARD (SHS)
+
+
+                            1. INTRODUCTION
+
+   The Secure Hash Algorithm (SHA) specified in this standard is
+necessary to ensure the security of the Digital Signature Standard. 
+When a message of length < 2^64 bits is input, the SHA produces a
+160-bit representation of the message called the message digest. 
+The message digest is used during generation of a signature for the
+message.  The same message digest should be computed for the
+received version of the message, during the process of verifying
+the signature.  Any change to the message in transit will, with
+very high probability, result in a different message digest, and
+the signature will fail to verify.
+
+   The SHA is designed to have the following properties: it is
+computationally infeasible to recover a message corresponding to a
+given message digest, or to find two different messages which
+produce the same message digest.
+
+                     2. BIT STRINGS AND INTEGERS
+
+   The following terminology related to bit strings and integers
+will be used:
+      
+   a. hex digit = 0, 1, ... , 9, a, ... , f.  A hex digit is the  
+      representation of a 4-bit string.  Examples: 7 = 0111, a =  
+      1010.
+
+   b. word = 32-bit string b(31) b(30) ... b(0).  A word may be represented
+ 
+      as a sequence of 8 hex digits.  To convert the latter to    
+      a 32-bit string, each hex digit is converted to a 4-bit     
+      string as in (a).  Example: 
+
+         a103fe23 = 1010 0001 0000 0011 1111 1110 0010 0011.
+
+      A word is also the representation of an unsigned integer    
+      between 0 and 2^32 - 1, inclusive, with the most significant 
+      bit first.  Example: the hex string a103fe23 represents     
+      the decimal integer 2701393443.
+
+   c. block = 512-bit string.  A block may be represented as a    
+      sequence of 16 words.
+
+   d. integer: each integer x in the standard will satisfy 0 <=
+      x < 2^64.  For the purpose of this standard, "integer" and   
+      "unsigned integer" are equivalent.  If an integer x         
+      satisfies 0 <= x < 2^32, x may be represented as a word as in     
+      (b).  If 2^32 <= x < 2^64, then x = 2^32 y + z where 0 <= y < 2^32 
+      and 0 <= z < 2^32.  Hence y and z can be represented as words A and B,
+
+      respectively, and x can be represented as the pair of       
+      words (A,B).
+
+   Suppose 0 <= x < 2^32.  To convert x to a 32-bit string, the
+following algorithm may be employed:
+
+      y(0) = x;
+      for i = 0 to 31 do
+        {
+        b(i) = 1 if y(i) is odd, b(i) = 0 if y(i) is even;
+        y(i+1) = (y(i) - b(i))/2;
+        }
+
+   Then x has the 32-bit representation b(31) b(30) ... b(0).  Example:
+
+      25 = 00000000 00000000 00000000 00011001
+         = hex 00000019.
+
+   If 2^32 <= x < 2^64, the 2-word representation of x is obtained
+similarly. 
+Example:
+
+      2^35 + 25 = 8 * 2^32 + 25
+               = 00000000 00000000 00000000 00001000
+                 00000000 00000000 00000000 00011001
+               = hex 00000008 00000019.
+
+   Conversely, the string b(31) b(30) ... b(0) represents the integer
+
+      b(31) * 2^31 + b(30) * 2^30 + ... + b(1) * 2 + b(0).
+
+                      3. OPERATIONS ON WORDS
+   
+   The following logical operators will be applied to words:   
+
+      AND    =  bitwise logical and.
+
+      OR    =  bitwise logical inclusive-or.
+    
+      XOR  =  bitwise logical exclusive-or.
+
+      ~x   =  bitwise logical complement of x.
+
+   Example: 
+
+            01101100101110011101001001111011
+      XOR   01100101110000010110100110110111
+            --------------------------------
+        =   00001001011110001011101111001100.
+
+   Another operation on words is A + B.  This is defined as
+follows: words A and B represent integers x and y, where 0 <= x < 2^32
+and 0 <= y < 2^32.  Compute 
+
+      z = (x + y) mod 2^32.
+
+   Then 0 <= z < 2^32. Convert z to a word, C, and define A + B = C.
+
+   Another function on words is S(n,X), where X is a word and n is
+an integer with 0 <= n < 32.  This is defined by
+
+      S(n,X) = (X << n) OR (X >> 32-n).
+
+   In the above, X << n is obtained as follows: discard the
+leftmost n bits of X and then pad the result with n zeroes on the
+right (the result will still be 32 bits).  X >> m is obtained by
+discarding the rightmost m bits of X and then padding the result
+with m zeroes on the left.  Thus S(n,X) is equivalent to a circular
+shift of X by n positions to the left.
+
+                        4. MESSAGE PADDING
+ 
+   The SHA takes bit strings as input.  Thus, for the purpose of
+this standard, a message will be considered to be a bit string. 
+The length of the message is the number of bits (the empty message
+has length 0).  If the number of bits in a message is a multiple of
+8, for compactness we can represent the message in hex.
+
+   Suppose a message has length L < 2^64.  Before it is input to the
+SHA, the message is padded on the right as follows:
+
+   a. "1" is appended.  Example: if the original message is       
+      "01010011", this is padded to "010100111".
+
+   b. If necessary, "0"s are then appended until the number of bits 
+      in the padded message is congruent to 448 modulo 512.       
+      Example: suppose the original message is the bit string
+         
+         01100001 01100010 01100011 01100100 01100101.
+
+      After step (a) this gives
+
+         01100001 01100010 01100011 01100100 01100101 1.
+
+      The number of bits in the above is 41; we pad with 407 "0"s 
+      to make the length of the padded message congruent to 448   
+      modulo 512.  This gives (in hex)
+
+
+         61626364 65800000 00000000 00000000
+         00000000 00000000 00000000 00000000
+         00000000 00000000 00000000 00000000
+         00000000 00000000.
+
+      Note that the padding is arranged so that at this point
+      the padded message contains 16s + 14 words, for some s >=
+      0.
+
+   c. Obtain the 2-word representation of L = the number of bits in 
+      the original message.  If L < 2^32 then the first word is all 
+      zeroes.  Append these two words to the padded message.      
+      Example: suppose the original message is as in (b). Then L = 
+      40 (note that L is computed before any padding). The two-word 
+      representation of 40 is hex 00000000 00000028.  Hence the   
+      final padded message is hex
+
+         61626364 65800000 00000000 00000000
+         00000000 00000000 00000000 00000000
+         00000000 00000000 00000000 00000000
+         00000000 00000000 00000000 00000028.
+
+   The final padded message will contain 16N words for some N > 0.
+Example: in (c) above, the final padded message has N = 1. The
+final padded message may be regarded as a sequence of N blocks M(1)
+, M(2), ... , M(N), where each M(i) contains 16 words and M(1) is leftmost.
+
+                         5. FUNCTIONS USED
+
+   A sequence of logical functions f(0,x,y,z), ... , f(79,x,y,z) is used in
+the
+SHA.  Each f operates on three 32-bit words {x,y,z} and produces a 32-bit
+word as output.  f(t,x,y,z) is defined as follows: for words x,y,z,
+
+      f(t,x,y,z) = (x AND y) OR (~x AND z)             (0  <= t <= 19)
+
+      f(t,x,y,z) = x XOR y XOR z                  (20 <= t <= 39)
+
+      f(t,x,y,z) = (x AND y) OR (x AND z) OR (y AND z)    (40 <= t <= 59)
+
+      f(t,x,y,z) = x XOR y XOR z                  (60 <= t <= 79).
+
+                          6. CONSTANTS USED
+
+   A sequence of constant words K(0), K(1), ... , K(79) is used in the SHA.
+In hex these are given by
+
+      K(t) = 5a827999         (0  <= t <= 19)
+
+      K(t) = 6ed9eba1         (20 <= t <= 39)
+
+      K(t) = 8f1bbcdc         (40 <= t <= 59)
+
+      K(t) = ca62c1d6         (60 <= t <= 79).
+
+                     7. COMPUTING THE MESSAGE DIGEST
+   
+   The message digest is computed using the final padded message. 
+The computation uses two buffers, each consisting of five 32-bit
+words, and a sequence of eighty 32-bit words.  The words of the
+first 5-word buffer are labeled A,B,C,D,E.  The words of the second
+5-word buffer are labeled h0, h1, h2, h3, h4.  The words of the 80-
+word sequence are labeled W(0), W(1), ... , W(79).  A single word buffer
+TEMP is also employed.
+   
+   To generate the message digest, the 16-word blocks M(1), M(2), ...
+, M(N) defined in Section 4 are processed in order.  The processing
+of each M(i) involves 80 steps.
+
+   Before processing any blocks, the {hj} are initialized as
+follows: in hex,
+
+      h0 = 67452301
+
+      h1 = efcdab89
+
+      h2 = 98badcfe
+
+      h3 = 10325476
+
+      h4 = c3d2e1f0.
+
+   Now M(1), M(2), ... , M(N) are processed.  To process M(i), we proceed as
+follows:
+
+   a. Divide M(i) into 16 words W(0), W(1), ... , W(15), where W(0) is the
+   
+      leftmost word.
+
+   b. For t = 16 to 79 let W(t) = W(t-3) XOR W(t-8) XOR W(t-14) XOR W(t-16).
+
+   c. Let A = h0, B = h1, C = h2, D = h3, E = h4.
+
+   d. For t = 0 to 79 do
+
+        TEMP = S(5,A) + f(t,B,C,D) + E + W(t) + K(t);
+
+        E = D;  D = C;  C = S(30,B);  B = A; A = TEMP;
+    
+   e. Let h0 = h0 + A, h1 = h1 + B, h2 = h2 + C, h3 = h3 + D, h4     
+      = h4 + E.
+
+   After processing M(N), the message digest is the 160-bit string
+represented by the 5 words
+
+      h0 h1 h2 h3 h4.
+
+   The above assumes that the sequence W(0), ... , W(79) is implemented
+as an array of eighty 32-bit words.  This is efficient from the
+standpoint of minimization of execution time, since the addresses
+of W(t-3), ... , W(t-16) in step (b) are easily computed.  If space is at
+a premium, an alternative is to regard { W(t) } as a circular queue,
+which may be implemented using an array of sixteen 32-bit words
+W[0], ... W[15].  In this case, in hex let MASK = 0000000f.  Then
+processing of M(i) is as follows:
+
+   aa. Divide M(i) into 16 words W[0], ... , W[15], where W[0] is the 
+       leftmost word.
+
+   bb. Let A = h0, B = h1, C = h2, D = h3, E = h4.
+
+   cc. For t = 0 to 79 do
+        
+         s = t AND MASK;
+
+         if (t >= 16) W[s] = W[(s + 13) AND MASK] XOR W[(s + 8) AND 
+            
+            MASK] XOR W[(s + 2) AND MASK] XOR W[s];
+
+         TEMP = S(5,A) + f(t,B,C,D) + E + W[s] + K(t);
+  
+         E = D; D = C; C = S(30,B); B = A; A = TEMP;
+
+   dd. Let h0 = h0 + A, h1 = h1 + B, h2 = h2 + C, h3 = h3 + D, h4    
+       = h4 + E.
+
+   Both (a) - (d) and (aa) - (dd) yield the same message digest.
+Although using (aa) - (dd) saves sixty-four 32-bit words of
+storage, it is likely to lengthen execution time due to the
+increased complexity of the address computations for the { W[t] }
+in step (cc).  Other computation methods which give identical
+results may be implemented in conformance with the standard.
+
+   Examples are given in the appendices.
+
+           APPENDIX A. A SAMPLE MESSAGE AND ITS MESSAGE DIGEST
+
+   This appendix is for informational purposes only and is not
+required to meet the standard.
+
+   Let the message be the ASCII binary-coded form of "abc", i.e.
+
+      01100001 01100010 01100011.
+
+   This message has length L = 24.  In step (a) of Section 4, we
+append "1", giving a new length of 25.  In step (b) we append 423
+"0"s.  In step (c) we append hex 00000000 00000018, the 2-word
+representation of 24.  Thus the final padded message consists of
+one block, so that N = 1 in the notation of Section 4.  The single
+block has hex words
+
+W[ 0] = 61626380
+W[ 1] = 00000000
+W[ 2] = 00000000
+W[ 3] = 00000000
+W[ 4] = 00000000
+W[ 5] = 00000000
+W[ 6] = 00000000
+W[ 7] = 00000000
+W[ 8] = 00000000
+W[ 9] = 00000000
+W[10] = 00000000
+W[11] = 00000000
+W[12] = 00000000
+W[13] = 00000000
+W[14] = 00000000
+W[15] = 00000018
+
+   Initial hex values of h:
+         
+         h0        h1        h2        h3        h4
+
+      67452301  efcdab89  98badcfe  10325476  c3d2e1f0
+
+   Hex values of A,B,C,D,E after pass t of the "for t = 0 to 79"
+loop (step (d) or (cc)) in Section 7:
+
+            A        B        C        D        E
+
+t =  0:  0116fc33 67452301 7bf36ae2 98badcfe 10325476
+t =  1:  8990536d 0116fc33 59d148c0 7bf36ae2 98badcfe
+t =  2:  a1390f08 8990536d c045bf0c 59d148c0 7bf36ae2
+t =  3:  cdd8e11b a1390f08 626414db c045bf0c 59d148c0
+t =  4:  cfd499de cdd8e11b 284e43c2 626414db c045bf0c
+t =  5:  3fc7ca40 cfd499de f3763846 284e43c2 626414db
+t =  6:  993e30c1 3fc7ca40 b3f52677 f3763846 284e43c2
+t =  7:  9e8c07d4 993e30c1 0ff1f290 b3f52677 f3763846
+t =  8:  4b6ae328 9e8c07d4 664f8c30 0ff1f290 b3f52677
+t =  9:  8351f929 4b6ae328 27a301f5 664f8c30 0ff1f290
+t = 10:  fbda9e89 8351f929 12dab8ca 27a301f5 664f8c30
+t = 11:  63188fe4 fbda9e89 60d47e4a 12dab8ca 27a301f5
+t = 12:  4607b664 63188fe4 7ef6a7a2 60d47e4a 12dab8ca
+t = 13:  9128f695 4607b664 18c623f9 7ef6a7a2 60d47e4a
+t = 14:  196bee77 9128f695 1181ed99 18c623f9 7ef6a7a2
+t = 15:  20bdd62f 196bee77 644a3da5 1181ed99 18c623f9
+t = 16:  ed2ff4a3 20bdd62f c65afb9d 644a3da5 1181ed99
+t = 17:  565df73c ed2ff4a3 c82f758b c65afb9d 644a3da5
+t = 18:  550b1e7f 565df73c fb4bfd28 c82f758b c65afb9d
+t = 19:  fe0f9e4b 550b1e7f 15977dcf fb4bfd28 c82f758b
+t = 20:  b4d4c943 fe0f9e4b d542c79f 15977dcf fb4bfd28
+t = 21:  43993572 b4d4c943 ff83e792 d542c79f 15977dcf
+t = 22:  f7106486 43993572 ed353250 ff83e792 d542c79f
+t = 23:  775924e6 f7106486 90e64d5c ed353250 ff83e792
+t = 24:  45a7ef23 775924e6 bdc41921 90e64d5c ed353250
+t = 25:  ccead674 45a7ef23 9dd64939 bdc41921 90e64d5c
+t = 26:  02d0c6d1 ccead674 d169fbc8 9dd64939 bdc41921
+t = 27:  070c437f 02d0c6d1 333ab59d d169fbc8 9dd64939
+t = 28:  301e90be 070c437f 40b431b4 333ab59d d169fbc8
+t = 29:  b898c685 301e90be c1c310df 40b431b4 333ab59d
+t = 30:  669723e2 b898c685 8c07a42f c1c310df 40b431b4
+t = 31:  d9316f96 669723e2 6e2631a1 8c07a42f c1c310df
+t = 32:  db81a5c7 d9316f96 99a5c8f8 6e2631a1 8c07a42f
+t = 33:  99c8dfb2 db81a5c7 b64c5be5 99a5c8f8 6e2631a1
+t = 34:  6be6ae07 99c8dfb2 f6e06971 b64c5be5 99a5c8f8
+t = 35:  c01cc62c 6be6ae07 a67237ec f6e06971 b64c5be5
+t = 36:  6433fdd0 c01cc62c daf9ab81 a67237ec f6e06971
+t = 37:  0a33ccf7 6433fdd0 3007318b daf9ab81 a67237ec
+t = 38:  4bf58dc8 0a33ccf7 190cff74 3007318b daf9ab81
+t = 39:  ebbd5233 4bf58dc8 c28cf33d 190cff74 3007318b
+t = 40:  825a3460 ebbd5233 12fd6372 c28cf33d 190cff74
+t = 41:  b62cbb93 825a3460 faef548c 12fd6372 c28cf33d
+t = 42:  aa3f9707 b62cbb93 20968d18 faef548c 12fd6372
+t = 43:  fe1d0273 aa3f9707 ed8b2ee4 20968d18 faef548c
+t = 44:  57ad526b fe1d0273 ea8fe5c1 ed8b2ee4 20968d18
+t = 45:  93ebbe3f 57ad526b ff87409c ea8fe5c1 ed8b2ee4
+t = 46:  f9adf47b 93ebbe3f d5eb549a ff87409c ea8fe5c1
+t = 47:  875586d2 f9adf47b e4faef8f d5eb549a ff87409c
+t = 48:  d0a22ffb 875586d2 fe6b7d1e e4faef8f d5eb549a
+t = 49:  c12b6426 d0a22ffb a1d561b4 fe6b7d1e e4faef8f
+t = 50:  ebc90281 c12b6426 f4288bfe a1d561b4 fe6b7d1e
+t = 51:  e7d0ec05 ebc90281 b04ad909 f4288bfe a1d561b4
+t = 52:  7cb98e55 e7d0ec05 7af240a0 b04ad909 f4288bfe
+t = 53:  0d48dba2 7cb98e55 79f43b01 7af240a0 b04ad909
+t = 54:  c2d477bf 0d48dba2 5f2e6395 79f43b01 7af240a0
+t = 55:  236bd48d c2d477bf 835236e8 5f2e6395 79f43b01
+t = 56:  9b4364d6 236bd48d f0b51def 835236e8 5f2e6395
+t = 57:  5b8c33c9 9b4364d6 48daf523 f0b51def 835236e8
+t = 58:  be2a4656 5b8c33c9 a6d0d935 48daf523 f0b51def
+t = 59:  8ff296db be2a4656 56e30cf2 a6d0d935 48daf523
+t = 60:  c10c8993 8ff296db af8a9195 56e30cf2 a6d0d935
+t = 61:  6ac23cbf c10c8993 e3fca5b6 af8a9195 56e30cf2
+t = 62:  0708247d 6ac23cbf f0432264 e3fca5b6 af8a9195
+t = 63:  35d201f8 0708247d dab08f2f f0432264 e3fca5b6
+t = 64:  969b2fc8 35d201f8 41c2091f dab08f2f f0432264
+t = 65:  3cac6514 969b2fc8 0d74807e 41c2091f dab08f2f
+t = 66:  14cd9a35 3cac6514 25a6cbf2 0d74807e 41c2091f
+t = 67:  ba564047 14cd9a35 0f2b1945 25a6cbf2 0d74807e
+t = 68:  c241f74d ba564047 4533668d 0f2b1945 25a6cbf2
+t = 69:  2896b70f c241f74d ee959011 4533668d 0f2b1945
+t = 70:  564bbed1 2896b70f 70907dd3 ee959011 4533668d
+t = 71:  8fa15d5a 564bbed1 ca25adc3 70907dd3 ee959011
+t = 72:  9a226c11 8fa15d5a 5592efb4 ca25adc3 70907dd3
+t = 73:  f0b94489 9a226c11 a3e85756 5592efb4 ca25adc3
+t = 74:  1809d5e2 f0b94489 66889b04 a3e85756 5592efb4
+t = 75:  b86c5a40 1809d5e2 7c2e5122 66889b04 a3e85756
+t = 76:  dfe7e487 b86c5a40 86027578 7c2e5122 66889b04
+t = 77:  70286c07 dfe7e487 2e1b1690 86027578 7c2e5122
+t = 78:  24ff7ed5 70286c07 f7f9f921 2e1b1690 86027578
+t = 79:  9a1f95a8 24ff7ed5 dc0a1b01 f7f9f921 2e1b1690
+
+   After processing, values of h:
+
+         h0        h1        h2        h3        h4
+
+      0164b8a9  14cd2a5e  74c4f7ff   082c4d97  f1edf880
+
+   Message digest =  0164b8a9 14cd2a5e 74c4f7ff 082c4d97 f1edf880
+
+        APPENDIX B. A SECOND SAMPLE MESSAGE AND ITS MESSAGE DIGEST
+
+   This appendix is for informational purposes only and is not
+required to meet the standard.
+
+   Let the message be the binary-coded form (cf. Appendix A) of the
+ASCII string
+      
+      "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"
+
+   Since each of the 56 characters is converted to 8 bits, the
+length of the message is L = 448.  In step (a) of Section 4, we
+append "1", giving a new length of 449.  In step (b) we append 511
+"0"s, producing a new message of length 960 which is congruent to
+448 modulo 512 (note that 511 "0"s are the most that ever need to
+be appended).  In step (c) we append the 2-word representation of
+448, i.e., hex 00000000 000001c0. This gives N = 2.
+
+   Initial values of h:
+
+         h0        h1        h2        h3        h4
+
+      67452301  efcdab89  98badcfe  10325476  c3d2e1f0
+
+   Start processing block 1. Words of block 1:
+
+W[ 0] = 61626364
+W[ 1] = 62636465
+W[ 2] = 63646566
+W[ 3] = 64656667
+W[ 4] = 65666768
+W[ 5] = 66676869
+W[ 6] = 6768696a
+W[ 7] = 68696a6b
+W[ 8] = 696a6b6c
+W[ 9] = 6a6b6c6d
+W[10] = 6b6c6d6e
+W[11] = 6c6d6e6f
+W[12] = 6d6e6f70
+W[13] = 6e6f7071
+W[14] = 80000000
+W[15] = 00000000
+
+   Hex values of A,B,C,D,E after pass t of the "for t = 0 to 79"
+loop (step (d) or (cc)) in Section 7:
+
+            A        B        C        D        E
+
+t =  0:  0116fc17 67452301 7bf36ae2 98badcfe 10325476
+t =  1:  ebf3b452 0116fc17 59d148c0 7bf36ae2 98badcfe
+t =  2:  5109913a ebf3b452 c045bf05 59d148c0 7bf36ae2
+t =  3:  2c4f6eac 5109913a bafced14 c045bf05 59d148c0
+t =  4:  33f4ae5b 2c4f6eac 9442644e bafced14 c045bf05
+t =  5:  96b85189 33f4ae5b 0b13dbab 9442644e bafced14
+t =  6:  db04cb58 96b85189 ccfd2b96 0b13dbab 9442644e
+t =  7:  45833f0f db04cb58 65ae1462 ccfd2b96 0b13dbab
+t =  8:  c565c35e 45833f0f 36c132d6 65ae1462 ccfd2b96
+t =  9:  6350afda c565c35e d160cfc3 36c132d6 65ae1462
+t = 10:  8993ea77 6350afda b15970d7 d160cfc3 36c132d6
+t = 11:  e19ecaa2 8993ea77 98d42bf6 b15970d7 d160cfc3
+t = 12:  8603481e e19ecaa2 e264fa9d 98d42bf6 b15970d7
+t = 13:  32f94a85 8603481e b867b2a8 e264fa9d 98d42bf6
+t = 14:  b2e7a8be 32f94a85 a180d207 b867b2a8 e264fa9d
+t = 15:  42637e39 b2e7a8be 4cbe52a1 a180d207 b867b2a8
+t = 16:  66036329 42637e39 acb9ea2f 4cbe52a1 a180d207
+t = 17:  b59a89e4 66036329 5098df8e acb9ea2f 4cbe52a1
+t = 18:  90b9433e b59a89e4 5980d8ca 5098df8e acb9ea2f
+t = 19:  db5227e2 90b9433e 2d66a279 5980d8ca 5098df8e
+t = 20:  91241034 db5227e2 a42e50cf 2d66a279 5980d8ca
+t = 21:  4c06bd64 91241034 b6d489f8 a42e50cf 2d66a279
+t = 22:  8665831e 4c06bd64 2449040d b6d489f8 a42e50cf
+t = 23:  3f62d9ec 8665831e 1301af59 2449040d b6d489f8
+t = 24:  cd40e178 3f62d9ec a19960c7 1301af59 2449040d
+t = 25:  d83e484e cd40e178 0fd8b67b a19960c7 1301af59
+t = 26:  d70940fe d83e484e 3350385e 0fd8b67b a19960c7
+t = 27:  39b6981b d70940fe b60f9213 3350385e 0fd8b67b
+t = 28:  694303ae 39b6981b b5c2503f b60f9213 3350385e
+t = 29:  8e08fd0a 694303ae ce6da606 b5c2503f b60f9213
+t = 30:  fbff1ba5 8e08fd0a 9a50c0eb ce6da606 b5c2503f
+t = 31:  8ab96092 fbff1ba5 a3823f42 9a50c0eb ce6da606
+t = 32:  4206057a 8ab96092 7effc6e9 a3823f42 9a50c0eb
+t = 33:  2cbcfc1a 4206057a a2ae5824 7effc6e9 a3823f42
+t = 34:  505759f3 2cbcfc1a 9081815e a2ae5824 7effc6e9
+t = 35:  05bb8ec9 505759f3 8b2f3f06 9081815e a2ae5824
+t = 36:  a0fc08a0 05bb8ec9 d415d67c 8b2f3f06 9081815e
+t = 37:  8664f5e1 a0fc08a0 416ee3b2 d415d67c 8b2f3f06
+t = 38:  fe3d2a4f 8664f5e1 283f0228 416ee3b2 d415d67c
+t = 39:  07d02aa9 fe3d2a4f 61993d78 283f0228 416ee3b2
+t = 40:  38d7321c 07d02aa9 ff8f4a93 61993d78 283f0228
+t = 41:  1f3ca4c0 38d7321c 41f40aaa ff8f4a93 61993d78
+t = 42:  df27aa0c 1f3ca4c0 0e35cc87 41f40aaa ff8f4a93
+t = 43:  84e2dba6 df27aa0c 07cf2930 0e35cc87 41f40aaa
+t = 44:  8797eb77 84e2dba6 37c9ea83 07cf2930 0e35cc87
+t = 45:  9d220100 8797eb77 a138b6e9 37c9ea83 07cf2930
+t = 46:  cb326b71 9d220100 e1e5fadd a138b6e9 37c9ea83
+t = 47:  505de66f cb326b71 27488040 e1e5fadd a138b6e9
+t = 48:  ffdf8e6f 505de66f 72cc9adc 27488040 e1e5fadd
+t = 49:  47a17a6f ffdf8e6f d417799b 72cc9adc 27488040
+t = 50:  2c742cf4 47a17a6f fff7e39b d417799b 72cc9adc
+t = 51:  692c82f3 2c742cf4 d1e85e9b fff7e39b d417799b
+t = 52:  741a7aeb 692c82f3 0b1d0b3d d1e85e9b fff7e39b
+t = 53:  e89625b3 741a7aeb da4b20bc 0b1d0b3d d1e85e9b
+t = 54:  bb527c29 e89625b3 dd069eba da4b20bc 0b1d0b3d
+t = 55:  609a8616 bb527c29 fa25896c dd069eba da4b20bc
+t = 56:  5e259ced 609a8616 6ed49f0a fa25896c dd069eba
+t = 57:  fdce04c4 5e259ced 9826a185 6ed49f0a fa25896c
+t = 58:  2a35958f fdce04c4 5789673b 9826a185 6ed49f0a
+t = 59:  029a9dbb 2a35958f 3f738131 5789673b 9826a185
+t = 60:  651604ab 029a9dbb ca8d6563 3f738131 5789673b
+t = 61:  3f163f73 651604ab c0a6a76e ca8d6563 3f738131
+t = 62:  60e30527 3f163f73 d945812a c0a6a76e ca8d6563
+t = 63:  da53f35e 60e30527 cfc58fdc d945812a c0a6a76e
+t = 64:  59f8e302 da53f35e d838c149 cfc58fdc d945812a
+t = 65:  be75732c 59f8e302 b694fcd7 d838c149 cfc58fdc
+t = 66:  8d8dfd49 be75732c 967e38c0 b694fcd7 d838c149
+t = 67:  556247fc 8d8dfd49 2f9d5ccb 967e38c0 b694fcd7
+t = 68:  c416c3e2 556247fc 63637f52 2f9d5ccb 967e38c0
+t = 69:  64c244c9 c416c3e2 155891ff 63637f52 2f9d5ccb
+t = 70:  b0df5b97 64c244c9 b105b0f8 155891ff 63637f52
+t = 71:  905723fe b0df5b97 59309132 b105b0f8 155891ff
+t = 72:  49946022 905723fe ec37d6e5 59309132 b105b0f8
+t = 73:  b3a64db3 49946022 a415c8ff ec37d6e5 59309132
+t = 74:  281589bc b3a64db3 92651808 a415c8ff ec37d6e5
+t = 75:  4623888d 281589bc ece9936c 92651808 a415c8ff
+t = 76:  74eb04b7 4623888d 0a05626f ece9936c 92651808
+t = 77:  035d4cd9 74eb04b7 5188e223 0a05626f ece9936c
+t = 78:  b2bdd7d0 035d4cd9 dd3ac12d 5188e223 0a05626f
+t = 79:  1d750196 b2bdd7d0 40d75336 dd3ac12d 5188e223
+
+   Block 1 processed. Values of h:
+
+         h0        h1        h2        h3        h4
+
+      84ba2497  a28b8359  d9923034  ed6d15a3  155bc413
+
+   Start processing block 2. Words of block 2:
+
+W[ 0] = 00000000
+W[ 1] = 00000000
+W[ 2] = 00000000
+W[ 3] = 00000000
+W[ 4] = 00000000
+W[ 5] = 00000000
+W[ 6] = 00000000
+W[ 7] = 00000000
+W[ 8] = 00000000
+W[ 9] = 00000000
+W[10] = 00000000
+W[11] = 00000000
+W[12] = 00000000
+W[13] = 00000000
+W[14] = 00000000
+W[15] = 000001c0
+
+   Hex values of A,B,C,D,E after pass t of the "for t = 0 to 79"
+loop (step (d) or (cc)) in Section 7:
+
+             A       B        C        D        E
+
+t =  0:  d508e54e 84ba2497 68a2e0d6 d9923034 ed6d15a3
+t =  1:  42ae69cc d508e54e e12e8925 68a2e0d6 d9923034
+t =  2:  738c64e9 42ae69cc b5423953 e12e8925 68a2e0d6
+t =  3:  d5b4a0fe 738c64e9 10ab9a73 b5423953 e12e8925
+t =  4:  870f3c0b d5b4a0fe 5ce3193a 10ab9a73 b5423953
+t =  5:  46574e97 870f3c0b b56d283f 5ce3193a 10ab9a73
+t =  6:  1405102f 46574e97 e1c3cf02 b56d283f 5ce3193a
+t =  7:  297306df 1405102f d195d3a5 e1c3cf02 b56d283f
+t =  8:  30185ce2 297306df c501440b d195d3a5 e1c3cf02
+t =  9:  10d7ba0c 30185ce2 ca5cc1b7 c501440b d195d3a5
+t = 10:  0c28cf6b 10d7ba0c 8c061738 ca5cc1b7 c501440b
+t = 11:  6eabfec0 0c28cf6b 0435ee83 8c061738 ca5cc1b7
+t = 12:  7e85f170 6eabfec0 c30a33da 0435ee83 8c061738
+t = 13:  f964f1a3 7e85f170 1baaffb0 c30a33da 0435ee83
+t = 14:  26e19055 f964f1a3 1fa17c5c 1baaffb0 c30a33da
+t = 15:  156937e7 26e19055 fe593c68 1fa17c5c 1baaffb0
+t = 16:  6295f273 156937e7 49b86415 fe593c68 1fa17c5c
+t = 17:  b81a706e 6295f273 c55a4df9 49b86415 fe593c68
+t = 18:  a5620a0d b81a706e d8a57c9c c55a4df9 49b86415
+t = 19:  2dbc9cff a5620a0d ae069c1b d8a57c9c c55a4df9
+t = 20:  bf89c409 2dbc9cff 69588283 ae069c1b d8a57c9c
+t = 21:  239a6d9b bf89c409 cb6f273f 69588283 ae069c1b
+t = 22:  adec9cd5 239a6d9b 6fe27102 cb6f273f 69588283
+t = 23:  1cdd463f adec9cd5 c8e69b66 6fe27102 cb6f273f
+t = 24:  e0da5334 1cdd463f 6b7b2735 c8e69b66 6fe27102
+t = 25:  b947bdab e0da5334 c737518f 6b7b2735 c8e69b66
+t = 26:  ad4e620c b947bdab 383694cd c737518f 6b7b2735
+t = 27:  ca67cf14 ad4e620c ee51ef6a 383694cd c737518f
+t = 28:  fe343974 ca67cf14 2b539883 ee51ef6a 383694cd
+t = 29:  7cfd680a fe343974 3299f3c5 2b539883 ee51ef6a
+t = 30:  e4d7304c 7cfd680a 3f8d0e5d 3299f3c5 2b539883
+t = 31:  a6fd2352 e4d7304c 9f3f5a02 3f8d0e5d 3299f3c5
+t = 32:  c57dadcd a6fd2352 3935cc13 9f3f5a02 3f8d0e5d
+t = 33:  5f146ab9 c57dadcd a9bf48d4 3935cc13 9f3f5a02
+t = 34:  469dc798 5f146ab9 715f6b73 a9bf48d4 3935cc13
+t = 35:  03bcf3da 469dc798 57c51aae 715f6b73 a9bf48d4
+t = 36:  f03f67ba 03bcf3da 11a771e6 57c51aae 715f6b73
+t = 37:  2e04e8c4 f03f67ba 80ef3cf6 11a771e6 57c51aae
+t = 38:  e8b3497e 2e04e8c4 bc0fd9ee 80ef3cf6 11a771e6
+t = 39:  a9ce9b40 e8b3497e 0b813a31 bc0fd9ee 80ef3cf6
+t = 40:  f261bb65 a9ce9b40 ba2cd25f 0b813a31 bc0fd9ee
+t = 41:  42ef9dd9 f261bb65 2a73a6d0 ba2cd25f 0b813a31
+t = 42:  b2f2664a 42ef9dd9 7c986ed9 2a73a6d0 ba2cd25f
+t = 43:  1291092a b2f2664a 50bbe776 7c986ed9 2a73a6d0
+t = 44:  7c6aef48 1291092a acbc9992 50bbe776 7c986ed9
+t = 45:  a9cb9df6 7c6aef48 84a4424a acbc9992 50bbe776
+t = 46:  c5f82e71 a9cb9df6 1f1abbd2 84a4424a acbc9992
+t = 47:  8868c238 c5f82e71 aa72e77d 1f1abbd2 84a4424a
+t = 48:  b052f768 8868c238 717e0b9c aa72e77d 1f1abbd2
+t = 49:  61102ac0 b052f768 221a308e 717e0b9c aa72e77d
+t = 50:  8bee2ff1 61102ac0 2c14bdda 221a308e 717e0b9c
+t = 51:  9e700133 8bee2ff1 18440ab0 2c14bdda 221a308e
+t = 52:  877a43cd 9e700133 62fb8bfc 18440ab0 2c14bdda
+t = 53:  c4e901d6 877a43cd e79c004c 62fb8bfc 18440ab0
+t = 54:  2c7a07f0 c4e901d6 61de90f3 e79c004c 62fb8bfc
+t = 55:  67344973 2c7a07f0 b13a4075 61de90f3 e79c004c
+t = 56:  7ebaee45 67344973 0b1e81fc b13a4075 61de90f3
+t = 57:  eb9659b3 7ebaee45 d9cd125c 0b1e81fc b13a4075
+t = 58:  0ebfb62a eb9659b3 5faebb91 d9cd125c 0b1e81fc
+t = 59:  4dbf216a 0ebfb62a fae5966c 5faebb91 d9cd125c
+t = 60:  08089f12 4dbf216a 83afed8a fae5966c 5faebb91
+t = 61:  601aba34 08089f12 936fc85a 83afed8a fae5966c
+t = 62:  e1685b50 601aba34 820227c4 936fc85a 83afed8a
+t = 63:  ec956f26 e1685b50 1806ae8d 820227c4 936fc85a
+t = 64:  6bed4126 ec956f26 385a16d4 1806ae8d 820227c4
+t = 65:  96d6e5e6 6bed4126 bb255bc9 385a16d4 1806ae8d
+t = 66:  a5d83970 96d6e5e6 9afb5049 bb255bc9 385a16d4
+t = 67:  74ccf6e4 a5d83970 a5b5b979 9afb5049 bb255bc9
+t = 68:  b9bdca6d 74ccf6e4 29760e5c a5b5b979 9afb5049
+t = 69:  9526a197 b9bdca6d 1d333db9 29760e5c a5b5b979
+t = 70:  a2e5a7c9 9526a197 6e6f729b 1d333db9 29760e5c
+t = 71:  3708b81b a2e5a7c9 e549a865 6e6f729b 1d333db9
+t = 72:  f27081ec 3708b81b 68b969f2 e549a865 6e6f729b
+t = 73:  41daeb9b f27081ec cdc22e06 68b969f2 e549a865
+t = 74:  4215a57b 41daeb9b 3c9c207b cdc22e06 68b969f2
+t = 75:  2655c2d6 4215a57b d076bae6 3c9c207b cdc22e06
+t = 76:  11dc8a86 2655c2d6 d085695e d076bae6 3c9c207b
+t = 77:  69364641 11dc8a86 899570b5 d085695e d076bae6
+t = 78:  0a6ed856 69364641 847722a1 899570b5 d085695e
+t = 79:  4d974a4a 0a6ed856 5a4d9190 847722a1 899570b5
+
+   Block 2 processed. Values of h:
+
+         h0        h1        h2        h3        h4
+
+      d2516ee1  acfa5baf  33dfc1c4  71e43844  9ef134c8
+
+   Message digest =  d2516ee1 acfa5baf 33dfc1c4 71e43844 9ef134c8
+
+        APPENDIX C. A THIRD SAMPLE MESSAGE AND ITS MESSAGE DIGEST
+
+   This appendix is for informational purposes only and is not
+required to meet the standard.
+
+   Let the message be the binary-coded form of the ASCII string
+which consists of 1,000,000 repetitions of 'a'. 
+
+   Message digest =  3232affa 48628a26 653b5aaa 44541fd9 0d690603
+
+
+

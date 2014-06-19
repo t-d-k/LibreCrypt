@@ -1,0 +1,232 @@
+<!doctype html public "-//IETF//DTD HTML//EN">
+<HTML>
+
+<HEAD>
+
+<META NAME="GENERATOR" CONTENT="Internet Assistant for Word 1.0Z">
+<TITLE>FIPS PUB 180 - SECURE HASH STANDARD</TITLE>
+</HEAD>
+
+<body bgcolor="#000000" text="#FFFFFF" link="#FF8000"
+vlink="#00FF00">
+
+<H1>FIPS PUB 180 - SECURE HASH STANDARD</H1>
+
+<P>
+FEDERAL INFORMATION PROCESSING STANDARDS PUBLICATION
+<P>
+1993 May 11 
+<P>
+U.S. DEPARTMENT OF COMMERCE/National Institute of Standards and
+Technology
+<P>
+/*** NOTE: NOT OFFICIAL. HARD COPY IS THE OFFICIAL VERSION. ^
+is used for exponentiation or superscript. ***/
+<H2>CATEGORY: COMPUTER SECURITY</H2>
+
+<P>
+U.S. DEPARTMENT OF COMMERCE, Barbara Franklin, Secretary 
+<P>
+NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY
+<H3>Foreword</H3>
+
+<P>
+The Federal Information Processing Standards Publication Series
+of the National Institute of Standards and Technology (NIST) is
+the official series of publications relating to standards and
+guidelines adopted and promulgated under the provisions of Section
+111(d) of the Federal Property and Administrative Services Act
+of 1949 as amended by the Computer Security Act of 1987, Public
+Law 100-235. These mandates have given the Secretary of Commerce
+and NIST important responsibilities for improving the utilization
+and management of computer and related telecommunications systems
+in the Federal Government. The NIST, through the Computer Systems
+Laboratory, provides leadership, technical guidance, and coordination
+of Government efforts in the development of standards and guidelines
+in these areas. 
+<P>
+Comments concerning Federal Information Processing Standards Publications
+are welcomed and should be addressed to the Director, Computer
+Systems Laboratory, National Institute of Standards and Technology,
+Gaithersburg, MD 20899.
+<P>
+James H. Burrows, Director Computer Systems Laboratory 
+<H3>Abstract</H3>
+
+<P>
+This standard specifies a Secure Hash Algorithm (SHA) which can
+be used to generate a condensed representation of a message called
+a message digest. The SHA is required for use with the Digital
+Signature Algorithm (DSA) as specified in the Digital Signature
+Standard (DSS) and whenever a secure hash algorithm is required
+for federal applications. The SHA is used by both the transmitter
+and intended receiver of a message in computing and verifying
+a digital signature.
+<P>
+Key words: Computer security, digital signatures, Federal Information
+Processing Standard, hash algorithm.
+<P>
+FIPS PUB 180 
+<P>
+Federal Information Processing Standards Publication 180 
+<P>
+1993 MAY 11
+<H4>ANNOUNCING THE SECURE HASH STANDARD</H4>
+
+<P>
+Federal Information Processing Standards Publications (FIPS PUBS)
+are issued by the National Institute of Standards and Technology
+(NIST) after approval by the Secretary of Commerce pursuant to
+Section 111(d) of the Federal Property and Administrative Services
+Act of 1949 as amended by the Computer Security Act of 1987, Public
+Law 100-235.
+<P>
+Name of Standard: Secure Hash Standard.
+<P>
+Category of Standard: Computer Security.
+<P>
+Explanation: This Standard specifies a Secure Hash Algorithm (SHA)
+for computing a condensed representation of a message or a data
+file. When a message of any length &lt; 2^64 bits is input, the
+SHA produces a 160-bit output called a message digest. The message
+digest can then be input to the Digital Signature Algorithm (DSA)
+which generates or verifies the signature for the message (see
+Figure 1). Signing the message digest rather than the message
+often improves the efficiency of the process because the message
+digest is usually much smaller in size than the message. The same
+hash algorithm must be used by the verifier of a digital signature
+as was used by the creator of the digital signature. The SHA is
+called secure because it is computationally infeasible to find
+a message which corresponds to a given message digest, or to find
+two different messages which produce the same message digest.
+Any change to a message in transit will, with very high probability,
+result in a different message digest, and the signature will fail
+to verify. The SHA is based on principles similar to those used
+by Professor Ronald L. Rivest of MIT when designing the MD4 message
+digest algorithm (&quot;The MD4 Message Digest Algorithm,&quot;
+Advances in Cryptology - CRYPTO '90 Proceedings, Springer-Verlag,
+1991, pp. 303-311), and is closely modelled after that algorithm.
+<P>
+Approving Authority: Secretary of Commerce.
+<P>
+Maintenance Agency: U.S. Department of Commerce, National Institute
+of Standards and Technology, Computer Systems Laboratory.
+<P>
+Applicability: This standard is applicable to all Federal departments
+and agencies for the protection of unclassified information that
+is not subject to section 2315 of Title 10, United States Code,
+or section 3502(2) of Title 44, United States Code. This standard
+is required for use with the Digital Signature Algorithm (DSA)
+as specified in the Digital Signature Standard (DSS) and whenever
+a secure hash algorithm is required for federal applications.
+Private and commercial organizations are encouraged to adopt and
+use this standard. 
+<P>
+Applications: The SHA may be used with the DSA in electronic mail,
+electronic funds transfer, software distribution, data storage,
+and other applications which require data integrity assurance
+and data origin authentication. The SHA may also be used whenever
+it is necessary to generate a condensed version of a message.
+<P>
+Implementations: The SHA may be implemented in software, firmware,
+hardware, or any combination thereof. Only implementations of
+the SHA that are validated by NIST will be considered as complying
+with this standard. Information about the requirements for validating
+implementations of this standard can be obtained from the National
+Institute of Standards and Technology, Computer Systems Laboratory,
+Attn: SHS Validation, Gaithersburg, MD 20899.
+<P>
+Export Control: Implementations of this standard are subject to
+Federal Government export controls as specified in Title 15, Code
+of Federal Regulations, Parts 768 through 799. Exporters are advised
+to contact the Department of Commerce, Bureau of Export Administration
+for more information.
+<P>
+Patents: Implementations of the SHA in this standard may be covered
+by U.S. and foreign patents.
+<P>
+Implementation Schedule: This standard becomes effective October
+15, 1993. 
+<P>
+Specifications: Federal Information Processing Standard (FIPS
+180) Secure Hash Standard (affixed).
+<P>
+Cross Index:
+<MENU>
+<LI>a. FIPS PUB 46-1, Data Encryption Standard.
+<LI>b. FIPS PUB 73, Guidelines for Security of Computer Applications.
+<LI>c. FIPS PUB 140-1, Security Requirements for Cryptographic
+Modules.
+<LI>d. FIPS PUB XX, Digital Signature Standard.
+</MENU>
+
+<P>
+
+<P>
+Qualifications: While it is the intent of this standard to specify
+a secure hash algorithm, conformance to this standard does not
+assure that a particular implementation is secure. The responsible
+authority in each agency or department shall assure that an overall
+implementation provides an acceptable level of security. This
+standard will be reviewed every five years in order to assess
+its adequacy.
+<P>
+Waiver Procedure: Under certain exceptional circumstances, the
+heads of Federal departments and agencies may approve waivers
+to Federal Information Processing Standards (FIPS). The head of
+such agency may redelegate such authority only to a senior official
+designated pursuant to section 3506(b) of Title 44, United States
+Code. Waiver shall be granted only when:
+<MENU>
+<LI>a. Compliance with a standard would adversely affect the accomplishment
+of the mission of an operator of a Federal computer system; or
+<LI>b. Compliance with a standard would cause a major adverse
+financial impact on the operator which is not offset by Government-wide
+savings.
+</MENU>
+
+<P>
+
+<P>
+Agency heads may act upon a written waiver request containing
+the information detailed above. Agency heads may also act without
+a written waiver request when they determine that conditions for
+meeting the standard cannot be met. Agency heads may approve waivers
+only by a written decision which explains the basis on which the
+agency head made the required finding(s). A copy of each decision,
+with procurement sensitive or classified portions clearly identified,
+shall be sent to: National Institute of Standards and Technology;
+ATTN: FIPS Waiver Decisions, Technology Building, Room B-154,
+Gaithersburg, MD 20899.
+<P>
+In addition, notice of each waiver granted and each delegation
+of authority to approve waivers shall be sent promptly to the
+Committee on Government Operations of the House of Representatives
+and the Committee on Government Affairs of the Senate and shall
+be published promptly in the Federal Register.
+<P>
+When the determination on a waiver applies to the procurement
+of equipment and/or services, a notice of the waiver determination
+must be published in the Commerce Business Daily as a part of
+the notice of solicitation for offers of an acquisition or, if
+the waiver determination is made after that notice is published,
+by amendment to such notice.
+<P>
+A copy of the waiver, any supporting documents, the document approving
+the waiver and any accompanying documents, with such deletions
+as the agency is authorized and decides to make under 5 United
+States Code Section 552(b), shall be part of the procurement documentation
+and retained by the agency.
+<P>
+Where to Obtain Copies of the Standard: Copies of this publication
+are for sale by the National Technical Information Service, U.S.
+Department of Commerce, Springfield, VA 22161. When ordering,
+refer to Federal Information Processing Standards Publication
+180 (FIPS PUB 180), and identify the title. When microfiche is
+desired, this should be specified. Prices are published by NTIS
+in current catalogs and other issuances. Payment may be made by
+check, money order, deposit account or charged to a credit card
+accepted by NTIS.
+</BODY>
+
+</HTML>

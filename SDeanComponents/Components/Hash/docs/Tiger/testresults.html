@@ -1,0 +1,41 @@
+<html><head><title>Test Results of testtiger</title></head>
+
+<body><h1>Test Results of testtiger</h1>
+
+All 64-bit numbers are hexadecimal representations of unsigned
+integers. Their binary representation is as three 64-bit words.  On
+little-endian processors each word can be viewed as an eight-byte
+array printed below in the order w[7] w[6] w[5] w[4] w[3] w[2] w[1]
+w[0].  Thus the 192-bit hash values are represented below in the byte
+order 7 6 5 4 3 2 1 0 space 15 14 13 12 11 10 9 8 space 23 22 21 20 19 18 17 16.
+<p>
+<b>The values printed here do NOT define the way the output of Tiger is printed!!!</b>
+
+</p><pre>Hash of "":
+        24F0130C63AC9332 16166E76B1BB925F F373DE2D49584E7A
+Hash of "abc":
+        F258C1E88414AB2A 527AB541FFC5B8BF 935F7B951C132951
+Hash of "Tiger":
+        9F00F599072300DD 276ABB38C8EB6DEC 37790C116F9D2BDF
+Hash of "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-":
+        87FB2A9083851CF7 470D2CF810E6DF9E B586445034A5A386
+Hash of "ABCDEFGHIJKLMNOPQRSTUVWXYZ=abcdefghijklmnopqrstuvwxyz+0123456789":
+        467DB80863EBCE48 8DF1CD1261655DE9 57896565975F9197
+Hash of "Tiger - A Fast New Hash Function, by Ross Anderson and Eli Biham":
+        0C410A042968868A 1671DA5A3FD29A72 5EC1E457D3CDB303
+Hash of "Tiger - A Fast New Hash Function, by Ross Anderson and Eli Biham, proceedings of Fast Software Encryption 3, Cambridge.":
+        EBF591D5AFA655CE 7F22894FF87F54AC 89C811B6B0DA3193
+Hash of "Tiger - A Fast New Hash Function, by Ross Anderson and Eli Biham, proceedings of Fast Software Encryption 3, Cambridge, 1996.":
+        3D9AEB03D1BD1A63 57B2774DFD6D5B24 DD68151D503974FC
+Hash of "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-":
+        00B83EB4E53440C5 76AC6AAEE0A74858 25FD15E70A59FFE4
+Hash of a 64K-byte string:
+        8EF43951B3F5F4FD 1D41AFE51B420E71 0462F233C3AAA8E1
+</pre>
+
+<h2>The hashing speed in Bits per second are:</h2>
+<pre>rate = 132038961.823374 bit/s  on 200Mhz Alpha
+rate =  19163751.522533 bit/s  on Sparc10
+rate =  14368438.356164 bit/s  on Sparc10 with the reordering of the bytes
+rate =   3224065.573770 bit/s  on 33Mhz 80486
+</pre></body></html>

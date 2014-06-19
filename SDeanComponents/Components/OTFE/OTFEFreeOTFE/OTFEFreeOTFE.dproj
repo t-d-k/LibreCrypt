@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{308bf0cd-a2c4-4b01-bb49-23a12289ac13}</ProjectGuid>
+    <MainSource>OTFEFreeOTFE.dpk</MainSource>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+    <DCC_DependencyCheckOutputName>C:\Documents and Settings\All Users\Documents\RAD Studio\5.0\Bpl\OTFEFreeOTFE.bpl</DCC_DependencyCheckOutputName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+    <DCC_Define>RELEASE</DCC_Define>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Delphi.Personality</Borland.Personality>
+    <Borland.ProjectType>Package</Borland.ProjectType>
+    <BorlandProject>
+<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters><Parameters Name="RunParams">/mount /volume xts.vol /lesfile x\test.les</Parameters></Parameters><Package_Options><Package_Options Name="PackageDescription">OTFE: FreeOTFE Delphi Component</Package_Options><Package_Options Name="ImplicitBuild">False</Package_Options><Package_Options Name="DesigntimeOnly">False</Package_Options><Package_Options Name="RuntimeOnly">False</Package_Options></Package_Options><Language><Language Name="ProjectLang">$00000809</Language></Language><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">1</VersionInfo><VersionInfo Name="MinorVer">60</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">831</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">2057</VersionInfo><VersionInfo Name="CodePage">1252</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName">Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="FileDescription">TOTFEFreeOTFE (FreeOTFE Delphi Component)</VersionInfoKeys><VersionInfoKeys Name="FileVersion">1.60.0.831</VersionInfoKeys><VersionInfoKeys Name="InternalName">OTFEFreeOTFEDelphiComponent</VersionInfoKeys><VersionInfoKeys Name="LegalCopyright">(c) Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename">OTFEFreeOTFE.bpl</VersionInfoKeys><VersionInfoKeys Name="ProductName">FreeOTFE Delphi Component</VersionInfoKeys><VersionInfoKeys Name="ProductVersion">1.60</VersionInfoKeys><VersionInfoKeys Name="Comments">http://www.FreeOTFE.org/</VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">OTFEFreeOTFE.dpk</Source></Source><Excluded_Packages>
+      <Excluded_Packages Name="$(BDS)\bin\dcldbxcds4100.bpl">CodeGear SimpleDataset Component (DBX)</Excluded_Packages>
+    </Excluded_Packages></Delphi.Personality></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
+  <ItemGroup>
+    <DelphiCompile Include="OTFEFreeOTFE.dpk">
+      <MainSource>MainSource</MainSource>
+    </DelphiCompile>
+    <DCCReference Include="..\..\..\OTFE.dcp" />
+    <DCCReference Include="..\..\..\rtl.dcp" />
+    <DCCReference Include="..\..\..\SDeanFilesystem.dcp" />
+    <DCCReference Include="..\..\..\SDeanSecurity.dcp" />
+    <DCCReference Include="..\..\..\SDeanUtils.dcp" />
+    <DCCReference Include="..\..\..\vcl.dcp" />
+    <DCCReference Include="..\..\..\VclSmp.dcp" />
+    <DCCReference Include="..\..\..\vclx.dcp" />
+    <DCCReference Include="FreeOTFEDLLCypherAPI.pas" />
+    <DCCReference Include="FreeOTFEDLLHashAPI.pas" />
+    <DCCReference Include="FreeOTFEDLLMainAPI.pas" />
+    <DCCReference Include="OTFEFreeOTFEBase_U.pas" />
+    <DCCReference Include="OTFEFreeOTFEDLL_PartitionImage.pas" />
+    <DCCReference Include="OTFEFreeOTFEDLL_U.dcr" />
+    <DCCReference Include="OTFEFreeOTFEDLL_U.dcr" />
+    <DCCReference Include="OTFEFreeOTFEDLL_U.pas" />
+    <DCCReference Include="OTFEFreeOTFE_cryptlib.pas" />
+    <DCCReference Include="OTFEFreeOTFE_DiskPartitionsPanel.pas" />
+    <DCCReference Include="OTFEFreeOTFE_DriverAPI.pas" />
+    <DCCReference Include="OTFEFreeOTFE_DriverCommon.pas" />
+    <DCCReference Include="OTFEFreeOTFE_DriverControl.pas" />
+    <DCCReference Include="OTFEFreeOTFE_DriverCypherAPI.pas" />
+    <DCCReference Include="OTFEFreeOTFE_DriverHashAPI.pas" />
+    <DCCReference Include="OTFEFreeOTFE_fmePKCS11_MgrBase.pas">
+      <Form>fmePKCS11_MgrBase</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas">
+      <Form>fmePKCS11_MgrKeyfile</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas">
+      <Form>fmePKCS11_MgrSecretKey</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_fmeSelectPartition.pas">
+      <Form>fmeSelectPartition</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmCypherInfo.pas">
+      <Form>frmCypherInfo</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmDriverControl.pas">
+      <Form>frmDriverControl</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmHashInfo.pas">
+      <Form>frmHashInfo</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas">
+      <Form>frmKeyEntryFreeOTFE</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmKeyEntryLinux.pas">
+      <Form>frmKeyEntryLinux</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmKeyEntryLUKS.pas">
+      <Form>frmKeyEntryLUKS</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmNewVolumeSize.pas">
+      <Form>frmNewVolumeSize</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmPKCS11Management.pas">
+      <Form>frmPKCS11Management</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmPKCS11NewSecretKey.pas">
+      <Form>frmPKCS11NewSecretKey</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmPKCS11Session.pas">
+      <Form>frmPKCS11Session</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmSelectHashCypher.pas">
+      <Form>frmSelectHashCypher</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmSelectPartition.pas" />
+    <DCCReference Include="OTFEFreeOTFE_frmSelectPartition_Simple.pas">
+      <Form>frmSelectPartition_Simple</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmSelectVolumeAndOffset.pas">
+      <Form>frmSelectVolumeFileAndOffset</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmVolumeType.pas">
+      <Form>frmSelectVolumeType</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmWizard.pas">
+      <Form>frmWizard</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas">
+      <Form>frmWizardChangePasswordCreateKeyfile</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmWizardCreateVolume.pas">
+      <Form>frmWizardCreateVolume</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas">
+      <Form>frmWizardCreateVolumeAdvanced</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_InstructionRichEdit.pas" />
+    <DCCReference Include="OTFEFreeOTFE_LUKSAPI.pas" />
+    <DCCReference Include="OTFEFreeOTFE_PasswordRichEdit.pas" />
+    <DCCReference Include="OTFEFreeOTFE_PKCS11.pas" />
+    <DCCReference Include="OTFEFreeOTFE_U.dcr" />
+    <DCCReference Include="OTFEFreeOTFE_U.dcr" />
+    <DCCReference Include="OTFEFreeOTFE_U.pas" />
+    <DCCReference Include="OTFEFreeOTFE_VolumeFileAPI.pas" />
+    <DCCReference Include="OTFEFreeOTFE_VolumeSelect.pas">
+      <Form>OTFEFreeOTFEVolumeSelect</Form>
+    </DCCReference>
+    <DCCReference Include="OTFEFreeOTFE_WizardCommon.pas" />
+  </ItemGroup>
+</Project>

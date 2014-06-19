@@ -1,0 +1,56 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{5e138cce-5895-4429-b893-6d774ecf5430}</ProjectGuid>
+    <MainSource>sdDemo.dpr</MainSource>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+    <DCC_DependencyCheckOutputName>sdDemo.exe</DCC_DependencyCheckOutputName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_OpenStringParams>False</DCC_OpenStringParams>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+    <DCC_UnitSearchPath>f:\scram\TkrScramDisk</DCC_UnitSearchPath>
+    <DCC_ResourcePath>f:\scram\TkrScramDisk</DCC_ResourcePath>
+    <DCC_ObjPath>f:\scram\TkrScramDisk</DCC_ObjPath>
+    <DCC_IncludePath>f:\scram\TkrScramDisk</DCC_IncludePath>
+    <DCC_Define>RELEASE</DCC_Define>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+    <DCC_OpenStringParams>False</DCC_OpenStringParams>
+    <DCC_SymbolReferenceInfo>2</DCC_SymbolReferenceInfo>
+    <DCC_UnitSearchPath>f:\scram\TkrScramDisk</DCC_UnitSearchPath>
+    <DCC_ResourcePath>f:\scram\TkrScramDisk</DCC_ResourcePath>
+    <DCC_ObjPath>f:\scram\TkrScramDisk</DCC_ObjPath>
+    <DCC_IncludePath>f:\scram\TkrScramDisk</DCC_IncludePath>
+    <DCC_Define>DEBUG</DCC_Define>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Delphi.Personality</Borland.Personality>
+    <Borland.ProjectType>VCLApplication</Borland.ProjectType>
+    <BorlandProject>
+<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><Language><Language Name="ProjectLang">$00000809</Language></Language><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">1</VersionInfo><VersionInfo Name="MinorVer">0</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">248</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">2057</VersionInfo><VersionInfo Name="CodePage">1252</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName">Kwik-Rite Development</VersionInfoKeys><VersionInfoKeys Name="FileDescription">TkrScramDisk Demonstration</VersionInfoKeys><VersionInfoKeys Name="FileVersion">1.0.0.248</VersionInfoKeys><VersionInfoKeys Name="InternalName">TkrScramDisk Demo App</VersionInfoKeys><VersionInfoKeys Name="LegalCopyright">©1998 Kwik-Rite Development</VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename"></VersionInfoKeys><VersionInfoKeys Name="ProductName"></VersionInfoKeys><VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys><VersionInfoKeys Name="Comments"></VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">sdDemo.dpr</Source></Source></Delphi.Personality></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
+  <ItemGroup>
+    <DelphiCompile Include="sdDemo.dpr">
+      <MainSource>MainSource</MainSource>
+    </DelphiCompile>
+    <DCCReference Include="sdAbout.pas">
+      <Form>AboutForm</Form>
+    </DCCReference>
+    <DCCReference Include="sdGlobals.pas" />
+    <DCCReference Include="sdMain.pas">
+      <Form>MainForm</Form>
+    </DCCReference>
+    <DCCReference Include="sdPassword.pas">
+      <Form>PasswordForm</Form>
+    </DCCReference>
+  </ItemGroup>
+</Project>

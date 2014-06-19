@@ -1,0 +1,76 @@
+package Hash;
+
+{$R *.res}
+{$R 'HashAlgGOST_U.dcr'}
+{$R 'HashAlgMD2_U.dcr'}
+{$R 'HashAlgMD4_U.dcr'}
+{$R 'HashAlgMD5_U.dcr'}
+{$R 'HashAlgSHA_U.dcr'}
+{$R 'HashAlgSHA1_U.dcr'}
+{$R 'HashAlgSHA256_U.dcr'}
+{$R 'HashAlgSHA384_U.dcr'}
+{$R 'HashAlgSHA512_U.dcr'}
+{$R 'HashAlgRIPEMD_U.dcr'}
+{$R 'HashAlgUnified_U.dcr'}
+{$R 'HashAlgTiger_U.dcr'}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'Hash: Delphi Hash Components'}
+{$IMPLICITBUILD OFF}
+
+requires
+  vcl,
+  rtl,
+  vclx,
+  VclSmp,
+  SDeanUtils;
+
+contains
+  HashAlg_U in 'HashAlg_U.pas',
+  HashValue_U in 'HashValue_U.pas',
+  HashAlgMD2_U in 'HashAlgMD2_U.pas',
+  HashAlgMD2Engine_U in 'HashAlgMD2Engine_U.pas',
+  HashAlgMD4_U in 'HashAlgMD4_U.pas',
+  HashAlgMD4Engine_U in 'HashAlgMD4Engine_U.pas',
+  HashAlgMD5_U in 'HashAlgMD5_U.pas',
+  HashAlgMD5Engine_U in 'HashAlgMD5Engine_U.pas',
+  HashAlgGOST_U in 'HashAlgGOST_U.pas',
+  HashAlgGOSTEngine_U in 'HashAlgGOSTEngine_U.pas',
+  HashAlgSHA_U in 'HashAlgSHA_U.pas',
+  HashAlgSHAEngine_U in 'HashAlgSHAEngine_U.pas',
+  HashAlgSHA1_U in 'HashAlgSHA1_U.pas',
+  HashAlgSHA1Engine_U in 'HashAlgSHA1Engine_U.pas',
+  HashAlgSHA256_U in 'HashAlgSHA256_U.pas',
+  HashAlgSHA256Engine_U in 'HashAlgSHA256Engine_U.pas',
+  HashAlgSHA384_U in 'HashAlgSHA384_U.pas',
+  HashAlgSHA384Engine_U in 'HashAlgSHA384Engine_U.pas',
+  HashAlgSHA512_U in 'HashAlgSHA512_U.pas',
+  HashAlgSHA512Engine_U in 'HashAlgSHA512Engine_U.pas',
+  HashAlgRIPEMD_U in 'HashAlgRIPEMD_U.pas',
+  HashAlgRIPEMDEngine_U in 'HashAlgRIPEMDEngine_U.pas',
+  HashAlgUnified_U in 'HashAlgUnified_U.pas',
+  HashAlgTigerSBoxes_U in 'HashAlgTigerSBoxes_U.pas',
+  HashAlgTigerEngine_U in 'HashAlgTigerEngine_U.pas',
+  HashAlgTiger_U in 'HashAlgTiger_U.pas',
+  HashAlgEngine_U in 'HashAlgEngine_U.pas';
+
+end.

@@ -1,0 +1,131 @@
+Note: This implementation does *not* carry out verify reads on written data.
+
+
+----------------------------------------------------------
+US DoD 5220.22-M
+
+Overwrite methods (e) and (ece) implemented.
+
+Reference:
+http://cryptome.org/nispom/nispom.htm
+Chapter 8, section 8-306
+
+
+Note: A later version may be found at:
+2006 NISPOM (aka US DoD 5220.22-M)
+http://www.dss.mil/isp/fac_clear/download_nispom.html
+
+Pass 1: Any character (0x00)
+Pass 2: It's complement (0xFF)
+Pass 3: PRNG data
+(Verify write)
+Pass 4: A single character (0x7F)
+Pass 5: Any character (0x00)
+Pass 6: It's complement (0xFF)
+Pass 7: PRNG data
+(Verify write)
+
+
+A copy of the sanitization matrix may be found at:
+http://www.dss.mil/isp/odaa/documents/clearing_and_sanitization_matrix.pdf
+
+
+----------------------------------------------------------
+Gutmann
+
+Reference:
+Secure Deletion of Data from Magnetic and Solid-State Memory
+http://www.cs.auckland.ac.nz/~pgut001/pubs/secure_del.html
+
+http://archive.cert.uni-stuttgart.de/bugtraq/2005/07/msg00466.html
+
+Pass 1
+PRNG data
+Pass 2
+PRNG data
+Pass 3
+PRNG data
+Pass 4
+PRNG data
+Pass 5
+$55, $55, $55
+Pass 6
+$aa, $aa, $aa
+Pass 7
+$92, $49, $24
+Pass 8
+$49, $24, $92
+Pass 9
+$24, $92, $49
+Pass 10
+$00, $00, $00
+Pass 11
+$11, $11, $11
+Pass 12
+$22, $22, $22
+Pass 13
+$33, $33, $33
+Pass 14
+$44, $44, $44
+Pass 15
+$55, $55, $55
+Pass 16
+$66, $66, $66
+Pass 17
+$77, $77, $77
+Pass 18
+$88, $88, $88
+Pass 19
+$99, $99, $99
+Pass 20
+$aa, $aa, $aa
+Pass 21
+$bb, $bb, $bb
+Pass 22
+$cc, $cc, $cc
+Pass 23
+$dd, $dd, $dd
+Pass 24
+$ee, $ee, $ee
+Pass 25
+$ff, $ff, $ff
+Pass 26
+$92, $49, $24
+Pass 27
+$49, $24, $92
+Pass 28
+$24, $92, $49
+Pass 29
+$6d, $b6, $db
+Pass 30
+$b6, $db, $6d
+Pass 31
+$db, $6d, $b6
+Pass 32
+PRNG data
+Pass 33
+PRNG data
+Pass 34
+PRNG data
+Pass 35
+PRNG data
+
+----------------------------------------------------------
+RCMP (DSX)
+
+Royal Canadian Mounted Police DSX Triple overwrite
+
+Reference:
+http://www.rcmp-grc.gc.ca/tsb/pubs/it_sec/g2-003_e.pdf
+http://www.rcmp-grc.gc.ca/tsb/pubs/it_sec/dsx-faq_e.pdf
+http://www.rcmp-grc.gc.ca/tsb/pubs/it_sec/dsx-userguide_e.pdf
+
+Pass 1: 0x00
+(Verify write)
+Pass 2: 0xFF
+(Verify write)
+Pass 3: "1.40YYYYMMDDHHMM" repeated (date/timestamp)
+(Verify write)
+
+
+----------------------------------------------------------

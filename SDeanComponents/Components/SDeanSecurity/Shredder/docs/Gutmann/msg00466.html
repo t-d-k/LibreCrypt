@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><!-- MHonArc v2.6.16 --><!--X-Subject: RE: Peter Gutmann data deletion theaory? --><!--X-From-R13: "qnir xyrvzna" <qnirNvfrpherh.pbz> --><!--X-Date: Thu, 28 Jul 2005 02:43:23 +0200 --><!--X-Message-Id: 20050724192544.10748.qmail@mail.securityfocus.com --><!--X-Content-Type: text/plain --><!--X-Reference: 20050720235626.17186.qmail@mail.securityfocus.com --><!--X-Head-End--><title>RE: Peter Gutmann data deletion theaory?</title></head><body>
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<a href="http://archive.cert.uni-stuttgart.de/bugtraq/2005/07/msg00465.html">Date Prev</a>][<a href="http://archive.cert.uni-stuttgart.de/bugtraq/2005/07/msg00467.html">Date Next</a>][<a href="http://archive.cert.uni-stuttgart.de/bugtraq/2005/07/msg00529.html">Thread Prev</a>][<a href="http://archive.cert.uni-stuttgart.de/bugtraq/2005/07/msg00530.html">Thread Next</a>][<a href="http://archive.cert.uni-stuttgart.de/bugtraq/2005/07/maillist.php#00466">Date Index</a>][<a href="http://archive.cert.uni-stuttgart.de/bugtraq/2005/07/index.php#00466">Thread Index</a>]
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<h1>RE: Peter Gutmann data deletion theaory?</h1>
+<hr>
+<!--X-Subject-Header-End-->
+<!--X-Head-of-Message-->
+<ul>
+<li><em>To</em>: &lt;<a href="mailto:focus-ms@DOMAIN.HIDDEN">focus-ms@xxxxxxxxxxxxxxxxx</a>&gt;</li>
+<li><em>Subject</em>: RE: Peter Gutmann data deletion theaory?</li>
+<li><em>From</em>: "dave kleiman" &lt;<a href="mailto:dave@DOMAIN.HIDDEN">dave@xxxxxxxxxxxx</a>&gt;</li>
+<li><em>Date</em>: Sun, 24 Jul 2005 15:30:30 -0400</li>
+<li><em>Cc</em>: &lt;<a href="mailto:bugtraq@DOMAIN.HIDDEN">bugtraq@xxxxxxxxxxxxxxxxx</a>&gt;</li>
+<li><em>Delivered-to</em>: mailing list <a href="mailto:bugtraq@DOMAIN.HIDDEN">bugtraq@xxxxxxxxxxxxxxxxx</a></li>
+<li><em>Delivered-to</em>: moderator for <a href="mailto:bugtraq@DOMAIN.HIDDEN">bugtraq@xxxxxxxxxxxxxxxxx</a></li>
+<li><em>In-reply-to</em>: &lt;<a href="mailto:20050720235626.17186.qmail@DOMAIN.HIDDEN">20050720235626.17186.qmail@xxxxxxxxxxxxxxxxxxxxxx</a>&gt;</li>
+<li><em>List-help</em>: &lt;<a href="mailto:bugtraq-help@securityfocus.com">mailto:bugtraq-help@securityfocus.com</a>&gt;</li>
+<li><em>List-id</em>: &lt;bugtraq.list-id.securityfocus.com&gt;</li>
+<li><em>List-post</em>: &lt;<a href="mailto:bugtraq@securityfocus.com">mailto:bugtraq@securityfocus.com</a>&gt;</li>
+<li><em>List-subscribe</em>: &lt;<a href="mailto:bugtraq-subscribe@securityfocus.com">mailto:bugtraq-subscribe@securityfocus.com</a>&gt;</li>
+<li><em>List-unsubscribe</em>: &lt;<a href="mailto:bugtraq-unsubscribe@securityfocus.com">mailto:bugtraq-unsubscribe@securityfocus.com</a>&gt;</li>
+<li><em>Mailing-list</em>: contact <a href="mailto:bugtraq-help@DOMAIN.HIDDEN">bugtraq-help@xxxxxxxxxxxxxxxxx</a>; run by ezmlm</li>
+<li><em>Thread-index</em>: AcWNUcb8dwJ4AIZ7S5qH3SW2+y7mFwAAJtaQAAyyrvAAv/YhIA==</li>
+</ul>
+<!--X-Head-of-Message-End-->
+<!--X-Head-Body-Sep-Begin-->
+<hr>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<pre>Here is a quote directly from Peter I received Saturday, he asked to have it
+passed on to the list.
+
+--------------Snip-------------------------
+&gt;I'd love to hear some thoughts on this from security and data experts
+&gt;out there.
+
+People should note the epilogue to the paper:
+
+  Epilogue
+
+  In the time since this paper was published, some people have treated the
+35-
+  pass overwrite technique described in it more as a kind of voodoo
+  incantation to banish evil spirits than the result of a technical analysis
+  of drive encoding techniques.  As a result, they advocate applying the
+  voodoo to PRML and EPRML drives even though it will have no more effect
+than
+  a simple scrubbing with random data.  In fact performing the full 35-pass
+  overwrite is pointless for any drive since it targets a blend of scenarios
+  involving all types of (normally-used) encoding technology, which covers
+  everything back to 30+-year-old MFM methods (if you don't understand that
+  statement, re-read the paper).  If you're using a drive which uses
+encoding
+  technology X, you only need to perform the passes specific to X, and you
+  never need to perform all 35 passes.  For any modern PRML/EPRML drive, a
+few
+  passes of random scrubbing is the best you can do. As the paper says, "A
+  good scrubbing with random data will do about as well as can be expected".
+  This was true in 1996, and is still true now.
+
+  Looking at this from the other point of view, with the ever-increasing
+data
+  density on disk platters and a corresponding reduction in feature size and
+  use of exotic techniques to record data on the medium, it's unlikely that
+  anything can be recovered from any recent drive except perhaps one or two
+  levels via basic error-cancelling techniques.  In particular the the
+drives
+  in use at the time that this paper was originally written have mostly
+fallen
+  out of use, so the methods that applied specifically to the older, lower-
+  density technology don't apply any more.  Conversely, with modern high-
+  density drives, even if you've got 10KB of sensitive data on a drive and
+  can't erase it with 100% certainty, the chances of an adversary being able
+  to find the erased traces of that 10KB in 80GB of other erased traces are
+  close to zero.
+
+Peter.
+
+--------------Snip-------------------------
+
+
+Dave Kleiman
+
+
+
+</pre>
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<hr>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<ul><li><strong>References</strong>:
+<ul>
+<li><strong><a name="00353" href="http://archive.cert.uni-stuttgart.de/bugtraq/2005/07/msg00353.html">Peter Gutmann data deletion theaory?</a></strong>
+<ul><li><em>From:</em> Jared Johnson</li></ul></li>
+</ul></li></ul>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<li>Prev by Date:
+<strong><a href="http://archive.cert.uni-stuttgart.de/bugtraq/2005/07/msg00465.html">Re: Peter Gutmann data deletion theaory?</a></strong>
+</li>
+<li>Next by Date:
+<strong><a href="http://archive.cert.uni-stuttgart.de/bugtraq/2005/07/msg00467.html">MDKSA-2005:125 - Updated clamav packages fix more vulnerabilities</a></strong>
+</li>
+<li>Previous by thread:
+<strong><a href="http://archive.cert.uni-stuttgart.de/bugtraq/2005/07/msg00529.html">Re: [BugTraq] Peter Gutmann data deletion theaory?</a></strong>
+</li>
+<li>Next by thread:
+<strong><a href="http://archive.cert.uni-stuttgart.de/bugtraq/2005/07/msg00530.html">Re: Peter Gutmann data deletion theaory?</a></strong>
+</li>
+<li>Index(es):
+<ul>
+<li><a href="http://archive.cert.uni-stuttgart.de/bugtraq/2005/07/maillist.php#00466"><strong>Date</strong></a></li>
+<li><a href="http://archive.cert.uni-stuttgart.de/bugtraq/2005/07/index.php#00466"><strong>Thread</strong></a></li>
+</ul>
+</li>
+</ul>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+
+</body></html>

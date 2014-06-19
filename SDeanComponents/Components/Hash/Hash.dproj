@@ -1,0 +1,96 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{ce4a90fa-c901-4d1e-9d93-83f9c0e38dd6}</ProjectGuid>
+    <MainSource>Hash.dpk</MainSource>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+    <DCC_DependencyCheckOutputName>C:\Documents and Settings\All Users\Documents\RAD Studio\5.0\Bpl\Hash.bpl</DCC_DependencyCheckOutputName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+    <DCC_Define>RELEASE</DCC_Define>
+    <DCC_UNSAFE_TYPE>True</DCC_UNSAFE_TYPE>
+    <DCC_UNSAFE_CODE>True</DCC_UNSAFE_CODE>
+    <DCC_UNSAFE_CAST>True</DCC_UNSAFE_CAST>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+    <DCC_UNSAFE_TYPE>True</DCC_UNSAFE_TYPE>
+    <DCC_UNSAFE_CODE>True</DCC_UNSAFE_CODE>
+    <DCC_UNSAFE_CAST>True</DCC_UNSAFE_CAST>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Delphi.Personality</Borland.Personality>
+    <Borland.ProjectType>Package</Borland.ProjectType>
+    <BorlandProject>
+<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><Package_Options><Package_Options Name="PackageDescription">Hash: Delphi Hash Components</Package_Options><Package_Options Name="ImplicitBuild">False</Package_Options><Package_Options Name="DesigntimeOnly">False</Package_Options><Package_Options Name="RuntimeOnly">False</Package_Options></Package_Options><Language><Language Name="ProjectLang">$00000809</Language></Language><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">2</VersionInfo><VersionInfo Name="MinorVer">0</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">27</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">2057</VersionInfo><VersionInfo Name="CodePage">1252</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName">Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="FileDescription">Delphi Hash Components</VersionInfoKeys><VersionInfoKeys Name="FileVersion">2.0.0.27</VersionInfoKeys><VersionInfoKeys Name="InternalName">Hash.bpl</VersionInfoKeys><VersionInfoKeys Name="LegalCopyright">(c) Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename">Hash.bpl</VersionInfoKeys><VersionInfoKeys Name="ProductName">Delphi Hash Components</VersionInfoKeys><VersionInfoKeys Name="ProductVersion">2.0.0</VersionInfoKeys><VersionInfoKeys Name="Comments">http://www.SDean12.org/</VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">Hash.dpk</Source></Source></Delphi.Personality></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
+  <ItemGroup>
+    <DelphiCompile Include="Hash.dpk">
+      <MainSource>MainSource</MainSource>
+    </DelphiCompile>
+    <DCCReference Include="..\..\rtl.dcp" />
+    <DCCReference Include="..\..\SDeanUtils.dcp" />
+    <DCCReference Include="..\..\vcl.dcp" />
+    <DCCReference Include="..\..\VclSmp.dcp" />
+    <DCCReference Include="..\..\vclx.dcp" />
+    <DCCReference Include="HashAlgEngine_U.pas" />
+    <DCCReference Include="HashAlgGOSTEngine_U.pas" />
+    <DCCReference Include="HashAlgGOST_U.dcr" />
+    <DCCReference Include="HashAlgGOST_U.dcr" />
+    <DCCReference Include="HashAlgGOST_U.pas" />
+    <DCCReference Include="HashAlgMD2Engine_U.pas" />
+    <DCCReference Include="HashAlgMD2_U.dcr" />
+    <DCCReference Include="HashAlgMD2_U.dcr" />
+    <DCCReference Include="HashAlgMD2_U.pas" />
+    <DCCReference Include="HashAlgMD4Engine_U.pas" />
+    <DCCReference Include="HashAlgMD4_U.dcr" />
+    <DCCReference Include="HashAlgMD4_U.dcr" />
+    <DCCReference Include="HashAlgMD4_U.pas" />
+    <DCCReference Include="HashAlgMD5Engine_U.pas" />
+    <DCCReference Include="HashAlgMD5_U.dcr" />
+    <DCCReference Include="HashAlgMD5_U.dcr" />
+    <DCCReference Include="HashAlgMD5_U.pas" />
+    <DCCReference Include="HashAlgRIPEMDEngine_U.pas" />
+    <DCCReference Include="HashAlgRIPEMD_U.dcr" />
+    <DCCReference Include="HashAlgRIPEMD_U.dcr" />
+    <DCCReference Include="HashAlgRIPEMD_U.pas" />
+    <DCCReference Include="HashAlgSHA1Engine_U.pas" />
+    <DCCReference Include="HashAlgSHA1_U.dcr" />
+    <DCCReference Include="HashAlgSHA1_U.dcr" />
+    <DCCReference Include="HashAlgSHA1_U.pas" />
+    <DCCReference Include="HashAlgSHA256Engine_U.pas" />
+    <DCCReference Include="HashAlgSHA256_U.dcr" />
+    <DCCReference Include="HashAlgSHA256_U.dcr" />
+    <DCCReference Include="HashAlgSHA256_U.pas" />
+    <DCCReference Include="HashAlgSHA384Engine_U.pas" />
+    <DCCReference Include="HashAlgSHA384_U.dcr" />
+    <DCCReference Include="HashAlgSHA384_U.dcr" />
+    <DCCReference Include="HashAlgSHA384_U.pas" />
+    <DCCReference Include="HashAlgSHA512Engine_U.pas" />
+    <DCCReference Include="HashAlgSHA512_U.dcr" />
+    <DCCReference Include="HashAlgSHA512_U.dcr" />
+    <DCCReference Include="HashAlgSHA512_U.pas" />
+    <DCCReference Include="HashAlgSHAEngine_U.pas" />
+    <DCCReference Include="HashAlgSHA_U.dcr" />
+    <DCCReference Include="HashAlgSHA_U.dcr" />
+    <DCCReference Include="HashAlgSHA_U.pas" />
+    <DCCReference Include="HashAlgTigerEngine_U.pas" />
+    <DCCReference Include="HashAlgTigerSBoxes_U.pas" />
+    <DCCReference Include="HashAlgTiger_U.dcr" />
+    <DCCReference Include="HashAlgTiger_U.dcr" />
+    <DCCReference Include="HashAlgTiger_U.pas" />
+    <DCCReference Include="HashAlgUnified_U.dcr" />
+    <DCCReference Include="HashAlgUnified_U.dcr" />
+    <DCCReference Include="HashAlgUnified_U.pas" />
+    <DCCReference Include="HashAlg_U.pas" />
+    <DCCReference Include="HashValue_U.pas" />
+  </ItemGroup>
+</Project>

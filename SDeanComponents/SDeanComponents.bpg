@@ -1,0 +1,63 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = SDeanUtils.bpl Hash.bpl SDeanSecurity.bpl SDeanFilesystem.bpl \
+  OTFE.bpl OTFEBestCrypt.bpl OTFECrossCrypt.bpl OTFEE4M.bpl OTFEFreeOTFE.bpl \
+  OTFEPGPDisk.bpl OTFEScramDisk.bpl OTFEStrongDisk.bpl OTFETrueCrypt.bpl \
+  OTFEUnified.bpl
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+
+SDeanUtils.bpl: Components\SDeanUtils\SDeanUtils.dpk
+  $(DCC)
+
+OTFE.bpl: Components\OTFE\OTFE\OTFE.dpk
+  $(DCC)
+
+OTFEBestCrypt.bpl: Components\OTFE\OTFEBestCrypt\OTFEBestCrypt.dpk
+  $(DCC)
+
+OTFEE4M.bpl: Components\OTFE\OTFEE4M\OTFEE4M.dpk
+  $(DCC)
+
+OTFEPGPDisk.bpl: Components\OTFE\OTFEPGPDisk\OTFEPGPDisk.dpk
+  $(DCC)
+
+OTFEScramDisk.bpl: Components\OTFE\OTFEScramDisk\OTFEScramDisk.dpk
+  $(DCC)
+
+OTFEUnified.bpl: Components\OTFE\OTFEUnified\OTFEUnified.dpk
+  $(DCC)
+
+Hash.bpl: Components\Hash\Hash.dpk
+  $(DCC)
+
+SDeanSecurity.bpl: Components\SDeanSecurity\SDeanSecurity.dpk
+  $(DCC)
+
+OTFECrossCrypt.bpl: Components\OTFE\OTFECrossCrypt\OTFECrossCrypt.dpk
+  $(DCC)
+
+OTFEFreeOTFE.bpl: Components\OTFE\OTFEFreeOTFE\OTFEFreeOTFE.dpk
+  $(DCC)
+
+OTFEStrongDisk.bpl: Components\OTFE\OTFEStrongDisk\OTFEStrongDisk.dpk
+  $(DCC)
+
+OTFETrueCrypt.bpl: Components\OTFE\OTFETrueCrypt\OTFETrueCrypt.dpk
+  $(DCC)
+
+SDeanFilesystem.bpl: Components\SDeanFilesystem\SDeanFilesystem.dpk
+  $(DCC)
+
+

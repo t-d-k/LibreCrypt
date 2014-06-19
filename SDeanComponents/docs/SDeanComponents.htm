@@ -1,0 +1,2570 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html><head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+  <meta name="GENERATOR" content="Mozilla/4.7 [en] (Win95; I) [Netscape]"><title>Delphi Components</title></head>
+<body>
+<h1>SDeanComponents</h1>
+
+By Sarah Dean (<a href="mailto:sdean12@sdean12.org">sdean12@sdean12.org</a>)
+<br>
+
+<a href="http://www.SDean12.org/">http://www.SDean12.org/</a>
+<br>
+
+Last updated: 7th February 2010
+<hr>
+<h2>Contents</h2>
+
+<ul>
+
+  <li><a href="#Summary">Summary</a></li>
+  <li><a href="#Licence_and_Legal_Stuff">Licence and Legal Stuff</a></li>
+  <li><a href="#Download">Download</a></li>
+  <li><a href="#Component_Specific_Notes%20and%20Issues">Component Specific Notes and Issues</a></li>
+  <ul>
+    <li><a href="#SDeanUtils">SDeanUtils</a></li>
+    <li><a href="#SDeanSecurity">SDeanSecurity</a></li>
+    <li><a href="#Hash">Hash</a></li>
+    <li><a href="#OTFE">OTFE</a></li>
+    <li><a href="#OTFEBestCrypt">OTFEBestCrypt</a></li>
+    <li><a href="#OTFECrossCrypt">OTFECrossCrypt</a></li>
+    <li><a href="#OTFEE4M">OTFEE4M</a></li>
+    <li><a href="#OTFEFreeOTFE">OTFEFreeOTFE</a></li>
+    <li><a href="#OTFEPGPDisk">OTFEPGPDisk</a></li>
+    <li><a href="#OTFEScramDisk">OTFEScramDisk</a></li>
+    <li><a href="#OTFETrueCrypt">OTFETrueCrypt</a></li>
+    <li><a href="#OTFEUnified">OTFEUnified</a></li>
+    <li><a href="#OTFEDriveCrypt">OTFEDriveCrypt</a></li>
+    <li><a href="#OTFEStrongDisk">OTFEStrongDisk</a></li>
+    <li><a href="#PKCS11">PKCS#11</a></li>
+  </ul>
+  <li><a href="#Credits">Credits</a></li>
+  <li><a href="#OTFE_Compatibility">Appendix A: OTFE Compatibility</a></li><li><a href="#overwrite%20algorithms">Appendix B: Shredder overwrite algorithms</a><br>
+  </li>
+
+  <li><a href="#Version_History">Appendix C: Version History</a></li>
+</ul>
+
+<br>
+<hr style="width: 100%; height: 2px;">
+<a name="Summary"></a>
+<h2>Summary</h2>
+
+<p>SDeanComponents currently contains the following Delphi
+packages: <br>
+</p>
+
+<p>
+<table border="1" cols="4" width="100%">
+  <tbody>
+    <tr bgcolor="#ffff00">
+      <td>Package</td>
+      <td>Version</td>
+      <td>Description</td>
+    </tr>
+    <tr>
+      <td>SDeanUtils</td>
+      <td>v2.0.0</td>
+      <td>SDeanUtils: Sarah Dean - General Utility Classes and
+Components <br>
+Includes file and directory iterators for walking through directory
+structures/filesytems, system tray icon (aka tasktray icon), endian
+integers, TSDUStringGrid (enhanced TStringGrid with sorting and column
+resize), named pipes, wrappers for Windows Vista's TaskDialog API, display
+of partition information, file and directory drag and drop component, WinHttp API, multimedia key events, etc<br>
+      </td>
+    </tr>
+    <tr>
+      <td>SDeanSecurity</td>
+      <td>v2.5.0</td>
+      <td>Includes:<br>
+      <ul>
+        <li>AFSplitter</li>
+        <li>HMAC</li>
+        <li>Keyboard Entry Dialog</li>
+        <li>MouseRNG</li>
+        <li>MouseRNG Random Data Capture Dialog</li>
+        <li>MSCryptoAPI</li>
+        <li>PKCS#11 (Cryptoki)</li>
+        <li>Shredder</li>
+      </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>SDeanFilesystem</td>
+      <td>v1.0</td>
+      <td>Filesystem components for reading/writing to FAT (FAT12/FAT16/FAT32) filesystem images</td>
+    </tr>
+    <tr>
+      <td>Hash</td>
+      <td>v2.0.0</td>
+      <td>Hash: Hash algorithms:
+      <ul>
+        <li>GOST R 34.11-94,</li>
+        <li>MD2,</li>
+        <li>MD4,</li>
+        <li>MD5,</li>
+        <li>RIPEMD-128,</li>
+        <li>RIPEMD-160,</li>
+        <li>RIPEMD-256,</li>
+        <li>RIPEMD-320,</li>
+        <li>SHA,</li>
+        <li>SHA-1</li>
+        <li>SHA-256</li>
+        <li>SHA-384</li>
+        <li>SHA-512</li>
+        <li>Tiger<br>
+        </li>
+      </ul>
+(All of which inherit from THash)</td>
+    </tr>
+    <tr>
+      <td>OTFE</td>
+      <td>v1.1.0</td>
+      <td>OTFE: Base class for On-The-Fly Encryption components</td>
+    </tr>
+    <tr>
+      <td>OTFEBestCrypt</td>
+      <td>v2.0.0</td>
+      <td>OTFE: BestCrypt Delphi Component</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">OTFECrossCrypt<br>
+      </td>
+      <td style="vertical-align: top;">v1.0.0<br>
+      </td>
+      <td style="vertical-align: top;">OTFE: CrossCrypt Delphi Component<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">OTFEE4M<br>
+      </td>
+      <td style="vertical-align: top;">v1.0.2</td>
+      <td style="vertical-align: top;">OTFE: E4M Delphi Component<br>
+      </td>
+    </tr>
+    <tr>
+      <td>OTFEFreeOTFE<br>
+      </td>
+      <td>v3.0.0</td>
+      <td>OTFE: FreeOTFE Delphi Component</td>
+    </tr>
+    <tr>
+      <td>OTFEPGPDisk</td>
+      <td>v1.0.0</td>
+      <td>OTFE: PGPDisk Delphi Component</td>
+    </tr>
+    <tr>
+      <td>OTFEScramDisk</td>
+      <td>v2.0.0</td>
+      <td>OTFE: ScramDisk Delphi Component</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">OTFETrueCrypt<br>
+      </td>
+      <td style="vertical-align: top;">v1.1.0<br>
+      </td>
+      <td style="vertical-align: top;">OTFE: TrueCrypt Delphi Component<br>
+      </td>
+    </tr>
+<tr>
+      <td>OTFEUnified</td>
+      <td>v2.0.0</td>
+      <td>OTFE: Unified OTFE Delphi Component</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">OTFEDriveCrypt<br>
+      </td>
+      <td style="vertical-align: top;">n/a<br>
+      </td>
+      <td style="vertical-align: top;">OTFE: DriveCrypt Delphi Component<br>
+      <span style="font-style: italic;">Do not use - development
+shelved (see below)</span><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">OTFEStrongDisk<br>
+      </td>
+      <td style="vertical-align: top;">n/a</td>
+      <td style="vertical-align: top;">OTFE: StrongDisk Delphi Component<br>
+      <span style="font-style: italic;">Do not use - under development
+(see below)</span><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</p>
+
+<p>Additionally, the following test applications to demo/test the above
+components are included:
+</p>
+
+<ul>
+
+<li>SDUCreateLargeFile<br>
+</li><li>SDUPrettyPrintHex</li>
+
+  <li>SDUNamedPipes</li>
+  <li>SDUURLLabelTestApp</li>
+
+  <li>IteratorTestApp</li>
+  <li>AFSplitter</li><li>MouseRNGTestApp</li>
+
+  <li>MouseRNGDialogTestApp</li><li>PasswordRichEdit<br>
+  </li>
+
+  <li>MSCryptoAPI</li><li>SimpleHash</li>
+  <li>SDHash<br>
+  </li>
+<li>HashTestVectorSuite</li><li>TigerTest</li>
+<li>ScramDiskDemo (original demo as supplied with TkrScramDisk)</li>
+  <li>OTFEBestCryptTestApp</li>
+  <li>OTFECrossCryptTestApp</li>
+  <li>OTFEE4MTestApp</li>
+  <li>OTFEFreeOTFETestApp</li><li>OTFEFreeOTFEDetectLinuxSettings<br>
+  </li>
+
+  <li>OTFEPGPDiskTestApp</li>
+  <li>OTFEScramDiskTestApp</li>
+  <li>OTFEUnifiedTestApp</li>
+  <li>OTFEDriveCryptTestApp</li>
+  <li>OTFEStrongDiskTestApp<br>
+  </li>
+</ul>
+
+<hr width="100%">
+<a name="Licence_and_Legal_Stuff"></a>
+<h2>Licence and Legal Stuff</h2>
+
+<ul>
+
+  <li>I retain all rights to this software</li>
+  <li>You are free to distribute this software, although no charge may
+be
+made
+of any kind for doing so (that includes any fees for copying and/or the
+distribution media)</li>
+  <li>If you distribute this software, this file must be included with
+it,
+intact
+and unmodified.</li>
+  <li>Any software derived from any part, or using, any of these
+components
+and/or
+their source code are to be released into the public domain with full
+source code
+freely available (Note: This condition may be lifted,
+subject to negotiation; please
+email
+me for further information)</li>
+  <li>Blah, blah, blah ... you use this software at your own risk ...
+blah,
+blah
+... author takes no responsibility ... blah, blah ... (i.e. the usual
+disclaimers,
+etc. Do be careful with the TShredder though - test it out with junk
+files
+before trusting this component</li>
+</ul>
+
+<hr>
+<a name="Download"></a>
+<h2>Download</h2>
+
+The latest version of this software can be downloaded
+from: <a href="http://www.SDean12.org/Download.htm">http://www.SDean12.org/Download.htm</a>
+<hr><a name="Component_Specific_Notes_and_Issues"></a>
+<h2>Component Specific Notes and Issues</h2>
+
+<a name="SDeanUtils"></a>
+<h3>SDeanUtils</h3>
+
+<h4>SDUGeneral</h4>
+
+<h5>SDUCreateLargeFile</h5>
+
+Files created with this function consist of the $00 character, repeated.<br>
+
+<h4>SDUFileIterator</h4>
+
+Note that setting "FileMask" to a string including a path (e.g.
+"C:\test\*.*"), the path will be stripped off and "Directory" will be
+set to that value, while "FileMask" is set to just the mask ("*.*", in
+this example)<br>
+
+<h4>SDUSystemTrayIcon</h4>
+
+Usage of this component should be fairly obvious;
+it provides full functionality with respect to creating, animating, etc system tray icons.<br>
+
+<br>
+
+Note that balloon messages will not appear with early versions of MS
+Windows which include an older shell (shell32.dll; e.g. pre-Windows
+2000)<br>
+
+<br>
+
+This component may be compiled with the either one of the following parameters for debug purposes:<br>
+
+<br>
+
+<div style="margin-left: 40px;">GEXPERTS - Send debug output to the GExpers debug window. Requires GExperts to be installed; see http://www.GExperts.org/<br>
+SDUSYSTEMTRAYICON_DEBUG - Send debug output to file using SDULogger object (see source for output filename)<br>
+</div>
+
+<br>
+
+SDUSystemTrayIcon includes support for "minimize to system tray icon"
+functionality.
+In order to support "close to system tray icon" functionality, certain
+minor
+code changes are required to the form which this must apply for; see
+comments in the "Min/Close to System Tray" test application source for
+details; specifically those below the "Functions required for
+close/minimize to system tray follow" source code comment. These
+changes
+are required in order to override the default operations carried out
+when Close() is called, in order to minimise the form to the system
+tray
+instead of closing it.<br>
+
+<br>
+
+Note that when MinToIcon is set on an SDUSystemTrayIcon, if WindowState
+is set to wsMinimized on the form it is placed on, the normal
+WidowState behavious will occur; i.e. the form is minimized to the
+desktop; use Application.Minimize to minimize the application
+completely.<br>
+
+<P>
+<I><B>Important:</B</I> If you set the ".Position" property on the form the TSDUSystemTrayIcon is on <I>after setting TSDUSystemTrayIcon's "Active" property to TRUE</I>, toggle it's "Active" property FALSE then TRUE again. (The window handle of the owning window gets destroyed, so TSDUSystemTrayIcon's minimise to system tray functionality stops working)
+
+
+<h4>SDUDropFiles</h4>
+
+Set "DropControl" property to only monitor file/directory drops onto a particular control. Leave blank/set to nil to monitor for the application
+
+
+<h4>SDUMultimediaKeys</h4>
+
+YMMV with this component - it's correct operation depends on the user's keyboard drivers supporting the standard Windows multimedia keycode for it to fire its events.
+
+<P>
+"Odd" keyboard drivers will cause this component to have no effect.
+
+
+<h4>Named Pipes</h4>
+
+This software is currently under development - do not use.<br>
+
+<br>
+
+<a name="SDeanSecurity"></a>
+<h3>SDeanSecurity</h3>
+
+<h4>HMAC</h4>
+
+This file contains a number of functions that may be
+called to generate HMAC values using a number of different hashes
+including SHA-1, MD5, SHA-512, Tiger - any hash that has an
+implementation based on THash.<br>
+
+<h4>TMouseRNG</h4>
+
+The height and width of this component should be set to a multiple of
+(2 to the power of BITS_PER_SAMPLE)<br>
+
+<br>
+
+e.g.<br>
+
+If BITS_PER_SAMPLE is 1, then the width and height should be a multiple
+of 2<br>
+
+If BITS_PER_SAMPLE is 2, then the width and height should be a multiple
+of 4<br>
+
+<br>
+
+If you want the component to have BorderStyle=bsSingle, then the window
+should be <span style="font-style: italic;">further</span> increased in size by 2 pixels in both width and
+height.<br>
+
+<br>
+
+If the component is not sized as shown above, you risk biasing the RNG.<br>
+
+<br>
+
+At both design time and runtime, if the control is dynamically resized,
+then it will take care of the above rules and will automatically adjust
+itself appropriately. This however, does have the effect that the
+window may appear "jerky" when resized; especially for very large
+values of BITS_PER_SAMPLE (say, 4 or 5).<br>
+
+<h4>TMouseRNGDialog </h4>
+
+This is a standard dialog that uses TMouseRNG. It is designed to be
+
+used in a similar manner as other standard dialogs supplied with Delphi
+(e.g. TOpenDialogTo, TFontDialog).<br>
+
+<br>
+
+To use:<br>
+
+<ol>
+
+  <li>Set "RequiredBits" to the number of random bits of data that are
+required (Note: This value gives the number of <span style="font-style: italic;">bits</span>, not <span style="font-style: italic;">bytes</span> of random data that will be
+captured)</li>
+  <li>Call Execute(...)</li>
+  <li>If the return value of the call to Execute(...) is TRUE, then
+call GetRandomData(...) to retrieve the random data captured.</li>
+</ol>
+
+<h4>TPasswordRichEdit</h4>
+
+This is a standard TRichEdit component, but "PasswordChar" is exposed in the same manner as TEdit.<br>
+
+<br>
+
+It should be noted that this control is intended for obscuring
+passwords from visual inspection only. In the same way as passwords
+entered into TEdit controls with PasswordChar set, passwords entered
+into TPasswordRichEdit can be "lifted" using tools such as "Password
+Spectator Pro".<br>
+
+<h4>AFSplitter</h4>
+
+This is not a Delphi component, but library code intended to be used by applications.<br>
+
+<br>
+
+This implementation reflects the AFSplitter as used by "cryptsetup";
+the Linux LUKS encryption version, and as such it should be noted that
+a single bit change in split data will only change up to &lt;hash
+algorithm's hash length&gt; bits in the recovered data.<br>
+
+<h4>CryptoAPI</h4>
+
+This is not a Delphi component, but library code intended to be used by applications.<br>
+
+<br>
+
+&nbsp;This library is fairly limited, and currenly only supports those
+interfaces required to generate random data.<br>
+
+<a name="Hash"></a>
+<h3>Hash</h3>
+
+No notes.<br>
+
+<a name="OTFE"></a>
+<h3>OTFE</h3>
+
+The OTFE package is <span style="font-style: italic;">required</span>
+in order to use the other OTFE components; it holds the base class on
+which they all depend.<br>
+
+<a name="OTFEBestCrypt"></a>
+<h3>OTFEBestCrypt</h3>
+
+<pre>function Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean;</pre>
+
+<blockquote>
+This function will prompt the user for a password for each volume file
+instead of accepting one password, and applying it to all the volume
+files specified
+</blockquote>
+
+<br>
+
+Note to self (the following table is really only intended as a
+development aid to the author):<br>
+
+<br>
+
+The following table lists the buffer sizes used by the BestCrypt
+Control Panel when carrying out various DeviceIOControl calls. The
+sizes shown are in hex.<br>
+
+<br>
+
+In all cases, unless otherwise indicated, the buffer in is exactly the
+same as the buffer out (both in size, and memory location)<br>
+
+<br>
+
+The "Driver Version" lists the version ID of the driver installed for
+each combination of BestCrypt release version/OS combination. The
+versions shown are:<br>
+
+<ul>
+
+  <li>The version displayed in the "About BestCrypt" dialog by the
+BestCrypt Control Panel</li>
+  <li>The version ID returned by the DeviceIOControl called (in hex)<br>
+  </li>
+</ul>
+
+<br>
+
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; background-color: rgb(255, 255, 0);">BestCrypt
+version<br>
+      </td>
+      <td style="vertical-align: top; background-color: rgb(255, 255, 0);">OS<br>
+      </td>
+      <td style="background-color: rgb(51, 255, 51); vertical-align: top;">Driver
+Version<br>
+      </td>
+      <td style="vertical-align: top; background-color: rgb(255, 153, 0);">DeviceIOControl:<br>
+0x72001<br>
+(Driver version)<br>
+      </td>
+      <td style="vertical-align: top; background-color: rgb(255, 153, 0);">DeviceIOControl:<br>
+0x72005<br>
+(Get mounted disks mask)<br>
+      </td>
+      <td style="vertical-align: top; background-color: rgb(255, 153, 0);">DeviceIOControl:<br>
+0x72009<br>
+(Get disk info)<br>
+      </td>
+      <td style="vertical-align: top; background-color: rgb(255, 153, 0);">DeviceIOControl:<br>
+0x7200d<br>
+(Mount disk)<br>
+      </td>
+      <td style="vertical-align: top; background-color: rgb(255, 153, 0);">DeviceIOControl:<br>
+0x72011<br>
+(Disconnect disk)<br>
+      </td>
+      <td style="vertical-align: top; background-color: rgb(255, 153, 0);">DeviceIOControl:<br>
+0x72051<br>
+(??? - called on create/mount)<br>
+      </td>
+      <td style="vertical-align: top; background-color: rgb(255, 153, 0);">DeviceIOControl:<br>
+0x72061<br>
+(???)</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">v6.06<br>
+      </td>
+      <td style="vertical-align: top;">Windows Me<br>
+      </td>
+      <td style="vertical-align: top;">v2.31<br>
+(0x21F)<br>
+      </td>
+      <td style="vertical-align: top;">0x00b </td>
+      <td style="vertical-align: top;">0x010<br>
+(old struct) </td>
+      <td style="vertical-align: top;">0x1b8<br>
+(old struct)<br>
+      </td>
+      <td style="vertical-align: top;">0x1b8<br>
+(old struct)</td>
+      <td style="vertical-align: top;">0x014 </td>
+      <td style="vertical-align: top;">0x01c
+in/0x200 out </td>
+      <td style="vertical-align: top;"><span style="font-style: italic;">(this
+one not checked for)</span> </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">v6.06<br>
+      </td>
+      <td style="vertical-align: top;">Windows
+XP<br>
+      </td>
+      <td style="vertical-align: top;">v2.14
+(0x20E)<br>
+      </td>
+      <td style="vertical-align: top;">0x00b </td>
+      <td style="vertical-align: top;">0x010<br>
+(old struct)<br>
+      </td>
+      <td style="vertical-align: top;">0x1b8<br>
+(old struct)<br>
+      </td>
+      <td style="vertical-align: top;">0x1b8<br>
+(old struct) </td>
+      <td style="vertical-align: top;">0x014<br>
+      </td>
+      <td style="vertical-align: top;">0x01c
+in/0x200 out<br>
+      </td>
+      <td style="vertical-align: top;"><span style="font-style: italic;">(this
+one not checked for)</span> </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">v6.07.2<br>
+      </td>
+      <td style="vertical-align: top;">Windows
+Me</td>
+      <td style="vertical-align: top;">v2.41
+(0x229)<br>
+      </td>
+      <td style="vertical-align: top;">0x00b</td>
+      <td style="vertical-align: top;">0x014<br>
+(new struct)<br>
+      </td>
+      <td style="vertical-align: top;">0x1b8<br>
+(old struct)</td>
+      <td style="vertical-align: top;">0x1b8<br>
+(old struct)</td>
+      <td style="vertical-align: top;">0x014 </td>
+      <td style="vertical-align: top;"><span style="font-style: italic;">(this
+one not checked for)</span> </td>
+      <td style="vertical-align: top;"><span style="font-style: italic;">(this
+one not checked for)</span> </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">v6.07.2</td>
+      <td style="vertical-align: top;">Windows
+XP</td>
+      <td style="vertical-align: top;">v2.18<br>
+(0x212)<br>
+      </td>
+      <td style="vertical-align: top;">0x00b </td>
+      <td style="vertical-align: top;">0x014<br>
+(new struct) </td>
+      <td style="vertical-align: top;">0x1b8<br>
+(old struct)<br>
+      </td>
+      <td style="vertical-align: top;">0x1b8<br>
+(old struct)</td>
+      <td style="vertical-align: top;">0x014 </td>
+      <td style="vertical-align: top;">0x01c
+in/0x200 out </td>
+      <td style="vertical-align: top;"><span style="font-style: italic;">(this
+one not checked for)</span> </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">v7.05<br>
+      </td>
+      <td style="vertical-align: top;">Windows
+Me</td>
+      <td style="vertical-align: top;">v2.41<br>
+(0x229)<br>
+      </td>
+      <td style="vertical-align: top;">0x00b </td>
+      <td style="vertical-align: top;">0x014<br>
+(new struct) </td>
+      <td style="vertical-align: top;">0x1b8<br>
+(old struct) </td>
+      <td style="vertical-align: top;">0x1b8<br>
+(old struct) </td>
+      <td style="vertical-align: top;">0x014 </td>
+      <td style="vertical-align: top;"><span style="font-style: italic;">(this
+one not checked for)</span> </td>
+      <td style="vertical-align: top;"><span style="font-style: italic;">(this
+one not checked for)</span> </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">v7.05</td>
+      <td style="vertical-align: top;">Windows
+XP</td>
+      <td style="vertical-align: top;">v3.18
+(0x312)<br>
+      </td>
+      <td style="vertical-align: top;">0x00b </td>
+      <td style="vertical-align: top;">0x014<br>
+(new struct)</td>
+      <td style="vertical-align: top;">0x1b8<br>
+(old struct) </td>
+      <td style="vertical-align: top;">0x1b8<br>
+(old struct)</td>
+      <td style="vertical-align: top;">0x014 </td>
+      <td style="vertical-align: top;">0x01c
+in/0x200 out</td>
+      <td style="vertical-align: top;"><span style="font-style: italic;">(this
+one not checked for)</span> </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">v7.10.4<br>
+      </td>
+      <td style="vertical-align: top;">Windows
+Me</td>
+      <td style="vertical-align: top;">v2.42
+(0x22A)<br>
+      </td>
+      <td style="vertical-align: top;">0x00b<br>
+      </td>
+      <td style="vertical-align: top;">0x014<br>
+(new struct) </td>
+      <td style="vertical-align: top;">0x1c0<br>
+(new struct) </td>
+      <td style="vertical-align: top;">0x1c0<br>
+(new struct)</td>
+      <td style="vertical-align: top;">0x014 </td>
+      <td style="vertical-align: top;"><span style="font-style: italic;">(this
+one not checked for)</span> </td>
+      <td style="vertical-align: top;">0x010</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">v7.10.4<br>
+      </td>
+      <td style="vertical-align: top;">Windows
+XP</td>
+      <td style="vertical-align: top;">v3.30
+(0x31E)<br>
+      </td>
+      <td style="vertical-align: top;">0x00b </td>
+      <td style="vertical-align: top;">0x014<br>
+(new struct) </td>
+      <td style="vertical-align: top;">0x1c0<br>
+(new struct) </td>
+      <td style="vertical-align: top;">0x1c0<br>
+(new struct) </td>
+      <td style="vertical-align: top;">0x014 </td>
+      <td style="vertical-align: top;">0x01c
+in/0x200 out </td>
+      <td style="vertical-align: top;">0x010</td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+<br>
+
+The v6.07.2 release used for these tests was downloaded from Jetico's
+WWW site on the 24th
+September 2004<br>
+
+The v7.10.4 release used for these tests was downloaded from Jetico's
+WWW site on the 19th
+September 2004<br>
+
+<br>
+
+<a name="OTFECrossCrypt"></a>
+<h3>OTFECrossCrypt</h3>
+
+<pre>function Version(): cardinal; override;<br>function VersionStr(): string; override;<br></pre>
+
+<blockquote>
+Note that the version ID returned by these functions will only be valid
+if a
+CrossCrypt volume is mounted. This is due to weirdness in
+CrossCrypt.
+</blockquote>
+
+<a name="OTFEE4M"></a>
+<h3>OTFEE4M</h3>
+
+<span style="font-style: italic;">CAUTION!</span><br>
+
+If you have an application that uses this component that may still be
+running when the user shuts down/restarts their computer, it is
+important that you intercept the shutdown, and ensure that this
+components "Active" property to FALSE. Failure to do so could result in
+the user's computer freezing on shutdown as the component is still
+connected to the E4M driver (under Windows Me, at least). <br>
+
+<br>
+
+<pre>function GetVolFileForDrive(driveLetter: char): string;</pre>
+
+<blockquote>
+When getting filenames of mounted volumes under NT, the E4M driver does
+not return the full filename it is more than 63 chars long; instead it
+will return the first 60 chars, followed by "..." (or if the "filename"
+is <span style="font-style: italic;">not</span> the name of a device, only the first 56 chars)<br>
+  <br>
+This is because under NT, the E4M driver does not return the full
+filename it is more than 63 chars long; instead it will return the
+first 60 chars, followed by "...". In the case of volume files (not
+partitions), the
+filename returned by the driver is prefixed with "/??/" which is
+stripped out by the component<br>
+  <br>
+Note: "Filename" in the above two paragraphs refers to the full
+filename, including the full path to the file.<br>
+  <br>
+</blockquote>
+
+<pre>function GetDriveForVolFile(volumeFilename: string): char;</pre>
+
+<blockquote>
+Calls to this function <span style="font-style: italic;">may</span> return the wrong drive letter if there is
+more than one volume file mounted, and the first 56 chars (or 60 in the
+case of partitions) of two or more of the mounted volume filenames
+match the first 56 chars of "volumeFilename". In such a case, the drive
+letter to either one of these volumes may be returned.<br>
+  <br>
+This is because under NT, the E4M driver does not return the full
+filename it is more than 63 chars long; instead it will return the
+first 60 chars, followed by "...". In the case of volume files (not
+partitions), the
+filename returned by the driver is prefixed with "/??/" which is
+stripped out by the component<br>
+  <br>
+Note: "Filename" in the above two paragraphs refers to the full
+filename, including the full path to the file.<br>
+  <br>
+</blockquote>
+
+<pre>function Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean;</pre>
+
+<blockquote>
+Calls to this function <span style="font-style: italic;">may</span> dismount the wrong drive if there is more
+than one volume file mounted, and the first 56 chars (or 60 in the case
+of partitions) of two or more of the mounted volume filenames match the
+first 56 chars of "volumeFilename". In such a case, one of the matching
+volume filenames will have it's drive dismounted<br>
+  <br>
+This is because under NT, the E4M driver does not return the full
+filename it is more than 63 chars long; instead it will return the
+first 60 chars, followed by "...". In the case of volume files (not
+partitions), the filename returned by the driver is prefixed with
+"/??/" which is stripped out by the component<br>
+  <br>
+Note: "Filename" in the above two paragraphs refers to the full
+filename, including the full path to the file.<br>
+  <br>
+The "Dismount" function that takes a drive letter as it's parameter
+works correctly, and it is recommended that this function should be
+used instead.<br>
+  <br>
+</blockquote>
+
+<pre>function Mount(volumeFilename: string; readonly: boolean = FALSE): char;</pre>
+
+<blockquote>
+The "readonly" parameter is ignored (E4M does not support mounting
+volume files as readonly)<br>
+  <br>
+</blockquote>
+
+<pre>function Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean;</pre>
+
+<blockquote>
+The "readonly" parameter is ignored (E4M does not support mounting
+volume files as readonly)<br>
+  <br>
+</blockquote>
+
+<pre>function GetVolumeInfo(volumeFilename: string; info: pTOTFEE4MVolumeInfo): boolean;</pre>
+
+<blockquote>
+Due to another limitation with the E4M driver, it is not possible to
+identify the cipher or hash details of a mounted volume that has not
+been mounted with the same instance of TOTFEE4M on which
+GetVolumeInfo(...) is being called, nor is it possible to determine the
+type of the volume if it is a ScramDisk/E4M/SFS volume file, although
+partitions can be identified as such.<br>
+  <br>
+</blockquote>
+
+<a name="OTFEFreeOTFE"></a>
+<h3>OTFEFreeOTFE</h3>
+
+Projects built with the conditional "FREEOTFE_DEBUG" defined will
+generate additional debug information.<br>
+
+<br>
+
+An additional test application "OTFEFreeOTFEDetectLinuxSettings" is
+included for this component. This particular test app is not intended
+for general use; it was a quick 'n' dirty tool to detect the settings
+used in encrypting a Linux cryptoloop/dm-crypt volume, given the
+volumes password. Requires conditional "DETECT_LINUX" defined during
+compilation to use.<br>
+
+<br>
+
+<a name="OTFEPGPDisk"></a>
+<h3>OTFEPGPDisk</h3>
+
+The PGPDisk component was originally written for the version of PGPDisk
+supplied with PGP v6.0.2i. Because NAI appear to have changed all the
+APIs to PGPDisk, and don't appear to wanna talk to me about what's
+changed, the version of PGPDisk supplied with the commercial release of
+PGP v7.0.x does not work correctly with this component (mounted
+PGPDisks are misreported, etc)<br>
+
+<pre>function Version(): cardinal;<br>function VersionStr(): string;</pre>
+
+<blockquote>
+The version number returned is (as with the other OTFE components) the
+version ID the driver identifies as. In the case of PGPDisk, this
+constant should be interpreted as an internal version number only, and
+has no meaning outside of PGPdisk.<br>
+  <br>
+</blockquote>
+
+<pre>function Mount(volumeFilename: string; readonly: boolean = FALSE): char;</pre>
+
+<blockquote>
+The "readonly" parameter is ignored (the user can specify mounting as
+readonly when entering the password)<br>
+  <br>
+</blockquote>
+
+<pre>function Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean;</pre>
+
+<blockquote>
+This function will prompt the user for a password for each volume file
+instead of accepting one password, and applying it to all the volume
+files specified<br>
+Also, the "readonly" parameter is ignored (the user can specify
+mounting as readonly when entering the password)<br>
+  <br>
+</blockquote>
+
+<a name="OTFEScramDisk"></a>
+<h3>OTFEScramDisk</h3>
+
+Because the ScramDisk component is designed to clear all cached
+passwords immediatly after they are used, you cannot mount a volume
+using this component and then create an SKF file; in order to create a
+SKF file, you are required <i>not</i> to clear the cached passwords.
+Instead, you can use ScramDisk to mount the volumes, and <span style="font-style: italic;">then</span> create
+any SKF files needed.<br>
+
+<a name="OTFETrueCrypt"></a>
+<h3>OTFETrueCrypt</h3>
+
+<pre>property VersionHint: TTrueCryptVersionHint;</pre>
+
+<blockquote>The TrueCrypt driver supplied with TrueCrypt v2.1 and v2.1a both identify as version 0x0210.
+Normally, this would not be too much of a problem, however the cypher IDs used by the driver changed between these two versions
+(Arrrrgh! It's a chore, but why can't people just <span style="font-style: italic;">update their version IDs</span> when they update their software?!!).<br>
+As a direct result of this, when attempting to identify the driver
+version, the component will determine the version ID returned by the
+driver. In the case of v2.1 and v2.1a, the component will then proceed
+to further check the filesize of the TrueCrypt executable, comparing it
+against the filesize known to be in the different releases in order to
+find out which of the two versions it's working with. Setting this
+property to anything other than "tcvAuto" will skip this check, and the
+version you supply will be assumed.<br>
+If the version is incorrectly set, then the names of cyphers returned
+when getting volume information from the component may be incorrect,
+although it should be noted that this is largely a cosmetic issue, and
+has no impact on the rest of the component's functionality.<br>
+  <br>
+</blockquote>
+
+<pre>function Version(): cardinal;</pre>
+
+<blockquote>
+This function will operate as per normal, however both TrueCrypt v2.1 and v2.1a will both be reported as 0x210.<br>
+<br>
+</blockquote>
+
+<pre>function VersionStr(): cardinal;</pre>
+
+<blockquote>This function will operate as per normal, however for
+TrueCrypt v2.1 and v2.1a, because the component cannot differentiate
+between these two versions:
+If the TrueCrypt executable as one of two known filesizes, this
+function will return either "v2.1" or "v2.1a". If the filesize cannot
+be determined, or does not match a known executable filesize, then
+"v2.1(???)" will be returned.
+If you set the "VersionHint" property to something other than
+"tcvAuto", then this filesize check will be skipped, and the version
+will be assumed to be that which you specified.<br>
+  <br>
+
+</blockquote>
+
+<pre>function GetVolFileForDrive(driveLetter: char): string;</pre>
+
+<blockquote>
+When getting filenames of mounted volumes under NT, the TrueCrypt driver does
+not return the full filename it is more than 63 chars long; instead it
+will return the first 60 chars, followed by "..." (or if the "filename"
+is <span style="font-style: italic;">not</span> the name of a device, only the first 56 chars)<br>
+  <br>
+This is because under NT, the TrueCrypt driver does not return the full
+filename it is more than 63 chars long; instead it will return the
+first 60 chars, followed by "...". In the case of volume files (not
+partitions), the
+filename returned by the driver is prefixed with "/??/" which is
+stripped out by the component<br>
+  <br>
+Note: "Filename" in the above two paragraphs refers to the full
+filename, including the full path to the file.<br>
+  <br>
+</blockquote>
+
+<pre>function GetDriveForVolFile(volumeFilename: string): char;</pre>
+
+<blockquote>
+Calls to this function <span style="font-style: italic;">may</span> return the wrong drive letter if there is
+more than one volume file mounted, and the first 56 chars (or 60 in the
+case of partitions) of two or more of the mounted volume filenames
+match the first 56 chars of "volumeFilename". In such a case, the drive
+letter to either one of these volumes may be returned.<br>
+  <br>
+This is because under NT, the TrueCrypt driver does not return the full
+filename it is more than 63 chars long; instead it will return the
+first 60 chars, followed by "...". In the case of volume files (not
+partitions), the
+filename returned by the driver is prefixed with "/??/" which is
+stripped out by the component<br>
+  <br>
+Note: "Filename" in the above two paragraphs refers to the full
+filename, including the full path to the file.<br>
+  <br>
+</blockquote>
+
+<pre>function Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean;</pre>
+
+<blockquote>
+Calls to this function <span style="font-style: italic;">may</span> dismount the wrong drive if there is more
+than one volume file mounted, and the first 56 chars (or 60 in the case
+of partitions) of two or more of the mounted volume filenames match the
+first 56 chars of "volumeFilename". In such a case, one of the matching
+volume filenames will have it's drive dismounted<br>
+  <br>
+This is because under NT, the TrueCrypt driver does not return the full
+filename it is more than 63 chars long; instead it will return the
+first 60 chars, followed by "...". In the case of volume files (not
+partitions), the filename returned by the driver is prefixed with
+"/??/" which is stripped out by the component<br>
+  <br>
+Note: "Filename" in the above two paragraphs refers to the full
+filename, including the full path to the file.<br>
+  <br>
+The "Dismount" function that takes a drive letter as it's parameter
+works correctly, and it is recommended that this function should be
+used instead.<br>
+  <br>
+</blockquote>
+
+<pre>function Mount(volumeFilename: string; readonly: boolean = FALSE): char;</pre>
+
+<blockquote>
+The "readonly" parameter is ignored (TrueCrypt does not support mounting
+volume files as readonly)<br>
+  <br>
+
+</blockquote>
+
+<pre>function Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean;</pre>
+
+<blockquote>
+The "readonly" parameter is ignored (TrueCrypt does not support mounting
+volume files as readonly)
+</blockquote>
+
+<a name="OTFEUnified"></a>
+<h3>OTFEUnified</h3>
+
+<span style="font-style: italic;">CAUTION!</span><br>
+
+If you enable support for E4M, then: If you have an application that
+uses this component that may still be running when the user shuts
+down/restarts their computer, it is important that you intercept the
+shutdown, and ensure that this components "Active" property to FALSE.
+Failure to do so could result in the user's computer freezing on
+shutdown as the component is still connected to the E4M driver (under
+Windows Me, at least).<br>
+
+<a name="OTFEDriveCrypt"></a>
+<h3>OTFEDriveCrypt</h3>
+
+A modified TOTFEScramDisk. Development shelved indefinatly due to lack
+of DriveCrypt API documentation<br>
+
+<a name="OTFEStrongDisk"></a>
+<h3>OTFEStrongDisk</h3>
+
+This component is currently under development. Current development is
+based on API documentation for StrongDisk v2, pending API information
+relating to later versions.<br>
+
+<br>
+
+<span style="font-style: italic;">Development comment to self:
+strdsk.dll for StrongDisk v3 appears to require Language.dll be loaded
+- not was not the case in the earlier versions (v2.x?), it seems</span><br style="font-style: italic;">
+
+<span style="font-style: italic;">&nbsp;- IS IT THE CASE WITH
+STRONGDISK SERVER????</span><br>
+
+<br>
+
+<a name="PKCS11"></a>
+<h3>PKCS#11</h3>
+
+PKCS#11 (Cryptoki) components
+
+<P>
+See "PKCS#11 Explorer" for an example of usage.
+
+<hr style="width: 100%; height: 2px;"> <a name="Credits"></a>
+<h2>Credits</h2>
+
+Full credit is given to Andy Jeffries at Kwik-Rite Development for
+writing
+the original TkrScramdisk, the basis of TOTFEScramDisk and the (now
+redundant)
+TEnhKrScramDisk.
+<hr width="100%"><a name="OTFE_Compatibility"></a>
+<h2>Appendix A: OTFE Compatibility</h2>
+
+The OTFE components have been tested for compatibility with the OTFE
+system/versions described in the table below.<br>
+
+Note that this table is not exhaustive, and only lists those versions
+which I have tested - other versions of the packages listed may very
+well work, provided there have been no driver API changes within the
+particular OTFE system.<br>
+
+<br>
+
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; background-color: rgb(255, 255, 51);">OTFE
+System<br>
+      </td>
+      <td style="vertical-align: top; background-color: rgb(255, 255, 51);">Version<br>
+      </td>
+      <td style="vertical-align: top; background-color: rgb(255, 255, 51);">Comments<br>
+      </td>
+    </tr>
+<tr>
+<td colspan="1" rowspan="16" style="vertical-align: top;">FreeOTFE<br>
+</td>
+<td style="vertical-align: top;">v5.10<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">v5.00<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">v4.71<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">v4.70<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">v4.60<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">v4.50<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">v4.40<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">v4.30<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">v4.00<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">v3.00<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">v2.00<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+ <tr>
+<td style="vertical-align: top;">v1.60<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+<tr>
+
+<td style="vertical-align: top;">v1.50<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+<tr>
+
+<td style="vertical-align: top;">v1.00<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+<tr>
+
+<td style="vertical-align: top;">v00.58<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">v00.59<br>
+</td>
+<td style="vertical-align: top;">Fully supported.<br>
+</td>
+    </tr>
+    <tr>
+      <td colspan="1" rowspan="5" style="vertical-align: top;">BestCrypt<br>
+      </td>
+      <td style="vertical-align: top;">v6.06 </td>
+      <td style="vertical-align: top;">Fully supported.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">v6.07.2</td>
+      <td style="vertical-align: top;">Fully supported.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">v7.05</td>
+      <td style="vertical-align: top;">Fully supported.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">v7.10.4<br>
+      </td>
+      <td style="vertical-align: top;">Fully supported. </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">v7.12.01<br>
+      </td>
+      <td style="vertical-align: top;">Fully supported. </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">CrossCrypt<br>
+      </td>
+      <td style="vertical-align: top;">v0.4.3<br>
+      </td>
+      <td style="vertical-align: top;">Fully supported, with minor
+cosmetic issue (CrossCrypt is slightly weird in that it will not report
+it's version number correctly unless it has one or more CrossCrypt
+volumes mounted.)<br>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="1" rowspan="2" style="vertical-align: top;">E4M<br>
+      </td>
+      <td style="vertical-align: top;">v2.00<br>
+      </td>
+      <td style="vertical-align: top;">Fully supported.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">v2.02a<br>
+      </td>
+      <td style="vertical-align: top;">Fully supported.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">PGPDisk<br>
+      </td>
+      <td style="vertical-align: top;">v6.0.2i<br>
+      </td>
+      <td style="vertical-align: top;">Fully supported (Note: This is
+the version
+of
+PGPDisk supplied with freeware version of PGP v6.0.2i)</td>
+    </tr>
+    <tr>
+      <td colspan="1" rowspan="2" style="vertical-align: top;">ScramDisk<br>
+      </td>
+      <td style="vertical-align: top;">v2.02g<br>
+      </td>
+      <td style="vertical-align: top;">Fully supported.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">v3.xx<br>
+      </td>
+      <td style="vertical-align: top;">Fully supported.</td>
+    </tr><tr>
+      <td colspan="1" rowspan="7" style="vertical-align: top;">TrueCrypt<br>
+      <br>
+
+      <br>
+
+      </td>
+      <td style="vertical-align: top;">v1.0<br>
+      </td>
+      <td style="vertical-align: top;">Fully supported.<br>
+      </td>
+    </tr><tr>
+      <td style="vertical-align: top;">v2.0<br>
+      </td>
+      <td style="vertical-align: top;">Fully supported.</td>
+    </tr>
+<tr>
+      
+      <td style="vertical-align: top;">v2.1<br>
+      </td>
+      <td style="vertical-align: top;">Fully
+supported, with minor
+issue if the version ID cannot be determined (TrueCrypt v2.1 and v2.1a
+both identify themselves as version 0x0210 - but the cipher IDs changed
+between these versions! This issue has no effect on security, and can
+be easily eliminated if you use the component correctly)<br>
+      </td>
+    </tr>
+    <tr>
+      
+      <td style="vertical-align: top;">v2.1a<br>
+      </td>
+      <td style="vertical-align: top;">Fully supported, with minor
+issue if the version ID cannot be determined (TrueCrypt v2.1 and v2.1a
+both identify themselves as version 0x0210 - but the cipher IDs changed
+between these versions! This issue has no effect on security, and can
+be easily eliminated if you use the component correctly)</td>
+    </tr>
+<tr>
+      <td style="vertical-align: top;">v3.0a<br>
+      </td>
+      <td style="vertical-align: top;">Fully supported.<br>
+      </td>
+    </tr>
+
+<tr>
+      <td style="vertical-align: top;">v3.1<br>
+      </td>
+      <td style="vertical-align: top;">Fully supported.<br>
+      </td>
+    </tr>
+
+<tr>
+      <td style="vertical-align: top;">v3.1a<br>
+      </td>
+      <td style="vertical-align: top;">Fully supported.<br>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+<br>
+
+<br>
+
+<br>
+
+<hr style="width: 100%; height: 2px;"> <a name="overwrite algorithms"></a>
+<h2>Appendix B: Shredder overwrite algorithms</h2>
+
+The following overwrite algorithms are implemented by TShredder:<br>
+
+<br>
+
+Note: Overwrite passes which should be followed by a verification read
+to ensure written data is actually written out correctly are indicated
+with "[*]". This implementation does <i>not</i> currently carry out verify reads on written data.
+
+<p>
+</p>
+
+<h3>Zeros</h3>
+
+Storage is overwritten a user specified number of times with 0x00s
+
+<h3>Ones</h3>
+
+Storage is overwritten a user specified number of times with 0xFFs
+
+<p>
+</p>
+
+<h3>Pseudorandom data</h3>
+
+Storage is overwritten a user specified number of times with pseudorandom data
+
+<p>
+</p>
+
+<h3>RCMP (DSX)</h3>
+
+Royal Canadian Mounted Police DSX triple overwrite
+<p>
+
+<table border="1">
+<tbody><tr>
+<th>Overwrite pass</th>
+<th>Data</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>0x00 [*]</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0xFF [*]</td>
+</tr>
+<tr>
+<td>3</td>
+<td>"1.40YYYYMMDDHHMM" repeated (DSX version followed by date/timestamp) [*]</td>
+
+</tr>
+</tbody></table>
+
+</p>
+
+<p>
+</p>
+
+<h3>NISPOM US DoD 5220.22-M (E)</h3>
+
+<table border="1">
+
+<tbody><tr>
+<th>Overwrite pass</th>
+<th>Data</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Any character (0x00)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>It's complement (0xFF)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>PRNG data [*]</td>
+
+</tr>
+</tbody>
+</table>
+
+<p>
+</p>
+
+<h3>NISPOM US DoD 5220.22-M (ECE)</h3>
+
+<table border="1">
+
+<tbody><tr>
+<th>Overwrite pass</th>
+<th>Data</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Any character (0x00)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>It's complement (0xFF)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>PRNG data [*]</td>
+
+</tr>
+<tr>
+<td>4</td>
+<td>A single character (0x7F)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Any character (0x00)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>It's complement (0xFF)</td>
+
+</tr>
+<tr>
+<td>7</td>
+<td>PRNG data [*]</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+</p>
+
+<h3>Gutmann</h3>
+
+<table border="1">
+
+<tbody><tr>
+
+<th>Overwrite pass</th>
+<th>Data</th>
+</tr>
+<tr>
+<td>1</td>
+<td>PRNG data</td>
+</tr>
+<tr>
+<td>2</td>
+<td>PRNG data</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>PRNG data</td>
+</tr>
+<tr>
+<td>4</td>
+<td>PRNG data</td>
+</tr>
+<tr>
+<td>5</td>
+<td>$55, $55, $55</td>
+
+</tr>
+<tr>
+<td>6</td>
+<td>$aa, $aa, $aa</td>
+</tr>
+<tr>
+<td>7</td>
+<td>$92, $49, $24</td>
+</tr>
+<tr>
+<td>8</td>
+<td>$49, $24, $92</td>
+
+</tr>
+<tr>
+<td>9</td>
+<td>$24, $92, $49</td>
+</tr>
+<tr>
+<td>10</td>
+<td>$00, $00, $00</td>
+</tr>
+<tr>
+<td>11</td>
+<td>$11, $11, $11</td>
+
+</tr>
+<tr>
+<td>12</td>
+<td>$22, $22, $22</td>
+</tr>
+<tr>
+<td>13</td>
+<td>$33, $33, $33</td>
+</tr>
+<tr>
+<td>14</td>
+<td>$44, $44, $44</td>
+
+</tr>
+<tr>
+<td>15</td>
+<td>$55, $55, $55</td>
+</tr>
+<tr>
+<td>16</td>
+<td>$66, $66, $66</td>
+</tr>
+<tr>
+<td>17</td>
+<td>$77, $77, $77</td>
+
+</tr>
+<tr>
+<td>18</td>
+<td>$88, $88, $88</td>
+</tr>
+<tr>
+<td>19</td>
+<td>$99, $99, $99</td>
+</tr>
+<tr>
+<td>20</td>
+<td>$aa, $aa, $aa</td>
+
+</tr>
+<tr>
+<td>21</td>
+<td>$bb, $bb, $bb</td>
+</tr>
+<tr>
+<td>22</td>
+<td>$cc, $cc, $cc</td>
+</tr>
+<tr>
+<td>23</td>
+<td>$dd, $dd, $dd</td>
+
+</tr>
+<tr>
+<td>24</td>
+<td>$ee, $ee, $ee</td>
+</tr>
+<tr>
+<td>25</td>
+<td>$ff, $ff, $ff</td>
+</tr>
+<tr>
+<td>26</td>
+<td>$92, $49, $24</td>
+
+</tr>
+<tr>
+<td>27</td>
+<td>$49, $24, $92</td>
+</tr>
+<tr>
+<td>28</td>
+<td>$24, $92, $49</td>
+</tr>
+<tr>
+<td>29</td>
+<td>$6d, $b6, $db</td>
+
+</tr>
+<tr>
+<td>30</td>
+<td>$b6, $db, $6d</td>
+</tr>
+<tr>
+<td>31</td>
+<td>$db, $6d, $b6</td>
+</tr>
+<tr>
+<td>32</td>
+<td>PRNG data</td>
+
+</tr>
+<tr>
+<td>33</td>
+<td>PRNG data</td>
+</tr>
+<tr>
+<td>34</td>
+<td>PRNG data</td>
+</tr>
+<tr>
+<td>35</td>
+<td>PRNG data</td>
+
+</tr>
+</tbody>
+</table>
+
+<br>
+
+<hr style="width: 100%; height: 2px;"> <a name="Version_History"></a>
+<h2>Appendix C: Version History</h2>
+
+<ul>
+
+<li>v2.89 - [7th February 2010]
+<ul>
+ <li>Package: OTFEFreeOTFE
+ <UL>
+ <LI>Updates for FreeOTFE v5.21
+ </UL>
+</UL>
+
+<li>v2.88 - [3rd January 2010]
+<ul>
+ <li>Package: SDeanUtils
+ <UL>
+ <LI>Fixed bug under 64 bit versions of Windows Vista/Windows 7 causing standard Windows progres dialog to crash
+ </UL>
+
+ <li>Package: OTFEFreeOTFE
+ <UL>
+ <LI>Updates for FreeOTFE v5.20
+ <LI>TOTFEFreeOTFE: Partition selection dialog: Doubleclicking a disk/partition selects it and OK's the dialog. disk/partition properties can now be accessed via context menuitem.
+ </UL>
+</UL>
+
+
+<li>v2.87 - [13th October 2009]
+<ul>
+ <li>Package: SDeanUtils
+ <UL>
+ <LI>Added TSDUWindowsProgressDialog to wrap MS Window's IProgressDialog
+ <LI>Added "/unix" switch to SDHash test project
+ <LI>Fixed bug causing SDUDateTimeToFileTime(...)/SDUFileTimeToDateTime(...) to convert to/from UTC
+ </UL>
+
+ <li>Package: SDeanFilesystem
+ <UL>
+ <LI>Optimise performance to read/write in cluster-sized chunks instead of sector-sized
+ </UL>
+
+ <li>Package: OTFEFreeOTFE
+ <UL>
+ <LI>Updates for FreeOTFE v5.10
+ </UL>
+</UL>
+
+<li>v2.86 - [22nd July 2009]
+<ul>
+ <li>Package: SDeanUtils
+ <UL>
+ <LI>Added Multimedia keys component to provide events when keyboard multimedia keys are pressed
+ <LI>Added SDUWinHTTP; Delphi interface to WinHttp API
+ <LI>Added functionality to get version details from PAD file
+ <LI>Added functions to convert between TDate/TTime/TDateTime and ISO8601 format
+ <LI>Added functionality to format version details differently
+ <LI>Added indent/outdent and OnLogMessage event functionality to TSDULogger
+ <LI>Fixed bug and improved file drag/drop support
+ <LI>Add functionality to TSDListView to make it more rugged when columns are moved around, add a few more methods to it, and use enum for sort direction (ascending/descending)  	
+ <LI>TSDUCheckListBox: Fix bug when setting readonly would enable/disable the control incorrectly. Add various methods to swap/select/delete/move items  	
+ <LI>SDeanGeneral: Add methods to convert from char/string to boolean
+ <LI>SDeanGeneral: Add methods to store/restore a form's layout
+ <LI>SDUGraphics: Added methods SDUColorToRGB(...)/SDURGBToColor(...)
+ <LI>SDUGraphics: Added method SDUMakeIconGhosted(...)
+ <LI>SDUGraphics: Added method SDUConvertIconToBitmap_16x16(...)
+ <LI>SDULogger: Add functionality to support events on logging messages, and indentation
+ </UL>
+
+ <li>Package: SDeanFilesystem
+ <UL>
+ <LI>Add additional sanity check if user attempts to mount NTFS filesystem as FAT
+ <LI>Fix bug causing corrupt data to be read/written beyond 4GB
+ <LI>Fix problems causing it to incorrectly get the root directory on FAT12/FAT16 filesystems
+ <LI>Add MoveFileOrDir(...) and CopyFile(...) functionality
+ <LI>Move "Hidden" property to TSDDirItem base class
+ <LI>SDFilesystem_Local: Implement GetItem(...); abstract method on base class
+ <LI>Added layout store/restore functionality on list view control
+ <LI>Fixed FAT12/FAT16 root directory handling
+ <LI>Fixed bug which left spurious LFNs on deletion
+ <LI>Fixed bug causing incorrect operation on data beyond 4GB
+ <LI>Filesystem controls: Add functionality to hide directories with "hidden" attribute set
+ <LI>Filesystem controls: Add functionality to suppress the display of file extensions for "known file types"
+ <LI>Filesystem controls: Add functionality to add/remove/move/resize columns
+ <LI>Filesystem controls: Add column layout dialog to allow user to change columns layout
+ <LI>Filesystem controls: Change to show icons for files/dirs with "hidden" attribute set as "ghosted" (more transparent)
+ <LI>Filesystem controls: Add two additional FAT timestamp columns
+ <LI>Filesystem controls: Add support for storing/restoring layout
+ <LI>Filesystem controls: Add right justify alignment for "Size" column    TSDCustomFilesystemTreeView:
+ <LI>Filesystem controls: Replace root directory node icon with "drive" icon, instead of normal "folder" icon
+ <LI>Filesystem controls: Add functionality to hide directories with "hidden" attribute set
+ </UL>
+
+ <li>Package: OTFEFreeOTFE
+ <UL>
+ <LI>Updates for FreeOTFE v5.00
+ </UL>
+</UL>
+
+<li>v2.85 - [19th April 2009]
+<ul>
+ <li>Package: OTFEFreeOTFE
+ <UL>
+ <LI>Updates for FreeOTFE v4.71
+ </UL>
+
+ <li>Package: SDFilesystem
+ <UL>
+   <LI>Improved detection of different FAT types
+   <LI>Improved filesystem compatibility when formatting new volumes as FAT12/FAT16/FAT32:
+   <UL>
+     <LI>Default filesystem now defaults to FAT16/FAT32, depending on volume size
+     <LI>Changed filesystem OEM name for more common one
+     <LI>Volume serial number randomized
+     <LI>Added FSInfo sector
+     <LI>Added filesystem backup sectors
+   </UL>
+   <LI>Fixed bug in LFN handling, causing it to pad filenames when not needed, potentially resulting in "duplicate" directory entries
+ </UL>
+
+</UL>
+
+<li>v2.84 - [4th April 2009]
+<ul>
+ <LI>Package: SDeanUtils
+ <UL>
+  <LI>Added TSDUDropFiles component
+ </UL>
+ <li>Package: OTFEFreeOTFE
+ <UL>
+ <LI>Updates for FreeOTFE v4.70
+ </UL>
+ <li>Package: Hash
+ <UL>
+ <LI>Updated Tiger and SHA384/512 hash implementations to use ULONGLONG instead of LONGLONG, and get rid of many of   compiler warnings associated with the previous (signed) type
+ </UL>
+</UL>
+
+<li>v2.83 - [19th February 2009]
+<ul>
+<LI>Package: SDeanUtils
+<UL>
+<LI>Changes to improve support for Delphi 7
+<LI>Combined SDUURLLabel.pas (TSDUURLLabel) and SDUFilenameLabel.pas (TSDUFilenameLabel) into SDUStdCtrls.pas
+<LI>Split graphics routines out from SDUGeneral.pas into SDUGraphics.pas
+<LI>Add routines to flip, rotate and grayscale TBitmaps (in SDUGraphics.pas)
+<LI>Changed icon overlay routines to improve code when used with standard Windows icons (e.g. loaded in from shell32.dll)
+</UL>
+<li>Package: OTFEFreeOTFE
+<UL>
+<LI>Changes to improve support for Delphi 7
+</UL>
+</UL>
+
+<li>v2.82 - [1st January 2009]
+<ul>
+<li>Package: SDeanUtils
+<ul>
+<li>Added SDUParamSubstitute(...) function SDUGeneral to substitute %1, %2, %3, etc in string for parameters in passed in array.
+<li>Changed a number of display texts to use SDUParamSubstitute(...) instead of Format(...)
+<li>Added TSDUFilenameEdit (combined TEdit and browse button)
+<li>Added TSDUFileDropPanel
+<li>Added TSDListView
+<li>Various other minor changes
+</ul>
+<li>Package: SDeanUtils
+<UL>
+<LI>Changed TShredder API to return an enum instead of magic numbers(!)
+<LI>Corrected fault causing shredder to fail when overwriting items over 4GB under some circumstances
+</UL>
+<li>Package: OTFEFreeOTFE
+<ul>
+<li>Updated to support FreeOTFE v4.50
+</UL>
+</UL>
+
+<li>v2.81 - [20th November 2008]</li>
+<ul>
+<li>Package: SDeanUtils</li>
+<ul>
+<li>Added SDUi18n unit for translation, etc
+<li>Added "value and units" component; TSpin64Units
+<li>Various other changes
+</ul>
+<li>Package: OTFEFreeOTFE</li>
+<ul>
+<li>Updated to support FreeOTFE v4.40
+</UL>
+</UL>
+
+<li>v2.80 - [27th October 2008]</li>
+<ul>
+<li>Package: SDeanUtils</li>
+<ul>
+<li>Corrected estimated time remaining display on progress dialog
+<li>Corrected fault causing SDUGetFileSize(...) to return the incorrect filesize when used on files greater than 4GB
+</UL>
+<li>Package: SDeanSecurity</li>
+<ul>
+<li>Extended PKCS#11 library to include support for more PKCS#11 functions
+</UL>
+<li>Package: OTFEFreeOTFE</li>
+<ul>
+<li>Updated to support FreeOTFE v4.30
+</UL>
+</UL>
+
+  <li>v2.75 - [26th June 2008]</li>
+  <ul><li>Package: SDeanUtils</li>
+    <ul>
+<li>Added support for MS Windows x64 functions
+<li>Added functions for getting partitions/disk geometry information and displaying partition information graphically</li>
+<li>Added support for displaying estimated time remaining on progress dialog</li>
+<li>Added TSDUStringGrid (enhanced TStringGrid with column resizing and sorting)</li><li>Renamed SDUProgress_U to SDUProgressDlg, TSDUProgress_F to TSDUProgressDialog and added tool palette icon<br>
+      </li>
+
+    </ul>
+<li>Package: SDeanSecurity</li>
+    <ul>
+<li>Added PKCS#11 library support
+      <li>Added extra functionality to TShredder to support multiple other overwrite algorithms, including RCMP and US DoD 5220.22-M</li>
+      <li>Added estimated time remaining to shredder progress dialog</li>
+    </ul><li>Package: OTFEFreeOTFE</li>
+    <ul>
+      <li>Added support for FreeOTFE v3.00 and v4.00</li>
+<li>Password entry dialog is now only dismissed when the volume is
+successfully mounted, or the user cancels the mount when mounting
+a FreeOTFE volume<br>
+      </li>
+<li>Removed short password warning when mounting a LUKS volume with less than 20 characters in its password</li>
+      <li>Added LRW and XTS cypher mode support</li>
+
+    </ul>
+
+  </ul>
+  <li>v2.60 - [18th Match 2007]</li>
+
+  <ul>
+    <li>Package: OTFEFreeOTFE</li>
+    <ul>
+      <li>Added support for FreeOTFE v2.00</li><li>Added Windows Vista support<br>
+      </li>
+<li>Added support for (nonstandard) LUKS volumes created with Tiger and Whirlpool hashes</li>
+
+    </ul>
+    <li>Package: SDeanUtils</li>
+    <ul>
+      <li>Added wrapper for Windows Vista's TaskDialog API<br>
+      </li>
+    </ul>
+
+    <ul>
+      <li>Added support for Windows Vista detection</li><li>Added SDUXOR function to XOR strings together</li>
+      <li>Extended SDUProgress dialog to include status text<br>
+      </li>
+
+      <li>Added test application for SDUProgress dialog</li>
+
+    </ul>
+<li>Package: SDeanSecurity</li>
+    <ul>
+      <li>Added HMAC (implemented according to RFC 2104 specification)<br>
+    </li>
+    </ul>
+
+    <li>Package: Hash</li>
+    <ul>
+      <li>Updated THash components to make more logical, object oriented (OO),
+easy to use, to extend flexability, add const correctness and to open up lower level
+functionality.<br>Note:
+Users of previous versions of the THash components will have to
+add the "HashValue_U" into their "uses" clause, and may need to rebuild
+and reinstall some of the SDeanComponents packages. (i.e. Remove the
+packages from Delphi, exist Delphi, rebuild and reinstall). Some older
+methods have been marked "depreciated", though can still be used.<br>
+      </li>
+    </ul>
+    <ul>
+      <li>Added additional test/demo applications for the THash package,
+and rationalised the test vectors file to allow easier verification.</li>
+    </ul><li>Added fixes for Borland Delphi 2006 for Windows Vista<br>
+    </li>
+
+  </ul>
+  <li>v2.54 - [28th January 2006]</li>
+
+  <ul>
+    <li>Fixed minor bug that prevented FreeOTFE from properly dismounting volumes under certain conditions.</li>
+  </ul>
+  <li>v2.53 - [8th January 2006]</li>
+
+  <ul>
+    <li>Updated email address from sdean12@softhome.net to sdean12@sdean12.org<br>
+</li><li>Package: SDeanUtils</li>
+
+    <ul>
+      <li>Added SDUSimplePieChart(...) and test application<br>
+      </li>
+    </ul>
+    <li>Package: OTFEFreeOTFE</li>
+
+    <ul>
+      <li>Added ability to resize the driver control dialog<br>
+</li><li>Corrected fault that prevented LUKS partitions from being mounted</li>
+<li>Corrected errors that were displayed when a non-admin attempted to access the driver control dialog</li><li>Added support for LUKS volumes which use ESSIV, subject to the
+hashlength of the ESSIV hash generating the same number or less bits as
+the cypher used. Note: Although LUKS can create volumes with ESSIV -
+ESSIV is <span style="font-style: italic;">not</span> part of the LUKS specification!</li>
+
+    </ul>
+  </ul>
+  <li>v2.52.00 - [20th November 2005]</li>
+<ul><li>Package: OTFEFreeOTFE<br>
+</li>
+    <ul>
+      <li>Updated documentation to reflect fact that FreeOTFE component supports FreeOTFE v1.00.00</li>
+      <li>Changed red warning panels with white text to clBtnFace
+colored panels with red text; required as under Windows XP Themes the
+red panels were displayed in grey, giving white text on grey background.<br>
+      </li>
+    </ul>
+
+  </ul>
+  <li>v2.51.00 - [17th October 2005]</li>
+
+  <ul>
+    <li>General</li>
+    <ul>
+      <li>Switched from Delphi 5 to Delphi 7<br>
+      </li>
+    </ul>
+    <li>Package: SDeanUtils</li>
+
+    <ul>
+      <li>TSDUTaskTray renamed to TSDUSystemTrayIcon</li>
+      <li>Added minimise/close to system tray to SDUSystemTrayIcon</li><li>SDUEnableControl now colours disabled THotKeys correctly (why couldn't Microsoft just do this?!)</li><li>SDUInstalledOS changed to return an enumerated type<br>
+      </li>
+</ul><li>Package: OTFETrueCrypt</li>
+    <ul>
+      <li>Minor revision letter ("a") now correctly appended onto end of VersionStr() when TrueCrypt v3.<span style="font-style: italic;">x</span>a is installed</li><li>Fixed
+bug that sometimes prevented TrueCrypt volumes from being mounted</li><li>Implemented additional TrueCrypt v3.1+ shell notification when volumes are mounted/dismounted</li>
+      <li>Corrected bug with broadcast message when a volume is mounted/dismounted<br>
+      </li>
+
+    </ul>
+
+  </ul>
+  <li>v2.50.00 - [31st August 2005]</li>
+
+  <ul>
+    <li>Package: SDeanGeneral</li>
+  </ul>
+  <ul>
+    <ul>
+      <li>Added SDUEndianIntegers</li><li>Added SDUTaskTray</li><li>Modified
+SDUGeneral.SDUEnableControl to automatically enable/disable controls
+that have FocusControl set to the one being enabled/disabled (e.g. if
+you have a TEdit with a label next to it with an accelerator key and
+FocusControl set to the TEdit, you can disable both by simply disabling
+the TEdit)<br>
+      </li>
+
+    </ul>
+  </ul>
+  <ul>
+    <li>Package: SDeanSecurity</li>
+  </ul>
+  <ul>
+    <ul>
+      <li>Added Delphi implementation of Clemens Fruhwirth's AFSplitter software.</li><li>Added hex dump of entered data for TPasswordRichEdit test app.<br>
+      </li>
+
+    </ul>
+    <li>Package: OTFEFreeOTFE</li>
+    <ul>
+      <li>Added support for encrypted CDs/DVDs<br>
+      </li>
+      <li>Added support for encrypting disk devices, as well as
+partitions (i.e. You can now encrypt an entire disk, not just
+partitions held on it)<br>
+      </li>
+      <li>Added support for cryptlib (cl32.dll) as an RNG, if installed<br>
+      </li>
+      <li>Added support for Linux LUKS volumes<br>
+      </li>
+      <li>Removed redundant warnings when run by a user without Administrative privileges<br>
+      </li>
+    </ul>
+  </ul>
+  <li>v2.25.00 - [28th May 2005]</li>
+
+  <ul>
+    <li>Package: OTFEFreeOTFE</li>
+    <ul>
+      <li>Added progress dialog when creating volume files.</li>
+      <li>Fixed bug in sample application that caused incorrect data to be written to file during the cypher testing.</li>
+      <li>Updated package version ID to 00.57.00</li>
+      <li>Updated to support FreeOTFE v0.57.00</li>
+      <li>Support for FreeOTFE v0.50.00 and previous widthdrawn, though older volumes may still be mounted.</li>
+      <li>Added warning to user if an attempt is made to use a volume file created under a later version of FreeOTFE</li>
+      <li>Corrected fault with Windows XP/Windows 2000 differing
+QueryDosDevice behaviour that sometimes prevented FreeOTFE listing all
+cyphers/hash algorithms installed</li>
+      <li>Removed redundant warnings when attempting to stop/uninstall drivers while no volumes are mounted</li><li>Fixed
+bug found in volume creation wizard when creating a new volume and
+storing the volume's CDB separatly. (The CDB file wasn't being created
+before the CDB was written to it, causing an "Unable to write critical
+data block" error.)</li><li>ESSIV - better support; added user selectable cypher for IV generation with linux volumes</li>
+      <li>Fixed bug found when creating a new volume and storing the
+volume's CDB separatly. (The CDB file wasn't being created before the
+CDB was written to it, causing an "Unable to write critical data block"
+error.)<br>
+      </li>
+
+    </ul>
+    <li>Package: SDeanSecurity</li>
+    <ul>
+      <li>Shredder overwrite free space revamped to significantly
+improve progress dialog's responsiveness wrt cancelling and displaying
+progress.</li>
+    </ul>
+    <li>Package: SDeanUtils</li>
+    <ul>
+      <li>SDUCreateLargeFile(...) and test application added to
+SDUGeneral to give simple function to create (potentially large) files
+on demand.<br>
+      </li>
+    </ul>
+  </ul>
+  <li>v2.21.00 - [6th April 2005]</li>
+
+  <ul>
+    <li>Changed URL<br>
+    </li>
+  </ul>
+  <li>v2.20.00 - [4th April 2005]</li>
+
+  <ul>
+    <li>Package: SDeanUtils</li>
+    <ul>
+      <li>Changed SDUURLLabel so that the mouse cursor changes to the standard "hand" icon when hovered over the component.</li><li>Added test application for SDUURLLabel</li><li>Added TSpinEdit64 component - a 64 bit version of the TSpin component that comes supplied with Delphi</li>
+      <li>Added SDUParseASCIIToData(...) to SDUGeneral<br>
+      </li>
+</ul><li>Package: SDeanSecurity</li>
+    <ul>
+      <li>Added "TPasswordRichEdit" control.<br>
+      </li>
+
+    </ul>
+
+    <li>Package: OTFEFreeOTFE</li>
+
+  </ul>
+  <ul>
+    <ul>
+      <li>Setting TOTFEFreeOTFE components to Active when the driver is not installed/running will raise an exception</li><li>Added support for "portable mode drivers"</li>
+      <li>Rewrote most of the "Driver Control" dialog</li><li>Fixed
+bug that caused extra newline to be added to user's password when
+creating a new FreeOTFE volume via the volume creation wizard</li>
+      <li>Added portable mode</li>
+      <ul>
+        <li>Starting portable mode will cause the CWD will be checked
+for "*.sys" files, which will be treated as FreeOTFE device drivers,
+installed and started.</li>
+        <li>Stopping portable mode will stop and uninstall all portable mode drivers<br>
+        </li>
+      </ul>
+      <li>User passwords are no longer displayed; they are blanked out with "*" characters<br>
+      </li>
+      <li>Added option to backup and restore the CDB from volumes with a CDB<br>
+      </li>
+      <li>Added option to dump critical data block to a human readable file<br>
+      </li>
+      <li>Added support for keyfiles<br>
+      </li>
+      <li>Added option to change user's password/salt length/drive letter<br>
+      </li>
+      <ul>
+        <li>Note: Changing any of the above details will update the CDB to the latest version<br>
+        </li>
+      </ul>
+      <li>Fixed significant bug that caused VolumeFlags to be read back from the volume incorrectly<br>
+      </li>
+      <ul>
+        <li>In order to continue support for these v1 CDBs, they will
+still be read in incorrectly, but in new v2 CDBs, they are handled
+correctly.<br>
+        </li>
+        <li>To fix volumes which old version CDBs, just change your password; this will update the CDB used to a v2 CDB<br>
+        </li>
+        <ul>
+          <li>HIGHLY RECOMMENDED you change your password to do this, in order to ensure future-compatability<br>
+          </li>
+        </ul>
+      </ul>
+      <li>Added option to store a volume's CDB in a separate keyfile
+instead of including it at the start of the volume file when creating a
+new volume<br>
+      </li>
+      <li>Driver control dlg now indicates state of drivers - making it a <span style="font-style: italic;">lot</span> clearer what's happening!<br>
+      </li>
+      <li>Added ability to save settings when mounting linux volumes<br>
+      </li>
+
+    </ul>
+  </ul>
+  <ul>
+    <li>Package: OTFECrossCrypt</li>
+    <ul>
+      <li>Setting TOTFECrossCryptcomponents to Active when the driver is not installed/running will raise an exception</li></ul><li>Package: OTFETrueCrypt</li>
+    <ul>
+      <li>Package added to allow interfacing with the TrueCrypt OTFE system.</li>
+
+    </ul><li>Package: OTFEUnified</li>
+    <ul>
+      <li>Removed bug causing the partition select prompt to be shown
+once for every OTFE system which supports partition mounting, when
+attemping to mount a partition.<br>
+      </li>
+    </ul>
+
+  </ul>
+  <li>v2.01.00 - [11th October 2004]</li>
+
+  <ul>
+    <li>Package: OTFEFreeOTFE</li>
+  </ul>
+  <ul>
+    <ul>
+      <li>Bugfix relating to mounting FreeOTFE drives with salt.
+Grrrrrrr!<br>
+      </li>
+    </ul>
+  </ul>
+  <li>v2.00.00 - [10th October 2004]</li>
+  <ul>
+    <li>Package: Hash</li>
+    <ul>
+      <li>Added Tiger hash algorithm</li>
+      <li>Updated SDHash demo app to include Tiger hash algorithm<br>
+      </li>
+    </ul>
+    <li>Package: SDeanSecurity</li>
+    <ul>
+      <li>Added CryptoAPI library</li>
+      <li>Cleaned up the TShredder component - API changed slightly as
+well<br>
+      </li>
+      <li>Added TMouseRNGDialog for a common TMouseRNG dialog<br>
+      </li>
+    </ul>
+    <li>Package: OTFE...</li>
+    <ul>
+      <li>Added FreeOTFE OTFE component</li>
+      <li>BestCrypt OTFE component updated to reflect changes in newer
+versions<br>
+      </li>
+      <li>Added CrossCrypt OTFE component</li>
+      <li>Added DriveCrypt OTFE component (development shelved)</li>
+      <li>Added StrongDisk OTFE component (still under development)<br>
+      </li>
+      <li>Updated TOTFEUnified component to prompt user for which
+OTFE system is to be used when mounting a volume which could
+potentially be mounted by more than one OTFE system<br>
+      </li>
+    </ul>
+  </ul>
+  <li>v1.85.00 - [29th May 2004]
+    <ul>
+      <li>Package: Hash</li>
+    </ul>
+    <div style="margin-left: 40px;">
+    <ul>
+      <li>Added "Title" property to hashes</li>
+      <li>Updated SDHash demo app now uses updated SDUFileIterator</li>
+      <li>Updated SDHash demo app to accept /rmdXXX and /rmd-XXX in
+addition to existing command line options</li>
+      <li>Added "THashAlgUnified" component</li>
+    </ul>
+    </div>
+    <ul>
+      <li>Package: OTFE</li>
+    </ul>
+    <ul style="margin-left: 40px;">
+      <li>Updated CrossCrypt component:</li>
+      <li>Updated CrossCrypt component: Fixed minor bug that caused
+the
+"*"s obscuring the user's password to reveal the characters being typed
+in after "multiline" was selected, and then deselected.</li>
+      <li>Updated CrossCrypt component: Modified volume creation
+dialog
+to prevent users from entering the volume filename directly. Users must
+now specify the filename, and full path to it by clicking the browse
+("...") button.</li>
+      <li>Updated CrossCrypt component: DoMount fixed so volume
+size
+passed in is now an int64, not integer</li>
+    </ul>
+    <ul>
+      <li>Package: SDeanSecurity</li>
+    </ul>
+    <ul style="margin-left: 40px;">
+      <li>Updated TShredder to use latest SDUFileIterator</li>
+      <li>Fixed bug with resizing TMouseRNG components<br>
+      </li>
+    </ul>
+    <ul>
+      <li>Package: SDeanUtils</li>
+    </ul>
+    <ul style="margin-left: 40px;">
+      <li>Added "SDUGetUsedDriveLetters()" and
+"SDUGetUnusedDriveLetters()" functions</li>
+      <li>Fixed fault in SDUFileIterator which caused it to return
+"."
+and ".." directories when IncludeDirNames was TRUE.</li>
+      <li>Updated SDUFileIterator properties:<br>
+        <ul>
+          <li>"IncludeSubDirs" now "RecurseSubDirs"</li>
+          <li>"SupressDotDir" removed (superceded by
+"OmitStartDirPrefix")</li>
+          <li>"OmitStartDirPrefix" added to prevent "Directory"
+being
+prepended to returned file/dirnames</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>v1.80.00 - [7th March 2004]</li>
+  <ul>
+    <li>Package: SDeanSecurity</li>
+    <ul>
+      <li>Added MouseRNG visual component (v0.8.0)</li>
+    </ul>
+  </ul>
+  <li>v1.75.00 - [28th February 2004]
+    <ul>
+      <li>Package: Hash</li>
+    </ul>
+    <ul style="margin-left: 40px;">
+      <li>Now at version v1.1.0</li>
+      <li>Added SHA-256, SHA-384, SHA-512 hash algorithms</li>
+      <li>Updated SHA-1 implementation to be consistant with the
+above
+SHA implementations</li>
+      <li>SDHash demo app updated to v2.0</li>
+    </ul>
+    <ul>
+      <li>Package: OTFEBestCrypt</li>
+    </ul>
+    <ul style="margin-left: 40px;">
+      <li>Now at version v1.1.0</li>
+      <li>Updated to support BestCrypt v7</li>
+    </ul>
+    <ul>
+      <li>Package: OTFECrossCrypt</li>
+    </ul>
+    <ul style="margin-left: 40px;">
+      <li>Package initially added to SDeanComponents</li>
+    </ul>
+    <ul>
+      <li>Package: SDeanUtils</li>
+    </ul>
+    <ul style="margin-left: 40px;">
+      <li>Now at version v1.1.0</li>
+      <li>Added SDUURLLabel component</li>
+      <li>Added "SDUPrettyPrintHex" to SDUGeneral</li>
+    </ul>
+  </li>
+  <li>v1.55.00 (5th November 2001)</li>
+  <ul>
+    <li>Package: SDeanUtils</li>
+    <ul>
+      <li>Now at version v1.0.5</li>
+      <li>SDUBase64 unit added to perform base64 encoding/decoding
+(e.g.
+MIME/UUENCODE)</li>
+      <li>SDUDirIterator modified to give the option of returning
+directories
+iterated
+over, as well as the files they contain</li>
+      <li>SDUGeneral - bugfix: SFN-&gt;LFN and LFN-&gt;SFN filename
+converter
+fixed so
+they work with directories as well.</li>
+      <li>SDUGeneral - added functions:</li>
+      <ul>
+        <li>SDUSplitString - Split a string into two parts, given a
+charactor to
+split
+on</li>
+        <li>SDUHexToInt - Function to convert a hex number into an
+integer. Yeah,
+it's
+a bit noddy, but can be useful :)</li>
+      </ul>
+    </ul>
+  </ul>
+  <li>v1.51.00 (10th August 2001)</li>
+  <ul>
+    <li>Added "Licence and Legal" stuff section to README.TXT</li>
+  </ul>
+  <li>v1.50.00 (1st August 2001)</li>
+  <ul>
+    <li>All packages switched to Delphi 5</li>
+    <li>Package: SDeanUtils</li>
+    <ul>
+      <li>Now at version v1.0.2</li>
+      <li>Added support for passing a dir/filename to the
+TSDUFileIterator as a
+filemask.</li>
+      <li>SDUProgress_F - added support for accepting int64 as well
+as
+integers</li>
+      <li>SDUGeneral - bugfix wrt calling SDUConvertSFNToLFN with a
+UNC
+path
+filename</li>
+    </ul>
+    <li>Package: Hash</li>
+    <ul>
+      <li>Now at version 1.0.0; package taken out of beta</li>
+      <li>Added in recursive hashes into the "HashDemo.exe" test
+application</li>
+      <li>ClearHash(...) added to cleardown a hash/initialize it to
+zero</li>
+    </ul>
+    <li>Package: OTFE</li>
+    <ul>
+      <li>Note: All OTFE packages now have full support for
+recursively
+mounted
+OTF
+volumes (where possible)</li>
+    </ul>
+    <li>Package: OTFEBestCrypt</li>
+    <ul>
+      <li>Now at version v1.0.0</li>
+      <li>Updated to support BestCrypt's "half dismounting". When a
+volume can't
+be dismounted as it's in use, BestCrypt "half dismounts" the volume,
+and
+it can't be remounted under any other drive letter until it's mounted
+again
+under the original drive letter, and dismounted properly. "Half
+dismounting"
+a volume also prevents BestCrypt from mounting any other volume as that
+drive letter.</li>
+    </ul>
+    <li>Package: OTFEScramDisk</li>
+    <ul>
+      <li>Now at version v2.0.0</li>
+      <li>Upgraded to better support ScramDisk v3</li>
+      <br>
+Bugfix: when entering passwords via the red screen, pressing cancel
+was effectivly the same as entering a set of passwords (i.e. it didn't
+act as though the user had cancelled)
+    </ul>
+    <ul>
+"VolumeName" has been removed from TSlotInfo - call
+GetVolumeInformation
+if you need this information
+    </ul>
+    <ul>
+      <li>TSlotInfo now has the following changes:</li>
+      <ul>
+        <li>added "softReadOnly" - only applies to the ScramDisk
+(v3
+and above)
+driver
+- set if the volume was mounted as readonly by information in the
+header
+field</li>
+        <li>added "mediaReadOnly" - set to TRUE if the volume was
+mounted as
+readonly
+because the media on which the volume resides is readonly/the volume
+file's
+file attributes are readonly</li>
+        <li>added "viaSKFFile" - set to TRUE if the volume was
+mounted
+via an SKF
+file</li>
+        <li>added "partitionRemovable" - only applies to the
+ScramDisk
+(v3 and
+above)
+driver - set if the volume is a partition that is mounted on removable
+media</li>
+        <li>added "wavFileBits" - set to either 4 or 8, depending
+on
+how many bits
+out of 16 are used when a WAV file is mounted</li>
+        <li>added "bfs" (Bypassed File System) - only applies to
+the
+ScramDisk (v3
+and above) Windows 9x/Me driver</li>
+        <li>added "partitionName" - under NT/2000, this will be
+filled
+in with the
+device ID of the partition. Under w9x/wMe this will be the vendor ID of
+the HDD the partition is on</li>
+        <li>changed "FileName" - This will only be filled in if the
+volume is
+stored
+within a file (WAV/SVL) and not a partition</li>
+      </ul>
+      <li>Various improvements and optimisations (incl faster
+mounting
+due to not
+writing to volume)</li>
+      <li>Calls to "GetVolFileForDrive" will no longer return
+"&lt;partition&gt;"
+for
+mounted partitions, but will instead return the device ID of the
+partiton</li>
+      <br>
+Note: Due to a limitation in the ScramDisk (w9x) driver, although
+readonly
+will be correct, softReadOnly may be TRUE if the media the volume was
+stored&nbsp;&nbsp;&nbsp;
+in was readonly (e.g. attrib +r on a SVL file), even though the
+volume's
+header information was set to read/write
+    </ul>
+    <ul>
+      <li>Note that "summer" encrypted volumes cannot be <span style="font-style: italic;">mounted</span>
+with
+this
+component.
+I have no immediate intentions to add support for mounting these
+volumes,
+unless anyone really wants it...</li>
+    </ul>
+    <ul>
+      <li>Note that under NT, this component will probably fail on
+drives with
+more
+than 256 partitions. This is due to it having a hardcoded limit of 256
+PARTITION_INFORMATION records being returned from the ScramDisk call
+with
+DRIVE_LAYOUT_INFORMATION to get drive information and partition
+information.</li>
+      <br>
+Not particularly likely that anyone will hit this limit in the
+immediate
+future, but if anyone does, let me know!
+    </ul>
+    <ul>
+Because the ScramDisk component is designed to clear all cached
+passwords
+immediatly after they are used, you cannot mount a volume using this
+component,
+and then create an SKF file; in order to create a SKF file, you are
+required not to clear the cached passwords. Instead, you can use ScramDisk to
+mount the volumes, and *then* create any SKF files needed.
+    </ul>
+    <ul>
+      <li>Added SetEnableVolumeDeletion(...) function to allow the
+user
+to turn
+on/off
+the ScramDisk driver protection for ".SVL" files.</li>
+    </ul>
+    <li>Package: OTFEE4M</li>
+    <ul>
+      <li>Now at version v1.0.2</li>
+      <li>Usability improvement, if there is no default drive, then
+neither drive
+A: nor B: will be selected by default</li>
+    </ul>
+    <li>Package: OTFEPGPDisk</li>
+    <ul>
+      <li>Now at version v1.0.0</li>
+    </ul>
+    <li>Package: OTFEUnified</li>
+    <ul>
+      <li>Now at version v1.0.0</li>
+    </ul>
+  </ul>
+  <li>v1.00.00 (16th January 2000) - Initial release</li>
+</ul>
+
+<p>
+</p>
+
+<hr>
+<p>
+Email me at: <a href="mailto:sdean12@sdean12.org">sdean12@sdean12.org</a>
+</p>
+
+<p>
+Return to the <a href="/">main page</a>
+
+</p>
+
+</body></html>

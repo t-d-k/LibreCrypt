@@ -1,0 +1,67 @@
+package SDeanSecurity;
+
+{$R *.res}
+{$R 'KeyboardDialog\KeyboardDialog_U.dcr'}
+{$R 'Shredder\Shredder.dcr'}
+{$R 'MouseRNG\MouseRNG.dcr'}
+{$R 'MouseRNGDialog\MouseRNGDialog_U.dcr'}
+{$R 'PasswordRichedit\PasswordRichEdit.dcr'}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'SDeanSecurity Components'}
+{$IMPLICITBUILD OFF}
+
+requires
+  vcl,
+  vclx,
+  vclsmp,
+  SDeanUtils,
+  Hash,
+  rtl;
+
+contains
+  KeyboardDialog_U in 'KeyboardDialog\KeyboardDialog_U.pas',
+  KeyboardEntryDlg_U in 'KeyboardDialog\KeyboardEntryDlg_U.pas' {KeyboardEntryDlg},
+  Shredder in 'Shredder\Shredder.pas',
+  FileList_U in 'Shredder\FileList_U.pas' {FileList_F},
+  MouseRNG in 'MouseRNG\MouseRNG.pas',
+  MSCryptoAPI in 'MSCryptoAPI\MSCryptoAPI.pas',
+  MouseRNGCaptureDlg_U in 'MouseRNGDialog\MouseRNGCaptureDlg_U.pas' {MouseRNGCaptureDlg},
+  MouseRNGDialog_U in 'MouseRNGDialog\MouseRNGDialog_U.pas',
+  PasswordRichEdit in 'PasswordRichEdit\PasswordRichEdit.pas',
+  AFSplitter in 'AFSplitter\AFSplitter.pas',
+  HMAC in 'HMAC\HMAC.pas',
+  pkcs11_api in 'PKCS#11\pkcs11_api.pas',
+  pkcs11_attribute in 'PKCS#11\pkcs11_attribute.pas',
+  pkcs11_mechanism in 'PKCS#11\pkcs11_mechanism.pas',
+  pkcs11_library in 'PKCS#11\pkcs11_library.pas',
+  pkcs11_object in 'PKCS#11\pkcs11_object.pas',
+  pkcs11_session in 'PKCS#11\pkcs11_session.pas',
+  pkcs11_slot in 'PKCS#11\pkcs11_slot.pas',
+  pkcs11_token in 'PKCS#11\pkcs11_token.pas',
+  pkcs11f in 'PKCS#11\pkcs11f.pas',
+  pkcs11t in 'PKCS#11\pkcs11t.pas',
+  pkcs11_slot_event_thread in 'PKCS#11\pkcs11_slot_event_thread.pas',
+  PKCS11LibrarySelectDlg in 'PKCS#11\PKCS11LibrarySelectDlg.pas' {PKCS11LibrarySelectDialog},
+  PKCS11KnownLibs in 'PKCS#11\PKCS11KnownLibs.pas';
+
+end.

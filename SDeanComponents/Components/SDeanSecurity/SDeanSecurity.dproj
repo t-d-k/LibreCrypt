@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{65dbb499-ea7b-47b1-a21a-91afb57f1f3d}</ProjectGuid>
+    <MainSource>SDeanSecurity.dpk</MainSource>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+    <DCC_DependencyCheckOutputName>C:\Documents and Settings\All Users\Documents\RAD Studio\5.0\Bpl\SDeanSecurity.bpl</DCC_DependencyCheckOutputName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_GenerateStackFrames>True</DCC_GenerateStackFrames>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+    <DCC_Define>RELEASE</DCC_Define>
+    <DCC_UNSAFE_TYPE>True</DCC_UNSAFE_TYPE>
+    <DCC_UNSAFE_CODE>True</DCC_UNSAFE_CODE>
+    <DCC_UNSAFE_CAST>True</DCC_UNSAFE_CAST>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+    <DCC_GenerateStackFrames>True</DCC_GenerateStackFrames>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Delphi.Personality</Borland.Personality>
+    <Borland.ProjectType>Package</Borland.ProjectType>
+    <BorlandProject>
+<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><Package_Options><Package_Options Name="PackageDescription">SDeanSecurity Components</Package_Options><Package_Options Name="ImplicitBuild">False</Package_Options><Package_Options Name="DesigntimeOnly">False</Package_Options><Package_Options Name="RuntimeOnly">False</Package_Options></Package_Options><Language><Language Name="ProjectLang">$00000809</Language></Language><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">2</VersionInfo><VersionInfo Name="MinorVer">5</VersionInfo><VersionInfo Name="Release">5</VersionInfo><VersionInfo Name="Build">301</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">1033</VersionInfo><VersionInfo Name="CodePage">1252</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName">Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="FileDescription">Sarah Dean Security Components</VersionInfoKeys><VersionInfoKeys Name="FileVersion">2.5.5.301</VersionInfoKeys><VersionInfoKeys Name="InternalName">Sarah Dean Security Components</VersionInfoKeys><VersionInfoKeys Name="LegalCopyright">(c) Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename">SDeanSecurity.bpl</VersionInfoKeys><VersionInfoKeys Name="ProductName">Sarah Dean Security Components</VersionInfoKeys><VersionInfoKeys Name="ProductVersion">2.5.0</VersionInfoKeys><VersionInfoKeys Name="Comments">http://www.SDean12.org/</VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">SDeanSecurity.dpk</Source></Source></Delphi.Personality></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
+  <ItemGroup>
+    <DelphiCompile Include="SDeanSecurity.dpk">
+      <MainSource>MainSource</MainSource>
+    </DelphiCompile>
+    <DCCReference Include="..\..\Hash.dcp" />
+    <DCCReference Include="..\..\rtl.dcp" />
+    <DCCReference Include="..\..\SDeanUtils.dcp" />
+    <DCCReference Include="..\..\vcl.dcp" />
+    <DCCReference Include="..\..\vclsmp.dcp" />
+    <DCCReference Include="..\..\vclx.dcp" />
+    <DCCReference Include="AFSplitter\AFSplitter.pas" />
+    <DCCReference Include="HMAC\HMAC.pas" />
+    <DCCReference Include="KeyboardDialog\KeyboardDialog_U.dcr" />
+    <DCCReference Include="KeyboardDialog\KeyboardDialog_U.dcr" />
+    <DCCReference Include="KeyboardDialog\KeyboardDialog_U.pas" />
+    <DCCReference Include="KeyboardDialog\KeyboardEntryDlg_U.pas">
+      <Form>KeyboardEntryDlg</Form>
+    </DCCReference>
+    <DCCReference Include="MouseRNGDialog\MouseRNGCaptureDlg_U.pas">
+      <Form>MouseRNGCaptureDlg</Form>
+    </DCCReference>
+    <DCCReference Include="MouseRNGDialog\MouseRNGDialog_U.dcr" />
+    <DCCReference Include="MouseRNGDialog\MouseRNGDialog_U.dcr" />
+    <DCCReference Include="MouseRNGDialog\MouseRNGDialog_U.pas" />
+    <DCCReference Include="MouseRNG\MouseRNG.dcr" />
+    <DCCReference Include="MouseRNG\MouseRNG.dcr" />
+    <DCCReference Include="MouseRNG\MouseRNG.pas" />
+    <DCCReference Include="MSCryptoAPI\MSCryptoAPI.pas" />
+    <DCCReference Include="PasswordRichedit\PasswordRichEdit.dcr" />
+    <DCCReference Include="PasswordRichedit\PasswordRichEdit.dcr" />
+    <DCCReference Include="PasswordRichEdit\PasswordRichEdit.pas" />
+    <DCCReference Include="PKCS#11\pkcs11f.pas" />
+    <DCCReference Include="PKCS#11\PKCS11KnownLibs.pas" />
+    <DCCReference Include="PKCS#11\PKCS11LibrarySelectDlg.pas">
+      <Form>PKCS11LibrarySelectDialog</Form>
+    </DCCReference>
+    <DCCReference Include="PKCS#11\pkcs11t.pas" />
+    <DCCReference Include="PKCS#11\pkcs11_api.pas" />
+    <DCCReference Include="PKCS#11\pkcs11_attribute.pas" />
+    <DCCReference Include="PKCS#11\pkcs11_library.pas" />
+    <DCCReference Include="PKCS#11\pkcs11_mechanism.pas" />
+    <DCCReference Include="PKCS#11\pkcs11_object.pas" />
+    <DCCReference Include="PKCS#11\pkcs11_session.pas" />
+    <DCCReference Include="PKCS#11\pkcs11_slot.pas" />
+    <DCCReference Include="PKCS#11\pkcs11_slot_event_thread.pas" />
+    <DCCReference Include="PKCS#11\pkcs11_token.pas" />
+    <DCCReference Include="Shredder\FileList_U.pas">
+      <Form>FileList_F</Form>
+    </DCCReference>
+    <DCCReference Include="Shredder\Shredder.dcr" />
+    <DCCReference Include="Shredder\Shredder.dcr" />
+    <DCCReference Include="Shredder\Shredder.pas" />
+  </ItemGroup>
+</Project>

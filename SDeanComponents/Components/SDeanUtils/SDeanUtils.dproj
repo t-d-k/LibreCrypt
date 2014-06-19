@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{1dad6d73-0c4d-45a9-bb5c-e0fe5280d3cd}</ProjectGuid>
+    <MainSource>SDeanUtils.dpk</MainSource>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+    <DCC_DependencyCheckOutputName>C:\Documents and Settings\All Users\Documents\RAD Studio\5.0\Bpl\SDeanUtils.bpl</DCC_DependencyCheckOutputName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+    <DCC_Define>RELEASE</DCC_Define>
+    <DCC_UNSAFE_TYPE>True</DCC_UNSAFE_TYPE>
+    <DCC_UNSAFE_CODE>True</DCC_UNSAFE_CODE>
+    <DCC_UNSAFE_CAST>True</DCC_UNSAFE_CAST>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Delphi.Personality</Borland.Personality>
+    <Borland.ProjectType>Package</Borland.ProjectType>
+    <BorlandProject>
+<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><Package_Options><Package_Options Name="PackageDescription">SDeanUtils: Sarah Dean - General Utility Classes and Components</Package_Options><Package_Options Name="ImplicitBuild">False</Package_Options><Package_Options Name="DesigntimeOnly">False</Package_Options><Package_Options Name="RuntimeOnly">False</Package_Options></Package_Options><Language><Language Name="ProjectLang">$00000809</Language></Language><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">2</VersionInfo><VersionInfo Name="MinorVer">0</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">1238</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">2057</VersionInfo><VersionInfo Name="CodePage">1252</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName">Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="FileDescription">Sarah Dean's General Utility Classes and Components</VersionInfoKeys><VersionInfoKeys Name="FileVersion">2.0.0.1238</VersionInfoKeys><VersionInfoKeys Name="InternalName">SDeanUtils</VersionInfoKeys><VersionInfoKeys Name="LegalCopyright">(c) Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename">SDeanUtils.bpl</VersionInfoKeys><VersionInfoKeys Name="ProductName">General Delphi Classes and Components</VersionInfoKeys><VersionInfoKeys Name="ProductVersion">2.00</VersionInfoKeys><VersionInfoKeys Name="Comments">http://www.SDean12.org/</VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">SDeanUtils.dpk</Source></Source><Excluded_Packages>
+      <Excluded_Packages Name="C:\Documents and Settings\All Users\Documents\RAD Studio\5.0\Bpl\SDeanSecurity.bpl">SDeanSecurity Components</Excluded_Packages>
+      <Excluded_Packages Name="C:\Documents and Settings\All Users\Documents\RAD Studio\5.0\Bpl\Hash.bpl">Hash: Delphi Hash Components</Excluded_Packages>
+      <Excluded_Packages Name="C:\Documents and Settings\All Users\Documents\RAD Studio\5.0\Bpl\OTFEFreeOTFE.bpl">OTFE: FreeOTFE Delphi Component</Excluded_Packages>
+      <Excluded_Packages Name="$(BDS)\bin\dcldbxcds4100.bpl">CodeGear SimpleDataset Component (DBX)</Excluded_Packages>
+    </Excluded_Packages></Delphi.Personality></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
+  <ItemGroup>
+    <DelphiCompile Include="SDeanUtils.dpk">
+      <MainSource>MainSource</MainSource>
+    </DelphiCompile>
+    <DCCReference Include="C:\Documents and Settings\Administrator\rtl.dcp" />
+    <DCCReference Include="C:\Documents and Settings\Administrator\vcl.dcp" />
+    <DCCReference Include="C:\Documents and Settings\Administrator\vclsmp.dcp" />
+    <DCCReference Include="C:\Documents and Settings\Administrator\vclx.dcp" />
+    <DCCReference Include="C:\Documents and Settings\Administrator\xmlrtl.dcp" />
+    <DCCReference Include="MSntdll.pas" />
+    <DCCReference Include="NetMsg.pas" />
+    <DCCReference Include="SDUAboutDlg.pas">
+      <Form>SDUAboutDialog</Form>
+    </DCCReference>
+    <DCCReference Include="SDUBase64.pas" />
+    <DCCReference Include="SDUBlocksPanel.dcr" />
+    <DCCReference Include="SDUBlocksPanel.dcr" />
+    <DCCReference Include="SDUBlocksPanel.pas" />
+    <DCCReference Include="SDUCheckLst.dcr" />
+    <DCCReference Include="SDUCheckLst.dcr" />
+    <DCCReference Include="SDUCheckLst.pas" />
+    <DCCReference Include="SDUClasses.pas" />
+    <DCCReference Include="SDUClipbrd.dcr" />
+    <DCCReference Include="SDUClipbrd.pas" />
+    <DCCReference Include="SDUComCtrls.pas" />
+    <DCCReference Include="SDUDialogs.pas" />
+    <DCCReference Include="SDUDirIterator_U.dcr" />
+    <DCCReference Include="SDUDirIterator_U.dcr" />
+    <DCCReference Include="SDUDirIterator_U.pas" />
+    <DCCReference Include="SDUDiskPartitionsPanel.dcr" />
+    <DCCReference Include="SDUDiskPartitionsPanel.dcr" />
+    <DCCReference Include="SDUDiskPartitionsPanel.pas" />
+    <DCCReference Include="SDUDiskPropertiesDlg.pas" />
+    <DCCReference Include="SDUDropFiles.dcr" />
+    <DCCReference Include="SDUDropFiles.dcr" />
+    <DCCReference Include="SDUDropFiles.pas" />
+    <DCCReference Include="SDUEndianIntegers.pas" />
+    <DCCReference Include="SDUExtCtrls.pas" />
+    <DCCReference Include="SDUFileIterator_U.dcr" />
+    <DCCReference Include="SDUFileIterator_U.dcr" />
+    <DCCReference Include="SDUFileIterator_U.pas" />
+    <DCCReference Include="SDUFilenameEdit_U.dcr" />
+    <DCCReference Include="SDUFilenameEdit_U.dcr" />
+    <DCCReference Include="SDUFilenameEdit_U.pas">
+      <Form>SDUFilenameEdit</Form>
+    </DCCReference>
+    <DCCReference Include="SDUFilenameLabel.dcr" />
+    <DCCReference Include="SDUForms.pas" />
+    <DCCReference Include="SDUFrames.pas">
+      <Form>SDUFrame</Form>
+    </DCCReference>
+    <DCCReference Include="SDUGeneral.pas" />
+    <DCCReference Include="SDUGraphics.pas" />
+    <DCCReference Include="SDUi18n.pas" />
+    <DCCReference Include="SDULogger_U.pas" />
+    <DCCReference Include="SDUMRUList.pas" />
+    <DCCReference Include="SDUMultimediaKeys.dcr" />
+    <DCCReference Include="SDUMultimediaKeys.dcr" />
+    <DCCReference Include="SDUMultimediaKeys.pas" />
+    <DCCReference Include="SDUNamedPipe_U.dcr" />
+    <DCCReference Include="SDUNamedPipe_U.dcr" />
+    <DCCReference Include="SDUNamedPipe_U.pas" />
+    <DCCReference Include="SDUObjectManager.pas" />
+    <DCCReference Include="SDUPartitionPropertiesDlg.pas" />
+    <DCCReference Include="SDUProgressDlg.dcr" />
+    <DCCReference Include="SDUProgressDlg.dcr" />
+    <DCCReference Include="SDUProgressDlg.pas">
+      <Form>SDUProgressDialog</Form>
+    </DCCReference>
+    <DCCReference Include="SDURegistry.pas" />
+    <DCCReference Include="SDUSpin64Units.dcr" />
+    <DCCReference Include="SDUSpin64Units.dcr" />
+    <DCCReference Include="SDUSpin64Units.pas">
+      <Form>SDUSpin64Unit</Form>
+    </DCCReference>
+    <DCCReference Include="SDUStdCtrls.dcr" />
+    <DCCReference Include="SDUStdCtrls.dcr" />
+    <DCCReference Include="SDUStdCtrls.pas" />
+    <DCCReference Include="SDUStringGrid.dcr" />
+    <DCCReference Include="SDUStringGrid.dcr" />
+    <DCCReference Include="SDUStringGrid.pas" />
+    <DCCReference Include="SDUSystemTrayIcon.dcr" />
+    <DCCReference Include="SDUSystemTrayIcon.dcr" />
+    <DCCReference Include="SDUSystemTrayIcon.pas" />
+    <DCCReference Include="SDUSystemTrayIconShellAPI.pas" />
+    <DCCReference Include="SDUSysUtils.pas" />
+    <DCCReference Include="SDUURLLabel.dcr" />
+    <DCCReference Include="SDUWindows64.pas" />
+    <DCCReference Include="SDUWinHTTP.pas" />
+    <DCCReference Include="SDUWinHTTP_API.pas" />
+    <DCCReference Include="Spin64.pas" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,138 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = SDUPrettyPrintHex.exe SDUCreateLargeFile.exe IteratorTestApp.exe \
+  NamedPipesExample.exe SDUDialogsTestApp.exe SDUPermutate.exe \
+  SDUProgressTestApp.exe SDUSystemTrayIconBasicUsage.exe \
+  SDUSystemTrayIconMinCloseToSystemTray.exe SDUDropFilesTestApp.exe \
+  SDUMultimediaKeysTestApp.exe SDUClipboardMonitor.exe SDUXOR.exe \
+  SDUURLLabelTestApp.exe SDUSimplePieChart.exe AFSplitterTestApp.exe \
+  HMACTestVectorSuite.exe ShredderTestApp.exe MouseRNGTestApp.exe \
+  MouseRNGDialogTestApp.exe MSCryptoAPITest.exe PasswordRichEditTestApp.exe \
+  SDHash.exe SimpleHash.exe HashTestVectorSuite.exe TigerHashTest.exe \
+  OTFEBestCryptTestProject.exe OTFECrossCryptTestProject.exe \
+  OTFEE4MTestProject.exe OTFEFreeOTFETestProject.exe OTFEPGPDiskTestProject.exe \
+  OTFEScramDiskTestProject.exe OTFEStrongDiskTestProject.exe \
+  OTFETrueCryptTestProject.exe OTFEUnifiedTestProject.exe sdDemo.exe
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+
+OTFEBestCryptTestProject.exe: TestApps\OTFES\OTFEBestCryptTestApp\OTFEBestCryptTestProject.dpr
+  $(DCC)
+
+OTFEE4MTestProject.exe: TestApps\OTFES\OTFEE4MTestApp\OTFEE4MTestProject.dpr
+  $(DCC)
+
+OTFEPGPDiskTestProject.exe: TestApps\OTFES\OTFEPGPDiskTestApp\OTFEPGPDiskTestProject.dpr
+  $(DCC)
+
+OTFEScramDiskTestProject.exe: TestApps\OTFES\OTFEScramDiskTestApp\OTFEScramDiskTestProject.dpr
+  $(DCC)
+
+OTFEUnifiedTestProject.exe: TestApps\OTFES\OTFEUnifiedTestApp\OTFEUnifiedTestProject.dpr
+  $(DCC)
+
+sdDemo.exe: TestApps\OTFES\OrigScramDiskDemo\sdDemo.dpr
+  $(DCC)
+
+IteratorTestApp.exe: TestApps\SDeanUtils\SDUIterators\IteratorTestApp.dpr
+  $(DCC)
+
+NamedPipesExample.exe: TestApps\SDeanUtils\SDUNamedPipes\NamedPipesExample.dpr
+  $(DCC)
+
+OTFECrossCryptTestProject.exe: TestApps\OTFES\OTFECrossCryptTestApp\OTFECrossCryptTestProject.dpr
+  $(DCC)
+
+MouseRNGTestApp.exe: TestApps\SDeanSecurity\MouseRNG\MouseRNGTestApp.dpr
+  $(DCC)
+
+SDHash.exe: TestApps\Hash\SDHash\SDHash.dpr
+  $(DCC)
+
+TigerHashTest.exe: TestApps\Hash\TigerTest\TigerHashTest.dpr
+  $(DCC)
+
+OTFEFreeOTFETestProject.exe: TestApps\OTFES\OTFEFreeOTFETestApp\OTFEFreeOTFETestProject.dpr
+  $(DCC)
+
+MouseRNGDialogTestApp.exe: TestApps\SDeanSecurity\MouseRNGDialog\MouseRNGDialogTestApp.dpr
+  $(DCC)
+
+ShredderTestApp.exe: TestApps\SDeanSecurity\Shredder\ShredderTestApp.dpr
+  $(DCC)
+
+OTFEStrongDiskTestProject.exe: TestApps\OTFES\OTFEStrongDiskTestApp\OTFEStrongDiskTestProject.dpr
+  $(DCC)
+
+PasswordRichEditTestApp.exe: TestApps\SDeanSecurity\PasswordRichEdit\PasswordRichEditTestApp.dpr
+  $(DCC)
+
+OTFETrueCryptTestProject.exe: TestApps\OTFES\OTFETrueCryptTestApp\OTFETrueCryptTestProject.dpr
+  $(DCC)
+
+MSCryptoAPITest.exe: TestApps\SDeanSecurity\MSCryptoAPI\MSCryptoAPITest.dpr
+  $(DCC)
+
+SDUCreateLargeFile.exe: TestApps\SDeanUtils\SDUGeneral\SDUCreateLargeFile\SDUCreateLargeFile.dpr
+  $(DCC)
+
+SDUPrettyPrintHex.exe: TestApps\SDeanUtils\SDUGeneral\SDUPrettyPrintHex\SDUPrettyPrintHex.dpr
+  $(DCC)
+
+AFSplitterTestApp.exe: TestApps\SDeanSecurity\AFSplitter\AFSplitterTestApp.dpr
+  $(DCC)
+
+SDUSystemTrayIconBasicUsage.exe: TestApps\SDeanUtils\SDUSystemTrayIcon\BasicUsage\SDUSystemTrayIconBasicUsage.dpr
+  $(DCC)
+
+SDUSystemTrayIconMinCloseToSystemTray.exe: TestApps\SDeanUtils\SDUSystemTrayIcon\MinCloseToSystemTray\SDUSystemTrayIconMinCloseToSystemTray.dpr
+  $(DCC)
+
+SDUPermutate.exe: TestApps\SDeanUtils\SDUGeneral\SDUPermutate\SDUPermutate.dpr
+  $(DCC)
+
+SimpleHash.exe: TestApps\Hash\SimpleHash\SimpleHash.dpr
+  $(DCC)
+
+HashTestVectorSuite.exe: TestApps\Hash\HashTestVectorSuite\HashTestVectorSuite.dpr
+  $(DCC)
+
+HMACTestVectorSuite.exe: TestApps\SDeanSecurity\HMAC\HMACTestVectorSuite\HMACTestVectorSuite.dpr
+  $(DCC)
+
+SDUXOR.exe: TestApps\SDeanUtils\SDUGeneral\SDUXOR\SDUXOR.dpr
+  $(DCC)
+
+SDUDialogsTestApp.exe: TestApps\SDeanUtils\SDUDialogs\SDUDialogsTestApp.dpr
+  $(DCC)
+
+SDUProgressTestApp.exe: TestApps\SDeanUtils\SDUProgress\SDUProgressTestApp.dpr
+  $(DCC)
+
+SDUSimplePieChart.exe: TestApps\SDeanUtils\SDUGraphics\SDUSimplePieChart\SDUSimplePieChart.dpr
+  $(DCC)
+
+SDUURLLabelTestApp.exe: TestApps\SDeanUtils\SDUStdCtrls\SDUURLLabel\SDUURLLabelTestApp.dpr
+  $(DCC)
+
+SDUMultimediaKeysTestApp.exe: TestApps\SDeanUtils\SDUMultimediaKeys\SDUMultimediaKeysTestApp.dpr
+  $(DCC)
+
+SDUDropFilesTestApp.exe: TestApps\SDeanUtils\SDUDropFiles\SDUDropFilesTestApp.dpr
+  $(DCC)
+
+SDUClipboardMonitor.exe: TestApps\SDeanUtils\SDUClipboardMonitor\SDUClipboardMonitor.dpr
+  $(DCC)
+
+

@@ -1,0 +1,346 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{faf71be9-a5d6-4299-aa0d-d5c2b806b7a6}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <ProjectExtensions>
+    <Borland.Personality>Default.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+<BorlandProject xmlns=""><Default.Personality></Default.Personality></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Target Name="SDUPrettyPrintHex">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGeneral\SDUPrettyPrintHex\SDUPrettyPrintHex.dproj" Targets="" />
+  </Target>
+  <Target Name="SDUPrettyPrintHex:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGeneral\SDUPrettyPrintHex\SDUPrettyPrintHex.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SDUPrettyPrintHex:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGeneral\SDUPrettyPrintHex\SDUPrettyPrintHex.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SDUCreateLargeFile">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGeneral\SDUCreateLargeFile\SDUCreateLargeFile.dproj" Targets="" />
+  </Target>
+  <Target Name="SDUCreateLargeFile:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGeneral\SDUCreateLargeFile\SDUCreateLargeFile.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SDUCreateLargeFile:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGeneral\SDUCreateLargeFile\SDUCreateLargeFile.dproj" Targets="Make" />
+  </Target>
+  <Target Name="IteratorTestApp">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUIterators\IteratorTestApp.dproj" Targets="" />
+  </Target>
+  <Target Name="IteratorTestApp:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUIterators\IteratorTestApp.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="IteratorTestApp:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUIterators\IteratorTestApp.dproj" Targets="Make" />
+  </Target>
+  <Target Name="NamedPipesExample">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUNamedPipes\NamedPipesExample.dproj" Targets="" />
+  </Target>
+  <Target Name="NamedPipesExample:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUNamedPipes\NamedPipesExample.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="NamedPipesExample:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUNamedPipes\NamedPipesExample.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SDUDialogsTestApp">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUDialogs\SDUDialogsTestApp.dproj" Targets="" />
+  </Target>
+  <Target Name="SDUDialogsTestApp:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUDialogs\SDUDialogsTestApp.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SDUDialogsTestApp:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUDialogs\SDUDialogsTestApp.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SDUDropFilesTestApp">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUDropFiles\SDUDropFilesTestApp.dproj" Targets="" />
+  </Target>
+  <Target Name="SDUDropFilesTestApp:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUDropFiles\SDUDropFilesTestApp.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SDUDropFilesTestApp:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUDropFiles\SDUDropFilesTestApp.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SDUMultimediaKeysTestApp">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUMultimediaKeys\SDUMultimediaKeysTestApp.dproj" Targets="" />
+  </Target>
+  <Target Name="SDUMultimediaKeysTestApp:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUMultimediaKeys\SDUMultimediaKeysTestApp.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SDUMultimediaKeysTestApp:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUMultimediaKeys\SDUMultimediaKeysTestApp.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SDUClipboardMonitor">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUClipboardMonitor\SDUClipboardMonitor.dproj" Targets="" />
+  </Target>
+  <Target Name="SDUClipboardMonitor:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUClipboardMonitor\SDUClipboardMonitor.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SDUClipboardMonitor:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUClipboardMonitor\SDUClipboardMonitor.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SDUPermutate">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGeneral\SDUPermutate\SDUPermutate.dproj" Targets="" />
+  </Target>
+  <Target Name="SDUPermutate:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGeneral\SDUPermutate\SDUPermutate.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SDUPermutate:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGeneral\SDUPermutate\SDUPermutate.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SDUProgressTestApp">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUProgress\SDUProgressTestApp.dproj" Targets="" />
+  </Target>
+  <Target Name="SDUProgressTestApp:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUProgress\SDUProgressTestApp.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SDUProgressTestApp:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUProgress\SDUProgressTestApp.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SDUSystemTrayIconBasicUsage">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUSystemTrayIcon\BasicUsage\SDUSystemTrayIconBasicUsage.dproj" Targets="" />
+  </Target>
+  <Target Name="SDUSystemTrayIconBasicUsage:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUSystemTrayIcon\BasicUsage\SDUSystemTrayIconBasicUsage.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SDUSystemTrayIconBasicUsage:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUSystemTrayIcon\BasicUsage\SDUSystemTrayIconBasicUsage.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SDUSystemTrayIconMinCloseToSystemTray">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUSystemTrayIcon\MinCloseToSystemTray\SDUSystemTrayIconMinCloseToSystemTray.dproj" Targets="" />
+  </Target>
+  <Target Name="SDUSystemTrayIconMinCloseToSystemTray:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUSystemTrayIcon\MinCloseToSystemTray\SDUSystemTrayIconMinCloseToSystemTray.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SDUSystemTrayIconMinCloseToSystemTray:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUSystemTrayIcon\MinCloseToSystemTray\SDUSystemTrayIconMinCloseToSystemTray.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SDUXOR">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGeneral\SDUXOR\SDUXOR.dproj" Targets="" />
+  </Target>
+  <Target Name="SDUXOR:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGeneral\SDUXOR\SDUXOR.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SDUXOR:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGeneral\SDUXOR\SDUXOR.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SDUURLLabelTestApp">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUStdCtrls\SDUURLLabel\SDUURLLabelTestApp.dproj" Targets="" />
+  </Target>
+  <Target Name="SDUURLLabelTestApp:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUStdCtrls\SDUURLLabel\SDUURLLabelTestApp.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SDUURLLabelTestApp:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUStdCtrls\SDUURLLabel\SDUURLLabelTestApp.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SDUSimplePieChart">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGraphics\SDUSimplePieChart\SDUSimplePieChart.dproj" Targets="" />
+  </Target>
+  <Target Name="SDUSimplePieChart:Clean">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGraphics\SDUSimplePieChart\SDUSimplePieChart.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SDUSimplePieChart:Make">
+    <MSBuild Projects="TestApps\SDeanUtils\SDUGraphics\SDUSimplePieChart\SDUSimplePieChart.dproj" Targets="Make" />
+  </Target>
+  <Target Name="AFSplitterTestApp">
+    <MSBuild Projects="TestApps\SDeanSecurity\AFSplitter\AFSplitterTestApp.dproj" Targets="" />
+  </Target>
+  <Target Name="AFSplitterTestApp:Clean">
+    <MSBuild Projects="TestApps\SDeanSecurity\AFSplitter\AFSplitterTestApp.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="AFSplitterTestApp:Make">
+    <MSBuild Projects="TestApps\SDeanSecurity\AFSplitter\AFSplitterTestApp.dproj" Targets="Make" />
+  </Target>
+  <Target Name="HMACTestVectorSuite">
+    <MSBuild Projects="TestApps\SDeanSecurity\HMAC\HMACTestVectorSuite\HMACTestVectorSuite.dproj" Targets="" />
+  </Target>
+  <Target Name="HMACTestVectorSuite:Clean">
+    <MSBuild Projects="TestApps\SDeanSecurity\HMAC\HMACTestVectorSuite\HMACTestVectorSuite.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="HMACTestVectorSuite:Make">
+    <MSBuild Projects="TestApps\SDeanSecurity\HMAC\HMACTestVectorSuite\HMACTestVectorSuite.dproj" Targets="Make" />
+  </Target>
+  <Target Name="ShredderTestApp">
+    <MSBuild Projects="TestApps\SDeanSecurity\Shredder\ShredderTestApp.dproj" Targets="" />
+  </Target>
+  <Target Name="ShredderTestApp:Clean">
+    <MSBuild Projects="TestApps\SDeanSecurity\Shredder\ShredderTestApp.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="ShredderTestApp:Make">
+    <MSBuild Projects="TestApps\SDeanSecurity\Shredder\ShredderTestApp.dproj" Targets="Make" />
+  </Target>
+  <Target Name="MouseRNGTestApp">
+    <MSBuild Projects="TestApps\SDeanSecurity\MouseRNG\MouseRNGTestApp.dproj" Targets="" />
+  </Target>
+  <Target Name="MouseRNGTestApp:Clean">
+    <MSBuild Projects="TestApps\SDeanSecurity\MouseRNG\MouseRNGTestApp.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="MouseRNGTestApp:Make">
+    <MSBuild Projects="TestApps\SDeanSecurity\MouseRNG\MouseRNGTestApp.dproj" Targets="Make" />
+  </Target>
+  <Target Name="MouseRNGDialogTestApp">
+    <MSBuild Projects="TestApps\SDeanSecurity\MouseRNGDialog\MouseRNGDialogTestApp.dproj" Targets="" />
+  </Target>
+  <Target Name="MouseRNGDialogTestApp:Clean">
+    <MSBuild Projects="TestApps\SDeanSecurity\MouseRNGDialog\MouseRNGDialogTestApp.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="MouseRNGDialogTestApp:Make">
+    <MSBuild Projects="TestApps\SDeanSecurity\MouseRNGDialog\MouseRNGDialogTestApp.dproj" Targets="Make" />
+  </Target>
+  <Target Name="MSCryptoAPITest">
+    <MSBuild Projects="TestApps\SDeanSecurity\MSCryptoAPI\MSCryptoAPITest.dproj" Targets="" />
+  </Target>
+  <Target Name="MSCryptoAPITest:Clean">
+    <MSBuild Projects="TestApps\SDeanSecurity\MSCryptoAPI\MSCryptoAPITest.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="MSCryptoAPITest:Make">
+    <MSBuild Projects="TestApps\SDeanSecurity\MSCryptoAPI\MSCryptoAPITest.dproj" Targets="Make" />
+  </Target>
+  <Target Name="PasswordRichEditTestApp">
+    <MSBuild Projects="TestApps\SDeanSecurity\PasswordRichEdit\PasswordRichEditTestApp.dproj" Targets="" />
+  </Target>
+  <Target Name="PasswordRichEditTestApp:Clean">
+    <MSBuild Projects="TestApps\SDeanSecurity\PasswordRichEdit\PasswordRichEditTestApp.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="PasswordRichEditTestApp:Make">
+    <MSBuild Projects="TestApps\SDeanSecurity\PasswordRichEdit\PasswordRichEditTestApp.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SDHash">
+    <MSBuild Projects="TestApps\Hash\SDHash\SDHash.dproj" Targets="" />
+  </Target>
+  <Target Name="SDHash:Clean">
+    <MSBuild Projects="TestApps\Hash\SDHash\SDHash.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SDHash:Make">
+    <MSBuild Projects="TestApps\Hash\SDHash\SDHash.dproj" Targets="Make" />
+  </Target>
+  <Target Name="SimpleHash">
+    <MSBuild Projects="TestApps\Hash\SimpleHash\SimpleHash.dproj" Targets="" />
+  </Target>
+  <Target Name="SimpleHash:Clean">
+    <MSBuild Projects="TestApps\Hash\SimpleHash\SimpleHash.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="SimpleHash:Make">
+    <MSBuild Projects="TestApps\Hash\SimpleHash\SimpleHash.dproj" Targets="Make" />
+  </Target>
+  <Target Name="HashTestVectorSuite">
+    <MSBuild Projects="TestApps\Hash\HashTestVectorSuite\HashTestVectorSuite.dproj" Targets="" />
+  </Target>
+  <Target Name="HashTestVectorSuite:Clean">
+    <MSBuild Projects="TestApps\Hash\HashTestVectorSuite\HashTestVectorSuite.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="HashTestVectorSuite:Make">
+    <MSBuild Projects="TestApps\Hash\HashTestVectorSuite\HashTestVectorSuite.dproj" Targets="Make" />
+  </Target>
+  <Target Name="TigerHashTest">
+    <MSBuild Projects="TestApps\Hash\TigerTest\TigerHashTest.dproj" Targets="" />
+  </Target>
+  <Target Name="TigerHashTest:Clean">
+    <MSBuild Projects="TestApps\Hash\TigerTest\TigerHashTest.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="TigerHashTest:Make">
+    <MSBuild Projects="TestApps\Hash\TigerTest\TigerHashTest.dproj" Targets="Make" />
+  </Target>
+  <Target Name="OTFEBestCryptTestProject">
+    <MSBuild Projects="TestApps\OTFES\OTFEBestCryptTestApp\OTFEBestCryptTestProject.dproj" Targets="" />
+  </Target>
+  <Target Name="OTFEBestCryptTestProject:Clean">
+    <MSBuild Projects="TestApps\OTFES\OTFEBestCryptTestApp\OTFEBestCryptTestProject.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="OTFEBestCryptTestProject:Make">
+    <MSBuild Projects="TestApps\OTFES\OTFEBestCryptTestApp\OTFEBestCryptTestProject.dproj" Targets="Make" />
+  </Target>
+  <Target Name="OTFECrossCryptTestProject">
+    <MSBuild Projects="TestApps\OTFES\OTFECrossCryptTestApp\OTFECrossCryptTestProject.dproj" Targets="" />
+  </Target>
+  <Target Name="OTFECrossCryptTestProject:Clean">
+    <MSBuild Projects="TestApps\OTFES\OTFECrossCryptTestApp\OTFECrossCryptTestProject.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="OTFECrossCryptTestProject:Make">
+    <MSBuild Projects="TestApps\OTFES\OTFECrossCryptTestApp\OTFECrossCryptTestProject.dproj" Targets="Make" />
+  </Target>
+  <Target Name="OTFEE4MTestProject">
+    <MSBuild Projects="TestApps\OTFES\OTFEE4MTestApp\OTFEE4MTestProject.dproj" Targets="" />
+  </Target>
+  <Target Name="OTFEE4MTestProject:Clean">
+    <MSBuild Projects="TestApps\OTFES\OTFEE4MTestApp\OTFEE4MTestProject.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="OTFEE4MTestProject:Make">
+    <MSBuild Projects="TestApps\OTFES\OTFEE4MTestApp\OTFEE4MTestProject.dproj" Targets="Make" />
+  </Target>
+  <Target Name="OTFEFreeOTFETestProject">
+    <MSBuild Projects="TestApps\OTFES\OTFEFreeOTFETestApp\OTFEFreeOTFETestProject.dproj" Targets="" />
+  </Target>
+  <Target Name="OTFEFreeOTFETestProject:Clean">
+    <MSBuild Projects="TestApps\OTFES\OTFEFreeOTFETestApp\OTFEFreeOTFETestProject.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="OTFEFreeOTFETestProject:Make">
+    <MSBuild Projects="TestApps\OTFES\OTFEFreeOTFETestApp\OTFEFreeOTFETestProject.dproj" Targets="Make" />
+  </Target>
+  <Target Name="OTFEPGPDiskTestProject">
+    <MSBuild Projects="TestApps\OTFES\OTFEPGPDiskTestApp\OTFEPGPDiskTestProject.dproj" Targets="" />
+  </Target>
+  <Target Name="OTFEPGPDiskTestProject:Clean">
+    <MSBuild Projects="TestApps\OTFES\OTFEPGPDiskTestApp\OTFEPGPDiskTestProject.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="OTFEPGPDiskTestProject:Make">
+    <MSBuild Projects="TestApps\OTFES\OTFEPGPDiskTestApp\OTFEPGPDiskTestProject.dproj" Targets="Make" />
+  </Target>
+  <Target Name="OTFEScramDiskTestProject">
+    <MSBuild Projects="TestApps\OTFES\OTFEScramDiskTestApp\OTFEScramDiskTestProject.dproj" Targets="" />
+  </Target>
+  <Target Name="OTFEScramDiskTestProject:Clean">
+    <MSBuild Projects="TestApps\OTFES\OTFEScramDiskTestApp\OTFEScramDiskTestProject.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="OTFEScramDiskTestProject:Make">
+    <MSBuild Projects="TestApps\OTFES\OTFEScramDiskTestApp\OTFEScramDiskTestProject.dproj" Targets="Make" />
+  </Target>
+  <Target Name="OTFEStrongDiskTestProject">
+    <MSBuild Projects="TestApps\OTFES\OTFEStrongDiskTestApp\OTFEStrongDiskTestProject.dproj" Targets="" />
+  </Target>
+  <Target Name="OTFEStrongDiskTestProject:Clean">
+    <MSBuild Projects="TestApps\OTFES\OTFEStrongDiskTestApp\OTFEStrongDiskTestProject.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="OTFEStrongDiskTestProject:Make">
+    <MSBuild Projects="TestApps\OTFES\OTFEStrongDiskTestApp\OTFEStrongDiskTestProject.dproj" Targets="Make" />
+  </Target>
+  <Target Name="OTFETrueCryptTestProject">
+    <MSBuild Projects="TestApps\OTFES\OTFETrueCryptTestApp\OTFETrueCryptTestProject.dproj" Targets="" />
+  </Target>
+  <Target Name="OTFETrueCryptTestProject:Clean">
+    <MSBuild Projects="TestApps\OTFES\OTFETrueCryptTestApp\OTFETrueCryptTestProject.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="OTFETrueCryptTestProject:Make">
+    <MSBuild Projects="TestApps\OTFES\OTFETrueCryptTestApp\OTFETrueCryptTestProject.dproj" Targets="Make" />
+  </Target>
+  <Target Name="OTFEUnifiedTestProject">
+    <MSBuild Projects="TestApps\OTFES\OTFEUnifiedTestApp\OTFEUnifiedTestProject.dproj" Targets="" />
+  </Target>
+  <Target Name="OTFEUnifiedTestProject:Clean">
+    <MSBuild Projects="TestApps\OTFES\OTFEUnifiedTestApp\OTFEUnifiedTestProject.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="OTFEUnifiedTestProject:Make">
+    <MSBuild Projects="TestApps\OTFES\OTFEUnifiedTestApp\OTFEUnifiedTestProject.dproj" Targets="Make" />
+  </Target>
+  <Target Name="sdDemo">
+    <MSBuild Projects="TestApps\OTFES\OrigScramDiskDemo\sdDemo.dproj" Targets="" />
+  </Target>
+  <Target Name="sdDemo:Clean">
+    <MSBuild Projects="TestApps\OTFES\OrigScramDiskDemo\sdDemo.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="sdDemo:Make">
+    <MSBuild Projects="TestApps\OTFES\OrigScramDiskDemo\sdDemo.dproj" Targets="Make" />
+  </Target>
+  <Target Name="Build">
+    <CallTarget Targets="SDUPrettyPrintHex;SDUCreateLargeFile;IteratorTestApp;NamedPipesExample;SDUDialogsTestApp;SDUDropFilesTestApp;SDUMultimediaKeysTestApp;SDUClipboardMonitor;SDUPermutate;SDUProgressTestApp;SDUSystemTrayIconBasicUsage;SDUSystemTrayIconMinCloseToSystemTray;SDUXOR;SDUURLLabelTestApp;SDUSimplePieChart;AFSplitterTestApp;HMACTestVectorSuite;ShredderTestApp;MouseRNGTestApp;MouseRNGDialogTestApp;MSCryptoAPITest;PasswordRichEditTestApp;SDHash;SimpleHash;HashTestVectorSuite;TigerHashTest;OTFEBestCryptTestProject;OTFECrossCryptTestProject;OTFEE4MTestProject;OTFEFreeOTFETestProject;OTFEPGPDiskTestProject;OTFEScramDiskTestProject;OTFEStrongDiskTestProject;OTFETrueCryptTestProject;OTFEUnifiedTestProject;sdDemo" />
+  </Target>
+  <Target Name="Clean">
+    <CallTarget Targets="SDUPrettyPrintHex:Clean;SDUCreateLargeFile:Clean;IteratorTestApp:Clean;NamedPipesExample:Clean;SDUDialogsTestApp:Clean;SDUDropFilesTestApp:Clean;SDUMultimediaKeysTestApp:Clean;SDUClipboardMonitor:Clean;SDUPermutate:Clean;SDUProgressTestApp:Clean;SDUSystemTrayIconBasicUsage:Clean;SDUSystemTrayIconMinCloseToSystemTray:Clean;SDUXOR:Clean;SDUURLLabelTestApp:Clean;SDUSimplePieChart:Clean;AFSplitterTestApp:Clean;HMACTestVectorSuite:Clean;ShredderTestApp:Clean;MouseRNGTestApp:Clean;MouseRNGDialogTestApp:Clean;MSCryptoAPITest:Clean;PasswordRichEditTestApp:Clean;SDHash:Clean;SimpleHash:Clean;HashTestVectorSuite:Clean;TigerHashTest:Clean;OTFEBestCryptTestProject:Clean;OTFECrossCryptTestProject:Clean;OTFEE4MTestProject:Clean;OTFEFreeOTFETestProject:Clean;OTFEPGPDiskTestProject:Clean;OTFEScramDiskTestProject:Clean;OTFEStrongDiskTestProject:Clean;OTFETrueCryptTestProject:Clean;OTFEUnifiedTestProject:Clean;sdDemo:Clean" />
+  </Target>
+  <Target Name="Make">
+    <CallTarget Targets="SDUPrettyPrintHex:Make;SDUCreateLargeFile:Make;IteratorTestApp:Make;NamedPipesExample:Make;SDUDialogsTestApp:Make;SDUDropFilesTestApp:Make;SDUMultimediaKeysTestApp:Make;SDUClipboardMonitor:Make;SDUPermutate:Make;SDUProgressTestApp:Make;SDUSystemTrayIconBasicUsage:Make;SDUSystemTrayIconMinCloseToSystemTray:Make;SDUXOR:Make;SDUURLLabelTestApp:Make;SDUSimplePieChart:Make;AFSplitterTestApp:Make;HMACTestVectorSuite:Make;ShredderTestApp:Make;MouseRNGTestApp:Make;MouseRNGDialogTestApp:Make;MSCryptoAPITest:Make;PasswordRichEditTestApp:Make;SDHash:Make;SimpleHash:Make;HashTestVectorSuite:Make;TigerHashTest:Make;OTFEBestCryptTestProject:Make;OTFECrossCryptTestProject:Make;OTFEE4MTestProject:Make;OTFEFreeOTFETestProject:Make;OTFEPGPDiskTestProject:Make;OTFEScramDiskTestProject:Make;OTFEStrongDiskTestProject:Make;OTFETrueCryptTestProject:Make;OTFEUnifiedTestProject:Make;sdDemo:Make" />
+  </Target>
+</Project>

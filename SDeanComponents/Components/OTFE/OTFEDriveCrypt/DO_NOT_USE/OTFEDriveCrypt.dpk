@@ -1,0 +1,43 @@
+package OTFEDriveCrypt;
+
+{$R *.RES}
+{$R 'OTFEScramDisk_U.dcr'}
+{$ALIGN ON}
+{$ASSERTIONS OFF}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS OFF}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'OTFE: ScramDisk Delphi Component'}
+{$IMPLICITBUILD OFF}
+
+requires
+  vcl50,
+  SDeanUtils,
+  OTFE,
+  Hash,
+  SDeanSecurity;
+
+contains
+  OTFEDriveCrypt_U in 'OTFEDriveCrypt_U.pas',
+  SdStructures_U in 'SdStructures_U.pas',
+  OTFEScramDiskDismountVolumes_U in 'OTFEScramDiskDismountVolumes_U.pas' {OTFEScramDiskDismountVolumes_F},
+  OTFEScramDiskPasswordEntry_U in 'OTFEScramDiskPasswordEntry_U.pas' {OTFEScramDiskPasswordEntry_F},
+  WindowsMissing_U in 'WindowsMissing_U.pas';
+
+end.

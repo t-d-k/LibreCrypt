@@ -1,0 +1,40 @@
+package OTFEStrongDisk;
+
+{$R *.res}
+{$R 'OTFEStrongDisk_U.dcr'}
+{$ALIGN 8}
+{$ASSERTIONS OFF}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS OFF}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'OTFE: StrongDisk Delphi Component'}
+{$IMPLICITBUILD OFF}
+
+requires
+  vcl,
+  vclx,
+  SDeanUtils,
+  OTFE;
+
+contains
+  OTFEStrongDisk_U in 'OTFEStrongDisk_U.pas',
+  OTFEStrongDiskConsts_U in 'OTFEStrongDiskConsts_U.pas',
+  OTFEStrongDiskPasswordEntry_U in 'OTFEStrongDiskPasswordEntry_U.pas' {OTFEStrongDiskPasswordEntry_F};
+
+end.
