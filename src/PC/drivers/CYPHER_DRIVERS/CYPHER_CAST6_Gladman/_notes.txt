@@ -1,0 +1,13 @@
+
+In order for this driver to compile, Gladman's "cast.c" must be modified slightly.
+
+In this distribution, the original file appears as "cast.c", and the modified version as "FreeOTFE_cast.c"
+
+As can clearly be seen from diffing these files, the only change made is to the line:
+
+#include "../std_defs.h"
+
+which was changed to read:
+
+#include "std_defs.h"
+

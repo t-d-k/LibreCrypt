@@ -1,0 +1,322 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Installation and Upgrading from a Previous Version: PC Version</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+<UL>
+<LI>PC Version
+<UL>
+<LI><a href="impact_of_kernel_driver_signing.htm">Windows Vista&nbsp;x64 / Windows&nbsp;7&nbsp;x64 Additional</a>
+</UL>
+<LI><a href="installation_and_upgrading__PDA.htm">PDA Version</a>
+</UL>
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+<h2>Installation and Upgrading from a Previous Version: PC Version</h2>
+
+
+<B>NOTE: Windows Vista x64 (64 bit) users <I>only</I> should <I>also</I> read the <A HREF="impact_of_kernel_driver_signing.htm">additional information for Windows Vista x64 users</A> section, in order to configure their system before use</B>
+
+<P>
+As with the PDA version, if you wish to use FreeOTFE in portable mode, you do <span style="font-style: italic;">not </span>have
+to carry
+out the installation described below; simply copy the binary (".exe"
+and ".sys") files to wherever you would like them stored, and
+doubleclick on "FreeOTFE.exe" (i.e. the file with the combination
+lock icon). From there, you can then start using FreeOTFE in <a href="portable_mode.htm">Portable Mode</a>.
+<P>
+Alternatively, if you would like to carry out a full installation, which
+will allow non-administrator users to mount and use FreeOTFE volumes, follow <I>either</I> of the automatic or manuall installation instructions detailed below.
+
+<P>
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>Automatic installation</H3></A>
+
+
+<OL>
+<LI>Download the "installer" version of FreeOTFE, and run the executable.
+<LI>After prompting you for some simple details, FreeOTFE will be automatically installed on your PC.
+</OL>
+
+<P>
+If you are using the 64 bit version of Windows Vista (Vista x64), you will have to reboot your PC after the automatic installation is complete.
+
+<P>
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_2"><H3>Manual installation</H3></A>
+
+
+<ol>
+
+  <li>Uncompress the release ZIP to where you would the software installed. 
+  <li>Login to your computer as administrator (if
+appropriate) - installation of the device drivers requires
+administrator privileges to create the registry entries, etc
+  <li>Create shortcuts to "FreeOTFE.exe", if required.
+  <li>Launch "FreeOTFE.exe". You will be prompted that the
+system could not connect to the main FreeOTFE driver - ignore this
+error for now as you have not yet installed the main FreeOTFE driver.</li>
+  <li>Select
+"File | Drivers...". If you are running under Windows Vista, you will
+see the standard UAC consent/credential dialog at this point because
+you are about to install a device driver, which requires Administrator
+privileges. Authorise FreeOTFE to continue by clicking "Allow" or
+entering your Administrator's password to continue.<li>Install each of the ".sys" files included with the release in turn, as follows:
+
+  <ol>
+    <li>Click the "Install..." button
+    <li>Select the ".sys" file to be installed from the release, and click
+"OK". (This should copy the driver file into your
+&lt;windows&gt;\system32\drivers dir, and setup a few registry entries)
+    <li>Select the driver's name which should now appear in the list of installed drivers, and
+click "Start". (This should start the driver selected)</li>
+    <li>Change the driver's startup option to "At system startup" and click "Update"
+  </ol>
+
+  <li>Click the "Close" button
+</ol>
+
+These steps will install and setup a FreeOTFE in a minimalist
+installation. With these steps complete, you may now use FreeOTFE to
+create and mount FreeOTFE and Linux encrypted volumes.
+<P>
+The drivers installed are
+configured such that they <span style="font-style: italic;">do not
+automatically startup when your system boots</span>. Once you are happy
+that FreeOTFE is stable enough, you may
+return to the driver management dialog, select each driver in turn, and
+set them to start automatically at
+system startup.
+<P>
+
+Note: In order to use FreeOTFE, you <span style="font-style: italic;">must
+</span>have the following drivers <span style="font-style: italic;">installed</span>,
+and <span style="font-style: italic;">running</span> as the bare
+minimum for FreeOTFE to operate correctly:<br>
+
+<ol>
+
+  <li>The main "FreeOTFE" driver</li>
+  <li>At least one hash driver ("FreeOTFEHash...")</li>
+  <li>At least one cypher driver ("FreeOTFECypher...")</li>
+</ol>
+A number of the cyphers (e.g. RC6 and Twofish) have multiple
+drivers; these reflect different implementations (e.g. FreeOTFE comes
+with three Twofish implementations; one based on the libtomcrypt
+library, one based on the optimised reference implementation, and one
+based on Brian Gladman's implementation). Each of these drivers
+provides pretty much the same functionality, it's just the
+implementation that differs.&nbsp; <span style="font-style: italic;">Were multiple drivers are provided for the same cypher, you only need to install one of them</span>. You <span style="font-style: italic;">can </span>mix
+drivers based on different implementations (e.g. install the Gladman
+version of Twofish, while installing the libtomcrypt version of AES).
+Installing <span style="font-style: italic;">all </span>of the drivers
+them is harmless, but does mean that you'll be prompted which one to
+use during mounting a volume, if more than one can be used to
+encrypt/decrypt that volume.<br>
+
+<A NAME="level_4_heading_1"><H4>Upgrading from a Previous Version</H4></A>
+
+
+Because of potential changes
+within the driver API, you must ensure that you completely
+uninstall your existing FreeOTFE installation before installing and
+using the latest version. Please see the section on <a href="uninstalling.htm">uninstalling</a> for details on how to do this.<br>
+
+<A NAME="level_5_heading_1"><H5>Special Notes if Upgrading from v2.00</H5></A>
+
+Although the FreeOTFE drivers are backwardly compatible, v2.00 of the
+main FreeOTFE driver cannot correctly use LRW or XTS encrypted volumes.
+Such volumes may be mounted with the v2.00 driver, but their contents
+will not be usable.<br>
+
+<A NAME="level_5_heading_2"><H5>Special Notes if Upgrading from v00.00.02</H5></A>
+
+
+With the possible exception of those volumes which were generated using
+the "NULL" hash algorithm (which was only intended for testing purposes), the latest version of FreeOTFE should be
+backward compatible with existing volume files and you should
+experience no problems with mounting and using them.
+<P>
+
+You will notice that when mounting volumes, you are presented with more
+options than with your previous version of FreeOTFE. For the purposes of
+mounting older volumes, these additional controls can be ignored
+<span style="font-style: italic;">except for the "salt length" option</span>.
+Newer versions of FreeOTFE default this value to 256 bits, and you may well
+have to change this to the previous default of 128 bits. 
+<P>
+
+When mounting FreeOTFE volumes, FreeOTFE will
+attempt to mount using the latest CDB format,
+only falling back and attempting to mount using the older CDB format if this
+fails.
+<P>
+
+Although FreeOTFE is backward compatible with existing volumes, it is <span style="font-style: italic;">very highly recommended</span> that
+you update your volume files to ensure that they use the new CDB
+format, as this will allow you to take advantage of the numerous
+security improvements that the latest version provides. The easiest way
+to update your volume files to the new CDB format is to simply change
+their passwords by selecting
+"Tools | Change volume/keyfile password/details...".
+<P>
+
+IMPORTANT: If you created any ".les" (Linux Encryption Settings) files,
+please double check the next time you reload them, and ensure that your
+settings are correct. Changes due to ongoing development <span style="font-style: italic;">may</span> cause some settings to change; to fix, simply confirm your settings are correct, and save them out again.
+
+
+<P>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

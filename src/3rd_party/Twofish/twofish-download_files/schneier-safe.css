@@ -1,0 +1,7 @@
+/* styles to hide from Netscape 4.7 */
+@import url(schneier.css);
+
+/* N4-safe duplicates of rules in the "unsafe" stylesheet */
+TD { vertical-align: top; }
+
+

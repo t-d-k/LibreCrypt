@@ -1,0 +1,14 @@
+﻿  The device is not ready.
+  The system cannot find the path specified.
+  The system cannot find the path specified.
+  The device is not ready.
+  The device is not ready.
+  The system cannot find the path specified.
+  The system cannot find the path specified.
+  The system cannot find the path specified.
+  The system cannot find the path specified.
+  Building SYS...
+  'build' is not recognized as an internal or external command,
+  operable program or batch file.
+  The system cannot find the path specified.
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.MakeFile.Targets(38,5): error MSB3073: The command "my_build_sys.bat" exited with code 1.

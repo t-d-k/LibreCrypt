@@ -1,0 +1,29 @@
+; Description: 
+; By Sarah Dean
+; Email: sdean12@sdean12.org
+; WWW:   http://www.FreeOTFE.org/
+;
+; -----------------------------------------------------------------------------
+;
+
+EXPORTS
+    CypherIdentifyDriver          @1
+    CypherIdentifySupported       @2
+    CypherGetCypherDetails        @3
+    CypherEncrypt                 @4
+    CypherEncryptWithASCII        @5
+    CypherDecrypt                 @6
+    CypherDecryptWithASCII        @7
+    CypherIdentifySupported_v1    @8
+    CypherIdentifySupported_v3    @9
+    CypherGetCypherDetails_v1     @10
+    CypherGetCypherDetails_v3     @11
+    CypherEncryptSector           @12
+    CypherEncryptSectorWithASCII  @13
+    CypherDecryptSector           @14
+    CypherDecryptSectorWithASCII  @15
+   
+
+; =========================================================================
+; =========================================================================
+

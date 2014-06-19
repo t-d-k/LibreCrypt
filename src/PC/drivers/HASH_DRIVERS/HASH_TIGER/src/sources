@@ -1,0 +1,28 @@
+!IF 0
+
+Copyright (C) Microsoft Corporation, 1997 - 1997
+
+Module Name:
+
+    sources.
+
+!ENDIF
+
+TARGETNAME=FreeOTFEHashTiger
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+!IF 0
+  Include the CSQ stuff...
+!ENDIF
+TARGETLIBS=$(DDK_LIB_PATH)\csq.lib
+
+INCLUDES=..\..\..\DRIVER\inc;..\..\..\Common\inc;..\..\Common\inc;..\..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\headers;..\..\..\..\..\Common\HASH_DRIVERS\Common\inc;..\..\..\..\..\Common\Common\inc
+
+SOURCES=FreeOTFEHashDriver.c\
+        FreeOTFEDebug.c \
+        FreeOTFElib.c \
+        FreeOTFEDriverlib.c \
+        FreeOTFEHashTiger.c \
+        FreeOTFEHashTiger.rc \
+        tiger.c
+

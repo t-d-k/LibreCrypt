@@ -1,0 +1,416 @@
+<html><head>
+<meta http-equiv="Content-Language" content="en-gb">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document"><title>AES Second Round Implementation Experience</title>
+
+<meta name="Microsoft Border" content="l, default"></head>
+
+<body><!--msnavigation--><table dir="ltr" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td valign="top" width="1%">
+
+<p align="center"><img src="aes%202nd%20round%20implementation%20-%20index_files/brg.gif" border="0" height="200" width="150">
+&nbsp;&nbsp;&nbsp; 
+<table border="0" cellpadding="2" cellspacing="0">
+  <tbody><tr>
+    <td><font face="Arial" size="2"><img src="aes%202nd%20round%20implementation%20-%20index_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td colspan="2"><font face="Arial Narrow" size="2"><a href="http://fp.gladman.plus.com/index.htm">About
+      Me</a></font></td>
+  </tr>
+  <tr>
+    <td><font face="Arial" size="2"><img src="aes%202nd%20round%20implementation%20-%20index_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td colspan="2"><a href="http://fp.gladman.plus.com/career/index.htm"><font face="Arial Narrow" size="2">Background</font></a></td>
+  </tr>
+  <tr>
+    <td><font face="Arial" size="2"><img src="aes%202nd%20round%20implementation%20-%20index_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td colspan="2"><font face="Arial Narrow" size="2">Policy Analysis</font></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><font face="Arial Narrow" size="2">
+    <img src="aes%202nd%20round%20implementation%20-%20index_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td><a href="http://fp.gladman.plus.com/policy_orgs.htm"><font face="Arial Narrow" size="2">Organisations</font></a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><font face="Arial Narrow" size="2">
+    <img src="aes%202nd%20round%20implementation%20-%20index_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td><a href="http://fp.gladman.plus.com/cryptography_policy/index.htm"><font face="Arial Narrow" size="2">Cryptography</font></a></td>
+  </tr>
+  <tr>
+    <td><font face="Arial" size="2"><img src="aes%202nd%20round%20implementation%20-%20index_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td colspan="2"><font face="Arial Narrow" size="2">Technology</font></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><font face="Arial Narrow" size="2">
+    <img src="aes%202nd%20round%20implementation%20-%20index_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td><a href="http://fp.gladman.plus.com/cryptography_technology/index.htm"><font face="Arial Narrow" size="2">Cryptography</font></a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><font face="Arial Narrow" size="2">
+    <img src="aes%202nd%20round%20implementation%20-%20index_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td><font face="Arial Narrow" size="2">
+    <a href="http://fp.gladman.plus.com/computing/index.htm">Computing</a></font></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><font face="Arial Narrow" size="2">
+    <img src="aes%202nd%20round%20implementation%20-%20index_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td><font face="Arial Narrow" size="2">Mathematics</font></td>
+  </tr>
+  <tr>
+    <td><font face="Arial" size="2"><img src="aes%202nd%20round%20implementation%20-%20index_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td colspan="2"><a href="http://fp.gladman.plus.com/papers/index.htm"><font face="Arial Narrow" size="2">Papers</font></a></td>
+  </tr>
+</tbody></table>
+
+</p><p align="center"><a href="http://www.no2id.net/"><img src="aes%202nd%20round%20implementation%20-%20index_files/square_1.gif" alt="NO2ID - Stop ID cards and the database state" style="border: 0pt none ; width: 120px; height: 90px;"></a></p>
+
+</td><td valign="top" width="24"></td><!--msnavigation--><td valign="top">
+
+<h2><font color="#0000ff" face="Arial">AES Second Round Implementation
+Experience</font></h2>
+<p><font color="#000000" face="Arial"> Note a new Serpent result <a href="http://fp.gladman.plus.com/cryptography_technology/serpent/index.htm#pmmx">here</a>
+showing a 36% speed up on the previous
+best Pentium&nbsp;II/III results by using MMX instructions.</font></p>
+<p><font color="#0000ff" face="Arial">The Code</font></p>
+<p><font face="Arial">This code implements and tests the five AES finalist
+algorithms on the Pentium II/III architecture.</font></p>
+<p><font face="Arial">This <a href="http://fp.gladman.plus.com/cryptography_technology/aesr2/aes.r2.algs.zip">zip file</a> contains the
+source code for the five AES finalists.&nbsp; The files are C source code files
+but they will also compile in Visual C++ by simply renaming them with a 'cpp'
+file extension rather than 'c'.&nbsp; The compiler used by the author is Visual
+C++ version 6.&nbsp;&nbsp;</font></p>
+<p><font face="Arial">This <a href="http://fp.gladman.plus.com/cryptography_technology/aesr2/aes.r2.test.zip">zip file</a> contains
+source code files for testing the AES finalists and consists of header files, an
+auxiliary file, aes_aux.c, and the following:</font></p>
+<ul>
+  <li><font face="Arial">aes_gav.c – for generating test vector files and
+    optionally checking them against a reference set.</font></li>
+  <li><font face="Arial">aes_rav.c – for running the algorithms and verifying
+    their output against files containing reference test vectors.</font></li>
+  <li><font face="Arial">aes_tmr.c – for testing the speed of the algorithm
+    code.</font></li>
+</ul>
+<p><font face="Arial">Again the files have 'c' extensions but can be used as C++
+files by changing the extension to 'cpp'.&nbsp; In order to run the code you
+will need to set up appropriate directory paths in aes_config.h because I make some assumptions about where
+files are located.&nbsp; I have a master directory with a subdirectory for each algorithm
+where the source code and its test vectors are stored.&nbsp; The testing files
+listed above each contain details of the command line switches used to control
+which algorithms are tested on each run.&nbsp; The header file std_defs.h
+contains some common definitions.&nbsp; You will also need test vector files if
+you intend to verify the implementations.</font></p>
+<p><font face="Arial">All these files are updated versions of those published
+previously.&nbsp; There were two errors in the previous source code files, one
+in the code for rijndael that might cause errors for 256 bit keys and one in
+aes_rav.c that meant that it did not always test decryption operations after
+encryption to check for the correct recovery of the original
+plaintext.&nbsp;&nbsp;</font></p>
+<p><font face="Arial">I have been porting these files to ARM and in doing this I
+have also changed the Pentium code to improve performance in some areas.&nbsp;
+The figures below are hence not identical to those provided here
+previously.&nbsp; Some of the key schedule costs have been significantly reduced
+(my thanks go to the Bill and John Worley of HP Labs for one suggestion here in
+respect of Twofish).&nbsp; DES results are provided for comparison
+purposes.&nbsp;</font></p>
+<p><font color="#0000ff" face="Arial">Speed Results</font></p>
+<div align="center">
+  <center>
+<table bordercolorlight="#000000" bordercolordark="#000000" bgcolor="#cccccc" border="0" cellpadding="2" width="1165">
+  <tbody><tr>
+    <td rowspan="3" align="center" bgcolor="#0033cc" width="90"><font color="#ffffff" face="Arial" size="2"><b>Key Length</b></font></td>
+    <td colspan="4" align="center" bgcolor="#0033cc" width="196"><font color="#ffffff" face="Arial" size="2"><b>MARS</b></font></td>
+    <td colspan="4" align="center" bgcolor="#0033cc" width="196"><font color="#ffffff" face="Arial" size="2"><b>RC6</b></font></td>
+    <td colspan="4" align="center" bgcolor="#0033cc" width="196"><font color="#ffffff" face="Arial" size="2"><b>RIJNDAEL</b></font></td>
+    <td colspan="4" align="center" bgcolor="#0033cc" width="196"><font color="#ffffff" face="Arial" size="2"><b>SERPENT</b></font></td>
+    <td colspan="4" align="center" bgcolor="#0033cc" width="201"><font color="#ffffff" face="Arial" size="2"><b>TWOFISH</b></font></td>
+    <td colspan="2" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial" size="2"><b>DES</b></font></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center" bgcolor="#0033cc" width="94"><font color="#ffffff" face="Arial" size="2"><b>C</b></font></td>
+    <td colspan="2" align="center" bgcolor="#0033cc" width="94"><font color="#ffffff" face="Arial" size="2"><b>C++</b></font></td>
+    <td colspan="2" align="center" bgcolor="#0033cc" width="94"><font color="#ffffff" face="Arial" size="2"><b>C</b></font></td>
+    <td colspan="2" align="center" bgcolor="#0033cc" width="94"><font color="#ffffff" face="Arial" size="2"><b>C++</b></font></td>
+    <td colspan="2" align="center" bgcolor="#0033cc" width="94"><font color="#ffffff" face="Arial" size="2"><b>C</b></font></td>
+    <td colspan="2" align="center" bgcolor="#0033cc" width="94"><font color="#ffffff" face="Arial" size="2"><b>C++</b></font></td>
+    <td colspan="2" align="center" bgcolor="#0033cc" width="94"><font color="#ffffff" face="Arial" size="2"><b>C</b></font></td>
+    <td colspan="2" align="center" bgcolor="#0033cc" width="94"><font color="#ffffff" face="Arial" size="2"><b>C++</b></font></td>
+    <td colspan="2" align="center" bgcolor="#0033cc" width="94"><font color="#ffffff" face="Arial" size="2"><b>C</b></font></td>
+    <td colspan="2" align="center" bgcolor="#0033cc" width="99"><font color="#ffffff" face="Arial" size="2"><b>C++</b></font></td>
+    <td colspan="2" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial" size="2"><b>C</b></font></td>
+  </tr>
+  <tr>
+    <td align="right" bgcolor="#0033cc" width="52"><font color="#ffffff" face="Arial" size="2"><b>Cycles</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="34"><font color="#ffffff" face="Arial" size="2"><b>Mb/s</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="52"><font color="#ffffff" face="Arial" size="2"><b>Cycles</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="34"><font color="#ffffff" face="Arial" size="2"><b>Mb/s</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="52"><font color="#ffffff" face="Arial" size="2"><b>Cycles</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="34"><font color="#ffffff" face="Arial" size="2"><b>Mb/s</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="52"><font color="#ffffff" face="Arial" size="2"><b>Cycles</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="34"><font color="#ffffff" face="Arial" size="2"><b>Mb/s</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="52"><font color="#ffffff" face="Arial" size="2"><b>Cycles</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="34"><font color="#ffffff" face="Arial" size="2"><b>Mb/s</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="52"><font color="#ffffff" face="Arial" size="2"><b>Cycles</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="34"><font color="#ffffff" face="Arial" size="2"><b>Mb/s</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="52"><font color="#ffffff" face="Arial" size="2"><b>Cycles</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="34"><font color="#ffffff" face="Arial" size="2"><b>Mb/s</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="52"><font color="#ffffff" face="Arial" size="2"><b>Cycles</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="34"><font color="#ffffff" face="Arial" size="2"><b>Mb/s</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="52"><font color="#ffffff" face="Arial" size="2"><b>Cycles</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="34"><font color="#ffffff" face="Arial" size="2"><b>Mb/s</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="52"><font color="#ffffff" face="Arial" size="2"><b>Cycles</b></font></td>
+    <td align="right" bgcolor="#0033cc" width="39"><font color="#ffffff" face="Arial" size="2"><b>Mb/s</b></font></td>
+    <td align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial" size="2"><b>Cycles</b></font></td>
+    <td align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial" size="2"><b>Mb/s</b></font></td>
+  </tr>
+  <tr>
+    <td colspan="21" bgcolor="#d6fecd" width="1075"><font face="Arial" size="2"><b>128 bits</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd"><font size="2">&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d6fecd" width="90"><font face="Arial" size="2"><b>key_set</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>2118</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>2044</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>1697</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>2200</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>215
+      / 1334</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>216
+      / 1435</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>1300</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>1363</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>8520</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="99"><font face="Arial" size="2"><b>8530</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>988</b></font></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d6fecd" width="90"><font face="Arial" size="2"><b>encrypt</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>364</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>70.3</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>395</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>64.8</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>269</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>95.1</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>264</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>96.9</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>362</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>70.7</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>371</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>69.0</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>953</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>26.8</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>980</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>26.1</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>366</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>69.9</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>417</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="39"><font face="Arial" size="2"><b>61.3</b></font></td>
+    <td align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>840</b></font></td>
+    <td align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>30.5</b></font></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d6fecd" width="90"><font face="Arial" size="2"><b>decrypt</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>371</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>69.0</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>423</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>60.5</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>231</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>110.8</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>280</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>91.4</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>358</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>71.5</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>373</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>68.6</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>920</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>27.8</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>959</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>26.6</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>376</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>68.0</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>439</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="39"><font face="Arial" size="2"><b>58.3</b></font></td>
+    <td align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>840</b></font></td>
+    <td align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>30.5</b></font></td>
+  </tr>
+  <tr>
+    <td colspan="21" bgcolor="#d6fecd" width="1075"><font face="Arial" size="2"><b>192 bits</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd">&nbsp;</td>
+  </tr>
+  <tr>
+    <td bgcolor="#d6fecd" width="90"><font face="Arial" size="2"><b>key_set</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>2132</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>2042</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>2040</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>2472</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>215
+      / 1591</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>223
+      / 1678</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>1312</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>1380</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>11755</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="99"><font face="Arial" size="2"><b>11740</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>988</b></font></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d6fecd" width="90"><font face="Arial" size="2"><b>encrypt</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>369</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>69.3</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>393</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>65.1</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>271</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>94.4</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>283</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>90.4</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>428</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>59.8</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>440</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>58.1</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>961</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>26.6</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>994</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>25.7</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>359</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>71.3</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>423</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="39"><font face="Arial" size="2"><b>60.5</b></font></td>
+    <td align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>1260</b></font></td>
+    <td align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>30.5</b></font></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d6fecd" width="90"><font face="Arial" size="2"><b>decrypt</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>367</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>69.7</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>417</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>61.3</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>226</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>113.2</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>284</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>90.1</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>421</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>60.8</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>433</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>59.1</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>908</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>28.1</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>956</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>26.7</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>378</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>67.7</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>417</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="39"><font face="Arial" size="2"><b>61.3</b></font></td>
+    <td align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>1260</b></font></td>
+    <td align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>30.5</b></font></td>
+  </tr>
+  <tr>
+    <td colspan="21" bgcolor="#d6fecd" width="1075"><font face="Arial" size="2"><b>256 bits</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd">&nbsp;</td>
+  </tr>
+  <tr>
+    <td bgcolor="#d6fecd" width="90"><font face="Arial" size="2"><b>key_set</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>2136</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>2050</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>1894</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>2400</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>288
+      / 1913</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>290
+      / 1983</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>1306</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>1362</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="94"><font face="Arial" size="2"><b>15700</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd" width="99"><font face="Arial" size="2"><b>15650</b></font></td>
+    <td colspan="2" align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>988</b></font></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d6fecd" width="90"><font face="Arial" size="2"><b>encrypt</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>369</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>69.3</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>400</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>64.0</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>269</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>95.1</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>279</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>91.7</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>503</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>50.8</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>505</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>50.6</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>928</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>27.5</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>961</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>26.6</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>376</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>68.0</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>417</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="39"><font face="Arial" size="2"><b>61.3</b></font></td>
+    <td align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>1680</b></font></td>
+    <td align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>30.5</b></font></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d6fecd" width="90"><font face="Arial" size="2"><b>decrypt</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>375</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>68.2</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>426</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>60.0</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>226</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>113.2</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>284</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>90.1</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>492</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>52.0</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>504</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>50.7</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>915</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>27.9</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>954</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>26.8</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>374</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="34"><font face="Arial" size="2"><b>68.4</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="52"><font face="Arial" size="2"><b>428</b></font></td>
+    <td align="center" bgcolor="#d6fecd" width="39"><font face="Arial" size="2"><b>59.8</b></font></td>
+    <td align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>1680</b></font></td>
+    <td align="center" bgcolor="#d6fecd"><font face="Arial" size="2"><b>30.5</b></font></td>
+  </tr>
+</tbody></table>
+  </center>
+</div>
+<p><font face="Arial">The figures in megabits per second (Mb/s) are for the 200MHz reference
+platform.&nbsp; Two cycle counts are provided for Rijndael key setup because its
+key schedule cost is different for encryption and decryption (the decryption
+figure also applies if both encryption and decryption are required).</font></p>
+<p><font face="Arial">Because of the higher overheads in C++ (virtual function
+tables and instance references) this code would be
+expected to be slower than that in C.&nbsp; This is true in general but the table shows that
+this overhead varies considerably between algorithms.&nbsp; Rijndael and
+Serpent both do reasonably well but Twofish suffers more than most, probably because this
+algorithm is sensitive to register allocation and there is less freedom for the compiler
+to optimise this in C++.&nbsp;&nbsp;</font></p>
+<p><font face="Arial">You are welcome to play with this code provided you
+attribute its source and comply with any constraints that algorithm designers
+have imposed.</font></p>
+<p><font color="#0000ff" face="Arial">Changes</font></p>
+<p><font color="#000000" face="Arial">(6th May 2000) - My thanks to Michael Dwyer of
+Intel for pointing out that the previous version of aes_tmr.c published on this
+page
+contained a bug that resulted in the algorithm timing for encryption being
+measured twice instead of encryption and
+decryption respectively.&nbsp; The zip files below has now been revised to correct this
+error and to simplify some of the code.&nbsp; I have updated the table below but, fortunately, the changes are
+small since most algorithms are symmetric in respect of encryption and
+decryption times (the only significant change is for RC6 decryption in C).&nbsp;</font></p>
+<hr>
+
+<p><em><a href="http://fp.gladman.plus.com/index.htm"><font face="Arial" size="2">Back to Brian
+Gladman's Home Page</font></a></em>.&nbsp; <i><font face="Arial" size="2">This page has
+been accessed&nbsp;<!--webbot bot="HitCounter" u-custom
+i-digits="5" i-image="1" PREVIEW="&lt;strong&gt;[Hit Counter]&lt;/strong&gt;"
+i-resetvalue="0" startspan --><img src="aes%202nd%20round%20implementation%20-%20index_files/a.gif" alt="Hit Counter"><!--webbot bot="HitCounter" endspan i-checksum="25563" -->
+ times since
+30th January 2000.</font></i></p>
+
+
+<!--msnavigation--></td></tr><!--msnavigation--></tbody></table></body></html>

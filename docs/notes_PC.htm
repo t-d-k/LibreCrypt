@@ -1,0 +1,280 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Miscellaneous Notes: PC Version Specific</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+<UL>
+<LI>PC Version Specific
+<LI><a href="notes_PDA.htm">PDA Version Specific</a>
+</UL>
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<h2>Miscellaneous Notes: PC Version Specific</h2>
+
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_VistaPCIcon.png" alt="PC version only" >
+    </TD>
+    <TD width=100%>
+This section applies to the PC version of FreeOTFE <I>only</I>
+
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+<ul>
+
+<li>After creating a new volume, it must be mounted and formatted.
+After this, it is highly recommended that you overwrite all the free
+space on the drive ("Tools | Overwrite free space"...)<br>
+<li>Linux encryption settings files (".les") files are straightforward text files which contain the settings entered.
+<li>Peter Gutmann's "cryptlib" may (<span style="font-style: italic;">optionally</span>) be used as an RNG, provided that it has been installed correctly. This may be downloaded from <a href="http://www.cs.auckland.ac.nz/%7Epgut001/cryptlib/">http://www.cs.auckland.ac.nz/~pgut001/cryptlib/</a>. After installation, the "cryptlib" option will no longer be greyed out on RNG selection dialogs.
+<li>User
+settings configured via the "View | Options" menu are stored within a
+configuration file (".ini" file) which is located in the same directory
+the FreeOTFE executable is launched from. User options are <span style="font-style: italic;">not</span>
+stored within the registry, unless configured to store them in it. By storing user settings in a separate
+file, as opposed to the registry, FreeOTFE achieves two things:
+  <ol>
+    
+    <li>If
+FreeOTFE is stored on removable media (e.g. a USB flash drive, CDROM),
+your settings can be stored together with
+FreeOTFE; there is no need to configure FreeOTFE every time you use it
+on a different computer - this would not be possible to do if the registry
+was used.
+    <li>When user settings are stored in a flat file, as opposed to the registry, security
+is increased. It is trivial to overwrite a simple file if needed, but
+removing registry entries completely is another matter.
+  </ol>
+<li>Creating an encrypted partition/disk will <span style="font-style: italic;">overwrite</span> whatever data was stored on the partition/disk you select. <span style="font-style: italic;">Be careful!</span>
+<li>An additional option is available to allow a program to be automatically executed:
+  
+  <ul>
+    <li>After a volume has been mounted
+    <li>Before a volume is dismounted
+    <li>After a volume is dismounted
+  </ul>
+
+This functionality gives significantly more flexibility
+than the standard Windows "autorun" feature, and allows automated
+integrity checking, setup, cleanup to be carried out<br>
+<li>For security reasons, any file launched by the post-mount and
+pre-dismount options must reside on the encrypted volume; a path
+relative to the root directory
+of the mounted volume should be specified in the options dialog
+(e.g. "\MyFiles\start.bat").
+For the post-dismount option, the absolute path to the file to be
+launched should be specified (e.g. "C:\volume_just_dismounted.bat")
+
+<li>The pre-dismount executable must terminate before the dismount will be carried out.
+<li>The pre-dismount executable will not be launched in case of a forced/emergency dismount<br>
+</ul>
+
+<A NAME="level_4_heading_1"><H4>Windows Vista and Windows 7 Specific</H4></A>
+<h5>User Access Control (UAC)<br>
+</h5>
+
+Windows Vista incorporates a <a href="http://www.microsoft.com/windows/products/windowsvista/features/details/useraccountcontrol.mspx">new security system</a>
+called "User Access Control" (UAC), which is there to help prevent
+malicious software from doing things which could be harmful to your computer.
+<P>
+
+As part of this new security system, you will find a number of FreeOTFE's
+menuitems are marked with a "shield" icon - specifically, those which
+relate to installing or changing FreeOTFE's drivers, starting/stopping portable mode, and formatting.
+<P>
+
+Whenever you attempt to use functionality which is marked with one of
+these icons, Windows will display a dialog (the "consent/credential"
+dialog), asking for your permission to allow
+FreeOTFE to continue. <span style="font-style: italic;">This is for your protection</span>, and is perfectly normal. You will be shown this dialog even if you are logged on as an Administrator
+<P>
+
+Although the FreeOTFE binaries are digitally signed using
+the Microsoft standard, Windows refuses to identify FreeOTFE, and as such
+this dialog will state that "An unidentified
+program wants access to your computer". Again, this is perfectly
+normal; if you would like to check that your copy of FreeOTFE is an
+unmodified, original copy, you may do so by checking the hashes/signatures available
+from the <a href="http://www.FreeOTFE.org/">FreeOTFE WWW site</a>.
+<P>
+
+If you are logged on as a "standard" (i.e. non-Administrator) user, the
+prompt you are shown will also ask for an Administrator's password. It
+should be emphasised that it is Windows Vista itself which is
+generating these prompts, and not FreeOTFE, which will have no access
+to the password you type in. The same type of warning dialogs will 
+appear when
+you attempt to (for example) change the system time or dete by going to Window's Control Panel, selecting
+"Date and Time", and then changing the computer's time/date.
+<P>
+
+If you are happy for FreeOTFE to carry out the operation you requested
+of it, you should select the relevant option from the consent/credential dialog to allow FreeOTFE to proceed.
+<P>
+
+You can find out more about UAC from the <a href="http://technet.microsoft.com/en-us/windowsvista/aa906022.aspx">Microsoft WWW site</a>.
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

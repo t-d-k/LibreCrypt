@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Installation and Upgrading from a Previous Version: PDA Version</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+<UL>
+<LI><a href="installation_and_upgrading__PC.htm">PC Version</a>
+<UL>
+<LI><a href="impact_of_kernel_driver_signing.htm">Windows Vista&nbsp;x64 / Windows&nbsp;7&nbsp;x64 Additional</a>
+</UL>
+<LI>PDA Version
+</UL>
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+<h2>Installation and Upgrading from a Previous Version: PDA Version</h2>
+
+
+The PDA version may be installed using any of three different ways:<br>
+<ol>
+  <li>By connecting your PDA to a PC, making an ActiveSync connection, and the running the ActiveSync installer</li>
+  <li>By copying the .CAB file release to a memory card, inserting it
+in your PDA, and then tapping on the .CAB file from File Explorer (or
+similar)</li>
+  <li>By uncompressing the .ZIP file release and copying the
+executables (".exe" and ".dll" files) to your PDA, and then simply
+tapping on "FreeOTFE4PDA.exe"</li>
+</ol>
+
+<A NAME="level_4_heading_1"><H4>Faster mounting</H4></A>
+
+<P>
+To reduce the time taken for FreeOTFE4PDA to mount volumes, please see the FAQ "<A HREF="FAQ.htm#bm">How can I speed FreeOTFE up when mounting my volumes?</A>"
+
+<P>
+<A NAME="level_4_heading_2"><H4>Alternative drivers</H4></A>
+
+Most users can ignore this section; it's only intended for more advanced users.
+<P>
+
+FreeOTFE4PDA comes with multiple AES and Twofish implementations, specifically:<br>
+
+<ul>
+
+  <li>FreeOTFE4PDACypherAES_Gladman.dll</li>
+  <li>FreeOTFE4PDACypherAES_ltc.dll</li>
+</ul>
+
+for AES, and:<br>
+
+<ul>
+
+  <li>FreeOTFE4PDACypherTwofish_Gladman.dll</li>
+  <li>FreeOTFE4PDACypherTwofish_HifnCS.dll</li>
+  <li>FreeOTFE4PDACypherTwofish_ltc.dll</li>
+</ul>
+
+for Twofish. 
+<P>
+
+These libraries all implement the same cyphers, but are built from
+different crypto libraries. They are primarily intended to allow
+verification of the implementations and increase confidence that
+they're actually doing what it's supposed to do.
+<P>
+
+Because most users have no need for redundant cypher implementations,
+one of the AES drivers and two of the Twofish drivers are stored in the
+"alternate_drivers" directory. To use these drivers, simply copy them
+into the same directory as your "FreeOTFE4PDA.exe" executable.
+<P>
+
+Please note:<br>
+
+<ol>
+
+  <li>When mounting a volume, FreeOTFE4PDA will just use the first
+combination of drivers it finds
+which will successfully decrypts your volume's critical data block
+(CDB); unlike the PC version, the user isn't (yet) offered a choice of
+which successful driver to use. To force FreeOTFE4PDA to use a
+particular driver for mounting, please remove all drivers which
+implement the same algorithms as you wish to use from the directory
+"FreeOTFE4PDA.exe" is stored in.</li>
+  <li>Placing multiple drivers which implement the same hash/cypher
+algorithms in the FreeOTFE directory can significantly slow down the
+time it takes to mount volumes. The is because (for security reasons) FreeOTFE doesn't store any information
+relating to the hash/cypher used to a secure a volume, which forces it
+to cycle through all possible hash/cypher combinations in order
+to determine which one to use. Reducing the number of combinations it
+has to check by removing redundant hash/cypher drivers reduces the time, and has no impact on the level of security offered.</li>
+</ol>
+<br>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

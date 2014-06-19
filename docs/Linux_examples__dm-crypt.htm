@@ -1,0 +1,715 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Linux Examples: dm-crypt</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+<UL>
+<LI><a href="Linux_examples__cryptoloop.htm">Examples: Cryptoloop</a>
+<LI>Examples: dm-crypt
+<LI><a href="Linux_examples__LUKS.htm">Examples: LUKS</a>
+</UL>
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<H2>Linux Examples: dm-crypt</h2>
+
+
+<P>
+This section gives a series of examples of how to create Linux dm-crypt volumes, and then mount them using FreeOTFE.<br>
+
+<P>
+These examples have been
+tested using Fedora Core 3, with a v2.6.11.7 kernel installed; though
+they should work for all compatible Linux distributions.
+
+<P>
+<UL>
+  <LI><A HREF="#level_3_heading_1">Initial Setup</A>
+  <LI><A HREF="#level_3_heading_2">Defaults</A>
+  <LI><A HREF="#level_3_heading_3">Example #1: Mounting a dm-crypt Volume Encrypted Using dm-crypt's Default Encryption</A>
+  <LI><A HREF="#level_3_heading_4">Example #2: Mounting a dm-crypt Volume Encrypted Using 128 bit AES</A>
+  <LI><A HREF="#level_3_heading_5">Example #3: Mounting a dm-crypt Volume Encrypted Using 256 bit AES, using SHA256 ESSIV</A>
+  <LI><A HREF="#level_3_heading_6">Example #4: Mounting a dm-crypt Volume Encrypted Using 448 bit Blowfish</A>
+  <LI><A HREF="#level_3_heading_7">Example #5: Mounting a dm-crypt Volume Encrypted Using 256 bit Twofish and Offset</A>
+  <LI><A HREF="#level_3_heading_8">Example #6: Mounting a dm-crypt Volume Encrypted Using 256 bit AES with MD5 Password Hashing</A>
+  <LI><A HREF="#level_3_heading_9">Example #7: Mounting a dm-crypt Volume Encrypted Using 448 bit Blowfish, MD5 Password Hashing and SHA-256 ESSIV</A>
+  <LI><A HREF="#level_3_heading_10">Example #8: Mounting a dm-crypt Volume Encrypted Using AES-256 in XTS Mode (aka XTS-AES-256)</A>
+</UL>
+
+
+<P>
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>Initial Setup</H3></A>
+
+
+<P>
+To begin using dm-crypt under Linux, ensure that the various kernel modules are installed:
+<br>
+
+<blockquote>
+<pre>
+modprobe cryptoloop
+
+modprobe deflate
+modprobe zlib_deflate
+modprobe twofish
+modprobe serpent
+modprobe aes_i586
+modprobe blowfish
+modprobe des
+modprobe sha256
+modprobe sha512
+modprobe crypto_null
+modprobe md5
+modprobe md4
+modprobe cast5
+modprobe cast6
+modprobe arc4
+modprobe khazad
+modprobe anubis
+
+modprobe dm_mod <span style="font-style: italic;">(this should give you dm_snapshot, dm_zero and dm_mirror?)</span>
+modprobe dm_crypt
+</pre>
+</blockquote>
+
+At this point, typing "dmsetup targets" should give you something along the lines of:
+
+
+<pre>
+crypt            v1.0.0
+striped          v1.0.1
+linear           v1.0.1
+error            v1.0.1
+</pre>
+
+Typing "lsmod" will show you which modules are currently installed.<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_2"><H3>Defaults</H3></A>
+
+
+<P>
+If not overridden by the user, dm-crypt defaults to encrypting with:
+
+<P>
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="vertical-align: top;">Cypher:</th>
+      <td style="vertical-align: top;">AES</td>
+    </tr>
+    <tr>
+      <th style="vertical-align: top;">Cypher keysize:</th>
+      <td style="vertical-align: top;">256 bit</td>
+    </tr>
+    <tr>
+      <th style="vertical-align: top;">User key processed with:</th>
+      <td style="vertical-align: top;">RIPEMD-160 (<span style="font-style: italic;">not</span> "RIPEMD-160 (Linux; Twice, with A)").
+<P>"Hash with "A"s, if hash output is too short" option - selected
+      </td>
+    </tr>
+    <tr>
+      <th style="vertical-align: top;">IV generation:</th>
+      <td style="vertical-align: top;">32 bit sector ID</td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_3"><H3>Example #1: Mounting a dm-crypt Volume Encrypted Using dm-crypt's Default Encryption</H3></A>
+
+
+This example demonstrates use of a dm-crypt volume using the dm-crypt's
+default encryption system: AES128 with the user's password hashed with
+RIPEMD160, using the 32 bit sector IDs as encryption IVs
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./volumes/vol_default.vol bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_default.vol
+echo password1234567890ABC | cryptsetup create myMapper /dev/loop0
+dmsetup ls
+dmsetup table
+dmsetup status
+losetup /dev/loop1 /dev/mapper/myMapper 
+mkdosfs /dev/loop1
+mkdir ./test_mountpoint
+mount /dev/loop1 ./test_mountpoint
+cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+umount ./test_mountpoint
+losetup -d /dev/loop1
+cryptsetup remove myMapper
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+  <li>Select "Linux | Mount..."</li>
+  <li>Select the volume file</li>
+  <li>"Key" tab:</li>
+  <ul>
+<li>Enter "password1234567890ABC" as the key</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile  blank</li><li>Leave seed blank</li><li>Select the "RIPEMD-160 (160/512)" hash</li><li>Ensure "Hash with "A"s, if hash output is too short" is checked.
+<li>Leave iteration count at 0</li>
+  </ul>
+  <li>"Encryption" tab:</li>
+  <ul>
+<li>Select the "AES (CBC; 256/128)" cypher</li><li>Select "32 bit sector ID" as the IV generation method<li>Set "Sector zero location" to "Start of encrypted data"</li>
+  </ul>
+  <li>"File options" tab:</li>
+  <ul>
+<li>Leave offset at 0</li><li>Leave sizelimit at 0</li>
+  </ul>
+  <li>"Mount options" tab:</li>
+  <ul>
+<li>Select any unused drive letter</li><li>Leave readonly unchecked</li>
+  </ul>
+  <li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_4"><H3>Example #2: Mounting a dm-crypt Volume Encrypted Using 128 bit AES</H3></A>
+
+
+This example demonstrates use of a dm-crypt AES128 volume.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./volumes/vol_aes128.vol bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_aes128.vol
+echo password1234567890ABC | cryptsetup  -c aes -s 128 create myMapper /dev/loop0
+dmsetup ls
+dmsetup table
+dmsetup status
+losetup /dev/loop1 /dev/mapper/myMapper 
+mkdosfs /dev/loop1
+mkdir ./test_mountpoint
+mount /dev/loop1 ./test_mountpoint
+cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+umount ./test_mountpoint
+losetup -d /dev/loop1
+cryptsetup remove myMapper
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+<li>Select "Linux | Mount..."</li><li>Select the volume file</li><li>"Key" tab:</li><ul><li>Enter "password1234567890ABC" as the key</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile  blank</li><li>Leave seed blank</li><li>Select the "RIPEMD-160 (160/512)" hash.</li><li>Ensure "Hash with "A"s, if hash output is too short" is checked.
+<li>Leave iteration count at 0</li></ul><li>"Encryption" tab:</li><ul><li>Select the "AES (CBC; 128/128)" cypher</li><li>Select "32 bit sector ID" as the IV generation method<li>Set "Sector zero location" to "Start of encrypted data"</li></ul><li>"File options" tab:</li><ul><li>Leave offset at 0</li><li>Leave sizelimit at 0</li></ul><li>"Mount options" tab:</li><ul><li>Select any unused drive letter</li><li>Leave readonly unchecked</li></ul><li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_5"><H3>Example #3: Mounting a dm-crypt Volume Encrypted Using 256 bit AES, using SHA256 ESSIV</H3></A>
+
+
+This example demonstrates use of a dm-crypt AES256 volume using SHA-256 ESSIV sector IVs.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./volumes/vol_aes_essiv_sha256.vol bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_aes_essiv_sha256.vol
+echo password1234567890ABC | cryptsetup  -c aes-cbc-essiv:sha256 create myMapper /dev/loop0
+dmsetup ls
+dmsetup table
+dmsetup status
+losetup /dev/loop1 /dev/mapper/myMapper 
+mkdosfs /dev/loop1
+mkdir ./test_mountpoint
+mount /dev/loop1 ./test_mountpoint
+cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+umount ./test_mountpoint
+losetup -d /dev/loop1
+cryptsetup remove myMapper
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+<li>Select "Linux | Mount..."</li><li>Select the volume file</li><li>"Key" tab:</li><ul><li>Enter "password1234567890ABC" as the key</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile  blank</li><li>Leave seed blank</li><li>Select the "RIPEMD-160 (160/512)" hash</li>
+    <li>Ensure "Hash with "A"s, if hash output is too short" is checked.
+<li>Leave iteration count at 0</li></ul><li>"Encryption" tab:</li><ul><li>Select the "AES (CBC; 256/128)" cypher</li>
+    <li>Select "ESSIV" as the IV generation method
+    <li>Set "Sector zero location" to "Start of encrypted data"</li>
+    <li>Select "SHA-256 (256/512)" as the IV hash</li><li>Select "AES (CBC; 256/128)" as the IV cypher
+
+</ul><li>"File options" tab:</li><ul><li>Leave offset at 0</li><li>Leave sizelimit at 0</li></ul><li>"Mount options" tab:</li><ul><li>Select any unused drive letter</li><li>Leave readonly unchecked</li></ul><li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_6"><H3>Example #4: Mounting a dm-crypt Volume Encrypted Using 448 bit Blowfish</H3></A>
+
+
+This example demonstrates use of a dm-crypt Blowfish 448 volume.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./volumes/vol_blowfish_448.vol bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_blowfish_448.vol
+echo password1234567890ABC | cryptsetup -c blowfish -s 448 create myMapper /dev/loop0
+dmsetup ls
+dmsetup table
+dmsetup status
+losetup /dev/loop1 /dev/mapper/myMapper 
+mkdosfs /dev/loop1
+mkdir ./test_mountpoint
+mount /dev/loop1 ./test_mountpoint
+cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+umount ./test_mountpoint
+losetup -d /dev/loop1
+cryptsetup remove myMapper
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+  <li>Select "Linux | Mount..."</li>
+  <li>Select the volume file</li>
+  <li>"Key" tab:</li>
+  <ul>
+<li>Enter "password1234567890ABC" as the key</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile  blank</li><li>Leave seed blank</li><li>Select the "RIPEMD-160 (160/512)" hash</li>
+    <li>Ensure "Hash with "A"s, if hash output is too short" is checked.
+<li>Leave iteration count at 0</li>
+  </ul>
+  <li>"Encryption" tab:</li>
+  <ul>
+<li>Select the "Blowfish (CBC; 448/64)" cypher</li><li>Select "32 bit sector ID" as the IV generation method<li>Set "Sector zero location" to "Start of encrypted data"</li>
+  </ul>
+  <li>"File options" tab:</li>
+  <ul>
+<li>Leave offset at 0</li><li>Leave sizelimit at 0</li>
+  </ul>
+  <li>"Mount options" tab:</li>
+  <ul>
+<li>Select any unused drive letter</li><li>Leave readonly unchecked</li>
+  </ul>
+  <li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_7"><H3>Example #5: Mounting a dm-crypt Volume Encrypted Using 256 bit Twofish and Offset</H3></A>
+
+
+This example demonstrates use of a dm-crypt Twofish 256 volume, with the
+encrypted volume beginning at an offset of 3 sectors (3 x 512 = 1536 bytes) into the volume
+file.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./volumes/vol_twofish_o3.vol bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_twofish_o3.vol
+echo password1234567890ABC | cryptsetup -c twofish -o 3 create myMapper /dev/loop0
+dmsetup ls
+dmsetup table
+dmsetup status
+losetup /dev/loop1 /dev/mapper/myMapper 
+mkdosfs /dev/loop1
+mkdir ./test_mountpoint
+mount /dev/loop1 ./test_mountpoint
+cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+umount ./test_mountpoint
+losetup -d /dev/loop1
+cryptsetup remove myMapper
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+<li>Select "Linux | Mount..."</li><li>Select the volume file</li><li>"Key" tab:</li><ul><li>Enter "password1234567890ABC" as the key</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile  blank</li><li>Leave seed blank</li><li>Select the "RIPEMD-160 (160/512)" hash</li>
+    <li>Ensure "Hash with "A"s, if hash output is too short" is checked.</li>
+<li>Leave iteration count at 0</li></ul><li>"Encryption" tab:</li><ul><li>Select the "Twofish (CBC; 256/128)" cypher</li><li>Select "32 bit sector ID" as the IV generation method<li>Set "Sector zero location" to "Start of encrypted data"</li></ul><li>"File options" tab:</li><ul><li>Set offset to 1536 bytes (i.e. 3 sectors, each of 512 bytes)<li>Leave sizelimit at 0</li></ul><li>"Mount options" tab:</li><ul><li>Select any unused drive letter</li><li>Leave readonly unchecked</li></ul><li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_8"><H3>Example #6: Mounting a dm-crypt Volume Encrypted Using 256 bit AES with MD5 Password Hashing</H3></A>
+
+
+This example demonstrates use of a dm-crypt Twofish 256 volume, with the
+user's password processed with MD5.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./volumes/vol_aes_md5.vol bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_aes_md5.vol
+echo password1234567890ABC | cryptsetup -c aes -h md5 create myMapper /dev/loop0
+dmsetup ls
+dmsetup table
+dmsetup status
+losetup /dev/loop1 /dev/mapper/myMapper 
+mkdosfs /dev/loop1
+mkdir ./test_mountpoint
+mount /dev/loop1 ./test_mountpoint
+cp ./test_files/SHORT_TEXT.txt ./test_mountpoint
+cp ./test_files/BINARY_ZEROS.dat ./test_mountpoint
+cp ./test_files/BINARY_ABC_RPTD.dat ./test_mountpoint
+cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+umount ./test_mountpoint
+losetup -d /dev/loop1
+cryptsetup remove myMapper
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+<li>Select "Linux | Mount..."</li><li>Select the volume file</li><li>"Key" tab:</li><ul><li>Enter "password1234567890ABC" as the key</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile blank</li><li>Leave seed blank</li><li>Select the "MD5 (128/512)" hash</li><li>Ensure "Hash with "A"s, if hash output is too short" is checked.</li>
+<li>Leave iteration count at 0</li></ul><li>"Encryption" tab:</li><ul><li>Select the "AES (CBC; 256/128)" cypher</li>
+    <li>Select "32 bit sector ID" as the IV generation method
+    <li>Set "Sector zero location" to "Start of encrypted data"</li>
+</ul><li>"File options" tab:</li><ul><li>Leave offset at 0</li>
+    <li>Leave sizelimit at 0</li>
+</ul><li>"Mount options" tab:</li><ul><li>Select any unused drive letter</li><li>Leave readonly unchecked</li></ul><li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_9"><H3>Example #7: Mounting a dm-crypt Volume Encrypted Using 448 bit Blowfish, MD5 Password Hashing and SHA-256 ESSIV</H3></A>
+
+
+This example demonstrates use of a dm-crypt Blowfish 448 volume, with the
+user's password processed with MD5 and ESSIV using SHA-256.
+<P>
+
+Note that although the main cypher is Blowfish 448, Blowfish 256 is used as the IV cypher as the IV hash outputs 256 bytes
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./volumes/vol_blowfish_448_essivsha256_md5.vol bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_blowfish_448_essivsha256_md5.vol
+echo password1234567890ABC | cryptsetup -c blowfish-cbc-essiv:sha256 -s 448 -h md5 create myMapper /dev/loop0
+dmsetup ls
+dmsetup table
+dmsetup status
+losetup /dev/loop1 /dev/mapper/myMapper 
+mkdosfs /dev/loop1
+mkdir ./test_mountpoint
+mount /dev/loop1 ./test_mountpoint
+cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+umount ./test_mountpoint
+losetup -d /dev/loop1
+cryptsetup remove myMapper
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+<li>Select "Linux | Mount..."</li><li>Select the volume file</li><li>"Key" tab:</li><ul><li>Enter "password1234567890ABC" as the key</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile blank</li><li>Leave seed blank</li><li>Select the "MD5 (128/512)" hash</li><li>Ensure "Hash with "A"s, if hash output is too short" is checked.</li>
+<li>Leave iteration count at 0</li></ul><li>"Encryption" tab:</li><ul><li>Select the "Blowfish (CBC; 448/64)" cypher</li>
+    <li>Select "ESSIV" as the IV generation method
+    <li>Set "Sector zero location" to "Start of encrypted data"</li>
+    <li>Select "SHA-256 (256/512)" as the IV hash</li>
+    <li>Select "Blowfish (CBC; 256/64)" as the IV cypher
+
+</ul><li>"File options" tab:</li><ul><li>Leave offset at 0</li>
+    <li>Leave sizelimit at 0</li>
+</ul><li>"Mount options" tab:</li><ul><li>Select any unused drive letter</li><li>Leave readonly unchecked</li></ul><li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_10"><H3>Example #8: Mounting a dm-crypt Volume Encrypted Using AES-256 in XTS Mode (aka XTS-AES-256)</H3></A>
+
+
+This example demonstrates use of a dm-crypt AES-256 volume in XTS mode (aka XTS-AES-256) and using SHA-512 for hashing
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./volumes/vol_aes_xts.vol bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_aes_xts.vol
+echo password1234567890ABC | cryptsetup -h sha512 -c aes-xts-plain --key-size 512 create myMapper /dev/loop0
+dmsetup ls
+dmsetup table
+dmsetup status
+losetup /dev/loop1 /dev/mapper/myMapper 
+mkdosfs /dev/loop1
+mkdir ./test_mountpoint
+mount /dev/loop1 ./test_mountpoint
+cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+umount ./test_mountpoint
+losetup -d /dev/loop1
+cryptsetup remove myMapper
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+<li>Select "Linux | Mount..."
+<li>Select the volume file
+<li>"Key" tab:
+<ul>
+<li>Enter "password1234567890ABC" as the key
+<li>Leave GPG executable blank
+<li>Leave GPG keyfile  blank
+<li>Leave seed blank
+<li>Select the "SHA-512 (512/1024)" hash
+<li>Ensure "Hash with "A"s, if hash output is too short" is checked.
+<li>Leave iteration count at 0
+</ul>
+<li>"Encryption" tab:
+<ul>
+<li>Select the "AES (256 bit XTS)" cypher
+<li>Select "Null IV" as the IV generation method
+</ul>
+<li>"File options" tab:
+<ul>
+<li>Leave offset at 0
+<li>Leave sizelimit at 0
+</ul>
+<li>"Mount options" tab:
+<ul>
+<li>Select any unused drive letter
+<li>Leave readonly unchecked
+</ul>
+<li>Click the "OK" button
+</ol>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

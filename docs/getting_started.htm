@@ -1,0 +1,560 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Getting Started Guide</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI>Getting Started
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+<H2>Getting Started Guide</H2>
+
+<P>
+Pretty much everything in FreeOTFE works as it seems, and should be
+fairly self explanatory. If there's anything you're not too
+sure of, most times an educated guess will give you the right answer.
+
+<P>
+<UL>
+  <LI><A HREF="#level_3_heading_1">Installation/Portable mode</A>
+  <LI><A HREF="#level_3_heading_2">Using FreeOTFE</A>
+  <LI><A HREF="#level_3_heading_3">Creating a new volume</A>
+  <LI><A HREF="#level_3_heading_4">Mounting volumes</A>
+  <LI><A HREF="#level_3_heading_5">Dismounting volumes</A>
+  <LI><A HREF="#level_3_heading_6">Changing a volume's password</A>
+</UL>
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>Installation/Portable mode</H3></A>
+
+<P>
+Before FreeOTFE can be used, it must first either be installed or uncompressed from the releaes archive.
+
+<P>
+Please see the section on <A HREF="installation_and_upgrading.htm">Installation and Upgrading</A> for instructions on how to do this.
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_2"><H3>Using FreeOTFE</H3></A>
+
+<P>
+Once FreeOTFE is installed (or started in portable mode), securing your data is simple:
+
+<OL>
+<LI>Create a volume to store your encrypted data on (or several, if you choose!)
+<LI>Mount the volume created.
+<LI>Once mounted, your volume will appear as a new drive (a "virtual drive") on your system.
+
+<P>
+<I>Anything</I> and <I>everything</I> stored on this drive (documents, pictures, videos, software - whatever you like) will be automatically encrypted and stored within the volume you created, at the point that it's written to the drive.
+
+<P>
+The encryption process is totally transparent to the user, and is
+carried out on-the-fly as data is written to the drive. Similarly,
+decryption is carried out transparently when data is read from it.
+
+<P>
+You can drag files to and from this drive, open and save files from applications to it, run applications directly from it - in fact, <I>everything</I> that you can do with a normal drive, you can do with a FreeOTFE virtual drive.
+
+<LI>To secure your data, simply dismount the drive. At that point,
+the drive disappears and the encryption/decryption key is overwritten
+in memory - making your data totally inaccessable until the password
+(and other parameters, if needed) are supplied, and the volume is
+mounted again.
+
+</OL>
+
+<P>
+The following sections give more detailed instructions on how do carry out each of these steps.
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_3"><H3>Creating a new volume</H3></A>
+
+<P>
+In order to use FreeOTFE, you must first create a "disk image" (called a "volume") to represent your virtual drive.
+
+<P>
+This is a fairly straightforward process, and consists of using FreeOTFE to create a large file (or setup a partition) on your computer's hard drive. 
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Technical.png" alt="Technical note" >
+    </TD>
+    <TD width=100%>
+
+This volume will hold an encrypted "disk image" of your virtual drive, and is where FreeOTFE will store all data written to your virtual drive.
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+This file (or partition) can subsequently be "mounted", at which point a virtual drive will appear on your computer - anything stored on one of these virtual drives will be automatically encrypted before being written to volume file.
+
+<P>
+To create a new volume, select "File | New..." menuitem to display the "new volume wizard", which will guide you through the process in a series of simple steps.
+
+<P>
+
+<TABLE BORDER=0 WIDTH="100%">
+  <TR>
+    <TD WIDTH="50%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PC/NewVolumeWizard.png">
+    </TD>
+    <TD WIDTH="50%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PDA/NewVolumeWizard.png">
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD>
+      <FONT SIZE=-1>(PC version)</FONT>
+    </TD>
+    <TD>
+      <FONT SIZE=-1>(PDA version)</FONT>
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD COLSPAN="2">
+      <I>New volume wizard</I>
+    </TD>
+  </TR>
+</TABLE>
+
+
+<P>
+When prompted to select between creating a file or partition based volume, new users should select "File". This is the safer of the two options - partition based volumes are intended for more advanced users.
+
+<P>
+Some users who are unfamiliar with disk encryption systems may not understand all of the options they are presented with. If you feel that you are in this position, you should probably simply accept the default values you are presented with, which will give you a volume that will be secure enough for your needs. 
+
+<P>
+FreeOTFE is a highly flexible system that caters for both novice and advanced users alike; many of the options that the volume creation wizard provides you with are intended for more advanced users who understand the implications of the options provided (e.g. storing a volume's CDB separately to the volume file it relates to), and how they operate.
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Tip.png" alt="Tip!" >
+    </TD>
+    <TD width=100%>
+
+You may want to create and use multiple volumes; one to store work related files, one for personal files, etc
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_SecurityTip.png" alt="Security tip" >
+    </TD>
+    <TD width=100%>
+
+Do not simply copy an existing volume file to create a new one - even if you change the password on the "new" volume. If you do this, both volumes will have the same encrypted master key, which reduces the amount of security offered.
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_4"><H3>Mounting volumes</H3></A>
+
+<P>
+Once you have created a volume, it must be "mounted" in order for it to appear as a virtual drive on your computer.
+
+<P>
+Select "File | Mount file..." menuitem to mount a file based volume, or "File | Mount partition..." to mount a partition based volume.
+
+<P>
+You will then be prompted to select which volume you wish to mount; do so, and click "OK" to display the password entry dialog.
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Tip.png" alt="Tip!" >
+    </TD>
+    <TD width=100%>
+
+You can also mount volumes by dragging and dropping the encrypted volume file onto the main FreeOTFE window.
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+
+<TABLE BORDER=0 WIDTH="100%">
+  <TR>
+    <TD WIDTH="50%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PC/MountBasic.png">
+    </TD>
+    <TD WIDTH="50%" class="screenshot_img" >
+      <img BORDER="1" src="./images/screenshots/PDA/MountBasic.png">
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD>
+      <FONT SIZE=-1>(PC version)</FONT>
+    </TD>
+    <TD>
+      <FONT SIZE=-1>(PDA version)</FONT>
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD COLSPAN="2">
+      <I>Password entry dialog</I>
+    </TD>
+  </TR>
+</TABLE>
+
+
+<P>
+Enter your volume's password, and click "OK". If the correct password has been entered, the volume will be mounted and shown in the main FreeOTFE window.
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Tip.png" alt="Tip!" >
+    </TD>
+    <TD width=100%>
+
+To reduce the time taken FreeOTFE spends mounting volumes, see the FAQ <A HREF="FAQ.htm#bm">How can I speed FreeOTFE up when mounting my volumes?</A>
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+If this is the first time you have mounted a particular volume after creating it, you will need to format the virtual drive before it can be used. To do so, select the mounted volume shown in the main FreeOTFE window, and select the "Tools | Format..." menuitem. The standard MS Windows format utility will be displayed, and should be used to carry out the format.
+
+<P>
+If you wish to use your volume on both PCs <I>and</I> PDAs, or with FreeOTFE Explorer, it should be formatted on a PC as either FAT or FAT32 (see also the FAQ on <A HREF="FAQ.htm#bl">PDA formatting.</A>)
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_SecurityTip.png" alt="Security tip" >
+    </TD>
+    <TD width=100%>
+
+To increase security, it is recommended that after a volume is formatted, it is overwritten with random data. However, this process can take some time and may be skipped if required. See section on <A HREF="plausible_deniability.htm">plausible deniability</A> for further details
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+Once mounted, a virtual drive can be used in the same way <I>as any other drive</I> (e.g. they will appear in Windows Explorer and in Open/Save dialogs shown by applications); transparently encrypting and decrypting your files as and when needed.
+
+<P>
+
+<TABLE BORDER=0 WIDTH="100%">
+  <TR>
+    <TD WIDTH="50%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PC/ExplorerWithMounted.png">
+    </TD>
+    <TD WIDTH="50%" class="screenshot_img" >
+      <img BORDER="1" src="./images/screenshots/PDA/ExplorerWithMounted.png">
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD>
+      <FONT SIZE=-1>(PC version)</FONT>
+    </TD>
+    <TD>
+      <FONT SIZE=-1>(PDA version)</FONT>
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD COLSPAN="2">
+      <I>Explorer showing mounted volume</I>
+    </TD>
+  </TR>
+</TABLE>
+
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Tip.png" alt="Tip!" >
+    </TD>
+    <TD width=100%>
+
+You can have more than one volume mounted at the same time
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_5"><H3>Dismounting volumes</H3></A>
+
+<P>
+Once you have finished using your secured drive, it should be "dismounted". This will remove the virtual drive, and wipe any sensitive information FreeOTFE has stored in the computers memory.
+
+<P>
+Select which volumes shown in the main FreeOTFE window you wish to dismount and click the "File | Dismount" menuitem; or use the context menu shown by rightclicking on one of the volumes shown (tap and hold, on the PDA version)
+
+<P>
+
+<TABLE BORDER=0 WIDTH="100%">
+  <TR>
+    <TD WIDTH="50%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PC/MainContextMenu.png">
+    </TD>
+    <TD WIDTH="50%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PDA/MainContextMenu.png">
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD>
+      <FONT SIZE=-1>(PC version)</FONT>
+    </TD>
+    <TD>
+      <FONT SIZE=-1>(PDA version)</FONT>
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD COLSPAN="2">
+      <I>Main window context menu</I>
+    </TD>
+  </TR>
+</TABLE>
+
+
+<P>
+To quickly dismount all mounted volumes, use the "Dismount all" menuitem.
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_6"><H3>Changing a volume's password</H3></A>
+
+<P>
+To change a volume's password (or a keyfile's password), select the "Tools | Change volume/keyfile password/details..." menuitem (or "Tools | Change password/details..." on the PDA version) to display the "change password wizard", which will guide you through the process in a series of simple steps.
+
+<P>
+Note that volumes must be <I>dismounted</I> first before they can be modified in this way.
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Tip.png" alt="Tip!" >
+    </TD>
+    <TD width=100%>
+
+You may also change certain volume/keyfile details via this wizard; for example, the default drive letter which the volume will normally be mounted as. Advanced users may also change more technical details, such as the length of salt used in encrypting the volume's CDB/keyfile
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Technical.png" alt="Technical note" >
+    </TD>
+    <TD width=100%>
+
+In common with most disk encryption systems, FreeOTFE uses an "encrypted master key" system to secure volumes.<P>Every FreeOTFE volume has its own "master encryption key" which is generated when the volume is created. This master key is used to carry out the actual encryption/decryption process used to secure data stored within the volume.<P>A volume's master encryption key is, in turn, encrypted with the (PBKDF2 processed) user's password. As a consequence, FreeOTFE doesn't need to decrypt and re-encrypt the entire volume to change the user's password - only the encrypted master encryption key. This makes changing a volume/keyfile's password an extremely quick, and risk free, operation when compared to a complete volume re-encryption.
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

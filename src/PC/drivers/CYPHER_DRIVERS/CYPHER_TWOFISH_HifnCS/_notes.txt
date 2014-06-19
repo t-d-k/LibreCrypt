@@ -1,0 +1,25 @@
+
+
+CYPHER_TWOFISH building:
+
+Copy:
+
+AES.H
+DEBUG.H
+PLATFORM.H
+TABLE.H
+TWOFISH2.C
+
+from the optimised version of twofish into the same dir as "FreeOTFECypherTwofish.c", and ensure that you comment out (or just delete) the line:
+
+#define		CONST				/* helpful C++ syntax sugar, NOP for ANSI C */
+
+in AES.H, and change the line:
+
+CONST BYTE P8x8[2][256]=
+
+in TABLE.H to:
+
+BYTE P8x8[2][256]=
+
+

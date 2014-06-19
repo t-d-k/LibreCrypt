@@ -1,0 +1,36 @@
+This directory contains 3rd party source code required to build the FreeOTFE drivers.
+
+In each case, two copies are included:
+
+  1) The original 3rd party source release
+  2) The above, uncompressed and preconfigured ready for use
+
+Please note that this software is covered by the licences included, and by not the main FreeOTFE licence (for example, libtomcrypt is in the public domain, while Twofish is uncopyrighted and license-free)
+
+3rd party source included is:
+
+libtomcrypt
+ - Tom's Crypto lib library
+ - Obtained from: http://libtomcrypt.org/
+
+Twofish
+ - Counterpane Twofish; the reference and optimised implementations
+ - Obtained from:
+     http://www.schneier.com/twofish.html
+     http://www.schneier.com/twofish-download.html
+
+AES_candidates_1st_round_-_Gladman
+ - Brian Gladman's AES Second Round Implementation Experience
+ - Obtained from: http://fp.gladman.plus.com/cryptography_technology/aesr1/index.htm
+ - Note: The decompressed version has been modified to make it threadsafe
+
+AES_candidates_2nd_round_-_Gladman
+ - Brian Gladman's AES Second Round Implementation Experience
+ - Obtained from: http://fp.gladman.plus.com/cryptography_technology/aesr2/index.htm
+ - Note: The decompressed version has been modified to make it threadsafe
+
+ltc_gladman_xts
+ - The files in this directory are a version of the LibTomCrypt XTS cypher mode
+   library which has been modified to allow its use with the Gladman cypher 
+   libraries.
+

@@ -1,0 +1,776 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Linux Volumes</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI>Linux Volumes
+<UL>
+<LI><a href="Linux_examples__cryptoloop.htm">Examples: Cryptoloop</a>
+<LI><a href="Linux_examples__dm-crypt.htm">Examples: dm-crypt</a>
+<LI><a href="Linux_examples__LUKS.htm">Examples: LUKS</a>
+</UL>
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<h2>Linux Volumes</h2>
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_VistaPCIcon.png" alt="PC version only" >
+    </TD>
+    <TD width=100%>
+This section applies to the PC version of FreeOTFE <I>only</I>
+
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+<I>IMPORTANT</I>: This is obvious, <I>but</I>... If you are using FTP to transfer your Linux volumes between your Linux and MS Windows systems, <I>make sure you transfer the volume file in binary mode!</I>
+
+<P>
+<UL>
+  <LI><A HREF="#level_3_heading_1">Creating Linux Volumes</A>
+  <LI><A HREF="#level_3_heading_2">Hiding a Linux Volume Within Another Volume</A>
+  <LI><A HREF="#level_3_heading_3">Mounting Volumes Created under Linux</A>
+  <LI><A HREF="#level_3_heading_4">Cryptoloop Specific Information</A>
+  <LI><A HREF="#level_3_heading_5">dm-crypt Specific Information</A>
+  <LI><A HREF="#level_3_heading_6">LUKS Specific Information</A>
+  <LI><A HREF="#level_3_heading_7">Additional Notes on Linux Volumes</A>
+</UL>
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>Creating Linux Volumes</H3></A>
+
+<span style="font-style: italic;"><span style="font-weight: bold;">IMPORTANT: </span>If
+you select the wrong options when creating a Linux volume using
+FreeOTFE, you will not be able to read it under Linux! (Although this is patently obvious, there are some people who...!)
+<P>
+<span style="font-weight: bold;">NOTE:</span> At time of writing (17th July 2005), although FreeOTFE can read and write LUKS volumes, it cannot create them itself.<br>
+</span><br>
+
+To create a new encrypted Linux-compatible volume:<br>
+
+<ol>
+  <li>Launch FreeOTFE
+  <li>If you are creating a file-based volume (as opposed to an encrypted partition):
+  <ol>
+    <li>Select "File | Linux volume | New..."</li>
+    <li>Enter the filename and size of the volume required.</li>
+    <li>Click the "OK" button
+
+This will create a file of the appropriate size, and is the equivalent of the Linux command:<br>
+    <blockquote>
+<pre>dd if=/dev/zero of=./vol_none bs=1M count=<span style="font-style: italic;">x</span>
+</pre>
+    </blockquote>
+
+Where "<i>x</i>" is the size of the volume in MB.
+<br>
+
+This
+step is unnecessary in case of using an existing partition on your HDD,
+and is only required in order to create the file which is to store the
+encrypted data. </ol>
+
+  <li>
+
+Select "File | Linux volume | Mount..."</li>
+  <li>
+
+Enter the appropriate parameters into the mount dialog.<br>See
+the "Linux Examples" section in the documentation for example
+configurations; the choices you make here must reflect those options
+that are supported by the version of Linux you wish to subsequently use
+the volume with.<li>Click the "OK" button
+This will mount the volume using the encryption system(s) specified, and is analogous to executing the Linux commands:<br>
+
+<blockquote>
+<pre>losetup /dev/loop0 &lt;volume file&gt; &lt;various options&gt;<br>mkdir ./mountpoint<br>mount /dev/loop0 ./mountpoint<br></pre>
+</blockquote>
+
+At this point a new drive should appear, although at this
+stage it is unformatted and you will be given an error if you attempt
+to access it (e.g. using Windows Explorer)<br>
+  
+  <li>Select the new drive</li><li>Select "Tools | Format..."<br>
+You will be shown the standard MS Windows format dialog. It is suggested that you select either the FAT or FAT32 filesystem.
+<P>
+  
+  </li>
+<li>Click "OK" button to format the volume.<br>
+This is analogous to the Linux command:</li>
+
+<blockquote>
+<pre>mkdosfs /dev/loop0<br></pre>
+</blockquote>
+
+Your volume file is now fully ready for use, although for
+security reasons it is highly recommended that you now initialize the
+volume by writing data to all its sectors before making any further use of it.
+<P>
+This process is recommended because if omitted it may be possible
+for an attacker to determine the amount of data you have stored on your
+volume file (as stated above, the actual process of creating the volume
+file consists of creating a suitably large file, filled with zeros) <br>Note:
+It is important that this step be carried out if you intend using the
+volume file just created as a "host" file for storing a second, hidden,
+encrypted volume. 
+<P>
+  
+  <li>Switch back to FreeOTFE, and select "Tools | Overwrite free space..."<li>Click "Yes" when prompted if you wish to proceed.<br>FreeOTFE will then write pseudorandom
+data to the drive, which will then be encrypted before being written to the volume file.
+  </li>
+
+</ol>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_2"><H3>Hiding a Linux Volume Within Another Volume</H3></A>
+
+To create a Linux volume within another volume file:<br>
+
+<ol>
+
+  <li>Create a FreeOTFE/Linux volume as normal, <span style="font-style: italic;">ensuring that you initialize the volume by mounting it, formatting it, and then overwriting all its free space</span>.</li>
+  <li>Unmount the "host" volume</li>
+  <li>Remount the "host" volume, but specify a reasonable offset on the "File options" tab of the Linux mount dialog.</li>
+</ol>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_3"><H3>Mounting Volumes Created under Linux</H3></A>
+
+Select "File | Linux volume | Mount file.../Mount partition".<br>
+
+Enter the volume's password, and set all appropriate options<br>
+
+Click "OK".
+<P>
+
+Note that if you do not:<br>
+
+<ol>
+
+  <li>Set the same options as used when the volume is mounted and used while under Linux</li>
+  <li>Format the volume using a filesystem MS Windows understands (i.e. NTFS/FAT/FAT32)</li>
+</ol>
+
+then although your Linux volume may well be mounted, its contents will probably be unreadable.<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_4"><H3>Cryptoloop Specific Information</H3></A>
+
+<A NAME="level_4_heading_1"><H4>Hash Selection</H4></A>
+
+Cryptoloop ("losetup") Linux volumes use the hash of the user's key as the key used for reading/writing to the encrypted volume.<br>
+
+<A NAME="level_4_heading_2"><H4>Cryptoloop and RIPEMD-160</H4></A>
+
+If you pass "-H rmd160" to losetup in order to use RIPEMD-160 to
+process your password, losetup's behaviour changes slightly. The user's
+password is <span style="font-style: italic;">not</span> simply hashed with RIPEMD-160 - instead, the following procedure is used:<br>
+
+<ol>
+
+  <li>The user's password is hashed once using RIPEMD-160</li>
+  <li>A copy of the first 129 characters of the user's password is made</li>
+  <li>The capital letter "A" is prepended to the start of the copy</li>
+  <li>The resulting string is then hashed with RIPEMD-160</li>
+  <li>This hash is then appended to the first hash to produce 320 bits of data</li><li>The appropriate
+number of bits is taken from the result, and used as the
+encryption/decryption key.</li>
+
+</ol>
+
+For this reason, FreeOTFE includes a RIPEMD-160 driver
+specifically modified ("RIPEMD-160 (Linux; Twice, with A)") to carry
+out this form of hashing.
+<P>
+
+(This does not appear to be documented; the above logic was derived
+from examining "util-linux-2.12p.diff" - one of the files included with loop-AES)
+<P>
+
+<A NAME="level_4_heading_3"><H4>Cypher Selection</H4></A>
+
+If the cypher selected ("-e" parameter passed as losetup) can support
+different keysizes (e.g. AES supports 128/192/256 bit keysizes), and
+the user doesn't specify the keysize to be used (i.e. you specify "-e
+AES" as opposed to "-e AES128"), then the cypher will default to using
+128 bit keys.
+<P>
+
+(From: <a href="http://loop-aes.sourceforge.net/loop-AES.README">http://loop-aes.sourceforge.net/loop-AES.README</a>)
+<P>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_5"><H3>dm-crypt Specific Information</H3></A>
+
+<h4>/dev/loop1 Usage in the Examples Included in this Documentation<br>
+</h4>The examples shown in this documentation include the slightly odd step of:
+
+<P>
+<blockquote>
+<pre>losetup /dev/loop1 /dev/mapper/myMapper
+mkdosfs /dev/loop1
+...
+</pre>
+</blockquote>
+
+<P>
+as opposed to just straight:
+
+<P>
+<blockquote>
+<pre>mkdosfs /dev/mapper/myMapper
+...
+</pre>
+</blockquote>
+
+<P>
+This is carried out as (in my tests) the latter appears to result in failure:
+
+<P>
+<blockquote>
+<pre># mkdosfs /dev/mapper/myMapper
+mkdosfs 2.8 (28 Feb 2001)
+mkdosfs: unable to get drive geometry for '/dev/mapper/myMapper'
+</pre>
+</blockquote>
+
+<A NAME="level_4_heading_4"><H4>Hash Selection</H4></A>
+
+If an attempt is made to mount a volume using a cypher with a larger
+keysize than the hash algorithm used to processes the user's password,
+dm-crypt appears to use the following algorithm to generate the actual
+encryption/decryption key used by the cypher:<br>
+
+<ol>
+
+  <li>The user's password is hashed.</li>
+  <li>If the hash output contains fewer bits than the cypher's keysize,
+the capital letter "A" is prepended to the user's password, and a new
+hash is generated.</li>
+  <li>This second hash is appended to the previous one</li>
+  <li>If the total hash output contains fewer bits than the cypher's keysize, <span style="font-style: italic;">another</span> capital letter "A" is prepended to the user's password, and a new hash
+is generated.</li>
+  <li>This third hash is appended to the previous hashes</li>
+  <li>If the total hash output contains fewer bits than the cypher's keysize, <span style="font-style: italic;">another</span> capital letter "A" is prepended to the user's password, and a new hash
+is generated.</li>
+  <li>...and so on, until the required keylength is reached.</li>
+</ol>
+
+i.e. This is the same as Cryptoloop uses for its RIPEMD-160
+hashing, but is extended to produce a key of arbitrary length, by adding
+multiple "A" characters to the password and hashing, until a key of the
+required length is obtained.
+<P>
+
+FreeOTFE supports this form of key processing, which can be invoked by
+selecting the option "Hash with "A"s, if hash output is too short" on
+the Linux mount dialog.
+<P>
+
+Note that, under linux, the actual encryption/decryption key can be shown in its hex representation by running "dmsetup table".
+<P>
+
+For example, if the volume's password is "password1234567890ABC", then:
+<P>
+
+If AES (256 bit key) is used for encryption/decryption, and the user's
+password is processed with RIPEMD-160, the actual encryption/decryption
+key will be:<br>
+
+<pre>FAFE56C3BAB4CD216BA02474AC157EA555FA5711<br>D539285C28A6D8122D9464EE</pre>
+
+This is made up as follows:
+<P>
+
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+<tbody>
+<tr>
+<td style="vertical-align: top;">
+<pre>FAFE56C3BAB4CD216BA02474AC157EA555FA5711</pre>
+</td>
+<td style="vertical-align: top;">The first 160 bits are the RIPEMD-160 hash of "password1234567890ABC"</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">
+<pre>D539285C28A6D8122D9464EE<span style="font-style: italic;">0AA3C4811DE0D846</span></pre>
+</td>
+<td style="vertical-align: top;">The remaining bits are the first 96 bits taken from the RIPEMD-160 hash of "Apassword1234567890ABC"</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+
+If Blowfish (448 bit key) is used for encryption/decryption, and the user's password is
+processed with MD5, the actual encryption/decryption key will be:<br>
+
+<pre>4EAB90A0D00CE0086EB59DA838CC888D<br>D1270498F52EFFA562872664BB514F8E<br>2FA054980C9D92542F5801FDF82ADFEA<br>121E587A4EEBDF3B<br></pre>
+
+This is made up as follows:
+<P>
+
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+<tbody>
+<tr>
+<td style="vertical-align: top;">
+<pre>4EAB90A0D00CE0086EB59DA838CC888D</pre>
+</td>
+<td style="vertical-align: top;">The first 128 bits are the MD5 hash of "password1234567890ABC"</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">
+<pre>D1270498F52EFFA562872664BB514F8E</pre>
+</td>
+<td style="vertical-align: top;">The next 128 bits are the MD5 hash of "Apassword1234567890ABC"</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">
+<pre>2FA054980C9D92542F5801FDF82ADFEA</pre>
+</td>
+<td style="vertical-align: top;">The next 128 bits are the MD5 hash of "AApassword1234567890ABC"</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">
+<pre>121E587A4EEBDF3B<span style="font-style: italic;">D6CD437A1B2C32A</span></pre>
+</td>
+<td style="vertical-align: top;">The remaining bits are the first 64 bits taken from the MD5 hash of "AAApassword1234567890ABC"</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+
+<A NAME="level_4_heading_5"><H4>ESSIV</H4></A>
+
+dm-crypt's ESSIV functionality is available with v2.6.10 and later Linux kernels.
+<P>
+
+The manner in which Linux uses ESSIV differs from FreeOTFE volumes in how
+the ESSIV encryption key is generated. Both hash the master
+encryption/decryption key to generate the key used for ESSIV, however
+dm-crypt uses the full hash output as the ESSIV key. This means that if
+you have a dm-crypt volume which is encrypted using 256 bit AES, and
+specify MD5 as the ESSIV hash, the ESSIV process will actually use
+AES-128 for creating the "salt" for ESSIV IVs (MD5 generates 128 bit hashes).
+<P>
+
+It is for this reason, you cannot create a dm-crypt volume under Linux
+using 256 bit Twofish, and specify SHA-512 as the ESSIV hash; Twofish
+doesn't support 512 bit keys, and so dm-crypt fails.<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_6"><H3>LUKS Specific Information</H3></A>
+As LUKS is based on dm-crypt, please see also the section above relating to dm-setup.
+<P>
+FreeOTFE supports LUKS to v1.1 of the LUKS specification. This is the latest version at time of writing (2nd December 2007)<br>
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Tip.png" alt="Tip!" >
+    </TD>
+    <TD width=100%>
+
+As well as using the "File | Linux | Mount file/partition..." menu items, LUKS volumes may also be mounted using the main "File | Mount file/partition..." menu items and toolbar buttons. (FreeOTFE detects LUKS volumes by their signature and offers to mount them appropriately)
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<A NAME="level_4_heading_6"><H4>ESSIV</H4></A>
+<span style="font-weight: bold; font-style: italic;"></span>
+FreeOTFE supports LUKS with ESSIV, subject to the condition that
+the ESSIV hash used generates hashes with the same, or less, bits than
+the cypher's block size.
+<P>
+Also at time of writing (25th February 2007), the current LUKS
+implementation of "cryptsetup" only supports the SHA1 hash algorithm,
+although other hashes may be used for ESSIV.
+<P>
+Because of the way in which dm-crypt operates (see also the "dm-crypt"
+section on ESSIV, above), LUKS ESSIV doesn't do what you'd probably
+expect it to do. Specifically, if you have (for example) a Blowfish-448
+encrypted volume, and specify cbc-essiv:sha256 for use as IVs - LUKS
+(dm-crypt) will actually use Blowfish-256 as the ESSIV cypher, and <span style="font-style: italic;">not </span>Blowfish-448.
+In other words, the ESSIV cypher used will be from the same "family" of
+cypher (AES, Blowfish, Serpent, etc) - but will use the keylength which
+matches the ESSIV hash output length.
+<P>
+As a result of this, another option appears on the LUKS password entry
+dialog; "Base IV cypher on hash length". If this is checked, then when
+mounting an ESSIV volume, the keylength of the cypher used for ESSIV
+generation will be that of the ESSIV hash. If this is unchecked, the
+ESSIV cypher used will have the same keylength as the main bulk
+encryption cypher used for securing the encrypted disk image.
+<P>
+Most users will want this option <span style="font-style: italic;">checked</span>.<br>
+
+<A NAME="level_4_heading_7"><H4>FreeOTFE Supported LUKS Cyphers</H4></A>
+The following table lists compatibility with LUKS cyphers:
+<P>
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="vertical-align: top;">Cypher<br>
+      </th>
+      <th style="vertical-align: top;">Compatibility<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">aes</TD>
+
+      <td style="vertical-align: top;">Supported by FreeOTFE.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">twofish</TD>
+
+      <td style="vertical-align: top;">Supported by FreeOTFE.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">serpent</TD>
+
+      <td style="vertical-align: top;">Supported by FreeOTFE.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">cast5</TD>
+
+      <td style="vertical-align: top;">Supported by FreeOTFE.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">cast6</TD>
+
+      <td style="vertical-align: top;">Supported by FreeOTFE.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<A NAME="level_4_heading_8"><H4>FreeOTFE Supported LUKS Cypher modes</H4></A>
+The following table lists compatibility with LUKS cypher modes:
+<P>
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="vertical-align: top;">Mode<br>
+      </th>
+      <th style="vertical-align: top;">Compatibility<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">ecb</TD>
+
+      <td style="vertical-align: top;">Not supported by FreeOTFE.<br>
+Note: This is a pretty insecure mode - the use of ECB is <span style="font-style: italic;">highly discouraged</span>, and FreeOTFE is unlikely to ever support this mode.</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">cbc-plain</TD>
+
+      <td style="vertical-align: top;">Supported by FreeOTFE.</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">cbc-essiv:<span style="font-style: italic;">&lt;hash&gt;</span></TD>
+
+      <td style="vertical-align: top;">Supported by FreeOTFE</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">xts-plain
+      </td>
+      <td style="vertical-align: top;">Supported by FreeOTFE</TD>
+
+    </tr>
+  </tbody>
+</table>
+<br>
+<A NAME="level_4_heading_9"><H4>FreeOTFE Supported LUKS hashes</H4></A>
+The following table lists compatibility with LUKS hashes:
+<P>
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="vertical-align: top;">Hash<br>
+      </th>
+      <th style="vertical-align: top;">Compatibility<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">sha1</TD>
+
+      <td style="vertical-align: top;">Supported by FreeOTFE.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">sha256</TD>
+
+      <td style="vertical-align: top;">Supported by FreeOTFE.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">sha512</TD>
+
+      <td style="vertical-align: top;">Supported by FreeOTFE.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">ripemd160</TD>
+
+      <td style="vertical-align: top;">Supported by FreeOTFE.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_7"><H3>Additional Notes on Linux Volumes</H3></A>
+
+Linux volumes should be formatted as FAT/FAT32/NTFS in order for them
+to be recognised by MS Windows. Although it should be possible for MS
+Windows can to understand other filesystems (e.g. ext2/ext3/riserFS),
+this does require 3rd party filesystem drivers to be installed.
+<P>
+If you do wish to read an ext2/ext3 formatted volume from MS Windows,
+the filesystem drivers listed below are suggested. There may well be
+others, though at time of writing (23rd December 2005) these are the
+only ones that I have checked:
+<P>
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="vertical-align: top;">Package<br>
+      </th>
+      <th style="vertical-align: top;">URL<br>
+      </th>
+      <th style="vertical-align: top;">Description</th>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Ext2 Installable File System For Windows</TD>
+
+      <td style="vertical-align: top;">http://www.fs-driver.org/</TD>
+
+      <td style="vertical-align: top;">Supports both read and write operations with ext2/ext3. Freeware, but closed source.</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">EXT2 IFS for Windows</TD>
+
+      <td style="vertical-align: top;">http://uranus.it.swin.edu.au/~jn/linux/ext2ifs.htm</TD>
+
+      <td style="vertical-align: top;">Supports ext2, readonly. Open source.</TD>
+
+    </tr>
+  </tbody>
+</table>
+
+<P>
+
+Further information on Linux volumes may be obtained from:
+<P>
+
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">Cryptoloop</TD>
+
+      <td style="vertical-align: top;"><a href="http://tldp.org/HOWTO/Cryptoloop-HOWTO/">Cryptoloop HOWTO</a></td>
+    </tr>
+    <tr>
+ <td style="vertical-align: top;">loop-AES</TD>
+
+      <td style="vertical-align: top;"><a href="http://loop-aes.sourceforge.net/loop-AES.README">loop-AES README</a></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">dm-crypt</TD>
+
+      <td style="vertical-align: top;"><a href="http://www.saout.de/misc/dm-crypt/">dm-crypt WWW site</a><br>
+<a href="http://www.saout.de/tikiwiki/tiki-index.php">dm-crypt Wiki</a>
+      </td>
+    </tr><tr>
+      <td style="vertical-align: top;">LUKS</TD>
+
+      <td style="vertical-align: top;"><a href="http://luks.endorphin.org/">LUKS - Linux Unified Key Setup</a></td>
+    </tr>
+
+  </tbody>
+</table>
+
+<br>
+
+Note that for many of the controls on FreeOTFE's Linux mount volume dialog,
+the equivalent Cryptoloop ("losetup") parameter for that control is displayed
+in brackets.<br>
+
+<span style="font-weight: bold;"><br>
+</span><br>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

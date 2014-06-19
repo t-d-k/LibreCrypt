@@ -1,0 +1,294 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Technical Details: Mounting FreeOTFE Volumes]
+[NOT PLATFORM:PDF </TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+<UL>
+<LI><a href="technical_details__FreeOTFE_volumes_and_keyfiles.htm">Volumes and Keyfiles</a>
+
+<LI><a href="technical_details__FreeOTFE_CDB_layout.htm">Critical Data Block Layouts</a>
+<UL>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_1.htm">Format ID 1</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_2.htm">Format ID 2</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_3.htm">Format ID 3</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_4.htm">Format ID 4</a>
+</UL>
+
+<LI><a href="technical_details__creating_FreeOTFE_volumes.htm">Creating Volumes</a>
+<LI>Mounting Volumes
+<LI><a href="technical_details__partition_encryption_decryption.htm">Encrypted Partition Image Encryption/Decryption</a>
+<LI><a href="technical_details__registry_entries.htm">Registry Entries</a>
+<LI><a href="technical_details__RNGs.htm">Random Number Generators (RNGs)</a>
+<LI><a href="technical_details__build_notes.htm">Building the Software</a>
+<LI><a href="technical_details__creating_a_new_hash_cypher_driver.htm">Creating a New Hash/Cypher Driver</a>
+<LI><a href="technical_details__filename_extensions.htm">Filename Extensions</a>
+</UL>
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<H3>Technical Details: Mounting FreeOTFE Volumes
+</H3>
+
+
+<p>To mount a FreeOTFE volume, the following information must be obtained from the user:<br>
+</p>
+
+<ol>
+
+  <li>The volume to be mounted</li><li>The user's password</li>
+  <li>If the CDB to be used for mounting is stored in a keyfile, the location of the keyfile</li>
+  <li>The length of salt used in the CDB (<span style="font-style: italic;">sl</span>)
+  <li>The number of key iterations</li>
+  <li>When mounting a hidden volume, the following information is also required:</li>
+  <li>The offset within the host file/volume that the hidden volume resides at</li>
+  <li>If the offset specified gives the location of a CDB, or the "Encrypted partition image"
+</ol>
+Although this list may sound as though it places a significant burden
+on the user to remember a significant amount of information. However,
+for most users the only information required will be the volume the
+wish to mount, and their password; all of the other details may be
+defaulted to sensible values unless the user chooses to take advantage
+of the more advanced features of FreeOTFE.
+<P>
+From the information supplied by the user, the following can be determined automatically:<br>
+<ol>
+  <li>
+The cypher used</li>
+  <li>The hash algorithm used
+  <li>All of the details stored within "Volume details block" of the CDB used for mounting
+</ol>
+The first two items are determined by brute force; by decrypting the
+CDB with every possible combination of hash/cypher installed on the
+user's system until the CDB's "Check MAC" is decrypted successfully.
+<P>
+
+In detail, the following procedure is used:
+
+<ol>
+
+<li>The information listed above is obtained from the user.</li>
+
+  <ol>
+  </ol>
+<li>
+The 512 bytes (4096 bits) CDB is read in.<br>
+This will be taken from one of: 
+  <ol>
+
+  <li>The start of the volume being mounted (provided the volume includes a CDB)</li>
+    <li>A host file, starting from a user specified offset, if mounting a hidden volume (provided the hidden volume includes a CDB)</li>
+
+    <li>A keyfile relating to the volume being mounted
+
+  </ol>
+
+<li>The first "<span style="font-style: italic;">sl</span>" bits are stripped off the CDB, and are assumed to be the salt</li><li>For each hash algorithm installed on the user's computer:
+    
+
+<ol>
+<li>For each cypher algorithm installed on the user's computer:
+<ol>
+<li>A "critical data key" is derived by processing the user's password and salt with
+PKCS #5 PBKDF2. The PRF used with PBKDF2 will be HMAC, with the current hash algorithm.<br>
+
+The derived key should be <span style="font-style: italic;">ks</span> bits long (i.e. the cypher's keysize). If <span style="font-style: italic;">ks</span> is undefined, then 512 bits will be used.</li><li>The number of "Random padding #1" bytes is determined, based on the
+cypher's blocksize. This random padding is then stripped off the CDB to give an "Encrypted block".</li>
+        <li>The "Encrypted block" is decrypted using the "critical data key" generated above and the current cypher.</li>
+        <li>The first 512 bytes of the decrypted "Encrypted block" are split off
+and retained as a plaintext check MAC and "Random padding #3".</li>
+        <li>The
+remainder of the decrypted "Encrypted block" is assumed to be a
+"Volume details block". The HMAC of this "Volume details block" is
+generated, using the current hash algorithm and the "critical data key"
+just used for decryption.
+        <li>The generated MAC is truncated to its first 512 bytes, if it's longer than this.</li>
+        <li>The resulting "n" bit MAC is compared with the first "n" bits of the "Check MAC"/"Random padding #3"</li>
+        <li>If the MAC is identical to the "Check MAC", it is assumed that a valid
+cypher/hash combination has been found - the "Volume details block" is
+parsed and stored together with the hash/cypher combination.</li><li>Regardless of whether the generated MAC is identical to the "Check
+MAC", all remaining hash/cypher combinations will be processed in the
+same manner, to check if there are any other matching hash/cypher
+combinations.
+
+        </li>
+</ol>
+</li></ol>
+
+</ol>
+
+After all possible hash/cypher combinations have been exhausted:
+<ul>
+
+<li>If no cypher/hash combination successfully decrypted the "Volume details
+block", the user will be informed that they have entered incorrect details.</li>
+
+<li>If more than one cypher/hash combination successfully decrypted the "Volume
+details block", the user should be prompted to choose which of the combinations they
+wish to use. The system will proceed as if only the user selected combination had been successful in decrypting.</li>
+
+<li>If exactly one cypher/hash combination successfully decrypted the "Volume
+details block", then the "Encrypted partition image" will be decrypted
+as necessary using this cypher/hash combination, together with the information
+obtained from the decrypted "Volume details block".</li>
+
+</ul>As a result of the CDB layout, it is not necessary to store either
+the cypher or hash algorithm used
+for en/decryption anywhere. Nor is it necessary to prompt the user for
+this information as this information can be determined dynamically by
+attempting the mount using
+all possible combinations of installed hash/cypher and testing if the
+same check MAC can be generated using the decrypted data.
+<P>
+<A NAME="level_4_heading_1"><H4>Additional information</H4></A>
+The driver API supports passing volume "metadata" to the driver when
+mounting a volume. Information passed in this way to the driver is
+simply stored by the driver against the mounted volume, and is not
+processed in any way.<br>
+When a user application calls DeviceIOControl with
+IOCTL_FREEOTFE_GET_DISK_DEVICE_STATUS, the number of bytes of volume
+metadata is returned. By calling with IOCTL_FREEOTFE_GET_DISK_DEVICE_METADATA, the actual data that was
+stored when mounting can be retrieved.<br>
+This is intended for future development; to enable user applications to
+store information against volumes they mount (e.g. "This is a Linux
+volume", "This is a FreeOTFE volume"), which can later be retrieved for
+display to the user.<br>
+Volume metadata passed to the driver in this way should be kept to the <span style="font-style: italic;">absolute minimum possible</span>.
+<P>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

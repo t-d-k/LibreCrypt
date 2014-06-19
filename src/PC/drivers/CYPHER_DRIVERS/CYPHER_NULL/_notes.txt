@@ -1,0 +1,8 @@
+
+*) This "encryption" driver just copies it's input straight to it's output.
+
+*) This driver reports a blocksize of "-1" bits
+
+*) This driver reports a keysize of of "0" bits
+
+

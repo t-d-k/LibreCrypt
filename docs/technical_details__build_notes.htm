@@ -1,0 +1,661 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Technical Details: Building the Software</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+</LI><LI><a href="description.htm">Introduction</a>
+</LI><LI><a href="download.htm">Download</a>
+</LI><LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+</LI><LI><a href="getting_started.htm">Getting Started</a>
+</LI><LI><a href="advanced_topics.htm">Advanced Topics</a>
+</LI><LI><a href="portable_mode.htm">Portable Mode</a>
+</LI><LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+</LI><LI><a href="command_line.htm">Command Line Interface</a>
+</LI><LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+</LI><LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+</LI><LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+</LI><LI><a href="FAQ.htm">FAQ</a>
+</LI><LI><a href="technical_details.htm">Technical Details</a>
+<UL>
+</LI><LI><a href="technical_details__FreeOTFE_volumes_and_keyfiles.htm">Volumes and Keyfiles</a>
+
+</LI><LI><a href="technical_details__FreeOTFE_CDB_layout.htm">Critical Data Block Layouts</a>
+<UL>
+</LI><LI><a href="technical_details__FreeOTFE_CDB_layout_format_1.htm">Format ID 1</a>
+</LI><LI><a href="technical_details__FreeOTFE_CDB_layout_format_2.htm">Format ID 2</a>
+</LI><LI><a href="technical_details__FreeOTFE_CDB_layout_format_3.htm">Format ID 3</a>
+</LI><LI><a href="technical_details__FreeOTFE_CDB_layout_format_4.htm">Format ID 4</a>
+</UL>
+
+</LI><LI><a href="technical_details__creating_FreeOTFE_volumes.htm">Creating Volumes</a>
+</LI><LI><a href="technical_details__mounting_FreeOTFE_volumes.htm">Mounting Volumes</a>
+</LI><LI><a href="technical_details__partition_encryption_decryption.htm">Encrypted Partition Image Encryption/Decryption</a>
+</LI><LI><a href="technical_details__registry_entries.htm">Registry Entries</a>
+</LI><LI><a href="technical_details__RNGs.htm">Random Number Generators (RNGs)</a>
+</LI><LI>Building the Software
+</LI><LI><a href="technical_details__creating_a_new_hash_cypher_driver.htm">Creating a New Hash/Cypher Driver</a>
+</LI><LI><a href="technical_details__filename_extensions.htm">Filename Extensions</a>
+</UL>
+</LI><LI><a href="known_bugs.htm">Known Bugs</a>
+</LI><LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+</LI><LI><a href="TODO_list.htm">TODO List</a>
+</LI><LI><a href="version_history.htm">Appendix A: Version History</a>
+</LI><LI><a href="credits.htm">Appendix B: Credits</a>
+</LI><LI><a href="licence.htm">Appendix C: Licence</a>
+</LI><LI><a href="glossary.htm">Appendix D: Glossary</a>
+</LI><LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+</LI><LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+</LI><LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+</LI><LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<H2>Technical Details: Building the Software</h2>
+
+
+FreeOTFE/FreeOTFE4PDA/FreeOTFE Explorer come in a number parts:<br>
+<UL>
+<LI>FreeOTFE:
+<OL>
+<LI>A front-end GUI, written in Delphi
+</LI><LI>A number of kernel drivers, written in C
+</OL>
+</LI><LI>FreeOTFE4PDA:
+<OL>
+</LI><LI>A front-end GUI, written in C
+</LI><LI>A number of drivers, written in C
+</OL>
+</LI><LI>FreeOTFE Explorer:
+<OL>
+</LI><LI>A front-end GUI, written in Delphi
+</LI><LI>The same drivers as FreeOTFE4PDA, but built for Win32
+</OL>
+</LI><LI>A number of command line decryption utilities, also written in C.
+</UL>
+
+<P>
+<UL>
+  </LI><LI><A HREF="#level_3_heading_1">FreeOTFE</A>
+  </LI><LI><A HREF="#level_3_heading_2">FreeOTFE4PDA</A>
+  </LI><LI><A HREF="#level_3_heading_3">FreeOTFE Explorer</A>
+  </LI><LI><A HREF="#level_3_heading_4">Building the Command Line Decryption Utilities</A>
+  </LI><LI><A HREF="#level_3_heading_5">Signing the Binaries</A>
+  </LI><LI><A HREF="#level_3_heading_6">Additional Notes</A>
+</UL>
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>FreeOTFE</H3></A>
+
+
+<A NAME="level_4_heading_1"><H4>Building the GUI</H4></A>
+
+
+<P>
+This is a description for Delphi newbies of the basic steps involved in
+compiling the FreeOTFE GUI.
+<P>
+To build the GUI, the following software is required:<br>
+<ul>
+  </LI><LI>Delphi (CodeGear Delphi 2007 or later, though Delphi 2006 should just as well. Delphi v5 -
+v7 can probably be used with minimal changes, though wouldn't look
+as nice under Windows Vista)</li>
+  </LI><LI>The SDeanComponents package (v2.00.00 or later)</li>
+  </LI><LI>(Optional) GNU gettext for Delphi (dxgettext), available (free) from: <A HREF="http://dybdahl.dk/dxgettext/">http://dybdahl.dk/dxgettext/</A> (This package adds support for language translations)
+</ul>
+The binary release of this software was built with CodeGear Delphi 2007.<br>
+<ol>
+  </LI><LI>With each of the packages in the SDeanComponents archive,</li>
+  <ol>
+    </LI><LI>Build each package</li>
+    </LI><LI>Install each package</li>
+    </LI><LI>Ensure
+that the correct path to each package is added to your Delphi
+environment ("Tools | Environment Options...", "Library" tab)</li>
+  </ol>
+  </LI><LI>Add the path to the modified Delphi files included in SDeanComponents
+to fix various bugs relating to Delphi 2006's Windows Vista support to
+the top of Delphi's standard library paths. (This step probably won't
+be needed with later versions of Delphi, and shouldn't be carried out
+with older versions of Delphi, which will have different source)</LI><LI>Open the FreeOTFE project ("FreeOTFE.dpr")</li>
+  </LI><LI>If you have the dxgettext software installed (see above), ensure that the compiler directive "_DXGETTEXT" is set. Otherwise, make sure that this compiler directive is <I>not</I> set.
+  </LI><LI>Build the application.</li>
+  </LI><LI>You should now find a file called "FreeOTFE.exe" in the directory
+above the "src" directory
+</ol>
+You have now successfully built the GUI frontend!
+<P>
+If required, the compiler definition "FREEOTFE_TIME_CDB_DUMP" may be
+set, in which case the time taken to dump a CDB ("Tools | Critical data
+block | Dump to human readable file...") will be shown after the dump
+completes.
+
+<P>
+<A NAME="level_4_heading_2"><H4>Building the Kernel Drivers</H4></A>
+
+
+The kernel mode drivers implement the actual hash,
+encryption/decryption and main FreeOTFE drivers.
+<P>
+To build these drivers, the following software is required:<br>
+<ul>
+  </LI><LI>Microsoft Visual Studio 2008 (older versions may well be used, changing "vcvarsall" to "vcvars32", and similar changes)
+<UL>
+  </LI><LI>If using an older version of MS Visual Studio, the MS Windows SDK (February 2003 version) is also needed
+</UL>
+  </LI><LI>The MS Windows WDK (WDK for Server 2008 v6001.18001)
+</ul>
+The binary release of this software was built with Microsoft Visual Studio 2005 Professional Edition.
+<P>
+At time of writing, the MS Windows SDK can be downloaded from the
+Microsoft WWW site. The MS Windows DDK is not available as a download,
+but can be ordered from the Microsoft WWW site as a free CD, for the
+cost of delivery.
+<P>
+It should be noted that if you are unable to source the exact versions
+listed above, earlier versions may well be substituted, although I
+cannot guarantee success. Later versions should operate correctly. The
+above list describes the development environment as used to build the
+binary release of FreeOTFE.<br>
+
+<A NAME="level_5_heading_1"><H5>Setting up the Build Environment</H5></A>
+
+
+<A NAME="level_6_heading_1"><H6>Installation and Configuration of MS Build Environment</H6></A>
+
+
+The following list comprehensively describes the configuration used to
+build the binary
+release of FreeOTFE. Feel free to adjust according to taste - a number
+of the options listed are not necessary, and are only included for
+completeness...<br>
+<ol>
+  </LI><LI>Install VC++
+  </LI><LI>Put a copy of "vcvarsall.bat" into one of the directories in your
+path</li>
+  </LI><LI>Configure the VC++ editor:</li>
+  <ul>
+    </LI><LI>To use spaces, not tabs</li>
+    </LI><LI>To indent braces</li>
+  </ul>
+  </LI><LI>Install the MS Windows SDK with the following options:
+  <ul>
+    </LI><LI>Install in C:\MSSDK</li>
+    </LI><LI>Install the "Core SDK"</li>
+    </LI><LI><span style="font-style: italic;">Then</span> install the
+debugging tools for windows</li>
+    </LI><LI>Do <span style="font-style: italic;">not</span> register
+environment variables (we'll use "Setenv.bat" from the command line)</li>
+  </ul>
+  </LI><LI>Install the MS Windows DDK with the following options:</li>
+  <ul>
+    </LI><LI>Install in C:\WINDDK\3790
+    </LI><LI>Include the "Illustrative Driver Samples"</li>
+    </LI><LI>Include the "Input Samples"</li>
+    </LI><LI>Include the "Storage Samples"</li>
+    </LI><LI>Include the "Virtual Device Driver Samples"</li>
+    </LI><LI>Include the "WDM Samples"</li>
+    </LI><LI>Build Environment\Windows Driver Development Kit AMD64
+Additional Build Tools</li>
+    </LI><LI>Build Environment\Windows Server 2003 AMD64 Libraries</li>
+    </LI><LI>Build Environment\Windows XP Headers</li>
+    </LI><LI>Build Environment\Windows XP x86 Libraries</li>
+    </LI><LI>Build Environment\Windows XP IA86 Libraries</li>
+    <ul>
+      </LI><LI>Needed if the build .BAT files (see later) use "chk WXP" - if
+that's skipped it'll default to WNET (windows .NET)</li>
+    </ul>
+    </LI><LI>Build Environment\Windows 2000 Headers</li>
+    </LI><LI>Build Environment\Windows 2000 Build Environment</li>
+    <ul>
+      </LI><LI>Needed if the build .BAT files (see later) use "chk
+&lt;something&gt;" - if that's skipped it'll default to WNET (windows
+.net)</li>
+    </ul>
+  </ul>
+</ol>
+<A NAME="level_6_heading_2"><H6>FreeOTFE Build Configuration</H6></A>
+
+<ol>
+  </LI><LI>Edit "setup_env_common.bat" (located under
+src\drivers\Common\bin), and ensure that the following variables are
+set
+appropriately:</li>
+  <br>
+  <table style="width: 100%; text-align: left;" border="1" cellpadding="2" cellspacing="2">
+    <tbody>
+      <tr>
+        <th style="vertical-align: top;">Variable<br>
+        </th>
+        <th style="vertical-align: top;">Description<br>
+        </th>
+        <th style="vertical-align: top;">Default value<br>
+        </th>
+      </tr>
+      <tr>
+        <td style="vertical-align: top;">FREEOTFE_DEBUG</TD>
+
+        <td style="vertical-align: top;">Build type flag; set to 1 for
+debug build, or 0 for release</TD>
+
+        <td style="vertical-align: top;">0</TD>
+
+      </tr>
+      <tr>
+        <td style="vertical-align: top;">FREEOTFE_TARGET</TD>
+
+        <td style="vertical-align: top;">Target OS to build for; e.g.
+WXP/W2K/WNET; note that W2K builds will not operate correctly under
+Windows XP (e.g. when formatting a volume)</TD>
+
+        <td style="vertical-align: top;">WXP</TD>
+
+      </tr>
+<tr>
+        <td style="vertical-align: top;">PROJECT_DRIVE</td>
+        <td style="vertical-align: top;">The drive on which you have
+stored the FreeOTFE source</td>
+        <td style="vertical-align: top;">E:</TD>
+
+      </tr>
+      <tr>
+        <td style="vertical-align: top;">PROJECT_DIR</td>
+        <td style="vertical-align: top;">The full drive and path where
+the "drivers" directory is located</td>
+        <td style="vertical-align: top;"><span style="font-style: italic;">&lt;see file&gt;</span></TD>
+
+      </tr>
+      <tr>
+        <td style="vertical-align: top;">MSSDK_DIR</td>
+        <td style="vertical-align: top;">The directory in which you
+installed the MS SDK</TD>
+
+        <td style="vertical-align: top;">C:\MSSDK</TD>
+
+      </tr>
+      <tr>
+        <td style="vertical-align: top;">MSDDK_DIR</td>
+        <td style="vertical-align: top;">The directory in which you
+installed the MS DDK</TD>
+
+        <td style="vertical-align: top;">C:\WINDDK\3790</TD>
+
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  </LI><LI>Edit "setup_env_driver.bat" (in the same directory), and ensure
+that "SETENV.BAT" is called with the parameters appropriate to the type
+of build you wish to create, and that "FREEOTFE_OUTPUT_DIR" is set to
+the appropriate directory under the source directories where the build executable
+places the files it creates (this shouldn't be needed as it will happen automatically if the above are configured correctly)
+</ol>
+
+<A NAME="level_6_heading_3"><H6>3rd Party Source Code</H6></A>
+
+
+Some of the FreeOTFE drivers (the hash/encryptions drivers in
+particular) are dependant on certain 3rd party software being
+installed. FreeOTFE's source code comes complete with 3rd party
+included in the"src\3rd_party" directory and should be
+preconfigured, ready for use.
+<P>
+<span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;">Alternatively</span>,
+you may wish to download this 3rd party source from the
+original authors in order to verify the integrity of this software. For
+this reason, details of where this software was obtained from are
+included in the above directory.
+<P>
+Please note that should choose the latter option, it is important that
+you review the individual driver notes (see separate driver
+directories; "_notes.txt" files) to ensure that this software is
+configured correctly. Additionally, you may well have to modify the
+"my_build_sys.bat" files, directing them to the location where you
+installed said 3rd party source code, as the build process requires
+that certain files are copied over into the FreeOTFE src directories.
+(Annoying, but this is a requirement of the MS "build.exe" command)
+<P>
+The LibTomCrypt source in particular had minor configuration changes to
+tomcrypt_cfg.h and tomcrypt_custom.h; please compare the original
+source (a copy of its release ZIP file is stored under
+src\3rd_party\libtomcrypt) with the modified version (uncompressed in a
+directory under this one)<br>
+
+<A NAME="level_5_heading_2"><H5>Building the FreeOTFE Drivers</H5></A>
+
+
+Either:<br>
+<ol>
+  </LI><LI>Open "FreeOTFE.sln" using Visual C++</li>
+  </LI><LI>Rightclick on each project in turn, and select "Build"</li>
+</ol>
+or:<br>
+<ol>
+  </LI><LI>Enter each of the separate driver directories in turn and launch
+each project's "my_build_sys.bat"</li>
+</ol>
+In either case, a copy of the binary which is built will be copied into
+the directory above your "src" directory.
+<P>
+After reaching this stage, you should have successfully built your own
+version of the FreeOTFE drivers!
+<P>
+Notes:<br>
+<ol>
+  </LI><LI>If FREEOTFE_TARGET is set to W2K, the resulting binary may
+not
+operate correctly under MS Windows XP as a number of functions what are
+only needed under Windows XP and later are #ifdef'd out. As a result, a
+"W2K" binary may not operate correctly under Windows XP (e.g. trying to
+format a volume
+may result in... Nothing happening). If you want a binary which will
+operate under <span style="font-style: italic;">both</span> Windows 2000 and Windows XP, set this to WXP.</li>
+  </LI><LI>Windows
+XP migrated a couple of the previous Windows 2000 macros
+to be functions. In order to allow the above "WXP" builds to work under
+Windows 2000, "IFSRelated.h" includes a copy of these macros, and uses
+them regardless - see comments in code for an explanation.</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_2"><H3>FreeOTFE4PDA</H3></A>
+
+
+To build FreeOTFE4PDA (both the drivers and GUI):
+
+<OL>
+  </LI><LI>Open "FreeOTFE4PDA.sln" using Visual C++
+  </LI><LI>Set the build configuration within Visual C++ to "Release" - "Pocket PC 2003 (ARM4)"
+  </LI><LI>Rightclick on each project in turn, and select "Rebuild"
+</OL>
+
+A copy of the binary which is built will be copied into
+the directory above your "src" directory.
+
+
+<P>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_3"><H3>FreeOTFE Explorer</H3></A>
+
+
+<A NAME="level_4_heading_3"><H4>Building the GUI</H4></A>
+
+
+<P>
+This is a description for Delphi newbies of the basic steps involved in
+compiling the FreeOTFE Explorer GUI.
+<P>
+To build the GUI, the following software is required:<br>
+<ul>
+  </LI><LI>Delphi (CodeGear Delphi 2007 or later, though Delphi 2006 should just as well. Delphi v5 -
+v7 can probably be used with minimal changes, though wouldn't look
+as nice under Windows Vista)</li>
+  </LI><LI>The SDeanComponents package (v2.00.00 or later)</li>
+  </LI><LI>(Optional) GNU gettext for Delphi (dxgettext), available (free) from: <A HREF="http://dybdahl.dk/dxgettext/">http://dybdahl.dk/dxgettext/</A> (This package adds support for language translations)
+</ul>
+The binary release of this software was built with CodeGear Delphi 2007.<br>
+<ol>
+  </LI><LI>With each of the packages in the SDeanComponents archive,</li>
+  <ol>
+    </LI><LI>Build each package</li>
+    </LI><LI>Install each package</li>
+    </LI><LI>Ensure
+that the correct path to each package is added to your Delphi
+environment ("Tools | Environment Options...", "Library" tab)</li>
+  </ol>
+  </LI><LI>Add the path to the modified Delphi files included in SDeanComponents
+to fix various bugs relating to Delphi 2006's Windows Vista support to
+the top of Delphi's standard library paths. (This step probably won't
+be needed with later versions of Delphi, and shouldn't be carried out
+with older versions of Delphi, which will have different source)</LI><LI>Open the FreeOTFE Explorer project ("FreeOTFEExplorer.dpr")</li>
+  </LI><LI>If you have the dxgettext software installed (see above), ensure that the compiler directive "_DXGETTEXT" is set. Otherwise, make sure that this compiler directive is <I>not</I> set.
+  </LI><LI>Build the application.</li>
+  </LI><LI>You should now find a file called "FreeOTFEExplorer.exe" in the directory
+above the "src" directory
+</ol>
+You have now successfully built the GUI frontend!<br>
+
+<A NAME="level_4_heading_4"><H4>Building the DLL drivers</H4></A>
+
+
+To build the DLLs used by FreeOTFE Explorer:
+
+<OL>
+  </LI><LI>Open "FreeOTFE4PDA.sln" using Visual C++
+  </LI><LI>Set the build configuration within Visual C++ to "Release" - "Win32"
+  </LI><LI>Rightclick on each project in turn, and select "Rebuild". Note: Don't bother building the "GUI" project; at present, this can only be built for the Windows Mobile platform.
+</OL>
+
+A copy of the binary which is built will be copied into
+the directory above your "src" directory.
+<P>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_4"><H3>Building the Command Line Decryption Utilities</H3></A>
+
+
+<I>Note: The development of the command line decryption utilities has ceased. This functionality has been superceded with the development of FreeOTFE Explorer</I>
+
+<P>
+To build the command line decryption utilities, the following software
+is required:<br>
+<ul>
+  </LI><LI>A C compiler (Visual C++ .NET was used to write and test this
+software)</li>
+</ul>
+Please follow the following steps:<br>
+<ol>
+  </LI><LI>Install and configure up the build environment, as described as
+per building the backend drivers, <span style="font-style: italic;">you
+may omit the SDK and DDK</span>.
+  </LI><LI>Modify the software as appropriate for your test</li>
+  <ul>
+    </LI><LI>Please see the command line decryption utility documentation
+  </ul>
+  </LI><LI>Launch the relevant "my_build_exe.bat" file</li>
+</ol>
+The executable should be built in the same directory.
+
+
+<P>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_5"><H3>Signing the Binaries</H3></A>
+
+
+To sign the FreeOTFE binary files (.exe, .dll and .sys files), the procedure is pretty much as described at: <A 
+
+HREF="http://www.pantaray.com/signcode.html#create_SPC">Pantaray Research</A> WWW site
+
+<P>
+At present, FreeOTFE is signed using a self-signed certificate; the full procedure used is as follows:
+
+<OL>
+</LI><LI>Install Visual Studio
+</LI><LI>From a command prompt, run "vcvarsall" (all commands detailed below should be executed from this command prompt)
+</LI><LI>Create a private certificate:
+
+<blockquote>
+<pre>
+makecert.exe -sv sdean12.pvk -n "E=sdean12@sdean12.org,CN=Sarah Dean" sdean12.cer
+</pre>
+</blockquote>
+
+this should create two files: sdean12.pvk and sdean12.cer
+
+</LI><LI>Create a test software publisher certificate (SPC):
+<blockquote>
+<pre>
+cert2spc.exe sdean12.cer sdean12.spc
+</pre>
+</blockquote>
+to create sdean12.spc. (This file would normally be supplied by a CA, if purchased)
+
+</LI><LI>Create a personal information file:
+<blockquote>
+<pre>
+pvk2pfx -pvk sdean12.pvk -spc sdean12.spc -pfx sdean12.pfx -f /pi <I>&lt;pvk password&gt;</I> /po <I>&lt;pfx password&gt;</I>
+</pre>
+</blockquote>
+
+Where:
+<UL>
+</LI><LI><I>&lt;pvk password&gt;</I> is the password used when generating the .pvk file with makecert.txt
+</LI><LI><I>&lt;pfx password&gt;</I> is the password you wish to use for securing the new .pfx file
+</UL>
+
+</LI><LI>Sign each of binary files:
+<blockquote>
+<pre>
+signtool.exe sign /f sdean12.pfx /p <I>&lt;pfx password&gt;</I> /v /t http://timestamp.verisign.com/scripts/timstamp.dll <I>&lt;filename&gt;</I> 
+</pre>
+</blockquote>
+
+Where:
+<UL>
+</LI><LI><I>&lt;pfx password&gt;</I> is the password used when generating the .pfx file with pvk2pfx
+</UL>
+
+<P>
+The URL specified is a time stamping service (Verisign's in this case).
+</OL>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_6"><H3>Additional Notes</H3></A>
+
+
+When building the C code, FreeOTFEPlatform.h automatically #defines one of the following:
+
+<UL>
+</LI><LI>FreeOTFE_PC_DRIVER
+</LI><LI>FreeOTFE_PC_DLL
+</LI><LI>FreeOTFE_PDA
+</UL>
+
+depending on what is being built.
+
+<P>
+This header file should be #included at the start of <I>every</I> file which uses any of these defines. (Yes, this is obvious - but easily overlooked!)
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

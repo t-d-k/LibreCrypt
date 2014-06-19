@@ -1,0 +1,20 @@
+sha*.c - from tomlibcrypt
+
+1) Ensure that the "sources" file includes the lib path to tomlibcrypt
+2) Comment out the lines:
+
+extern void *XMALLOC(size_t n);
+extern void *REALLOC(void *p, size_t n);
+extern void *XCALLOC(size_t n, size_t s);
+extern void XFREE(void *p);
+
+extern clock_t XCLOCK(void);
+
+and also change:
+
+#define ARGTYPE  0
+to:
+#define ARGTYPE  1
+
+in mycrypt_cfg.h
+

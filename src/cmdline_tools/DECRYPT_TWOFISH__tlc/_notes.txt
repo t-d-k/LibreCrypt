@@ -1,0 +1,11 @@
+IN THE ENCRYPTION KERNEL DRIVER, THE FOLLOWING CHANGE IS REQUIRED:
+
+
+
+
+in twofish.c:
+
+change:
+
+//#define sbox(i, x) ((ulong32)SBOX[i][(x)&255])
+#define sbox(i, x) ((unsigned char)SBOX[i][(x)&255])

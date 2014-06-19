@@ -1,0 +1,40 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{1426f7d5-0665-431b-9d64-a99bbcd21ee7}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <ProjectExtensions>
+    <Borland.Personality>Default.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+  <BorlandProject xmlns=""> <Default.Personality> </Default.Personality> </BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Target Name="FreeOTFE">
+    <MSBuild Projects="main\FreeOTFE.dproj" Targets="" />
+  </Target>
+  <Target Name="FreeOTFE:Clean">
+    <MSBuild Projects="main\FreeOTFE.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="FreeOTFE:Make">
+    <MSBuild Projects="main\FreeOTFE.dproj" Targets="Make" />
+  </Target>
+  <Target Name="FreeOTFEExplorer">
+    <MSBuild Projects="explorer\FreeOTFEExplorer.dproj" Targets="" />
+  </Target>
+  <Target Name="FreeOTFEExplorer:Clean">
+    <MSBuild Projects="explorer\FreeOTFEExplorer.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="FreeOTFEExplorer:Make">
+    <MSBuild Projects="explorer\FreeOTFEExplorer.dproj" Targets="Make" />
+  </Target>
+  <Target Name="Build">
+    <CallTarget Targets="FreeOTFE;FreeOTFEExplorer" />
+  </Target>
+  <Target Name="Clean">
+    <CallTarget Targets="FreeOTFE:Clean;FreeOTFEExplorer:Clean" />
+  </Target>
+  <Target Name="Make">
+    <CallTarget Targets="FreeOTFE:Make;FreeOTFEExplorer:Make" />
+  </Target>
+</Project>

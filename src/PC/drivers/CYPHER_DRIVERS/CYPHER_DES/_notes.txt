@@ -1,0 +1,14 @@
+
+
+Comment out the line:
+
+#define LTC_TEST
+
+in "mycrypt_custom.h"
+
+ - if this is not done, then when the driver is compiled, you will get an error like:
+
+des.c(1774) : error C4242: '=' : conversion from 'int' to 'unsigned char', possible loss of data
+
+when compiling
+

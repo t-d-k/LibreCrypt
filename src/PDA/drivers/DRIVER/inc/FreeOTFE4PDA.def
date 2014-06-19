@@ -1,0 +1,29 @@
+; Description: 
+; By Sarah Dean
+; Email: sdean12@sdean12.org
+; WWW:   http://www.FreeOTFE.org/
+;
+; -----------------------------------------------------------------------------
+;
+
+LIBRARY   FreeOTFE4PDA.dll
+EXPORTS
+; Standard stream device functions...
+    DSK_Init       @1
+    DSK_Deinit     @2
+    DSK_Open       @3
+    DSK_Close      @4
+    DSK_IOControl  @5
+    DSK_Seek       @6
+    DSK_Read       @7
+    DSK_Write      @8
+    DSK_PowerDown  @9
+    DSK_PowerUp    @10
+; FreeOTFE specific functions...
+    MainDeriveKey  @11
+    MainMACData    @12
+
+
+; =========================================================================
+; =========================================================================
+

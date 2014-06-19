@@ -1,0 +1,14 @@
+
+
+*) "RIPEMD-160" generates a straight RIPEMD-160 (160 bit) hash. "RIPEMD-160
+   (Linux; Twice, with A)" is the RIPEMD160 hash as used by linux when
+   "-H rmd160" is specified (e.g. with SuSE Linux).
+
+   "RIPEMD-160 (Linux; Twice, with A)" hashes are generated as follows:
+
+     1) Hash the user's key generating a 160 bit hash.
+     2) Prepend the letter "A" onto the start of the user's key
+     3) Hash the modififed key generating a second 160 bit hash.
+     4) Add the second hash onto the end of the first hash, and return the
+        result.
+

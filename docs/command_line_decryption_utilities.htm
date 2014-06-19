@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Appendix F: Command Line Decryption Utilities</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI>Appendix F: Command Line Decryption Utilities
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+<h2>Appendix F: Command Line Decryption Utilities</h2>
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>Overview</H3></A>
+<B><I>Note: The development of the command line decryption utilities has ceased. This functionality has been superceded with the development of FreeOTFE Explorer</I></B>
+
+<P>
+FreeOTFE is relatively unique in that comes complete with software
+which
+may be used to decrypt encrypted volumes (provided the correct
+decryption key is known!).
+<P>
+This software is designed to fulfil two main objectives:<br>
+<ol>
+  <li>To increase and encourage peer review of FreeOTFE</li>
+  <li>To act as a "security blanket" for users - should development of
+FreeOTFE ever be dropped, it will still be possible for users to
+recover their data, regardless of the state of the FreeOTFE project.</li>
+</ol>
+Functionally, this software has one task: to decrypt the encrypted
+partition area of FreeOTFE volume files and to write out the plaintext
+version for examination.
+<P>
+This software is considerably easier to understand than the
+kernel mode drivers, and does <span style="font-style: italic;">not</span>
+require the Microsoft SDK/DDK to be
+present. As a result, any competent software engineer should be able to
+modify the software as appropriate and confirm that data is being
+encrypted correctly by the FreeOTFE system.
+<P>
+This software is <span style="font-style: italic;">not</span> intended
+for
+general public use, but by those who understand and can write C. In
+order to use it, modifications to the source code will most probably be
+required (to change the decryption keys used, if nothing else). For
+this purpose, the command line decryption utilities are not released in
+binary form, only as
+source code which must be compiled by the user.<br>
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_2"><H3>Operation</H3></A>
+Each of the command line decryption utilities is designed to operate in
+the following manner:<br>
+<ol>
+  <li>Open the (input) encrypted volume file.</li>
+  <ul>
+    <li>The filename used is <span style="font-style: italic;">hard coded</span>
+to "inFile.dat"; obviously this may be changed as required.</li>
+  </ul>
+  <li>Open/Create the (output) plaintext volume file.</li>
+  <ul>
+    <li>The filename used is <span style="font-style: italic;">hard coded</span>
+to "outFile.dat"; obviously this may be changed as required.</li>
+  </ul>
+  <li>Generate an IV, if required</li>
+  <ul>
+    <li>The method of generating the IV may vary, dependant on how the
+volume was encrypted
+  </ul>
+  <li>Read in a sector's worth of data from the input (encrypted) file</li>
+  <li>Decrypt the sector, block by block</li>
+  <ul>
+    <li>The key used here is <span style="font-style: italic;">hard coded</span>
+in the source, and must be the actual key that was used to encrypt the
+data (obviously!)
+    <li>The way in which decryption is carried out is cypher, and
+cypher implementation dependant
+  </ul>
+  <li>Write the decrypted sector to the output (plaintext) file</li>
+  <li>Repeat steps 3-6 until all data has been decrypted</li>
+  <li>Close the output file</li>
+  <li>Close the input file</li>
+</ol>
+Please note:<br>
+<ol>
+  <li>This software is focussed only on decrypting data. They do <span style="font-style: italic;">not</span> hash user keys, etc</li>
+  <li>The hard coded keys must represent the actual encryption keys. In
+the case of Linux volumes, this is the user's password hashed as
+appropriate. In the case of FreeOTFE volumes, this is the "master key"
+stored in the volume's "critical data block"</li>
+</ol>
+At time of writing, although a separate command line decryption utility
+to decode a FreeOTFE volume's CDB/keyfiles has not been
+implemented, the FreeOTFE GUI does incorporate this functionality
+allowing developers to extract all of the information required
+contained within a CDB/keyfile. <span style="font-style: italic;">(Note:
+For obvious reasons, this requires the volume's password and all other
+details that are required to use the CDB are known - it is simply not
+possible to decrypt this information otherwise)</span>
+
+
+<P>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

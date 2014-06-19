@@ -1,0 +1,532 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Linux Examples: LUKS</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+<UL>
+<LI><a href="Linux_examples__cryptoloop.htm">Examples: Cryptoloop</a>
+<LI><a href="Linux_examples__dm-crypt.htm">Examples: dm-crypt</a>
+<LI>Examples: LUKS
+</UL>
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<H2>Linux Examples: LUKS</h2>
+
+
+<P>
+This section gives a series of examples of how to create Linux LUKS volumes, and then mount them using FreeOTFE.
+
+<P>
+These examples have been
+tested using Fedora Core 3, with a v2.6.20.1 kernel installed and using cryptsetup-luks v1.0; though
+they should work for all compatible Linux distributions.
+
+<P>
+Note: The executable name in the following examples is "cryptsetup-luks"; most systems use "cryptsetup".
+
+<P>
+<UL>
+  <LI><A HREF="#level_3_heading_1">Initial Setup</A>
+  <LI><A HREF="#level_3_heading_2">Defaults</A>
+  <LI><A HREF="#level_3_heading_3">Example #1: Mounting a LUKS Volume Encrypted Using LUKS's Default Encryption</A>
+  <LI><A HREF="#level_3_heading_4">Example #2: Mounting a LUKS Volume Encrypted Using 256 bit AES</A>
+  <LI><A HREF="#level_3_heading_5">Example #3: Mounting a LUKS Volume Encrypted Using 128 bit Twofish</A>
+  <LI><A HREF="#level_3_heading_6">Example #4: Mounting a LUKS Volume Encrypted Using 256 bit AES-XTS</A>
+  <LI><A HREF="#level_3_heading_7">Example #5: Mounting a LUKS Volume Encrypted Using 256 bit Serpent XTS</A>
+</UL>
+
+
+<P>
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>Initial Setup</H3></A>
+
+
+<P>
+To begin using LUKS under Linux, ensure that the various kernel modules are installed:
+<br>
+
+<blockquote>
+<pre>
+modprobe cryptoloop
+
+modprobe aes
+modprobe anubis
+modprobe arc4
+modprobe blkcipher
+modprobe blowfish
+modprobe cast5
+modprobe cast6
+modprobe cbc
+modprobe crc32c
+modprobe crypto_algapi
+modprobe crypto_hash
+modprobe cryptomgr
+modprobe crypto_null
+modprobe deflate
+modprobe des
+modprobe ecb
+modprobe gf128mul
+modprobe hmac
+modprobe khazad
+modprobe lrw
+modprobe md4
+modprobe md5
+modprobe michael_mic
+modprobe serpent
+modprobe sha1
+modprobe sha256
+modprobe sha512
+modprobe tea
+modprobe tgr192
+modprobe twofish_common
+modprobe twofish
+modprobe wp512
+modprobe xcbc
+
+<span style="font-style: italic;"># dm_mod should give you dm_snapshot, dm_zero and dm_mirror?</span>
+modprobe dm_mod
+modprobe dm_crypt
+</pre>
+</blockquote>
+
+At this point, typing "dmsetup targets" should give you something along the lines of:<br>
+
+<pre>
+crypt            v1.0.0
+striped          v1.0.1
+linear           v1.0.1
+error            v1.0.1
+</pre>
+
+Typing "lsmod" will show you which modules are currently installed.<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_2"><H3>Defaults</H3></A>
+
+
+<P>
+If not overridden by the user, LUKS defaults to encrypting with:
+
+<P>
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="vertical-align: top;">Cypher:</th>
+      <td style="vertical-align: top;">AES</td>
+    </tr>
+    <tr>
+      <th style="vertical-align: top;">Cypher keysize:</th>
+      <td style="vertical-align: top;">128 bit</td>
+    </tr>
+    <tr>
+      <th style="vertical-align: top;">Cypher mode:</th>
+      <td style="vertical-align: top;">cbc-plain
+      </td>
+    </tr>
+    <tr>
+      <th style="vertical-align: top;">Hash:</th>
+      <td style="vertical-align: top;">SHA-1</td>
+    </tr>
+  </tbody>
+</table>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_3"><H3>Example #1: Mounting a LUKS Volume Encrypted Using LUKS's Default Encryption</H3></A>
+
+
+This example demonstrates use of a LUKS volume using the LUKS's
+default encryption system: AES128 with the user's password hashed with SHA1, using 32 bit sector IDs as encryption IVs
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./volumes/vol_default.vol bs=1M count=1
+losetup /dev/loop0 ./volumes/vol_default.vol
+echo password1234567890ABC | cryptsetup-luks luksFormat /dev/loop0
+cryptsetup-luks luksDump /dev/loop0 
+echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
+dmsetup ls
+dmsetup table
+dmsetup status
+cryptsetup-luks status myMapper
+losetup /dev/loop1 /dev/mapper/myMapper
+mkdosfs /dev/loop1
+mkdir ./test_mountpoint
+mount /dev/loop1 ./test_mountpoint
+cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+umount ./test_mountpoint
+losetup -d /dev/loop1
+cryptsetup-luks luksClose myMapper
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+  <li>Select "Linux | Mount..."</li>
+  <li>Select the volume file</li>
+  <li>In the dialog shown, enter "password1234567890ABC" as the key, and set any of the options wanted.
+<li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_4"><H3>Example #2: Mounting a LUKS Volume Encrypted Using 256 bit AES</H3></A>
+
+
+This example demonstrates use of a LUKS AES256 volume.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./volumes/vol_aes_256.vol bs=1M count=1
+losetup /dev/loop0 ./volumes/vol_aes_256.vol
+echo password1234567890ABC | cryptsetup-luks -c aes -s 256 luksFormat /dev/loop0
+cryptsetup-luks luksDump /dev/loop0 
+echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
+dmsetup ls
+dmsetup table
+dmsetup status
+cryptsetup-luks status myMapper
+losetup /dev/loop1 /dev/mapper/myMapper
+mkdosfs /dev/loop1
+mkdir ./test_mountpoint
+mount /dev/loop1 ./test_mountpoint
+cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+umount ./test_mountpoint
+losetup -d /dev/loop1
+cryptsetup-luks luksClose myMapper
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+<li>Select "Linux | Mount..."</li><li>Select the losetup volume file</li><li>In the dialog shown, enter "password1234567890ABC" as the key, and set any of the options wanted.
+<li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_5"><H3>Example #3: Mounting a LUKS Volume Encrypted Using 128 bit Twofish</H3></A>
+
+
+This example demonstrates use of a LUKS Twofish 128 volume.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./volumes/vol_twofish.vol bs=1M count=1
+losetup /dev/loop0 ./volumes/vol_twofish.vol
+echo password1234567890ABC | cryptsetup-luks -c twofish luksFormat /dev/loop0
+cryptsetup-luks luksDump /dev/loop0 
+echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
+dmsetup ls
+dmsetup table
+dmsetup status
+cryptsetup-luks status myMapper
+losetup /dev/loop1 /dev/mapper/myMapper
+#cat ./test_files/2MB_Z.dat > /dev/loop1
+#cat ./test_files/2MB_0x00.dat > /dev/loop1
+mkdosfs /dev/loop1
+mkdir ./test_mountpoint
+mount /dev/loop1 ./test_mountpoint
+cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+umount ./test_mountpoint
+losetup -d /dev/loop1
+cryptsetup-luks luksClose myMapper
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+  <li>Select "Linux | Mount..."</li>
+  <li>Select the losetup volume file</li><li>In the dialog shown, enter "password1234567890ABC" as the key, and set any of the options wanted.
+<li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_6"><H3>Example #4: Mounting a LUKS Volume Encrypted Using 256 bit AES-XTS</H3></A>
+
+
+This example demonstrates use of a LUKS AES 256 volume in XTS mode.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./volumes/vol_aes_xts.vol bs=5M count=1
+losetup /dev/loop0 ./volumes/vol_aes_xts.vol
+echo password1234567890ABC | cryptsetup-luks -c aes-xts-plain -s 512 luksFormat /dev/loop0
+cryptsetup-luks luksDump /dev/loop0 
+echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
+dmsetup ls
+dmsetup table
+dmsetup status
+cryptsetup-luks status myMapper
+losetup /dev/loop1 /dev/mapper/myMapper
+#cat ./test_files/2MB_Z.dat > /dev/loop1
+#cat ./test_files/2MB_0x00.dat > /dev/loop1
+mkdosfs /dev/loop1
+mkdir ./test_mountpoint
+mount /dev/loop1 ./test_mountpoint
+cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+umount ./test_mountpoint
+losetup -d /dev/loop1
+cryptsetup-luks luksClose myMapper
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+  <li>Select "Linux | Mount..."</li>
+  <li>Select the losetup volume file</li><li>In the dialog shown, enter "password1234567890ABC" as the key, and set any of the options wanted.
+<li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_7"><H3>Example #5: Mounting a LUKS Volume Encrypted Using 256 bit Serpent XTS</H3></A>
+
+
+This example demonstrates use of a LUKS Serpent 256 volume in XTS mode.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./volumes/vol_serpent_xts.vol bs=5M count=1
+losetup /dev/loop0 ./volumes/vol_serpent_xts.vol
+echo password1234567890ABC | cryptsetup-luks -c serpent-xts-plain -s 512 luksFormat /dev/loop0
+cryptsetup-luks luksDump /dev/loop0 
+echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
+dmsetup ls
+dmsetup table
+dmsetup status
+cryptsetup-luks status myMapper
+losetup /dev/loop1 /dev/mapper/myMapper
+#cat ./test_files/2MB_Z.dat > /dev/loop1
+#cat ./test_files/2MB_0x00.dat > /dev/loop1
+mkdosfs /dev/loop1
+mkdir ./test_mountpoint
+mount /dev/loop1 ./test_mountpoint
+cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+umount ./test_mountpoint
+losetup -d /dev/loop1
+cryptsetup-luks luksClose myMapper
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+  <li>Select "Linux | Mount..."</li>
+  <li>Select the losetup volume file</li><li>In the dialog shown, enter "password1234567890ABC" as the key, and set any of the options wanted.
+<li>Click the "OK" button</li>
+</ol>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

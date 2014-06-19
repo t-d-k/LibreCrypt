@@ -1,0 +1,5 @@
+http://gladman.plus.com/
+http://fp.gladman.plus.com/cryptography_technology/aesr2/index.htm
+ - ZIP file from this URL; these are AES 2nd round implementations
+
+04/12/05

@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A37FC339-7583-4A4E-9F0C-2FD86F8508BB}</ProjectGuid>
+    <RootNamespace>DRIVER</RootNamespace>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC70.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC70.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</IntDir>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">my_build_sys.bat</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">build -gcZ</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">FreeOTFE.sys</NMakeOutput>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</IntDir>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">my_build_sys.bat</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">build -gcZ</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">FreeOTFE.sys</NMakeOutput>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\FreeOTFE.c" />
+    <ClCompile Include="..\..\..\Common\DRIVER\src\FreeOTFEBlockCalc.c" />
+    <ClCompile Include="..\..\..\Common\DRIVER\src\FreeOTFECallModuleFn.c" />
+    <ClCompile Include="..\..\..\Common\DRIVER\src\FreeOTFEContext.c" />
+    <ClCompile Include="..\..\..\Common\CYPHER_DRIVERS\Common\src\FreeOTFECypherAPICommon.c" />
+    <ClCompile Include="..\..\..\Common\Common\src\FreeOTFEDebug.c" />
+    <ClCompile Include="..\Common\src\FreeOTFEDriverlib.c" />
+    <ClCompile Include="..\..\..\Common\DRIVER\src\FreeOTFEGenerateBlockIV.c" />
+    <ClCompile Include="..\..\..\Common\DRIVER\src\FreeOTFEKDFHashSaltedPassword.c" />
+    <ClCompile Include="..\..\..\Common\DRIVER\src\FreeOTFEKDFPBKDF2.c" />
+    <ClCompile Include="..\..\..\Common\Common\src\FreeOTFElib.c" />
+    <ClCompile Include="..\..\..\Common\DRIVER\src\FreeOTFEMACHash.c" />
+    <ClCompile Include="..\..\..\Common\DRIVER\src\FreeOTFEMACHMAC.c" />
+    <ClCompile Include="..\..\..\Common\Common\src\FreeOTFENULLGUID.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\FreeOTFE.h" />
+    <ClInclude Include="inc\FreeOTFEAPI.h" />
+    <ClInclude Include="inc\FreeOTFEAPIConsts.h" />
+    <ClInclude Include="..\..\..\Common\DRIVER\inc\FreeOTFEAPIConstsCommon.h" />
+    <ClInclude Include="..\..\..\Common\DRIVER\inc\FreeOTFEAPITypes.h" />
+    <ClInclude Include="..\..\..\Common\DRIVER\inc\FreeOTFEBlockCalc.h" />
+    <ClInclude Include="..\..\..\Common\DRIVER\inc\FreeOTFECallModuleFn.h" />
+    <ClInclude Include="..\..\..\Common\DRIVER\inc\FreeOTFEContext.h" />
+    <ClInclude Include="..\CYPHER_DRIVERS\Common\inc\FreeOTFECypherAPI.h" />
+    <ClInclude Include="..\..\..\Common\CYPHER_DRIVERS\Common\inc\FreeOTFECypherAPICommon.h" />
+    <ClInclude Include="..\..\..\Common\Common\inc\FreeOTFEDebug.h" />
+    <ClInclude Include="..\..\..\Common\DRIVER\inc\FreeOTFEDriverConstsCommon.h" />
+    <ClInclude Include="..\Common\inc\FreeOTFEDriverlib.h" />
+    <ClInclude Include="..\..\..\Common\DRIVER\inc\FreeOTFEGenerateBlockIV.h" />
+    <ClInclude Include="..\HASH_DRIVERS\Common\inc\FreeOTFEHashAPI.h" />
+    <ClInclude Include="..\..\..\Common\HASH_DRIVERS\Common\inc\FreeOTFEHashAPICommon.h" />
+    <ClInclude Include="..\..\..\Common\DRIVER\inc\FreeOTFEKDFHashSaltedPassword.h" />
+    <ClInclude Include="..\..\..\Common\DRIVER\inc\FreeOTFEKDFPBKDF2.h" />
+    <ClInclude Include="..\..\..\Common\Common\inc\FreeOTFElib.h" />
+    <ClInclude Include="..\..\..\Common\DRIVER\inc\FreeOTFEMACHash.h" />
+    <ClInclude Include="..\..\..\Common\DRIVER\inc\FreeOTFEMACHMAC.h" />
+    <ClInclude Include="..\..\..\Common\Common\inc\FreeOTFENULLGUID.h" />
+    <ClInclude Include="..\..\..\Common\Common\inc\FreeOTFEPlatform.h" />
+    <ClInclude Include="src\IFSRelated.h" />
+    <ClInclude Include="src\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\FreeOTFE.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,37 @@
+!IF 0
+
+Copyright (C) Microsoft Corporation, 1997 - 1997
+
+Module Name:
+
+    sources.
+
+!ENDIF
+
+TARGETNAME=FreeOTFEHashSHA
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+!IF 0
+  Include the CSQ stuff...
+!ENDIF
+TARGETLIBS=$(DDK_LIB_PATH)\csq.lib
+
+INCLUDES=..\..\..\DRIVER\inc;..\..\..\Common\inc;..\..\Common\inc;..\..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\headers;..\..\..\..\..\Common\HASH_DRIVERS\Common\inc;..\..\..\..\..\Common\Common\inc
+
+
+!IF 0
+  Note: File:
+       sha224.c is #included by sha256.c
+       sha384.c is #included by sha512.c
+!ENDIF
+
+SOURCES=FreeOTFEHashDriver.c\
+        FreeOTFEDebug.c \
+        FreeOTFElib.c \
+        FreeOTFEDriverlib.c \
+        FreeOTFEHashSHA.c \
+        FreeOTFEHashSHA.rc \
+        sha1.c \
+        sha256.c \
+        sha512.c
+

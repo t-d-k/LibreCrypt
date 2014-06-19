@@ -1,0 +1,852 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Command Line Interface</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI>Command Line Interface
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<h2>Command Line Interface</h2>
+
+Both the PC and PDA version support passing parameters via a command line interface.<br>
+
+<P>
+<UL>
+  <LI><A HREF="#level_3_heading_1">PC Version</A>
+  <LI><A HREF="#level_3_heading_2">PDA Version</A>
+</UL>
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>PC Version</H3></A>
+
+<A NAME="level_4_heading_1"><H4>Synopsis</H4></A>
+
+<blockquote>
+<pre>
+FreeOTFE.exe /mount /volume <span style="font-style: italic;">&lt;volume&gt;</span> [/freeotfe | /linux] [/readonly] [/drive <span style="font-style: italic;">&lt;drive letter&gt;</span>]
+             [/offset <span style="font-style: italic;">&lt;offset&gt;</span>] [/nocdbatoffset]
+             [/keyfile <span style="font-style: italic;">&lt;keyfile&gt;</span>] [/keyfileisascii] [/keyfilenewline {CRLF|LF|CR}]
+             [/lesfile <span style="font-style: italic;">&lt;LES file&gt;</span>]
+             [/saltlength <span style="font-style: italic;">&lt;saltlength&gt;</span>] [/keyiterations <span style="font-style: italic;">&lt;keyiterations&gt;</span>]
+             [/password <span style="font-style: italic;">&lt;password&gt;</span>] [/silent] [/noexit] [/minimize]
+             [/settings <span style="font-style: italic;">&lt;settings file&gt;</span>]
+
+FreeOTFE.exe /dismount {<span style="font-style: italic;">&lt;drive letter&gt;</span>[:] | all} [/force]
+
+FreeOTFE.exe /count
+
+FreeOTFE.exe /create
+
+FreeOTFE.exe /portable {start | on | 1 | stop | off | 0 | toggle} [/silent]
+
+FreeOTFE.exe /drivercontrol gui
+FreeOTFE.exe /drivercontrol count [/type {total | portable | installed}]
+FreeOTFE.exe /drivercontrol install /filename {<span style="font-style: italic;">&lt;driver filename&gt;</span> | all} [/silent]
+FreeOTFE.exe /drivercontrol uninstall /drivername {<span style="font-style: italic;">&lt;driver name&gt;</span> | all} [/silent]
+</pre>
+</blockquote>
+
+<A NAME="level_4_heading_2"><H4>Description</H4></A>
+
+FreeOTFE supports a number of command line options that allow a number
+of its main functions to be carried out from the command line or via
+MS Windows shortcuts.<br>
+
+<A NAME="level_4_heading_3"><H4>Options</H4></A>
+
+Note that "-" may be substituted in place of "/", if required.
+<P>
+
+Note: Although there is currently no option to specify which drive
+letter a volume should be mounted as, this may be set on any given
+FreeOTFE volume by selecting "Tools | Change volume/keyfile
+password/details..."
+<P>
+
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/count</pre>
+      </td>
+      <td style="vertical-align: top;">Count
+the number of mounted volumes. Exit code indicates the appropriate number (or error code;
+see below)</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/create</pre>
+      </td>
+      <td style="vertical-align: top;">Create new FreeOTFE volume
+      </td>
+    </tr>
+<tr>
+      <td style="vertical-align: top;">
+      <pre>/dismount {<span style="font-style: italic;">&lt;drive letter&gt;</span>[:] | all}</pre>
+      </td>
+      <td style="vertical-align: top;">Dismount indicated drive/all drives</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/drive <span style="font-style: italic;">&lt;drive letter&gt;</span></pre>
+      </td>
+      <td style="vertical-align: top;">Drive letter to be used when mounting the volume</TD>
+
+    </tr>
+<tr>
+      <td style="vertical-align: top;">
+      <pre>/drivercontrol count [/type {total | portable | installed}]</pre>
+      </td>
+      <td style="vertical-align: top;">Return count of drivers as exit code; total drivers present/count
+installed in portable mode/count formally installed. If "/type" is not
+specified, "/type total" is assumed</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/drivercontrol gui</pre>
+      </td>
+      <td style="vertical-align: top;">Display driver control dialog</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/drivercontrol install /filename {<span style="font-style: italic;">&lt;driver filename&gt;</span> | all}</pre>
+      </td>
+      <td style="vertical-align: top;">Install specified driver, or all drivers in the current working directory</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/drivercontrol uninstall /drivername {<span style="font-style: italic;">&lt;driver name&gt;</span> | all}<span style="font-style: italic;"></span></pre>
+      </td>
+      <td style="vertical-align: top;">Uninstall specified driver, or all installed drivers. Note that this takes the <span style="font-style: italic;">driver name</span>, not the driver's filename (Important: Don't attempt to uninstall drivers which are currently in use; e.g. by a mounted volume)</td>
+    </tr>
+
+<tr>
+      <td style="vertical-align: top;">
+      <pre>/force</pre>
+      </td>
+      <td style="vertical-align: top;">When dismounting, force dismount (emergency dismount)</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/freeotfe</pre>
+      </td>
+      <td style="vertical-align: top;">The specified volume is a FreeOTFE volume. If a volume type
+(FreeOTFE/Linux) isn't specified, the user will be prompted for this
+information.</td>
+    </tr>
+    
+<tr>
+      <td style="vertical-align: top;">
+      <pre>/keyfile <span style="font-style: italic;">&lt;keyfile&gt;</span></pre>
+
+      </td>
+      <td style="vertical-align: top;">Keyfile to be used when mounting a FreeOTFE volume. Only valid when mounting FreeOTFE volumes</td>
+    </tr>
+<tr>
+      <td style="vertical-align: top;">
+      <pre>/keyfileisascii</pre>
+
+      </td>
+      <td style="vertical-align: top;">Only valid when mounting Linux LUKS volumes. If this flag is specified, the keyfile will be treated as containing ASCII password. Otherwise the keyfile will be treated as containing binary data. Default is to treat as binary.</td>
+    </tr>
+<tr>
+      <td style="vertical-align: top;">
+      <pre>/keyfilenewline {CRLF|LF|CR}</pre>
+
+      </td>
+      <td style="vertical-align: top;">Only valid when mounting Linux LUKS volumes. If /keyfileisascii is specified, the first newline found in the keyfile will be treated as an EOF. This option specifies what constitutes a newline. Default is "LF".</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/keyiterations <span style="font-style: italic;">&lt;keyiterations&gt;</span></pre>
+      </td>
+      <td style="vertical-align: top;">The number of key iterations</TD>
+
+    </tr>
+<tr>
+      <td style="vertical-align: top;">
+      <pre>/lesfile <span style="font-style: italic;">&lt;LES file&gt;</span></pre>
+
+      </td>
+      <td style="vertical-align: top;">File from which to read Linux encryption settings from. Only valid when mounting non-LUKS Linux volumes</td>
+    </tr>
+<tr>
+      <td style="vertical-align: top;">
+      <pre>/linux</pre>
+      </td>
+      <td style="vertical-align: top;">The specified volume is a Linux volume. If a
+volume type (FreeOTFE/Linux) isn't specified, the user will be prompted for this information.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/mount</pre>
+      </td>
+      <td style="vertical-align: top;">Mount indicated file/partition</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/minimize</pre>
+      </td>
+      <td style="vertical-align: top;">Minimize main window when run</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/nocdbatoffset</pre>
+      </td>
+      <td style="vertical-align: top;">Indicates there is no CDB stored from the offset specified by "/offset". Only meaningful when both "/offset", "/freeotfe" and "/keyfile" are used.
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/noexit</pre>
+      </td>
+      <td style="vertical-align: top;">Normally, when run with command line parameters, FreeOTFE carries out the requested action and exits. Specifying this parameter will cause FreeOTFE to continue running</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/offset <span style="font-style: italic;">&lt;offset&gt;</span></pre>
+      </td>
+      <td style="vertical-align: top;">Use specified offset when mounting. This may be specified using GB/MB/KB units, or with no units for an offset in bytes (e.g. 5GB or 5368709120 for a 5GB offset). Note: If the value used for the offset has has a space in it, it should be surrounded by quotes (e.g. "10 GB" or 10GB are both valid)</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/password <span style="font-style: italic;">&lt;password&gt;</span></pre>
+      </td>
+      <td style="vertical-align: top;">The
+password to be used. It is <I>not</I> recommended that this is used;
+particularly in shortcuts, as this would involve storing your password
+in plaintext such that anyone can read it!
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/portable {start | on | 1 | stop | off | 0 | toggle}</pre>
+      </td>
+      <td style="vertical-align: top;">Turn on/off portable mode</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/readonly</pre>
+      </td>
+      <td style="vertical-align: top;">Mount the volume readonly</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/settings</pre>
+      </td>
+      <td style="vertical-align: top;">Use specified file for program settings, instead of normal settings location 
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/silent<span style="font-style: italic;"></span></pre>
+      </td>
+      <td style="vertical-align: top;">Can be used when installing/uninstalling drivers and changing portable mode to suppress dialogs, and also when mounting a volume to prevent the password entry dialog showing
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/saltlength <span style="font-style: italic;">&lt;saltlength&gt;</span></pre>
+      </td>
+      <td style="vertical-align: top;">The length of the salt (in bits)</TD>
+
+    </tr>
+<tr>
+      <td style="vertical-align: top;">
+      <pre>/volume <span style="font-style: italic;">&lt;volume&gt;</span></pre>
+      </td>
+      <td style="vertical-align: top;">The volume filename/partition to
+be used. When using a volume file, this should be set to the full path
+and filename of a volume file. Partitions should be specified in the
+form: "\Device\Harddisk<span style="font-style: italic;">X</span>\Partition<span style="font-style: italic;">Y</span>", where <span style="font-style: italic;">X</span> is 0 based, while <span style="font-style: italic;">Y</span> starts from 1 to indicate a particular partition, or 0 to indicate the entire disk.<br>
+Important: If the volume filename has any spaces in it, then it should be enclosed in double quotes (").</TD>
+
+    </tr>
+  </tbody>
+</table>
+
+<br>
+Note: Under Windows Vista, the "install" and "uninstall" options
+require
+FreeOTFE.exe to be explicitly "runas" an account with administrator
+privileges, if not being executed from a process which has already been
+escalated; see
+examples below. The "/portable" will automatically escalate to
+administrator privileges, if required
+<P>
+
+<A NAME="level_4_heading_4"><H4>Exit Codes</H4></A>
+
+When run at the command line, FreeOTFE will terminate with one of the following exit codes:
+<P>
+
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <th style="vertical-align: top;">Exit code<br>
+      </th>
+      <th style="vertical-align: top;">Meaning<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">0</td>
+      <td style="vertical-align: top;">Success</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">100</TD>
+
+      <td style="vertical-align: top;">Invalid/unrecognised command line</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">101</TD>
+
+      <td style="vertical-align: top;">Unable to connect to FreeOTFE driver; check driver is installed or portable mode is started</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">102</TD>
+
+      <td style="vertical-align: top;">Unable to mount volume</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">103</TD>
+
+      <td style="vertical-align: top;">Unable to dismount volume
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">104</TD>
+
+      <td style="vertical-align: top;">Unable to start portable mode</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">105</TD>
+
+      <td style="vertical-align: top;">Unable to stop portable mode</td>
+    </tr><tr>
+      <td style="vertical-align: top;">106</TD>
+
+      <td style="vertical-align: top;">The requested operation requires administrative privileges</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">999</TD>
+
+      <td style="vertical-align: top;">Other error</TD>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<br>
+
+<A NAME="level_4_heading_5"><H4>Examples</H4></A>
+
+Mounting a FreeOTFE volume:<br>
+
+<blockquote>
+<pre>FreeOTFE.exe /mount /volume "C:\My Private Data\my encrypted volume.dat" /freeotfe</pre>
+</blockquote>
+
+<br>
+
+Mounting a Linux volume readonly:<br>
+
+<blockquote>
+<pre>FreeOTFE.exe /mount /volume "C:\My Private Data\my encrypted volume.dat" /linux /readonly</pre>
+</blockquote>
+
+<br>
+
+Mounting a FreeOTFE partition::<br>
+
+<blockquote>
+<pre>FreeOTFE.exe /mount /volume "\Device\Harddisk0\Partition1" /freeotfe /readonly</pre>
+</blockquote>
+
+<br>
+
+Dismount drive "S:":<br>
+
+<blockquote>
+<pre>FreeOTFE.exe /dismount S:</pre>
+</blockquote>
+
+<br>
+
+Dismount all volumes, emergency:<br>
+
+<blockquote>
+<pre>FreeOTFE.exe /dismount all /force</pre>
+</blockquote>
+
+<br>
+
+Start and stop portable mode:<br>
+
+<blockquote>
+<pre>FreeOTFE.exe /portable start<br>FreeOTFE.exe /portable stop<br></pre>
+</blockquote>
+
+<br>
+Installing drivers (except Windows Vista):<br>
+
+<blockquote>
+<pre>
+FreeOTFE.exe /drivercontrol install /filename FreeOTFE.sys
+FreeOTFE.exe /drivercontrol install /filename FreeOTFEHashSHA.sys
+FreeOTFE.exe /drivercontrol install /filename FreeOTFECypherAES_ltc.sys
+</pre>
+</blockquote>
+
+<br>
+
+Installing drivers (Windows Vista):<br>
+
+<blockquote>
+<pre>
+runas /user:<span style="font-style: italic;">myAdminAccount</span> FreeOTFE.exe /drivercontrol install /filename FreeOTFE.sys
+runas /user:<span style="font-style: italic;">myAdminAccount</span> FreeOTFE.exe /drivercontrol install /filename FreeOTFEHashSHA.sys
+runas /user:<span style="font-style: italic;">myAdminAccount</span> FreeOTFE.exe /drivercontrol install /filename FreeOTFECypherAES_ltc.sys
+</pre>
+</blockquote>
+
+<br>
+Uninstalling drivers (except Windows Vista):<br>
+
+<blockquote>
+<pre>
+FreeOTFE.exe /drivercontrol uninstall /drivername FreeOTFE
+FreeOTFE.exe /drivercontrol uninstall /drivername FreeOTFEHashSHA
+FreeOTFE.exe /drivercontrol uninstall /drivername FreeOTFECypherAES</pre>
+</blockquote>
+
+
+<br>
+Uninstalling drivers (except Windows Vista):<br>
+
+<blockquote>
+<pre>
+runas /user:<span style="font-style: italic;">myAdminAccount</span> FreeOTFE.exe /drivercontrol uninstall /drivername FreeOTFE
+runas /user:<span style="font-style: italic;">myAdminAccount</span> FreeOTFE.exe /drivercontrol uninstall /drivername FreeOTFEHashSHA
+runas /user:<span style="font-style: italic;">myAdminAccount</span> FreeOTFE.exe /drivercontrol uninstall /drivername FreeOTFECypherAES</pre>
+</blockquote>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_2"><H3>PDA Version</H3></A>
+
+<A NAME="level_4_heading_6"><H4>Synopsis</H4></A>
+
+<blockquote>
+<pre>
+FreeOTFE4PDA.exe /mount /volume <span style="font-style: italic;">&lt;volume&gt;</span>  [/freeotfe | /linux] [/keyfile <span style="font-style: italic;">&lt;keyfile&gt;</span>]
+                 [/password <span style="font-style: italic;">&lt;password&gt;</span>] [/mountpoint <span style="font-style: italic;">&lt;mountpoint&gt;</span>] [/freeotfe]
+                 [/readonly] [/offset <span style="font-style: italic;">&lt;offset&gt;</span>] [/nocdbatoffset]
+                 [/saltlength <span style="font-style: italic;">&lt;saltlength&gt;</span>] [/keyiterations <span style="font-style: italic;">&lt;keyiterations&gt;</span>]
+                 [/silent] [/noexit]
+
+FreeOTFE4PDA.exe /dismount {<span style="font-style: italic;">&lt;mountpoint&gt;</span> | all} [/force]
+
+FreeOTFE4PDA.exe /create
+</pre>
+</blockquote>
+
+<A NAME="level_4_heading_7"><H4>Description</H4></A>
+
+FreeOTFE4PDA supports a number of command line options that allow a number
+of its main functions to be carried out from the command line or via
+MS Windows shortcuts.<br>
+
+<A NAME="level_4_heading_8"><H4>Options</H4></A>
+
+Note that "-" may be substituted in place of "/", if required.
+<P>
+
+Important: Any mountpoints or filenames with spaces in them must be enclosed in double quotes (").
+<P>
+
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/create</pre>
+      </td>
+      <td style="vertical-align: top;">Create new FreeOTFE volume
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/dismount {<span style="font-style: italic;">&lt;mountpoint&gt;</span> | all}</pre>
+      </td>
+      <td style="vertical-align: top;">Dismount indicated volume/all mounted volumes.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/force</pre>
+      </td>
+      <td style="vertical-align: top;">When dismounting, force dismount (emergency dismount)</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/freeotfe</pre>
+      </td>
+      <td style="vertical-align: top;">The specified volume is a FreeOTFE volume.
+</td>
+    </tr>
+    
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/keyfile <span style="font-family: mon;"><span style="font-style: italic;">&lt;</span></span><span style="font-style: italic;">keyfile&gt;</span></pre>
+      </td>
+      <td style="vertical-align: top;">The keyfile to be used. If specified, this must be set to the full path and filename of the keyfile.</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/keyiterations <span style="font-style: italic;">&lt;keyiterations&gt;</span></pre>
+      </td>
+      <td style="vertical-align: top;">The number of key iterations</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/linux</pre>
+      </td>
+      <td style="vertical-align: top;">The specified volume is a Linux volume. If a volume type
+(FreeOTFE/Linux) isn't specified when mounting, "/freeotfe" will be assumed.</td>
+    </tr>
+<tr>
+      <td style="vertical-align: top;">
+      <pre>/mount</pre>
+      </td>
+      <td style="vertical-align: top;">Mount indicated file/partition</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/mountpoint <span style="font-family: mon;"><span style="font-style: italic;">&lt;mountpoint</span></span><span style="font-style: italic;">&gt;</span></pre>
+      </td>
+      <td style="vertical-align: top;">The mountpoint where the volume is to appear.</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/nocdbatoffset</pre>
+      </td>
+      <td style="vertical-align: top;">Indicates that there is no CDB
+at the offset with the volume. This parameter has no effect unless the
+"<span style="font-style: italic;">/keyfile</span>" parameter is specified</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/noexit</pre>
+      </td>
+      <td style="vertical-align: top;">Normally, when run with command line parameters, FreeOTFE4PDA carries out the requested action and exits. Specifying this parameter will cause FreeOTFE4PDA to continue running</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/offset <span style="font-style: italic;">&lt;offset&gt;</span></pre>
+      </td>
+      <td style="vertical-align: top;">The offset within the file (in bytes)</TD>
+
+    </tr>
+<tr>
+      <td style="vertical-align: top;">
+      <pre>/password <span style="font-style: italic;">&lt;password&gt;</span></pre>
+      </td>
+      <td style="vertical-align: top;">The
+password to be used. It is <I>not</I> recommended that this is used;
+particularly in shortcuts, as this would involve storing your password
+in plaintext such that anyone can read it!
+</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/readonly</pre>
+      </td>
+      <td style="vertical-align: top;">Mount the volume readonly</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/saltlength <span style="font-style: italic;">&lt;saltlength&gt;</span></pre>
+      </td>
+      <td style="vertical-align: top;">The length of the salt (in bits)</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/silent<span style="font-style: italic;"></span></pre>
+      </td>
+      <td style="vertical-align: top;">Can be used when mounting a volume to prevent the password entry dialog showing
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <pre>/volume <span style="font-style: italic;">&lt;volume&gt;</span></pre>
+      </td>
+      <td style="vertical-align: top;">The volume filename/partition to
+be used. This should be set to the full path
+and filename of a volume file.</TD>
+
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+<A NAME="level_4_heading_9"><H4>Exit Codes</H4></A>
+
+When run at the command line, FreeOTFE will terminate with one of the following exit codes:
+<P>
+
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <th style="vertical-align: top;">Exit code<br>
+      </th>
+      <th style="vertical-align: top;">Meaning<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">0</td>
+      <td style="vertical-align: top;">Success</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">100</TD>
+
+      <td style="vertical-align: top;">Invalid/unrecognised command line</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">101</TD>
+
+      <td style="vertical-align: top;">n/a</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">102</TD>
+
+      <td style="vertical-align: top;">Unable to mount volume</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">103</TD>
+
+      <td style="vertical-align: top;">Unable to dismount volume
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">104</TD>
+
+      <td style="vertical-align: top;">n/a</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">105</TD>
+
+      <td style="vertical-align: top;">n/a</td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+<A NAME="level_4_heading_10"><H4>Examples</H4></A>
+
+Mounting a FreeOTFE volume:<br>
+
+<blockquote>
+<pre>FreeOTFE4PDA.exe /mount /volume "\Storage Card\my encrypted volume.dat"</pre>
+</blockquote>
+
+<br>
+Dismount volume mounted at "\FreeOTFE secure":<br>
+
+<blockquote>
+<pre>FreeOTFE4PDA.exe /dismount "FreeOTFE secure"</pre>
+</blockquote>
+
+<br>
+
+Dismount all volumes, emergency:<br>
+
+<blockquote>
+<pre>FreeOTFE4PDA.exe /dismount all /force</pre>
+</blockquote>
+
+
+
+
+<P>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

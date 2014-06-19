@@ -1,0 +1,322 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Technical Details: Encrypted Partition Image Encryption/Decryption]
+[NOT PLATFORM:PDF </TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+<UL>
+<LI><a href="technical_details__FreeOTFE_volumes_and_keyfiles.htm">Volumes and Keyfiles</a>
+
+<LI><a href="technical_details__FreeOTFE_CDB_layout.htm">Critical Data Block Layouts</a>
+<UL>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_1.htm">Format ID 1</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_2.htm">Format ID 2</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_3.htm">Format ID 3</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_4.htm">Format ID 4</a>
+</UL>
+
+<LI><a href="technical_details__creating_FreeOTFE_volumes.htm">Creating Volumes</a>
+<LI><a href="technical_details__mounting_FreeOTFE_volumes.htm">Mounting Volumes</a>
+<LI>Encrypted Partition Image Encryption/Decryption
+<LI><a href="technical_details__registry_entries.htm">Registry Entries</a>
+<LI><a href="technical_details__RNGs.htm">Random Number Generators (RNGs)</a>
+<LI><a href="technical_details__build_notes.htm">Building the Software</a>
+<LI><a href="technical_details__creating_a_new_hash_cypher_driver.htm">Creating a New Hash/Cypher Driver</a>
+<LI><a href="technical_details__filename_extensions.htm">Filename Extensions</a>
+</UL>
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<H3>Technical Details: Encrypted Partition Image Encryption/Decryption
+</H3>
+
+
+
+The encrypted partition that forms the bulk of an encrypted volume is encrypted on a 512 byte, sector-by-sector basis using:<br>
+
+<ul>
+
+<li>The master key stored within the volume's CDB (or keyfile)</li><li><span style="font-style: italic;"></span>A per-sector IV <span style="font-style: italic;">(provided that the cypher used has a fixed blocksize, greater than zero)</span></li>
+</ul>
+
+<A NAME="level_4_heading_1"><H4>Per-Sector IV Generation</H4></A>
+
+The manner in which per-sector IVs are generated depends on the IV
+generation method the user selected when creating the volume:
+<P>
+
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <th style="vertical-align: top;">IV Generation Method<br>
+      </th>
+      <th style="vertical-align: top;">Description<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Null IV</TD>
+
+      <td style="vertical-align: top;">No IV is used/a null IV is used.<br>
+i.e. A block of data consisting of with 0x00 (null) characters is used as the IV</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+32 bit sector ID</TD>
+
+      <td style="vertical-align: top;">The least significant 32 bits of the sector ID is right-padded with 0x00 characters, and used as the IV.<br>
+These bits are ordered MSB..LSB.</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+
+64 bit sector ID</TD>
+
+      <td style="vertical-align: top;">As the 32-bit sector ID method, but a 64 bits sector ID is used.<br>
+Note: This is unlikely to offer any security advantage over using 32
+bit sector IDs, unless used with a volume file ((2^32) * 512) bytes
+long (2048GB), or greater</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+
+Hashed 32 bit sector ID</TD>
+
+      <td style="vertical-align: top;">The least significant 32 bits of the sector ID is hashed with the user's choice of hash algorithm.<br>
+The resulting hash value will be truncated/right padded with 0x00
+characters until it is the same length as the cypher's blocksize.</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+
+Hashed 
+64 bit sector ID</TD>
+
+      <td style="vertical-align: top;">As the hashed 32-bit sector ID method, but a 64 bits sector ID is used.<br>
+
+Note: This is unlikely to offer any security advantage over using 32
+bit sector IDs, unless used with a volume file ((2^32) * 512) bytes
+long (2048GB), or greater</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+
+ESSIV</td>
+      <td style="vertical-align: top;">This option offers the most security.
+<P>
+On mounting the FreeOTFE volume, the master key used for
+encrypting/decrypting the volume is hashed with the hash algorithm
+chosen by the user when the volume was created.<br>
+If the cypher used for encryption/decryption has a fixed keysize, this
+hash output is truncated/right padded with 0x00 characters until it
+matches the cypher's keysize and stored as the "ESSIV key" (or "salt").
+If the cypher doesn't have a fixed keysize, the full hash output is
+stored as this key ("salt").
+<P>
+When a per-sector IV is required, the 64 bit sector ID is encrypted
+using the "ESSIV key". This encrypted sector ID is
+truncated/right-padded with 0x00 characters until it matches the
+cypher's blocksize.<span style="font-weight: bold; font-style: italic;"></span></TD>
+
+    </tr>
+  </tbody>
+</table>
+
+<br>
+In all
+cases, the sector ID is calculated as:<br>
+
+<blockquote>
+Sector ID = (<span style="font-style: italic;">Ostart</span> - <span style="font-style: italic;">Soffset</span>) % <span style="font-style: italic;">Ssize</span><br>
+</blockquote>
+
+where:
+<P>
+
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-style: italic;">Ostart</span></TD>
+
+      <td style="vertical-align: top;">The offset within the host volume/partition from where the encrypted partition begins (i.e. after any CDB)</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-style: italic;">Soffset</span></TD>
+
+      <td style="vertical-align: top;">The offset from within the encrypted partition from where the sector begins</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-style: italic;">Ssize</span></TD>
+
+      <td style="vertical-align: top;">The sector size of the emulated drive (i.e. 512 bytes)</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">%</TD>
+
+      <td style="vertical-align: top;">is the modulus operator</TD>
+
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+Putting it another way, this is the sector ID (starting from zero) of the partition as it appears to the host OS after mounting.
+<P>
+
+If the user opted to additionally use per-volume IVs when the volume
+was created, IVs generated using the method selected by the user when
+the volume was created are XORd with a "per-volume" IV. This
+"per-volume" IV consists of a block of data equal to the blocklength of
+the cypher used to encrypt the volume and consists of random data
+generated when the volume was created, and stored within the volume's
+CDB (or keyfile).
+
+
+<P>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

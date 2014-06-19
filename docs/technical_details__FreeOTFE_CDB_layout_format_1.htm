@@ -1,0 +1,909 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Technical Details: FreeOTFE Critical Data Block (CDB) Layout (CDB Format ID 1)]
+[NOT PLATFORM:PDF </TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+<UL>
+<LI><a href="technical_details__FreeOTFE_volumes_and_keyfiles.htm">Volumes and Keyfiles</a>
+
+<LI><a href="technical_details__FreeOTFE_CDB_layout.htm">Critical Data Block Layouts</a>
+<UL>
+<LI>Format ID 1
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_2.htm">Format ID 2</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_3.htm">Format ID 3</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_4.htm">Format ID 4</a>
+</UL>
+
+<LI><a href="technical_details__creating_FreeOTFE_volumes.htm">Creating Volumes</a>
+<LI><a href="technical_details__mounting_FreeOTFE_volumes.htm">Mounting Volumes</a>
+<LI><a href="technical_details__partition_encryption_decryption.htm">Encrypted Partition Image Encryption/Decryption</a>
+<LI><a href="technical_details__registry_entries.htm">Registry Entries</a>
+<LI><a href="technical_details__RNGs.htm">Random Number Generators (RNGs)</a>
+<LI><a href="technical_details__build_notes.htm">Building the Software</a>
+<LI><a href="technical_details__creating_a_new_hash_cypher_driver.htm">Creating a New Hash/Cypher Driver</a>
+<LI><a href="technical_details__filename_extensions.htm">Filename Extensions</a>
+</UL>
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<H3>Technical Details: FreeOTFE Critical Data Block (CDB) Layout (CDB Format ID 1)
+</H3>
+
+
+<font color="RED"><span style="font-weight: bold;">NOTE: This CDB layout is </span><span style="font-style: italic; font-weight: bold;">obsolete</span><span style="font-weight: bold;">; all new volumes should use the <A HREF="technical_details__FreeOTFE_CDB_layout_format_3.htm">latest CDB format</A>.</span></font><br>
+
+<A NAME="level_4_heading_1"><H4>Overview</H4></A>
+
+
+The following table describes the high-level layout of all FreeOTFE (<span style="font-style: italic;">not </span>Linux) volume files:
+<P>
+
+<table style="width: 100%;" border="1">
+
+<tbody><tr>
+<td style="background-color: rgb(255, 204, 204);">Critical data block:
+<table border="1">
+<tbody><tr>
+<td>Password salt</td>
+
+<td style="background-color: rgb(153, 255, 255);">Encrypted block:
+<table border="1">
+<tbody><tr>
+<td>Check hash</td>
+
+<td>Volume details block:
+<table border="1">
+<tbody>
+<tr>
+<td>Critical data version</td>
+<td>Volume flags</td>
+<td>Encrypted partition image length</td>
+<td>Master key length</td>
+<td>Master key</td>
+<td>Requested drive letter</td>
+<td>Random padding #2</td>
+</tr>
+</tbody>
+</table>
+</td>
+
+</tr>
+</tbody></table>
+</td><td>Random padding #1</td>
+
+</tr>
+</tbody></table>
+</td>
+
+<td style="width: 100%; background-color: rgb(153, 255, 153);">Encrypted partition image</td>
+</tr>
+</tbody>
+</table>
+
+<p>Color key:<br>
+</p>
+
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+<tbody>
+<tr>
+<th style="vertical-align: top;">Color<br>
+</th>
+<th style="vertical-align: top;">Encryption used<br>
+</th>
+</tr>
+<tr>
+<td style="vertical-align: top; background-color: rgb(255, 204, 204);">&nbsp;</TD>
+
+<td style="vertical-align: top;">Red items are not encrypted</TD>
+
+</tr>
+<tr>
+<td style="vertical-align: top; background-color: rgb(153, 255, 255);">&nbsp;</TD>
+
+<td style="vertical-align: top;">Blue items are encrypted with the user's password, password salt, and user's chosen hash/cypher algorithms</td>
+</tr>
+<tr>
+<td style="vertical-align: top; background-color: rgb(153, 255, 153);">&nbsp;</TD>
+
+<td style="vertical-align: top;">Green
+items are encrypted with the master key and the user's chosen cypher, with
+IVs generated with the user's chosen sector IV method</TD>
+
+</tr>
+</tbody>
+</table>
+
+<br>
+
+<p>Seem intimidating? Read on, and all will become clear... When broken down into its component parts,
+the volume structure is reasonably straightforward to understand.
+</p>
+
+<p>
+</p>
+
+<hr>
+<h4>
+Breakdown: Top level</h4>
+
+
+<table border="1" width="100%">
+
+<tbody><tr>
+<td>Critical data block</td>
+
+<td width="100%">Encrypted partition image</td>
+</tr>
+</tbody>
+</table>
+
+<p>At the highest level, volume files can be broken down into just two
+basic parts: A critical data area, and the encrypted partition itself.
+<br>&nbsp;
+<table border="1">
+<tbody><tr>
+<th>Item name</th>
+
+<th>Size (in bits)<br>
+</th>
+
+<th>Description</th>
+</tr>
+
+<tr>
+<td>Critical data block</td>
+
+<td>4096</TD>
+
+
+<td>This part of the volume file contains "critical data", including the
+master en/decryption key used for the encrypted partition image, the method
+used for generating sector IDs, and a check hash.
+<p>See below for further breakdown.</p></td>
+</tr>
+
+<tr>
+<td>Encrypted partition image</td>
+
+<td>User defined.
+<br>(max 2^64 bytes; circa 16777216 TB)</td>
+
+<td>This is a literal partition image which represents the volume. This image is encrypted with:<br>
+<ol>
+<li>The master key</li>
+<li>The user's chosen cypher</li>
+<li>The user's chosen method for generating different sector IVs</li>
+</ol>
+</td>
+</tr>
+
+<tr>
+<td><b><i>Total size:</i></b></td>
+
+<td>4096 + Encrypted partition image size</TD>
+
+
+<td></TD>
+
+</tr>
+</tbody></table>
+
+</p>
+
+<hr>
+<h4>
+Breakdown: Critical data block layout</h4>
+
+
+<table border="1" width="50%">
+
+<tbody><tr>
+<td>Password salt</td>
+
+<td width="100%">Encrypted block</td><td style="vertical-align: top;">Random padding #1</TD>
+
+
+</tr>
+</tbody>
+</table>
+
+
+
+<P>
+
+<table border="1">
+
+<tbody><tr>
+<th>Item name</th>
+
+<th>Size (in bits)</th>
+
+<th>Description</th>
+</tr>
+
+<tr>
+<td>Password salt</td>
+
+<td><span style="font-style: italic;">sl</span><br>
+(User specified
+to a max 512)</td>
+
+<td>This data is appended onto the user's password, before it's hashed.
+The resulting hash may then be used to encrypt/decrypt the "Encrypted block".</td>
+</tr>
+
+<tr>
+<td>Encrypted block</td>
+
+<td>If <span style="font-style: italic;">bs</span>&gt;0 then:<br>
+((4096 - salt length) div <span style="font-style: italic;">bs</span><span style="font-style: italic;">)</span> * <span style="font-style: italic;">bs</span><span style="font-style: italic;"><span style="font-style: italic;"></span></span>
+<P>
+If <span style="font-style: italic;">bs</span>&lt;=0 then:<br>
+(4096 - salt length)</TD>
+
+
+<td>This block contains the actual key which is used to encrypt/decrypt
+the encrypted partition image.
+<p>See below for further breakdown.<br>
+</p></td>
+</tr>
+
+<tr>
+<td>Random padding #1</TD>
+
+<td>((4096 - <span style="font-style: italic;">sl</span>) % <span style="font-style: italic;">bs</span>)<span style="font-weight: bold; font-style: italic;"></span></TD>
+
+<td>Random "padding" data. Required to pad out any remaining, unused, bits in the "critical data block"<span style="font-style: italic;"></span></TD>
+
+</tr>
+<tr>
+<td><b><i>Total size:</i></b></td>
+
+<td>4096</td>
+
+<td></TD>
+
+</tr>
+</tbody>
+</table>
+
+</p>
+
+<hr>
+<h4>
+Breakdown: Encrypted block layout</h4>
+
+
+<table border="1" width="50%">
+
+<tbody><tr>
+<td>Check hash</td>
+
+<td width="100%">Volume details block</td>
+
+</tr>
+</tbody>
+</table>
+
+<p>As described above, this entire block is encrypted using the user's
+password, salt, and chosen hash and cypher algorithms. <br>
+</p>
+
+<p>As this block is encrypted, its length (in bits) must be a multiple of the cypher's blocksize.
+<P>
+
+<table border="1">
+<tbody><tr>
+<th>Item name</th>
+
+<th>Size (in bits)</th>
+
+<th>Description</th>
+</tr>
+
+<tr>
+<td>Check hash</td>
+
+<td><span style="font-style: italic;">hk</span></TD>
+
+
+<td>This is the hash of the plaintext version of the "Volume details block".
+<P>
+If <span style="font-style: italic;">hk</span> is zero, then this hash will be either truncated to 512 bits, or right-padded with 0 bits up to a maximum of 512 bits</TD>
+
+</tr>
+
+<tr>
+<td>Volume details</td>
+
+<td><span style="font-style: italic; font-weight: bold;">Total size</span> - <i>hk</i></TD>
+
+
+<td>This stores the details of how to encrypt/decrypt the encrypted partition.</td>
+</tr>
+
+<tr>
+<td><b><i>Total size:</i></b></td>
+
+<td>If <span style="font-style: italic;">bs</span>&gt;8 then:<br>
+
+((4096 - <span style="font-style: italic;">sl</span>) / <span style="font-style: italic;">bs</span><span style="font-style: italic;">)</span> * <span style="font-style: italic;">bs</span><span style="font-style: italic;"><span style="font-style: italic;"></span></span>
+<P>
+
+If <span style="font-style: italic;">bs</span>&lt;=8 then:<br>
+
+(4096 - <span style="font-style: italic;">sl</span>)
+</td>
+
+<td>Note: "/" represents <span style="font-style: italic;">integer</span> division</TD>
+
+</tr>
+</tbody></table>
+
+</p>
+
+<hr>
+<h4>
+Breakdown: Volume details block layout</h4>
+
+
+<table border="1">
+
+<tbody>
+<tr>
+<td>Critical data version</td>
+<td>Volume flags</td>
+<td>Encrypted partition image length</td>
+<td>Master key length</td>
+<td>Master key</td>
+<td>Requested drive letter</td>
+<td>Random padding #2</TD>
+
+</tr>
+</tbody>
+</table>
+
+<p>Finally, we reach the details that the critical data block was designed
+to protect:
+<br>&nbsp;
+<table border="1">
+<tbody><tr>
+<th>Item name</th>
+
+<th>Size (in bits)</th>
+
+<th>Description</th>
+</tr>
+
+<tr>
+<td>Critical data version</td>
+
+<td>8</td>
+
+<td>This is a version ID which identifies the layout of the remainder of
+the volume details block
+<p>When this layout format is used, this will always be set to 1.</p></td>
+</tr>
+
+<tr>
+<td>Volume flags</TD>
+
+
+<td>32</TD>
+
+
+<td>Bitmap flagging various items.
+<P>
+Currently, this only identifies which method is used in generating sector IVs, used
+in encrypting/decrypting the encrypted partition image.
+<P>Bit - Description<br>
+0 - Use different IVs for each sector<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 = Use NULL IV<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 = Use sector ID (possibly hashed) as IV<br>
+1 - Sector ID zero is at the start of the file<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 = Sector ID zero is at the start of the encrypted data<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 = Sector ID zero is at the start of the host volume file<br>
+2 - &lt;unused&gt;<br>
+3 - Hash sector ID before use<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 = Sector ID used as IV<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 = Hash sector ID before using is as an IV</TD>
+
+</tr>
+
+<tr>
+<td>Encrypted partition image length</td>
+<td>64</td>
+<td>This stores the length (in bytes) of the encrypted partition image</td>
+</tr>
+<tr>
+<td>Master key length</td>
+
+<td>32</td>
+
+<td>This will be set to the length of the master key <span style="font-style: italic;">in bits</span>. Not strictly needed, but used as a
+sanity check.</td>
+</tr>
+
+<tr>
+<td>Master key</td>
+
+<td><i>ks<br>
+(max 1536)<br>
+</i></td>
+
+<td>This is set to the random data generated when the volume was created;
+it represents the en/decryption key used to encrypt the encrypted partition
+image</td>
+</tr>
+
+<tr>
+<td>Requested drive letter</TD>
+
+<td>8</td>
+<td>The drive letter the volume should be typically be mounted as.<br>Set
+to 0x00 if there is no particular drive letter the volume should be
+mounted as; mount using the first available drive letter.</td>
+</tr>
+<tr>
+<td>Random padding #2</TD>
+
+
+<td>All remaining bits to pad out to <span style="font-weight: bold; font-style: italic;">Total size</span> </TD>
+
+
+<td>Random "padding" data. Required to pad out the encrypted block to a multiple of <span style="font-style: italic;">bs</span>, and to increase the size of this block to the maximum length that can fit within the "critical data block".</TD>
+
+</tr>
+
+<tr>
+<td><b><i>Total size:</i></b></td>
+
+<td>(((4096 - <span style="font-style: italic;">sl</span>) / <span style="font-style: italic;">bs</span><span style="font-style: italic;">)</span> * <span style="font-style: italic;">bs</span><span style="font-style: italic;"><span style="font-style: italic;"></span></span><span style="font-style: italic;">)</span> - <i>hk</i></TD>
+
+
+<td>Note: "/" represents <span style="font-style: italic;">integer</span> division
+</td>
+</tr>
+</tbody></table>
+
+</p>
+
+<hr style="width: 100%; height: 2px;">
+<A NAME="level_4_heading_2"><H4>Miscellaneous Comments Regarding the FreeOTFE Volume File Layout</H4></A>
+
+
+The design of the critical data layout eliminates the need for the
+cypher/hash used to be stored anywhere, denying an attacker this
+information and increasing the amount of work required to attack a
+volume file.
+<P>
+
+The "critical data block" is encrypted.
+<P>
+
+The "password salt" appears <span style="font-style: italic;">before</span>
+the "encrypted block", and no indication of the length of salt used is
+stored anywhere in order to prevent an attacker from even knowing where
+the "encrypted block" starts within the "critical data block".
+<P>
+
+The "Check hash" appears <span style="font-style: italic;">before</span>
+the volume details block. This may seem a little strange since the size
+of "Check hash" is variable (its actual length is dependant on the
+hash algorithm chosen), but appears first in order to reduce the
+amount of "known" (or predictable) data early on in the volume.
+Theoretically this is desirable as (for example) cyphers operating in
+CBC (or similar) modes which "whiten" data will do so with data that is
+less predictable than would occur if the hash appeared towards the end
+of the block it appears in.
+<P>
+
+The "Check hash" is limited to 512 bits. This is limited as, in
+practical terms, some kind of limit is required if the critical data
+block is to be of a predetermined size. See section on mounting volume
+files for how multiple matching check hashes is handled.
+<P>
+
+The "Password salt" is (fairly arbitrarily) limited to 512 bits. Again, this is primarily done for practical reasons.
+<P>
+
+Although at time of writing (2004) this limit to the length of salt
+used should be sufficient, the format of the critical data block (with
+included layout version ID) does allow future scope for modification in
+order to allow the critical data block to be extended (e.g. from 4096
+to 8192 bits), should this limit be determined as insufficient.
+<P>
+
+The "Encrypted block" does contain a certain amount of data
+that may be reasonably guessed by an attacker (e.g. the critical data
+version), however this would be of very limited use to an attacker
+launching a "known plaintext" attack as the amount of this data is
+minimal, and as with pretty much any OTFE system, the "Encrypted partition image" can reasonably expected to
+contain significantly more known plaintext anyway (e.g. the partition's boot sector)
+<P>
+
+<hr style="width: 100%; height: 2px;">
+<A NAME="level_4_heading_3"><H4>Creating FreeOTFE Volumes</H4></A>
+
+
+To create a FreeOTFE volume file, a fairly significant amount of
+information is required due to freedom that FreeOTFE gives you in
+creating volume files. <br>
+
+Broadly speaking, creating a FreeOTFE volume consists of three distinct stages:<br>
+
+<ol>
+  <li>Creating a file large enough on the local filesystem
+  <li>Writing the critical data block to the volume file
+  <li>Mounting the volume, formatting it, and "shredding" (overwriting) all free space
+</ol>
+
+Stage 1 is straightforward; write data to the file until is has gained
+the required size. This stage is skipped in the case of creating a
+hidden volume.<br>
+
+Stage 2 is more complex; and will be described below.<br>
+
+Stage 3 is required in set the volume up for use, and increase security.<br>
+
+<A NAME="level_4_heading_4"><H4>Writing the critical data block.</H4></A>
+
+
+The following procedure is used to build up a FreeOTFE's critical volume block:<br>
+
+<ol>
+
+<li>Obtain all the information which will be stored within the volume's "Volume details block"<span style="font-style: italic;"></span></li><li>The following information is determined:</li>
+  <ol>
+
+  </ol>
+  <ol>
+    <li>"<span style="font-style: italic;">sl</span>" - The number of "salt" bits required by the user</li>
+    <li>"<span style="font-style: italic;">ks</span>" - The keysize (in bits) of the user's chosen cypher. If the cypher driver reports that this value is "-1", then "<span style="font-style: italic;">ks</span>" should be assumed to be 8 bits.
+    <li>"<span style="font-style: italic;">bs</span>" - The blocksize (in
+bits) of the user's chosen cypher. If the cypher driver reports that
+this value is "-1", then "<span style="font-style: italic;">bs</span>" should be assumed to be 8 bits.
+    <li>"<span style="font-style: italic;">hk</span>"
+- The length (in bits) of hashes generated by the user's chosen hash
+algorithm. If the hash driver reports that this value is "-1", then "<span style="font-style: italic;">hk</span>" should be assumed to be 512 bits.</li>
+  </ol>
+  <ol>
+
+  </ol>
+
+  <li>Build the "Volume details block" in memory. The length of this block (in bits) is calculated as:
+
+<blockquote>(((4096 - <span style="font-style: italic;">sl</span>) / <span style="font-style: italic;">bs</span><span style="font-style: italic;">)</span> * <span style="font-style: italic;">bs</span><span style="font-style: italic;"><span style="font-style: italic;"></span></span><span style="font-style: italic;">)</span> - <i>hk</i></blockquote>
+
+(See the layout breakdown diagrams of the "Critical data area" to understand where this algorithm comes from.)
+
+  <li>With the user's selection of hash algorithm, hash the "Volume details block" to generate the "Check hash".</li>
+  <li>If the "Check hash" generated has less than "<span style="font-style: italic;">hk</span>" bits, it should be right-padded with zero bits until it is "<span style="font-style: italic;">hk</span>" bits long.</li>
+  <li>If the "Check hash" generated has more than "<span style="font-style: italic;">hk</span>" bits, it should be truncated to the first "<span style="font-style: italic;">hk</span>" bits.</li><li>Prepend the "Check hash" onto the "Volume details block" to build the plaintext version of the "Encrypted block"</li>
+  <li>Append the salt onto the user's password</li>
+  <li>Hash the salted password with the user's chosen hash algorithm</li>
+  <li>If the hash generated has less than "<span style="font-style: italic;">ks</span>" bits, it should be right-padded with zero bits until it is "<span style="font-style: italic;">ks</span>" bits long.</li>
+  <li>If the hash generated has more than "<span style="font-style: italic;">ks</span>" bits, it should be truncated to the first "<span style="font-style: italic;">ks</span>" bits.<br>
+    <span style="font-style: italic;">The truncated/padded hash will be used as the "critical data key"</span>
+  <li>Encrypt the plaintext "Encrypted block" with the user's selection of cypher, an IV of "<span style="font-style: italic;">bs"</span> zeroed bits, and the "critical data key" 
+  <li>Prepend the salt onto the cyphertext version of the "Encrypted block"</li>
+
+  <li>Append "Random padding #1" to the "Encrypted block" in order to
+pad it out to 4096 bits (512 bytes) and form the complete "Critical
+data block"
+  <li>Write the "Critical data block" to the volume file, beginning
+from the start of the file for normal FreeOTFE volumes, or from
+the user's offset in the case of a hidden volume.
+</ol>
+
+<hr style="width: 100%; height: 2px;">
+<A NAME="level_4_heading_5"><H4>Mounting FreeOTFE Volumes</H4></A>
+
+
+<p>IMPORTANT: Versions of FreeOTFE (v00.00.0x) that used this CDB
+format had an implementation fault that caused
+the Volume Details Block to be incorrectly parsed when it was read in.
+It incorrectly used the 32 bits starting from offset byte 10 within the
+Volume Details Block (i.e. data storing the part of the encrypted partition image length) as
+the VolumeFlags. This has been compensated for in later versions of
+FreeOTFE, which use a later CDB layout in any case.
+
+ </p>
+<p>To mount a FreeOTFE volume, the following information must be determined:</p>
+
+<ul>
+
+</ul>
+
+<ul>
+
+</ul>
+
+<ol>
+
+  <li>The location of the critical data block within the volume file<li>The user's password</li>
+
+  <li>The length of salt used, in bits (<span style="font-style: italic;">sl</span>)<li>The algorithm used to hash the user's password and salt
+
+  <li>The cypher used for all en/decryption operations
+  <li>
+The master key to be used to en/decrypt the encrypted partition image</li>
+  <li>
+The method used to generate the different IVs for each sector of the encrypted partition image
+  <li>
+The length of the encrypted partition image</li>
+</ol>
+
+<ul>
+
+</ul>
+
+Items 1-3 are obtained by asking the user.<br>
+
+Items 3 and 4 are determined by brute force; by hashing the user's password with the first <span style="font-style: italic;">sl</span>
+bits of the critical data block with each of the hash algorithms
+installed, then using that information to decrypt the remainder of the
+critical data block using each of the installed cyphers in turn. After
+each decryption, the decrypted critical data block is hashed, and this
+hash value is compared to the decrypted version of the check hash.<br>
+
+Items 6-8 are then taken from the successfully decrypted critical data block, and the volume is mounted.
+<P>
+
+In detail, the following procedure is used:
+<ol>
+
+<li>
+The user is prompted for the following information:</li>
+
+<ul>
+<li>
+The volume's password</li>
+
+<li>
+The drive letter they wish to mount the volume as.</li>
+
+<li>
+In case the user opted to change the default amount of "salt" used during
+volume creation, the user is also be prompted to enter the size of the salt used, in bits (Call this value "<span style="font-style: italic;">sl"</span>).</li>
+
+<li>The offset within the file where the critical data block is
+located. Typically this will be zero, unless a hidden volume is to be
+accessed (see information
+on "hidden volumes").</li>
+</ul>
+
+<li>
+The first 512 bytes (4096 bits) of the file are read in, beginning from the user specified offset.</li>
+
+<li>The first "<span style="font-style: italic;">sl</span>" bits of which are assumed to be the salt, and are appended to the user's password.
+
+<li>
+For each hash algorithm installed on the user's computer:
+<br>
+<i>Note: We will use "</i>hk<i>" to describe the length of hash values
+generated by each hash algorithm as it is used in turn. This value is as reported by the hash driver.
+If the hash driver reports that the hash length "-1", we will use the
+smaller of 512 bits, and the length of the data that the hash algorithm actually returns, as "</i>hk<i>".</i>
+<ol>
+<li>
+The combined user's password and salt previously generated is hashed, giving an <span style="font-style: italic;">hk</span> bit "critical key".
+
+<li>
+For each cypher installed on the user's computer:
+<br>
+<i>Note: We will use "</i>ks<i>" to describe the keysize of each cypher as it is used in turn,
+the keysize being as reported by the cypher driver. If the cypher driver reports that the
+cypher's keysize is "-1" (no specific keysize), we will use "</i>hk<i>" as "</i>ks<i>".</i>
+<br><i>Note: We will use "</i>bs<i>" to describe the blocksize of the cypher,
+as reported by the cypher driver. If the cypher driver reports that the
+cypher's keysize is "-1" (no blocksize), we will use 8 bits (1 byte) as "</i>bs<i>".</i>
+        <ol>
+
+<li>
+The "Encrypted block" is extracted from the critical data block. The length of the "Encrypted block" is calculated as:<br>
+<blockquote>((4096 - <span style="font-style: italic;">sl</span>) / <span style="font-style: italic;">bs</span>) * <span style="font-style: italic;">bs<br></span></blockquote>
+Alternatively, the length of "Random padding #1" can be viewed as being:<br>
+<blockquote>((4096 - <span style="font-style: italic;">sl</span>) % <span style="font-style: italic;">bs</span>)<br></blockquote>
+Where % represents the modulus, and / integer division<li>The "Encrypted block" is decrypted using:</li>
+
+          <ol>
+
+            <li>
+The first "<i>ks</i>" bits of the hash value previously generated as the
+decryption key; if "<i>hk</i>" is less than "<i>ks</i>", then the hash will have extra
+zero bits appended to it in order to pad it out to "<i>ks</i>"</li>
+
+            <li>
+An IV consisting of a block of "<i>bs</i>" bits, all set to 0.</li>
+
+          </ol>
+
+<li>Next, the "Check hash" and "Volume details block" are extracted
+from the decrypted data. In order to do this, the length of the check
+hash must be known; if the hash algorithm used on the salted user's
+password is reported to generate hashes "-1" bits long, then the check
+hash is assumed to be 512 bits long. Otherwise, the actual hash length
+is used.</li><li>The "Volume details block" is hashed and right
+padded with zero bits to make it the same length as the "Check hash",
+which it is then compared with.<br>If
+the hash generated matches the "Check hash", then the "Encrypted
+block" is deemed to have been successfully decrypted; a note will be
+made of the cypher and hash used, together with the contents of the
+decrypted "Volume details block".<br>
+In either case, all remaining hash/cypher combinations will be processed in the same manner.</ol>
+
+      </li>
+
+</ol>
+
+</li><li>
+After all possible hash/cypher combinations have been exhausted:</li>
+
+<ul>
+<li>
+If no cypher/hash combination successfully decrypted the "Volume details
+block", the user will be informed that they have entered incorrect details.</li>
+
+<li>
+If more than one cypher/hash combination successfully decrypted the "Volume
+details block", the user should be prompted to choose which of the combinations they
+wish to use. The system will proceed as if only the user selected combination had been successful in decrypting.</li><li>If exactly one cypher/hash combination successfully decrypted the "Volume
+details block", then the "Encrypted partition image" will be decrypted
+as necessary using this cypher/hash combination, together with the information
+obtained from the decrypted "Volume details block".</li>
+
+</ul>
+</ol>
+
+As a result of the volume's layout, it is not necessary to store the cypher or hash algorithm used
+for en/decryption anywhere. Nor is it necessary to prompt the user for this information since during mounting
+a FreeOTFE formatted volume, this information can be determined dynamically by attempting the mount using
+all possible combinations of installed hash/cypher in conjunction with the check hash.<br>
+
+<p>
+
+</p>
+
+
+<P>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

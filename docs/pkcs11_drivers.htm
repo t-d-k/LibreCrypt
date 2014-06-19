@@ -1,0 +1,647 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Appendix E: PKCS#11 Driver Libraries</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI>Appendix E: PKCS#11 Driver Libraries
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<H2>Appendix E: PKCS#11 Driver Libraries</H2>
+
+<P>
+If you have a token which supports the PKCS#11 standard, as most do, your token can be used by FreeOTFE. Below is a list of well known smartcards/tokens which do support this standard, and the suggested library filename to use.
+
+<P>
+Please note that:
+
+<OL>
+<LI>Token manufacturers may change their driver filenames without notice; check with your supplier if the information listed below doesn't work.
+<LI>This list is <B><I>not exhaustive</I></B> - many more tokens are supported than are listed here.
+</OL>
+
+<P>
+If you are using a token which isn't mentioned on the list below, please check with your token supplier as to what to enter, and <A HREF="contact_details.htm">get in touch</A> to have it added to the list.
+
+<P>
+<TABLE BORDER=1>
+<TR>
+<TH>Manufacturer</TH>
+<TH>Device</TH>
+<TH>Library</TH>
+<TH>WWW Site</TH>
+<TH>Notes</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1">ACS</TD>
+<TD >ACOS5 smartcards</TD>
+<TD >acospkcs11.dll</TD>
+<TD >&nbsp;</TD>
+<TD >For use with ACOS5 smartcards. ACOS5 smartcards unable to create data objects, and contain no mechanisms for creating secret keys (except public/private keypairs)</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">AET</TD>
+<TD >Rainbow iKey 3000 series and G&D StarCos 2.3 SPK cards</TD>
+<TD >aetpkss1.dll</TD>
+<TD ><A HREF="http://www.aeteurope.nl/ download from http://www.gi-de.com/portal/page?_pageid=42,124645&_dad=portal&_schema=PORTAL">(WWW)</A></TD>
+<TD >aka StarSign Middleware. Also installs PKCS#11 drivers aetpksse.dll (Entrust PKCS#11 lib) and aetpkssw.dll (PKCS #11 library wrapper that detects the need for automatic login on aetpkss1.dll)</TD>
+</TR>
+<TR>
+<TD ROWSPAN="2">Aladdin</TD>
+<TD >eToken PRO</TD>
+<TD >etpkcs11.dll</TD>
+<TD ><A HREF="http://www.aladdin.com/">(WWW)</A></TD>
+<TD >Confirmed working with FreeOTFE</TD>
+</TR>
+<TR>
+<TD >eToken R2</TD>
+<TD >etpkcs11.dll</TD>
+<TD ><A HREF="http://www.aladdin.com/">(WWW)</A></TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">Algorithmic Research</TD>
+<TD >MiniKey</TD>
+<TD >sadaptor.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">Aloaha</TD>
+<TD >Smart Card Connector</TD>
+<TD >aloaha_pkcs11.dll</TD>
+<TD ><A HREF="http://www.aloaha.com/wi-software-en/aloaha-cryptographic-service-provider.php">(WWW)</A></TD>
+<TD >Not fully tested, but from initial checks, this library appears <I>badly broken</I> - it reports tokens present when no card reader is installed. When creating data objects on the phantom token, it reports that the objects were <I>successfully created</I>, but doesn't actually <I>do anything</I>! Possible that it works correctly if both hardware and token present?</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">A-Sign</TD>
+<TD >A-Sign premium cards</TD>
+<TD >psepkcs11.dll</TD>
+<TD >&nbsp;</TD>
+<TD >Reputedly v1.0 of this library is incomplete and has many bugs??</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">Athena</TD>
+<TD >Athena Smartcard System ASE Card</TD>
+<TD >asepkcs.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">A-Trust</TD>
+<TD >a-sign</TD>
+<TD >asignp11.dll</TD>
+<TD ><A HREF="http://www.a-trust.at/">(WWW)</A></TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">Belgian Government</TD>
+<TD >Belgian Electronic Identity (eID) Card </TD>
+<TD >Belgium Identity Card PKCS11.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="2">Chrysalis</TD>
+<TD >&nbsp;</TD>
+<TD >cryst32.dll</TD>
+<TD ><A HREF="www.chrysalis-its.com">(WWW)</A></TD>
+<TD >WWW site no longer exists</TD>
+</TR>
+<TR>
+<TD >LUNA</TD>
+<TD >cryst201.dll</TD>
+<TD ><A HREF="www.chrysalis-its.com">(WWW)</A></TD>
+<TD >WWW site no longer exists</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">Dallas Semiconductors</TD>
+<TD >iButton</TD>
+<TD >dspkcs.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="2">Eracom </TD>
+<TD >(hardware)</TD>
+<TD >cryptoki.dll</TD>
+<TD >&nbsp;</TD>
+<TD >Full path to library may be required, e.g:<BR>C:\ Program Files\ ERACOM\ Cprov SDK\ bin\ csa\ cryptoki.dll<BR>On 1st December2005 Eracom Technologies AG was acquired by SafeNet </TD>
+</TR>
+<TR>
+<TD >(software emulation)</TD>
+<TD >cryptoki.dll</TD>
+<TD >&nbsp;</TD>
+<TD >Full path to library may be required, e.g.:<BR>C:\ Program Files\ ERACOM\ Cprov SDK\ bin\ sw\ cryptoki.dll<BR>On 1st December2005 Eracom Technologies AG was acquired by SafeNet </TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">Estonian Government</TD>
+<TD >Estonian Electronic Identity (eID) Card </TD>
+<TD >opensc-pkcs11.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">Eutron</TD>
+<TD >Crypto Identity</TD>
+<TD >sadaptor.dll</TD>
+<TD ><A HREF="http://www.eutron.com">(WWW)</A></TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="5">Feitain technologys Co.,Ltd</TD>
+<TD >ePass 1000</TD>
+<TD >EP1PK111.DLL</TD>
+<TD ><A HREF="http://www.epass.nl/ and http://www.ftsafe.com/">(WWW)</A></TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >ePass 2000</TD>
+<TD >ep2pk11.dll</TD>
+<TD ><A HREF="http://www.epass.nl/ and http://www.ftsafe.com/">(WWW)</A></TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >ePass 2000_FT11</TD>
+<TD >ngp11v211.dll</TD>
+<TD ><A HREF="http://www.epass.nl/ and http://www.esoftkey.com/">(WWW)</A></TD>
+<TD >Confirmed working with FreeOTFE</TD>
+</TR>
+<TR>
+<TD >ePass 3000</TD>
+<TD >ngp11v211.dll</TD>
+<TD ><A HREF="http://www.ftsafe.com/">(WWW)</A></TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >ePass 3003</TD>
+<TD >ShuttleCsp11_3003.dll</TD>
+<TD ><A HREF="http://www.epass.nl/ and http://www.esoftkey.com/">(WWW)</A></TD>
+<TD >Confirmed working with FreeOTFE</TD>
+</TR>
+<TR>
+<TD ROWSPAN="2">Gemplus</TD>
+<TD >&nbsp;</TD>
+<TD >gclib.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >&nbsp;</TD>
+<TD >pk2priv.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">GemPlus/GemSoft</TD>
+<TD >GemPlus/GemSoft Smartcard</TD>
+<TD >w32pk2ig.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="2">GemSafe</TD>
+<TD >&nbsp;</TD>
+<TD >gclib.dll</TD>
+<TD >&nbsp;</TD>
+<TD >GemSafe new version</TD>
+</TR>
+<TR>
+<TD >&nbsp;</TD>
+<TD >pk2priv.dll</TD>
+<TD >&nbsp;</TD>
+<TD >GemSafe old version</TD>
+</TR>
+<TR>
+<TD ROWSPAN="6">IBM</TD>
+<TD >IBM 4758</TD>
+<TD >cryptoki.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >IBM Digital Signature for the Internet (DSI) for MFC cards </TD>
+<TD >CccSigIT.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >IBM Embededded Security Subsystem</TD>
+<TD >csspkcs11.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >IBM Netfinity PSG Chip1</TD>
+<TD >ibmpkcss.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >IBM SecureWay Smartcard</TD>
+<TD >w32pk2ig.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >&nbsp;</TD>
+<TD >cryptoki.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">ID2</TD>
+<TD >&nbsp;</TD>
+<TD >id2cbox.dll</TD>
+<TD >&nbsp;</TD>
+<TD >Full path to library may be required, e.g.:<BR>C:\ Data\ Development\ SmartCardIntegration\ PKCS11wrapper\ JavaToPKCS11\ demo\ test\ old\ id2cbox.dll</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">Mozilla/Netscape</TD>
+<TD >Mozilla or Netscape crypto module</TD>
+<TD >softokn3.dll</TD>
+<TD >&nbsp;</TD>
+<TD >Cannot be used with FreeOTFE; requires additional parameters to initailize</TD>
+</TR>
+<TR>
+<TD ROWSPAN="2">nCipher</TD>
+<TD >nFast</TD>
+<TD >cknfast.dll</TD>
+<TD ><A HREF="http://www.ncipher.com/">(WWW)</A></TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >nShield</TD>
+<TD >cknfast.dll</TD>
+<TD ><A HREF="http://www.ncipher.com/">(WWW)</A></TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">Nexus</TD>
+<TD >&nbsp;</TD>
+<TD >nxpkcs11.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">OpenSC</TD>
+<TD >(multiple)</TD>
+<TD >opensc-pkcs11.dll</TD>
+<TD ><A HREF="http://www.opensc-project.org/scb/">(WWW)</A></TD>
+<TD >Free, open source library</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">Orga Micardo</TD>
+<TD >&nbsp;</TD>
+<TD >micardoPKCS11.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="8">Rainbow</TD>
+<TD >CryptoSwift Accelerator</TD>
+<TD >Cryptoki22.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >CryptoSwift HSM</TD>
+<TD >iveacryptoki.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >Ikey 1000</TD>
+<TD >cryptoki22.dll</TD>
+<TD >&nbsp;</TD>
+<TD >From wiki.cacert.org: for USB use Datakey driver</TD>
+</TR>
+<TR>
+<TD >iKey 1000/1032</TD>
+<TD >k1pk112.dll</TD>
+<TD ><A HREF="http://www.rainbow.msk.ru">(WWW)</A></TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >iKey 2000 series and for DataKey cards</TD>
+<TD >dkck201.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >iKey 2000/2032</TD>
+<TD >dkck232.dll</TD>
+<TD ><A HREF="http://www.rainbow.msk.ru">(WWW)</A></TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >iKey 2032</TD>
+<TD >dkck201.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >&nbsp;</TD>
+<TD >cryptoki22.dll</TD>
+<TD >&nbsp;</TD>
+<TD >From wiki.cacert.org: for USB use Datakey driver</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">Safelayer</TD>
+<TD >HSM </TD>
+<TD >p11card.dll</TD>
+<TD >&nbsp;</TD>
+<TD >From wiki.cacert.org: for USB use Datakey driver</TD>
+</TR>
+<TR>
+<TD ROWSPAN="3">Schlumberger</TD>
+<TD >Cryptoflex</TD>
+<TD >acpkcs.dll</TD>
+<TD ><A HREF="http://www.schlumberger.com">(WWW)</A></TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >Cryptoflex</TD>
+<TD >slbck.dll</TD>
+<TD ><A HREF="http://www.schlumberger.com">(WWW)</A></TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >Cyberflex Access</TD>
+<TD >slbck.dll</TD>
+<TD ><A HREF="http://www.schlumberger.com">(WWW)</A></TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">SeTec</TD>
+<TD >SeTokI cards</TD>
+<TD >SetTokI.dll</TD>
+<TD >&nbsp;</TD>
+<TD >Full path to library may be required, e.g.:<BR>C:\ Program Files\ Setec\ SetTokI\ SetTokI.dll</TD>
+</TR>
+<TR>
+<TD ROWSPAN="2">Siemens</TD>
+<TD >HiPath SIcurity Card</TD>
+<TD >siecap11.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >Some Siemens Card OS cards</TD>
+<TD >eTpkcs11.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">SmartTrust</TD>
+<TD >&nbsp;</TD>
+<TD >smartp11.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">Spyrus</TD>
+<TD >&nbsp;</TD>
+<TD >SpyPK11.dll</TD>
+<TD ><A HREF="http://www.spyrus.com/">(WWW)</A></TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1">Utimaco</TD>
+<TD >Cryptoki for SafeGuard</TD>
+<TD >pkcs201n.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD ROWSPAN="10">?</TD>
+<TD >ActivCard cards</TD>
+<TD >acpkcs.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >ActivClient</TD>
+<TD >acpkcs211.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >Datakey</TD>
+<TD >dkck201.dll</TD>
+<TD >&nbsp;</TD>
+<TD >From wiki.cacert.org: for Entrust</TD>
+</TR>
+<TR>
+<TD >Datakey</TD>
+<TD >pkcs201n.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >Datakey CIP</TD>
+<TD >dkck201.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >Datakey/iKey </TD>
+<TD >dkck232.dll</TD>
+<TD >&nbsp;</TD>
+<TD >From wiki.cacert.org: NB: buggy, use 201</TD>
+</TR>
+<TR>
+<TD >Fortezza Module</TD>
+<TD >fort32.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >Oberthur AuthentIC</TD>
+<TD >AuCryptoki2-0.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >SCW PKCS 3GI 3-G International</TD>
+<TD >3gp11csp.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+<TR>
+<TD >TeleSec</TD>
+<TD >pkcs11.dll</TD>
+<TD >&nbsp;</TD>
+<TD >&nbsp;</TD>
+</TR>
+</TABLE>
+
+
+<P>
+The information listed above was compiled from multiple sources, including:
+
+<UL>
+<LI><A HREF="http://wiki.cacert.org/wiki/Pkcs11TaskForce">CAcert Wiki: Pkcs11TaskForce</A>
+<LI><A HREF="http://209.85.165.104/search?q=cache:-QugArnZ2I8J:www.strongdisk.ru/free/tech/SDSSettings.pdf+eutron+sadaptor.dll&hl=en&ct=clnk&cd=13">StrongDisk Server (Russian documentation)</A>
+<LI><A HREF="http://csourcesearch.net/package/cryptlib/3.1/test/testlib.c">cryptlib v3.1 testlib.c</A>
+<LI><A HREF="http://www.koders.com/noncode/fid57E0E0B63C88E5FF7A14B501B48BF0C95CF59E8D.aspx">IAIKPkcs11.properties</A>
+<LI><A HREF="http://jce.iaik.tugraz.at/sic/layout/set/print/products/core_crypto_toolkits/pkcs_11_provider/using">Using the IAIK JCE Provider for PKCS#11</A>
+
+</UL>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

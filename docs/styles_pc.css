@@ -1,0 +1,22 @@
+.nav_text {
+  padding: 20px;
+  text-align: left;
+  background-color: #F0F0F0;
+}
+.content_text {
+  padding: 20px;
+  background-color: #F0F0F0;
+}
+.UL_noindent {
+  margin-left: 0;
+  padding-left: 0;
+}
+table.note {
+  border-width: 1px;
+  border-spacing: 2px;
+  border-style: outset;
+  border-color: #009F00;
+  border-collapse: collapse;
+  background-color: white;
+  width: 75%
+}

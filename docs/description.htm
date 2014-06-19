@@ -1,0 +1,993 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Introduction</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI>Introduction
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+<h2>Introduction</h2>
+
+FreeOTFE: A free "on-the-fly" transparent disk encryption program for MS 
+Windows 2000/XP/Vista/Windows 7 PCs (both 32 and 64 bit), and Windows Mobile 2003/2005 and Windows Mobile 6 and later PDAs
+<P>
+
+Using this software, you can create one or more 
+"virtual disks" on your computer - anything written to these disks is 
+automatically, and securely, encrypted before being stored on your computers 
+hard drive.
+<P>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>Features</H3></A>
+
+<UL>
+<LI><B>Source code freely available</B>
+<LI>Easy to use; full wizard included for creating new volumes
+<LI>Data encrypted on your PC can be read/written on your PDA, and vice versa
+<LI>Powerful: Supports numerous hash/encryption algorithms, and
+provides a greater level of flexibility than a number of other
+(including many commercial!) OTFE systems
+<LI>Available in English, Spanish, German, Italian, French, Czech, Japanese, Croatian, Greek and Russian - with support for other language translations
+<LI>Hash algorithms include: MD5, SHA-512, RIPEMD-320, Tiger and <I>many</I> more
+<LI>Cyphers include AES (256 bit), Twofish (256 bit), Blowfish (448 bit), Serpent (256 bit) and <I>many</I> more
+<LI>Cypher modes supported include XTS, LRW and CBC (including XTS-AES-128 and XTS-AES-256)
+<LI>"Portable mode" included; FreeOTFE doesn't need to be installed before it can be
+used - making it ideal for carrying your data securely on USB drives!
+<LI>Security tokens/smartcards supported for extra (optional) security
+<LI>Operates under both PC (MS Windows 2000/XP/Vista/Windows 7) and PDA (Windows Mobile 2003/2005 and Windows Mobile 6) platforms
+<LI>Linux compatibility (Cryptoloop "losetup", dm-crypt and LUKS supported)
+<LI>"Hidden" volumes may be concealed within other FreeOTFE volumes, providing "plausible deniability"
+<LI>FreeOTFE volumes have no "signature" to allow them to be identified as such
+<LI>Encrypted volumes can be either file or partition based.
+<LI>Modular design allowing 3rd party drivers to be created, incorporating new hash/cypher algorithms
+<LI>Supports password salting (up to 512 bits), reducing the risks presented by dictionary attacks.
+<LI>Allows users to backup and restore the critical areas of volume files.
+<LI>Keyfile support included; store volumes and their associated metadata separately.
+<LI>Volume file timestamps and attributes are reset after dismounting, increasing "plausible deniability"
+<LI>Supports volumes files up to 2^63 bytes (8388608 TB) 
+<LI>Comprehensive documentation
+<LI>Naturally, fully supported by <a href="http://www.SDean12.org/SecureTrayUtil.htm">SecureTrayUtil</a>.
+<LI><I><B>Plus more...!</B></I>
+</UL>
+
+Screenshots of FreeOTFE and FreeOTFE4PDA are <a href="http://www.FreeOTFE.org/screenshots_pc_main.html">available</a>
+
+
+<P>
+
+Cyphers included:
+<P>
+
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <th style="vertical-align: top;">Cypher<br>
+      </th>
+      
+      <th style="vertical-align: top;">Key length (in bits)</th>
+      <th style="vertical-align: top;">Block Length (in bits)<br>
+      </th>
+      <th style="vertical-align: top;">Modes<br>
+      </th>
+<th style="vertical-align: top;">Source Library<br>
+      </th><th style="vertical-align: top;">Comments<br>
+
+      </th>
+
+    </tr>
+ <tr>
+<td style="vertical-align: top;">AES</TD>
+
+
+<td style="vertical-align: top;">128</TD>
+
+<td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+<td style="vertical-align: top;">XTS version aka XTS-AES-128</td>
+
+</tr>
+<tr>
+<td style="vertical-align: top;">AES</td>
+
+<td style="vertical-align: top;">192</td>
+<td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">AES</td>
+
+<td style="vertical-align: top;">256</td>
+<td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+<td style="vertical-align: top;">XTS version aka XTS-AES-256</td>
+
+</tr>
+
+ <tr>
+<td style="vertical-align: top;">AES</TD>
+
+
+<td style="vertical-align: top;">128</TD>
+
+<td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC/LRW/XTS
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;">XTS version aka XTS-AES-128</TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">AES</td>
+
+<td style="vertical-align: top;">192</td>
+<td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC/LRW/XTS
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">AES</td>
+
+<td style="vertical-align: top;">256</td>
+<td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC/LRW/XTS
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;">XTS version aka XTS-AES-256
+</td>
+
+</tr>
+
+ <tr>
+<td style="vertical-align: top;">Blowfish</TD>
+
+
+<td style="vertical-align: top;">128</TD>
+
+<td style="vertical-align: top;">64</TD>
+
+      <td style="vertical-align: top;">CBC
+      
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">Blowfish</TD>
+
+
+<td style="vertical-align: top;">160</TD>
+
+<td style="vertical-align: top;">64
+</td>
+      <td style="vertical-align: top;">CBC
+      
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">Blowfish</TD>
+
+
+<td style="vertical-align: top;">192</TD>
+
+<td style="vertical-align: top;">64
+</td>
+      <td style="vertical-align: top;">CBC
+      
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">Blowfish</td>
+
+<td style="vertical-align: top;">256</TD>
+
+<td style="vertical-align: top;">64</td>
+      <td style="vertical-align: top;">CBC
+      
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">Blowfish</td>
+
+<td style="vertical-align: top;">448</TD>
+
+<td style="vertical-align: top;">64
+</td>
+      <td style="vertical-align: top;">CBC
+      
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+
+<tr>
+<td style="vertical-align: top;">CAST5</TD>
+
+
+<td style="vertical-align: top;">128</TD>
+
+<td style="vertical-align: top;">64</TD>
+
+      <td style="vertical-align: top;">CBC
+      
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;">aka CAST-128</TD>
+
+
+</tr>
+
+ <tr>
+      <td style="vertical-align: top;">CAST6</td>
+      
+      <td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+      <td style="vertical-align: top;">aka CAST-256</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">CAST6</td>
+      
+      <td style="vertical-align: top;">160</TD>
+
+      <td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+      <td style="vertical-align: top;">aka CAST-256</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">CAST6</td>
+      
+      <td style="vertical-align: top;">192</TD>
+
+      <td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+      <td style="vertical-align: top;">aka CAST-256</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">CAST6</td>
+      
+      <td style="vertical-align: top;">224</TD>
+
+      <td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+      <td style="vertical-align: top;">aka CAST-256</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">CAST6</td>
+      
+      <td style="vertical-align: top;">256</TD>
+
+      <td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+      <td style="vertical-align: top;">aka CAST-256</td>
+    </tr>
+<tr>
+<td style="vertical-align: top;">DES</TD>
+
+
+<td style="vertical-align: top;">64</TD>
+
+<td style="vertical-align: top;">64</TD>
+
+      <td style="vertical-align: top;">CBC
+      
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">3DES</TD>
+
+
+<td style="vertical-align: top;">192</TD>
+
+<td style="vertical-align: top;">64</TD>
+
+      <td style="vertical-align: top;">CBC
+      
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;">Standard encrypt, decrypt, encrypt</TD>
+
+
+</tr>
+ <tr>
+      <td style="vertical-align: top;">MARS</TD>
+
+      
+      <td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+      <td style="vertical-align: top;"></TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">MARS</TD>
+
+      
+      <td style="vertical-align: top;">192</TD>
+
+      <td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+      <td style="vertical-align: top;"></TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">MARS</TD>
+
+      
+      <td style="vertical-align: top;">256</TD>
+
+      <td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+      <td style="vertical-align: top;"></TD>
+
+    </tr>
+<tr>
+<td style="vertical-align: top;">Null</TD>
+
+
+<td style="vertical-align: top;">0</TD>
+
+<td style="vertical-align: top;">(variable)</TD>
+
+      <td style="vertical-align: top;">n/a</TD>
+
+<td style="vertical-align: top;">n/a</TD>
+<td style="vertical-align: top;"></TD>
+
+
+</tr>
+
+<tr>
+<td style="vertical-align: top;">RC-6</TD>
+
+
+<td style="vertical-align: top;">128</TD>
+
+<td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">RC-6</TD>
+
+
+<td style="vertical-align: top;">192</TD>
+
+<td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">RC-6</TD>
+
+
+<td style="vertical-align: top;">256</TD>
+
+<td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">RC-6</TD>
+
+
+<td style="vertical-align: top;">128</TD>
+
+<td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC/LRW/XTS
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">RC-6</TD>
+
+
+<td style="vertical-align: top;">192</TD>
+
+<td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC/LRW/XTS
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">RC-6</TD>
+
+
+<td style="vertical-align: top;">256</TD>
+
+<td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC/LRW/XTS
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">RC-6</TD>
+
+
+<td style="vertical-align: top;">1024</TD>
+
+<td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC/LRW/XTS
+      </td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+
+ <tr>
+      <td style="vertical-align: top;">Serpent</td>
+      
+      <td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+      <td style="vertical-align: top;"></TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Serpent</td>
+      
+      <td style="vertical-align: top;">192</TD>
+
+      <td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+      <td style="vertical-align: top;"></TD>
+
+    </tr>
+    <tr>
+<td style="vertical-align: top;">Serpent</TD>
+
+
+<td style="vertical-align: top;">256</TD>
+
+<td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</TD>
+
+<td style="vertical-align: top;"></TD>
+</tr>
+    <tr>
+      <td style="vertical-align: top;">Twofish</td>
+      
+      <td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+      <td style="vertical-align: top;"></TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Twofish</td>
+      
+      <td style="vertical-align: top;">192</TD>
+
+      <td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+      <td style="vertical-align: top;"></TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Twofish</td>
+      
+      <td style="vertical-align: top;">256</TD>
+
+      <td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC/XTS
+      </td>
+<td style="vertical-align: top;">Dr. Brian R. Gladman</td>
+      <td style="vertical-align: top;"></TD>
+
+    </tr>
+<tr>
+<td style="vertical-align: top;">Twofish</TD>
+
+
+<td style="vertical-align: top;">128</TD>
+
+<td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC
+      </td>
+<td style="vertical-align: top;">Hi/fn and Counterpane Systems
+</td><td style="vertical-align: top;">x86 systems <I>only</I></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">Twofish</td>
+
+<td style="vertical-align: top;">192</TD>
+
+<td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC
+      </td>
+<td style="vertical-align: top;">Hi/fn and Counterpane Systems</td><td style="vertical-align: top;">x86 systems <I>only</I></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">Twofish</td>
+
+<td style="vertical-align: top;">256</TD>
+
+<td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC
+      </td>
+<td style="vertical-align: top;">Hi/fn and Counterpane Systems</td><td style="vertical-align: top;">x86 systems <I>only</I></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">Twofish</TD>
+
+
+<td style="vertical-align: top;">128</TD>
+
+<td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC/LRW/XTS</td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">Twofish</td>
+
+<td style="vertical-align: top;">192</TD>
+
+<td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">CBC/LRW/XTS</td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">Twofish</td>
+
+<td style="vertical-align: top;">256</TD>
+
+<td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">CBC/LRW/XTS</td>
+<td style="vertical-align: top;">LibTomCrypt
+</td><td style="vertical-align: top;"></TD>
+
+
+</tr>
+<tr>
+<td style="vertical-align: top;">XOR</TD>
+
+
+<td style="vertical-align: top;">(variable)</TD>
+
+<td style="vertical-align: top;">(variable)</td>
+      <td style="vertical-align: top;">n/a</TD>
+
+<td style="vertical-align: top;">n/a</TD>
+<td style="vertical-align: top;"></TD>
+
+
+</tr>
+
+  </tbody>
+</table>
+
+
+<P>
+
+Hash algorithms included:
+<P>
+
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <th style="vertical-align: top;">Hash<br>
+      </th>
+      <th style="vertical-align: top;">Hash Length (in bits)<br>
+      </th>
+      <th style="vertical-align: top;">Block Length (in bits)<br>
+
+      </th>
+
+<th style="vertical-align: top;">Source Library<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">MD2</TD>
+
+      <td style="vertical-align: top;">128</TD>
+
+      <td style="vertical-align: top;">128</TD>
+
+<td style="vertical-align: top;">LibTomCrypt 
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">MD4</TD>
+
+      <td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">512</TD>
+
+<td style="vertical-align: top;">LibTomCrypt </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">MD5</TD>
+
+      <td style="vertical-align: top;">128</td>
+      <td style="vertical-align: top;">512</TD>
+
+<td style="vertical-align: top;">LibTomCrypt 
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Null</TD>
+
+      <td style="vertical-align: top;">(variable)</TD>
+
+      <td style="vertical-align: top;">(variable)</td>
+<td style="vertical-align: top;">n/a</TD>
+
+    </tr>
+ <tr>
+<td style="vertical-align: top;">RIPEMD-128</TD>
+
+<td style="vertical-align: top;">128</TD>
+
+<td style="vertical-align: top;">512</td>
+<td style="vertical-align: top;">LibTomCrypt
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">RIPEMD-160</TD>
+
+<td style="vertical-align: top;">160</TD>
+
+<td style="vertical-align: top;">512</td>
+<td style="vertical-align: top;">LibTomCrypt </td>
+</tr>
+<tr>
+<td style="vertical-align: top;">RIPEMD-160 (Linux; Twice, with A)</TD>
+
+<td style="vertical-align: top;">320</TD>
+
+<td style="vertical-align: top;">512</td>
+<td style="vertical-align: top;">LibTomCrypt
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">RIPEMD-256</TD>
+
+<td style="vertical-align: top;">256</TD>
+
+<td style="vertical-align: top;">512</td>
+<td style="vertical-align: top;">LibTomCrypt</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">RIPEMD-320</TD>
+
+<td style="vertical-align: top;">320</TD>
+
+<td style="vertical-align: top;">512</td>
+<td style="vertical-align: top;">LibTomCrypt</td>
+</tr>
+
+    <tr>
+      <td style="vertical-align: top;">SHA-1</TD>
+
+      <td style="vertical-align: top;">160</TD>
+
+      <td style="vertical-align: top;">512</td>
+<td style="vertical-align: top;">LibTomCrypt 
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">SHA-224</TD>
+
+      <td style="vertical-align: top;">224</TD>
+
+      <td style="vertical-align: top;">512</td>
+<td style="vertical-align: top;">LibTomCrypt 
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">SHA-256</td>
+      <td style="vertical-align: top;">256</TD>
+
+      <td style="vertical-align: top;">512</td>
+<td style="vertical-align: top;">LibTomCrypt 
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">SHA-384</td>
+      <td style="vertical-align: top;">384</TD>
+
+      <td style="vertical-align: top;">1024</TD>
+
+<td style="vertical-align: top;">LibTomCrypt 
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">SHA-512</td>
+      <td style="vertical-align: top;">512</TD>
+
+      <td style="vertical-align: top;">1024</TD>
+
+<td style="vertical-align: top;">LibTomCrypt 
+      </td>
+    </tr><tr>
+      <td style="vertical-align: top;">Tiger</TD>
+
+      <td style="vertical-align: top;">192</TD>
+
+      <td style="vertical-align: top;">512</TD>
+
+<td style="vertical-align: top;">LibTomCrypt 
+      </td>
+    </tr><tr>
+      <td style="vertical-align: top;">Whirlpool</TD>
+
+      <td style="vertical-align: top;">512</td>
+      <td style="vertical-align: top;">512</td>
+      <td style="vertical-align: top;">LibTomCrypt 
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+
+
+
+<P>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

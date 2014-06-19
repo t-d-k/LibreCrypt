@@ -1,0 +1,840 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Advanced Topics</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI>Advanced Topics
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+<H2>Advanced Topics</H2>
+
+<P>
+<UL>
+  <LI><A HREF="#level_3_heading_1">Keyfiles</A>
+  <LI><A HREF="#level_3_heading_2">Partition/Entire Disk Based Volumes</A>
+  <LI><A HREF="#level_3_heading_3">Creating Hidden Volumes</A>
+  <LI><A HREF="#level_3_heading_4">Volume Creation: Advanced Options</A>
+  <LI><A HREF="#level_3_heading_5">Password Entry: Advanced Options</A>
+  <LI><A HREF="#level_3_heading_6">Driver Control</A>
+  <LI><A HREF="#level_3_heading_7">Enabling/Disabling Hash/Cypher Algorithms</A>
+</UL>
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>Keyfiles</H3></A>
+
+<P>
+A "keyfile" is a small file (about 512 bytes) which can optionally be created for a volume, and contains a copy of the information required to mount a FreeOTFE volume. Keyfiles are encrypted based a user-supplied keyfile password, which must be supplied in order to use the keyfile.
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Tip.png" alt="Tip!" >
+    </TD>
+    <TD width=100%>
+
+More than one keyfile can be created for the same volume.
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+Keyfiles are useful as they allow critical information which is required in order to mount a particular volume to be stored separately to the volume which they relate to; on a floppy disk, or USB drive, for example - which would be too small to store the entire volume on. In this way, your volume may be stored on your computer, but the information required to access it can be stored in a physically more secure location (e.g. in a locked safe)
+
+<P>
+In a business environment, keyfiles may be used as a form of password recovery, or to reset forgotten passwords. When confidential information is held within a FreeOTFE volume, a keyfile can be created for that volume and stored in a safe location. Should the employee which normally uses the volume be unavailable, or cannot remember the volume's password, the volume may still be mounted using a keyfile that has was previously created for it (together with that keyfile's password) - even if the <I>volume's password</I> has been subsequently changed.
+
+<P>
+Keyfiles may also be used to provide multiple users with access to mount and use the same volume; each using a password of their own choosing.
+
+<P>
+Note: Keyfiles are <I>specific</I> to the volume they are created for! Although a keyfile for one volume may be able to successfully <I>mount</I> another volume, the virtual drive shown will appear to be unformatted - the files within the volume will remain securely encrypted and unreadable.
+
+<A NAME="level_4_heading_1"><H4>Creating a new keyfile</H4></A>
+
+<P>
+To create a new volume, select "Tools | Create keyfile..." to display the "keyfile wizard", which will guide you through the process in a series of simple steps.
+
+<A NAME="level_4_heading_2"><H4>Mounting a volume using a keyfile</H4></A>
+
+<P>
+The process of mounting a volume using a keyfile is identical to the normal mount procedure, with the exceptions that:
+
+<OL>
+<LI>The password used should be the <I>keyfile's</I> password, and <I>not the volume's password</I>.
+<LI>The full path and filename of the keyfile should be entered as the "keyfile file"
+</OL>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_2"><H3>Partition/Entire Disk Based Volumes</H3></A>
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_VistaPCIcon.png" alt="PC version only" >
+    </TD>
+    <TD width=100%>
+This section applies to the PC version of FreeOTFE <I>only</I>
+
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+As well as being able to storing encrypted volumes in flat files, FreeOTFE also provides the option of encrypting partitions, and even entire physical disks, by selecting "Partition/disk" when prompted during the volume creation process.
+
+<P>
+It is <I>not</I> recommended that inexperienced users do this - is the kind of operation that should only be carried out by those familiar with disk partitioning and fully understand what they're doing.
+
+<A NAME="level_4_heading_3"><H4>Safety Precautions</H4></A>
+
+<P>
+It is <B><I>extremely important</I></B> that you make <B><I>absolutely sure</I></B> you have selected the correct disk/partition to be used when creating a new partition based volume!
+
+<A NAME="level_5_heading_1"><H5>Backing up</H5></A>
+
+<P>
+The volume creation process will overwrite the first 512 bytes of the selected partition (or start of the disk, if using the entire disk).
+
+<P>
+You might wish to use the FreeOTFE's backup functionality ("Tools | Critical data block | Backup...") to back up this part of the disk, prior to creating a partition/disk based volume - which will allow you to revert the changes FreeOTFE makes to your partition/disk should you realise that you've selected the wrong one.
+
+<P>
+Note: Such a backup will be of limited use after the volume created has been mounted and formatted, since formatting will carry out further overwrites to the partition/disk.
+
+<P>
+Ideally, you should backup your entire system before creating encrypted partitions, just to be on the safe side - though this is unlikely to be particularly practical for many users.
+
+<A NAME="level_5_heading_2"><H5>Create New Volumes as an Administrator</H5></A>
+
+<P>
+The partition display shown by FreeOTFE will give more information about the partitions on a disk (e.g. drive letters allocated, size of partitions, proportional display) when used by a user with administrative privileges. A user with normal privileges will be shown less information due to their restricted access rights.
+
+<P>
+
+<TABLE BORDER=0 WIDTH="100%" >
+  <TR>
+    <TD WIDTH="100%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PC/NewVolumeWizard_PartitionFullInfo.png">
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD>
+      <I>New volume wizard showing full partition information</I>
+    </TD>
+  </TR>
+</TABLE>
+
+
+<P>
+Therefore, it is <I>recommended</I> that you create any new partition based volumes while logged in as an administrator. To do this under Windows Vista, you will need to run FreeOTFE with elevated permissions; locate the "FreeOTFE.exe" executable where you installed it, rightclick on this executable and select "Run as administrator" from the context menu.
+
+<A NAME="level_4_heading_4"><H4>Special Note for Windows Vista x64 (64 bit) and Windows 7 (64 bit) Users</H4></A>
+
+<P>
+In order to format a new <I>partition or disk based volume</I> under Windows Vista x64 (64 bit), the volume must be mounted while FreeOTFE is running with elevated permissions.
+
+<P>
+To do this:
+
+<OL>
+<LI>Locate "FreeOTFE.exe" where you installed it, rightclick on this executable, and select "Run as administrator" from the context menu)
+<LI>Mount the partition/disk as normal
+<LI>Format the mounted volume
+</OL>
+
+<P>
+This procedure only needs to be carried out <I>once</I> in order to format the volume; it may subsequently be mounted and used by any user.
+
+<P>
+Elevated permissions are <I>not</I> required to format file based volumes.
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_3"><H3>Creating Hidden Volumes</H3></A>
+
+<P>
+FreeOTFE offers users the ability to create "hidden volumes" stored inside other "host" volumes.
+
+<P>
+To create a hidden volume:
+
+<OL>
+<LI>If the volume you wish to create a hidden volume in is mounted, dismount it.
+<LI>Start the volume creation wizard as normal (select "File | New..." from the main menu).
+<LI>When prompted to select between creating a file or partition based volume, select "File" or "Partition", depending on whether the <I>host volume</I> you wish to use is file or partition based.
+<LI>When prompted for the filename/partition to create your hidden volume on, select the <I>host</I> file/partition you wish to create the hidden volume inside.
+<LI>The next step in the wizard will prompt you to enter an offset. The offset is the number of bytes from the start of the host volume where you wish the hidden volume to begin. Make sure that the offset you specify is large enough such that it does not overwrite any of the system areas of that host volume (e.g. the FAT), or files already written to it.
+<LI>Continue with the volume creation wizard as normal.
+</OL>
+
+<P>
+To mount your hidden volume, proceed as if mounting the <I>host</I> volume, but when prompted to enter your password, click the "Advanced" button and enter the offset. (See the section on advanced password entry options).
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Tip.png" alt="Tip!" >
+    </TD>
+    <TD width=100%>
+
+Make sure you remember the value you enter for the offset value! For security reasons, FreeOTFE doesn't store this information anywhere, and so you will have to enter the same offset into the password entry dialog every time you wish to mount your hidden volume.
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_SecurityTip.png" alt="Security tip" >
+    </TD>
+    <TD width=100%>
+
+More than one hidden volume can be stored within the same host volume, by using different offsets
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+If you create a hidden volume within an existing volume, <I>be warned</I>: subsequently mounting and adding data to the <I>host</I> volume can potentially result in parts of the hidden volume being overwritten, and its data destroyed. This is by design, and increases the security of the hidden volume.
+
+<P>
+Please see the <A HREF="plausible_deniability.htm">Plausible Deniability</A> section for further information on the practical uses and considerations of hidden volumes.
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_4"><H3>Volume Creation: Advanced Options</H3></A>
+
+<P>
+At the end of the volume creation process, FreeOTFE will display a summary of the volume it is about to create. At this stage, more advanced options be configured for the new volume, by selecting the "Advanced..." button (PC version), or by selecting "Menu | Next" and "Menu | Back" (PDA version).
+
+<P>
+
+<TABLE BORDER=0 WIDTH="100%">
+  <TR>
+    <TD WIDTH="50%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PC/VolCreateAdvanced.png">
+    </TD>
+    <TD WIDTH="50%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PDA/VolCreateAdvanced.png">
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD>
+      <FONT SIZE=-1>(PC version)</FONT>
+    </TD>
+    <TD>
+      <FONT SIZE=-1>(PDA version)</FONT>
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD COLSPAN="2">
+      <I>Advanced volume creation options</I>
+    </TD>
+  </TR>
+</TABLE>
+
+
+<A NAME="level_4_heading_5"><H4>Key Iterations</H4></A>
+
+<P>
+Before the user's password is used to encrypt/decrypt the CDB, it is processed using PBKDF2 to increase security.
+
+<P>
+This tab allows the number of PBKDF2 iterations to be set by the user; higher values increase security, but will also increase the amount of time taken to mount the volume. This becomes more significant when mounting volumes on a PDA, which typically have slower CPUs.
+
+<P>
+The default number of key iterations is 2048.
+
+<A NAME="level_4_heading_6"><H4>Salt</H4></A>
+
+<P>
+Before the user's password is used to encrypt/decrypt the CDB, it is processed using PBKDF2 to increase security.
+
+<P>
+Part of this processing involves the use of a random "salt" value, which reduces the risk of dictionary based attacks. This tab allows the length of the salt value (in bits) to be set by the user.
+
+<P>
+<I>It should be noted that every time a volume which has a non-default (256 bit) salt length is mounted, the user must specify the correct salt length (unless using a keyfile; in which case the keyfiles salt length must be specified) by using the "Advanced" options available on the FreeOTFE password entry dialog.</I>
+
+<P>
+The default salt length is 256 bits. Any salt length entered must be a multiple of 8 bits.
+
+<A NAME="level_4_heading_7"><H4>Drive Letter</H4></A>
+
+
+<!-- No standard "PC only" banner here - it's too big and wouldn't look good -->
+<I>(PC version only)</I>
+
+
+<P>
+By default, FreeOTFE will use the next available drive letter when mounting a volume.
+
+<P>
+This behaviour can be changed to use a specific drive letter on a volume-by-volume basis by setting it on this option.
+
+<P>
+The default setting here is "Use default"; use the next available drive letter
+
+<P>
+Note: If the chosen drive letter is in use at the time of mounting, the next free drive letter will be used
+
+<A NAME="level_4_heading_8"><H4>CDB Location</H4></A>
+
+<P>
+Normally, a volume's CDB will be stored as the first 512 bytes of the volume.
+
+<P>
+However, this does increase the size of the volume by the size of the CDB, which can FreeOTFE volumes more distinctive, and making it slightly more obvious that a volume file <I>is</I> volume file.
+
+<P>
+This is most clearly shown when creating a file based volume: a 2GB volume, for example, will be 2,147,484,160 bytes in length - made up of a 2,147,483,648 byte (2GB) encrypted disk image, plus a 512 byte embedded CDB.
+
+<P>
+To reduce this, it is possible to create a volume <I>without</I> an embedded CDB; the CDB begin stored in a separate file as a standard FreeOTFE keyfile.
+
+<P>
+In this case, a 2GB volume would comprise of a 2,147,483,648 byte (2GB) encrypted disk image, plus a separate 512 byte keyfile which may be stored in a separate location to the volume.
+
+<P>
+Note that if you store the volume's CDB in a keyfile, you will <I>always</I> need to supply a keyfile when mounting the volume, and ensure that the "Data from offset includes CDB" advanced option shown on the FreeOTFE password entry dialog shown when mounting must be <I>unchecked after the keyfile is specified</I>.
+
+<P>
+By default, FreeOTFE includes the CDB will be included as part of the volume.
+
+<A NAME="level_4_heading_9"><H4>Padding</H4></A>
+
+<P>
+"Padding" is additional random data added to the end of a volume file. Any padding added will not be available for use as part of the mounted volume, and serves to increase the size of the volume.
+
+<P>
+Encrypted volumes typically have a file size that is a multiple of 512 bytes, or a "signature size" beyond the last 1MB boundry. To prevent this, you may wish to append random "padding" data to the new volume.
+
+<P>
+Padding also reduces the amount of information available to an attacker with respect to the maximum amount of the encrypted that may actually be held within the volume.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_5"><H3>Password Entry: Advanced Options</H3></A>
+
+<P>
+<I>Note: This section only covers the password entry dialog shown when mounting FreeOTFE volumes. For mounting Linux volumes, please see the section on <A HREF="Linux_volumes.htm">Linux volumes</A>.</I>
+
+
+<TABLE BORDER=0 WIDTH="100%">
+  <TR>
+    <TD WIDTH="50%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PC/MountAdvanced.png">
+    </TD>
+    <TD WIDTH="50%" class="screenshot_img" >
+      <img BORDER="1" src="./images/screenshots/PDA/MountAdvanced.png">
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD>
+      <FONT SIZE=-1>(PC version)</FONT>
+    </TD>
+    <TD>
+      <FONT SIZE=-1>(PDA version)</FONT>
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD COLSPAN="2">
+      <I>Advanced mount options</I>
+    </TD>
+  </TR>
+</TABLE>
+
+
+<P>
+<A NAME="level_4_heading_10"><H4>Advanced Security Details</H4></A>
+
+<P>
+
+<A NAME="level_5_heading_3"><H5>Salt length</H5></A>
+
+<P>
+This should be set to the number of salt bits used in the PBKDF2 processing of the user's password, before using it to decrypt the volume's CDB/keyfile being used.
+
+<P>
+By default, this is set to 256 bits - the same default length used when creating a new volume.
+
+<A NAME="level_5_heading_4"><H5>Key iterations</H5></A>
+
+<P>
+This should be set to the number of key iterations used in the PBKDF2 processing of the user's password, before using it to decrypt the volume's CDB/keyfile being used.
+
+<P>
+By default, this is set to 2048 iterations - the same default number used when creating a new volume.
+
+<A NAME="level_5_heading_5"><H5>PKCS#11 secret key</H5></A>
+
+<P>
+This option is only available if PKCS#11 support is enabled (see the section on <A HREF="pkcs11_support.htm">Security Token/Smartcard Support</A> for more information on how to use this setting.
+
+<A NAME="level_4_heading_11"><H4>Mount Options</H4></A>
+
+
+<!-- No standard "PC only" banner here - it's too big and wouldn't look good -->
+<I>(PC version only)</I>
+
+
+<P>
+<A NAME="level_5_heading_6"><H5>Mount as</H5></A>
+
+<P>
+FreeOTFE volumes may be mounted as any of the following types of virtual drive:
+
+<UL>
+<LI>Fixed disk
+<LI>Removable disk
+<LI>CD
+<LI>DVD
+</UL>
+
+<P>
+Under normal operation, users should select either fixed disk, or removable disk.
+
+<P>
+Selecting the "removable disk" option causes the volume to be mounted as
+though it was a removable drive. By mounting volumes in this way, among
+other things, files deleted from your volume will not be moved to
+a "recycle bin" on your encrypted volume, but will be deleted immediately.
+
+<P>
+By default, FreeOTFE mounts volumes as a fixed disk.
+
+<A NAME="level_5_heading_7"><H5>Mount for all users</H5></A>
+
+<P>
+If this option is checked, mounted drives will be visible to all users logged onto the PC.
+
+<P>
+By default, this option is checked.
+
+<A NAME="level_5_heading_8"><H5>Volume Options</H5></A>
+
+<P>
+These options are intended for use with hidden volumes, and volumes which were created without a CDB embedded at the start of the volume
+
+</H5>Offset</H5>
+
+<P>
+When attempting to mount a <I>hidden volume</I>, this should be set to the offset (in bytes) where the hidden volume starts, as specified when creating it.
+
+<P>
+By default, this is set to an offset of 0 bytes.
+
+</H5>Data from offset includes CDB</H5>
+
+<P>
+This checkbox is only enabled if a keyfile has been specified.
+
+<P>
+If you are attempting to mount either a hidden, or normal, volume which was created <I>without</I> a CDB embedded at the start of the volume, this checkbox should be changed so that it is <I>unchecked</I>.
+
+<P>
+For mounting all other volumes, this checkbox should be checked.
+
+<P>
+By default, this checkbox is checked.
+
+<A NAME="level_4_heading_12"><H4>Mountpoint</H4></A>
+
+
+<!-- No standard "PC only" banner here - it's too big and wouldn't look good -->
+<I>(PDA version only)</I>
+
+
+<P>
+This is the name of the new "folder" where the mounted volume will appear. For example, you may already have a "mountpoint" called "SD Card" where your SD storage card appears under.
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_6"><H3>Driver Control</H3></A>
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_VistaPCIcon.png" alt="PC version only" >
+    </TD>
+    <TD width=100%>
+This section applies to the PC version of FreeOTFE <I>only</I>
+
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+The driver control dialog may be accessed by selecting "File | Drivers...". From here you may see all drivers installed, and their current state.
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Tip.png" alt="Tip!" >
+    </TD>
+    <TD width=100%>
+
+A summary of all available hash and cypher algorithms can be found by selecting "Help | List hashes..."/"Help | List cyphers...".
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+
+<TABLE BORDER=0 WIDTH="100%" >
+  <TR>
+    <TD WIDTH="100%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PC/DriverControl.png">
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD>
+      <I>Driver control dialog</I>
+    </TD>
+  </TR>
+</TABLE>
+
+
+<A NAME="level_4_heading_13"><H4>Installing New Drivers</H4></A>
+
+<P>
+FreeOTFE drivers may be installed by clicking "Install...", and selecting the driver file to be installed.
+
+<P>
+FreeOTFE will then install the driver selected (adding it to the list of installed drivers), start it, and sets it to automatically start up whenever the PC boots up.
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Tip.png" alt="Tip!" >
+    </TD>
+    <TD width=100%>
+
+More than one driver can be installed at the same time by selecting holding down &lt;SHIFT&gt;/&lt;CTRL&gt; when selecting driver files in the "Open" dialog shown when "Install..." is clicked
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<A NAME="level_4_heading_14"><H4>Modify Existing Drivers</H4></A>
+
+<P>
+The lower half of the Driver Control dialog lists all drivers currently installed, together with their status indicated with the icons listed below:
+
+<P>
+<CENTER>
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<th style="vertical-align: top;">Column</th>
+<th style="vertical-align: top;">Icon</th>
+<th style="vertical-align: top;">Description</th>
+</tr>
+<tr>
+<td colspan="1" rowspan="2" style="vertical-align: top;">Start up</TD>
+
+<td style="text-align: center; vertical-align: middle;"><img src="./images/driver_START_MANUAL.png" alt="Smiley"></TD>
+
+<td style="vertical-align: top;">Driver must be started manually</TD>
+
+</tr>
+<tr>
+<td style="text-align: center; vertical-align: middle;"><img src="./images/driver_START_AUTO.png" alt="Up arrow"></TD>
+
+<td style="vertical-align: top;">Driver will be started automatically when the computer starts up</TD>
+
+</tr>
+<tr>
+<td colspan="1" rowspan="2" style="vertical-align: top;">Installation mode</TD>
+
+<td style="text-align: center; vertical-align: middle;"><img src="./images/driver_MODE_NORMAL.png" alt="Blank icon"></td>
+<td style="vertical-align: top;">Driver is installed normally<span style="font-style: italic;"> (no icon) </span>
+</td>
+</tr>
+<tr>
+<td style="text-align: center; vertical-align: middle;"><img src="./images/driver_MODE_PORTABLE.png" alt="Car icon"></td>
+<td style="vertical-align: top;">Driver is installed in portable mode<span style="font-style: italic;"> (world icon)</span></TD>
+
+</tr>
+<tr>
+<td colspan="1" rowspan="2" style="vertical-align: top;">Status</TD>
+
+<td style="text-align: center; vertical-align: middle;"><img src="./images/driver_STATUS_STARTED.png" alt="Green triangle"></TD>
+
+<td style="vertical-align: top;">Driver started</TD>
+
+</tr>
+<tr>
+<td style="text-align: center; vertical-align: middle;"><img src="./images/driver_STATUS_STOPPED.png" alt="Red square"></TD>
+
+<td style="vertical-align: top;">Driver stopped</TD>
+
+</tr>
+
+</tbody>
+</table>
+</CENTER>
+
+<P>
+After selecting an installed driver from the list, the operations listed below may be carried out on it:
+
+<A NAME="level_5_heading_9"><H5>Driver startup</H5></A>
+
+<P>
+Changes whether the selected driver is automatically started when the PC boots up. After changing this setting, click "Update" for the change to take effect.
+
+<A NAME="level_5_heading_10"><H5>Change driver status</H5></A>
+
+<P>
+The start/stop buttons start and stop the selected driver
+
+<A NAME="level_5_heading_11"><H5>Uninstall</H5></A>
+
+<P>
+Uninstalls the selected driver, and removes it from the drivers list.
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_7"><H3>Enabling/Disabling Hash/Cypher Algorithms</H3></A>
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_VistaPDAIcon.png" alt="PDA version only" >
+    </TD>
+    <TD width=100%>
+This section applies to the PDA version of FreeOTFE <I>only</I>
+
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+FreeOTFE4PDA comes with a wide range of hash/cypher drivers. From v3.75 onwards however, only the SHA hashes (i.e. SHA-1, SHA-224, SHA-256, SHA-284 and SHA-512) and AES cyphers are enabled by default.
+
+<P>
+This change was introduced to improve performance for the majority of users (see FAQ <a href="FAQ.htm#bm">How can I speed FreeOTFE up when mounting my volumes?</a>). Other drivers can be easily enabled, if required.
+
+<P>
+To enable or disable a hash/cypher driver:
+
+<OL>
+<LI>From the main menu, select "View".
+<LI>Select "Options...".
+<LI>Select either the "Hashes" or "Cyphers" tab as appropriate.
+<LI>Select which of the hash/cypher drivers you would like enabled.
+</OL>
+
+
+<TABLE BORDER=0 WIDTH="100%" >
+  <TR>
+    <TD WIDTH="100%" class="screenshot_img" >
+      <img BORDER="1" src="./images/screenshots/PDA/OptionsCyphers.png">
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD>
+      <I>Options dialog; enabling/disabling cypher drivers</I>
+    </TD>
+  </TR>
+</TABLE>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

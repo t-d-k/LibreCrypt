@@ -1,0 +1,33 @@
+!IF 0
+
+Copyright (C) Microsoft Corporation, 1997 - 1997
+
+Module Name:
+
+    sources.
+
+!ENDIF
+
+TARGETNAME=FreeOTFEHashWhirlpool
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+!IF 0
+  Include the CSQ stuff...
+!ENDIF
+TARGETLIBS=$(DDK_LIB_PATH)\csq.lib
+
+INCLUDES=..\..\..\DRIVER\inc;..\..\..\Common\inc;..\..\Common\inc;..\..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\headers;..\..\..\..\..\Common\HASH_DRIVERS\Common\inc;..\..\..\..\..\Common\Common\inc
+
+
+!IF 0
+  Note that we don't include "whirltab.c" in the following list; it's #included by whirl.c
+!ENDIF
+
+SOURCES=FreeOTFEHashDriver.c\
+        FreeOTFEDebug.c \
+        FreeOTFElib.c \
+        FreeOTFEDriverlib.c \
+        FreeOTFEHashWhirlpool.c \
+        FreeOTFEHashWhirlpool.rc \
+        whirl.c \
+        zeromem.c

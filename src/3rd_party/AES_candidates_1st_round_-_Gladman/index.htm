@@ -1,0 +1,856 @@
+<html><head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><title>AES Algorithm Efficiency</title>
+
+<meta name="Microsoft Border" content="none"></head><body>
+
+<h2><font face="Copperplate Gothic Bold">AES Algorithm Efficiency</font></h2>
+
+<p><font face="Arial">This page gives the results I have obtained in implementing&nbsp; <a href="http://csrc.nist.gov/encryption/aes/">AES</a> candidate algorithms from
+an efficiency perspective.</font> </p>
+
+<h3><font face="Arial">Results</font></h3>
+
+<p><font face="Arial">The figures given in the table below are in clock cycles for key set-up and clock
+cycles per block for encryption and decryption.&nbsp; The rows giving speed figures
+provide encryption and decryption speeds (and their average) for 128 bit keys on the 200
+MHz Pentium Pro reference platform without any I/O byte/word/block inversion costs. The
+key set-up timings are for computing both the encryption and decryption key
+schedules.&nbsp;&nbsp; For Rijndael and CRYPTON the cost of the key schedule for
+decryption is much higher than that for encryption so two figures are given for these
+algorithms (the encryption and decryption key schedule cycle counts respectively). &nbsp;
+The encryption and decryption speeds for 128 bit keys and full input/output byte order
+conversion are provided below the main figures where these are different (note, however,
+that these are not fair for comparison purposes since many of the AES algorithms
+chose
+arbitrary byte order conventions).</font></p>
+
+<p><font face="Arial">Here (as a result of many requests) are the source code
+files used to obtain these results:</font></p>
+
+<ul>
+  <li><font face="Arial"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/std_defs.h">std_defs.h</a> &#8211; a header
+    file containing common definitions</font></li>
+  <li><font face="Arial"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/rand.cpp">rand.cpp</a> &#8211; a random number
+    generator used in the testing</font></li>
+  <li><font face="Arial"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/aes_gtst.cpp">aes_gtst.cpp</a> &#8211; a C++
+    file that generates test vector files and compares them with reference
+    versions</font></li>
+  <li><font face="Arial"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/aes_test.cpp">aes_test.cpp</a> &#8211; a C++
+    file that checks algorithm output against a file of standard test vector
+    outputs</font></li>
+  <li><font face="Arial"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/aes_time.cpp">aes_time.cpp</a> &#8211; a C++
+    file for timing the algorithms</font></li>
+</ul>
+
+<p><font face="Arial">For comparison DES in C (<a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/des.h">des.h</a>, <a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/des.c">des.c</a> and <a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/key.c">key.c</a>), optimised for the Pentium Pro, requires 456 cycles for each 64
+bit data block, corresponding to a speed of 28 Mbits/second on this platform running at
+200 Mhz (faster than many AES design teams appear to believe).</font></p>
+<div align="center"><center>
+
+<table bgcolor="#e9e9e9" border="0" cellpadding="2" width="1410">
+  <tbody><tr>
+    <td bgcolor="#a9c0fe" height="24" width="213"><font face="Arial Narrow">Algorithm</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="54"><font face="Arial Narrow">RC6</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="88"><font face="Arial Narrow">Rijndael</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="64"><font face="Arial Narrow">MARS</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="85"><font face="Arial Narrow">Twofish</font></td>
+    <td colspan="2" align="center" bgcolor="#a9c0fe" height="24" width="176"><font face="Arial Narrow">CRYPTON</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="57"><font face="Arial Narrow">CAST</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="45"><font face="Arial Narrow">E2</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="73"><font face="Arial Narrow">Serpent</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="51"><font face="Arial Narrow">DFC</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="62"><font face="Arial Narrow">HPC</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="65"><font face="Arial Narrow">SAFER</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="57"><font face="Arial Narrow">LOKI</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="72"><font face="Arial Narrow">FROG</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="53"><font face="Arial Narrow">DEAL</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="99"><font face="Arial Narrow">MAGENTA</font></td>
+  </tr>
+  <tr>
+    <td bgcolor="#a9c0fe" height="24" width="213"><font face="Arial Narrow">Source Code</font></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="54"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/rc6.c"><font face="Arial Narrow">rc6.c</font></a></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="88"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/rijndael.c"><font face="Arial Narrow">rijndael.c</font></a></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="64"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/mars.c"><font face="Arial Narrow">mars.c</font></a></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="85"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/twofish.c"><font face="Arial Narrow">twofish.c</font></a></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="85"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/crypton.c"><font face="Arial Narrow">crypton.c</font></a></td>
+    <td align="center" bgcolor="#d3bee2" height="24" width="85"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/crypton1.c"><font face="Arial Narrow">crypton1.c</font></a></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="57"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/cast.c"><font face="Arial Narrow">cast.c</font></a></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="45"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/e2.c"><font face="Arial Narrow">e2.c</font></a></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="73"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/serpent.c"><font face="Arial Narrow">serpent.c</font></a></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="51"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/dfc.c"><font face="Arial Narrow">dfc.c</font></a></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="62"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/hpc.c"><font face="Arial Narrow">hpc.c</font></a></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="65"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/safer.c"><font face="Arial Narrow">safer.c</font></a></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="57"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/loki.c"><font face="Arial Narrow">loki.c</font></a></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="72"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/frog.c"><font face="Arial Narrow">frog.c</font></a></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="53"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/deal.c"><font face="Arial Narrow">deal.c</font></a></td>
+    <td align="center" bgcolor="#a9c0fe" height="24" width="99"><a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/magenta.c"><font face="Arial Narrow">magenta.c</font></a></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d8dada" height="24" width="213"><font face="Arial Narrow">Key Set-up
+    (128)</font></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="54"><small><strong><font face="Courier New">1632</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="88"><small><strong><font face="Courier New">305:1389</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="64"><small><strong><font face="Courier New">4316</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">8414</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">531:1369</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">744:1270</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">4333</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="45"><small><strong><font face="Courier New">9473</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="73"><small><strong><font face="Courier New">2402</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="51"><small><strong><font face="Courier New">5222</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="62"><small><strong><font face="Courier New">120749</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="65"><small><strong><font face="Courier New">4278</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">7430</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="72"><small><strong><font face="Courier New">1416182</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="53"><small><strong><font face="Courier New">8635</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="99"><small><strong><font face="Courier New">30</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d8dada" height="24" width="213"><font face="Arial Narrow">Key Set-up
+    (192)</font></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="54"><small><strong><font face="Courier New">1885</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="88"><small><strong><font face="Courier New">277:1595</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="64"><small><strong><font face="Courier New">4377</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">11628</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">539:1381</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">748:1284</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">4342</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="45"><small><strong><font face="Courier New">9540</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="73"><small><strong><font face="Courier New">2449</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="51"><small><strong><font face="Courier New">5203</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="62"><small><strong><font face="Courier New">120754</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="65"><small><strong><font face="Courier New">7426</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">7303</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="72"><small><strong><font face="Courier New">1422837</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="53"><small><strong><font face="Courier New">8653</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="99"><small><strong><font face="Courier New">25</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d8dada" height="24" width="213"><font face="Arial Narrow">Key Set-up
+    (256)</font></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="54"><small><strong><font face="Courier New">1877</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="88"><small><strong><font face="Courier New">374:1960</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="64"><small><strong><font face="Courier New">4340</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">15457</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">552:1392</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">784:1323</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">4325</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="45"><small><strong><font face="Courier New">9913</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="73"><small><strong><font face="Courier New">2349</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="51"><small><strong><font face="Courier New">5177</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="62"><small><strong><font face="Courier New">120731</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="65"><small><strong><font face="Courier New">11313</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">7166</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="72"><small><strong><font face="Courier New">1423613</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="53"><small><strong><font face="Courier New">11698</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="99"><small><strong><font face="Courier New">37</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d8dada" height="24" width="213"><font face="Arial Narrow">Encrypt (128)</font></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="54"><small><strong><font face="Courier New">270</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="88"><small><strong><font face="Courier New">374</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="64"><small><strong><font face="Courier New">369</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">376</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">474</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">476</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">633</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="45"><small><strong><font face="Courier New">687</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="73"><small><strong><font face="Courier New">952</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="51"><small><strong><font face="Courier New">1203</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="62"><small><strong><font face="Courier New">1429</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="65"><small><strong><font face="Courier New">1722</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">2134</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="72"><small><strong><font face="Courier New">2417</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="53"><small><strong><font face="Courier New">2339</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="99"><small><strong><font face="Courier New">6539</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d8dada" height="24" width="213"><font face="Arial Narrow">Encrypt (192)</font></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="54"><small><strong><font face="Courier New">267</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="88"><small><strong><font face="Courier New">439</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="64"><small><strong><font face="Courier New">373</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">376</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">473</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">469</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">633</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="45"><small><strong><font face="Courier New">696</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="73"><small><strong><font face="Courier New">952</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="51"><small><strong><font face="Courier New">1288</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="62"><small><strong><font face="Courier New">1477</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="65"><small><strong><font face="Courier New">2555</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">2138</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="72"><small><strong><font face="Courier New">2433</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="53"><small><strong><font face="Courier New">2358</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="99"><small><strong><font face="Courier New">6531</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d8dada" height="24" width="213"><font face="Arial Narrow">Encrypt (256)</font></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="54"><small><strong><font face="Courier New">270</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="88"><small><strong><font face="Courier New">502</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="64"><small><strong><font face="Courier New">369</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">381</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">469</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">470</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">639</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="45"><small><strong><font face="Courier New">691</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="73"><small><strong><font face="Courier New">952</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="51"><small><strong><font face="Courier New">1178</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="62"><small><strong><font face="Courier New">1462</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="65"><small><strong><font face="Courier New">3391</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">2131</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="72"><small><strong><font face="Courier New">2440</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="53"><small><strong><font face="Courier New">3115</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="99"><small><strong><font face="Courier New">8711</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d8dada" height="24" width="213"><font face="Arial Narrow">Decrypt (128)</font></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="54"><small><strong><font face="Courier New">226</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="88"><small><strong><font face="Courier New">352</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="64"><small><strong><font face="Courier New">376</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">374</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">474</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">470</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">634</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="45"><small><strong><font face="Courier New">691</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="73"><small><strong><font face="Courier New">914</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="51"><small><strong><font face="Courier New">1244</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="62"><small><strong><font face="Courier New">1599</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="65"><small><strong><font face="Courier New">1709</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">2192</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="72"><small><strong><font face="Courier New">2227</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="53"><small><strong><font face="Courier New">2365</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="99"><small><strong><font face="Courier New">6534</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d8dada" height="24" width="213"><font face="Arial Narrow">Decrypt (192)</font></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="54"><small><strong><font face="Courier New">235</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="88"><small><strong><font face="Courier New">425</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="64"><small><strong><font face="Courier New">379</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">374</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">470</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">470</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">633</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="45"><small><strong><font face="Courier New">693</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="73"><small><strong><font face="Courier New">914</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="51"><small><strong><font face="Courier New">1235</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="62"><small><strong><font face="Courier New">1599</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="65"><small><strong><font face="Courier New">2530</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">2189</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="72"><small><strong><font face="Courier New">2255</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="53"><small><strong><font face="Courier New">2363</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="99"><small><strong><font face="Courier New">6528</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d8dada" height="24" width="213"><font face="Arial Narrow">Decrypt (256)</font></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="54"><small><strong><font face="Courier New">227</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="88"><small><strong><font face="Courier New">500</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="64"><small><strong><font face="Courier New">376</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">374</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">483</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">469</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">638</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="45"><small><strong><font face="Courier New">706</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="73"><small><strong><font face="Courier New">914</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="51"><small><strong><font face="Courier New">1226</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="62"><small><strong><font face="Courier New">1526</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="65"><small><strong><font face="Courier New">3338</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">2184</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="72"><small><strong><font face="Courier New">2240</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="53"><small><strong><font face="Courier New">3102</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="99"><small><strong><font face="Courier New">8705</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#a9c0fe" height="24" width="213"><font face="Arial Narrow">Encryption
+    speed (128)</font></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="54"><small><strong><font face="Courier New">94.8</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="88"><small><strong><font face="Courier New">68.4</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="64"><small><strong><font face="Courier New">69.4</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="85"><small><strong><font face="Courier New">68.1</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="85"><small><strong><font face="Courier New">54.1</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="85"><small><strong><font face="Courier New">53.8</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="57"><small><strong><font face="Courier New">40.4</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="45"><small><strong><font face="Courier New">37.3</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="73"><small><strong><font face="Courier New">26.9</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="51"><small><strong><font face="Courier New">21.3</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="62"><small><strong><font face="Courier New">17.9</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="65"><small><strong><font face="Courier New">14.9</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="57"><small><strong><font face="Courier New">12.0</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="72"><small><strong><font face="Courier New">10.6</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="53"><small><strong><font face="Courier New">10.9</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="99"><small><strong><font face="Courier New">3.9</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#a9c0fe" height="24" width="213"><font face="Arial Narrow">Decryption
+    speed (128)</font></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="54"><small><strong><font face="Courier New">113.3</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="88"><small><strong><font face="Courier New">72.7</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="64"><small><strong><font face="Courier New">68.1</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="85"><small><strong><font face="Courier New">68.4</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="85"><small><strong><font face="Courier New">54.1</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="85"><small><strong><font face="Courier New">54.5</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="57"><small><strong><font face="Courier New">40.4</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="45"><small><strong><font face="Courier New">37.0</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="73"><small><strong><font face="Courier New">28.0</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="51"><small><strong><font face="Courier New">20.6</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="62"><small><strong><font face="Courier New">16.0</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="65"><small><strong><font face="Courier New">15.0</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="57"><small><strong><font face="Courier New">11.7</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="72"><small><strong><font face="Courier New">11.5</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="53"><small><strong><font face="Courier New">10.8</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="99"><small><strong><font face="Courier New">3.9</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#a9c0fe" height="24" width="213"><font face="Arial Narrow">Mean speed
+    (128)</font></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="54"><small><strong><font face="Courier New">103.2</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="88"><small><strong><font face="Courier New">70.2</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="64"><small><strong><font face="Courier New">68.7</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="85"><small><strong><font face="Courier New">68.3</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="85"><small><strong><font face="Courier New">54.1</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="85"><small><strong><font face="Courier New">54.1</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="57"><small><strong><font face="Courier New">40.4</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="45"><small><strong><font face="Courier New">37.2</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="73"><small><strong><font face="Courier New">27.4</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="51"><small><strong><font face="Courier New">20.9</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="62"><small><strong><font face="Courier New">16.9</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="65"><small><strong><font face="Courier New">14.9</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="57"><small><strong><font face="Courier New">11.8</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="72"><small><strong><font face="Courier New">11.0</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="53"><small><strong><font face="Courier New">10.9</font></strong></small></td>
+    <td align="right" bgcolor="#a9c0fe" height="24" width="99"><small><strong><font face="Courier New">3.9</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#2637ce" height="23" width="213"><small><font color="#ffffff" face="Arial Narrow">Encryption
+    speed (128, full)</font></small></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="54"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="88"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="64"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="85"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="85"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="85"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="57"><font color="#ffffff" face="Courier New"><small>37.8</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="45"><font color="#ffffff" face="Courier New"><small>35.1</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="73"><font color="#ffffff" face="Courier New"><small>26.0</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="51"><font color="#ffffff" face="Courier New"><small>20.5</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="62"><font color="#ffffff" face="Courier New"><small>17.3</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="65"><font color="#ffffff" face="Courier New"><small>14.6</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="57"><font color="#ffffff" face="Courier New"><small>11.8</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="72"><font color="#ffffff" face="Courier New"><small>10.4</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="53"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="99"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+  </tr>
+  <tr>
+    <td bgcolor="#2637ce" height="23" width="213"><small><font color="#ffffff" face="Arial Narrow">Decryption
+    speed (128, full)</font></small></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="54"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="88"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="64"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="85"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="85"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="85"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="57"><font color="#ffffff" face="Courier New"><small>38.3</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="45"><font color="#ffffff" face="Courier New"><small>35.4</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="73"><font color="#ffffff" face="Courier New"><small>26.8</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="51"><font color="#ffffff" face="Courier New"><small>20.9</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="62"><font color="#ffffff" face="Courier New"><small>16.0</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="65"><font color="#ffffff" face="Courier New"><small>14.8</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="57"><font color="#ffffff" face="Courier New"><small>11.5</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="72"><font color="#ffffff" face="Courier New"><small>11.2</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="53"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+    <td align="right" bgcolor="#2637ce" height="23" width="99"><font color="#ffffff" face="Courier New"><small>&nbsp;</small></font></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d8dada" height="23" width="213"><font face="Arial Narrow">Min. Secure
+    Rounds</font></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="54"><font color="#ff0000" face="Courier New"><small><strong>20</strong></small></font></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="88"><font color="#ff0000" face="Courier New"><small><strong>8</strong></small></font></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="64"><font color="#ff0000" face="Courier New"><small><strong>10</strong></small></font></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="85"><font color="#ff0000" face="Courier New"><small><strong>12</strong></small></font></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="85"><font color="#ff0000" face="Courier New"><small><strong>11</strong></small></font></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="85"><font color="#ff0000" face="Courier New"><small><strong>11?</strong></small></font></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="57"><font color="#ff0000" face="Courier New"><small><strong>10</strong></small></font></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="45"><font color="#ff0000" face="Courier New"><small><strong>10</strong></small></font></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="73"><font color="#ff0000" face="Courier New"><small><strong>17</strong></small></font></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="51"><font color="#ff0000" face="Courier New"><small><strong>9</strong></small></font></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="62"><font color="#ff0000" face="Courier New"><small><strong>8?</strong></small></font></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="65"><font color="#ff0000" face="Courier New"><small><strong>7</strong></small></font></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="57"><font color="#ff0000" face="Courier New"><small><strong>&gt;36</strong></small></font></td>
+    <td align="center" bgcolor="#d8dada" height="23" width="72"><p align="right"><font color="#ff0000" face="Courier New"><small><strong>8?</strong></small></font></p></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="53"><font color="#ff0000" face="Courier New"><small><strong>6</strong></small></font></td>
+    <td align="right" bgcolor="#d8dada" height="23" width="99"><font color="#ff0000" face="Courier New"><small><strong>&gt;10</strong></small></font></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d8dada" height="24" width="213"><font face="Arial Narrow">Min. Secure
+    Cycles</font></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="54"><small><strong><font face="Courier New">245</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="88"><small><strong><font face="Courier New">344</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="64"><small><strong><font face="Courier New">240</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">300</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">440</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">440</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">550</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="45"><small><strong><font face="Courier New">590</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="73"><small><strong><font face="Courier New">483</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="51"><small><strong><font face="Courier New">1353</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="62"><small><strong><font face="Courier New">1466</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="65"><small><strong><font face="Courier New">1498</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">4840</font></strong></small></td>
+    <td align="center" bgcolor="#d8dada" height="24" width="72"><p align="right"><small><strong><font face="Courier New">2500</font></strong></small></p></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="53"><small><strong><font face="Courier New">2550</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="99"><small><strong><font face="Courier New">11000</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d8dada" height="24" width="213"><font face="Arial Narrow">Diffusion, 1
+    &nbsp; round</font></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="54"><small><strong><font face="Courier New">15</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="88"><small><strong><font face="Courier New">17</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="64"><small><strong><font face="Courier New">21</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">17</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">12</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">12</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">41</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="45"><small><strong><font face="Courier New">39</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="73"><small><strong><font face="Courier New">13</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="51"><small><strong><font face="Courier New">17</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="62"><small><strong><font face="Courier New">64</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="65"><small><strong><font face="Courier New">57</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">13</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="72"><small><strong><font face="Courier New">47</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="53"><small><strong><font face="Courier New">17</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="99"><small><strong><font face="Courier New">18</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d8dada" height="24" width="213"><font face="Arial Narrow">Diffusion, 2
+    rounds</font></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="54"><small><strong><font face="Courier New">42</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="88"><small><strong><font face="Courier New">64</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="64"><small><strong><font face="Courier New">47</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">49</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">48</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">48</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">64</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="45"><small><strong><font face="Courier New">48</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="73"><small><strong><font face="Courier New">58</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="51"><small><strong><font face="Courier New">49</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="62"><small><strong><font face="Courier New">64</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="65"><small><strong><font face="Courier New">64</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">41</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="72"><small><strong><font face="Courier New">64</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="53"><small><strong><font face="Courier New">49</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="99"><small><strong><font face="Courier New">49</font></strong></small></td>
+  </tr>
+  <tr>
+    <td bgcolor="#d8dada" height="24" width="213"><font face="Arial Narrow">Overall
+    Diffusion Count</font></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="54"><small><strong><font face="Courier New">420</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="88"><small><strong><font face="Courier New">332</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="64"><small><strong><font face="Courier New">370</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">388</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">288</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="85"><small><strong><font face="Courier New">288</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">495</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="45"><small><strong><font face="Courier New">468</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="73"><small><strong><font face="Courier New">940</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="51"><small><strong><font face="Courier New">192</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="62"><small><strong><font face="Courier New">512</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="65"><small><strong><font face="Courier New">468</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="57"><small><strong><font face="Courier New">328</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="72"><small><strong><font face="Courier New">376</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="53"><small><strong><font face="Courier New">147</font></strong></small></td>
+    <td align="right" bgcolor="#d8dada" height="24" width="99"><small><strong><font face="Courier New">147</font></strong></small></td>
+  </tr>
+</tbody></table>
+</center></div>
+
+<h3><font face="Arial">Comments</font></h3>
+
+<p><font face="Arial">1. The order of the algorithms in the table is based on mean encryption/decryption
+speed for 128 bit keys.</font></p>
+
+<p><font face="Arial">2. Different designers have chosen a different number of rounds for their algorithms
+and this clearly impacts in a major way on performance.&nbsp; This is illustrated by
+Serpent in particular, which has a much higher diffusion count than other algorithms.</font></p>
+
+<p><font face="Arial">3. Both DFC and HPC make use of 64 bit arithmetic. Since this will be the norm by the
+time the AES algorithm is selected it makes little sense to judge the speed of these
+algorithms on 32 bit architectures.</font> </p>
+
+<p><font face="Arial">4. I suspect that there is quite a bit that can still be done for E2 and SAFER+ since I
+have not spent a great deal of time on these.&nbsp; I am grateful for suggestions from
+Kazumaro Aoki of NTT Japan for speeding up my E2 implementation.</font> </p>
+
+<p><font face="Arial">5. For TWOFISH I have pushed encryption/decryption speed without concern for the impact
+on the cost of the key schedule or memory use (I employ 8K+ bytes of table space). &nbsp;
+There are many optimisation alternatives for this algorithm and major reductions in key
+schedule and memory cost can be achieved if high volume encryption/decryption speed is not
+the primary concern. My thanks to Niels Ferguson for suggesting some useful speed ups for
+my original implementation.</font></p>
+
+<p><font face="Arial">6.&nbsp; Where an algorithm meets a superset of the AES requirements I have only
+implemented the AES compliant elements.&nbsp; Hence Rijndael is only implemented for a
+block size of 128 bits and for HPC only HPC(medium) has been coded.&nbsp;</font> </p>
+
+<p><font face="Arial">7. For Crypton I have implemented both the version submitted for AES and the revised
+version 1 (issued on December 21st 1998).&nbsp;</font> </p>
+
+<p><font face="Arial">8. The DEAL timings are based on the DES source code in which the IP/FP permutations
+have been implemented in DEAL and not in DES (as described in the DEAL specification).
+&nbsp;</font></p>
+
+<p><font face="Arial">9.&nbsp; I have implemented Loki97, Frog and MAGENTA for completeness although it
+appears that they have all been broken.&nbsp;</font> </p>
+
+<h3><font face="Arial">Security versus Performance Issues (<font color="#ff0000">HEALTH WARNINGS</font>)</font></h3>
+
+<p><font face="Arial">The work presented here is primarily about performance but it is not sensible to
+consider this in complete isolation from security since there are inevitably trade-offs
+between these attributes in the real world. One obvious example is the number of rounds
+employed by each algorithm and another is the quality of each round in achieving the
+'mixing' that the cipher is intended to provide.&nbsp;&nbsp; The lower rows in the table
+are a first attempt to consider the ways in which security and performance are being
+traded off by each of the AES algorithms.</font></p>
+
+<p><font face="Arial"><strong>Diffusion</strong>.&nbsp; The lower rows dealing with diffusion should not be
+seen as a direct measure of algorithm security.&nbsp; They simply give an indication of
+how good the algorithms are at spreading out the influence of input bits on output
+bits.&nbsp; Obviously, diffusion counts say nothing about the 'quality' of the diffusion
+achieved and this alone means that this sort of analysis needs to be treated with extreme
+caution.</font> </p>
+
+<p><font face="Arial"><strong>Minimum Number of Secure Rounds</strong>.&nbsp; <a href="http://www.cs.technion.ac.il/%7Ebiham/">Eli Biham</a> has suggested that AES algorithm
+performance should be measured by timing the 'minimum number of secure rounds' for each
+candidate - that is the estimated number of rounds needed to make a brute force key search
+the most efficient form of attack.&nbsp; This is a controversial suggestion that some AES
+participants do not accept even in principle&nbsp; (for example, see the <a href="http://www.counterpane.com/aes-performance.html">paper</a> by Bruce Schneier and the
+Twofish team).&nbsp; In my view, however, we have to look at this in two steps - it seems
+to me that the principle has merit but that there is (and may continue to be) a problem in
+obtaining impartial and widely accepted values for the minimum number of secure rounds for
+each of the AES algorithms.&nbsp;&nbsp;</font> </p>
+
+<p><font face="Arial">At the moment the table uses figures equivalent to those suggested by Eli Biham. &nbsp;
+However as an AES algorithm contributor, Eli will not been seen by all as an impartial
+observer and it would hence be preferable to have a wider community basis for setting the
+values to be used in such a process.&nbsp; For the present therefore it is important to
+treat these figures (and any conclusions derived from them) with caution.</font></p>
+
+<p><font face="Arial"><strong>Implementation Assurance.&nbsp; </strong>It seems certain that there will be a
+significant number of the AES algorithms that will be judged to be secure at an algorithm
+level.&nbsp; In practice, however, most failures in cryptographic systems derive not from
+weaknesses in the algorithms used but rather from the exploitation of subtle flaws in the
+way the algorithms are implemented or through the exploitation of interactions between
+algorithm implementations and the environments in which they operate.&nbsp; This means
+that it is vital to judge implementations not simply from the perspective of the
+performance that they provide but also from the perspective of 'implementation assurance'
+- can we be confident that the implementation does what the algorithm requires, no more
+and no less, and can we also be confident that it does not interact with the wider
+environment in ways that can be exploited to undermine the security that the algorithm
+itself is otherwise capable of providing.</font></p>
+
+<p><font face="Arial">To answer these questions we need much more hard evidence derived from the
+implementation of the AES candidates in environments that are representative of practical
+use. In particular we have very little evidence at the moment of how the AES candidates
+behave in low end environments of the kind that may apply in much of electronic commerce
+and consumer applications.</font></p>
+
+<p><font face="Arial">We also need to understand whether the different AES algorithms are architecturally
+different in their ability to support implementation assurance techniques.&nbsp; None of
+the existing specifications are precise enough to support formal design and analysis
+methods and it even seems possible that at least some of the algorithms on offer are
+sufficiently complex to make these techniques difficult or even impossible to apply.
+&nbsp;&nbsp; This may also be true of other approaches for implementation assurance.
+&nbsp;&nbsp; This is an area where much more work is needed before any final algorithm
+choices are made.</font></p>
+
+<h3><font face="Arial">Performance Measurement Approach</font></h3>
+
+<p><font face="Arial">All the implementations provided and discussed here have been coded from scratch using
+the AES specification documents without prior reference to the source code provided by the
+design teams.&nbsp; However, comparisons with the reference code has sometimes been
+necessary because the specification and reference code for some algorithms are not
+consistent.</font></p>
+
+<p><font face="Arial">I have tried to keep a fairly consistent style across the source code to aid fair
+comparison.&nbsp;&nbsp; All the routines have been biased towards encryption and
+decryption speed without regard to key set-up or to memory use in tables.&nbsp; I have
+also used <a href="http://developer.intel.com/design/perftool/vtune/">VTune</a>, the <a href="http://www.intel.com/">Intel</a> performance tuning software, to look for optimised
+code sequences.&nbsp; This was kindly supplied by Intel and I much appreciate their
+generous support.&nbsp; The code has been optimised for the Pentium Pro/II and it is hence
+likely to be relatively poor on the Pentium.&nbsp; Although I have pushed for speed, I
+have not used some techniques where the resulting source code has become especially
+obscure.</font></p>
+
+<p><font face="Arial"> All the algorithms and results reported are based on implementation
+using Microsoft Visual C++ version 6.&nbsp;&nbsp;&nbsp; I have generally coded in standard
+C but I have used non-standard features where this is reasonable and would be done in
+practice.&nbsp; For example I have used the intrinsic circular rotate operations that
+Microsoft C provides.&nbsp; Some of the algorithms are endian neutral, others are
+definitively either big-endian or little-endian.&nbsp; Most of the difficulties I have had
+with implementation relate to confusion about endianness.&nbsp; I am running on a little
+endian machine (a Pentium II) and I have checked out the code in this context only.&nbsp;
+My inputs and outputs to algorithms are in 32 bit words, not bytes, and this impacts on
+the byte numbering conventions that are used.&nbsp;&nbsp; The algorithm source code
+provided below contains code to invert byte order on input and output to match the
+standard test values but timings do not include these sections of code.&nbsp;&nbsp;</font> </p>
+
+<p><font face="Arial">Please bear in mind that there may be mistakes in the source code - please let me know
+if you find any. If you use any of it, be especially careful about endianess since I have
+not designed to eliminate such problems.</font></p>
+
+<p><font face="Arial">I am happy for the source code given here to be used provided that any conditions set
+by the algorithm designers are complied with.&nbsp; My only additional requirement if you
+do use it is that you acknowledge its origin.&nbsp; At the request of NTT, E2 source code
+is available for academic study purposes only.</font></p>
+
+<h3><font face="Arial">Timing</font></h3>
+
+<p><font face="Arial">Obtaining accurate and repeatable timings has proved more difficult than I expected.
+&nbsp; After many experiments I have settled on the use of the Pentium Pro/II cycle
+counter as the basis for timing.&nbsp; For each of the three routines in question (key
+set-up, encrypt and decrypt) I time two code sequences containing respectively single and
+double calls to the routines in question (with random key and data inputs).&nbsp; After
+running the routines to eliminate initialisation effects I then time these two sequences
+100 times each and take the difference between their minimum timings as the cycle count
+for the routine in question.&nbsp;&nbsp; My thanks to Doug Whiting for a useful exchange
+of views on timing issues.</font></p>
+
+<h3><font face="Arial">Fair Algorithm Comparison - Timing and Byte Order</font></h3>
+
+<p><font face="Arial">There is scope for confusion in the definition of the AES
+interface on whether any required changes to byte order lie are internal or
+external to this interface.&nbsp; The programming interface is byte oriented and
+suggests that byte order changes are not needed. But the test vectors are
+'numeric' and this suggests that such changes are needed as a part of the AES
+algorithms.&nbsp; I cover this in more detail <a href="http://fp.gladman.plus.com/papers/bit_order.pdf">here</a>.</font> </p>
+
+<p><font face="Arial">A consequence of this uncertainty is that some design
+teams have implemented byte order inversion for input and output blocks whereas
+others have not.&nbsp; Since byte order change involves processing costs this
+can impact on performance comparisons.</font> </p>
+
+<p><font face="Arial">I am running on a little-endian machine (Pentium
+II) and this means that algorithms
+which involve byte, word or block order inversion ('big-endian'
+algorithms)&nbsp; are at a
+disadvantage if their speed is compared with 'little-endian' algorithms
+in my
+environment.&nbsp; Equally if I were using a big-endian machine it
+would be 'little-endian' AES algorithms would be put at a
+disadvantage.&nbsp; In order to obtain fair
+comparisons I have therefore chosen to base my timings on those that
+can be achieved when
+an algorithm is run on a machine that matches its own endianness.&nbsp;
+In practice this
+means that I do not include the processing cost of byte, word or block
+order inversions on
+input and output in my timing measurements.&nbsp; For some algorithms
+there are more
+deeply buried endian issues but, fortunately, these turn out to be
+small in comparison
+with the costs involved in input/output byte order changes. I hence
+believe that the
+timings given here are a fair assessment of what the AES algorithms can
+achieve when run
+in environments that match their own design endianess.&nbsp;&nbsp;</font> </p>
+
+<p><font face="Arial">Since other comparisons, for example,
+<a href="http://www.tcs.hut.fi/%7Ehelger/aes">that</a> being compiled by Helger
+Lipmaa, include results for both big and little endian processors it is important that
+they use full timing data including endian conversion costs (however care has to be taken
+to ensure that results on big and little endian machines are given equal weight).&nbsp;
+The figures I have provided for Helger are hence full timings that include I/O conversion
+costs.</font></p>
+
+<h3><font face="Arial">Diffusion</font> </h3>
+
+<p><font face="Arial">I have attempted to measure how effective the algorithms are at mixing up bits by
+measuring their 'diffusion'.&nbsp; I do this as follows.&nbsp; After setting up random key
+and data input blocks I run the encryption round function for the algorithm in question
+once or twice.&nbsp; I then change just one bit in the data input block and count how many
+bits in the output block change. I do this for each bit in the input block and I repeat
+this for a large number of random inputs to obtain average values.&nbsp; I then calculate
+for each input bit how many output bits change on average; I also calculate for each
+output bit how many input bits change its value (these two outputs are very similar on
+average but they are sometimes very different for particular bits).&nbsp; Since some
+algorithms operate using 'half-rounds' I use the best of the 1 and 2 round diffusion
+values to calculate an overall diffusion count for each algorithm.</font></p>
+
+<h3><font face="Arial">Acknowledgements</font></h3>
+
+<p><font face="Arial">A number of people have contributed ideas for improvements in the source code and the
+analysis presented here.&nbsp; I gratefully acknowledge the contributions made by the
+following people:</font> 
+
+</p><ul>
+  <li><font face="Arial">Shai Halevi</font></li>
+  <li><font face="Arial">Niels Ferguson</font></li>
+  <li><font face="Arial">Marcus Watts</font></li>
+  <li><font face="Arial">Doug Whiting</font></li>
+  <li><font face="Arial">Chae Hoon Lim</font></li>
+  <li><font face="Arial">Eli Biham</font></li>
+  <li><font face="Arial">Richard Schroeppel</font></li>
+  <li><font face="Arial">Richard Outerbridge</font></li>
+  <li><font face="Arial">Kazumaro Aoki</font></li>
+  <li><font face="Arial">Sam Simpson</font></li>
+  <li><font face="Arial">Helger Lipmaa</font></li>
+  <li><font face="Arial">Louis Granboulan</font></li>
+  <li><font face="Arial">Vincent Rijmen</font></li>
+  <li><font face="Arial">Dave Hearn</font></li>
+</ul>
+
+<h3><font face="Arial">Revision History</font></h3>
+
+<table border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td><small><font face="Arial">Changes:&nbsp;&nbsp;</font> </small></td>
+    <td><small><font face="Arial">29th October&nbsp;&nbsp;</font> </small></td>
+    <td><small><font face="Arial">&nbsp;&nbsp;&nbsp;&nbsp;</font> </small></td>
+    <td><small><font face="Arial">added ranking rows to table and additional comments</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">31st October</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">corrected Twofish cycle count per round figure (thanks to Doug Whiting for
+    finding this)</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">31st October</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">added diffusion per round values</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">3rd November</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">changed diffusion rows and added a health warning</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">12th November</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">added performance estimates for the minimum number of secure rounds</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">30th November</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">added results for HPC and DEAL</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">6th December</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">revised (improved) RC6 speed</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">11th December</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">revised speed figures and simplified the table layout</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">13th December</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">added Frog and Loki97</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">15th December</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">added MAGENTA - completed implementation of all 15 AES candidates</font> </small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">19th December</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">added improved Serpent figures based on new S box decompositions</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">19th December</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">corrected CAST figures (error spotted by Helger Lipmaa)</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">20th December</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">expanded on 'endian' timing issues (at Helger Lipmaa's suggestion)</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">21st December</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">corrected error in the rc6 implementation and changed timing figures</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">23rd December</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">added figures for the revised version of Crypton</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">3rd January 1999</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">improved implementations of RC6 and MARS</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">13th January 1999</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">corrected an error in MARS spotted by Louis Granboulan</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">14th January 1999</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">published final (pre-AES2) timing data (including improved Twofish figures)</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">20th January 1999</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">updates to timings (improved DEAL, DES and Rijndael)</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">20th January 1999</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">changed page format to make results easier to access</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">22nd January 1999</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">improved timings for Twofish key setup</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">23rd January 1999</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">minor updates to timing data and added figures for 'full cost' encryption</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">28th January 1999</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">added text on the (as yet) inadequately discussed issue of implementation
+    assurance</font></small></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><small><font face="Arial">16th February 1999</font></small></td>
+    <td></td>
+    <td><small><font face="Arial">improved DFC speed</font> </small></td>
+  </tr>
+</tbody></table>
+
+<hr>
+
+<p><em><a href="http://fp.gladman.plus.com/index.htm"><font face="Arial" size="2">Back to Brian Gladman's Home Page</font></a> </em></p>
+</body></html>

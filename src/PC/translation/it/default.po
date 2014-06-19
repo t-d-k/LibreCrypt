@@ -1,0 +1,5153 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FreeOTFE\n"
+"POT-Creation-Date: 2008-12-21 22:12\n"
+"PO-Revision-Date: 2008-12-24 12:13+0100\n"
+"Last-Translator: Daniele Brunengo <littleman@cyberdude.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: dxgettext 1.2.2\n"
+
+#. About_F..Caption
+#: About_U.dfm:6
+msgid "About FreeOTFE"
+msgstr "Informazioni su FreeOTFE"
+
+#. About_F..lblBeta..Caption
+#: About_U.dfm:25
+msgid "BETA"
+msgstr "BETA"
+
+#. About_F..Label1..Caption
+#: About_U.dfm:85
+msgid "FreeOTFE: Free On-The-Fly-Encryption"
+msgstr "FreeOTFE: Free On-The-Fly-Encryption"
+
+#. About_F..pbOK..Caption
+#. frmFreeOTFECDBBackupRestore..pbOK..Caption
+#. frmFreeOTFECDBDump..pbOK..Caption
+#. frmInstallOnUSBDrive..pbOK..Caption
+#. frmOptions..pbOK..Caption
+#. frmFreeOTFESelectOverwriteMethod..pbOK..Caption
+#. frmFreeOTFEVolProperties..pbOK..Caption
+#. frmKeyEntryFreeOTFE..pnlLower..pnlButtons..pbOK..Caption
+#. frmKeyEntryLinux..pbOK..Caption
+#. frmKeyEntryLUKS..pbOK..Caption
+#. frmNewVolumeSize..pbOK..Caption
+#. frmPKCS11NewSecretKey..pbOK..Caption
+#. frmPKCS11Session..pbOK..Caption
+#. frmSelectHashCypher..pbOK..Caption
+#. frmSelectPartition..pnlButtonCenter..pbOK..Caption
+#. frmSelectPartition_Simple..pbOK..Caption
+#. frmSelectVolumeFileAndOffset..pbOK..Caption
+#. frmSelectVolumeType..pbOK..Caption
+#. frmWizardCreateVolumeAdvanced..pbOK..Caption
+#. KeyboardEntryDlg..pbOK..Caption
+#. MouseRNGCaptureDlg..pbOK..Caption
+#. FileList_F..pbOK..Caption
+#: About_U.dfm:154
+#: FreeOTFEfrmCDBBackupRestore.dfm:35
+#: FreeOTFEfrmCDBDump.dfm:25
+#: FreeOTFEfrmInstallOnUSBDrive.dfm:40
+#: FreeOTFEfrmOptions.dfm:51
+#: FreeOTFEfrmSelectOverwriteMethod.dfm:26
+#: FreeOTFEfrmVolProperties.dfm:89
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:167
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:36
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:36
+#: OTFEFreeOTFE_frmNewVolumeSize.dfm:49
+#: OTFEFreeOTFE_frmPKCS11NewSecretKey.dfm:59
+#: OTFEFreeOTFE_frmPKCS11Session.dfm:68
+#: OTFEFreeOTFE_frmSelectHashCypher.dfm:71
+#: OTFEFreeOTFE_frmSelectPartition.dfm:43
+#: OTFEFreeOTFE_frmSelectPartition_Simple.dfm:34
+#: OTFEFreeOTFE_frmSelectVolumeAndOffset.dfm:94
+#: OTFEFreeOTFE_frmVolumeType.dfm:52
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:202
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:1027
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.dfm:57
+#: Shredder/FileList_U.dfm:35
+msgid "OK"
+msgstr "OK"
+
+#. fmeOptions_Autorun..gbAutorun..Caption
+#: FreeOTFEfmeOptions_Autorun.dfm:12
+msgid "Autorun pre/post-mount/dismount"
+msgstr "Autoavvia pre/post-montaggio/smontaggio"
+
+#. fmeOptions_Autorun..gbAutorun..Label33..Caption
+#: FreeOTFEfmeOptions_Autorun.dfm:19
+msgid "Post-&mount:"
+msgstr "Post-&montaggio"
+
+#. fmeOptions_Autorun..gbAutorun..Label34..Caption
+#: FreeOTFEfmeOptions_Autorun.dfm:27
+msgid "&Pre-dismount:"
+msgstr "&Pre-smontaggio"
+
+#. fmeOptions_Autorun..gbAutorun..Label35..Caption
+#: FreeOTFEfmeOptions_Autorun.dfm:35
+msgid "Post-&dismount:"
+msgstr "Post-smontaggio"
+
+#. fmeOptions_Autorun..gbAutorun..ckPrePostExeWarn..Caption
+#: FreeOTFEfmeOptions_Autorun.dfm:94
+msgid "&Warn user if file is not found."
+msgstr "Avverti l'utente se il file non è trovato."
+
+#. fmeOptions_General..gbGeneral..Caption
+#. frmOptions..pcOptions..tsGeneral..Caption
+#: FreeOTFEfmeOptions_General.dfm:12
+#: FreeOTFEfrmOptions.dfm:92
+msgid "General"
+msgstr "Generali"
+
+#. fmeOptions_General..gbGeneral..lblDragDrop..Caption
+#: FreeOTFEfmeOptions_General.dfm:19
+msgid "Assume files &dragged onto FreeOTFE are encrypted using:"
+msgstr "Presumi che i file trascinati su FreeOTFE vengano crittati usan&do:"
+
+#. fmeOptions_General..gbGeneral..Label1..Caption
+#: FreeOTFEfmeOptions_General.dfm:28
+msgid "Default drive &letter:"
+msgstr "&Lettera per disco di default:"
+
+#. fmeOptions_General..gbGeneral..Label4..Caption
+#: FreeOTFEfmeOptions_General.dfm:36
+msgid "(Set to 0 to disable MRU list)"
+msgstr "(Porre a 0 per disabilitare la lista MRU)"
+
+#. fmeOptions_General..gbGeneral..lblMRUMaxItemCount..Caption
+#: FreeOTFEfmeOptions_General.dfm:43
+msgid "&Max. number of volumes to show in most recently used list:"
+msgstr "&Max. numero di volumi da mostrare nella lista volumi recenti:"
+
+#. fmeOptions_General..gbGeneral..Label2..Caption
+#: FreeOTFEfmeOptions_General.dfm:52
+msgid "&Language:"
+msgstr "&Lingua:"
+
+#. fmeOptions_General..gbGeneral..ckAllowMultipleInstances..Caption
+#: FreeOTFEfmeOptions_General.dfm:61
+msgid "&Allow multiple instances"
+msgstr "Permetti ist&anze multiple:"
+
+#. fmeOptions_General..gbGeneral..ckDisplayToolbar..Caption
+#: FreeOTFEfmeOptions_General.dfm:69
+msgid "Display &toolbar"
+msgstr "Mostra &toolbar"
+
+#. fmeOptions_General..gbGeneral..ckDisplayStatusbar..Caption
+#: FreeOTFEfmeOptions_General.dfm:78
+msgid "Display &statusbar"
+msgstr "Mostra barra &stato"
+
+#. fmeOptions_General..gbGeneral..ckAutoStartPortable....Caption
+#: FreeOTFEfmeOptions_General.dfm:97
+msgid "Autostart &portable mode if FreeOTFE drivers not installed/running"
+msgstr "Autoavvia modalità trasferibile se i driver non sono installati/avviati"
+
+#. fmeOptions_General..gbGeneral..ckAdvancedMountDlg..Caption
+#: FreeOTFEfmeOptions_General.dfm:106
+msgid "Display advanced &options when mounting"
+msgstr "Mostra le &opzioni avanzate al montaggio"
+
+#. fmeOptions_General..gbGeneral..ckExploreAfterMount..Caption
+#: FreeOTFEfmeOptions_General.dfm:115
+msgid "&Explore after mount"
+msgstr "&Esplora dopo il montaggio"
+
+#. fmeOptions_General..gbGeneral..ckRevertVolTimestamps..Caption
+#: FreeOTFEfmeOptions_General.dfm:123
+msgid "&Revert volume timestamps on dismount"
+msgstr "&Resetta i timestamp allo smontaggio"
+
+#. fmeOptions_General..gbGeneral..ckShowPasswords..Caption
+#: FreeOTFEfmeOptions_General.dfm:157
+msgid "Display &passwords when entered"
+msgstr "Mostra le password all'inserimento"
+
+#. fmeOptions_General..gbGeneral..ckPromptMountSuccessful..Caption
+#: FreeOTFEfmeOptions_General.dfm:184
+msgid "Display &message on successful mount"
+msgstr "Mostra &messaggio a montaggio riuscito"
+
+#. fmeOptions_General..gbGeneral..ckDisplayToolbarLarge..Caption
+#: FreeOTFEfmeOptions_General.dfm:192
+msgid "Large &icons"
+msgstr "&Icone grandi"
+
+#. fmeOptions_General..gbGeneral..ckDisplayToolbarCaptions..Caption
+#: FreeOTFEfmeOptions_General.dfm:201
+msgid "Display &captions"
+msgstr "Mostra tips"
+
+#. fmeOptions_Hotkeys..gbHotkeys..Caption
+#. frmOptions..pcOptions..tsHotkeys..Caption
+#: FreeOTFEfmeOptions_Hotkeys.dfm:8
+#: FreeOTFEfrmOptions.dfm:123
+msgid "Hotkeys"
+msgstr "Hotkeys"
+
+#. fmeOptions_Hotkeys..gbHotkeys..Label1..Caption
+#: FreeOTFEfmeOptions_Hotkeys.dfm:15
+msgid "&Hotkey:"
+msgstr "&Hotkey:"
+
+#. fmeOptions_Hotkeys..gbHotkeys..Label2..Caption
+#: FreeOTFEfmeOptions_Hotkeys.dfm:23
+msgid "H&otkey:"
+msgstr "H&otkey:"
+
+#. fmeOptions_Hotkeys..gbHotkeys..ckHotkeyDismount..Caption
+#: FreeOTFEfmeOptions_Hotkeys.dfm:40
+msgid "&Enable dismount all hotkey"
+msgstr "Abilita hotk&ey per smontare tutti i volumi"
+
+#. fmeOptions_Hotkeys..gbHotkeys..ckHotkeyDismountEmerg..Caption
+#: FreeOTFEfmeOptions_Hotkeys.dfm:49
+msgid "E&nable emergency dismount all hotkey"
+msgstr "Abilita hotkey smo&ntaggio di emergenza"
+
+#. fmeOptions_PKCS11..gbPKCS11..Caption
+#: FreeOTFEfmeOptions_PKCS11.dfm:12
+msgid "Security Token/Smartcard support"
+msgstr "Supporto Smartcard/Security Token"
+
+#. fmeOptions_PKCS11..gbPKCS11..lblLibrary..Caption
+#: FreeOTFEfmeOptions_PKCS11.dfm:19
+msgid "PKCS#11 &library:"
+msgstr "&Libreria PKCS#11:"
+
+#. fmeOptions_PKCS11..gbPKCS11..ckEnablePKCS11..Caption
+#: FreeOTFEfmeOptions_PKCS11.dfm:27
+msgid "&Enable PKCS#11 support"
+msgstr "Abilita il supporto a PKCS#11"
+
+#. fmeOptions_PKCS11..gbPKCS11..pbVerify..Caption
+#: FreeOTFEfmeOptions_PKCS11.dfm:36
+msgid "&Verify"
+msgstr "&Verifica"
+
+#. fmeOptions_PKCS11..gbPKCS11..gbPKCS11AutoActions..Caption
+#: FreeOTFEfmeOptions_PKCS11.dfm:45
+msgid "Automount/dismount"
+msgstr "Automontaggio/smontaggio"
+
+#. fmeOptions_PKCS11..gbPKCS11..gbPKCS11AutoActions..lblAutoMountVolume..Caption
+#: FreeOTFEfmeOptions_PKCS11.dfm:52
+msgid "V&olume:"
+msgstr "V&olume:"
+
+#. fmeOptions_PKCS11..gbPKCS11..gbPKCS11AutoActions..ckPKCS11AutoDismount..Caption
+#: FreeOTFEfmeOptions_PKCS11.dfm:60
+msgid "Auto &dismount PKCS#11 volumes when associated token is removed"
+msgstr "Auto smonta i volumi PKCS#11 quando il token associato è rimosso"
+
+#. fmeOptions_PKCS11..gbPKCS11..gbPKCS11AutoActions..ckPKCS11AutoMount..Caption
+#: FreeOTFEfmeOptions_PKCS11.dfm:69
+msgid "Auto &mount specified volume on token insertion"
+msgstr "Auto &monta il volume specificato all'inserimento del token"
+
+#. fmeOptions_SystemTray..gbSystemTrayIcon..Caption
+#: FreeOTFEfmeOptions_SystemTray.dfm:8
+msgid "System Tray Icon"
+msgstr "Icona nella barra di sistema"
+
+#. fmeOptions_SystemTray..gbSystemTrayIcon..ckUseSystemTrayIcon..Caption
+#: FreeOTFEfmeOptions_SystemTray.dfm:15
+msgid "&Display system tray icon"
+msgstr "Mostra icona nel tray"
+
+#. fmeOptions_SystemTray..gbSystemTrayIcon..ckMinToIcon..Caption
+#: FreeOTFEfmeOptions_SystemTray.dfm:24
+msgid "Hide when &minimised"
+msgstr "Nascondi se &minimizzo"
+
+#. fmeOptions_SystemTray..gbSystemTrayIcon..ckCloseToIcon..Caption
+#: FreeOTFEfmeOptions_SystemTray.dfm:32
+msgid "Hide when &closed"
+msgstr "Nascondi se &chiudo"
+
+#. frmFreeOTFECDBBackupRestore..pbCancel..Caption
+#. frmFreeOTFECDBDump..pbCancel..Caption
+#. frmInstallOnUSBDrive..pbCancel..Caption
+#. frmOptions..pbCancel..Caption
+#. frmFreeOTFESelectOverwriteMethod..pbCancel..Caption
+#. frmKeyEntryFreeOTFE..pnlLower..pnlButtons..pbCancel..Caption
+#. frmKeyEntryLinux..pbCancel..Caption
+#. frmKeyEntryLUKS..pbCancel..Caption
+#. frmNewVolumeSize..pbCancel..Caption
+#. frmPKCS11NewSecretKey..pbCancel..Caption
+#. frmPKCS11Session..pbCancel..Caption
+#. frmSelectHashCypher..pbCancel..Caption
+#. frmSelectPartition..pnlButtonCenter..pbCancel..Caption
+#. frmSelectPartition_Simple..pbCancel..Caption
+#. frmSelectVolumeFileAndOffset..pbCancel..Caption
+#. frmSelectVolumeType..pbCancel..Caption
+#. frmWizard..pnlRight..pnlButtons..pbCancel..Caption
+#. frmWizardCreateVolumeAdvanced..pbCancel..Caption
+#. KeyboardEntryDlg..pbCancel..Caption
+#. MouseRNGCaptureDlg..pbCancel..Caption
+#: FreeOTFEfrmCDBBackupRestore.dfm:26
+#: FreeOTFEfrmCDBDump.dfm:36
+#: FreeOTFEfrmInstallOnUSBDrive.dfm:51
+#: FreeOTFEfrmOptions.dfm:62
+#: FreeOTFEfrmSelectOverwriteMethod.dfm:37
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:158
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:27
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:27
+#: OTFEFreeOTFE_frmNewVolumeSize.dfm:40
+#: OTFEFreeOTFE_frmPKCS11NewSecretKey.dfm:50
+#: OTFEFreeOTFE_frmPKCS11Session.dfm:79
+#: OTFEFreeOTFE_frmSelectHashCypher.dfm:82
+#: OTFEFreeOTFE_frmSelectPartition.dfm:54
+#: OTFEFreeOTFE_frmSelectPartition_Simple.dfm:45
+#: OTFEFreeOTFE_frmSelectVolumeAndOffset.dfm:105
+#: OTFEFreeOTFE_frmVolumeType.dfm:43
+#: OTFEFreeOTFE_frmWizard.dfm:9529
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:213
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:1009
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.dfm:69
+msgid "Cancel"
+msgstr "Annulla"
+
+#. frmFreeOTFECDBBackupRestore..gbDest..lblOffsetDest..Caption
+#: FreeOTFEfrmCDBBackupRestore.dfm:59
+msgid "O&ffset:"
+msgstr "O&ffset:"
+
+#. frmFreeOTFECDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#. frmFreeOTFECDBBackupRestore..gbDest..se64UnitOffsetDest..SelectedUnits
+#. frmFreeOTFECDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#. frmFreeOTFECDBBackupRestore..gbSrc..se64UnitOffsetSrc..SelectedUnits
+#. frmFreeOTFECDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#. frmFreeOTFECDBDump..GroupBox1..se64UnitOffset..SelectedUnits
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset..SelectedUnits
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset..SelectedUnits
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit..SelectedUnits
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit..SelectedUnits
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#. frmNewVolumeSize..se64UnitSize..SelectedUnits
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#. frmSelectVolumeFileAndOffset..se64UnitOffset..SelectedUnits
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset..SelectedUnits
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset..SelectedUnits
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize..SelectedUnits
+#: FreeOTFEfrmCDBBackupRestore.dfm:77
+#: FreeOTFEfrmCDBBackupRestore.dfm:82
+#: FreeOTFEfrmCDBBackupRestore.dfm:125
+#: FreeOTFEfrmCDBBackupRestore.dfm:130
+#: FreeOTFEfrmCDBDump.dfm:149
+#: FreeOTFEfrmCDBDump.dfm:154
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:220
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:225
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:543
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:548
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:559
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:564
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:132
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:137
+#: OTFEFreeOTFE_frmNewVolumeSize.dfm:61
+#: OTFEFreeOTFE_frmNewVolumeSize.dfm:66
+#: OTFEFreeOTFE_frmSelectVolumeAndOffset.dfm:116
+#: OTFEFreeOTFE_frmSelectVolumeAndOffset.dfm:121
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:257
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:262
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:396
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:401
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:454
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:459
+msgid "bytes"
+msgstr "bytes"
+
+#. frmFreeOTFECDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#. frmFreeOTFECDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#. frmFreeOTFECDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#: FreeOTFEfrmCDBBackupRestore.dfm:78
+#: FreeOTFEfrmCDBBackupRestore.dfm:126
+#: FreeOTFEfrmCDBDump.dfm:150
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:221
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:544
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:560
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:133
+#: OTFEFreeOTFE_frmNewVolumeSize.dfm:62
+#: OTFEFreeOTFE_frmSelectVolumeAndOffset.dfm:117
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:258
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:397
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:455
+msgid "KB"
+msgstr "KB"
+
+#. frmFreeOTFECDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#. frmFreeOTFECDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#. frmFreeOTFECDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#: FreeOTFEfrmCDBBackupRestore.dfm:79
+#: FreeOTFEfrmCDBBackupRestore.dfm:127
+#: FreeOTFEfrmCDBDump.dfm:151
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:222
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:545
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:561
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:134
+#: OTFEFreeOTFE_frmNewVolumeSize.dfm:63
+#: OTFEFreeOTFE_frmSelectVolumeAndOffset.dfm:118
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:259
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:398
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:456
+msgid "MB"
+msgstr "MB"
+
+#. frmFreeOTFECDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#. frmFreeOTFECDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#. frmFreeOTFECDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#: FreeOTFEfrmCDBBackupRestore.dfm:80
+#: FreeOTFEfrmCDBBackupRestore.dfm:128
+#: FreeOTFEfrmCDBDump.dfm:152
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:223
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:546
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:562
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:135
+#: OTFEFreeOTFE_frmNewVolumeSize.dfm:64
+#: OTFEFreeOTFE_frmSelectVolumeAndOffset.dfm:119
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:260
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:399
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:457
+msgid "GB"
+msgstr "GB"
+
+#. frmFreeOTFECDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#. frmFreeOTFECDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#. frmFreeOTFECDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#: FreeOTFEfrmCDBBackupRestore.dfm:81
+#: FreeOTFEfrmCDBBackupRestore.dfm:129
+#: FreeOTFEfrmCDBDump.dfm:153
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:224
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:547
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:563
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:136
+#: OTFEFreeOTFE_frmNewVolumeSize.dfm:65
+#: OTFEFreeOTFE_frmSelectVolumeAndOffset.dfm:120
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:261
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:400
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:458
+msgid "TB"
+msgstr "TB"
+
+#. frmFreeOTFECDBBackupRestore..gbSrc..lblOffsetSrc..Caption
+#. frmFreeOTFECDBDump..GroupBox1..lblOffset..Caption
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox4..Label8..Caption
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..Label8..Caption
+#. frmSelectVolumeFileAndOffset..lblOffsetSrc..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label9..Caption
+#: FreeOTFEfrmCDBBackupRestore.dfm:107
+#: FreeOTFEfrmCDBDump.dfm:67
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:203
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:494
+#: OTFEFreeOTFE_frmSelectVolumeAndOffset.dfm:32
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:180
+msgid "&Offset:"
+msgstr "&Offset:"
+
+#. frmFreeOTFECDBDump..GroupBox1..Caption
+#: FreeOTFEfrmCDBDump.dfm:45
+msgid "Volume/keyfile details"
+msgstr "Dettagli su volume/keyfile"
+
+#. frmFreeOTFECDBDump..GroupBox1..Label1..Caption
+#: FreeOTFEfrmCDBDump.dfm:52
+msgid "&Volume/keyfile:"
+msgstr "&Volume/keyfile:"
+
+#. frmFreeOTFECDBDump..GroupBox1..Label2..Caption
+#. frmKeyEntryFreeOTFE..pnlBasic..GroupBox1..Label1..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPassword..Label17..Caption
+#. KeyboardEntryDlg..Label1..Caption
+#: FreeOTFEfrmCDBDump.dfm:59
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:42
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:822
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:23
+msgid "&Password:"
+msgstr "&Password:"
+
+#. frmFreeOTFECDBDump..GroupBox1..lblSaltLengthBits..Caption
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox3..Label5..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label6..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label7..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsMasterKeyLength..Label9..Caption
+#: FreeOTFEfrmCDBDump.dfm:74
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:284
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:203
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:347
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:584
+msgid "bits"
+msgstr "bits"
+
+#. frmFreeOTFECDBDump..GroupBox1..lblSaltLength..Caption
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox3..Label2..Caption
+#: FreeOTFEfrmCDBDump.dfm:81
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:276
+msgid "&Salt length:"
+msgstr "Lunghezza &sale:"
+
+#. frmFreeOTFECDBDump..GroupBox1..lblKeyIterations..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label8..Caption
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsKeyIterations..Label22..Caption
+#: FreeOTFEfrmCDBDump.dfm:89
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:362
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:39
+msgid "&Key iterations:"
+msgstr "Iterazioni chiave:"
+
+#. frmFreeOTFECDBDump..GroupBox1..lblOptional..Caption
+#: FreeOTFEfrmCDBDump.dfm:97
+msgid "(optional)"
+msgstr "(opzionale)"
+
+#. frmFreeOTFECDBDump..GroupBox1..ckBaseIVCypherOnHashLength..Caption
+#: FreeOTFEfrmCDBDump.dfm:130
+msgid "Base IV cypher on hash length"
+msgstr "Cypher base IV sulla lunghezza di hash"
+
+#. frmFreeOTFECDBDump..GroupBox2..Caption
+#: FreeOTFEfrmCDBDump.dfm:164
+msgid "Dump file"
+msgstr "Dump file"
+
+#. frmFreeOTFECDBDump..GroupBox2..Label3..Caption
+#: FreeOTFEfrmCDBDump.dfm:177
+msgid "&Dump to file:"
+msgstr "Scarica nel file"
+
+#. frmFreeOTFECDBDump..OpenDialog..Filter
+#. frmFreeOTFEMain..OpenDialog..Filter
+#: FreeOTFEfrmCDBDump.dfm:199
+#: FreeOTFEfrmMain.dfm:313
+msgid "All files (*.*)|*.*"
+msgstr "Tutti i file (*.*)|*.*"
+
+#. frmGridReport..pbSave..Caption
+#: FreeOTFEfrmGridReport.dfm:38
+msgid "&Save..."
+msgstr "&Salva..."
+
+#. frmGridReport..pbClose..Caption
+#. frmCypherInfo..pbClose..Caption
+#. frmDriverControl..pbClose..Caption
+#. frmHashInfo..pbClose..Caption
+#. frmPKCS11Management..pbClose..Caption
+#. SDUDiskPropertiesDialog..pbClose..Caption
+#. SDUPartitionPropertiesDialog..pbClose..Caption
+#: FreeOTFEfrmGridReport.dfm:49
+#: OTFEFreeOTFE_frmCypherInfo.dfm:262
+#: OTFEFreeOTFE_frmDriverControl.dfm:33
+#: OTFEFreeOTFE_frmHashInfo.dfm:245
+#: OTFEFreeOTFE_frmPKCS11Management.dfm:29
+#: SDUDiskPropertiesDlg.dfm:105
+#: SDUPartitionPropertiesDlg.dfm:91
+msgid "Close"
+msgstr "Chiudi"
+
+#. frmGridReport..pnlBetweenButtons..pnlBetweenButtonsCenter..ckShowAdvanced..Caption
+#: FreeOTFEfrmGridReport.dfm:96
+msgid "Show &advanced"
+msgstr "Mostra &avanzate"
+
+#. frmGridReport..pbDrivers..Caption
+#: FreeOTFEfrmGridReport.dfm:120
+msgid "&Drivers..."
+msgstr "&Drivers..."
+
+#. frmGridReport..ActionList1..actSelectAll..Caption
+#: FreeOTFEfrmGridReport.dfm:129
+msgid "Select &all"
+msgstr "Selezion&a tutto"
+
+#. frmGridReport..ActionList1..actCopy..Caption
+#: FreeOTFEfrmGridReport.dfm:134
+msgid "&Copy"
+msgstr "&Copia"
+
+#. frmInstallOnUSBDrive..Caption
+#: FreeOTFEfrmInstallOnUSBDrive.dfm:5
+msgid "Copy %1 to USB Drive"
+msgstr "Copia %1 su disco USB"
+
+#. frmInstallOnUSBDrive..Label1..Caption
+#. frmFreeOTFEVolProperties..Label22..Caption
+#. frmKeyEntryFreeOTFE..pnlBasic..GroupBox1..Label4..Caption
+#. frmKeyEntryLinux..pcEntry..tsMountOptions..GroupBox2..Label4..Caption
+#. frmKeyEntryLUKS..GroupBox2..Label4..Caption
+#: FreeOTFEfrmInstallOnUSBDrive.dfm:24
+#: FreeOTFEfrmVolProperties.dfm:32
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:57
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:589
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:53
+msgid "&Drive:"
+msgstr "&Disco:"
+
+#. frmInstallOnUSBDrive..Label2..Caption
+#: FreeOTFEfrmInstallOnUSBDrive.dfm:32
+msgid "&Path to copy to:"
+msgstr "Co&pia in:"
+
+#. frmInstallOnUSBDrive..edPath..Text
+#: FreeOTFEfrmInstallOnUSBDrive.dfm:61
+msgid "edPath"
+msgstr "edPath"
+
+#. frmInstallOnUSBDrive..ckSetupAutoplay..Caption
+#: FreeOTFEfrmInstallOnUSBDrive.dfm:78
+msgid "&Setup autorun.inf to launch %1 when drive inserted"
+msgstr "Configurare autorun.inf per lanciare %1 all'in&serimento del disco"
+
+#. frmInstallOnUSBDrive..pbRefreshDrives..Caption
+#. frmFreeOTFEMain..ActionList1..actRefresh..Caption
+#. fmePKCS11_MgrBase..ActionList1..actRefresh..Caption
+#. frmPKCS11Session..pbRefresh..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGPKCS11..pbRefresh..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGPKCS11..pbRefresh..Caption
+#: FreeOTFEfrmInstallOnUSBDrive.dfm:95
+#: FreeOTFEfrmMain.dfm:423
+#: OTFEFreeOTFE_fmePKCS11_MgrBase.dfm:11
+#: OTFEFreeOTFE_frmPKCS11Session.dfm:88
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:574
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:753
+msgid "&Refresh"
+msgstr "Aggio&rna"
+
+#. frmInstallOnUSBDrive..ckHideAutorunInf..Caption
+#: FreeOTFEfrmInstallOnUSBDrive.dfm:104
+msgid "&Mark autorun.inf file as hidden"
+msgstr "Rendi autorun.inf un file nascosto"
+
+#. frmFreeOTFEMain..pnlTopSpacing..Caption
+#: FreeOTFEfrmMain.dfm:118
+msgid "pnlTopSpacing"
+msgstr "pnlTopSpacing"
+
+#. frmFreeOTFEMain..mmMain..File1..Caption
+#: FreeOTFEfrmMain.dfm:160
+msgid "&File"
+msgstr "&File"
+
+#. frmFreeOTFEMain..mmMain..File1..miLinuxVolume..Caption
+#: FreeOTFEfrmMain.dfm:180
+msgid "&Linux volume"
+msgstr "Volume &Linux"
+
+#. frmFreeOTFEMain..mmMain..File1..miLinuxVolume..miLUKSDump..Caption
+#: FreeOTFEfrmMain.dfm:197
+msgid "&Dump LUKS details to human readable file..."
+msgstr "Passa &dettagli LUKS a file leggibile..."
+
+#. frmFreeOTFEMain..mmMain..View1..Caption
+#: FreeOTFEfrmMain.dfm:215
+msgid "&View"
+msgstr "&Vedi"
+
+#. frmFreeOTFEMain..mmMain..View1..miOptions..Caption
+#: FreeOTFEfrmMain.dfm:223
+msgid "Options..."
+msgstr "Opzioni..."
+
+#. frmFreeOTFEMain..mmMain..miTools..Caption
+#: FreeOTFEfrmMain.dfm:234
+msgid "&Tools"
+msgstr "S&trumenti"
+
+#. frmFreeOTFEMain..mmMain..miTools..miCreateKeyfile..Caption
+#: FreeOTFEfrmMain.dfm:260
+msgid "&Create keyfile..."
+msgstr "&Crea keyfile..."
+
+#. frmFreeOTFEMain..mmMain..miTools..miChangePassword..Caption
+#: FreeOTFEfrmMain.dfm:264
+msgid "Change volume/keyfile &password/details..."
+msgstr "Cambia &password/dettagli di volume/keyfile"
+
+#. frmFreeOTFEMain..mmMain..miTools..miCDB..Caption
+#: FreeOTFEfrmMain.dfm:274
+msgid "Critical data &block"
+msgstr "&Blocco dati critici"
+
+#. frmFreeOTFEMain..mmMain..miTools..miCDB..miCDBBackup..Caption
+#: FreeOTFEfrmMain.dfm:276
+msgid "&Backup..."
+msgstr "&Backup..."
+
+#. frmFreeOTFEMain..mmMain..miTools..miCDB..miCDBRestore..Caption
+#: FreeOTFEfrmMain.dfm:280
+msgid "&Restore..."
+msgstr "&Ripristina.."
+
+#. frmFreeOTFEMain..mmMain..miTools..miCDB..miCDBPlaintextDump..Caption
+#: FreeOTFEfrmMain.dfm:284
+msgid "&Dump to human readable file..."
+msgstr "Passa &dettagli a file leggibile..."
+
+#. frmFreeOTFEMain..mmMain..Help1..Caption
+#: FreeOTFEfrmMain.dfm:290
+msgid "&Help"
+msgstr "Aiuto"
+
+#. frmFreeOTFEMain..mmMain..Help1..About1..Caption
+#: FreeOTFEfrmMain.dfm:307
+msgid "&About FreeOTFE..."
+msgstr "Inform&azioni su FreeOTFE..."
+
+#. frmFreeOTFEMain..ActionList1..actFreeOTFENew..Caption
+#. fmePKCS11_MgrSecretKey..ActionList1..actNew..Caption
+#: FreeOTFEfrmMain.dfm:335
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.dfm:79
+msgid "&New..."
+msgstr "&Nuovo..."
+
+#. frmFreeOTFEMain..ActionList1..actFreeOTFENew..Hint
+#: FreeOTFEfrmMain.dfm:336
+msgid "New encrypted volume"
+msgstr "Nuovo volume crittato"
+
+#. frmFreeOTFEMain..ActionList1..actFreeOTFEMountFile..Caption
+#. frmFreeOTFEMain..ActionList1..actLinuxMountFile..Caption
+#: FreeOTFEfrmMain.dfm:341
+#: FreeOTFEfrmMain.dfm:373
+msgid "&Mount file..."
+msgstr "&Monta file..."
+
+#. frmFreeOTFEMain..ActionList1..actFreeOTFEMountFile..Hint
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_MOUNTFILE
+#: FreeOTFEfrmMain.dfm:342
+#: FreeOTFEfrmMain.pas:414
+msgid "Mount file"
+msgstr "Monta file"
+
+#. frmFreeOTFEMain..ActionList1..actFreeOTFEMountPartition..Caption
+#. frmFreeOTFEMain..ActionList1..actLinuxMountPartition..Caption
+#: FreeOTFEfrmMain.dfm:348
+#: FreeOTFEfrmMain.dfm:378
+msgid "Mount &partition..."
+msgstr "Monta &partizione..."
+
+#. frmFreeOTFEMain..ActionList1..actFreeOTFEMountPartition..Hint
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_MOUNTPARTITION
+#: FreeOTFEfrmMain.dfm:349
+#: FreeOTFEfrmMain.pas:415
+msgid "Mount partition"
+msgstr "Monta partizione"
+
+#. frmFreeOTFEMain..ActionList1..actDismount..Caption
+#: FreeOTFEfrmMain.dfm:355
+msgid "&Dismount"
+msgstr "Smonta"
+
+#. frmFreeOTFEMain..ActionList1..actDismount..Hint
+#: FreeOTFEfrmMain.dfm:356
+msgid "Dismount selected"
+msgstr "Smonta selezionati"
+
+#. frmFreeOTFEMain..ActionList1..actDismountAll..Caption
+#: FreeOTFEfrmMain.dfm:362
+msgid "Dismount &all"
+msgstr "Smont&a tutto"
+
+#. frmFreeOTFEMain..ActionList1..actDismountAll..Hint
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_DISMOUNTALL
+#: FreeOTFEfrmMain.dfm:363
+#: FreeOTFEfrmMain.pas:417
+msgid "Dismount all"
+msgstr "Smonta tutto"
+
+#. frmFreeOTFEMain..ActionList1..actLinuxNew..Caption
+#: FreeOTFEfrmMain.dfm:368
+msgid "&New file..."
+msgstr "&Nuovo file..."
+
+#. frmFreeOTFEMain..ActionList1..actLinuxNew..Hint
+#: FreeOTFEfrmMain.dfm:369
+msgid "New Linux volume"
+msgstr "Nuovo volume Linux"
+
+#. frmFreeOTFEMain..ActionList1..actLinuxMountFile..Hint
+#: FreeOTFEfrmMain.dfm:374
+msgid "Mount Linux file"
+msgstr "Monta file Linux"
+
+#. frmFreeOTFEMain..ActionList1..actLinuxMountPartition..Hint
+#: FreeOTFEfrmMain.dfm:379
+msgid "Mount Linux partition"
+msgstr "Monta partizione Linux"
+
+#. frmFreeOTFEMain..ActionList1..actProperties..Caption
+#: FreeOTFEfrmMain.dfm:383
+msgid "&Properties..."
+msgstr "&Proprietà..."
+
+#. frmFreeOTFEMain..ActionList1..actProperties..Hint
+#: FreeOTFEfrmMain.dfm:384
+msgid "Properties of selected volume"
+msgstr "Proprietà del volume selezionato"
+
+#. frmFreeOTFEMain..ActionList1..actExit..Caption
+#: FreeOTFEfrmMain.dfm:389
+msgid "E&xit"
+msgstr "Esci"
+
+#. frmFreeOTFEMain..ActionList1..actExit..Hint
+#: FreeOTFEfrmMain.dfm:390
+msgid "Exit"
+msgstr "Esci"
+
+#. frmFreeOTFEMain..ActionList1..actDisplayConsole..Caption
+#. frmFreeOTFEMain..ActionList1..actDisplayConsole..Hint
+#: FreeOTFEfrmMain.dfm:394
+#: FreeOTFEfrmMain.dfm:395
+msgid "Display console"
+msgstr "Mostra console"
+
+#. frmFreeOTFEMain..ActionList1..actTogglePortableMode..Hint
+#: FreeOTFEfrmMain.dfm:400
+msgid "Toggle portable mode on/off"
+msgstr "Attiva/disattiva modo trasferibile"
+
+#. frmFreeOTFEMain..ActionList1..actFormat..Caption
+#: FreeOTFEfrmMain.dfm:405
+msgid "&Format..."
+msgstr "&Formatta..."
+
+#. frmFreeOTFEMain..ActionList1..actFormat..Hint
+#: FreeOTFEfrmMain.dfm:406
+msgid "Format volume"
+msgstr "Formatta volume"
+
+#. frmFreeOTFEMain..ActionList1..actOverwriteFreeSpace..Caption
+#: FreeOTFEfrmMain.dfm:410
+msgid "&Overwrite free space..."
+msgstr "S&ovrascrivi spazio libero..."
+
+#. frmFreeOTFEMain..ActionList1..actOverwriteFreeSpace..Hint
+#: FreeOTFEfrmMain.dfm:411
+msgid "Overwrite free space on volume"
+msgstr "Sovrascrivi spazio libero sul volume"
+
+#. frmFreeOTFEMain..ActionList1..actOverwriteEntireDrive..Caption
+#: FreeOTFEfrmMain.dfm:415
+msgid "Overwrite entire drive..."
+msgstr "Sovrascrivi l'intero disco..."
+
+#. frmFreeOTFEMain..ActionList1..actDrivers..Caption
+#: FreeOTFEfrmMain.dfm:419
+msgid "Drivers..."
+msgstr "Drivers..."
+
+#. frmFreeOTFEMain..ActionList1..actListCyphers..Caption
+#: FreeOTFEfrmMain.dfm:428
+msgid "List &cyphers..."
+msgstr "Elenca &cypher..."
+
+#. frmFreeOTFEMain..ActionList1..actListHashes..Caption
+#: FreeOTFEfrmMain.dfm:432
+msgid "List &hashes..."
+msgstr "Elenca &hash..."
+
+#. frmFreeOTFEMain..ActionList1..actPKCS11TokenManagement..Caption
+#: FreeOTFEfrmMain.dfm:436
+msgid "&PKCS#11 token management..."
+msgstr "Gestione token &PKCS#11..."
+
+#. frmFreeOTFEMain..ActionList1..actUserGuide..Caption
+#: FreeOTFEfrmMain.dfm:440
+msgid "&User guide"
+msgstr "Guida &utente"
+
+#. frmFreeOTFEMain..ActionList1..actInstallOnUSBDrive..Caption
+#: FreeOTFEfrmMain.dfm:444
+msgid "&Copy %1 to USB drive..."
+msgstr "&Copia %1 su disco USB..."
+
+#. frmFreeOTFEMain..pmSystemTray..mmRecentlyMounted..Caption
+#: FreeOTFEfrmMain.dfm:453
+msgid "&Recently mounted"
+msgstr "Montati di &recente"
+
+#. frmOptions..Caption
+#: FreeOTFEfrmOptions.dfm:5
+msgid "Options"
+msgstr "Opzioni"
+
+#. frmOptions..lblSettingsLocation..Caption
+#: FreeOTFEfrmOptions.dfm:25
+msgid "&Save above settings to:"
+msgstr "&Salva le opzioni soprastanti in:"
+
+#. frmOptions..ckAssociateFiles..Caption
+#: FreeOTFEfrmOptions.dfm:81
+msgid "Associate %1 with \".vol\" &files"
+msgstr "Associa %1 con i &file \".vol\""
+
+#. frmOptions..pcOptions..tcSystemTray..Caption
+#: FreeOTFEfrmOptions.dfm:147
+msgid "System Tray"
+msgstr "System Tray"
+
+#. frmOptions..pcOptions..tsAutorun..Caption
+#: FreeOTFEfrmOptions.dfm:165
+msgid "Autorun"
+msgstr "Autoavvia"
+
+#. frmFreeOTFESelectOverwriteMethod..Caption
+#: FreeOTFEfrmSelectOverwriteMethod.dfm:5
+msgid "Select Type of Overwrite"
+msgstr "Seleziona tipo di sovrascrittura"
+
+#. frmFreeOTFESelectOverwriteMethod..GroupBox1..Caption
+#: FreeOTFEfrmSelectOverwriteMethod.dfm:46
+msgid "Type of overwrite data"
+msgstr "Tipo di dati in sovrascrittura"
+
+#. frmFreeOTFESelectOverwriteMethod..GroupBox1..rbDataEncrypted..Caption
+#: FreeOTFEfrmSelectOverwriteMethod.dfm:53
+msgid "Encrypted data"
+msgstr "Dati crittati"
+
+#. frmFreeOTFESelectOverwriteMethod..GroupBox1..rbDataPseudorandom..Caption
+#. Programmer's name for it: SHREDMETHOD_PSEUDORANDOM_DATA
+#: FreeOTFEfrmSelectOverwriteMethod.dfm:62
+#: Shredder/Shredder.pas:45
+msgid "Pseudorandom data"
+msgstr "Dati pseudocasuali"
+
+#. frmFreeOTFEVolProperties..Caption
+#: FreeOTFEfrmVolProperties.dfm:5
+msgid "FreeOTFE Volume Properties"
+msgstr "Proprietà del volume FreeOTFE"
+
+#. frmFreeOTFEVolProperties..Label15..Caption
+#: FreeOTFEfrmVolProperties.dfm:24
+msgid "&Mounted for:"
+msgstr "&Montato per:"
+
+#. frmFreeOTFEVolProperties..Label5..Caption
+#: FreeOTFEfrmVolProperties.dfm:40
+#: FreeOTFEfrmCDBBackupRestore.pas:105
+#: FreeOTFEfrmCDBBackupRestore.pas:122
+msgid "&Volume:"
+msgstr "&Volume:"
+
+#. frmFreeOTFEVolProperties..Label7..Caption
+#: FreeOTFEfrmVolProperties.dfm:48
+msgid "M&ounted on device:"
+msgstr "M&ontato sull'unità:"
+
+#. frmFreeOTFEVolProperties..Label6..Caption
+#: FreeOTFEfrmVolProperties.dfm:56
+msgid "&Main cypher:"
+msgstr "Cypher principale:"
+
+#. frmFreeOTFEVolProperties..lblIVHash..Caption
+#: FreeOTFEfrmVolProperties.dfm:64
+msgid "&IV hash algorithm:"
+msgstr "Algoritmo hash &IV:"
+
+#. frmFreeOTFEVolProperties..Label2..Caption
+#. frmKeyEntryLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..Label5..Caption
+#: FreeOTFEfrmVolProperties.dfm:72
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:380
+msgid "&Sector IVs:"
+msgstr "&Settore IV:"
+
+#. frmFreeOTFEVolProperties..lblIVCypher..Caption
+#: FreeOTFEfrmVolProperties.dfm:80
+msgid "I&V cypher:"
+msgstr "Cypher I&V:"
+
+#: About_U.pas:71
+msgid "FreeOTFE driver: %1"
+msgstr "Driver FreeOTFE: %1"
+
+#: About_U.pas:76
+msgid "The main FreeOTFE driver is either not installed, or not started"
+msgstr "Il driver FreeOTFE principale non è installato, o non è avviato"
+
+#. Programmer's name for it: FILTER_EXECUTABLE_FILES
+#: FreeOTFEfmeOptions_Autorun.pas:55
+msgid "Program files (*.exe, *.com, *.bat)|*.exe; *.bat; *.com|All files|*.*"
+msgstr "File eseguibili (*.exe, *.com, *.bat)|*.exe; *.bat; *.com|Tutti i file|*.*"
+
+#: FreeOTFEfmeOptions_Autorun.pas:66
+msgid "Locate post mount executable"
+msgstr "Indica l'eseguibile post montaggio"
+
+#: FreeOTFEfmeOptions_Autorun.pas:80
+msgid "Locate pre dismount executable"
+msgstr "Indica l'eseguibile pre smontaggio"
+
+#: FreeOTFEfmeOptions_Autorun.pas:94
+msgid "Locate post dismount executable"
+msgstr "Indica l'eseguibile post smontaggio"
+
+#. Setup instructions text
+#: FreeOTFEfmeOptions_Autorun.pas:136
+msgid ""
+"FreeOTFE can be configured here to automatically run programs after mounting, before dismounting, and after dismounting.\n"
+"\n"
+"Any post-mount and pre-dismount executables specified must use a relative path to the executable within the mounted volume (i.e. absolute and UNC paths are not allowed for security reasons)\n"
+"\n"
+"Executables with spaces in their paths/names must be surrounded with double quotes.\n"
+"\n"
+"\"%DRIVE\" will be substituted with the drive letter of the mounted drive letter"
+msgstr ""
+"FreeOTFE può essere qui configurato per avviare automaticamente programmi dopo il montaggio, prima dello smontaggio, e dopo lo smontaggio.\n"
+"\n"
+"Qualsiasi eseguibile specificato in post-montaggio e pre-montaggio deve usare un percorso relativo che punti all'eseguibile nel volume montato (p.e. i percorsi assoluti e UNC non sono permessi per ragioni di sicurezza).\n"
+"\n"
+"Gli eseguibili con spazi nei loro percorsi/nomi devono essere delimitati da virgolette.\n"
+"\n"
+"\"%DRIVE\" verrà sostituito dalla lettera del disco montato."
+
+#. Programmer's name for it: USE_DEFAULT
+#. tsRequestedDriveLetter
+#: FreeOTFEfmeOptions_General.pas:76
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas:221
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:355
+#: OTFEFreeOTFE_frmKeyEntryLUKS.pas:126
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:548
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1519
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas:206
+msgid "Use default"
+msgstr "Usa impostazioni di default"
+
+#. This should be set to the name of the language translated to
+#. Programmer's name for it: RS_LANGUAGE
+#: FreeOTFEfmeOptions_General.pas:78
+#: FreeOTFEfmeOptions_General.pas:299
+msgid "English"
+msgstr "Italiano"
+
+#: FreeOTFEfmeOptions_General.pas:167
+msgid "Language name: %1"
+msgstr "Nome lingua: %1"
+
+#: FreeOTFEfmeOptions_General.pas:168
+msgid "Language code: %1"
+msgstr "Codice lingua: %1"
+
+#: FreeOTFEfmeOptions_General.pas:169
+msgid "Translator: %1"
+msgstr "Traduttore: %1"
+
+#. Add "default" into the list
+#: FreeOTFEfmeOptions_General.pas:322
+msgid "(Default)"
+msgstr "(Default)"
+
+#. Programmer's name for it: FILTER_LIBRARY_FILES
+#: FreeOTFEfmeOptions_PKCS11.pas:50
+msgid "Library files (*.dll)|*.dll|All files|*.*"
+msgstr "Estensioni applicazione (*.dll)|*.dll|Tutti i file|*.*"
+
+#: FreeOTFEfmeOptions_PKCS11.pas:71
+msgid "PKCS#11 library appears to be functional"
+msgstr "La libreria PKCS#11 sembra in funzione"
+
+#: FreeOTFEfmeOptions_PKCS11.pas:126
+msgid "Please specify the PKCS#11 library to be used"
+msgstr "Specificare la libreria PKCS#11 da utilizzare"
+
+#: FreeOTFEfmeOptions_PKCS11.pas:149
+msgid "The library specified does not appear to be a valid/working PKCS#11 library"
+msgstr "La libreria PKCS#11 specificata non sembra essere valida/funzionante"
+
+#: FreeOTFEfmeOptions_PKCS11.pas:180
+msgid "If automount on PKCS#11 token insertion is enabled, the volume to be mounted must be specified"
+msgstr "Se l'automontaggio all'inserimento del token PKCS#11 è abilitato, va specifiato il volume da montare"
+
+#. Programmer's name for it: USE_NOT_IN_USE
+#: FreeOTFEfrmCDBBackupRestore.pas:88
+msgid "Please ensure that the volume is not mounted, or otherwise in use"
+msgstr "Assicurarsi che il volume non sia montato, o comunque in uso"
+
+#: FreeOTFEfrmCDBBackupRestore.pas:102
+msgid "Backup Volume Critical Data Block"
+msgstr "Backup Dati Critici del Volume"
+
+#: FreeOTFEfrmCDBBackupRestore.pas:104
+#: FreeOTFEfrmCDBBackupRestore.pas:121
+msgid "Volume details"
+msgstr "Dettagli volume"
+
+#: FreeOTFEfrmCDBBackupRestore.pas:107
+#: FreeOTFEfrmCDBBackupRestore.pas:118
+msgid "Backup details"
+msgstr "Dettagli backup"
+
+#: FreeOTFEfrmCDBBackupRestore.pas:108
+#: FreeOTFEfrmCDBBackupRestore.pas:119
+msgid "&Backup filename:"
+msgstr "Nome file di &Backup:"
+
+#. Backup file starts from 0 - don't allow the user to change offset
+#: FreeOTFEfrmCDBBackupRestore.pas:116
+msgid "Restore Volume Critical Data Block"
+msgstr "Ripristino Dati Critici del Volume"
+
+#. Note: You can only backup to a *file*
+#: FreeOTFEfrmCDBBackupRestore.pas:166
+msgid "The file you are attempting to backup to already exists."
+msgstr "Il file su cui si vuole effettuare il backup esiste già."
+
+#: FreeOTFEfrmCDBBackupRestore.pas:168
+msgid "Please delete this backup file and try again, or specify a different filename to backup to."
+msgstr "Cancellare questo file di backup e riprovare, o cambiare il nome del file per il backup."
+
+#. Note: You can only restore from a *file*
+#: FreeOTFEfrmCDBBackupRestore.pas:197
+msgid "The backup file specified does not exist."
+msgstr "Il file di backup specificato non esiste."
+
+#. Check that the source file is the right size for a backup file
+#: FreeOTFEfrmCDBBackupRestore.pas:209
+msgid "The source file you specified does not appear to be the right size for a backup file"
+msgstr "Il file specificato non sembra essere delle dimensioni corrette per un file di backup"
+
+#: FreeOTFEfrmCDBBackupRestore.pas:211
+msgid "Please check your settings and try again."
+msgstr "Contollare le impostazioni e riprovare."
+
+#. Backup is relativly safe as it backs up to a file which doesn't exist
+#: FreeOTFEfrmCDBBackupRestore.pas:231
+msgid ""
+"Please confirm: Do you wish to restore the critial data block from backup file:\n"
+"\n"
+"%1\n"
+"\n"
+"Into the volume:\n"
+"\n"
+"%2\n"
+"\n"
+"Starting from offset %3 in the volume?"
+msgstr ""
+"Confirmare: Si vogliono ripristinare i dati critici dal file di backup:\n"
+"\n"
+"%1\n"
+"\n"
+"Nel volume:\n"
+"\n"
+"%2\n"
+"\n"
+"Iniziare dall'offset %3 nel volume?"
+
+#: FreeOTFEfrmCDBBackupRestore.pas:269
+msgid "Backup operation completed successfully."
+msgstr "Operazione di backup completata con successo."
+
+#: FreeOTFEfrmCDBBackupRestore.pas:275
+msgid "Backup operation failed."
+msgstr "Operazione di backup fallita."
+
+#. if (dlgType = opBackup) then
+#: FreeOTFEfrmCDBBackupRestore.pas:295
+msgid "Restore operation completed successfully."
+msgstr "Operazione di ripristino completata con successo."
+
+#: FreeOTFEfrmCDBBackupRestore.pas:301
+msgid "Restore operation failed."
+msgstr "Operazione di ripristino fallita."
+
+#: FreeOTFEfrmCDBDump.pas:229
+msgid "A human readable copy of your critical data block has been written to:"
+msgstr "Una copia leggibile dei dati critici è stata scritta in:"
+
+#: FreeOTFEfrmCDBDump.pas:233
+msgid "Do you wish to open this file in Windows Notepad?"
+msgstr "Aprire questo file con il Blocco Note di Windows?"
+
+#: FreeOTFEfrmCDBDump.pas:240
+msgid "Error running Notepad"
+msgstr "Errore apertura Blocco Note"
+
+#: FreeOTFEfrmCDBDump.pas:257
+msgid "Unable to dump out critical data block."
+msgstr "Errore nel trasferimento dei dati critici."
+
+#: FreeOTFEfrmCDBDump.pas:259
+msgid "Please ensure that your password and details are entered correctly, and that this file is not currently in use (e.g. mounted)"
+msgstr "Assicurarsi che la password e i dettagli siano corretti, e che il file non sia attualmente in uso (p.e. montato)"
+
+#: FreeOTFEfrmCDBDump.pas:281
+msgid "Dump LUKS Details"
+msgstr "Trasferire Dettagli LUKS"
+
+#: FreeOTFEfrmCDBDump.pas:288
+msgid "Dump Critical Data Block"
+msgstr "Trasferire Dati Critici"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_TITLE
+#: FreeOTFEfrmGridReport.pas:70
+msgid "Driver title"
+msgstr "Nome driver"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_VERSION
+#: FreeOTFEfrmGridReport.pas:71
+msgid "Driver version"
+msgstr "Versione driver"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_GUID
+#: FreeOTFEfrmGridReport.pas:72
+msgid "Driver GUID"
+msgstr "GUID driver"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_DEVICE_NAME
+#: FreeOTFEfrmGridReport.pas:73
+msgid "Driver device name"
+msgstr "Nome dispositivo driver"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_USER_MODE_NAME
+#: FreeOTFEfrmGridReport.pas:74
+msgid "Driver user mode name"
+msgstr "Nome driver modalità utente"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_KERNEL_MODE_NAME
+#: FreeOTFEfrmGridReport.pas:75
+msgid "Driver kernel mode name"
+msgstr "Nome driver modalità kernel"
+
+#. Save dialog related
+#. Programmer's name for it: FILE_FILTER_FLT_REPORTS
+#: FreeOTFEfrmGridReport.pas:94
+msgid "Text report (*.txt)|*.txt|Comma separated values (*.csv)|*.csv|Tab separated values (*.tsv)|*.tsv"
+msgstr "Formato file rapporto (*.txt)|*.txt|Comma separated values (*.csv)|*.csv|Tab separated values (*.tsv)|*.tsv"
+
+#. Programmer's name for it: FILE_FILTER_DFLT_REPORTS
+#. Programmer's name for it: FILE_FILTER_DFLT_TEXTFILES
+#: FreeOTFEfrmGridReport.pas:95
+#: OTFEFreeOTFE_U.pas:58
+msgid "txt"
+msgstr "txt"
+
+#: FreeOTFEfrmGridReport.pas:178
+msgid "Total drivers: %1"
+msgstr "Driver totali: %1"
+
+#: FreeOTFEfrmGridReport.pas:179
+#: FreeOTFEfrmGridReport.pas:252
+msgid "Total algorithms: %1"
+msgstr "Algoritmi totali: %1"
+
+#. Generate file contents...
+#: FreeOTFEfrmGridReport.pas:228
+msgid "No implementations found"
+msgstr "Nessuna implementazione trovata"
+
+#. Add header if text report
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSummary..Caption
+#: FreeOTFEfrmGridReport.pas:249
+#: FreeOTFEfrmGridReport.pas:250
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:866
+msgid "Summary"
+msgstr "Sommario"
+
+#: FreeOTFEfrmGridReport.pas:251
+msgid "Total drivers   : %1"
+msgstr "Driver totali   : %1"
+
+#: FreeOTFEfrmGridReport.pas:255
+#: FreeOTFEfrmGridReport.pas:256
+msgid "Details"
+msgstr "Dettagli"
+
+#: FreeOTFEfrmGridReport.pas:420
+msgid "Unknown output format?!"
+msgstr "Formato di output sconosciuto?!"
+
+#: FreeOTFEfrmGridReport.pas:422
+msgid "Please report seeing this error!"
+msgstr "Per favore segnalate questo errore!"
+
+#. IMPORTANT: If this is updated, GetColumnTitle() MUST ALSO BE UPDATED
+#. Programmer's name for it: COL_TITLE_CYPHER_TITLE
+#: FreeOTFEfrmGridReport_Cypher.pas:62
+msgid "Cypher title"
+msgstr "Titolo Cypher"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_KEYSIZE
+#: FreeOTFEfrmGridReport_Cypher.pas:63
+msgid "Cypher keysize"
+msgstr "Keysiza Cypher"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_MODE
+#: FreeOTFEfrmGridReport_Cypher.pas:64
+msgid "Cypher mode"
+msgstr "Modalità Cypher"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_VERSION
+#: FreeOTFEfrmGridReport_Cypher.pas:65
+msgid "Cypher version"
+msgstr "Version Cypher"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_KEYSIZE_REQD
+#: FreeOTFEfrmGridReport_Cypher.pas:66
+msgid "Cypher keysize required"
+msgstr "Keysize Cypher richiesto"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_BLOCKSIZE
+#: FreeOTFEfrmGridReport_Cypher.pas:67
+msgid "Cypher blocksize"
+msgstr "Blocksize Cypher"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_GUID
+#: FreeOTFEfrmGridReport_Cypher.pas:68
+msgid "Cypher GUID"
+msgstr "GUID Cypher"
+
+#: FreeOTFEfrmGridReport_Cypher.pas:122
+#: FreeOTFEfrmGridReport_Cypher.pas:134
+msgid "<null>"
+msgstr "<null>"
+
+#: FreeOTFEfrmGridReport_Cypher.pas:126
+#: FreeOTFEfrmGridReport_Cypher.pas:138
+#: FreeOTFEfrmGridReport_Cypher.pas:146
+msgid "<any>"
+msgstr "<tutti>"
+
+#: FreeOTFEfrmGridReport_Cypher.pas:272
+msgid "Available Cyphers"
+msgstr "Cypher disponibili"
+
+#: FreeOTFEfrmGridReport_Cypher.pas:273
+msgid "The following cyphers are available for use:"
+msgstr "I seguenti cypher sono disponibili per l'uso:"
+
+#: FreeOTFEfrmGridReport_Cypher.pas:284
+msgid "No cypher algorithms could be found."
+msgstr "Nessun algoritmo cypher trovato."
+
+#: FreeOTFEfrmGridReport_Cypher.pas:286
+msgid "Please start portable mode, or click \"Drivers...\" to install one or more cypher drivers"
+msgstr "Avviare modalità trasferibile, o cliccare \"Driver...\" per installare uno o più driver cypher"
+
+#. IMPORTANT: If this is updated, GetColumnTitle() MUST ALSO BE UPDATED
+#. Programmer's name for it: COL_TITLE_HASH_TITLE
+#: FreeOTFEfrmGridReport_Hash.pas:60
+msgid "Hash title"
+msgstr "Titolo Hash"
+
+#. Programmer's name for it: COL_TITLE_HASH_VERSION
+#: FreeOTFEfrmGridReport_Hash.pas:61
+msgid "Hash version"
+msgstr "Versione Hash"
+
+#. Programmer's name for it: COL_TITLE_HASH_LENGTH
+#: FreeOTFEfrmGridReport_Hash.pas:62
+msgid "Hash length"
+msgstr "Lunghezza Hash"
+
+#. Programmer's name for it: COL_TITLE_HASH_BLOCKSIZE
+#: FreeOTFEfrmGridReport_Hash.pas:63
+msgid "Hash blocksize"
+msgstr "Blocksize Hash"
+
+#. Programmer's name for it: COL_TITLE_HASH_GUID
+#: FreeOTFEfrmGridReport_Hash.pas:64
+msgid "Hash GUID"
+msgstr "GUID Hash"
+
+#: FreeOTFEfrmGridReport_Hash.pas:117
+msgid "<variable>"
+msgstr "<variabile>"
+
+#: FreeOTFEfrmGridReport_Hash.pas:125
+msgid "<n/a>"
+msgstr "<n/a>"
+
+#: FreeOTFEfrmGridReport_Hash.pas:249
+msgid "Available Hashes"
+msgstr "Hash disponibili"
+
+#: FreeOTFEfrmGridReport_Hash.pas:250
+msgid "The following hashes are available for use:"
+msgstr "I seguenti hash sono disponibili per l'uso:"
+
+#: FreeOTFEfrmGridReport_Hash.pas:261
+msgid "No hash algorithms could be found."
+msgstr "Nessun algoritmo di hash trovato:"
+
+#: FreeOTFEfrmGridReport_Hash.pas:263
+msgid "Please start portable mode, or click \"Drivers...\" to install one or more hash drivers"
+msgstr "Avviare modalità trasferibile, o cliccare \"Driver...\" per installare uno o più hash cypher"
+
+#: FreeOTFEfrmInstallOnUSBDrive.pas:67
+msgid ""
+"This function provides an easy means of copying %1 to a USB drive, and configuring it to launch automatically when the USB drive is plugged in.\n"
+"\n"
+"Please select the USB drive, and location on it, where you would like %1 to be copied to:"
+msgstr ""
+"Questa funzione semplifica la copiatura di %1 su un disco USB, e la sua configurazione per lanciarlo in automatico al collegamento del disco USB.\n"
+"\n"
+"Selezionare il disco USB, e il percorso su di esso, dove volete copiare %1:"
+
+#: FreeOTFEfrmInstallOnUSBDrive.pas:85
+msgid "Select location to copy %1 to"
+msgstr "Selezionare la posizione in cui copiare %1"
+
+#: FreeOTFEfrmInstallOnUSBDrive.pas:104
+msgid "%1 copy complete."
+msgstr "Copia di %1 completa"
+
+#. Note: GetInstallRelativePath() will return '\', at a minimum
+#: FreeOTFEfrmInstallOnUSBDrive.pas:128
+msgid "You have opted to copy %1 to the root directory of your USB drive, and not a subdirectory."
+msgstr "Si è scelto di copiare %1 nella cartella principale del drive USB, e non una sottocartella."
+
+#: FreeOTFEfrmInstallOnUSBDrive.pas:130
+msgid "Are you sure you wish to do this?"
+msgstr "Si conferma l'azione prescelta?"
+
+#. Note: This force-creates the destPath directory
+#: FreeOTFEfrmInstallOnUSBDrive.pas:149
+msgid ""
+"Unable to copy %1 to:\n"
+"\n"
+"%2"
+msgstr ""
+"Impossible copiare %1 in:\n"
+"\n"
+"%2"
+
+#. Create autorun.inf file, if needed
+#: FreeOTFEfrmInstallOnUSBDrive.pas:165
+msgid "%1 was successfully copied over, but an autoplay (autorun.inf) file could not be created."
+msgstr "%1 è stato copiato con successo, ma non è stato possible creare autorun.inf."
+
+#: FreeOTFEfrmInstallOnUSBDrive.pas:204
+#: FreeOTFEfrmInstallOnUSBDrive.pas:205
+msgid "Launch %1"
+msgstr "Avvia %1"
+
+#. Programmer's name for it: AUTORUN_POST_MOUNT
+#: FreeOTFEfrmMain.pas:400
+msgid "post mount"
+msgstr "post montaggio"
+
+#. Programmer's name for it: AUTORUN_PRE_MOUNT
+#: FreeOTFEfrmMain.pas:401
+msgid "pre dismount"
+msgstr "pre smontaggio"
+
+#. Programmer's name for it: AUTORUN_POST_DISMOUNT
+#: FreeOTFEfrmMain.pas:402
+msgid "post dismount"
+msgstr "post smontaggio"
+
+#. Programmer's name for it: TEXT_NEED_ADMIN
+#: FreeOTFEfrmMain.pas:411
+msgid "You need administrator privileges in order to carry out this operation."
+msgstr "C'è bisogno di privilegi di amministratore per compiere questa operazione."
+
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_NEW
+#: FreeOTFEfrmMain.pas:413
+msgid "New"
+msgstr "Nuovo"
+
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_DISMOUNT
+#: FreeOTFEfrmMain.pas:416
+msgid "Dismount"
+msgstr "Smonta"
+
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_PORTABLEMODE
+#: FreeOTFEfrmMain.pas:418
+msgid "Portable mode"
+msgstr "Modalità trasferibile"
+
+#: FreeOTFEfrmMain.pas:548
+msgid "The main FreeOTFE driver does not appear to be installed/running on this computer"
+msgstr "Il driver principale FreeOTFE non sembra essere installato/avviato su questo computer"
+
+#: FreeOTFEfrmMain.pas:550
+msgid "Would you like to start FreeOTFE in portable mode?"
+msgstr "Si vuole avviare FreeOTFE in modalità trasferibile?"
+
+#: FreeOTFEfrmMain.pas:564
+msgid "Please see the \"installation\" section of the accompanying documentation for instructions on how to install the FreeOTFE drivers."
+msgstr "Vedere la sezione \"installation\" della documentazione per istruzione su come installare i driver FreeOTFE."
+
+#. Listview columns...
+#: FreeOTFEfrmMain.pas:828
+msgid "Drive"
+msgstr "Drive"
+
+#. tmpColumn.minwidth := lvDrives.width;
+#: FreeOTFEfrmMain.pas:833
+msgid "Volume"
+msgstr "Volume"
+
+#: FreeOTFEfrmMain.pas:1300
+msgid "Unable to mount volume."
+msgstr "Impossibile montare il volume."
+
+#: FreeOTFEfrmMain.pas:1302
+msgid "Please check your password and settings, and try again."
+msgstr "Controllare password e impostazioni, e riprovare."
+
+#. Mount successful
+#: FreeOTFEfrmMain.pas:1313
+msgid "Your FreeOTFE volume has been mounted as drive: %1"
+msgstr "Il volume FreeOTFE è stato montato come disco: %1"
+
+#: FreeOTFEfrmMain.pas:1317
+msgid "Your FreeOTFE volumes have been mounted as drives: %1"
+msgstr "I volumi FreeOTFE sono stati montati come dischi: %1"
+
+#. the drives to be dismounted - and we're not dismounting that drive
+#: FreeOTFEfrmMain.pas:1633
+msgid "The volume currently mounted as %1: must be dismounted before %2: can be dismounted"
+msgstr "Il volume montato come %1: deve essere smontato prima che %2: possa essere smontato"
+
+#. an emergency dismount
+#: FreeOTFEfrmMain.pas:1690
+msgid "Unable to dismount drive: %1"
+msgstr "Impossible smontare disco: %1"
+
+#: FreeOTFEfrmMain.pas:1691
+msgid "Unable to dismount drives: %1"
+msgstr "Impossibile smontare dischi: %1"
+
+#. they want to attempt an emergency dismount
+#: FreeOTFEfrmMain.pas:1702
+msgid "Do you wish to force a dismount on this drive?"
+msgstr "Forzare lo smontaggio di questo disco?"
+
+#: FreeOTFEfrmMain.pas:1703
+msgid "Do you wish to force a dismount on these drives?"
+msgstr "Forzare lo smontaggio di questi dischi?"
+
+#: FreeOTFEfrmMain.pas:1709
+msgid "Warning: Emergency dismounts are not recommended"
+msgstr "Attenzione: Smontaggi di emergenza non raccomandati"
+
+#: FreeOTFEfrmMain.pas:1711
+#: FreeOTFEfrmMain.pas:3516
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:520
+#: OTFEFreeOTFE_frmKeyEntryLUKS.pas:217
+msgid "Are you sure you wish to proceed?"
+msgstr "Si è sicuri di voler procedere?"
+
+#. portable mode status - and DOESN'T turn it on/off
+#: FreeOTFEfrmMain.pas:1798
+msgid "Toggle portable mode drivers"
+msgstr "Attivare/disattivare driver modo trasferibile"
+
+#: FreeOTFEfrmMain.pas:1802
+msgid "Use portable mode drivers"
+msgstr "Usa driver modalità trasferibile"
+
+#. Update status bar text, if visible
+#: FreeOTFEfrmMain.pas:1854
+msgid "FreeOTFE main driver not connected."
+msgstr "Driver principale FreeOTFE non connesso."
+
+#: FreeOTFEfrmMain.pas:1860
+msgid "%1 drive mounted."
+msgstr "%1 disco montato."
+
+#: FreeOTFEfrmMain.pas:1861
+msgid "%1 drives mounted."
+msgstr "%1 dischi montati."
+
+#: FreeOTFEfrmMain.pas:1878
+msgid "%1: Free Space: %2; Total size: %3"
+msgstr "%1: Spazio Libero: %2; Dimensione totale: %3"
+
+#: FreeOTFEfrmMain.pas:1902
+msgid "%1 drive selected."
+msgstr "Disco %1 selezionato."
+
+#: FreeOTFEfrmMain.pas:1903
+msgid "%1 drives selected."
+msgstr "Dischi %1 selezionati."
+
+#: FreeOTFEfrmMain.pas:1985
+msgid "Unknown autorun type?!"
+msgstr "Tipo di autorun sconosciuto?!"
+
+#. PARAMETERS!
+#: FreeOTFEfrmMain.pas:2037
+msgid "Unable to locate %1 executable:"
+msgstr "Impossibile trovare eseguibile %1:"
+
+#: FreeOTFEfrmMain.pas:2062
+msgid "Error running %1 executable:"
+msgstr "Errore nell'esecuzione di %1:"
+
+#: FreeOTFEfrmMain.pas:2129
+msgid "Error running Explorer"
+msgstr "Errore esecuzione Explorer"
+
+#. Don't complain to user is we're about to exit!
+#: FreeOTFEfrmMain.pas:2213
+msgid "In order to use this software, you must first upgrade your %1 drivers to a later version."
+msgstr "Per usare questo software, è necessario aggiornare i driver %1 ad una versione recente."
+
+#: FreeOTFEfrmMain.pas:2215
+msgid "If you have just upgraded your copy of %1 from a previous version, please ensure that you have followed the upgrade instructions that came with it, and have rebooted if necessary."
+msgstr "Se la copia di %1 è stata appena aggiornata, assicurarsi di aver seguito le istruzioni di aggiornamento e di aver riavviato il sistema se necessario."
+
+#: FreeOTFEfrmMain.pas:2222
+msgid "Unable to connect to the main %1 driver."
+msgstr "Impossibile connettersi al driver %1 principale."
+
+#: FreeOTFEfrmMain.pas:2224
+msgid "Please ensure that the main \"%1\" driver is installed and started."
+msgstr "Assicurarsi che il driver \"%1\" principale sia installato e avviato."
+
+#: FreeOTFEfrmMain.pas:2226
+msgid "If you have only just installed %1, please reboot and try again."
+msgstr "Se %1 è stato appena installato, riavviare il sistema e riprovare"
+
+#. Old driver warnings
+#: FreeOTFEfrmMain.pas:2241
+#: FreeOTFEfrmMain.pas:2252
+msgid "The main FreeOTFE driver installed on this computer dates back to FreeOTFE %1"
+msgstr "Il driver FreeOTFE installato su questo computer corrisponde alla versione %1 di FreeOTFE"
+
+#: FreeOTFEfrmMain.pas:2243
+msgid "It is highly recommended that you upgrade your FreeOTFE drivers to v3.00 or later as soon as possible, in order to allow the use of LRW and XTS based volumes."
+msgstr "E' altamente raccomandato l'aggiornamento dei driver FreeOTFE alla versione 3.00 o successiva appena possibile, in modo da permettere l'uso di volumi LRW e XTS."
+
+#: FreeOTFEfrmMain.pas:2245
+#: FreeOTFEfrmMain.pas:2256
+msgid "See documentation (installation section) for instructions on how to do this."
+msgstr "Vedere la documentazione (sezione installazione) per istruzioni a riguardo."
+
+#: FreeOTFEfrmMain.pas:2254
+msgid "It is highly recommended that you upgrade your FreeOTFE drivers to those included in v4.30 or later as soon as possible, due to improvements in the main driver."
+msgstr "E' altamente raccomandato l'aggiornamento dei driver FreeOTFE alla versione 4.30 o successiva appena possibile, per via di miglioramenti nel driver principale."
+
+#. Encrypt the pseudorandom data generated
+#: FreeOTFEfrmMain.pas:2355
+msgid "Unable to encrypt pseudorandom data before using for overwrite buffer?!"
+msgstr "Impossibile crittare dati pseudocasuali prima di usare il buffer di sovrascrittura?!"
+
+#: FreeOTFEfrmMain.pas:2357
+msgid "Error #: %1"
+msgstr "Errore #: %1"
+
+#: FreeOTFEfrmMain.pas:2497
+msgid "Unable to locate any portable FreeOTFE drivers."
+msgstr "Impossibile localizzare i driver trasferibili FreeOTFE."
+
+#: FreeOTFEfrmMain.pas:2499
+msgid "Please ensure that the a copy of the FreeOTFE drivers (\".sys\" files) you wish to use are located in the correct directory."
+msgstr "Assicurarsi che una copia dei driver FreeOTFE (file \".sys\") che si desidera usare sia presente nella cartella corretta."
+
+#. end;
+#: FreeOTFEfrmMain.pas:2525
+msgid "One or more of your portable FreeOTFE drivers could not be installed/started."
+msgstr "Impossibile installare/avviare uno o più driver trasferibili FreeOTFE."
+
+#: FreeOTFEfrmMain.pas:2529
+#: FreeOTFEfrmMain.pas:2612
+msgid "Please select \"File | Drivers...\" to check which drivers are currently operating."
+msgstr "Selezionare \"File | Driver...\" per verificare quali driver sono attivi."
+
+#. as no drives can be mounted
+#: FreeOTFEfrmMain.pas:2568
+msgid "You have one or more volumes mounted."
+msgstr "Sono presenti uno o più volumi montati."
+
+#: FreeOTFEfrmMain.pas:2570
+msgid "If any of the currently mounted volumes makes use of any of the FreeOTFE drivers which are currently in portable mode, stopping portable mode is not advisable."
+msgstr "Se uno dei volumi attualmente montati fa uso di un driver FreeOTFE attualmente in modalità trasferibile, è sconsigliabile interrompere la modalità trasferibile."
+
+#: FreeOTFEfrmMain.pas:2572
+msgid "It is recommended that you dismount all volumes before stopping portable mode."
+msgstr "Si raccomanda di smontare tutti i volumi prima di interrompere la modalità trasferibile."
+
+#: FreeOTFEfrmMain.pas:2574
+msgid "Do you wish to continue stopping portable mode?"
+msgstr "Si desidera continuare l'interruzione della modalità trasferibile?"
+
+#. problem
+#: FreeOTFEfrmMain.pas:2597
+msgid "Portable mode drivers stopped and uninstalled."
+msgstr "Driver modalità trasferibile chiusi e disinstallati."
+
+#: FreeOTFEfrmMain.pas:2608
+msgid "One or more of your portable FreeOTFE drivers could not be stopped/uninstalled."
+msgstr "Impossible chiudere/disinstallare uno o più driver FreeOTFE in modalità trasferibile."
+
+#: FreeOTFEfrmMain.pas:2734
+msgid "FreeOTFE volume created successfully."
+msgstr "Volume FreeOTFE creato con successo."
+
+#: FreeOTFEfrmMain.pas:2736
+msgid "Please mount, format and overwrite this volume's free space before use."
+msgstr "Montare, formattare e sovrascriver lo spazio libero del volume prima dell'uso."
+
+#: FreeOTFEfrmMain.pas:2744
+msgid "FreeOTFE volume could not be created"
+msgstr "Impossibile creare il volume FreeOTFE"
+
+#: FreeOTFEfrmMain.pas:2818
+msgid "Linux volume created successfully."
+msgstr "Volume Linux creato con successo."
+
+#: FreeOTFEfrmMain.pas:2820
+msgid "Don't forget to mount and format this volume before use."
+msgstr "Non dimenticare di montare e formattare il volume prima dell'uso."
+
+#: FreeOTFEfrmMain.pas:2827
+msgid "Linux volume could not be created"
+msgstr "Impossibile creare volume Linux"
+
+#: FreeOTFEfrmMain.pas:3012
+msgid "One or more volumes are still mounted."
+msgstr "Uno o pià volumi sono ancora montati."
+
+#: FreeOTFEfrmMain.pas:3014
+msgid "Do you wish to dismount all volumes before exiting?"
+msgstr "Vuoi smontare tutti i volumi prima di uscire?"
+
+#. portable mode shutdown
+#: FreeOTFEfrmMain.pas:3060
+msgid "One or more of the FreeOTFE drivers are running in portable mode."
+msgstr "Uno o più driver FreeOTFE sono avviati in modalità trasferibile."
+
+#: FreeOTFEfrmMain.pas:3062
+msgid "Do you wish to shutdown portable mode before exiting?"
+msgstr "Si desidera arrestare la modalità trasferibile prima di uscire?"
+
+#: FreeOTFEfrmMain.pas:3270
+msgid "Error: Unable to assign hotkey %1"
+msgstr "Errore: Impossibile assegnare l'hotkey %1"
+
+#. Programmer's name for it: FORMAT_CAPTION
+#: FreeOTFEfrmMain.pas:3346
+msgid "Format"
+msgstr "Format"
+
+#. just failed...
+#: FreeOTFEfrmMain.pas:3374
+msgid "Your encrypted drive could not be formatted at this time."
+msgstr "Impossibile formattare il disco crittato in questo momento."
+
+#: FreeOTFEfrmMain.pas:3376
+msgid "Please dismount this volume and remount it with the \"Mount for all users\" option checked, before trying again."
+msgstr "Smontare questo volume e rimontarlo con l'opzione \"Monta per tutti gli utenti\" attivata, prima di riprovare."
+
+#: FreeOTFEfrmMain.pas:3394
+msgid "Due to the destructive nature of overwriting entire drives, only one drive may be selected when this option is chosen."
+msgstr "A causa della natura distuttiva della sovrascrittura di interi dischi, un solo disco può essere selezionato con questa opzione."
+
+#: FreeOTFEfrmMain.pas:3396
+msgid "Please ensure that only one mounted drive is selected, and retry."
+msgstr "Assicurarsi che soltanto un disco montato sia selezionato, e riprovare."
+
+#. it.
+#. it.
+#: FreeOTFEfrmMain.pas:3404
+#: OTFEFreeOTFE_frmDriverControl.pas:263
+#: OTFEFreeOTFE_frmDriverControl.pas:309
+msgid "WARNING!"
+msgstr "ATTENZIONE!"
+
+#: FreeOTFEfrmMain.pas:3406
+msgid "You are attempting to overwrite drive: %1:"
+msgstr "Si sta cercando di sovrascrivere il disco: %1:"
+
+#: FreeOTFEfrmMain.pas:3408
+msgid "THIS WILL DESTROY ALL INFORMATION STORED ON DRIVE %1:, and require it to be reformatted"
+msgstr "QUESTO DISTRUGGERA' TUTTE LE INFORMAZIONE SUL DISCO %1:, e richiederà una riformattazione"
+
+#: FreeOTFEfrmMain.pas:3410
+msgid "Are you ABSOLUTELY SURE you want to do this?"
+msgstr "Si conferma ASSOLUTAMENTE l'azione prescelta?"
+
+#: FreeOTFEfrmMain.pas:3514
+msgid "Overwriting on a large volume may take awhile."
+msgstr "Sovrascrivere un volume di grandi dimesione può richiedere tempi lunghi."
+
+#: FreeOTFEfrmMain.pas:3557
+msgid "Overwrite operation complete."
+msgstr "Operazione di sovrascrittura completata."
+
+#: FreeOTFEfrmMain.pas:3560
+msgid "Please reformat the drive just overwritten before attempting to use it."
+msgstr "Riformattare il disco appena sovrascritto prima di tentare di usarlo."
+
+#: FreeOTFEfrmMain.pas:3565
+msgid "Overwrite operation FAILED."
+msgstr "Operazione di sovrascrittura FALLITA."
+
+#: FreeOTFEfrmMain.pas:3570
+msgid "Did you remember to format this drive first?"
+msgstr "Ci si è ricordati di formattare il disco prima?"
+
+#: FreeOTFEfrmMain.pas:3577
+msgid "Overwrite operation cancelled by user."
+msgstr "Operazione di sovrascrittura annullata dall'utente."
+
+#: FreeOTFEfrmMain.pas:3581
+msgid "No drives selected to overwrite?"
+msgstr "Nessun disco selezionato per la sovrascrittura?"
+
+#. any stupid warning messages about "unsigned drivers"
+#: FreeOTFEfrmMain.pas:3735
+msgid "IMPORTANT: Please see the documentation for additional steps to be carried out after installing under this OS."
+msgstr "IMPORTANTE: Vedere la documentazione sui passi ulteriori da seguire dopo aver installato sotto questo OS."
+
+#: FreeOTFEfrmMain.pas:4367
+msgid "Unable to initialize PKCS#11 support:"
+msgstr "Impossibile inizializzare il supporto PKCS#11:"
+
+#: FreeOTFEfrmMain.pas:4414
+msgid "Detected removal of token from slot ID: %1"
+msgstr "Rilevata rimozione token dallo slot ID: %1"
+
+#: FreeOTFEfrmMain.pas:4434
+msgid "Autodismounting drives: %1"
+msgstr "Autosmontaggio dischi: %1"
+
+#: FreeOTFEfrmMain.pas:4445
+msgid "Detected insertion of token into slot ID: %1"
+msgstr "Rilevato inserimento token nello slot ID: %1"
+
+#. Attempt automount...
+#: FreeOTFEfrmMain.pas:4453
+msgid "Automounting: %1"
+msgstr "Automontaggio: %1"
+
+#. Sanity check; we can't do anything if FreeOTFE component's not available
+#: FreeOTFEfrmMain.pas:4475
+msgid "Slot event on slot ID: %1"
+msgstr "Evento slot nello slot ID: %1"
+
+#. Don't do special processing on this message
+#: FreeOTFEfrmOptions.pas:182
+msgid ""
+"Under Windows Vista, you cannot save your settings file anywhere under:\n"
+"\n"
+"%1\n"
+"\n"
+"due to Vista's security/mapping system."
+msgstr ""
+"Sotto Windows Vista, è impossibile salvare il file impostazioni sotto:\n"
+"\n"
+"%1\n"
+"\n"
+"a causa del sistema di sicurezza/mappatura di Vista."
+
+#: FreeOTFEfrmOptions.pas:184
+msgid "Please either select another location for storing your settings (e.g. your user profile), or move the FreeOTFE executable such that it is not stored underneath the directory shown above."
+msgstr "Scegliere un'altra posizione dove salvare le impostazioni (p.e. il profilo utente), o spostare l'eseguibile FreeOTFE in modo che non sia installato in una sottocartella del percorso scelto."
+
+#. warn user
+#: FreeOTFEfrmOptions.pas:243
+msgid "You have not specified a location where FreeOTFE should save its settings to."
+msgstr "Non si è specificata una posizione dove FreeOTFE salvi le sue impostazioni."
+
+#: FreeOTFEfrmOptions.pas:245
+msgid "Although the settings entered will take effect, they will revert back to their defaults when FreeOTFE is exited."
+msgstr "I settaggi scelti avranno effetto, ma verranno resettati a default all'uscita da FreeOTFE."
+
+#: FreeOTFEfrmOptions.pas:247
+msgid "Do you wish to select a location in order to make your settings persistant?"
+msgstr "Si vuole selezionare una posizione in modo da rendere i settaggi persistenti?"
+
+#. old settings file
+#: FreeOTFEfrmOptions.pas:263
+msgid "You have opted not to save your settings"
+msgstr "Si è scelto di non salvare i settaggi"
+
+#: FreeOTFEfrmOptions.pas:267
+msgid "You have changed the location where your settings will be saved"
+msgstr "La posizione di salvataggio dei settaggi è stata cambiata"
+
+#. to delete it
+#: FreeOTFEfrmOptions.pas:282
+msgid "Would you like FreeOTFE to delete your previous settings file?"
+msgstr "Si vogliono cancellare i vecchi file dei settaggi di FreeOTFE?"
+
+#: FreeOTFEfrmOptions.pas:284
+msgid "Note: If you select \"No\" here, FreeOTFE may pick up your old settings the next time you start FreeOTFE"
+msgstr "Nota: Se si seleziona \"No\" qui, FreeOTFE potrebbe ripescare le vecchie impostazioni al suo prossimo avvio"
+
+#: FreeOTFEfrmOptions.pas:305
+msgid ""
+"Your previous settings file stored at:\n"
+"\n"
+"%1\n"
+"\n"
+"could not be deleted. Please remove this file manually."
+msgstr ""
+"Il vecchio file dei settaggi memorizzato in:\n"
+"\n"
+"%1\n"
+"\n"
+"non è stato rimosso. Rimuovere il file manualmente."
+
+#: FreeOTFEfrmOptions.pas:317
+msgid ""
+"Your previous settings file stored in the Windows registry under:\n"
+"\n"
+"%1\n"
+"\n"
+"could not be deleted. Please delete this registry key manually."
+msgstr ""
+"Il vecchio file dei settaggi memorizzato nel registro di Windows sotto:\n"
+"\n"
+"%1\n"
+"\n"
+"non è stato rimosso. Rimuovere le chiavi registro manualmente."
+
+#: FreeOTFEfrmOptions.pas:335
+msgid ""
+"Your previous settings will remain stored at:\n"
+"\n"
+"%1"
+msgstr ""
+"I settaggi precedenti rimarranno memorizzati in:\n"
+"\n"
+"%1"
+
+#: FreeOTFEfrmOptions.pas:345
+msgid ""
+"Your previous settings will remain stored in the Windows registry under:\n"
+"\n"
+"%1"
+msgstr ""
+"I settaggi precedenti rimarranno memorizzati nel registro di Windows sotto:\n"
+"\n"
+"%1"
+
+#: FreeOTFEfrmSelectOverwriteMethod.pas:100
+msgid ""
+"Please select the type of data that should be used to overwrite the free space:\n"
+"\n"
+"Pseudorandom data - This is faster, but less secure if you wish to create a hidden volume within this volume at a later date.\n"
+"\n"
+"Encrypted data - This is more secure, but slower. Pseudorandom data will be encrypted with your choice of cypher before being written to the drive."
+msgstr ""
+"Seleziona il tipo di dati da usare per sovrascrivere lo spazio libero:\n"
+"\n"
+"Dati pseudocasuali - Più rapido, ma meno sicuro se in futuro si dovesse creare un volume nascosto all'interno di questo.\n"
+"\n"
+"Dati crittati - Più sicuro, ma più lento. I dati pseudocasuali verranno crittati con la tua scelta di cypher prima di essere scritti sul disco."
+
+#: FreeOTFEfrmSelectOverwriteMethod.pas:112
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:318
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1268
+msgid "Unable to obtain list of cyphers."
+msgstr "Impossibile ottenre la lista dei cypher."
+
+#: FreeOTFEfrmSelectOverwriteMethod.pas:114
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:320
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1270
+msgid "Please ensure that you have one or more FreeOTFE cypher drivers installed and started."
+msgstr "Assicurarsi di avere uno o più driver di cypher FreeOTFE installati e avviati."
+
+#: FreeOTFEfrmSelectOverwriteMethod.pas:116
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:288
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:322
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1231
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1244
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1272
+#: OTFEFreeOTFE_U.pas:9974
+#: OTFEFreeOTFE_U.pas:9990
+msgid "If you have only just installed FreeOTFE, you may need to restart your computer."
+msgstr "Se FreeOTFE è stato appena installato, potrebbe essere necessario riavviare il pc."
+
+#. Programmer's name for it: RS_UNKNOWN
+#. This function may be called when the driver isn't running
+#. Programmer's name for it: RS_UNKNOWN
+#: FreeOTFEfrmVolProperties.pas:66
+#: OTFEFreeOTFE_U.pas:10159
+#: SDUPartitionPropertiesDlg.pas:50
+msgid "<Unknown>"
+msgstr "<Sconosciuto>"
+
+#: FreeOTFEfrmVolProperties.pas:98
+msgid "Readonly"
+msgstr "Sola lettura"
+
+#: FreeOTFEfrmVolProperties.pas:102
+msgid "Read/write"
+msgstr "Leggi/Scrivi"
+
+#: FreeOTFEfrmVolProperties.pas:114
+#: FreeOTFEfrmVolProperties.pas:140
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:839
+msgid "n/a"
+msgstr "n/a"
+
+#: FreeOTFEfrmVolProperties.pas:175
+msgid "Unable to get drive properties for drive %1:"
+msgstr "Impossibile ottenere le proprietà del drive %1:"
+
+#. Programmer's name for it: DRAGDROPFILETYPE_PROMPT
+#: FreeOTFESettings.pas:33
+msgid "<prompt user>"
+msgstr "<chiedere utente>"
+
+#. Programmer's name for it: DRAGDROPFILETYPE_LINUX
+#. frmSelectVolumeType..rgVolumeType....Items.Strings
+#: FreeOTFESettings.pas:35
+#: OTFEFreeOTFE_frmVolumeType.dfm:34
+msgid "Linux"
+msgstr "Linux"
+
+#. Programmer's name for it: SAVELOCATION_DO_NOT_SAVE
+#: FreeOTFESettings.pas:37
+msgid "<Do not save settings>"
+msgstr "<Non salvare i settaggi>"
+
+#. Programmer's name for it: SAVELOCATION_EXE_DIR
+#: FreeOTFESettings.pas:38
+msgid "File in %1 directory"
+msgstr "File nella cartella %1"
+
+#. Programmer's name for it: SAVELOCATION_USER_PROFILE
+#: FreeOTFESettings.pas:39
+msgid "File in user profile"
+msgstr "File nel profilo utente"
+
+#. Programmer's name for it: SAVELOCATION_REGISTRY
+#: FreeOTFESettings.pas:40
+msgid "Windows registry"
+msgstr "Registro di Windows"
+
+#. Programmer's name for it: UNKNOWN_SETTINGS_LOCATION
+#: FreeOTFESettings.pas:42
+msgid "Unknown settings location?! Please report seeing this message!"
+msgstr "Posizione settaggi ignota?! Segnalare questo messaggio!"
+
+#: FreeOTFESettings.pas:362
+msgid "Your settings could not be saved."
+msgstr "Impossibile salvare i settaggi."
+
+#: FreeOTFESettings.pas:366
+msgid ""
+"Please ensure that you have suitable access rights in order to write to:\n"
+"\n"
+"%1"
+msgstr ""
+"Assicurarsi di avere diritti di accesso per scrivere in:\n"
+"\n"
+"%1"
+
+#. fmePKCS11_MgrKeyfile..Label1..Caption
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.dfm:15
+msgid "The following &keyfiles are stored on your PKCS#11 token:"
+msgstr "I seguenti keyfile sono memorizzati sul token PKCS#11:"
+
+#. fmePKCS11_MgrKeyfile..ActionList1..actImport..Caption
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.dfm:58
+msgid "&Import..."
+msgstr "&Importa..."
+
+#. fmePKCS11_MgrKeyfile..ActionList1..actExport..Caption
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.dfm:62
+msgid "&Export..."
+msgstr "&Esporta..."
+
+#. fmePKCS11_MgrKeyfile..ActionList1..actDelete..Caption
+#. fmePKCS11_MgrSecretKey..ActionList1..actDelete..Caption
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.dfm:66
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.dfm:83
+msgid "&Delete"
+msgstr "Elimina"
+
+#. fmePKCS11_MgrSecretKey..Label1..Caption
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.dfm:14
+msgid "The following secret &keys are stored on your PKCS#11 token:"
+msgstr "Le seguenti chiavi segrete sono memorizzate sul token PKCS#11:"
+
+#. fmePKCS11_MgrSecretKey..gbSecretKey..Caption
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.dfm:33
+msgid "Secret Key"
+msgstr "Chiave Segreta"
+
+#. fmePKCS11_MgrSecretKey..gbKeyfile..Caption
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.dfm:58
+msgid "Keyfile/volume"
+msgstr "Keyfile/volume"
+
+#. fmePKCS11_MgrSecretKey..ActionList1..actEncrypt..Caption
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.dfm:87
+msgid "&Secure..."
+msgstr "Proteggi..."
+
+#. fmePKCS11_MgrSecretKey..ActionList1..actDecrypt..Caption
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.dfm:91
+msgid "D&esecure"
+msgstr "Sprot&eggi"
+
+#. fmeSelectPartition..lblDblClickNotice..Caption
+#: OTFEFreeOTFE_fmeSelectPartition.dfm:16
+msgid "Doubleclick partition to display details"
+msgstr "Doppio click sulla partizione per i dettagli"
+
+#. fmeSelectPartition..ckShowCDROM..Caption
+#: OTFEFreeOTFE_fmeSelectPartition.dfm:93
+msgid "&Show CD/DVD drives"
+msgstr "Mostra lettori CD/DVD"
+
+#. fmeSelectPartition..ckEntireDisk..Caption
+#: OTFEFreeOTFE_fmeSelectPartition.dfm:103
+msgid "&Entire disk"
+msgstr "Int&ero disco"
+
+#. frmCypherInfo..Caption
+#: OTFEFreeOTFE_frmCypherInfo.dfm:5
+msgid "Cypher Details"
+msgstr "Dettagli Cypher"
+
+#. frmCypherInfo..gbCypherDriver..Caption
+#: OTFEFreeOTFE_frmCypherInfo.dfm:24
+msgid "Cypher Driver"
+msgstr "Driver Cypher"
+
+#. frmCypherInfo..gbCypherDriver..Label1..Caption
+#. frmHashInfo..gbHashDriver..Label1..Caption
+#: OTFEFreeOTFE_frmCypherInfo.dfm:31
+#: OTFEFreeOTFE_frmHashInfo.dfm:31
+msgid "DeviceName:"
+msgstr "NomePeriferica:"
+
+#. frmCypherInfo..gbCypherDriver..Label2..Caption
+#. frmHashInfo..gbHashDriver..Label2..Caption
+#: OTFEFreeOTFE_frmCypherInfo.dfm:38
+#: OTFEFreeOTFE_frmHashInfo.dfm:38
+msgid "DeviceUserModeName:"
+msgstr "NomePerifericaUserMode:"
+
+#. frmCypherInfo..gbCypherDriver..Label3..Caption
+#. frmHashInfo..gbHashDriver..Label3..Caption
+#: OTFEFreeOTFE_frmCypherInfo.dfm:45
+#: OTFEFreeOTFE_frmHashInfo.dfm:45
+msgid "DeviceKernelModeName:"
+msgstr "NomePerifericaKernelMode:"
+
+#. frmCypherInfo..gbCypherDriver..Label4..Caption
+#. frmCypherInfo..gbCypher..Label7..Caption
+#. frmHashInfo..gbHashDriver..Label4..Caption
+#. frmHashInfo..gbHash..Label7..Caption
+#: OTFEFreeOTFE_frmCypherInfo.dfm:52
+#: OTFEFreeOTFE_frmCypherInfo.dfm:158
+#: OTFEFreeOTFE_frmHashInfo.dfm:52
+#: OTFEFreeOTFE_frmHashInfo.dfm:158
+msgid "Title:"
+msgstr "Titolo:"
+
+#. frmCypherInfo..gbCypherDriver..Label5..Caption
+#. frmCypherInfo..gbCypher..Label11..Caption
+#. frmHashInfo..gbHashDriver..Label5..Caption
+#. frmHashInfo..gbHash..Label11..Caption
+#: OTFEFreeOTFE_frmCypherInfo.dfm:59
+#: OTFEFreeOTFE_frmCypherInfo.dfm:186
+#: OTFEFreeOTFE_frmHashInfo.dfm:59
+#: OTFEFreeOTFE_frmHashInfo.dfm:179
+msgid "Version:"
+msgstr "Versione:"
+
+#. frmCypherInfo..gbCypherDriver..Label6..Caption
+#: OTFEFreeOTFE_frmCypherInfo.dfm:66
+msgid "Cyphers supported:"
+msgstr "Cypher supportati:"
+
+#. frmCypherInfo..gbCypherDriver..Label12..Caption
+#. frmCypherInfo..gbCypher..Label8..Caption
+#. frmHashInfo..gbHashDriver..Label9..Caption
+#. frmHashInfo..gbHash..Label8..Caption
+#: OTFEFreeOTFE_frmCypherInfo.dfm:73
+#: OTFEFreeOTFE_frmCypherInfo.dfm:165
+#: OTFEFreeOTFE_frmHashInfo.dfm:73
+#: OTFEFreeOTFE_frmHashInfo.dfm:165
+msgid "GUID:"
+msgstr "GUID:"
+
+#. frmCypherInfo..gbCypher..Caption
+#: OTFEFreeOTFE_frmCypherInfo.dfm:151
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:90
+msgid "Cypher"
+msgstr "Cypher"
+
+#. frmCypherInfo..gbCypher..Label9..Caption
+#: OTFEFreeOTFE_frmCypherInfo.dfm:172
+msgid "Mode:"
+msgstr "Modalità:"
+
+#. frmCypherInfo..gbCypher..Label10..Caption
+#: OTFEFreeOTFE_frmCypherInfo.dfm:179
+msgid "Blocksize:"
+msgstr "Blocksize:"
+
+#. frmCypherInfo..gbCypher..Label13..Caption
+#: OTFEFreeOTFE_frmCypherInfo.dfm:193
+msgid "Keysize:"
+msgstr "Keysize:"
+
+#. frmDriverControl..Caption
+#: OTFEFreeOTFE_frmDriverControl.dfm:5
+msgid "FreeOTFE Driver Control"
+msgstr "Controllo Driver FreeOTFE"
+
+#. frmDriverControl..gbInstallNew..Caption
+#: OTFEFreeOTFE_frmDriverControl.dfm:44
+msgid "Install new driver"
+msgstr "Installa nuovo driver"
+
+#. frmDriverControl..gbInstallNew..lblInstall....Caption
+#: OTFEFreeOTFE_frmDriverControl.dfm:53
+msgid "To install a new hash or cypher driver, please click \"Install...\""
+msgstr "Per installare un nuovo driver hash o cypher, cliccare\"Installa...\""
+
+#. frmDriverControl..gbInstallNew..pbInstall..Caption
+#: OTFEFreeOTFE_frmDriverControl.dfm:60
+msgid "&Install..."
+msgstr "&Installa..."
+
+#. frmDriverControl..gbModifyExisting..Caption
+#: OTFEFreeOTFE_frmDriverControl.dfm:70
+msgid "Modify existing driver"
+msgstr "Modifica driver esistente"
+
+#. frmDriverControl..gbModifyExisting..lblStart..Caption
+#: OTFEFreeOTFE_frmDriverControl.dfm:81
+msgid "Driver &startup:"
+msgstr "Avvio driver:"
+
+#. frmDriverControl..gbModifyExisting..Label1..Caption
+#: OTFEFreeOTFE_frmDriverControl.dfm:89
+msgid "&Existing drivers:"
+msgstr "Driver &esistenti:"
+
+#. frmDriverControl..gbModifyExisting..Label3..Caption
+#: OTFEFreeOTFE_frmDriverControl.dfm:98
+msgid "Change driver status:"
+msgstr "Cambia stato driver:"
+
+#. frmDriverControl..gbModifyExisting..Label4..Caption
+#: OTFEFreeOTFE_frmDriverControl.dfm:106
+msgid "Remove driver:"
+msgstr "Rimuovi driver:"
+
+#. frmDriverControl..gbModifyExisting..pbStart..Caption
+#: OTFEFreeOTFE_frmDriverControl.dfm:126
+msgid "St&art"
+msgstr "St&art"
+
+#. frmDriverControl..gbModifyExisting..pbStop..Caption
+#: OTFEFreeOTFE_frmDriverControl.dfm:136
+msgid "St&op"
+msgstr "St&op"
+
+#. frmDriverControl..gbModifyExisting..pbUninstall..Caption
+#: OTFEFreeOTFE_frmDriverControl.dfm:146
+msgid "U&ninstall"
+msgstr "Disi&nstalla"
+
+#. frmDriverControl..gbModifyExisting..pbUpdate..Caption
+#: OTFEFreeOTFE_frmDriverControl.dfm:176
+msgid "&Update"
+msgstr "Aggiorna"
+
+#. frmHashInfo..Caption
+#: OTFEFreeOTFE_frmHashInfo.dfm:5
+msgid "Hash Details"
+msgstr "Dettagli Hash"
+
+#. frmHashInfo..gbHashDriver..Caption
+#: OTFEFreeOTFE_frmHashInfo.dfm:24
+msgid "Hash Driver"
+msgstr "Driver Hash"
+
+#. frmHashInfo..gbHashDriver..Label6..Caption
+#: OTFEFreeOTFE_frmHashInfo.dfm:66
+msgid "Hashes supported:"
+msgstr "Hash supportati:"
+
+#. frmHashInfo..gbHash..Caption
+#: OTFEFreeOTFE_frmHashInfo.dfm:151
+msgid "Hash"
+msgstr "Hash"
+
+#. frmHashInfo..gbHash..Label10..Caption
+#: OTFEFreeOTFE_frmHashInfo.dfm:172
+msgid "Length:"
+msgstr "Lunghezza"
+
+#. frmHashInfo..gbHash..Label12..Caption
+#: OTFEFreeOTFE_frmHashInfo.dfm:186
+msgid "Block size:"
+msgstr "Dimensioni blocco:"
+
+#. frmKeyEntryFreeOTFE..Caption
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:5
+msgid "FreeOTFE Key Entry"
+msgstr "Inserimento Chiave FreeOTFE"
+
+#. frmKeyEntryFreeOTFE..pnlBasic..GroupBox1..Caption
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:35
+msgid "Security details"
+msgstr "Dettagli sicurezza"
+
+#. frmKeyEntryFreeOTFE..pnlBasic..GroupBox1..Label6..Caption
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:49
+msgid "&Keyfile:"
+msgstr "&Keyfile:"
+
+#. frmKeyEntryFreeOTFE..pnlBasic..GroupBox1..ckMountReadonly..Caption
+#. frmKeyEntryLinux..pcEntry..tsMountOptions..GroupBox2..ckMountReadonly..Caption
+#. frmKeyEntryLUKS..GroupBox2..ckMountReadonly..Caption
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:87
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:630
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:81
+msgid "Mount &readonly"
+msgstr "Monta&re in sola lettura"
+
+#. frmKeyEntryFreeOTFE..pnlBasic..GroupBox1..rbKeyfileFile..Caption
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:105
+msgid "&File:"
+msgstr "&File:"
+
+#. frmKeyEntryFreeOTFE..pnlLower..pnlButtons..pbAdvanced..Caption
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:177
+msgid "Advanced >>"
+msgstr "Avanzato >>"
+
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox4..Caption
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:196
+msgid "Volume options"
+msgstr "Opzioni volume"
+
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox4..ckOffsetPointsToCDB..Caption
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:210
+msgid "Data from offset includes &CDB"
+msgstr "I dati dell'offset includono &CDB"
+
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox2..Caption
+#. frmKeyEntryLinux..pcEntry..tsMountOptions..Caption
+#. frmKeyEntryLinux..pcEntry..tsMountOptions..GroupBox2..Caption
+#. frmKeyEntryLUKS..GroupBox2..Caption
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:235
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:571
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:582
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:46
+msgid "Mount options"
+msgstr "Opzioni montaggio"
+
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox2..Label9..Caption
+#. frmKeyEntryLinux..pcEntry..tsMountOptions..GroupBox2..Label25..Caption
+#. frmKeyEntryLUKS..GroupBox2..Label25..Caption
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:242
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:610
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:61
+msgid "&Mount as:"
+msgstr "&Monta come:"
+
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox2..ckMountForAllUsers..Caption
+#. frmKeyEntryLinux..pcEntry..tsMountOptions..GroupBox2..ckMountForAllUsers..Caption
+#. frmKeyEntryLUKS..GroupBox2..ckMountForAllUsers..Caption
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:260
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:649
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:100
+msgid "Mount for all &users"
+msgstr "Monta per ogni &utente"
+
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox3..Caption
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:269
+msgid "Advanced security details"
+msgstr "Dettagli avanzati sicurezza"
+
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox3..Label7..Caption
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:291
+msgid "Key &iterations:"
+msgstr "&Iterazioni chiave:"
+
+#. frmKeyEntryFreeOTFE..pnlLower..pnlAdvanced..GroupBox3..Label10..Caption
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.dfm:299
+msgid "PKCS#&11 secret key:"
+msgstr "Chiave segreta PKCS#&11:"
+
+#. frmKeyEntryLinux..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:5
+msgid "FreeOTFE Linux Key Entry"
+msgstr "Inserimento chiave FreeOTFE Linux"
+
+#. frmKeyEntryLinux..pcEntry..tsKey..Caption
+#. frmKeyEntryLinux..pcEntry..tsKey..GroupBox1..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:50
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:60
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:87
+msgid "Key"
+msgstr "Key"
+
+#. frmKeyEntryLinux..pcEntry..tsKey..GroupBox1..Label1..Caption
+#. frmKeyEntryLUKS..GroupBox1..Label1..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:67
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:153
+msgid "&Key:"
+msgstr "&Key:"
+
+#. frmKeyEntryLinux..pcEntry..tsKey..GroupBox1..Label14..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:102
+msgid "&GPG executable:"
+msgstr "Eseguibile &GPG:"
+
+#. frmKeyEntryLinux..pcEntry..tsKey..GroupBox1..Label21..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:111
+msgid "G&PG keyfile:"
+msgstr "G&PG keyfile:"
+
+#. frmKeyEntryLinux..pcEntry..tsKey..GroupBox5..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:161
+msgid "Key processing"
+msgstr "Elaborazione key"
+
+#. frmKeyEntryLinux..pcEntry..tsKey..GroupBox5..Label2..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:168
+msgid "&Hash:"
+msgstr "&Hash:"
+
+#. frmKeyEntryLinux..pcEntry..tsKey..GroupBox5..Label6..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:176
+msgid "&Iteration count:"
+msgstr "Conteggio &iterazione:"
+
+#. frmKeyEntryLinux..pcEntry..tsKey..GroupBox5..Label3..Caption
+#. frmKeyEntryLinux..pcEntry..tsEncryption..GroupBox3..Label23..Caption
+#. frmPKCS11NewSecretKey..Label1..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:205
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:333
+#: OTFEFreeOTFE_frmPKCS11NewSecretKey.dfm:26
+msgid "&Cypher:"
+msgstr "&Cypher:"
+
+#. frmKeyEntryLinux..pcEntry..tsKey..GroupBox5..Label18..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:228
+msgid "&Seed:"
+msgstr "&Seed:"
+
+#. frmKeyEntryLinux..pcEntry..tsKey..GroupBox5..ckHashWithAs..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:309
+msgid "Hash with \"A\"s, if hash output is too short"
+msgstr "Hash con \"A\", se l'hash output è troppo breve"
+
+#. frmKeyEntryLinux..pcEntry..tsEncryption..Caption
+#. frmKeyEntryLUKS..GroupBox1..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:315
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:146
+msgid "Encryption"
+msgstr "Crittaggio"
+
+#. frmKeyEntryLinux..pcEntry..tsEncryption..GroupBox3..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:326
+msgid "Encryption options"
+msgstr "Opzioni di crittaggio"
+
+#. frmKeyEntryLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:373
+msgid "IV Generation"
+msgstr "Generazione IV"
+
+#. frmKeyEntryLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..lblIVHash..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:388
+msgid "&IV Hash:"
+msgstr "Hash &IV:"
+
+#. frmKeyEntryLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..lblIVCypher..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:409
+msgid "I&V Cypher:"
+msgstr "Cypher I&V:"
+
+#. frmKeyEntryLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..rgSectorIVSectorZeroPos..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:446
+msgid "Sector &zero location"
+msgstr "Posizione settore &zero"
+
+#. frmKeyEntryLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..rgSectorIVSectorZeroPos....Items.Strings
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:448
+msgid "Start of host file"
+msgstr "Inizio del file host"
+
+#. frmKeyEntryLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..rgSectorIVSectorZeroPos....Items.Strings
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:449
+msgid "Start of encrypted data"
+msgstr "Inizio dei dati crittati"
+
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..Caption
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..Caption
+#. frmKeyEntryLUKS..GroupBox4..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:476
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:487
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:109
+msgid "File options"
+msgstr "Opzioni file"
+
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..Label10..Caption
+#. frmKeyEntryLUKS..GroupBox4..Label10..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:514
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:116
+msgid "Si&zelimit:"
+msgstr "Si&zelimit:"
+
+#. frmKeyEntryLinux..pcEntry..tsFileOptions..GroupBox4..Label22..Caption
+#. frmKeyEntryLUKS..GroupBox4..Label22..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:534
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:123
+msgid "(\"0\" indicates no sizelimit.)"
+msgstr "(\"0\" indica nessun sizelimit.)"
+
+#. frmKeyEntryLinux..pbLoad..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:660
+msgid "&Load..."
+msgstr "Apri..."
+
+#. frmKeyEntryLinux..pbSave..Caption
+#: OTFEFreeOTFE_frmKeyEntryLinux.dfm:669
+msgid "Sa&ve..."
+msgstr "Sal&va..."
+
+#. frmKeyEntryLUKS..Caption
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:5
+msgid "FreeOTFE LUKS Key Entry"
+msgstr "Inserimento chiave FreeOTFE LUKS"
+
+#. frmKeyEntryLUKS..GroupBox1..ckBaseIVCypherOnHashLength..Caption
+#: OTFEFreeOTFE_frmKeyEntryLUKS.dfm:172
+msgid "&Base IV cypher on hash length (where applicable)"
+msgstr "Cypher &Base IV su lunghezza di hash (ove applicabile)"
+
+#. frmNewVolumeSize..Caption
+#: OTFEFreeOTFE_frmNewVolumeSize.dfm:5
+msgid "Create Volume"
+msgstr "Crea Volume"
+
+#. frmNewVolumeSize..Label2..Caption
+#: OTFEFreeOTFE_frmNewVolumeSize.dfm:24
+msgid "&Filename:"
+msgstr "Nome &file:"
+
+#. frmNewVolumeSize..Label3..Caption
+#: OTFEFreeOTFE_frmNewVolumeSize.dfm:32
+msgid "Volume &size:"
+msgstr "Dimensioni volume:"
+
+#. frmPKCS11Management..Caption
+#: OTFEFreeOTFE_frmPKCS11Management.dfm:5
+msgid "Security Token/Smartcard Management"
+msgstr "Gestione Security Token/Smartcard"
+
+#. frmPKCS11Management..PageControl1..tsSecretKeys..Caption
+#: OTFEFreeOTFE_frmPKCS11Management.dfm:45
+msgid "Secret Keys"
+msgstr "Chiavi segrete"
+
+#. frmPKCS11Management..PageControl1..tsKeyfiles..Caption
+#: OTFEFreeOTFE_frmPKCS11Management.dfm:75
+msgid "Keyfiles"
+msgstr "Keyfiles"
+
+#. frmPKCS11NewSecretKey..Caption
+#: OTFEFreeOTFE_frmPKCS11NewSecretKey.dfm:5
+msgid "New PKCS#11 Secret Key"
+msgstr "Nuova chiave segreta PKCS#11"
+
+#. frmPKCS11NewSecretKey..Label2..Caption
+#: OTFEFreeOTFE_frmPKCS11NewSecretKey.dfm:34
+msgid "&Name:"
+msgstr "&Nome:"
+
+#. frmPKCS11NewSecretKey..Label3..Caption
+#: OTFEFreeOTFE_frmPKCS11NewSecretKey.dfm:42
+msgid "Please specify a name and cypher for the new secret key:"
+msgstr "Specificare nome e cypher per la nuova chiave segreta:"
+
+#. frmPKCS11Session..Caption
+#: OTFEFreeOTFE_frmPKCS11Session.dfm:5
+msgid "Security Token/Smartcard PIN"
+msgstr "Security Token/Smartcard PIN"
+
+#. frmPKCS11Session..lblPIN..Caption
+#: OTFEFreeOTFE_frmPKCS11Session.dfm:25
+msgid "&PIN:"
+msgstr "&PIN:"
+
+#. frmPKCS11Session..lblToken..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGPKCS11..lblToken..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGPKCS11..lblToken..Caption
+#: OTFEFreeOTFE_frmPKCS11Session.dfm:33
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:548
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:736
+msgid "&Token:"
+msgstr "&Token:"
+
+#. frmPKCS11Session..Label3....Caption
+#: OTFEFreeOTFE_frmPKCS11Session.dfm:43
+msgid "Please select appropriate security token/smartcard and enter its PIN"
+msgstr "Selezionare il giusto security token/smartcard e inserire il suo PIN"
+
+#. frmPKCS11Session..cbToken..Text
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGPKCS11..cbToken..Text
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGPKCS11..cbToken..Text
+#: OTFEFreeOTFE_frmPKCS11Session.dfm:53
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:567
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:746
+msgid "cbToken"
+msgstr "cbToken"
+
+#. frmPKCS11Session..ckUseSecureAuthPath..Caption
+#: OTFEFreeOTFE_frmPKCS11Session.dfm:97
+msgid "Use &secure authentication path"
+msgstr "Usare un percorso di autenticazione &sicuro"
+
+#. frmPKCS11Session..pbSkip..Caption
+#: OTFEFreeOTFE_frmPKCS11Session.dfm:106
+msgid "Skip"
+msgstr "Salta"
+
+#. frmSelectHashCypher..Caption
+#: OTFEFreeOTFE_frmSelectHashCypher.dfm:5
+msgid "Hash/Cypher Combination"
+msgstr "Combinazione Hash/Cypher"
+
+#. frmSelectHashCypher..Label1....Caption
+#: OTFEFreeOTFE_frmSelectHashCypher.dfm:28
+msgid "It appears that the volume specified may be decrypted with any of the following hash/cypher combinations:"
+msgstr "Sembra che il volume indicato possa essere decrittato con una delle seguenti combinazioni hash/cypher:"
+
+#. frmSelectHashCypher..Label2..Caption
+#: OTFEFreeOTFE_frmSelectHashCypher.dfm:36
+msgid "Please select the combination you wish to use, and click \"OK\""
+msgstr "Selezionare la combinazione che si vuole usare, e cliccare \"OK\""
+
+#. frmSelectHashCypher..Label3....Caption
+#: OTFEFreeOTFE_frmSelectHashCypher.dfm:45
+msgid "By rightclicking on a particular hash/cypher combination, you may view further details on the selected combination."
+msgstr "Cliccando col destro su una particolare combinazione hash/cypher, è possibile avere ulteriore dettagli sulla combinazione."
+
+#. frmSelectHashCypher..miPopup..miHashDetails..Caption
+#: OTFEFreeOTFE_frmSelectHashCypher.dfm:90
+msgid "&Hash details..."
+msgstr "Dettagli &Hash..."
+
+#. frmSelectHashCypher..miPopup..miCypherDetails..Caption
+#: OTFEFreeOTFE_frmSelectHashCypher.dfm:94
+msgid "&Cypher details..."
+msgstr "Dettagli &Cypher..."
+
+#. frmSelectPartition..Caption
+#. frmSelectPartition_Simple..Caption
+#: OTFEFreeOTFE_frmSelectPartition.dfm:4
+#: OTFEFreeOTFE_frmSelectPartition_Simple.dfm:5
+msgid "Select Partition"
+msgstr "Seleziona Partizione"
+
+#. frmSelectPartition..Label1..Caption
+#: OTFEFreeOTFE_frmSelectPartition.dfm:28
+msgid "Please select from the following disks/partitions:"
+msgstr "Selezionare tra i seguenti dischi/partizioni:"
+
+#. frmSelectPartition_Simple..Label1..Caption
+#: OTFEFreeOTFE_frmSelectPartition_Simple.dfm:26
+msgid "Please select from the following &partitions:"
+msgstr "Selezionare tra le seguenti &partizioni:"
+
+#. frmSelectPartition_Simple..ckListRemovable..Caption
+#: OTFEFreeOTFE_frmSelectPartition_Simple.dfm:64
+msgid "&List removable"
+msgstr "E&lenco rimovibili"
+
+#. frmSelectVolumeFileAndOffset..lblFileDescSrc..Caption
+#: OTFEFreeOTFE_frmSelectVolumeAndOffset.dfm:24
+msgid "Volume/keyfile:"
+msgstr "Volume/keyfile:"
+
+#. frmSelectVolumeType..Caption
+#. frmSelectVolumeType..rgVolumeType..Caption
+#: OTFEFreeOTFE_frmVolumeType.dfm:5
+#: OTFEFreeOTFE_frmVolumeType.dfm:30
+msgid "Volume Type"
+msgstr "Tipo di Volume"
+
+#. frmSelectVolumeType..Label1..Caption
+#: OTFEFreeOTFE_frmVolumeType.dfm:23
+msgid "Please select the type of volume:"
+msgstr "Selezionare il tipo di volume:"
+
+#. frmWizard..pnlRight..Caption
+#: OTFEFreeOTFE_frmWizard.dfm:9444
+msgid "pnlRight"
+msgstr "pnlRight"
+
+#. frmWizard..pnlRight..pnlButtons..pbNext..Caption
+#: OTFEFreeOTFE_frmWizard.dfm:9498
+msgid "&Next >"
+msgstr "Ava&nti >"
+
+#. frmWizard..pnlRight..pnlButtons..pbBack..Caption
+#: OTFEFreeOTFE_frmWizard.dfm:9508
+msgid "< &Back"
+msgstr "< Indietro"
+
+#. frmWizard..pnlRight..pnlButtons..pbFinish..Caption
+#: OTFEFreeOTFE_frmWizard.dfm:9518
+msgid "&Finish"
+msgstr "&Termina"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsFileOrPartition..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFileOrPartition..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:19
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:60
+msgid "Volume File or Partition"
+msgstr "File o partizione di volume"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsFileOrPartition..rgFileOrPartition..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:30
+msgid "File or Partition"
+msgstr "File o partizione"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcFile..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:48
+msgid "Source file"
+msgstr "File origine"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcFile..GroupBox2..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:68
+msgid "Source volume/keyfile"
+msgstr "Volume/keyfile origine"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcFile..GroupBox2..pbBrowseSrc..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestFile..GroupBox1..pbBrowseDest..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGGPG..GroupBox5..pbBrowseGPG..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFilename..GroupBox1..pbBrowseFilename..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGGPG..GroupBox2..pbBrowseGPG..Caption
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..gbKeyfile..pbBrowseKeyfile..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:84
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:305
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:616
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:125
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:804
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:181
+msgid "&Browse..."
+msgstr "Esplora..."
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsPartitionSelect..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionSelect..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:91
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:232
+msgid "Partition Select"
+msgstr "Selezione partizione"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsPartitionSelect..Label21..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:102
+msgid "&Select disk/partition:"
+msgstr "&Seleziona disco/partizione:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label1..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:187
+msgid "Current &password:"
+msgstr "&Password attuale:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label4..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:195
+msgid "Current &salt length:"
+msgstr "Attuale lunghezza &sale:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label11..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:210
+msgid "Current &key iterations:"
+msgstr "Attuali iterazioni chiave:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestFile..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:269
+msgid "Destination file"
+msgstr "File destinazione"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestFile..GroupBox1..Caption
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..gbKeyfile..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:289
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:165
+msgid "Keyfile"
+msgstr "Keyfile"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:312
+msgid "Destination file details"
+msgstr "Dettagli file destinazione"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label2..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:323
+msgid "New &password:"
+msgstr "Nuova &password:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label3..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:331
+msgid "Confirm new p&assword:"
+msgstr "Confirmare nuova p&assword:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label5..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:339
+msgid "New &salt length:"
+msgstr "Nuova lunghezza &sale:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label12..Caption
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsDriveLetter..Label1..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:354
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:113
+msgid "&Requested drive letter:"
+msgstr "Lettera drive &richiesta:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:424
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:610
+msgid "RNG Select"
+msgstr "Selezione RNG"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..gbRNG..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..gbRNG..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:444
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:630
+msgid "Random number generator (RNG)"
+msgstr "Generatore di numeri random (RNG)"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGMouseMovement..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGMouseMovement..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:451
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:637
+msgid "Mouse movement"
+msgstr "Movimento mouse"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGCryptoAPI..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGCryptoAPI..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:460
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:646
+msgid "Microsoft CryptoAPI"
+msgstr "Microsoft CryptoAPI"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGPKCS11..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGPKCS11..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:478
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:664
+msgid "PKCS#11 token"
+msgstr "Token PKCS#11"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGMouseMovement..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGMouseMovement..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:495
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:681
+msgid "RNG Mouse movement"
+msgstr "Movimento mouse RNG"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGPKCS11..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:537
+msgid "RNG PKCS#11 token"
+msgstr "Token RNG PKCS#11"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGGPG..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGGPG..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:580
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:768
+msgid "RNG GPG"
+msgstr "RNG GPG"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGGPG..GroupBox5..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGGPG..GroupBox2..Caption
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:600
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:788
+msgid "GPG Executable"
+msgstr "Eseguibile GPG"
+
+#. frmWizardChangePasswordCreateKeyfile..GPGOpenDialog..Filter
+#. frmWizardCreateVolume..GPGOpenDialog..Filter
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.dfm:643
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:927
+msgid "GPG (gpg.exe)|gpg.exe|Executables (*.exe)|*.exe|All files|*.*"
+msgstr "GPG (gpg.exe)|gpg.exe|Eseguibili (*.exe)|*.exe|Tutti i file|*.*"
+
+#. frmWizardCreateVolume..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:4
+msgid "FreeOTFE Volume Creation Wizard"
+msgstr "Wizard Creazione Volume FreeOTFE"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsWelcome..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:24
+msgid "Welcome"
+msgstr "Benvenuto"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsWelcome..lblWelcomeBanner..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:34
+msgid "Welcome to the FreeOTFE Volume Creation Wizard."
+msgstr "Benvenuti nel Wizard Creazione Volume FreeOTFE"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsWelcome..lblWelcomeClickNext..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:47
+msgid "Please click \"Next >\" to continue."
+msgstr "Cliccare \"Avanti>\" per continuare."
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFileOrPartition..rgFileOrPartition..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:80
+msgid "File or Partition/Entire Disk"
+msgstr "File o partizione/Intero disco"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFilename..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFilename..GroupBox1..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:89
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:109
+msgid "Volume filename"
+msgstr "Nome file volume"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionWarning..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:132
+msgid "Partition Warning"
+msgstr "Avviso partizione"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionWarning..pnlWarningPartition..lblWarningPartition..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..pnlWarningOffset..lblWarningOffset..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:161
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:345
+msgid "WARNING"
+msgstr "ATTENZIONE"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionWarning..pnlWarningPartition..Label28....Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:179
+msgid "DO NOT PROCEED UNLESS YOU UNDERSTAND THE FULL IMPLICATIONS OF CREATING ENCRYPTED PARTITIONS."
+msgstr "NON PROCEDERE SE NON SI COMPRENDONO LE PIENE IMPLICAZIONI DELLA CREAZIONE DI PARTIZIONI CRITTATE."
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionSelect..Label21..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:243
+msgid "&Disk/partition to create encrypted volume on:"
+msgstr "&Disco/partizione su cui creare il volume crittato:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionSelect..ckPartitionHidden..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:259
+msgid "&Create hidden volume within selected partition"
+msgstr "&Creare volume nascosto nella partizione selezionata"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:320
+msgid "Offset"
+msgstr "Offset"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..Label7..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:331
+msgid "&Byte offset within volume:"
+msgstr "&Byte offset nel volume:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..pnlWarningOffset..Label13....Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:361
+msgid "DO NOT PROCEED UNLESS YOU UNDERSTAND THE FULL IMPLICATIONS OF CREATING HIDDEN VOLUMES."
+msgstr "NON PROCEDERE SE NON SI COMPRENDONO LE PIENE IMPLICAZIONI DELLA CREAZIONE DI VOLUMI NASCOSTI."
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:408
+msgid "Size"
+msgstr "Dimensioni"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..Label6..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:419
+msgid "&Size of new volume:"
+msgstr "Dimensioni nuovo volume:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..ckSizeEntirePartitionDisk..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:442
+msgid "&Use entire partition/disk"
+msgstr "&Usa intera partizione/disco"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:466
+msgid "Hash, cypher and IV"
+msgstr "Hash, cypher e IV"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..Label4..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:478
+msgid "Select &hash:"
+msgstr "Seleziona &hash:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..Label5..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:487
+msgid "Select &cypher:"
+msgstr "Seleziona &cypher:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..lblSectorIVGenMethod..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:495
+msgid "Sector &IVs:"
+msgstr "Settore &IV:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..ckUsePerVolumeIV..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:550
+msgid "Additionally &XOR sector IV with per volume IV"
+msgstr "Addizionalmente settore IV &XOR con volume IV"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsMasterKeyLength..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:565
+msgid "Master Key Length"
+msgstr "Lunghezza chiave principale"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsMasterKeyLength..Label2..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:576
+msgid "&Size of master key:"
+msgstr "Dimen&sione chiave principale:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGPKCS11..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:725
+msgid "RNG PKCS token"
+msgstr "Token RNG PKCS"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPassword..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:811
+msgid "Password"
+msgstr "Password"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPassword..Label3..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:830
+msgid "&Confirm password:"
+msgstr "&Confermare la password:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSummary..pbAdvanced..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolume.dfm:895
+msgid "&Advanced..."
+msgstr "&Avanzate..."
+
+#. frmWizardCreateVolumeAdvanced..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:5
+msgid "Advanced Options"
+msgstr "Opzioni Avanzate"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsKeyIterations..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:28
+msgid "Key Iterations"
+msgstr "Iterazioni Chiavi"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsSalt..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:61
+msgid "Salt"
+msgstr "Sale"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsSalt..Label15..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:71
+msgid "&Length of salt:"
+msgstr "&Lunghezza sale:"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsSalt..Label18..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:79
+msgid "bits."
+msgstr "bits."
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsDriveLetter..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:102
+msgid "Drive Letter"
+msgstr "Lettera Drive"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:136
+msgid "CDB Location"
+msgstr "Posizione CDB"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..rbCDBInVolFile..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:147
+msgid "Include CDB as part of volume file"
+msgstr "Includere CDB nel file volume"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..rbCDBInKeyfile..Caption
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.dfm:156
+msgid "Store CDB as separate keyfile"
+msgstr "Salvare CDB come keyfile separato"
+
+#. Programmer's name for it: RS_MOUNTSOURCE_FILE
+#. Programmer's name for it: FILEORPART_OPT_VOLUME_FILE
+#: OTFEFreeOTFE_DriverAPI.pas:139
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:193
+msgid "File"
+msgstr "File"
+
+#. Programmer's name for it: RS_MOUNTSOURCE_PARTITION
+#. Programmer's name for it: FILEORPART_OPT_PARTITION
+#: OTFEFreeOTFE_DriverAPI.pas:140
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:194
+msgid "Partition"
+msgstr "Partizione"
+
+#. Programmer's name for it: RS_MOUNTSOURCE_UNKNOWN
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_UNKNOWN
+#. Programmer's name for it: MOUNT_AS_UNKNOWN
+#: OTFEFreeOTFE_DriverAPI.pas:141
+#: OTFEFreeOTFE_DriverAPI.pas:162
+#: OTFEFreeOTFE_U.pas:127
+msgid "Unknown"
+msgstr "Sconosciuto"
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_NULL_IV
+#: OTFEFreeOTFE_DriverAPI.pas:156
+msgid "Null IV"
+msgstr "Null IV"
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_SECTOR_ID_32
+#: OTFEFreeOTFE_DriverAPI.pas:157
+msgid "32 bit sector ID"
+msgstr "ID settore 32 bit"
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_SECTOR_ID_64
+#: OTFEFreeOTFE_DriverAPI.pas:158
+msgid "64 bit sector ID"
+msgstr "ID settore 64 bit"
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_HASHED_SECTOR_ID_32
+#: OTFEFreeOTFE_DriverAPI.pas:159
+msgid "Hashed 32 bit sector ID"
+msgstr "ID settore hashed 32 bit"
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_HASHED_SECTOR_ID_64
+#: OTFEFreeOTFE_DriverAPI.pas:160
+msgid "Hashed 64 bit sector ID"
+msgstr "ID settore hashed 64 bit"
+
+#. Programmer's name for it: TEXT_NEED_ADMIN
+#: OTFEFreeOTFE_DriverControl.pas:38
+msgid "Administrator privileges are required in order to carry out this operation."
+msgstr "Sono richiesti privilegi di amministratore per eseguire questa operazione."
+
+#: OTFEFreeOTFE_DriverControl.pas:145
+msgid "Unable to open service control manager."
+msgstr "Impossible aprire il service control manager."
+
+#. Installation SUCCESSFULL
+#. 2 x CRLF - one to end the last line, one for spacing
+#. 2 x CRLF - one to end the last line, one for spacing
+#: OTFEFreeOTFE_DriverControl.pas:609
+#: OTFEFreeOTFE_DriverControl.pas:658
+#: OTFEFreeOTFE_frmDriverControl.pas:334
+msgid "Please reboot your computer to allow changes to take effect."
+msgstr "Riavviare il computer affinché i cambiamenti abbiano effetto."
+
+#: OTFEFreeOTFE_DriverControl.pas:633
+msgid "This driver has been installed, started, and is now available for use"
+msgstr "Questo driver è stato installato, avviato, ed è pronto per l'uso"
+
+#: OTFEFreeOTFE_DriverControl.pas:637
+msgid "This driver has been installed but not started; you may need to reboot your PC for the installation to take effect"
+msgstr "Questo driver è stato installato ma non avviato; potrebbe essere necessario un riavvio per finalizzare l'installazione."
+
+#: OTFEFreeOTFE_DriverControl.pas:643
+msgid "Driver %1 installed"
+msgstr "Driver %1 installato"
+
+#. 2 x CRLF - one to end the last line, one for spacing
+#: OTFEFreeOTFE_DriverControl.pas:667
+msgid "This driver appears to already be installed."
+msgstr "Questo driver è già installato."
+
+#: OTFEFreeOTFE_DriverControl.pas:668
+msgid "Please uninstall the existing driver before attempting to reinstall."
+msgstr "Disinstallare il driver esistente prima di tentare la reinstallazione."
+
+#. 2 x CRLF - one to end the last line, one for spacing
+#: OTFEFreeOTFE_DriverControl.pas:677
+msgid "Unable to copy driver file to windows driver directory"
+msgstr "Impossibile copiare il file del driver nella cartella driver di windows"
+
+#: OTFEFreeOTFE_DriverControl.pas:683
+msgid "Unable to install driver."
+msgstr "Impossibile installare il driver."
+
+#. type of access to service
+#: OTFEFreeOTFE_DriverControl.pas:895
+msgid "Unable to open service for driver \"%1\""
+msgstr "Impossibile aprire il servizio driver \"%1\""
+
+#. (driverFilenames.count - 1)
+#: OTFEFreeOTFE_DriverControl.pas:1229
+msgid "Starting drivers in portable mode..."
+msgstr "Avvio driver in modalità trasferibile..."
+
+#: OTFEFreeOTFE_DriverControl.pas:1233
+msgid "Installing drivers..."
+msgstr "Installazione driver..."
+
+#: OTFEFreeOTFE_DriverControl.pas:1247
+msgid "Starting: "
+msgstr "Avvio:"
+
+#: OTFEFreeOTFE_DriverControl.pas:1251
+msgid "Installing: "
+msgstr "Installazione:"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas:83
+msgid "Are you sure you wish to delete the selected keyfiles from the token?"
+msgstr "Si è sicuri di voler eliminare dal token i keyfile selezionati?"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas:124
+msgid ""
+"The following keyfiles were deleted successfully:\n"
+"\n"
+"%1"
+msgstr ""
+"I keyfile seguenti sono stati eliminati con successo:\n"
+"\n"
+"%1"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas:139
+msgid ""
+"The following keyfiles could not be deleted:\n"
+"\n"
+"%1"
+msgstr ""
+"Impossibile eliminare i keyfile seguenti:\n"
+"\n"
+"%1"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas:170
+msgid "Keyfile exported successfully"
+msgstr "Keyfile esportato con successo"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas:177
+msgid ""
+"Unable to export keyfile to:\n"
+"\n"
+"%1"
+msgstr ""
+"Impossibile esportare keyfile in:\n"
+"\n"
+"%1"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas:206
+msgid "Unable to read keyfile contents"
+msgstr "Impossibile leggere contenuto keyfile"
+
+#. Sanity check...
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas:214
+msgid "The file specified doesn't appear to be a FreeOTFE keyfile."
+msgstr "Il file specificato non sembra essere un keyfile FreeOTFE."
+
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas:216
+msgid "Do you wish to continue anyway?"
+msgstr "Si vuole continuare comunque?"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas:257
+msgid "Keyfile imported successfully as:"
+msgstr "Keyfile importato con successo come:"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas:268
+msgid "Keyfile import failed"
+msgstr "Importazione keyfile fallita"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas:347
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas:271
+msgid "Unable to get list of CDB entries from Token"
+msgstr "Impossibile ottenere lista CDB dal Token"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas:371
+msgid "One or more of the keyfiles stored on your token are invalid/corrupt"
+msgstr "Uno o più keyfile memorizzati sul token sono non validi/corrotti"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:93
+msgid "Keysize"
+msgstr "Keysize"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:142
+msgid "Unable to get list of keys from Token"
+msgstr "Impossibile ottenere lista chiavi dal Token"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:186
+msgid "Are you sure you wish to delete the selected keys from the token?"
+msgstr "Si è sicuri di voler eliminare le chiavi selezionate dal token?"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:227
+msgid ""
+"The following keys were deleted successfully:\n"
+"\n"
+"%1"
+msgstr ""
+"Le chiavi seguenti sono state eliminate con successo:\n"
+"\n"
+"%1"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:242
+msgid ""
+"The following keys could not be deleted:\n"
+"\n"
+"%1"
+msgstr ""
+"Impossibile eliminare le chiavi seguenti:\n"
+"\n"
+"%1"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:330
+msgid "Please select a secret key to use"
+msgstr "Selezionare una chiave segreta"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:350
+msgid "unsecure"
+msgstr "sproteggere"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:353
+msgid "secure"
+msgstr "proteggere"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:365
+msgid ""
+"Are you sure you wish to use PKCS#11 secret key:\n"
+"\n"
+"%1\n"
+"\n"
+"to %2 the CDB starting from offset %3 within volume:\n"
+"\n"
+"%4"
+msgstr ""
+"Si è sicuri di voler utilizzare la chiave segreta PKCS#11:\n"
+"\n"
+"%1\n"
+"\n"
+"fino %2 al CDB che inizia da offset %3 nel volume:\n"
+"\n"
+"%4"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:378
+msgid ""
+"Are you sure you wish to %1 the volume/keyfile:\n"
+"\n"
+"%2\n"
+"\n"
+"using the PKCS#11 secret key:\n"
+"\n"
+"%3"
+msgstr ""
+"Si è sicuri di voler %1 il volume/keyfile:\n"
+"%2\n"
+"\n"
+"usare la chiave segreta PKCS#11:\n"
+"\n"
+"%3"
+
+#. Read CDB...
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:393
+msgid "Unable to read keyfile/volume CDB"
+msgstr "Impossibile leggere il keyfile/volume CDB"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:424
+msgid "Unable to carry out encryption/decryption using Token"
+msgstr "Impossibile eseguire crittaggio/decrittaggio usando il Token"
+
+#. ...Write CDB.
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:437
+msgid "Unable to write keyfile/volume CDB"
+msgstr "Impossibile scrivere il CDB del keyfile/volume"
+
+#: OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas:452
+msgid "Volume/keyfile now %1"
+msgstr "Volume/keyfile ora %1"
+
+#. Programmer's name for it: RS_NO_PARTITIONS_FOUND
+#: OTFEFreeOTFE_fmeSelectPartition.pas:111
+msgid "<No partitions found>"
+msgstr "<Nessuna partizione trovata>"
+
+#. Programmer's name for it: RS_CANT_GET_DISK_LAYOUT
+#: OTFEFreeOTFE_fmeSelectPartition.pas:113
+msgid "<Unable to get disk layout information for disk #%1>"
+msgstr "<Impossibile ottenere informazioni sul layout del disco #%1>"
+
+#. Programmer's name for it: RS_ENTIRE_DISK_X
+#: OTFEFreeOTFE_fmeSelectPartition.pas:114
+msgid "<Entire disk #%1>"
+msgstr "<Intero disco #%1>"
+
+#. Programmer's name for it: RS_CDROM_IN_X
+#: OTFEFreeOTFE_fmeSelectPartition.pas:115
+msgid "<CDROM/DVD in %1>"
+msgstr "<CDROM/DVD in %1>"
+
+#. Programmer's name for it: RS_DBLCLK_PROMPT_PARTITION
+#: OTFEFreeOTFE_fmeSelectPartition.pas:117
+msgid "Doubleclick partition to display properties"
+msgstr "Fare doppio click sulla partizione per visualizzare le proprietà"
+
+#. Programmer's name for it: RS_DBLCLK_PROMPT_DISK
+#: OTFEFreeOTFE_fmeSelectPartition.pas:118
+msgid "Doubleclick to display disk properties"
+msgstr "Fare doppio click per visualizzare le proprietà del disco"
+
+#. Programmer's name for it: RS_PARTITION
+#: OTFEFreeOTFE_fmeSelectPartition.pas:120
+msgid "Partition #%1"
+msgstr "Partizione #%1"
+
+#. Programmer's name for it: RS_PART_ERROR_NO_PARTITION_NO
+#: OTFEFreeOTFE_fmeSelectPartition.pas:122
+msgid "Windows has not allocated this partition a partition number"
+msgstr "Windows non ha allocato un numero di partizione a questa partizione"
+
+#. Programmer's name for it: RS_PART_ERROR_SYSTEM_PARTITION
+#: OTFEFreeOTFE_fmeSelectPartition.pas:123
+msgid "This is where Windows is installed"
+msgstr "Qui è installato Windows"
+
+#. Programmer's name for it: RS_PART_ERROR_PROG_FILES_PARTITION
+#: OTFEFreeOTFE_fmeSelectPartition.pas:124
+msgid "This is where program files are installed"
+msgstr "Qui sono installati i programmi"
+
+#. Programmer's name for it: RS_PART_WARN_BOOTABLE
+#: OTFEFreeOTFE_fmeSelectPartition.pas:125
+msgid "Partition is marked as bootable"
+msgstr "La partizione è avviabile"
+
+#: OTFEFreeOTFE_fmeSelectPartition.pas:216
+msgid "Disk #%1"
+msgstr "Disco #%1"
+
+#. Programmer's name for it: RS_UNABLE_LOCATE_CYPHER_DRIVER
+#: OTFEFreeOTFE_frmCypherInfo.pas:74
+msgid "<Unable to locate correct cypher driver>"
+msgstr "<Impossibile localizzare il driver cypher corretto>"
+
+#. Programmer's name for it: RS_UNABLE_LOCATE_CYPHER
+#: OTFEFreeOTFE_frmCypherInfo.pas:75
+msgid "<Unable to locate cypher>"
+msgstr "<Impossibile localizzare cypher>"
+
+#: OTFEFreeOTFE_frmCypherInfo.pas:142
+msgid "(null key only)"
+msgstr "(solo null key)"
+
+#: OTFEFreeOTFE_frmCypherInfo.pas:146
+msgid "(arbitary keysize allowed)"
+msgstr "(keysize arbitrario permesso)"
+
+#: OTFEFreeOTFE_frmCypherInfo.pas:153
+msgid "(arbitary blocksize allowed)"
+msgstr "(blocksize arbitrario permesso)"
+
+#. Programmer's name for it: TEXT_MANUAL_START
+#: OTFEFreeOTFE_frmDriverControl.pas:90
+msgid "Manual"
+msgstr "Manuale"
+
+#. Programmer's name for it: TEXT_AUTO_START
+#: OTFEFreeOTFE_frmDriverControl.pas:91
+msgid "At system startup"
+msgstr "All'avvio del sistema"
+
+#. Programmer's name for it: FILE_FILTER_FLT_DRIVERS
+#: OTFEFreeOTFE_frmDriverControl.pas:93
+msgid "Driver files (*.sys)|*.sys|All files|*.*"
+msgstr "File driver (*.sys)|*.sys|Tutti i file|*.*"
+
+#: OTFEFreeOTFE_frmDriverControl.pas:238
+msgid "Unable to start driver \"%1\""
+msgstr "Impossibile avviare driver \"%1\""
+
+#: OTFEFreeOTFE_frmDriverControl.pas:265
+msgid "Stopping a FreeOTFE driver which is currently in use (e.g. by one or more mounted volumes) can lead to SYSTEM INSTABILITY."
+msgstr "Chiudere un driver FreeOTFE attualmente utilizzato (p.e. da uno o più volumi montati) può portare a INSTABILITA' DI SISTEMA."
+
+#: OTFEFreeOTFE_frmDriverControl.pas:267
+#: OTFEFreeOTFE_frmDriverControl.pas:313
+msgid "This option is intended for experienced users who REALLY know what they're doing."
+msgstr "Quest'opzione è intesa per utenti esperti che sanno DAVVERO cosa stanno facendo."
+
+#: OTFEFreeOTFE_frmDriverControl.pas:269
+msgid "Are you sure you wish to stop the \"%1\" driver?"
+msgstr "Si è sicuri di voler chiudere il driver \"%1\"?"
+
+#: OTFEFreeOTFE_frmDriverControl.pas:279
+msgid "Unable to stop driver \"%1\""
+msgstr "Impossibile chiudere il driver \"%1\" "
+
+#: OTFEFreeOTFE_frmDriverControl.pas:311
+msgid "Uninstalling a FreeOTFE driver which is currently in use (e.g. by one or more mounted volumes) can lead to SYSTEM INSTABILITY."
+msgstr "Disinstallare un driver FreeOTFE attualmente utilizzato (p.e. da uno o più volumi montati) può portare a INSTABILITA' DI SISTEMA."
+
+#: OTFEFreeOTFE_frmDriverControl.pas:315
+msgid "Are you sure you wish to uninstall the \"%1\" driver?"
+msgstr "Si è sicuri di voler disinstallare il driver \"%1\"?"
+
+#. 2 x CRLF - one to end the last line, one for spacing
+#: OTFEFreeOTFE_frmDriverControl.pas:343
+msgid "After rebooting, please remove the driver file from your <windows>\\system32\\drivers directory"
+msgstr "Dopo il riavvio, rimuovere il file driver dalla cartella <windows>\\system32\\drivers"
+
+#: OTFEFreeOTFE_frmDriverControl.pas:347
+msgid "The \"%1\" driver has now been uninstalled."
+msgstr "Il driver \"%1\" è stato disinstallato."
+
+#. Uninstallation FAILURE
+#: OTFEFreeOTFE_frmDriverControl.pas:357
+msgid "Unable to delete driver service \"%1\"."
+msgstr "Impossibile cancellare il servizio driver \"%1\"."
+
+#: OTFEFreeOTFE_frmDriverControl.pas:359
+msgid "Please disable this driver from starting up automatically, reboot, and try again."
+msgstr "Disabilitare l'avvio automatico del driver, riavviare e riprovare."
+
+#: OTFEFreeOTFE_frmDriverControl.pas:429
+msgid "Unable to set startup option for driver \"%1\"."
+msgstr "Impossibile settare l'opzione di avvio per il driver \"%1\"."
+
+#. Programmer's name for it: RS_UNABLE_LOCATE_HASH_DRIVER
+#: OTFEFreeOTFE_frmHashInfo.pas:71
+msgid "<Unable to locate correct hash driver>"
+msgstr "<Impossibile localizzare il driver hash corretto>"
+
+#. Programmer's name for it: RS_UNABLE_LOCATE_HASH
+#: OTFEFreeOTFE_frmHashInfo.pas:72
+msgid "<Unable to locate hash>"
+msgstr "<Impossibile localizzare l'hash>"
+
+#: OTFEFreeOTFE_frmHashInfo.pas:137
+msgid "(length of hash returned may vary)"
+msgstr "(la lunghezza dell'hash può variare)"
+
+#: OTFEFreeOTFE_frmHashInfo.pas:144
+msgid "(n/a)"
+msgstr "(n/a)"
+
+#. Programmer's name for it: RS_NOT_SELECTED
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas:162
+msgid "<none selected>"
+msgstr "<nessuna selezione>"
+
+#. Programmer's name for it: RS_NONE_AVAILABLE
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas:163
+msgid "<none available>"
+msgstr "<non disponibile>"
+
+#. Programmer's name for it: RS_BUTTON_ADVANCED
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas:165
+msgid "&Advanced"
+msgstr "&Avanzato"
+
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas:295
+msgid "One or more of the keyfiles stored on your token are invalid/corrupt and will be ignored"
+msgstr "Uno o più keyfile sul token sono invalidi/corrotti e verrano ignorati"
+
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas:297
+msgid "Please check which keyfiles are stored on this token and correct"
+msgstr "Controllare i keyfile memorizzati sul token e correggere"
+
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas:342
+msgid "Unable to get a list of secret keys from Token"
+msgstr "Impossibile ottenere una lista di chiavi segrete dal Token"
+
+#. No volumes were mounted...
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas:460
+msgid "Unable to mount volume; please ensure that you entered the correct details (password, etc)"
+msgstr "Impossibile montare il volume; assicurarsi di aver inserito i dettagli corretti (password, etc)"
+
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas:466
+msgid "Please ensure that you check/uncheck the \"Data from offset includes CDB\" option, as appropriate for your volume"
+msgstr "Assicurarsi di selezionare/deselezionare l'opzione \"I dati dall'offset includono CDB\", come necessario per il volume"
+
+#. At least one volume was mounted, but not all of them
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas:476
+msgid "%1 volume was mounted successfully, but %2 could not be mounted"
+msgstr "Volume %1 montato con successo, ma impossibile montare %2"
+
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas:477
+msgid "%1 volumes were mounted successfully, but %2 could not be mounted"
+msgstr "Volumi %1 montati con successo, ma impossibile montare %2"
+
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas:499
+msgid "Salt length (in bits) must be a multiple of 8"
+msgstr "La lunghezza salt (in bit) deve essere multipla di 8"
+
+#. keyfiles are on the token, warn the user
+#: OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas:540
+msgid "No keyfiles could be found on the token inserted."
+msgstr "Nessun keyfile trovato sul token inserito."
+
+#. Programmer's name for it: FILTER_GPG_FILES
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:252
+msgid "GPG files|*.gpg|All files|*.*"
+msgstr "File GPG|*.gpg|Tutti i file|*.*"
+
+#. Programmer's name for it: FILTER_GPG_EXE
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:253
+msgid "GPG Executable|GPG.exe|All files|*.*"
+msgstr "Eseguibile GPG|GPG.exe|Tutti i file|*.*"
+
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:284
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1240
+msgid "Unable to obtain list of hashes."
+msgstr "Impossibile ottenere la lista degli hash."
+
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:286
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1242
+msgid "Please ensure that you have one or more FreeOTFE hash drivers installed and started."
+msgstr "Assicurarsi di avere uno o più driver hash FreeOTFE installati e avviati."
+
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:518
+#: OTFEFreeOTFE_frmKeyEntryLUKS.pas:215
+msgid "You have not entered a password."
+msgstr "Non è stata digitata una password."
+
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:532
+msgid "The password you entered has less than 20 characters, and may not be compatible with some Linux volumes."
+msgstr "La password digitata ha meno di 20 caratteri, e potrebbe non essere compatibile con alcuni volumi Linux."
+
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:534
+msgid "Do you wish to proceed?"
+msgstr "Si vuole procedere?"
+
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:1436
+msgid "Settings file not found."
+msgstr "File settaggi non trovato."
+
+#: OTFEFreeOTFE_frmKeyEntryLinux.pas:1619
+msgid "One or more of your settings may not have loaded correctly; please check settings before continuing."
+msgstr "Uno o più settaggi potrebbero non essere stati caricati; si prega di controllare prima di continuare."
+
+#: OTFEFreeOTFE_frmNewVolumeSize.pas:51
+msgid "Please specify a filename for the new volume file by clicking the \"...\" button."
+msgstr "Specificare un nome file per il nuovo file volume cliccando il pulsante \"...\"."
+
+#: OTFEFreeOTFE_frmPKCS11NewSecretKey.pas:67
+msgid "Unable to get list of key types for Token"
+msgstr "Impossibile ottenere una lista di tipi di chiave per il Token"
+
+#: OTFEFreeOTFE_frmPKCS11NewSecretKey.pas:145
+msgid "A key with the name specified already exists."
+msgstr "Una chiave col nome specificato esiste già."
+
+#: OTFEFreeOTFE_frmPKCS11NewSecretKey.pas:147
+msgid "Please enter a unique key name"
+msgstr "Digitare un nome chiave unico"
+
+#: OTFEFreeOTFE_frmPKCS11NewSecretKey.pas:168
+msgid "Unable to create new key"
+msgstr "Impossibile creare nuova chiave"
+
+#: OTFEFreeOTFE_frmPKCS11NewSecretKey.pas:172
+msgid "Key \"%1\" created"
+msgstr "Chiave \"%1\" creata"
+
+#. Programmer's name for it: RS_SLOT_REMOVED
+#: OTFEFreeOTFE_frmPKCS11Session.pas:62
+msgid "Slot removed; token no longer available - please reselect and try again"
+msgstr "Slot remosso; token non più disponibile - riselezionare e riprovare"
+
+#. Programmer's name for it: RS_TOKEN_REMOVED
+#: OTFEFreeOTFE_frmPKCS11Session.pas:63
+msgid "Token no longer available; please reselect and try again"
+msgstr "Token non più disponibile; riselezionare e riprovare"
+
+#: OTFEFreeOTFE_frmPKCS11Session.pas:142
+msgid "Unable to open session for token in slot %1"
+msgstr "Impossibile aprire la sessione per il token nello slot %1"
+
+#: OTFEFreeOTFE_frmPKCS11Session.pas:170
+msgid "Login failed"
+msgstr "Login fallito"
+
+#: OTFEFreeOTFE_frmSelectHashCypher.pas:143
+msgid "Hash implementation: %1"
+msgstr "Implementazione hash: %1"
+
+#: OTFEFreeOTFE_frmSelectHashCypher.pas:144
+#: OTFEFreeOTFE_frmSelectHashCypher.pas:173
+msgid "Kernel mode driver: %1"
+msgstr "Kernel driver: %1"
+
+#: OTFEFreeOTFE_frmSelectHashCypher.pas:145
+#: OTFEFreeOTFE_frmSelectHashCypher.pas:174
+msgid "Algorithm GUID: %1"
+msgstr "Algoritmo GUID: %1"
+
+#: OTFEFreeOTFE_frmSelectHashCypher.pas:172
+msgid "Cypher implementation: %1"
+msgstr "Implementazione cypher: %1"
+
+#. Work out cell layout...
+#: OTFEFreeOTFE_frmSelectHashCypher.pas:203
+msgid "Error! Please report seeing this!"
+msgstr "Errore! Segnalare prego!"
+
+#: OTFEFreeOTFE_frmSelectVolumeAndOffset.pas:47
+msgid "Secure with PKCS#11 Secret Key"
+msgstr "Assicurare con Chiave Segreta PKCS#11"
+
+#: OTFEFreeOTFE_frmSelectVolumeAndOffset.pas:48
+msgid "Please enter the volume/keyfile you wish to encrypt using the selected PKCS#11 secret key."
+msgstr "Digitare il volume/keyfile che si desidera crittare usando la chave segreta PKCS#11 selezionata."
+
+#: OTFEFreeOTFE_frmSelectVolumeAndOffset.pas:52
+msgid "Remove PKCS#11 Secret Key Security"
+msgstr "Rimuovere la Chiave Segreta di Sicurezza PKCS#11"
+
+#: OTFEFreeOTFE_frmSelectVolumeAndOffset.pas:53
+msgid "Please enter the volume/keyfile you wish to decrypt using the selected PKCS#11 secret key."
+msgstr "Digitare il volume/keyfile che si desidera decrittare usando la chave segreta PKCS#11 selezionata."
+
+#: OTFEFreeOTFE_frmWizard.pas:159
+msgid "Stage %1 of %2"
+msgstr "Stadio %1 di %2"
+
+#. generated...
+#. generated...
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:431
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:819
+msgid "Random bits generated: %1/%2"
+msgstr "Bit casuali generati: %1/%2"
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:800
+msgid "Completed successfully."
+msgstr "Completato con successo."
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:806
+msgid "Unable to complete requested operation: please ensure that your encrypted volume is not mounted or otherwise in use, and that the password, salt and offset entered are correct."
+msgstr "Impossibile completare l'operazione: assicurarsi che il volume crittato non sia montato o altrimenti in uso, e che la password, il salt e l'offset digitati siano corretti."
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:818
+msgid "Change Password/Other Details"
+msgstr "Cambia Password/Altri Dettagli"
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:823
+msgid ""
+"If you would like to modify an encrypted volume, please specify whether it is file or partition based.\n"
+"\n"
+"If you would like to modify a keyfile, please select \"file\" below."
+msgstr "Se si vuole modificare un volume crittato, per favore specificare se è basato su file o partizione."
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:828
+msgid ""
+"Please enter the full path and filename of the volume/keyfile you wish to change.\n"
+"\n"
+"If you wish to update a \"hidden\" volume held within another file, please specify the filename of the host file which stores your encrypted volume"
+msgstr ""
+"Digitare il percorso completo e il nome file del volume/keyfile che si vuol modificare.\n"
+"\n"
+"Se si vuole aggiornare un volume \"nascosto\" contenuto in un altro file, specificare il nome file del file ospite che contiene il volume crittato"
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:831
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:875
+msgid "Please specify the partition your volume is stored on."
+msgstr "Specificare la partizione su cui è memorizzato il volume."
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:836
+msgid ""
+"Please enter the full details of the volume/keyfile you wish to change.\n"
+"\n"
+"If you wish to update a \"hidden\" volume held within another file, please specify the offset within the host file where your hidden volume is located"
+msgstr ""
+"Digitare i dettagli completi del volume/keyfile che si vuol modificare.\n"
+"\n"
+"Se si vuole aggiornare un volume \"nascosto\" contenuto in un altro file, specificare l'offset nel file ospite che contiene il volume crittato"
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:842
+msgid "Please enter new details for your volume/keyfile."
+msgstr "Digitare nuovi dettagli per il volume/keyfile."
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:852
+msgid ""
+"In order to change your volume/keyfile's details, a certain amount of random data is required.\n"
+"\n"
+"This data will be used for the following:\n"
+"\n"
+"1) Password salting\n"
+"2) Random padding data\n"
+"\n"
+"In order to generate this data, please select which random number generators you wish to use from the options below."
+msgstr ""
+"Per cambiare i dettagli del volume/keyfile, è richiesta una certa quantità di dati casuali.\n"
+"\n"
+"Questi dati saranno usati per:\n"
+"\n"
+"1) Salatura password\n"
+"2) Dati casuali di padding\n"
+"\n"
+"Per generare questi dati, selezionare quale generatore di numeri casuali si vuole usare dalle opzioni seguenti."
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:859
+msgid "Create Keyfile for Volume"
+msgstr "Creare Keyfile o Volume"
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:862
+msgid "Please specify whether the volume you wish to create a keyfile for is file or partition based."
+msgstr "Specificare se il volume per il quale si vuole creare un keyfile è basato su file o partizione."
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:872
+msgid ""
+"Please enter the full path and filename of either:\n"
+"\n"
+"1) A volume containing a CDB, or\n"
+"2) An existing keyfile\n"
+"\n"
+"for the volume you wish to create a keyfile for.\n"
+"\n"
+"If you wish to update a \"hidden\" volume which is held within another file, and your hidden volume includes a CDB, please specify the filename of the host file which stores your encrypted volume."
+msgstr ""
+"Digitare il percorso e nome file completo di:\n"
+"\n"
+"1) Un volume contenente un CDB, o\n"
+"2) Un keyfile esistente\n"
+"\n"
+"per il volume per cui si vuole creare un keyfile.\n"
+"\n"
+"Se si vuole aggiornare un volume \"nascosto\" memorizzato in un altro file, e il volume nascosto include un CDB, specificare il nome file del file host che contiene il volume crittato."
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:880
+msgid ""
+"Please enter the full details of the volume you wish to create a keyfile for.\n"
+"\n"
+"If you wish to update a \"hidden\" volume which is held within another file, and your hidden volume includes a CDB, please specify the offset within the host file where your hidden volume is located."
+msgstr ""
+"Digitare i dettagli completi del volume per cui si desidera creare un keyfile.\n"
+"\n"
+"Se si vuole aggiornare un volume \"nascosto\" memorizzato in un altro file, e il volume nascosto include un CDB, specificare l'offset nel file host che contiene il volume crittato."
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:883
+msgid "Please specify the full path and filename where the keyfile should be written to."
+msgstr "Specificare il percorso completo e il nome file dove deve essere scritto il keyfile."
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:886
+msgid "Please specify the details for your new keyfile."
+msgstr "Specificare i dettagli del nuovo keyfile."
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:896
+msgid ""
+"In order to create a new keyfile, a certain amount of random data is required.\n"
+"\n"
+"This data will be used for the following:\n"
+"\n"
+"1) Password salting\n"
+"2) Random padding data\n"
+"\n"
+"In order to generate this data, please select which random number generators you wish to use from the options below."
+msgstr ""
+"Per creare un nuovo keyfile, è richiesta una certa quantità di dati casuali.\n"
+"\n"
+"Questi dati saranno usati per:\n"
+"\n"
+"1) Salatura password\n"
+"2) Dati casuali di padding\n"
+"\n"
+"Per generare questi dati, selezionare quale generatore di numeri casuali si vuole usare dalle opzioni seguenti."
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:921
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2129
+msgid ""
+"You have selected mouse movement to generate random data.\n"
+"\n"
+"Please \"waggle\" the mouse within the area below, until enough random data has been generated."
+msgstr ""
+"Si è scelto di usare il movimento del mouse per generare dati casuali.\n"
+"\n"
+"\"Agitare\" il mouse nell'area sottostante, fino alla generazione di sufficienti dati casuali."
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:924
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2135
+msgid "In order to use GPG to generate random data, please specify the location of \"gpg.exe\" by clicking the browse button."
+msgstr "Per usare GPG nella generazione di dati casuali, specificare la posizione di \"gpg.exe\" cliccando il bottone Apri."
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:927
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2132
+msgid "Please select the PKCS#11 token you wish to use to generate random data, from the list shown below"
+msgstr "Selezionare dalla lista sottostante il token PKCS#11 che si vuole utilizzare per generare dati casuali"
+
+#: OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas:949
+msgid ""
+"A file with the filename you specified already exists.\n"
+"\n"
+"For safety reasons, you must specify a file which doesn't already exist.\n"
+"\n"
+"Please either delete the existing file, or specify a new filename."
+msgstr ""
+"Un file col nome file specificato esiste già.\n"
+"\n"
+"Per ragioni di sicurezza, deve essere specificato un file non esistente.\n"
+"\n"
+"Cancellare il file esistente, o specificare un nuovo nome file."
+
+#. Programmer's name for it: FILEORPART_OPT_VOLUME_FILE
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:293
+msgid "Volume file"
+msgstr "File volume"
+
+#. Programmer's name for it: FILEORPART_OPT_PARTITION
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:294
+msgid "Partition/entire disk"
+msgstr "Partizione/intero disco"
+
+#. Just warn user, and ignore...
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1202
+msgid "Unable to obtain hash details for %1"
+msgstr "Impossibile ottenere dettagli hash per %1"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1229
+msgid "You do not appear to have any FreeOTFE hash drivers that can be used to create new FreeOTFE volumes installed and started."
+msgstr "Non sembrano presenti driver FreeOTFE installati o avviati che possano essere usati per creare nuovi volumi FreeOTFE."
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1400
+msgid "Partition: %1"
+msgstr "Partizione: %1"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1404
+msgid "Filename: %1"
+msgstr "Nome file: %1"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1409
+msgid "Hidden volume starting at offset: %1"
+msgstr "Volume nascosto con inizio all'offset: %1"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1416
+msgid "Volume size: %1 + %2 (for CDB) = %3 bytes"
+msgstr "Dimensioni volume: %1 + %2 (per CDB) = %3 byte"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1423
+msgid "CDB stored: At start of volume file"
+msgstr "CDB salvato: All'inizio del file volume"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1427
+msgid "Volume size: %1 bytes"
+msgstr "Dimensioni volume: %1 byte"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1428
+msgid "CDB stored: In separate keyfile"
+msgstr "CDB salvato: In un keyfile separato"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1429
+msgid "CDB keyfile: %1"
+msgstr "CDB keyfile: %1"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1432
+msgid "Hash algorithm: %1"
+msgstr "Algoritmo hash: %1"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1433
+msgid "[Hash driver: %1]"
+msgstr "[Driver hash: %1]"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1434
+msgid "[Hash GUID: %1]"
+msgstr "[GUID Hash: %1]"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1436
+msgid "Key iterations: %1"
+msgstr "Iterazioni chiavi: %1"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1441
+msgid "Sector IVs will not be used (cypher has zero or variable blocksize)"
+msgstr "Il settore IVs non saranno usati (il cypher ha blocksize zero o variabile)"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1445
+msgid "Cypher has fixed, defined blocksize; sector IVs will be used"
+msgstr "Il cypher ha blocksize fisso, definito: il settore IVs sarà utilizzato"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1446
+msgid "Sector IV generation method: %1"
+msgstr "Metodo di generazione del settore IV: %1"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1450
+msgid "Sector IVs will be XORd with a per-volume IV before use"
+msgstr "Il settore IVs sarà passato in XOR con un per-volume IV prima dell'utilizzo"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1454
+msgid "A per-volume IV will not be used"
+msgstr "Non verrà utilizzato un per-volume IV "
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1459
+msgid "Cypher algorithm: %1"
+msgstr "Algoritmo cypher: %1"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1460
+msgid "[Cypher driver: %1]"
+msgstr "[Driver cypher: %1]"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1461
+msgid "[Cypher GUID: %1]"
+msgstr "[GUID cypher: %1]"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1463
+msgid "Master key length: %1 bits"
+msgstr "Lunghezza chiave principale: %1 bit"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1510
+msgid "RNG: %1"
+msgstr "RNG: %1"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1513
+msgid "Password: <entered>"
+msgstr "Password: <entered>"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1514
+msgid "Salt length: %1 bits"
+msgstr "Lunghezza salt: %1 bit"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1525
+#: OTFEFreeOTFE_U.pas:9073
+msgid "Requested drive letter: %1"
+msgstr "Lettera drive richiesta: %1"
+
+#. If there was a problem, and not a user cancel, warn user
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1649
+msgid "Volume creation canceled"
+msgstr "Creazione volume annullata"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1653
+msgid "Unable to create volume file; please ensure you have %1 free on the relevant drive"
+msgstr "Impossibile creare file volume; assicurarsi di avere %1 liberi sul drive"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1658
+msgid "Please note that FAT/FAT32 filesystems cannot store files that are 4GB or larger"
+msgstr "Notare che i file system FAT e FAT32 non possono contenere file di 4 o più GB"
+
+#. Create separate CDB file, if needed
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1678
+msgid "Unable to create separate CDB keyfile."
+msgstr "Impossbile creare un keyfile CDB separato."
+
+#. Write the header to the file, starting from the specified offset
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1790
+msgid "Unable to write critical data block."
+msgstr "Impossibile scrivere blocco dati critico."
+
+#. Ensure master key length is a multiple of 8 bits
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1812
+msgid "The master key length must be a multiple of 8"
+msgstr "La lunghezza della chiave principale deve essere un multiplo di 8"
+
+#. If we have it cached alredy, use it
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1843
+msgid "Unable to determine the keysize for your selected cypher."
+msgstr "Impossibile determinare il keysize per il cypher selezionato."
+
+#. If we have it cached alredy, use it
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1879
+msgid "Unable to determine the blocksize for your selected cypher."
+msgstr "Impossibile determinare il blocksize per il cypher selezionato."
+
+#. If we have it cached alredy, use it
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:1914
+msgid "Unable to determine the cypher mode for your selected cypher."
+msgstr "Impossibile determinare la modalità cypher per il cypher selezionato."
+
+#. Warn user if volume size smaller than PDA version min
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2011
+msgid "Please note: If you would like your volume to be compatible with the PDA version of FreeOTFE, please specify a volume size greater than %1 MB"
+msgstr "Nota: Se si vuole che il volume sia compatibile con la version PDA di FreeOTFE, specificare una dimensione maggiore di %1 MB"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2036
+msgid "(Approx: %1)"
+msgstr "(Approx: %1)"
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2059
+msgid ""
+"This \"wizard\" will guide you through the process of either creating a new FreeOTFE volume file, or a hidden volume within an existing file.\n"
+"\n"
+"If you are unsure as to how to answer any of the questions this wizard asks, simply accepting the default values should generate a volume that is secure enough for most purposes."
+msgstr ""
+"Questo \"wizard\" vi guiderà nel processo di creare un nuovo file volume FreeOTFE, o un volume nascosto all'interno di un file esistente.\n"
+"\n"
+"Se non sapete come rispondere a qualche domanda posta dal wizard, accettate i valori di default per generare un volume sicuro a sufficienza per la maggior parte delle esigenze."
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2064
+msgid ""
+"Please specify whether the new volume should be created as a disk image file stored on your filesystem, or take up a disk partition/entire physical disk\n"
+"\n"
+"For most users, it is recommended that you use a volume file; encrypted partitions/physical disks are intended for advanced users."
+msgstr ""
+"Specificare se il nuovo volume deve essere creato come un file immagine disco memorizzato nel filesystem, o deve occupare una partizione/un intero disco fisico.\n"
+"\n"
+"Per la maggior parte degli utenti, è raccomandato usare un file volume; le partizioni/dischi crittate sono indirizzate agli utenti avanzati."
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2069
+msgid ""
+"Please specify the filename and location where the new volume should be created, by clicking the browse button.\n"
+"\n"
+"If you wish to create a \"hidden\" volume within an existing volume, please specify your existing volume to be used."
+msgstr ""
+"Specificare il nome file e la posizione dove il nuovo volume deve essere creato, cliccando il bottone Esplora.\n"
+"\n"
+"Se si vuole creare un volume \"nascosto\" all'interno di un volume esistente, specificare volume da usare."
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2076
+msgid ""
+"1) Creating encrypted partitions is POTENTIALLY DESTRUCTIVE.\n"
+"\n"
+"2) Data stored on the partition you select in the next stage may be OVERWRITTEN with encrypted data.\n"
+"\n"
+"3) It is RECOMMENDED that you backup your data as appropriate before continuing."
+msgstr ""
+"1) Creare partizioni crittate è POTENZIALMENTE DISTRUTTIVO.\n"
+"\n"
+"2) I dati contenuti nella partizione che si sta per selezionare potrebbero essere SOVRASCRITTI da dati crittati.\n"
+"\n"
+"3) Si RACCOMANDA di eseguire un appropriato backup dei dati prima di continuare."
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2079
+msgid "Please select the partition you wish to create the new volume on, and whether you would like to create a \"hidden\" volume."
+msgstr "Selezionare la partizione su cui creare il nuovo volume,  ed indicare se si desidera creare un volume \"nascosto\"."
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2084
+msgid ""
+"The volume file you specified already exists. To create a hidden volume within this file, please specify the byte offset within this file (multiple of 512), from where the new volume should begin.\n"
+"\n"
+"If you do NOT wish to create a hidden volume within your existing file, please click \"< Back\" and enter a different filename."
+msgstr ""
+"Il file volume specificato esiste già. Per creare un volume nascosto in questo file, specificare il byte offset in questo file (multiplo di 512), da cui deve avere inizio il nuovo volume.\n"
+"\n"
+"Se NON si vuole creare un volume nascosto nel file esistente, cliccare \"< Indietro\" e digitare un nuovo nome file."
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2091
+msgid ""
+"1) Creating hidden volumes is POTENTIALLY DESTRUCTIVE.\n"
+"\n"
+"2) Data within the file/partition specified in the previous stage may be OVERWRITTEN, starting from byte offset specified, and running for the full length of the new hidden volume.\n"
+"\n"
+"3) Remember the offset entered! For security reasons, this information is not stored anywhere, nor can it be determined automatically; you will need to type in this offset whenever  you wish to mount your hidden volume."
+msgstr ""
+"1) Creare volumi nascosti è POTENZIALMENTE DISTRUTTIVO.\n"
+"\n"
+"2) I dati nel file/partizione specificato al passo precedente potrebbero essere SOVRASCRITTI, a partire dall'offset specificato, fino alla piena lunghezza del nuovo volume nascosto.\n"
+"\n"
+"3) Ricordare l'offset inserito! Per ragioni di sicurezza, queste informazioni non sono memorizzate sul pc, né possono essere determinate automaticamente; si dovrà digitare questo offset ogni volta per montare il volume nascosto."
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2101
+msgid ""
+"Please enter the required size of the new volume.\n"
+"\n"
+"This value must be more than 1 MB, and must be a multiple of 512 bytes.\n"
+"\n"
+"If you are creating a hidden volume, then the size of the original volume file, less the byte offset entered in the previous stage, must be greater than the sum of the value entered here, and the size critical data area.\n"
+"\n"
+"Note: The size you specified here will be the size of the data part of the volume file. The actual file created will be larger than this by the size of the critical data area, which will be prepended onto the volume file."
+msgstr ""
+"Digitare le dimensioni del nuovo volume.\n"
+"\n"
+"Questo valore deve superare 1 MB ed essere multiplo di 512 bytes.\n"
+"\n"
+"Se si sta creando un  volume nascosto, allora le dimensioni del file volume originale, meno il byte offset inserito nel passo precedente, deve essere maggiore della somma del valore inserito qui, e delle dimensioni dell'area dati critici.\n"
+"\n"
+"Nota: Le dimensioni specificate saranno le dimensioni della parte dati del file volume. Il vero file creato le supererà di una quantità pari all'area dati, che precederà la file di volume."
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2106
+msgid ""
+"Please select which security options should be used in securing your new volume.\n"
+"\n"
+"Most users can simply accept the defaults here, though more advanced users may prefer to specify their own options, depending on their needs."
+msgstr ""
+"Selezionare quali opzioni di sicurezza utilizzare per il nuovo volume.\n"
+"\n"
+"La maggioranza degli utenti può accettare i default qui, mentre gli utenti avanzati possono specificare le loro opzioni, a seconda della bisogna."
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2113
+msgid ""
+"The cypher you selected supports arbitary key lengths.\n"
+"\n"
+"Please specify the length of the master key which will be used to encrypt/decrypt your data.\n"
+"\n"
+"Note: The value entered must be a multiple of 8."
+msgstr ""
+"Il cypher selezionato supporta chiavi di lunghezza arbitraria.\n"
+"\n"
+"Specificare la lunghezza della chiave principale che sarà usata per decrittare/crittare i dati.\n"
+"\n"
+"Nota: Il valore inserito deve essere multiplo di 8."
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2124
+msgid ""
+"In order to create your new volume, a certain amount of random data is required.\n"
+"\n"
+"This data will be used for the following:\n"
+"\n"
+"1) Password salting\n"
+"2) The new volume's master key\n"
+"3) Random padding data\n"
+"\n"
+"In order to generate this data, please select which random number generators you wish to use from the options below."
+msgstr ""
+"Per creare un nuovo volume, è richiesta una certa quantità di dati casuali.\n"
+"\n"
+"Questi dati saranno usati per:\n"
+"\n"
+"1) Salatura password\n"
+"2) La chiave principale del nuovo volume\n"
+"3) Dati di protezione random\n"
+"\n"
+"Per generare questi dati, selezionare quale generatore di numeri casuali si vuole usare dalle opzioni seguenti."
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2144
+msgid ""
+"Please enter the password to be used for securing your volume.\n"
+"\n"
+"It is suggested that you enter a mix of uppercase, lowercase, numbers, and punctuation symbols.\n"
+"\n"
+"Note: If you forget your password, you can forget your data.\n"
+"\n"
+"Note: Newlines (blank lines) are significant. It is recommended that you do not press <ENTER> after typing in your password, as this will add an extra newline to the end of your password."
+msgstr ""
+"Inserire la password da usare per proteggere il volume.\n"
+"\n"
+"Si suggerisce di digitare un misto di maiuscole, minuscole, numeri e simboli di punteggiatura.\n"
+"\n"
+"Nota: se la password viene dimenticata, i dati saranno irrecuperabili.\n"
+"\n"
+"Nota: Le linee a capo vengono rilevate. Si raccomanda di non premere <INVIO> dopo aver digitato la password, perché ciò aggiungerebbe una linea a capo a fine password."
+
+#: OTFEFreeOTFE_frmWizardCreateVolume.pas:2151
+msgid ""
+"You have now entered all the information required to create a new volume.\n"
+"\n"
+"Please check the summary shown below and click \"Finish\" to create the new volume, or use the \"Back\"/\"Next\" buttons to modify the details you have entered.\n"
+"\n"
+"If you would like to configure more advanced options, please select \"Advanced...\""
+msgstr ""
+"Sono state inserite tutte le informazioni richieste per creare un nuovo volume.\n"
+"\n"
+"Controllare il sommario seguente e cliccare \"Fine\" per creare il nuovo volume, o usare i pulsanti \"Indietro\"/\"Avanti\" per modificare i dettagli inseriti.\n"
+"\n"
+"Per configurare opzioni più avanzate, selezionare \"Avanzate...\""
+
+#. Ensure number of key iterations is > 0
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas:104
+msgid "The number of key iterations must be 1 or more"
+msgstr "Il numero di iterazioni chiave deve essere 1 o più"
+
+#. Ensure salt length is a multiple of 8 bits
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas:116
+msgid "The salt length must be a multiple of 8"
+msgstr "La lunghezza salt deve essere un multiplo di 8"
+
+#. they've specified a keyfilename
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas:130
+msgid "If you wish to store the volume's CDB in a keyfile, you must specify the file to use"
+msgstr "Se si vuole memorizzare il CDB del volume in un keyfile, si deve specificare il file da usare"
+
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas:231
+msgid ""
+"Please enter the number of PBKDF2 key iterations to be carried out on your password to generate an encryption key\n"
+"\n"
+"The higher the number, the greater the security offered - but the slower mounting will be (especially if mounting the volume on a PDA)\n"
+"\n"
+"Note: If this value is changed from its default, you will be required to enter it value every time you mount your volume. For this reason it is recommended that most users leave it at its default value, unless there is a particular need to do otherwise."
+msgstr ""
+"Digitare il numero di iterazioni di chiave PBKDF2 da eseguire sulla password per generare una chiave di crittaggio\n"
+"\n"
+"Più è alto il numero, maggiore è il livello di sicurezza - ma più è lento il montaggio (specialmente se si monta il volume su un PDA)\n"
+"\n"
+"Nota: Se questo valore viene cambiato dal default, vi verrà richiesto di inserirlo ogni volta che montate il volume. Per questa ragione si raccomanda per la maggioranza degli utenti di lasciarlo a default, a meno che non ci sia un motivo particolare per cambiarlo."
+
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas:240
+msgid ""
+"Please enter the amount of \"salt\" to be combined with your password to generate an encryption key.\n"
+"\n"
+"\"Salting\" your password increases security, and will slow down dictionary attacks against your volume.\n"
+"\n"
+"Note: The value entered must be a multiple of both 8 and the cypher's blocksize.\n"
+"\n"
+"Note: If this value is changed from its default, you will be required to enter it value every time you mount your volume. For this reason it is recommended that most users leave it at its default value, unless there is a particular need to do otherwise."
+msgstr ""
+"Inserire la quantità di \"salt\" da combinare con la password per generare una chiave di crittaggio.\n"
+"\n"
+"\"Dare salt\" alla password aumenta la sicurezza, e rallenta gli attacchi dizionario contro il vostro volume.\n"
+"\n"
+"Nota: Se questo valore viene cambiato dal default, vi verrà richiesto di inserirlo ogni volta che montate il volume. Per questa ragione si raccomanda per la maggioranza degli utenti di lasciarlo a default, a meno che non ci sia un motivo particolare per cambiarlo."
+
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas:245
+msgid ""
+"Please enter the drive letter you would normally like this volume mounted under.\n"
+"\n"
+"Note: You will be able to change this after the volume has been created."
+msgstr ""
+"Digitare la lettera di drive sotto la quale si vuole montare normalmente il volume.\n"
+"\n"
+"Nota: Sarà possibile cambiarla dopo che il volume è stato creato."
+
+#: OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas:256
+msgid ""
+"Please specify if you would like your volume's critical data block (CDB) to be written at the start of the new volume, or stored in a separate keyfile.\n"
+"\n"
+"The CDB is where metadata about your volume is stored, together with the master key used to carry out the actual encryption/decryption of your data.\n"
+"\n"
+"For most users, including the CDB as part of the volume file is probably the best option.\n"
+"\n"
+"If you store this information in a keyfile, you will need both your volume file AND a keyfile in order to mount your volume.\n"
+"\n"
+"Note: Storing the CDB as part of the volume file will increase your volume's size by 512 bytes."
+msgstr ""
+"Specificare se vorreste che il blocco dati critici del volume (CDB) deve essere scritto all'inizio del nuovo volume, o memorizzato in un keyfile separato.\n"
+"\n"
+"Nel CDB vengono salvati i metadati del volume, insieme alla chiave principale usata per implementare il crittaggio/decrittaggio dei dati.\n"
+"\n"
+"Per la maggioranza degli utenti, includere il CDB nel file volume è forse l'opzione migliore.\n"
+"\n"
+"Se salvate questa informazione in un keyfile, vi serviranno il volume E ANCHE un keyfile per poter montare il volume.\n"
+"\n"
+"Nota: Salvare il CDB come parte del file volume aumenterà le dimensioni del volume di 512 byte."
+
+#. Programmer's name for it: RS_PASTE
+#: OTFEFreeOTFE_PasswordRichEdit.pas:35
+msgid "Paste"
+msgstr "Incolla"
+
+#. Programmer's name for it: RS_NO_TOKENS_DETECTED
+#: OTFEFreeOTFE_PKCS11.pas:339
+msgid "<No tokens detected>"
+msgstr "<Nessun token>"
+
+#: OTFEFreeOTFE_PKCS11.pas:950
+msgid "CDB length changed during encryption; from %1 bytes to %2 bytes"
+msgstr "Lunghezza CDB cambiata durante il crittaggio: da %1 byte a %2 byte"
+
+#: OTFEFreeOTFE_PKCS11.pas:988
+msgid "CDB length changed during decryption; from %1 bytes to %2 bytes"
+msgstr "Lunghezza CDB cambiata durante il decrittaggio: da %1 byte a %2 byte"
+
+#. Open/Save file filters...
+#. Programmer's name for it: FILE_FILTER_FLT_VOLUMES
+#: OTFEFreeOTFE_U.pas:48
+msgid "Volume files (*.vol)|*.vol|All files|*.*"
+msgstr "File volume (*.vol)|*.vol|Tutti i file|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_KEYFILES
+#: OTFEFreeOTFE_U.pas:51
+msgid "Keyfiles (*.cdb)|*.cdb|All files|*.*"
+msgstr "Keyfile (*.cdb)|*.cdb|Tutti i file|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_VOLUMESANDKEYFILES
+#: OTFEFreeOTFE_U.pas:54
+msgid "Volume files and keyfiles (*.vol;*.cdb)|*.vol;*.cdb|Volume files (*.vol)|*.vol|Keyfiles (*.cdb)|*.cdb|All files|*.*"
+msgstr "File volume e keyfile (*.vol;*.cdb)|*.vol;*.cdb|File volume (*.vol)|*.vol|Keyfile (*.cdb)|*.cdb|Tutti i file|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_TEXTFILES
+#: OTFEFreeOTFE_U.pas:57
+msgid "Text files (*.txt)|*.txt|All files|*.*"
+msgstr "File di testo (*.txt)|*.txt|Tutti i file|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_CDBBACKUPS
+#: OTFEFreeOTFE_U.pas:60
+msgid "CDB backups (*.cdbBackup)|*.cdbBackup|All files|*.*"
+msgstr "Backup CDB (*.cdbBackup)|*.cdbBackup|Tutti i file|*.*"
+
+#. Programmer's name for it: FILE_FILTER_DFLT_CDBBACKUPS
+#: OTFEFreeOTFE_U.pas:61
+msgid "cdbBackup"
+msgstr "cdbBackup"
+
+#. Programmer's name for it: FILE_FILTER_FLT_EXECUTABLES
+#: OTFEFreeOTFE_U.pas:63
+msgid "Executable files (*.exe)|*.exe|All files|*.*"
+msgstr "File eseguibili (*.exe)|*.exe|Tutti i file|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_LINUX_SETTINGS
+#: OTFEFreeOTFE_U.pas:67
+msgid "Linux encryption settings (*.les)|*.les|All files|*.*"
+msgstr "Settaggi crittaggio Linux (*.les)|*.les|Tutti i file|*.*"
+
+#. Programmer's name for it: COUNT_BITS
+#: OTFEFreeOTFE_U.pas:69
+msgid "%1 bits"
+msgstr "%1 bit"
+
+#. Programmer's name for it: MOUNT_AS_FIXED_DISK
+#: OTFEFreeOTFE_U.pas:123
+msgid "Fixed disk"
+msgstr "Disco fisso"
+
+#. Programmer's name for it: MOUNT_AS_REMOVABLE_DISK
+#: OTFEFreeOTFE_U.pas:124
+msgid "Removable disk"
+msgstr "Disco removibile"
+
+#. Programmer's name for it: MOUNT_AS_CD
+#: OTFEFreeOTFE_U.pas:125
+msgid "CD"
+msgstr "CD"
+
+#. Programmer's name for it: MOUNT_AS_DVD
+#: OTFEFreeOTFE_U.pas:126
+msgid "DVD"
+msgstr "DVD"
+
+#. supports
+#: OTFEFreeOTFE_U.pas:6535
+msgid ""
+"WARNING: This volume appears to have been created with a later version of FreeOTFE than this software supports.\n"
+"\n"
+"You may continue, however:\n"
+"1) Your data may be read incorrectly due to changes in the decryption process, and\n"
+"2) It is not recommended that you write to this volume using this software."
+msgstr ""
+"AVVISO: Sembra che il volume sia stato creato con una versione di FreeOTFE non supportata da questo software.\n"
+"\n"
+"Si può continuare, ma:\n"
+"1) I dati potrebbero venir letti in modo errato per i cambiamenti nel processo di decrittaggio, e\n"
+"2) Non è raccomandato scrivere su questo volume usando questo software."
+
+#. cdkSizeBits
+#: OTFEFreeOTFE_U.pas:7190
+msgid "Failed to derive critical data key."
+msgstr "Impossibile derivare la chiave dati critici."
+
+#: OTFEFreeOTFE_U.pas:7192
+#: OTFEFreeOTFE_U.pas:7314
+msgid "Hash:"
+msgstr "Hash:"
+
+#: OTFEFreeOTFE_U.pas:7271
+msgid "Failed to decrypt encrypted block."
+msgstr "Impossibile decrittare blocco crittato."
+
+#: OTFEFreeOTFE_U.pas:7273
+#: OTFEFreeOTFE_U.pas:7317
+msgid "Cypher:"
+msgstr "Cypher:"
+
+#: OTFEFreeOTFE_U.pas:7313
+msgid "Failed to generate check MAC."
+msgstr "Impossibile generare controllo MAC."
+
+#. as appropriate
+#: OTFEFreeOTFE_U.pas:8169
+msgid "Mode unknown"
+msgstr "Modalità sconosciuta"
+
+#. Note the semicolon-space on the end
+#: OTFEFreeOTFE_U.pas:8194
+msgid "Mode unknown; "
+msgstr "Modalità sconosciuta;"
+
+#: OTFEFreeOTFE_U.pas:8271
+msgid "An error occured while trying to create your volume file"
+msgstr "Si è verificato un errore cercando di creare il file volume"
+
+#. Generate the report
+#: OTFEFreeOTFE_U.pas:8914
+msgid "Critical Data Block Dump"
+msgstr "Dump Blocco Dati Critici"
+
+#: OTFEFreeOTFE_U.pas:8916
+msgid "User Supplied Information"
+msgstr "Informazioni fornite dall'utente"
+
+#: OTFEFreeOTFE_U.pas:8917
+msgid "Filename (user mode)  : %1"
+msgstr "Nome file (modo user)  : %1"
+
+#: OTFEFreeOTFE_U.pas:8918
+msgid "Filename (kernel mode): %1"
+msgstr "Nome file (modo kernel): %1"
+
+#: OTFEFreeOTFE_U.pas:8919
+msgid "Password              : "
+msgstr "Password              : "
+
+#: OTFEFreeOTFE_U.pas:8920
+#: OTFEFreeOTFE_U.pas:8982
+#: OTFEFreeOTFE_U.pas:8993
+#: OTFEFreeOTFE_U.pas:9044
+msgid "Length: %1 bits"
+msgstr "Lunghezza: %1 bit"
+
+#: OTFEFreeOTFE_U.pas:8921
+#: OTFEFreeOTFE_U.pas:8994
+msgid "Data  : "
+msgstr "Dati   :"
+
+#: OTFEFreeOTFE_U.pas:8930
+msgid "Offset                : %1 bytes"
+msgstr "Offset                : %1 byte"
+
+#: OTFEFreeOTFE_U.pas:8931
+msgid "Salt length           : %1 bits"
+msgstr "Lunghezza Salt    : %1 bit"
+
+#: OTFEFreeOTFE_U.pas:8932
+msgid "Key iterations        : %1"
+msgstr "Iterazioni chiave    : %1"
+
+#: OTFEFreeOTFE_U.pas:8934
+msgid "Plaintext Information"
+msgstr "Informazioni in testo semplice"
+
+#: OTFEFreeOTFE_U.pas:8935
+msgid "Salt data             :"
+msgstr "Dati Salt              :"
+
+#: OTFEFreeOTFE_U.pas:8946
+msgid "Dump Performance"
+msgstr "Performance dump"
+
+#: OTFEFreeOTFE_U.pas:8949
+msgid "Time to process CDB   : %1 hours, %2 mins, %3.%4 secs"
+msgstr "Tempo per processare CDB   : %1 ore, %2 min, %3.%4 sec"
+
+#: OTFEFreeOTFE_U.pas:8952
+msgid "Autodetermined Information"
+msgstr "Informazioni autodeterminate"
+
+#: OTFEFreeOTFE_U.pas:8954
+msgid "ERROR: Unable to determine hash title?!"
+msgstr "ERRORE: Impossibile determinare il titolo hash?!"
+
+#: OTFEFreeOTFE_U.pas:8964
+msgid "ERROR: Unable to determine cypher title?!"
+msgstr "ERRORE: Impossibile determinare il titolo cypher?!"
+
+#: OTFEFreeOTFE_U.pas:8974
+msgid "Hash pretty title     : %1"
+msgstr "Titolo hash pretty   : %1"
+
+#: OTFEFreeOTFE_U.pas:8975
+msgid "Hash driver KM name   : %1"
+msgstr "Nome driver Hash KM   : %1"
+
+#: OTFEFreeOTFE_U.pas:8976
+msgid "Hash GUID             : %1"
+msgstr "GUID Hash             : %1"
+
+#: OTFEFreeOTFE_U.pas:8977
+msgid "Cypher pretty title   : %1"
+msgstr "Titolo cypher pretty : %1"
+
+#: OTFEFreeOTFE_U.pas:8978
+msgid "Cypher driver KM name : %1"
+msgstr "Nome driver cypher KM : %1"
+
+#: OTFEFreeOTFE_U.pas:8979
+msgid "Cypher GUID           : %1"
+msgstr "GUID Cypher           : %1"
+
+#: OTFEFreeOTFE_U.pas:8980
+msgid "Critical data key     : "
+msgstr "Chiave dati critici    :"
+
+#: OTFEFreeOTFE_U.pas:8981
+msgid "KDF   : %1"
+msgstr "KDF   : %1"
+
+#: OTFEFreeOTFE_U.pas:8983
+msgid "Key   : "
+msgstr "Chiave   : "
+
+#: OTFEFreeOTFE_U.pas:8992
+msgid "Plaintext encrypted block: "
+msgstr "Blocco crittato testo semplice:"
+
+#: OTFEFreeOTFE_U.pas:9003
+msgid "Check MAC             : "
+msgstr "Controllo MAC        :"
+
+#: OTFEFreeOTFE_U.pas:9004
+msgid "MAC algorithm: %1"
+msgstr "Algoritmo MAC: %1"
+
+#: OTFEFreeOTFE_U.pas:9005
+msgid "Length       : %1 bits"
+msgstr "Lunghezza : %1 bit"
+
+#: OTFEFreeOTFE_U.pas:9006
+#: OTFEFreeOTFE_U.pas:9017
+msgid "Data         : "
+msgstr "Dati          : "
+
+#: OTFEFreeOTFE_U.pas:9015
+msgid "Volume details block  : "
+msgstr "Dettagli blocco volume:"
+
+#: OTFEFreeOTFE_U.pas:9016
+msgid "Length       : %1"
+msgstr "Lunghezza : %1"
+
+#: OTFEFreeOTFE_U.pas:9028
+msgid "Volume Details Block"
+msgstr "Dettagli Blocco Volume"
+
+#: OTFEFreeOTFE_U.pas:9029
+msgid "CDB format ID         : %1"
+msgstr "ID formato CDB       : %1"
+
+#. Decode the VolumeFlags to human-readable format
+#: OTFEFreeOTFE_U.pas:9032
+msgid "Volume flags          : %1"
+msgstr "Flag volume           : %1"
+
+#: OTFEFreeOTFE_U.pas:9037
+msgid "Sector ID zero is at the start of the encrypted data"
+msgstr "Il settore ID zero è all'inizio dei dati crittati"
+
+#: OTFEFreeOTFE_U.pas:9038
+msgid "Sector ID zero is at the start of the host file/partition"
+msgstr "Il settore ID zero è all'inizio del file/partizione host"
+
+#: OTFEFreeOTFE_U.pas:9041
+msgid "Partition length      : %1 bytes"
+msgstr "Lunghezza partizione: %1 byte"
+
+#: OTFEFreeOTFE_U.pas:9043
+msgid "Master key            : "
+msgstr "Master key            :"
+
+#: OTFEFreeOTFE_U.pas:9045
+msgid "Key   :"
+msgstr "Chiave:"
+
+#: OTFEFreeOTFE_U.pas:9054
+msgid "Sector IV generation  : %1"
+msgstr "Generazione settore IV: %1"
+
+#: OTFEFreeOTFE_U.pas:9055
+msgid "Volume IV             : "
+msgstr "Volume IV             : "
+
+#: OTFEFreeOTFE_U.pas:9056
+msgid "Length : %1 bits"
+msgstr "Lunghezza : %1 bit"
+
+#: OTFEFreeOTFE_U.pas:9057
+msgid "IV data:"
+msgstr "Dati IV:"
+
+#: OTFEFreeOTFE_U.pas:9069
+msgid "Requested drive letter: None; use default"
+msgstr "Lettera driver richiesta: Nessuna; usa default"
+
+#: OTFEFreeOTFE_U.pas:9076
+msgid "Encrypted CDB"
+msgstr "CDB Crittato"
+
+#: OTFEFreeOTFE_U.pas:9148
+msgid "Bit %1: %2 (%3)"
+msgstr "Bit %1: %2 (%3)"
+
+#. The entire disk
+#: OTFEFreeOTFE_U.pas:9767
+msgid "Hard disk #%1 (entire disk)"
+msgstr "Hard disk #%1 (intero disco)"
+
+#. Note: We start from 1; partition 0 indicates the entire disk
+#: OTFEFreeOTFE_U.pas:9780
+msgid "Hard disk #%1, partition #%2"
+msgstr "Hard disk #%1, partizione #%2"
+
+#. Check to see if the entire disk exists, before checking for partitions
+#: OTFEFreeOTFE_U.pas:9823
+msgid "CDROM drive #%1"
+msgstr "CDROM drive #%1"
+
+#: OTFEFreeOTFE_U.pas:9972
+msgid "You do not appear to have any FreeOTFE hash drivers installed and started."
+msgstr "Non sembrano esserci driver FreeOTFE installati o avviati."
+
+#: OTFEFreeOTFE_U.pas:9988
+msgid "You do not appear to have any FreeOTFE cypher drivers installed and started."
+msgstr "Non sembrano esserci driver cypher FreeOTFE installati o avviati."
+
+#: OTFEFreeOTFE_U.pas:10165
+msgid "Dump Created By"
+msgstr "Dump Creato Da"
+
+#: OTFEFreeOTFE_U.pas:10180
+msgid "Platform              : %1"
+msgstr "Piattaforma         : %1"
+
+#: OTFEFreeOTFE_U.pas:10181
+msgid "Application version   : %1"
+msgstr "Versione applicazione: %1"
+
+#: OTFEFreeOTFE_U.pas:10182
+msgid "Driver ID             : %1"
+msgstr "ID Driver             : %1"
+
+#. Programmer's name for it: PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR
+#: OTFEFreeOTFE_WizardCommon.pas:108
+msgid "Please report seeing this message using the email address specified in the FreeOTFE documentation, together with a brief description of what you were attempting to do."
+msgstr "Si prega di segnalare questo messaggio usando l'indirizzo email specificato nella documentazione FreeOTFE, insieme con una breve descrizione di ciò che si stava tentando di fare."
+
+#. MS CryptoAPI...
+#: OTFEFreeOTFE_WizardCommon.pas:203
+msgid "The MS CryptoAPI could not be used to generate random data."
+msgstr "Impossibile usare la CryptoAPI MS per generare dati casuali."
+
+#: OTFEFreeOTFE_WizardCommon.pas:205
+#: OTFEFreeOTFE_WizardCommon.pas:546
+msgid "Please select another RNG, and try again"
+msgstr "Selezionare un altro RNG, e riprovare"
+
+#. cryptlib...
+#: OTFEFreeOTFE_WizardCommon.pas:220
+msgid "cryptlib could not be used to generate random data."
+msgstr "Impossibile usare cryptlib per generare dati casuali."
+
+#: OTFEFreeOTFE_WizardCommon.pas:222
+msgid "Please ensure the cryptlib DLL is in the correct location, and try again"
+msgstr "Assicurarsi che la DLL cryptlib sia nella posizione corretta, e riprovare"
+
+#. PKCS#11 token...
+#: OTFEFreeOTFE_WizardCommon.pas:242
+msgid "PKCS#11 token could not be used to generate random data."
+msgstr "Impossibile usare il token PKCS#11 per generare dati casuali."
+
+#: OTFEFreeOTFE_WizardCommon.pas:244
+msgid "Please ensure token is inserted and configured correctly"
+msgstr "Assicurarsi che il token sia inserito e configurato correttamente"
+
+#. GPG...
+#: OTFEFreeOTFE_WizardCommon.pas:263
+msgid "GPG could not be used to generate random data."
+msgstr "Impossibile usare GPG per generare dati casuali."
+
+#: OTFEFreeOTFE_WizardCommon.pas:265
+msgid "Please doublecheck the path to the GPG executable, and try again."
+msgstr "Ricontrollare il percorso dell'eseguibile GPG, e riprovare."
+
+#: OTFEFreeOTFE_WizardCommon.pas:274
+msgid "Unknown RNG selected?!"
+msgstr "RNG sconosciuto selezionato?!"
+
+#. Sanity check
+#: OTFEFreeOTFE_WizardCommon.pas:293
+msgid "Insufficient random data generated?!"
+msgstr "Insufficienti dati casuali generati?!"
+
+#: OTFEFreeOTFE_WizardCommon.pas:544
+msgid "The selected PKCS#11 token could not be used to generate random data."
+msgstr "Impossibile usare il token PKCS#11 selezionato per generare dati casuali."
+
+#. KeyboardEntryDlg..pbScramble..Caption
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:31
+msgid "Scramble &Keys"
+msgstr "Mescola chiavi"
+
+#. KeyboardEntryDlg..ckShift..Caption
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:999
+msgid "&Shift"
+msgstr "&Sposta"
+
+#. KeyboardEntryDlg..pbClear..Caption
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:1018
+msgid "C&lear"
+msgstr "Ripu&lisci"
+
+#. MouseRNGCaptureDlg..Caption
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.dfm:4
+msgid "Random Data Generation"
+msgstr "Generazione Dati Casuali"
+
+#. MouseRNGCaptureDlg..lblInstructions....Caption
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.dfm:48
+msgid "In order to generate sufficient random data, please waggle the mouse randomly over the area below until it changes color, then click \"OK\":"
+msgstr "Per generare dati casuali a sufficienza, agitare il mouse in modo casuale sull'area sottostante fino al cambio di colore, poi cliccare \"OK\":"
+
+#. FileList_F..Caption
+#: Shredder/FileList_U.dfm:4
+msgid "Report"
+msgstr "Rapporto"
+
+#. Programmer's name for it: BITS_REQUIRED
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.pas:72
+msgid "Bits required: %1"
+msgstr "Bit richiesti: %1"
+
+#. Programmer's name for it: BITS_GENERATED
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.pas:73
+msgid "Bits generated: %1"
+msgstr "Bit generati: %1"
+
+#. Programmer's name for it: E_EPKCS11_LISTINDEXOUTOFBOUNDS
+#: PKCS#11/pkcs11_api.pas:86
+msgid "List index out of bounds"
+msgstr "List index out of bounds"
+
+#. Programmer's name for it: E_EPKCS11_TOKENNOTPRESENT
+#: PKCS#11/pkcs11_api.pas:87
+msgid "Token not present"
+msgstr "Token non presente"
+
+#. Programmer's name for it: E_EPKCS11_DLLNOTFOUND
+#: PKCS#11/pkcs11_api.pas:88
+msgid "Unable to locate/load PKCS#11 library: %1"
+msgstr "Impossibile localizzare/caricare la libreria PKCS#11: %1"
+
+#. Programmer's name for it: E_EPKCS11_DLLNOAPI
+#: PKCS#11/pkcs11_api.pas:89
+msgid "Library specified doesn't support the PKCS#11 API"
+msgstr "La libreria specificata non supporta l'API PKCS#11"
+
+#. Programmer's name for it: SESSION_STATE_RO_PUBLIC
+#: PKCS#11/pkcs11_session.pas:38
+msgid "Read-only Public"
+msgstr "Pubblico sola lettura"
+
+#. Programmer's name for it: SESSION_STATE_RO_USER
+#: PKCS#11/pkcs11_session.pas:39
+msgid "Read-only User"
+msgstr "Utente sola lettura"
+
+#. Programmer's name for it: SESSION_STATE_RW_PUBLIC
+#: PKCS#11/pkcs11_session.pas:40
+msgid "Read/write Public"
+msgstr "Pubblico lettura/scrittura"
+
+#. Programmer's name for it: SESSION_STATE_RW_USER
+#: PKCS#11/pkcs11_session.pas:41
+msgid "Read/write User"
+msgstr "Utente lettura/scrittura"
+
+#. Programmer's name for it: SESSION_STATE_RW_SO
+#: PKCS#11/pkcs11_session.pas:42
+msgid "Read/write Security Officer"
+msgstr "Ufficiale Sicurezza lettura/scrittura"
+
+#. Programmer's name for it: SHREDMETHOD_ZEROS
+#: Shredder/Shredder.pas:44
+msgid "Zeros"
+msgstr "Zeri"
+
+#. Programmer's name for it: SHREDMETHOD_GUTMANN
+#: Shredder/Shredder.pas:49
+msgid "Gutmann (35 pass)"
+msgstr "Gutmann (35 passaggi)"
+
+#. Programmer's name for it: USER_CANCELLED
+#: Shredder/Shredder.pas:251
+msgid "User cancelled"
+msgstr "Utente annullato"
+
+#. Let user know what's going on...
+#: Shredder/Shredder.pas:606
+msgid "Custom"
+msgstr "Personalizzato"
+
+#: Shredder/Shredder.pas:609
+msgid "Shredding (%1 pass %2/%3) %4"
+msgstr "Obliterazione (%1 passaggio %2/%3) %4"
+
+#: Shredder/Shredder.pas:1141
+msgid "Error running external (3rd party) free space shredder"
+msgstr "Errore nell'esecuzione dell'obliteratore di spazio libero"
+
+#. left, create a file FIntFreeSpcFileSize (or smart) big
+#: Shredder/Shredder.pas:1173
+msgid "Shredding free space on drive %1:"
+msgstr "Obliterazione spazio libero sul drive %1:"
+
+#: Shredder/Shredder.pas:1453
+msgid "Shredding file slack on drive %1:"
+msgstr "Obliterazione file slack sul drive %1:"
+
+#: Shredder/Shredder.pas:1469
+msgid "The following files could not have their slack space shredded:"
+msgstr "Lo slack space dei seguenti files non è stato obliterato"
+
+#. SDUDiskPropertiesDialog..Caption
+#: SDUDiskPropertiesDlg.dfm:5
+msgid "Disk Properties"
+msgstr "Proprietà Disco"
+
+#. SDUDiskPropertiesDialog..Label1..Caption
+#: SDUDiskPropertiesDlg.dfm:24
+msgid "Tracks per cylinder:"
+msgstr "Tracce per cilindro:"
+
+#. SDUDiskPropertiesDialog..Label4..Caption
+#: SDUDiskPropertiesDlg.dfm:31
+msgid "Sectors per track:"
+msgstr "Settori per traccia:"
+
+#. SDUDiskPropertiesDialog..Label5..Caption
+#: SDUDiskPropertiesDlg.dfm:38
+msgid "Bytes per sector:"
+msgstr "Byte per settore:"
+
+#. SDUDiskPropertiesDialog..Label6..Caption
+#: SDUDiskPropertiesDlg.dfm:45
+msgid "MediaType"
+msgstr "Tipo Media"
+
+#. SDUDiskPropertiesDialog..Label7..Caption
+#: SDUDiskPropertiesDlg.dfm:52
+msgid "Size (in bytes):"
+msgstr "Dimensioni (byte):"
+
+#. SDUDiskPropertiesDialog..Label11..Caption
+#: SDUDiskPropertiesDlg.dfm:59
+msgid "Cylinders:"
+msgstr "Cilindri:"
+
+#. SDUDiskPropertiesDialog..Label8..Caption
+#: SDUDiskPropertiesDlg.dfm:66
+msgid "Disk number:"
+msgstr "Numero disco:"
+
+#. SDUDiskPropertiesDialog..Label10..Caption
+#: SDUDiskPropertiesDlg.dfm:73
+msgid "Disk signature:"
+msgstr "Firma disco:"
+
+#. SDUDiskPropertiesDialog..Label12..Caption
+#: SDUDiskPropertiesDlg.dfm:80
+msgid "Partition count:"
+msgstr "Conteggio partizioni:"
+
+#. SDUDiskPropertiesDialog..Label2..Caption
+#: SDUDiskPropertiesDlg.dfm:87
+msgid "Size (sensible units):"
+msgstr "Dimensioni (unità sensibili):"
+
+#. SDUPartitionPropertiesDialog..Caption
+#: SDUPartitionPropertiesDlg.dfm:5
+msgid "Partition Properties"
+msgstr "Proprietà Partizione"
+
+#. SDUPartitionPropertiesDialog..Label1..Caption
+#: SDUPartitionPropertiesDlg.dfm:24
+msgid "Starting offset:"
+msgstr "Offset iniziale:"
+
+#. SDUPartitionPropertiesDialog..Label4..Caption
+#: SDUPartitionPropertiesDlg.dfm:31
+msgid "Partition length (in bytes):"
+msgstr "Lunghezza partizione (byte):"
+
+#. SDUPartitionPropertiesDialog..Label5..Caption
+#: SDUPartitionPropertiesDlg.dfm:38
+msgid "Hidden sectors:"
+msgstr "Settori nascosti:"
+
+#. SDUPartitionPropertiesDialog..Label6..Caption
+#: SDUPartitionPropertiesDlg.dfm:45
+msgid "Partition number:"
+msgstr "Numero partizione:"
+
+#. SDUPartitionPropertiesDialog..Label7..Caption
+#: SDUPartitionPropertiesDlg.dfm:52
+msgid "Partition type:"
+msgstr "Tipo partizione:"
+
+#. SDUPartitionPropertiesDialog..Label9..Caption
+#: SDUPartitionPropertiesDlg.dfm:59
+msgid "Flags:"
+msgstr "Indicatori:"
+
+#. SDUPartitionPropertiesDialog..Label11..Caption
+#: SDUPartitionPropertiesDlg.dfm:66
+msgid "Mounted as:"
+msgstr "Montato come:"
+
+#. SDUPartitionPropertiesDialog..Label8..Caption
+#: SDUPartitionPropertiesDlg.dfm:73
+msgid "Partition length (sensible units):"
+msgstr "Lunghezza partizione (unità sensibili):"
+
+#. SDUProgressDialog..Caption
+#: SDUProgressDlg.dfm:6
+msgid "Progress"
+msgstr "Progresso"
+
+#. SDUProgressDialog..pnlProgressBar..lblEstTimeRemainText..Caption
+#: SDUProgressDlg.dfm:37
+msgid "Estimated time remaining:"
+msgstr "Tempo rimanente stimato:"
+
+#. SDUProgressDialog..pnlProgressBar..pbCancel..Caption
+#: SDUProgressDlg.dfm:61
+msgid "&Cancel"
+msgstr "Annulla"
+
+#. compiler error; copy of consts from "Consts.pas"
+#. Programmer's name for it: SDU_SMsgDlgWarning
+#: SDUDialogs.pas:155
+msgid "Warning"
+msgstr "Attenzione"
+
+#. Programmer's name for it: SDU_SMsgDlgError
+#: SDUDialogs.pas:156
+msgid "Error"
+msgstr "Errore"
+
+#. Programmer's name for it: SDU_SMsgDlgInformation
+#: SDUDialogs.pas:157
+msgid "Information"
+msgstr "Informazioni"
+
+#. Programmer's name for it: SDU_SMsgDlgConfirm
+#: SDUDialogs.pas:158
+msgid "Confirm"
+msgstr "Conferma"
+
+#. Programmer's name for it: UNABLE_TO_GET_DISK_LAYOUT
+#: SDUDiskPartitionsPanel.pas:22
+msgid "Unable to get disk layout for disk: %1"
+msgstr "Impossibile ottenere il layout del disco: %1"
+
+#. Programmer's name for it: RS_UNABLE_TO_OBTAIN_DATA
+#: SDUDiskPropertiesDlg.pas:45
+msgid "<Unable to obtain data>"
+msgstr "<Impossibile ottenere i dati>"
+
+#. Programmer's name for it: RS_UNKNOWN
+#: SDUGeneral.pas:138
+msgid "<unknown>"
+msgstr "<sconosciuto>"
+
+#. Programmer's name for it: RS_BOOTABLE
+#: SDUPartitionPropertiesDlg.pas:46
+msgid "Bootable"
+msgstr "Avviabile"
+
+#. Programmer's name for it: RS_REWRITE
+#: SDUPartitionPropertiesDlg.pas:47
+msgid "Rewrite"
+msgstr "Riscrivi"
+
+#. Programmer's name for it: RS_RECOGNISED
+#: SDUPartitionPropertiesDlg.pas:48
+msgid "Recognised"
+msgstr "Riconosciuto"
+
+#. Programmer's name for it: RS_NO_DRIVE_LETTER
+#: SDUPartitionPropertiesDlg.pas:51
+msgid "<No drive letter>"
+msgstr "<Nessun disco>"
+
+#. not particularly significant
+#: SDUProgressDlg.pas:201
+msgid "%1 days, %2 hours"
+msgstr "%1 giorni, %2 ore"
+
+#: SDUProgressDlg.pas:208
+msgid "%1 hours, %2 minutes"
+msgstr "%1 ore, %2 minuti"
+
+#: SDUProgressDlg.pas:215
+msgid "%1 minutes, %2 seconds"
+msgstr "%1 minuti, %2 secondi"
+
+#: SDUProgressDlg.pas:221
+msgid "%1 seconds"
+msgstr "%1 secondi"
+
+#: SDUProgressDlg.pas:289
+msgid "Operation cancelled by user"
+msgstr "Operazione annullata dall'utente"
+
+#~ msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
+#~ msgstr "File di testo (*.txt)|*.txt|Tutti i file (*.*)|*.*"
+#~ msgid "(any)"
+#~ msgstr "(tutti)"
+#~ msgid "FreeOTFE executable dir"
+#~ msgstr "Cartella dell'eseguibile FreeOTFE"
+#~ msgid "reSummary"
+#~ msgstr "reSommario"
+#~ msgid ""
+#~ "Please specify whether the volume you wish to modify is file or partition "
+#~ "based."
+#~ msgstr ""
+#~ "Specificare se il volume che si desiderra modificare sia a base file o "
+#~ "partizione."
+#~ msgid "%1 bytes"
+#~ msgstr "%1 byte"
+
+#: SDUAboutDlg.pas:61
+msgid "About %1"
+msgstr "Informazioni su %1"
+
+msgid "About %1..."
+msgstr "Informazioni su %1..."
+
+#: SDUAboutDlg.pas:82
+msgid "by %1"
+msgstr "%1"
+
+#. Programmer's name for it: SDU_SMsgDlgHelpNone
+#: SDUDialogs.pas:191
+msgid "No help available"
+msgstr "Nessuno aiuto disponibile"
+
+#. Programmer's name for it: SDU_SMsgDlgHelpHelp
+#: SDUDialogs.pas:192
+msgid "Help"
+msgstr "Aiuto"
+
+#. Programmer's name for it: SDU_SMsgDlgAbort
+#: SDUDialogs.pas:193
+msgid "&Abort"
+msgstr "&Fine"
+
+#. Programmer's name for it: SDU_SMsgDlgRetry
+#: SDUDialogs.pas:194
+msgid "&Retry"
+msgstr "&Riprova"
+
+#. Programmer's name for it: SDU_SMsgDlgIgnore
+#: SDUDialogs.pas:195
+msgid "&Ignore"
+msgstr "I&gnora"
+
+#. Programmer's name for it: SDU_SMsgDlgAll
+#: SDUDialogs.pas:196
+msgid "&All"
+msgstr "&Tutto"
+
+#. Programmer's name for it: SDU_SMsgDlgNoToAll
+#: SDUDialogs.pas:197
+msgid "N&o to All"
+msgstr "N&o a tutti"
+
+#. Programmer's name for it: SDU_SMsgDlgYesToAll
+#: SDUDialogs.pas:198
+msgid "Yes to &All"
+msgstr "S&ì a tutti"
+
+#. Programmer's name for it: SDU_SMsgDlgYes
+#: SDUDialogs.pas:186
+msgid "&Yes"
+msgstr "&Sì"
+
+#. Programmer's name for it: SDU_SMsgDlgNo
+#: SDUDialogs.pas:187
+msgid "&No"
+msgstr "&No"
+

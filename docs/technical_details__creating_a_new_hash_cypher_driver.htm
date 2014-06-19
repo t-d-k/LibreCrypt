@@ -1,0 +1,489 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Technical Details: Creating a New Hash/Cypher Driver]
+[NOT PLATFORM:PDF </TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+<UL>
+<LI><a href="technical_details__FreeOTFE_volumes_and_keyfiles.htm">Volumes and Keyfiles</a>
+
+<LI><a href="technical_details__FreeOTFE_CDB_layout.htm">Critical Data Block Layouts</a>
+<UL>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_1.htm">Format ID 1</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_2.htm">Format ID 2</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_3.htm">Format ID 3</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_4.htm">Format ID 4</a>
+</UL>
+
+<LI><a href="technical_details__creating_FreeOTFE_volumes.htm">Creating Volumes</a>
+<LI><a href="technical_details__mounting_FreeOTFE_volumes.htm">Mounting Volumes</a>
+<LI><a href="technical_details__partition_encryption_decryption.htm">Encrypted Partition Image Encryption/Decryption</a>
+<LI><a href="technical_details__registry_entries.htm">Registry Entries</a>
+<LI><a href="technical_details__RNGs.htm">Random Number Generators (RNGs)</a>
+<LI><a href="technical_details__build_notes.htm">Building the Software</a>
+<LI>Creating a New Hash/Cypher Driver
+<LI><a href="technical_details__filename_extensions.htm">Filename Extensions</a>
+</UL>
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<H3>Technical Details: Creating a New Hash/Cypher Driver
+</H3>
+
+
+These
+instructions specify in general terms, the steps in taking an existing
+cypher driver (Blowfish, in this case), and modifying it to create a
+new cypher driver. The procedure for creating a new hash driver is
+practically identical, but one of the existing hash drivers should be
+used as a base, instead of the Blowfish cypher.<br>
+
+<ol>
+
+  <li>Create a new directory to contain your new cypher driver
+  <ul>
+    <li>Make a copy of the directory containing the Blowfish cypher driver ("CYPHER_BLOWFISH")</li>
+  </ul>
+  <ul>
+    <li>Rename this directory to reflect the new cypher's name</li>
+  </ul>
+  <li>Modify "my_build_sys.bat"</li>
+  <ul>
+    <li>Edit this file using a text editor to change:</li>
+    <ul>
+      <li>All instances of "Blowfish" to reflect new cypher's name</li>
+      <li>The files needed</li>
+    </ul>
+
+  </ul>
+  <li>Modify "CYPHER_BLOWFISH.vcproj"</li>
+  <ul>
+    <li>Rename this file to reflect the new cypher's name</li>
+    <li>Edit this file using a text editor to change:</li>
+    <ul>
+      <li>All instances of "Blowfish" to reflect new cypher's name</li>
+      <li>What files are needed, as per my_build_sys.bat</li>
+    </ul>
+  </ul>
+  <li>Modify "src/sources"</li>
+  <ul>
+    <li>Edit this file using a text editor to change:</li>
+    <ul>
+<li>All instances of "Blowfish" to reflect new cypher's name</li><li>What files are needed, as per my_build_sys.bat</li>
+    </ul>
+  </ul>
+  <li>In the "src" directory, rename all the "*Blowfish*" files to reflect the new cypher's name</li>
+  <li>Start VC++ and load the "FreeOTFE.sln" Visual Studio Solution.</li>
+  <li>Add the "....vcproj" project file you modified above into the solution.</li>
+  <li>Within VC++, modify the new FreeOTFECypher<span style="font-style: italic;">XXX</span>.rc file to change all instances of "Blowfish" to reflect new cypher's name</li>
+  <li>Within VC++, modify FreeOTFECypher<span style="font-style: italic;">XXX</span>.h</li>
+  <ul>
+    <li>Change:</li>
+  </ul>
+  <ol>
+    <ul>
+      <li>All instances of "Blowfish" to reflect new cypher name</li><li>Add/remove any "DRIVER_CIPHER_TITLE_<span style="font-style: italic;">XXX</span>" entries as required
+
+      <li>All of the GUID values (this is <span style="font-style: italic;">important!</span> The FreeOTFE GUI uses these values to differentiate between the different cypher implementations)<li>Set the definition of
+"CYPHERS_SUPPORTED" to reflect the number of different cyphers the driver will
+provide (i.e. the number of "DRIVER_CIPHER_TITLE_<span style="font-style: italic;">XXX</span>" definitions you have)
+
+    </ul>
+  </ol>
+  <li>Within VC++, modify FreeOTFECypher<span style="font-style: italic;">XXX</span>.c</li>
+  <ul>
+    <li>Change:</li>
+    <ul>
+      <li>The cipher descriptions returned</li>
+      <li>The initialization and encrypt/decrypt routines to check for, and use the correct cypher</li>
+    </ul>
+  </ul><li>Modify
+"clean.bat", in the top level "src" directory to clean up any object,
+garbage, etc files that are created when your driver is built
+
+  <li>You should now be able to build your new cypher driver, which may then be installed as per any other cypher or hash driver.</li>
+</ol>
+
+<A NAME="level_4_heading_1"><H4>Hash Length/Blocksize</H4></A>
+
+When your hash driver is asked for details of the hash algorithms it
+provides, the hash length returned for each hash algorithm must be one
+of the following:
+<P>
+
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+<tbody>
+<tr>
+<th style="vertical-align: top; width: 10%;">Hash length<br>
+</th>
+<th style="vertical-align: top; width: 5%;">Validity<br>
+</th>
+<th style="vertical-align: top; width: 25%;">Meaning<br>
+</th>
+<th style="vertical-align: top;">Comments<br>
+</th>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 10%;">0</TD>
+
+<td style="vertical-align: top; width: 5%;">Valid</TD>
+
+<td style="vertical-align: top; width: 25%;">Hash values returned are 0 bits long.</td>
+<td style="vertical-align: top;">Hashes which return zero length hash values cannot be
+used with FreeOTFE volumes. (FreeOTFE volumes use PKCS#5 PBKDF2 (HMAC), which requires that the
+length of hash values returned is greater than zero.)</TD>
+
+</tr>
+<tr>
+<td style="vertical-align: top; width: 10%;">Less than 0</TD>
+
+<td style="vertical-align: top; width: 5%;">Valid</TD>
+
+<td style="vertical-align: top; width: 25%;">Hash values returned are of variable length (e.g. the "NULL" hash, which returns its input as the generated hash value.)</td>
+<td style="vertical-align: top;">Hashes which return variable
+length hash values cannot be used with FreeOTFE volumes. (FreeOTFE volumes use PKCS#5 PBKDF2
+(HMAC), which requires that the length of the hash values used is
+fixed.) </td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 10%;">Greater than 0</TD>
+
+<td style="vertical-align: top; width: 5%;">Valid</TD>
+
+<td style="vertical-align: top; width: 25%;">Hash values returned have a fixed, defined length (e.g. SHA-512's hash length is 512 bits)</TD>
+
+<td style="vertical-align: top;">Must be a multiple of 8.</TD>
+
+</tr>
+</tbody>
+</table>
+
+
+<P>
+
+When your hash driver is asked for details of the hash algorithms it
+provides, the blocksize returned for each hash algorithm must be one
+of the following:
+<P>
+
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+<tbody>
+<tr>
+<th style="vertical-align: top; width: 10%;">Hash blocksize<br>
+</th>
+<th style="vertical-align: top; width: 5%;">Validity<br>
+</th>
+<th style="vertical-align: top; width: 25%;">Meaning<br>
+</th>
+<th style="vertical-align: top;">Comments<br>
+</th>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 10%;">0</TD>
+
+<td style="vertical-align: top; width: 5%;">Valid</TD>
+
+<td style="vertical-align: top; width: 25%;">Hash algorithm does not process input data.</td>
+<td style="vertical-align: top;">Hashes may only have a blocksize of 0
+bits if the length of the hash values they output is also 0 bits long,
+or if they ignore their input.
+<P>Hashes which use zero length blocksizes cannot be
+used for FreeOTFE volumes. (FreeOTFE volumes use HMAC, which requires that the
+blocksize of hashes used is greater than zero.)</TD>
+
+</tr>
+<tr>
+<td style="vertical-align: top; width: 10%;">Less than 0</TD>
+
+<td style="vertical-align: top; width: 5%;">Valid</TD>
+
+<td style="vertical-align: top; width: 25%;">Hash algorithm processes input data in variable-length blocks.</td>
+<td style="vertical-align: top;">Hashes which use variable length blocksizes cannot be
+used for FreeOTFE volumes. (FreeOTFE volumes use HMAC, which requires that the
+blocksize of hashes is a fixed size.) </td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 10%;">Greater than 0</TD>
+
+<td style="vertical-align: top; width: 5%;">Valid</TD>
+
+<td style="vertical-align: top; width: 25%;">Hash algorithm processes input data in defined, fixed blocks (e.g. SHA-512's block size is 1024 bits)</TD>
+
+<td style="vertical-align: top;">Must be a multiple of 8.
+</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+
+<A NAME="level_4_heading_2"><H4>Cypher Keysize/Blocksize</H4></A>
+
+When your hash driver is asked for details of the cyphers it
+provides, the keysize returned for each cypher must be one
+of the following:
+<P>
+
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+<tbody>
+<tr>
+<th style="vertical-align: top; width: 10%;">Cypher keysize<br>
+</th>
+<th style="vertical-align: top; width: 5%;">Validity<br>
+</th>
+<th style="vertical-align: top; width: 25%;">Meaning<br>
+</th>
+<th style="vertical-align: top;">Comments<br>
+</th>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 10%;">0</TD>
+
+<td style="vertical-align: top; width: 5%;">Valid</TD>
+
+<td style="vertical-align: top; width: 25%;">No key is used during encryption (e.g.
+if the cypher doesn't encrypt data, just returns the plaintext as the
+cyphertext; or if the cypher uses a hardcoded key)</TD>
+
+<td style="vertical-align: top;">
+      </TD>
+
+</tr>
+<tr>
+<td style="vertical-align: top; width: 10%;">Less than 0</TD>
+
+<td style="vertical-align: top; width: 5%;">Valid</TD>
+
+<td style="vertical-align: top; width: 25%;">The cypher takes variable keylengths (e.g. the "XOR" cypher)</td>
+<td style="vertical-align: top;"> </TD>
+
+</tr>
+<tr>
+<td style="vertical-align: top; width: 10%;">Greater than 0</TD>
+
+<td style="vertical-align: top; width: 5%;">Valid</TD>
+
+<td style="vertical-align: top; width: 25%;">The cypher accepts only a specific keysize (e.g. full-strength DES only accepts 64 bit keys)</TD>
+
+<td style="vertical-align: top;">Must be a multiple of 8.
+</td>
+</tr>
+</tbody>
+</table>
+
+
+<P>
+
+When your hash driver is asked for details of the cyphers it
+provides, the blocksize returned for each cypher must be one
+of the following:
+<P>
+
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2" cellspacing="2">
+
+<tbody>
+<tr>
+<th style="vertical-align: top; width: 10%;">Cypher blocksize<br>
+</th>
+<th style="vertical-align: top; width: 5%;">Validity<br>
+</th>
+<th style="vertical-align: top; width: 25%;">Meaning<br>
+</th>
+<th style="vertical-align: top;">Comments<br>
+</th>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 10%;">0</TD>
+
+<td style="vertical-align: top; width: 5%;">Valid</TD>
+
+<td style="vertical-align: top; width: 25%;">Cypher does not process input data. (e.g. the "NULL" cypher, which just returns the supplied plaintext as cyphertext)</TD>
+
+<td style="vertical-align: top;">If the blocksize is 0, then no IVs will be used for encrypting/decrypting.
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 10%;">Less than 0</TD>
+
+<td style="vertical-align: top; width: 5%;">Valid</TD>
+
+<td style="vertical-align: top; width: 25%;">Cypher processes input data in
+variable-length blocks. (e.g. XOR processes data in blocks with the
+same length as the key being used)</TD>
+
+<td style="vertical-align: top;">If the blocksize isn't fixed, then no IVs will be used for encrypting/decrypting.</TD>
+
+</tr>
+<tr>
+<td style="vertical-align: top; width: 10%;">Greater than 0</TD>
+
+<td style="vertical-align: top; width: 5%;">Valid</TD>
+
+<td style="vertical-align: top; width: 25%;">Cypher processes input data in defined, fixed blocks (e.g. AES has a block size is 128 bits)
+</td>
+<td style="vertical-align: top;">Must be a multiple of 8.
+</td>
+</tr>
+</tbody>
+</table>
+
+
+<P>
+
+<h4>Miscellaneous Comments: Cypher Drivers<br>
+</h4>
+<ul>
+  <li>
+When called upon to encrypt/decrypt data, if the "IVLength" passed in is 0, then "IV" should be <span style="font-style: italic;">ignored</span> (it <span style="font-style: italic;">may</span> be set to NULL)</li>
+
+  <li>When writing a cypher driver, the encrypt/decrypt implementation should <span style="font-style: italic;">not </span>write to the input buffer; only the output buffer (i.e. when encrypting, do <span style="font-style: italic;">not </span>write to the plaintext buffer passed in; when decrypting, do <span style="font-style: italic;">not </span>write
+to the cyphertext buffer). An optimisation in the driver involves the
+use of a single buffer for input/output. You may find that you'll need
+to create a temporary buffer equal to your blocksize when implementing
+some modes of operation (e.g. CBC)<br>
+<LI><B>Important:</B> Don't read/write to the <I>input</I> plaintext/cyphertext buffer! Only the <I>output</I> ones!
+  </li>
+</ul>
+
+<P>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Technical Details: Registry Entries]
+[NOT PLATFORM:PDF </TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+<UL>
+<LI><a href="technical_details__FreeOTFE_volumes_and_keyfiles.htm">Volumes and Keyfiles</a>
+
+<LI><a href="technical_details__FreeOTFE_CDB_layout.htm">Critical Data Block Layouts</a>
+<UL>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_1.htm">Format ID 1</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_2.htm">Format ID 2</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_3.htm">Format ID 3</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_4.htm">Format ID 4</a>
+</UL>
+
+<LI><a href="technical_details__creating_FreeOTFE_volumes.htm">Creating Volumes</a>
+<LI><a href="technical_details__mounting_FreeOTFE_volumes.htm">Mounting Volumes</a>
+<LI><a href="technical_details__partition_encryption_decryption.htm">Encrypted Partition Image Encryption/Decryption</a>
+<LI>Registry Entries
+<LI><a href="technical_details__RNGs.htm">Random Number Generators (RNGs)</a>
+<LI><a href="technical_details__build_notes.htm">Building the Software</a>
+<LI><a href="technical_details__creating_a_new_hash_cypher_driver.htm">Creating a New Hash/Cypher Driver</a>
+<LI><a href="technical_details__filename_extensions.htm">Filename Extensions</a>
+</UL>
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<H3>Technical Details: Registry Entries
+</H3>
+
+
+The PC version of FreeOTFE
+doesn't create any registry entries for itself unless the user chooses
+to associate ".vol" files with the application, in which case only
+those registry entries which are required to associate the FreeOTFE
+executable with the filename extension are created. All user
+options and settings are stored in a ".ini" file, unless the
+user <I>explicitly</I> configures them to be stored in the registry.
+<P>
+In addition to this, MS Windows does create a registry entry for each FreeOTFE driver used. This is inevitable; <span style="font-style: italic;">all</span> OTFE systems running under MS Windows are required to do this in order to function correctly.
+<P>
+The following detail the registry entries are typically created by MS Windows:
+<P>
+Registry key: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\<span style="font-style: italic;">&lt;driver name&gt;</span>
+<P>
+These keys may have the following values under them:
+<P>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="vertical-align: top;">Value<br>
+      </th>
+      <th style="vertical-align: top;">Type<br>
+      </th>
+      <th style="vertical-align: top;">Meaning<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">ErrorControl</TD>
+
+      <td style="vertical-align: top;">DWORD</td>
+      <td style="vertical-align: top;">0x00000001 - Normal error handling</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Start</TD>
+
+      <td style="vertical-align: top;">DWORD</td>
+      <td style="vertical-align: top;">0x00000001 - Driver started at system<br>
+0x00000003 - Driver started manually</TD>
+
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Type</TD>
+
+      <td style="vertical-align: top;">DWORD</TD>
+
+      <td style="vertical-align: top;">0x00000001</TD>
+
+    </tr><tr>
+      <td style="vertical-align: top;">Portable</TD>
+
+      <td style="vertical-align: top;">DWORD</TD>
+
+      <td style="vertical-align: top;">This value is optional, but set to 0x00000001 if present.<br>
+This value flags that the relevant driver was installed in "portable mode", and should be removed</TD>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<P>
+The PDA version operates in a similar
+manner, though no registry entries are created automatically by the OS
+for the drivers used. Instead, FreeOTFE4PDA is required to create a
+sequence of registry entries when a volume is mounted. These registry
+entries are deleted once the volume is dismounted.
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>Portable Mode Impact</H3></A>
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_VistaPCIcon.png" alt="PC version only" >
+    </TD>
+    <TD width=100%>
+This section applies to the PC version of FreeOTFE <I>only</I>
+
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+Although no files are copied to your computers hard drive when using portable mode,
+because part of the manner in which MS Windows manages device
+drivers, Windows still writes certain details
+about the portable mode drivers to the registry. Specifically, the full
+path and filename of the drivers used together with other basic
+information on the drivers as detailed above.
+
+<P>
+When portable mode is stopped, most of this information is deleted by Windows automatically. However:
+
+<P>
+<ol>
+  <li>Because of the way in which the registry stores data, an attacker <span style="font-style: italic;">may</span>
+be able to recover that information which has been deleted (this is analogous
+to deleting a file on your filesystem; although its directory entry
+may have been marked as "deleted", the data may still be recoverable)</li>
+  <li>When Windows deletes its registry entries, it doesn't delete all
+of them (e.g. HKLM\SYSTEM\CurrentControlSet\Enum\Root\LEGACY_...)</li>
+</ol>
+
+<P>
+It is not possible to securely delete the relevant registry entries
+without "going behind Windows' back" - not exactly recommended when
+working with kernel mode device drivers!
+
+<P>
+<I>It should be noted that this applies equally to <B>all</B> disk encryption systems that support any kind of "portable mode".</I>
+
+<P>
+Should it be a concern that an attacker may discover which FreeOTFE drivers were being used, it is suggested that you either:<br>
+
+<ol>
+  <li>Change the filenames of the FreeOTFE drivers you will be using in
+portable mode (e.g. rename "FreeOTFECypherAES.sys" to
+"FreeOTFECypherTwofish.sys"). This will cause the data written to the registry to reflect this new
+filename, hopefully convincing an attacker that the driver used was a
+different one.
+  <li>If you only use one cypher and hash driver in portable mode,
+store a number (or all) of the other cypher/hash drivers with your "portable" version of FreeOTFE.
+Even if an attacker can determine which drivers you were using in
+portable mode, that attacker will not be able to determine which of the
+portable drivers you were actually using to encrypt/decrypt your data
+with.
+</ol>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

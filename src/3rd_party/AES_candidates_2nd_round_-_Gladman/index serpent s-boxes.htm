@@ -1,0 +1,292 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><title>Serpent S Boxes</title>
+
+<meta name="Microsoft Border" content="l"></head>
+
+<body><!--msnavigation--><table dir="ltr" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td valign="top" width="1%">
+
+<p align="center"><img src="index%20serpent%20s-boxes_files/brg.gif" border="0" height="200" width="150">
+&nbsp;&nbsp;&nbsp; 
+<table border="0" cellpadding="2" cellspacing="0">
+  <tbody><tr>
+    <td><font face="Arial" size="2"><img src="index%20serpent%20s-boxes_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td colspan="2"><font face="Arial Narrow" size="2"><a href="http://fp.gladman.plus.com/index.htm">About
+      Me</a></font></td>
+  </tr>
+  <tr>
+    <td><font face="Arial" size="2"><img src="index%20serpent%20s-boxes_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td colspan="2"><a href="http://fp.gladman.plus.com/career/index.htm"><font face="Arial Narrow" size="2">Background</font></a></td>
+  </tr>
+  <tr>
+    <td><font face="Arial" size="2"><img src="index%20serpent%20s-boxes_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td colspan="2"><font face="Arial Narrow" size="2">Policy Analysis</font></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><font face="Arial Narrow" size="2">
+    <img src="index%20serpent%20s-boxes_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td><a href="http://fp.gladman.plus.com/policy_orgs.htm"><font face="Arial Narrow" size="2">Organisations</font></a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><font face="Arial Narrow" size="2">
+    <img src="index%20serpent%20s-boxes_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td><a href="http://fp.gladman.plus.com/cryptography_policy/index.htm"><font face="Arial Narrow" size="2">Cryptography</font></a></td>
+  </tr>
+  <tr>
+    <td><font face="Arial" size="2"><img src="index%20serpent%20s-boxes_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td colspan="2"><font face="Arial Narrow" size="2">Technology</font></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><font face="Arial Narrow" size="2">
+    <img src="index%20serpent%20s-boxes_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td><a href="http://fp.gladman.plus.com/cryptography_technology/index.htm"><font face="Arial Narrow" size="2">Cryptography</font></a></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><font face="Arial Narrow" size="2">
+    <img src="index%20serpent%20s-boxes_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td><font face="Arial Narrow" size="2">
+    <a href="http://fp.gladman.plus.com/computing/index.htm">Computing</a></font></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><font face="Arial Narrow" size="2">
+    <img src="index%20serpent%20s-boxes_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td><font face="Arial Narrow" size="2">Mathematics</font></td>
+  </tr>
+  <tr>
+    <td><font face="Arial" size="2"><img src="index%20serpent%20s-boxes_files/bullet.gif" border="0" height="17" width="17"></font></td>
+    <td colspan="2"><a href="http://fp.gladman.plus.com/papers/index.htm"><font face="Arial Narrow" size="2">Papers</font></a></td>
+  </tr>
+</tbody></table>
+
+</p><p align="center"><a href="http://www.no2id.net/"><img src="index%20serpent%20s-boxes_files/square_1.gif" alt="NO2ID - Stop ID cards and the database state" style="border: 0pt none ; width: 120px; height: 90px;"></a></p>
+
+</td><td valign="top" width="24"></td><!--msnavigation--><td valign="top"><h1><font color="#0000ff" face="Arial">Serpent</font></h1>
+
+<h2><font color="#0000ff" face="Arial">Serpent S Boxes as Boolean Functions</font></h2>
+
+<p><font face="Arial">The fastest implementations of Serpent depend on finding efficient boolean function
+decompositions for the eight Serpent S boxes and their inverses.&nbsp; One way of looking
+for such expressions is to perform a recursive search of all combinations of primitive
+boolean terms up to some limit.&nbsp; <a href="http://fp.gladman.plus.com/cryptography_technology/serpent/anal1.cpp">Here</a> is the program I use to
+do this - it works simply by looking for the minimum number of terms required to express
+the S box in question.</font> </p>
+
+<p><font face="Arial">Sam Simpson has been running this program as a background task on a cluster of high
+performance servers.&nbsp; After a search involving around 1000 machine hours we have
+found the S box decompositions given <a href="http://fp.gladman.plus.com/cryptography_technology/aesr1/f_box.h">here</a>.&nbsp;</font> </p>
+
+<p><font face="Arial">Although these are the S boxes we have found with the minimum number of terms, it is
+not always true that these expansions give the best results.&nbsp; On the Pentium Pro and
+Pentium II&nbsp; dependency chains, out of order execution and cache line relationships
+between temporary variables means that the results can vary considerably as small changes
+are made in the way the S box functions are actually calculated.</font></p>
+
+<p><font face="Arial">The functions given above are those directly output by the analyser.&nbsp; On any
+particular machine it will be desirable to experiment with the order of terms (where the
+is quite a lot of flexibility) and with the reuse of the temporary variables used during
+function evaluation (the raw analyser output does not reuse temporaries).</font> </p>
+
+<h2><font color="#0000ff" face="Arial">Serpent Performance</font> </h2>
+
+<h3><font color="#0000ff">Pentium II/III without MMX</font> </h3>
+
+<p><font face="Arial"><a href="http://www.ii.uib.no/%7Eosvik/">Dag Arne
+Osvik</a> has recently used a new search technique to find S box boolean
+functions tuned for the Pentium architecture.&nbsp; I have coded <a href="http://fp.gladman.plus.com/cryptography_technology/serpent/serpent.cpp"> Serpent in
+assembler</a> using these functions and obtained the following performance results
+(using my AES2 testing environment).&nbsp;&nbsp; The testing was undertaken on a
+600MHz PIII system but the speed figures are given for the 200MHz reference
+platform.</font> </p>
+
+<div align="center">
+  <center>
+  <table bordercolorlight="#FFFFFF" bordercolordark="#FFFFFF" bgcolor="#c0c0c0" border="2" bordercolor="#ffffff" cellspacing="0">
+    <tbody><tr>
+      <td rowspan="2" bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial">&nbsp;Key
+        Length&nbsp;&nbsp;</font></td>
+      <td rowspan="2" bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial">&nbsp;Operation&nbsp;&nbsp;</font></td>
+      <td colspan="2" bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial">&nbsp;Static
+        Key Schedule (C Interface)&nbsp;&nbsp;</font></td>
+      <td colspan="2" bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial">&nbsp;
+        Encapsulated Key Schedule (C++ Interface)&nbsp;&nbsp;</font></td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial">&nbsp;&nbsp;&nbsp;
+        cycles&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial">speed
+        (mbits/second)</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial">&nbsp;&nbsp;
+        cycles&nbsp;&nbsp;&nbsp;</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial">speed
+        (mbits/second)</font></td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" rowspan="3" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">128</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">key
+        set</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1292</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc">&nbsp;</td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1361</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc">&nbsp;</td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">encrypt</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">759</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">33.7</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">771</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">33.2</font></td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">decrypt</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">775</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">33.0</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">769</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">33.2</font></td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" rowspan="3" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">192</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">key
+        set</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1294</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc">&nbsp;</td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1360</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc">&nbsp;</td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">encrypt</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">761</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">33.6</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">768</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">33.3</font></td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">decrypt</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">772</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">33.1</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">765</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">33.4</font></td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" rowspan="3" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">256</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">key
+        set</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1273</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc">&nbsp;</td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1350</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc">&nbsp;</td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">encrypt</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">769</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">33.2</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">764</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">33.5</font></td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">decrypt</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">767</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">33.3</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">770</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">33.2</font></td>
+    </tr>
+  </tbody></table>
+  </center>
+</div>
+
+<h3><font color="#0000ff"><a name="pmmx"></a>Pentium II/III with MMX</font></h3>
+<p><font face="Arial">Serpent maps well onto the Pentium MMX registers since the
+bit-slice technique it uses allows two blocks to be processed in parallel by
+placing the corresponding 32-bit words of each block into the upper and lower
+32-bit words of each MMX register respectively. This technique is illustrated by
+this <a href="http://fp.gladman.plus.com/cryptography_technology/serpent/serpent.asm">assembler implementation</a> using the NASM assembler
+with a Microsoft Visual C/C++ test harness.&nbsp; This implementation uses a
+pre-computed key schedule and is tuned for bulk encryption with the following
+results (cycles for two 128-bit blocks with the resulting speed based on the
+200MHz reference platform):</font></p>
+
+<div align="center">
+  <center>
+  <table bordercolorlight="#FFFFFF" bordercolordark="#FFFFFF" bgcolor="#c0c0c0" border="2" bordercolor="#ffffff" cellspacing="0">
+    <tbody><tr>
+      <td rowspan="2" bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial">&nbsp;Key
+        Length&nbsp;&nbsp;</font></td>
+      <td rowspan="2" bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial">&nbsp;Operation&nbsp;&nbsp;</font></td>
+      <td colspan="2" bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial">&nbsp;Assembler
+        with a C Interface&nbsp;&nbsp;</font></td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial">&nbsp;&nbsp;&nbsp;
+        cycles&nbsp;&nbsp;&nbsp;&nbsp;</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#0033cc"><font color="#ffffff" face="Arial">speed
+        (mbits/second)</font></td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" rowspan="3" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">128</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">key
+        set</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1484</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc">&nbsp;</td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">encrypt</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1138</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">44.9</font></td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">decrypt</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1112</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">46.0</font></td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" rowspan="3" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">192</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">key
+        set</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1492</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc">&nbsp;</td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">encrypt</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1134</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">45.1</font></td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">decrypt</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1111</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">46.0</font></td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" rowspan="3" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">256</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">key
+        set</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1468</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc">&nbsp;</td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">encrypt</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1134</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">45.1</font></td>
+    </tr>
+    <tr>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">decrypt</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">1122</font></td>
+      <td bordercolor="#C0C0C0" bordercolorlight="#C0C0C0" bordercolordark="#C0C0C0" align="center" bgcolor="#99ffcc"><font face="Arial">45.6</font></td>
+    </tr>
+  </tbody></table>
+  </center>
+</div>
+
+<p><font face="Arial">There is a penalty compared with non-MMX code because the
+MMX instruction set lacks a rotate instruction but this is more than compensated
+by the ability to process two blocks at a time.&nbsp; The use of S boxes that do
+not require table lookups is also a considerable benefit since the whole
+algorithm can be run in the MMX registers with only the key schedule requiring
+memory accesses.</font></p>
+<hr>
+
+<p><a href="http://fp.gladman.plus.com/index.htm"><em><font face="Arial" size="2">Back to Brian Gladman's
+Home Page</font></em></a></p>
+<!--msnavigation--></td></tr><!--msnavigation--></tbody></table></body></html>

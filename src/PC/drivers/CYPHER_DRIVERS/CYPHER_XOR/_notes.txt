@@ -1,0 +1,8 @@
+
+*) This "encryption" driver just XOR it's input with the password supplied.
+
+*) This driver reports a keysize of "-1" bits
+
+*) This driver reports a blocksize of "-1" bits
+
+

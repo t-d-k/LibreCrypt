@@ -1,0 +1,34 @@
+!IF 0
+
+Copyright (C) Microsoft Corporation, 1997 - 1997
+
+Module Name:
+
+    sources.
+
+!ENDIF
+
+TARGETNAME=FreeOTFECypherSerpent_Gladman
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+!IF 0
+  Include the CSQ stuff...
+!ENDIF
+TARGETLIBS=$(DDK_LIB_PATH)\csq.lib
+
+INCLUDES=..\..\..\DRIVER\inc;..\..\..\Common\inc;..\..\Common\inc;..\..\..\CYPHER_DRIVERS\Common\inc;..\..\..\..\..\3rd_party\ltc_gladman_xts;..\..\..\..\..\3rd_party\AES_candidates_2nd_round_-_Gladman\aes.r2.algs;..\..\..\..\..\3rd_party\AES_candidates_2nd_round_-_Gladman\aes.r2.test;..\..\..\..\..\Common\CYPHER_DRIVERS\Common\inc;..\..\..\..\..\Common\Common\inc
+
+SOURCES=FreeOTFECypherDriver.c \
+        FreeOTFECypherImpl.c \
+        FreeOTFECypherAPICommon.c \
+        FreeOTFEDebug.c \
+        FreeOTFElib.c \
+        FreeOTFEDriverlib.c \
+        FreeOTFECypherSerpent_Gladman.c \
+        FreeOTFECypherSerpent_Gladman.rc \
+        ltc_gladman_xts_init.c \
+        ltc_gladman_xts_done.c \
+        ltc_gladman_xts_encrypt.c \
+        ltc_gladman_xts_decrypt.c \
+        ltc_gladman_xts_mult_x.c \
+        serpent.c

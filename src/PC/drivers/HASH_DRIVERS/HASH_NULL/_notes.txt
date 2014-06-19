@@ -1,0 +1,9 @@
+
+
+*) This "hash driver" will copy the input data directly to the output.
+
+*) When used with the FreeOTFE system, use of this hash will *fail* if the length of the password is longer than the MAX_HASH_TITLE const.
+
+*) This driver reports it creates hashes of length "-1"
+
+

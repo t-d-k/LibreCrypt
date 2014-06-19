@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Portable Mode</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI>Portable Mode
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<h2>Portable Mode</h2>
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_VistaPCIcon.png" alt="PC version only" >
+    </TD>
+    <TD width=100%>
+This section applies to the PC version of FreeOTFE <I>only</I>
+
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+Portable mode allows you to use FreeOTFE without first installing it on your computers hard drive.
+
+<P>
+To start portable mode, simply:
+
+<OL>
+<LI>Uncompress the FreeOTFE release (.ZIP file version) into a suitable location
+<LI>Run "FreeOTFE.exe" by doubleclicking on it.
+<LI>Select the "Tools | Portable mode drivers" option, or click on the "world" icon on the toolbar
+</OL>
+
+<P>
+To stop portable mode, select the "Tools | Portable mode drivers" option, or select the "world" icon on the toolbar again.
+
+<P>
+No files are copied to your hard drive when starting/stopping portable mode.<br>
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Tip.png" alt="Tip!" >
+    </TD>
+    <TD width=100%>
+
+Administrator rights are required in order to start and stop portable mode.<P>You <I>can</I> still use FreeOTFE on a computer which you do not have Administrator rights on, but will need to ask an Administrator to install it for you first; see the <a href="installation_and_upgrading__PC.htm">installation section</a> for further details.<P>Alternativly, use <A HREF="http://www.FreeOTFE.org/">FreeOTFE Explorer</A> instead - which doesn't need drivers <I>at all!</I>
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Tip.png" alt="Tip!" >
+    </TD>
+    <TD width=100%>
+
+You can check to see which drivers are operating in portable mode by selecting "File&nbsp;|&nbsp;Drivers..." - those drivers currently running in portable mode are with a small "world" icon to the left of their names.
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+IMPORTANT: Stopping portable mode when any mounted volumes are still
+using one or more FreeOTFE drivers operating in portable mode can cause
+unexpected
+results - for this reason it is recommended that you dismount all volumes before stopping portable mode.
+<P>
+For safety reasons, drivers installed in portable mode are installed
+such that if you reboot your system without first stopping portable
+mode via the FreeOTFE interface, those drivers will not automatically
+start up when your computer comes back up. If they were automatically
+restarted, and your portable drivers were stored on removable media
+which was taken out while rebooting, possible problems could occur
+during your boot sequence.
+<P>
+Because of this, if you exit FreeOTFE without stopping all portable
+mode drivers, and then reboot your computer, you will find that the next
+time you launch FreeOTFE, the "Portable mode drivers" menuitem will
+appear checked as FreeOTFE detects your portable mode drivers. If you
+select this menuitem, the previous portable mode drivers should be
+stopped and uninstalled as per normal; clearing this menuitem, ready
+for you to restart portable mode.
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>Portable Mode and Removable Media</H3></A>
+
+<P>
+You may wish to run FreeOTFE in portable mode from removable media such as a USB flash drive, or similar. In this way, your copy of FreeOTFE can easily be transported and used on different computers.
+
+<P>
+In order to do so, the following files should be copied onto your flash drive:
+
+<OL>
+<LI>The main FreeOTFE GUI: "FreeOTFE.exe"
+<LI>The main FreeOTFE driver: "FreeOTFE.sys"
+<LI>At least one hash driver: "FreeOTFEHash<I>XYZ</I>.sys"
+<LI>At least one cypher driver: "FreeOTFECypher<I>XYZ</I>.sys"
+</OL>
+
+<P>
+Please note that if you attempt to start portable mode on a computer which already has one or more of the FreeOTFE drivers installed, FreeOTFE will display an error stating that it cannot start the relevant driver in portable mode - which is hardly surprising if it's already there!
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

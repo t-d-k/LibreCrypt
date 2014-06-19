@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{be62b9f0-6bf7-435e-bcc5-1b2a537d2c02}</ProjectGuid>
+    <MainSource>FreeOTFE.dpr</MainSource>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+    <DCC_DependencyCheckOutputName>..\..\..\..\bin\PC\FreeOTFE.exe</DCC_DependencyCheckOutputName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+    <DCC_ExeOutput>..\..\..\bin\PC</DCC_ExeOutput>
+    <DCC_Define>RELEASE</DCC_Define>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_WriteableConstants>True</DCC_WriteableConstants>
+    <DCC_ExeOutput>..\..\..\..\bin\PC</DCC_ExeOutput>
+    <DCC_Define>_DXGETTEXT;FREEOTFE_MAIN</DCC_Define>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Delphi.Personality</Borland.Personality>
+    <Borland.ProjectType>VCLApplication</Borland.ProjectType>
+    <BorlandProject>
+<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><Language><Language Name="ProjectLang">$00000809</Language></Language><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">5</VersionInfo><VersionInfo Name="MinorVer">21</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">4058</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">2057</VersionInfo><VersionInfo Name="CodePage">1252</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName">Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="FileDescription">FreeOTFE</VersionInfoKeys><VersionInfoKeys Name="FileVersion">5.21.0.4058</VersionInfoKeys><VersionInfoKeys Name="InternalName">FreeOTFE</VersionInfoKeys><VersionInfoKeys Name="LegalCopyright">Copyright (C) 2010 Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename">FreeOTFE.exe</VersionInfoKeys><VersionInfoKeys Name="ProductName">FreeOTFE</VersionInfoKeys><VersionInfoKeys Name="ProductVersion">5.21</VersionInfoKeys><VersionInfoKeys Name="Comments">http://www.FreeOTFE.org/</VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">FreeOTFE.dpr</Source></Source><Excluded_Packages>
+      
+      <Excluded_Packages Name="$(BDS)\bin\dcldbxcds4100.bpl">CodeGear SimpleDataset Component (DBX)</Excluded_Packages>
+    </Excluded_Packages></Delphi.Personality></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
+  <ItemGroup>
+    <DelphiCompile Include="FreeOTFE.dpr">
+      <MainSource>MainSource</MainSource>
+    </DelphiCompile>
+    <DCCReference Include="..\common\CommonConsts.pas" />
+    <DCCReference Include="..\common\CommonfmeOptions_Base.pas">
+      <Form>fmeOptions_Base</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonfmeOptions_PKCS11.pas">
+      <Form>fmeOptions_PKCS11</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonfrmAbout.pas">
+      <Form>frmAbout</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonfrmCDBBackupRestore.pas">
+      <Form>frmCDBBackupRestore</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonfrmCDBDump.pas">
+      <Form>frmCDBDump</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonfrmCDBDump_Base.pas">
+      <Form>frmCDBDump_Base</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonfrmCDBDump_FreeOTFE.pas">
+      <Form>frmCDBDump_FreeOTFE</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonfrmCDBDump_LUKS.pas">
+      <Form>frmCDBDump_LUKS</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonfrmGridReport.pas">
+      <Form>frmGridReport</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonfrmGridReport_Cypher.pas">
+      <Form>frmGridReport_Cypher</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonfrmGridReport_Hash.pas">
+      <Form>frmGridReport_Hash</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonfrmInstallOnUSBDrive.pas">
+      <Form>frmInstallOnUSBDrive</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonfrmMain.pas">
+      <Form>frmMain</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonfrmOptions.pas">
+      <Form>frmOptions</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonfrmVersionCheck.pas">
+      <Form>frmVersionCheck</Form>
+    </DCCReference>
+    <DCCReference Include="..\common\CommonSettings.pas" />
+    <DCCReference Include="FreeOTFEConsts.pas" />
+    <DCCReference Include="FreeOTFEfmeOptions_Advanced.pas">
+      <Form>fmeOptions_FreeOTFEAdvanced</Form>
+    </DCCReference>
+    <DCCReference Include="FreeOTFEfmeOptions_Autorun.pas">
+      <Form>fmeOptions_Autorun</Form>
+    </DCCReference>
+    <DCCReference Include="FreeOTFEfmeOptions_Base.pas">
+      <Form>fmeFreeOTFEOptions_Base</Form>
+    </DCCReference>
+    <DCCReference Include="FreeOTFEfmeOptions_General.pas">
+      <Form>fmeOptions_FreeOTFEGeneral</Form>
+    </DCCReference>
+    <DCCReference Include="FreeOTFEfmeOptions_Hotkeys.pas">
+      <Form>fmeOptions_Hotkeys</Form>
+    </DCCReference>
+    <DCCReference Include="FreeOTFEfmeOptions_SystemTray.pas">
+      <Form>fmeOptions_SystemTray</Form>
+    </DCCReference>
+    <DCCReference Include="FreeOTFEfrmMain.pas">
+      <Form>frmFreeOTFEMain</Form>
+    </DCCReference>
+    <DCCReference Include="FreeOTFEfrmOptions.pas">
+      <Form>frmOptions_FreeOTFE</Form>
+    </DCCReference>
+    <DCCReference Include="FreeOTFEfrmSelectOverwriteMethod.pas">
+      <Form>frmFreeOTFESelectOverwriteMethod</Form>
+    </DCCReference>
+    <DCCReference Include="FreeOTFEfrmVolProperties.pas">
+      <Form>frmFreeOTFEVolProperties</Form>
+    </DCCReference>
+    <DCCReference Include="FreeOTFESettings.pas" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,54 @@
+!IF 0
+
+Copyright (C) Microsoft Corporation, 1997 - 1997
+
+Module Name:
+
+    sources.
+
+!ENDIF
+
+TARGETNAME=FreeOTFECypherTwofish_ltc
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+!IF 0
+  Include the CSQ stuff...
+!ENDIF
+TARGETLIBS=$(DDK_LIB_PATH)\csq.lib
+
+INCLUDES=..\..\..\DRIVER\inc;..\..\..\Common\inc;..\..\Common\inc;..\..\..\CYPHER_DRIVERS\Common\inc;..\..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\headers;..\..\..\..\..\Common\CYPHER_DRIVERS\Common\inc;..\..\..\..\..\Common\Common\inc
+
+!IF 0
+  Note that we don't include "twofish_tab.c" in the following list; it's #included by aes.c
+!ENDIF
+SOURCES=FreeOTFECypherDriver.c \
+        FreeOTFECypherImpl.c \
+        FreeOTFECypherAPICommon.c \
+        FreeOTFEDebug.c \
+        FreeOTFElib.c \
+        FreeOTFEDriverlib.c \
+        FreeOTFECypherTwofish_ltc.c \
+        FreeOTFECypherTwofish_ltc.rc \
+        twofish.c \
+        crypt_cipher_descriptor.c \
+        crypt_cipher_is_valid.c \
+        crypt_find_cipher.c \
+        crypt_register_cipher.c \
+        crypt_unregister_cipher.c \
+        cbc_start.c \
+        cbc_encrypt.c \
+        cbc_decrypt.c \
+        cbc_done.c \
+        lrw_start.c \
+        lrw_encrypt.c \
+        lrw_decrypt.c \
+        lrw_setiv.c \
+        lrw_process.c \
+        lrw_done.c \
+        xts_init.c \
+        xts_encrypt.c \
+        xts_decrypt.c \
+        xts_mult_x.c \
+        xts_done.c \
+        gcm_gf_mult.c \
+        zeromem.c

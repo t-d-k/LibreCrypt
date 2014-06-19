@@ -1,0 +1,83 @@
+body {
+  background-color: #FFFFFF;
+}
+.nav_table {
+  background-color: #007f00;
+}
+.nav_header {
+  background-color: #007f00;
+  color: #FFFFFF;
+  text-align: left;
+  font-weight: bold;
+}
+.content_table {
+  background-color: #007f00;
+  text-align: left;
+  width: 100%
+}
+.content_cell {
+  background-color: #007f00;
+  text-align: left;
+}
+.content_header {
+  background-color: #007f00;
+  color: #FFFFFF;
+  text-align: left;
+<!--  font-weight: bold; -->
+}
+td {
+  vertical-align: top
+}
+td.screenshot_img {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  vertical-align: middle
+}
+.oldver_table {
+  background-color: #009F00;
+}
+.oldver_header {
+  background-color: #009F00;
+  color: #FFFFFF;
+  text-align: left;
+}
+.oldver_package_table {
+  background-color: #FFFFFF;
+}
+.half {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+.master_title {
+  font-size: x-large;
+  font-weight: bold;
+}
+.master_link {
+  color: #000000;
+  text-decoration: none
+}
+table.note th {
+  padding: 10px;
+  border-style: none;
+  vertical-align: middle;
+}
+table.note td {
+  padding: 10px;
+  border-style: none;
+  vertical-align: middle;
+}
+div.licence_list_numbering OL {
+  counter-reset: item 
+}
+div.licence_list_numbering OL > LI {
+  display: block 
+}
+div.licence_list_numbering LI:before {
+  content: counters(item, ".") ". "; counter-increment: item 
+}
+div.licence_list_numbering LI.item_not_numbered:before {
+  content: ""
+}

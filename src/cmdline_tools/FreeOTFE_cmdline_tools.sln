@@ -1,0 +1,45 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_AES__2K__tlc", "DECRYPT_AES__2K__tlc\DECRYPT_AES__2K__tlc.vcproj", "{C0DADACB-09AD-4307-B6A3-24392D44574F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_AES__tlc", "DECRYPT_AES__tlc\DECRYPT_AES__tlc.vcproj", "{C0DADACB-09AD-4307-B6A3-24392D44574F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_TWOFISH__Hifn_Counterpane", "DECRYPT_TWOFISH__Hifn_Counterpane\DECRYPT_TWOFISH__Hifn_Counterpane.vcproj", "{628AD58D-D436-4DCB-8CF1-6004C94B673C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_TWOFISH__tlc", "DECRYPT_TWOFISH__tlc\DECRYPT_TWOFISH__tlc.vcproj", "{C0DADACB-09AD-4307-B6A3-24392D44574F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_XOR", "DECRYPT_XOR\DECRYPT_XOR.vcproj", "{C0DADACB-09AD-4307-B6A3-24392D44574F}"
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		ConfigName.0 = Debug
+		ConfigName.1 = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.ActiveCfg = Debug|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.Build.0 = Debug|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.ActiveCfg = Release|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.Build.0 = Release|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.ActiveCfg = Debug|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.Build.0 = Debug|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.ActiveCfg = Release|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.Build.0 = Release|Win32
+		{628AD58D-D436-4DCB-8CF1-6004C94B673C}.Debug.ActiveCfg = Debug|Win32
+		{628AD58D-D436-4DCB-8CF1-6004C94B673C}.Debug.Build.0 = Debug|Win32
+		{628AD58D-D436-4DCB-8CF1-6004C94B673C}.Release.ActiveCfg = Release|Win32
+		{628AD58D-D436-4DCB-8CF1-6004C94B673C}.Release.Build.0 = Release|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.ActiveCfg = Debug|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.Build.0 = Debug|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.ActiveCfg = Release|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.Build.0 = Release|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.ActiveCfg = Debug|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.Build.0 = Debug|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.ActiveCfg = Release|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

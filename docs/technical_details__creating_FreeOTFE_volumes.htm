@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Technical Details: Creating FreeOTFE Volumes]
+[NOT PLATFORM:PDF </TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+<UL>
+<LI><a href="technical_details__FreeOTFE_volumes_and_keyfiles.htm">Volumes and Keyfiles</a>
+
+<LI><a href="technical_details__FreeOTFE_CDB_layout.htm">Critical Data Block Layouts</a>
+<UL>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_1.htm">Format ID 1</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_2.htm">Format ID 2</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_3.htm">Format ID 3</a>
+<LI><a href="technical_details__FreeOTFE_CDB_layout_format_4.htm">Format ID 4</a>
+</UL>
+
+<LI>Creating Volumes
+<LI><a href="technical_details__mounting_FreeOTFE_volumes.htm">Mounting Volumes</a>
+<LI><a href="technical_details__partition_encryption_decryption.htm">Encrypted Partition Image Encryption/Decryption</a>
+<LI><a href="technical_details__registry_entries.htm">Registry Entries</a>
+<LI><a href="technical_details__RNGs.htm">Random Number Generators (RNGs)</a>
+<LI><a href="technical_details__build_notes.htm">Building the Software</a>
+<LI><a href="technical_details__creating_a_new_hash_cypher_driver.htm">Creating a New Hash/Cypher Driver</a>
+<LI><a href="technical_details__filename_extensions.htm">Filename Extensions</a>
+</UL>
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<H3>Technical Details: Creating FreeOTFE Volumes
+</H3>
+
+
+To create a FreeOTFE volume file, a fairly significant amount of
+information is required due to freedom that FreeOTFE gives you in
+creating volume files. 
+<P>
+
+Broadly speaking, creating a FreeOTFE volume consists of three distinct stages:<br>
+
+<ol>
+
+  <li>Creating
+a file large enough on the local filesystem to store the encrypted
+partition image (and CDB, if included as part of the volume).
+  <li>Writing a CDB either to the volume file or a separate keyfile, depending on the user's choice.
+  <li>Mounting the volume, formatting it, and "shredding" (overwriting) all free space.</li>
+</ol>
+
+Stage 1 is straightforward; write data to the file until is has gained
+the required size. This stage is skipped in the case of creating a
+hidden volume or volume based on a partition.<br>
+
+Stage 2 is more complex; and is described below.<br>
+
+Stage 3 is required in set the volume up for use, and increase
+security. This is largely a manual process carried out by the user,
+depending on their needs.<br>
+
+<A NAME="level_4_heading_1"><H4>Writing the CDB/keyfile</H4></A>
+
+The following procedure is used to build up a FreeOTFE CDB/keyfile:<br>
+
+<ol>
+
+<li>Obtain all the information which will be stored within the volume's "Volume details block"</li><li>Derive
+the "critical data key" by processing the user's password and salt with
+PKCS #5 PBKDF2 (using HMAC with the user's choice of hash algorithm).<br>
+The derived key should be <span style="font-style: italic;">ks</span> bits long (i.e. the cypher's keysize). If <span style="font-style: italic;">ks</span>
+is undefined, then 512 bits will be used. (Note: In this case, the
+keysize used for encrypting/decrypting the encrypted partition image
+must be specified by the user. The keysize for the critical data block
+is fixed at 512 bits if <span style="font-style: italic;">ks </span>is
+undefined in order to simplify the "mount volume" dialog, and to reduce
+the potential for user confusion as most cyphers have a fixed <span style="font-style: italic;">ks</span>,
+and asking users for this information may cause them to think this is
+more information they have to memorise, which it wouldn't be)</li><li>Create the plaintext version of the "Volume details block" in memory, including padding the end with random data as appropriate
+  <li>Calculate the check MAC using HMAC, together with the derived key and user's choice of hash algorithm</li><li>Truncate the MAC to 512 bits if it is longer, or right-pad to 512 bits with random data to if less.
+
+  <li>Prepend the check MAC (and any random data appended to it) onto the beginning of the volume details
+block to form a plaintext version
+of the "Encrypted block"</li>
+  <li>Encrypt the plaintext "Encrypted block" using a null IV and the critical data key.
+  <li>Prepend the salt bytes onto the end of the "Encrypted block", and pad out the end with random data to form the complete CDB
+  <li>Write the CDB to either:</li>
+<ul>
+  <li>The start of the user's volume</li>
+  <li>A keyfile</li>
+  <li>The user specified offset within the host volume, if creating a "hidden volume" which includes a CDB</ul>
+</ol><br>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

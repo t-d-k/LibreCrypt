@@ -1,0 +1,598 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Linux Examples: Cryptoloop</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+<UL>
+<LI>Examples: Cryptoloop
+<LI><a href="Linux_examples__dm-crypt.htm">Examples: dm-crypt</a>
+<LI><a href="Linux_examples__LUKS.htm">Examples: LUKS</a>
+</UL>
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<h2>Linux Examples: Cryptoloop</h2>
+
+
+<P>
+This section gives a series of examples of how to create Linux Cryptoloop (losetup) volumes, and then mount them using FreeOTFE.
+
+<P>
+These examples have been
+tested using SuSE 9.2; though
+they should work for all compatible Linux distributions.
+
+<P>
+<UL>
+  <LI><A HREF="#level_3_heading_1">Initial Setup</A>
+  <LI><A HREF="#level_3_heading_2">Defaults</A>
+  <LI><A HREF="#level_3_heading_3">Example #1: Mounting a Cryptoloop Volume Without Encryption</A>
+  <LI><A HREF="#level_3_heading_4">Example #2: Mounting a Cryptoloop Volume Encrypted Using XOR</A>
+  <LI><A HREF="#level_3_heading_5">Example #3: Mounting a Cryptoloop Volume Encrypted Using 128 bit AES</A>
+  <LI><A HREF="#level_3_heading_6">Example #4: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES</A>
+  <LI><A HREF="#level_3_heading_7">Example #5: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES and rmd160 Hash</A>
+  <LI><A HREF="#level_3_heading_8">Example #6: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES and Seed Value</A>
+  <LI><A HREF="#level_3_heading_9">Example #7: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES and Offset</A>
+  <LI><A HREF="#level_3_heading_10">Example #8: Mounting a Cryptoloop Volume Encrypted Using 256 bit Twofish</A>
+</UL>
+
+
+<P>
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>Initial Setup</H3></A>
+
+
+<P>
+To begin using Cryptoloop under Linux, ensure that the various kernel modules are installed:
+<br>
+
+<blockquote>
+<pre>
+modprobe cryptoloop
+
+modprobe deflate
+modprobe zlib_deflate
+modprobe twofish
+modprobe serpent
+modprobe aes_i586
+modprobe blowfish
+modprobe des
+modprobe sha256
+modprobe sha512
+modprobe crypto_null
+modprobe md4
+modprobe md5
+modprobe arc4
+modprobe khazad
+modprobe anubis
+</pre>
+</blockquote>
+
+Typing "lsmod" will show you which modules are currently installed.<br>
+
+The examples shown below may then be followed to create and use various volume files.<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_2"><H3>Defaults</H3></A>
+
+
+<P>
+If not overridden by the user, Cryptoloop defaults to no
+encryption. If the user specifies that they <span style="font-style: italic;">do</span> want encryption (i.e.
+passes "losetup" a "-e" parameter), Cryptoloop defaults to the following:
+
+<P>
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="vertical-align: top;">Cypher:</th>
+      <td style="vertical-align: top;">As specified by the user (no encryption takes place if no cypher is specified)</td>
+    </tr>
+    <tr>
+      <th style="vertical-align: top;">Cypher keysize:</th>
+      <td style="vertical-align: top;">128 bit</td>
+    </tr>
+    <tr>
+      <th style="vertical-align: top;">User key processed with:</th>
+      <td style="vertical-align: top;">The hash used to process the user's key is dependant on the cypher's keysize:
+
+<P>
+<center>
+<table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="vertical-align: top;">Cypher keysize</th>
+      <th style="vertical-align: top;">Hash</th>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">128 - 191 bits</td>
+      <td style="vertical-align: top;">SHA-256</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">192 - 255 bits</td>
+      <td style="vertical-align: top;">SHA-384</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">256+ bits</td>
+      <td style="vertical-align: top;">SHA-512</td>
+    </tr>
+  </tbody>
+</table>
+</center>
+
+<P>
+"Hash with "A"s, if hash output is too short" option - this option should 
+<span style="font-style: italic;">not</span> be selected; if the hash used outputs too few bits, its output is
+right-padded with 0x00 characters to the required length.
+      </td>
+    </tr>
+    <tr>
+      <th style="vertical-align: top;">IV generation:</th>
+      <td style="vertical-align: top;">32 bit sector ID</td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_3"><H3>Example #1: Mounting a Cryptoloop Volume Without Encryption</H3></A>
+
+
+This is the simplest form of Linux volume file, and the recommended
+starting point for checking that FreeOTFE is operating correctly.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./vol_none bs=1k count=1024
+losetup /dev/loop0 ./vol_none
+mkdosfs /dev/loop0
+mkdir ./test_mountpoint
+mount /dev/loop0 ./test_mountpoint
+echo "This is a text test file" > ./test_mountpoint/SHORT_TEXT.txt
+umount /dev/loop0
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+<li>Select "Linux | Mount..."</li><li>Select the volume file</li><li>"Key" tab:</li><ul><li>Leave key blank</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile  blank</li><li>Leave seed blank</li><li>Select the "Null" hash</li><li>Leave iteration count at 0</li></ul><li>"Encryption" tab:</li><ul><li>Select the "Null" cypher</li><li>Select the "Null IV" IV generation method</li><li>The "Hash with "A"s, if hash output is too short" makes no difference</li>
+</ul><li>"File options" tab:</li><ul><li>Leave offset at 0</li><li>Leave sizelimit at 0</li></ul><li>"Mount options" tab:</li><ul><li>Select any unused drive letter</li><li>Leave readonly unchecked</li></ul><li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_4"><H3>Example #2: Mounting a Cryptoloop Volume Encrypted Using XOR</H3></A>
+
+
+This is the second simplest form of Linux volume file, and is the
+simplest case to confirm that passwords are being accepted and used
+correctly.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./vol_xor bs=1k count=1024
+losetup -e XOR /dev/loop0 ./vol_xor
+# Enter password: password1234567890ABC
+mkdosfs /dev/loop0
+mkdir ./test_mountpoint
+mount /dev/loop0 ./test_mountpoint
+echo "This is a text test file" > ./test_mountpoint/SHORT_TEXT.txt
+umount /dev/loop0
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+<li>Select "Linux | Mount..."</li><li>Select the volume file</li><li>"Key" tab:</li><ul><li>Enter "password1234567890ABC" as the key</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile  blank</li><li>Leave seed blank</li><li>Select the "Null" hash</li><li>Leave iteration count at 0</li></ul><li>"Encryption" tab:</li><ul><li>Select the "XOR" cypher</li><li>Select the "Null IV" IV generation method</li><li>The "Hash with "A"s, if hash output is too short" makes no difference.</li>
+</ul><li>"File options" tab:</li><ul><li>Leave offset at 0</li><li>Leave sizelimit at 0</li></ul><li>"Mount options" tab:</li><ul><li>Select any unused drive letter</li><li>Leave readonly unchecked</li></ul><li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_5"><H3>Example #3: Mounting a Cryptoloop Volume Encrypted Using 128 bit AES</H3></A>
+
+
+This example demonstrates use of a Linux AES128 volume.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./vol_aes128 bs=1k count=1024
+losetup -e AES128 /dev/loop0 ./vol_aes128
+# Enter password: password1234567890ABC
+mkdosfs /dev/loop0
+mkdir ./test_mountpoint
+mount /dev/loop0 ./test_mountpoint
+echo "This is a text test file" > ./test_mountpoint/SHORT_TEXT.txt
+umount /dev/loop0
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+<li>Select "Linux | Mount..."</li><li>Select the volume file</li><li>"Key" tab:</li><ul><li>Enter "password1234567890ABC" as the key</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile  blank</li><li>Leave seed blank</li><li>Select the "SHA-256 (256/512)" hash</li><li>Make sure that the "Hash with "A"s, if hash output is too short" is <span style="font-style: italic;">not</span> checked.</li>
+<li>Leave iteration count at 0</li></ul><li>"Encryption" tab:</li><ul><li>Select the "AES (CBC; 128/128)" cypher</li><li>Select the "32 bits sector IV" IV generation method</li><li>Set "Sector zero location" to "Start of host file"</li></ul><li>"File options" tab:</li><ul><li>Leave offset at 0</li><li>Leave sizelimit at 0</li></ul><li>"Mount options" tab:</li><ul><li>Select any unused drive letter</li><li>Leave readonly unchecked</li></ul><li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_6"><H3>Example #4: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES</H3></A>
+
+
+This example demonstrates use of a Linux AES256 volume.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./vol_aes256 bs=1k count=1024
+losetup -e AES256 /dev/loop0 ./vol_aes256
+# Enter password: password1234567890ABC
+mkdosfs /dev/loop0
+mkdir ./test_mountpoint
+mount /dev/loop0 ./test_mountpoint
+echo "This is a text test file" > ./test_mountpoint/SHORT_TEXT.txt
+umount /dev/loop0
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+<li>Select "Linux | Mount..."</li><li>Select the volume file</li><li>"Key" tab:</li><ul><li>Enter "password1234567890ABC" as the key</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile  blank</li><li>Leave seed blank</li><li>Select the "SHA-512 (512/1024)" hash</li><li>Make sure that the "Hash with "A"s, if hash output is too short" is <span style="font-style: italic;">not</span> checked.</li>
+<li>Leave iteration count at 0</li></ul><li>"Encryption" tab:</li><ul><li>Select the "AES (CBC; 256/128)" cypher</li>
+    <li>Select the "32 bits sector IV" IV generation method</li>
+    <li>Set "Sector zero location" to "Start of host file"</li>
+</ul><li>"File options" tab:</li><ul><li>Leave offset at 0</li><li>Leave sizelimit at 0</li></ul><li>"Mount options" tab:</li><ul><li>Select any unused drive letter</li><li>Leave readonly unchecked</li></ul><li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_7"><H3>Example #5: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES and rmd160 Hash</H3></A>
+
+
+This example demonstrates use of a Linux AES256 volume using the rmd160
+hash to process the user's password instead of the default SHA hash.
+<P>
+<span style="font-weight: bold;">WARNING:</span> Note that this example uses the "rmd160" and not "ripemd160" hash.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./vol_aes256_rmd160 bs=1k count=1024
+losetup -e AES256 -H rmd160 /dev/loop0 ./vol_aes256_rmd160
+# Enter password: password1234567890ABC
+mkdosfs /dev/loop0
+mkdir ./test_mountpoint
+mount /dev/loop0 ./test_mountpoint
+echo "This is a text test file" > ./test_mountpoint/SHORT_TEXT.txt
+cp TEST_FILE_1.dat ./test_mountpoint
+cp TEST_FILE_2.dat ./test_mountpoint
+cp TEST_FILE_3.dat ./test_mountpoint
+umount /dev/loop0
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+<li>Select "Linux | Mount..."</li><li>Select the volume file</li><li>"Key" tab:</li><ul><li>Enter "password1234567890ABC" as the key</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile  blank</li><li>Leave seed blank</li><li>Select the "RIPEMD-160 (Linux; Twice, with A)" hash</li><li>Make sure that the "Hash with "A"s, if hash output is too short" is <span style="font-style: italic;">not</span> checked.</li>
+<li>Leave iteration count at 0</li></ul><li>"Encryption" tab:</li><ul><li>Select the "AES (CBC; 256/128)" cypher</li>
+    <li>Select the "32 bits sector IV" IV generation method</li>
+    <li>Set "Sector zero location" to "Start of host file"</li>
+</ul><li>"File options" tab:</li><ul><li>Leave offset at 0</li><li>Leave sizelimit at 0</li></ul><li>"Mount options" tab:</li><ul><li>Select any unused drive letter</li><li>Leave readonly unchecked</li></ul><li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_8"><H3>Example #6: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES and Seed Value</H3></A>
+
+
+This example demonstrates use of a Linux AES256 volume with seeding. The seed used here is the string "seedvalue"
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./vol_aes256_seeded bs=1k count=1024
+losetup -e AES256 -S seedvalue /dev/loop0 ./vol_aes256_seeded
+# Enter password: password1234567890ABC
+losetup -a
+mkdosfs /dev/loop0
+mkdir ./test_mountpoint
+mount /dev/loop0 ./test_mountpoint
+echo "This is a text test file" > ./test_mountpoint/SHORT_TEXT.txt
+cp TEST_FILE_1.dat ./test_mountpoint
+cp TEST_FILE_2.dat ./test_mountpoint
+cp TEST_FILE_3.dat ./test_mountpoint
+umount /dev/loop0
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+<li>Select "Linux | Mount..."</li><li>Select the volume file</li><li>"Key" tab:</li><ul><li>Enter "password1234567890ABC" as the key</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile  blank</li><li>Change the seed to "seedvalue"</li><li>Select the "SHA-512 (512/1024)" hash</li><li>Make sure that the "Hash with "A"s, if hash output is too short" is <span style="font-style: italic;">not</span> checked.</li>
+<li>Leave iteration count at 0</li></ul><li>"Encryption" tab:</li><ul><li>Select the "AES (CBC; 256/128)" cypher</li><li>Select the "32 bits sector IV" IV generation method</li>
+    <li>Set "Sector zero location" to "Start of host file"</li>
+</ul><li>"File options" tab:</li><ul><li>Leave offset at 0</li><li>Leave sizelimit at 0</li></ul><li>"Mount options" tab:</li><ul><li>Select any unused drive letter</li><li>Leave readonly unchecked</li></ul><li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_9"><H3>Example #7: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES and Offset</H3></A>
+
+
+This example demonstrates use of a Linux AES256 volume, with the
+encrypted volume beginning at an offset of 2560 bytes into the volume
+file.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./vol_aes256_2560 bs=1k count=1024
+losetup -e AES256 -o 2560 /dev/loop0 ./vol_aes256_2560
+# Enter password: password1234567890ABC
+mkdosfs /dev/loop0
+mkdir ./test_mountpoint
+mount /dev/loop0 ./test_mountpoint
+echo "This is a text test file" > ./test_mountpoint/SHORT_TEXT.txt
+umount /dev/loop0
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+<li>Select "Linux | Mount..."</li><li>Select the volume file</li><li>"Key" tab:</li><ul><li>Enter "password1234567890ABC" as the key</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile  blank</li><li>Leave seed blank</li><li>Select the "SHA-512 (512/1024)" hash</li><li>Make sure that the "Hash with "A"s, if hash output is too short" is <span style="font-style: italic;">not</span> checked.</li>
+<li>Leave iteration count at 0</li></ul><li>"Encryption" tab:</li><ul><li>Select the "AES (CBC; 256/128)" cypher</li><li>Select the "32 bits sector IV" IV generation method</li>
+    <li>Set "Sector zero location" to "Start of host file"</li>
+</ul><li>"File options" tab:</li><ul><li>Change offset to 2560 bytes<li>Leave sizelimit at 0</li></ul><li>"Mount options" tab:</li><ul><li>Select any unused drive letter</li><li>Leave readonly unchecked</li></ul><li>Click the "OK" button</li>
+</ol>
+
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_10"><H3>Example #8: Mounting a Cryptoloop Volume Encrypted Using 256 bit Twofish</H3></A>
+
+
+This example demonstrates use of a Linux Twofish 256 bit volume.
+<P>
+
+Creating the volume file under Linux:
+
+<blockquote>
+<pre>
+dd if=/dev/zero of=./vol_twofish256 bs=1k count=1024
+losetup -e twofish256 /dev/loop0 ./vol_twofish256
+# Enter password: password1234567890ABC
+losetup -a
+mkdosfs /dev/loop0
+mkdir ./test_mountpoint
+mount /dev/loop0 ./test_mountpoint
+echo "This is a text test file" > ./test_mountpoint/SHORT_TEXT.txt
+umount /dev/loop0
+losetup -d /dev/loop0
+rm -rf ./test_mountpoint
+</pre>
+</blockquote>
+
+Mounting the volume under FreeOTFE:<br>
+
+<ol>
+
+<li>Select "Linux | Mount..."</li><li>Select the volume file</li><li>"Key" tab:</li><ul><li>Enter "password1234567890ABC" as the key</li><li>Leave GPG executable blank</li><li>Leave GPG keyfile  blank</li><li>Leave seed blank</li><li>Select the "SHA-512 (512/1024)" hash</li>
+    <li>Make sure that the "Hash with "A"s, if hash output is too short" is <span style="font-style: italic;">not</span> checked.</li>
+<li>Leave iteration count at 0</li></ul><li>"Encryption" tab:</li><ul><li>Select the "Twofish (CBC; 256/128)" cypher</li><li>Select the "32 bits sector IV" IV generation method</li>
+    <li>Set "Sector zero location" to "Start of host file"</li>
+</ul><li>"File options" tab:</li><ul><li>Leave offset at 0
+</li><li>Leave sizelimit at 0</li></ul><li>"Mount options" tab:</li><ul><li>Select any unused drive letter</li><li>Leave readonly unchecked</li></ul><li>Click the "OK" button</li>
+</ol>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,3143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>FAQ</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI><a href="pkcs11_support.htm">Security Token/Smartcard Support</a>
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI>FAQ
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+<h2>FAQ</h2>
+
+<!-- LAST FAQ REF USED: #hy -->
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Tip.png" alt="Tip!" >
+    </TD>
+    <TD width=100%>
+
+The latest version of this FAQ, along with the latest FreeOTFE user manual, can be found online at the <A HREF="http://www.FreeOTFE.org/">FreeOTFE WWW site</A>
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>FAQ Contents</H3></A>
+
+<P>
+<A NAME="level_4_heading_1"><H4>General</H4></A>
+
+<ul>
+<li><a href="FAQ.htm#gm">Whare are the differences between FreeOTFE and FreeOTFE Explorer?</A>
+<li><a href="FAQ.htm#el">How can I help the FreeOTFE project?</A>
+<li><a href="FAQ.htm#ey">Which of the hash/cypher algorithms should I use?</A>
+<li><a href="FAQ.htm#ez">Which of the random number generators (RNGs) should I use?</A>
+<li><a href="FAQ.htm#aa">Is FreeOTFE based on CrossCrypt?</a> 
+<li><a href="FAQ.htm#ab">Is FreeOTFE based on Linux's "losetup"?</a> 
+<li><a href="FAQ.htm#ac">Right now, FreeOTFE supports losetup volumes; do you have any plans to include support for DriveCrypt, BestCrypt, etc volumes?</a>
+<li><a href="FAQ.htm#ad">When I mount a FAT/FAT32 formatted Linux volume under FreeOTFE everything works perfectly. When I do the same with myext2/ext3/RiserFS/etc volume, I can't see my files!</a> 
+<li><a href="FAQ.htm#ca">Why do the Linux examples for LUKS/dm-crypt volumes show "losetup" being used twice?</a><li><a href="FAQ.htm#ae">FreeOTFE comes with a set of command line decryption utilities! Can't anyone can just decrypt my data!</a> 
+<li><a href="FAQ.htm#af">When I mount a volume and then view its properties under FreeOTFE, it states that the hash algorithm used is "n/a" - but I used a hash algorithm!</a> 
+<li><a href="FAQ.htm#ah">FreeOTFE is currently available for free - are you intending to "sell out" later, and start charging for it once enough users have been "hooked" on it?</a> 
+<li><a href="FAQ.htm#ai">FreeOTFE may always be free, but will an "enhanced" version (which is charged for) with extra features be released (perhaps under a different name)?</a> 
+<li><a href="FAQ.htm#ct">What about klonsoft's "LockDisk" and WinCrypto LLC's "CryptoDisk"? Aren't they paid-for packages which are based on FreeOTFE?</a> 
+<li><a href="FAQ.htm#al">How can I be sure that there are no backdoors in FreeOTFE?</a>
+<li><a href="FAQ.htm#hg">Do FreeOTFE volumes have any kind of identifying "signature"?</A>
+<li><a href="FAQ.htm#ao">By examining a FreeOTFE/encrypted Linux volume file, can anyone tell what it is?</a> 
+<li><a href="FAQ.htm#ap">What is "plausible deniability?"</a>
+<li><a href="FAQ.htm#aq_1">What do the numbers and letters after a hash name mean?</a> 
+<li><a href="FAQ.htm#aq_2">What do the numbers and letters after a cypher name mean?</a>
+<li><a href="FAQ.htm#hh">When creating a new volume file, why do I get a message asking me to ensure I have XX.XX GB free on the relevant drive?</A>
+<li><a href="FAQ.htm#gc">I tried to create a large volume (> 4GB), and FreeOTFE stopped halfway through with an error - why?</a>
+<li><a href="FAQ.htm#as">What is the largest volume that I can create?</a>
+<li><a href="FAQ.htm#he">Can I store an encrypted volume on a compressed NTFS drive?</A>
+<li><a href="FAQ.htm#ha">What hash algorithms does FreeOTFE use?</A>
+<li><a href="FAQ.htm#hb">What encryption algorithms does FreeOTFE use?</A>
+<li><a href="FAQ.htm#cp">Which cypher modes does FreeOTFE support?</a>  
+<li><a href="FAQ.htm#at">Help! I forgot my password! I know it was something like...</a> 
+<li><a href="FAQ.htm#hd">Which is the best encryption algorithm to use?</A>
+<li><a href="FAQ.htm#ax">How safe is FreeOTFE?</a>
+<li><a href="FAQ.htm#ay">What happens if my volume file is corrupted or damaged in some way? Will I lose all my data?</a>
+<li><a href="FAQ.htm#az">If someone steals my keyfile, will they be able to decrypt by data and read it?</a>
+<li><a href="FAQ.htm#gt">How do I know FreeOTFE is encrypting my data, and with the encryption algorithm I choose?</A>
+<li><a href="FAQ.htm#ba">When selecting a cypher to use, why do the some cyphers appear multiple times?</a>
+<li><a href="FAQ.htm#bc">Why are there duplicated cypher drivers?</a>
+<li><a href="FAQ.htm#bd">Which of the duplicated drivers should I use?</a>
+<li><a href="FAQ.htm#bi">Can FreeOTFE generate keyfiles which <span style="font-style: italic;">only</span> allow read only access?</a>
+<li><a href="FAQ.htm#cs">Can I use the same encrypted volumes on <i>both</i> my PC and PDA?</a>
+<li><a href="FAQ.htm#dd">When creating a new volume, how do I enable the sector IV options?</a>
+<li><a href="FAQ.htm#cb">Is FreeOTFE vulnerable to "watermarking" attacks?</a>  
+<li><a href="FAQ.htm#de">Is FreeOTFE vulnerable to "Cold Boot Attacks on Encryption Keys" (aka "DRAM attacks")?</a>
+<li><a href="FAQ.htm#ei">Does FreeOTFE have any form of password recovery?</A>
+<li><a href="FAQ.htm#ej">Isn't FreeOTFE's "keyfile" functionality a security risk?</A>
+<li><a href="FAQ.htm#bn">What happened to the NULL hash and NULL/XOR cypher drivers?</a>
+<li><a href="FAQ.htm#gd">How do I resize an encrypted volume?</A>
+<li><a href="FAQ.htm#ge">How do I delete an encrypted volume?</A>
+<li><a href="FAQ.htm#et">How do I backup an encrypted volume?</A>
+<li><a href="FAQ.htm#hf">Can I use <I>any</I> filename/file extension for my FreeOTFE volume?</A>
+<li><a href="FAQ.htm#gw">Does FreeOTFE support LVM2?</A>
+<li><a href="FAQ.htm#gx">Is it worth running file overwriter ("shredder") programs to securely delete existing data stored on my encrypted drive?</A>
+<li><a href="FAQ.htm#gy">What is the difference between the main FreeOTFE/FreeOTFE Explorer release and the PortableApps.com version?</A>
+<li><a href="FAQ.htm#gz">What is the difference between the main FreeOTFE/FreeOTFE Explorer release and the U3 version?</A>
+<li><a href="FAQ.htm#hi">When dismounting a file based volume, what does FreeOTFE do with the file timestamps?</A>
+<li><a href="FAQ.htm#hs">What is volume "padding", and why would I want it?</A>
+<li><a href="FAQ.htm#ht">Why <I>wouldn't</I> I want to use padding?</A>
+</ul>
+
+<P>
+<A NAME="level_4_heading_2"><H4>FreeOTFE Specific (PC)</H4></A>
+
+<ul>
+<li><a href="FAQ.htm#ag">When creating a FreeOTFE volume, the wizard shows me which stage of volume creation I am currently on - but it goes haywire, and the number of stages to complete keeps changing!</a> 
+<li><a href="FAQ.htm#aj">Is it possible to dismount my FreeOTFE volumes when I hit a certain "hotkey"?</a>
+<li><a href="FAQ.htm#ak">Why can't I dismount my volume(s)?</a> 
+<li><a href="FAQ.htm#am">Why are the drivers written in C, but the GUI in Delphi?!</a> 
+<li><a href="FAQ.htm#an">Why aren't I prompted to enter a password when creating a Linux volume?</a> 
+<li><a href="FAQ.htm#ar">Can I burn my volumes on a CD (or CDRW, or DVD), and mount them from there?</a>
+<li><a href="FAQ.htm#au">Can I use FreeOTFE over a network?</a>
+<li><a href="FAQ.htm#aw">Why do I get "Unable to connect to the FreeOTFE driver" errors?</a>
+<li><a href="FAQ.htm#bb">Why do I get prompted to select a driver whenever I attempt to mount some of my FreeOTFE volume?</a>
+<li><a href="FAQ.htm#cc">Do I need Administrator privileges to use FreeOTFE on my computer?</a>
+<li><a href="FAQ.htm#be">Why do I need Administrator rights to install FreeOTFE?</a>
+<li><a href="FAQ.htm#bf">Why do I need Administrator rights to start "portable mode"?</a>
+<li><a href="FAQ.htm#bg">Can FreeOTFE run under MS Windows 95/98/Me?</a>
+<li><a href="FAQ.htm#bh">Can FreeOTFE run under Linux?</a>
+<li><a href="FAQ.htm#bk">How can I get FreeOTFE to mount my volumes at startup/when I login?</a>
+<li><a href="FAQ.htm#cd">On the options dialog, what does the "Save above settings to" option do?</a>
+<li><a href="FAQ.htm#ce">Can I save my settings in the same directory as my FreeOTFE executable?</a>
+<li><a href="FAQ.htm#cf">Where, and in what order does FreeOTFE search for my settings?</a>
+<li><a href="FAQ.htm#ch">After associating FreeOTFE with ".vol" files from the options dialog, I doubleclicked my ".vol" volume file, and nothing happened!</a>
+<li><a href="FAQ.htm#ci">Why do volumes created with the FreeOTFE v2.00 and later have the extension ".vol"?</a>
+<li><a href="FAQ.htm#em">What is the difference between the "Overwrite free space..." and "Overwrite entire drive..." options under the "Tools" menu?</A>
+<li><a href="FAQ.htm#eo">Does FreeOTFE support encrypting data with multiple cyphers (aka "cascaded" cyphers, or "superencryption")</a>
+<li><a href="FAQ.htm#eq">FreeOTFE supports different languages, but why isn't mine listed?</a>
+<li><a href="FAQ.htm#er">How do I translate FreeOTFE into a different language?</a>
+<li><a href="FAQ.htm#es">Can I defragment encrypted volumes?</A>
+<li><a href="FAQ.htm#cg">Can I use FreeOTFE with my USB flash drive?</a>
+<li><a href="FAQ.htm#ew">Why doesn't FreeOTFE run automatically when I insert my USB drive?</a>
+<li><a href="FAQ.htm#db">Can I use FreeOTFE with "MojoPac"?</a>
+<li><a href="FAQ.htm#ee">Can FreeOTFE be used with RAID arrays?</A>
+<li><a href="FAQ.htm#go">Does FreeOTFE try to connect to the internet?</A>
+<li><a href="FAQ.htm#gr">How do I check FreeOTFE's exit code when passing parameters via the command line?</A>
+<li><a href="FAQ.htm#gs">Why won't FreeOTFE accept my password when supplied via the command line parameter?</A>
+
+<LI>Partition based volumes
+<UL>
+<li><a href="FAQ.htm#ea">Do I have to partition my drive to use FreeOTFE?</A>
+<li><a href="FAQ.htm#eb">I want to create a FreeOTFE partition on my unallocated space, but can't see it in the partition display - where is it?</A>
+<li><a href="FAQ.htm#ec">When I'm prompted to select a partition, some of the partitions on my USB drive are shown in red (or not at all) - why?</A>
+<li><a href="FAQ.htm#ed">Why can't I use encrypted partitions on a USB drive, unless it's the first partition?</A>
+<li><a href="FAQ.htm#bj">After creating an encrypted partition, MS Windows reports that partition I used as being type "RAW" and prompts me to format it - why?</a>
+<li><a href="FAQ.htm#hk">How do I "hide" an encrypted partition such that MS Windows doesn't allocate it a drive letter?</a>
+<li><a href="FAQ.htm#ek">Why does the partition/disk selection display sometimes display less information?</a>
+<li><a href="FAQ.htm#eu">I accidentally selected the wrong disk/partition when creating a new volume and now can't see my files! How can I get my data back?</a>
+<li><a href="FAQ.htm#hp">Does FreeOTFE offer whole disk encryption?</a>
+</UL>
+
+<LI>Security Token/Smartcard Support (PKCS#11)
+<UL>
+<li><a href="FAQ.htm#fa">Do I <I>have</I> to use a security token/smartcard with FreeOTFE?</A>
+<li><a href="FAQ.htm#eg">What is the difference between PKCS#11, Cryptoki, and "tokens"?</A>
+<li><a href="FAQ.htm#ex">Does FreeOTFE encrypt my <I>entire</I> encrypted volume using my PKCS#11 token?</A>
+<li><a href="FAQ.htm#ef">I've inserted my PKCS#11 (Cryptoki) token, but why is the "PKCS#11 token management..." menuitem disabled?</A>
+<li><a href="FAQ.htm#eh">How do I change the password on a volume/keyfile which is secured with a PKCS#11 secret key?</A>
+<li><a href="FAQ.htm#gb">Can I use more than one security token with FreeOTFE?</A>
+<li><a href="FAQ.htm#ga">Why don't all of my volumes automatically dismount when I remove my security token?</A>
+</UL>
+
+<LI>Windows Vista specific
+<UL>
+<li><a href="FAQ.htm#bo">Why do I get "unidentified program wants access to your computer" prompts when using FreeOTFE?</a>
+<li><a href="FAQ.htm#bp">Why does FreeOTFE prompt me to enter my Administrator's password?</a>
+<li><a href="FAQ.htm#cj">How do I stop the Windows Vista "consent/credential" (UAC) dialog from being displayed?</a>
+<li><a href="FAQ.htm#br">What are the little "shield" icons shown next to some menuitems?</a> 
+<li><a href="FAQ.htm#hl">I have problems starting any of the drivers under the 64 bit version of Windows Vista/Windows 7 - what's wrong?</a> 
+</UL>
+</ul>
+
+<P>
+<A NAME="level_4_heading_3"><H4>FreeOTFE4PDA Specific (PDA)</H4></A>
+
+<ul>
+<li><a href="FAQ.htm#bl">I created my volume file using the PDA version of FreeOTFE and can mount it on my PC - but why does it keep asking if I want to format it?</a>
+<li><a href="FAQ.htm#ep">I created a volume on my PC, and can mount it successfully on my PDA - but can't see any of my files!</a>
+<li><a href="FAQ.htm#bm">How can I speed FreeOTFE up when mounting my volumes?</a>
+<li><a href="FAQ.htm#ck">Does the PDA version support Linux volumes?</a>
+<li><a href="FAQ.htm#cl">Why does FreeOTFE4PDA's version numbering skip from v0.55 to v2.00; what happened to v1.00?</a>
+<li><a href="FAQ.htm#hr">Why does FreeOTFE4PDA's version numbering skip from v3.76 to v5.00; what happened to v4.00?</a>
+<li><a href="FAQ.htm#co">When I use the "open" dialog to select my volume file/keyfile, it doesn't list the file I'm trying to specify - even when I select "All files" - where is it?</a>
+<li><a href="FAQ.htm#cz">How can I reduce the amount of storage space FreeOTFE4PDA takes up when installed?</a>
+<li><a href="FAQ.htm#cw">Why do I get the message "Unable to locate local copy of user guide; would you like to see the latest version on the Internet?" when I try to view the user guide by selecting "Help | User guide"?</a>
+<li><a href="FAQ.htm#dc">When I try to mount a volume, I sometimes the error: "Mount failed; the virtual storage device could not be activated at this time"</a>
+<li><a href="FAQ.htm#cm">Which PDAs will FreeOTFE4PDA work with?</a>
+<li><a href="FAQ.htm#da">What does the "Support WM 5.0 soft keys" option do?</a>
+<li><a href="FAQ.htm#cx">I don't like the new two-item menus at the bottom of my display - how do I change them back to the older toolbar style menu?
+<li><a href="FAQ.htm#cy">I don't like the multi-item menubar/toolbar at the bottom of FreeOTFE4PDA's display - how do I get it to use the newer two-item style (softkey) menus instead?</a>
+<li><a href="FAQ.htm#gf">Can I use my PC volumes with the PDA version?</A>
+<li><a href="FAQ.htm#gh">I upgraded to the lastest version of FreeOTFE4PDA, can I still mount my old volumes?</A>
+<li><a href="FAQ.htm#gi">I would like to use hash/cypher <I>XYZ</I>, why doesn't it appear as an option?</A>
+<li><a href="FAQ.htm#gg">How to I enable hash/cypher <I>XYZ</I>?</A>
+</ul>
+
+<P>
+<A NAME="level_4_heading_4"><H4>FreeOTFE Explorer Specific</H4></A>
+
+<ul>
+<li><a href="FAQ.htm#gl">Does FreeOTFE Explorer support drag and drop with MS Windows Explorer?</A>
+<li><a href="FAQ.htm#hy">Can Does FreeOTFE Explorer support drag and drop with MS Windows Explorer?</A>
+<li><a href="FAQ.htm#gj">What filesystems does FreeOTFE Explorer support?</A>
+<li><a href="FAQ.htm#gp">Does FreeOTFE Explorer try to connect to the internet?</A>
+<li><a href="FAQ.htm#hw">How do I securely overwrite files stored on a flash drive?</A>
+<li><a href="FAQ.htm#hx">How do I get FreeOTFE Explorer to display filename extensions for all files?</A>
+<li><a href="FAQ.htm#hy">Can FreeOTFE Explorer run under Linux?</A>
+</ul>
+
+<br>
+
+<hr>
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_2"><H3>General</H3></A>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gm"></a><b>Q: Whare are the differences between FreeOTFE and FreeOTFE Explorer?
+<P>
+A:</b> 
+Please see the <A HREF="http://www.FreeOTFE.org/main_explorer_differences.html">FreeOTFE v. FreeOTFE Explorer Comparison</A>
+
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+
+<a name="el"></a><b>Q: How can I help the FreeOTFE project?</b>
+<p><span style="font-weight: bold;">A: </span>If you are a native speaker of a language other than English, please take a look at
+<A HREF="http://www.FreeOTFE.org/translations.html">translating FreeOTFE</A> page. FreeOTFE v4.3 introduced support for translating the user interface into different languages, though at present the actual number of translations into other languages is fairly limited.
+
+<P>
+Alternativly, <I>FEEDBACK!</I> If you have any comments or suggestions for how FreeOTFE can be improved - get in touch!
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ey"></a><b>Q: Which of the hash/cypher algorithms should I use?
+<P>
+A:</b> This decision is left up to the user.
+
+<P>
+Most users can simply accept the default algorithms offered, which provides a fairly high degree of security.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ez"></a><b>Q: Which of the random number generators (RNGs) should I use?
+<P>
+A:</b> This decision is left up to the user.
+
+<P>
+Using more than one RNG increases the security offered by FreeOTFE as the combined random data generated will be at least as random as the most random RNG selected. Should one of the RNGs subsequently be found to be weak (i.e. producing data that is not as random as it should be), the random data used will still be as strong as the strongest RNG used.
+
+<P>
+See the <A HREF="technical_details__RNGs.htm">Technical Details: Random Number Generators (RNGs)</A> section for further information.
+
+
+<P>
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+
+<a name="aa"></a><b>Q: Is FreeOTFE based on CrossCrypt?</b>
+<p><span style="font-weight: bold;">A: </span>The answer to that is an
+emphatic <span style="font-style: italic;">NO</span>! FreeOTFE and
+CrossCrypt are two <span style="font-style: italic;">completely</span> separate projects, written by completely
+different people.<br>
+
+<p>It's easy to see why users may get the idea that FreeOTFE is based
+on CrossCrypt; CrossCrypt was released first, and the CrossCrypt's GUI
+(CrossCryptGUI) looks practically identical to FreeOTFE's interface.<br>
+
+The reality is that <i>CrossCrypt</i> itself is a command line based OTFE system; it has no
+GUI. <i>CrossCryptGUI</i> was a project I created to provide a GUI to
+CrossCrypt to improve its ease of use.
+<P>
+
+In actual fact, far from FreeOTFE looking a lot like CrossCryptGUI, it's
+actually the other way around - CrossCryptGUI looks a lot like FreeOTFE! The
+Delphi GUI to FreeOTFE was already developed before CrossCrypt was
+released. For the sake of expediency, I dropped the CrossCrypt Delphi
+component I wrote into FreeOTFE's GUI, hijacking it to produce
+CrossCryptGUI; a
+cannibalized version of the FreeOTFE interface.
+<P>
+
+The cyphers supplied with the first public release of FreeOTFE
+(v00.00.01) were the same as those used by CrossCrypt. Originally I had
+planned
+to release the first beta of FreeOTFE for compatibility testing with
+only the NULL, XOR, DES and AES cyphers; these apparently being the
+most common cyphers used with Linux volumes. After CrossCrypt was
+released (which uses AES and Twofish) DES was the only cypher in
+the above list I had not implemented. I decided to switch from DES
+to Twofish in order that people without Linux could easily use
+CrossCrypt to verify that FreeOTFE was operating correctly with AES and
+Twofish volumes (and vice versa; benefiting both systems).
+<P>
+
+Since its initial release, FreeOTFE has seen significant
+developments, including support for many more hashes, cyphers, and
+other options.
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ab"></a><span style="font-weight: bold;">Q: Is FreeOTFE based
+on Linux's "losetup"?</span>
+<P>
+
+<span style="font-weight: bold;">
+A:</span> No, FreeOTFE is a completely separate project in its own
+right. It
+was only after I realised how "simple" Linux encrypted losetup volumes
+are (they are nothing more than an encrypted partition image), that I
+added support for them into FreeOTFE.
+<P>
+
+Having said that the format of losetup volumes are "simple" - have you <span style="font-style: italic;">any idea</span>
+how many different options, combinations, etc it has?! Each option on
+its own may be relatively simple, but there are a fair number of
+them...!
+(See the relative complexity of the FreeOTFE's Linux mount dialog - you
+have to tell it everything!)
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ac"></a><span style="font-weight: bold;">Q: Right now,
+FreeOTFE supports
+losetup volumes; do you have any plans to include support for
+DriveCrypt, BestCrypt, etc volumes?</span>
+<P>
+
+<span style="font-weight: bold;">
+A:</span> This is unlikely to happen
+as there is no standard for OTFE volume files (each system uses its
+own layout). Since adding support for other OTFE systems is
+non-trivial, and few OTFE systems have released proper technical
+documentation into the public domain, it may be awhile before such
+support is added
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ad"></a><span style="font-weight: bold;">Q: When I mount a FAT/FAT32
+formatted Linux volume under FreeOTFE everything works perfectly. When
+I do the same with my ext2/ext3/RiserFS/etc volume, I can't see my
+files!</span><br>
+
+<p><span style="font-weight: bold;">A:</span> FreeOTFE does one thing:
+when a volume file is mounted, FreeOTFE presents a new storage device
+to the operating system.<br>
+
+Like all OTFE systems, it has no comprehension <span style="font-style: italic;">at all</span> of what FAT/FAT32/NTFS, let
+alone ext2/ext3/etc - this understanding lies well <span style="font-style: italic;">outside the scope of an OTFE system</span>,
+and is the responsibility of the filesystem drivers installed.
+<P>
+
+Although MS Windows does come with filesystem drivers for
+FAT/FAT32/NTFS, it does not (natively) support other filesystems such
+as
+ext2.
+<P>
+
+As a result, in order to read/write to your encrypted Linux volumes
+under MS Windows, you will need to either:<br>
+
+<ol>
+
+<li>Format the volume under Linux using one of the filesystems MS
+Windows understands (e.g. FAT), or
+<li>Install 3rd party software on your MS Windows system, which
+provides the filesystem (e.g. ext2) that you wish to use
+</ol>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ca"></a><b>
+Q: Why do the Linux examples for LUKS/dm-crypt volumes show "losetup" being used twice?
+
+<P>
+A:</b> This actually has <i>nothing</i> to do with FreeOTFE(!), but appears to be an oddity with "mkdosfs"/dm-crypt.
+
+<P>
+
+Although this section of the documentation shows:
+<br>
+
+<blockquote>
+<pre>losetup /dev/loop1 /dev/mapper/myMapper<br>mkdosfs /dev/loop1<br></pre>
+</blockquote>
+
+you should be able to simply use:
+<br>
+
+<blockquote>
+<pre>mkdosfs /dev/mapper/myMapper<br></pre>
+</blockquote>
+
+However, when this section of the documentation was written and
+tested (under Fedora Core 3, with a v2.6.11.7 kernel installed and
+using cryptsetup-luks v1.0), this shorter (and more sensible) version
+resulted in mkdosfs generating the following error:
+<br>
+
+<blockquote>
+<pre># mkdosfs /dev/mapper/myMapper<br>mkdosfs 2.8 (28 Feb 2001)<br>mkdosfs: unable to get drive geometry for '/dev/mapper/myMapper'<br></pre>
+</blockquote>
+
+YMMV, though you may well find that formatting the volume with a
+different filesystem will remove the "double loop" issue. (Please note
+though, that if you are intending to encrypted volumes which don't use
+FAT/NTFS under MS Windows, you will need a suitable filesystem driver)
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ae"></a><span style="font-weight: bold;">Q: FreeOTFE comes
+with a set of command line decryption utilities! Can't anyone just
+decrypt my data?</span><br>
+
+<span style="font-weight: bold;"><br>
+A: </span>The decryption software included with FreeOTFE is <span style="font-style: italic;">completely useless</span> without the
+password used to encrypt your data. And anyone with <span style="font-style: italic;">that</span> information can decrypt your
+data anyway!
+<P>
+
+The command line decryption utilities are not some form of "password
+cracking" tool - far
+from it; they actually act to increase your security by allowing you to
+verify that encryption is actually taking place.
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="af"></a><span style="font-weight: bold;">Q: When I mount a
+volume and then view its properties under FreeOTFE, it states that the
+hash algorithm used is "n/a" - but I used a hash algorithm!</span><br>
+
+<span style="font-weight: bold;"><br>
+A: </span>The hash algorithm
+shown is the one used to generate sector IVs. If the sector IV
+generation method used does not require the use of a hash algorithm (see the
+"Sector IVs" item on this dialog), "n/a" will be displayed for the hash
+algorithm.
+<P>
+
+This is separate from any hash algorithm used to process your password,
+which in the case of FreeOTFE volumes can be seen in the output file of
+a CDB dump (select "Tools | Critical data block | Dump to human
+readable file..."), or in the case of Linux volumes, is specified at
+time of mounting.
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ah"></a><span style="font-weight: bold;">Q: FreeOTFE
+is currently available for free - are you intending to "sell out"
+later, and start charging for it once enough users have been "hooked"
+on it?</span>
+<P>
+
+<span style="font-weight: bold; font-style: italic;">A: NO! ABSOLUTELY NOT!</span>
+FreeOTFE is free, and will always <span style="font-style: italic;">be</span>
+free. As much as anything else, it would look a little silly if people
+had to pay for "<span style="font-style: italic;">Free</span>OTFE"! ;)
+<P>
+
+Seriously though, I have <span style="font-style: italic;">no</span>
+intention in turning FreeOTFE into a commercial product.
+<P>
+The nearest that I may do is request donations. This would, of course,
+be fully voluntary.
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ai"></a><span style="font-weight: bold;">Q:
+FreeOTFE may always be free, but will an "enhanced" version (which is
+charged for) with extra features be released (perhaps under a different
+name)?</span>
+<P>
+
+<span style="font-weight: bold;">A: </span>Personally, this sounds a
+lot like the "selling out" idea above - if such a "paid for" version
+was to be
+released, FreeOTFE development may become at risk of stalling, ceasing
+completely, or omitting particularly useful features. This would have
+practically the same effect as making FreeOTFE a paid-for commercial
+system.
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ct"></a><span style="font-weight: bold;">Q:
+What about klonsoft's "LockDisk" and WinCrypto LLC's "CryptoDisk"? Aren't they paid-for packages which are based on FreeOTFE?</span>
+<P>
+
+<span style="font-weight: bold;">A:</span> Both "LockDisk" and "CryptoDisk" are unlicensed
+(and unlicensable) commercial rip-offs of FreeOTFE. They are based on
+FreeOTFE's source code (and only a beta version at that in the case of "LockDisk") and, because
+they are closed-source, are in direct violation of FreeOTFE's licence.
+<P>
+
+I have nothing to do with either "LockDisk" or "CryptoDisk", nor any involvement in their creation.
+<P>
+
+Personally, I would <span style="font-style: italic;">strongly recommend against</span> using these products:<br>
+
+<ul>
+
+<li>They have less functionality than FreeOTFE
+<li>They're closed source; there's no way of knowing how secure it is, or what it does
+<li>It is not possible to (legally) obtain a licence for these products
+<li>In the case of "LockDisk" the so-called "free" version is <I>severely</I> crippled (only permitting 35MB volumes)
+<li>In the case of "LockDisk", it's based on a pretty old and now obsolete (v0.59 BETA) version of FreeOTFE
+<li>And for all this, you have to <span style="font-style: italic;">pay for them?!!</span>
+</ul>
+
+I could list another few dozen reasons for not using these products, but I think you get the picture - FreeOTFE is simply better!
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="al"></a><span style="font-weight: bold;">Q: How can I be sure
+that there are no backdoors in FreeOTFE?</span>
+<P>
+
+<span style="font-weight: bold;">A:</span> Review the source code to
+your satisfaction, and build your own (see section <a href="technical_details__build_notes.htm">Building FreeOTFE</a>)
+<P>
+
+This is <span style="font-style: italic;">strongly recommended</span>,
+and the best way of ensuring that the software is not compromised.
+<P>
+
+However, this is not always practical (many people are not familiar
+with how to read source code, or lack the required tools to build their
+own). In which case, <span style="font-style: italic;">if</span>
+you trust the author, and the system on which the release was built
+on, then you may prefer to simply check the SHA-1 and PGP signatures
+associated with the binary release.
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hg"></a><b>Q: Do FreeOTFE volumes have any kind of identifying "signature"?
+<P>
+A:</b> 
+No!
+
+<P>
+Please see the FAQ: <A HREF="#ao">By examining a
+FreeOTFE/encrypted Linux volume file, can anyone tell what it is?</A> for further information.
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ao"></a><span style="font-weight: bold;">Q: By examining a
+FreeOTFE/encrypted Linux volume file, can anyone tell what it is?</span>
+<P>
+
+<span style="font-weight: bold;">A:</span> Neither FreeOTFE nor
+encrypted Linux volumes have any kind of "signature" that would allow
+an attacker to identify them for what they are.
+<P>
+
+In particular, the "critical data block" in every FreeOTFE volumes is
+encrypted, and as such it is not possible to identify it for what it is
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ap"></a><span style="font-weight: bold;">Q: What is "plausible
+deniability?"</span>
+<P>
+
+<span style="font-weight: bold;">A: </span>See the documentation section on
+<a href="plausible_deniability.htm">"Plausible Deniability"</a> for details.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="aq_1"></a><span style="font-weight: bold;">Q: What to the
+numbers and letters after a hash name mean?</span><br style="font-weight: bold;">
+
+<br style="font-weight: bold;">
+
+<span style="font-weight: bold;">
+A:</span> When required to choose which hash you wish to use,
+FreeOTFE will present you with a list of all hashes that are provided
+by the FreeOTFE drivers installed. These lists will display hash names in the format:<br>
+
+<blockquote><span style="font-style: italic;">
+&lt;hash name&gt;</span> (<span style="font-style: italic;">&lt;hash length&gt;</span>/<span style="font-style: italic;">&lt;block size&gt;</span>)
+</blockquote>
+
+Note: The hash length and block sizes shown are in bits, not bytes.
+<P>
+
+For example:<br>
+
+<blockquote>
+SHA-512 (512/1024)
+</blockquote>
+
+This indicates that the hash used is SHA-512, which generates 512 bit hash values, and processes data in 1024 bit blocks.
+<P>
+
+If the hash length shown is zero, then the hash generates no output.<br>
+
+If the hash length shown is "-1", then the length of the hash values returned can vary.
+<P>
+
+If the block size is "-1", then the hash processes data using a variable block size.
+<P>
+
+Typically, when presented with a selection of different hashes to
+choose from, you will see a "?" or "..." button next to the list;
+clicking this button will display full details on the driver.
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="aq_2"></a><span style="font-weight: bold;">Q: What to the
+numbers and letters after a cypher name mean?</span><br style="font-weight: bold;">
+
+<br style="font-weight: bold;">
+
+<span style="font-weight: bold;">
+A:</span> When required to choose which cypher you wish to use,
+FreeOTFE will present you with a list of all cyphers that are provided
+by the FreeOTFE drivers installed. These lists will display cypher
+names in the format:<br>
+
+<blockquote><span style="font-style: italic;">
+&lt;cypher name&gt;</span> ([<span style="font-style: italic;">&lt;mode&gt;</span>;
+] <span style="font-style: italic;">&lt;key size&gt;</span>/<span style="font-style: italic;">&lt;block size&gt;</span>)
+</blockquote>
+
+Note: The key and block sizes shown are in bits, not bytes.
+<P>
+
+For example:<br>
+
+<blockquote>
+AES (XTS; 256/128)
+</blockquote>
+
+This indicates that the cypher is AES, operating in XTS mode with
+a key size of 256 bits and a block size of 128 bits.
+<P>
+
+If the key size shown is zero, then the cypher does need take a key
+(password) to carry out encryption (e.g. the "Null" test cypher).<br>
+
+If the key size shown is "-1", then the cypher can accept keys of
+arbitrary size.
+<P>
+
+If the block size is "-1", then the cypher encrypts/decrypts arbitrary
+block size.
+<P>
+
+Typically, when presented with a selection of different cyphers to
+choose from, you will see a "?" or "..." button next to the list;
+clicking this button will display full details on the driver.
+
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hh"></a><b>Q: When creating a new volume file, why do I get a message asking me to ensure I have XX.XX GB free on the relevant drive?
+<P>
+A:</b> 
+If you get an error stating that:
+
+<BLOCKQUOTE>
+Unable to create volume file; please ensure you have XX.XX GB free on the relevant drive
+</BLOCKQUOTE>
+
+<P>
+during volume creation, this is probably because the drive you are trying to create the volume on is formatted as FAT/FAT32 - both of which have a file size limit of 4GB. 
+
+<P>
+Please see the FAQ "<A HREF="#gc">I tried to create a large volume (> 4GB), and FreeOTFE stopped halfway through with an error - why?</A>"
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gc"></a><span style="font-weight: bold;">Q: I tried to create a large volume (> 4GB), and FreeOTFE stopped halfway through with an error - why?</span><br style="font-weight: bold;">
+
+<br style="font-weight: bold;">
+
+<span style="font-weight: bold;">A:</span> The most probable cause for this is that you were creating a volume file on a FAT/FAT32 filesystem,
+however FAT/FAT32 filesystems cannot support files larger than (4 GB - 1 byte).
+
+<P>
+See the FAQ: <A HREF="#as">What is the largest volume that I can create?</A> for further information and how to resolve this.
+
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="as"></a><span style="font-weight: bold;">Q: What is the
+largest volume that I can create?</span><br style="font-weight: bold;">
+
+<br style="font-weight: bold;">
+
+<span style="font-weight: bold;">A:</span> On a PC, FreeOTFE has a theoretical maximum volume size of 2^64 bytes (16777216 TB; 17179869184 GB). For fairly obvious reasons, I have not had the opportunity to test a volume this size!
+
+<P>
+In practice however, although partition based volumes may be able to realise volumes as large as this, 
+file-based volumes may find that limitations with the filesystem that the volume file is to be stored
+upon may prevent this limit from being reached.
+
+<P>
+For example, a FAT32 drive cannot store a volume file which is
+4GB or larger. In practical terms, this means that the largest volume you can
+create on a FAT32 filesystem is 3999 MB. An NTFS formatted drive <I>can</I> store volume files <I>much</I> larger; in excess of FAT32's
+4GB limit, and up to FreeOTFE's maximum size stated above.
+
+<P>
+On a PDA, the largest volume supported is 2^32 (4GB). This is due to limitations with Windows Mobile.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="at"></a><span style="font-weight: bold;">Q: Help! I forgot my
+password! I know it was something like...</span><br style="font-weight: bold;">
+
+<br style="font-weight: bold;">
+
+<span style="font-weight: bold;">A:</span> Oops. That was silly of you,
+wasn't it?
+<P>
+
+If you've secured your volume with something like AES, then you can
+pretty much kiss goodbye to your data.
+<P>
+
+If you know what most of your password is though, then you could
+certainly write an application which would carry out a brute force
+attack on your volume, assuming those known characters. How long this
+would take to run would depend on the cypher used, the strength of your
+password, and how much you remember of it.
+<P>
+
+Note: This is not a security risk; that last comment <span style="font-style: italic;">equally applies</span> to pretty much <span style="font-style: italic;">any</span> OTFE system which has been
+implemented correctly.
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="he"></a><b>Q: Can I store an encrypted volume on a compressed NTFS drive?
+<P>
+A:</b> 
+Yes, though there is nothing to be gained from compressing encrypted data, as it is unlikely to compress by any significant amount (if at all)
+
+
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ha"></a><b>Q: What hash algorithms does FreeOTFE use?
+<P>
+A:</b> 
+A full list of the hash algorithms used by FreeOTFE can be found on the <A HREF="description.htm">introduction page</A>
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hb"></a><b>Q: What encryption algorithms does FreeOTFE use?
+<P>
+A:</b> 
+A full list of the cyphers and cypher modes used by FreeOTFE can be found on the <A HREF="description.htm">introduction page</A>
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="cp"></a><b>Q: Which cypher modes does FreeOTFE support?
+
+<P>
+A:</b> With the exception of the NULL and XOR cyphers, FreeOTFE
+offers CBC, LRW and XTS modes, and has the flexibility for other modes to be easily
+added by simply changing drivers.
+
+<P>
+A full list of the cyphers and cypher modes used by FreeOTFE can be found on the <A HREF="description.htm">introduction page</A>
+
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hd"></a><b>Q: Which is the best encryption algorithm to use?
+<P>
+A:</b> 
+<I>That</I> is a difficult question to answer!
+
+<P>
+The best advice that can be given here is to research the cyphers available, and make your own decision based on your particular security requirements.
+
+<P>
+FreeOTFE defaults to using the AES-256 cypher in XTS mode together with SHA-512 for hashing. This should prove more than enough for the overwhelming majority of users.
+
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ax"></a><span style="font-weight: bold;">Q: How safe is FreeOTFE?</span>
+<P>
+
+A: FreeOTFE is about as pretty much just as safe as writing directly
+data to your hard drive, without FreeOTFE encrypting it (see also the FAQ: "<a href="FAQ.htm#ay">What happens if my volume file is corrupted or damaged in some way? Will I lose all my data?</a>")
+<P>
+
+If you forget your password however, then by definition you will not be able to recover your data (see also the FAQ: "<a href="FAQ.htm#at">Help! I forgot my
+
+password! I know it was something
+like...</a>")
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ay"></a><span style="font-weight: bold;">Q: What happens if my volume file is corrupted or damaged in some way? Will I lose all my data?</span>
+
+<P>
+
+A: As with pretty much <span style="font-style: italic;">all</span> OTFE systems, if you were to corrupt a FreeOTFE volume is some way, the damage
+your data would receive would be about the same as if you had stored it
+directly on your hard drive, without FreeOTFE encrypting it.
+<P>
+
+For example: If you mount a FreeOTFE volume file and then write a byte
+of data, at random, to somewhere on that mounted drive, the effect
+would be exactly the same as if you had randomly written the same byte
+to a real hard drive.
+<P>
+
+On the other hand, if you were to write a byte to data to a random
+location within an umounted FreeOTFE volume, then the amount of damage
+caused would dependant on where that byte was written:<br>
+
+<ol>
+
+<li>If the volume file was created with a critical data block (CDB)
+at the start of it, and the byte was written to the first 512 bytes of
+the volume file (where the CDB is located), then the volume would be
+unmountable, unless you had made a backup of this area of your volume,
+or created a keyfile - in which case, you could restore from your
+backup/mount from your keyfile, and continue as if nothing had happened.
+<li>If the volume file was created without a critical data block, or
+the byte was written to any other part of your volume file, then the
+sector that corresponded to the location that the byte was written to
+would be corrupted from approximately the point the byte was written, to
+the end of that sector; a maximum of 512 bytes.<br>
+
+</ol>
+
+To protect against (1), FreeOTFE included functionality to backup a
+volume's CDB (see "Tools | Critical data block... | Backup..."), and to
+create keyfiles (see "Tools | Create keyfile...")<br>
+
+Should case (2) occur, the damage to your volume would be minimal
+(up to a maximum of 512 bytes), and restricted to the sector
+that was corrupted.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="az"></a><span style="font-weight: bold;">Q: If someone steals my keyfile, will they be able to decrypt my data and read it?</span>
+
+<P>
+
+A: No, not unless they have the keyfile's password as well.
+<P>
+
+Keyfiles are encrypted. Without the password used to encrypt it, a keyfile is pretty much just a useless block of random data.
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gt"></a><b>Q: How do I know FreeOTFE is encrypting my data, and with the encryption algorithm I choose?
+<P>
+A:</b> 
+To verify that encryption/decryption is taking place for Linux volumes, create an encrypted volume using Linux; then mount it using FreeOTFE.
+
+<P>
+The encrypted Linux volume will be fully readable (and writable) using FreeOTFE - confirming that the same encryption is taking place under FreeOTFE as Linux.
+
+<P>
+For FreeOTFE volumes, the critical data block can be dumped out (see "Tools | Dump to human readable file..." menu), and the master encryption key used to mount the same volume under Linux (offsetting for the CDB) - again proving that encryption is taking place.
+
+<P>
+<B>WARNING:</B> <I>Contrary to popular belief</I>, a user interface which accepts and processes encryption test vectors does <I>not prove anything!</I>  It is a trivial task to take a secure cypher, and use it to process test vectors provided by the user, while actually using a very weak and insecure cypher to carry out encryption/decryption on the data being stored!
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ba"></a><span style="font-weight: bold;">Q: When selecting a cypher to use, why do the same cyphers appear multiple times?</span>
+
+<P>
+
+A: This is because you have more than one version of a particular cypher driver
+installed. See also: <a href="#bc">Why are there duplicated cypher drivers?</a>
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="bc"></a><span style="font-weight: bold;">Q: Why are there duplicated cypher drivers?</span>
+
+<P>
+
+A: The "duplicated" drivers implement the same algorithms, but are built from different crypt libraries. For example,
+there are three Twofish drivers; one based on the Hi/fn and Counterpane
+Systems Twofish
+implementation, another which uses the libtomcrypt implementation, and
+a third which relies on the Gladman implementation.
+<P>
+
+They redundant drivers are primarily intended to allow verification of
+the implementations and increase confidence that they're actually doing
+what it's supposed to do.
+<P>
+
+These duplicated drivers do exactly the same thing. It is recommended that if you
+wish to use a cypher which has multiple supplied drivers, that you uninstall one of them. (See
+also: <a href="#bd">Which of the duplicated drivers should I use?</a>)
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="bd"></a><span style="font-weight: bold;">Q: Which of the duplicated drivers should I use?</span>
+
+<P>
+
+A: It doesn't particularly matter too much; they both do exactly the
+same thing, but are based on different implementations.
+<P>
+
+Simply choose one and uninstall the other.
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="bi"></a><span style="font-weight: bold;">Q: Can FreeOTFE generate keyfiles which <span style="font-style: italic;">only</span> allow read only
+
+access?</span>
+
+<P>
+
+A: Not at present, though if I receive enough requests for it, I may add this functionality.
+<P>
+
+Until then, it should be borne in mind that anyone with a "read only"
+keyfile has, pretty much by definition, a copy of your master key and
+so has the potential to modify their "read only" keyfile, turning it
+into a "read-write" keyfile.
+<P>
+
+i.e. It is debatable how much use this functionality has; certainly it
+should not be relied upon to prevent users from gaining write access to
+your volume files.
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="cs"></a><span style="font-weight: bold;">Q: Can I use the same encrypted volumes on <i>both</i> my PC and PDA?</span>
+
+<P>
+
+<b>A:</b> Yes - you can! Both the PC and PDA versions of FreeOTFE are <I>fully</I> compatible with each other.
+
+<p>
+However, please create your volume using the PC version of FreeOTFE.
+Volumes created using the PDA version will include additional partition
+information which will not be understood by your PC.
+
+<P>
+Make sure that before attempting to mount your volume using the PDA version, you have enabled the
+relevant hash/cypher drivers used in securing the volume. By default, FreeOTFE4PDA only has 
+the SHA-<I>xxx</I> and AES algorithms enabled. See 
+<A HREF="advanced_topics.htm">Advanced Topics</A>, "Enabling/Disabling Hash/Cypher Algorithms" section, 
+for how to enable/disable other hash/cypher algorithms.
+
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="dd"></a><span style="font-weight: bold;">Q: When creating a new volume, how do I enable the sector IV options?</span>
+
+<P>
+
+<b>A:</b> Sector IVs are only used with cyphers using CBC mode; to
+enable the sector IV options, select an encryption algorithm which
+operates in CBC mode.
+<P>
+If you select a cypher which uses either LRW or XTS, the IV options are
+automatically disabled as these algorithms don't use them.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="cb"></a><b>
+Q: Is FreeOTFE vulnerable to "watermarking" attacks?
+
+<P>
+A:</b> FreeOTFE volumes are <I>not</I> vulnerable to watermarking attacks, as long as they are created with a cypher using:
+
+<UL>
+<LI>XTS mode
+<LI>LRW mode
+<LI>CBC mode with ESSIV
+</UL>
+
+(see the "Create new volume" wizard, encryption settings step).
+
+<P>
+By default, FreeOTFE creates volumes using XTS mode. Users would have to <I>deliberatly</I> create their volumes using CBC mode with predictable IVs in order to be vulnerable to this type of attack.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="de"></a><span style="font-weight: bold;">Q: Is FreeOTFE vulnerable to "Cold Boot Attacks on Encryption Keys" (aka "DRAM attacks")?
+</span>
+
+<P>
+
+<b>A:</b> 
+
+No, it isn't - assuming common sense is used.
+<P>
+<I>Description</I>
+
+<P>
+A "cold boot attack" involves rebooting a computer which has been handling sensitive information, and dumping contents of its memory out to a 
+disk in order to try to examine information stored in memory immediately prior to rebooting. This form of attack is
+detailed at <A HREF="http://citp.princeton.edu/memory/faq/">http://citp.princeton.edu/memory/</A>
+
+<P>
+
+This attack is <I>nothing new</I>, and has been well known for a <I>long</I> time; despite the disproportionate amount of attention it's now getting.
+<P>
+<I>Solution</I>
+
+
+<P>
+If you mount an OTFE volume, and simply walk away from your computer, the encryption keys used to secure your volume will be held in your computer's physical 
+memory (obviously). If someone reboots your computer at that point, there is a risk they could successfully recover your encryption key.
+
+<P>
+However, it is not generally recommended that you simply <I>walk away from your computer while you have volumes mounted</I> - if anyone can come along and 
+attempt to launch the above attack, THEY CAN SIMPLY READ THE CONTENTS OF YOUR ENCRYPTED VOLUME DIRECTLY ANYWAY!
+
+<P>
+If you dismount your volumes after using them, the FreeOTFE driver overwrites all sensitive data (key information, etc) that 
+it holds before releasing it - which should prevent the above attack.
+
+<P>
+If you suddenly press your computer's power off button or reset it (i.e. using the physical "power off" button on the front of its case) <I>while a volume is 
+mounted</I>, then an attacker could theoretically dump out your encryption keys using this attack. Please note that:
+
+<OL>
+<LI><I>All</I> encryption systems are susceptible to this attack, since they have to store encryption keys in memory in order to use them
+<LI><I>Regardless of whether you use any form of disk encryption or not</I>, it is not recommended that you do power off/reset your computer without first shutting down cleanly via the "Start -> Turn off computer"!
+</OL>
+
+<P>
+To prevent this attack in the situation described above, ensure that the computer remains powered off for several minutes after it is turned off in order for the contents 
+of RAM to effectively "bleed away"
+
+<P>
+<I>Summary</I>
+
+<P>
+In summary, to completely remove the threat of this attack against your encryption keys:
+
+<OL>
+<LI>Dismount volumes after you have used them
+<LI>If you must power off your computer <I>while one or more volumes are mounted</I>: prevent anyone from powering it back on and dumping it's memory out for 
+at least the first few minutes after it was powered off (or the first 15-20 minutes if they open up the case and spray coolant on the memory chips)
+</OL>
+
+In short - just use common sense.
+
+<P>
+<I>Notes</I>
+
+<P>
+It should be noted that this attack is <I>not limited in any way to disk encryption systems</I>. The focus on these systems by the authors of the above paper is a red 
+herring. Essentially the attack consists of attempting to take a snapshot of the PC's memory at the time it was reset, which can then be picked over at 
+leisure. <I>Any</I> encryption system can be attacked in this way.
+
+<P>
+Furthermore, because this attack may allow whatever was in the computer's memory at the point it was rebooted to be recovered, it should also be noted that any 
+information that applications had in memory at the time the computer is reset (e.g. a document open in MS Word, or image being displayed on the screen) may potentially be 
+recovered. Disk encryption systems encrypt data stored on disks - not in RAM.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ei"></a><b>Q: Does FreeOTFE have any form of password recovery?
+<P>
+A:</b> Yes; FreeOTFE keyfiles can be used to provide a form of password recovery; see the <A HREF="getting_started.htm">Getting Started Guide</A>
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ej"></a><b>Q: Isn't FreeOTFE's "keyfile" functionality a security risk?
+<P>
+A:</b> No. In order to create a keyfile, both the volume and the volume's password (or an existing keyfile, and that keyfiles password) are required.
+
+<P>
+If an attacker already has this information, your security has already been compromised anyway.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="bn"></a><span style="font-weight: bold;">Q: What happened to the NULL hash and NULL/XOR cypher drivers?</span>
+
+<P>
+
+<b>A:</b> 
+
+To improve performance, these drivers have been moved into a "weak
+drivers" directory in the PDA release. Really, you shouldn't be using
+these drivers at all; they are of little use from a security perspective, and are only really included to allow testing.
+They're still included with the release though, if you <i>really</i> need them...
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gd"></a><b>Q: How do I resize an encrypted volume?
+<P>
+A:</b> To change the size of an encrypted volume:
+
+<OL>
+<LI>Mount your existing volume
+<LI>Create a new FreeOTFE volume of the size required
+<LI>Mount the new volume (overwriting and formatting it if needed)
+<LI>Copy all data from the old volume to the new one
+<LI>Dismount both volumes
+<LI>Delete the old volume
+</OL>
+
+<P>
+Obviously, this procedure requires enough storage space to hold both the old and newly created volumes.
+
+<P>
+It should be noted that, although a number of <I>other</I> disk encryption systems <I>claim</I> to offer volume resizing functionality, they typically either carrying out the procedure above "behind the scenes" (often failing completely if insufficient storage is available to hold the new volume), or by storing the volume in a "sparse" files - which can lead to security leaks.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ge"></a><b>Q: How do I delete an encrypted volume?
+<P>
+A:</b> If your volume is stored within a file, simply dismount the volume if already mounted, and delete the file.
+
+<P>
+IMPORTANT: Before deleting a volume file, make sure that you mount it first and copy any information stored in it to somewhere safe! Once deleted, you will lose access to your encrypted volume, and anything it contains!
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="et"></a><b>Q: How do I backup an encrypted volume?
+<P>
+A:</b> How you backup an encrypted volume depends on whether it is a file or
+partition based volume. In both cases however, volumes should be
+<I>dismounted</I> before being backed up.
+
+<P>
+<B>For file based volumes</B>
+
+<P>
+A file based volume is a file just like any other (albeit a
+fairly big one); simply let your backup software backup the volume as
+it chooses, and your data should be safe.
+
+<P>
+This will work regardless of what backup software you use, though you may wish to turn off FreeOTFE's timestamp reverting functionality in order for your backup software to identify when volumes have been changed. (See "View | Options..." dialog, "General" tab, "Revert volume timestamps on dismount")
+
+<P>
+<B>For disk/partition based volumes</B>
+
+<P>
+Whether you can backup disk/partition based volumes depends on the
+backup software being used. If your backup software takes a <I>literal</I>
+backup image of a disk/partition, then it should successfully backup
+FreeOTFE volumes (even if the backup copy is compressed). However, not
+all backup systems do this, and instead try to be "smart" about what
+they store to backup - and fail to backup everything they need to.
+
+<P>
+(This issue is true for all disk encryption systems, not just FreeOTFE)
+
+<P>
+For example, with <A HREF="http://www.paragon-software.com/">Paragon Drive Backup</A>,
+if you create an encrypted volume using an <I>entire disk</I>
+(i.e. without creating a partition on the disk, and encrypting that partition),
+Paragon Drive
+doesn't appear to think there's anything worth backing up (i.e. it
+doesn't see any partitions <I>to</I> backup) and therefore backs up 
+practically nothing. As a result, it will <I>not</I> back up your volume
+correctly.
+
+<P>
+However! If you create an encrypted volume on a <I>partition</I> (even
+one filling the entire drive), and back that partition up, Paragon Drive Backup
+does what it <I>should</I> do - generates a compressed backup copy of the
+<I>entire</I> partition, which can then be restored back later.
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_Tip.png" alt="Tip!" >
+    </TD>
+    <TD width=100%>
+
+No matter <I>what</I> you're backing up, when you setup a backup system for the first time, it is <I>strongly recommended</I> that you go through the restore process at least <I>once</I> before "setting it and forgetting it". The <I>absolute worst</I> time for learning how your software's restore function works is when you actually need it (e.g. after a disk failure, and you want to get your data back)<P>This advice applies to <B>ALL</B> backups, and not just backups of FreeOTFE volumes.<P>By doing a "dry run", you can have confidence in both your backups, and in your ability to use them should you need to.
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hf"></a><b>Q: Can I use <I>any</I> filename/file extension for my FreeOTFE volume?
+<P>
+A:</b> 
+Yes!
+
+<P>
+Filenames and file extensions have no special meaning to FreeOTFE, which means any filename can be used.
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gw"></a><b>Q: Does FreeOTFE support LVM2?
+<P>
+A:</b> 
+Yes - it certainly can!
+
+<P>
+FreeOTFE fully supports Linux LVM2 volumes, provided that you have a suitable Windows driver which allows access to LVM2 volumes, this will allow FreeOTFE to carry out disk encryption either above or below the LVM management system (i.e. on physical or logical volumes)
+
+<P>
+(It should be noted however that LVM2 is <I>not</I> a disk encryption issue!)
+
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gx"></a><b>Q: Is it worth running file overwriter ("shredder") programs to securely delete existing data stored on my encrypted drive?
+<P>
+A:</b> 
+For most users, no - it would only have the effect of replacing encrypted files with encrypted garbage; neither is particularly useful to an attacker.
+
+<P>
+However, if you have concerns of an attacker being able to gain your password (and other details required to decrypt your encrypted volume), it may still be wise to overwrite data before its deletion. This way, should an attacker be able to decrypt your volume(s), they will not be able to use data recovery tools to retrieve sensitive data.
+
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gy"></a><b>Q: What is the difference between the main FreeOTFE/FreeOTFE Explorer release and the PortableApps.com version?
+<P>
+A:</b> 
+The PortableApps.com version is identical to the main FreeOTFE/FreeOTFE Explorer release, but includes an additional:
+
+<UL>
+<LI>"Launcher" executable, which simply starts FreeOTFE.exe/FreeOTFEExplorer.exe
+<LI>Directory structure required to integrate it into the PortableApps.com menu software.
+<LI>Configuration files required to integrate it into the PortableApps.com menu software.
+</UL>
+
+Further, the installer has been created using the PortableApps.com installer-creator software instead of the standard FreeOTFE NSIS installer, and the translation source files (".po" files, which aren't needed to use the software) have been removed.
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gz"></a><b>Q: What is the difference between the main FreeOTFE/FreeOTFE Explorer release and the U3 version?
+<P>
+A:</b> 
+The U3 version is identical to the main FreeOTFE/FreeOTFE Explorer release with the exception that a slightly different directory structure is used to support the U3 platform, and the translation source files (".po" files, which aren't needed to use the software) have been removed.
+
+<P>
+The ".u3p" file is simply a ZIP archive which has been renamed; it may be renamed to have a ".zip" file extension and uncompressed to verify its contents.
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hi"></a><b>Q: When dismounting a file based volume, what does FreeOTFE do with the file timestamps?
+<P>
+A:</b> 
+By default, when mounting file based volumes, FreeOTFE stores the volume file's timestamps, and resets them back again after dismounting. This is carried out for security reasons (see section on <A HREF="plausible_deniability.htm">plausible deniability</A>).
+
+<P>
+This functionality can be turned off if needed (e.g. to assist backup processes; see FAQ "<A HREF="#et">How do I backup an encrypted volume?</A>") by turning off the "Revert volume timestamps on dismount" option on the Options dialog ("View | Options").
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hi"></a><b>Q: What is volume "padding", and why would I want it?
+<P>
+A:</b> 
+A number of tools are available to "detect" encrypted volumes. These typically operate
+by detecting large files with a high amount of entropy and a file size that is a multiple of 512 bytes, or which is a certain "signature size" greater than the last 1MB boundary.
+
+<P>
+"Padding" is additional (random) data added to the end of the volume, and is used to prevent detection of FreeOTFE volumes by automated volume-finding tools which only carry out a cursory search for volumes, and rely on the size of files found.
+
+<P>
+Furthermore, padding also reduces the amount of information an attacker has about a volume, by preventing reliable detection of the size of the mounted volume (subject to the mounted volume being overwritten as described in the <A HREF="plausible_deniability.htm">Plausible Deniability</A> section).
+
+<P>
+Padding will not prevent a reasonably knowledgeable IT person from being able to reasonably identify an encrypted volume as such - like any security mechanism, padding is simply another tool which would be employed from a larger toolbox. For this reason, it is <I>not</I> recommended that padding be relied upon to help secure data against an attacker, and users considering using padding may benefit from reading the section on <A HREF="plausible_deniability.htm">"Plausible Deniability"</A>
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hi"></a><b>Q: Why <I>wouldn't</I> I want to use padding?
+<P>
+A:</b> 
+Padding takes up additional storage on your hard drive beyond that required by the volume file.
+
+
+
+<P>
+
+<hr>
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_3"><H3>FreeOTFE Specific (PC)</H3></A>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ag"></a><span style="font-weight: bold;">Q: When creating a
+FreeOTFE volume,
+the wizard shows me which stage of volume creation I am currently on -
+but it goes haywire, and the number of stages to complete keeps
+changing!</span><br>
+
+<span style="font-weight: bold;"><br>
+A: </span>The number of
+different stages to creating a new FreeOTFE volume varies, depending on
+what options you choose - for example, if you elect to the mouse
+movement to generate random data, then you will have to complete an
+extra step to actually generate this random data; if you switch to
+using the Microsoft CryptoAPI for generating random data, you can skip
+that step, as it is done for you automatically.
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="aj"></a><span style="font-weight: bold;">Q: Is it possible to
+dismount my FreeOTFE volumes when I hit a certain "hotkey"?</span>
+<P>
+
+<span style="font-weight: bold;">A:</span> Yes; see under "View | Options..." - the "Hotkeys" tab
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ak"></a><span style="font-weight: bold;">Q: Why can't I
+dismount my volume(s)?</span>
+<P>
+
+<span style="font-weight: bold;">A:</span> The most common reason for
+this is because FreeOTFE cannot gain an exclusive lock on the
+associated drive. This is normally caused by one or more files being
+open on the encrypted volume.
+<P>
+
+"Normal" (non administrator) users may also have problems dismounting
+drives (see the TODO list this documentation)
+<P>
+
+If a volume cannot be dismounted "normally", you will be prompted if
+you want to forcefully dismount it; it is only recommended that volumes
+are dismounted in this way if all open files and documents are closed.
+<br>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="am"></a><span style="font-weight: bold;">Q: Why are the drivers
+written in C, but the PC versions GUI in Delphi?!</span>
+<P>
+
+<span style="font-weight: bold;">A:</span> Good question. The drivers
+are written in C as the DDK pretty much requires it. The PC GUI is in
+Delphi as this was the easiest for me to implement.
+<P>The PDA version of the GUI was written in C; this may be ported to the PC platform at a later date
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="an"></a><span style="font-weight: bold;">Q: Why aren't I prompted to enter a password when creating a Linux volume?</span>
+<P>
+
+<span style="font-weight: bold;">A:</span> This is covered in the
+documentation; see section relating to creating Linux volumes.
+<P>
+
+In a nutshell, creating a Linux volume only requires a file to be
+created of the appropriate size. It is when the volume is subsequently
+mounted that a password is required; the same process as when creating
+an encrypted Linux volume under Linux.
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ar"></a><span style="font-weight: bold;">Q: Can I burn my
+volumes on a CD (or CDRW, or DVD), and mount them from there?</span>
+<P>
+
+<span style="font-weight: bold;">A: </span>Yes; at the end of the day,
+volume files are just plain straight (albeit very large) files. Just
+ensure that when you mount them, you mount them as <span style="font-style: italic;">read only</span> volumes, (for obvious
+reasons - even with CDRWs).
+<P>
+
+It is recommended that volumes which are to be written to CD are
+formatted using either the FAT or FAT32 filesystem. NTFS volumes will
+work (under Windows XP), though AFAIR Windows 2000 is unable to mount
+NTFS volumes read only (meaning the volume must be copied back to your
+HDD, the file set to read/write, and <span style="font-style: italic;">then</span>
+mounted).
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="au"></a><span style="font-weight: bold;">Q:
+Can I use FreeOTFE over a network?</span>
+<P>
+
+<span style="font-weight: bold;">A:</span> Yes. By installing FreeOTFE
+on the computers you wish to access your data from, you can mount a
+volume file located on a networked server.
+<P>
+
+When mounting over a network, simply specify the UNC path (e.g.
+\\servername\sharename\path\volumefilename) to the volume file begin
+mounted.
+<P>
+
+When a volume is mounted over a network in this way, all data
+read/written to that volume will be sent over the network in encrypted
+form.
+<P>
+
+If you wish to mount a networked volume file by more than one computer
+at the same time, you may do so provided that they all mount the volume
+read only. If any computer has a volume file mounted as read/write, you
+should dismount all other computers (even if they were accessing the
+volume as read only), and ensure no other computer mounts the volume
+until the computer mounted as read/write has dismounted.
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="aw"></a><span style="font-weight: bold;">Q: Why do I get "Unable to connect to the FreeOTFE driver" errors?</span>
+<P>
+
+<b>A:</b> 
+
+This message indicates that you have either not installed the main
+FreeOTFE driver ("FreeOTFE.sys"), or you have not started it yet.
+<P>
+
+It is <span style="font-style: italic;">normal</span> to see this message in the following circumstances:<br>
+
+<ol>
+
+<li>The first time you run FreeOTFE, when no drivers have been installed
+<li>When exiting the driver installation dialog, if the main FreeOTFE driver hasn't been both <span style="font-style: italic;">installed</span> and <span style="font-style: italic;">started</span>.<br>
+
+<li>When starting FreeOTFE after installing the main FreeOTFE driver,
+if the driver has not been started (e.g. you rebooted, and the driver
+was set for manual start, as opposed to at system startup)
+<li>When stopping all portable mode drivers, where the main FreeOTFE driver was started in portable mode.
+<li>When exiting FreeOTFE and stopping all portable mode drivers, where the main FreeOTFE driver was started in portable mode.
+</ol>
+
+To eliminate this error message, ensure that that the main FreeOTFE driver is installed and started.
+<P>
+
+To prevent this error message from being displayed when FreeOTFE is run
+after rebooting, set the main FreeOTFE driver to start at system
+startup.
+<P>
+
+The status of all installed drivers can be checked by selecting "File | Drivers..."
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="bb"></a><span style="font-weight: bold;">Q: Why do I get prompted to select a driver whenever I attempt to mount some of my FreeOTFE volume?</span>
+
+<P>
+
+<b>A:</b> 
+If your volume looks as though it can be decrypted by using more
+than one cypher/hash driver combination, you will be prompted to select
+which combination you wish to use.
+<P>
+
+This happens, for example, if you used Twofish or AES to encrypt your
+data as FreeOTFE comes supplied with a choice of drivers for these cyphers (see also: <a href="#bd">Which of the duplicated drivers should I use?</a>)
+<P>
+
+To prevent the prompt appearing, please uninstall one of the offending drivers. 
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="cc"></a><b>
+Q: Do I need Administrator privileges to use FreeOTFE on my computer?
+
+<P>
+A:</b> No - Although Administrator privileges are needed to install the FreeOTFE drivers, or start/stop portable mode.
+
+<P>
+
+To allow "standard" (non Administrator) users to use FreeOTFE, please
+install the FreeOTFE drivers by following the instructions in the <a href="installation_and_upgrading__PC.htm">Installation and Upgrading</a> section. After which, any user will be free to use FreeOTFE (e.g. to create, mount, dismount and use encrypted volumes)
+
+<P>
+To access an encrypted volume on a PC which <I>doesn't</I> have FreeOTFE installed, and on which you <I>don't</I> have Administrator privileges, please use FreeOTFE Explorer.
+
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="be"></a><span style="font-weight: bold;">Q: Why do I need Administrator rights to install FreeOTFE?</span>
+
+<P>
+
+<b>A:</b> 
+This is probably the most common FAQ with respect to OTFE systems.
+<P>
+
+In order for
+most (if not all) OTFE systems to operate, they require the use of
+"kernel mode drivers" to carry out drive emulation.
+<P>
+
+A "kernel mode driver" is special piece of software which operates at a
+very low-level within your computer's operating system. As such, it can
+do pretty much <span style="font-style: italic;">anything</span> to your system - including carrying out privileged actions that normal users are not
+allowed to do (e.g. formatting your HDD). Because of this, MS Windows only allows users
+with Administrator rights to install such drivers.
+<P>
+
+<span style="font-weight: bold;">NOTE:</span> Administrator rights are <span style="font-style: italic;">not</span> required in order to use FreeOTFE once
+
+installed.
+
+<P>
+To access an encrypted volume on a PC which <I>doesn't</I> have FreeOTFE installed, and on which you <I>don't</I> have Administrator privileges, please use FreeOTFE Explorer.
+
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="bf"></a><span style="font-weight: bold;">Q: Why do I need Administrator rights to start "portable mode"?</span>
+
+<P>
+
+<b>A:</b> 
+
+Administrator rights are required to start "portable mode" starting
+portable mode implicitly registers the FreeOTFE drivers on the
+computer it's running on. When portable mode is stopped, they are
+unregistered.
+<P>
+
+Administrator rights are required for this operation, for the same reasons as given for the answer to "<a href="#be">Why do I need Administrator rights to
+
+install FreeOTFE?</a>"
+
+<P>
+To access an encrypted volume on a PC which <I>doesn't</I> have FreeOTFE installed, and on which you <I>don't</I> have Administrator privileges, please use FreeOTFE Explorer.
+
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="bg"></a><span style="font-weight: bold;">Q: Can FreeOTFE run under MS Windows 95/98/Me?</span>
+
+<P>
+
+<b>A:</b> 
+
+No - and there are currently no plans to port FreeOTFE to Windows 9x based systems due to the different driver model used.
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="bh"></a><span style="font-weight: bold;">Q: Can FreeOTFE run under Linux?</span>
+
+<P>
+
+<b>A:</b> 
+
+No - although FreeOTFE can read, write and create volumes which can be used under Linux.
+
+<P>
+FreeOTFE Explorer however, can be used under Linux when run under <A HREF="http://www.winehq.org/">Wine</A>.
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="bk"></a><span style="font-weight: bold;">Q: How can I get FreeOTFE to mount my volumes at startup/when I login?</span>
+
+<P>
+
+<b>A:</b> 
+
+By creating a shortcut with suitable command line parameters in your
+"Startup" directory (click the MS Windows "Start" button, then go to
+"Programs | Startup"), FreeOTFE can mount volume files after your
+system starts up/you login.
+<P>
+
+See the <a href="command_line.htm">Command Line Interface</a> section for full details of FreeOTFE's command line options.
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="cd"></a><b>
+Q: On the options dialog, what does the "Save above settings to" option do?
+
+<P>
+A:</b> This allows you to change where your FreeOTFE settings are
+stored; in your user profile (only accessible to you), or with the
+FreeOTFE executable (which is useful if you want to take FreeOTFE with
+you; on a USB drive, for example).
+
+<P>
+
+You may also choose to not save your settings; in which case, the next
+time you start FreeOTFE, you will begin again with the default options.
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ce"></a><b>
+Q: Can I save my settings in the same directory as my FreeOTFE executable?
+
+<P>
+A:</b> Yes, you can - and this makes FreeOTFE more portable, and
+easier to use, if you want to take it with you on (for example) a USB
+drive.
+
+<P>
+
+There is only one exception though; if you are using Windows Vista, and
+have User Account Control (UAC) switched on, you will not be allowed to
+store your settings with the FreeOTFE executable <i>if it is stored under your "Program Files" directory</i>.
+This is due to one of the limitations imposed by Windows Vista's
+security system; though you are still free to store FreeOTFE's settings
+in your user profile.
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="cf"></a><b>
+Q: Where, and in what order does FreeOTFE search for my settings?
+
+<P>
+A:</b> If you have chosen to save your settings, FreeOTFE will
+store them un a "FreeOTFE.ini" file stored on your computer at your
+chosen location
+
+<P>
+
+When it starts up, FreeOTFE will attempt to locate this file and read
+in your settings, by first checking for it in the same directory the
+executable (FreeOTFE.exe) was located in. If a settings file cannot be
+found in this location, it will try and look for the same file in your
+user's profile. If a settings file still cannot be found, FreeOTFE
+will fallback to using configured default values for all settings.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ch"></a><b>Q: After associating FreeOTFE with ".vol" files
+from the options dialog, I doubleclicked my ".vol" volume file, and
+nothing happened!
+
+<P>
+A:</b> The FreeOTFE drivers must be running in order for you to
+mount a volume by doubleclicking on it. Please either install the
+FreeOTFE drivers (see the <a href="installation_and_upgrading__PC.htm">installation section</a>), or start FreeOTFE's portable mode (see <a href="portable_mode.htm">portable mode</a> section). 
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ci"></a><b>
+Q: Why do volumes created with the FreeOTFE v2.00 and later have the extension ".vol"?
+
+<P>
+A:</b> This is purely to maintain consistency with the PDA version (see <a href="">other FAQ</a>
+for an explanation as to why the PDA version uses filename extensions).
+FreeOTFE gives you complete freedom over what you name your volume
+files.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="em"></a><b>Q: What is the difference between the "Overwrite free space..." and "Overwrite entire drive..." options under the "Tools" menu?
+<P>
+A:</b> These options are largely self-explanatory.
+
+<P>
+The "Overwrite free space.." option will simply overwrite all <I>unused</I> storage on the selected volume.
+
+<P>
+The "Overwrite entire drive.." option is more destructive - it will overwrite <I>all</I> storage on the selected volume - including overwriting (destroying) any data that may have been present on it.
+
+<P>
+Because the latter option is more destructive, it may only be used when a single mounted volume has been selected within the FreeOTFE user interface.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="eo"></a><b>Q: Does FreeOTFE support encrypting data with multiple cyphers (aka "cascaded" cyphers, or "superencryption")
+<P>
+A:</b> Yes! FreeOTFE allows volumes to be nested one inside another, with <I>complete</I> flexibility as to which encryption options are used with each volume.
+
+<P>
+This means that you can (for example) have:
+
+<UL>
+<LI>An AES XTS (with SHA-512) encrypted volume, stored within
+<LI>A Blowfish LRW (using Tiger) encrypted volume, stored within
+<LI>A Serpent CBC-ESSIV (using RIPEMD-320)encrypted volume
+</UL>
+
+<P>
+In this example, any data stored within the "innermost" AES encrypted volume will be actually be triple-encrypted with AES, Blowfish and Serpent before written to disk.
+
+<P>
+Obviously, there is a performance impact in encrypting data more than once - as there would be in any system which encrypts data multiple times.
+
+<P>
+It's debatable how much this will increases security by, though in principle the "innermost" volume, in which sensitve files are stored, will be secured at least as strongly as the strongest cypher used. Should any of the cyphers be found to be weak at a later date, this will still hold true.
+
+<P>
+Note: Volumes nested in this manner must be dismounted in the <I>reverse</I> order to which they were mounted.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="eq"></a><b>Q: FreeOTFE supports different languages, but why isn't mine listed?
+<P>
+A:</b> Please see FreeOTFE's <A HREF="http://www.FreeOTFE.org/translations.html">translations page</A> for up-to-date information on language translations.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="eq"></a><b>Q: How do I translate FreeOTFE into a different language?
+<P>
+A:</b> Please see FreeOTFE's <A HREF="http://www.FreeOTFE.org/translations.html">translations page</A> for up-to-date information on language translations.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="es"></a><b>Q: Can I defragment encrypted volumes?
+<P>
+A:</b> Yes! There are two things that you may wish to defragment:
+
+<OL>
+<LI>(File based volumes only) The drive on which the volume file is stored (i.e. defragmenting a volume file) 
+
+<P>
+Once dismounted, a volume file can be treated <I>just like any other file</I>. Volume files can be defragmented by then running <I>any</I> defragmentation tool on the drive it's stored on.
+
+<LI>The filesystem stored within the encrypted volume (i.e. defragmenting the encrypted files stored within the volume)
+
+<P>
+By mounting a volume, you can defragment the encrypted data stored within it. Again, you can use any tool for this, with the exception of:
+
+<UL>
+<LI>Raxco's PerfectDisk 2008
+<LI>Diskeeper Corporation's "Diskeeper"
+<LI>The defragmentation tool which comes bundled with Windows (which is a simply a stripped down version of Diskeeper)
+</UL>
+
+<P>
+The above systems have limitations which prevent them from "seeing" mounted volumes, all other tools will work as normal. Examples of defragmentation tools which work with FreeOTFE volumes include:
+
+<UL>
+<LI><A HREF="http://www.oo-software.com/">O&O Defrag</A>
+<LI><A HREF="http://www.defraggler.com/">Defraggler</A>
+<LI><A HREF="http://www.auslogics.com/disk-defrag">Auslogics Disk Defrag</A>
+<LI><A HREF="http://www.iobit.com/">IObit Smart Defrag</A>
+<LI><A HREF="http://www.kessels.com/JkDefrag/">JkDefrag</A>
+<LI><A HREF="http://ultradefrag.sourceforge.net/">Ultra Defragmenter</A>
+<LI>...and the vast majority of other defragmentation tools
+</UL>
+</OL>
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="cg"></a><b>
+Q: Can I use FreeOTFE with my USB flash drive?
+
+<P>
+A:</b> Yes!
+FreeOTFE has been designed to be portable; see the section on <A HREF="portable_mode.htm">Portable Mode</A> for details
+on which files to copy onto your USB drive. Alternativly, insert your USB drive and select
+the "Tools | Copy FreeOTFE to USB drive..." menuitem to automatically copy FreeOTFE to your USB drive.
+
+<P>
+You can then use FreeOTFE on any PC - even if it doesn't have FreeOTFE installed.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ew"></a><b>Q: Why doesn't FreeOTFE run automatically when I insert my USB drive?
+<P>
+A:</b> If you used the "Tools | Copy FreeOTFE to USB drive..." function, and selected the "Setup autorun.inf to launch FreeOTFE when drive inserted" option, 
+
+FreeOTFE will normally run automatically whenever the drive is inserted (or prompt the user if they want to run it).
+
+<P>
+However, this does depend on your PC's configuration.
+
+<P>
+If FreeOTFE doesn't launch automatically (and you don't get prompted to launch FreeOTFE after inserting the drive), you probably have autorun turned off for 
+
+removable disks.
+
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_SecurityTip.png" alt="Security tip" >
+    </TD>
+    <TD width=100%>
+
+ It is generally recommended that "autorun" functionality be <I>disabled</I>, as this can have security implications; should an untrusted USB drive be plugged in, the program specified in an autorun.inf file on the device may be launched - without offering the user the chance to prevent it
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+To reset (enable) autorun functionality:
+
+<OL>
+<LI>Click the windows "Start" button
+<LI>Select "Run"
+<LI>Type in "gpedit.msc" and click "OK"
+<LI>Reset the setting for the local computer policy
+<OL>
+<LI>Select "Local Computer Policy \ Computer Configuration \ Administrative Template \ System"
+<LI>Double click the "Turn off Autoplay" entry
+<LI>Change the "Not configured"/"Enabled"/"Disabled" selection to any of the three options
+<LI>Click "Apply"
+<LI>Change the "Not configured"/"Enabled"/"Disabled" selection to either "Not configured" or "Disabled"
+<LI>Click "Apply"
+</OL>
+<LI>Reset the setting for users
+<OL>
+<LI>Select "User Configuration \ Computer Configuration \ Administrative Template \ System"
+<LI>Double click the "Turn off Autoplay" entry
+<LI>Change the "Not configured"/"Enabled"/"Disabled" selection to any of the three options
+<LI>Click "Apply"
+<LI>Change the "Not configured"/"Enabled"/"Disabled" selection to either "Not configured" or "Disabled"
+<LI>Click "Apply"
+</OL>
+</OL>
+
+<P>
+See also: <A HREF="http://www.moonvalley.com/products/rwavdc/enable.htm">Enable Autorun on DVD, CD and other removable media</A>
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="db"></a><b>Q: Can I use FreeOTFE with "MojoPac"?
+<P>
+A:</b> Yes!
+
+<p>
+There are two basic ways of encrypting you data using FreeOTFE while using MojoPac:
+
+<ol>
+
+<li>By creating an encrypted volume and installing MojoPac onto it.
+<li>By installing MojoPac as normal (e.g. onto a USB drive), and running FreeOTFE from within MojoPac
+
+</ol>
+
+<p>
+<b>Method one: Installing onto a FreeOTFE volume</b>
+
+<p>
+The first method is probably the more secure, as your <i>entire</i> MojoPac setup is encrypted. Simply create a new FreeOTFE volume 
+on your USB drive, mount it, and then install MojoPac onto the mounted volume.
+
+<p>
+In this way <i>everything</i> relating to your MojoPac system
+will be secured. Because of FreeOTFE's portable mode, MojoPac can be
+used as a fully mobile, secured, system by placing a copy of FreeOTFE
+onto your USB drive along with the volume file. 
+
+<p>
+<b>Method two: Running within the MojoPac environment</b>
+
+<p>
+FreeOTFE can also be launched and used from within the MojoPac
+environment to create and use encrypted volumes in much the same way as
+on a normal PC.
+
+<p>
+In order to use FreeOTFE in this way, you must first either
+
+<ul>
+
+<li>Start FreeOTFE's portable mode on the <i>host PC</i>, or
+<li>Install and start the FreeOTFE drivers on the <i>host PC</i>
+
+</ul>
+
+<p>
+(See the <a href="portable_mode.htm">Portable mode</a> and <a href="installation_and_upgrading__PC.htm">Installation</a> sections for further information)
+
+<p>
+When running MojoPac, your MojoPac device (i.e. your USB drive, iPod, etc) will appear as <i>both</i> the removable drive it is normally mounted as on the host PC (e.g. D:, E:), and as your MojoPac's C: drive.
+
+<p>
+To mount a FreeOTFE volume which is stored on your <i>MojoPac device</i>, you should select the volume file on the removable drive (e.g. D:, E:) and <i>not</i> the mirror copy which appears on you MojoPac's C: drive. Mounting volumes stored elsewhere should be unaffected.
+
+<p>
+Note that when a volume is mounted from within the MojoPac environment, it may also be accessed by the <i>host PC</i>
+by using the drive letter it is mounted as under the MojoPac session.
+Applications on the host PC will see the mounted volume as normal, with
+the exception of Windows Explorer which will not show a new drive icon
+for it - though even then, it can still be accessed by Windows Explorer
+on the host PC, by simply typing the drive letter the encrypted volume
+is mounted as, followed by a colon, into Windows Explorer's "Address"
+bar and pressing &lt;ENTER&gt;.
+
+<p>
+In the same manner, volumes mounted on the host PC will be accessible from within the MojoPac environment.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ee"></a><b>Q: Can FreeOTFE be used with RAID arrays?
+<P>
+A:</b> Yes! FreeOTFE has been tested with, and works with, RAID arrays
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="go"></a><b>Q: Does FreeOTFE try to connect to the internet??
+<P>
+A:</b> No - not by default.
+
+<P>
+FreeOTFE and FreeOTFE Explorer will <I>only ever</I> try to connect to the internet if it has been configured to check for updates - and even then, they will only try to connect to the FreeOTFE WWW site to retrieve version information.
+
+<P>
+By default, both FreeOTFE and FreeOTFE Explorer are configured such that thtey will <I>not</I> check for updates - this functionality must be explicitly enabled by the user.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gr"></a><b>Q: How do I check FreeOTFE's exit code when passing parameters via the command line?
+<P>
+A:</b> The easiest way is to check FreeOTFE's exit code is to run it via a batch file.
+
+For example, if you create a "FreeOTFE_cmdline.bat" file containing the following:
+
+<BLOCKQUOTE>
+<pre>
+FreeOTFE.exe %1 %2 %3 %4 %5 %6 %7 %8 %9
+@echo Exit code: %ERRORLEVEL%
+</pre>
+</BLOCKQUOTE>
+
+and use "FreeOTFE_cmdline.bat" in places of "FreeOTFE.exe"
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gr"></a><b>Q: Why won't FreeOTFE accept my password when supplied via the command line parameter?
+<P>
+A:</b> If you're using the "/silent" switch, try removing it and just clicking "OK" on the password dialog to confirm that your password and other details have been entered correctly.
+
+<P>
+If FreeOTFE fails to mount, check your command line parameters carefully. If your password or volume filename have spaces in them, you'll need to surround them with doublequotes ("). Similarly "%" signs may be interpreted in batch files as batch file variables.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ea"></a><b>Q: Do I have to partition my drive to use FreeOTFE?
+<P>
+A:</b> No. FreeOTFE volumes may be stored in files stored on your normal file system.
+
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="eb"></a><b>Q: I want to create a FreeOTFE partition on my unallocated space, but can't see it in the partition display - where is it?
+<P>
+A:</b> For obvious reasons, the FreeOTFE only shows partitions which are reported to it by the OS.
+
+<P>
+Disk space which does not form any part of a partition (i.e. is not referenced in <I>any</I> partition table on the disk (primary or extended); reported as "Unallocated" by the Windows Disk Management tool) cannot be "seen" by FreeOTFE.
+
+<P>
+To make use of such space, use the Windows Disk Management tool to create a new partition for it, and <I>then</I> use FreeOTFE to turn it into an encrypted partition.
+
+<P>
+Please note that FreeOTFE is <I>not</I> responsible for partitioning your hard drive - you should be using a partitioning tool for that!
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ec"></a><b>Q: When I'm prompted to select a partition, some of the partitions on my USB drive are shown in red (or not at all) - why?
+<P>
+A:</b> See: <A HREF="#ed">Why can't I use encrypted partitions on a USB drive, unless it's the first partition?</A>
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ed"></a><b>Q: Why can't I use encrypted partitions on a USB drive, unless it's the first partition?
+<P>
+A:</b> MS Windows has a limitation which prevents it from correctly using partitions on USB drives that are beyond the first one. As a result, the <I>current</I> version of FreeOTFE cannot use these partitions, and this is indicated by displaying such partitions in red (or not at all) in the partition selection display.
+
+<P>
+If you wish to use an encrypted partition on a USB drive under both Windows and Linux, please ensure that the encrypted partition is the <I>first</I> partition on the USB drive.
+
+<P>
+<B><I>It should be noted that this limitation only applies to USB drives, and not physical disks installed inside the PC</I></B>
+
+<P>
+A solution which will allow FreeOTFE to use second (and other) partitions on USB drives is currently under development.
+
+<P>
+Other possible solutions/information may be found at:
+
+<UL>
+<LI><A HREF="http://www.techspot.com/vb/topic18736.html">Why is it not possible to partition a USB Flash Stick?</A>
+<LI><A HREF="http://www.lancelhoff.com/2008/05/01/multi-partition-a-usb-flash-drive-in-windows/">Multi partition a USB flash drive in Windows</A>
+<LI><A HREF="http://www.911cd.net/forums//index.php?showtopic=21572">Removable Media Bit</A>
+</UL>
+<BR>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="bj"></a><span style="font-weight: bold;">Q: After creating an encrypted partition/disk, MS Windows reports that
+partition I used as being type "RAW" and prompts me to format it - why?</span>
+
+<P>
+
+<b>A:</b> 
+
+After creating an encrypted partition/disk, if you have a drive
+letter associated with the physical partition used, MS Windows will
+report that drive as being "RAW" since it cannot understand what is
+stored on it (for obvious reasons, it can't understand what the
+encrypted data means).
+<P>
+
+<span style="font-weight: bold;">WARNING:</span> Do not let MS Windows
+format this partition! Although formatting the "virtual drive" FreeOTFE
+creates after mounting your encrypted partition is certainly a
+requirement before it can be used, formatting the partition it resides
+on could destroy your encrypted data!
+<P>
+
+The safest course of action is to prevent MS Windows from allocating a drive letter to the encrypted partition. By doing so:<br>
+
+<ul>
+
+<li>MS Windows will not prompt you every time this drive is accessed, since you will not be able to accidentally access it<br>
+<li>You'll be less likely to hit "OK" and format the partition, overwriting your encrypted data!
+</ul>
+
+To do this, see the FAQ "<A HREF="#hk">How do I "hide" an encrypted partition such that MS Windows doesn't allocate it a drive letter?</A>"
+
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hk"></a><b>Q: How do I "hide" an encrypted partition such that MS Windows doesn't allocate it a drive letter?
+<P>
+A:</b> 
+
+Carry out the following steps:
+
+<ol>
+<li>Go to "Start -&gt; Settings -&gt; Control Panel -&gt; Administrative tools -&gt; Computer Management"
+<li>Select "Disk Management"
+<li>Rightclick on the partition you have setup an encrypted and select "Change Drive Letter and Paths"
+<li>Remove any drive letters associated with the partition
+</ol>
+
+Windows should then remove any drive letters associated with the encrypted partition.
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ek"></a><b>Q: Why does the partition/disk selection display sometimes display less information?
+<P>
+A:</b> Depending on the user's access rights, FreeOTFE may only be able to obtain limited information about the various disk partitions.
+
+<P>
+When this happens, FreeOTFE will fallback to displaying a more restricted set of information (e.g. no partition sizes)
+
+<P>
+Because more information can be displayed if the user is an administrator (or under Windows Vista, the FreeOTFE process has been started with escalated under UAC), it is <I>highly</I> recommended that any partition based volumes are created when logged in as an administrator. (Under Vista, FreeOTFE should be launched by rightclicking on the executable, "FreeOTFE.exe", and selecting "Run as administrator".)
+
+<P>
+By displaying additional information, there is less likelihood of creating a volume on the wrong partition.
+
+<P>
+
+<TABLE BORDER=0 WIDTH="100%" >
+  <TR>
+    <TD WIDTH="100%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PC/PartitionSelect_FullInfo.png">
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD>
+      <I>Partition selection dialog; full information shown</I>
+    </TD>
+  </TR>
+</TABLE>
+
+
+<P>
+
+<TABLE BORDER=0 WIDTH="100%" >
+  <TR>
+    <TD WIDTH="100%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PC/PartitionSelect_RestrictedInfo.png">
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD>
+      <I>Partition selection dialog; restricted information shown</I>
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="eu"></a><b>Q: I accidentally selected the wrong disk/partition when creating a new volume and now can't see my files! How can I get my data back?
+<P>
+A:</b> The more important thing to do in this kind of situation is <B>STOP</B> and <B>THINK</B>. Before attempting 
+any kind of recovery, understand what you are going to do and how you are going to do it - <I>before</I> doing 
+anything.
+
+<P>
+For safety reasons, FreeOTFE only writes the initial 512 byte CDB to the start of the disk/partition when creating a 
+new disk/partition based volume (see the <A HREF="plausible_deniability.htm">Plausible Deniability</A> section for 
+how to initialize a volume by overwriting it). If you haven't yet mounted the volume and started writing data to it, 
+or overwriting it, you have a good chance of getting your files back.
+
+<P>
+Obviously, if you have written data to the encrypted volume (e.g. by selecting one of the overwrite options or 
+copying files to it), the amount you will be able to recover will decrease.
+
+<P>
+The recommended approach to recovering the data originally stored on the disk/partition is to:
+
+<OL>
+<LI>Dismount all mounted volumes.
+<LI>Take an image of the disk/partition the volume was created on
+(e.g. by using a tool such as <A HREF="http://www.sdean12.org/USBFlashTools.htm">USB Flash Tools</A>, or any disk imaging/cloning tool)
+<LI>Use any standard recovery software
+(e.g. <A HREF="http://www.restorer2000.com/">Restorer 2000 Pro</A>) on the 
+<I>image taken</I> - not the disk/partition itself - to try to recover your data.
+</OL>
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hp"></a><b>Q: Does FreeOTFE offer whole disk encryption?
+<P>
+A:</b>Yes! FreeOTFE <I>does</I> support whole disk encryption, although it does not yet support
+encrypting the system partition (i.e. the entire disk or partition that the OS boots from)
+
+<P>
+To encrypt a whole disk, proceed as though creating an encrypted partition and select the
+"entire disk" checkbox after selecting the drive to be used.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="fa"></a><b>Q: Do I <I>have</I> to use a security token/smartcard with FreeOTFE?
+<P>
+A:</b> No! FreeOTFE offers security token/smartcard as an option to provide additional security, they are not
+necessary to use FreeOTFE.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="eg"></a><b>Q: What is the difference between PKCS#11, Cryptoki, and "tokens"?
+<P>
+A:</b> PKCS#11 and Cryptoki are the same thing; an API for accessing security tokens/smartcards.
+
+<P>
+"Token" is a generic term to refer to a security token or smartcard.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ex"></a><b>Q: Does FreeOTFE encrypt my <I>entire</I> encrypted volume using my PKCS#11 token?
+<P>
+A:</b> No, just the volume's CDB/keyfile. Encrypting the entire volume would incur significant performance penalties due to the relatively low power of security tokens when compared to a PC, and need to transfer data <I>twice</I> over the USB connection (once to sending the encrypted/plaintext data, and again to receive the plaintext/cyphertext)
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ef"></a><b>Q: I've inserted my PKCS#11 (Cryptoki) token, but why is the "PKCS#11 token management..." menuitem disabled?
+<P>
+A:</b> Please ensure that you have configured FreeOTFE to use your token via the "PKCS#11" tab on the Options dialog ("View | Options...")
+
+<P>
+See the section on <A HREF="pkcs11_support.htm">Security Token/Smartcard Support</A> for further details
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="eh"></a><b>Q: How do I change the password on a volume/keyfile which is secured with a PKCS#11 secret key?
+<P>
+A:</b> To change the password on a volume/keyfile which is secured with a PKCS#11 secret key:
+
+<OL>
+<LI>Decrypt the volume's CDB/keyfile using the token's secret key:
+<OL>
+<LI>Go to "Tools | PKCS#11 token management..."
+<LI>Select the "Secret keys" tab
+<LI>Select the appropriate secret key
+<LI>Click "Decrypt", and select your volume/keyfile
+</OL>
+<LI>Change the password on it
+<LI>Re-encrypt the keyfile/volume's CDB using the token's secret key, using the "encrypt" function on the PKCS#11 token management dialog
+</OL>
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gb"></a><b>Q: Can I use more than one security token with FreeOTFE?
+<P>
+A:</b> Yes! FreeOTFE supports as many security tokens as you've got!
+
+<P>
+You can even use different tokens to mount different volumes, or the same token to mount multiple volumes,
+all at the same time if you wish!
+
+<P>
+The only caveat being that your PKCS#11 library provider may only support up to a certain number of
+security tokens being plugged in <I>at the same time</I> (typically this may allow up to 16 tokens to be
+used simultaneously)
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ga"></a><b>Q: Why don't all of my volumes automatically dismount when I remove my security token?
+<P>
+A:</b> First, please check that you have configured FreeOTFE to autodismount volumes on token removal by:
+
+<OL>
+<LI>Go to "View | Options..."
+<LI>Select the PKCS#11 tab
+<LI>Ensure that the "Auto dismount PKCS#11 volumes when associated token is removed" is checked
+</OL>
+
+<P>
+If you dismount, then remount, your volumes with your PKCS#11 token, they should be dismounted when it is removed.
+
+<P>
+Please note that <I>only those volumes which were mounted with the removed token</I> will be automatically dismounted.
+
+<P>
+More than one token may be used at the same time; again, only those volumes mounted with the removed token will be automatically dismounted.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="bo"></a><span style="font-weight: bold;">Q: (Windows Vista only) Why do I get "unidentified program wants access to your computer" prompts when using FreeOTFE?</span>
+
+<P>
+
+<span style="font-style: italic;">(This FAQ is only applicable when running under Windows Vista and later; it is not relevant for other operating systems)</span>
+<P>
+
+<b>A:</b> 
+
+Windows Vista incorporates a new security system called "User
+Access Control" (UAC), which is there to help prevent malicious
+software from doing things which could be harmful to your computer.
+<P>
+
+Whenever you attempt to use any part of FreeOTFE's functionality which
+Windows considers a malicious program could use to cause harm, Windows
+displays this dialog (called the "consent/credential" dialog), and asks
+you if you would give your permission for it to continue. You will be
+shown this dialog even if you are logged on as an Administrator.
+<P>
+
+The same type of dialog will appear when you attempt to (for example)
+go to Window's Control Panel, selecting "Date and Time", and then
+attempting to change the computer's time or date.
+<P>
+
+Because the FreeOTFE executable does not have a digital signature that
+Windows recognises, this dialog claims that "An unidentified program
+wants access to your computer". This is perfectly normal, and part of
+Vista's system to help protect you. If you would like to check that
+your copy of FreeOTFE is an original, you may do so by checking the
+hashes/signatures available from the <a href="http://www.FreeOTFE.org/">FreeOTFE WWW site</a>.
+<P>
+
+These prompts form part of Windows Vista's "User Access Control" (UAC) system, which you can find out more about from the <a href="http://technet.microsoft.com/en-us/windowsvista/aa906022.aspx">Microsoft WWW site</a>.
+
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="bp"></a><span style="font-weight: bold;">Q: (Windows Vista only) Why does FreeOTFE prompt me to enter my Administrator's password?</span>
+
+<P>
+
+<span style="font-style: italic;">(This FAQ is only applicable when running under Windows Vista and later; it is not relevant for other operating systems)</span>
+<P>
+
+<b>A:</b> 
+
+FreeOTFE <span style="font-style: italic;">doesn't</span> ask you to enter an Administrator's password; it has no use or need for this information. Windows Vista, however, <span style="font-style: italic;">will </span>prompt
+you to enter an Administrator's password whenever you are logged in as
+a "standard" (i.e. non-Administrator) user, and attempt to carry out
+any operation which it deems could be harmful to your computer.
+<P>
+
+If you are happy for FreeOTFE to carry out the operation you requested
+of it, you should select the relevant option from the
+consent/credential dialog, and enter the appropriate Administrator's
+password to allow FreeOTFE to proceed.
+<P>
+
+Those operations which require Administrator's explicit approval before
+Windows Vista will permit you to carry them out are marked in FreeOTFE
+with a "shield icon".
+<P>
+
+It should be emphasised that it is Windows Vista itself which is
+generating these prompts, and not FreeOTFE, which will have no access
+to the password you type in. 
+<P>
+
+These prompts form part of Windows Vista's "User Access Control" (UAC) system, which you can find out more about from the <a href="http://technet.microsoft.com/en-us/windowsvista/aa906022.aspx">Microsoft WWW site</a>.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="cj"></a><b>
+Q: (Windows Vista only) How do I stop the Windows Vista "consent/credential" (UAC) dialog from being displayed?
+</b>
+
+<P>
+
+<i>(This FAQ is only applicable when running under Windows Vista and later; it is not relevant for other operating systems)</i>
+
+<P>
+
+<b>A:</b> To prevent the UAC dialogs from being shown when using
+FreeOTFE (and all other applications), you can disable it by carrying
+out the following steps:
+
+<P>
+
+<ol>
+
+<li>Click on the "Start" button, and then select "Control Panel"
+<li>Doubleclick "User Accounts"
+<li>Click on "Turn User Account Control on or off"
+<li>Make sure that the "Use User Account Control (UAC)" checkbox is unchecked
+<li>Click "OK"
+<li>Restart your computer
+<br>
+</ol>
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hl"></a><span style="font-weight: bold;">Q: (Windows Vista only) I have problems starting any of the drivers under the 64 bit version of Windows Vista/Windows 7 - what's wrong?</span>
+
+<P>
+
+<span style="font-style: italic;">(This FAQ is only applicable when running under Windows Vista and later; it is not relevant for other operating systems)</span>
+<P>
+
+<b>A:</b> 
+
+The 64 bit versions of MS Windows Vista and MS Windows 7 both use driver signing; please see the section on installing FreeOTFE on
+<A HREF="impact_of_kernel_driver_signing.htm">Windows Vista x64 and Windows 7 x64</A>
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="br"></a><span style="font-weight: bold;">Q: (Windows Vista only) What are the little "shield" icons shown next to some menuitems?</span>
+
+<P>
+
+<span style="font-style: italic;">(This FAQ is only applicable when running under Windows Vista and later; it is not relevant for other operating systems)</span>
+<P>
+
+<b>A:</b> 
+
+Functions marked with a "shield" icon require Administrator
+privileges in order to use them, for security reasons. This is for your
+security, and more information can be found on the <a href="http://technet.microsoft.com/en-us/windowsvista/aa906022.aspx">Microsoft WWW site</a>.
+
+
+<P>
+
+<hr>
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_4"><H3>FreeOTFE4PDA Specific (PDA)</H3></A>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="bl"></a><span style="font-weight: bold;">Q: I created my
+volume file using the PDA version of FreeOTFE and can mount it on my PC
+- but why does it keep asking if I want to format it?</span>
+
+<P>
+
+<b>A:</b> 
+
+When you created your volume on your PDA, your PDA fully formatted
+the volume as though it was a new device - not just a partition on a device.
+<P>
+
+In order for a volume to be mounted and used correctly on both a PDA
+and PC, it should be created and formatted using a PC as a FAT volume,
+and subject to the maximum volume size your PDA can support (see <a href="FAQ.htm#as">FAQ on volume sizes</a><span style="text-decoration: underline;">)</span>. This will ensure it can be read on all systems.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ep"></a><span style="font-weight: bold;">Q: I created a volume on my PC, and can mount it successfully on my PDA - but can't see any of my files!</span>
+
+<P>
+<b>A:</b> 
+
+The chances are that you formatted your volume on your PC using NTFS, and your PDA doesn't support this filesystem.
+
+<P>
+Volumes which are to be used on a PDA should normally be formatted as FAT or FAT32; this should be carried out on a PC, not a PDA (see <A HREF="#bl">related FAQ</A>).
+
+<P>
+Please note also that FAT32 can only support volumes up to (4GB less one byte)
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="bm"></a><span style="font-weight: bold;">Q: How can I speed FreeOTFE up when mounting my volumes?</span>
+
+
+<P>
+
+<b>A:</b> 
+
+For security reasons, FreeOTFE doesn't store any information
+relating to which hash/cypher combination was used to encrypt a
+FreeOTFE volume.
+<P>
+
+As a result, FreeOTFE is forced to cycle through all of its
+possible hash/cypher combinations in order to determine which one to
+use. Reducing the number of combinations it has to check can
+significantly reduce the time this takes.
+<P>
+
+To reduce the number of combinations, <span style="font-style: italic;">without</span>
+making any difference to the level of security FreeOTFE offers, simply
+disable any redundant cypher/hash implementation drivers such as either one of:
+
+<BR>
+
+<ul>
+  <li>FreeOTFE4PDACypherAES_Gladman.dll
+  <li>FreeOTFE4PDACypherAES_ltc.dll
+</ul>
+
+and any two of:<br>
+
+<ul>
+  <li>FreeOTFE4PDACypherTwofish_Gladman.dll
+  <li>FreeOTFE4PDACypherTwofish_HifnCS.dll
+  <li>FreeOTFE4PDACypherTwofish_ltc.dll
+</ul>
+
+Please see <A HREF="advanced_topics.htm">Advanced Topics</A>, "Enabling/Disabling Hash/Cypher Algorithms" section, for instructions on how to enable/disable hash/cypher drivers.
+
+<P>
+(Please see the <a href="#bc">FAQ on duplicated drivers</a> for an explanation as to why multiple implementations are included in the release)
+<P>
+
+The mount time can be reduced even more dramatically by disabling all of
+the hash/cypher drivers <I>except</I> for the ones which you have secured
+your data with. This however could decrease the level of security
+offered, as doing so would make it pretty clear to any attacker which
+combination you've used - though it's debatable whether this loss in
+security will actually be of any practical value to an attacker.
+<P>
+
+To speed things up even further, you could drop the number of key
+iterations your volume is secured with. This isn't particularly
+recommended, but might help some users...
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="ck"></a><b>
+Q: Does the PDA version support Linux volumes?
+
+<P>
+A:</b>
+Yes!
+
+<P>
+FreeOTFE4PDA v4.0 and later support LUKS volumes.
+
+<P>
+A front-end interface to allow support for other Linux encrypted volumes is currently being implemented, and will appear in a later release.
+
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="cl"></a><b>
+Q: Why does FreeOTFE4PDA's version numbering skip from v0.55 to v2.00; what happened to v1.00?
+
+<P>
+A:</b> FreeOTFE4PDA's version number was incremented to v2.00 in
+order to match the PC version of FreeOTFE, with which FreeOTFE4PDA
+shares a fair amount of common code.
+
+<P>
+
+A specific "v1.00" was never released, although there were a fair
+number of non-public versions released between v0.55 and v2.00 to
+various people to help with testing and confirm compatibility.
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hr"></a><b>
+Q: Why does FreeOTFE4PDA's version numbering skip from v3.76 to v5.00; what happened to v4.00?
+
+<P>
+A:</b> FreeOTFE4PDA's version number was incremented to v5.00 in
+order to better reflect that its level of functionality was on a
+par with the PC version with the same version number, after 
+support for encrypted Linux volumes and language translations were added in v5.00.
+
+<P>
+
+A specific "v4.00" was never released, although there were a fair
+number of non-public versions released between v3.76 and v5.00 to
+various people to help with testing and confirm compatibility.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="co"></a><b>Q: When I use the "open" dialog to select my
+volume file/keyfile, it doesn't list the file I'm trying to specify -
+even when I select "All files" - where is it?
+
+<P>
+A:</b> The standard Windows Mobile "open file" dialog is a little odd; this isn't just restricted to FreeOTFE!
+
+<P>
+
+Although FreeOTFE allows you the freedom to use <i>any</i> filename
+you wish, only files which have a filename extension (i.e. the volume's
+filename has a full stop followed by one or more letters) will be
+listed in the "open file" dialog; even if you selected the display "All
+files" option.
+
+<P>
+
+Furthermore, this dialog will only display those files located in the following places:
+<br>
+
+<ul>
+
+<li>Any subdirectory on a storage card which is located from the root directory of that storage card.
+<li>Files in the "My Documents" directory on your PDA
+<li>Files in any subdirectory immediately underneath your "My Documents" directory<br>
+
+</ul>
+
+The simplest solution is to rename your file, and move it into one of the directories indicated above.
+
+<P>
+
+Alternatively, you can still specify your file by simply typing its
+full path and filename into the relevant entry box, instead of clicking
+"..." and using the "open file" dialog to select it.
+
+<P>
+
+Note that you don't <i>need</i> a filename extension, and can store volume/key files <i>anywhere</i>
+on your PDA. Conforming to the above restrictions allows you to use the
+"open file" dialog to select your files, and does not affect FreeOTFE's
+operation in any way.
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="cz"></a><b>Q: How can I reduce the amount of storage space FreeOTFE4PDA takes up when installed?
+<P>
+A:</b> The easiest way of reducing FreeOTFE4PDA's installed
+"footprint" is to delete its user documentation from your PDA (i.e.
+everything in the "docs" subdirectory).
+
+<P>
+
+You don't (or at least, shouldn't!) <i>really</i> need this
+documentation as FreeOTFE4PDA is a pretty straightforward application
+to use - and if you do find you want to refer to it occasionally,
+tapping on "Help | User guide" will take you to the online version if a
+local copy cannot be found.
+
+<P>
+
+It is recommended that you keep a copy <i>somewhere</i> though; on your desktop PC, if nowhere else.
+
+
+<P>
+
+You can further reduce the amount of storage taken up by deleting
+any unused cypher and hash drivers; this will also increase the speed
+at which FreeOTFE4PDA will mount volumes. (See FAQ: "<a href="#bm">How can I speed FreeOTFE up when mounting my volumes?</a>" for further details on how to do this)
+
+
+<P>
+If you don't need any of the language translations (or only one of them), deleting those translations you <I>don't</I> need from the "locale" subdirectory can free off a small amount more storage.
+
+
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="cw"></a><b>Q: Why do I get the message "Unable to locate local
+copy of user guide; would you like to see the latest version on the
+Internet?" when I try to view the user guide by selecting "Help | User
+guide"?
+<P>
+A:</b> FreeOTFE4PDA attempts to locate a local copy of the user guide stored with the executable. If this is not found, it 
+
+will fallback to trying to show you the latest version found on the FreeOTFE WWW site.
+<br>
+
+To prevent this, please place a copy of the "docs" directory included
+with the release into the same directory as your "FreeOTFE4PDA.exe"
+executable. (i.e. Such that you have a "docs" subdirectory in the same
+directory as the "FreeOTFE4PDA.exe" executable on your PDA)
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="dc"></a><b>Q: When I try to mount a volume, I sometimes the
+error: "Mount failed; the virtual storage device could not be activated
+at this time"
+
+<P>
+A:</b> If you see this error message, you have correctly entered
+all details to allow FreeOTFE4PDA to mount your encrypted volume,
+however Windows Mobile has failed to activate the FreeOTFE4PDA virtual
+storage device.
+
+<P>
+This error appears to be related to the wireless functions (mobile
+phone/wifi/bluetooth) of these particular devices; turning off wireless
+functionality (and possibly carrying out a soft-reset of the device)
+can resolve this issue.
+
+<P>
+This issue has been reported to affect the following devices:
+
+<ul>
+<li>T-Mobile Vario (WM v5.1.195 (Build 14847.2.0.0))
+<li>MDA Vario II/HTC TyTn (WM v5.1.195 (Build 14955.2.3.0)
+<li>O2 Exec/QTEK 9000 (WM v5.1.195 (Build 1487.2.0.0))
+<li>Fujitsu Siemens Loox T830 (WM v5.1.195)
+</ul>
+
+<P>
+A version of FreeOTFE4PDA which should resolve this issue is currently under development
+and will appear in a later release
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="cm"></a><b>
+Q: Which PDAs will FreeOTFE4PDA work with?
+
+<P>
+A:</b> FreeOTFE4PDA has been tested with various Windows Mobile
+2003/2005 and Windows Mobile 6 devices, and should work with all Windows Mobile 2003
+and later PDAs.
+
+<P>
+Smartphones <I>which do not have a touchscreen</I> may not display FreeOTFE4PDA's interface
+correctly though. Smartphones which <I>do</I> have a touchscreen <I>can</I> use FreeOTFE4PDA.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="da"></a><b>Q: What does the "Support WM 5.0 soft keys" option do?
+<P>
+A:</b> Under Windows Mobile 5.0 and later, you have the option of
+displaying FreeOTFE's menus and Wizard navigation using the new style
+two-item "softkey" menus. This is the "Microsoft standard" for
+Windows Mobile 5 (and later) applications, and is designed to allow
+users with "softkeys" (i.e. smartphones with two buttons, left and
+right, below their display) to navigate more quickly and easily.
+
+<P>
+
+Alternatively, you can still opt to use the older "menu and toolbar"
+style used with Windows Mobile 2003 (second edition) and earlier.
+
+<P>
+
+Here is a sample of what the different menus look like:
+
+<P>
+
+<center>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table border="0" cellpadding="10"><tbody><tr><th>
+Menu and toolbar style menus
+</th><th>
+WM 5.0 soft key menus
+</th></tr><tr><td>
+<img src="./images/PDA_NonSoftkeyMenuBar.png" alt="Menu and toolbar style menubar" height="71" width="240">
+</td><td>
+<img src="./images/PDA_SoftkeyMenuBar.png" alt="Menu and toolbar style menuitems" height="71" width="240">
+</td></tr><tr><td>
+<img src="./images/PDA_NonSoftkeyMenuItems.png" alt="WM 5.0 softkey menubar" height="176" width="240">
+</td><td>
+<img src="./images/PDA_SoftkeyMenuItems.png" alt="WM 5.0 softkey menuitems" height="176" width="240">
+</td></tr></tbody></table>
+
+</center>
+
+
+<P>
+
+You can change this setting by going to "Tools | Options".
+
+
+<P>
+
+If you have a PDA which runs Windows Mobile 2003 (second edition) or earlier, your PDA does not support this new style menu.
+
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="cx"></a><b>Q: I don't like the new two-item menus at the bottom of my display - how do I change them back to the older toolbar style menu?
+<P>
+A:</b> The "Microsoft standard" for Windows Mobile 5 (and later)
+applications is to employ a two-item menu at the bottom of the display,
+as opposed to using a similar style menu as is found on desktop PCs
+running MS Windows.
+
+<P>
+
+This is to allow users with "softkeys" (i.e. smartphones with two
+buttons, left and right, below their display) to navigate more quickly
+and easily.
+
+<P>
+
+Of course, as with all user interfaces, there's always someone who
+doesn't like it! FreeOTFE4PDA does give you the option to change back
+the older style though; simply tap "Menu | View | Options" and <i>uncheck</i> the "Support WM 5.0 soft keys" option.
+
+
+<P>
+(See also FAQ: <a href="FAQ.htm#da">What does the "Support WM 5.0 soft keys" option do?</a>)
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="cy"></a><b>Q: I don't like the multi-item menubar/toolbar at
+the bottom of FreeOTFE4PDA's display - how do I get it to use the newer
+two-item style (softkey) menus instead?
+<P>
+A:</b> The two-item menu at the bottom of the display is the
+"Microsoft standard" for Windows Mobile 5 (and later) applications, and
+is designed to allow users with "softkeys" (i.e. smartphones with two
+buttons, left and right, below their display) to navigate more quickly
+and easily.
+
+<P>
+
+If you have a PDA which runs Windows Mobile 2003 (second edition) or earlier, your PDA does not support this new style menu.
+
+
+<P>
+
+However, if you are running Windows Mobile 2005 or later, you can
+enable the two-item style menu by simply tapping "Menu | View |
+Options" and making sure the "Support WM 5.0 soft keys" option is
+checked.
+
+<P>
+
+(See also FAQ: <a href="FAQ.htm#da">What does the "Support WM 5.0 soft keys" option do?</a>)
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gf"></a><b>Q: Can I use my PC volumes with the PDA version?
+<P>
+A:</b> Yes! 
+
+<P>
+See FAQ <a href="FAQ.htm#cs">Can I use the same encrypted volumes on <i>both</i> my PC and PDA?</a>
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gh"></a><b>Q: I upgraded to the lastest version of FreeOTFE4PDA, can I still mount my old volumes?
+<P>
+A:</b> Yes, you can!
+
+<P>
+It should be noted that v3.75 and later only have the SHA hash and AES cypher drivers enabled by default. If your volume was secured using a different hash/cypher algorithm, please enable the required drivers by following the procedure described in <A HREF="advanced_topics.htm">Advanced Topics</A>, under "Enabling/Disabling Hash/Cypher Algorithms".
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gi"></a><b>Q: I would like to use hash/cypher <I>XYZ</I>, why doesn't it appear as an option?
+<P>
+A:</b> The most likely reason is that <I>XYZ</I> has been disabled within FreeOTFE4PDA; please see <A HREF="advanced_topics.htm">Advanced Topics</A>, "Enabling/Disabling Hash/Cypher Algorithms" section, for how to enable/disable hash/cypher algorithms, and show <I>XYZ</I> as an option.
+
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gg"></a><b>Q: How to I enable hash/cypher <I>XYZ</I>?
+<P>
+A:</b> See <A HREF="advanced_topics.htm">Advanced Topics</A>, "Enabling/Disabling Hash/Cypher Algorithms" section.
+
+
+<P>
+
+<hr>
+<br>
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_5"><H3>FreeOTFE Explorer Specific</H3></A>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gl"></a><b>Q: Does FreeOTFE Explorer support drag and drop with MS Windows Explorer?
+<P>
+A:</b> 
+Yes - FreeOTFE Explorer supports dragging files and folders <I>from</I> MS Windows Explorer <I>to</I> FreeOTFE Explorer, but doesn't currently support dragging files <I>from</I> FreeOTFE Explorer <I>to</I> MS Windows Explorer.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gj"></a><b>Q: What filesystems does FreeOTFE Explorer support?
+<P>
+A:</b> 
+FreeOTFE Explorer supports volumes using the FAT12, FAT16 and FAT32 filesystems. Support for other filesystems is currently under development.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="gp"></a><b>Q: Does FreeOTFE Explorer try to connect to the internet?
+<P>
+A:</b> 
+No - not unless you configure it to do so; see the FAQ "<A HREF="#go">Does FreeOTFE try to connect to the internet?</A>"
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hw"></a><b>Q: How do I securely overwrite files stored on a flash drive?
+<P>
+A:</b> 
+FreeOTFE Explorer includes (optional) functionality to overwrite files as they are moved into an encrypted volume, or on demand, to destroy plaintext (non-secured) copies.
+
+<P>
+This works well for destroying files stored on a normal (magnetic) hard drives, however many flash drives employ "wear levelling" to reduce wear and prolong their useful life. This can cause overwrite data to be written to locations on the disk <I>other</I> than where the data to be overwritten is stored.
+
+<P>
+As a consequence, most (if not all) file overwrite tools are not be able to overwrite files stored on such flash drives - even though it may report that they have operated successfully.
+
+<P>
+To securely overwrite files on flash drives, please delete them as normal - and then overwrite all remaining free space available on the device.
+
+<P>
+This will prevent any form of wear levelling from redirecting overwrite data to other parts of the disk, and guarantee a successful overwrite.
+
+
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hx"></a><b>Q: How do I get FreeOTFE Explorer to display filename extensions for all files?
+<P>
+A:</b> 
+Like MS Windows Explorer, FreeOTFE Explorer default to hiding filename extensions for "known file types".
+
+<P>
+To configure FreeOTFE Explorer to display filename extensions for <I>all</I> files, please set your options as follows:
+
+<UL>
+<LI>Select the "View | Options..." menuitem.
+<LI>Select the "Advanced" tab
+<LI><I>Unselect</I> the "Hide extensions of known file types" option
+</UL>
+
+
+<P>
+
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<a name="hy"></a><span style="font-weight: bold;">Q: Can FreeOTFE Explorer run under Linux?</span>
+
+<P>
+
+<b>A:</b> 
+Yes - FreeOTFE Explorer can be used under Linux when run under <A HREF="http://www.winehq.org/">Wine</A>.
+
+<P>
+
+
+<hr>
+
+<BR>
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

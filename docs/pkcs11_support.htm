@@ -1,0 +1,380 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<HEAD>
+
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
+<meta name="description" content="FreeOTFE: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+
+<meta name="author" content="Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="ROBOTS" content="ALL">
+
+<TITLE>Security Token/Smartcard Support</TITLE>
+
+<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="styles_pc.css" rel="stylesheet" type="text/css">
+<link rev="made" href="mailto:sdean12@sdean12.org">
+<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+</HEAD>
+<BODY>
+
+<CENTER>
+
+<TABLE border=0 cellspacing=20 WIDTH=100%>
+  <TR ALIGN="CENTER" VALIGN="MIDDLE">
+    <TD COLSPAN="2" ALIGN="CENTER" VALIGN="MIDDLE">
+<BR>
+<TABLE border=0>
+<TR ALIGN="CENTER" VALIGN="MIDDLE">
+<TD>
+<TABLE border=0>
+<TR VALIGN="MIDDLE" style="font-size: x-large">
+<TD>
+<A HREF="http://www.FreeOTFE.org/"><IMG ALT="FreeOTFE logo" SRC="./images/FreeOTFE.gif" BORDER=0></A>
+</TD>
+<TD class="master_title">
+<A HREF="http://www.FreeOTFE.org/" class="master_link">FreeOTFE</A>
+</TD>
+</TR>
+</TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<I>Free disk encryption software for PCs and PDAs</I>
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN="CENTER">
+<FONT SIZE=-1>(<A HREF="mobile_site/index.htm">PDA version of WWW site</A>)</FONT>
+</TD>
+</TR>
+</TABLE>
+<BR>
+    </TD>
+  </TR>
+  <TR>
+    <TD width=20%>
+
+
+      <TABLE class="nav_table">
+        <TR>
+          <TD class="nav_header">
+            Contents
+          </TD>
+        </TR>
+        <TR>
+          <!-- Navigation cell -->
+          <TD class="nav_text">
+
+<B>
+<!-- Begin actual contents -->
+<UL class="UL_noindent">
+<LI><a href="description.htm">Introduction</a>
+<LI><a href="download.htm">Download</a>
+<LI><a href="installation_and_upgrading.htm">Installation and Upgrading</a>
+
+
+
+
+
+
+
+<LI><a href="getting_started.htm">Getting Started</a>
+<LI><a href="advanced_topics.htm">Advanced Topics</a>
+<LI><a href="portable_mode.htm">Portable Mode</a>
+<LI>Security Token/Smartcard Support
+<LI><a href="command_line.htm">Command Line Interface</a>
+<LI><a href="Linux_volumes.htm">Linux Volumes</a>
+
+
+
+
+
+<LI><a href="plausible_deniability.htm">Plausible Deniability</a>
+<LI><a href="notes.htm">Miscellaneous Notes</a>
+
+
+
+
+<LI><a href="FAQ.htm">FAQ</a>
+<LI><a href="technical_details.htm">Technical Details</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<LI><a href="known_bugs.htm">Known Bugs</a>
+<LI><a href="fault_reporting.htm">Fault/Bug Reporting</a>
+<LI><a href="TODO_list.htm">TODO List</a>
+<LI><a href="version_history.htm">Appendix A: Version History</a>
+<LI><a href="credits.htm">Appendix B: Credits</a>
+<LI><a href="licence.htm">Appendix C: Licence</a>
+<LI><a href="glossary.htm">Appendix D: Glossary</a>
+<LI><a href="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</a>
+<LI><a href="command_line_decryption_utilities.htm">Appendix F: Command Line Decryption Utilities</a>
+<LI><a href="uninstalling.htm">Appendix G: Uninstalling</a>
+<LI><a href="contact_details.htm">Appendix H: Contact Details</a>
+</UL>
+<!-- End actual contents -->
+</B>
+
+          </TD>
+        </TR>
+      </TABLE>
+
+
+    </TD>
+
+    <TD>
+
+      <TABLE class="content_table">
+        <TR>
+          <TD class="content_text">
+            
+
+<H2>Security Token/Smartcard Support</H2>
+
+<P>
+
+ 
+<TABLE class="note" align="CENTER">
+  <TR>
+    <TD>
+<img src="./images/note_VistaPCIcon.png" alt="PC version only" >
+    </TD>
+    <TD width=100%>
+This section applies to the PC version of FreeOTFE <I>only</I>
+
+    </TD>
+  </TR>
+</TABLE>
+
+
+
+<P>
+FreeOTFE supports all security tokens/smartcards (referred to as "tokens" in this documentation) which conform to the PKCS#11 (aka Cryptoki) standard, providing two factor authentication of FreeOTFE volumes.
+
+<P>
+There are two ways in which tokens can be used:
+
+<OL>
+<LI>As a secure keyfile store
+<LI>To add an additional level of encryption to keyfiles/volumes
+</OL>
+
+<P>
+In both cases case, the token's password (typically called a "PIN" - although not limited to numbers) is required in order for the token to be used.
+
+<P>
+These two methods can be used independently, or combined together.
+
+<P>
+<UL>
+  <LI><A HREF="#level_3_heading_1">Initial configuration</A>
+  <LI><A HREF="#level_3_heading_2">Secure Keyfile Store</A>
+  <LI><A HREF="#level_3_heading_3">Token Encryption</A>
+  <LI><A HREF="#level_3_heading_4">PIN Entry</A>
+</UL>
+
+
+<P>
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_1"><H3>Initial configuration</H3></A>
+
+<P>
+In order to use tokens, FreeOTFE must first be configured to use the appropriate PKCS#11 library:
+
+<P>
+<OL>
+<LI>Go to "View | Options..." 
+<LI>Select the "PKCS#11" tab
+<LI>Check the "Enable PKCS#11 support" checkbox
+<LI>The filename of the PKCS#11 library you wish to use (see table below). Note: In most cases you shouldn't need to enter the full path to the DLL, just its filename.
+<LI>Click "Verify" to run a quick sanity check to ensure that the library looks viable
+<LI>Set "Save above settings to" be (for example) "FreeOTFE executable dir"
+<LI>Click "OK"
+</OL>
+
+
+<TABLE BORDER=0 WIDTH="100%" >
+  <TR>
+    <TD WIDTH="100%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PC/PKCS11Options.png">
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD>
+      <I>Options dialog; PKCS#11 tab</I>
+    </TD>
+  </TR>
+</TABLE>
+
+
+<P>
+The menuitem under the "Tools" menu should then be enabled, as should
+the options (when appropriate) on the password entry dialog when
+mounting FreeOTFE volumes
+
+<P>
+A list of driver library names supplied by common manufacturers may be found at <A HREF="pkcs11_drivers.htm">Appendix E: PKCS#11 Driver Libraries</A>
+
+<P>
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_2"><H3>Secure Keyfile Store</H3></A>
+
+<P>
+Keyfiles may be stored on tokens in a similar fashion to which they can be stored on (for example) a USB flash drive. However, unlike storing a keyfile on a USB flash drive, those stored on a token require the token's PIN to be entered before they can be accessed.
+
+<P>
+<A NAME="level_4_heading_1"><H4>Usage</H4></A>
+
+<P>
+To add a keyfile to your token:
+
+<OL>
+<LI>Create a keyfile for your volume as per normal
+<LI>Plug in/insert your token
+<LI>Go to "Tools | PKCS#11 Token management..."
+<LI>Enter your token's PIN and click "OK"
+<LI>The token management dialog should be displayed; select the "Keyfiles" tab
+<LI>Click "Import..."
+<LI>Select the keyfile previously created and click "OK".
+</OL>
+
+<P>
+To use a keyfile stored on a token:
+
+<OL>
+<LI>Follow the normal procedure for mounting your FreeOTFE volume
+<LI>When shown the password prompt, select "PKCS#11" as the keyfile option; you will then be prompted to authenticate yourself to the token
+<LI>Enter your token's PIN and click "OK"
+<LI>Select the keyfile stored on your token, and proceed as normal by entering your keyfile's password, etc and clicking "OK" to mount
+</OL>
+
+Note: More than one keyfile can be stored on a single token; however they must all have different names.
+
+<P>
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_3"><H3>Token Encryption</H3></A>
+
+<P>
+PKCS#11 tokens can also be used to add a further level of encryption to volumes, by using the token to encrypt the volume's CDB and/or keyfile(s).
+
+<P>
+The keys ("secret keys") used for this encryption are automatically generated by a token and can never be duplicated, extracted or in any way copied from the token, <I>even if the token's PIN is known</I>. All encryption/decryption operations used to secure a keyfile/volume CDB are carried out <I>by the token itself</I>.
+
+<P>
+This mechanism therefore provides a means of "tying" a volume/keyfile to a physical token; preventing it from being mounted unless the token is present and its PIN is known.
+
+<P>
+It should be noted however, that since it is inherent that <I>no backups of the secret keys stored on a token can be made</I>, the loss of the token will result in the loss of all data stored on the volume it protects, unless a separate means of accessing the volume (e.g. a keyfile which isn't secured by the same PKCS#11 token) is available.
+
+<P>
+<A NAME="level_4_heading_2"><H4>Usage</H4></A>
+
+<P>
+To encrypt a volume's CDB/keyfile:
+
+<OL>
+<LI>Plug in/insert your token
+<LI>Go to "Tools | PKCS#11 Token management..."
+<LI>Enter your token's PIN and click "OK"
+<LI>The token management dialog should be displayed; select the "Secret keys" tab
+<LI>Click "New..."
+<LI>Enter a meaningful name of the token, and select the cypher to be used for the encryption
+<BR>
+It should be noted that the range of cyphers available for use is determined by the capabilities of your token, and not FreeOTFE
+<LI>Click "OK" and the new key will be created
+
+<LI>Select the secret key to be used to encrypt your volume CDB/keyfile.
+<LI>Click "Secure..."
+
+<LI>In the dialog shown, specify the volume/keyfile to be encrypted. If you are trying to secure a hidden volume, enter the host volume's filename/partition.
+<LI>Leave the "offset" field set to zero, unless you are trying to secure a hidden volume - in which case this should be set to the offset where the hidden volume may be found.
+<LI>Click "OK".
+</OL>
+
+Note:
+<UL>
+<LI>More than one secret key can be stored on a single token; however they must all have different names.
+<LI>The same secret key can be used to encrypt more than one volume CDB/keyfile.
+</UL>
+
+<P>
+To use a volume/keyfile which has been double-encrypted by a token:
+
+<OL>
+<LI>Follow the normal procedure for mounting your FreeOTFE volume
+<LI>When shown the password prompt, click the "Advanced >>" button to display the "Advanced security details" options
+<LI>Enter your token's PIN and click "OK"
+<LI>Select the secret key used to secure your volume/keyfile, and proceed as normal by entering your volume/keyfile's password, etc and clicking "OK" to mount
+</OL>
+
+<P>
+<P>
+<HR class="half"> <!-- ---------------------------------------------------------------------------- -->
+<A NAME="level_3_heading_4"><H3>PIN Entry</H3></A>
+
+<P>
+FreeOTFE will only prompt you to enter your token's PIN as and when it's needed. FreeOTFE does <I>not</I> cache your PIN in any way
+
+
+<TABLE BORDER=0 WIDTH="100%" >
+  <TR>
+    <TD WIDTH="100%" class="screenshot_img" >
+      <img BORDER="0" src="./images/screenshots/PC/PKCS11PINEntry.png">
+    </TD>
+  </TR>
+  <TR ALIGN="CENTER">
+    <TD>
+      <I>PKCS#11 PIN entry</I>
+    </TD>
+  </TR>
+</TABLE>
+
+
+<P>
+The PIN entry prompt will display a list of all tokens found on your system, showing the slot number the token is inserted in, and the token's label. If you have not yet inserted your token, do so and click "Refresh" to refresh the list.
+
+<P>
+If only one token is found, it will be selected automatically, and the token selection control will be disabled. Otherwise, select the token you wish to use, enter your PIN, and click "OK" to continue.
+
+<A NAME="level_4_heading_3"><H4>Secure authentication path</H4></A>
+
+<P>
+If your token hardware features a secure authentication path (e.g. a smartcard reader with PIN entry keypad), you can take advantage of it by selecting the "Use secure authentication path" checkbox when FreeOTFE prompts for the token's PIN.
+
+
+          </TD>
+        </TR>
+      </TABLE>
+
+    </TD>
+
+  </TR>
+</TABLE>
+
+</CENTER>
+
+
+</BODY>
+</HTML>

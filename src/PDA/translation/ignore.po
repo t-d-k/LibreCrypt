@@ -1,0 +1,112 @@
+#  Ignore list. Remove those that you do want to have translated.
+
+#  Internal
+msgid "\n"
+
+msgid "resource.h0"
+
+msgid "#include "
+
+msgid "#include \"afxres.h\"\n"
+
+msgid "MS Shell Dlg"
+
+msgid "Button"
+
+msgid "Dialog"
+
+msgid "Context menu"
+
+msgid "080904b0"
+
+msgid "StringFileInfo"
+
+msgid "SHCreateMenuBar Failed"
+
+
+#  Version block information
+msgid "CompanyName"
+
+msgid "FileDescription"
+
+msgid "FileVersion"
+
+msgid "InternalName"
+
+msgid "LegalCopyright"
+
+msgid "LegalTrademarks"
+
+msgid "OriginalFilename"
+
+msgid "ProductName"
+
+msgid "ProductVersion"
+
+msgid "VarFileInfo"
+
+
+
+#  Display placeholders
+msgid "APP_TITLE_HERE"
+
+msgid "APP_VERSION_HERE"
+
+msgid "DRIVER_VERSION_HERE"
+
+msgid "APP_URL_HERE"
+
+msgid "APP_AUTHOR_CREDIT_HERE"
+
+msgid "INSTRUCTIONS HERE"
+
+msgid "THIS TEXT REPLACED WITH USERRNG"
+
+msgid "WIZARD DESCRIPTION SET AUTOMATICALLY"
+
+msgid "WIZARD TITLE SET AUTOMATICALY\n"
+"(COVERS TWO LINES)"
+
+msgid "LEFT ITEM"
+
+msgid "RIGHT ITEM"
+
+msgid "<SEPARATOR>"
+
+msgid "SELECTED COUNT SET AUTOMATICALLY"
+
+msgid "SRC DETAILS"
+
+msgid "DEST DETAILS"
+
+msgid "SRC FILENAME"
+
+msgid "DEST FILENAME"
+
+msgid "ASSOCIATE WITH EXTN"
+
+msgid "RANDOM BITS GENERATED - REQ"
+
+
+#  Other
+msgid "..."
+
+msgid "/"
+
+#  Files
+msgid "..\\..\\..\\Common\\Common\\images\\FreeOTFE.ico"
+
+msgid "..\\..\\..\\Common\\Common\\images\\FreeOTFESmall.ico"
+
+msgid "..\\images\\wndMain_Toolbar.bmp"
+
+
+
+#  English only test stuff
+msgid "Test 1"
+
+msgid "Test 2"
+
+msgid "Test 3"
+
+

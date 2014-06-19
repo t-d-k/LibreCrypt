@@ -1,0 +1,51 @@
+                   Reference Implementation Diskette
+
+
+Files on this diskette (or in this ZIP file)
+
+File Name           Description
+========================================================================
+
+README          This file
+
+PLATFORM.H      Platform-specific definitions (e.g., endianness, rotates)
+
+TABLE.H         Macros and tables for Twofish internal structures
+
+AES.H           AES header file, function prototypes, API explanation/example
+
+DEBUG.H         Debug i/o macros and functions
+
+TWOFISH.C       Reference ANSI C source code
+
+TST2FISH.C      Test code, links with TWOFISH.C to generate KAT/MCT
+
+COMPILE.BAT     Batch file used to compile TST2FISH.EXE.  See this file for
+                the set of compiler options used to optimize performance.
+
+TST2FISH.EXE    Executable 32-bit console app of TST2FISH.C and TWOFISH.C
+                linked together. 
+
+========================================================================
+
+Notes:
+
+To programmers wishing to use the Twofish code:  please see the
+example code (and comments) at the end of the file AES.H showing how 
+the Twofish functions are typically used.
+
+The program TST2FISH.EXE will generate the full set of KAT/MCT/Tables 
+files in the current directory, if run with the -M switch:
+
+        TST2FISH -M
+
+When run without command-line parameters, it will generate a partial MCT set,
+since the full set takes a long time.
+
+When run with a question mark character ('?') as a parameter, TST2FISH.EXE
+will display a help screen of command line options.
+
+It is recommended that the version of TST2FISH.EXE compiled with the
+optimized ANSI C code be used to generate the full MCT file set, since
+the reference version is considerably slower.
+
