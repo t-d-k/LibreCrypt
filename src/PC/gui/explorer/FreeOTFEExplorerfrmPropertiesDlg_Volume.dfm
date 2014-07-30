@@ -7,21 +7,27 @@ inherited frmPropertiesDialog_Volume: TfrmPropertiesDialog_Volume
     inherited tsGeneral: TTabSheet
       inherited lblSizeOnDisk: TLabel
         Top = 376
+        ExplicitTop = 376
       end
       inherited lblSize: TLabel
         Top = 352
+        ExplicitTop = 352
       end
       inherited lblLocation: TLabel
         Top = 328
+        ExplicitTop = 328
       end
       inherited edLocation: TLabel
         Top = 328
+        ExplicitTop = 328
       end
       inherited edSizeOnDisk: TLabel
         Top = 376
+        ExplicitTop = 376
       end
       inherited edSize: TLabel
         Top = 352
+        ExplicitTop = 352
       end
       object lblFileSystem: TLabel [10]
         Left = 12

@@ -44,8 +44,8 @@ resourcestring
   RS_COPYING    = 'copying';
   RS_DELETING   = 'deleting';
 
-  RS_ENCRYPTED_VOLUME = 'Encrypted volume';
-  RS_VOLUME_PLAINTEXT = 'Plaintext volume';
+  RS_ENCRYPTED_VOLUME = 'Locked Box';
+  RS_VOLUME_PLAINTEXT = 'Open Box';
 
   RS_DETERMINING_SIZE_MSG = 'Determining size of files/folders....';
 
@@ -302,9 +302,9 @@ type
     procedure actOverwriteFileExecute(Sender: TObject);
     procedure actOverwriteDirExecute(Sender: TObject);
     procedure SDFilesystemListView1DblClick(Sender: TObject);
-    procedure actLinuxMountHiddenExecute(Sender: TObject);
-    procedure actLinuxMountFileExecute(Sender: TObject);
-    procedure actLinuxNewExecute(Sender: TObject);
+
+
+
   private
     PartitionImage: TSDPartitionImage;
     Filesystem: TSDFilesystem_FAT;
@@ -328,9 +328,9 @@ type
     procedure RefreshMRUList(); override;
     procedure MRUListItemClicked(mruList: TSDUMRUList; idx: integer); override;
 
-    procedure MountFiles(mountAsSystem: TDragDropFileType; filenames: TStringList; readOnly: boolean); overload; override;
+    procedure MountFiles(mountAsSystem: TDragDropFileType; filenames: TStringList; readOnly, forceHidden : Boolean); overload; override;
 
-    procedure PostMountGUISetup(driveLetter: char);
+    procedure PostMountGUISetup(driveLetter: Ansichar);
 
     procedure RecaptionToolbarAndMenuIcons(); override;
     procedure SetIconListsAndIndexes(); override;
@@ -368,7 +368,7 @@ type
     procedure SetDragCursor();
 
     procedure Dismount(); overload;
-    procedure Dismount(driveLetter: char); overload;
+    procedure Dismount(driveLetter: ansichar); overload;
 
     procedure PromptForAndImportFile(importToPath: WideString);
     procedure PromptForAndImportDir(importToPath: WideString);
@@ -530,7 +530,7 @@ type
   public
     // This next line will generate a compiler warning - this is harmless.
     // (We want to use OTFEFreeOTFE as the descendant class in this unit)
-    function  OTFEFreeOTFE(): TOTFEFreeOTFEDLL; overload;
+    function  OTFEFreeOTFE(): TOTFEFreeOTFEDLL; reintroduce;overload;
 
     procedure WMUserPostShow(var msg: TWMEndSession); override;
 
@@ -597,7 +597,7 @@ const
 {$ENDIF}
 
 resourcestring
-  FOTFE_EXPL_DESCRIPTION  = 'An explorer-type application to allow access to FreeOTFE volumes, without requiring administrator rights to install any drivers';
+  FOTFE_EXPL_DESCRIPTION  = 'An explorer-type application to allow access to DoxBox volumes, without requiring administrator rights to install any drivers';
 
   // Toolbar captions
   RS_TOOLBAR_CAPTION_BACK    = 'Back';
@@ -623,8 +623,8 @@ resourcestring
   RS_TOOLBAR_HINT_COPYTO          = 'Copy To';
   RS_TOOLBAR_HINT_DELETE          = 'Delete';
   RS_TOOLBAR_HINT_VIEWS           = 'Views';
-  RS_TOOLBAR_HINT_EXTRACT         = 'Extract selected files/folders from the mounted volume';
-  RS_TOOLBAR_HINT_STORE           = 'Store a file/folder in the mounted volume';
+  RS_TOOLBAR_HINT_EXTRACT         = 'Extract selected files/folders from the open box';
+  RS_TOOLBAR_HINT_STORE           = 'Store a file/folder in the open box';
   RS_TOOLBAR_HINT_ITEMPROPERTIES  = 'Properties';
   RS_TOOLBAR_HINT_EXPLORERBARFOLDERS  = 'Shows the Folders bar.';
 
@@ -632,9 +632,9 @@ resourcestring
   RS_TOOLBAR_MNU_HINT_STORE_DIR   = 'Store folder';
 
   RS_COULD_MOUNT_BUT_NOT_PARTITION = 'Volume could be mounted, but not mounted as a partition image?!';
-  RS_FILESYSTEM_NOT_FAT121632      = 'The filesystem used by this volume could not be recognised as either FAT12, FAT16 or FAT32.'+SDUCRLF+
+  RS_FILESYSTEM_NOT_FAT121632      = 'The filesystem used by this box could not be recognised as either FAT12, FAT16 or FAT32.'+SDUCRLF+
                                      SDUCRLF+
-                                     'Although FreeOTFE supports all filesystems, FreeOTFE Explorer only supports those listed above.';
+                                     'Although DoxBox supports all filesystems, DoxBox Explorer only supports those listed above.';
 
   RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE = 'Cannot %1 %2: Cannot find the specified file.'+SDUCRLF+
                                            SDUCRLF+
@@ -678,7 +678,7 @@ const
   CURSOR_DRAG_MOVE = 'CURSOR_DRAG_MOVE';
 
   // String for this instance of FreeOTFE Explorer's clipboard
-  CFSTR_FEXPL_SESSION_BASE = 'FreeOTFEExplorer:%1';
+  CFSTR_FEXPL_SESSION_BASE = 'DoxBoxExplorer:%1';
 
 var
   CF_FEXPL_SESSION_DATA: Word;
@@ -725,7 +725,7 @@ begin
   if not(ActivateFreeOTFEComponent(TRUE)) then
     begin
     SDUMessageDlg(
-               _('The main FreeOTFE driver could not be found on this computer'+SDUCRLF+
+               _('The DoxBox DLL (FreeOTFE.dll) could not be found on this computer'+SDUCRLF+
                SDUCRLF+
                'Please check your installation'),
                mtError
@@ -784,15 +784,15 @@ begin
 
 end;
 
-procedure TfrmFreeOTFEExplorerMain.MountFiles(mountAsSystem: TDragDropFileType; filenames: TStringList; readOnly: boolean);
+procedure TfrmFreeOTFEExplorerMain.MountFiles(mountAsSystem: TDragDropFileType; filenames: TStringList; readOnly, forceHidden : Boolean);
 var
-  mountedAs: string;
+  mountedAs: AnsiString;
   mountedOK: boolean;
 begin
   // Sanity check
   if (filenames.count <> 1) then
     begin
-    SDUMessageDlg(_('Please specify a single volume to be mounted'), mtError);
+    SDUMessageDlg(_('Please specify a single box to be opened'), mtError);
     exit;
     end;
 
@@ -806,7 +806,7 @@ begin
     end
   else if (mountAsSystem = ftLinux) then
     begin
-    mountedOK:= OTFEFreeOTFE.MountLinux(filenames, mountedAs, readOnly,);
+    mountedOK:= OTFEFreeOTFE.MountLinux(filenames, mountedAs, readOnly);
     end
   else
     begin
@@ -818,9 +818,9 @@ begin
     if (OTFEFreeOTFE.LastErrorCode <> OTFE_ERR_USER_CANCEL) then
       begin
       SDUMessageDlg(
-                    _('Unable to mount volume.')+SDUCRLF+
+                    _('Unable to open Box.')+SDUCRLF+
                     SDUCRLF+
-                    _('Please check your password and settings, and try again.'),
+                    _('Please check your keyphrase and settings, and try again.'),
                     mtError
                    );
       end;
@@ -851,7 +851,7 @@ end;
 
 // Configure up the GUI, assuming the filename supplied has been mounted under
 // the "drive letter" supplied
-procedure TfrmFreeOTFEExplorerMain.PostMountGUISetup(driveLetter: char);
+procedure TfrmFreeOTFEExplorerMain.PostMountGUISetup(driveLetter: Ansichar);
 var
   volFilename: string;
 begin
@@ -1591,7 +1591,7 @@ begin
 end;
 
 // Specify #0 as driveLetter to dismount all
-procedure TfrmFreeOTFEExplorerMain.Dismount(driveLetter: char);
+procedure TfrmFreeOTFEExplorerMain.Dismount(driveLetter: ansichar);
 begin
   SDFilesystemListView1.Filesystem := nil;
   SDFilesystemTreeView1.Filesystem := nil;
@@ -1796,8 +1796,8 @@ end;
 
 procedure TfrmFreeOTFEExplorerMain.actFreeOTFENewExecute(Sender: TObject);
 var
-  prevMounted: string;
-  newMounted: string;
+  prevMounted: ansistring;
+  newMounted:ansistring;
   i: integer;
 begin
   inherited;
@@ -1808,7 +1808,7 @@ begin
     begin
     if (OTFEFreeOTFE.LastErrorCode <> OTFE_ERR_USER_CANCEL) then
       begin
-      SDUMessageDlg(_('FreeOTFE volume could not be created'), mtError);
+      SDUMessageDlg(_('DoxBox could not be created'), mtError);
       end;
     end
   else
@@ -1833,7 +1833,7 @@ begin
       end;
 
     SDUMessageDlg(
-               _('FreeOTFE volume created successfully.'),
+               _('DoxBox created successfully.'),
                mtInformation
               );
     end;
@@ -1912,7 +1912,7 @@ begin
           begin
           if not(userCancel) then
             begin
-            SDUMessageDlg(_('An error occured while trying to create your volume file'), mtError, [mbOK], 0);
+            SDUMessageDlg(_('An error occured while trying to create your DoxBox file'), mtError, [mbOK], 0);
             end;
 
           allOK := FALSE;
@@ -2231,7 +2231,7 @@ begin
 
   if not(Mounted())then
     begin
-    dispMsg := _('Ready to mount volume...');
+    dispMsg := _('Ready to open Box...');
     end
   else
     begin
@@ -3851,8 +3851,8 @@ end;
 function TfrmFreeOTFEExplorerMain.HandleCommandLineOpts_Mount(): integer;
 var
   cmdExitCode: integer;
-  preMounted: string;
-  postMounted: string;
+  preMounted: ansistring;
+  postMounted: ansistring;
 begin
   preMounted := OTFEFreeOTFE.DrivesMounted;
 

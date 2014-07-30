@@ -1,6 +1,8 @@
 inherited fmeOptions_FreeOTFEExplorerAdvanced: TfmeOptions_FreeOTFEExplorerAdvanced
   Width = 504
   Height = 382
+  ExplicitWidth = 504
+  ExplicitHeight = 382
   object gbAdvanced: TGroupBox
     Left = 16
     Top = 16
@@ -100,7 +102,6 @@ inherited fmeOptions_FreeOTFEExplorerAdvanced: TfmeOptions_FreeOTFEExplorerAdvan
       Width = 144
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 5
       OnChange = ControlChanged
     end
@@ -110,7 +111,6 @@ inherited fmeOptions_FreeOTFEExplorerAdvanced: TfmeOptions_FreeOTFEExplorerAdvan
       Width = 144
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 2
       OnChange = ControlChanged
     end

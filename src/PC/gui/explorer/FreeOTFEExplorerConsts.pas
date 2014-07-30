@@ -15,9 +15,9 @@ const
   APP_BETA_BUILD = -1;
 
   // Online user manual URL...
-  URL_USERGUIDE = 'http://www.FreeOTFE.org/docs/Explorer';
+  URL_USERGUIDE = 'http://DoxBox.squte.com/docs/Explorer';
   // PAD file URL...
-  URL_PADFILE   = 'http://www.FreeOTFE.org/PAD/FreeOTFEExplorer.xml';
+  URL_PADFILE   = 'http://DoxBox.squte.com/PAD/DoxBoxEExplorer.xml';
 
 
 implementation
