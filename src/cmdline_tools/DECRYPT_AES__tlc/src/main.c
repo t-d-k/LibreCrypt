@@ -16,7 +16,10 @@
 //#define CBC 1
 //#include <mycrypt.h>
 //#include <mycrypt_cipher.h>
-#include <mycrypt_custom.h>
+//  #include <mycrypt_custom.h>
+#include <tomcrypt.h>
+// #include <tomcrypt_cipher.h>
+
 
 
 #include <stdio.h>
@@ -431,8 +434,8 @@ void main(void)
             // Slight cast weirdness to please PC-Lint
             x = (unsigned int)(int)(SECTOR_SIZE / aes_desc.block_length);
             for (i = 0; i < x; i++)
-                {
-                if ((errnum = cbc_decrypt(inBufPtr, outBufPtr, &cbc)) != CRYPT_OK)
+                {                          
+                if ((errnum = cbc_decrypt(inBufPtr, outBufPtr,aes_desc.block_length ,&cbc)) != CRYPT_OK)
                     {
                     printf ("CBC result: %s\n", error_to_string(errnum));
                     exit (-1);

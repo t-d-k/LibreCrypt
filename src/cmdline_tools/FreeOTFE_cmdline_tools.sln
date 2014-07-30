@@ -1,45 +1,37 @@
-Microsoft Visual Studio Solution File, Format Version 7.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_AES__2K__tlc", "DECRYPT_AES__2K__tlc\DECRYPT_AES__2K__tlc.vcproj", "{C0DADACB-09AD-4307-B6A3-24392D44574F}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_AES__2K__tlc", "DECRYPT_AES__2K__tlc\DECRYPT_AES__2K__tlc.vcxproj", "{C0DADACB-09AD-4307-B6A3-24392D44574F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_AES__tlc", "DECRYPT_AES__tlc\DECRYPT_AES__tlc.vcproj", "{C0DADACB-09AD-4307-B6A3-24392D44574F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_AES__tlc", "DECRYPT_AES__tlc\DECRYPT_AES__tlc.vcxproj", "{CB47934E-0EEE-4036-AB96-ABBA0FD306F2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_TWOFISH__Hifn_Counterpane", "DECRYPT_TWOFISH__Hifn_Counterpane\DECRYPT_TWOFISH__Hifn_Counterpane.vcproj", "{628AD58D-D436-4DCB-8CF1-6004C94B673C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_TWOFISH__Hifn_Counterpane", "DECRYPT_TWOFISH__Hifn_Counterpane\DECRYPT_TWOFISH__Hifn_Counterpane.vcxproj", "{628AD58D-D436-4DCB-8CF1-6004C94B673C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_TWOFISH__tlc", "DECRYPT_TWOFISH__tlc\DECRYPT_TWOFISH__tlc.vcproj", "{C0DADACB-09AD-4307-B6A3-24392D44574F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_TWOFISH__tlc", "DECRYPT_TWOFISH__tlc\DECRYPT_TWOFISH__tlc.vcxproj", "{0B4063EF-37D8-4D94-A0A6-94EB184CBA9C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_XOR", "DECRYPT_XOR\DECRYPT_XOR.vcproj", "{C0DADACB-09AD-4307-B6A3-24392D44574F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DECRYPT_XOR", "DECRYPT_XOR\DECRYPT_XOR.vcxproj", "{D29441E9-5CC3-46B3-BBE3-2F90CE1FD4EC}"
 EndProject
 Global
-	GlobalSection(SolutionConfiguration) = preSolution
-		ConfigName.0 = Debug
-		ConfigName.1 = Release
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ProjectDependencies) = postSolution
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug|Win32.Build.0 = Debug|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release|Win32.ActiveCfg = Release|Win32
+		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release|Win32.Build.0 = Release|Win32
+		{CB47934E-0EEE-4036-AB96-ABBA0FD306F2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CB47934E-0EEE-4036-AB96-ABBA0FD306F2}.Release|Win32.ActiveCfg = Release|Win32
+		{628AD58D-D436-4DCB-8CF1-6004C94B673C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{628AD58D-D436-4DCB-8CF1-6004C94B673C}.Debug|Win32.Build.0 = Debug|Win32
+		{628AD58D-D436-4DCB-8CF1-6004C94B673C}.Release|Win32.ActiveCfg = Release|Win32
+		{628AD58D-D436-4DCB-8CF1-6004C94B673C}.Release|Win32.Build.0 = Release|Win32
+		{0B4063EF-37D8-4D94-A0A6-94EB184CBA9C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0B4063EF-37D8-4D94-A0A6-94EB184CBA9C}.Release|Win32.ActiveCfg = Release|Win32
+		{D29441E9-5CC3-46B3-BBE3-2F90CE1FD4EC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D29441E9-5CC3-46B3-BBE3-2F90CE1FD4EC}.Release|Win32.ActiveCfg = Release|Win32
 	EndGlobalSection
-	GlobalSection(ProjectConfiguration) = postSolution
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.ActiveCfg = Debug|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.Build.0 = Debug|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.ActiveCfg = Release|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.Build.0 = Release|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.ActiveCfg = Debug|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.Build.0 = Debug|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.ActiveCfg = Release|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.Build.0 = Release|Win32
-		{628AD58D-D436-4DCB-8CF1-6004C94B673C}.Debug.ActiveCfg = Debug|Win32
-		{628AD58D-D436-4DCB-8CF1-6004C94B673C}.Debug.Build.0 = Debug|Win32
-		{628AD58D-D436-4DCB-8CF1-6004C94B673C}.Release.ActiveCfg = Release|Win32
-		{628AD58D-D436-4DCB-8CF1-6004C94B673C}.Release.Build.0 = Release|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.ActiveCfg = Debug|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.Build.0 = Debug|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.ActiveCfg = Release|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.Build.0 = Release|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.ActiveCfg = Debug|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Debug.Build.0 = Debug|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.ActiveCfg = Release|Win32
-		{C0DADACB-09AD-4307-B6A3-24392D44574F}.Release.Build.0 = Release|Win32
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-	EndGlobalSection
-	GlobalSection(ExtensibilityAddIns) = postSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
