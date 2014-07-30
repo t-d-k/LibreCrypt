@@ -13,7 +13,7 @@ type
   TSDULittleEndian32 = array [0..(4-1)] of byte;
 
 function SDUBigEndian32ToDWORD(number: TSDUBigEndian32): DWORD;
-function SDUBigEndian32ToString(number: TSDUBigEndian32): string;
+function SDUBigEndian32ToString(number: TSDUBigEndian32): Ansistring; { TODO 1 -otdk -cclean : use byte areays }
 function SDUDWORDToBigEndian32(number: DWORD): TSDUBigEndian32;
 
 implementation
@@ -28,13 +28,13 @@ begin
             (number[3] * $00000001);
 end;
 
-function SDUBigEndian32ToString(number: TSDUBigEndian32): string;
+function SDUBigEndian32ToString(number: TSDUBigEndian32): Ansistring;
 begin
   Result :=
-            char(number[0] * $01000000) +
-            char(number[1] * $00010000) +
-            char(number[2] * $00000100) +
-            char(number[3] * $00000001);
+            Ansichar(number[0] * $01000000) +
+            Ansichar(number[1] * $00010000) +
+            Ansichar(number[2] * $00000100) +
+            Ansichar(number[3] * $00000001);
 end;
 
 

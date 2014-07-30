@@ -254,13 +254,13 @@ type
 
     // TOTFE functions...
     function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; overload; override;
-    function  Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean; overload; override;
+    function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; overload; override;
     function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
     function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
     function  IsEncryptedVolFile(volumeFilename: string): boolean; override;
     function  DrivesMounted(): string; override;
     function  GetVolFileForDrive(driveLetter: char): string; override;
-    function  GetDriveForVolFile(volumeFilename: string): char; override;
+    function  GetDriveForVolFile(volumeFilename: string): Ansichar; override;
     function  Version(): cardinal; override;
     function  VersionStr(): string; override;
     function  GetMainExe(): string; override;
@@ -474,7 +474,7 @@ var
   lastMountTimeDate: TSystemTime;
   writeProtect: DWORD;
   mountType: TMountType;
-  mountedAs: char;
+  mountedAs: ansichar;
   fileAttr: integer;
 begin
   CheckActive();
@@ -1419,7 +1419,7 @@ end;
 function  TOTFEScramDisk.Mount(volumeFilename: string; readonly: boolean = FALSE): char;
 var
   stlTemp: TStringList;
-  mountedAs: string;
+  mountedAs: AnsiString;
 begin
   stlTemp := TStringList.Create();
   try
@@ -1438,7 +1438,7 @@ begin
 
 end;
 
-function  TOTFEScramDisk.Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean;
+function  TOTFEScramDisk.Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean;
 var
   passwordsEntered: boolean;
   i: integer;
@@ -1685,7 +1685,7 @@ begin
 
 end;
 
-function  TOTFEScramDisk.GetDriveForVolFile(volumeFilename: string): char;
+function  TOTFEScramDisk.GetDriveForVolFile(volumeFilename: string): Ansichar;
 var
   i: integer;
   currSlotInfo: TSlotInfo;

@@ -146,12 +146,12 @@ type
     // Advanced options...
     FKeyIterations: integer;
     FSaltLength: integer;  // Length in *bits*
-    FRequestedDriveLetter: char;
+    FRequestedDriveLetter: ansichar;
     FCDBFilename: string;
     FPaddingLength: ULONGLONG;
     FPadWithEncryptedData: boolean;
 
-    FNewVolumeMountedAs: char;
+    FNewVolumeMountedAs: Ansichar;
 
     // These are ordered lists corresponding to the items shown in the combobox
     hashKernelModeDriverNames: TStringList;
@@ -166,10 +166,10 @@ type
     // Used for overwriting
     TempCypherDetails: TFreeOTFECypher_v3;
     TempCypherUseKeyLength: integer;  // In *bits*
-    TempCypherKey: string;
+    TempCypherKey: Ansistring;
     TempCypherEncBlockNo: int64;
 
-    fCombinedRandomData: string;
+    fCombinedRandomData: ansistring;
 
     CanUseCryptlib: boolean;
     FPKCS11TokensAvailable: boolean;
@@ -204,15 +204,15 @@ type
     function  GetSize(): ULONGLONG;
     function  GetHashDriver(): string;
     function  GetHashGUID(): TGUID;
-    function  GetCypherDriver(): string;
+    function  GetCypherDriver(): Ansistring;
     function  GetCypherGUID(): TGUID;
     function  GetSectorIVGenMethod(): TFreeOTFESectorIVGenMethod;
     procedure SetSectorIVGenMethod(sectorIVGenMethod: TFreeOTFESectorIVGenMethod);
     function  GetUsePerVolumeIV(): boolean;
     function  GetMasterKeyLength(): integer;  // Returns length in *bits*
-    function  GetRandomData_CDB(): string;
-    function  GetRandomData_PaddingKey(): string;
-    function  GetPassword(): string;
+    function  GetRandomData_CDB(): Ansistring;
+    function  GetRandomData_PaddingKey(): Ansistring;
+    function  GetPassword(): Ansistring;
 
     function  GetIsHidden(): boolean;
     function  GetCDBInVolFile(): boolean;
@@ -265,25 +265,25 @@ type
     property HashGUID: TGUID read GetHashGUID;
     // CypherDriver - Kernel drivers: CypherKernelDeviceName
     //                DLL drivers:    CypherLibFilename
-    property CypherDriver: string read GetCypherDriver;
+    property CypherDriver: Ansistring read GetCypherDriver;
     property CypherGUID: TGUID read GetCypherGUID;
     property SectorIVGenMethod: TFreeOTFESectorIVGenMethod read GetSectorIVGenMethod;
     property UsePerVolumeIV: boolean read GetUsePerVolumeIV;
     property MasterKeyLength: integer read GetMasterKeyLength;  // In *bits*
-    property RandomData_CDB: string read GetRandomData_CDB;
-    property RandomData_PaddingKey: string read GetRandomData_PaddingKey;
-    property Password: string read GetPassword;
+    property RandomData_CDB: Ansistring read GetRandomData_CDB;
+    property RandomData_PaddingKey: Ansistring read GetRandomData_PaddingKey;
+    property Password: Ansistring read GetPassword;
 
     property KeyIterations: integer read FKeyIterations write FKeyIterations;
     property SaltLength: integer read FSaltLength write FSaltLength;  // In *bits*
-    property RequestedDriveLetter: char read FRequestedDriveLetter write FRequestedDriveLetter;
+    property RequestedDriveLetter: ansichar read FRequestedDriveLetter write FRequestedDriveLetter;
     property KeyFilename: string read FCDBFilename write FCDBFilename;
     property CDBInVolFile: boolean read GetCDBInVolFile;
     property PaddingLength: ULONGLONG read FPaddingLength write FPaddingLength;
     property PadWithEncryptedData: boolean read FPadWithEncryptedData write FPadWithEncryptedData;
 
     property AutoMountAfterCreate: boolean read GetAutoMountAfterCreate;
-    property NewVolumeMountedAs: char read FNewVolumeMountedAs write FNewVolumeMountedAs;
+    property NewVolumeMountedAs: Ansichar read FNewVolumeMountedAs write FNewVolumeMountedAs;
 
     property IsHidden: boolean read GetIsHidden;
 
@@ -1178,9 +1178,9 @@ begin
   Result := StringToGUID(strGUID);
 end;
 
-function TfrmWizardCreateVolume.GetCypherDriver(): string;
+function TfrmWizardCreateVolume.GetCypherDriver(): Ansistring;
 var
-  retval: string;
+  retval: Ansistring;
 begin
   retval := '';
 
@@ -1247,21 +1247,22 @@ begin
 end;
 
 
-function TfrmWizardCreateVolume.GetRandomData_CDB(): string;
+function TfrmWizardCreateVolume.GetRandomData_CDB(): Ansistring;
 begin
   // Use the first CRITICAL_DATA_LENGTH bits as the CDB random data
   Result := Copy(fCombinedRandomData, 1, (CRITICAL_DATA_LENGTH div 8));
 end;
 
-function TfrmWizardCreateVolume.GetRandomData_PaddingKey(): string;
+function TfrmWizardCreateVolume.GetRandomData_PaddingKey(): Ansistring;
 begin
   // Use the last FPadWithEncryptedDataKeyLen bits as the CDB random data,
   // after the CDB random data
   Result := Copy(fCombinedRandomData, (CRITICAL_DATA_LENGTH div 8) + 1, (TempCypherUseKeyLength div 8));
 end;
 
-function TfrmWizardCreateVolume.GetPassword(): string;
+function TfrmWizardCreateVolume.GetPassword(): Ansistring;
 begin
+{ TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
   Result := preUserKey1.Text;
 end;
 
@@ -1368,9 +1369,9 @@ begin
       if (cbHash.Items.count = 0) then
         begin
         SDUMessageDlg(
-                      _('You do not appear to have any FreeOTFE hash drivers that can be used to create new FreeOTFE volumes installed and started.')+SDUCRLF+
+                      _('You do not appear to have any FreeOTFE hash drivers that can be used to create new DoxBox volumes installed and started.')+SDUCRLF+
                       SDUCRLF+
-                      _('If you have only just installed FreeOTFE, you may need to restart your computer.'),
+                      _('If you have only just installed DoxBox, you may need to restart your computer.'),
                       mtError
                      );
         end;
@@ -1383,7 +1384,7 @@ begin
                     SDUCRLF+
                     _('Please ensure that you have one or more FreeOTFE hash drivers installed and started.')+SDUCRLF+
                     SDUCRLF+
-                    _('If you have only just installed FreeOTFE, you may need to restart your computer.'),
+                    _('If you have only just installed DoxBox, you may need to restart your computer.'),
                     mtError
                    );
       end;
@@ -1411,7 +1412,7 @@ begin
                  SDUCRLF+
                  _('Please ensure that you have one or more FreeOTFE cypher drivers installed and started.')+SDUCRLF+
                  SDUCRLF+
-                 _('If you have only just installed FreeOTFE, you may need to restart your computer.'),
+                 _('If you have only just installed DoxBox, you may need to restart your computer.'),
                  mtError
                 );
       end;
@@ -1507,9 +1508,10 @@ showmessage('destroying wizard');
 
   PurgeMouseRNGData();
 
+  { TODO 1 -otdk -ccleanup : whats this for? }
   for i:=1 to length(fCombinedRandomData) do
     begin
-    fCombinedRandomData[i] := char(i);
+    fCombinedRandomData[i] := ansichar(i);
     end;
 
 end;
@@ -1748,7 +1750,7 @@ begin
   if IsPartition then
   begin
     if (SDUMessageDlg(
-                      _('You are about to create a new encrypted volume on a disk/partition.'+SDUCRLF+
+                      _('You are about to create a new DoxBox on a disk/partition.'+SDUCRLF+
                       SDUCRLF+
                       'This process will OVERWRITE that disk/partition.'+SDUCRLF+
                       SDUCRLF+
@@ -1792,8 +1794,8 @@ var
   allOK: boolean;
   volumeDetails: TVolumeDetailsBlock;
   CDBMetaData: TCDBMetaData;
-  saltBytes: string;
-  randomPool: string;
+  saltBytes: ansistring;
+  randomPool: ansistring;
   volumeFileSize: ULONGLONG;
   cdbFile: string;
   cdbOffset: ULONGLONG;
@@ -1833,11 +1835,11 @@ begin
         // If there was a problem, and not a user cancel, warn user
         else if userCancel then
           begin
-          SDUMessageDlg(_('Volume creation canceled'), mtInformation);
+          SDUMessageDlg(_('Box creation canceled'), mtInformation);
           end
         else
           begin
-          fileCreateProbMsg := SDUParamSubstitute(_('Unable to create volume file; please ensure you have %1 free on the relevant drive'), [SDUFormatAsBytesUnits(volumeFileSize)]);
+          fileCreateProbMsg := SDUParamSubstitute(_('Unable to create Box; please ensure you have %1 free on the relevant drive'), [SDUFormatAsBytesUnits(volumeFileSize)]);
           if (volumeFileSize >= MAX_FAT_FILESIZE) then
             begin
             fileCreateProbMsg := fileCreateProbMsg+SDUCRLF+
@@ -1993,7 +1995,7 @@ end;
 // Post-creation functionality
 procedure TfrmWizardCreateVolume.PostCreate();
 var
-  MountedDrives: string;
+  MountedDrives: Ansistring;
   errMsg: WideString;
   cntMountOK: integer;
   cntMountFailed: integer;
@@ -2063,7 +2065,7 @@ begin
     if not(mountedOK) then
       begin
       // Volumes couldn't be mounted for some reason...
-      errMsg := _('Unable to mount volume.');
+      errMsg := _('Unable to open box.');
       end;
     end;
 
@@ -2087,7 +2089,7 @@ begin
       begin
       PartitionImage.Free();
       PartitionImage := nil;
-      SDUMessageDlg('Volume could be mounted, but not mounted as a partition image?!', mtError);
+      SDUMessageDlg('Box could be opened, but not mounted as a partition image?!', mtError);
       end;
 
     if (PartitionImage <> nil) then
@@ -2313,7 +2315,7 @@ begin
   if (Size < minSize) then
     begin
     SDUMessageDlg(
-               SDUParamSubstitute(_('Please note: If you would like your volume to be compatible with the PDA version of FreeOTFE, please specify a volume size greater than %1 MB'), [MIN_PDA_VOLUME_SIZE]),
+               SDUParamSubstitute(_('Please note: If you would like your DoxBox to be compatible with the PDA version of FreeOTFE, please specify a box size greater than %1 MB'), [MIN_PDA_VOLUME_SIZE]),
                mtWarning
               );
     end;
@@ -2363,19 +2365,19 @@ begin
   inherited;
 
   reInstructWelcome.Text :=
-                   _('This "wizard" will guide you through the process of either creating a new FreeOTFE volume file, or a hidden volume within an existing file.'+SDUCRLF+
+                   _('This "wizard" will guide you through the process of either creating a new DoxBox, or a hidden box within an existing box.'+SDUCRLF+
                      SDUCRLF+
-                     'If you are unsure as to how to answer any of the questions this wizard asks, simply accepting the default values should generate a volume that is secure enough for most purposes.');
+                     'If you are unsure as to how to answer any of the questions this wizard asks, simply accept the defaults.');
 
   reInstructFileOrPartition.Text :=
-                   _('Please specify whether the new volume should be created as a disk image file stored on your filesystem, or take up a disk partition/entire physical disk'+SDUCRLF+
+                   _('Please specify whether the new DoxBox should be created as a file stored on your disk, or take up a disk partition or an entire physical disk'+SDUCRLF+
                      SDUCRLF+
-                     'For most users, it is recommended that you use a volume file; encrypted partitions/physical disks are intended for advanced users.');
+                     'For most users, it is recommended that you use a file; encrypted partitions or physical disks may give greater obscurity or speed.');
 
   reInstructFilename.Text :=
-                   _('Please specify the filename and location where the new volume should be created, by clicking the browse button.'+SDUCRLF+
+                   _('Please specify the filename and location of the new DoxBox, by clicking the browse button.'+SDUCRLF+
                      SDUCRLF+
-                     'If you wish to create a "hidden" volume within an existing volume, please specify your existing volume to be used.');
+                     'If you wish to create a "hidden" DoxBox within an existing DoxBox, please specify your existing DoxBox file to be used.');
 
   reInstructPartitionWarning.Text :=
                    _('1) Creating encrypted partitions is POTENTIALLY DESTRUCTIVE.'+SDUCRLF+
@@ -2385,34 +2387,34 @@ begin
                      '3) It is RECOMMENDED that you backup your data as appropriate before continuing.');
 
   reInstructPartitionSelect.Text :=
-                   _('Please select the partition you wish to create the new volume on, and whether you would like to create a "hidden" volume.');
+                   _('Please select the partition you wish to create the new DoxBox on, and whether you would like to create a "hidden" DoxBox.');
 
   reInstructOffset.Text :=
-                   _('The volume file you specified already exists. To create a hidden volume within this file, please specify the byte offset within this file from where the new volume should begin.'+SDUCRLF+
+                   _('The DoxBox file you specified already exists. To create a hidden DoxBox within this file, please specify the byte offset within this file from where the new DoxBox should begin.'+SDUCRLF+
                      SDUCRLF+
-                     'If you do NOT wish to create a hidden volume within your existing file, please click "< Back" and enter a different filename.');
+                     'If you do NOT wish to create a hidden DoxBox within your existing file, please click "< Back" and enter a different filename.');
 
   reInstructWarningOffset.Text :=
-                   _('1) Creating hidden volumes is POTENTIALLY DESTRUCTIVE.'+SDUCRLF+
+                   _('1) Creating hidden Boxes is POTENTIALLY DESTRUCTIVE.'+SDUCRLF+
                      SDUCRLF+
-                     '2) Data within the file/partition specified in the previous stage may be OVERWRITTEN, starting from byte offset specified, and running for the full length of the new hidden volume.'+SDUCRLF+
+                     '2) Data within the file/partition specified in the previous stage may be OVERWRITTEN, starting from byte offset specified, and running for the full length of the new hidden DoxBox.'+SDUCRLF+
                      SDUCRLF+
-                     '3) Remember the offset entered! For security reasons, this information is not stored anywhere, nor can it be determined automatically; you will need to type in this offset whenever  you wish to mount your hidden volume.');
+                     '3) Remember the offset entered! For security reasons, this information is not stored anywhere, nor can it be determined automatically; you will need to type in this offset whenever  you wish to mount your hidden DoxBox.');
 
 
   reInstructSize.Text :=
-                   _('Please enter the required size of the new volume.'+SDUCRLF+
+                   _('Please enter the required size of the new DoxBox.'+SDUCRLF+
                      SDUCRLF+
                      'This value must be more than 1 MB, and must be a multiple of 512 bytes.'+SDUCRLF+
                      SDUCRLF+
-                     'If you are creating a hidden volume, then the size of the original volume file, less the byte offset entered in the previous stage, must be greater than the sum of the value entered here, and the size critical data area.'+SDUCRLF+
+                     'If you are creating a hidden DoxBox, then the size of the original DoxBox file, less the byte offset entered in the previous stage, must be greater than the sum of the value entered here, and the size critical data area.'+SDUCRLF+
                      SDUCRLF+
-                     'Note: The size you specified here will be the size of the data part of the volume file. The actual file created will be larger than this by the size of the critical data area, which will be prepended onto the volume file.');
+                     'Note: The size you specified here will be the size of the data part of the DoxBox. The actual file created will be slightly larger than this.');
 
   reInstructHashCypherIV.Text :=
-                   _('Please select which security options should be used in securing your new volume.'+SDUCRLF+
+                   _('Please select which security options should be used in securing your new DoxBox.'+SDUCRLF+
                      SDUCRLF+
-                     'Most users can simply accept the defaults here, though more advanced users may prefer to specify their own options, depending on their needs.');
+                     'You can simply accept the defaults here.');
 
   reInstructMasterKeyLen.Text :=
                    _('The cypher you selected supports arbitary key lengths.'+SDUCRLF+
@@ -2422,12 +2424,12 @@ begin
                      'Note: The value entered must be a multiple of 8.');
 
   reInstructRNGSelect.Text :=
-                   _('In order to create your new volume, a certain amount of random data is required.'+SDUCRLF+
+                   _('In order to create your new DoxBox, a certain amount of random data is required.'+SDUCRLF+
                      SDUCRLF+
                      'This data will be used for the following:'+SDUCRLF+
                      SDUCRLF+
                      '1) Password salting'+SDUCRLF+
-                     '2) The new volume''s master key'+SDUCRLF+
+                     '2) The new DoxBox''s master key'+SDUCRLF+
                      '3) Random padding data'+SDUCRLF+
                      SDUCRLF+
                      'In order to generate this data, please select which random number generators you wish to use from the options below.');
@@ -2444,18 +2446,18 @@ begin
                    _('In order to use GPG to generate random data, please specify the location of "gpg.exe" by clicking the browse button.');
 
   reInstructPassword.Text :=
-                   _('Please enter the password to be used for securing your volume.'+SDUCRLF+
+                   _('Please enter the keyphrase to be used for securing your DoxBox.'+SDUCRLF+
                      SDUCRLF+
-                     'It is suggested that you enter a mix of uppercase, lowercase, numbers, and punctuation symbols.'+SDUCRLF+
+                     'Try to enter one character for each bit of the cypher keysize. For example for a 256 bit cypher enter a 256 character keyphrase.'+SDUCRLF+
                      SDUCRLF+
-                     'Note: If you forget your password, you can forget your data.'+SDUCRLF+
+                     'Note: If you forget your keyphrase, you can forget your data.'+SDUCRLF+
                      SDUCRLF+
-                     'Note: Newlines (blank lines) are significant. It is recommended that you do not press <ENTER> after typing in your password, as this will add an extra newline to the end of your password.');
+                     'Note: Newlines (blank lines) are significant. It is recommended that you do not press <ENTER> after typing in your keyphrase, as this will add an extra newline to the end of your keyphrase.');
 
   reInstructSummary.Text :=
-                   _('You have now entered all the information required to create a new volume.'+SDUCRLF+
+                   _('You have now entered all the information required to create a new DoxBox.'+SDUCRLF+
                      SDUCRLF+
-                     'Please check the summary shown below and click "Finish" to create the new volume, or use the "Back"/"Next" buttons to modify the details you have entered.'+SDUCRLF+
+                     'Please check the summary shown below and click "Finish" to create the new DoxBox, or use the "Back"/"Next" buttons to modify the details you have entered.'+SDUCRLF+
                      SDUCRLF+
                      'If you would like to configure more advanced options, please select "Advanced..."');
 
@@ -2564,9 +2566,9 @@ var
   i: integer;
   tempArraySize: cardinal;
   blocksizeBytes: cardinal;
-  plaintext: string;
-  cyphertext: string;
-  IV: string;
+  plaintext: Ansistring;
+  cyphertext: Ansistring;
+  IV: Ansistring;
   localIV: int64;
   sectorID: LARGE_INTEGER;
 begin
@@ -2587,7 +2589,8 @@ begin
   plaintext := '';
   for i:=1 to tempArraySize do
     begin
-    plaintext := plaintext + char(random(256));
+    plaintext := plaintext + Ansichar(random(256));
+    { TODO 2 -otdk -csecurity : This is not secure PRNG - check }
     end;
 
 
@@ -2598,13 +2601,13 @@ begin
   IV := '';
   if (TempCypherDetails.BlockSize > 0) then
     begin
-    IV := StringOfChar(#0, (TempCypherDetails.BlockSize div 8));
+    IV := StringOfChar(AnsiChar(#0), (TempCypherDetails.BlockSize div 8));
 
     localIV := TempCypherEncBlockNo;
 
     for i:=1 to min(sizeof(localIV), length(IV)) do
       begin
-      IV[i] := char((localIV AND $FF));
+      IV[i] := Ansichar((localIV AND $FF));
       localIV := localIV shr 8;
       end;
 

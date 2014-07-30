@@ -54,8 +54,8 @@ type
     procedure SetKeyIterations(keyIterations: integer);
     function  GetSaltLength(): integer;
     procedure SetSaltLength(saltLength: integer);
-    function  GetDriveLetter(): char;
-    procedure SetDriveLetter(driveLetter: char);
+    function  GetDriveLetter(): Ansichar;
+    procedure SetDriveLetter(driveLetter: Ansichar);
     function  GetCDBFilename(): string;
     procedure SetCDBFilename(CDBFilename: string);
     function  GetPaddingLength(): int64;
@@ -72,7 +72,7 @@ type
 
     property KeyIterations: integer read GetKeyIterations write SetKeyIterations;
     property SaltLength: integer read GetSaltLength write SetSaltLength;
-    property DriveLetter: char read GetDriveLetter write SetDriveLetter;
+    property DriveLetter: Ansichar read GetDriveLetter write SetDriveLetter;
     property CDBFilename: string read GetCDBFilename write SetCDBFilename;
     property PaddingLength: int64 read GetPaddingLength write SetPaddingLength;
     property PadWithEncryptedData: boolean read GetPadWithEncryptedData write SetPadWithEncryptedData;
@@ -216,20 +216,20 @@ begin
   seSaltLength.Value := saltLength;
 end;
 
-function TfrmWizardCreateVolumeAdvanced.GetDriveLetter(): char;
+function TfrmWizardCreateVolumeAdvanced.GetDriveLetter(): Ansichar;
 var
-  driveLetter: char;
+  driveLetter: Ansichar;
 begin
   driveLetter := #0;
   if (cbDriveLetter.ItemIndex > 0) then
     begin
-    driveLetter := cbDriveLetter.Items[cbDriveLetter.ItemIndex][1];
+    driveLetter := Ansichar(cbDriveLetter.Items[cbDriveLetter.ItemIndex][1]);
     end;
 
   Result := driveLetter;
 end;
 
-procedure TfrmWizardCreateVolumeAdvanced.SetDriveLetter(driveLetter: char);
+procedure TfrmWizardCreateVolumeAdvanced.SetDriveLetter(driveLetter: Ansichar);
 begin
   cbDriveLetter.ItemIndex := 0;
   if (driveLetter <> #0) then
@@ -240,7 +240,7 @@ end;
 
 procedure TfrmWizardCreateVolumeAdvanced.FormCreate(Sender: TObject);
 var
-  dl: char;
+  dl: ansichar;
 begin
   CypherBlocksize := 0;
 

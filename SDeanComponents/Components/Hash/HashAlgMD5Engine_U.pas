@@ -322,6 +322,7 @@ begin
   // Zeroize sensitive information.
 //  HE_memset(x, 0, 0, Length(x)+1);
 //xxx
+{ TODO 3 -otdk -csecurity : check why not zeroed}
   for i:=0 to 15 do
     begin
     x[i] := 0;

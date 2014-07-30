@@ -187,7 +187,7 @@ procedure TfmePKCS11_MgrKeyfile.actImportExecute(Sender: TObject);
 var
   importFile: string;
   newLabel: string;
-  newCDB: string;
+  newCDB: Ansistring;
   errMsg: string;
   labelValid: boolean;
   testLabel: string;

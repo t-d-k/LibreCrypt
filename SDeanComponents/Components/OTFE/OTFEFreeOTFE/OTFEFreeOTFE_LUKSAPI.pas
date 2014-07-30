@@ -24,7 +24,7 @@ const
   LUKS_HEADER_BYTES = 592;
 
 
-  LUKS_MAGIC        = 'LUKS'+char($BA)+char($BE);
+  LUKS_MAGIC :  Ansistring     = 'LUKS'+Ansichar($BA)+Ansichar($BE);
   LUKS_DIGESTSIZE   = 20;
   LUKS_SALTSIZE     = 32;
   LUKS_NUMKEYS      = 8;
@@ -95,15 +95,15 @@ type
   TLUKSHeaderRaw = record
     magic         : array [0..(LUKS_MAGIC_L-1)] of byte;
     version       : array [0..1] of byte;  // Stored as big endian
-    cipher_name   : array [0..(LUKS_CIPHERNAME_L-1)] of char;
-    cipher_mode   : array [0..(LUKS_CIPHERMODE_L-1)] of char;
-    hash_spec     : array [0..(LUKS_HASHSPEC_L-1)] of char;
+    cipher_name   : array [0..(LUKS_CIPHERNAME_L-1)] of Ansichar;
+    cipher_mode   : array [0..(LUKS_CIPHERMODE_L-1)] of Ansichar;
+    hash_spec     : array [0..(LUKS_HASHSPEC_L-1)] of Ansichar;
     payload_offset: TSDUBigEndian32;
     key_bytes     : TSDUBigEndian32;
     mk_digest     : array [0..(LUKS_DIGESTSIZE-1)] of byte;
     mk_digest_salt: array [0..(LUKS_SALTSIZE-1)] of byte;
     mk_digest_iter: TSDUBigEndian32;
-    uuid          : array [0..(UUID_STRING_L-1)] of char;
+    uuid          : array [0..(UUID_STRING_L-1)] of Ansichar;
     keySlot       : array [0..(LUKS_NUMKEYS-1)] of TLUKSKeySlotRaw;  // Note: Indexes from 0
   end;
 

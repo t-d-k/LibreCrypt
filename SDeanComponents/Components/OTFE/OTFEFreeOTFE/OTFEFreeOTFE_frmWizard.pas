@@ -20,7 +20,6 @@ type
     pbFinish: TButton;
     pbCancel: TButton;
     pbStage: TProgressBar;
-    imgWizard: TImage;
     bvlLine: TBevel;
     procedure pbBackClick(Sender: TObject);
     procedure pbNextClick(Sender: TObject);

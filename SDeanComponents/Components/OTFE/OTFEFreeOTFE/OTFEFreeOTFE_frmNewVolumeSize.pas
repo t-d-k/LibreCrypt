@@ -58,7 +58,7 @@ begin
   if (feFilename.Filename = '') then
     begin
     SDUMessageDlg(
-               _('Please specify a filename for the new volume file by clicking the "..." button.'),
+               _('Please specify a filename for the new DoxBox by clicking the "..." button.'),
                mtWarning
               );
     exit;

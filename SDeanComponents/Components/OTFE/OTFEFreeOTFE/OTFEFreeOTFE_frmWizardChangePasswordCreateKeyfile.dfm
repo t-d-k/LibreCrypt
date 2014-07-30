@@ -6,14 +6,20 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
   Position = poScreenCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  ExplicitWidth = 613
+  ExplicitHeight = 438
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlRight: TPanel
     inherited pcWizard: TPageControl
-      ActivePage = tsDestDetails
+      ActivePage = tsSrcDetails
       object tsFileOrPartition: TTabSheet
         Caption = 'Volume File or Partition'
         ImageIndex = 7
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object rgFileOrPartition: TRadioGroup
           Left = 164
           Top = 136
@@ -31,21 +37,37 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Top = 12
           Width = 473
           Height = 77
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
       end
       object tsSrcFile: TTabSheet
         Caption = 'Source file'
         ImageIndex = 6
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructSrcFile: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
           Width = 473
           Height = 125
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object GroupBox2: TGroupBox
@@ -90,8 +112,14 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Top = 12
           Width = 473
           Height = 77
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         inline fmeSelectPartition: TfmeSelectPartition
@@ -100,31 +128,188 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Width = 473
           Height = 144
           TabOrder = 1
+          ExplicitLeft = 8
+          ExplicitTop = 120
+          ExplicitWidth = 473
+          ExplicitHeight = 144
           inherited lblErrorWarning: TLabel
             Top = 125
+            ExplicitTop = 125
           end
           inherited imgErrorWarning: TImage
             Top = 123
+            ExplicitTop = 123
           end
           inherited TabControl1: TTabControl
             Width = 473
             Height = 97
+            ExplicitWidth = 473
+            ExplicitHeight = 97
             inherited SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel
               Width = 280
               Height = 69
+              ExplicitWidth = 280
+              ExplicitHeight = 69
             end
             inherited pnlNoPartitionDisplay: TPanel
               Left = 284
               Height = 69
+              ExplicitLeft = 284
+              ExplicitHeight = 69
             end
           end
           inherited ckShowCDROM: TCheckBox
             Left = 240
             Top = 105
+            ExplicitLeft = 240
+            ExplicitTop = 105
           end
           inherited ckEntireDisk: TCheckBox
             Left = 384
             Top = 105
+            ExplicitLeft = 384
+            ExplicitTop = 105
+          end
+          inherited ilErrorWarning: TImageList
+            Bitmap = {
+              494C0101030004000C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              0000000000003600000028000000400000001000000001002000000000000010
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000FF000000FF000000FF000000FF000000FF000000FF000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000080800000FFFF0000FFFF0000FF
+              FF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FF
+              FF0000FFFF0000FFFF0000FFFF00000000000000000000000000000000000000
+              FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF000000
+              FF000000FF000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              000000000000000000000000000000000000000000000080800000FFFF0000FF
+              FF0000FFFF0000FFFF0000FFFF00000000000000000000FFFF0000FFFF0000FF
+              FF0000FFFF0000FFFF00000000000000000000000000000000000000FF000000
+              FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF000000
+              FF000000FF000000FF0000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              000000000000000000000000000000000000000000000080800000FFFF0000FF
+              FF0000FFFF0000FFFF0000FFFF00000000000000000000FFFF0000FFFF0000FF
+              FF0000FFFF0000FFFF000000000000000000000000000000FF000000FF000000
+              FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF000000
+              FF000000FF000000FF000000FF00000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              00000000000000000000000000000000000000000000000000000080800000FF
+              FF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FF
+              FF0000FFFF00000000000000000000000000000000000000FF000000FF000000
+              FF00FFFFFF00FFFFFF000000FF000000FF000000FF000000FF00FFFFFF00FFFF
+              FF000000FF000000FF000000FF00000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              00000000000000000000000000000000000000000000000000000080800000FF
+              FF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FF
+              FF0000FFFF000000000000000000000000000000FF000000FF000000FF000000
+              FF00FFFFFF00FFFFFF00FFFFFF000000FF000000FF00FFFFFF00FFFFFF00FFFF
+              FF000000FF000000FF000000FF000000FF000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000080
+              800000FFFF0000FFFF0000FFFF00000000000000000000FFFF0000FFFF0000FF
+              FF00000000000000000000000000000000000000FF000000FF000000FF000000
+              FF000000FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF000000
+              FF000000FF000000FF000000FF000000FF000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000080
+              800000FFFF0000FFFF0000FFFF00000000000000000000FFFF0000FFFF0000FF
+              FF00000000000000000000000000000000000000FF000000FF000000FF000000
+              FF000000FF000000FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF000000FF000000
+              FF000000FF000000FF000000FF000000FF000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              00000080800000FFFF0000FFFF00000000000000000000FFFF0000FFFF000000
+              0000000000000000000000000000000000000000FF000000FF000000FF000000
+              FF000000FF000000FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF000000FF000000
+              FF000000FF000000FF000000FF000000FF000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              00000080800000FFFF0000FFFF00000000000000000000FFFF0000FFFF000000
+              0000000000000000000000000000000000000000FF000000FF000000FF000000
+              FF000000FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF000000
+              FF000000FF000000FF000000FF000000FF000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000080800000FFFF00000000000000000000FFFF00000000000000
+              0000000000000000000000000000000000000000FF000000FF000000FF000000
+              FF00FFFFFF00FFFFFF00FFFFFF000000FF000000FF00FFFFFF00FFFFFF00FFFF
+              FF000000FF000000FF000000FF000000FF000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000080800000FFFF0000FFFF0000FFFF0000FFFF00000000000000
+              000000000000000000000000000000000000000000000000FF000000FF000000
+              FF00FFFFFF00FFFFFF000000FF000000FF000000FF000000FF00FFFFFF00FFFF
+              FF000000FF000000FF000000FF00000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              000000000000000000000080800000FFFF0000FFFF0000000000000000000000
+              000000000000000000000000000000000000000000000000FF000000FF000000
+              FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF000000
+              FF000000FF000000FF000000FF00000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              000000000000000000000080800000FFFF0000FFFF0000000000000000000000
+              00000000000000000000000000000000000000000000000000000000FF000000
+              FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF000000
+              FF000000FF000000FF0000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000008080000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF000000
+              FF000000FF000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000008080000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000FF000000FF000000FF000000FF000000FF000000FF000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              000000000000000000000000000000000000424D3E000000000000003E000000
+              2800000040000000100000000100010000000000800000000000000000000000
+              000000000000000000000000FFFFFF00FFFF0000F81F0000FFFF0000E0070000
+              FFFF8001C0030000FFFF800180010000FFFFC00380010000FFFFC00300000000
+              FFFFE00700000000FFFFE00700000000FFFFF00F00000000FFFFF00F00000000
+              FFFFF81F00000000FFFFF81F80010000FFFFFC3F80010000FFFFFC3FC0030000
+              FFFFFE7FE0070000FFFFFE7FF81F000000000000000000000000000000000000
+              000000000000}
           end
         end
       end
@@ -173,8 +358,14 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Top = 12
           Width = 473
           Height = 61
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object preSrcUserKey: TOTFEFreeOTFE_PasswordRichEdit
@@ -182,8 +373,14 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Top = 88
           Width = 337
           Height = 65
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'preSrcUserKey')
+          ParentFont = False
           ScrollBars = ssBoth
           TabOrder = 1
           OnChange = preUserKeyChange
@@ -226,13 +423,23 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsDestFile: TTabSheet
         Caption = 'Destination file'
         ImageIndex = 4
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructDestFile: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
           Width = 473
           Height = 61
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object GroupBox1: TGroupBox
@@ -317,8 +524,14 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Top = 12
           Width = 473
           Height = 61
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object preDestUserKey1: TOTFEFreeOTFE_PasswordRichEdit
@@ -326,8 +539,14 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Top = 88
           Width = 337
           Height = 65
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'preDestUserKey1')
+          ParentFont = False
           ScrollBars = ssBoth
           TabOrder = 1
           OnChange = preUserKeyChange
@@ -337,8 +556,14 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Top = 160
           Width = 337
           Height = 65
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'preDestUserKey2')
+          ParentFont = False
           ScrollBars = ssBoth
           TabOrder = 2
           OnChange = preUserKeyChange
@@ -358,7 +583,6 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Width = 89
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
           TabOrder = 5
         end
         object seDestKeyIterations: TSpinEdit64
@@ -373,13 +597,23 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsRNGSelect: TTabSheet
         Caption = 'RNG Select'
         ImageIndex = 6
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructRNGSelect: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
           Width = 473
           Height = 125
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object gbRNG: TGroupBox
@@ -440,8 +674,12 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsRNGMouseMovement: TTabSheet
         Caption = 'RNG Mouse movement'
         ImageIndex = 4
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
-          492
+          597
           318)
         object lblMouseRNGBits: TLabel
           Left = 160
@@ -456,8 +694,14 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Top = 12
           Width = 473
           Height = 49
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object MouseRNG: TMouseRNG
@@ -478,6 +722,10 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsRNGPKCS11: TTabSheet
         Caption = 'RNG PKCS#11 token'
         ImageIndex = 9
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lblToken: TLabel
           Left = 123
           Top = 175
@@ -491,8 +739,14 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Top = 12
           Width = 473
           Height = 61
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object cbToken: TComboBox
@@ -500,7 +754,6 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Top = 170
           Width = 145
           Height = 21
-          ItemHeight = 0
           TabOrder = 2
           Text = 'cbToken'
         end
@@ -517,13 +770,23 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsRNGGPG: TTabSheet
         Caption = 'RNG GPG'
         ImageIndex = 5
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructRNGGPG: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
           Width = 473
           Height = 61
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object GroupBox5: TGroupBox
@@ -557,6 +820,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
     inherited pnlButtons: TPanel
       inherited lblCompleteIndicator: TLabel
         Width = 95
+        ExplicitWidth = 95
       end
     end
   end

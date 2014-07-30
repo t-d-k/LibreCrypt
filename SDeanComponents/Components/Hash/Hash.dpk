@@ -13,6 +13,7 @@ package Hash;
 {$R 'HashAlgRIPEMD_U.dcr'}
 {$R 'HashAlgUnified_U.dcr'}
 {$R 'HashAlgTiger_U.dcr'}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
@@ -34,6 +35,7 @@ package Hash;
 {$WRITEABLECONST ON}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
+{$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Hash: Delphi Hash Components'}
 {$IMPLICITBUILD OFF}
 
@@ -42,7 +44,7 @@ requires
   rtl,
   vclx,
   VclSmp,
-  SDeanUtils;
+  SDeanUtilsXE;
 
 contains
   HashAlg_U in 'HashAlg_U.pas',

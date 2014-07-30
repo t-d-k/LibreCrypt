@@ -29,7 +29,7 @@ type
   THASH = record
     HashGUID: TGUID;
 
-    Title: array [0..MAX_HASH_NAME-1] of char;
+    Title: array [0..MAX_HASH_NAME-1] of Ansichar;
     VersionID: DWORD;
     Length: DWORD;  // In bits
     BlockSize: DWORD;  // In bits
@@ -42,7 +42,7 @@ type
   TDIOC_HASH_IDENTIFYDRIVER = record
     DriverGUID: TGUID;
 
-    Title: array [0..MAX_HASH_NAME-1] of char;
+    Title: array [0..MAX_HASH_NAME-1] of Ansichar;
     VersionID: DWORD;
     HashCount: DWORD;
   end;

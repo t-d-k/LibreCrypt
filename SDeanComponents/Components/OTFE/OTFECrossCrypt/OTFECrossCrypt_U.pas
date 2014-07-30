@@ -78,7 +78,7 @@ type
 
     function  UserToKernelModeDeviceName(deviceName: string): string;
 
-    function  DoMount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE; volumeSizeInBytes: int64 = -1): boolean;
+    function  DoMount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE; volumeSizeInBytes: int64 = -1): boolean;
   public
     // Standard TOTFE methods
     constructor Create(AOwner : TComponent); override;
@@ -86,7 +86,7 @@ type
     function  Title(): string; overload; override;
     function  IsDriverInstalled(): boolean; overload; override;
     function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; overload; override;
-    function  Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean; overload; override;
+    function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; overload; override;
     function  MountDevices(): string; override;
     function  CanMountDevice(): boolean; override;
     // Note: CrossCrypt doesn't have the concept of an "emergency dismount"
@@ -101,13 +101,13 @@ type
     function  IsEncryptedVolFile(volumeFilename: string): boolean; override;
     function  DrivesMounted(): string; overload; override;
     function  GetVolFileForDrive(driveLetter: char): string; override;
-    function  GetDriveForVolFile(volumeFilename: string): char; override;
+    function  GetDriveForVolFile(volumeFilename: string): Ansichar; override;
     function  GetMainExe(): string; override;
 
 
     // Extensions to the standard TOTFE class...
     
-    function  GetVolumeInfo(driveLetter: char; var volumeInfo: TOTFECrossCryptVolumeInfo): boolean;
+    function  GetVolumeInfo(driveLetter: Ansichar; var volumeInfo: TOTFECrossCryptVolumeInfo): boolean;
 
     // Attempt to create and mount a volume file of the specified size
     // Returns the drive letter of the volume file, or #0 on error
@@ -231,7 +231,7 @@ function TOTFECrossCrypt.Mount(volumeFilename: string; readonly: boolean = FALSE
 var
   retVal: char;
   filenames: TStringList;
-  mountedAs: string;
+  mountedAs: AnsiString;
 begin
   retVal := #0;
   LastErrorCode := OTFE_ERR_UNKNOWN_ERROR;
@@ -255,7 +255,7 @@ begin
 end;
 
 
-function TOTFECrossCrypt.Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean;
+function TOTFECrossCrypt.Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean;
 begin
   CheckActive();
 
@@ -270,7 +270,7 @@ end;
 // If "volumeSizeInBytes" is >0 then it will attempt to create the volume if
 // the file doesn't already exist, otherwise it'll fail the mount if the volume
 // file doesn't exist 
-function TOTFECrossCrypt.DoMount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE; volumeSizeInBytes: int64 = -1): boolean;
+function TOTFECrossCrypt.DoMount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE; volumeSizeInBytes: int64 = -1): boolean;
 var
   ka: TOPEN_FILE_INFORMATION;
   retVal: boolean;
@@ -1049,7 +1049,7 @@ begin
 end;
 
 
-function TOTFECrossCrypt.GetDriveForVolFile(volumeFilename: string): char;
+function TOTFECrossCrypt.GetDriveForVolFile(volumeFilename: string): Ansichar;
 var
   mounted: string;
   volumeInfo: TOTFECrossCryptVolumeInfo;

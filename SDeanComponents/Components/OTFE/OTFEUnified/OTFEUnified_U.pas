@@ -89,7 +89,7 @@ type
     destructor  Destroy(); override;
     function  Title(): string; overload; override;
     function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; overload; override;
-    function  Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean; overload; override;
+    function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; overload; override;
     function  MountDevices(): string; override;
     function  CanMountDevice(): boolean; override;
     function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
@@ -230,7 +230,7 @@ begin
 end;
 
 
-function TOTFEUnified.Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean;
+function TOTFEUnified.Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean;
 var
   useOTFSystem: TOTFESystem;
   OTFSystemLoop: TOTFESystem;

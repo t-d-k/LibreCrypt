@@ -23,8 +23,14 @@ object OTFEFreeOTFELUKSKeyOrKeyfileEntry: TOTFEFreeOTFELUKSKeyOrKeyfileEntry
     Top = 0
     Width = 333
     Height = 61
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
     Lines.Strings = (
       'preUserKey')
+    ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 0
     OnChange = preUserKeyChange
@@ -78,7 +84,6 @@ object OTFEFreeOTFELUKSKeyOrKeyfileEntry: TOTFEFreeOTFELUKSKeyOrKeyfileEntry
     Width = 145
     Height = 21
     Style = csDropDownList
-    ItemHeight = 13
     TabOrder = 5
   end
   object SDUDropFiles_Keyfile: TSDUDropFiles

@@ -8,6 +8,7 @@ begin
   for i:=1 to len do
     begin
 // xxx -     retVal := retVal + char(random(256));
+{ TODO 3 -otdk -csecurity : wtf? is this used anywhere }
     retVal := retVal + char(0);
     end;
 
@@ -18,19 +19,19 @@ end;
 // ----------------------------------------------------------------------------
 // Hash input repeatedly until a string with the same length is produced
 function TOTFEFreeOTFEBase.RepeatedHash(
-                      hashKernelModeDeviceName: string;
+                      hashKernelModeDeviceName: Ansistring;
                       hashGUID: TGUID;
-                      input: string;
-                      var output: string
+                      input: Ansistring;
+                      var output: Ansistring
                      ): boolean;
 var
   allOK: boolean;
-  hashOutput: string;
+  hashOutput: Ansistring;
   digestSizeBytes: integer;
   inputDivDigestBytes: integer;
   inputModDigestBytes: integer;
   i, j: integer;
-  tmpString: string;
+  tmpString: Ansistring;
   hashDetails: TFreeOTFEHash;
 begin
   output := '';
@@ -113,18 +114,18 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEBase.AFSplit(
-                 input: string;
+                 input: AnsiString;
                  n: integer;
                  hashKernelModeDeviceName: string;
                  hashGUID: TGUID;
-                 var output: string
+                 var output: AnsiString
                 ): boolean;
 var
   allOK: boolean;
   i, j: integer;
-  randomStripeData: string;
-  calcStripe: string;
-  processedStripes: string;
+  randomStripeData: AnsiString ;
+  calcStripe: AnsiString;
+  processedStripes: AnsiString;
   blockLength: integer;
 begin
   allOK := TRUE;
@@ -151,7 +152,7 @@ begin
   calcStripe := '';
   for j:=1 to blockLength do
     begin
-    calcStripe := calcStripe + char((ord(processedStripes[j]) XOR ord(input[j])));
+    calcStripe := calcStripe + Ansichar((ord(processedStripes[j]) XOR ord(input[j])));
     end;
 
   // Store result as random block "n" as output
@@ -164,20 +165,20 @@ end;
 // ----------------------------------------------------------------------------
 // Process blocks 1 - (n-1)
 function TOTFEFreeOTFEBase.Process(
-                 stripeData: string;
+                 stripeData: AnsiString;
                  totalBlockCount: integer;
                  blockLength: integer;
                  hashKernelModeDeviceName: string;
                  hashGUID: TGUID;
-                 var output: string
+                 var output: AnsiString
                 ): boolean;
 var
   allOK: boolean;
-  prev: string;
+  prev: Ansistring;
   i, j: integer;
-  tmpData: string;
-  hashedBlock: string;
-  blockN: string;
+  tmpData: Ansistring;
+  hashedBlock: Ansistring;
+  blockN: Ansistring;
 {$IFDEF FREEOTFE_DEBUG}
   blkNum: integer;
 {$ENDIF}
@@ -206,7 +207,7 @@ DebugMsgBinary(prev);
     tmpData := '';
     for j:=1 to length(prev) do
       begin
-      tmpData := tmpData + char((ord(prev[j]) XOR ord(blockN[j])));
+      tmpData := tmpData + Ansichar((ord(prev[j]) XOR ord(blockN[j])));
       end;
 
 {$IFDEF FREEOTFE_DEBUG}
@@ -241,7 +242,7 @@ end;
 
 // ----------------------------------------------------------------------------
 // Get the "blockNumber" block out of "totalBlockCount"
-function TOTFEFreeOTFEBase.GetBlock(stripeData: string; totalBlockCount: integer; blockLength: integer; blockNumber: integer; var output: string): boolean;
+function TOTFEFreeOTFEBase.GetBlock(stripeData: Ansistring; totalBlockCount: integer; blockLength: integer; blockNumber: integer; var output: Ansistring): boolean;
 var
   allOK: boolean;
   i: integer;
@@ -265,18 +266,18 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEBase.AFMerge(
-                 input: string;
+                 input: AnsiString;
                  n: integer;
                  hashKernelModeDeviceName: string;
                  hashGUID: TGUID;
-                 var output: string
+                 var output: AnsiString
                 ): boolean;
 var
   allOK: boolean;
   i: integer;
-  processedStripes: string;
+  processedStripes: AnsiString;
   blockLength: integer;
-  lastBlock: string;
+  lastBlock: AnsiString;
 begin
   allOK := TRUE;
 
@@ -298,7 +299,7 @@ begin
   output := '';
   for i:=1 to blockLength do
     begin
-    output := output + char((ord(processedStripes[i]) XOR ord(lastBlock[i])));
+    output := output + Ansichar((ord(processedStripes[i]) XOR ord(lastBlock[i])));
     end;
 
   Result := allOK;

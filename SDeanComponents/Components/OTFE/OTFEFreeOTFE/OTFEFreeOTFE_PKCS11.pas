@@ -20,8 +20,8 @@ type
   TPKCS11CDB = record
     SlotID: integer;
     Obj: TPKCS11Object;
-    Xlabel: string;
-    CDB: string;
+    Xlabel: AnsiString;
+    CDB: AnsiString;
   end;
   PPKCS11CDB = ^TPKCS11CDB;
 
@@ -58,7 +58,7 @@ type
   TPKCS11SecretKey = record
     SlotID: integer;
     Obj: TPKCS11Object;
-    Xlabel: string;
+    Xlabel: ansistring;
     Size: integer; // In *bits*; set to -1 if this couldn't be retrieved
     XType: TPKCS11SecretKeyType;
   end;
@@ -236,7 +236,7 @@ function GetPKCS11RandomData(
                              PKCS11Library: TPKCS11Library;
                              SlotID: integer;
                              BytesWanted: integer;
-                             var RandomData: string
+                             var RandomData: ansistring
                             ): boolean;
 
 
@@ -303,15 +303,15 @@ procedure DestroyAndFreeRecord_PKCS11SecretKey(var rcdArr: TPKCS11SecretKeyPtrAr
 function PKCS11EncryptCDBWithSecretKey(
                       PKCS11Session: TPKCS11Session;
                       SecretKey: PPKCS11SecretKey;
-                      PlaintextData: string;
-                      var CyphertextData: string;
+                      PlaintextData: ansistring;
+                      var CyphertextData: ansistring;
                       var strError: string
                      ): boolean;
 function PKCS11DecryptCDBWithSecretKey(
                       PKCS11Session: TPKCS11Session;
                       SecretKey: PPKCS11SecretKey;
-                      CyphertextData: string;
-                      var PlaintextData: string;
+                      CyphertextData: ansistring;
+                      var PlaintextData: ansistring;
                       var strError: string
                      ): boolean;
 
@@ -921,8 +921,8 @@ end;
 function PKCS11EncryptCDBWithSecretKey(
                       PKCS11Session: TPKCS11Session;
                       SecretKey: PPKCS11SecretKey;
-                      PlaintextData: string;
-                      var CyphertextData: string;
+                      PlaintextData: ansistring;
+                      var CyphertextData: ansistring;
                       var strError: string
                      ): boolean;
 var
@@ -959,8 +959,8 @@ end;
 function PKCS11DecryptCDBWithSecretKey(
                       PKCS11Session: TPKCS11Session;
                       SecretKey: PPKCS11SecretKey;
-                      CyphertextData: string;
-                      var PlaintextData: string;
+                      CyphertextData: ansistring;
+                      var PlaintextData: ansistring;
                       var strError: string
                      ): boolean;
 var
@@ -999,7 +999,7 @@ function GetPKCS11RandomData(
                              PKCS11Library: TPKCS11Library;
                              SlotID: integer;
                              BytesWanted: integer;
-                             var RandomData: string
+                             var RandomData: ansistring
                             ): boolean;
 var
   retval: boolean;

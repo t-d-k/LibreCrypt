@@ -262,7 +262,7 @@ type
                             // This is due to a limitation of the TrueCrypt
                             // driver
 
-    mountedAs: char;
+    mountedAs: ansichar;
 
     diskLength: int64;
 

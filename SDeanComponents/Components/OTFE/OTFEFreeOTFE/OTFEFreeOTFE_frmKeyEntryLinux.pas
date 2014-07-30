@@ -130,11 +130,11 @@ type
     FreeOTFEObj: TOTFEFreeOTFEBase;
 
     // Key...
-    function  GetKey(var userKey: string): boolean;
-    function  SetKey(userKey: string): boolean;
+    function  GetKey(var userKey: ansistring): boolean;
+    function  SetKey(userKey: ansistring): boolean;
 
     // Key processing...
-    function  GetKeyProcSeed(var keyProcSeed: string): boolean;
+    function  GetKeyProcSeed(var keyProcSeed: Ansistring): boolean;
     function  SetKeyProcSeed(keyProcSeed: string): boolean;
     function  GetKeyProcHashKernelDeviceName(var keyProcHashDriver: string): boolean;
     function  GetKeyProcHashGUID(var keyProcHashGUID: TGUID): boolean;
@@ -157,7 +157,7 @@ type
     function  SetSizeLimit(fileOptSizeLimit: int64): boolean;
 
     // Encryption options...
-    function  GetMainCypherKernelDeviceName(var mainCypherDriver: string): boolean;
+    function  GetMainCypherKernelDeviceName(var mainCypherDriver: Ansistring): boolean;
     function  GetMainCypherGUID(var mainCypherGUID: TGUID): boolean;
     function  SetMainCypher(mainCypherDriver: string; mainCypherGUID: TGUID): boolean;
     function  GetMainIVSectorZeroPos(var startOfVolFile: boolean; var startOfEndData: boolean): boolean;
@@ -165,16 +165,16 @@ type
     function  SetMainIVSectorZeroPos(startOfVolFile: boolean; startOfEndData: boolean): boolean;
     function  GetMainSectorIVGenMethod(var sectorIVGenMethod: TFreeOTFESectorIVGenMethod): boolean;
     function  SetMainSectorIVGenMethod(sectorIVGenMethod: TFreeOTFESectorIVGenMethod): boolean;
-    function  GetMainIVHashKernelDeviceName(var mainIVHashDriver: string): boolean;
+    function  GetMainIVHashKernelDeviceName(var mainIVHashDriver: Ansistring): boolean;
     function  GetMainIVHashGUID(var mainIVHashGUID: TGUID): boolean;
     function  SetMainIVHash(mainIVHashDriver: string; mainIVHashGUID: TGUID): boolean;
-    function  GetMainIVCypherKernelDeviceName(var mainIVCypherDriver: string): boolean;
+    function  GetMainIVCypherKernelDeviceName(var mainIVCypherDriver: Ansistring): boolean;
     function  GetMainIVCypherGUID(var mainIVCypherGUID: TGUID): boolean;
     function  SetMainIVCypher(mainIVCypherDriver: string; mainIVCypherGUID: TGUID): boolean;
 
     // Mount options...
-    function  GetDriveLetter(var mountDriveLetter: char): boolean;
-    function  SetDriveLetter(mountDriveLetter: char): boolean;
+    function  GetDriveLetter(var mountDriveLetter: ansichar): boolean;
+    function  SetDriveLetter(mountDriveLetter: ansichar): boolean;
     function  GetReadonly(var mountReadonly: boolean): boolean;
     function  SetReadonly(mountReadonly: boolean): boolean;
     function  GetMountAs(var mountAs: TFreeOTFEMountAs): boolean;
@@ -348,7 +348,7 @@ end;
 
 procedure TfrmKeyEntryLinux.PopulateDrives();
 var
-  driveLetters: string;
+  driveLetters: ansistring;
   i: integer;
 begin
   cbDrive.Items.Clear();
@@ -390,7 +390,7 @@ procedure TfrmKeyEntryLinux.DefaultOptions();
 var
   idx: integer;
   i: integer;
-  currDriveLetter: char;
+  currDriveLetter: ansichar;
 begin
   // Autoselect default, if available
   if (cbKeyProcHash.Items.Count>0) then
@@ -483,7 +483,7 @@ begin
         // Start from 1; skip the default
         for i:=1 to (cbDrive.items.count-1) do
           begin
-          currDriveLetter := cbDrive.Items[i][1];
+          currDriveLetter := ansichar(cbDrive.Items[i][1]);
           if (currDriveLetter >= TOTFEFreeOTFE(FreeOTFEObj).DefaultDriveLetter) then
             begin
             cbDrive.ItemIndex := i;
@@ -529,14 +529,14 @@ end;
 
 procedure TfrmKeyEntryLinux.pbOKClick(Sender: TObject);
 var
-  tmpKey: string;
+  tmpKey: ansistring;
 begin
   if GetKey(tmpKey) then
     begin
     if (Length(tmpKey)=0) then
       begin
       if (SDUMessageDlg(
-                 _('You have not entered a password.')+SDUCRLF+
+                 _('You have not entered a Keyphrase.')+SDUCRLF+
                  SDUCRLF+
                  _('Are you sure you wish to proceed?'),
                  mtConfirmation,
@@ -550,7 +550,7 @@ begin
     else if (Length(tmpKey)<20) then
       begin
       if (SDUMessageDlg(
-                     _('The password you entered has less than 20 characters, and may not be compatible with some Linux volumes.')+SDUCRLF+
+                     _('The Keyphrase you entered has less than 20 characters, and may not be compatible with some Linux volumes.')+SDUCRLF+
                      SDUCRLF+
                      _('Do you wish to proceed?'),
                       mtWarning,
@@ -579,7 +579,7 @@ var
   filePresentGPGKeyfile: boolean;
   iterationCypherOK: boolean;
   IVStartSectorOK: boolean;
-  junkChar: char;
+  junkChar: ansichar;
   IVHashOK: boolean;
   IVCypherOK: boolean;
   mountAsOK: boolean;
@@ -711,7 +711,7 @@ end;
 
 procedure TfrmKeyEntryLinux.pbIVHashInfoClick(Sender: TObject);
 var
-  deviceName: string;
+  deviceName: Ansistring;
   GUID: TGUID;
 begin
   GetMainIVHashKernelDeviceName(deviceName);
@@ -734,7 +734,7 @@ end;
 
 procedure TfrmKeyEntryLinux.pbMainCypherInfoClick(Sender: TObject);
 var
-  deviceName: string;
+  deviceName: Ansistring;
   GUID: TGUID;
 begin
   GetMainCypherKernelDeviceName(deviceName);
@@ -829,21 +829,22 @@ begin
 end;
 
 
-function TfrmKeyEntryLinux.GetKey(var userKey: string): boolean;
+function TfrmKeyEntryLinux.GetKey(var userKey: ansistring): boolean;
 begin
+{ TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
   userKey := preUserkey.Text;
   Result := TRUE;
 end;
 
-function TfrmKeyEntryLinux.SetKey(userKey: string): boolean;
+function TfrmKeyEntryLinux.SetKey(userKey: ansistring): boolean;
 begin
   preUserkey.Text := userKey;
   Result := TRUE;
 end;
 
-function TfrmKeyEntryLinux.GetKeyProcSeed(var keyProcSeed: string): boolean;
+function TfrmKeyEntryLinux.GetKeyProcSeed(var keyProcSeed: Ansistring): boolean;
 begin
-  keyProcSeed := edKeySeed.Text;
+  keyProcSeed := edKeySeed.Text;   { TODO 1 -otdk -cclean : allow unicode }
   Result := TRUE;
 end;
 
@@ -1042,20 +1043,20 @@ begin
 end;
 
 // Note: This may return #0 as mountDriveLetter to indicate "any"
-function TfrmKeyEntryLinux.GetDriveLetter(var mountDriveLetter: char): boolean;
+function TfrmKeyEntryLinux.GetDriveLetter(var mountDriveLetter: ansichar): boolean;
 begin
   mountDriveLetter := #0;
   // Note: The item at index zero is "Use default"; #0 is returned for this
   if (cbDrive.ItemIndex>0) then
     begin
-    mountDriveLetter := cbDrive.Items[cbDrive.ItemIndex][1];
+    mountDriveLetter :=AnsiChar( cbDrive.Items[cbDrive.ItemIndex][1]);
     end;
 
   Result := TRUE;
 end;
 
 // mountDriveLetter - Set to #0 to indicate "Use default"
-function TfrmKeyEntryLinux.SetDriveLetter(mountDriveLetter: char): boolean;
+function TfrmKeyEntryLinux.SetDriveLetter(mountDriveLetter: ansichar): boolean;
 var
   idx: integer;
   retVal: boolean;
@@ -1142,7 +1143,7 @@ begin
 end;
 
 
-function TfrmKeyEntryLinux.GetMainCypherKernelDeviceName(var mainCypherDriver: string): boolean;
+function TfrmKeyEntryLinux.GetMainCypherKernelDeviceName(var mainCypherDriver: Ansistring): boolean;
 var
   retVal: boolean;
 begin
@@ -1150,7 +1151,7 @@ begin
 
   if (cbMainCypher.ItemIndex >= 0) then
     begin
-    mainCypherDriver := cypherKernelModeDriverNames[cbMainCypher.ItemIndex];
+    mainCypherDriver := cypherKernelModeDriverNames[cbMainCypher.ItemIndex];   // unicode->ansi not a data loss because only ansistring stored
     retVal := TRUE;
     end;
 
@@ -1269,7 +1270,7 @@ end;
 
 // Note: This function will return '' if none is selected, and still return TRUE
 // It will also return '' if no hash *can* be selected (the control is disabled)
-function TfrmKeyEntryLinux.GetMainIVHashKernelDeviceName(var mainIVHashDriver: string): boolean;
+function TfrmKeyEntryLinux.GetMainIVHashKernelDeviceName(var mainIVHashDriver: Ansistring): boolean;
 var
   retVal: boolean;
   sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
@@ -1285,7 +1286,7 @@ begin
       // ...and the user has selected one, return it
       if (cbSectorIVHash.ItemIndex >= 0) then
         begin
-        mainIVHashDriver := hashKernelModeDriverNames[cbSectorIVHash.ItemIndex];
+        mainIVHashDriver := hashKernelModeDriverNames[cbSectorIVHash.ItemIndex];    // unicode->ansi not a data loss because only ansistring stored
         retVal := TRUE;
         end;
       end
@@ -1366,7 +1367,7 @@ end;
 
 // Note: This function will return '' if none is selected, and still return TRUE
 // It will also return '' if no hash *can* be selected (the control is disabled)
-function TfrmKeyEntryLinux.GetMainIVCypherKernelDeviceName(var mainIVCypherDriver: string): boolean;
+function TfrmKeyEntryLinux.GetMainIVCypherKernelDeviceName(var mainIVCypherDriver: Ansistring): boolean;
 var
   retVal: boolean;
   sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
@@ -1382,7 +1383,7 @@ begin
       // ...and the user has selected one, return it
       if (cbSectorIVCypher.ItemIndex >= 0) then
         begin
-        mainIVCypherDriver := cypherKernelModeDriverNames[cbSectorIVCypher.ItemIndex];
+        mainIVCypherDriver := cypherKernelModeDriverNames[cbSectorIVCypher.ItemIndex];  // unicode->ansi not a data loss because only ansistring stored
         retVal := TRUE;
         end;
       end
@@ -1635,7 +1636,7 @@ begin
       begin
       tmpString := #0;
       end;
-    allOK := allOK and SetDriveLetter(tmpString[1]);
+    allOK := allOK and SetDriveLetter(AnsiChar(tmpString[1]));
 
     tmpBoolean := settingsFile.ReadBool(SETTINGS_SECTION_MOUNT_OPTIONS, SETTINGS_VALUE_Readonly, FALSE);
     allOK := allOK and SetReadonly(tmpBoolean);
@@ -1665,11 +1666,12 @@ procedure TfrmKeyEntryLinux.pbSaveClick(Sender: TObject);
 var
   settingsFile: TINIFile;
   tmpString: string;
+    tmpAnsiString: Ansistring;
   tmpBoolean: boolean;
   tmpGUID: TGUID;
   tmpInteger: integer;
   tmpInt64: int64;
-  tmpChar: char;
+  tmpChar: ansichar;
   startOfVolFile, startOfEndData: boolean;
   tmpSectorIVGenMethod: TFreeOTFESectorIVGenMethod;
   tmpMountAs: TFreeOTFEMountAs;
@@ -1680,9 +1682,9 @@ begin
     try
       // -------
       // Key processing...
-      if (GetKeyProcSeed(tmpString)) then
+      if (GetKeyProcSeed(tmpAnsiString)) then
         begin
-        settingsFile.WriteString(SETTINGS_SECTION_KEY, SETTINGS_VALUE_KeyProcSeed, tmpString);
+        settingsFile.WriteString(SETTINGS_SECTION_KEY, SETTINGS_VALUE_KeyProcSeed, tmpAnsiString);
         end;
 
       if (GetKeyProcHashKernelDeviceName(tmpString)) then
@@ -1726,9 +1728,9 @@ begin
 
       // -------
       // Encryption options...
-      if (GetMainCypherKernelDeviceName(tmpString)) then
+      if (GetMainCypherKernelDeviceName(tmpAnsiString)) then
         begin
-        settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION, SETTINGS_VALUE_MainCypherKernelDeviceName, tmpString);
+        settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION, SETTINGS_VALUE_MainCypherKernelDeviceName, tmpAnsiString);
         end;
 
       if (GetMainCypherGUID(tmpGUID)) then
@@ -1770,9 +1772,9 @@ begin
         begin
         if (SCTRIVGEN_USES_HASH[tmpSectorIVGenMethod]) then
           begin
-          if (GetMainIVHashKernelDeviceName(tmpString)) then
+          if (GetMainIVHashKernelDeviceName(tmpAnsiString)) then
             begin
-            settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION, SETTINGS_VALUE_MainIVHashKernelDeviceName, tmpString);
+            settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION, SETTINGS_VALUE_MainIVHashKernelDeviceName, tmpAnsiString);
             end;
 
           if (GetMainIVHashGUID(tmpGUID)) then
@@ -1787,9 +1789,9 @@ begin
         begin
         if (SCTRIVGEN_USES_CYPHER[tmpSectorIVGenMethod]) then
           begin
-          if (GetMainIVCypherKernelDeviceName(tmpString)) then
+          if (GetMainIVCypherKernelDeviceName(tmpAnsiString)) then
             begin
-            settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION, SETTINGS_VALUE_MainIVCypherKernelDeviceName, tmpString);
+            settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION, SETTINGS_VALUE_MainIVCypherKernelDeviceName, tmpAnsiString);
             end;
 
           if (GetMainIVCypherGUID(tmpGUID)) then
@@ -1848,7 +1850,7 @@ end;
 
 procedure TfrmKeyEntryLinux.pbIVCypherInfoClick(Sender: TObject);
 var
-  deviceName: string;
+  deviceName: Ansistring;
   GUID: TGUID;
 begin
   GetMainIVCypherKernelDeviceName(deviceName);

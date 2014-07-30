@@ -99,14 +99,14 @@ end;
 function TPKCS11Object.SetAttribute(attrObj: TPKCS11Attribute): boolean;
 var
   attrStruct: CK_ATTRIBUTE;
-  bufferStr: string;
+  bufferStr: AnsiString;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_SetAttributeValue, FN_NAME_C_SetAttributeValue);
 
   bufferStr := attrObj.ValueAsRawData;
 
   attrStruct.attrType := attrObj.AttribType;
-  attrStruct.pValue := PChar(bufferStr);
+  attrStruct.pValue := PAnsiChar(bufferStr);
   attrStruct.ulValueLen := length(bufferStr);
 
   LastRV := LibraryFunctionList.CK_C_SetAttributeValue(

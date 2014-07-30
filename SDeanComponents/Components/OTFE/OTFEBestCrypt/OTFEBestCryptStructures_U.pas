@@ -33,7 +33,7 @@ const
   E_BESTCRYPT_BAD_DLL = 'BestCrypt DLL did not have correct facilities!';
   E_BESTCRYPT_DLL_FAILURE = 'BestCrypt DLL returned unexpected value';
   E_BESTCRYPT_DLL_SIGNATURE_FAILURE = 'BestCrypt DLL returned bad signature';
-  E_BESTCRYPT_UNABLE_TO_CREATE_FILENAME_HASH = 'Internal error: Unable to create ASCII coded SHA-1 hash of volume filename';
+  E_BESTCRYPT_UNABLE_TO_CREATE_FILENAME_HASH = 'Internal error: Unable to create ASCII coded SHA-1 hash of box filename';
 
 
   // BestCrypt Status codes
@@ -437,15 +437,15 @@ const BC_FILE_ERRORS_IN_MOUNTING_OFFSET = $88;
 
 type
   TBCDiskInfo = class(TObject) // This is not part of the BestCrypt source
-    volumeFilename: string;
-    mountedAs: char;
+    volumeFilename: AnsiString;
+    mountedAs: Ansichar;
     algorithmID: integer;
-    algorithmName: string;
+    algorithmName: AnsiString;
     algorithmKeyLen: integer;
     keyGenID: integer;
-    keyGenName: string;
+    keyGenName: AnsiString;
     readOnly: boolean;
-    description: string;
+    description: AnsiString;
     errsInMounting: integer;
     extent: cardinal;
     version: cardinal;

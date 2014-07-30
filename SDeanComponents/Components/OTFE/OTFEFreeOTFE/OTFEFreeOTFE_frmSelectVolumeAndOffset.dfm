@@ -20,9 +20,9 @@ object frmSelectVolumeFileAndOffset: TfrmSelectVolumeFileAndOffset
   object lblFileDescSrc: TLabel
     Left = 8
     Top = 44
-    Width = 73
+    Width = 56
     Height = 13
-    Caption = '&Volume/keyfile:'
+    Caption = '&Box/keyfile:'
     FocusControl = OTFEFreeOTFEVolumeSelect1
   end
   object lblOffsetSrc: TLabel

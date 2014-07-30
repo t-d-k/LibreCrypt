@@ -31,7 +31,7 @@ type
   TCYPHER_v1 = record
     CypherGUID: TGUID;
 
-    Title: array [0..MAX_CYPHER_NAME-1] of char;
+    Title: array [0..MAX_CYPHER_NAME-1] of Ansichar;
     Mode: integer;  // This must be one of the values stored in FreeOTFECypherModeID
     KeySizeUnderlying: DWORD;  // In bits
     BlockSize: DWORD;  // In bits
@@ -44,7 +44,7 @@ type
   TCYPHER_v3 = record
     CypherGUID: TGUID;
 
-    Title: array [0..MAX_CYPHER_NAME-1] of char;
+    Title: array [0..MAX_CYPHER_NAME-1] of Ansichar;
     Mode: integer;  // This must be one of the values stored in FreeOTFECypherModeID
     KeySizeUnderlying: DWORD;  // In bits
     BlockSize: DWORD;  // In bits
@@ -58,7 +58,7 @@ type
   TDIOC_CYPHER_IDENTIFYDRIVER = record
     DriverGUID: TGUID;
 
-    Title: array [0..MAX_CYPHER_NAME-1] of char;
+    Title: array [0..MAX_CYPHER_NAME-1] of Ansichar;
     VersionID: DWORD;
     CypherCount: DWORD;
   end;
@@ -89,9 +89,9 @@ type
                    //       If specified though, IVLength, and IV, should
                    //       be equal to the blocksize of the cypher being used
     DataLength: integer;  // In *bytes*
-    Key: array [0..0] of char;  // Variable length
-    IV: array [0..0] of char;  // Variable length
-    Data: array [0..0] of char;  // Variable length
+    Key: array [0..0] of Ansichar;  // Variable length
+    IV: array [0..0] of Ansichar;  // Variable length
+    Data: array [0..0] of Ansichar;  // Variable length
   end;
 
   PDIOC_CYPHER_SECTOR_DATA_IN = ^TDIOC_CYPHER_SECTOR_DATA_IN;
@@ -105,9 +105,9 @@ type
                    //       If specified though, IVLength, and IV, should
                    //       be equal to the blocksize of the cypher being used
     DataLength: integer;  // In *bytes*
-    Key: array [0..0] of char;  // Variable length
-    IV: array [0..0] of char;  // Variable length
-    Data: array [0..0] of char;  // Variable length
+    Key: array [0..0] of Ansichar;  // Variable length
+    IV: array [0..0] of Ansichar;  // Variable length
+    Data: array [0..0] of Ansichar;  // Variable length
   end;
 
 
@@ -115,7 +115,7 @@ type
   // of DIOC_CYPHER_DATA_IN
   PDIOC_CYPHER_DATA_OUT = ^TDIOC_CYPHER_DATA_OUT;
   TDIOC_CYPHER_DATA_OUT = record
-    Data: array [0..0] of char;  // Variable length
+    Data: array [0..0] of Ansichar;  // Variable length
   end;
 
 

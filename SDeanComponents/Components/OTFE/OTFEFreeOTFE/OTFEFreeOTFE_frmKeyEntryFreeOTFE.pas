@@ -123,7 +123,7 @@ type
     procedure EnableDisableControls_Keyfile();
     procedure EnableDisableControls_SecretKey();
 
-    function  GetDriveLetter(): char;
+    function  GetDriveLetter(): Ansichar;
     function  GetMountAs(): TFreeOTFEMountAs;
     function  SetMountAs(mountAs: TFreeOTFEMountAs): boolean;
 
@@ -144,9 +144,9 @@ type
     FreeOTFEObj: TOTFEFreeOTFEBase;
     Silent: boolean;
     VolumeFiles: TStringList;
-    MountedDrives: string;
+    MountedDrives: Ansistring;
 
-    procedure SetPassword(password: string);
+    procedure SetPassword(password: ansistring);
     procedure SetReadOnly(readonly: boolean);
     procedure SetKeyfile(keyFilename: string);
     procedure SetOffset(offset: ULONGLONG);
@@ -187,15 +187,15 @@ resourcestring
   RS_BUTTON_ADVANCED = '&Advanced';
 
 
-function TfrmKeyEntryFreeOTFE.GetDriveLetter(): char;
+function TfrmKeyEntryFreeOTFE.GetDriveLetter(): Ansichar;
 var
-  driveLetter: char;
+  driveLetter: Ansichar;
 begin
   driveLetter := #0;
   // Note: The item at index zero is "Use default"; #0 is returned for this
   if (cbDrive.ItemIndex>0) then
     begin
-    driveLetter := cbDrive.Items[cbDrive.ItemIndex][1];
+    driveLetter :=AnsiChar( cbDrive.Items[cbDrive.ItemIndex][1]);
     end;
 
   Result := driveLetter;
@@ -427,7 +427,7 @@ var
   cntMountOK: integer;
   cntMountFailed: integer;
   useKeyfilename: string;
-  usePKCS11CDB: string;
+  usePKCS11CDB: AnsiString;
   tmpCDBRecord: PPKCS11CDB;
   usePKCS11SecretKey: PPKCS11SecretKey;
   usedSlotID: integer;
@@ -465,9 +465,10 @@ begin
       end;
 
     MountedDrives := '';
+    { TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
     retval := FreeOTFEObj.MountFreeOTFE(
                           VolumeFiles,
-                          preUserkey.Text,
+                          Ansistring(preUserkey.Text),
                           useKeyfilename,
                           usePKCS11CDB,
                           usedSlotID, 
@@ -494,17 +495,17 @@ begin
       if (cntMountOK = 0) then
         begin
         // No volumes were mounted...
-        errMsg := _('Unable to mount volume.');
+        errMsg := _('Unable to open Box.');
 
         // Specific problems when mounting...
         if (FreeOTFEObj.LastErrorCode = OTFE_ERR_WRONG_PASSWORD) then
           begin
-          errMsg := _('Unable to mount volume; please ensure that you entered the correct details (password, etc)');
+          errMsg := _('Unable to open Box; please ensure that you entered the correct details (keyphrase, etc)');
           if (feKeyfile.Filename <> '') then
             begin
             errMsg := errMsg + SDUCRLF +
                       SDUCRLF+
-                      _('Please ensure that you check/uncheck the "Data from offset includes CDB" option, as appropriate for your volume');
+                      _('Please ensure that you check/uncheck the "Data from offset includes CDB" option, as appropriate for your Box');
             end;
           end
         else if (FreeOTFEObj.LastErrorCode = OTFE_ERR_VOLUME_FILE_NOT_FOUND) then
@@ -528,14 +529,14 @@ begin
                  IsVolumeStoredOnReadonlyMedia()
                 ) then
           begin
-          errMsg := _('Unable to mount volume; if a volume to be mounted is stored on readonly media (e.g. CDROM or DVD), please ensure that the "Mount readonly" option is selected.');
+          errMsg := _('Unable to open Box; if a Box to be mounted is stored on readonly media (e.g. CDROM or DVD), please check the "open readonly" option.');
           end
         else if (
                  not(ckMountReadonly.checked) and
                  IsVolumeMarkedAsReadonly()
                 ) then
           begin
-          errMsg := _('Unable to mount volume; if a volume file is readonly, please ensure that the "Mount readonly" option is selected.');
+          errMsg := _('Unable to open Box; if a Box is readonly, please check the "open readonly" option.');
           end;
 
         INSMessageDlg(errMSg, mtError);
@@ -545,8 +546,8 @@ begin
         // At least one volume was mounted, but not all of them
         errMsg := SDUPluralMsg(
                                cntMountOK,
-                               SDUParamSubstitute(_('%1 volume was mounted successfully, but %2 could not be mounted'), [cntMountOK, cntMountFailed]),
-                               SDUParamSubstitute(_('%1 volumes were mounted successfully, but %2 could not be mounted'), [cntMountOK, cntMountFailed])
+                               SDUParamSubstitute(_('%1 Box was opened successfully, but %2 could not be opened'), [cntMountOK, cntMountFailed]),
+                               SDUParamSubstitute(_('%1 Boxes were opened successfully, but %2 could not be opened'), [cntMountOK, cntMountFailed])
                               );
 
         INSMessageDlg(errMSg, mtWarning);
@@ -825,7 +826,7 @@ end;
 procedure TfrmKeyEntryFreeOTFE.FormShow(Sender: TObject);
 var
   i: integer;
-  currDriveLetter: char;
+  currDriveLetter: ansichar;
 begin
   feKeyfile.Filter     := FILE_FILTER_FLT_KEYFILES;
   feKeyfile.DefaultExt := FILE_FILTER_DFLT_KEYFILES;
@@ -852,7 +853,7 @@ begin
         // Start from 1; skip the default
         for i:=1 to (cbDrive.items.count-1) do
           begin
-          currDriveLetter := cbDrive.Items[i][1];
+          currDriveLetter := ansichar(cbDrive.Items[i][1]);
           if (currDriveLetter >= TOTFEFreeOTFE(FreeOTFEObj).DefaultDriveLetter) then
             begin
             cbDrive.ItemIndex := i;
@@ -1065,7 +1066,7 @@ begin
 
 end;
 
-procedure TfrmKeyEntryFreeOTFE.SetPassword(password: string);
+procedure TfrmKeyEntryFreeOTFE.SetPassword(password: ansistring);
 begin
   preUserKey.text := password;
 end;

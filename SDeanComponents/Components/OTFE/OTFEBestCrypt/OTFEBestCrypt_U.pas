@@ -97,20 +97,20 @@ type
     function  Version(): cardinal; override;
     function  VersionStr(): string; override;
     function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; overload; override;
-    function  Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean; overload; override;
+    function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; overload; override;
     function  MountDevices(): string; override;
     function  CanMountDevice(): boolean; override;
     function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
     function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
     function  DrivesMounted(): string; override;
     function  GetVolFileForDrive(driveLetter: char): string; override;
-    function  GetDriveForVolFile(volumeFilename: string): char; override;
+    function  GetDriveForVolFile(volumeFilename: string): Ansichar; override;
     function  IsEncryptedVolFile(volumeFilename: string): boolean; override;
     function  GetMainExe(): string; override;
 
 
     function  GetVolumeInfo(volumeFilename: string; var info: TBCDiskInfo): boolean; overload;
-    function  GetVolumeInfo(driveLetter: char; var info: TBCDiskInfo): boolean; overload;
+    function  GetVolumeInfo(driveLetter: Ansichar; var info: TBCDiskInfo): boolean; overload;
 
   end;
 
@@ -125,11 +125,11 @@ type
                                   ): boolean; stdcall;
 
 
-  TBCCreateKeyHandle = function(AlgServiceName: PChar;  // what Encryption Algorithm will use the encryption key
+  TBCCreateKeyHandle = function(AlgServiceName: PAnsiChar;  // what Encryption Algorithm will use the encryption key
                                 AlgId: DWORD;           // Encryption Algorithm Identificator
                                 AlgKeyLength: DWORD;    // encryption key length for the Encryption Algorithm
-                                Text: PChar;            // Any information text (optional parameter)
-                                Caption: PChar;         // Caption of the "get password" dialog window (optional parameter)
+                                Text: PAnsiChar;            // Any information text (optional parameter)
+                                Caption: PAnsiChar;         // Caption of the "get password" dialog window (optional parameter)
                                 CreateFlag: DWORD;      // whether to create new key or open existing
                                 vDataBlock: ppByte;     // block of data that is stored inside file-container in encrypted form
                                 DataSize: pDWORD;       // size of the block of data
@@ -763,7 +763,7 @@ begin
   Result := filename;
 end;
 
-function TOTFEBestCrypt.GetDriveForVolFile(volumeFilename: string): char;
+function TOTFEBestCrypt.GetDriveForVolFile(volumeFilename: string): Ansichar;
 var
   i: integer;
   mountedDrives: string;
@@ -1046,10 +1046,10 @@ begin
 end;
 
 
-function  TOTFEBestCrypt.Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean;
+function  TOTFEBestCrypt.Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean;
 var
   i: integer;
-  tmpDrv: char;
+  tmpDrv: ansichar;
 begin
   mountedAs := '';
 
@@ -1062,6 +1062,7 @@ begin
     // causing a "List out of bounds" error when trying to get a filename
     // that doesn't exist - first noticed after installing BestCrypt v6.07.2)
     // xxx - this should be sorted out properly...
+    { TODO 3 -otdk -ccleanup : check}
     if (i>(volumeFilenames.count-1)) then
       begin
       exit;
@@ -1599,7 +1600,7 @@ begin
     if not(RegistryVolumeSetDefaultDrive(volumeFilename, driveLetter)) then
       begin
       MessageDlg(
-                 'Unable to set default drive for volume "'+volumeFilename+'"',
+                 'Unable to set default drive for box "'+volumeFilename+'"',
                  mtError,
                  [mbOK],
                  0
@@ -1610,7 +1611,7 @@ begin
     if not(RegistryVolumeSetAutomounted(volumeFilename, automount)) then
       begin
       MessageDlg(
-                 'Unable to set volume to be automounted for volume "'+volumeFilename+'"',
+                 'Unable to set box to be auto-opened for box "'+volumeFilename+'"',
                  mtError,
                  [mbOK],
                  0

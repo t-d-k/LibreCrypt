@@ -27,6 +27,10 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
     object tsKeyIterations: TTabSheet
       Caption = 'Key Iterations'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label22: TLabel
         Left = 80
         Top = 192
@@ -48,13 +52,23 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
         Top = 12
         Width = 389
         Height = 169
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
         Lines.Strings = (
           'reInstructKeyIterations')
+        ParentFont = False
         TabOrder = 1
       end
     end
     object tsSalt: TTabSheet
       Caption = 'Salt'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label15: TLabel
         Left = 110
         Top = 192
@@ -85,14 +99,24 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
         Top = 12
         Width = 389
         Height = 169
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
         Lines.Strings = (
           'reInstructSalt')
+        ParentFont = False
         TabOrder = 1
       end
     end
     object tsDriveLetter: TTabSheet
       Caption = 'Drive Letter'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label1: TLabel
         Left = 87
         Top = 192
@@ -107,7 +131,6 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
         Width = 89
         Height = 21
         Style = csDropDownList
-        ItemHeight = 0
         TabOrder = 0
       end
       object reInstructDriveLetter: TOTFEFreeOTFE_InstructionRichEdit
@@ -115,14 +138,24 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
         Top = 12
         Width = 389
         Height = 169
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
         Lines.Strings = (
           'reInstructDriveLetter')
+        ParentFont = False
         TabOrder = 1
       end
     end
     object tsCDBLocation: TTabSheet
       Caption = 'CDB Location'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object rbCDBInVolFile: TRadioButton
         Left = 14
         Top = 212
@@ -172,14 +205,24 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
         Top = 12
         Width = 389
         Height = 197
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
         Lines.Strings = (
           'reInstructCDBLocation')
+        ParentFont = False
         TabOrder = 3
       end
     end
     object tsPadding: TTabSheet
       Caption = 'Padding'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label2: TLabel
         Left = 320
         Top = 224
@@ -206,8 +249,14 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
         Top = 12
         Width = 389
         Height = 197
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
         Lines.Strings = (
           'reInstructPadding')
+        ParentFont = False
         TabOrder = 0
       end
       object rbDataEncrypted: TRadioButton

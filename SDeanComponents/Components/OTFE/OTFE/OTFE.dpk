@@ -1,6 +1,7 @@
 package OTFE;
 
 {$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
@@ -12,8 +13,8 @@ package OTFE;
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
 {$OPTIMIZATION ON}
-{$OVERFLOWCHECKS OFF}
-{$RANGECHECKS OFF}
+{$OVERFLOWCHECKS ON}
+{$RANGECHECKS ON}
 {$REFERENCEINFO ON}
 {$SAFEDIVIDE OFF}
 {$STACKFRAMES OFF}
@@ -22,13 +23,14 @@ package OTFE;
 {$WRITEABLECONST ON}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
+{$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'OTFE: Base class for On-The-Fly Encryption components'}
 {$IMPLICITBUILD OFF}
 
 requires
   vcl,
   vclx,
-  SDeanUtils;
+  SDeanUtilsXE;
 
 contains
   OTFE_U in 'OTFE_U.pas',

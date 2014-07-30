@@ -29,7 +29,7 @@ end;
 // Determine if the specified volume is a Linux LUKS volume
 function TOTFEFreeOTFEBase.IsLUKSVolume(volumeFilename: string): boolean;
 var
-  rawData: string;
+  rawData: ansistring;
   retVal: boolean;
 begin
   retVal := FALSE;
@@ -91,11 +91,11 @@ end;
 //  =====  ==================
 //    48   total keyslot size
 //  =====  ==================
-function TOTFEFreeOTFEBase.ParseLUKSHeader(rawData: string; var LUKSheader: TLUKSHeader): boolean;
+function TOTFEFreeOTFEBase.ParseLUKSHeader(rawData: Ansistring; var LUKSheader: TLUKSHeader): boolean;
 var
   rawLUKSheader: TLUKSHeaderRaw;
   allOK: boolean;
-  strGUID: string;
+  strGUID: Ansistring;
   i: integer;
   faultFlag: boolean;
   keySlotActive: DWORD;
@@ -104,13 +104,13 @@ begin
 
   if (length(rawData) = sizeof(rawLUKSheader)) then
     begin
-    StrMove(@rawLUKSheader, PChar(rawData), Length(rawData));
+    StrMove(@rawLUKSheader, PAnsiChar(rawData), Length(rawData));
 
     // OK, this loop is crude - but it works
     LUKSheader.magic := '';
     for i:=low(rawLUKSheader.magic) to high(rawLUKSheader.magic) do
       begin
-      LUKSheader.magic := LUKSheader.magic + char(rawLUKSheader.magic[i]);
+      LUKSheader.magic := LUKSheader.magic + Ansichar(rawLUKSheader.magic[i]);
       end;
 
     if (LUKSheader.magic = LUKS_MAGIC) then
@@ -189,7 +189,7 @@ end;
 function TOTFEFreeOTFEBase.ReadLUKSHeader(filename: string; var LUKSheader: TLUKSHeader): boolean;
 var
   allOK: boolean;
-  rawData: string;
+  rawData: Ansistring;
 begin
   allOK := FALSE;
 
@@ -250,7 +250,7 @@ end;
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEBase.DumpLUKSDataToFile(
   filename: string;
-  userKey: string;
+  userKey: Ansistring;
   keyfile: string;
   keyfileIsASCII: boolean;
   keyfileNewlineType: TSDUNewline;
@@ -268,7 +268,7 @@ var
   cypherDetails: TFreeOTFECypher_v3;
   IVCypherDetails: TFreeOTFECypher_v3;
   keySlot: integer;
-  keyMaterial: string;
+  keyMaterial: Ansistring;
   prettyPrintData: TStringList;
   dumpReport: TStringList;
   IVHashTitle: string;
@@ -575,17 +575,17 @@ end;
 // formats slightly differently
 // This special function is required to generate the same format output as
 // cryptsetup produces, in order to make diffing the output easier.
-function TOTFEFreeOTFEBase.PrettyHex(data: Pointer; bytesCount: integer): string;
+function TOTFEFreeOTFEBase.PrettyHex(data: Pointer; bytesCount: integer): Ansistring;
 var
   i: integer;
-  x: char;
-  retVal: string;
+  x: Ansichar;
+  retVal: Ansistring;
 begin
   retVal := '';
 
   for i:=0 to (bytesCount-1) do
     begin
-    x := (PChar(data))[i];
+    x := (PAnsiChar(data))[i];
     // Yeah, I know - this isn't too nice. There's always going to be an extra
     // space at the end of the line. Don't blame me, this is how
     // cryptosetup-luks does things - I'm just replicating it here so that the
@@ -600,23 +600,23 @@ end;
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEBase.RecoverMasterKey(
                                 filename: string;
-                                userPassword: string;
+                                userPassword: Ansistring;
                                 baseIVCypherOnHashLength: boolean;
                                 var LUKSHeader: TLUKSHeader;
                                 var keySlot: integer;
-                                var keyMaterial: string
+                                var keyMaterial: Ansistring
                                ): boolean;
 var
   allOK: boolean;
-  pwd_PBKDF2ed: string;
+  pwd_PBKDF2ed: Ansistring;
   foundValid: boolean;
   i, j:integer;
-  keySlotSaltAsString: string;
-  masterkeySaltAsString: string;
-  generatedCheck: string;
-  masterKey: string;
+  keySlotSaltAsString: Ansistring;
+  masterkeySaltAsString: Ansistring;
+  generatedCheck: Ansistring;
+  masterKey: Ansistring;
   splitDataLength: integer;
-  splitData: string;
+  splitData: Ansistring;
   tmpVolumeFlags: integer;
 begin
   allOK := TRUE;
@@ -643,7 +643,7 @@ begin
     masterkeySaltAsString := '';
     for j:=low(LUKSHeader.mk_digest_salt) to high(LUKSHeader.mk_digest_salt) do
       begin
-      masterkeySaltAsString := masterkeySaltAsString + char(LUKSHeader.mk_digest_salt[j]);
+      masterkeySaltAsString := masterkeySaltAsString + Ansichar(LUKSHeader.mk_digest_salt[j]);
       end;
     end;
 
@@ -658,7 +658,7 @@ begin
         keySlotSaltAsString := '';
         for j:=low(LUKSHeader.keySlot[i].salt) to high(LUKSHeader.keySlot[i].salt) do
           begin
-          keySlotSaltAsString := keySlotSaltAsString + char(LUKSHeader.keySlot[i].salt[j]);
+          keySlotSaltAsString := keySlotSaltAsString + Ansichar(LUKSHeader.keySlot[i].salt[j]);
           end;
 
         // PBKDF2 the user's password with the salt
@@ -770,7 +770,7 @@ begin
         foundValid := TRUE;
         for j:=1 to length(generatedCheck) do
           begin
-          if (generatedCheck[j] <> char(LUKSHeader.mk_digest[j-1])) then
+          if (generatedCheck[j] <> Ansichar(LUKSHeader.mk_digest[j-1])) then
             begin
             foundValid := FALSE;
             break;
@@ -1288,7 +1288,7 @@ function TOTFEFreeOTFEBase.ReadLUKSKeyFromFile(
   filename: string;
   treatAsASCII: boolean;
   ASCIINewline: TSDUNewline;
-  out key: string
+  out key: Ansistring
 ): boolean;
 var
   retval: boolean;

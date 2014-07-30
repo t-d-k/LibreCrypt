@@ -139,6 +139,7 @@ object SDUPartitionPropertiesDialog: TSDUPartitionPropertiesDialog
     Width = 225
     Height = 56
     Color = clBtnFace
+    Enabled = False
     ItemHeight = 13
     TabOrder = 6
     ReadOnly = True

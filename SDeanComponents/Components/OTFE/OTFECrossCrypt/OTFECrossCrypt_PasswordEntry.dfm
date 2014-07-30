@@ -1,9 +1,9 @@
 object OTFECrossCrypt_PasswordEntry_F: TOTFECrossCrypt_PasswordEntry_F
   Left = 513
   Top = 426
-  Width = 345
-  Height = 288
   Caption = 'CrossCrypt Password'
+  ClientHeight = 250
+  ClientWidth = 329
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -54,7 +54,6 @@ object OTFECrossCrypt_PasswordEntry_F: TOTFECrossCrypt_PasswordEntry_F
     Width = 145
     Height = 21
     Style = csDropDownList
-    ItemHeight = 13
     TabOrder = 0
     OnChange = cbCipherChange
   end
@@ -84,7 +83,6 @@ object OTFECrossCrypt_PasswordEntry_F: TOTFECrossCrypt_PasswordEntry_F
     Width = 145
     Height = 21
     Style = csDropDownList
-    ItemHeight = 13
     TabOrder = 4
   end
   object ckReadonly: TCheckBox
@@ -118,8 +116,14 @@ object OTFECrossCrypt_PasswordEntry_F: TOTFECrossCrypt_PasswordEntry_F
     Top = 56
     Width = 237
     Height = 53
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
     Lines.Strings = (
       'rePasswords')
+    ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 2
     OnChange = rePasswordsChange

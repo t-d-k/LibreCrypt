@@ -33,13 +33,13 @@ type
     function  VersionStr(): string; override;
     function  DrivesMounted(): string; override;
     function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; overload; override;
-    function  Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean; overload; override;
+    function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; overload; override;
     function  MountDevices(): string; override;
     function  CanMountDevice(): boolean; override;
     function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
     function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
     function  IsEncryptedVolFile(volumeFilename: string): boolean; override;
-    function  GetDriveForVolFile(volumeFilename: string): char; override;
+    function  GetDriveForVolFile(volumeFilename: string): Ansichar; override;
     function  GetVolFileForDrive(driveLetter: char): string; override;
     function  GetMainExe(): string; override;
 
@@ -513,7 +513,7 @@ begin
 
 end;
 
-function TOTFEPGPDisk.GetDriveForVolFile(volumeFilename: string): char;
+function TOTFEPGPDisk.GetDriveForVolFile(volumeFilename: string): Ansichar;
 var
   mtdVolFiles: TStringList;
   mtdDrives: string;

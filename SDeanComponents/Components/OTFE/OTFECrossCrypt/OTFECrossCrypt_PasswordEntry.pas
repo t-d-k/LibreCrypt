@@ -272,10 +272,10 @@ begin
         // No point in warning the user if there's no encryption!
         if askUser and (Cipher<>cphrNone) then
           begin
-          msgDlgReply := MessageDlg('One or more of the password you entered is less than '+inttostr(MinPasswordLength)+' characters long.'+CRLF+
+          msgDlgReply := MessageDlg('One or more of the keyphrases you entered is less than '+inttostr(MinPasswordLength)+' characters long.'+CRLF+
                                      CRLF+
-                                     'In order to be able to use this volume with Linux, all of'+CRLF+
-                                     'your passwords must be longer than '+inttostr(MinPasswordLength)+' characters long.'+CRLF+
+                                     'In order to be able to use this box with Linux, all of'+CRLF+
+                                     'your keyphrases must be longer than '+inttostr(MinPasswordLength)+' characters long.'+CRLF+
                                      CRLF+
                                      'Do you wish to proceed?',
                                      mtWarning,
@@ -291,10 +291,10 @@ begin
         // No point in warning the user if there's no encryption!
         if (Length(origSinglePw) < MinPasswordLength) and (Cipher<>cphrNone) then
           begin
-          msgDlgReply := MessageDlg('The password you entered is less than '+inttostr(MinPasswordLength)+' characters long.'+CRLF+
+          msgDlgReply := MessageDlg('The keyphrase you entered is less than '+inttostr(MinPasswordLength)+' characters long.'+CRLF+
                                      CRLF+
-                                     'In order to be able to use this volume with Linux,'+CRLF+
-                                     'your password must be longer than '+inttostr(MinPasswordLength)+' characters long.'+CRLF+
+                                     'In order to be able to use this box with Linux,'+CRLF+
+                                     'your keyphrase must be longer than '+inttostr(MinPasswordLength)+' characters long.'+CRLF+
                                      CRLF+
                                      'Do you wish to proceed?',
                                      mtWarning,

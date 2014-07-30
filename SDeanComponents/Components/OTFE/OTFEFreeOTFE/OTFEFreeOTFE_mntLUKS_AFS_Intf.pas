@@ -3,40 +3,40 @@
 function GetRandom(len: integer): string;
 
 function RepeatedHash(
-                      hashKernelModeDeviceName: string;
+                      hashKernelModeDeviceName: Ansistring;
                       hashGUID: TGUID;
-                      input: string;
-                      var output: string
+                      input: Ansistring;
+                      var output: Ansistring
                      ): boolean;
 function Process(
-                 stripeData: string;
+                 stripeData: Ansistring;
                  totalBlockCount: integer;
                  blockLength: integer;
                  hashKernelModeDeviceName: string;
                  hashGUID: TGUID;
-                 var output: string
+                 var output: Ansistring
                 ): boolean;
 
-function GetBlock(stripeData: string; totalBlockCount: integer; blockLength: integer; blockNumber: integer; var output: string): boolean;
+function GetBlock(stripeData: Ansistring; totalBlockCount: integer; blockLength: integer; blockNumber: integer; var output: Ansistring): boolean;
 
 
 // ------------------------
 // "Public"
 
 function AFSplit(
-                 input: string;
+                 input: AnsiString;
                  n: integer;
                  hashKernelModeDeviceName: string;
                  hashGUID: TGUID;
-                 var output: string
+                 var output: AnsiString
                 ): boolean;
 
 function AFMerge(
-                 input: string;
+                 input: AnsiString;
                  n: integer;
                  hashKernelModeDeviceName: string;
                  hashGUID: TGUID;
-                 var output: string
+                 var output: AnsiString
                 ): boolean;
 
 

@@ -39,7 +39,7 @@ function GenerateRandomData(
                             // GPG specific
                             gpgFilename: string;
                             // Output
-                            var randomData: string
+                            var randomData: ansistring
                            ): boolean; overload;
 function GenerateRandomData(
                             rng: TRNG;
@@ -50,18 +50,18 @@ function GenerateRandomData(
                             // GPG specific
                             gpgFilename: string;
                             // Output
-                            var randomData: string
+                            var randomData: ansistring
                            ): boolean; overload;
 
 
 // Generate RNG data using GPG, assuming GPG is located under the specified
 // filename
-function GenerateRNGDataGPG(bytesRequired: integer; GPGFilename: string; var randomData: string): boolean;
+function GenerateRNGDataGPG(bytesRequired: integer; GPGFilename: string; var randomData: ansistring): boolean;
 
 // Generate RNG data using the MS CryptoAPI
 function GenerateRNGDataMSCryptoAPI(
   bytesRequired: integer;
-  var randomData: string
+  var randomData: ansistring
 ): boolean; overload;
 function GenerateRNGDataMSCryptoAPI(
   bytesRequired: integer;
@@ -69,13 +69,13 @@ function GenerateRNGDataMSCryptoAPI(
   szProvider: LPCSTR;
   dwProvType: DWORD;
   dwFlags: DWORD;
-  var randomData: string
+  var randomData: ansistring
 ): boolean; overload;
 
 // Load cryptlib, if possiblem, and initialise
 function cryptlibLoad(): boolean;
 // Generate RNG data using cryptlib
-function GenerateRNGDataCryptlib(bytesRequired: integer; var randomData: string): boolean;
+function GenerateRNGDataCryptlib(bytesRequired: integer; var randomData: ansistring): boolean;
 // Unload cryptlib
 function cryptlibUnload(): boolean;
 
@@ -83,13 +83,13 @@ function GenerateRNGDataPKCS11(
                                PKCS11Library: TPKCS11Library;
                                SlotID: integer;
                                bytesRequired: integer;
-                               var randomData: string
+                               var randomData: ansistring
                               ): boolean;
 
 // MouseRNG store
 procedure InitMouseRNGData();
 procedure AddToMouseRNGData(random: Byte);
-function GetMouseRNGData(bytesRequired: integer; var randomData: string): boolean;
+function GetMouseRNGData(bytesRequired: integer; var randomData: ansistring): boolean;
 function CountMouseRNGData(): integer;
 procedure PurgeMouseRNGData();
 
@@ -105,7 +105,7 @@ uses
   SDUDialogs;
 
 resourcestring
-  PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR = 'Please report seeing this message using the email address specified in the FreeOTFE documentation, together with a brief description of what you were attempting to do.';
+  PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR = 'Please report seeing this message using the email address specified in the DoxBox documentation, together with a brief description of what you were attempting to do.';
 
 var
   _MouseRNGStore: string;
@@ -121,12 +121,12 @@ function GenerateRandomData(
                             // GPG specific
                             gpgFilename: string;
                             // Output
-                            var randomData: string
+                            var randomData: ansistring
                            ): boolean;
 var
   allOK: boolean;
   currRNG: TRNG;
-  currRandom: string;
+  currRandom: ansistring;
   rngsUsed: integer;
 begin
   allOK := TRUE;
@@ -174,7 +174,7 @@ function GenerateRandomData(
                             // GPG specific
                             gpgFilename: string;
                             // Output
-                            var randomData: string
+                            var randomData: ansistring
                            ): boolean;
 var
   allOK: boolean;
@@ -306,7 +306,7 @@ begin
 end;
 
 
-function GenerateRNGDataGPG(bytesRequired: integer; GPGFilename: string; var randomData: string): boolean;
+function GenerateRNGDataGPG(bytesRequired: integer; GPGFilename: string; var randomData: ansistring): boolean;
 begin
 // xxx - implement GPG integration
 showmessage('Using GPG to generate RNG data has not yet been implemented. Please select another RNG option');
@@ -317,7 +317,7 @@ end;
 
 function GenerateRNGDataMSCryptoAPI(
   bytesRequired: integer;
-  var randomData: string
+  var randomData: ansistring
 ): boolean;
 var
   gotData: boolean;
@@ -375,7 +375,7 @@ function GenerateRNGDataMSCryptoAPI(
   szProvider: LPCSTR;
   dwProvType: DWORD;
   dwFlags: DWORD;
-  var randomData: string
+  var randomData: ansistring
 ): boolean;
 var
   hProv: HCRYPTPROV;
@@ -463,7 +463,7 @@ end;
 
 
 // Generate RNG data using cryptlib
-function GenerateRNGDataCryptlib(bytesRequired: integer; var randomData: string): boolean;
+function GenerateRNGDataCryptlib(bytesRequired: integer; var randomData: ansistring): boolean;
 var
   allOK: boolean;
 begin
@@ -486,7 +486,7 @@ begin
 end;
 
 // Get first bytesRequired bytes of data from the MouseRNG store
-function GetMouseRNGData(bytesRequired: integer; var randomData: string): boolean;
+function GetMouseRNGData(bytesRequired: integer; var randomData: ansistring): boolean;
 var
   retval: boolean;
 begin
@@ -527,7 +527,7 @@ function GenerateRNGDataPKCS11(
                                PKCS11Library: TPKCS11Library;
                                SlotID: integer;
                                bytesRequired: integer;
-                               var randomData: string
+                               var randomData: ansistring
                               ): boolean;
 var
   allOK: boolean;

@@ -31,7 +31,7 @@ type
     { Private declarations }
   public
     PartitionInfo: TSDUPartitionInfo;
-    MountedAsDrive: char;
+    MountedAsDrive: ansichar;
   end;
 
 implementation

@@ -93,21 +93,21 @@ type
     function  Connect(): boolean; override;
     function  Disconnect(): boolean; override;
 
-    procedure AddHandles(driveLetter: char; handles: TMountedHandle);
-    function  GetHandles(driveLetter: char; var handles: TMountedHandle): boolean;
-    procedure DeleteHandles(driveLetter: char);
+    procedure AddHandles(driveLetter: Ansichar; handles: TMountedHandle);
+    function  GetHandles(driveLetter: Ansichar; var handles: TMountedHandle): boolean;
+    procedure DeleteHandles(driveLetter: Ansichar);
 
-    procedure AddDiskGeometry(driveLetter: char; diskGeometry: TSDUDiskGeometry); 
-    procedure DeleteDiskGeometry(driveLetter: char);
+    procedure AddDiskGeometry(driveLetter: Ansichar; diskGeometry: TSDUDiskGeometry);
+    procedure DeleteDiskGeometry(driveLetter: Ansichar);
     // Internal use only; callers should normally use GetDiskGeometry(...)
     // (without prefixing "_") instead
     function _GetDiskGeometry(
-                             DriveLetter: char;
+                             DriveLetter: Ansichar;
                              var diskGeometry: TSDUDiskGeometry
                            ): boolean;
 
-    function _GetCypherDriverCyphers_v1(cypherDriver: string; var cypherDriverDetails: TFreeOTFECypherDriver): boolean; override;
-    function _GetCypherDriverCyphers_v3(cypherDriver: string; var cypherDriverDetails: TFreeOTFECypherDriver): boolean; override;
+    function _GetCypherDriverCyphers_v1(cypherDriver: ansistring; var cypherDriverDetails: TFreeOTFECypherDriver): boolean; override;
+    function _GetCypherDriverCyphers_v3(cypherDriver: ansistring; var cypherDriverDetails: TFreeOTFECypherDriver): boolean; override;
 
     procedure GetAllDriversUnderExeDir(driverFilenames: TStringList);
 
@@ -133,11 +133,11 @@ type
                               sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
                               volumeIV: string;
                               readonly: boolean;
-                              IVHashDriver: string;
+                              IVHashDriver: ansistring;
                               IVHashGUID: TGUID;
-                              IVCypherDriver: string;
+                              IVCypherDriver: ansistring;
                               IVCypherGUID: TGUID;
-                              mainCypherDriver: string;
+                              mainCypherDriver: ansistring;
                               mainCypherGUID: TGUID;
                               VolumeFlags: integer;
                               metaData: TOTFEFreeOTFEVolumeMetaData;
@@ -148,18 +148,18 @@ type
 
     function  CreateMountDiskDevice(
                               volFilename: string;
-                              volumeKey: string;
+                              volumeKey: Ansistring;
                               sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                              volumeIV: string;
+                              volumeIV: Ansistring;
                               readonly: boolean;
-                              IVHashDriver: string;
+                              IVHashDriver: ansistring;
                               IVHashGUID: TGUID;
-                              IVCypherDriver: string;
+                              IVCypherDriver: ansistring;
                               IVCypherGUID: TGUID;
-                              mainCypherDriver: string;
+                              mainCypherDriver: ansistring;
                               mainCypherGUID: TGUID;
                               VolumeFlags: integer;
-                              DriveLetter: char;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
+                              DriveLetter: Ansichar;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
                               offset: int64 = 0;
                               size: int64 = 0;
                               MetaData_LinuxVolume: boolean = FALSE;  // Linux volume
@@ -181,20 +181,20 @@ type
                     readNotWrite: boolean;
 
                     volFilename: string;
-                    volumeKey: string;
+                    volumeKey: ansistring;
                     sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                    IVHashDriver: string;
+                    IVHashDriver: Ansistring;
                     IVHashGUID: TGUID;
-                    IVCypherDriver: string;
+                    IVCypherDriver: Ansistring;
                     IVCypherGUID: TGUID;
-                    mainCypherDriver: string;
+                    mainCypherDriver: Ansistring;
                     mainCypherGUID: TGUID;
                     VolumeFlags: integer;
                     mountMountAs: TFreeOTFEMountAs;
 
                     dataOffset: int64;  // Offset from within mounted volume from where to read/write data
                     dataLength: integer;  // Length of data to read/write. In bytes
-                    var data: string;  // Data to read/write
+                    var data: ansistring;  // Data to read/write
 
                     offset: int64 = 0;
                     size: int64 = 0;
@@ -216,7 +216,7 @@ type
     // ---------
     // Misc functions
 
-    function  GetNextDriveLetter(userDriveLetter, requiredDriveLetter: char): char; overload; override;
+    function  GetNextDriveLetter(userDriveLetter, requiredDriveLetter: Ansichar): Ansichar; overload; override;
 
     function  DriverType(): string; override;
 
@@ -225,107 +225,107 @@ type
     // TOTFE standard API
     constructor Create(AOwner: TComponent); override;
     destructor  Destroy; override;
-    function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
+    function  Dismount(driveLetter: Ansichar; emergency: boolean = FALSE): boolean; overload; override;
     function  Version(): cardinal; overload; override;
-    function  DrivesMounted(): string; overload; override;
+    function  DrivesMounted(): ansistring; overload; override;
 
 
     // -----------------------------------------------------------------------
     // TOTFEFreeOTFEBase standard API
 
-    function  GetVolumeInfo(driveLetter: char; var volumeInfo: TOTFEFreeOTFEVolumeInfo): boolean; override;
+    function  GetVolumeInfo(driveLetter: Ansichar; var volumeInfo: TOTFEFreeOTFEVolumeInfo): boolean; override;
 
     function GetHashDrivers(var hashDrivers: TFreeOTFEHashDriverArray): boolean; override;
-    function GetHashDriverHashes(hashDriver: string; var hashDriverDetails: TFreeOTFEHashDriver): boolean; override;
+    function GetHashDriverHashes(hashDriver: ansistring; var hashDriverDetails: TFreeOTFEHashDriver): boolean; override;
 
     function GetCypherDrivers(var cypherDrivers: TFreeOTFECypherDriverArray): boolean; override;
 
 
     function _EncryptDecryptData(
                                 encryptFlag: boolean;
-                                cypherDriver: string;
+                                cypherDriver: ansistring;
                                 cypherGUID: TGUID;
-                                var key: string;
-                                var IV: string;
-                                var inData: string;
-                                var outData: string
+                                var key: Ansistring;
+                                var IV: Ansistring;
+                                var inData: Ansistring;
+                                var outData: Ansistring
                                ): boolean; override;
 
     function EncryptDecryptSectorData(
                                 encryptFlag: boolean;
-                                cypherDriver: string;
+                                cypherDriver: ansistring;
                                 cypherGUID: TGUID;
                                 SectorID: LARGE_INTEGER;
                                 SectorSize: integer;
-                                var key: string;
-                                var IV: string;
-                                var inData: string;
-                                var outData: string
+                                var key: Ansistring;
+                                var IV: Ansistring;
+                                var inData: Ansistring;
+                                var outData: Ansistring
                                ): boolean; override;
                                
     function HashData(
-                      hashDriver: string;
+                      hashDriver: Ansistring;
                       hashGUID: TGUID;
-                      var data: string;
-                      var hashOut: string
+                      var data: Ansistring;
+                      var hashOut: Ansistring
                      ): boolean; override;
 
     function MACData(
                       macAlgorithm: TFreeOTFEMACAlgorithm;
-                      HashDriver: string;
+                      HashDriver: Ansistring;
                       HashGUID: TGUID;
-                      CypherDriver: string;
+                      CypherDriver: Ansistring;
                       CypherGUID: TGUID;
-                      var key: string;
-                      var data: string;
-                      var MACOut: string;
+                      var key: Ansistring;
+                      var data: Ansistring;
+                      var MACOut: Ansistring;
                       tBits: integer = -1
                      ): boolean; override;
 
     function DeriveKey(
                     kdfAlgorithm: TFreeOTFEKDFAlgorithm;
-                    HashDriver: string;
+                    HashDriver: Ansistring;
                     HashGUID: TGUID;
-                    CypherDriver: string;
+                    CypherDriver: Ansistring;
                     CypherGUID: TGUID;
-                    Password: string;
-                    Salt: string;
+                    Password: Ansistring;
+                    Salt: Ansistring;
                     Iterations: integer;
                     dkLenBits: integer;  // In *bits*
-                    var DK: string
+                    var DK: Ansistring
                    ): boolean; override;
 
                    
     // -----------------------------------------------------------------------
     // Extended FreeOTFE DLL specific functions
 
-    function Seek(driveLetter: char; offset: DWORD): boolean;
+    function Seek(driveLetter: Ansichar; offset: DWORD): boolean;
     function ReadData_Sectors(
-                      DriveLetter: char;
+                      DriveLetter: Ansichar;
                       SectorNoStart: DWORD;
                       CountSectors: DWORD;
                       stm: TStream
                     ): boolean;
     function WriteData_Sectors(
-                      DriveLetter: char;
+                      DriveLetter: Ansichar;
                       SectorNoStart: DWORD;
                       CountSectors: DWORD;
                       stm: TStream
                     ): boolean;
     function ReadData_Bytes(
-                      DriveLetter: char;
+                      DriveLetter: Ansichar;
                       Offset: ULONGLONG;
                       DataLength: ULONGLONG;
                       Data: TStream
                     ): boolean;
     function WriteData_Bytes(
-                      DriveLetter: char;
+                      DriveLetter: Ansichar;
                       Offset: ULONGLONG;
                       DataLength: ULONGLONG;
                       Data: TStream
                     ): boolean;
     function GetDiskGeometry(
-                             DriveLetter: char;
+                             DriveLetter: Ansichar;
                              var diskGeometry: TSDUDiskGeometry
                            ): boolean;
 
@@ -381,12 +381,12 @@ end;
 destructor TOTFEFreeOTFEDLL.Destroy();
 var
   i: integer;
-  currDrvStr: string;
-  currDrvChar: char;
+  currDrvStr: ansistring;
+  currDrvChar: ansichar;
 begin
   for i:=0 to (fCachedDiskGeometry.Count-1) do
     begin
-    currDrvStr := fCachedDiskGeometry[i];
+    currDrvStr := fCachedDiskGeometry[i];      // unicode->ansi not a data loss because only ansistring stored
     if (length(currDrvStr) > 0) then // Sanity check
       begin
       currDrvChar := currDrvStr[1];
@@ -403,7 +403,7 @@ end;
 // This dismount routine is based on the MS "media eject" routine for NT/2k/XP
 // at:
 // http://support.microsoft.com/default.aspx?scid=http://support.microsoft.com:80/support/kb/articles/Q165/7/21.asp&NoWebContent=1
-function TOTFEFreeOTFEDLL.Dismount(driveLetter: char; emergency: boolean = FALSE): boolean;
+function TOTFEFreeOTFEDLL.Dismount(driveLetter: ansichar; emergency: boolean = FALSE): boolean;
 var
   allOK: boolean;
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
@@ -486,17 +486,17 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.DrivesMounted(): string;
+function TOTFEFreeOTFEDLL.DrivesMounted(): ansistring;
 var
   i: integer;
-  retval: string;
+  retval: ansistring;
 begin
   // DLL version doesn't have concept of drive letters as in system drive
   // letters, but uses them to reference different mounted volumes
   retval := '';
   for i:=0 to (MountedHandles.count - 1) do
     begin
-    retval := retval + MountedHandles[i];
+    retval := retval + MountedHandles[i];   // unicode->ansi not a data loss because only ansistring stored
     end;
     
   Result := retval;
@@ -540,20 +540,20 @@ function TOTFEFreeOTFEDLL.ReadWritePlaintextToVolume(
   readNotWrite: boolean;
 
   volFilename: string;
-  volumeKey: string;
+  volumeKey: ansistring;
   sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-  IVHashDriver: string;
+  IVHashDriver: Ansistring;
   IVHashGUID: TGUID;
-  IVCypherDriver: string;
+  IVCypherDriver: Ansistring;
   IVCypherGUID: TGUID;
-  mainCypherDriver: string;
+  mainCypherDriver: Ansistring;
   mainCypherGUID: TGUID;
   VolumeFlags: integer;
   mountMountAs: TFreeOTFEMountAs;
 
   dataOffset: int64;  // Offset from within mounted volume from where to read/write data
   dataLength: integer;  // Length of data to read/write. In bytes
-  var data: string;  // Data to read/write
+  var data: ansistring;  // Data to read/write
 
   offset: int64 = 0;  // Offset within volume where encrypted data starts
   size: int64 = 0;  // Size of volume
@@ -562,7 +562,7 @@ function TOTFEFreeOTFEDLL.ReadWritePlaintextToVolume(
 var
   allOK: boolean;
   dummyMetadata: TOTFEFreeOTFEVolumeMetaData;
-  tempMountDriveLetter: char;
+  tempMountDriveLetter: Ansichar;
   stm: TSDUMemoryStream;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
@@ -1095,7 +1095,7 @@ begin
         begin
         // Get the details for the device
         SetLength(hashDrivers, (Length(hashDrivers)+1));
-        retval := GetHashDriverHashes(dllNames[j], hashDrivers[high(hashDrivers)]);
+        retval := GetHashDriverHashes(dllNames[j], hashDrivers[high(hashDrivers)]);       // unicode->ansi not a data loss because only ansistring stored
 
         // Note: This "break" condition differs between the DLL and kernel
         //       driver versions
@@ -1133,7 +1133,7 @@ begin
         begin
         // Get the details for the device
         SetLength(cypherDrivers, (Length(cypherDrivers)+1));
-        retval := GetCypherDriverCyphers(dllNames[j], cypherDrivers[high(cypherDrivers)]);
+        retval := GetCypherDriverCyphers(dllNames[j], cypherDrivers[high(cypherDrivers)]);   // unicode->ansi not a data loss because only ansistring stored
 
         // Note: This "break" condition differs between the DLL and kernel
         //       driver versions
@@ -1153,7 +1153,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.GetHashDriverHashes(hashDriver: string; var hashDriverDetails: TFreeOTFEHashDriver): boolean;
+function TOTFEFreeOTFEDLL.GetHashDriverHashes(hashDriver: ansistring; var hashDriverDetails: TFreeOTFEHashDriver): boolean;
 var
   retval: boolean;
   DIOCBuffer: TDIOC_HASH_IDENTIFYDRIVER;
@@ -1259,7 +1259,7 @@ end;
 // ----------------------------------------------------------------------------
 // Get cypher details - using FreeOTFE v3 and later API
 // Don't call this function directly! Call GetCypherDriverCyphers(...) instead!
-function TOTFEFreeOTFEDLL._GetCypherDriverCyphers_v1(cypherDriver: string; var cypherDriverDetails: TFreeOTFECypherDriver): boolean;
+function TOTFEFreeOTFEDLL._GetCypherDriverCyphers_v1(cypherDriver: ansistring; var cypherDriverDetails: TFreeOTFECypherDriver): boolean;
 var
   retval: boolean;
   DIOCBuffer: TDIOC_CYPHER_IDENTIFYDRIVER;
@@ -1388,7 +1388,7 @@ end;
 // ----------------------------------------------------------------------------
 // Get cypher details - using FreeOTFE v3 and later API
 // Don't call this function directly! Call GetCypherDriverCyphers(...) instead!
-function TOTFEFreeOTFEDLL._GetCypherDriverCyphers_v3(cypherDriver: string; var cypherDriverDetails: TFreeOTFECypherDriver): boolean;
+function TOTFEFreeOTFEDLL._GetCypherDriverCyphers_v3(cypherDriver: ansistring; var cypherDriverDetails: TFreeOTFECypherDriver): boolean;
 var
   retval: boolean;
   DIOCBuffer: TDIOC_CYPHER_IDENTIFYDRIVER;
@@ -1517,10 +1517,10 @@ end;
 // ----------------------------------------------------------------------------
 // Hash the specified data with the supplied hash device/hash GUID
 function TOTFEFreeOTFEDLL.HashData(
-                      hashDriver: string;
+                      hashDriver: Ansistring;
                       hashGUID: TGUID;
-                      var data: string;
-                      var hashOut: string
+                      var data: Ansistring;
+                      var hashOut: Ansistring
                      ): boolean;
 var
   retval: boolean;
@@ -1568,7 +1568,7 @@ DebugMsg('couldn''t connect to: '+hashDriver);
           ptrDIOCBufferIn.HashGUID := hashGUID;
 
           ptrDIOCBufferIn.DataLength := Length(Data) * 8;
-          StrMove(@ptrDIOCBufferIn.Data, PChar(Data), Length(Data));
+          StrMove(@ptrDIOCBufferIn.Data, PAnsiChar(Data), Length(Data));
 
           bitsReturned := expectedHashSizeBits;
           if (hashAPI.HashDLLFnHash(
@@ -1586,8 +1586,8 @@ DebugMsg('hashByteCount: '+inttostr(hashByteCount));
 
             // Set hashOut so that it has enough characters which can be
             // overwritten with StrMove
-            hashOut := StringOfChar(#0, hashByteCount);
-            StrMove(PChar(hashOut), @ptrDIOCBufferOut.Hash, hashByteCount);
+            hashOut := StringOfChar(Ansichar(#0), hashByteCount);
+            StrMove(PAnsiChar(hashOut), @ptrDIOCBufferOut.Hash, hashByteCount);
 
             retval := TRUE;
             end
@@ -1636,13 +1636,13 @@ end;
 //         an MAC of variable length
 function TOTFEFreeOTFEDLL.MACData(
                       macAlgorithm: TFreeOTFEMACAlgorithm;
-                      HashDriver: string;
+                      HashDriver: Ansistring;
                       HashGUID: TGUID;
-                      CypherDriver: string;
+                      CypherDriver: Ansistring;
                       CypherGUID: TGUID;
-                      var key: string;
-                      var data: string;
-                      var MACOut: string;
+                      var key: Ansistring;
+                      var data: Ansistring;
+                      var MACOut: Ansistring;
                       tBits: integer = -1
                      ): boolean;
 var
@@ -1695,8 +1695,8 @@ begin
       ptrDIOCBufferIn.DataLength := Length(data) * 8;
       // This may seem a little weird, but we do this because the data is
       // immediatly after the key
-      StrMove(@ptrDIOCBufferIn.Key, PChar(key), Length(key));
-      StrMove(((PChar(@ptrDIOCBufferIn.Key))+length(key)), PChar(data), Length(data));
+      StrMove(@ptrDIOCBufferIn.Key, PAnsiChar(key), Length(key));
+      StrMove(((PAnsiChar(@ptrDIOCBufferIn.Key))+length(key)), PAnsiChar(data), Length(data));
 
       if (DriverAPI.MainDLLFnMACData(
                                      bufferSizeIn,
@@ -1712,8 +1712,8 @@ DebugMsg('outputByteCount: '+inttostr(outputByteCount));
 
         // Set MACOut so that it has enough characters which can be
         // overwritten with StrMove
-        MACOut := StringOfChar(#0, outputByteCount);
-        StrMove(PChar(MACOut), @ptrDIOCBufferOut.MAC, outputByteCount);
+        MACOut := StringOfChar(Ansichar(#0), outputByteCount);
+        StrMove(PAnsiChar(MACOut), @ptrDIOCBufferOut.MAC, outputByteCount);
 
         retval := TRUE;
         end
@@ -1745,15 +1745,15 @@ end;
 // dkLenBits - This must *always* be >= 0
 function TOTFEFreeOTFEDLL.DeriveKey(
                     kdfAlgorithm: TFreeOTFEKDFAlgorithm;
-                    HashDriver: string;
+                    HashDriver: Ansistring;
                     HashGUID: TGUID;
-                    CypherDriver: string;
+                    CypherDriver: Ansistring;
                     CypherGUID: TGUID;
-                    Password: string;
-                    Salt: string;
+                    Password: Ansistring;
+                    Salt: Ansistring;
                     Iterations: integer;
                     dkLenBits: integer;  // In *bits*
-                    var DK: string
+                    var DK: Ansistring
                    ): boolean;
 var
   retval: boolean;
@@ -1807,8 +1807,8 @@ begin
       ptrDIOCBufferIn.SaltLength     := (Length(Salt) * 8);
       // This may seem a little weird, but we do this because the salt is
       // immediatly after the password
-      StrMove(@ptrDIOCBufferIn.Password, PChar(Password), Length(Password));
-      StrMove(((PChar(@ptrDIOCBufferIn.Password))+length(Password)), PChar(Salt), Length(Salt));
+      StrMove(@ptrDIOCBufferIn.Password, PAnsiChar(Password), Length(Password));
+      StrMove(((PAnsiChar(@ptrDIOCBufferIn.Password))+length(Password)), PAnsiChar(Salt), Length(Salt));
 
 
       if (DriverAPI.MainDLLFnDeriveKey(
@@ -1825,8 +1825,8 @@ DebugMsg('outputByteCount: '+inttostr(outputByteCount));
 
         // Set DK so that it has enough characters which can be
         // overwritten with StrMove
-        DK := StringOfChar(#0, outputByteCount);
-        StrMove(PChar(DK), @ptrDIOCBufferOut.DerivedKey, outputByteCount);
+        DK := StringOfChar(AnsiChar(#0), outputByteCount);
+        StrMove(PAnsiChar(DK), @ptrDIOCBufferOut.DerivedKey, outputByteCount);
 
         retval := TRUE;
         end
@@ -1858,12 +1858,12 @@ end;
 // encryptFlag - set to TRUE to encrypt, FALSE to decrypt
 function TOTFEFreeOTFEDLL._EncryptDecryptData(
                                    encryptFlag: boolean;
-                                   cypherDriver: string;
+                                   cypherDriver: ansistring;
                                    cypherGUID: TGUID;
-                                   var key: string;
-                                   var IV: string;
-                                   var inData: string;
-                                   var outData: string
+                                   var key: Ansistring;
+                                   var IV: Ansistring;
+                                   var inData: Ansistring;
+                                   var outData: Ansistring
                                   ): boolean;
 var
   retval: boolean;
@@ -1914,9 +1914,9 @@ DebugMsg('couldn''t connect to: '+cypherDriver);
           ptrDIOCBufferIn.DataLength := Length(inData);  //  In *bytes*
           // This may seem a little weird, but we do this because the data is
           // immediatly after the IV, which is immediatly after the key
-          StrMove(@ptrDIOCBufferIn.Key,                                   PChar(key),    Length(key));
-          StrMove(((PChar(@ptrDIOCBufferIn.Key))+length(key)),            PChar(IV),     Length(IV));
-          StrMove(((PChar(@ptrDIOCBufferIn.Key))+length(key)+length(IV)), PChar(inData), Length(inData));
+          StrMove(@ptrDIOCBufferIn.Key,                                   PAnsiChar(key),    Length(key));
+          StrMove(((PAnsiChar(@ptrDIOCBufferIn.Key))+length(key)),            PAnsiChar(IV),     Length(IV));
+          StrMove(((PAnsiChar(@ptrDIOCBufferIn.Key))+length(key)+length(IV)), PAnsiChar(inData), Length(inData));
 
           if encryptFlag then
             begin
@@ -1940,9 +1940,9 @@ DebugMsg('couldn''t connect to: '+cypherDriver);
             begin
             // Set outData so that it has enough characters which can be
             // overwritten with StrMove
-            outData := StringOfChar(#0, ptrDIOCBufferIn.DataLength);
+            outData := StringOfChar(AnsiChar(#0), ptrDIOCBufferIn.DataLength);
 
-            StrMove(PChar(outData), @ptrDIOCBufferOut.Data, ptrDIOCBufferIn.DataLength);
+            StrMove(PAnsiChar(outData), @ptrDIOCBufferOut.Data, ptrDIOCBufferIn.DataLength);
 
             retval := TRUE;
             end
@@ -1987,14 +1987,14 @@ end;
 // encryptFlag - set to TRUE to encrypt, FALSE to decrypt
 function TOTFEFreeOTFEDLL.EncryptDecryptSectorData(
                                    encryptFlag: boolean;
-                                   cypherDriver: string;
+                                   cypherDriver: ansistring;
                                    cypherGUID: TGUID;
                                    SectorID: LARGE_INTEGER;
                                    SectorSize: integer;
-                                   var key: string;
-                                   var IV: string;
-                                   var inData: string;
-                                   var outData: string
+                                   var key: Ansistring;
+                                   var IV: Ansistring;
+                                   var inData: Ansistring;
+                                   var outData: Ansistring
                                   ): boolean;
 var
   retval: boolean;
@@ -2047,9 +2047,9 @@ DebugMsg('couldn''t connect to: '+cypherDriver);
           ptrDIOCBufferIn.DataLength := Length(inData);  //  In *bytes*
           // This may seem a little weird, but we do this because the data is
           // immediatly after the IV, which is immediatly after the key
-          StrMove(@ptrDIOCBufferIn.Key,                                   PChar(key),    Length(key));
-          StrMove(((PChar(@ptrDIOCBufferIn.Key))+length(key)),            PChar(IV),     Length(IV));
-          StrMove(((PChar(@ptrDIOCBufferIn.Key))+length(key)+length(IV)), PChar(inData), Length(inData));
+          StrMove(@ptrDIOCBufferIn.Key,                                   PAnsiChar(key),    Length(key));
+          StrMove(((PAnsiChar(@ptrDIOCBufferIn.Key))+length(key)),            PAnsiChar(IV),     Length(IV));
+          StrMove(((PAnsiChar(@ptrDIOCBufferIn.Key))+length(key)+length(IV)), PAnsiChar(inData), Length(inData));
 
           if encryptFlag then
             begin
@@ -2073,9 +2073,9 @@ DebugMsg('couldn''t connect to: '+cypherDriver);
             begin
             // Set outData so that it has enough characters which can be
             // overwritten with StrMove
-            outData := StringOfChar(#0, ptrDIOCBufferIn.DataLength);
+            outData := StringOfChar(AnsiChar(#0), ptrDIOCBufferIn.DataLength);
 
-            StrMove(PChar(outData), @ptrDIOCBufferOut.Data, ptrDIOCBufferIn.DataLength);
+            StrMove(PAnsiChar(outData), @ptrDIOCBufferOut.Data, ptrDIOCBufferIn.DataLength);
 
             retval := TRUE;
             end
@@ -2111,7 +2111,7 @@ DebugMsg('cypher DIOC 2 FAIL');
                                 key,
                                 IV,
                                 inData,
-                                outData,
+                                outData
                                );
 
         end;
@@ -2147,11 +2147,11 @@ function TOTFEFreeOTFEDLL.MountDiskDevice(
                                    sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
                                    volumeIV: string;
                                    readonly: boolean;
-                                   IVHashDriver: string;
+                                   IVHashDriver: ansistring;
                                    IVHashGUID: TGUID;
-                                   IVCypherDriver: string;
+                                   IVCypherDriver: ansistring;
                                    IVCypherGUID: TGUID;
-                                   mainCypherDriver: string;
+                                   mainCypherDriver: ansistring;
                                    mainCypherGUID: TGUID;
                                    VolumeFlags: integer;
                                    metaData: TOTFEFreeOTFEVolumeMetaData;
@@ -2170,7 +2170,7 @@ var
   openAccessCode: DWORD;
   openShareMode: DWORD;
   diskGeometry: TSDUDiskGeometry;
-  useDriveLetter: char;
+  useDriveLetter: ansichar;
 begin
   retVal := FALSE;
 
@@ -2183,7 +2183,7 @@ begin
 DebugMsg('In MountDiskDevice');
 {$ENDIF}
 
-  useDriveLetter := deviceName[1];
+  useDriveLetter := AnsiChar(deviceName[1]);
 
   VolumeMetadataToString(metaData, strMetaData);
 
@@ -2369,18 +2369,18 @@ end;
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.CreateMountDiskDevice(
                               volFilename: string;
-                              volumeKey: string;
+                              volumeKey: Ansistring;
                               sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                              volumeIV: string;
+                              volumeIV: Ansistring;
                               readonly: boolean;
-                              IVHashDriver: string;
+                              IVHashDriver: ansistring;
                               IVHashGUID: TGUID;
-                              IVCypherDriver: string;
+                              IVCypherDriver: ansistring;
                               IVCypherGUID: TGUID;
-                              mainCypherDriver: string;
+                              mainCypherDriver: ansistring;
                               mainCypherGUID: TGUID;
                               VolumeFlags: integer;
-                              DriveLetter: char;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
+                              DriveLetter: Ansichar;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
                               offset: int64 = 0;
                               size: int64 = 0;
                               MetaData_LinuxVolume: boolean = FALSE;  // Linux volume
@@ -2436,7 +2436,7 @@ var
   DIOCBuffer: TDIOC_FORCE_DISMOUNTS;
   bytesReturned: DWORD;
   handles: TMountedHandle;
-  useDriveLetter: char;
+  useDriveLetter: Ansichar;
 begin
   retVal := FALSE;
 
@@ -2447,8 +2447,8 @@ begin
          (deviceName <> ''),
          'deviceName set to empty string in call to DismountDiskDevice'
         );
-
-  useDriveLetter := deviceName[1];
+    { TODO 1 -otdk -cclean : pass in just drive letter }
+  useDriveLetter := Ansichar(deviceName[1]);
 
   if GetHandles(useDriveLetter, handles) then
     begin
@@ -2479,7 +2479,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-procedure TOTFEFreeOTFEDLL.AddHandles(driveLetter: char; handles: TMountedHandle);
+procedure TOTFEFreeOTFEDLL.AddHandles(driveLetter: ansichar; handles: TMountedHandle);
 var
   ptrMountedHandles: PMountedHandle;
 begin
@@ -2489,7 +2489,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.GetHandles(driveLetter: char; var handles: TMountedHandle): boolean;
+function TOTFEFreeOTFEDLL.GetHandles(driveLetter: ansichar; var handles: TMountedHandle): boolean;
 var
   ptrMountedHandles: PMountedHandle;
   idx: integer;
@@ -2509,7 +2509,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-procedure TOTFEFreeOTFEDLL.DeleteHandles(driveLetter: char);
+procedure TOTFEFreeOTFEDLL.DeleteHandles(driveLetter: ansichar);
 var
   ptrMountedHandles: PMountedHandle;
   idx: integer;
@@ -2526,10 +2526,10 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.GetNextDriveLetter(userDriveLetter, requiredDriveLetter: char): char;
+function TOTFEFreeOTFEDLL.GetNextDriveLetter(userDriveLetter, requiredDriveLetter: Ansichar): Ansichar;
 var
-  c: char;
-  retval: char;
+  c: Ansichar;
+  retval: Ansichar;
 begin
   retval := #0;
   for c:='A' to 'Z' do
@@ -2560,7 +2560,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.GetVolumeInfo(driveLetter: char; var volumeInfo: TOTFEFreeOTFEVolumeInfo): boolean;
+function TOTFEFreeOTFEDLL.GetVolumeInfo(driveLetter: ansichar; var volumeInfo: TOTFEFreeOTFEVolumeInfo): boolean;
 var
   retVal: boolean;
   BytesReturned: DWORD;
@@ -2583,7 +2583,7 @@ begin
                             0,
                             @outBuffer,
                             sizeof(outBuffer),
-                            @BytesReturned,
+                            @BytesReturned
                            ) then
       begin
       if (BytesReturned <= sizeof(outBuffer)) then
@@ -2609,7 +2609,7 @@ begin
             end;
           end;
 
-        volumeInfo.DriveLetter := driveLetter;
+        volumeInfo.DriveLetter := AnsiChar(driveLetter);
 
 // Functionality in DLL/PDA driver to retrieve metadata not currently implemented!
         retval := TRUE;
@@ -2629,7 +2629,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.Seek(driveLetter: char; offset: DWORD): boolean;
+function TOTFEFreeOTFEDLL.Seek(driveLetter: Ansichar; offset: DWORD): boolean;
 var
   handles: TMountedHandle;
   retval: boolean;
@@ -2654,7 +2654,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.ReadData_Sectors(
-  DriveLetter: char;
+  DriveLetter: Ansichar;
   SectorNoStart: DWORD;
   CountSectors: DWORD;
   stm: TStream
@@ -2711,7 +2711,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.WriteData_Sectors(
-  DriveLetter: char;
+  DriveLetter: Ansichar;
   SectorNoStart: DWORD;
   CountSectors: DWORD;
   stm: TStream
@@ -2770,7 +2770,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.ReadData_Bytes(
-                      DriveLetter: char;
+                      DriveLetter: Ansichar;
                       Offset: ULONGLONG;
                       DataLength: ULONGLONG;
                       Data: TStream
@@ -2846,7 +2846,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.WriteData_Bytes(
-                      DriveLetter: char;
+                      DriveLetter: Ansichar;
                       Offset: ULONGLONG;
                       DataLength: ULONGLONG;
                       Data: TStream
@@ -2907,7 +2907,7 @@ begin
                             DriveLetter,
                             sectorID,
                             cntSectors,
-                            tmpStream,
+                            tmpStream
                            ) then
           begin
           tmpStream.Position := 0;
@@ -2933,7 +2933,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL._GetDiskGeometry(
-  DriveLetter: char;
+  DriveLetter: Ansichar;
   var diskGeometry: TSDUDiskGeometry
 ): boolean;
 var
@@ -2965,7 +2965,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-procedure TOTFEFreeOTFEDLL.AddDiskGeometry(driveLetter: char; diskGeometry: TSDUDiskGeometry);
+procedure TOTFEFreeOTFEDLL.AddDiskGeometry(driveLetter: Ansichar; diskGeometry: TSDUDiskGeometry);
 var
   ptrDiskGeometry: PSDUDiskGeometry;
 begin
@@ -2975,7 +2975,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.GetDiskGeometry(driveLetter: char; var diskGeometry: TSDUDiskGeometry): boolean;
+function TOTFEFreeOTFEDLL.GetDiskGeometry(driveLetter: Ansichar; var diskGeometry: TSDUDiskGeometry): boolean;
 var
   ptrDiskGeometry: PSDUDiskGeometry;
   idx: integer;
@@ -2995,7 +2995,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-procedure TOTFEFreeOTFEDLL.DeleteDiskGeometry(driveLetter: char);
+procedure TOTFEFreeOTFEDLL.DeleteDiskGeometry(driveLetter: Ansichar);
 var
   ptrDiskGeometry: PSDUDiskGeometry;
   idx: integer;

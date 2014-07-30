@@ -1,148 +1,192 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ProjectGuid>{4626b4ed-0ae0-4ff2-a94a-c4787c0a9b20}</ProjectGuid>
-  </PropertyGroup>
-  <ItemGroup />
-  <ItemGroup />
-  <ProjectExtensions>
-    <Borland.Personality>Default.Personality</Borland.Personality>
-    <Borland.ProjectType />
-    <BorlandProject>
-<BorlandProject xmlns=""><Default.Personality></Default.Personality></BorlandProject></BorlandProject>
-  </ProjectExtensions>
-  <Target Name="SDeanUtils">
-    <MSBuild Projects="Components\SDeanUtils\SDeanUtils.dproj" Targets="" />
-  </Target>
-  <Target Name="SDeanUtils:Clean">
-    <MSBuild Projects="Components\SDeanUtils\SDeanUtils.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="SDeanUtils:Make">
-    <MSBuild Projects="Components\SDeanUtils\SDeanUtils.dproj" Targets="Make" />
-  </Target>
-  <Target Name="Hash">
-    <MSBuild Projects="Components\Hash\Hash.dproj" Targets="" />
-  </Target>
-  <Target Name="Hash:Clean">
-    <MSBuild Projects="Components\Hash\Hash.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="Hash:Make">
-    <MSBuild Projects="Components\Hash\Hash.dproj" Targets="Make" />
-  </Target>
-  <Target Name="SDeanSecurity">
-    <MSBuild Projects="Components\SDeanSecurity\SDeanSecurity.dproj" Targets="" />
-  </Target>
-  <Target Name="SDeanSecurity:Clean">
-    <MSBuild Projects="Components\SDeanSecurity\SDeanSecurity.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="SDeanSecurity:Make">
-    <MSBuild Projects="Components\SDeanSecurity\SDeanSecurity.dproj" Targets="Make" />
-  </Target>
-  <Target Name="SDeanFilesystem">
-    <MSBuild Projects="Components\SDeanFilesystem\SDeanFilesystem.dproj" Targets="" />
-  </Target>
-  <Target Name="SDeanFilesystem:Clean">
-    <MSBuild Projects="Components\SDeanFilesystem\SDeanFilesystem.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="SDeanFilesystem:Make">
-    <MSBuild Projects="Components\SDeanFilesystem\SDeanFilesystem.dproj" Targets="Make" />
-  </Target>
-  <Target Name="OTFE">
-    <MSBuild Projects="Components\OTFE\OTFE\OTFE.dproj" Targets="" />
-  </Target>
-  <Target Name="OTFE:Clean">
-    <MSBuild Projects="Components\OTFE\OTFE\OTFE.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="OTFE:Make">
-    <MSBuild Projects="Components\OTFE\OTFE\OTFE.dproj" Targets="Make" />
-  </Target>
-  <Target Name="OTFEBestCrypt">
-    <MSBuild Projects="Components\OTFE\OTFEBestCrypt\OTFEBestCrypt.dproj" Targets="" />
-  </Target>
-  <Target Name="OTFEBestCrypt:Clean">
-    <MSBuild Projects="Components\OTFE\OTFEBestCrypt\OTFEBestCrypt.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="OTFEBestCrypt:Make">
-    <MSBuild Projects="Components\OTFE\OTFEBestCrypt\OTFEBestCrypt.dproj" Targets="Make" />
-  </Target>
-  <Target Name="OTFECrossCrypt">
-    <MSBuild Projects="Components\OTFE\OTFECrossCrypt\OTFECrossCrypt.dproj" Targets="" />
-  </Target>
-  <Target Name="OTFECrossCrypt:Clean">
-    <MSBuild Projects="Components\OTFE\OTFECrossCrypt\OTFECrossCrypt.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="OTFECrossCrypt:Make">
-    <MSBuild Projects="Components\OTFE\OTFECrossCrypt\OTFECrossCrypt.dproj" Targets="Make" />
-  </Target>
-  <Target Name="OTFEE4M">
-    <MSBuild Projects="Components\OTFE\OTFEE4M\OTFEE4M.dproj" Targets="" />
-  </Target>
-  <Target Name="OTFEE4M:Clean">
-    <MSBuild Projects="Components\OTFE\OTFEE4M\OTFEE4M.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="OTFEE4M:Make">
-    <MSBuild Projects="Components\OTFE\OTFEE4M\OTFEE4M.dproj" Targets="Make" />
-  </Target>
-  <Target Name="OTFEFreeOTFE" DependsOnTargets="SDeanFilesystem">
-    <MSBuild Projects="Components\OTFE\OTFEFreeOTFE\OTFEFreeOTFE.dproj" Targets="" />
-  </Target>
-  <Target Name="OTFEFreeOTFE:Clean" DependsOnTargets="SDeanFilesystem:Clean">
-    <MSBuild Projects="Components\OTFE\OTFEFreeOTFE\OTFEFreeOTFE.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="OTFEFreeOTFE:Make" DependsOnTargets="SDeanFilesystem:Make">
-    <MSBuild Projects="Components\OTFE\OTFEFreeOTFE\OTFEFreeOTFE.dproj" Targets="Make" />
-  </Target>
-  <Target Name="OTFEPGPDisk">
-    <MSBuild Projects="Components\OTFE\OTFEPGPDisk\OTFEPGPDisk.dproj" Targets="" />
-  </Target>
-  <Target Name="OTFEPGPDisk:Clean">
-    <MSBuild Projects="Components\OTFE\OTFEPGPDisk\OTFEPGPDisk.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="OTFEPGPDisk:Make">
-    <MSBuild Projects="Components\OTFE\OTFEPGPDisk\OTFEPGPDisk.dproj" Targets="Make" />
-  </Target>
-  <Target Name="OTFEScramDisk">
-    <MSBuild Projects="Components\OTFE\OTFEScramDisk\OTFEScramDisk.dproj" Targets="" />
-  </Target>
-  <Target Name="OTFEScramDisk:Clean">
-    <MSBuild Projects="Components\OTFE\OTFEScramDisk\OTFEScramDisk.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="OTFEScramDisk:Make">
-    <MSBuild Projects="Components\OTFE\OTFEScramDisk\OTFEScramDisk.dproj" Targets="Make" />
-  </Target>
-  <Target Name="OTFEStrongDisk">
-    <MSBuild Projects="Components\OTFE\OTFEStrongDisk\OTFEStrongDisk.dproj" Targets="" />
-  </Target>
-  <Target Name="OTFEStrongDisk:Clean">
-    <MSBuild Projects="Components\OTFE\OTFEStrongDisk\OTFEStrongDisk.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="OTFEStrongDisk:Make">
-    <MSBuild Projects="Components\OTFE\OTFEStrongDisk\OTFEStrongDisk.dproj" Targets="Make" />
-  </Target>
-  <Target Name="OTFETrueCrypt">
-    <MSBuild Projects="Components\OTFE\OTFETrueCrypt\OTFETrueCrypt.dproj" Targets="" />
-  </Target>
-  <Target Name="OTFETrueCrypt:Clean">
-    <MSBuild Projects="Components\OTFE\OTFETrueCrypt\OTFETrueCrypt.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="OTFETrueCrypt:Make">
-    <MSBuild Projects="Components\OTFE\OTFETrueCrypt\OTFETrueCrypt.dproj" Targets="Make" />
-  </Target>
-  <Target Name="OTFEUnified">
-    <MSBuild Projects="Components\OTFE\OTFEUnified\OTFEUnified.dproj" Targets="" />
-  </Target>
-  <Target Name="OTFEUnified:Clean">
-    <MSBuild Projects="Components\OTFE\OTFEUnified\OTFEUnified.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="OTFEUnified:Make">
-    <MSBuild Projects="Components\OTFE\OTFEUnified\OTFEUnified.dproj" Targets="Make" />
-  </Target>
-  <Target Name="Build">
-    <CallTarget Targets="SDeanUtils;Hash;SDeanSecurity;SDeanFilesystem;OTFE;OTFEBestCrypt;OTFECrossCrypt;OTFEE4M;OTFEFreeOTFE;OTFEPGPDisk;OTFEScramDisk;OTFEStrongDisk;OTFETrueCrypt;OTFEUnified" />
-  </Target>
-  <Target Name="Clean">
-    <CallTarget Targets="SDeanUtils:Clean;Hash:Clean;SDeanSecurity:Clean;SDeanFilesystem:Clean;OTFE:Clean;OTFEBestCrypt:Clean;OTFECrossCrypt:Clean;OTFEE4M:Clean;OTFEFreeOTFE:Clean;OTFEPGPDisk:Clean;OTFEScramDisk:Clean;OTFEStrongDisk:Clean;OTFETrueCrypt:Clean;OTFEUnified:Clean" />
-  </Target>
-  <Target Name="Make">
-    <CallTarget Targets="SDeanUtils:Make;Hash:Make;SDeanSecurity:Make;SDeanFilesystem:Make;OTFE:Make;OTFEBestCrypt:Make;OTFECrossCrypt:Make;OTFEE4M:Make;OTFEFreeOTFE:Make;OTFEPGPDisk:Make;OTFEScramDisk:Make;OTFEStrongDisk:Make;OTFETrueCrypt:Make;OTFEUnified:Make" />
-  </Target>
-</Project>
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{049E6E13-B530-4C3F-A296-40996E25A8FE}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="Components\SDeanUtils\SDeanUtils.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Components\Hash\Hash.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Components\SDeanSecurity\SDeanSecurity.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Components\SDeanFilesystem\SDeanFilesystem.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Components\OTFE\OTFE\OTFE.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Components\OTFE\OTFEBestCrypt\OTFEBestCrypt.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Components\OTFE\OTFECrossCrypt\OTFECrossCrypt.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Components\OTFE\OTFEE4M\OTFEE4M.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Components\OTFE\OTFEFreeOTFE\OTFEFreeOTFE.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Components\OTFE\OTFEPGPDisk\OTFEPGPDisk.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Components\OTFE\OTFEScramDisk\OTFEScramDisk.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Components\OTFE\OTFEStrongDisk\OTFEStrongDisk.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Components\OTFE\OTFETrueCrypt\OTFETrueCrypt.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Components\OTFE\OTFEUnified\OTFEUnified.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="SDeanUtils">
+			<MSBuild Projects="Components\SDeanUtils\SDeanUtils.dproj"/>
+		</Target>
+		<Target Name="SDeanUtils:Clean">
+			<MSBuild Projects="Components\SDeanUtils\SDeanUtils.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="SDeanUtils:Make">
+			<MSBuild Projects="Components\SDeanUtils\SDeanUtils.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Hash">
+			<MSBuild Projects="Components\Hash\Hash.dproj"/>
+		</Target>
+		<Target Name="Hash:Clean">
+			<MSBuild Projects="Components\Hash\Hash.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Hash:Make">
+			<MSBuild Projects="Components\Hash\Hash.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="SDeanSecurity">
+			<MSBuild Projects="Components\SDeanSecurity\SDeanSecurity.dproj"/>
+		</Target>
+		<Target Name="SDeanSecurity:Clean">
+			<MSBuild Projects="Components\SDeanSecurity\SDeanSecurity.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="SDeanSecurity:Make">
+			<MSBuild Projects="Components\SDeanSecurity\SDeanSecurity.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="SDeanFilesystem">
+			<MSBuild Projects="Components\SDeanFilesystem\SDeanFilesystem.dproj"/>
+		</Target>
+		<Target Name="SDeanFilesystem:Clean">
+			<MSBuild Projects="Components\SDeanFilesystem\SDeanFilesystem.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="SDeanFilesystem:Make">
+			<MSBuild Projects="Components\SDeanFilesystem\SDeanFilesystem.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="OTFE">
+			<MSBuild Projects="Components\OTFE\OTFE\OTFE.dproj"/>
+		</Target>
+		<Target Name="OTFE:Clean">
+			<MSBuild Projects="Components\OTFE\OTFE\OTFE.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="OTFE:Make">
+			<MSBuild Projects="Components\OTFE\OTFE\OTFE.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="OTFEBestCrypt">
+			<MSBuild Projects="Components\OTFE\OTFEBestCrypt\OTFEBestCrypt.dproj"/>
+		</Target>
+		<Target Name="OTFEBestCrypt:Clean">
+			<MSBuild Projects="Components\OTFE\OTFEBestCrypt\OTFEBestCrypt.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="OTFEBestCrypt:Make">
+			<MSBuild Projects="Components\OTFE\OTFEBestCrypt\OTFEBestCrypt.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="OTFECrossCrypt">
+			<MSBuild Projects="Components\OTFE\OTFECrossCrypt\OTFECrossCrypt.dproj"/>
+		</Target>
+		<Target Name="OTFECrossCrypt:Clean">
+			<MSBuild Projects="Components\OTFE\OTFECrossCrypt\OTFECrossCrypt.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="OTFECrossCrypt:Make">
+			<MSBuild Projects="Components\OTFE\OTFECrossCrypt\OTFECrossCrypt.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="OTFEE4M">
+			<MSBuild Projects="Components\OTFE\OTFEE4M\OTFEE4M.dproj"/>
+		</Target>
+		<Target Name="OTFEE4M:Clean">
+			<MSBuild Projects="Components\OTFE\OTFEE4M\OTFEE4M.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="OTFEE4M:Make">
+			<MSBuild Projects="Components\OTFE\OTFEE4M\OTFEE4M.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="OTFEFreeOTFE">
+			<MSBuild Projects="Components\OTFE\OTFEFreeOTFE\OTFEFreeOTFE.dproj"/>
+		</Target>
+		<Target Name="OTFEFreeOTFE:Clean">
+			<MSBuild Projects="Components\OTFE\OTFEFreeOTFE\OTFEFreeOTFE.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="OTFEFreeOTFE:Make">
+			<MSBuild Projects="Components\OTFE\OTFEFreeOTFE\OTFEFreeOTFE.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="OTFEPGPDisk">
+			<MSBuild Projects="Components\OTFE\OTFEPGPDisk\OTFEPGPDisk.dproj"/>
+		</Target>
+		<Target Name="OTFEPGPDisk:Clean">
+			<MSBuild Projects="Components\OTFE\OTFEPGPDisk\OTFEPGPDisk.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="OTFEPGPDisk:Make">
+			<MSBuild Projects="Components\OTFE\OTFEPGPDisk\OTFEPGPDisk.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="OTFEScramDisk">
+			<MSBuild Projects="Components\OTFE\OTFEScramDisk\OTFEScramDisk.dproj"/>
+		</Target>
+		<Target Name="OTFEScramDisk:Clean">
+			<MSBuild Projects="Components\OTFE\OTFEScramDisk\OTFEScramDisk.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="OTFEScramDisk:Make">
+			<MSBuild Projects="Components\OTFE\OTFEScramDisk\OTFEScramDisk.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="OTFEStrongDisk">
+			<MSBuild Projects="Components\OTFE\OTFEStrongDisk\OTFEStrongDisk.dproj"/>
+		</Target>
+		<Target Name="OTFEStrongDisk:Clean">
+			<MSBuild Projects="Components\OTFE\OTFEStrongDisk\OTFEStrongDisk.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="OTFEStrongDisk:Make">
+			<MSBuild Projects="Components\OTFE\OTFEStrongDisk\OTFEStrongDisk.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="OTFETrueCrypt">
+			<MSBuild Projects="Components\OTFE\OTFETrueCrypt\OTFETrueCrypt.dproj"/>
+		</Target>
+		<Target Name="OTFETrueCrypt:Clean">
+			<MSBuild Projects="Components\OTFE\OTFETrueCrypt\OTFETrueCrypt.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="OTFETrueCrypt:Make">
+			<MSBuild Projects="Components\OTFE\OTFETrueCrypt\OTFETrueCrypt.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="OTFEUnified">
+			<MSBuild Projects="Components\OTFE\OTFEUnified\OTFEUnified.dproj"/>
+		</Target>
+		<Target Name="OTFEUnified:Clean">
+			<MSBuild Projects="Components\OTFE\OTFEUnified\OTFEUnified.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="OTFEUnified:Make">
+			<MSBuild Projects="Components\OTFE\OTFEUnified\OTFEUnified.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="SDeanUtils;Hash;SDeanSecurity;SDeanFilesystem;OTFE;OTFEBestCrypt;OTFECrossCrypt;OTFEE4M;OTFEFreeOTFE;OTFEPGPDisk;OTFEScramDisk;OTFEStrongDisk;OTFETrueCrypt;OTFEUnified"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="SDeanUtils:Clean;Hash:Clean;SDeanSecurity:Clean;SDeanFilesystem:Clean;OTFE:Clean;OTFEBestCrypt:Clean;OTFECrossCrypt:Clean;OTFEE4M:Clean;OTFEFreeOTFE:Clean;OTFEPGPDisk:Clean;OTFEScramDisk:Clean;OTFEStrongDisk:Clean;OTFETrueCrypt:Clean;OTFEUnified:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="SDeanUtils:Make;Hash:Make;SDeanSecurity:Make;SDeanFilesystem:Make;OTFE:Make;OTFEBestCrypt:Make;OTFECrossCrypt:Make;OTFEE4M:Make;OTFEFreeOTFE:Make;OTFEPGPDisk:Make;OTFEScramDisk:Make;OTFEStrongDisk:Make;OTFETrueCrypt:Make;OTFEUnified:Make"/>
+		</Target>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
+	</Project>

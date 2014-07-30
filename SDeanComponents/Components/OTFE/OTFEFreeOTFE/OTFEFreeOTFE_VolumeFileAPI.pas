@@ -95,14 +95,14 @@ type
     PartitionLen: int64;  // In *bytes*
 
     MasterKeyLength: DWORD;  // In *bits*
-    MasterKey: string;
+    MasterKey: Ansistring;
 
-    RequestedDriveLetter: char;
+    RequestedDriveLetter: Ansichar;
 
     SectorIVGenMethod: TFreeOTFESectorIVGenMethod;
 
     VolumeIVLength: DWORD;  // In *bits*
-    VolumeIV: string;
+    VolumeIV: Ansistring;
   end;
 
   TVolumeDetailsBlockArray = array of TVolumeDetailsBlock;
@@ -119,11 +119,11 @@ type
 
     // driver - Kernel drivers: HashDriverKernelModeName
     //          DLL drivers:    HashLibFilename
-    HashDriver: string;
+    HashDriver: ansistring;
     HashGUID: TGUID;
     // driver - Kernel drivers: CypherDriverKernelModeName
     //          DLL drivers:    CypherLibFilename
-    CypherDriver: string;
+    CypherDriver: ansistring;
     CypherGUID: TGUID;
   end;
 

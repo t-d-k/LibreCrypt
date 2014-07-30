@@ -263,7 +263,7 @@ type
     // TOTFE functions...
     function  Title(): string; overload; override;
     function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; overload; override;
-    function  Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean; overload; override;
+    function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; overload; override;
     function  MountDevices(): string; override;
     function  CanMountDevice(): boolean; override;
     function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
@@ -1455,7 +1455,7 @@ begin
 
 end;
 
-function  TOTFEScramDisk.Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean;
+function  TOTFEScramDisk.Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean;
 var
   passwordsEntered: boolean;
   i: integer;
@@ -1848,7 +1848,7 @@ begin
       mountFilenameDlg.InitialDir := FDefaultPromptDir;
       end;
     mountFilenameDlg.filter := 'SVL files (*.svl)|*.svl|Wave files (*.wav)|*.wav|All files|*.*';
-    mountFilenameDlg.Title := 'Mount Volume';
+    mountFilenameDlg.Title := 'Open Box';
     if (mountFilenameDlg.execute) then
       begin
       Result := MountPrompted(mountFilenameDlg.files,

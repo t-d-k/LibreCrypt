@@ -56,7 +56,7 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Width = 75
     Height = 25
     Caption = 'Move &Up'
-    TabOrder = 1
+    TabOrder = 0
     OnClick = pbMoveUpClick
   end
   object pbMoveDown: TButton
@@ -65,7 +65,7 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Width = 75
     Height = 25
     Caption = 'Move &Down'
-    TabOrder = 2
+    TabOrder = 1
     OnClick = pbMoveDownClick
   end
   object pbShow: TButton
@@ -74,7 +74,7 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Width = 75
     Height = 25
     Caption = '&Show'
-    TabOrder = 3
+    TabOrder = 2
     OnClick = pbShowClick
   end
   object pbHide: TButton
@@ -83,7 +83,7 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Width = 75
     Height = 25
     Caption = '&Hide'
-    TabOrder = 4
+    TabOrder = 3
     OnClick = pbHideClick
   end
   object pbOK: TButton
@@ -93,7 +93,7 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Height = 25
     Caption = 'OK'
     Default = True
-    TabOrder = 5
+    TabOrder = 4
     OnClick = pbOKClick
   end
   object pbCancel: TButton
@@ -120,6 +120,6 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Width = 297
     Height = 13
     Caption = 'pnlSplitter'
-    TabOrder = 8
+    TabOrder = 5
   end
 end

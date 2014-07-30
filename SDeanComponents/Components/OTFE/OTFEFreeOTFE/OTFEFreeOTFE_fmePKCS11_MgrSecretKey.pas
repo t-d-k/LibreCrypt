@@ -299,8 +299,8 @@ end;
 
 function TfmePKCS11_MgrSecretKey.EncryptDecryptCDB(encryptNotDecrypt: boolean): boolean;
 var
-  cdbBefore: string;
-  cdbAfter: string;
+  cdbBefore: ansistring;
+  cdbAfter: ansistring;
   allOK: boolean;
   errMsg: string;
   fileToSecure: string;
@@ -385,7 +385,7 @@ begin
         if not(FreeOTFEObj.ReadRawVolumeCriticalData(
                                                  fileToSecure,
                                                  offset,
-                                                 cdbBefore
+                                                cdbBefore
                                                 )) then
           begin
           SDUMessageDlg(_('Unable to read keyfile/volume CDB'), mtError);

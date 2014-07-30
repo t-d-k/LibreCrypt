@@ -82,9 +82,9 @@ type
   private
     FFileDirUseInt: boolean;
     FFreeUseInt: boolean;
-    FExtFileExe: string;
-    FExtDirExe: string;
-    FExtFreeSpaceExe: string;
+    FExtFileExe: AnsiString;
+    FExtDirExe: AnsiString;
+    FExtFreeSpaceExe: AnsiString;
     FExtShredFilesThenDir: boolean;
     FIntSegmentOffset: ULONGLONG;
     FIntSegmentLength: ULONGLONG;
@@ -138,7 +138,7 @@ type
     // Call this to shred all free space on the specified drive
     // Note: Does *not* wipe file slack - OverwriteAllFileSlacks(...) should be
     //       called before this function, if needed
-    function  OverwriteDriveFreeSpace(driveLetter: char; silent: boolean = FALSE): TShredResult;
+    function  OverwriteDriveFreeSpace(driveLetter: ansichar; silent: boolean = FALSE): TShredResult;
 
     // Call this to a specific file's slack space
     function  OverwriteFileSlack(filename: string): boolean;
@@ -168,13 +168,13 @@ type
     property FreeUseInt: boolean read FFreeUseInt write FFreeUseInt default TRUE;
 
     // Command to be used when using a 3rd party executable to shred files
-    property ExtFileExe: string read FExtFileExe  write FExtFileExe;
+    property ExtFileExe: Ansistring read FExtFileExe  write FExtFileExe;
 
     // Command to be used when using a 3rd party executable to shred directories
-    property ExtDirExe: string read FExtDirExe  write FExtDirExe;
+    property ExtDirExe: Ansistring read FExtDirExe  write FExtDirExe;
 
     // Command to be used when using a 3rd party executable to free space
-    property ExtFreeSpaceExe: string read FExtFreeSpaceExe write FExtFreeSpaceExe;
+    property ExtFreeSpaceExe: Ansistring read FExtFreeSpaceExe write FExtFreeSpaceExe;
 
     // When shredding directories, and using a 3rd party executable to do so,
     // if all the files and subdirs within the directory to be destroyed must
@@ -243,7 +243,7 @@ type
 
 function ShredMethodTitle(shredMethod: TShredMethod): string;
 
-procedure Overwrite(var x: string); overload;
+procedure Overwrite(var x: AnsiString); overload;
 procedure Overwrite(var x: TStream); overload;
 // Not clear why this next one is needed; descends from TStream, but Delphi
 // can't match it when this when a TSDUMemoryStream is passed to the TStream
@@ -291,9 +291,9 @@ begin
   Result := LoadResString(TShredMethodTitle[shredMethod]);
 end;
 
-procedure Overwrite(var x: string);
+procedure Overwrite(var x: AnsiString);
 begin
-  x := StringOfChar(#0, length(x));
+  x := StringOfChar(Ansichar(#0), length(x));
 end;
 
 procedure Overwrite(var x: TStream);
@@ -464,7 +464,7 @@ var
 {$IFDEF MSWINDOWS}
   fileAttributes : integer;
 {$ENDIF}
-  shredderCommandLine : string;
+  shredderCommandLine : AnsiString;
   retval: TShredResult;
 begin
   // Remove any hidden, system or readonly file attrib
@@ -497,7 +497,7 @@ begin
     else
       begin
       shredderCommandLine := format(FExtFileExe, [itemname]);
-      WinExec(PChar(shredderCommandLine), SW_MINIMIZE);
+      WinExec(PAnsiChar(shredderCommandLine), SW_MINIMIZE);
       // Assume success
       retval := srSuccess;
       end;
@@ -1277,11 +1277,11 @@ begin
 end;
 
 // Returns: TShredResult
-function TShredder.OverwriteDriveFreeSpace(driveLetter: char; silent: boolean): TShredResult;
+function TShredder.OverwriteDriveFreeSpace(driveLetter: ansichar; silent: boolean): TShredResult;
 const
   FIVE_MB = (5 * BYTES_IN_MEGABYTE);
 var
-  drive: string;
+  drive: ansistring;
   tempDriveDir: string;
   freeSpace: int64;
   fileNumber: integer;
@@ -1289,7 +1289,7 @@ var
   blankArray: TShredFreeSpaceBlockObj;
   i: integer;
   lastFilename: string;
-  shredderCommandLine: string;
+  shredderCommandLine: Ansistring;
   progressDlg: TSDUProgressDialog;
   diskNumber: integer;
   userCancel: boolean;
@@ -1308,7 +1308,7 @@ begin
   if not(FFreeUseInt) then
     begin
     shredderCommandLine := format(FExtFreeSpaceExe, [driveLetter]);
-    if (WinExec(PChar(shredderCommandLine), SW_RESTORE))<31 then
+    if (WinExec(PAnsiChar(shredderCommandLine), SW_RESTORE))<31 then
       begin
       failure := TRUE;
       SDUMessageDlg(_('Error running external (3rd party) free space shredder'),
@@ -1927,7 +1927,7 @@ end;
 function TShredder.ShredDir(dirname: string; silent: boolean): TShredResult;
 var
   dirToDestroy: string;
-  shredderCommandLine: string;
+  shredderCommandLine: Ansistring;
   fileIterator: TSDUFileIterator;
   dirIterator: TSDUDirIterator;
   currFile: string;
@@ -1944,7 +1944,7 @@ begin
     // removed before it can be used
     dirname := SDUConvertLFNToSFN(dirname);
     shredderCommandLine := format(FExtDirExe, [dirname]);
-    winexec(PChar(shredderCommandLine), SW_MINIMIZE);
+    winexec(PAnsiChar(shredderCommandLine), SW_MINIMIZE);
     end
   else
     begin
@@ -2000,7 +2000,7 @@ begin
             // removed before it can be used
             dirToDestroy := SDUConvertLFNToSFN(currDir);
             shredderCommandLine := format(FExtDirExe, [dirToDestroy]);
-            WinExec(PChar(shredderCommandLine), SW_MINIMIZE);
+            WinExec(PAnsiChar(shredderCommandLine), SW_MINIMIZE);
             end
           else
             begin

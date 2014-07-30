@@ -36,9 +36,9 @@ type
 
     procedure EnableDisableControls();
 
-    function  GetKey(var userKey: string): boolean;
+    function  GetKey(var userKey: Ansistring): boolean;
     function  GetKeyRaw(var userKey: string): boolean;
-    function  SetKey(userKey: string): boolean;
+    function  SetKey(userKey: Ansistring): boolean;
     function  SetKeyfile(filename: string): boolean;
     function  GetKeyfile(var filename: string): boolean;
     function  GetKeyfileIsASCII(var isASCII: boolean): boolean;
@@ -150,7 +150,7 @@ begin
   Result := TRUE;
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKey(var userKey: string): boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKey(var userKey: Ansistring): boolean;
 var
   retval: boolean;
   keyfileIsASCII: boolean;
@@ -160,6 +160,7 @@ begin
   
   if rbKeyFromUser.checked then
     begin
+    { TODO 1 -otdk -cfix : warn user about losing unicde chars }
     userKey := preUserkey.Text;
     retval := TRUE;
     end
@@ -182,7 +183,7 @@ begin
   Result := retval;
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SetKey(userKey: string): boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SetKey(userKey: Ansistring): boolean;
 begin
   preUserkey.Text := userKey;
   Result := TRUE;

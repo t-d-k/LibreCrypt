@@ -4,21 +4,21 @@ unit SDUBase64;
 
 interface
 
-function Base64Decode(var Buf: string): longint; overload;
+function Base64Decode(var Buf: Ansistring): longint; overload;
 
-function Base64Encode(inBuf: string; var outBuf: string): longint; overload;
+function Base64Encode(inBuf: Ansistring; var outBuf: Ansistring): longint; overload;
 
-function Base64Decode(const Buf: PChar): longint; overload;
+function Base64Decode(const Buf: PAnsiChar): longint; overload;
 
-function Base64Encode(const InBuf: PChar; const InLen: longint;
-                      const OutBuf: PChar): longint; overload;
+function Base64Encode(const InBuf: PAnsiChar; const InLen: longint;
+                      const OutBuf: PAnsiChar): longint; overload;
 
 implementation
 
 uses SysUtils;
 
 // Decode the supplied string, returning the number of decoded bytes
-function Base64Decode(var Buf: string): longint;
+function Base64Decode(var Buf: Ansistring): longint;
 var
   tmpArray: array of byte;
   i: integer;
@@ -37,7 +37,7 @@ begin
   buf := '';
   for i:=0 to (decodedLen-1) do
     begin
-    buf := buf + char(tmpArray[i]);
+    buf := buf + Ansichar(tmpArray[i]);
     end;
 
   Result := decodedLen;
@@ -46,7 +46,7 @@ end;
 
 
 // Encode the supplied string, returning number of bytes
-function Base64Encode(inBuf: string; var outBuf: string): longint;
+function Base64Encode(inBuf: Ansistring; var outBuf: Ansistring): longint;
 var
   tmpInArray: array of byte;
   tmpOutArray: array of byte;
@@ -68,7 +68,7 @@ begin
   outBuf := '';
   for i:=0 to (decodedLen-1) do
     begin
-    outBuf := outBuf + char(tmpOutArray[i]);
+    outBuf := outBuf + AnsiChar(tmpOutArray[i]);
     end;
 
   Result := decodedLen;
@@ -76,10 +76,10 @@ begin
 end;
 
 
-function Base64Decode(const Buf: PChar): longint;
+function Base64Decode(const Buf: PAnsiChar): longint;
 { Do a Base-64 decode of Buf, returning the number of decoded bytes. }
 var
-   InP, OutP: PChar;
+   InP, OutP: PAnsiChar;
    Group3: longint; { Must be a 3+ byte entity }
    Idx: integer;
 begin
@@ -101,9 +101,9 @@ while (InP^ <> #0) do
       Idx:= (Idx + 1) mod 4;
       if (Idx = 0) then
          begin
-         OutP^    := chr((Group3 shr 16) and $ff);
-         (OutP+1)^:= chr((Group3 shr 8)  and $ff);
-         (OutP+2)^:= chr(Group3 and $ff);
+         OutP^    := AnsiChar((Group3 shr 16) and $ff);
+         (OutP+1)^:= AnsiChar((Group3 shr 8)  and $ff);
+         (OutP+2)^:= AnsiChar(Group3 and $ff);
          inc(OutP, 3);
          end;
       end;
@@ -116,13 +116,13 @@ while (InP^ <> #0) do
    0, 1: { Not possible };
    2   : begin
             { Two encoded-data bytes yield one decoded byte }
-            OutP^:= chr((Group3 shr 16) and $ff);
+            OutP^:= AnsiChar((Group3 shr 16) and $ff);
             inc(OutP);
          end;
    3   : begin
             { Three encoded-data bytes yield two decoded bytes }
-            OutP^    := chr((Group3 shr 16) and $ff);
-            (OutP+1)^:= chr((Group3 shr 8) and $ff);
+            OutP^    := AnsiChar((Group3 shr 16) and $ff);
+            (OutP+1)^:= AnsiChar((Group3 shr 8) and $ff);
             inc(OutP, 2);
          end;
   end;
@@ -132,14 +132,14 @@ Result:= (OutP - Buf);
 end;
 
 
-function Base64Encode(const InBuf: PChar; const InLen: longint;
-                      const OutBuf: PChar): longint;
+function Base64Encode(const InBuf: PAnsiChar; const InLen: longint;
+                      const OutBuf: PAnsiChar): longint;
 { Do a base64 encoding of InLen bytes from InBuf,
   save to OutBuf and return number of bytes in OutBuf }
 
 var
-   Alphabet : array[0..63] of char;
-   InP, OutP: PChar;
+   Alphabet : array[0..63] of Ansichar;
+   InP, OutP: PAnsiChar;
    Remain: longint;
    i: byte;
 
@@ -149,10 +149,10 @@ InP:= InBuf; OutP:= OutBuf; Remain:= InLen;
 { Setup the encoding alphabet }
 for i:= 0 to 25 do
     begin
-    Alphabet[i]:= chr(i + ord('A'));
-    Alphabet[i+26]:= chr(i + ord('a'));
+    Alphabet[i]:= Ansichar(i + ord('A'));
+    Alphabet[i+26]:= Ansichar(i + ord('a'));
     end;
-for i:= 0 to 9 do Alphabet[i+52]:= chr(i + ord('0'));
+for i:= 0 to 9 do Alphabet[i+52]:= Ansichar(i + ord('0'));
 Alphabet[62]:= '+'; Alphabet[63]:= '/';
 
 while (remain >= 3) do

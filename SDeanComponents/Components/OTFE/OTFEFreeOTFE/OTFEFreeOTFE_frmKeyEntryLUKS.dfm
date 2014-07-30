@@ -67,7 +67,6 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
       Width = 113
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 0
       OnChange = SelectionChange
       Items.Strings = (
@@ -89,7 +88,6 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
       Width = 113
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 1
       OnChange = SelectionChange
     end

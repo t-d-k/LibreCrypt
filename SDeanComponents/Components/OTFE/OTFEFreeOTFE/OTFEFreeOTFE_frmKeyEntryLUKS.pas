@@ -72,8 +72,8 @@ type
     procedure Initialize();
 
     // Key...
-    function  GetKey(var userKey: string): boolean;
-    function  SetKey(userKey: string): boolean;
+    function  GetKey(var userKey: Ansistring): boolean;
+    function  SetKey(userKey: Ansistring): boolean;
     function  SetKeyfile(filename: string): boolean;
     function  GetKeyfileIsASCII(var isASCII: boolean): boolean;
     function  SetKeyfileIsASCII(isASCII: boolean): boolean;
@@ -88,8 +88,8 @@ type
     function  SetSizeLimit(fileOptSizeLimit: int64): boolean;
 
     // Mount options...
-    function  GetDriveLetter(var mountDriveLetter: char): boolean;
-    function  SetDriveLetter(mountDriveLetter: char): boolean;
+    function  GetDriveLetter(var mountDriveLetter: ansichar): boolean;
+    function  SetDriveLetter(mountDriveLetter: ansichar): boolean;
     function  GetReadonly(var mountReadonly: boolean): boolean;
     function  SetReadonly(mountReadonly: boolean): boolean;
     function  GetMountAs(var mountAs: TFreeOTFEMountAs): boolean;
@@ -125,7 +125,7 @@ end;
 
 procedure TfrmKeyEntryLUKS.PopulateDrives();
 var
-  driveLetters: string;
+  driveLetters: ansistring;
   i: integer;
 begin
   cbDrive.Items.Clear();
@@ -165,7 +165,7 @@ end;
 procedure TfrmKeyEntryLUKS.DefaultOptions();
 var
   i: integer;
-  currDriveLetter: char;
+  currDriveLetter: ansichar;
 begin
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.DefaultOptions();
 
@@ -180,7 +180,7 @@ begin
         // Start from 1; skip the default
         for i:=1 to (cbDrive.items.count-1) do
           begin
-          currDriveLetter := cbDrive.Items[i][1];
+          currDriveLetter := ansichar(cbDrive.Items[i][1]);
           if (currDriveLetter >= TOTFEFreeOTFE(FreeOTFEObj).DefaultDriveLetter) then
             begin
             cbDrive.ItemIndex := i;
@@ -212,7 +212,7 @@ end;
 
 procedure TfrmKeyEntryLUKS.pbOKClick(Sender: TObject);
 var
-  tmpKey: string;
+  tmpKey: Ansistring;
   msgZeroLenKey: string;
 begin
   if GetKey(tmpKey) then
@@ -263,7 +263,7 @@ end;
 procedure TfrmKeyEntryLUKS.EnableDisableControls();
 var
   junkInt64: int64;
-  junkChar: char;
+  junkChar: ansichar;
   mountAsOK: boolean;
   tmpMountAs: TFreeOTFEMountAs;
 begin
@@ -364,12 +364,12 @@ begin
 end;
 
 
-function TfrmKeyEntryLUKS.GetKey(var userKey: string): boolean;
+function TfrmKeyEntryLUKS.GetKey(var userKey: Ansistring): boolean;
 begin
   Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKey(userKey);
 end;
 
-function TfrmKeyEntryLUKS.SetKey(userKey: string): boolean;
+function TfrmKeyEntryLUKS.SetKey(userKey: Ansistring): boolean;
 begin
   Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.SetKey(userKey);
 end;
@@ -413,20 +413,20 @@ begin
 end;
 
 // Note: This may return #0 as mountDriveLetter to indicate "any"
-function TfrmKeyEntryLUKS.GetDriveLetter(var mountDriveLetter: char): boolean;
+function TfrmKeyEntryLUKS.GetDriveLetter(var mountDriveLetter: ansichar): boolean;
 begin
   mountDriveLetter := #0;
   // Note: The item at index zero is "Use default"; #0 is returned for this
   if (cbDrive.ItemIndex>0) then
     begin
-    mountDriveLetter := cbDrive.Items[cbDrive.ItemIndex][1];
+    mountDriveLetter :=ansichar( cbDrive.Items[cbDrive.ItemIndex][1]);
     end;
 
   Result := TRUE;
 end;
 
 // mountDriveLetter - Set to #0 to indicate "Use default"
-function TfrmKeyEntryLUKS.SetDriveLetter(mountDriveLetter: char): boolean;
+function TfrmKeyEntryLUKS.SetDriveLetter(mountDriveLetter: ansichar): boolean;
 var
   idx: integer;
   retVal: boolean;

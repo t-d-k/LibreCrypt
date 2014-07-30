@@ -48,7 +48,7 @@ type
     FMinimizeToIcon: boolean;
 
     FPopupMenuMenu: TPopupMenu;
-    FTip: string;
+    FTip: Ansistring;
 
     FIcon: TIcon;
 
@@ -82,7 +82,7 @@ type
   protected
     procedure SetActive(status: boolean);
     procedure SetAnimateIcon(animate: boolean);
-    procedure SetTip(tip: string);
+    procedure SetTip(tip: Ansistring);
     procedure SetIcon(icon: TIcon);
     procedure SetAnimationIcons(Value: TImageList);
     function  GetAnimationDelay(): integer;
@@ -127,7 +127,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor  Destroy; override;
 
-    procedure BubbleMessage(Title: string; Info: string; Icon: TSDUSystemTrayIconBubbleIcon = shbiNone; Timeout: integer = 15000);
+    procedure BubbleMessage(Title: AnsiChar; Info: AnsiChar; Icon: TSDUSystemTrayIconBubbleIcon = shbiNone; Timeout: integer = 15000);
 
     property Active: boolean read FActive write SetActive;
 
@@ -135,7 +135,7 @@ type
 
     property PopupMenu: TPopupMenu read FPopupMenuMenu write FPopupMenuMenu;
 
-    property Tip: string read FTip write SetTip;
+    property Tip: Ansistring read FTip write SetTip;
     property Icon: TIcon read FIcon write SetIcon;
 
     property AnimationIcons: TImageList read FAnimationIcons write SetAnimationIcons;
@@ -627,7 +627,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-procedure TSDUSystemTrayIcon.SetTip(tip: string);
+procedure TSDUSystemTrayIcon.SetTip(tip: Ansistring);
 begin
   FTip := tip;
   if (
@@ -845,7 +845,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-procedure TSDUSystemTrayIcon.BubbleMessage(Title: string; Info: string; Icon: TSDUSystemTrayIconBubbleIcon; Timeout: integer);
+procedure TSDUSystemTrayIcon.BubbleMessage(Title: AnsiChar; Info: AnsiChar; Icon: TSDUSystemTrayIconBubbleIcon; Timeout: integer);
 var
   trayIcon: TNotifyIconData_v2;
 begin

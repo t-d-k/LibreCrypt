@@ -43,7 +43,7 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
     Top = 0
     Width = 423
     Height = 361
-    ActivePage = tsEncryption
+    ActivePage = tsKey
     Align = alTop
     TabOrder = 0
     object tsKey: TTabSheet
@@ -113,8 +113,14 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
           Top = 20
           Width = 285
           Height = 61
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'preUserKey')
+          ParentFont = False
           ScrollBars = ssBoth
           TabOrder = 0
           OnChange = SelectionChange
@@ -243,7 +249,6 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
           Width = 145
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
           TabOrder = 1
           OnChange = SelectionChange
         end
@@ -284,7 +289,6 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
           Height = 21
           Style = csDropDownList
           Enabled = False
-          ItemHeight = 13
           TabOrder = 5
           OnChange = SelectionChange
         end
@@ -345,7 +349,6 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
           Width = 145
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
           TabOrder = 0
           OnChange = SelectionChange
         end
@@ -408,7 +411,6 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
             Width = 145
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
             TabOrder = 0
             OnChange = SelectionChange
           end
@@ -418,7 +420,6 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
             Width = 145
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
             TabOrder = 2
             OnChange = SelectionChange
           end
@@ -450,7 +451,6 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
             Width = 145
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
             TabOrder = 4
             OnChange = SelectionChange
           end
@@ -469,6 +469,10 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
     object tsFileOptions: TTabSheet
       Caption = 'File options'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 35
         Top = 16
@@ -560,6 +564,10 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
     object tsMountOptions: TTabSheet
       Caption = 'Mount options'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox2: TGroupBox
         Left = 75
         Top = 16
@@ -602,7 +610,6 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
           Width = 113
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
           TabOrder = 0
           OnChange = SelectionChange
           Items.Strings = (
@@ -624,7 +631,6 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
           Width = 113
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
           TabOrder = 1
           OnChange = SelectionChange
         end

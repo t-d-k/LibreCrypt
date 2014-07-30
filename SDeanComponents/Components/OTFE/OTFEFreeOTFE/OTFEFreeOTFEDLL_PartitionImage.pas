@@ -13,7 +13,7 @@ type
   protected
     FFilename: string;
     FSize: ULONGLONG;
-    FMountedAs: char;
+    FMountedAs: Ansichar;
     FBytesPerSector: integer;
 
     FFOTFEMountedOnPartitionMount: boolean;
@@ -34,7 +34,7 @@ type
     function  WriteConsecutiveSectors(startSectorID: uint64; sectors: TStream; maxSize: integer = -1): boolean; override;
   published
     property  Filename: string read FFilename write FFilename;
-    property  MountedAs: char read FMountedAs write FMountedAs;
+    property  MountedAs: Ansichar read FMountedAs write FMountedAs;
   end;
 
 implementation

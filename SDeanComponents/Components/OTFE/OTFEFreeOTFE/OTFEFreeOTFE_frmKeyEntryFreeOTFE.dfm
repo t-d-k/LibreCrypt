@@ -37,9 +37,9 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
       object Label1: TLabel
         Left = 12
         Top = 24
-        Width = 49
+        Width = 53
         Height = 13
-        Caption = '&Password:'
+        Caption = '&Keyphrase:'
       end
       object Label6: TLabel
         Left = 12
@@ -62,8 +62,14 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Top = 20
         Width = 429
         Height = 61
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
         Lines.Strings = (
           'preUserKey')
+        ParentFont = False
         ScrollBars = ssBoth
         TabOrder = 0
         OnKeyDown = preUserKeyKeyDown
@@ -74,7 +80,6 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Width = 113
         Height = 21
         Style = csDropDownList
-        ItemHeight = 13
         TabOrder = 5
         Items.Strings = (
           'Z:')
@@ -93,7 +98,6 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Width = 145
         Height = 21
         Style = csDropDownList
-        ItemHeight = 13
         TabOrder = 4
         OnChange = cbPKCS11CDBChange
       end
@@ -246,7 +250,6 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
           Width = 113
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
           TabOrder = 0
           OnChange = cbMediaTypeChange
         end
@@ -321,7 +324,6 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
           Width = 112
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
           TabOrder = 2
           OnChange = cbMediaTypeChange
         end

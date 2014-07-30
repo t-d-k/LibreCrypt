@@ -3,6 +3,8 @@ inherited SDUFilenameEdit: TSDUFilenameEdit
   Height = 122
   OnEnter = FrameEnter
   OnResize = FrameResize
+  ExplicitWidth = 307
+  ExplicitHeight = 122
   object edFilename: TEdit
     Left = 24
     Top = 16

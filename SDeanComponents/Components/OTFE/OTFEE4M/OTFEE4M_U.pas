@@ -92,14 +92,14 @@ type
     // TOTFE functions...
     function  Title(): string; overload; override;
     function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; override;
-    function  Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean; override;
+    function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; override;
     function  MountDevices(): string; override;
     function  CanMountDevice(): boolean; override;
     function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
     function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
     function  DrivesMounted(): string; override;
     function  GetVolFileForDrive(driveLetter: char): string; override;
-    function  GetDriveForVolFile(volumeFilename: string): char; override;
+    function  GetDriveForVolFile(volumeFilename: string): Ansichar; override;
     function  Version(): cardinal; override;
     function  VersionStr(): string; override;
     function  IsEncryptedVolFile(volumeFilename: string): boolean; override;
@@ -396,7 +396,7 @@ end;
 function TOTFEE4M.Mount(volumeFilename: string; readonly: boolean = FALSE): char;
 var
   stlVolumes: TStringList;
-  mountedAs: string;
+  mountedAs: AnsiString;
 begin
   CheckActive();
 
@@ -416,15 +416,15 @@ begin
 end;
 
 
-function TOTFEE4M.Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean;
+function TOTFEE4M.Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean;
 var
   query200: TOTFEE4M_200_MOUNT;
   query201: TOTFEE4M_201_MOUNT;
   dwBytesReturned: DWORD;
   volumeLoop: integer;
   i: integer;
-  driveLetter: char;
-  thePassword: string;
+  driveLetter: ansichar;
+  thePassword: AnsiString;
   oneOK: boolean;
   targetPath: string;
   dosName: string;
@@ -891,7 +891,7 @@ end;
 // If running under NT, then if the lanegth of "volumeFilename" is >64, this
 // function may FAIL as the E4M driver only gives us the first 60 chars
 // followed by "..." to work with
-function TOTFEE4M.GetDriveForVolFile(volumeFilename: string): char;
+function TOTFEE4M.GetDriveForVolFile(volumeFilename: string): Ansichar;
 var
   mountedFilenames: TStringList;
   mountedDrives: string;

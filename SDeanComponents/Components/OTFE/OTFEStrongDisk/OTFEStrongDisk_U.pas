@@ -76,7 +76,7 @@ type
     // TOTFE functions...
     function  Title(): string; overload; override;
     function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; override;
-    function  Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean; override;
+    function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; override;
     function  MountDevices(): string; override;
     function  CanMountDevice(): boolean; override;
     function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
@@ -366,7 +366,7 @@ begin
 end;
 
 
-function TOTFEStrongDisk.Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean;
+function TOTFEStrongDisk.Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean;
 var
   driveLetter: char;
   thePassword: string;

@@ -554,7 +554,7 @@ type
   //   - i.e. it's not a "packed record"
   PDIOC_DEVICE_NAME = ^TDIOC_DEVICE_NAME;
   TDIOC_DEVICE_NAME = record
-    DeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    DeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of aNSIchar;
   end;
 
 
@@ -563,7 +563,7 @@ type
   PDIOC_DEVICE_NAME_LIST = ^TDIOC_DEVICE_NAME_LIST;
   TDIOC_DEVICE_NAME_LIST = record
     DeviceCount: DWORD;
-    DeviceName: array [0..0] of array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;  // Variable length
+    DeviceName: array [0..0] of array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of aNSIchar;  // Variable length
   end;
 
 
@@ -572,20 +572,20 @@ type
   //   - i.e. it's not a "packed record"
   PDIOC_MOUNT_PC_DRIVER = ^TDIOC_MOUNT_PC_DRIVER;
   TDIOC_MOUNT_PC_DRIVER = record
-    DiskDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    DiskDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of aNSIchar;
 
-    Filename: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    Filename: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     // Start and end of encrypted data within the file
     // If DataEnd is zero, it will be set to the last byte in the file
     DataStart: int64;
     DataEnd: int64;
 
-    IVHashDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    IVHashDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     IVHashGUID: TGUID;
-    IVCypherDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    IVCypherDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     IVCypherGUID: TGUID;
 
-    MainCypherDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    MainCypherDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     MainCypherGUID: TGUID;
 
     ReadOnly: boolean;
@@ -640,7 +640,7 @@ type
   //   - i.e. it's not a "packed record"
   PDIOC_DISMOUNT = ^TDIOC_DISMOUNT;
   TDIOC_DISMOUNT = record
-    DiskDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    DiskDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     Emergency: boolean;
   end;
 
@@ -655,18 +655,18 @@ type
 
   PDIOC_DISK_DEVICE_STATUS_PC_DRIVER = ^TDIOC_DISK_DEVICE_STATUS_PC_DRIVER;
   TDIOC_DISK_DEVICE_STATUS_PC_DRIVER = packed record
-    DiskDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
-    Filename: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    DiskDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
+    Filename: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     Mounted: boolean;
 
-    IVHashDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    IVHashDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     junk_padding1: array [1..3] of byte;  // Weird, but needed?!
     IVHashGUID: TGUID;
 
-    IVCypherDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    IVCypherDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     IVCypherGUID: TGUID;
 
-    MainCypherDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    MainCypherDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     MainCypherGUID: TGUID;
 
     DismountPending: boolean;
@@ -713,12 +713,12 @@ type
 
   PDIOC_FILENAME = ^TDIOC_FILENAME;
   TDIOC_FILENAME = record
-    Filename: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    Filename: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
   end;
 
   PDIOC_SET_RAW_DATA = ^TDIOC_SET_RAW_DATA;
   TDIOC_SET_RAW_DATA = record
-    Filename: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    Filename: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     Offset: int64;
     DataLength: integer;
     Data: array [0..0] of byte;
@@ -726,7 +726,7 @@ type
 
   PDIOC_GET_RAW_DATA_IN = ^TDIOC_GET_RAW_DATA_IN;
   TDIOC_GET_RAW_DATA_IN = record
-    Filename: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    Filename: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     Offset: int64;
     DataLength: integer;
   end;
@@ -742,10 +742,10 @@ type
   TDIOC_DERIVE_KEY_IN_PC_DRIVER = record
     KDFAlgorithm: integer;
 
-    HashDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    HashDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     HashGUID: TGUID;
 
-    CypherDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    CypherDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     CypherGUID: TGUID;
 
     Iterations: integer;
@@ -761,8 +761,8 @@ type
     PasswordLength: integer;  // In bits
     SaltLength: integer;  // In bits
 
-    Password: array [0..0] of char;  // Variable length array
-    Salt: array [0..0] of char;  // Variable length array
+    Password: array [0..0] of AnsiChar;  // Variable length array
+    Salt: array [0..0] of AnsiChar;  // Variable length array
   end;
 
   PDIOC_DERIVE_KEY_IN_PC_DLL = ^TDIOC_DERIVE_KEY_IN_PC_DLL;
@@ -804,10 +804,10 @@ type
   TDIOC_GENERATE_MAC_IN_PC_DRIVER = record
     MACAlgorithm: integer;
 
-    HashDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    HashDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of aNSIchar;
     HashGUID: TGUID;
 
-    CypherDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    CypherDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of aNSIchar;
     CypherGUID: TGUID;
 
     LengthWanted: integer;  // In bits - the length of the output key wanted
@@ -862,8 +862,8 @@ type
   //   - i.e. it's not a "packed record"
   PDIOC_LDREU = ^TDIOC_LDREU;
   TDIOC_LDREU = record
-    DriveFile: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
-    DiskDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    DriveFile: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
+    DiskDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     Emergency: boolean;
   end;
 
@@ -871,9 +871,9 @@ type
   //   - i.e. it's not a "packed record"
   PDIOC_DOS_MOUNTPOINT = ^TDIOC_DOS_MOUNTPOINT;
   TDIOC_DOS_MOUNTPOINT = record
-    DiskDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    DiskDeviceName: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
     Global: boolean;
-    Mountpoint: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of char;
+    Mountpoint: array [0..FREEOTFE_MAX_FILENAME_LENGTH-1] of AnsiChar;
   end;
 
 

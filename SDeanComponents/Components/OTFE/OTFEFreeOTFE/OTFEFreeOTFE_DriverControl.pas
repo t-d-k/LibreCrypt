@@ -344,7 +344,7 @@ function TOTFEFreeOTFEDriverControl.DriverConfig(service: string; var autoStart:
 var
   retVal: boolean;
   serviceHandle: SC_HANDLE;
-  serviceConfig: PQueryServiceConfig;
+  serviceConfig: LPQUERY_SERVICE_CONFIGW;
   bytesNeeded: DWORD;
   bytesSupplied: DWORD;
 begin

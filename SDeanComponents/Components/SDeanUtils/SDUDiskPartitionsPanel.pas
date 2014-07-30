@@ -42,8 +42,8 @@ type
     procedure SetDiskNumber(DiskNo: integer);
     function GetPartitionInfo(idx: integer): TSDUPartitionInfo;
 
-    function GetDriveLetter(idx: integer): char;
-    function GetDriveLetterForPartition(DiskNo: integer; PartitionNo: integer): char;
+    function GetDriveLetter(idx: integer): ansichar;
+    function GetDriveLetterForPartition(DiskNo: integer; PartitionNo: integer): ansichar;
 
     procedure RefreshPartitions();
   protected
@@ -55,7 +55,7 @@ type
     destructor Destroy(); override;
 
     property PartitionInfo[idx: integer]: TSDUPartitionInfo read GetPartitionInfo;
-    property DriveLetter[idx: integer]: char read GetDriveLetter;
+    property DriveLetter[idx: integer]: ansichar read GetDriveLetter;
 
     procedure Clear(); override;
 
@@ -134,7 +134,7 @@ var
   currPartition: TSDUPartitionInfo;
   minPcnt: double;
   totalPcnt: double;
-  driveLetter: char;
+  driveLetter: ansichar;
   drive: string;
   prettyPartitionType: string;
 begin
@@ -272,9 +272,9 @@ begin
 end;
 
 // Returns #0 if drive letter can't be found
-function TSDUDiskPartitionsPanel.GetDriveLetterForPartition(DiskNo: integer; PartitionNo: integer): char;
+function TSDUDiskPartitionsPanel.GetDriveLetterForPartition(DiskNo: integer; PartitionNo: integer): ansichar;
 var
-  retval: char;
+  retval: ansichar;
   partitionDevice: string;
   partitionUnderlying: string;
   driveLetter: char;
@@ -312,16 +312,16 @@ begin
   idx := driveDevices.IndexOf(partitionUnderlying);
   if (idx >= 0) then
     begin
-    retval := char(integer(driveDevices.Objects[idx]));
+    retval := ansichar(integer(driveDevices.Objects[idx]));
     end;
 
   Result := retval;
 end;
 
 // Returns #0 if no partition selected/no drive letter assigned to partition
-function TSDUDiskPartitionsPanel.GetDriveLetter(idx: integer): char;
+function TSDUDiskPartitionsPanel.GetDriveLetter(idx: integer): ansichar;
 var
-  retval: char;
+  retval: ansichar;
   partInfo: TSDUPartitionInfo;
 begin
   retval := #0;

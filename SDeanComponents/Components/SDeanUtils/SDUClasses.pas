@@ -27,8 +27,8 @@ type
     function  ReadDWORD_BE(offset: int64 = -1): DWORD;
     procedure WriteDWORD_BE(x: DWORD; offset: int64 = -1);
 
-    function  ReadString(size: integer; offset: integer = -1): string;
-    procedure WriteString(data: string; maxChars: integer = -1; offset: integer = -1);
+    function  ReadString(size: integer; offset: integer = -1): ansistring;
+    procedure WriteString(data: ansistring; maxChars: integer = -1; offset: integer = -1);
     function  ReadWideString(size: integer; offset: integer = -1): WideString;
     procedure WriteWideString(data: WideString; offset: integer = -1);
 
@@ -174,9 +174,9 @@ begin
   WriteWORD_LE(tmpWORD);
 end;
 
-function TSDUMemoryStream.ReadString(size: integer; offset: integer = -1): string;
+function TSDUMemoryStream.ReadString(size: integer; offset: integer = -1): ansistring;
 var
-  retval: string;
+  retval: ansistring;
   i: integer;
 begin
   retval := '';
@@ -184,13 +184,13 @@ begin
   GotoOffset(offset);
   for i:=0 to (size - 1) do
     begin
-    retval := retval + chr(self.ReadByte());
+    retval := retval + ansichar(self.ReadByte());
     end;
 
   Result := retval;
 end;
 
-procedure TSDUMemoryStream.WriteString(data: string; maxChars: integer = -1; offset: integer = -1);
+procedure TSDUMemoryStream.WriteString(data: ansistring; maxChars: integer = -1; offset: integer = -1);
 begin
   GotoOffset(offset);
   if (maxChars < 0) then
@@ -200,7 +200,7 @@ begin
 
   maxChars := min(maxChars, length(data));
 
-  Write(PChar(data)^, maxChars);
+  Write(PansiChar(data)^, maxChars);
 end;
 
 // Note: Size here is in *bytes*

@@ -40,7 +40,7 @@ type
   private
     FAttribType: CK_ATTRIBUTE_TYPE;
     FLength: cardinal;
-    FRawData: string;
+    FRawData: AnsiString;
 
     function MapPKCS11AttrTypeToDelphiAttrType(pkcs11AttrType: CK_ATTRIBUTE_TYPE): TAttributeDataType;
 
@@ -96,7 +96,7 @@ type
     property AttribTypeStr: string read GetAttribTypeStr;
     property AttrLength: cardinal read GetLength;
 
-    property ValueAsRawData: string read FRawData write FRawData;
+    property ValueAsRawData: AnsiString read FRawData write FRawData;
     function DisplayValue(): string;
 
     function AttributeTypeToString(attrType: CK_ATTRIBUTE_TYPE): string;

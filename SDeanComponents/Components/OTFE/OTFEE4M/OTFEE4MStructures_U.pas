@@ -278,7 +278,7 @@ type
   TOTFEE4M_200_MOUNT = packed record
     nReturnCode: integer; // Return code back from driver
     wszVolume: array [1..E4M_MAX_PATH] of WCHAR; // Volume to be mounted
-    szPassword: array [1..(E4M_MAX_PASSWORD + 1)] of char; // User password or SHA1 hash
+    szPassword: array [1..(E4M_MAX_PASSWORD + 1)] of ansichar; // User password or SHA1 hash
     dummy1: array [1..3] of byte; // Needed to get the next item on a word boundry
     nPasswordLen: integer; // User password length
     bCache: boolean;  // Cache passwords in driver
@@ -292,7 +292,7 @@ type
   TOTFEE4M_201_MOUNT = packed record
     nReturnCode: integer; // Return code back from driver
     wszVolume: array [1..E4M_MAX_PATH] of short; // Volume to be mounted
-    szPassword: array [1..(E4M_MAX_PASSWORD + 1)] of char; // User password or SHA1 hash
+    szPassword: array [1..(E4M_MAX_PASSWORD + 1)] of ansichar; // User password or SHA1 hash
 // it seems that we no longer need dummy1
 //  dummy1: array [1..3] of byte; // Needed to get the next item on a word boundry
     nPasswordLen: integer; // User password length
@@ -347,14 +347,14 @@ type
   end;
 
   TOTFEE4MVolumeInfo = packed record // This is not part of the E4M source
-    volumeFilename: string;
-    mountedAs: char;
+    volumeFilename: AnsiString;
+    mountedAs: ansichar;
     cipherID: E4M_CIPHER_TYPE;
-    cipherName: string;
+    cipherName: AnsiString;
     hashID: E4M_HASH_TYPE;
-    hashName: string;
+    hashName: AnsiString;
     volumeTypeID: E4M_VOLUME_FILE_TYPE;
-    volumeTypeName: string;
+    volumeTypeName: AnsiString;
     readonly: boolean;
   end;
 

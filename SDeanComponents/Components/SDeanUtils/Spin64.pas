@@ -456,8 +456,8 @@ end;
 
 function TSpinEdit64.IsValidChar(Key: Char): Boolean;
 begin
-  Result := (Key in [DecimalSeparator, '+', '-', '0'..'9']) or
-    ((Key < #32) and (Key <> Chr(VK_RETURN)));
+  Result := CharInSet(Key, [DecimalSeparator, '+', '-', '0'..'9']) or
+    ((Key < #32) and (Key <> Char(VK_RETURN)));
   if not FEditorEnabled and Result and ((Key >= #32) or
       (Key = Char(VK_BACK)) or (Key = Char(VK_DELETE))) then
     Result := False;

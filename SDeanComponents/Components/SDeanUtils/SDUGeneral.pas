@@ -450,7 +450,7 @@ function SDUPartitionType(PartitionTypeID: byte; LongDesc: boolean): string;
 function SDUGetLastError(): string;
 // Read in the contents of the specified file
 // Note: THIS FUNCTION WILL FAIL IF FILESIZE IS > 2^(32-1); about 2GB
-function SDUGetFileContent(filename: string; out content: string): boolean;
+function SDUGetFileContent(filename: string; out content: Ansistring): boolean;
 // Write the contents of the specified file
 // Note: This will overwrite any existing file
 function SDUSetFileContent(filename: string; content: string): boolean;
@@ -494,7 +494,7 @@ function SDUCopyFile_Compression(
               callback: TCopyProgressCallback = nil
              ): boolean;
 // XOR the characters in two strings together
-function SDUXOR(a: string; b: string): string;
+function SDUXOR(a: ansistring; b: ansistring): ansistring;    { TODO 1 -otdk -cclean : use bytes instead of chars }
 // Calculate x! (factorial X)
 function  SDUFactorial(x: integer): LARGE_INTEGER;
 // Generate all permutations of the characters in "pool"
@@ -730,7 +730,7 @@ function SDUDeviceNameForCDROM(CDROMNumber: cardinal): string;
 // Get device name for disk
 function SDUDeviceNameForDisk(DiskNumber: cardinal): string;
 // Get device name for drive
-function SDUDeviceNameForDrive(driveLetter: char): string;
+function SDUDeviceNameForDrive(driveLetter: ansichar): string;
 // Get device name for partition
 function SDUDeviceNameForPartition(DiskNo: integer; PartitionNo: integer): string;
 // Get layout of disk
@@ -738,15 +738,15 @@ function SDUGetDriveLayout(physicalDiskNo: integer; var driveLayout: TSDUDriveLa
 function SDUGetDriveLayout_Device(driveDevice: string; var driveLayout: TSDUDriveLayoutInformation): boolean;
 // Get size of partition
 // Returns file size, or -1 on error
-function SDUGetPartitionSize(driveletter: char): ULONGLONG;
+function SDUGetPartitionSize(driveletter: ansichar): ULONGLONG;
 function SDUGetPartitionSize_Device(driveDevice: string): ULONGLONG;
 // Get partition information
 // Returns TRUE/FALSE on success/failure
-function SDUGetPartitionInfo(driveletter: char; var partInfo: TSDUPartitionInfo): boolean; overload;
+function SDUGetPartitionInfo(driveletter: ansichar; var partInfo: TSDUPartitionInfo): boolean; overload;
 function SDUGetPartitionInfo(driveDevice: string; var partInfo: TSDUPartitionInfo): boolean; overload;
 // Get disk geometry
 // Returns TRUE/FALSE on success/failure
-function SDUGetDiskGeometry(driveletter: char; var diskGeometry: TSDUDiskGeometry): boolean; overload;
+function SDUGetDiskGeometry(driveletter: ansichar; var diskGeometry: TSDUDiskGeometry): boolean; overload;
 function SDUGetDiskGeometry(DiskNumber: integer; var diskGeometry: TSDUDiskGeometry): boolean; overload;
 function SDUGetDiskGeometry(driveDevice: string; var diskGeometry: TSDUDiskGeometry): boolean; overload;
 // Returns installed OS
@@ -774,9 +774,9 @@ function SDUFileExtnIsRegd(fileExtn: string; menuItem: string): boolean;
 // Get a string with the drive letters of all drives present/not present, in
 // order
 // Return value is all in uppercase
-function SDUGetUsedDriveLetters(): string;
-function SDUGetUnusedDriveLetters(): string;
-function SDUGetNetworkDriveLetters(): string;
+function SDUGetUsedDriveLetters(): Ansistring;
+function SDUGetUnusedDriveLetters(): Ansistring;
+function SDUGetNetworkDriveLetters(): Ansistring;
 // Populate "output" with a pretty-printed hex display of the contents of "data"
 function SDUPrettyPrintHex(data: Pointer; offset: Longint; bytes: Longint; output: TStringList; width: cardinal = 8; dispOffsetWidth: cardinal = 8): boolean; overload;
 function SDUPrettyPrintHex(data: string; offset: Longint; bytes: Longint; output: TStringList; width: cardinal = 8; dispOffsetWidth: cardinal = 8): boolean; overload;
@@ -906,13 +906,13 @@ function SDUISO8601ToTDateTime(inDateTime: string): TDateTime;
 // count
 function SDUCountCharInstances(theChar: char; theString: string): integer;
 // These two functions ripped from FileCtrl.pas - see Delphi 4 source
-function SDUVolumeID(DriveChar: Char): string;
-function SDUNetworkVolume(DriveChar: Char): string;
+function SDUVolumeID(DriveChar: ansichar): string;
+function SDUNetworkVolume(DriveChar: ansichar): string;
 {$IFDEF MSWINDOWS}
 // This calls SDUVolumeID/SDUNetworkVolume as appropriate
 // Returns '3.5" Floppy'/'Removable Disk' instead of volume label for these
 // type of drives
-function SDUGetVolumeID(drive: char): string;
+function SDUGetVolumeID(drive: ansichar): string;
 {$ENDIF}
 // Detect if the current application is already running, and if it is, return
 // a handle to it's main window.
@@ -1912,7 +1912,7 @@ begin
   ShellExecuteEx(@sei);
 end;
 
-function SDUVolumeID(DriveChar: Char): string;
+function SDUVolumeID(DriveChar: ansichar): string;
 var
   OldErrorMode: Integer;
   NotUsed, VolFlags: DWORD;
@@ -1930,14 +1930,14 @@ begin
   end;
 end;
 
-function SDUNetworkVolume(DriveChar: Char): string;
+function SDUNetworkVolume(DriveChar: ansichar): string;
 var
-  Buf: Array [0..MAX_PATH] of Char;
-  DriveStr: array [0..3] of Char;
+  Buf: Array [0..MAX_PATH] of widechar;
+  DriveStr: array [0..3] of widechar;
   BufferSize: DWORD;
 begin
   BufferSize := sizeof(Buf);
-  DriveStr[0] := UpCase(DriveChar);
+  DriveStr[0] := widechar(UpCase(DriveChar));
   DriveStr[1] := ':';
   DriveStr[2] := #0;
   if WNetGetConnection(DriveStr, Buf, BufferSize) = WN_SUCCESS then
@@ -1957,7 +1957,7 @@ begin
 end;
 
 {$IFDEF MSWINDOWS}
-function SDUGetVolumeID(drive: char): string;
+function SDUGetVolumeID(drive: ansichar): string;
 var
   DriveType: TDriveType;
 begin
@@ -2453,7 +2453,7 @@ end;
 // Get a string with the drive letters of all drives present/not present, in
 // order
 // Return value is all in uppercase
-function SDUGetNetworkDriveLetters(): string;
+function SDUGetNetworkDriveLetters(): Ansistring;
 var
   i: DWORD;
   dwResult: DWORD;
@@ -2462,7 +2462,7 @@ var
   lpnrDrvLoc: PNETRESOURCE;
   cEntries: DWORD;
   cbBuffer: DWORD;
-  retval: string;
+  retval: Widestring;
   localName: string;
 begin
   retval:= '';
@@ -2515,20 +2515,20 @@ begin
     WNetCloseEnum(hEnum);
     end;
 
-  Result := retval;
+  Result := retval; { TODO 1 -otdk -cclean : warning wide->ansi }
 end;
 
 
 // Get a string with the drive letters of all drives present/not present, in
 // order
 // Return value is all in uppercase
-function SDUGetUsedDriveLetters(): string;
+function SDUGetUsedDriveLetters(): Ansistring;
 var
-  retval: string;
+  retval: Ansistring;
   DriveNum: Integer;
   DriveBits: set of 0..25;
   drivesList: TStringList;
-  netDrives: string;
+  netDrives: Ansistring;
   i: integer;
 begin
   retval := '';
@@ -2544,7 +2544,7 @@ begin
       begin
       if (DriveNum in DriveBits) then
         begin
-        drivesList.Add(Char(DriveNum + Ord('A')));
+        drivesList.Add(AnsiChar(DriveNum + Ord('A')));
         end;
       end;
 
@@ -2569,11 +2569,11 @@ begin
 end;
 
 
-function SDUGetUnusedDriveLetters(): string;
+function SDUGetUnusedDriveLetters(): Ansistring;
 var
-  x: char;
-  usedDriveLetters: string;
-  retval: string;
+  x: ansichar;
+  usedDriveLetters: Ansistring;
+  retval: Ansistring;
 begin
   retval:= '';
 
@@ -3020,7 +3020,7 @@ end;
 // Returns TRUE if installed OS is Windows Vista or later
 function SDUOSVistaOrLater(): boolean;
 begin
-  Result := (SDUInstalledOS = osWindowsVista);
+  Result := (SDUInstalledOS >= osWindowsVista);
 
 end;
 
@@ -3906,7 +3906,7 @@ begin
           ((digitCnt mod 3) = 0)
          ) then
         begin
-        retval := ThousandSeparator + retval;
+        retval :=  ThousandSeparator + retval;
         end;
 
       retval := inttostr(tmp64Mod) + retval;
@@ -4456,9 +4456,9 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function SDUXOR(a: string; b: string): string;
+function SDUXOR(a: ansistring; b: ansistring): ansistring;   { TODO 1 -otdk -cclean : use bytes instead of chars }
 var
-  retval: string;
+  retval: Ansistring;
   longest: integer;
   byteA: byte;
   byteB: byte;
@@ -4487,7 +4487,7 @@ begin
       byteB := ord(b[i]);
       end;
 
-    retval := retval + char(byteA XOR byteB);
+    retval := retval + ansichar(byteA XOR byteB);
     end;
 
   Result := retval;
@@ -4905,7 +4905,7 @@ end;
 // ----------------------------------------------------------------------------
 // Get size of partition
 // Returns partition size, or -1 on error
-function SDUGetPartitionSize(driveletter: char): ULONGLONG;
+function SDUGetPartitionSize(driveletter: ansichar): ULONGLONG;
 begin
   Result := SDUGetPartitionSize_Device(SDUDeviceNameForDrive(driveLetter));
 end;
@@ -4928,7 +4928,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-function SDUGetDiskGeometry(driveletter: char; var diskGeometry: TSDUDiskGeometry): boolean;
+function SDUGetDiskGeometry(driveletter: ansichar; var diskGeometry: TSDUDiskGeometry): boolean;
 begin
   Result := SDUGetDiskGeometry(
                                SDUDeviceNameForDrive(driveLetter),
@@ -4997,7 +4997,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-function SDUGetPartitionInfo(driveletter: char; var partInfo: TSDUPartitionInfo): boolean;
+function SDUGetPartitionInfo(driveletter: ansichar; var partInfo: TSDUPartitionInfo): boolean;
 begin
   Result := SDUGetPartitionInfo(
                                 SDUDeviceNameForDrive(driveLetter),
@@ -5211,7 +5211,7 @@ end;
 // ----------------------------------------------------------------------------
 // Read in the contents of the specified file
 // Note: THIS FUNCTION WILL FAIL IF FILESIZE IS > 2^(32-1); about 2GB
-function SDUGetFileContent(filename: string; out content: string): boolean;
+function SDUGetFileContent(filename: string; out content: Ansistring): boolean;
 var
   fileHandle: THandle;
   allOK: boolean;
@@ -5237,7 +5237,7 @@ begin
   if (fileHandle<>INVALID_HANDLE_VALUE) then
     begin
     // Size buffer so ReadFile(...) can populate it
-    content := StringOfChar(#0, filesize);
+    content := StringOfChar(Ansichar(#0), filesize);
 
     toRead := fileSize and $FFFFFFFF;
     ReadFile(
@@ -5328,7 +5328,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-function SDUDeviceNameForDrive(driveLetter: char): string;
+function SDUDeviceNameForDrive(driveLetter: ansichar): string;
 begin
   Result := Format(FMT_DEVICENAME_DRIVE_DEVICE, [upcase(driveLetter)]);
 end;
@@ -6005,7 +6005,7 @@ end;
 procedure SDUPopulateRemovableDrives(cbDrive: TComboBox);
 var
   DriveType: TDriveType;
-  drive: char;
+  drive: ansichar;
   item: string;
   volTitle: string;
 begin
@@ -6015,7 +6015,7 @@ begin
   // Note: *Uppercase* letters
   for drive:='C' to 'Z' do
     begin
-    DriveType := TDriveType(GetDriveType(PChar(drive + ':\')));
+    DriveType := TDriveType(GetDriveType(PwideChar(drive + ':\')));
 
     if (
         (DriveType = dtFloppy) or
@@ -6222,6 +6222,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
+{ TODO 1 -otdk -cclean : is there any advantage over 'format'? also doesnt escape % }
 function SDUParamSubstitute(const formatStr: string; const params: array of Variant): string;
 var
   i: integer;

@@ -1,9 +1,9 @@
 object OTFECrossCrypt_PasswordConfirm_F: TOTFECrossCrypt_PasswordConfirm_F
   Left = 408
   Top = 336
-  Width = 300
-  Height = 212
   Caption = 'Password Confirmation'
+  ClientHeight = 174
+  ClientWidth = 284
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -54,8 +54,14 @@ object OTFECrossCrypt_PasswordConfirm_F: TOTFECrossCrypt_PasswordConfirm_F
     Top = 52
     Width = 237
     Height = 53
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
     Lines.Strings = (
       'rePasswords')
+    ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 0
     OnChange = rePasswordsChange

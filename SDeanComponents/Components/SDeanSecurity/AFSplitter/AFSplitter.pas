@@ -8,13 +8,13 @@ uses
 
 // "Standard" version; uses SHA-1
 // n - Set to the number of stripes
-function AFSplit(input: string; n: integer; var output: string): boolean; overload;
-function AFMerge(input: string; n: integer; var output: string): boolean; overload;
+function AFSplit(input: Ansistring; n: integer; var output: Ansistring): boolean; overload;
+function AFMerge(input: Ansistring; n: integer; var output: Ansistring): boolean; overload;
 
 // User specified hash algorithm
 // n - Set to the number of stripes
-function AFSplit(input: string; n: integer; hashAlg: THashAlg; var output: string): boolean; overload;
-function AFMerge(input: string; n: integer; hashAlg: THashAlg; var output: string): boolean; overload;
+function AFSplit(input: Ansistring; n: integer; hashAlg: THashAlg; var output: Ansistring): boolean; overload;
+function AFMerge(input: Ansistring; n: integer; hashAlg: THashAlg; var output: Ansistring): boolean; overload;
 
 
 implementation
@@ -24,10 +24,10 @@ uses
   HashAlgSHA1_U,
   SDUEndianIntegers;
 
-function GetRandom(len: integer): string; forward;
-function RepeatedHash(input: string; hashAlg: THashAlg; var output: string): boolean; forward;
-function Process(stripeData: string; totalBlockCount: integer; blockLength: integer; hashAlg: THashAlg; var output: string): boolean; forward;
-function GetBlock(stripeData: string; totalBlockCount: integer; blockLength: integer; blockNumber: integer; var output: string): boolean; forward;
+function GetRandom(len: integer): Ansistring; forward;
+function RepeatedHash(input: Ansistring; hashAlg: THashAlg; var output: Ansistring): boolean; forward;
+function Process(stripeData: Ansistring; totalBlockCount: integer; blockLength: integer; hashAlg: THashAlg; var output: Ansistring): boolean; forward;
+function GetBlock(stripeData: Ansistring; totalBlockCount: integer; blockLength: integer; blockNumber: integer; var output: Ansistring): boolean; forward;
 
 
 
@@ -38,15 +38,16 @@ var
 begin
   for i:=1 to len do
     begin
-    retVal := retVal + char(random(256));
+    retVal := retVal + Ansichar(random(256));
 // xxx - debug use only -     retVal := retVal + char(0);
+{ TODO 2 -otdk -csecurity : this is not a secure PRNG - is it used anywhere it should be? }
     end;
 
   Result:= retVal;
 end;
 
 // Hash input repeatedly until a string with the same length is produced
-function RepeatedHash(input: string; hashAlg: THashAlg; var output: string): boolean;
+function RepeatedHash(input: Ansistring; hashAlg: THashAlg; var output: Ansistring): boolean;
 var
   allOK: boolean;
   digestSizeBytes: integer;
@@ -110,7 +111,7 @@ end;
 
 
 
-function AFSplit(input: string; n: integer; var output: string): boolean;
+function AFSplit(input: AnsiString; n: integer; var output: AnsiString): boolean;
 var
   hashAlg: THashAlg;
 begin
@@ -126,7 +127,7 @@ begin
 end;
 
 
-function AFSplit(input: string; n: integer; hashAlg: THashAlg; var output: string): boolean;
+function AFSplit(input: AnsiString; n: integer; hashAlg: THashAlg; var output: AnsiString): boolean;
 var
   allOK: boolean;
   i, j: integer;
@@ -152,7 +153,7 @@ begin
   calcStripe := '';
   for j:=1 to blockLength do
     begin
-    calcStripe := calcStripe + char((ord(processedStripes[j]) XOR ord(input[j])));
+    calcStripe := calcStripe + Ansichar((ord(processedStripes[j]) XOR ord(input[j])));
     end;
 
   // Store result as random block "n" as output
@@ -163,7 +164,7 @@ end;
 
 
 // Process blocks 1 - (n-1)
-function Process(stripeData: string; totalBlockCount: integer; blockLength: integer; hashAlg: THashAlg; var output: string): boolean;
+function Process(stripeData: Ansistring; totalBlockCount: integer; blockLength: integer; hashAlg: THashAlg; var output: Ansistring): boolean;
 var
   allOK: boolean;
   prev: string;
@@ -185,7 +186,7 @@ begin
     tmpData := '';
     for j:=1 to length(prev) do
       begin
-      tmpData := tmpData + char((ord(prev[j]) XOR ord(blockN[j])));
+      tmpData := tmpData + Ansichar((ord(prev[j]) XOR ord(blockN[j])));
       end;
 
     // Hash output
@@ -204,7 +205,7 @@ end;
 
 
 // Get the "blockNumber" block out of "totalBlockCount"
-function GetBlock(stripeData: string; totalBlockCount: integer; blockLength: integer; blockNumber: integer; var output: string): boolean;
+function GetBlock(stripeData: Ansistring; totalBlockCount: integer; blockLength: integer; blockNumber: integer; var output: Ansistring): boolean;
 var
   allOK: boolean;
   i: integer;
@@ -244,7 +245,7 @@ begin
 end;
 
 
-function AFMerge(input: string; n: integer; hashAlg: THashAlg; var output: string): boolean;
+function AFMerge(input: Ansistring; n: integer; hashAlg: THashAlg; var output: Ansistring): boolean;
 var
   allOK: boolean;
   i: integer;
@@ -265,7 +266,7 @@ begin
   output := '';
   for i:=1 to blockLength do
     begin
-    output := output + char((ord(processedStripes[i]) XOR ord(lastBlock[i])));
+    output := output + Ansichar((ord(processedStripes[i]) XOR ord(lastBlock[i])));
     end;
 
   Result := allOK;

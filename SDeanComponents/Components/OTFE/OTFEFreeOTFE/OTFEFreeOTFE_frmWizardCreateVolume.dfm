@@ -1,7 +1,7 @@
 inherited frmWizardCreateVolume: TfrmWizardCreateVolume
   Left = 388
   Top = 258
-  Caption = 'FreeOTFE Volume Creation Wizard'
+  Caption = 'DoxBox Volume Creation Wizard'
   Font.Name = 'MS Sans Serif'
   Position = poScreenCenter
   OnCreate = FormCreate
@@ -13,12 +13,16 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       ActivePage = tsSummary
       object tsWelcome: TTabSheet
         Caption = 'Welcome'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lblWelcomeBanner: TLabel
           Left = 36
           Top = 52
-          Width = 417
+          Width = 395
           Height = 20
-          Caption = 'Welcome to the FreeOTFE Volume Creation Wizard.'
+          Caption = 'Welcome to the DoxBox Volume Creation Wizard.'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -16
@@ -38,21 +42,37 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Top = 96
           Width = 333
           Height = 113
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
       end
       object tsFileOrPartition: TTabSheet
         Caption = 'Volume File or Partition'
         ImageIndex = 14
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructFileOrPartition: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
           Width = 473
           Height = 77
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object rgFileOrPartition: TRadioGroup
@@ -71,13 +91,23 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsFilename: TTabSheet
         Caption = 'Volume filename'
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructFilename: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
           Width = 473
           Height = 77
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object GroupBox1: TGroupBox
@@ -110,6 +140,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsPartitionWarning: TTabSheet
         Caption = 'Partition Warning'
         ImageIndex = 16
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object pnlWarningBorder_L: TPanel
           Left = 61
           Top = 236
@@ -167,8 +201,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Top = 36
             Width = 346
             Height = 97
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
             Lines.Strings = (
               'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+            ParentFont = False
             TabOrder = 0
           end
         end
@@ -206,6 +246,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsPartitionSelect: TTabSheet
         Caption = 'Partition Select'
         ImageIndex = 15
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label21: TLabel
           Left = 138
           Top = 92
@@ -218,8 +262,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Top = 12
           Width = 473
           Height = 77
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object ckPartitionHidden: TCheckBox
@@ -237,37 +287,198 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Width = 473
           Height = 144
           TabOrder = 1
+          ExplicitLeft = 8
+          ExplicitTop = 120
+          ExplicitWidth = 473
+          ExplicitHeight = 144
           inherited lblErrorWarning: TLabel
             Top = 125
+            ExplicitTop = 125
           end
           inherited imgErrorWarning: TImage
             Top = 123
+            ExplicitTop = 123
           end
           inherited TabControl1: TTabControl
             Width = 473
             Height = 97
+            ExplicitWidth = 473
+            ExplicitHeight = 97
             inherited SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel
               Width = 280
               Height = 69
+              ExplicitWidth = 280
+              ExplicitHeight = 69
             end
             inherited pnlNoPartitionDisplay: TPanel
               Left = 284
               Height = 69
+              ExplicitLeft = 284
+              ExplicitHeight = 69
             end
           end
           inherited ckShowCDROM: TCheckBox
             Left = 240
             Top = 105
+            ExplicitLeft = 240
+            ExplicitTop = 105
           end
           inherited ckEntireDisk: TCheckBox
             Left = 384
             Top = 105
+            ExplicitLeft = 384
+            ExplicitTop = 105
+          end
+          inherited ilErrorWarning: TImageList
+            Bitmap = {
+              494C010103000400100010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              0000000000003600000028000000400000001000000001002000000000000010
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000FF000000FF000000FF000000FF000000FF000000FF000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000080800000FFFF0000FFFF0000FF
+              FF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FF
+              FF0000FFFF0000FFFF0000FFFF00000000000000000000000000000000000000
+              FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF000000
+              FF000000FF000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              000000000000000000000000000000000000000000000080800000FFFF0000FF
+              FF0000FFFF0000FFFF0000FFFF00000000000000000000FFFF0000FFFF0000FF
+              FF0000FFFF0000FFFF00000000000000000000000000000000000000FF000000
+              FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF000000
+              FF000000FF000000FF0000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              000000000000000000000000000000000000000000000080800000FFFF0000FF
+              FF0000FFFF0000FFFF0000FFFF00000000000000000000FFFF0000FFFF0000FF
+              FF0000FFFF0000FFFF000000000000000000000000000000FF000000FF000000
+              FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF000000
+              FF000000FF000000FF000000FF00000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              00000000000000000000000000000000000000000000000000000080800000FF
+              FF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FF
+              FF0000FFFF00000000000000000000000000000000000000FF000000FF000000
+              FF00FFFFFF00FFFFFF000000FF000000FF000000FF000000FF00FFFFFF00FFFF
+              FF000000FF000000FF000000FF00000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              00000000000000000000000000000000000000000000000000000080800000FF
+              FF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FF
+              FF0000FFFF000000000000000000000000000000FF000000FF000000FF000000
+              FF00FFFFFF00FFFFFF00FFFFFF000000FF000000FF00FFFFFF00FFFFFF00FFFF
+              FF000000FF000000FF000000FF000000FF000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000080
+              800000FFFF0000FFFF0000FFFF00000000000000000000FFFF0000FFFF0000FF
+              FF00000000000000000000000000000000000000FF000000FF000000FF000000
+              FF000000FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF000000
+              FF000000FF000000FF000000FF000000FF000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000080
+              800000FFFF0000FFFF0000FFFF00000000000000000000FFFF0000FFFF0000FF
+              FF00000000000000000000000000000000000000FF000000FF000000FF000000
+              FF000000FF000000FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF000000FF000000
+              FF000000FF000000FF000000FF000000FF000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              00000080800000FFFF0000FFFF00000000000000000000FFFF0000FFFF000000
+              0000000000000000000000000000000000000000FF000000FF000000FF000000
+              FF000000FF000000FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF000000FF000000
+              FF000000FF000000FF000000FF000000FF000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              00000080800000FFFF0000FFFF00000000000000000000FFFF0000FFFF000000
+              0000000000000000000000000000000000000000FF000000FF000000FF000000
+              FF000000FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF000000
+              FF000000FF000000FF000000FF000000FF000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000080800000FFFF00000000000000000000FFFF00000000000000
+              0000000000000000000000000000000000000000FF000000FF000000FF000000
+              FF00FFFFFF00FFFFFF00FFFFFF000000FF000000FF00FFFFFF00FFFFFF00FFFF
+              FF000000FF000000FF000000FF000000FF000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000080800000FFFF0000FFFF0000FFFF0000FFFF00000000000000
+              000000000000000000000000000000000000000000000000FF000000FF000000
+              FF00FFFFFF00FFFFFF000000FF000000FF000000FF000000FF00FFFFFF00FFFF
+              FF000000FF000000FF000000FF00000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              000000000000000000000080800000FFFF0000FFFF0000000000000000000000
+              000000000000000000000000000000000000000000000000FF000000FF000000
+              FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF000000
+              FF000000FF000000FF000000FF00000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              000000000000000000000080800000FFFF0000FFFF0000000000000000000000
+              00000000000000000000000000000000000000000000000000000000FF000000
+              FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF000000
+              FF000000FF000000FF0000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000008080000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF000000
+              FF000000FF000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000008080000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000FF000000FF000000FF000000FF000000FF000000FF000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              000000000000000000000000000000000000424D3E000000000000003E000000
+              2800000040000000100000000100010000000000800000000000000000000000
+              000000000000000000000000FFFFFF00FFFF0000F81F0000FFFF0000E0070000
+              FFFF8001C0030000FFFF800180010000FFFFC00380010000FFFFC00300000000
+              FFFFE00700000000FFFFE00700000000FFFFF00F00000000FFFFF00F00000000
+              FFFFF81F00000000FFFFF81F80010000FFFFFC3F80010000FFFFFC3FC0030000
+              FFFFFE7FE0070000FFFFFE7FF81F000000000000000000000000000000000000
+              000000000000}
           end
         end
       end
       object tsOffset: TTabSheet
         Caption = 'Offset'
         ImageIndex = 7
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label7: TLabel
           Left = 41
           Top = 288
@@ -317,8 +528,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Top = 28
             Width = 446
             Height = 105
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
             Lines.Strings = (
               'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+            ParentFont = False
             TabOrder = 0
           end
         end
@@ -327,8 +544,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Top = 12
           Width = 473
           Height = 77
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object se64UnitByteOffset: TSDUSpin64Unit_Storage
@@ -352,6 +575,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsSize: TTabSheet
         Caption = 'Size'
         ImageIndex = 6
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label6: TLabel
           Left = 63
           Top = 188
@@ -371,8 +598,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Top = 12
           Width = 473
           Height = 157
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object ckSizeEntirePartitionDisk: TCheckBox
@@ -406,6 +639,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsHashCypherIV: TTabSheet
         Caption = 'Hash, cypher and IV'
         ImageIndex = 2
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label4: TLabel
           Left = 57
           Top = 128
@@ -436,7 +673,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Width = 145
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
           TabOrder = 1
           OnChange = cbHashCypherIVGenChange
         end
@@ -446,7 +682,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Width = 145
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
           TabOrder = 3
           OnChange = cbHashCypherIVGenChange
         end
@@ -455,8 +690,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Top = 12
           Width = 473
           Height = 61
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object pbHashInfo: TButton
@@ -491,7 +732,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Width = 145
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
           TabOrder = 5
           OnChange = cbHashCypherIVGenChange
         end
@@ -499,6 +739,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsMasterKeyLength: TTabSheet
         Caption = 'Master Key Length'
         ImageIndex = 11
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label2: TLabel
           Left = 113
           Top = 156
@@ -519,8 +763,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Top = 12
           Width = 473
           Height = 77
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object seMasterKeyLength: TSpinEdit64
@@ -540,13 +790,23 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGSelect: TTabSheet
         Caption = 'RNG Select'
         ImageIndex = 4
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructRNGSelect: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
           Width = 473
           Height = 141
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object gbRNG: TGroupBox
@@ -607,8 +867,12 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGMouseMovement: TTabSheet
         Caption = 'RNG Mouse movement'
         ImageIndex = 8
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
-          492
+          597
           318)
         object lblMouseRNGBits: TLabel
           Left = 159
@@ -623,8 +887,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Top = 12
           Width = 473
           Height = 49
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object MouseRNG: TMouseRNG
@@ -645,6 +915,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGPKCS11: TTabSheet
         Caption = 'RNG PKCS token'
         ImageIndex = 17
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lblToken: TLabel
           Left = 123
           Top = 175
@@ -658,7 +932,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Top = 170
           Width = 145
           Height = 21
-          ItemHeight = 0
           TabOrder = 2
           Text = 'cbToken'
         end
@@ -676,21 +949,37 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Top = 12
           Width = 473
           Height = 61
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
       end
       object tsRNGGPG: TTabSheet
         Caption = 'RNG GPG'
         ImageIndex = 10
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructRNGGPG: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
           Width = 473
           Height = 77
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object GroupBox2: TGroupBox
@@ -723,6 +1012,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsPassword: TTabSheet
         Caption = 'Password'
         ImageIndex = 6
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label17: TLabel
           Left = 41
           Top = 148
@@ -744,8 +1037,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Top = 12
           Width = 473
           Height = 113
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object preUserKey1: TOTFEFreeOTFE_PasswordRichEdit
@@ -753,8 +1052,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Top = 144
           Width = 277
           Height = 61
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'preUserKey1')
+          ParentFont = False
           ScrollBars = ssBoth
           TabOrder = 1
           OnChange = preUserKeyChange
@@ -764,8 +1069,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Top = 216
           Width = 277
           Height = 61
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'preUserKey2')
+          ParentFont = False
           ScrollBars = ssBoth
           TabOrder = 2
           OnChange = preUserKeyChange
@@ -774,8 +1085,12 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsSummary: TTabSheet
         Caption = 'Summary'
         ImageIndex = 9
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
-          492
+          597
           318)
         object reSummary: TRichEdit
           Left = 8
@@ -784,8 +1099,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Height = 155
           Anchors = [akLeft, akTop, akRight, akBottom]
           Color = clBtnFace
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'reSummary')
+          ParentFont = False
           PlainText = True
           ReadOnly = True
           ScrollBars = ssBoth
@@ -806,8 +1127,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Top = 12
           Width = 473
           Height = 89
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
+          ParentFont = False
           TabOrder = 0
         end
         object ckAutoMountAfterCreate: TCheckBox
@@ -824,6 +1151,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
     inherited pnlButtons: TPanel
       inherited lblCompleteIndicator: TLabel
         Width = 95
+        ExplicitWidth = 95
       end
     end
   end

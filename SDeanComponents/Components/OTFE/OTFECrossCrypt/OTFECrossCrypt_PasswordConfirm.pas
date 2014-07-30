@@ -167,7 +167,7 @@ end;
 
 
 // Get the single password
-procedure TOTFECrossCrypt_PasswordConfirm_F.GetSinglePassword(var password: string);
+procedure TOTFECrossCrypt_PasswordConfirm_F.GetSinglePassword(var password: Ansistring);
 begin
   password := FPasswords.Text;
 

@@ -232,7 +232,7 @@ end;
 
 procedure TcryptlibAPITest.pbGenerateRandomClick(Sender: TObject);
 var
-  randomData: string;
+  randomData: ansistring;
   tmpStringList: TStringList;
 begin
 

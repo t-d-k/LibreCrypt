@@ -109,7 +109,7 @@ type
     procedure pbRefreshClick(Sender: TObject);
   private
 
-    fCombinedRandomData: string;
+    fCombinedRandomData: ansistring;
 
     deviceList: TStringList;
     deviceTitle: TStringList;
@@ -122,15 +122,15 @@ type
     function  GetIsPartition(): boolean;
     function  GetSrcFilename(): string;
     function  GetOffset(): int64;
-    function  GetSrcUserKey(): string;
+    function  GetSrcUserKey(): ansistring;
     function  GetSrcSaltLength(): integer;
     function  GetSrcKeyIterations(): integer;
     function  GetDestFilename(): string;
     procedure SetDestFilename(filename: string);
-    function  GetDestUserKey(): string;
+    function  GetDestUserKey(): ansistring;
     function  GetDestSaltLength(): integer;
     function  GetDestKeyIterations(): integer;
-    function  GetDestRequestedDriveLetter(): char;
+    function  GetDestRequestedDriveLetter(): ansichar;
     function  GetRandomData(): string;
 
     procedure PopulatePKCS11Tokens();
@@ -157,14 +157,14 @@ type
     property IsPartition: boolean read GetIsPartition;
     property SrcFilename: string read GetSrcFilename;
     property Offset: int64 read GetOffset;
-    property SrcUserKey: string read GetSrcUserKey;
+    property SrcUserKey: ansistring read GetSrcUserKey;
     property SrcSaltLength: integer read GetSrcSaltLength;
     property SrcKeyIterations: integer read GetSrcKeyIterations;
     property DestFilename: string read GetDestFilename write SetDestFilename;
-    property DestUserKey: string read GetDestUserKey;
+    property DestUserKey: ansistring read GetDestUserKey;
     property DestSaltLength: integer read GetDestSaltLength;
     property DestKeyIterations: integer read GetDestKeyIterations;
-    property DestRequestedDriveLetter: char read GetDestRequestedDriveLetter;
+    property DestRequestedDriveLetter: ansichar read GetDestRequestedDriveLetter;
     property RandomData: string read GetRandomData;
 
   end;
@@ -218,8 +218,9 @@ begin
   Result := se64UnitOffset.Value;
 end;
 
-function TfrmWizardChangePasswordCreateKeyfile.GetSrcUserKey(): string;
+function TfrmWizardChangePasswordCreateKeyfile.GetSrcUserKey(): ansistring;
 begin
+{ TODO 1 -otdk -cfix : warn user - no unicode }
   Result := preSrcUserKey.Text;
 end;
 
@@ -238,14 +239,14 @@ begin
   lblDestFilename.Caption := filename;
 end;
 
-function TfrmWizardChangePasswordCreateKeyfile.GetDestUserKey(): string;
+function TfrmWizardChangePasswordCreateKeyfile.GetDestUserKey(): ansistring;
 begin
   Result := preDestUserKey1.Text;
 end;
 
 function TfrmWizardChangePasswordCreateKeyfile.GetDestSaltLength(): integer;
 begin
-  Result := seDestSaltLength.Value;
+  Result := seDestSaltLength.Value;  { TODO 1 -otdk -cfix : warn user - no unicode }
 end;
 
 function TfrmWizardChangePasswordCreateKeyfile.GetSrcKeyIterations(): integer;
@@ -258,14 +259,14 @@ begin
   Result := seDestKeyIterations.Value;
 end;
 
-function TfrmWizardChangePasswordCreateKeyfile.GetDestRequestedDriveLetter(): char;
+function TfrmWizardChangePasswordCreateKeyfile.GetDestRequestedDriveLetter(): ansichar;
 var
-  driveLetter: char;
+  driveLetter: ansichar;
 begin
   driveLetter := #0;
   if (cbDestDriveLetter.ItemIndex > 0) then
     begin
-    driveLetter := cbDestDriveLetter.Items[cbDestDriveLetter.ItemIndex][1];
+    driveLetter := AnsiChar(cbDestDriveLetter.Items[cbDestDriveLetter.ItemIndex][1]);
     end;
 
   Result := driveLetter;
@@ -764,8 +765,8 @@ procedure TfrmWizardChangePasswordCreateKeyfile.pbFinishClick(
   Sender: TObject);
 var
   allOK: boolean;
-  randomPool: string;
-  saltBytes: string;
+  randomPool: ansistring;
+  saltBytes: ansistring;
 begin
   inherited;
 
@@ -828,7 +829,7 @@ begin
     else                                                
       begin
       SDUMessageDlg(
-                    _('Unable to complete requested operation: please ensure that your encrypted volume is not mounted or otherwise in use, and that the password, salt and offset entered are correct.'),
+                    _('Unable to complete requested operation: please ensure that your Box is not already open or otherwise in use, and that the keyphrase, salt and offset entered are correct.'),
                     mtError
                    );
       end;
@@ -840,34 +841,34 @@ end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.SetupInstructionsChangePassword();
 begin
-  self.Caption := _('Change Password/Other Details');
+  self.Caption := _('Change Keyphrase/Other Details');
 
   reInstructFileOrPartition.Text :=
-                   _('If you would like to modify an encrypted volume, please specify whether it is file or partition based.'+SDUCRLF+
+                   _('If you would like to modify a Box, please specify whether it is file or partition based.'+SDUCRLF+
                      SDUCRLF+
                      'If you would like to modify a keyfile, please select "file" below.');
 
   reInstructSrcFile.Text :=
-                   _('Please enter the full path and filename of the volume/keyfile you wish to change.'+SDUCRLF+
+                   _('Please enter the full path and filename of the Box/keyfile you wish to change.'+SDUCRLF+
                      SDUCRLF+
-                     'If you wish to update a "hidden" volume held within another file, please specify the filename of the host file which stores your encrypted volume');
+                     'If you wish to update a "hidden" DoxBox held within another DoxBox, please specify the filename of the outer box which stores your hidden box');
 
   reInstructPartitionSelect.Text :=
-                   _('Please specify the partition your volume is stored on.');
+                   _('Please specify the partition your box is stored on.');
 
   reInstructSrcDetails.Text :=
-                   _('Please enter the full details of the volume/keyfile you wish to change.'+SDUCRLF+
+                   _('Please enter the full details of the box/keyfile you wish to change.'+SDUCRLF+
                      SDUCRLF+
-                     'If you wish to update a "hidden" volume held within another file, please specify the offset within the host file where your hidden volume is located');
+                     'If you wish to update a "hidden" DoxBox held within another DoxBox, please specify the offset within the outer box where your hidden box is located');
 
   reInstructDestFile.Text :=
                    _('n/a');
 
   reInstructDestDetails.Text :=
-                   _('Please enter new details for your volume/keyfile.');
+                   _('Please enter new details for your box/keyfile.');
 
   reInstructRNGSelect.Text :=
-                   _('In order to change your volume/keyfile''s details, a certain amount of random data is required.'+SDUCRLF+
+                   _('In order to change your box/keyfile''s details, a certain amount of random data is required.'+SDUCRLF+
                      SDUCRLF+
                      'This data will be used for the following:'+SDUCRLF+
                      SDUCRLF+
@@ -881,28 +882,28 @@ end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.SetupInstructionsCreateKeyfile();
 begin
-  self.Caption := _('Create Keyfile for Volume');
+  self.Caption := _('Create Keyfile for Box');
 
   reInstructFileOrPartition.Text :=
-                   _('Please specify whether the volume you wish to create a keyfile for is file or partition based.');
+                   _('Please specify whether the box you wish to create a keyfile for is file or partition based.');
 
   reInstructSrcFile.Text :=
                    _('Please enter the full path and filename of either:'+SDUCRLF+
                      SDUCRLF+
-                     '1) A volume containing a CDB, or'+SDUCRLF+
+                     '1) A box containing a CDB, or'+SDUCRLF+
                      '2) An existing keyfile'+SDUCRLF+
                      SDUCRLF+
-                     'for the volume you wish to create a keyfile for.'+SDUCRLF+
+                     'for the box you wish to create a keyfile for.'+SDUCRLF+
                      SDUCRLF+
-                     'If you wish to update a "hidden" volume which is held within another file, and your hidden volume includes a CDB, please specify the filename of the host file which stores your encrypted volume.');
+                     'If you wish to update a "hidden" box which is inside another box, and your hidden box includes a CDB, please specify the filename of the outer box which stores your hidden box.');
 
   reInstructPartitionSelect.Text :=
-                   _('Please specify the partition your volume is stored on.');
+                   _('Please specify the partition your box is stored on.');
 
   reInstructSrcDetails.Text :=
-                   _('Please enter the full details of the volume you wish to create a keyfile for.'+SDUCRLF+
+                   _('Please enter the full details of the box you wish to create a keyfile for.'+SDUCRLF+
                      SDUCRLF+
-                     'If you wish to update a "hidden" volume which is held within another file, and your hidden volume includes a CDB, please specify the offset within the host file where your hidden volume is located.');
+                     'If you wish to update a "hidden" box which is inside another box, and your hidden volume includes a CDB, please specify the offset within the outer box where your hidden box is located.');
 
   reInstructDestFile.Text :=
                    _('Please specify the full path and filename where the keyfile should be written to.');
@@ -943,7 +944,7 @@ begin
   reInstructRNGMouseMovement.Text :=
                    _('You have selected mouse movement to generate random data.'+SDUCRLF+
                      SDUCRLF+
-                     'Please "waggle" the mouse within the area below, until enough random data has been generated.');
+                     'Please "wiggle" the mouse within the area below, until enough random data has been generated.');
 
   reInstructRNGGPG.Text :=
                    _('In order to use GPG to generate random data, please specify the location of "gpg.exe" by clicking the browse button.');
@@ -1067,10 +1068,10 @@ begin
     end;
 
   PurgeMouseRNGData();
-
+              { TODO 1 -otdk -ccleanup : whats this for? }
   for i:=1 to length(fCombinedRandomData) do
     begin
-    fCombinedRandomData[i] := char(i);
+    fCombinedRandomData[i] := ansichar(i);
     end;
 
 end;

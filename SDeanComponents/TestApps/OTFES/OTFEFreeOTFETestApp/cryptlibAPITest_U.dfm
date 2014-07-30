@@ -177,8 +177,14 @@ object cryptlibAPITest: TcryptlibAPITest
     Top = 36
     Width = 449
     Height = 513
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
     Lines.Strings = (
       'reReport')
+    ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 9
   end
@@ -214,6 +220,11 @@ object cryptlibAPITest: TcryptlibAPITest
     Width = 165
     Height = 101
     Color = clBtnFace
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
     Lines.Strings = (
       'Note: Click:'
       ''
@@ -222,6 +233,7 @@ object cryptlibAPITest: TcryptlibAPITest
       '*) cryptAddRandom'
       ''
       'before generating random data.')
+    ParentFont = False
     ReadOnly = True
     TabOrder = 13
   end

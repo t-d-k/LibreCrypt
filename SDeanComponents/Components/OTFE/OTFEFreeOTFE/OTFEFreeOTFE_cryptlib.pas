@@ -344,7 +344,7 @@ function cryptlib_cryptStatusOK(status: integer): boolean;
 //   cryptlib_LoadDLL(...)
 //   cryptlib_cryptInit(...)
 //   cryptlib_cryptAddRandom(...)
-function cryptlib_RNG(lengthBytes: integer): string;
+function cryptlib_RNG(lengthBytes: integer): ansistring;
 
 implementation
 
@@ -493,14 +493,14 @@ end;
 // Because of this, we repeat the procedure, only drawing that number of bits
 // each time we obtain random data.
 // lengthBytes - Set this to the number of *bytes* of random data to be generated
-function cryptlib_RNG(lengthBytes: integer): string;
+function cryptlib_RNG(lengthBytes: integer): ansistring;
 const
   // The algorithm used is *relativly* arbitary
   CYPHER_ALG = catCRYPT_ALGO_AES;
 var
   funcResult: integer;
-  buffer: PChar;
-  retVal: string;
+  buffer: PAnsiChar;
+  retVal: ansistring;
   allOK: boolean;
   cryptContext: TCRYPT_CONTEXT;
   cypherKeysizeBytes: integer;  // In *bytes*

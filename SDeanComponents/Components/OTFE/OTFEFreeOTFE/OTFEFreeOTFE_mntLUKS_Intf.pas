@@ -4,7 +4,7 @@
 // ------------------------
 // "Private"
 
-function  ParseLUKSHeader(rawData: string; var LUKSheader: TLUKSHeader): boolean;
+function  ParseLUKSHeader(rawData: Ansistring; var LUKSheader: TLUKSHeader): boolean;
 function  IdentifyHash(hashSpec: string; var hashKernelModeDeviceName: string; var hashGUID: TGUID): boolean;
 function  IdentifyCypher(
                          cypherName: string;
@@ -27,7 +27,7 @@ function IdentifyCypher_SearchCyphers(
                                       var cypherKernelModeDeviceName: string;
                                       var cypherGUID: TGUID
                                      ): boolean;
-function  PrettyHex(data: Pointer; bytesCount: integer): string;
+function  PrettyHex(data: Pointer; bytesCount: integer): Ansistring;
 function  StringHasNumbers(checkString: string): boolean;
 
 // ------------------------
@@ -41,14 +41,14 @@ function ReadLUKSKeyFromFile(
   filename: string;
   treatAsASCII: boolean;
   ASCIINewline: TSDUNewline;
-  out key: string
+  out key: Ansistring
 ): boolean;
 
 
 // If keyfile is set, ignore userKey and read the key from the file
 function  DumpLUKSDataToFile(
   filename: string;
-  userKey: string;
+  userKey: Ansistring;
   keyfile: string;
   keyfileIsASCII: boolean;
   keyfileNewlineType: TSDUNewline;
@@ -68,11 +68,11 @@ function  MapToFreeOTFE(baseIVCypherOnHashLength: boolean; var LUKSheader: TLUKS
 
 function  RecoverMasterKey(
                                 filename: string;
-                                userPassword: string;
+                                userPassword: Ansistring;
                                 baseIVCypherOnHashLength: boolean;
                                 var LUKSHeader: TLUKSHeader;
                                 var keySlot: integer;
-                                var keyMaterial: string
+                                var keyMaterial: Ansistring
                                ): boolean;
 
 

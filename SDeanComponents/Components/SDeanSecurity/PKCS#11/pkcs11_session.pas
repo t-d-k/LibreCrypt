@@ -67,11 +67,11 @@ type
 
     function GetReadOnly(): boolean;
 
-    function Login(userType: TPKCS11UserType; usePINPad: boolean; PIN: string): boolean; overload;
+    function Login(userType: TPKCS11UserType; usePINPad: boolean; PIN: ansistring): boolean; overload;
     function GetLoggedIn(): boolean;
 
-    function InitPIN(usePINPad: boolean; PIN: string): boolean; overload;
-    function SetPIN(usePINPad: boolean; oldPIN: string; newPIN: string): boolean; overload;
+    function InitPIN(usePINPad: boolean; PIN: ansistring): boolean; overload;
+    function SetPIN(usePINPad: boolean; oldPIN: ansistring; newPIN: ansistring): boolean; overload;
 
     // Conversion functions...
     function CK_USER_TYPEToUserType(ckUserType: CK_USER_TYPE): TPKCS11UserType;
@@ -100,22 +100,22 @@ type
 
     property ReadOnly: boolean read GetReadOnly;
 
-    function  SeedRandom(byteCount: integer; seedData: string): boolean;
-    function  GenerateRandom(byteCount: integer; var randomData: string): boolean;
+    function  SeedRandom(byteCount: integer; seedData: ansistring): boolean;
+    function  GenerateRandom(byteCount: integer; var randomData: ansistring): boolean;
 
-    function  GetOperationState(var operationState: string): boolean;
-    function  SetOperationState(operationState: string; encryptionKeyObj: TPKCS11Object; authenticationKey: TPKCS11Object): boolean;
+    function  GetOperationState(var operationState: ansistring): boolean;
+    function  SetOperationState(operationState: ansistring; encryptionKeyObj: TPKCS11Object; authenticationKey: TPKCS11Object): boolean;
 
     function  Login(userType: TPKCS11UserType): boolean; overload;
-    function  Login(userType: TPKCS11UserType; PIN: string): boolean; overload;
+    function  Login(userType: TPKCS11UserType; PIN: ansistring): boolean; overload;
     procedure Logout();
 
     property  LoggedIn: boolean read GetLoggedIn;
 
     function  InitPIN(): boolean; overload;
-    function  InitPIN(PIN: string): boolean; overload;
+    function  InitPIN(PIN: ansistring): boolean; overload;
     function  SetPIN(): boolean; overload;
-    function  SetPIN(oldPIN: string; newPIN: string): boolean; overload;
+    function  SetPIN(oldPIN: ansistring; newPIN: ansistring): boolean; overload;
 
     function  FindObjectsInit(): boolean;
     function  FindNextObject(): TPKCS11Object;
@@ -149,46 +149,46 @@ type
 
     function  EncryptInit(mechanism: CK_MECHANISM_TYPE; keyObj: TPKCS11Object): boolean; overload;
     function  EncryptInit(mechanism: TPKCS11Mechanism; keyObj: TPKCS11Object): boolean; overload;
-    function  Encrypt(plaintext: string; var cyphertext: string): boolean;
-    function  EncryptUpdate(plaintext: string; var cyphertext: string): boolean;
-    function  EncryptFinal(var cyphertext: string): boolean;
+    function  Encrypt(plaintext: AnsiString; var cyphertext: AnsiString): boolean;
+    function  EncryptUpdate(plaintext: AnsiString; var cyphertext: AnsiString): boolean;
+    function  EncryptFinal(var cyphertext: AnsiString): boolean;
     function  DecryptInit(mechanism: CK_MECHANISM_TYPE; keyObj: TPKCS11Object): boolean; overload;
     function  DecryptInit(mechanism: TPKCS11Mechanism; keyObj: TPKCS11Object): boolean; overload;
-    function  Decrypt(cyphertext: string; var plaintext: string): boolean;
-    function  DecryptUpdate(cyphertext: string; var plaintext: string): boolean;
-    function  DecryptFinal(var plaintext: string): boolean;
+    function  Decrypt(cyphertext: AnsiString; var plaintext: AnsiString): boolean;
+    function  DecryptUpdate(cyphertext: AnsiString; var plaintext: AnsiString): boolean;
+    function  DecryptFinal(var plaintext: AnsiString): boolean;
 
     function  DigestInit(mechanism: CK_MECHANISM_TYPE): boolean; overload;
     function  DigestInit(mechanism: TPKCS11Mechanism): boolean; overload;
-    function  Digest(data: string; var digest: string): boolean;
-    function  DigestUpdate(data: string): boolean;
-    function  DigestKey(data: string; keyObj: TPKCS11Object): boolean;
-    function  DigestFinal(var digest: string): boolean;
+    function  Digest(data: ansistring; var digest: ansistring): boolean;
+    function  DigestUpdate(data: ansistring): boolean;
+    function  DigestKey(data: ansistring; keyObj: TPKCS11Object): boolean;
+    function  DigestFinal(var digest: ansistring): boolean;
 
     function  SignInit(mechanism: CK_MECHANISM_TYPE; keyObj: TPKCS11Object): boolean; overload;
     function  SignInit(mechanism: TPKCS11Mechanism; keyObj: TPKCS11Object): boolean; overload;
-    function  Sign(data: string; var signature: string): boolean;
-    function  SignUpdate(data: string): boolean;
-    function  SignFinal(var signature: string): boolean;
+    function  Sign(data: ansistring; var signature: ansistring): boolean;
+    function  SignUpdate(data: ansistring): boolean;
+    function  SignFinal(var signature: ansistring): boolean;
     function  SignRecoverInit(mechanism: CK_MECHANISM_TYPE; keyObj: TPKCS11Object): boolean; overload;
     function  SignRecoverInit(mechanism: TPKCS11Mechanism; keyObj: TPKCS11Object): boolean; overload;
-    function  SignRecover(data: string; var signature: string): boolean;
+    function  SignRecover(data: ansistring; var signature: ansistring): boolean;
     function  VerifyInit(mechanism: CK_MECHANISM_TYPE; keyObj: TPKCS11Object): boolean; overload;
     function  VerifyInit(mechanism: TPKCS11Mechanism; keyObj: TPKCS11Object): boolean; overload;
-    function  Verify(data: string; signature: string): boolean;
-    function  VerifyUpdate(data: string): boolean;
-    function  VerifyFinal(signature: string): boolean;
+    function  Verify(data: ansistring; signature: ansistring): boolean;
+    function  VerifyUpdate(data: ansistring): boolean;
+    function  VerifyFinal(signature: ansistring): boolean;
     function  VerifyRecoverInit(mechanism: CK_MECHANISM_TYPE; keyObj: TPKCS11Object): boolean; overload;
     function  VerifyRecoverInit(mechanism: TPKCS11Mechanism; keyObj: TPKCS11Object): boolean; overload;
-    function  VerifyRecover(data: string; var signature: string): boolean;
+    function  VerifyRecover(data: ansistring; var signature: ansistring): boolean;
 
-    function  DigestEncryptUpdate(part: string; var encryptedPart: string): boolean;
-    function  DecryptDigestUpdate(pEncryptedPart: string; var Part: string): boolean;
-    function  SignEncryptUpdate(part: string; var encryptedPart: string): boolean;
-    function  DecryptVerifyUpdate(pEncryptedPart: string; var Part: string): boolean;
+    function  DigestEncryptUpdate(part: ansistring; var encryptedPart: ansistring): boolean;
+    function  DecryptDigestUpdate(pEncryptedPart: ansistring; var Part: ansistring): boolean;
+    function  SignEncryptUpdate(part: ansistring; var encryptedPart: ansistring): boolean;
+    function  DecryptVerifyUpdate(pEncryptedPart: ansistring; var Part: ansistring): boolean;
 
-    function  WrapKey(mechanism: CK_MECHANISM_TYPE; wrappingKeyObj: TPKCS11Object; keyObj: TPKCS11Object; var wrappedKey: string): boolean;
-    function  UnwrapKey(mechanism: CK_MECHANISM_TYPE; unwrappingKeyObj: TPKCS11Object; wrappedKey: string; attrTemplate: TPKCS11AttributeTemplate): TPKCS11Object;
+    function  WrapKey(mechanism: CK_MECHANISM_TYPE; wrappingKeyObj: TPKCS11Object; keyObj: TPKCS11Object; var wrappedKey: ansistring): boolean;
+    function  UnwrapKey(mechanism: CK_MECHANISM_TYPE; unwrappingKeyObj: TPKCS11Object; wrappedKey: ansistring; attrTemplate: TPKCS11AttributeTemplate): TPKCS11Object;
     function  DeriveKey(mechanism: CK_MECHANISM_TYPE; baseKey: TPKCS11Object; attrTemplate: TPKCS11AttributeTemplate): TPKCS11Object;
 
     function  GetFunctionStatus(): boolean;
@@ -227,7 +227,7 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.SeedRandom(byteCount: integer; seedData: string): boolean;
+function TPKCS11Session.SeedRandom(byteCount: integer; seedData: ansistring): boolean;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_SeedRandom, FN_NAME_C_SeedRandom);
 
@@ -240,12 +240,12 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.GenerateRandom(byteCount: integer; var randomData: string): boolean;
+function TPKCS11Session.GenerateRandom(byteCount: integer; var randomData: ansistring): boolean;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_GenerateRandom, FN_NAME_C_GenerateRandom);
 
   // Setup the returned string so it's large enough to store the random data
-  randomData := StringOfChar('X', byteCount);
+  randomData := StringOfChar(AnsiChar('X'), byteCount);
 
   LastRV := LibraryFunctionList.CK_C_GenerateRandom(
                                                 FhSession,
@@ -256,19 +256,19 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.GetOperationState(var operationState: string): boolean;
+function TPKCS11Session.GetOperationState(var operationState: ansistring): boolean;
 var
   tmpLen: CK_ULONG;
-  tmpData: string;
+  tmpData: AnsiString;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_GetOperationState, FN_NAME_C_DecryptVerifyUpdate);
 
-  tmpData := StringOfChar(#0, BUFFER_LEN_OP_STATE);
+  tmpData := StringOfChar(AnsiChar(#0), BUFFER_LEN_OP_STATE);
   tmpLen := length(tmpData);
 
   LastRV := LibraryFunctionList.CK_C_GetOperationState(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(tmpData)),
+                                             CK_BYTE_PTR(PansiChar(tmpData)),
                                              @tmpLen
                                             );
 
@@ -278,13 +278,13 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.SetOperationState(operationState: string; encryptionKeyObj: TPKCS11Object; authenticationKey: TPKCS11Object): boolean;
+function TPKCS11Session.SetOperationState(operationState: ansistring; encryptionKeyObj: TPKCS11Object; authenticationKey: TPKCS11Object): boolean;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_SetOperationState, FN_NAME_C_SetOperationState);
 
   LastRV := LibraryFunctionList.CK_C_SetOperationState(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(operationState)),
+                                             CK_BYTE_PTR(PansiChar(operationState)),
                                              length(operationState),
                                              encryptionKeyObj.FHandle,
                                              authenticationKey.FHandle
@@ -300,12 +300,12 @@ begin
 end;
 
 // Log user in using specified PIN
-function TPKCS11Session.Login(userType: TPKCS11UserType; PIN: string): boolean;
+function TPKCS11Session.Login(userType: TPKCS11UserType; PIN: ansistring): boolean;
 begin
   Result := Login(userType, FALSE, PIN);
 end;
 
-function TPKCS11Session.Login(userType: TPKCS11UserType; usePINPad: boolean; PIN: string): boolean;
+function TPKCS11Session.Login(userType: TPKCS11UserType; usePINPad: boolean; PIN: ansistring): boolean;
 var
   pkcs11UserType: CK_USER_TYPE;
 begin
@@ -322,7 +322,7 @@ begin
     LastRV := LibraryFunctionList.CK_C_Login(
                                             FhSession,
                                             pkcs11UserType,
-                                            CK_UTF8CHAR_PTR(PChar(PIN)),
+                                            CK_UTF8CHAR_PTR(PansiChar(PIN)),
                                             length(PIN)
                                            );
     end;
@@ -412,7 +412,7 @@ var
   retval: TPKCS11Object;
   newObjHandle: CK_OBJECT_HANDLE;
   ckAttributes: array of CK_ATTRIBUTE;
-  bufferArray: array of string;
+  bufferArray: array of ansistring;
   i: integer;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_CreateObject, FN_NAME_C_CreateObject);
@@ -426,7 +426,7 @@ begin
     bufferArray[i] := attrObjs[i].ValueAsRawData;
 
     ckAttributes[i].attrType := attrObjs[i].AttribType;
-    ckAttributes[i].pValue := PChar(bufferArray[i]);
+    ckAttributes[i].pValue := PansiChar(bufferArray[i]);
     ckAttributes[i].ulValueLen := length(bufferArray[i]);
     end;
 
@@ -452,7 +452,7 @@ var
   retval: TPKCS11Object;
   newObjHandle: CK_OBJECT_HANDLE;
   ckAttributes: array of CK_ATTRIBUTE;
-  bufferArray: array of string;
+  bufferArray: array of ansistring;
   i: integer;
   attrPtr: CK_ATTRIBUTE_PTR;
   currTemplateAttr: TPKCS11Attribute;
@@ -473,7 +473,7 @@ begin
       bufferArray[i] := currTemplateAttr.ValueAsRawData;
 
       ckAttributes[i].attrType := currTemplateAttr.AttribType;
-      ckAttributes[i].pValue := PChar(bufferArray[i]);
+      ckAttributes[i].pValue := PansiChar(bufferArray[i]);
       ckAttributes[i].ulValueLen := length(bufferArray[i]);
       end;
 
@@ -507,7 +507,7 @@ var
   retval: TPKCS11Object;
   newObjHandle: CK_OBJECT_HANDLE;
   ckAttributes: array of CK_ATTRIBUTE;
-  bufferArray: array of string;
+  bufferArray: array of ansistring;
   i: integer;
   mechStruct: CK_MECHANISM;
   attrPtr: CK_ATTRIBUTE_PTR;
@@ -533,7 +533,7 @@ begin
       bufferArray[i] := currTemplateAttr.ValueAsRawData;
 
       ckAttributes[i].attrType := currTemplateAttr.AttribType;
-      ckAttributes[i].pValue := PChar(bufferArray[i]);
+      ckAttributes[i].pValue := PansiChar(bufferArray[i]);
       ckAttributes[i].ulValueLen := length(bufferArray[i]);
       end;
 
@@ -587,8 +587,8 @@ var
   newObjHandlePrivate: CK_OBJECT_HANDLE;
   ckAttributesPublic: array of CK_ATTRIBUTE;
   ckAttributesPrivate: array of CK_ATTRIBUTE;
-  bufferArrayPublic: array of string;
-  bufferArrayPrivate: array of string;
+  bufferArrayPublic: array of ansistring;
+  bufferArrayPrivate: array of ansistring;
   i: integer;
   mechStruct: CK_MECHANISM;
   attrPtrPublic: CK_ATTRIBUTE_PTR;
@@ -613,7 +613,7 @@ begin
       bufferArrayPublic[i] := currTemplateAttr.ValueAsRawData;
 
       ckAttributesPublic[i].attrType := currTemplateAttr.AttribType;
-      ckAttributesPublic[i].pValue := PChar(bufferArrayPublic[i]);
+      ckAttributesPublic[i].pValue := PansiChar(bufferArrayPublic[i]);
       ckAttributesPublic[i].ulValueLen := length(bufferArrayPublic[i]);
       end;
 
@@ -632,7 +632,7 @@ begin
       bufferArrayPrivate[i] := currTemplateAttr.ValueAsRawData;
 
       ckAttributesPrivate[i].attrType := currTemplateAttr.AttribType;
-      ckAttributesPrivate[i].pValue := PChar(bufferArrayPrivate[i]);
+      ckAttributesPrivate[i].pValue := PansiChar(bufferArrayPrivate[i]);
       ckAttributesPrivate[i].ulValueLen := length(bufferArrayPrivate[i]);
       end;
 
@@ -822,28 +822,28 @@ begin
   Result := GetSessionInfo(junk);
 end;
 
-function TPKCS11Session.InitPIN(usePINPad: boolean; PIN: string): boolean;
+function TPKCS11Session.InitPIN(usePINPad: boolean; PIN: ansistring): boolean;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_InitPIN, FN_NAME_C_InitPIN);
 
   LastRV := LibraryFunctionList.CK_C_InitPIN(
                                             FhSession,
-                                            CK_UTF8CHAR_PTR(PChar(PIN)),
+                                            CK_UTF8CHAR_PTR(PansiChar(PIN)),
                                             length(PIN)
                                            );
 
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.SetPIN(usePINPad: boolean; oldPIN: string; newPIN: string): boolean;
+function TPKCS11Session.SetPIN(usePINPad: boolean; oldPIN: ansistring; newPIN: ansistring): boolean;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_SetPIN, FN_NAME_C_SetPIN);
 
   LastRV := LibraryFunctionList.CK_C_SetPIN(
                                            FhSession,
-                                           CK_UTF8CHAR_PTR(PChar(oldPIN)),
+                                           CK_UTF8CHAR_PTR(pansichar(oldPIN)),
                                            length(oldPIN),
-                                           CK_UTF8CHAR_PTR(PChar(newPIN)),
+                                           CK_UTF8CHAR_PTR(pansichar(newPIN)),
                                            length(newPIN)
                                           );
 
@@ -855,7 +855,7 @@ begin
   Result := InitPIN(TRUE, '');
 end;
 
-function TPKCS11Session.InitPIN(PIN: string): boolean;
+function TPKCS11Session.InitPIN(PIN: ansistring): boolean;
 begin
   Result := InitPIN(FALSE, PIN);
 end;
@@ -865,7 +865,7 @@ begin
   Result := SetPIN(TRUE, '', '');
 end;
 
-function TPKCS11Session.SetPIN(oldPIN: string; newPIN: string): boolean;
+function TPKCS11Session.SetPIN(oldPIN: ansistring; newPIN: ansistring): boolean;
 begin
   Result := SetPIN(FALSE, oldPIN, newPIN);
 end;
@@ -1045,22 +1045,22 @@ begin
   Result := EncryptInit(mechanism.MechanismType, keyObj);
 end;
 
-function TPKCS11Session.Encrypt(plaintext: string; var cyphertext: string): boolean;
+function TPKCS11Session.Encrypt(plaintext: AnsiString; var cyphertext: AnsiString): boolean;
 var
   tmpLen: CK_ULONG;
-  tmpCyphertext: string;
+  tmpCyphertext: AnsiString;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_Encrypt, FN_NAME_C_Encrypt);
 
   tmpLen := length(plaintext);
   FLastEncryptDecryptLen := tmpLen;
-  tmpCyphertext := StringOfChar(#0, tmpLen);
+  tmpCyphertext := StringOfChar(AnsiChar(#0), tmpLen);
 
   LastRV := LibraryFunctionList.CK_C_Encrypt(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(plaintext)),
+                                             CK_BYTE_PTR(PAnsiChar(plaintext)),
                                              length(plaintext),
-                                             CK_BYTE_PTR(PChar(tmpCyphertext)),
+                                             CK_BYTE_PTR(PAnsiChar(tmpCyphertext)),
                                              @tmpLen
                                             );
 
@@ -1070,22 +1070,22 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.EncryptUpdate(plaintext: string; var cyphertext: string): boolean;
+function TPKCS11Session.EncryptUpdate(plaintext: AnsiString; var cyphertext: AnsiString): boolean;
 var
   tmpLen: CK_ULONG;
-  tmpCyphertext: string;
+  tmpCyphertext: AnsiString;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_EncryptUpdate, FN_NAME_C_EncryptUpdate);
 
   tmpLen := length(plaintext);
   FLastEncryptDecryptLen := tmpLen;
-  tmpCyphertext := StringOfChar(#0, tmpLen);
+  tmpCyphertext := StringOfChar(AnsiChar(#0), tmpLen);
 
   LastRV := LibraryFunctionList.CK_C_EncryptUpdate(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(plaintext)),
+                                             CK_BYTE_PTR(pansichar(plaintext)),
                                              length(plaintext),
-                                             CK_BYTE_PTR(PChar(tmpCyphertext)),
+                                             CK_BYTE_PTR(pansichar(tmpCyphertext)),
                                              @tmpLen
                                             );
 
@@ -1095,18 +1095,18 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.EncryptFinal(var cyphertext: string): boolean;
+function TPKCS11Session.EncryptFinal(var cyphertext: AnsiString): boolean;
 var
   tmpLen: CK_ULONG;
-  tmpCyphertext: string;
+  tmpCyphertext: AnsiString;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_EncryptFinal, FN_NAME_C_EncryptFinal);
 
-  tmpCyphertext := StringOfChar(#0, max(FLastEncryptDecryptLen, BUFFER_LEN_MIN_ENCRYPT_DECRYPT));
+  tmpCyphertext := StringOfChar(AnsiChar(#0), max(FLastEncryptDecryptLen, BUFFER_LEN_MIN_ENCRYPT_DECRYPT));
 
   LastRV := LibraryFunctionList.CK_C_EncryptFinal(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(tmpCyphertext)),
+                                             CK_BYTE_PTR(pansichar(tmpCyphertext)),
                                              @tmpLen
                                             );
 
@@ -1140,22 +1140,22 @@ begin
   Result := DecryptInit(mechanism.MechanismType, keyObj);
 end;
 
-function TPKCS11Session.Decrypt(cyphertext: string; var plaintext: string): boolean;
+function TPKCS11Session.Decrypt(cyphertext: AnsiString; var plaintext: AnsiString): boolean;
 var
   tmpLen: CK_ULONG;
-  tmpPlaintext: string;
+  tmpPlaintext: AnsiString;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_Decrypt, FN_NAME_C_Decrypt);
 
   tmpLen := length(cyphertext);
   FLastEncryptDecryptLen := tmpLen;
-  tmpPlaintext := StringOfChar(#0, tmpLen);
+  tmpPlaintext := StringOfChar(AnsiChar(#0), tmpLen);
 
   LastRV := LibraryFunctionList.CK_C_Decrypt(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(cyphertext)),
+                                             CK_BYTE_PTR(pansichar(cyphertext)),
                                              length(cyphertext),
-                                             CK_BYTE_PTR(PChar(tmpPlaintext)),
+                                             CK_BYTE_PTR(pansichar(tmpPlaintext)),
                                              @tmpLen
                                             );
 
@@ -1165,22 +1165,22 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.DecryptUpdate(cyphertext: string; var plaintext: string): boolean;
+function TPKCS11Session.DecryptUpdate(cyphertext: AnsiString; var plaintext: AnsiString): boolean;
 var
   tmpLen: CK_ULONG;
-  tmpPlaintext: string;
+  tmpPlaintext: AnsiString;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_DecryptUpdate, FN_NAME_C_DecryptUpdate);
 
   tmpLen := length(cyphertext);
   FLastEncryptDecryptLen := tmpLen;
-  tmpPlaintext := StringOfChar(#0, tmpLen);
+  tmpPlaintext := StringOfChar(AnsiChar(#0), tmpLen);
 
   LastRV := LibraryFunctionList.CK_C_DecryptUpdate(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(cyphertext)),
+                                             CK_BYTE_PTR(pansichar(cyphertext)),
                                              length(cyphertext),
-                                             CK_BYTE_PTR(PChar(tmpPlaintext)),
+                                             CK_BYTE_PTR(pansichar(tmpPlaintext)),
                                              @tmpLen
                                             );
 
@@ -1190,18 +1190,18 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.DecryptFinal(var plaintext: string): boolean;
+function TPKCS11Session.DecryptFinal(var plaintext: AnsiString): boolean;
 var
   tmpLen: CK_ULONG;
-  tmpPlaintext: string;
+  tmpPlaintext: AnsiString;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_DecryptFinal, FN_NAME_C_DecryptFinal);
 
-  tmpPlaintext := StringOfChar(#0, max(FLastEncryptDecryptLen, BUFFER_LEN_MIN_ENCRYPT_DECRYPT));
+  tmpPlaintext := StringOfChar(AnsiChar(#0), max(FLastEncryptDecryptLen, BUFFER_LEN_MIN_ENCRYPT_DECRYPT));
 
   LastRV := LibraryFunctionList.CK_C_DecryptFinal(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(tmpPlaintext)),
+                                             CK_BYTE_PTR(pansichar(tmpPlaintext)),
                                              @tmpLen
                                             );
 
@@ -1234,21 +1234,21 @@ begin
   Result := DigestInit(mechanism.MechanismType);
 end;
 
-function TPKCS11Session.Digest(data: string; var digest: string): boolean;
+function TPKCS11Session.Digest(data: ansistring; var digest: ansistring): boolean;
 var
   tmpLen: CK_ULONG;
-  tmpDigest: string;
+  tmpDigest: ansistring;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_Digest, FN_NAME_C_Digest);
 
   tmpLen := length(data);
-  tmpDigest := StringOfChar(#0, tmpLen);
+  tmpDigest := StringOfChar(AnsiChar(#0), tmpLen);
 
   LastRV := LibraryFunctionList.CK_C_Digest(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(data)),
+                                             CK_BYTE_PTR(pansichar(data)),
                                              length(data),
-                                             CK_BYTE_PTR(PChar(tmpDigest)),
+                                             CK_BYTE_PTR(pansichar(tmpDigest)),
                                              @tmpLen
                                             );
 
@@ -1258,28 +1258,28 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.DigestUpdate(data: string): boolean;
+function TPKCS11Session.DigestUpdate(data: ansistring): boolean;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_DigestUpdate, FN_NAME_C_DigestUpdate);
 
   LastRV := LibraryFunctionList.CK_C_DigestUpdate(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(data)),
+                                             CK_BYTE_PTR(pansichar(data)),
                                              length(data)
                                             );
 
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.DigestKey(data: string; keyObj: TPKCS11Object): boolean;
+function TPKCS11Session.DigestKey(data: ansistring; keyObj: TPKCS11Object): boolean;
 var
   tmpLen: CK_ULONG;
-  tmpDigest: string;
+  tmpDigest: ansistring;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_DigestKey, FN_NAME_C_DigestKey);
 
   tmpLen := length(data);
-  tmpDigest := StringOfChar(#0, tmpLen);
+  tmpDigest := StringOfChar(AnsiChar(#0), tmpLen);
 
   LastRV := LibraryFunctionList.CK_C_DigestKey(
                                              FhSession,
@@ -1289,18 +1289,18 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.DigestFinal(var digest: string): boolean;
+function TPKCS11Session.DigestFinal(var digest: ansistring): boolean;
 var
   tmpLen: CK_ULONG;
-  tmpDigest: string;
+  tmpDigest: ansistring;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_DigestFinal, FN_NAME_C_DigestFinal);
 
-  tmpDigest := StringOfChar(#0, BUFFER_LEN_DIGEST);
+  tmpDigest := StringOfChar(AnsiChar(#0), BUFFER_LEN_DIGEST);
 
   LastRV := LibraryFunctionList.CK_C_DigestFinal(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(tmpDigest)),
+                                             CK_BYTE_PTR(pansichar(tmpDigest)),
                                              @tmpLen
                                             );
 
@@ -1334,21 +1334,21 @@ begin
   Result := SignInit(mechanism.MechanismType, keyObj);
 end;
 
-function TPKCS11Session.Sign(data: string; var signature: string): boolean;
+function TPKCS11Session.Sign(data: ansistring; var signature: ansistring): boolean;
 var
   tmpLen: CK_ULONG;
-  tmpSignature: string;
+  tmpSignature: ansistring;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_Sign, FN_NAME_C_Sign);
 
   tmpLen := length(data);
-  tmpSignature := StringOfChar(#0, tmpLen);
+  tmpSignature := StringOfChar(AnsiChar(#0), tmpLen);
 
   LastRV := LibraryFunctionList.CK_C_Sign(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(data)),
+                                             CK_BYTE_PTR(pansichar(data)),
                                              length(data),
-                                             CK_BYTE_PTR(PChar(tmpSignature)),
+                                             CK_BYTE_PTR(pansichar(tmpSignature)),
                                              @tmpLen
                                             );
 
@@ -1358,31 +1358,31 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.SignUpdate(data: string): boolean;
+function TPKCS11Session.SignUpdate(data: ansistring): boolean;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_SignUpdate, FN_NAME_C_SignUpdate);
 
   LastRV := LibraryFunctionList.CK_C_SignUpdate(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(data)),
+                                             CK_BYTE_PTR(pansichar(data)),
                                              length(data)
                                             );
 
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.SignFinal(var signature: string): boolean;
+function TPKCS11Session.SignFinal(var signature: ansistring): boolean;
 var
   tmpLen: CK_ULONG;
-  tmpSignature: string;
+  tmpSignature: ansistring;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_SignFinal, FN_NAME_C_SignFinal);
 
-  tmpSignature := StringOfChar(#0, BUFFER_LEN_SIGN);
+  tmpSignature := StringOfChar(AnsiChar(#0), BUFFER_LEN_SIGN);
 
   LastRV := LibraryFunctionList.CK_C_SignFinal(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(tmpSignature)),
+                                             CK_BYTE_PTR(pansichar(tmpSignature)),
                                              @tmpLen
                                             );
 
@@ -1416,21 +1416,21 @@ begin
   Result := SignRecoverInit(mechanism.MechanismType, keyObj);
 end;
 
-function TPKCS11Session.SignRecover(data: string; var signature: string): boolean;
+function TPKCS11Session.SignRecover(data: ansistring; var signature: ansistring): boolean;
 var
   tmpLen: CK_ULONG;
-  tmpSignature: string;
+  tmpSignature: ansistring;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_SignRecover, FN_NAME_C_SignRecover);
 
   tmpLen := length(data);
-  tmpSignature := StringOfChar(#0, tmpLen);
+  tmpSignature := StringOfChar(AnsiChar(#0), tmpLen);
 
   LastRV := LibraryFunctionList.CK_C_SignRecover(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(data)),
+                                             CK_BYTE_PTR(pansichar(data)),
                                              length(data),
-                                             CK_BYTE_PTR(PChar(tmpSignature)),
+                                             CK_BYTE_PTR(pansichar(tmpSignature)),
                                              @tmpLen
                                             );
 
@@ -1465,41 +1465,41 @@ begin
   Result := VerifyInit(mechanism.MechanismType, keyObj);
 end;
 
-function TPKCS11Session.Verify(data: string; signature: string): boolean;
+function TPKCS11Session.Verify(data: ansistring; signature: ansistring): boolean;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_Verify, FN_NAME_C_Verify);
 
   LastRV := LibraryFunctionList.CK_C_Verify(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(data)),
+                                             CK_BYTE_PTR(pansichar(data)),
                                              length(data),
-                                             CK_BYTE_PTR(PChar(signature)),
+                                             CK_BYTE_PTR(pansichar(signature)),
                                              length(signature)
                                             );
 
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.VerifyUpdate(data: string): boolean;
+function TPKCS11Session.VerifyUpdate(data: ansistring): boolean;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_VerifyUpdate, FN_NAME_C_VerifyUpdate);
 
   LastRV := LibraryFunctionList.CK_C_VerifyUpdate(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(data)),
+                                             CK_BYTE_PTR(pansichar(data)),
                                              length(data)
                                             );
 
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.VerifyFinal(signature: string): boolean;
+function TPKCS11Session.VerifyFinal(signature: ansistring): boolean;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_VerifyFinal, FN_NAME_C_VerifyFinal);
 
   LastRV := LibraryFunctionList.CK_C_VerifyFinal(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(signature)),
+                                             CK_BYTE_PTR(pansichar(signature)),
                                              length(signature)
                                             );
 
@@ -1530,21 +1530,21 @@ begin
   Result := VerifyRecoverInit(mechanism.MechanismType, keyObj);
 end;
 
-function TPKCS11Session.VerifyRecover(data: string; var signature: string): boolean;
+function TPKCS11Session.VerifyRecover(data: ansistring; var signature: ansistring): boolean;
 var
   tmpLen: CK_ULONG;
-  tmpSignature: string;
+  tmpSignature: ansistring;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_VerifyRecover, FN_NAME_C_VerifyRecover);
 
   tmpLen := length(data);
-  tmpSignature := StringOfChar(#0, tmpLen);
+  tmpSignature := StringOfChar(AnsiChar(#0), tmpLen);
 
   LastRV := LibraryFunctionList.CK_C_VerifyRecover(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(data)),
+                                             CK_BYTE_PTR(pansichar(data)),
                                              length(data),
-                                             CK_BYTE_PTR(PChar(tmpSignature)),
+                                             CK_BYTE_PTR(pansichar(tmpSignature)),
                                              @tmpLen
                                             );
 
@@ -1554,11 +1554,11 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.WrapKey(mechanism: CK_MECHANISM_TYPE; wrappingKeyObj: TPKCS11Object; keyObj: TPKCS11Object; var wrappedKey: string): boolean;
+function TPKCS11Session.WrapKey(mechanism: CK_MECHANISM_TYPE; wrappingKeyObj: TPKCS11Object; keyObj: TPKCS11Object; var wrappedKey: ansistring): boolean;
 var
   mechStruct: CK_MECHANISM;
   tmpLen: CK_ULONG;
-  tmpWrappedKey: string;
+  tmpWrappedKey: ansistring;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_WrapKey, FN_NAME_C_WrapKey);
 
@@ -1566,14 +1566,14 @@ begin
   mechStruct.pParameter     := NULL_PTR;
   mechStruct.ulParameterLen := 0;
 
-  tmpWrappedKey := StringOfChar(#0, BUFFER_LEN_WRAPPED_KEY);
+  tmpWrappedKey := StringOfChar(AnsiChar(#0), BUFFER_LEN_WRAPPED_KEY);
 
   LastRV := LibraryFunctionList.CK_C_WrapKey(
                                              FhSession,
                                              @mechStruct,
                                              wrappingKeyObj.FHandle,
                                              keyObj.FHandle,
-                                             CK_BYTE_PTR(PChar(tmpWrappedKey)),
+                                             CK_BYTE_PTR(pansichar(tmpWrappedKey)),
                                              @tmpLen
                                             );
 
@@ -1583,12 +1583,12 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.UnwrapKey(mechanism: CK_MECHANISM_TYPE; unwrappingKeyObj: TPKCS11Object; wrappedKey: string; attrTemplate: TPKCS11AttributeTemplate): TPKCS11Object;
+function TPKCS11Session.UnwrapKey(mechanism: CK_MECHANISM_TYPE; unwrappingKeyObj: TPKCS11Object; wrappedKey: ansistring; attrTemplate: TPKCS11AttributeTemplate): TPKCS11Object;
 var
   retval: TPKCS11Object;
   newObjHandle: CK_OBJECT_HANDLE;
   ckAttributes: array of CK_ATTRIBUTE;
-  bufferArray: array of string;
+  bufferArray: array of ansistring;
   i: integer;
   mechStruct: CK_MECHANISM;
   attrPtr: CK_ATTRIBUTE_PTR;
@@ -1614,7 +1614,7 @@ begin
       bufferArray[i] := currTemplateAttr.ValueAsRawData;
 
       ckAttributes[i].attrType := currTemplateAttr.AttribType;
-      ckAttributes[i].pValue := PChar(bufferArray[i]);
+      ckAttributes[i].pValue := pansichar(bufferArray[i]);
       ckAttributes[i].ulValueLen := length(bufferArray[i]);
       end;
 
@@ -1625,7 +1625,7 @@ begin
                                                FhSession,
                                                @mechStruct,
                                                unwrappingKeyObj.FHandle,
-                                               CK_BYTE_PTR(PChar(wrappedKey)),
+                                               CK_BYTE_PTR(pansichar(wrappedKey)),
                                                length(wrappedKey),
                                                attrPtr,
                                                attrTemplate.Count,
@@ -1647,7 +1647,7 @@ var
   retval: TPKCS11Object;
   newObjHandle: CK_OBJECT_HANDLE;
   ckAttributes: array of CK_ATTRIBUTE;
-  bufferArray: array of string;
+  bufferArray: array of ansistring;
   i: integer;
   mechStruct: CK_MECHANISM;
   attrPtr: CK_ATTRIBUTE_PTR;
@@ -1673,7 +1673,7 @@ begin
       bufferArray[i] := currTemplateAttr.ValueAsRawData;
 
       ckAttributes[i].attrType := currTemplateAttr.AttribType;
-      ckAttributes[i].pValue := PChar(bufferArray[i]);
+      ckAttributes[i].pValue := pansichar(bufferArray[i]);
       ckAttributes[i].ulValueLen := length(bufferArray[i]);
       end;
 
@@ -1718,24 +1718,24 @@ begin
 end;
 
 
-function TPKCS11Session.DigestEncryptUpdate(part: string; var encryptedPart: string): boolean;
+function TPKCS11Session.DigestEncryptUpdate(part: ansistring; var encryptedPart: ansistring): boolean;
 var
   tmpLen: CK_ULONG;
-  inData: string;
-  outData: string;
+  inData: ansistring;
+  outData: ansistring;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_DigestEncryptUpdate, FN_NAME_C_DigestEncryptUpdate);
 
   inData := part;
 
-  outData := StringOfChar(#0, max(length(inData), BUFFER_LEN_MIN_ENCRYPT_DECRYPT));
+  outData := StringOfChar(AnsiChar(#0), max(length(inData), BUFFER_LEN_MIN_ENCRYPT_DECRYPT));
   tmpLen := length(outData);
 
   LastRV := LibraryFunctionList.CK_C_DigestEncryptUpdate(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(inData)),
+                                             CK_BYTE_PTR(pansichar(inData)),
                                              length(inData),
-                                             CK_BYTE_PTR(PChar(outData)),
+                                             CK_BYTE_PTR(pansichar(outData)),
                                              @tmpLen
                                             );
 
@@ -1746,24 +1746,24 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.DecryptDigestUpdate(pEncryptedPart: string; var part: string): boolean;
+function TPKCS11Session.DecryptDigestUpdate(pEncryptedPart: ansistring; var part: ansistring): boolean;
 var
   tmpLen: CK_ULONG;
-  inData: string;
-  outData: string;
+  inData: ansistring;
+  outData: ansistring;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_DecryptDigestUpdate, FN_NAME_C_DecryptDigestUpdate);
 
   inData := pEncryptedPart;
 
-  outData := StringOfChar(#0, max(length(inData), BUFFER_LEN_MIN_ENCRYPT_DECRYPT));
+  outData := StringOfChar(AnsiChar(#0), max(length(inData), BUFFER_LEN_MIN_ENCRYPT_DECRYPT));
   tmpLen := length(outData);
 
   LastRV := LibraryFunctionList.CK_C_DecryptDigestUpdate(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(inData)),
+                                             CK_BYTE_PTR(pansichar(inData)),
                                              length(inData),
-                                             CK_BYTE_PTR(PChar(outData)),
+                                             CK_BYTE_PTR(pansichar(outData)),
                                              @tmpLen
                                             );
 
@@ -1774,24 +1774,24 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.SignEncryptUpdate(part: string; var encryptedPart: string): boolean;
+function TPKCS11Session.SignEncryptUpdate(part: ansistring; var encryptedPart: ansistring): boolean;
 var
   tmpLen: CK_ULONG;
-  inData: string;
-  outData: string;
+  inData: ansistring;
+  outData: ansistring;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_SignEncryptUpdate, FN_NAME_C_SignEncryptUpdate);
 
   inData := part;
 
-  outData := StringOfChar(#0, max(length(inData), BUFFER_LEN_MIN_ENCRYPT_DECRYPT));
+  outData := StringOfChar(AnsiChar(#0), max(length(inData), BUFFER_LEN_MIN_ENCRYPT_DECRYPT));
   tmpLen := length(outData);
 
   LastRV := LibraryFunctionList.CK_C_SignEncryptUpdate(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(inData)),
+                                             CK_BYTE_PTR(pansichar(inData)),
                                              length(inData),
-                                             CK_BYTE_PTR(PChar(outData)),
+                                             CK_BYTE_PTR(pansichar(outData)),
                                              @tmpLen
                                             );
 
@@ -1802,24 +1802,24 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.DecryptVerifyUpdate(pEncryptedPart: string; var part: string): boolean;
+function TPKCS11Session.DecryptVerifyUpdate(pEncryptedPart: ansistring; var part: ansistring): boolean;
 var
   tmpLen: CK_ULONG;
-  inData: string;
-  outData: string;
+  inData: ansistring;
+  outData: ansistring;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_DecryptVerifyUpdate, FN_NAME_C_DecryptVerifyUpdate);
 
   inData := pEncryptedPart;
 
-  outData := StringOfChar(#0, max(length(inData), BUFFER_LEN_MIN_ENCRYPT_DECRYPT));
+  outData := StringOfChar(AnsiChar(#0), max(length(inData), BUFFER_LEN_MIN_ENCRYPT_DECRYPT));
   tmpLen := length(outData);
 
   LastRV := LibraryFunctionList.CK_C_DecryptVerifyUpdate(
                                              FhSession,
-                                             CK_BYTE_PTR(PChar(inData)),
+                                             CK_BYTE_PTR(pansichar(inData)),
                                              length(inData),
-                                             CK_BYTE_PTR(PChar(outData)),
+                                             CK_BYTE_PTR(pansichar(outData)),
                                              @tmpLen
                                             );
 

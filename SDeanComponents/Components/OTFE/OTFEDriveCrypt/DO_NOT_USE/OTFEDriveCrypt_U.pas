@@ -253,7 +253,7 @@ type
     // TOTFE functions...
     function  Title(): string; overload; override;
     function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; overload; override;
-    function  Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean; overload; override;
+    function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; overload; override;
     function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
     function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
     function  IsEncryptedVolFile(volumeFilename: string): boolean; override;
@@ -471,7 +471,7 @@ var
   lastMountTimeDate: TSystemTime;
   writeProtect: DWORD;
   mountType: TMountType;
-  mountedAs: char;
+  mountedAs: ansichar;
   fileAttr: integer;
 begin
   CheckActive();
@@ -1416,7 +1416,7 @@ end;
 function  TOTFEDriveCrypt.Mount(volumeFilename: string; readonly: boolean = FALSE): char;
 var
   stlTemp: TStringList;
-  mountedAs: string;
+  mountedAs: AnsiString;
 begin
   stlTemp := TStringList.Create();
   try
@@ -1435,11 +1435,11 @@ begin
 
 end;
 
-function  TOTFEDriveCrypt.Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean;
+function  TOTFEDriveCrypt.Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean;
 var
   passwordsEntered: boolean;
   i: integer;
-  tmpDrv: char;
+  tmpDrv: ansichar;
   mountedOK: boolean;
 begin
   Result := FALSE;
@@ -1481,7 +1481,7 @@ end;
 // Maintaining compatability with TEnhKrScramDisk
 function TOTFEDriveCrypt.MountPrompted(volumeFilenames: TStrings; readonly: boolean) : boolean;
 var
-  mountedAs: string;
+  mountedAs: AnsiString;
 begin
   Result := Mount(TStringList(volumeFilenames), mountedAs, readonly);
 
@@ -1828,7 +1828,7 @@ begin
       mountFilenameDlg.InitialDir := FDefaultPromptDir;
       end;
     mountFilenameDlg.filter := 'SVL files (*.svl)|*.svl|Wave files (*.wav)|*.wav|All files|*.*';
-    mountFilenameDlg.Title := 'Mount Volume';
+    mountFilenameDlg.Title := 'Open Box';
     if (mountFilenameDlg.execute) then
       begin
       Result := MountPrompted(mountFilenameDlg.files,
