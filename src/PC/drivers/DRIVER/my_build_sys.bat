@@ -1,4 +1,4 @@
-@echo off
+rem @echo off
 
 rem Set the build environment
 call ..\Common\bin\setup_env_common.bat
@@ -20,4 +20,4 @@ build -cgZ
 
 rem Copying the binary over...
 copy %FREEOTFE_OUTPUT_DIR%\FreeOTFE.sys %BIN_OUTPUT_DIR%
-
+cd ..

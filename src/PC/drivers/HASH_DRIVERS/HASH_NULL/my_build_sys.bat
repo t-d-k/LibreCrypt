@@ -21,5 +21,5 @@ echo Building SYS...
 build -cgZ
 
 rem Copying the binary over...
-copy %FREEOTFE_OUTPUT_DIR%\FreeOTFEHashNull.sys %BIN_OUTPUT_DIR%
+copy %FREEOTFE_OUTPUT_DIR%\FreeOTFEHashNull.sys %BIN_OUTPUT_DIR%\weak_drivers\
 

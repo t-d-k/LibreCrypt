@@ -1,5 +1,5 @@
 @echo off
-
+rem 
 rem -- Items below this line should probably not need changing --
 
 rem Set the checked DDK build environment for WXP/W2K/default

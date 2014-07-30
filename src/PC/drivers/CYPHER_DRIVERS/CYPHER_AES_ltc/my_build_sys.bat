@@ -55,3 +55,6 @@ build -cgZ
 rem Copying the binary over...
 copy %FREEOTFE_OUTPUT_DIR%\FreeOTFECypherAES_ltc.sys %BIN_OUTPUT_DIR%
 
+rem clean up copied files
+del *.c
+del FreeOTFECypherAES_ltc.h

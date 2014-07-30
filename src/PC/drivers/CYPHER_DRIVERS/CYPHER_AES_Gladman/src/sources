@@ -21,7 +21,7 @@ INCLUDES=..\..\..\DRIVER\inc;..\..\..\Common\inc;..\..\Common\inc;..\..\..\CYPHE
 SOURCES=FreeOTFECypherDriver.c \
         FreeOTFECypherImpl.c \
         FreeOTFECypherAPICommon.c \
-        FreeOTFEDebug.c \
+		FreeOTFEDebug.c \
         FreeOTFElib.c \
         FreeOTFEDriverlib.c \
         FreeOTFECypherAES_Gladman.c \

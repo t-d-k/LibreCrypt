@@ -32,5 +32,5 @@ echo Building SYS...
 build -cgZ
 
 rem Copying the binary over...
-copy %FREEOTFE_OUTPUT_DIR%\FreeOTFECypherTWOFISH_Gladman.sys %BIN_OUTPUT_DIR%
+copy %FREEOTFE_OUTPUT_DIR%\FreeOTFECypherTWOFISH_Gladman.sys %BIN_OUTPUT_DIR%\alternate_drivers\
 

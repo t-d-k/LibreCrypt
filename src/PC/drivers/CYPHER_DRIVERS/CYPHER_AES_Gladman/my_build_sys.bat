@@ -9,6 +9,8 @@ rem Move into the correct src directory...
 %PROJECT_DRIVE%
 cd %PROJECT_DIR%\CYPHER_DRIVERS\CYPHER_AES_Gladman\src
 
+rem TODO: whats with all the copying?
+
 rem The build utility can't handle source files not being in the same dir
 copy ..\..\..\..\..\Common\Common\src\* .
 copy ..\..\..\..\..\Common\CYPHER_DRIVERS\Common\src\* .
@@ -29,8 +31,14 @@ rem Gladman source...
 copy ..\..\..\..\..\3rd_party\AES_candidates_2nd_round_-_Gladman\aes.r2.algs\rijndael.c .
 
 echo Building SYS...
+rem build -gZ
 build -cgZ
 
 rem Copying the binary over...
-copy %FREEOTFE_OUTPUT_DIR%\FreeOTFECypherAES_Gladman.sys %BIN_OUTPUT_DIR%
 
+copy %FREEOTFE_OUTPUT_DIR%\FreeOTFECypherAES_Gladman.sys %BIN_OUTPUT_DIR%\alternate_drivers\
+echo copied FreeOTFECypherAES_Gladman.sys to %BIN_OUTPUT_DIR%
+
+rem clean up copied files
+rem del *.c
+rem del FreeOTFECypherAES_Gladman.h

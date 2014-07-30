@@ -14,10 +14,6 @@
 //     number of disk devices
 //   - Should all be COMMENTED OUT for release
 
-
-
-
-
 #include <ntddk.h>
 #include <stdio.h>
 
