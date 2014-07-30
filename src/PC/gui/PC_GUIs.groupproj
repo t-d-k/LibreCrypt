@@ -1,40 +1,48 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ProjectGuid>{1426f7d5-0665-431b-9d64-a99bbcd21ee7}</ProjectGuid>
-  </PropertyGroup>
-  <ItemGroup />
-  <ItemGroup />
-  <ProjectExtensions>
-    <Borland.Personality>Default.Personality</Borland.Personality>
-    <Borland.ProjectType />
-    <BorlandProject>
-  <BorlandProject xmlns=""> <Default.Personality> </Default.Personality> </BorlandProject></BorlandProject>
-  </ProjectExtensions>
-  <Target Name="FreeOTFE">
-    <MSBuild Projects="main\FreeOTFE.dproj" Targets="" />
-  </Target>
-  <Target Name="FreeOTFE:Clean">
-    <MSBuild Projects="main\FreeOTFE.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="FreeOTFE:Make">
-    <MSBuild Projects="main\FreeOTFE.dproj" Targets="Make" />
-  </Target>
-  <Target Name="FreeOTFEExplorer">
-    <MSBuild Projects="explorer\FreeOTFEExplorer.dproj" Targets="" />
-  </Target>
-  <Target Name="FreeOTFEExplorer:Clean">
-    <MSBuild Projects="explorer\FreeOTFEExplorer.dproj" Targets="Clean" />
-  </Target>
-  <Target Name="FreeOTFEExplorer:Make">
-    <MSBuild Projects="explorer\FreeOTFEExplorer.dproj" Targets="Make" />
-  </Target>
-  <Target Name="Build">
-    <CallTarget Targets="FreeOTFE;FreeOTFEExplorer" />
-  </Target>
-  <Target Name="Clean">
-    <CallTarget Targets="FreeOTFE:Clean;FreeOTFEExplorer:Clean" />
-  </Target>
-  <Target Name="Make">
-    <CallTarget Targets="FreeOTFE:Make;FreeOTFEExplorer:Make" />
-  </Target>
-</Project>
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{60198134-C3B5-4DB0-99F2-5C998386371F}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="main\DoxBox.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="explorer\DoxBoxExplorer.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="DoxBox">
+			<MSBuild Projects="main\DoxBox.dproj"/>
+		</Target>
+		<Target Name="DoxBox:Clean">
+			<MSBuild Projects="main\DoxBox.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="DoxBox:Make">
+			<MSBuild Projects="main\DoxBox.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="DoxBoxExplorer">
+			<MSBuild Projects="explorer\DoxBoxExplorer.dproj"/>
+		</Target>
+		<Target Name="DoxBoxExplorer:Clean">
+			<MSBuild Projects="explorer\DoxBoxExplorer.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="DoxBoxExplorer:Make">
+			<MSBuild Projects="explorer\DoxBoxExplorer.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="DoxBox;DoxBoxExplorer"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="DoxBox:Clean;DoxBoxExplorer:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="DoxBox:Make;DoxBoxExplorer:Make"/>
+		</Target>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
+	</Project>
