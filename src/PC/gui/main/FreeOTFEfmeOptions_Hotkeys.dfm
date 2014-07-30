@@ -1,6 +1,8 @@
 inherited fmeOptions_Hotkeys: TfmeOptions_Hotkeys
   Width = 337
   Height = 174
+  ExplicitWidth = 337
+  ExplicitHeight = 174
   object gbHotkeys: TGroupBox
     Left = 11
     Top = 20
@@ -60,7 +62,7 @@ inherited fmeOptions_Hotkeys: TfmeOptions_Hotkeys
       Height = 19
       HotKey = 32833
       InvalidKeys = [hcNone]
-      TabOrder = 3
+      TabOrder = 0
     end
   end
 end

@@ -127,7 +127,7 @@ begin
 
   // Setup instructions text
   reInstructions.Text :=
-    _('FreeOTFE can be configured here to automatically run programs after mounting, before dismounting, and after dismounting.'+SDUCRLF+
+    _('DoxBox can be configured here to automatically run programs after mounting, before dismounting, and after dismounting.'+SDUCRLF+
       SDUCRLF+
       'Any post-mount and pre-dismount executables specified must use a relative path to the executable within the mounted volume (i.e. absolute and UNC paths are not allowed for security reasons)'+SDUCRLF+
       SDUCRLF+

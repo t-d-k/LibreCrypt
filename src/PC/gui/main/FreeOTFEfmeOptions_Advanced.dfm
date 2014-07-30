@@ -13,7 +13,7 @@ inherited fmeOptions_FreeOTFEAdvanced: TfmeOptions_FreeOTFEAdvanced
       Top = 24
       Width = 151
       Height = 26
-      Caption = 'Assume files &dragged onto FreeOTFE are encrypted using:'
+      Caption = 'Assume files &dragged onto DoxBox are encrypted using:'
       FocusControl = cbDragDrop
       WordWrap = True
     end
@@ -94,7 +94,7 @@ inherited fmeOptions_FreeOTFEAdvanced: TfmeOptions_FreeOTFEAdvanced
       Width = 221
       Height = 30
       Caption = 
-        'Autostart &portable mode if FreeOTFE drivers not installed/runni' +
+        'Autostart &portable mode if DoxBox drivers not installed/runni' +
         'ng'
       Color = clBtnFace
       ParentColor = False

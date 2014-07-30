@@ -49,7 +49,7 @@ type
     function GetHiddenOffset(): Int64;
     { Private declarations }
   public
-    DriveLetter: char;
+    DriveLetter: ansichar;
     OTFEFreeOTFE: TOTFEFreeOTFE;
   end;
 

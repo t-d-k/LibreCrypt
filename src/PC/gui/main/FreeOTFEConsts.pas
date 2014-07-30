@@ -13,11 +13,11 @@ interface
 const
   // Set to "-1" to indicate release/non-beta
   APP_BETA_BUILD = -1;
-
+    { TODO 1 -otdk -cenhancement : updae homepage }
   // Online user manual URL...
-  URL_USERGUIDE = 'http://www.FreeOTFE.org/docs/Main';
+  URL_USERGUIDE = 'http://DoxBox.squte.com/docs/Main';
   // PAD file URL...
-  URL_PADFILE   = 'http://www.FreeOTFE.org/PAD/FreeOTFE.xml';
+  URL_PADFILE   = 'http://DoxBox.squte.com/PAD/FreeOTFE.xml';
 
 
 implementation

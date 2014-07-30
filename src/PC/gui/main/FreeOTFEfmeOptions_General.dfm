@@ -1,6 +1,8 @@
 inherited fmeOptions_FreeOTFEGeneral: TfmeOptions_FreeOTFEGeneral
   Width = 504
   Height = 382
+  ExplicitWidth = 504
+  ExplicitHeight = 382
   object gbGeneral: TGroupBox
     Left = 16
     Top = 16
@@ -39,7 +41,7 @@ inherited fmeOptions_FreeOTFEGeneral: TfmeOptions_FreeOTFEGeneral
       Width = 221
       Height = 17
       Caption = 'Display &toolbar'
-      TabOrder = 2
+      TabOrder = 11
       OnClick = ControlChanged
       AutoSize = True
     end
@@ -75,7 +77,6 @@ inherited fmeOptions_FreeOTFEGeneral: TfmeOptions_FreeOTFEGeneral
       Width = 145
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 7
     end
     object ckShowPasswords: TSDUCheckBox
@@ -93,8 +94,7 @@ inherited fmeOptions_FreeOTFEGeneral: TfmeOptions_FreeOTFEGeneral
       Width = 145
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
-      TabOrder = 3
+      TabOrder = 2
       OnChange = cbLanguageChange
     end
     object pbLangDetails: TButton
@@ -140,8 +140,7 @@ inherited fmeOptions_FreeOTFEGeneral: TfmeOptions_FreeOTFEGeneral
       Width = 145
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
-      TabOrder = 11
+      TabOrder = 3
     end
   end
 end

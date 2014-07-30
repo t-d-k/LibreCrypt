@@ -358,7 +358,7 @@ begin
     end
   else
     begin
-    config.OptDefaultDriveLetter := cbDrive.Items[cbDrive.ItemIndex][1];
+    config.OptDefaultDriveLetter :=ansichar( cbDrive.Items[cbDrive.ItemIndex][1]);
     end;
 
   // Decode update frequency

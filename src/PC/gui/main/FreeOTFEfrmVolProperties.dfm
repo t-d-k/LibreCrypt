@@ -2,7 +2,7 @@ object frmFreeOTFEVolProperties: TfrmFreeOTFEVolProperties
   Left = 322
   Top = 353
   BorderStyle = bsDialog
-  Caption = 'FreeOTFE Volume Properties'
+  Caption = 'DoxBox Volume Properties'
   ClientHeight = 264
   ClientWidth = 415
   Color = clBtnFace

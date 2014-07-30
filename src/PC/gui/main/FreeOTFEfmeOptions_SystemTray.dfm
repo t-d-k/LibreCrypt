@@ -1,6 +1,8 @@
 inherited fmeOptions_SystemTray: TfmeOptions_SystemTray
   Width = 424
   Height = 314
+  ExplicitWidth = 424
+  ExplicitHeight = 314
   object gbSystemTrayIcon: TGroupBox
     Left = 12
     Top = 20
@@ -48,7 +50,7 @@ inherited fmeOptions_SystemTray: TfmeOptions_SystemTray
       Width = 309
       Height = 149
       Caption = 'Click actions'
-      TabOrder = 3
+      TabOrder = 0
       object Label1: TLabel
         Left = 12
         Top = 24
@@ -85,7 +87,6 @@ inherited fmeOptions_SystemTray: TfmeOptions_SystemTray
         Width = 185
         Height = 21
         Style = csDropDownList
-        ItemHeight = 13
         TabOrder = 2
       end
     end

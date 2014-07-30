@@ -40,7 +40,7 @@ type
     OTFEFreeOTFEObj: TOTFEFreeOTFE;
 
     OverwriteWithEncryptedData: boolean;
-    CypherDriver: string;
+    CypherDriver: ansistring;
     CypherGUID: TGUID;
   end;
 
@@ -92,10 +92,11 @@ procedure TfrmFreeOTFESelectOverwriteMethod.FormShow(Sender: TObject);
 var
   tmpDisplayTitles: TStringList;
 begin
+               { TODO 2 -otdk -csecurity : default to secure wipe }
   reInstructOverwriteType.Text :=
     _('Please select the type of data that should be used to overwrite the free space:'+SDUCRLF+
       SDUCRLF+
-      'Pseudorandom data - This is faster, but less secure if you wish to create a hidden volume within this volume at a later date.'+SDUCRLF+
+      'Pseudorandom data - This is faster, but less secure if you wish to create a hidden Box within this Box later.'+SDUCRLF+
       SDUCRLF+
       'Encrypted data - This is more secure, but slower. Pseudorandom data will be encrypted with your choice of cypher before being written to the drive.');
 
@@ -111,9 +112,9 @@ begin
       SDUMessageDlg(
                  _('Unable to obtain list of cyphers.')+SDUCRLF+
                  SDUCRLF+
-                 _('Please ensure that you have one or more FreeOTFE cypher drivers installed and started.')+SDUCRLF+
+                 _('Please ensure that you have one or more DoxBox cypher drivers installed and started.')+SDUCRLF+
                  SDUCRLF+
-                 _('If you have only just installed FreeOTFE, you may need to restart your computer.'),
+                 _('If you have only just installed DoxBox, you may need to restart your computer.'),
                  mtError
                 );
       end;

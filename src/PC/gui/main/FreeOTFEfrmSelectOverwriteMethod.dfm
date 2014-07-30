@@ -69,7 +69,6 @@ object frmFreeOTFESelectOverwriteMethod: TfrmFreeOTFESelectOverwriteMethod
       Width = 145
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 2
       OnChange = ControlChanged
     end
@@ -88,8 +87,14 @@ object frmFreeOTFESelectOverwriteMethod: TfrmFreeOTFESelectOverwriteMethod
     Top = 12
     Width = 245
     Height = 137
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
     Lines.Strings = (
       'reInstructOverwriteType')
+    ParentFont = False
     TabOrder = 3
   end
 end

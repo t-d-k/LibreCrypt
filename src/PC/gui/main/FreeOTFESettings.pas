@@ -26,7 +26,7 @@ const
 {$ENDIF}
   
 const
-  FREEOTFE_REGISTRY_SETTINGS_LOCATION = '\Software\FreeOTFE';
+  FREEOTFE_REGISTRY_SETTINGS_LOCATION = '\Software\DoxBox';
   
 resourcestring
   RS_PROMPT_USER = 'Prompt user';
@@ -37,8 +37,8 @@ type
   TOnExitWhenMounted = (oewmDismount, oewmPromptUser, oewmLeaveMounted);
 
 resourcestring
-  ONEXITWHENMOUNTED_DISMOUNT = 'Dismount all volumes';
-  ONEXITWHENMOUNTED_LEAVEMOUNTED = 'Leave volumes mounted';
+  ONEXITWHENMOUNTED_DISMOUNT = 'Lock all boxes';
+  ONEXITWHENMOUNTED_LEAVEMOUNTED = 'Leave boxes open';
 
 const
   OnExitWhenMountedTitlePtr: array [TOnExitWhenMounted] of Pointer = (
@@ -126,7 +126,7 @@ type
     OptExploreAfterMount: boolean;
     OptAllowMultipleInstances: boolean;
     OptAutoStartPortable: boolean;
-    OptDefaultDriveLetter: char;
+    OptDefaultDriveLetter: ansichar;
     OptDefaultMountAs: TFreeOTFEMountAs;
 
     // Prompts and messages
@@ -150,9 +150,9 @@ type
     OptHKeyKeyDismountEmerg: TShortCut;
 
     // Autorun...
-    OptPostMountExe: string;
-    OptPreDismountExe: string;
-    OptPostDismountExe: string;
+    OptPostMountExe: ansistring;
+    OptPreDismountExe: ansistring;
+    OptPostDismountExe: ansistring;
     OptPrePostExeWarn: boolean;
 
     constructor Create(); override;
@@ -310,7 +310,7 @@ begin
   OptAutoStartPortable       := iniFile.ReadBool(SECTION_GENERAL,   OPT_AUTOSTARTPORTABLE,      DFLT_OPT_AUTOSTARTPORTABLE);
   useDefaultDriveLetter      := iniFile.ReadString(SECTION_GENERAL, OPT_DEFAULTDRIVELETTER,     DFLT_OPT_DEFAULTDRIVELETTER);
   // #0 written as "#"
-  OptDefaultDriveLetter := useDefaultDriveLetter[1];
+  OptDefaultDriveLetter := AnsiChar(useDefaultDriveLetter[1]);
   if (OptDefaultDriveLetter = '#') then
     begin
     OptDefaultDriveLetter := #0;
@@ -359,7 +359,7 @@ begin
       iniFile.WriteBool(SECTION_GENERAL,        OPT_ALLOWMULTIPLEINSTANCES,    OptAllowMultipleInstances);
       iniFile.WriteBool(SECTION_GENERAL,        OPT_AUTOSTARTPORTABLE,         OptAutoStartPortable);
       // #0 written as "#"
-      useDefaultDriveLetter := OptDefaultDriveLetter;
+      useDefaultDriveLetter := Char(OptDefaultDriveLetter);
       if (OptDefaultDriveLetter = #0) then
         begin
         useDefaultDriveLetter := '#';

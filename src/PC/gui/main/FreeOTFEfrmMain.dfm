@@ -1,30 +1,38 @@
 inherited frmFreeOTFEMain: TfrmFreeOTFEMain
-  Height = 372
+  ClientHeight = 314
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnResize = FormResize
+  ExplicitWidth = 316
+  ExplicitHeight = 372
   PixelsPerInch = 96
   TextHeight = 13
-  inherited StatusBar_Status: TStatusBar
-    Top = 295
+  inherited Label1: TLabel
+    Top = 275
+    ExplicitTop = 275
   end
-  object ToolBar1: TToolBar [1]
+  inherited StatusBar_Status: TStatusBar
+    Top = 256
+    ExplicitTop = 256
+    ExplicitWidth = 300
+  end
+  object ToolBar1: TToolBar [2]
     Left = 0
     Top = 0
-    Width = 326
-    Height = 26
+    Width = 300
+    Height = 22
     AutoSize = True
     Caption = 'ToolBar1'
     Images = ilToolbarIcons_Small
     TabOrder = 3
     object tbbNew: TToolButton
       Left = 0
-      Top = 2
+      Top = 0
       Action = actFreeOTFENew
     end
     object ToolButton2: TToolButton
       Left = 23
-      Top = 2
+      Top = 0
       Width = 8
       Caption = 'ToolButton2'
       ImageIndex = 1
@@ -32,17 +40,17 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     end
     object tbbMountFile: TToolButton
       Left = 31
-      Top = 2
+      Top = 0
       Action = actFreeOTFEMountFile
     end
     object tbbMountPartition: TToolButton
       Left = 54
-      Top = 2
+      Top = 0
       Action = actFreeOTFEMountPartition
     end
     object ToolButton5: TToolButton
       Left = 77
-      Top = 2
+      Top = 0
       Width = 8
       Caption = 'ToolButton5'
       ImageIndex = 3
@@ -50,17 +58,17 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     end
     object tbbDismount: TToolButton
       Left = 85
-      Top = 2
+      Top = 0
       Action = actDismount
     end
     object tbbDismountAll: TToolButton
       Left = 108
-      Top = 2
+      Top = 0
       Action = actDismountAll
     end
     object ToolButton8: TToolButton
       Left = 131
-      Top = 2
+      Top = 0
       Width = 8
       Caption = 'ToolButton8'
       ImageIndex = 5
@@ -68,26 +76,26 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     end
     object tbbTogglePortableMode: TToolButton
       Left = 139
-      Top = 2
+      Top = 0
       Action = actTogglePortableMode
       Style = tbsCheck
       OnMouseUp = tbbTogglePortableModeMouseUp
     end
   end
-  object pnlTopSpacing: TPanel [2]
+  object pnlTopSpacing: TPanel [3]
     Left = 0
-    Top = 26
-    Width = 326
+    Top = 22
+    Width = 300
     Height = 7
     Align = alTop
     Caption = 'pnlTopSpacing'
     TabOrder = 2
   end
-  object lvDrives: TListView [3]
+  object lvDrives: TListView [4]
     Left = 0
-    Top = 33
-    Width = 326
-    Height = 243
+    Top = 29
+    Width = 300
+    Height = 208
     Align = alClient
     Columns = <>
     PopupMenu = pmDrives
@@ -98,7 +106,9 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     OnSelectItem = lvDrivesSelectItem
   end
   inherited StatusBar_Hint: TStatusBar
-    Top = 276
+    Top = 237
+    ExplicitTop = 237
+    ExplicitWidth = 300
   end
   inherited mmMain: TMainMenu
     inherited File1: TMenuItem
@@ -318,7 +328,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     Left = 12
     Top = 164
     Bitmap = {
-      494C010102000400040020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101020004002C0020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000002000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
