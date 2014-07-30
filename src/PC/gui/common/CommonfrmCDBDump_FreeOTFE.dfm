@@ -72,8 +72,14 @@ inherited frmCDBDump_FreeOTFE: TfrmCDBDump_FreeOTFE
       Top = 48
       Width = 337
       Height = 65
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
       Lines.Strings = (
         'preUserKey')
+      ParentFont = False
       ScrollBars = ssBoth
       TabOrder = 1
     end

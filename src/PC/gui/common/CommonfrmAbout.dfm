@@ -4,8 +4,8 @@ object frmAbout: TfrmAbout
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
   Caption = 'CAPTION SET AUTOMATICALLY'
-  ClientHeight = 182
-  ClientWidth = 319
+  ClientHeight = 245
+  ClientWidth = 330
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,12 +15,15 @@ object frmAbout: TfrmAbout
   OldCreateOrder = False
   Position = poScreenCenter
   OnShow = FormShow
+  DesignSize = (
+    330
+    245)
   PixelsPerInch = 96
   TextHeight = 13
   object lblBeta: TLabel
     Left = 31
     Top = 40
-    Width = 257
+    Width = 250
     Height = 111
     Caption = 'BETA'
     Font.Charset = ANSI_CHARSET
@@ -63,9 +66,9 @@ object frmAbout: TfrmAbout
   object lblTitle: TLabel
     Left = 56
     Top = 4
-    Width = 84
+    Width = 62
     Height = 20
-    Caption = 'FreeOTFE'
+    Caption = 'DoxBox'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -84,9 +87,9 @@ object frmAbout: TfrmAbout
   object lblAuthor: TLabel
     Left = 56
     Top = 24
-    Width = 71
+    Width = 156
     Height = 13
-    Caption = 'by Sarah Dean'
+    Caption = 'by Sarah Dean, addtions by TDK'
     Transparent = True
     WordWrap = True
   end
@@ -104,10 +107,10 @@ object frmAbout: TfrmAbout
   object SDUURLLabel1: TSDUURLLabel
     Left = 95
     Top = 92
-    Width = 130
+    Width = 120
     Height = 13
     Cursor = crHandPoint
-    Caption = 'http://www.FreeOTFE.org/'
+    Caption = 'http://DoxBox.squte.com'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
     Font.Height = -11
@@ -117,7 +120,7 @@ object frmAbout: TfrmAbout
     Transparent = True
     NormalColor = clBlue
     HoverColor = clRed
-    URL = 'http://www.FreeOTFE.org/'
+    URL = 'http://www.doxbox.squte.com/'
   end
   object lblTranslatorCredit: TLabel
     Left = 56
@@ -128,9 +131,28 @@ object frmAbout: TfrmAbout
     Transparent = True
     WordWrap = True
   end
+  object Label1: TLabel
+    Left = 8
+    Top = 154
+    Width = 314
+    Height = 39
+    Hint = 
+      'This software is based on FreeOTFE and/or FreeOTFE4PDA, the free' +
+      ' disk encryption system for PCs and PDAs, available at <A HREF="' +
+      'http://www.FreeOTFE.org/">www.FreeOTFE.org</A>'
+    Anchors = [akLeft, akRight, akBottom]
+    AutoSize = False
+    Caption = 
+      'This software is based on FreeOTFE and/or FreeOTFE4PDA, the free' +
+      ' disk encryption system for PCs and PDAs, available at <A HREF="' +
+      'http://www.FreeOTFE.org/">www.FreeOTFE.org</A>'
+    WordWrap = True
+    ExplicitTop = 157
+    ExplicitWidth = 369
+  end
   object pbOK: TButton
-    Left = 123
-    Top = 148
+    Left = 124
+    Top = 199
     Width = 73
     Height = 25
     Cancel = True

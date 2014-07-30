@@ -11,12 +11,13 @@ unit CommonConsts;
 interface
 
 const
+{ TODO -otdk -cclean : seems a lot of repitition of these consts }
   // Homepage...
-  URL_HOMEPAGE = 'http://www.FreeOTFE.org/';
+  URL_HOMEPAGE = 'http://DoxBox.squte.com/';
   // Download URL...
-  URL_DOWNLOAD  = 'http://www.FreeOTFE.org/download.html';
+  URL_DOWNLOAD  = 'http://DoxBox.squte.com/download.html';
 
-  ENGLISH_TRANSLATION_CONTACT = 'Sarah Dean <sdean12@sdean12.org>';
+  ENGLISH_TRANSLATION_CONTACT = 'tdk <doxbox.tdk@squte.com>';
 
 resourcestring
   USE_DEFAULT = 'Use default';

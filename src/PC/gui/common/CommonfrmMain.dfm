@@ -1,9 +1,9 @@
 object frmMain: TfrmMain
   Left = 218
   Top = 272
-  Width = 342
-  Height = 385
   Caption = 'Caption set to application title'
+  ClientHeight = 320
+  ClientWidth = 300
   Color = clBtnFace
   Constraints.MinHeight = 150
   Constraints.MinWidth = 300
@@ -19,23 +19,46 @@ object frmMain: TfrmMain
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
+  object Label1: TLabel
+    Left = 0
+    Top = 281
+    Width = 300
+    Height = 39
+    Hint = 
+      'This software is based on FreeOTFE and/or FreeOTFE4PDA, the free' +
+      ' disk encryption system for PCs and PDAs, available at <A HREF="' +
+      'http://www.FreeOTFE.org/">www.FreeOTFE.org</A>'
+    Align = alBottom
+    AutoSize = False
+    Caption = 
+      'This software is based on FreeOTFE and/or FreeOTFE4PDA, the free' +
+      ' disk encryption system for PCs and PDAs, available at <A HREF="' +
+      'http://www.FreeOTFE.org/">www.FreeOTFE.org</A>'
+    EllipsisPosition = epEndEllipsis
+    WordWrap = True
+    ExplicitTop = 300
+    ExplicitWidth = 821
+  end
   object StatusBar_Status: TStatusBar
     Left = 0
-    Top = 308
-    Width = 326
+    Top = 262
+    Width = 300
     Height = 19
     Panels = <>
+    ExplicitWidth = 352
   end
   object StatusBar_Hint: TStatusBar
     Left = 0
-    Top = 289
-    Width = 326
+    Top = 243
+    Width = 300
     Height = 19
     Panels = <
       item
         Bevel = pbNone
         Width = 50
       end>
+    ExplicitTop = 309
+    ExplicitWidth = 326
   end
   object mmMain: TMainMenu
     Images = ilToolbarIcons_Small
@@ -168,7 +191,7 @@ object frmMain: TfrmMain
   end
   object ActionList1: TActionList
     Images = ilToolbarIcons_Small
-    Left = 84
+    Left = 116
     Top = 36
     object actFreeOTFENew: TAction
       Caption = '&New...'
@@ -275,10 +298,10 @@ object frmMain: TfrmMain
     end
   end
   object ilToolbarIcons_Small: TImageList
-    Left = 52
-    Top = 36
+    Left = 68
+    Top = 52
     Bitmap = {
-      494C010111001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010111001300300010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -952,10 +975,10 @@ object frmMain: TfrmMain
   object ilToolbarIcons_Large: TImageList
     Height = 24
     Width = 24
-    Left = 52
-    Top = 72
+    Left = 28
+    Top = 96
     Bitmap = {
-      494C010111001300040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010111001300300018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000078000000010020000000000000B4
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2450,8 +2473,8 @@ object frmMain: TfrmMain
   object ilWindowsStd_24x24: TImageList
     Height = 10
     Width = 10
-    Left = 100
-    Top = 200
+    Left = 44
+    Top = 192
   end
   object ilWindowsStd_16x16: TImageList
     Height = 10

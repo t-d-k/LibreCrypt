@@ -153,7 +153,7 @@ var
   Hour, Min, Sec, MSec: Word;
 {$ENDIF}
   dumpOK: boolean;
-  notepadCommandLine: string;
+  notepadCommandLine: Ansistring;
 begin
 {$IFDEF FREEOTFE_TIME_CDB_DUMP}
   startTime := Now();
@@ -180,7 +180,7 @@ begin
       begin
       notepadCommandLine := 'notepad '+DumpFilename;
 
-      if (WinExec(PChar(notepadCommandLine), SW_RESTORE))<31 then
+      if (WinExec(PAnsiChar(notepadCommandLine), SW_RESTORE))<31 then
         begin
         SDUMessageDlg(_('Error running Notepad'), mtError, [], 0);
         end;

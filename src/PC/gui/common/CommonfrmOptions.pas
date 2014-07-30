@@ -182,7 +182,7 @@ begin
                             SDUCRLF+
                             'due to Vista''s security/mapping system.'), [programFilesDir])+SDUCRLF+
                     SDUCRLF+
-                    _('Please either select another location for storing your settings (e.g. your user profile), or move the FreeOTFE executable such that it is not stored underneath the directory shown above.'),
+                    _('Please either select another location for storing your settings (e.g. your user profile), or move the DoxBox executable such that it is not stored underneath the directory shown above.'),
                     mtWarning
                    );
       SDUDialogsStripSingleCRLF := prevSDUDialogsStripSingleCRLF;  // Don't do special processing on this message
@@ -241,9 +241,9 @@ begin
        ) then
       begin
       allOK := (SDUMessageDlg(
-                              _('You have not specified a location where FreeOTFE should save its settings to.')+SDUCRLF+
+                              _('You have not specified a location where DoxBox should save its settings to.')+SDUCRLF+
                               SDUCRLF+
-                              _('Although the settings entered will take effect, they will revert back to their defaults when FreeOTFE is exited.')+SDUCRLF+
+                              _('Although the settings entered will take effect, they will revert back to their defaults when DoxBox is exited.')+SDUCRLF+
                               SDUCRLF+
                               _('Do you wish to select a location in order to make your settings persistant?'),
                               mtWarning,
@@ -281,9 +281,9 @@ begin
         deleteOldLocation := (SDUMessageDlg(
                                             msgSegment+SDUCRLF+
                                             SDUCRLF+
-                                            _('Would you like FreeOTFE to delete your previous settings file?')+SDUCRLF+
+                                            _('Would you like DoxBox to delete your previous settings file?')+SDUCRLF+
                                             SDUCRLF+
-                                            _('Note: If you select "No" here, FreeOTFE may pick up your old settings the next time you start FreeOTFE'),
+                                            _('Note: If you select "No" here, DoxBox may pick up your old settings the next time you start DoxBox'),
                                             mtConfirmation,
                                             [mbYes, mbNo],
                                             0

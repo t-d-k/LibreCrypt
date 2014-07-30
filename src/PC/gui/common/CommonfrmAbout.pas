@@ -30,6 +30,7 @@ type
     Label3: TLabel;
     SDUURLLabel1: TSDUURLLabel;
     lblTranslatorCredit: TLabel;
+    Label1: TLabel;
     procedure FormShow(Sender: TObject);
   private
   public
@@ -94,12 +95,12 @@ begin
     OTFEVersion := FreeOTFEObj.VersionStr();
     if (OTFEVersion<>'') then
       begin
-      OTFEVersion := SDUParamSubstitute(_('FreeOTFE driver: %1'), [OTFEVersion]);
+      OTFEVersion := SDUParamSubstitute(_('DoxBox driver: %1'), [OTFEVersion]);
       end;
     end
   else
     begin
-    OTFEVersion := _('The main FreeOTFE driver is either not installed, or not started');
+    OTFEVersion := _('The main DoxBox driver is either not installed, or not started');
     end;
 
 

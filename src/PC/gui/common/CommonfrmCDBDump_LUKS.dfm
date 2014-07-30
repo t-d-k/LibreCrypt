@@ -6,13 +6,17 @@ inherited frmCDBDump_LUKS: TfrmCDBDump_LUKS
   TextHeight = 13
   inherited pbOK: TButton
     Left = 221
+    ExplicitLeft = 221
   end
   inherited pbCancel: TButton
     Left = 309
+    ExplicitLeft = 309
   end
   inherited GroupBox1: TGroupBox
     Width = 589
     Height = 221
+    ExplicitWidth = 589
+    ExplicitHeight = 221
     inherited Label2: TLabel
       FocusControl = OTFEFreeOTFELUKSKeyOrKeyfileEntry1
     end
@@ -25,6 +29,7 @@ inherited frmCDBDump_LUKS: TfrmCDBDump_LUKS
     end
     inherited OTFEFreeOTFEVolumeSelect1: TOTFEFreeOTFEVolumeSelect
       Width = 465
+      ExplicitWidth = 465
     end
     object ckBaseIVCypherOnHashLength: TCheckBox
       Left = 8
@@ -45,8 +50,11 @@ inherited frmCDBDump_LUKS: TfrmCDBDump_LUKS
   inherited GroupBox2: TGroupBox
     Top = 236
     Width = 585
+    ExplicitTop = 236
+    ExplicitWidth = 585
     inherited feDumpFilename: TSDUFilenameEdit
       Width = 457
+      ExplicitWidth = 457
     end
   end
 end

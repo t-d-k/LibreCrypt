@@ -111,6 +111,7 @@ type
     actLUKSDump: TAction;
     actMountHidden: TAction;
     Mountfilehidden1: TMenuItem;
+    Label1: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure miCreateKeyfileClick(Sender: TObject);
     procedure miChangePasswordClick(Sender: TObject);
@@ -223,6 +224,7 @@ type
       defaultType: TDragDropFileType
     ); overload;
     procedure MountFiles(mountAsSystem: TDragDropFileType; filename: string; readOnly, forceHidden : Boolean); overload;
+
     procedure MountFiles(mountAsSystem: TDragDropFileType; filenames: TStringList; readOnly, forceHidden : Boolean); overload; virtual; abstract;
     procedure LinuxMountFile(forceHidden : Boolean);
 
@@ -272,12 +274,12 @@ type
 resourcestring
   // Captions...
   RS_TOOLBAR_CAPTION_NEW        = 'New';
-  RS_TOOLBAR_CAPTION_MOUNTFILE  = 'Mount file';
-  RS_TOOLBAR_CAPTION_DISMOUNT   = 'Dismount';
+  RS_TOOLBAR_CAPTION_MOUNTFILE  = 'Open DoxBox';
+  RS_TOOLBAR_CAPTION_DISMOUNT   = 'Lock';
   // Hints...
-  RS_TOOLBAR_HINT_NEW           = 'Create a new encrypted volume';
-  RS_TOOLBAR_HINT_MOUNTFILE     = 'Mount a file based encrypted volume';
-  RS_TOOLBAR_HINT_DISMOUNT      = 'Dismount a mounted volume';
+  RS_TOOLBAR_HINT_NEW           = 'Create a new DoxBox';
+  RS_TOOLBAR_HINT_MOUNTFILE     = 'Open a file based DoxBox';
+  RS_TOOLBAR_HINT_DISMOUNT      = 'Lock an open Box';
 
 const
   USERGUIDE_LOCAL = '.\docs\index.htm';
@@ -289,7 +291,7 @@ const
   // Command line parameters...
   // CMDLINE_SETTINGSFILE defined in "interface" section; used in FreeOTFE.dpr
   CMDLINE_MOUNT            = 'mount';
-  CMDLINE_FREEOTFE         = 'freeotfe';
+  CMDLINE_FREEOTFE         = 'doxbox';
   CMDLINE_LINUX            = 'linux';
   CMDLINE_VOLUME           = 'volume';
   CMDLINE_READONLY         = 'readonly';
@@ -1008,7 +1010,7 @@ begin
     begin
     SDUOpenSaveDialogSetup(OpenDialog, '');
     FreeOTFEGUISetupOpenSaveDialog(OpenDialog);
-
+    assert(OpenDialog<>nil);
     OpenDialog.Filter     := FILE_FILTER_FLT_VOLUMES;
     OpenDialog.DefaultExt := FILE_FILTER_DFLT_VOLUMES;
 
@@ -1429,7 +1431,7 @@ var
   cmdExitCode: integer;
   volume: string;
   readonly: boolean;
-  mountAs: string;
+  mountAs: ansistring;
   fileOK: boolean;
 {$IFDEF FREEOTFE_MAIN}
   useDriveLetter: string;
@@ -1491,7 +1493,7 @@ begin
         end
       else
         begin
-        TOTFEFreeOTFE(OTFEFreeOTFE).DefaultDriveLetter := (uppercase(useDriveLetter))[1];
+        TOTFEFreeOTFE(OTFEFreeOTFE).DefaultDriveLetter := AnsiChar((uppercase(useDriveLetter))[1]);
         end;
       end;
 {$ENDIF}
