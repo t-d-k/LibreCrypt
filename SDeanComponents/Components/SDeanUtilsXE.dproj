@@ -1,0 +1,380 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{78F9F773-3A32-49B5-B799-79E85D8163ED}</ProjectGuid>
+			<MainSource>SDeanUtilsXE.dpk</MainSource>
+			<ProjectVersion>13.4</ProjectVersion>
+			<FrameworkType>VCL</FrameworkType>
+			<Base>True</Base>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<TargetedPlatforms>3</TargetedPlatforms>
+			<AppType>Package</AppType>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+			<Base_Win64>true</Base_Win64>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+			<Base_Win32>true</Base_Win32>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+			<Cfg_1_Win32>true</Cfg_1_Win32>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<DCC_BplOutput>.\$(Platform)\$(Config)</DCC_BplOutput>
+			<VerInfo_Locale>2057</VerInfo_Locale>
+			<DCC_DcpOutput>.\$(Platform)\$(Config)</DCC_DcpOutput>
+			<DCC_UsePackage>rtl;xmlrtl;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_CBuilderOutput>All</DCC_CBuilderOutput>
+			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
+			<GenPackage>true</GenPackage>
+			<GenDll>true</GenDll>
+			<DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
+			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win64)'!=''">
+			<DCC_UsePackage>vclx;VclSmp;$(DCC_UsePackage)</DCC_UsePackage>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<DCC_UsePackage>vclx;VclSmp;$(DCC_UsePackage)</DCC_UsePackage>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+			<DCC_Optimize>false</DCC_Optimize>
+			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
+			<DCC_RemoteDebug>true</DCC_RemoteDebug>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<DCC_RangeChecking>true</DCC_RangeChecking>
+			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<DCC_RemoteDebug>false</DCC_RemoteDebug>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+		</PropertyGroup>
+		<ItemGroup>
+			<DelphiCompile Include="$(MainSource)">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="rtl.dcp"/>
+			<DCCReference Include="vclx.dcp"/>
+			<DCCReference Include="xmlrtl.dcp"/>
+			<DCCReference Include="vclsmp.dcp"/>
+			<DCCReference Include="SDeanSecurity\PasswordRichEdit\PasswordRichEdit.pas"/>
+			<DCCReference Include="SDeanUtils\MSntdll.pas"/>
+			<DCCReference Include="SDeanUtils\NetMsg.pas"/>
+			<DCCReference Include="SDeanUtils\SDUAboutDlg.pas">
+				<Form>SDUAboutDialog</Form>
+			</DCCReference>
+			<DCCReference Include="SDeanUtils\SDUBase64.pas"/>
+			<DCCReference Include="SDeanUtils\SDUBlocksPanel.pas"/>
+			<DCCReference Include="SDeanUtils\SDUClasses.pas"/>
+			<DCCReference Include="SDeanUtils\SDUClipbrd.pas"/>
+			<DCCReference Include="SDeanUtils\SDUComCtrls.pas"/>
+			<DCCReference Include="SDeanUtils\SDUDialogs.pas"/>
+			<DCCReference Include="SDeanUtils\SDUDirIterator_U.pas"/>
+			<DCCReference Include="SDeanUtils\SDUDiskPartitionsPanel.pas"/>
+			<DCCReference Include="SDeanUtils\SDUDiskPropertiesDlg.pas">
+				<Form>SDUDiskPropertiesDialog</Form>
+			</DCCReference>
+			<DCCReference Include="SDeanUtils\SDUDropFiles.pas"/>
+			<DCCReference Include="SDeanUtils\SDUEndianIntegers.pas"/>
+			<DCCReference Include="SDeanUtils\SDUExtCtrls.pas"/>
+			<DCCReference Include="SDeanUtils\SDUFileIterator_U.pas"/>
+			<DCCReference Include="SDeanUtils\SDUFilenameEdit_U.pas">
+				<Form>SDUFilenameEdit</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="SDeanUtils\SDUForms.pas">
+				<Form>SDUForm</Form>
+			</DCCReference>
+			<DCCReference Include="SDeanUtils\SDUFrames.pas">
+				<Form>SDUFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="SDeanUtils\SDUGeneral.pas"/>
+			<DCCReference Include="SDeanUtils\SDUGraphics.pas"/>
+			<DCCReference Include="SDeanUtils\SDUi18n.pas"/>
+			<DCCReference Include="SDeanUtils\SDULogger_U.pas"/>
+			<DCCReference Include="SDeanUtils\SDUMRUList.pas"/>
+			<DCCReference Include="SDeanUtils\SDUMultimediaKeys.pas"/>
+			<DCCReference Include="SDeanUtils\SDUNamedPipe_U.pas"/>
+			<DCCReference Include="SDeanUtils\SDUNetMsg.pas"/>
+			<DCCReference Include="SDeanUtils\SDUObjectManager.pas"/>
+			<DCCReference Include="SDeanUtils\SDUPartitionPropertiesDlg.pas">
+				<Form>SDUPartitionPropertiesDialog</Form>
+			</DCCReference>
+			<DCCReference Include="SDeanUtils\SDUProgressDlg.pas">
+				<Form>SDUProgressDialog</Form>
+			</DCCReference>
+			<DCCReference Include="SDeanUtils\SDURegistry.pas"/>
+			<DCCReference Include="SDeanUtils\SDUSpin64Units.pas">
+				<Form>SDUSpin64Unit</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="SDeanUtils\SDUStdCtrls.pas"/>
+			<DCCReference Include="SDeanUtils\SDUStringGrid.pas"/>
+			<DCCReference Include="SDeanUtils\SDUSystemTrayIcon.pas"/>
+			<DCCReference Include="SDeanUtils\SDUSystemTrayIconShellAPI.pas"/>
+			<DCCReference Include="SDeanUtils\SDUSysUtils.pas"/>
+			<DCCReference Include="SDeanUtils\SDUWindows.pas"/>
+			<DCCReference Include="SDeanUtils\SDUWindows64.pas"/>
+			<DCCReference Include="SDeanUtils\SDUWinHTTP.pas"/>
+			<DCCReference Include="SDeanUtils\SDUWinHttp_API.pas"/>
+			<DCCReference Include="SDeanUtils\Spin64.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_cryptlib.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DiskPartitionsPanel.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverCommon.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverControl.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverCypherAPI.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverHashAPI.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrBase.pas">
+				<Form>fmePKCS11_MgrBase</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas">
+				<Form>fmePKCS11_MgrKeyfile</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas">
+				<Form>fmePKCS11_MgrSecretKey</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas">
+				<Form>fmeSelectPartition</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmCypherInfo.pas">
+				<Form>frmCypherInfo</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmDriverControl.pas">
+				<Form>frmDriverControl</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmHashInfo.pas">
+				<Form>frmHashInfo</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas">
+				<Form>frmKeyEntryFreeOTFE</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLinux.pas">
+				<Form>frmKeyEntryLinux</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLUKS.pas">
+				<Form>frmKeyEntryLUKS</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmNewVolumeSize.pas">
+				<Form>frmNewVolumeSize</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmPKCS11Management.pas">
+				<Form>frmPKCS11Management</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmPKCS11NewSecretKey.pas">
+				<Form>frmPKCS11NewSecretKey</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmPKCS11Session.pas">
+				<Form>frmPKCS11Session</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectHashCypher.pas">
+				<Form>frmSelectHashCypher</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectPartition.pas">
+				<Form>frmSelectPartition</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectPartition_Simple.pas">
+				<Form>frmSelectPartition_Simple</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectVolumeAndOffset.pas">
+				<Form>frmSelectVolumeFileAndOffset</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmVolumeType.pas">
+				<Form>frmSelectVolumeType</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizard.pas">
+				<Form>frmWizard</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas">
+				<Form>frmWizardChangePasswordCreateKeyfile</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas">
+				<Form>frmWizardCreateVolume</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas">
+				<Form>frmWizardCreateVolumeAdvanced</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_InstructionRichEdit.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSAPI.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSKeyOrKeyfileEntry.pas">
+				<Form>OTFEFreeOTFELUKSKeyOrKeyfileEntry</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PasswordRichEdit.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PKCS11.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_U.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeSelect.pas">
+				<Form>OTFEFreeOTFEVolumeSelect</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_WizardCommon.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFEBase_U.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_PartitionImage.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_U.pas"/>
+			<DCCReference Include="SDeanUtils\SDUCheckLst.pas"/>
+			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_api.pas"/>
+			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_attribute.pas"/>
+			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_library.pas"/>
+			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_mechanism.pas"/>
+			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_object.pas"/>
+			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_session.pas"/>
+			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_slot.pas"/>
+			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_slot_event_thread.pas"/>
+			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_token.pas"/>
+			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11f.pas"/>
+			<DCCReference Include="SDeanSecurity\PKCS#11\PKCS11KnownLibs.pas"/>
+			<DCCReference Include="SDeanSecurity\PKCS#11\PKCS11LibrarySelectDlg.pas">
+				<Form>PKCS11LibrarySelectDialog</Form>
+			</DCCReference>
+			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11t.pas"/>
+			<DCCReference Include="SDeanSecurity\Shredder\Shredder.pas"/>
+			<DCCReference Include="SDeanSecurity\Shredder\FileList_U.pas">
+				<Form>FileList_F</Form>
+			</DCCReference>
+			<DCCReference Include="SDeanSecurity\MSCryptoAPI\MSCryptoAPI.pas"/>
+			<DCCReference Include="SDeanFilesystem\SDFATBootSectorPropertiesDlg.pas">
+				<Form>SDFATBootSectorPropertiesDialog</Form>
+			</DCCReference>
+			<DCCReference Include="SDeanFilesystem\SDFilesystem.pas"/>
+			<DCCReference Include="SDeanFilesystem\SDFilesystem_FAT.pas"/>
+			<DCCReference Include="SDeanFilesystem\SDFilesystem_Local.pas"/>
+			<DCCReference Include="SDeanFilesystem\SDFilesystemCtrls.pas"/>
+			<DCCReference Include="SDeanFilesystem\SDFilesystemCtrls_ColDetails.pas">
+				<Form>SDFilesystemListView_ColDetails</Form>
+			</DCCReference>
+			<DCCReference Include="SDeanFilesystem\SDPartitionImage.pas"/>
+			<DCCReference Include="SDeanFilesystem\SDPartitionImage_File.pas"/>
+			<DCCReference Include="OTFE\OTFE\OTFE_U.pas"/>
+			<DCCReference Include="OTFE\OTFE\OTFEConsts_U.pas"/>
+			<DCCReference Include="SDeanSecurity\MouseRNG\MouseRNG.pas"/>
+			<DCCReference Include="SDeanSecurity\MouseRNGDialog\MouseRNGCaptureDlg_U.pas">
+				<Form>MouseRNGCaptureDlg</Form>
+			</DCCReference>
+			<DCCReference Include="SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas"/>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>Package</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Source>
+						<Source Name="MainSource">SDeanUtilsXE.dpk</Source>
+					</Source>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">2057</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName"/>
+						<VersionInfoKeys Name="FileDescription"/>
+						<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName"/>
+						<VersionInfoKeys Name="LegalCopyright"/>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename"/>
+						<VersionInfoKeys Name="ProductName"/>
+						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+					</VersionInfoKeys>
+					<Excluded_Packages>
+						<Excluded_Packages Name="C:\Program Files (x86)\Raize\CS5\Bin\CodeSiteExpressPkg_Design160.bpl">CodeSite Express 5.1</Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\9.0\Bpl\SnoopPck.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclIndyProtocols160.bpl">Indy 10 Protocols Design Time</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dcltee9160.bpl">TeeChart Standard VCL Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\9.0\Bpl\RETSComponentsXE2.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclFMXtee9160.bpl">TeeChart Standard FMX Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdplugin160.bpl">LMD 2014 - Common PlugIn Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdinspector160.bpl">LMD 2014 - LMD-Tools InspectorPack Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdthemes160.bpl">LMD 2014 - Common ThemesPack Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmddocking160.bpl">LMD 2014 - LMD-Tools DockingPack Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmddialog160.bpl">LMD 2014 - LMD-Tools DialogPack Desingtime Enhancements</Excluded_Packages>
+						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdprint160.bpl">LMD 2014 - Common PrintPack Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdeldb160.bpl">LMD 2014 - ElPack Database Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdelpro160.bpl">LMD 2014 - ElPack Professional Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\Apps\TMS Component Pack\DelphiXE2\TMSWizDXE2.bpl">TMS Component Pack Wizards</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclIPIndyImpl160.bpl">IP Abstraction Indy Implementation Design Time</Excluded_Packages>
+						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdelcore160.bpl">LMD 2014 - ElPack Core Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\Apps\TMS Component Pack\DelphiXE2\TMSDeDXE2.bpl">TMS Component Pack design time support</Excluded_Packages>
+					</Excluded_Packages>
+				</Delphi.Personality>
+				<Deployment/>
+				<Platforms>
+					<Platform value="Win64">True</Platform>
+					<Platform value="OSX32">False</Platform>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')" Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+	</Project>

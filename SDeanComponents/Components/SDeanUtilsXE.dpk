@@ -1,0 +1,156 @@
+package SDeanUtilsXE;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS ON}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vclx,
+  xmlrtl,
+  vclsmp;
+
+contains
+  PasswordRichEdit in 'SDeanSecurity\PasswordRichEdit\PasswordRichEdit.pas',
+  MSntdll in 'SDeanUtils\MSntdll.pas',
+  NetMsg in 'SDeanUtils\NetMsg.pas',
+  SDUAboutDlg in 'SDeanUtils\SDUAboutDlg.pas' {SDUAboutDialog},
+  SDUBase64 in 'SDeanUtils\SDUBase64.pas',
+  SDUBlocksPanel in 'SDeanUtils\SDUBlocksPanel.pas',
+  SDUClasses in 'SDeanUtils\SDUClasses.pas',
+  SDUClipbrd in 'SDeanUtils\SDUClipbrd.pas',
+  SDUComCtrls in 'SDeanUtils\SDUComCtrls.pas',
+  SDUDialogs in 'SDeanUtils\SDUDialogs.pas',
+  SDUDirIterator_U in 'SDeanUtils\SDUDirIterator_U.pas',
+  SDUDiskPartitionsPanel in 'SDeanUtils\SDUDiskPartitionsPanel.pas',
+  SDUDiskPropertiesDlg in 'SDeanUtils\SDUDiskPropertiesDlg.pas' {SDUDiskPropertiesDialog},
+  SDUDropFiles in 'SDeanUtils\SDUDropFiles.pas',
+  SDUEndianIntegers in 'SDeanUtils\SDUEndianIntegers.pas',
+  SDUExtCtrls in 'SDeanUtils\SDUExtCtrls.pas',
+  SDUFileIterator_U in 'SDeanUtils\SDUFileIterator_U.pas',
+  SDUFilenameEdit_U in 'SDeanUtils\SDUFilenameEdit_U.pas' {SDUFilenameEdit: TFrame},
+  SDUForms in 'SDeanUtils\SDUForms.pas' {SDUForm},
+  SDUFrames in 'SDeanUtils\SDUFrames.pas' {SDUFrame: TFrame},
+  SDUGeneral in 'SDeanUtils\SDUGeneral.pas',
+  SDUGraphics in 'SDeanUtils\SDUGraphics.pas',
+  SDUi18n in 'SDeanUtils\SDUi18n.pas',
+  SDULogger_U in 'SDeanUtils\SDULogger_U.pas',
+  SDUMRUList in 'SDeanUtils\SDUMRUList.pas',
+  SDUMultimediaKeys in 'SDeanUtils\SDUMultimediaKeys.pas',
+  SDUNamedPipe_U in 'SDeanUtils\SDUNamedPipe_U.pas',
+  SDUNetMsg in 'SDeanUtils\SDUNetMsg.pas',
+  SDUObjectManager in 'SDeanUtils\SDUObjectManager.pas',
+  SDUPartitionPropertiesDlg in 'SDeanUtils\SDUPartitionPropertiesDlg.pas' {SDUPartitionPropertiesDialog},
+  SDUProgressDlg in 'SDeanUtils\SDUProgressDlg.pas' {SDUProgressDialog},
+  SDURegistry in 'SDeanUtils\SDURegistry.pas',
+  SDUSpin64Units in 'SDeanUtils\SDUSpin64Units.pas' {SDUSpin64Unit: TFrame},
+  SDUStdCtrls in 'SDeanUtils\SDUStdCtrls.pas',
+  SDUStringGrid in 'SDeanUtils\SDUStringGrid.pas',
+  SDUSystemTrayIcon in 'SDeanUtils\SDUSystemTrayIcon.pas',
+  SDUSystemTrayIconShellAPI in 'SDeanUtils\SDUSystemTrayIconShellAPI.pas',
+  SDUSysUtils in 'SDeanUtils\SDUSysUtils.pas',
+  SDUWindows in 'SDeanUtils\SDUWindows.pas',
+  SDUWindows64 in 'SDeanUtils\SDUWindows64.pas',
+  SDUWinHTTP in 'SDeanUtils\SDUWinHTTP.pas',
+  SDUWinHttp_API in 'SDeanUtils\SDUWinHttp_API.pas',
+  Spin64 in 'SDeanUtils\Spin64.pas',
+  FreeOTFEDLLCypherAPI in 'OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas',
+  FreeOTFEDLLHashAPI in 'OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas',
+  FreeOTFEDLLMainAPI in 'OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas',
+  OTFEFreeOTFE_cryptlib in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_cryptlib.pas',
+  OTFEFreeOTFE_DiskPartitionsPanel in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DiskPartitionsPanel.pas',
+  OTFEFreeOTFE_DriverAPI in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas',
+  OTFEFreeOTFE_DriverCommon in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverCommon.pas',
+  OTFEFreeOTFE_DriverControl in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverControl.pas',
+  OTFEFreeOTFE_DriverCypherAPI in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverCypherAPI.pas',
+  OTFEFreeOTFE_DriverHashAPI in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverHashAPI.pas',
+  OTFEFreeOTFE_fmePKCS11_MgrBase in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrBase.pas' {fmePKCS11_MgrBase: TFrame},
+  OTFEFreeOTFE_fmePKCS11_MgrKeyfile in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas' {fmePKCS11_MgrKeyfile: TFrame},
+  OTFEFreeOTFE_fmePKCS11_MgrSecretKey in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas' {fmePKCS11_MgrSecretKey: TFrame},
+  OTFEFreeOTFE_fmeSelectPartition in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas' {fmeSelectPartition: TFrame},
+  OTFEFreeOTFE_frmCypherInfo in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmCypherInfo.pas' {frmCypherInfo},
+  OTFEFreeOTFE_frmDriverControl in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmDriverControl.pas' {frmDriverControl},
+  OTFEFreeOTFE_frmHashInfo in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmHashInfo.pas' {frmHashInfo},
+  OTFEFreeOTFE_frmKeyEntryFreeOTFE in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas' {frmKeyEntryFreeOTFE},
+  OTFEFreeOTFE_frmKeyEntryLinux in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLinux.pas' {frmKeyEntryLinux},
+  OTFEFreeOTFE_frmKeyEntryLUKS in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLUKS.pas' {frmKeyEntryLUKS},
+  OTFEFreeOTFE_frmNewVolumeSize in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmNewVolumeSize.pas' {frmNewVolumeSize},
+  OTFEFreeOTFE_frmPKCS11Management in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmPKCS11Management.pas' {frmPKCS11Management},
+  OTFEFreeOTFE_frmPKCS11NewSecretKey in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmPKCS11NewSecretKey.pas' {frmPKCS11NewSecretKey},
+  OTFEFreeOTFE_frmPKCS11Session in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmPKCS11Session.pas' {frmPKCS11Session},
+  OTFEFreeOTFE_frmSelectHashCypher in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectHashCypher.pas' {frmSelectHashCypher},
+  OTFEFreeOTFE_frmSelectPartition in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectPartition.pas' {frmSelectPartition},
+  OTFEFreeOTFE_frmSelectPartition_Simple in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectPartition_Simple.pas' {frmSelectPartition_Simple},
+  OTFEFreeOTFE_frmSelectVolumeAndOffset in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectVolumeAndOffset.pas' {frmSelectVolumeFileAndOffset},
+  OTFEFreeOTFE_frmVolumeType in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmVolumeType.pas' {frmSelectVolumeType},
+  OTFEFreeOTFE_frmWizard in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizard.pas' {frmWizard},
+  OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas' {frmWizardChangePasswordCreateKeyfile},
+  OTFEFreeOTFE_frmWizardCreateVolume in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas' {frmWizardCreateVolume},
+  OTFEFreeOTFE_frmWizardCreateVolumeAdvanced in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas' {frmWizardCreateVolumeAdvanced},
+  OTFEFreeOTFE_InstructionRichEdit in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_InstructionRichEdit.pas',
+  OTFEFreeOTFE_LUKSAPI in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSAPI.pas',
+  OTFEFreeOTFE_LUKSKeyOrKeyfileEntry in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSKeyOrKeyfileEntry.pas' {OTFEFreeOTFELUKSKeyOrKeyfileEntry: TFrame},
+  OTFEFreeOTFE_PasswordRichEdit in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PasswordRichEdit.pas',
+  OTFEFreeOTFE_PKCS11 in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PKCS11.pas',
+  OTFEFreeOTFE_U in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_U.pas',
+  OTFEFreeOTFE_VolumeFileAPI in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas',
+  OTFEFreeOTFE_VolumeSelect in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeSelect.pas' {OTFEFreeOTFEVolumeSelect},
+  OTFEFreeOTFE_WizardCommon in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_WizardCommon.pas',
+  OTFEFreeOTFEBase_U in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFEBase_U.pas',
+  OTFEFreeOTFEDLL_PartitionImage in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_PartitionImage.pas',
+  OTFEFreeOTFEDLL_U in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_U.pas',
+  SDUCheckLst in 'SDeanUtils\SDUCheckLst.pas',
+  pkcs11_api in 'SDeanSecurity\PKCS#11\pkcs11_api.pas',
+  pkcs11_attribute in 'SDeanSecurity\PKCS#11\pkcs11_attribute.pas',
+  pkcs11_library in 'SDeanSecurity\PKCS#11\pkcs11_library.pas',
+  pkcs11_mechanism in 'SDeanSecurity\PKCS#11\pkcs11_mechanism.pas',
+  pkcs11_object in 'SDeanSecurity\PKCS#11\pkcs11_object.pas',
+  pkcs11_session in 'SDeanSecurity\PKCS#11\pkcs11_session.pas',
+  pkcs11_slot in 'SDeanSecurity\PKCS#11\pkcs11_slot.pas',
+  pkcs11_slot_event_thread in 'SDeanSecurity\PKCS#11\pkcs11_slot_event_thread.pas',
+  pkcs11_token in 'SDeanSecurity\PKCS#11\pkcs11_token.pas',
+  pkcs11f in 'SDeanSecurity\PKCS#11\pkcs11f.pas',
+  PKCS11KnownLibs in 'SDeanSecurity\PKCS#11\PKCS11KnownLibs.pas',
+  PKCS11LibrarySelectDlg in 'SDeanSecurity\PKCS#11\PKCS11LibrarySelectDlg.pas' {PKCS11LibrarySelectDialog},
+  pkcs11t in 'SDeanSecurity\PKCS#11\pkcs11t.pas',
+  Shredder in 'SDeanSecurity\Shredder\Shredder.pas',
+  FileList_U in 'SDeanSecurity\Shredder\FileList_U.pas' {FileList_F},
+  MSCryptoAPI in 'SDeanSecurity\MSCryptoAPI\MSCryptoAPI.pas',
+  SDFATBootSectorPropertiesDlg in 'SDeanFilesystem\SDFATBootSectorPropertiesDlg.pas' {SDFATBootSectorPropertiesDialog},
+  SDFilesystem in 'SDeanFilesystem\SDFilesystem.pas',
+  SDFilesystem_FAT in 'SDeanFilesystem\SDFilesystem_FAT.pas',
+  SDFilesystem_Local in 'SDeanFilesystem\SDFilesystem_Local.pas',
+  SDFilesystemCtrls in 'SDeanFilesystem\SDFilesystemCtrls.pas',
+  SDFilesystemCtrls_ColDetails in 'SDeanFilesystem\SDFilesystemCtrls_ColDetails.pas' {SDFilesystemListView_ColDetails},
+  SDPartitionImage in 'SDeanFilesystem\SDPartitionImage.pas',
+  SDPartitionImage_File in 'SDeanFilesystem\SDPartitionImage_File.pas',
+  OTFE_U in 'OTFE\OTFE\OTFE_U.pas',
+  OTFEConsts_U in 'OTFE\OTFE\OTFEConsts_U.pas',
+  MouseRNG in 'SDeanSecurity\MouseRNG\MouseRNG.pas',
+  MouseRNGCaptureDlg_U in 'SDeanSecurity\MouseRNGDialog\MouseRNGCaptureDlg_U.pas' {MouseRNGCaptureDlg},
+  MouseRNGDialog_U in 'SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas';
+
+end.
