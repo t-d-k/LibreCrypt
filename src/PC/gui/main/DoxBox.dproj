@@ -1,0 +1,252 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{be62b9f0-6bf7-435e-bcc5-1b2a537d2c02}</ProjectGuid>
+			<MainSource>DoxBox.dpr</MainSource>
+			<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+			<DCC_DependencyCheckOutputName>..\..\..\..\bin\PC\FreeOTFE.exe</DCC_DependencyCheckOutputName>
+			<FrameworkType>VCL</FrameworkType>
+			<ProjectVersion>13.4</ProjectVersion>
+			<Base>True</Base>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<TargetedPlatforms>1</TargetedPlatforms>
+			<AppType>Application</AppType>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+			<Base_Win64>true</Base_Win64>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+			<Base_Win32>true</Base_Win32>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+			<Cfg_2_Win32>true</Cfg_2_Win32>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_UnitSearchPath>P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanUtils;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\MouseRNGDialog;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\PKCS#11;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\Shredder;P:\Projects\Delphi\doxbox\SDeanComponents\Components\OTFE\OTFEFreeOTFE;P:\Projects\Delphi\doxbox\SDeanComponents\Components\OTFE\OTFE\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<Icon_MainIcon>FreeOTFE_Icon.ico</Icon_MainIcon>
+			<Manifest_File>None</Manifest_File>
+			<VerInfo_MinorVer>21</VerInfo_MinorVer>
+			<VerInfo_MajorVer>5</VerInfo_MajorVer>
+			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<VerInfo_Locale>2057</VerInfo_Locale>
+			<VerInfo_Keys>CompanyName=Sarah Dean;FileDescription=FreeOTFE;FileVersion=5.21.0.4058;InternalName=FreeOTFE;LegalCopyright=Copyright (C) 2010 Sarah Dean;LegalTrademarks=;OriginalFilename=FreeOTFE.exe;ProductName=FreeOTFE;ProductVersion=5.21;Comments=http://www.FreeOTFE.org/</VerInfo_Keys>
+			<VerInfo_Build>4058</VerInfo_Build>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win64)'!=''">
+			<Icon_MainIcon>FreeOTFE_Icon.ico</Icon_MainIcon>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_DcuOutput>P:\Projects\Delphi\doxbox\src\PC\gui\main\release_dcus\</DCC_DcuOutput>
+			<Version>7.0</Version>
+			<DCC_DebugInformation>False</DCC_DebugInformation>
+			<DCC_WriteableConstants>True</DCC_WriteableConstants>
+			<DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_ExeOutput>..\..\..\bin\PC</DCC_ExeOutput>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_DcuOutput>P:\Projects\Delphi\doxbox\src\PC\gui\main\debug_dcus\</DCC_DcuOutput>
+			<Version>7.0</Version>
+			<DCC_WriteableConstants>True</DCC_WriteableConstants>
+			<DCC_ExeOutput>..\..\..\..\bin\PC</DCC_ExeOutput>
+			<DCC_Define>FREEOTFE_MAIN;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+		</PropertyGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>VCLApplication</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Parameters>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+					</Parameters>
+					<Language>
+						<Language Name="ProjectLang">$00000809</Language>
+					</Language>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">5</VersionInfo>
+						<VersionInfo Name="MinorVer">21</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">4058</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">2057</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName">Sarah Dean</VersionInfoKeys>
+						<VersionInfoKeys Name="FileDescription">FreeOTFE</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">5.21.0.4058</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName">FreeOTFE</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalCopyright">Copyright (C) 2010 Sarah Dean</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename">FreeOTFE.exe</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductName">FreeOTFE</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductVersion">5.21</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments">http://www.FreeOTFE.org/</VersionInfoKeys>
+					</VersionInfoKeys>
+					<Source>
+						<Source Name="MainSource">DoxBox.dpr</Source>
+					</Source>
+					<Excluded_Packages>
+						<Excluded_Packages Name="C:\Apps\TMS Component Pack\DelphiXE2\TMSWizDXE2.bpl">TMS Component Pack Wizards</Excluded_Packages>
+						<Excluded_Packages Name="C:\Program Files (x86)\FastReports\LibD16\dclfrxDB16.bpl">FastReport 4.0 DB Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclIPIndyImpl160.bpl">IP Abstraction Indy Implementation Design Time</Excluded_Packages>
+						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdelcore160.bpl">LMD 2014 - ElPack Core Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\Apps\TMS Component Pack\DelphiXE2\TMSDeDXE2.bpl">TMS Component Pack design time support</Excluded_Packages>
+					</Excluded_Packages>
+				</Delphi.Personality>
+				<Platforms>
+					<Platform value="Win64">False</Platform>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
+				<ModelSupport>False</ModelSupport>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+		<ItemGroup>
+			<DelphiCompile Include="$(MainSource)">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="FreeOTFEfrmMain.pas">
+				<Form>frmFreeOTFEMain</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEConsts.pas"/>
+			<DCCReference Include="FreeOTFEfrmVolProperties.pas">
+				<Form>frmFreeOTFEVolProperties</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEfrmSelectOverwriteMethod.pas">
+				<Form>frmFreeOTFESelectOverwriteMethod</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmCDBBackupRestore.pas">
+				<Form>frmCDBBackupRestore</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonSettings.pas"/>
+			<DCCReference Include="..\common\CommonfrmOptions.pas">
+				<Form>frmOptions</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmGridReport.pas">
+				<Form>frmGridReport</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmGridReport_Hash.pas">
+				<Form>frmGridReport_Hash</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmGridReport_Cypher.pas">
+				<Form>frmGridReport_Cypher</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfmeOptions_Base.pas">
+				<Form>fmeOptions_Base</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEfmeOptions_SystemTray.pas">
+				<Form>fmeOptions_SystemTray</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEfmeOptions_Hotkeys.pas">
+				<Form>fmeOptions_Hotkeys</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfmeOptions_PKCS11.pas">
+				<Form>fmeOptions_PKCS11</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEfmeOptions_Autorun.pas">
+				<Form>fmeOptions_Autorun</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEfmeOptions_General.pas">
+				<Form>fmeOptions_FreeOTFEGeneral</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmInstallOnUSBDrive.pas">
+				<Form>frmInstallOnUSBDrive</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmAbout.pas">
+				<Form>frmAbout</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFESettings.pas"/>
+			<DCCReference Include="..\common\CommonfrmMain.pas">
+				<Form>frmMain</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEfrmOptions.pas">
+				<Form>frmOptions_FreeOTFE</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEfmeOptions_Base.pas">
+				<Form>fmeFreeOTFEOptions_Base</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmVersionCheck.pas">
+				<Form>frmVersionCheck</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEfmeOptions_Advanced.pas">
+				<Form>fmeOptions_FreeOTFEAdvanced</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonConsts.pas"/>
+			<DCCReference Include="..\common\CommonfrmCDBDump_LUKS.pas">
+				<Form>frmCDBDump_LUKS</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmCDBDump_Base.pas">
+				<Form>frmCDBDump_Base</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmCDBDump_FreeOTFE.pas">
+				<Form>frmCDBDump_FreeOTFE</Form>
+			</DCCReference>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+	</Project>
