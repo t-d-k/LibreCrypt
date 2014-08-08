@@ -715,7 +715,7 @@ function TOTFEFreeOTFEDriverControl.InstallDriver(
 var
   retVal: DWORD;
   newServiceHandle: SC_HANDLE;
-  installedFilename: string;
+  installedFilename,finalFileName: string;
   allOK: boolean;
   alreadyInstalled: boolean;
 begin
@@ -755,6 +755,8 @@ begin
   if (allOK) then
     begin
     // Create the service...
+    // convert mapped drives to unmapped here because admin cant access drives mapped by another user
+    finalFileName := SDUGetFinalPath(filename);
     newServiceHandle := CreateService(
                                       SCManager,  // handle to service control manager database
                                       PChar(driverName),  // pointer to name of service to start
@@ -763,7 +765,7 @@ begin
                                       SERVICE_KERNEL_DRIVER,  // type of service
                                       SERVICE_DEMAND_START,  // when to start service
                                       SERVICE_ERROR_NORMAL,  // severity if service fails to start
-                                      PChar(filename),  // pointer to name of binary file
+                                      PChar(finalFileName),  // pointer to name of binary file
                                       nil,  // pointer to name of load ordering group
                                       nil,  // pointer to variable to get tag identifier
                                       nil,  // pointer to array of dependency names

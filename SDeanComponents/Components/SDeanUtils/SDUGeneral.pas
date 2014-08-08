@@ -966,6 +966,8 @@ function SDUSaveFontToReg(rootKey: HKEY; fontKey: string; name: string; font: TF
 // Load the font's details back from the registry
 function SDULoadFontFromReg(rootKey: HKEY; fontKey: string; name: string; font: TFont): boolean;
 
+//replaces any subst/mapping
+function SDUGetFinalPath(path :string): string;
 
 implementation
 
@@ -7390,6 +7392,18 @@ end;
 function SDUZLibCompressionLevelTitle(compressionLevel: TCompressionLevel): string;
 begin
   Result := LoadResString(ZLibCompressionLevelTitlePtr[compressionLevel]);
+end;
+
+//replaces any subst/mapping
+function SDUGetFinalPath(path :string): string;
+var
+  hFile :THandle;
+  lpszFilePath :array[0..MAX_PATH] of char;
+begin
+  hFile := FileOpen(path,0);
+ GetFinalPathNameByHandle(hFile,lpszFilePath,MAX_PATH,0);
+ result :=   lpszFilePath;
+ FileClose(hFile);
 end;
 
 // ----------------------------------------------------------------------------
