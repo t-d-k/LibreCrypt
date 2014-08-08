@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{38112391-4AE5-403E-A8ED-99D1527A4050}</ProjectGuid>
+    <RootNamespace>test_dll</RootNamespace>
+    <Keyword>MFCDLLProj</Keyword>
+    <ProjectName>CYPHER_AES_Gladman</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Static</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>FreeOTFECypherAES_Gladman</TargetName>
+    <OutDir>$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;FOTFE_PC_DLL;_WINDLL;INITGUID;_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>"..\..\..\3rd_party\AES_candidates_2nd_round_-_Gladman\aes.r2.algs\";"..\..\..\3rd_party\AES_candidates_2nd_round_-_Gladman\aes.r2.test\";..\..\..\..\3rd_party\ltc_gladman_xts;..\..\..\drivers\CYPHER_DRIVERS\Common\inc\;..\..\Common\inc\;..\..\..\Common\inc\;..\..\..\..\Common\CYPHER_DRIVERS\Common\inc\;..\..\..\..\Common\Common\inc\;..\..\..\..\Common\DRIVER\inc\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>..\Common\inc\FreeOTFE4PDACypher.def</ModuleDefinitionFile>
+      <OutputFile>$(OutDir)/FreeOTFECypherAES_Gladman.dll</OutputFile>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ModuleDefinitionFile>.\test_dll.def</ModuleDefinitionFile>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+<ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\ciphers\aes\aes.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_decrypt.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_done.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_encrypt.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_start.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_cipher_descriptor.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_cipher_is_valid.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_find_cipher.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_register_cipher.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_unregister_cipher.c"  />
+ <ClCompile Include="..\Common\inc\FreeOTFE4PDACypher.def"  />
+ <ClCompile Include="..\Common\src\FreeOTFE4PDACypherDriver.c"  />
+ <ClCompile Include="..\..\Common\src\FreeOTFE4PDADriverlib.c"  />
+ <ClCompile Include="..\..\..\Common\src\FreeOTFE4PDAlib.c"  />
+ <ClCompile Include="..\..\..\..\Common\CYPHER_DRIVERS\CYPHER_AES_ltc\FreeOTFECypherAES_ltc.c"  />
+ <ClCompile Include="..\..\..\..\Common\CYPHER_DRIVERS\Common\src\FreeOTFECypherAPICommon.c"  />
+ <ClCompile Include="..\..\..\..\Common\CYPHER_DRIVERS\Common\src\FreeOTFECypherImpl.c"  />
+ <ClCompile Include="..\..\..\..\Common\Common\src\FreeOTFEDebug.c"  />
+ <ClCompile Include="..\..\..\..\Common\Common\src\FreeOTFElib.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\encauth\gcm\gcm_gf_mult.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\lrw\lrw_decrypt.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\lrw\lrw_done.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\lrw\lrw_encrypt.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\lrw\lrw_process.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\lrw\lrw_setiv.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\lrw\lrw_start.c"  />
+ <ClCompile Include="..\..\..\..\Common\Common\src\SDUGeneral.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\xts\xts_decrypt.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\xts\xts_done.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\xts\xts_encrypt.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\xts\xts_init.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\xts\xts_mult_x.c"  />
+ <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\zeromem.c"  />
+  
+    	
+    	</ItemGroup> 
+    	
+    	<ItemGroup> 
+    	
+   
+    
+    <ClInclude Include="..\Common\inc\FreeOTFE4PDACypherAPI.h"  />
+ <ClInclude Include="..\Common\inc\FreeOTFE4PDACypherDriver.h"  />
+ <ClInclude Include="..\..\Common\inc\FreeOTFE4PDADriverlib.h"  />
+ <ClInclude Include="..\..\..\Common\inc\FreeOTFE4PDAlib.h"  />
+ <ClInclude Include="..\..\..\..\Common\CYPHER_DRIVERS\CYPHER_AES_ltc\FreeOTFECypherAES_ltc.h"  />
+ <ClInclude Include="..\..\..\..\Common\CYPHER_DRIVERS\Common\inc\FreeOTFECypherAPICommon.h"  />
+ <ClInclude Include="..\..\..\..\Common\CYPHER_DRIVERS\Common\inc\FreeOTFECypherImpl.h"  />
+ <ClInclude Include="..\..\..\..\Common\Common\inc\FreeOTFEDebug.h"  />
+ <ClInclude Include="..\..\..\..\Common\Common\inc\FreeOTFElib.h"  />
+ <ClInclude Include="..\..\..\..\Common\Common\inc\FreeOTFEPlatform.h"  />
+ <ClInclude Include=".\src\resource.h"  />
+ <ClInclude Include="..\..\..\..\Common\Common\inc\SDUGeneral.h"  />
+
+    
+    
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include=".\src\FreeOTFE4PDACypherAES_ltc.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Common\inc\FreeOTFECypher.def" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A402}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52ED02}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAF02}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_decrypt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_done.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_encrypt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_start.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_cipher_descriptor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_cipher_is_valid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_find_cipher.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_register_cipher.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_unregister_cipher.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\src\FreeOTFE4PDACypherDriver.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\src\FreeOTFE4PDADriverlib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Common\src\FreeOTFE4PDAlib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Common\CYPHER_DRIVERS\Common\src\FreeOTFECypherAPICommon.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Common\CYPHER_DRIVERS\Common\src\FreeOTFECypherImpl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Common\CYPHER_DRIVERS\CYPHER_TWOFISH_ltc\FreeOTFECypherTwofish_ltc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Common\Common\src\FreeOTFEDebug.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Common\Common\src\FreeOTFElib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\encauth\gcm\gcm_gf_mult.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\lrw\lrw_decrypt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\lrw\lrw_done.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\lrw\lrw_encrypt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\lrw\lrw_process.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\lrw\lrw_setiv.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\lrw\lrw_start.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Common\Common\src\SDUGeneral.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\ciphers\twofish\twofish.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\xts\xts_decrypt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\xts\xts_done.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\xts\xts_encrypt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\xts\xts_init.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\xts\xts_mult_x.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\zeromem.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Common\inc\FreeOTFE4PDACypher.def">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Common\inc\FreeOTFE4PDACypherAPI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\inc\FreeOTFE4PDACypherDriver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\inc\FreeOTFE4PDADriverlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\inc\FreeOTFE4PDAlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Common\CYPHER_DRIVERS\Common\inc\FreeOTFECypherAPICommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Common\CYPHER_DRIVERS\Common\inc\FreeOTFECypherImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Common\CYPHER_DRIVERS\CYPHER_TWOFISH_ltc\FreeOTFECypherTwofish_ltc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Common\Common\inc\FreeOTFEDebug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Common\Common\inc\FreeOTFElib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Common\Common\inc\FreeOTFEPlatform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Common\Common\inc\SDUGeneral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\FreeOTFE4PDACypherTwofish_ltc.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

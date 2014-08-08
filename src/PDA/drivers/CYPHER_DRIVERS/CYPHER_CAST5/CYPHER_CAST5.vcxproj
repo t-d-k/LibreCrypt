@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{6752699F-C8BC-4118-9EAB-4CD5FEAFBA04}</ProjectGuid>
+    <RootNamespace>CYPHER_CAST5</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\..\bin\PC\DLL\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\..\bin\PC\DLL\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\headers\;..\..\..\drivers\CYPHER_DRIVERS\Common\inc\;..\..\Common\inc\;..\..\..\Common\inc\;..\..\..\..\Common\CYPHER_DRIVERS\Common\inc\;..\..\..\..\Common\Common\inc\;..\..\..\..\Common\DRIVER\inc\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;DRIVER_EXPORTS;_UNICODE;UNICODE;_CRT_SECURE_NO_WARNINGS;_X86_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <OutputFile>$(OutDir)FreeOTFECypherCAST5.dll</OutputFile>
+      <ModuleDefinitionFile>..\Common\inc\FreeOTFE4PDACypher.def</ModuleDefinitionFile>
+      <DelayLoadDLLs>
+      </DelayLoadDLLs>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)CYPHER_CAST5.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>$(OutDir)CYPHER_CAST5.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\headers\;..\..\..\drivers\CYPHER_DRIVERS\Common\inc\;..\..\Common\inc\;..\..\..\Common\inc\;..\..\..\..\Common\CYPHER_DRIVERS\Common\inc\;..\..\..\..\Common\Common\inc\;..\..\..\..\Common\DRIVER\inc\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;DRIVER_EXPORTS;_UNICODE;UNICODE;_CRT_SECURE_NO_WARNINGS;_X86_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <OutputFile>$(OutDir)FreeOTFECypherCAST5.dll</OutputFile>
+      <ModuleDefinitionFile>..\Common\inc\FreeOTFE4PDACypher.def</ModuleDefinitionFile>
+      <DelayLoadDLLs>
+      </DelayLoadDLLs>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)CYPHER_CAST5.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>$(OutDir)CYPHER_CAST5.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\ciphers\cast5.c" />
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_decrypt.c" />
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_done.c" />
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_encrypt.c" />
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_start.c" />
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_cipher_descriptor.c" />
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_cipher_is_valid.c" />
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_find_cipher.c" />
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_register_cipher.c" />
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_unregister_cipher.c" />
+    <ClCompile Include="..\Common\src\FreeOTFE4PDACypherDriver.c" />
+    <ClCompile Include="..\..\Common\src\FreeOTFE4PDADriverlib.c" />
+    <ClCompile Include="..\..\..\Common\src\FreeOTFE4PDAlib.c" />
+    <ClCompile Include="..\..\..\..\Common\CYPHER_DRIVERS\Common\src\FreeOTFECypherAPICommon.c" />
+    <ClCompile Include="..\..\..\..\Common\CYPHER_DRIVERS\CYPHER_CAST5\FreeOTFECypherCAST5.c" />
+    <ClCompile Include="..\..\..\..\Common\CYPHER_DRIVERS\Common\src\FreeOTFECypherImpl.c" />
+    <ClCompile Include="..\..\..\..\Common\Common\src\FreeOTFEDebug.c" />
+    <ClCompile Include="..\..\..\..\Common\Common\src\FreeOTFElib.c" />
+    <ClCompile Include="..\..\..\..\Common\Common\src\SDUGeneral.c" />
+    <ClCompile Include="..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\zeromem.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Common\inc\FreeOTFE4PDACypher.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Common\inc\FreeOTFE4PDACypherAPI.h" />
+    <ClInclude Include="..\Common\inc\FreeOTFE4PDACypherDriver.h" />
+    <ClInclude Include="..\..\Common\inc\FreeOTFE4PDADriverlib.h" />
+    <ClInclude Include="..\..\..\Common\inc\FreeOTFE4PDAlib.h" />
+    <ClInclude Include="..\..\..\..\Common\CYPHER_DRIVERS\Common\inc\FreeOTFECypherAPICommon.h" />
+    <ClInclude Include="..\..\..\..\Common\CYPHER_DRIVERS\CYPHER_CAST5\FreeOTFECypherCAST5.h" />
+    <ClInclude Include="..\..\..\..\Common\CYPHER_DRIVERS\Common\inc\FreeOTFECypherImpl.h" />
+    <ClInclude Include="..\..\..\..\Common\Common\inc\FreeOTFEDebug.h" />
+    <ClInclude Include="..\..\..\..\Common\Common\inc\FreeOTFElib.h" />
+    <ClInclude Include="..\..\..\..\Common\Common\inc\FreeOTFEPlatform.h" />
+    <ClInclude Include="src\resource.h" />
+    <ClInclude Include="..\..\..\..\Common\Common\inc\SDUGeneral.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\FreeOTFE4PDACypherCAST5.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
