@@ -129,9 +129,9 @@ type
     function  MountDiskDevice(
                               deviceName: string;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
                               volFilename: string;
-                              volumeKey: string;
+                              volumeKey: ansistring;
                               sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                              volumeIV: string;
+                              volumeIV: ansistring;
                               readonly: boolean;
                               IVHashDriver: ansistring;
                               IVHashGUID: TGUID;
@@ -1213,7 +1213,7 @@ DebugMsg('Couldn''t connect to: '+hashDriver);
 DIOCBufferHashes := (PDIOC_HASH_IDENTIFYSUPPORTED(ptrBuffer));
 DebugMsg('hash details count: '+inttostr(DIOCBufferHashes.BufCount));
 {$ENDIF}
-          ptrBufferOffset := Pointer(PChar(ptrBuffer) +
+          ptrBufferOffset := Pointer(PAnsiChar(ptrBuffer) +
                              sizeof(TDIOC_HASH_IDENTIFYSUPPORTED) -
                              sizeof(hashDetails^));
           arrIdx := low(hashDriverDetails.Hashes);
@@ -1227,7 +1227,7 @@ DebugMsg('hash details count: '+inttostr(DIOCBufferHashes.BufCount));
             hashDriverDetails.Hashes[arrIdx].BlockSize := hashDetails.BlockSize;
 
             // Setup for the next one...
-            ptrBufferOffset := Pointer(PChar(ptrBufferOffset) + sizeof(hashDetails^));
+            ptrBufferOffset := Pointer(PAnsiChar(ptrBufferOffset) + sizeof(hashDetails^));
             inc(arrIdx);
             end;
 
@@ -1322,7 +1322,7 @@ DIOCBufferCyphers := (PDIOC_CYPHER_IDENTIFYSUPPORTED_v1(ptrBuffer));
 DebugMsg('cypher details count: '+inttostr(DIOCBufferCyphers.BufCount));
 {$ENDIF}
           ptrBufferOffset := Pointer(
-                                     PChar(ptrBuffer) +
+                                     PAnsiChar(ptrBuffer) +
                                      sizeof(TDIOC_CYPHER_IDENTIFYSUPPORTED_v1) -
                                      sizeof(cypherDetails^)
                                     );
@@ -1352,7 +1352,7 @@ DebugMsg('cypher details count: '+inttostr(DIOCBufferCyphers.BufCount));
 
             // Setup for the next one...
             ptrBufferOffset := Pointer(
-                                       PChar(ptrBufferOffset) +
+                                       PAnsiChar(ptrBufferOffset) +
                                        sizeof(cypherDetails^)
                                       );
             inc(arrIdx);
@@ -1451,7 +1451,7 @@ DIOCBufferCyphers := (PDIOC_CYPHER_IDENTIFYSUPPORTED_v3(ptrBuffer));
 DebugMsg('cypher details count: '+inttostr(DIOCBufferCyphers.BufCount));
 {$ENDIF}
           ptrBufferOffset := Pointer(
-                                     PChar(ptrBuffer) +
+                                     PAnsiChar(ptrBuffer) +
                                      sizeof(TDIOC_CYPHER_IDENTIFYSUPPORTED_v3) -
                                      sizeof(cypherDetails^)
                                     );
@@ -1480,7 +1480,7 @@ DebugMsg('cypher details count: '+inttostr(DIOCBufferCyphers.BufCount));
 
             // Setup for the next one...
             ptrBufferOffset := Pointer(
-                                       PChar(ptrBufferOffset) +
+                                       PAnsiChar(ptrBufferOffset) +
                                        sizeof(cypherDetails^)
                                       );
             inc(arrIdx);
@@ -2130,11 +2130,12 @@ DebugMsg('Unable to EncryptDecryptData');
 
 end;
 
-
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.MainDLLFilename(): string;
 begin
+
   Result := IncludeTrailingPathDelimiter(ExeDir) + DRIVERS_SUBDIR + '\' + DLL_MAIN_DRIVER;
+  Result :=SDUGetFinalPath(Result);
 end;
 
 
@@ -2143,9 +2144,9 @@ end;
 function TOTFEFreeOTFEDLL.MountDiskDevice(
                                    deviceName: string;
                                    volFilename: string;
-                                   volumeKey: string;
+                                   volumeKey: ansistring;
                                    sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                                   volumeIV: string;
+                                   volumeIV: ansistring;
                                    readonly: boolean;
                                    IVHashDriver: ansistring;
                                    IVHashGUID: TGUID;
@@ -2300,9 +2301,9 @@ DebugMsg('  size: '+inttostr(size));
     ptrDIOCBuffer.MetaDataLength := Length(strMetaData);
     // This may seem a little weird, but we do this because the VolumeIV and metaData are
     // immediatly after the master key
-    StrMove(@ptrDIOCBuffer.MasterKey, PChar(volumeKey), Length(volumeKey));
-    StrMove(((PChar(@ptrDIOCBuffer.MasterKey))+length(volumeKey)), PChar(volumeIV), Length(volumeIV));
-    StrMove(((PChar(@ptrDIOCBuffer.MasterKey))+length(volumeKey)+length(volumeIV)), PChar(strMetaData), Length(strMetaData));
+    StrMove(@ptrDIOCBuffer.MasterKey, PAnsiChar(volumeKey), Length(volumeKey));
+    StrMove(((PAnsiChar(@ptrDIOCBuffer.MasterKey))+length(volumeKey)), PAnsiChar(volumeIV), Length(volumeIV));
+    StrMove(((PAnsiChar(@ptrDIOCBuffer.MasterKey))+length(volumeKey)+length(volumeIV)), PAnsiChar(strMetaData), Length(strMetaData));
 
 
     mntHandles.DeviceHandle := DriverAPI.DSK_Init(nil, ptrDIOCBuffer);

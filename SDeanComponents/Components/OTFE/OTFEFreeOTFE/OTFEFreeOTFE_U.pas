@@ -53,9 +53,9 @@ type
     function  MountDiskDevice(
                               deviceName: string;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
                               volFilename: string;
-                              volumeKey: string;
+                              volumeKey: ansistring;
                               sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                              volumeIV: string;
+                              volumeIV: ansistring;
                               readonly: boolean;
                               IVHashDriver: Ansistring;
                               IVHashGUID: TGUID;
@@ -879,9 +879,9 @@ end;
 function TOTFEFreeOTFE.MountDiskDevice(
                                    deviceName: string;
                                    volFilename: string;
-                                   volumeKey: string;
+                                   volumeKey: ansistring;
                                    sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                                   volumeIV: string;
+                                   volumeIV: ansistring;
                                    readonly: boolean;
                                    IVHashDriver: Ansistring;
                                    IVHashGUID: TGUID;
