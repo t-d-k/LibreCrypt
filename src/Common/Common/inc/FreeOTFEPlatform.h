@@ -54,7 +54,11 @@
 // files for kernel drive/WINCE
 #define STATUS_SUCCESS                   ((NTSTATUS)0x00000000L) // ntsubauth
 #define STATUS_UNSUCCESSFUL              ((NTSTATUS)0xC0000001L)
+#endif
+#if FOTFE_PDA
 #define STATUS_INVALID_PARAMETER         ((NTSTATUS)0xC000000DL)
+#endif
+#ifdef FOTFE_PC_DLL
 #define STATUS_BUFFER_TOO_SMALL          ((NTSTATUS)0xC0000023L)
 #define STATUS_INTERNAL_ERROR            ((NTSTATUS)0xC00000E5L)
 #define STATUS_INVALID_BUFFER_SIZE       ((NTSTATUS)0xC0000206L)
