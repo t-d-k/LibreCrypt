@@ -2275,7 +2275,7 @@ IOCTL_Std_DiskReadWrite(
     DEBUGOUTMAINDRV(DEBUGLEV_EXIT, (TEXT("IOCTL_Std_DiskReadWrite\n")));
     return retval;
 }
-    
+
 // =========================================================================
 // Process a *valid* SG_REQ read/write request
 BOOL
@@ -2383,7 +2383,7 @@ ProcessValidReadWrite(
     DEBUGOUTMAINDRV(DEBUGLEV_EXIT, (TEXT("ProcessValidReadWrite\n")));
     return retval;
 }
-
+ 
 
 // =========================================================================
 // This function is OPTIONAL; the driver doesn't actually need it.

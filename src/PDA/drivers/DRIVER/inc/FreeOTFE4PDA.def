@@ -6,7 +6,7 @@
 ; -----------------------------------------------------------------------------
 ;
 
-LIBRARY   FreeOTFE4PDA.dll
+LIBRARY   FreeOTFE.dll
 EXPORTS
 ; Standard stream device functions...
     DSK_Init       @1

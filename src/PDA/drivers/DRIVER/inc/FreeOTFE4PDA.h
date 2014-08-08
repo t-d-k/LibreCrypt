@@ -17,8 +17,11 @@
 #include "FreeOTFE4PDACypherAPI.h"
 #include "FreeOTFEContext.h"
 
-#include <Diskio.h>  // Required for SG_REQ definition
-
+#ifdef FOTFE_PDA
+ #include <Diskio.h>  // Required for SG_REQ definition
+#else
+#include "mydiskio.h"
+#endif
 
 // =========================================================================
 // Const definitions
