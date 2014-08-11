@@ -7,11 +7,11 @@
 * Portable mode doesn't need to be installed and leaves little trace on 3rd party PCs (administrator rights needed).
 * Full transparent encryption, DoxBoxes appear as removable discs in Windows Explorer.
 * Opens legacy volumes created with Truecrypt, E4M, Scramdisc, Bestcrypt, Crosscrypt, FreeOTFE and PGPdisc (only some versions supported).
-* 'Explorer' mode lets you access DoxBoxes when you don't have admin permisssions.
+* Explorer mode lets you access DoxBoxes when you don't have admin permisssions.
 * Deniable encryption protects you from 'rubber hose cryptography'.
 * Compatible with Linux encryption, Cryptoloop "losetup", dm-crypt, and LUKS. Linux shell scripts support deniable encryption on Linux.
 * Supports smartcards and security tokens.
-* Encrypted Boxes can be a file, a partition, or a whole disk.
+* Encrypted DoxBoxes can be a file, a partition, or a whole disk.
 * Runs on Windows XP onwards (see note below for 64 bit versions).
 * Supports numerous hash (including SHA-512, RIPEMD-320, Tiger) and encryption algorithms (Including AES, Twofish, and Serpent) in several modes (CBC, LRW, AND XTS), giving more options than any other disk encryption software.
 * Optional 'key files' let you use a thumbdrive as a key.
@@ -22,7 +22,7 @@
 *Important: DoxBox will not work on Windows Vista x64, Windows 7 x64 and later 64 bit versions without a extra step before use.*
 
 * Please follow these instructions on 64 bit Windows, if you do not do this you will get the error "Windows Requires a digitally signed driver" when starting DoxBox.
-	+ Click the "Start" button on the Windows taskbar, type "CMD" in the search box, and then press <CTRL+SHIFT+ENTER> (this will open a DOS prompt as administrator) 
+	+ Click the "Start" button on the Windows taskbar, type "CMD" in the search box, and then press &lt;CTRL+SHIFT+ENTER&gt; (this will open a DOS prompt as administrator) 
 	+ In the command prompt window which appears paste:
 		
 				bcdedit.exe /set TESTSIGNING ON	
@@ -38,7 +38,7 @@
 *	The gladman implementation of the twofish cypher (available in FreeOTFE) has been removed.
 *	DoxBox does not support encryption of the Operating System partition, for this I recommend Ubuntu Linux.
 
-###	Passwords
+####	Passwords
 *These issues relate to passwords containing non-ASCII characters, e.g. accented letters and non Latin scripts, **not** to ASCII special characters like '$&^'.*
 
 *	The handling of passwords containing non-ASCII characters will change in the next version. This change will not be backwards compatible. So in this version it is recommended to use only ASCII characters in passwords.
