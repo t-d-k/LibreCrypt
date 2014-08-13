@@ -1,63 +1,38 @@
 body {
-  background-color: #FFFFFF;
+  background-color: white;
 }
-.nav_table {
-  background-color: #007f00;
-}
-.nav_header {
-  background-color: #007f00;
-  color: #FFFFFF;
-  text-align: left;
-  font-weight: bold;
-}
-.content_table {
-  background-color: #007f00;
-  text-align: left;
-  width: 100%
-}
-.content_cell {
-  background-color: #007f00;
-  text-align: left;
-}
-.content_header {
-  background-color: #007f00;
-  color: #FFFFFF;
-  text-align: left;
-<!--  font-weight: bold; -->
-}
+
 td {
   vertical-align: top
 }
+
 td.screenshot_img {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-  vertical-align: middle
+  vertical-align: middle;
 }
-.oldver_table {
-  background-color: #009F00;
-}
-.oldver_header {
-  background-color: #009F00;
-  color: #FFFFFF;
-  text-align: left;
-}
-.oldver_package_table {
-  background-color: #FFFFFF;
-}
-.half {
+
+hr {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
   width: 50%;
 }
+
 .master_title {
   font-size: x-large;
   font-weight: bold;
+  display:block;
+  text-align:center;
 }
+
 .master_link {
-  color: #000000;
-  text-decoration: none
+  color: #000000; 
+  font-size: x-large;
+  text-decoration: none;
+  text-align:center;
+  display:block;
 }
 table.note th {
   padding: 10px;
@@ -81,3 +56,53 @@ div.licence_list_numbering LI:before {
 div.licence_list_numbering LI.item_not_numbered:before {
   content: ""
 }
+
+table.note {
+  border-width: 1px;
+  border-spacing: 2px;
+  border-style: outset;
+  border-color: #009F00;
+  border-collapse: collapse;
+  background-color: white;
+  width: 75%;
+}
+
+.tip { 
+	background-color: lightgreen;
+  padding:1em; 
+  background-image: url(images/note_Tip.png);
+  background-position: top left;
+  background-repeat: no-repeat;
+  padding-left:50px;   
+  vertical-align: middle;
+  display: inline-block;
+  min-height: 20px;
+}
+  
+.security_tip {    
+  background-color: pink;    
+  padding:1em;
+  background-image: url(images/note_SecurityTip.png);
+  background-position: top left;
+  background-repeat: no-repeat;
+  padding-left:70px; 
+  vertical-align: middle;
+  display: inline-block;
+  min-height: 20px;
+} 
+
+
+.tech_note {    
+  background-color: pink;    
+  padding:1em;
+  padding-left:100px;
+  background-image: url(images/note_Technical.png);
+  background-position: top left;
+  background-repeat: no-repeat;
+ 
+  vertical-align: middle;
+  display: inline-block;
+  min-height: 20px;
+} 
+
+
