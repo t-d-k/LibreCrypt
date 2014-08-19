@@ -1,8 +1,8 @@
 
 
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An OpenSource 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -20,7 +20,7 @@
 [DoxBox](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_OpenSource disk encryption for Windows_
+_Open-Source disk encryption for Windows_
 </SPAN>
 
       
@@ -65,46 +65,29 @@ However, this simplistic approach to plausible deniability has many drawbacks, a
 
 Legally (in the US at least, and in theory) what it really boils down to is: does the fact that a prosecution cannot prove that the data held is encrypted data, together with a user's denial, produce _reasonable doubt_ as to whether the data is not an OTFE volume or not? Raising reasonable doubt as to what your volumes files really are is the aim of "plausible deniability"; leaving it up to the prosecution to prove, **beyond reasonable doubt,** they store encrypted data.
 
-In the UK (AIUI), things are slightly different with the "<span class="pagetitle">Regulation of Investigatory Powers Act (RIPA)" (see </span><span class="pagetitle"></span><a href="http://www.legislation.hmso.gov.uk/acts/acts2000/20000023.htm">http://www.legislation.hmso.gov.uk/acts/acts2000/20000023.htm</a>).
-Depending largely on how the courts may interpret it, a user (as defendant) may eventually find yourself in the position of **effectively **having to ****prove that the data found is **not** an OTFE volume (or any other form of encrypted data).
+In the UK (AIUI), things are slightly different with the "<span class="pagetitle">Regulation of Investigatory Powers Act (RIPA)"</span> (see <span class="pagetitle"[http://www.legislation.hmso.gov.uk/acts/acts2000/20000023.htm](http://www.legislation.hmso.gov.uk/acts/acts2000/20000023.htm)></span>).
+Depending largely on how the courts may interpret it, a user (as defendant) may eventually find yourself in the position of **effectively** having to **prove** that the data found is **not** an OTFE volume (or any other form of encrypted data).
 
 * * * 
 <A NAME="level_3_heading_3">
 ### Hidden Volumes
 </A>
 
-More advanced OTFE systems go one step further: support for hidden
-volumes (as FreeOTFE does).
+More advanced OTFE systems go one step further: support for hidden volumes (as DoxBox does).
 
-Here, you have a "normal" OTFE volume filled with data that you have no
-objection to disclosing to an attacker. Mounting the volume with a
-different password causes the OTFE system to read a different part of
-the "host" volume file; giving access to a separate "hidden" volume.
+Here, you have a "normal" DoxBox filled with data that you have no objection to disclosing to an attacker. Opening the Box with a different password causes DoxBox to read a different part of the "host" DoxBox file; giving access to a separate "hidden" DoxBox.
 
-Here the concept of "plausible deniability" is much stronger;
-theoretically an attacker is not able to determine (let alone prove)
-whether or not such a hidden volume is present.
+Here the concept of "plausible deniability" is much stronger; theoretically an attacker is not able to determine (let alone prove) whether or not such a hidden DoxBox is present.
 
-However, the implementation of such "hidden volumes" is not as trivial
-as it may seem at first.
+However, the implementation of such "hidden DoxBoxes" is not as trivial as it may seem at first.
 
-In order for this approach to be successful, the host volume file must be initialized by writing random data to it. This is required since the host volume file may well have been created by simply writing 0x00's to your HDD in order to generate a large enough file. Any hidden volume stored within such a host volume file may well cause an attacker suspicion as to whether a hidden volume exists. (The hidden volume will appear as a large amount of high-entropy data, stuck in the middle of the volume file; interrupting the neat pattern of 0x00's!)
+In order for this approach to be successful, the DoxBox file must be initialized by writing random data to it. This is required since the host file may well have been created by simply writing 0x00's to your HDD in order to generate a large enough file. Any hidden volume stored within such a host file may well cause an attacker suspicion as to whether a hidden Box exists. (The hidden Box will appear as a large amount of high-entropy data, stuck in the middle of the file; interrupting the neat pattern of 0x00's!)
 
 The "random data" used for this process cannot simply be pseudorandom data; given the size of a typical volume file (even ones as small as a MB), pseudorandom data can potentially be identified as such, and become predictable. In this case, your hidden volume will not appear as high-entropy data stuck in the middle of a series of 0x00 bytes, but as high-entropy data interrupting any pattern formed by the pseudorandom data!
 
-Because truly random data can be difficult to rapidly generate in large
-quantities using a computer. Pseudorandom data _can_
-still be used though: by encrypting it before it is
-written to the host volume file. In principle, although not as good as
-a
-cryptographically secure RNG, this should give the data written to the
-volume file a suitable degree of entropy.
+Because truly random data can be difficult to rapidly generate in large quantities using a computer. Pseudorandom data _can_ still be used though: by encrypting it before it is written to the host file. In principle, although not as good as a cryptographically secure RNG, this should give the data written to the volume file a suitable degree of entropy.
 
-The easiest way of accomplishing this is, which will work with _any_
-OTFE system, is to mount the host volume as per normal and overwrite
-all of its free space with a single pass of pseudorandom data. The
-data written to the mounted volume will be encrypted as it is written
-to the host volume file.
+The easiest way of accomplishing this is, which will work with _any_ OTFE system, is to open the outer DoxBox as per normal and overwrite all of its free space with a single pass of pseudorandom data. The data written to the DoxBox will be encrypted as it is written to the file.
 
 * * * 
 <A NAME="level_3_heading_4">
@@ -113,33 +96,25 @@ to the host volume file.
 
 The technique described above for mounting and overwriting a volume before creating a hidden volume on it still isn't enough though.
 
-If you were to be forced to hand over the key to the outer, "host",
-volume; an attacker could then apply the same analysis - but this time
-to the mounted (plaintext) version of your host volume. Again, any
-hidden volume may well stick out in any pattern within the pseudorandom data.
+If you were to be forced to hand over the key to the outer DoxBox; an attacker could then apply the same analysis - but this time to the mounted (plaintext) version of your host volume. Again, any hidden volume may well stick out in any pattern within the pseudorandom data.
 
-The solution suggested is to encrypt the pseudorandom data _before_
-it is used to overwrite the mounted volume's free space; any attacker
-attempting to identify a hidden volume, even with the key to the outer
-"host" volume, would not be able to differentiate between your
-encrypted pseudorandom data, and an encrypted hidden volume.
+The solution suggested is to encrypt the pseudorandom data _before_ it is used to overwrite the mounted volume's free space; any attacker attempting to identify a hidden volume, even with the key to the outer "host" volume, would not be able to differentiate between your encrypted pseudorandom data, and an encrypted hidden volume.
 
 This all assumes the cypher used is strong enough, of course...
 
-For obvious reasons, all such overwriting must be carried out _before_ the hidden volume is created
-(doing so afterwards would probably corrupt your hidden volume!)
+For obvious reasons, all such overwriting must be carried out _before_ the hidden volume is created (doing so afterwards would probably corrupt your hidden volume!)
 
 * * * 
 <A NAME="level_3_heading_5">
 ### In Practice
 </A>
 
-Needless to say, FreeOTFE offers full functionality with overwriting and the encryption of random data used.
+Needless to say, DoxBox offers full functionality with overwriting and the encryption of random data used.
 
 To ensure the maximum security for your volumes, the following procedure is suggested after creating each new volume:
 
 1. Mount the new volume
-1. Select the new volume just mounted, and then select the "Tools | Overwrite entire drive..." menuitem. (Note: The "Overwrite free space..." option should _not_ be selected for this purpose, as this will miss overwriting parts of the volume which the filesystem reserves)
+1. Select the new volume just mounted, and then select the "Tools | Overwrite entire drive..." menu-item. (Note: The "Overwrite free space..." option should _not_ be selected for this purpose, as this will miss overwriting parts of the volume which the filesystem reserves)
 1. Doublecheck that you have selected the right volume, and confirm your actions at the prompt displayed
 1. Select "Encrypted data", and a suitable cypher from the dropdown list. Note that the cypher selected does not have to be the same as the one used to secure your volume.
 1. Click "OK"

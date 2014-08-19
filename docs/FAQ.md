@@ -1,6 +1,6 @@
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An OpenSource 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -13,11 +13,16 @@
 <link rev="made" href="mailto:sdean12@sdean12.org">
 <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
 
+
+
+<SPAN CLASS="master_link">
 [![DoxBox logo](./images/FreeOTFE.gif)](http://doxbox.squte.com/)
+[DoxBox](http://DoxBox.squte.com/)
+</SPAN>
+<SPAN CLASS="master_title">
+_Open-Source disk encryption for Windows_
+</SPAN>
 
-[DoxBox](http://DoxBox.squte.com/" class="master_link)
-
-**OpenSource disk encryption for PCs**
 
 <SPAN class="tip">
 The latest version of this FAQ, along with the latest DoxBox user manual, can be found online at the [DoxBox web site](http://DoxBox.squte.com/)
@@ -28,11 +33,11 @@ The latest version of this FAQ, along with the latest DoxBox user manual, can be
 ### FAQ Contents
 </A>
 
-#### Most asked
+#### New
 * [Why do I need to enable test mode?](#tm)
 * [Why don't you just sign the drivers?](#tm)
 * [Why does the documentation sometimes talk about FreeOTFE?](#fo)
-* [Can I use DoxBox to save to my Truecrypt volumes?](#tc)
+* [Can I use DoxBox to open my Truecrypt containers?](#tc)
 * [Will DoxBox support operating system encryption?](#os)
 * [Is there any backdoor in DoxBox?](#bd)
 
@@ -40,14 +45,14 @@ The latest version of this FAQ, along with the latest DoxBox user manual, can be
 #### General
 </A>
 
-* [Whare are the differences between DoxBox and DoxBox Explorer?](#gm)
+* [What are the differences between DoxBox and DoxBox Explorer?](#gm)
 * [How can I help the DoxBox project?](#el)
 * [Which of the hash/cypher algorithms should I use?](#ey)
 * [Which of the random number generators (RNGs) should I use?](#ez)
 * [Is DoxBox based on CrossCrypt?](#aa)
 * [Is DoxBox based on Linux's "losetup"?](#ab)
 * [Right now, DoxBox supports losetup volumes; do you have any plans to include support for DriveCrypt, BestCrypt, etc volumes?](#ac)
-* [When I mount a FAT/FAT32 formatted Linux volume under DoxBox everything works perfectly. When I do the same with myext2/ext3/RiserFS/etc volume, I can't see my files!](#ad)
+* [When I mount a FAT/FAT32 formatted Linux volume under DoxBox everything works perfectly. When I do the same with myext2/ext3/Riesers/etc volume, I can't see my files!](#ad)
 * [DoxBox comes with a set of command line decryption utilities! Can't anyone can just decrypt my data!](#ca)
 * [Why do the Linux examples for LUKS/dm-crypt volumes show "losetup" being used twice?](#ae)
 * [When I mount a volume and then view its properties under DoxBox, it states that the hash algorithm used is "n/a" - but I used a hash algorithm!](#af)
@@ -116,7 +121,7 @@ The latest version of this FAQ, along with the latest DoxBox user manual, can be
 * [On the options dialog, what does the "Save above settings to" option do?](#cd)
 * [Can I save my settings in the same directory as my DoxBox executable?](#ce)
 * [Where, and in what order does DoxBox search for my settings?](#cf)
-* [After associating DoxBox with ".vol" files from the options dialog, I doubleclicked my ".vol" volume file, and nothing happened!](#ch)
+* [After associating DoxBox with ".vol" files from the options dialog, I double-clicked my ".vol" volume file, and nothing happened!](#ch)
 * [What is the difference between the "Overwrite free space..." and "Overwrite entire drive..." options under the "Tools" menu?](#em)
 * [Does DoxBox support encrypting data with multiple cyphers (aka "cascaded" cyphers, or "superencryption")](#eo)
 * [DoxBox supports different languages, but why isn't mine listed?](#eq)
@@ -147,7 +152,7 @@ The latest version of this FAQ, along with the latest DoxBox user manual, can be
 * [Do I **have** to use a security token/smartcard with DoxBox?](#fa)
 * [What is the difference between PKCS#11, Cryptoki, and "tokens"?](#eg)
 * [Does DoxBox encrypt my **entire** encrypted volume using my PKCS#11 token?](#ex)
-* [I've inserted my PKCS#11 (Cryptoki) token, but why is the "PKCS#11 token management..." menuitem disabled?](#ef)
+* [I've inserted my PKCS#11 (Cryptoki) token, but why is the "PKCS#11 token management..." menu item disabled?](#ef)
 * [How do I change the password on a volume/keyfile which is secured with a PKCS#11 secret key?](#eh)
 * [Can I use more than one security token with DoxBox?](#gb)
 * [Why don't all of my volumes automatically dismount when I remove my security token?](#ga)
@@ -157,7 +162,7 @@ The latest version of this FAQ, along with the latest DoxBox user manual, can be
 * [Why do I get "unidentified program wants access to your computer" prompts when using DoxBox?](#bo)
 * [Why does DoxBox prompt me to enter my Administrator's password?](#bp)
 * [How do I stop the Windows Vista "consent/credential" (UAC) dialog from being displayed?](#cj)
-* [What are the little "shield" icons shown next to some menuitems?](#br)
+* [What are the little "shield" icons shown next to some menu items?](#br)
 * [I have problems starting any of the drivers under the 64 bit version of Windows Vista/Windows 7 - what's wrong?](#hl)
 
 <A NAME="level_4_heading_4">
@@ -173,7 +178,7 @@ The latest version of this FAQ, along with the latest DoxBox user manual, can be
 * [Can DoxBox Explorer run under Linux?](#hy)
 
 * * *
-### Most asked
+### New
 <a name="tm"></a>
 *Q: Why do I need to enable test mode?*
 
@@ -181,14 +186,14 @@ The latest version of this FAQ, along with the latest DoxBox user manual, can be
 
 This is not a security feature because in order to gain approval you only need to pay a fee, so it does not prevent viruses, trojans, backdoors etc.
 
-The main impact is on OpenSource projects such as DoxBox.
+The main impact is on Open-Source projects such as DoxBox.
 
 There are three possible reasons for this,
 
 1. is that it is a direct source of revenue for Microsoft.
-2. it means they can stop virtual devices from capturing audio and video and bypassing DRM. \ is clearly not the only reason, as claimed by Microsoft, because it applies to all devices not just to audio & video drivers.
+2. it means they can stop virtual devices from capturing audio and video and bypassing DRM. this is clearly not the only reason, as claimed by Microsoft, because it applies to all devices not just to audio & video drivers.
 3. It gives Microsoft control over what users do with their PCs - turning them partly into Microsoft's PCs instead of under the control of the users who own them.
-you  c envisage Microsoft extending this to all software in the future, allowing them to charge a commission on every program sold, similar to the iphone app store, or preventing apps being used that compete with Microsoft offerings, like libreoffice.
+you can envisage Microsoft extending this to all software in the future, allowing them to charge a commission on every program sold, similar to the iPhone app store, or preventing apps being used that compete with Microsoft offerings, like LibreOffice.
 
 * * *
 
@@ -196,22 +201,24 @@ you  c envisage Microsoft extending this to all software in the future, allowing
 *Q: Why don't you just sign the drivers?*
 
 *A:* The cost of the Microsoft certificate is currently $178 payable every year.
-Even if I had that in loose change lieing around there's also the issue of whether its right to ask permission of Microsoft to use your own PC.
-Diver signing may be a 'trial balloon' by Microsoft - to see how people react before extending it to app-signing. the easier people accept losing control over their drivers the mr likely y will lose complete control of their PCs.
-Ther are alternatives to DoxBox available on Linux, that are easy to use, secure, and do not need to be run in 'test mode'. DoxBox is provided mostly because people insist they *have* to use Windows for some reason, and have to have the extra security of an open source project. having to paste a single line into a cmd box is a small inconvenience compared to all the other problems of windows.
+
+Even if I had that in loose change lying around there's also the issue of whether its right to ask permission of Microsoft to use your own PC.
+Diver signing may be a 'trial balloon' by Microsoft - to see how people react before extending it to app-signing. the easier people accept losing control over their drivers the more likely they will lose complete control of their PCs.
+
+There are alternatives to DoxBox available on Linux, that are easy to use, secure, and do not need to be run in 'test mode'. DoxBox is provided mostly because people insist they *have* to use Windows for some reason, and have to have the extra security of an open source project. having to paste a single line into a command box is a small inconvenience compared to all the other problems of windows.
 
 * * *
 <a name="fo"></a>
 *Q: Why does the documentation sometimes talk about FreeOTFE?*
 
-*A:* DoxBox is based on the FreeOTFE project. this project was abandoned after tis developer Sarah Dean mysteriously disappeared. Under the licence of Freeotfe any forked project has to have a new name, so the GUI and most of the documentation talks about 'DoxBox'. The main driver is still known as the 'FreeOTFE Driver' and some filenames contain 'FreeOTFE'.
+*A:* DoxBox is based on the FreeOTFE project. this project was abandoned after tis developer Sarah Dean mysteriously disappeared. Under the licence of FreeOTFE any forked project has to have a new name, so the GUI and most of the documentation talks about 'DoxBox'. The main driver is still known as the 'FreeOTFE Driver' and some filenames contain 'FreeOTFE'.
 
 * * *
 
 <a name="tc"></a>
-*Q: Can I use DoxBox to save to my Truecrypt volumes?*
+*Q: Can I use DoxBox to open my Truecrypt containers?*
 
-*A:* DoxBox is compatible with Truecrypt up to version 'TODO'. For versions after that you will need to use Truecrypt to open the volume and then copy the files to a new DoxBox.
+*A:* DoxBox cannot open Truecrypt containers. A future version may have this ability. For now you should open your Truecrypt container using Truecrpt and copy your files to a native DoxBox.
 
 * * *
 
@@ -220,7 +227,7 @@ Ther are alternatives to DoxBox available on Linux, that are easy to use, secure
 
 *A:* No. DoxBox supports full disc encryption if the OS is on another disc, but does not support encryption of the OS partition.
 
-OS encryption is for higher security to encrypt information leaked to temp files, the registry, swap etc. but Windows and Microsoft software is inherently insecure, it has been known to leak data to word documents, to be pwned simply by visiting a web page and to be cracked within TODO minutes. it mks no sense to use Microsoft windows if you need high security. I recommend using Ubuntu Linux which has full disc encryption as an install option for people who need \ level of trust.  If you  use Windows and still are worried about leaking of temp files, registry etc, please see the section on ['best practices'](#best_practices)
+OS encryption is for higher security to encrypt information leaked to temp files, the registry, swap etc. but Windows and Microsoft software is inherently insecure, it has been known to leak data to [word documents](http://news.bbc.co.uk/1/hi/technology/3154479.stm) , to be pwned simply by [visiting a web] page(http://www.symantec.com/connect/blogs/emerging-threat-microsoft-internet-explorer-zero-day-cve-2014-1776-remote-code-execution-vulne), and an out-of-the box Windows machine is hacked within 4 minutes of [connecting to the internet](http://www.theregister.co.uk/2008/07/15/unpatched_pc_survival_drops/). it makes no sense to use Microsoft Windows if you need high security. I recommend using Ubuntu Linux which has full disc encryption as an install option for people who need this level of trust.  If you  use Windows and still are worried about leaking of temp files, registry etc, please see the section on ['best practices'](#best_practices)
 
 * * *
 
@@ -235,9 +242,9 @@ Every app may contain a security flaw, inadvertent or deliberate. software with 
 * open source. open source code can be checked by anyone. this means a flaw is more likely to be found out, which is a deterrent against putting one in (or allowing one to creep in). you get the benefits of open source even if you do not yourself check the code, in the same way as you benefit from safety inspections of your car even if you've never held a spanner yourself.
 	DoxBox is open source and uses widely used public domain crypt libraries like libtomcrypt
 * widely used and standard encryption algorithms. widely used ones have been studied more and are less likely to contain unknown flaws than proprietary ones.
-	DoxBox uses standard encryption algorithms like 3des and aes.
-* widely used encryption schemes and formats. f the same reason ts are less likely to contain flaws than product specific ones.
-	DoxBox supports the LUKs and losetup encryption schemes that are in most Linux distributions including secure ones used by enterprise, govts and militaries. DoxBox allows you  to use ts on Windows
+	DoxBox uses standard encryption algorithms like 3DES and AES.
+* widely used encryption schemes and formats. for the same reason ts are less likely to contain flaws than product specific ones.
+	DoxBox supports the LUKs and losetup encryption schemes that are in most Linux distributions including secure ones used by enterprise, govt's and militaries. DoxBox allows you  to use ts on Windows
 	
 
 * * *
@@ -246,7 +253,7 @@ Every app may contain a security flaw, inadvertent or deliberate. software with 
 <a name="al"></a>
 *Q: How can I trust DoxBox?*
 
-*A:* Review the source code to your satisfaction, and build your own (see section [Building DoxBox](technical_details__build_notes.htm))
+*A:* Review the source code to your satisfaction, and build your own (see section [Building DoxBox](technical_details__build_notes.md))
 
 This is **strongly recommended**, and the best way of ensuring that the software is not compromised.
 
@@ -255,34 +262,42 @@ However, this is not always practical (many people are not familiar with how to 
 * * *
 
 <a name="hid_bug"></a>
-*Q: What's this about a bug in deniability?*
+*Q: What's this about a flaw in deniability?*
 
-*A:* TODO	
+*A:* 	
+There is a known flaw in the way DoxBox handles Plausible Deniability (PD). For PD to work the file (or partition or disc) containing the Box must be filled with data indistinguishable m encrypted data.
+However by default when creating a 'DoxBox' file, DoxBox only fills it with zeros. 
+While there is a manual option to overwrite a file with crypto data there is a problem with this:
+The fact that a user has done this on a file tells an attacker that this file contains a hidden box. even if the user does with on every Box created, the fact that this is done tells an attacker that at least one must have a hidden Box.
+
+The solution is for all new boxes to be filled with random data by default. this will be implemented in the next version of DoxBox.
 
 * * *
 
-<a name="best_practises"></a>
+<a name="best_practices"></a>
 *Q: How should I use DoxBox for the best security?*
 
 *A:* 	The most tested encryption scheme used by DoxBox is the LUKS scheme however the native scheme has some extra features. The most widely used supported cypher is AES.
 
 In Windows numerous apps leak data to various places, including temp files, the registry, swap space, and your home folder.
-To minimise this its recommended to only open files on your box using 'portableapps' TODO:link. These generally won't save data in the registry, or your home folder.
-The portable apps should be installed on the Box itself, as they save their configuration, including MRU lists in the portableapp directory.
+To minimise this its recommended to only open files on your box using ['Portable Apps'](TODO:link). These generally won't save data in the registry, or your home folder.
+The portable apps should be installed on the Box itself, as they save their configuration, including MRU lists in the PortableApp directory.
 Some other things to do:
 - Schedule a free space erasing program to overwrite any free disk space regularly.
-- Have a fixed size swap file - this reduces the chance swap will be left unerased on the disk.
+- Have a fixed size swap file - this reduces the chance swap will be left un-erased on the disk.
 - Clean out your windows MRU list regularly.
-- Use open source apps and simple apps (eg text editors instead of word processors) wherever possible.
+- Use open source apps wherever possible.
+- Use simple 'do one thing' apps (e.g. text editors instead of word processors) wherever possible.
+-	enable Windows pagefile overwrite-on shutdown facility (see Microsoft knowledge-base article Q182086: How to Clear the Windows NT Paging File at Shutdown)
 
 * * *
 
 <a name="pass_length"></a>
-*Q: The help says I should have a keyphrase with one character per bit of the key. This is impossible to remember so you must have made a mistake*
+*Q: The help says I should have a keyphrase with one character per bit of the key. This is impossible to remember, so you must have made a mistake*
 
 *A:* 	There is no mistake.
 
-The normal way to attack encryption like this is to do a 'dictionary' attack that consists of trying many keyphrases automatically. this is because the keyphrase is normally the weakset part of the cypher. in order for the kephrase to be as strong as the rest of the encryption, it has to have at least as much information content as the 'key' used internally ([*](#pass_note)).
+The normal way to attack encryption like this is to do a 'dictionary' attack that consists of trying many keyphrases automatically. this is because the keyphrase is normally the weakest part of the cypher. in order for the keyphrase to be as strong as the rest of the encryption, it has to have at least as much information content as the 'key' used internally ([*](#pass_note)).
 The information content of normal English text is about [1.1](http://pit-claudel.fr/clement/blog/an-experimental-estimation-of-the-entropy-of-english-in-50-lines-of-python-code/) bits per character (including spaces), so for 256 bits it needs to be about 224 characters long or about 45 words. For comparison, the previous sentence contains 168 characters.
 
 Using special characters and misspellings increases the information content slightly but not as much as you may think, and reduces the memorability/bit ratio.
@@ -308,17 +323,17 @@ In WWII agents made up [poems](http://www.worldwar2history.info/war/espionage/co
 
 *A:* 	There are 3 techniques that work:
 
-* use [mnmonics](http://www.academictips.org/memory/index.html)
+* Use [mnemonics](http://www.academictips.org/memory/index.html)
 * Write it down
 	usually you should never write down the keyphrase but the idea here is to never have a written keyphrase and secret data at the same time, as follows.
-	+ create a doxbox with some files which are not secret but which you need to use frequently. create a secure keyphrase and write it down
+	+ create a DoxBox with some files which are not secret but which you need to use frequently. create a secure keyphrase and write it down
 	+ keep the paper with the keyphrase on you at all times. if it goes out of your sight at any time, make a new one and start again
 	+ refer to the paper to unlock your box. as you reuse it you will start to remember it better.
 	+ when you are sure you can remember the keyphrase
 		- destroy the paper
 		- start using your box for secure data
 * Increase it gradually	
-	+ create a doxbox with some data on you need to use frequently but which is not secret. Use a simple keyphrase, eg one word.
+	+ create a DoxBox with some data on you need to use frequently but which is not secret. Use a simple keyphrase, e.g. one word.
 	+ when you have used the keyphrase often enough you are sure you remember it thoroughly, add another word to the keyphrase.
 	+ repeat until the keyphrase is long enough, then
 	+ start using your box for secure data	
@@ -333,7 +348,7 @@ In WWII agents made up [poems](http://www.worldwar2history.info/war/espionage/co
 * * *
 
 <a name="gm"></a>
-*Q: Whare are the differences between DoxBox and DoxBox Explorer?*
+*Q: What are the differences between DoxBox and DoxBox Explorer?*
 
 *A:*
 Please see the [DoxBox v. DoxBox Explorer Comparison](http://DoxBox.squte.com/main_explorer_differences.html)
@@ -349,8 +364,8 @@ Alternatively, **FEEDBACK!** If you have any comments or suggestions for how Dox
 
  * * *
  <a name="ey"></a>
-*Q: Which of the hash/cypher algorithms should I use?
-*
+*Q: Which of the hash/cypher algorithms should I use?*
+
 *A:* This decision is left up to the user.
 
 Most users can simply accept the default algorithms offered, which provides a fairly high degree of security.
@@ -364,7 +379,7 @@ Most users can simply accept the default algorithms offered, which provides a fa
 
 Using more than one RNG increases the security offered by DoxBox as the combined random data generated will be at least as random as the most random RNG selected. Should one of the RNGs subsequently be found to be weak (i.e. producing data that is not as random as it should be), the random data used will still be as strong as the strongest RNG used.
 
-See the [Technical Details: Random Number Generators (RNGs)](technical_details__RNGs.htm) section for further information.
+See the [Technical Details: Random Number Generators (RNGs)](technical_details__RNGs.md) section for further information.
 
 * * *
 
@@ -405,7 +420,7 @@ _Q: Is DoxBox based on Linux's "losetup"?_
 
  * * *
  <a name="ad"></a>
-*Q: When I mount a FAT/FAT32 formatted Linux volume under DoxBox everything works perfectly. When I do the same with my ext2/ext3/RiserFS/etc volume, I can't see my files!*
+*Q: When I mount a FAT/FAT32 formatted Linux volume under DoxBox everything works perfectly. When I do the same with my ext2/ext3/Reisers/etc volume, I can't see my files!*
 
 
 *A:* DoxBox does one thing: when a volume file is mounted, DoxBox presents a new storage device to the operating system.
@@ -464,7 +479,7 @@ This is separate from any hash algorithm used to process your password, which in
 <a name="ah"></a>
 *Q: DoxBox is currently available for free - are you intending to "sell out" later, and start charging for it once enough users have been "hooked" on it?*
 
-*A:* DoxBox is Open-Source, meaing that if any canges are made that many people dissaprove of it is likely to be 'forked', with the 'fork' reaining the orignal features (suc as beign gratis). If you are concerned you sould make your own copy of the source.
+*A:* DoxBox is Open-Source, meaning that if any changes are made that many people disapprove of it is likely to be 'forked', with the 'fork' retaining the original features (such as being gratis). If you are concerned you should make your own copy of the source.
 
 
   * * *
@@ -512,14 +527,11 @@ Please see the FAQ: [By examining a DoxBox/encrypted Linux volume file, can anyo
  <a name="ap"></a>
 *Q: What is "plausible deniability?"*
 
-*A:* See the documentation section on ["Plausible Deniability"](plausible_deniability.htm) for details.
+*A:* See the documentation section on ["Plausible Deniability"](plausible_deniability.md) for details.
 
  * * *
  <a name="aq_1"></a>
 *Q: What to the numbers and letters after a hash name mean?*
-
-
-
 
 *A:* When required to choose which hash you wish to use, DoxBox will present you with a list of all hashes that are provided by the DoxBox drivers installed. These lists will display hash names in the format:
 
@@ -555,9 +567,9 @@ Note: The key and block sizes shown are in bits, not bytes.
 
 For example:
 
-<blockquote>
-AES (XTS; 256/128)
-</blockquote>
+
+> AES (XTS; 256/128)
+
 
 This indicates that the cypher is AES, operating in XTS mode with
 a key size of 256 bits and a block size of 128 bits.
@@ -634,7 +646,6 @@ implemented correctly.
 <a name="he"></a>
 *Q: Can I store an encrypted volume on a compressed NTFS drive?*
 
-*
 *A:*
 Yes, though there is nothing to be gained from compressing encrypted data, as it is unlikely to compress by any significant amount (if at all)
 
@@ -644,7 +655,7 @@ Yes, though there is nothing to be gained from compressing encrypted data, as it
 *Q: What hash algorithms does DoxBox use?*
 
 *A:*
-A full list of the hash algorithms used by DoxBox can be found on the [introduction page](description.htm)
+A full list of the hash algorithms used by DoxBox can be found on the [introduction page](description.md)
 
 * * *
 
@@ -652,7 +663,7 @@ A full list of the hash algorithms used by DoxBox can be found on the [introduct
 *Q: What encryption algorithms does DoxBox use?*
 
 *A:*
-A full list of the cyphers and cypher modes used by DoxBox can be found on the [introduction page](description.htm)
+A full list of the cyphers and cypher modes used by DoxBox can be found on the [introduction page](description.md)
 
 * * *
 
@@ -663,7 +674,7 @@ A full list of the cyphers and cypher modes used by DoxBox can be found on the [
 offers CBC, LRW and XTS modes, and has the flexibility for other modes to be easily
 added by simply changing drivers.
 
-A full list of the cyphers and cypher modes used by DoxBox can be found on the [introduction page](description.htm)
+A full list of the cyphers and cypher modes used by DoxBox can be found on the [introduction page](description.md)
 
 * * *
 
@@ -697,7 +708,7 @@ If you forget your password however, then by definition you will not be able to 
 
   For example: If you mount a DoxBox file and then write a byte of data, at random, to somewhere on that mounted drive, the effect would be exactly the same as if you had randomly written the same byte to a real hard drive.
 
-On the other hand, if you were to write a byte to data to a random location within an umounted DoxBox, then the amount of damage caused would dependant on where that byte was written:
+On the other hand, if you were to write a byte to data to a random location within an unmounted DoxBox, then the amount of damage caused would dependant on where that byte was written:
 
 1. If the volume file was created with a critical data block (CDB) at the start of it, and the byte was written to the first 512 bytes of the volume file (where the CDB is located), then the volume would be unmountable, unless you had made a backup of this area of your volume, or created a keyfile - in which case, you could restore from your backup/mount from your keyfile, and continue as if nothing had happened.
 2. If the volume file was created without a critical data block, or the byte was written to any other part of your volume file, then the sector that corresponded to the location that the byte was written to would be corrupted from approximately the point the byte was written, to the end of that sector; a maximum of 512 bytes.
@@ -790,7 +801,7 @@ Q: Is DoxBox vulnerable to "watermarking" attacks?
 
 (see the "Create new volume" wizard, encryption settings step).
 
-By default, DoxBox creates volumes using XTS mode. Users would have to **deliberatly** create their volumes using CBC mode with predictable IVs in order to be vulnerable to this type of attack.
+By default, DoxBox creates volumes using XTS mode. Users would have to **deliberately** create their volumes using CBC mode with predictable IVs in order to be vulnerable to this type of attack.
 
 * * *
 
@@ -841,7 +852,7 @@ Furthermore, because this attack may allow whatever was in the computer's memory
 <a name="ei"></a>
 *Q: Does DoxBox have any form of password recovery?*
 
-*A:* Yes; DoxBox keyfiles can be used to provide a form of password recovery; see the [Getting Started Guide](getting_started.htm)
+*A:* Yes; DoxBox keyfiles can be used to provide a form of password recovery; see the [Getting Started Guide](getting_started.md)
 
 * * *
 
@@ -897,7 +908,7 @@ IMPORTANT: Before deleting a volume file, make sure that you mount it first and 
 
 A file based volume is a file just like any other (albeit a fairly big one); simply let your backup software backup the volume as it chooses, and your data should be safe.
 
-This will work regardless of what backup software you use, though you may wish to turn off DoxBox's timestamp reverting functionality in order for your backup software to identify when volumes have been changed. (See "View | Options..." dialog, "General" tab, "Revert volume timestamps on dismount")
+This will work regardless of what backup software you use, though you may wish to turn off DoxBox's time-stamp reverting functionality in order for your backup software to identify when volumes have been changed. (See "View | Options..." dialog, "General" tab, "Revert volume timestamps on dismount")
 
 *For disk/partition based volumes*
 
@@ -939,7 +950,7 @@ DoxBox fully supports Linux LVM2 volumes, provided that you have a suitable Wind
 * * *
 
 <a name="gx"></a>
-*Q: Is it worth running file overwriter ("shredder") programs to securely delete existing data stored on my encrypted drive?*
+*Q: Is it worth running file over-writer ("shredder") programs to securely delete existing data stored on my encrypted drive?*
 
 *A:*
 For most users, no - it would only have the effect of replacing encrypted files with encrypted garbage; neither is particularly useful to an attacker.
@@ -959,7 +970,7 @@ The PortableApps.com version is identical to the main DoxBox/DoxBox Explorer rel
 * Directory structure required to integrate it into the PortableApps.com menu software.
 * Configuration files required to integrate it into the PortableApps.com menu software.
 
-Further, the installer has been created using the PortableApps.com installer-creator software instead of the standard DoxBox NSIS installer, and the translation source files (".po" files, which aren't needed to use the software) have been removed.
+Further, the installer has been created using the PortableApps.com installer-creator software instead of the standard DoxBox innosetup installer, and the translation source files (".po" files, which aren't needed to use the software) have been removed.
 
 * * *
 
@@ -979,7 +990,7 @@ The ".u3p" file is simply a ZIP archive which has been renamed; it may be rename
 *Q: When dismounting a file based volume, what does DoxBox do with the file timestamps?*
 
 *A:*
-By default, when mounting file based volumes, DoxBox stores the volume file's timestamps, and resets them back again after dismounting. This is carried out for security reasons (see section on [plausible deniability](plausible_deniability.htm)).
+By default, when mounting file based volumes, DoxBox stores the volume file's timestamps, and resets them back again after dismounting. This is carried out for security reasons (see section on [plausible deniability](plausible_deniability.md)).
 
 This functionality can be turned off if needed (e.g. to assist backup processes; see FAQ "[How do I backup an encrypted volume?](#et)") by turning off the "Revert volume timestamps on dismount" option on the Options dialog ("View | Options").
 
@@ -994,9 +1005,9 @@ by detecting large files with a high amount of entropy and a file size that is a
 
 "Padding" is additional (random) data added to the end of the volume, and is used to prevent detection of DoxBox volumes by automated volume-finding tools which only carry out a cursory search for volumes, and rely on the size of files found.
 
-Furthermore, padding also reduces the amount of information an attacker has about a volume, by preventing reliable detection of the size of the mounted volume (subject to the mounted volume being overwritten as described in the [Plausible Deniability](plausible_deniability.htm) section).
+Furthermore, padding also reduces the amount of information an attacker has about a volume, by preventing reliable detection of the size of the mounted volume (subject to the mounted volume being overwritten as described in the [Plausible Deniability](plausible_deniability.md) section).
 
-Padding will not prevent a reasonably knowledgeable IT person from being able to reasonably identify an encrypted volume as such - like any security mechanism, padding is simply another tool which would be employed from a larger toolbox. For this reason, it is **not** recommended that padding be relied upon to help secure data against an attacker, and users considering using padding may benefit from reading the section on ["Plausible Deniability"](plausible_deniability.htm)
+Padding will not prevent a reasonably knowledgeable IT person from being able to reasonably identify an encrypted volume as such - like any security mechanism, padding is simply another tool which would be employed from a larger toolbox. For this reason, it is **not** recommended that padding be relied upon to help secure data against an attacker, and users considering using padding may benefit from reading the section on ["Plausible Deniability"](plausible_deniability.md)
 
 * * *
 
@@ -1022,13 +1033,13 @@ Padding takes up additional storage on your hard drive beyond that required by t
 
   * * *
  <a name="aj"></a>
-*Q: Is it possible todismount my DoxBox volumes when I hit a certain "hotkey"?*
+*Q: Is it possible to dismount my DoxBox volumes when I hit a certain "hotkey"?*
 
 *A:* Yes; see under "View | Options..." - the "Hotkeys" tab
 
  * * *
  <a name="ak"></a>
-*Q: Why can't Idismount my volume(s)?*
+*Q: Why can't I Dismount my volume(s)?*
 
 *A:* The most common reason for this is because DoxBox cannot gain an exclusive lock on the associated drive. This is normally caused by one or more files being open on the encrypted volume.
 
@@ -1057,7 +1068,7 @@ In a nutshell, creating a Linux volume only requires a file to be created of the
 
 *A:* Yes; at the end of the day, volume files are just plain straight (albeit very large) files. Just ensure that when you mount them, you mount them as **read only** volumes, (for obvious reasons - even with CDRWs).
 
-It is recommended that volumes which are to be written to CD are formatted using either the FAT or FAT32 filesystem. NTFS volumes will work (under Windows XP), though AFAIR Windows 2000 is unable to mount NTFS volumes read only (meaning the volume must be copied back to your HDD, the file set to read/write, and **then** mounted).
+It is recommended that volumes which are to be written to CD are formatted using either the FAT or FAT32 filesystem. NTFS volumes will work (under Windows XP), though AFFAIK Windows 2000 is unable to mount NTFS volumes read only (meaning the volume must be copied back to your HDD, the file set to read/write, and **then** mounted).
 
   * * *
 
@@ -1115,7 +1126,7 @@ To prevent the prompt appearing, please uninstall one of the offending drivers.
 
 *A:* No - Although Administrator privileges are needed to install the FreeOTFE drivers, or start/stop portable mode.
 
-To allow "standard" (non Administrator) users to use DoxBox, please install the DoxBox drivers by following the instructions in the [Installation and Upgrading](installation_and_upgrading__PC.htm) section. After which, any user will be free to use DoxBox (e.g. to create, mount, dismount and use encrypted volumes)
+To allow "standard" (non Administrator) users to use DoxBox, please install the DoxBox drivers by following the instructions in the [Installation and Upgrading](installation_and_upgrading__PC.md) section. After which, any user will be free to use DoxBox (e.g. to create, mount, dismount and use encrypted volumes)
 
 To access an encrypted volume on a PC which **doesn't** have DoxBox installed, and on which you **don't** have Administrator privileges, please use DoxBox Explorer.
 
@@ -1165,7 +1176,7 @@ DoxBox Explorer however, can be used under Linux when run under [Wine](http://ww
 
 *A:* By creating a shortcut with suitable command line parameters in your "Startup" directory (click the MS Windows "Start" button, then go to "Programs | Startup"), DoxBox can mount volume files after your system starts up/you login.
 
-See the [Command Line Interface](command_line.htm) section for full details of DoxBox's command line options.
+See the [Command Line Interface](command_line.md) section for full details of DoxBox's command line options.
 
 
 * * *
@@ -1195,16 +1206,16 @@ There is only one exception though; if you are using Windows Vista, and have Use
 <a name="cf"></a>*
 Q: Where, and in what order does DoxBox search for my settings?
 
-*A:* If you have chosen to save your settings, DoxBox will store them un a "DoxBox.ini" file stored on your computer at your chosen location
+*A:* If you have chosen to save your settings, DoxBox will store them in a "DoxBox.ini" file stored on your computer at your chosen location
 
 When it starts up, DoxBox will attempt to locate this file and read in your settings, by first checking for it in the same directory the executable (DoxBox.exe) was located in. If a settings file cannot be found in this location, it will try and look for the same file in your user's profile. If a settings file still cannot be found, DoxBox will fallback to using configured default values for all settings.
 
 * * *
 
 <a name="ch"></a>
-*Q: After associating DoxBox with ".vol" files* from the options dialog, I doubleclicked my ".vol" volume file, and nothing happened!
+*Q: After associating DoxBox with ".vol" files* from the options dialog, I double-clicked my ".vol" volume file, and nothing happened!
 
-*A:* The DoxBox drivers must be running in order for you to mount a volume by doubleclicking on it. Please either install the DoxBox drivers (see the [portable mode](installation_and_upgrading__PC.htm)installation section, or start DoxBox's portable mode ([see](portable_mode.htm) section).
+*A:* The DoxBox drivers must be running in order for you to mount a volume by double-clicking on it. Please either install the DoxBox drivers (see the [portable mode](installation_and_upgrading__PC.md)installation section, or start DoxBox's portable mode ([see](portable_mode.md) section).
 
 * * *
 
@@ -1222,10 +1233,9 @@ Because the latter option is more destructive, it may only be used when a single
 * * *
 
 <a name="eo"></a>
-*Q: Does DoxBox support encrypting data with multiple cyphers (aka "cascaded" cyphers, or "superencryption")*
+*Q: Does DoxBox support nesting Boxes inside each other, isn't this a neat idea!*
 
-*A:* Yes! DoxBox allows volumes to be nested one inside another, with **complete** flexibility as to which encryption options are used with each volume.
-TODO:update - this is a bad idea
+*A:* Yes; DoxBox allows volumes to be nested one inside another, with **complete** flexibility as to which encryption options are used with each volume.
 
 This means that you can (for example) have:
 
@@ -1235,11 +1245,24 @@ This means that you can (for example) have:
 
 In this example, any data stored within the "innermost" AES encrypted volume will be actually be triple-encrypted with AES, Blowfish and Serpent before written to disk.
 
-Obviously, there is a performance impact in encrypting data more than once - as there would be in any system which encrypts data multiple times.
+This is, however a terrible idea because the security will usually be weaker as well access being slower.
 
-It's debatable how much this will increases security by, though in principle the "innermost" volume, in which sensitve files are stored, will be secured at least as strongly as the strongest cypher used. Should any of the cyphers be found to be weak at a later date, this will still hold true.
+You might think that it would be stronger because the 'innermost' box, will be encrypted many times and so would be as strong as the strongest cypher used.
 
-Note: Volumes nested in this manner must be dismounted in the **reverse** order to which they were mounted.
+However the weakest point in the encryption is not the cypher but the keyphrase (AFAWK).
+I order to nest 2 boxes you nd to remember 2 keyphrases. if s the same there is no increase in security because once one box is cracked the attacker knows the key to the other.
+If the keyphrases are diff then ea one is likely to be half the length of a keyphrase for a single box. that's because most people cant remember a keyphrase long enough for even one box.
+brute forcing 2 keyphrases is much easier than brute forcing one twice  length.
+For example dictionary attacking two separate 20 char keyphrases takes on average 67 Million operations wheres attacking one 40 char keyphrase takes 10^12 operations.
+
+If you v no problem remembering multiple keyphrases with 256 bit entropy (the shortest you should be considering) there there will be no decease in security,otherwise use a single Box. 
+f comparison here is a 256 bit keyphrase:
+
+>	190748903107813243563013947653698073429170975896029890745233298054250807024355
+
+An exception to this rule is if a weakness should be discovered in any of the cyphers, in that case the other nested boxes will still provide some protection, although you will still be more vulnerable to a dictionary attack than if they were not nested. 
+
+Boxes nested in this manner must be dismounted in the **reverse** order to which they were mounted.
 
 * * *
 
@@ -1294,7 +1317,7 @@ The above systems have limitations which prevent them from "seeing" mounted volu
 Q: Can I use DoxBox with my USB flash drive?
 
 *A:* Yes!
-DoxBox has been designed to be portable; see the section on [Portable Mode](portable_mode.htm) for details on which files to copy onto your USB drive. Alternativly, insert your USB drive and select the "Tools | Copy DoxBox to USB drive..." menuitem to automatically copy DoxBox to your USB drive.
+DoxBox has been designed to be portable; see the section on [Portable Mode](portable_mode.md) for details on which files to copy onto your USB drive. Alternatively, insert your USB drive and select the "Tools | Copy DoxBox to USB drive..." menu-item to automatically copy DoxBox to your USB drive.
 
 You can then use DoxBox on any PC - even if it doesn't have DoxBox installed.
 
@@ -1366,7 +1389,7 @@ In order to use DoxBox in this way, you must first either
 * Start DoxBox's portable mode on the **host PC**, or
 * Install and start the DoxBox drivers on the **host PC**
 
-(See the [Portable mode](portable_mode.htm) and [Installation](installation_and_upgrading__PC.htm) sections for further information
+(See the [Portable mode](portable_mode.md) and [Installation](installation_and_upgrading__PC.md) sections for further information
 
 When running MojoPac, your MojoPac device (i.e. your USB drive, iPod, etc) will appear as **both** the removable drive it is normally mounted as on the host PC (e.g. D:, E:), and as your MojoPac's C: drive.
 
@@ -1393,7 +1416,7 @@ In the same manner, volumes mounted on the host PC will be accessible from withi
 
 DoxBox and DoxBox Explorer will **only ever** try to connect to the internet if it has been configured to check for updates - and even then, they will only try to connect to the DoxBox web site to retrieve version information.
 
-By default, both DoxBox and DoxBox Explorer are configured such that thtey will **not** check for updates - this functionality must be explicitly enabled by the user.
+By default, both DoxBox and DoxBox Explorer are configured such that they will **not** check for updates - this functionality must be explicitly enabled by the user.
 
 * * *
 
@@ -1420,7 +1443,7 @@ and use "DoxBox_cmdline.bat" in places of "DoxBox.exe"
 
 *A:* If you're using the "/silent" switch, try removing it and just clicking "OK" on the password dialog to confirm that your password and other details have been entered correctly.
 
-If DoxBox fails to mount, check your command line parameters carefully. If your password or volume filename have spaces in them, you'll need to surround them with doublequotes ("). Similarly "%" signs may be interpreted in batch files as batch file variables.
+If DoxBox fails to mount, check your command line parameters carefully. If your password or volume filename have spaces in them, you'll need to surround them with double-quotes ("). Similarly "%" signs may be interpreted in batch files as batch file variables.
 
 * * *
 
@@ -1540,7 +1563,7 @@ By displaying additional information, there is less likelihood of creating a vol
 
 *A:* The more important thing to do in this kind of situation is *STOP* and *THINK*. Before attempting  any kind of recovery, understand what you are going to do and how you are going to do it - **before** doing  anything.
 
-For safety reasons, DoxBox only writes the initial 512 byte CDB to the start of the disk/partition when creating a  new disk/partition based volume (see the [Plausible Deniability](plausible_deniability.htm) section for  how to initialize a volume by overwriting it). If you haven't yet mounted the volume and started writing data to it,  or overwriting it, you have a good chance of getting your files back.
+For safety reasons, DoxBox only writes the initial 512 byte CDB to the start of the disk/partition when creating a  new disk/partition based volume (see the [Plausible Deniability](plausible_deniability.md) section for  how to initialize a volume by overwriting it). If you haven't yet mounted the volume and started writing data to it,  or overwriting it, you have a good chance of getting your files back.
 
 Obviously, if you have written data to the encrypted volume (e.g. by selecting one of the overwrite options or  copying files to it), the amount you will be able to recover will decrease.
 
@@ -1585,11 +1608,11 @@ To encrypt a whole disk, proceed as though creating an encrypted partition and s
 * * *
 
 <a name="ef"></a>
-*Q: I've inserted my PKCS#11 (Cryptoki) token, but why is the "PKCS#11 token management..." menuitem disabled?*
+*Q: I've inserted my PKCS#11 (Cryptoki) token, but why is the "PKCS#11 token management..." menu-item disabled?*
 
 *A:* Please ensure that you have configured DoxBox to use your token via the "PKCS#11" tab on the Options dialog ("View | Options...")
 
-See the section on [Security Token/Smartcard Support](pkcs11_support.htm) for further details
+See the section on [Security Token/Smartcard Support](pkcs11_support.md) for further details
 
 * * *
 
@@ -1684,7 +1707,7 @@ These prompts form part of Windows Vista's "User Access Control" (UAC) system, w
 *A:* To prevent the UAC dialogs from being shown when using DoxBox (and all other applications), you can disable it by carrying out the following steps:
 
 1. Click on the "Start" button, and then select "Control Panel"
-1. Doubleclick "User Accounts"
+1. Double-click "User Accounts"
 1. Click on "Turn User Account Control on or off"
 1. Make sure that the "Use User Account Control (UAC)" checkbox is unchecked
 1. Click "OK"
@@ -1697,12 +1720,12 @@ These prompts form part of Windows Vista's "User Access Control" (UAC) system, w
 
 **(This FAQ is only applicable when running under Windows Vista and later; it is not relevant for other operating systems)**
 
-*A:* The 64 bit versions of MS Windows Vista and MS Windows 7 both use driver signing; please see the section on installing DoxBox on [Windows Vista x64 and Windows 7 x64](impact_of_kernel_driver_signing.htm)
+*A:* The 64 bit versions of MS Windows Vista and MS Windows 7 both use driver signing; please see the section on installing DoxBox on [Windows Vista x64 and Windows 7 x64](impact_of_kernel_driver_signing.md)
 
 * * *
 
 <a name="br"></a>
-*Q: (Windows Vista and above only) What are the little "shield" icons shown next to some menuitems?*
+*Q: (Windows Vista and above only) What are the little "shield" icons shown next to some menu-items?*
 
 **(This FAQ is only applicable when running under Windows Vista and later; it is not relevant for other operating systems)**
 
@@ -1765,7 +1788,7 @@ Like MS Windows Explorer, DoxBox Explorer default to hiding filename extensions 
 
 To configure DoxBox Explorer to display filename extensions for **all** files, please set your options as follows:
 
-* Select the "View | Options..." menuitem.
+* Select the "View | Options..." menu-item.
 * Select the "Advanced" tab
 * **Unselect** the "Hide extensions of known file types" option
 

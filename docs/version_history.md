@@ -1,8 +1,8 @@
 
 
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An OpenSource 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -20,7 +20,7 @@
 [DoxBox](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_OpenSource disk encryption for Windows_
+_Open-Source disk encryption for Windows_
 </SPAN>
 
       
@@ -86,7 +86,7 @@ _OpenSource disk encryption for Windows_
     * Added "/settings" command line parameter to read options from user specified location
     * Created U3 and portableapps.com specific installers, simplifying installation for users of these particular systems
     * Removed restriction requiring hidden volumes to begin at an offset which is a multiple of 512 bytes
-    * Allow mounting either Linux LUKS or FreeOTFE partitions via the "Partition" toolbar button and "File | Mount partition..." menuitem (previously only FreeOTFE partitions could be mounted this way)
+    * Allow mounting either Linux LUKS or FreeOTFE partitions via the "Partition" toolbar button and "File | Mount partition..." menu-item (previously only FreeOTFE partitions could be mounted this way)
     * Fixed minor bug which prevented hidden volumes from being automatically mounted after being created
     * Fixed minor bug with "minimise to system tray" functionality
     * Fixed bug causing main window to resize continuously if toolbar not shown
@@ -209,7 +209,7 @@ a DoxBox
     
     * "File
 | Mount" now also auto detects LUKS volumes, so they can be mounted via
-this menuitem as well as "File | Linux volume | Mount file...".
+this menu-item as well as "File | Linux volume | Mount file...".
 Similarly, dragging and dropping files onto FreeOTFE will cause it to
 attempt to auto detect the type of volume used.
 
@@ -468,7 +468,7 @@ incorrectly. In order to continue support for older (CDB format 1)
 volumes, these volumes will still be read incorrectly, but newer (CDB
 format 2) volumes are processed correctly. To update older volumes to
 use the later CDB format, simply change your password via the "Tools |
-Change volume/keyfile password/details..." menuitem. It is highly
+Change volume/keyfile password/details..." menu-item. It is highly
 recommended that you do this anyway, in order to better ensure future
 compatibility
 

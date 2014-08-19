@@ -1,15 +1,19 @@
 
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
-<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, PDA, portable, USB drive, partition">
-<meta name="description" content="DoxBox: A free 'on-the-fly' transparent disk encryption program for PCs and PDAs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC or PDA - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
+<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
 
 
 <TITLE>Advanced Topics</TITLE>
 
 
-[DoxBox](http://doxbox.squte.com/)
-_Free disk encryption software for PCs and PDAs_
-
+<SPAN CLASS="master_link">
+[![DoxBox logo](./images/FreeOTFE.gif)](http://doxbox.squte.com/)
+[DoxBox](http://DoxBox.squte.com/)
+</SPAN>
+<SPAN CLASS="master_title">
+_Open-Source disk encryption for Windows_
+</SPAN>
 
 
 ## Advanced Topics
@@ -66,11 +70,6 @@ The process of mounting a volume using a keyfile is identical to the normal moun
 
 ### Partition/Entire Disk Based Volumes
 </A>
-
-<P>
-
-![PC version only](./images/note_VistaPCIcon.png)
-This section applies to the PC version of DoxBox _only_
 
 
 <P>
@@ -183,7 +182,7 @@ Please see the [Plausible Deniability](plausible_deniability.htm) section for fu
 </A>
 
 <P>
-At the end of the volume creation process, DoxBox will display a summary of the volume it is about to create. At this stage, more advanced options be configured for the new volume, by selecting the "Advanced..." button (PC version), or by selecting "Menu | Next" and "Menu | Back" (PDA version).
+At the end of the volume creation process, DoxBox will display a summary of the volume it is about to create. At this stage, more advanced options be configured for the new volume, by selecting the "Advanced..." button.
 
 <P>
 
@@ -201,7 +200,7 @@ At the end of the volume creation process, DoxBox will display a summary of the 
 Before the user's password is used to encrypt/decrypt the CDB, it is processed using PBKDF2 to increase security.
 
 <P>
-This tab allows the number of PBKDF2 iterations to be set by the user; higher values increase security, but will also increase the amount of time taken to mount the volume. This becomes more significant when mounting volumes on a PDA, which typically have slower CPUs.
+This tab allows the number of PBKDF2 iterations to be set by the user; higher values increase security, but will also increase the amount of time taken to mount the volume.
 
 <P>
 The default number of key iterations is 2048.
@@ -227,9 +226,6 @@ The default salt length is 256 bits. Any salt length entered must be a multiple 
 
 #### Drive Letter
 </A>
-
-<!-- No standard "PC only" banner here - it's too big and wouldn't look good -->
-_(PC version only)_
 
 <P>
 By default, DoxBox will use the next available drive letter when mounting a volume.
@@ -297,9 +293,6 @@ _Note: This section only covers the password entry dialog shown when mounting Do
 
 ![MountAdvanced](./images/screenshots/PC/MountAdvanced.png)
  
-
- (PC version)
-      _Advanced mount options_
 
 <P>
 <A NAME="level_4_heading_10">
@@ -422,10 +415,6 @@ By default, this checkbox is checked.
 
 <P>
 
-![PC version only](./images/note_VistaPCIcon.png)
-This section applies to the PC version of DoxBox _only_
-
-<P>
 The driver control dialog may be accessed by selecting "File | Drivers...". From here you may see all drivers installed, and their current state.
 
 <P>
@@ -491,12 +480,12 @@ The lower half of the Driver Control dialog lists all drivers currently installe
 <td colspan="1" rowspan="2">Installation mode</TD>
 
 <TD>![Blank icon](./images/driver_MODE_NORMAL.png)</TD>
-<TD>Driver is installed normally<span style="font-style: italic;"> (no icon) </span>
+<TD>Driver is installed normally _ (no icon) _ 
 </TD>
 </TR>
 <TR>
 <TD>![Car icon](./images/driver_MODE_PORTABLE.png)</TD>
-<TD>Driver is installed in portable mode<span style="font-style: italic;"> (world icon)</span></TD>
+<TD>Driver is installed in portable mode _ (world icon)_ </TD>
 
 </TR>
 <TR>

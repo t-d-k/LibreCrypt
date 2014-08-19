@@ -1,8 +1,8 @@
 
 
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An OpenSource 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -19,38 +19,37 @@
 <LInk rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-
 [![DoxBox logo](./images/FreeOTFE.gif)](http://DoxBox.squte.com/)
-
 [DoxBox](http://DoxBox.squte.com/)
 </SPAN>
-<SPAN CLASS="master_title">
-_OpenSource disk encryption for Windows_
-</SPAN>
 
-      
+<SPAN CLASS="master_title">
+_Open-Source disk encryption for Windows_
+</SPAN>
+ 
             
 
 ## Appendix C: Licence
+* * *
+*Note:* This licence applies to the deliverables and all source code inherited from the FreeOTFE project. All new code, documentation and modifications to existing code is dual licenced under GPL v3 or later and this licence.
+
+In addition the name 'DoxBox', the lock icon and the use of 'Box' as a term for encrypted containers are protected trademarks. 
+Redistributing DoxBox, FreeOTFE or any product derived from them, except under the terms explicitly set out in the licence is a crime [TODO - more warning].
+Distirbuting any software product named 'DoxBox' or using the name in any way that may cause confusion with this product is a violation of trademark law.
+If in any doubt do not distribute this product.
 
 * * * 
 <A NAME="level_3_heading_1">
 ### Preamble
 </A>
 
-The following licence covers FreeOTFE, FreeOTFE4PDA and FreeOTFE Explorer 
-(including source, executables,
-documentation and all related) with the exception of the files stored in the source
-release under the "src\3rd_party" directory which are covered by the separate licences
-included with them (e.g. libtomcrypt is public domain software, Twofish is uncopyrighted
-and license-free):
+The following licence covers FreeOTFE, FreeOTFE4PDA, DoxBox and FreeOTFE Explorer (including source, executables, documentation and all related) with the exception of the files stored in the source release under the "src\3rd_party" directory which are covered by the separate licences included with them (e.g. libtomcrypt is public domain software, Twofish is uncopyrighted and license-free):
 
 The primary purposes of this licence are:
 
-1. To ensure that any improvements made to FreeOTFE/FreeOTFE4PDA/FreeOTFE Explorer can always be incorporated into the main releases
+1. To ensure that any improvements made to FreeOTFE/FreeOTFE4PDA/FreeOTFE Explorer/DoxBox can always be incorporated into the main releases
 1. To ensure proper credit is given to these projects
-1. To protect against modified versions of the software claiming to be FreeOTFE/FreeOTFE4PDA/FreeOTFE Explorer, or be named such that they may be confused with them.
-
+1. To protect against modified versions of the software claiming to be FreeOTFE/FreeOTFE4PDA/FreeOTFE Explorer/DoxBox , or be named such that they may be confused with them.
   
 
 * * * 
@@ -71,9 +70,7 @@ The primary purposes of this licence are:
 
 1. Grant of license
 
-	2. Subject to the terms and conditions of this licence You are granted a world wide,
-royalty free, non exclusive licence to use, copy, distribute, display and modify The Software
-released under this licence.
+	2. Subject to the terms and conditions of this licence You are granted a world wide, royalty free, non exclusive licence to use, copy, distribute, display and modify The Software released under this licence.
 
 1. Modifications and Derivative Works
 
@@ -106,8 +103,7 @@ released under this licence.
 
 The Original Author is:
 
-<UL>* Sarah Dean
-</UL>
+* Sarah Dean
 
 <A NAME="level_4_heading_2">
 #### Exhibit B
@@ -127,9 +123,7 @@ The works covered by this licence are:
 
 The notice to be shown is:
 
-<BLOCKQUOTE>
-This software is based on FreeOTFE and/or FreeOTFE4PDA, the free disk encryption system for PCs and PDAs, available at [DoxBox.squte.com](http://DoxBox.squte.com/)
-</BLOCKQUOTE>
+> This software is based on FreeOTFE and/or FreeOTFE4PDA, the free disk encryption system for PCs and PDAs, available at [www.FreeOTFE.org](http://www.FreeOTFE.org/) 
 
 <A NAME="level_4_heading_4">
 #### Exhibit D

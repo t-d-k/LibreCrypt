@@ -1,8 +1,8 @@
 
 
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An OpenSource 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -20,7 +20,7 @@
 [DoxBox](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_OpenSource disk encryption for Windows_
+_Open-Source disk encryption for Windows_
 </SPAN>
 
       
@@ -43,26 +43,12 @@ data block | Backup..."
 * In the case of volume files where the CDB is stored in a separate keyfile, simply make a backup copy of this keyfile.
   </UL>
   * A number of DoxBox properties can be changed via the
-"Tools | Change volume/keyfile password/details..." menuitem. Note that
+"Tools | Change volume/keyfile password/details..." menu-item. Note that
 volumes must be _dismounted_ first before they can be modified in this way.
     
-  * An
-option is included to dump out a human readable version of the volume's
-critical data block/keyfile's contents (select "Tools | Critical
-data block | Dump to human readable file..."). This option is primarily
-intended to assist developers, and to future-proof volumes file by
-giving you access to the actual master encryption/decryption key used
-by the volume it dumps out. It should be noted that the inclusion of
-this option does **not** present a security risk as it **requires** that the user to enter the volume/keyfile's password immediately before it can operate
-(obviously, the volume/keyfile's password is needed in order to decrypt
-the critical data block). If an attacker has your volume/keyfile's
-password, clearly this option will give no further information away.
+  * An option is included to dump out a human readable version of the volume's critical data block/keyfile's contents (select "Tools | Critical data block | Dump to human readable file..."). This option is primarily intended to assist developers, and to future-proof volumes file by giving you access to the actual master encryption/decryption key used by the volume it dumps out. It should be noted that the inclusion of this option does **not** present a security risk as it **requires** that the user to enter the volume/keyfile's password immediately before it can operate (obviously, the volume/keyfile's password is needed in order to decrypt the critical data block). If an attacker has your volume/keyfile's password, clearly this option will give no further information away.
 
-* A "Revert timestamps"
-option is available from the "Options" dialog. If selected, on mounting a volume file its timestamps
-will be noted. When the volume is subsequently dismounted, these
-timestamps will be restored. By default, the PC version of FreeOTFE, and FreeOTFE Explorer, have this option
-switched **on**.
+* A "Revert timestamps" option is available from the "Options" dialog. If selected, on mounting a volume file its timestamps will be noted. When the volume is subsequently dismounted, these timestamps will be restored. By default, the PC version of FreeOTFE, and FreeOTFE Explorer, have this option switched **on**.
 
 * A password is **not** needed when backing up a volume's CDB as the
 backup copy is not stored in plaintext; it is a literal backup copy of

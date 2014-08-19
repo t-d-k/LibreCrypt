@@ -1,8 +1,8 @@
 
 
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An OpenSource 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -20,7 +20,7 @@
 [DoxBox](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_OpenSource disk encryption for Windows_
+_Open-Source disk encryption for Windows_
 </SPAN>   
             
 
@@ -484,7 +484,7 @@ The following procedure is used to build up a FreeOTFE's critical volume block:
 
 <OL>
 
-* Obtain all the information which will be stored within the volume's "Volume details block"****
+* Obtain all the information which will be stored within the volume's **"Volume details block"**
 * The following information is determined:
 
   <OL>

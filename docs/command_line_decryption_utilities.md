@@ -1,8 +1,8 @@
 
 
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An OpenSource 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -20,7 +20,7 @@
 [DoxBox](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_OpenSource disk encryption for Windows_
+_Open-Source disk encryption for Windows_
 </SPAN>
       
             
@@ -52,32 +52,19 @@ This software is **not** intended for general public use, but by those who under
 Each of the command line decryption utilities is designed to operate in the following manner:
 
   1. Open the (input) encrypted volume file.
-
-		<UL>
 			* The filename used is **hard coded** to "inFile.dat"; obviously this may be changed as required.
 	
-		</UL>
   1. Open/Create the (output) plaintext volume file.
-
-		<UL>
 			* The filename used is **hard coded** to "outFile.dat"; obviously this may be changed as required.
 	
-		</UL>
   1. Generate an IV, if required
-
-		<UL>
 			* The method of generating the IV may vary, dependent on how the volume was encrypted
-		</UL>
-  1. Read in a sector's worth of data from the input (encrypted) file
-  1. Decrypt the sector, block by block
 
-		<UL>
-			* The key used here is **hard coded**
-	in the source, and must be the actual key that was used to encrypt the
-	data (obviously!)
-			* The way in which decryption is carried out is cypher, and
-	cypher implementation dependent
-		</UL>
+			1. Read in a sector's worth of data from the input (encrypted) file
+  1. Decrypt the sector, block by block
+			* The key used here is **hard coded** in the source, and must be the actual key that was used to encrypt the data (obviously!)
+			* The way in which decryption is carried out is cypher, and cypher implementation dependent
+
   1. Write the decrypted sector to the output (plaintext) file
   1. Repeat steps 3-6 until all data has been decrypted
   1. Close the output file

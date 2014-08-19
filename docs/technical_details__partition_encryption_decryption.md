@@ -1,8 +1,8 @@
 
 
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An OpenSource 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -20,7 +20,7 @@
 [DoxBox](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_OpenSource disk encryption for Windows_
+_Open-Source disk encryption for Windows_
 </SPAN>
 
       
@@ -33,7 +33,7 @@ The encrypted partition that forms the bulk of an encrypted volume is encrypted 
 <UL>
 
 * The master key stored within the volume's CDB (or keyfile)
-* ****A per-sector IV **(provided that the cypher used has a fixed blocksize, greater than zero)**
+* **_A per-sector IV_ (provided that the cypher used has a fixed blocksize, greater than zero)**
 
 </UL>
 
@@ -48,50 +48,38 @@ generation method the user selected when creating the volume:
 
   <TBODY>
     <TR>
-      <TH>IV Generation Method
-      </TH>
-      <TH>Description
-      </TH>
+      <TH>IV Generation Method </TH>
+      <TH>Description </TH>
     </TR>
     <TR>
       <TD>Null IV</TD>
-
       <TD>No IV is used/a null IV is used.  i.e. A block of data consisting of with 0x00 (null) characters is used as the IV</TD>
-
     </TR>
     <TR>
       <TD> 32 bit sector ID</TD>
-
       <TD>The least significant 32 bits of the sector ID is right-padded with 0x00 characters, and used as the IV.  These bits are ordered MSB..LSB.</TD>
 
     </TR>
     <TR>
       <TD>  64 bit sector ID</TD>
-
       <TD>As the 32-bit sector ID method, but a 64 bits sector ID is used.  Note: This is unlikely to offer any security advantage over using 32 bit sector IDs, unless used with a volume file ((2^32) * 512) bytes long (2048GB), or greater</TD>
-
     </TR>
     <TR>
-      <TD>  Hashed 32 bit sector ID</TD>
-
+      <TD>Hashed 32 bit sector ID</TD>
       <TD>The least significant 32 bits of the sector ID is hashed with the user's choice of hash algorithm.  The resulting hash value will be truncated/right padded with 0x00 characters until it is the same length as the cypher's blocksize.</TD>
-
     </TR>
     <TR>
-      <TD>  Hashed  64 bit sector ID</TD>
-
+      <TD>Hashed  64 bit sector ID</TD>
       <TD>As the hashed 32-bit sector ID method, but a 64 bits sector ID is used.  Note: This is unlikely to offer any security advantage over using 32 bit sector IDs, unless used with a volume file ((2^32) * 512) bytes long (2048GB), or greater</TD>
     </TR>
     <TR>
       <TD>  ESSIV</TD>
-      <TD>This option offers the most security.  On mounting the DoxBox, the master key used for encrypting/decrypting the volume is hashed with the hash algorithm chosen by the user when the volume was created.  If the cypher used for encryption/decryption has a fixed keysize, this hash output is truncated/right padded with 0x00 characters until it matches the cypher's keysize and stored as the "ESSIV key" (or "salt"). If the cypher doesn't have a fixed keysize, the full hash output is stored as this key ("salt").  When a per-sector IV is required, the 64 bit sector ID is encrypted using the "ESSIV key". This encrypted sector ID is truncated/right-padded with 0x00 characters until it matches the cypher's blocksize.</TD>
-
+      <TD>This option offers the most security. On mounting the DoxBox, the master key used for encrypting/decrypting the volume is hashed with the hash algorithm chosen by the user when the volume was created. If the cypher used for encryption/decryption has a fixed keysize, this hash output is truncated/right padded with 0x00 characters until it matches the cypher's keysize and stored as the "ESSIV key" (or "salt"). If the cypher doesn't have a fixed keysize, the full hash output is stored as this key ("salt"). When a per-sector IV is required, the 64 bit sector ID is encrypted using the "ESSIV key". This encrypted sector ID is truncated/right-padded with 0x00 characters until it matches the cypher's blocksize.</TD>
     </TR>
   </TBODY>
 </TABLE>
 
-In all
-cases, the sector ID is calculated as:
+In all cases, the sector ID is calculated as:
 
 <blockquote>
 Sector ID = (**Ostart** - **Soffset**) % **Ssize**

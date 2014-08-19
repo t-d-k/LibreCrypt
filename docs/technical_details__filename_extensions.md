@@ -1,8 +1,8 @@
 
 
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An OpenSource 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -20,42 +20,22 @@
 [DoxBox](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_OpenSource disk encryption for Windows_
+_Open-Source disk encryption for Windows_
 </SPAN>
-</TABLE>
-\n
-    </TD>
-  </TR>
-  <TR>
-    <TD width=20%>
-
-      
+    
             
 
 ### Technical Details: Filename Extensions
 
-Volume files, keyfiles, and all other files created and used by FreeOTFE can have
-_*any*_ file extension you wish to give them (if any).
+DoxBox files, keyfiles, and all other files created and used by DoxBox can have _*any*_ file extension you wish to give them (if any).
 
-By default, FreeOTFE uses the following:
+By default, DoxBox uses the following:
 
 <TABLE>
-<TR>
-<TH>Extension</TH>
-<TH>Description</TH>
-</TR>
-<TR>
-<TD>.vol</TD>
-<TD>Volume file</TD>
-</TR>
-<TR>
-<TD>.cdb</TD>
-<TD>Keyfile (aka Critical Data Block)</TD>
-</TR>
-<TR>
-<TD>.cdbBackup</TD>
-<TD>Critical Data Block Backup</TD>
-</TR>
+<TR> <TH>Extension</TH> <TH>Description</TH> </TR>
+<TR> <TD>.box</TD> <TD>Volume file (DoxBox)</TD> </TR> 
+<TR> <TD>.cdb</TD> <TD>Keyfile (aka Critical Data Block)</TD> </TR>
+<TR> <TD>.cdbBackup</TD> <TD>Critical Data Block Backup</TD> </TR>
 </TABLE>
 
 

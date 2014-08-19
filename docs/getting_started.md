@@ -1,8 +1,8 @@
 
 
-<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An OpenSource 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -17,12 +17,10 @@
 
 <SPAN CLASS="master_link">
 [![DoxBox logo](./images/FreeOTFE.gif)](http://DoxBox.squte.com/)
-<SPAN CLASS="master_link">
 [DoxBox](http://DoxBox.squte.com/)
 </SPAN>
-</SPAN>
 <SPAN CLASS="master_title">
-_OpenSource disk encryption for Windows_
+_Open-Source disk encryption for Windows_
 </SPAN>
       
             
@@ -44,9 +42,9 @@ Pretty much everything in DoxBox works as it seems, and should be fairly self ex
 ### Installation/Portable mode
 </A>
 
-Before DoxBox can be used, it must first either be installed or uncompressed from the releaes archive.
+Before DoxBox can be used, it must first either be installed or unzipped from the portable zipfile.
 
-Please see the section on [Installation and Upgrading](installation_and_upgrading.htm) for instructions on how to do this.
+Please see the section on [Installation and Upgrading](installation_and_upgrading.md) for instructions on how to do this.
 
 * * * 
 <A NAME="level_3_heading_2">
@@ -64,7 +62,7 @@ Once DoxBox is installed (or started in portable mode), securing your data is si
 	_Anything_ and _everything_ stored on this drive (documents, pictures, videos, software - whatever you like) will be automatically encrypted and stored within the Box you created, at the time that it's written to the drive.
 	
 	
-	The encryption process is totally transparent, and is carried out on-the-fly as data is written to the drive. A no time is any unencrypted data stored on the disc. Similarly, decryption is carried out transparently when data is read from it.	
+	The encryption process is totally transparent, and is carried out on-the-fly as data is written to the drive. At no time is any unencrypted data stored on the disc. Similarly, decryption is carried out transparently when data is read from it.	
 	
 	You can drag files to and from this drive, open and save files from applications to it, run applications directly from it - in fact, _everything_ that you can do with a normal drive, you can do with a DoxBox.
 
@@ -88,16 +86,12 @@ This volume will hold an encrypted "disk image" of your DoxBox, and is where Dox
 
 This file (or partition) can subsequently be "mounted", at which point a virtual drive will appear on your computer - anything stored on one of these virtual drives will be automatically encrypted before being written to volume file.
 
-To create a new volume, select "File | New..." menuitem to display the "new volume wizard", which will guide you through the process in a series of simple steps.
+To create a new volume, select "File | New..." menu-item to display the "new volume wizard", which will guide you through the process in a series of simple steps.
 
 <TABLE WIDTH="100%">
   <TR>
     <TD WIDTH="50%" class="screenshot_img" >
       <img BORDER="0" src="./images/screenshots/PC/NewVolumeWizard.png">
-    </TD>
-  </TR>
-  <TR>
-    <TD>       <FONT SIZE=-1>(PC version)</FONT>
     </TD>
   </TR>
   <TR>
@@ -130,7 +124,7 @@ Do not simply copy an existing volume file to create a new one - even if you cha
 
 Once you have created a volume, it must be "mounted" in order for it to appear as a virtual drive on your computer.
 
-Select "File | Mount file..." menuitem to mount a file based volume, or "File | Mount partition..." to mount a partition based volume.
+Select "File | Mount file..." menu-item to mount a file based volume, or "File | Mount partition..." to mount a partition based volume.
 
 You will then be prompted to select which volume you wish to mount; do so, and click "OK" to display the keyphrase entry dialog.
 
@@ -147,10 +141,6 @@ You will then be prompted to select which volume you wish to mount; do so, and c
     </TD>
   </TR>
   <TR>
-    <TD>       <FONT SIZE=-1>(PC version)</FONT>
-    </TD>
-  </TR>
-  <TR>
     <TD COLSPAN="2">
       _Keyphrase entry dialog_
     </TD>
@@ -160,16 +150,16 @@ You will then be prompted to select which volume you wish to mount; do so, and c
 Enter your volume's keyphrase, and click "OK". If the correct keyphrase has been entered, the volume will be mounted and shown in the main DoxBox window.
 
  
-<SPAN class="tip">  To reduce the time taken DoxBox spends mounting volumes, see the FAQ [How can I speed DoxBox up when mounting my volumes?](FAQ.htm#bm)  </SPAN>
+<SPAN class="tip">  To reduce the time taken DoxBox spends mounting volumes, see the FAQ [How can I speed DoxBox up when mounting my volumes?](FAQ.md#bm)  </SPAN>
 
-If this is the first time you have mounted a particular volume after creating it, you will need to format the virtual drive before it can be used. To do so, select the mounted volume shown in the main DoxBox window, and select the "Tools | Format..." menuitem. The standard MS Windows format utility will be displayed, and should be used to carry out the format.
+If this is the first time you have mounted a particular volume after creating it, you will need to format the virtual drive before it can be used. To do so, select the mounted volume shown in the main DoxBox window, and select the "Tools | Format..." menu-item. The standard MS Windows format utility will be displayed, and should be used to carry out the format.
 
-If you wish to use your volume on both PCs _and_ PDAs, or with DoxBox Explorer, it should be formatted on a PC as either FAT or FAT32 (see also the FAQ on [PDA formatting.](FAQ.htm#bl))
+If you wish to use your volume on both PCs or with DoxBox Explorer, it should be formatted on a PC as either FAT or FAT32 
 
  
 
 <SPAN CLASS="security_tip">
-To increase security, it is recommended that after a volume is formatted, it is overwritten with random data. However, this process can take some time and may be skipped if required. See section on [plausible deniability](plausible_deniability.htm) for further details  
+To increase security, it is recommended that after a volume is formatted, it is overwritten with random data. However, this process can take some time and may be skipped if required. See section on [plausible deniability](plausible_deniability.md) for further details  
 </SPAN>
 
 Once mounted, a virtual drive can be used in the same way _as any other drive_ (e.g. they will appear in Windows Explorer and in Open/Save dialogs shown by applications); transparently encrypting and decrypting your files as and when needed.
@@ -179,11 +169,6 @@ Once mounted, a virtual drive can be used in the same way _as any other drive_ (
     <TD WIDTH="50%" class="screenshot_img" >
       <img BORDER="0" src="./images/screenshots/PC/ExplorerWithMounted.png">
     </TD>
-  </TR>
-  <TR>
-    <TD>       <FONT SIZE=-1>(PC version)</FONT>
-    </TD>
-
   </TR>
   <TR>
     <TD COLSPAN="2">
@@ -202,7 +187,7 @@ Once mounted, a virtual drive can be used in the same way _as any other drive_ (
 
 Once you have finished using your secured drive, it should be "dismounted". This will remove the virtual drive, and wipe any sensitive information DoxBox has stored in the computers memory.
 
-Select which volumes shown in the main DoxBox window you wish to dismount and click the "File | Dismount" menuitem; or use the context menu shown by rightclicking on one of the volumes shown (tap and hold, on the PDA version)
+Select which volumes shown in the main DoxBox window you wish to dismount and click the "File | Dismount" menu-item; or use the context menu shown by right-clicking on one of the volumes shown
 
 <TABLE WIDTH="100%">
   <TR>
@@ -221,14 +206,14 @@ Select which volumes shown in the main DoxBox window you wish to dismount and cl
   </TR>
 </TABLE>
 
-To quickly dismount all mounted volumes, use the "Dismount all" menuitem.
+To quickly dismount all mounted volumes, use the "Dismount all" menu-item.
 
 * * * 
 <A NAME="level_3_heading_6">
 ### Changing a volume's keyphrase
 </A>
 
-To change a volume's keyphrase (or a keyfile's keyphrase), select the "Tools | Change volume/keyfile keyphrase/details..." menuitem (or "Tools | Change keyphrase/details..." on the PDA version) to display the "change keyphrase wizard", which will guide you through the process in a series of simple steps.
+To change a volume's keyphrase (or a keyfile's keyphrase), select the "Tools | Change volume/keyfile keyphrase/details..." menu-item to display the "change keyphrase wizard", which will guide you through the process in a series of simple steps.
 
 Note that volumes must be _dismounted_ first before they can be modified in this way.
 
