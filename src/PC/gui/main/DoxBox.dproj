@@ -31,6 +31,12 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+			<Cfg_1_Win32>true</Cfg_1_Win32>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
 			<Cfg_2>true</Cfg_2>
 			<CfgParent>Base</CfgParent>
@@ -43,16 +49,15 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<VerInfo_PreRelease>true</VerInfo_PreRelease>
 			<DCC_UnitSearchPath>P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanUtils;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\MouseRNGDialog;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\PKCS#11;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\Shredder;P:\Projects\Delphi\doxbox\SDeanComponents\Components\OTFE\OTFEFreeOTFE;P:\Projects\Delphi\doxbox\SDeanComponents\Components\OTFE\OTFE\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<Icon_MainIcon>FreeOTFE_Icon.ico</Icon_MainIcon>
 			<Manifest_File>None</Manifest_File>
-			<VerInfo_MinorVer>21</VerInfo_MinorVer>
-			<VerInfo_MajorVer>5</VerInfo_MajorVer>
+			<VerInfo_MajorVer>6</VerInfo_MajorVer>
 			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<VerInfo_Locale>2057</VerInfo_Locale>
-			<VerInfo_Keys>CompanyName=Sarah Dean;FileDescription=FreeOTFE;FileVersion=5.21.0.4058;InternalName=FreeOTFE;LegalCopyright=Copyright (C) 2010 Sarah Dean;LegalTrademarks=;OriginalFilename=FreeOTFE.exe;ProductName=FreeOTFE;ProductVersion=5.21;Comments=http://www.FreeOTFE.org/</VerInfo_Keys>
-			<VerInfo_Build>4058</VerInfo_Build>
+			<VerInfo_Keys>CompanyName=DoxBox;FileDescription=DoxBox: Open-Source transparent disk encryption;FileVersion=6.0.0.0;InternalName=DoxBox;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=DoxBox;OriginalFilename=DoxBox.exe;ProductName=DoxBox;ProductVersion=6.0;Comments=http://doxbox.eu</VerInfo_Keys>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win64)'!=''">
 			<Icon_MainIcon>FreeOTFE_Icon.ico</Icon_MainIcon>
@@ -74,7 +79,14 @@
 			<DCC_ExeOutput>..\..\..\bin\PC</DCC_ExeOutput>
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
 		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<VerInfo_Keys>CompanyName=DoxBox;FileDescription=DoxBox: Open-Source transparent disk encryption;FileVersion=6.0.0.0;InternalName=DoxBox;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=DoxBox;OriginalFilename=DoxBox;ProductName=DoxBox;ProductVersion=6.0;Comments=http://doxbox.eu</VerInfo_Keys>
+			<VerInfo_Debug>true</VerInfo_Debug>
 			<DCC_DcuOutput>P:\Projects\Delphi\doxbox\src\PC\gui\main\debug_dcus\</DCC_DcuOutput>
 			<Version>7.0</Version>
 			<DCC_WriteableConstants>True</DCC_WriteableConstants>
@@ -82,8 +94,8 @@
 			<DCC_Define>FREEOTFE_MAIN;$(DCC_Define)</DCC_Define>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<Debugger_RunParams>/drivercontrol uninstall /drivername all </Debugger_RunParams>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
 		<ProjectExtensions>

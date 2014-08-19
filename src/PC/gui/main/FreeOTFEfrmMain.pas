@@ -83,6 +83,10 @@ type
     miFreeOTFEMountPartition: TMenuItem;
     miLinuxMountPartition: TMenuItem;
     actConsoleHide: TAction;
+    actInstall: TAction;
+    InstallDoxBox1: TMenuItem;
+    actTestMode: TAction;
+    SetTestMode1: TMenuItem;
 
     procedure actDriversExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -115,6 +119,10 @@ type
     procedure SDUSystemTrayIcon1DblClick(Sender: TObject);
     procedure SDUSystemTrayIcon1Click(Sender: TObject);
     procedure actConsoleHideExecute(Sender: TObject);
+    procedure miCreateKeyfileClick(Sender: TObject);
+    procedure actInstallExecute(Sender: TObject);
+    procedure actTestModeExecute(Sender: TObject);
+  private
 
   protected
     TempCypherDriver: string;
@@ -141,6 +149,10 @@ type
     function HandleCommandLineOpts_Count(): integer;
     function HandleCommandLineOpts_Create(): integer; override;
     function HandleCommandLineOpts_Dismount(): integer;
+
+    //true = set OK
+    function SetTestMode(silent,SetOn:Boolean):Boolean;
+
 
     procedure ReloadSettings(); override;
 
@@ -261,10 +273,13 @@ implementation
 {$R FreeOTFESystemTrayIcons.dcr}
 
 uses
+// delphi units
   ShellApi,  // Required for SHGetFileInfo
   Commctrl,  // Required for ImageList_GetIcon
   ComObj,  // Required for StringToGUID
   Math,  // Required for min
+  strutils,
+  //DoxBox units
   SDUGeneral,
   SDUGraphics,
   CommonfrmAbout,
@@ -306,7 +321,7 @@ resourcestring
 
   // Toolbar captions...
   RS_TOOLBAR_CAPTION_MOUNTPARTITION  = 'Open partition Box';
-  RS_TOOLBAR_CAPTION_DISMOUNTALL     = 'Dismount all';
+  RS_TOOLBAR_CAPTION_DISMOUNTALL     = 'Lock all';
   RS_TOOLBAR_CAPTION_PORTABLEMODE    = 'Portable mode';
   // Toolbar hints...
   RS_TOOLBAR_HINT_MOUNTPARTITION     = 'Open a partition based Box';
@@ -677,6 +692,7 @@ begin
   Result := iconIdx;
 
 end;
+
 
 procedure TfrmFreeOTFEMain.InitializeDrivesDisplay();
 var
@@ -2572,6 +2588,12 @@ begin
   Result := retVal;
 end;
 
+procedure TfrmFreeOTFEMain.miCreateKeyfileClick(Sender: TObject);
+begin
+  inherited;
+
+end;
+
 // Cleardown and setup hotkeys
 procedure TfrmFreeOTFEMain.SetupHotKeys();
 begin
@@ -2703,6 +2725,48 @@ begin
   UnRegisterHotkey(Application.Handle, hotkeyIdent);
 end;
 
+
+function TfrmFreeOTFEMain.SetTestMode(silent,setOn:Boolean):Boolean;
+var
+    Error  :cardinal;
+begin
+  inherited;
+    {   Error :=  WinExec(PAnsiChar('C:\Windows\System32\bcdedit.exe /set TESTSIGNING ON'), SW_SHOWNORMAL);
+      if Error<31 then
+      begin
+      SDUMessageDlg(_('Set Test Mode failed:')+Inttostr(Error), mtError, [mbOK], 0);
+      end;  }
+
+{
+  run bcdedit.exe /set TESTSIGNING ON
+
+  see https://stackoverflow.com/questions/16827229/file-not-found-error-launching-system32-winsat-exe-using-process-start for 'sysnative'
+  this will change if built as 64 bit exe  "Alternatively, if you build your program as x64, you can leave the path as c:\windows\system32"
+}
+// ciould alos use SDUWow64DisableWow64FsRedirection
+  result := SDUWinExecAndWait32(SDUGetWindowsDirectory()+'\sysnative\bcdedit.exe /set TESTSIGNING '+IfThen(setOn,'ON','OFF'), SW_SHOWNORMAL) <>  $FFFFFFFF;
+  if not silent then
+    begin
+    if not result then
+      begin
+      SDUMessageDlg(_('Set Test Mode failed: ')+SysErrorMessage(GetLastError), mtError, [mbOK], 0);
+      end
+    else
+      begin
+      SDUMessageDlg(_('Please reboot. After rebooting the DoxBox drivers may be loaded'), mtInformation, [mbOK], 0);
+      end
+    end;
+end;
+
+procedure TfrmFreeOTFEMain.actTestModeExecute(Sender: TObject);
+var
+  SigningOS :boolean;
+begin
+  inherited;
+  SigningOS := (SDUOSVistaOrLater() and SDUOS64bit());
+  if SigningOS then SetTestMode(false,true)
+  else  SDUMessageDlg(_('There is no need to set test mode on this version of Windows'), mtError, [mbOK], 0);
+end;
 
 procedure TfrmFreeOTFEMain.actTogglePortableModeExecute(Sender: TObject);
 begin
@@ -3085,7 +3149,7 @@ end;
 //
 // !! IMPORTANT !!
 // NOTICE: THIS DOES NOT CARRY OUT ANY UAC ESCALATION!
-//         User should use "runas FreeOTFE.exe ..." if UAC escalation
+//         User should use "runas DoxBox.exe ..." if UAC escalation
 //         required
 // !! IMPORTANT !!
 //
@@ -3119,11 +3183,17 @@ begin
           end
         else
           begin
+          cmdExitCode := CMDLINE_SUCCESS;
+
           // If under Vista x64, don't autostart the drivers after
           // installing - this could cause a bunch of *bloody* *stupid*
           // warning messages about "unsigned drivers" to be displayed by
           // the OS
           vista64Bit := (SDUOSVistaOrLater() and SDUOS64bit());
+          // set test mode
+          if vista64Bit then
+            if not SetTestMode(true,true) then cmdExitCode := CMDLINE_EXIT_UNKNOWN_ERROR;
+
           if driverControlObj.InstallMultipleDrivers(
                                                      driverFilenames,
                                                      FALSE,
@@ -3131,7 +3201,6 @@ begin
                                                      not(vista64Bit)
                                                     ) then
             begin
-            cmdExitCode := CMDLINE_SUCCESS;
 
             // If Vista x64, we tell the user to reboot. That way, the drivers
             // will be started up on boot - and the user won't actually see
@@ -3142,10 +3211,13 @@ begin
                ) then
               begin
               SDUMessageDlg(
-                            _('IMPORTANT: Please see the documentation for additional steps to be carried out after installing under this OS.'),
+                            _('IMPORTANT: Please reboot before using DoxBox.'),
                             mtInformation
                            );
               end;
+            end else
+            begin
+              cmdExitCode := CMDLINE_EXIT_UNKNOWN_ERROR;
             end;
           end;
 
@@ -3183,7 +3255,7 @@ end;
 //
 // !! IMPORTANT !!
 // NOTICE: THIS DOES NOT CARRY OUT ANY UAC ESCALATION!
-//         User should use "runas FreeOTFE.exe ..." if UAC escalation
+//         User should use "runas DoxBox.exe ..." if UAC escalation
 //         required
 // !! IMPORTANT !!
 //
@@ -3193,6 +3265,7 @@ var
   cmdExitCode: integer;
   paramValue: string;
   driveUninstallResult: DWORD;
+    vista64Bit: boolean;
 begin
   cmdExitCode := CMDLINE_EXIT_INVALID_CMDLINE;
 
@@ -3201,9 +3274,14 @@ begin
     cmdExitCode := CMDLINE_EXIT_UNKNOWN_ERROR;
     if (uppercase(trim(paramValue)) = uppercase(CMDLINE_ALL)) then
       begin
-      if driverControlObj.UninstallAllDrivers(FALSE) then
+      cmdExitCode := CMDLINE_SUCCESS;
+      vista64Bit := (SDUOSVistaOrLater() and SDUOS64bit());
+      // set test mode off
+      if vista64Bit then if not SetTestMode(true,false) then cmdExitCode := CMDLINE_EXIT_UNKNOWN_ERROR;
+
+      if not driverControlObj.UninstallAllDrivers(FALSE) then
         begin
-        cmdExitCode := CMDLINE_SUCCESS;
+          cmdExitCode := CMDLINE_EXIT_UNKNOWN_ERROR;
         end;
       end
     else
@@ -3722,6 +3800,70 @@ begin
 
     SDUMessageDlg(msg, mtInformation);
     end;
+
+end;
+
+procedure TfrmFreeOTFEMain.actInstallExecute(Sender: TObject);
+var
+  driverControlObj: TOTFEFreeOTFEDriverControl;
+
+      driverFilenames: TStringList;
+        vista64Bit: boolean;
+begin
+  inherited;
+
+
+      driverFilenames:= TStringList.Create();
+      try
+        GetAllDriversUnderCWD(driverFilenames);
+
+        if (driverFilenames.count <= 0) then
+          begin
+            MessageDlg('DoxBox failed to install, no drivers', mtError, [mbOK], 0);
+          end
+        else
+          begin
+
+
+          // If under Vista x64, don't autostart the drivers after
+          // installing - this could cause a bunch of *bloody* *stupid*
+          // warning messages about "unsigned drivers" to be displayed by
+          // the OS
+          vista64Bit := (SDUOSVistaOrLater() and SDUOS64bit());
+          // set test mode
+          if vista64Bit then
+            if not SetTestMode(true,true) then MessageDlg('DoxBox failed to install, can''t set test mode', mtError, [mbOK], 0);
+
+          if driverControlObj.InstallMultipleDrivers(
+                                                     driverFilenames,
+                                                     FALSE,
+                                                     true,
+                                                     not(vista64Bit)
+                                                    ) then
+            begin
+
+            // If Vista x64, we tell the user to reboot. That way, the drivers
+            // will be started up on boot - and the user won't actually see
+            // any stupid warning messages about "unsigned drivers"
+            if (
+                vista64Bit
+               ) then
+              begin
+              SDUMessageDlg(
+                            _('IMPORTANT: Please reboot before using DoxBox.'),
+                            mtInformation
+                           );
+              end;
+            end else
+            begin
+              MessageDlg('DoxBox failed to install, can''t install drivers', mtError, [mbOK], 0);
+            end;
+          end;
+
+      finally
+        driverFilenames.Free();
+      end;
+
 
 end;
 

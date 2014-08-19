@@ -12,13 +12,19 @@ interface
 
 const
   // Set to "-1" to indicate release/non-beta
-  APP_BETA_BUILD = -1;
-    { TODO 1 -otdk -cenhancement : updae homepage }
+  APP_BETA_BUILD = 0;
+    { TODO 1 -otdk -cenhancement : update homepage }
   // Online user manual URL...
   URL_USERGUIDE = 'http://DoxBox.squte.com/docs/Main';
-  // PAD file URL...
-  URL_PADFILE   = 'http://DoxBox.squte.com/PAD/FreeOTFE.xml';
 
+  // PAD file URL...
+  URL_PADFILE   =
+  {$IFDEF FORCE_LOCAL_PAD}
+     'P:\Projects\Delphi\doxbox\'
+  {$ELSE}
+    'https://raw.githubusercontent.com/t-d-k/doxbox/master/'
+  {$ENDIF}
+    + 'PAD.xml';
 
 implementation
 

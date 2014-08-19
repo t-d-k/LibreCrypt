@@ -30,7 +30,7 @@ const
   
 resourcestring
   RS_PROMPT_USER = 'Prompt user';
-  RS_DO_NOTHING = 'Do nothing';
+  RS_DO_NOTHING  = 'Do nothing';
 
 
 type
