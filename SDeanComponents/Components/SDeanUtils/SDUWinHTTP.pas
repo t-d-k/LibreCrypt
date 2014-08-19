@@ -47,7 +47,7 @@ function SDUWinHTTPRequest(
 
   Method: WideString;
   DataToSendPresent: boolean;
-  DataToSend: string;
+  DataToSend: Ansistring;
 
   UserAgent: WideString;
   RequestVersion: WideString;
@@ -65,7 +65,7 @@ function SDUWinHTTPRequest(
 
   Method: WideString;
   DataToSendPresent: boolean;
-  DataToSend: string;
+  DataToSend: Ansistring;
 
   UserAgent: WideString;
   RequestVersion: WideString;
@@ -81,7 +81,7 @@ function SDUWinHTTPRequest(
 
   Method: WideString;
   DataToSendPresent: boolean;
-  DataToSend: string;
+  DataToSend: Ansistring;
 
   UserAgent: WideString;
   RequestVersion: WideString;
@@ -101,7 +101,7 @@ function SDUWinHTTPRequest(
 
   Method: WideString;
   DataToSendPresent: boolean;
-  DataToSend: string;
+  DataToSend: Ansistring;
 
   UserAgent: WideString;
   RequestVersion: WideString;
@@ -219,7 +219,7 @@ function SDUWinHTTPRequest(
 
   Method: WideString;
   DataToSendPresent: boolean;
-  DataToSend: string;
+  DataToSend: Ansistring;
 
   UserAgent: WideString;
   RequestVersion: WideString;
@@ -255,7 +255,7 @@ function SDUWinHTTPRequest(
 
   Method: WideString;
   DataToSendPresent: boolean;
-  DataToSend: string;
+  DataToSend: Ansistring;
 
   UserAgent: WideString;
   RequestVersion: WideString;
@@ -328,7 +328,7 @@ function SDUWinHTTPRequest(
 
   Method: WideString;
   DataToSendPresent: boolean;
-  DataToSend: string;
+  DataToSend: Ansistring;
 
   UserAgent: WideString;
   RequestVersion: WideString;
@@ -368,7 +368,7 @@ function SDUWinHTTPRequest(
 
   Method: WideString;
   DataToSendPresent: boolean;
-  DataToSend: string;
+  DataToSend: Ansistring;
 
   UserAgent: WideString;
   RequestVersion: WideString;
@@ -392,7 +392,7 @@ var
   wstrTmp: WideString;
 
   byteReceived: DWORD;
-  page: string;
+  page: Ansistring;
   retval: boolean;
   strHeaders: WideString;
 begin
@@ -447,6 +447,7 @@ begin
                               );
     if (hConnect <> 0) then
       begin
+      { TODO 1 -otdk -cenhance : set flags according to whether https or http }
       hRequest := WinHttpOpenRequest(
                                      hConnect,
                                      // "nil" as second parameter causes it to use "GET"
@@ -455,7 +456,7 @@ begin
                                      nil,
                                      WINHTTP_NO_REFERER,
                                      WINHTTP_DEFAULT_ACCEPT_TYPES,
-                                     WINHTTP_FLAG_REFRESH
+                                     WINHTTP_FLAG_REFRESH  or WINHTTP_FLAG_SECURE  //  use flag WINHTTP_FLAG_SECURE for https
                                     );
       if (hRequest <> 0) then
         begin
@@ -490,7 +491,7 @@ begin
             begin
             allOK := WinHttpWriteData(
                                hRequest,
-                               PChar(DataToSend),
+                               PAnsiChar(DataToSend),
                                length(DataToSend),
                                @byteReceived
                               );
@@ -560,7 +561,7 @@ begin
                   page := StringOfChar('X', byteReceived);
                   if WinHttpReadData(
                                      hRequest,
-                                     PChar(page),
+                                     PAnsiChar(page),
                                      byteReceived,
                                      @byteReceived
                                     ) then
