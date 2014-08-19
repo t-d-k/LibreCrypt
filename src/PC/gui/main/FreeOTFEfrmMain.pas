@@ -384,11 +384,11 @@ const
 
   // Online user manual URL...
   { TODO -otdk -cenhancement : set project homepage }
-  URL_USERGUIDE_MAIN = 'http://DoxBox.squte.com/docs/Main';
+  URL_USERGUIDE_MAIN = 'http://DoxBox.eu/docs/Main';
   // PAD file URL...
-  URL_PADFILE_MAIN = 'http://DoxBox.squte.com/PAD/FreeOTFE.xml';
+  URL_PADFILE_MAIN = 'https://raw.githubusercontent.com/t-d-k/doxbox/master/PAD.xml';
   // Download URL...
-  URL_DOWNLOAD_MAIN = 'http://DoxBox.squte.com/download.html';
+  URL_DOWNLOAD_MAIN = 'http://DoxBox.eu/download.html';
 
 
 // External function in shell32.dll
