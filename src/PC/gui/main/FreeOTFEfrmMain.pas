@@ -85,8 +85,10 @@ type
     actConsoleHide: TAction;
     actInstall: TAction;
     InstallDoxBox1: TMenuItem;
-    actTestMode: TAction;
+    actTestModeOn: TAction;
     SetTestMode1: TMenuItem;
+    actTestModeOff: TAction;
+    DisallowTestsigneddrivers1: TMenuItem;
 
     procedure actDriversExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -121,8 +123,10 @@ type
     procedure actConsoleHideExecute(Sender: TObject);
     procedure miCreateKeyfileClick(Sender: TObject);
     procedure actInstallExecute(Sender: TObject);
-    procedure actTestModeExecute(Sender: TObject);
+    procedure actTestModeOnExecute(Sender: TObject);
+    procedure actTestModeOffExecute(Sender: TObject);
   private
+
 
   protected
     TempCypherDriver: string;
@@ -149,10 +153,14 @@ type
     function HandleCommandLineOpts_Count(): integer;
     function HandleCommandLineOpts_Create(): integer; override;
     function HandleCommandLineOpts_Dismount(): integer;
+    function HandleCommandLineOpts_SetTestMode(): integer;
+    function HandleCommandLineOpts_SetInstalled(): integer;
 
     //true = set OK
     function SetTestMode(silent,SetOn:Boolean):Boolean;
-
+    //sets 'installed' flag in ini file - returns false if fails (ini file must exist or be set as custom)
+    function SetInstalled():Boolean;
+    function InstallAllDrivers(driverControlObj: TOTFEFreeOTFEDriverControl;silent: boolean): integer;
 
     procedure ReloadSettings(); override;
 
@@ -257,6 +265,8 @@ const
   CMDLINE_EXIT_UNABLE_TO_START_PORTABLE_MODE = 104;
   CMDLINE_EXIT_UNABLE_TO_STOP_PORTABLE_MODE  = 105;
   CMDLINE_EXIT_ADMIN_PRIVS_NEEDED            = 106;
+  CMDLINE_EXIT_UNABLE_TO_SET_TESTMODE        = 107;
+  CMDLINE_EXIT_UNABLE_TO_SET_INSTALLED       = 108;
   CMDLINE_EXIT_UNKNOWN_ERROR                 = 999;
 
   // Command line parameter handled in the .dpr
@@ -270,6 +280,7 @@ var
 implementation
 
 {$R *.DFM}
+{ TODO -otdk -crefactor : editing dcr files is awkward - use imagelist instead }
 {$R FreeOTFESystemTrayIcons.dcr}
 
 uses
@@ -360,28 +371,37 @@ const
 
   AUTORUN_SUBSTITUTE_DRIVE = '%DRIVE';
 
-  // Command line parameters...
+  // Command line parameters. case insensitive. generally only one action per invocation
+  //swithces only 
   CMDLINE_NOUACESCALATE    = 'noUACescalate';
-  CMDLINE_DRIVERCONTROL    = 'drivercontrol';
+  CMDLINE_GUI              = 'gui';
+  CMDLINE_FORCE            = 'force';
+  CMDLINE_SET_INSTALLED    = 'SetInstalled';//sets 'installed' flag in ini file, creating if nec. - usually used with CMDLINE_SETTINGSFILE
+  
+  // cmds with params   
+  CMDLINE_DRIVERCONTROL    = 'driverControl';
   CMDLINE_PORTABLE         = 'portable';
+  CMDLINE_TOGGLE           = 'toggle';
+  CMDLINE_DISMOUNT         = 'dismount';
+
+
+//  CMDLINE_MOUNTED          = 'mounted'; unused    
+  CMDLINE_SET_TESTMODE       ='SetTestMode';
+  
+  // args to Command line parameters...
+    CMDLINE_COUNT            = 'count';
   CMDLINE_START            = 'start';
   CMDLINE_ON               = 'on';
   CMDLINE_STOP             = 'stop';
   CMDLINE_OFF              = 'off';
-  CMDLINE_TOGGLE           = 'toggle';
-  CMDLINE_DISMOUNT         = 'dismount';
-  CMDLINE_FORCE            = 'force';
-  CMDLINE_ALL              = 'all';
+    CMDLINE_ALL              = 'all';
   CMDLINE_INSTALL          = 'install';
   CMDLINE_UNINSTALL        = 'uninstall';
-  CMDLINE_COUNT            = 'count';
-  CMDLINE_MOUNTED          = 'mounted';
-  CMDLINE_GUI              = 'gui';
+  CMDLINE_DRIVERNAME       = 'drivername';
   CMDLINE_TOTAL            = 'total';
   CMDLINE_DRIVERSPORTABLE  = 'portable';
-  CMDLINE_DRIVERSINSTALLED = 'installed';
-  CMDLINE_DRIVERNAME       = 'drivername';
-
+  CMDLINE_DRIVERSINSTALLED = 'installed';  
+  
   // Online user manual URL...
   { TODO -otdk -cenhancement : set project homepage }
   URL_USERGUIDE_MAIN = 'http://DoxBox.eu/docs/Main';
@@ -432,8 +452,10 @@ begin
     goForStartPortable := Settings.OptAutoStartPortable;
     if not(goForStartPortable) then
       begin
-      goForStartPortable := SDUConfirmYN(
-               _('The main DoxBox driver does not appear to be installed/running on this computer')+SDUCRLF+
+      // if 'installed' then install drivers and prompt reboot else prompt portable as below
+      if not Settings.OptInstalled then 
+        goForStartPortable := SDUConfirmYN(
+               _('The main DoxBox driver does not appear to be installed and running on this computer')+SDUCRLF+
                SDUCRLF+
                _('Would you like to start DoxBox in portable mode?')
               );
@@ -445,12 +467,19 @@ begin
       end
     else
       begin
-      SDUMessageDlg(
-             _('Please see the "installation" section of the accompanying documentation for instructions on how to install the DoxBox drivers.'),
-             mtInformation,
-             [mbOK],
-             0
-            );
+        if Settings.OptInstalled then 
+        begin
+          actInstallExecute(nil);
+        end 
+        else
+          begin
+            SDUMessageDlg(
+               _('Please see the "installation" section of the accompanying documentation for instructions on how to install the DoxBox drivers.'),
+               mtInformation,
+               [mbOK],
+               0
+              );
+        end;
       end;
 
     end;
@@ -692,6 +721,7 @@ begin
   Result := iconIdx;
 
 end;
+
 
 
 procedure TfrmFreeOTFEMain.InitializeDrivesDisplay();
@@ -2743,7 +2773,7 @@ begin
   see https://stackoverflow.com/questions/16827229/file-not-found-error-launching-system32-winsat-exe-using-process-start for 'sysnative'
   this will change if built as 64 bit exe  "Alternatively, if you build your program as x64, you can leave the path as c:\windows\system32"
 }
-// ciould alos use SDUWow64DisableWow64FsRedirection
+// could also use SDUWow64DisableWow64FsRedirection
   result := SDUWinExecAndWait32(SDUGetWindowsDirectory()+'\sysnative\bcdedit.exe /set TESTSIGNING '+IfThen(setOn,'ON','OFF'), SW_SHOWNORMAL) <>  $FFFFFFFF;
   if not silent then
     begin
@@ -2753,12 +2783,36 @@ begin
       end
     else
       begin
-      SDUMessageDlg(_('Please reboot. After rebooting the DoxBox drivers may be loaded'), mtInformation, [mbOK], 0);
+      if setOn then    SDUMessageDlg(_('Please reboot. After rebooting the DoxBox drivers may be loaded'), mtInformation, [mbOK], 0)
+      else             SDUMessageDlg(_('After rebooting Test Mode will be off'), mtInformation, [mbOK], 0) ;
       end
     end;
 end;
 
-procedure TfrmFreeOTFEMain.actTestModeExecute(Sender: TObject);
+function TfrmFreeOTFEMain.SetInstalled():Boolean;
+begin
+  inherited;    
+  //needs to be place to save to
+  if Settings.OptSaveSettings = slNone then
+     Settings.OptSaveSettings := slProfile;//exe not supported in win >NT
+  if result then
+    begin
+      Settings.OptInstalled := true;
+      result := Settings.Save();//todo:needed?
+    end;
+end;
+
+procedure TfrmFreeOTFEMain.actTestModeOffExecute(Sender: TObject);
+var
+  SigningOS :boolean;
+begin
+  inherited;
+  SigningOS := (SDUOSVistaOrLater() and SDUOS64bit());
+  if SigningOS then SetTestMode(false,false)
+  else  SDUMessageDlg(_('This version of Windows does not support test mode'), mtError, [mbOK], 0);
+end;
+
+procedure TfrmFreeOTFEMain.actTestModeOnExecute(Sender: TObject);
 var
   SigningOS :boolean;
 begin
@@ -3145,6 +3199,84 @@ begin
   Result := cmdExitCode;
 end;
 
+// install all drivers
+//
+// !! IMPORTANT !!
+// NOTICE: THIS DOES NOT CARRY OUT ANY UAC ESCALATION!
+//         User should use "runas DoxBox.exe ..." if UAC escalation
+//         required
+// !! IMPORTANT !!
+//
+// Returns: exit code
+function TfrmFreeOTFEMain.InstallAllDrivers(driverControlObj: TOTFEFreeOTFEDriverControl;silent: boolean): integer;
+var
+
+  paramValue: string;
+  driverPathAndFilename: string;
+  driverFilenames: TStringList;
+//  vista64Bit: boolean;
+begin
+
+
+
+             result := CMDLINE_EXIT_UNKNOWN_ERROR;
+
+      driverFilenames:= TStringList.Create();
+      try
+        GetAllDriversUnderCWD(driverFilenames);
+
+        if (driverFilenames.count <= 0) then
+          begin
+          result := CMDLINE_EXIT_FILE_NOT_FOUND;
+          end
+        else
+          begin
+          result := CMDLINE_SUCCESS;
+
+          // If under Vista x64, don't autostart the drivers after
+          // installing - this could cause a bunch of *bloody* *stupid*
+          // warning messages about "unsigned drivers" to be displayed by
+          // the OS
+//          vista64Bit := (SDUOSVistaOrLater() and SDUOS64bit());
+          // set test mode
+         // if vista64Bit then
+          //  if not SetTestMode(true,true) then cmdExitCode := CMDLINE_EXIT_UNKNOWN_ERROR;
+
+          if driverControlObj.InstallMultipleDrivers(
+                                                     driverFilenames,
+                                                     FALSE,
+                                                     not(silent),
+                                                     true// not(vista64Bit)
+                                                    ) then
+            begin
+
+            { If Vista x64, we tell the user to reboot. That way, the drivers
+            // will be started up on boot - and the user won't actually see
+            // any stupid warning messages about "unsigned drivers"
+            apparently on vista is not necesary to set test mode - but need to start drivers on os start
+            test mode is set anyway for all OS's so start drivers now whatever
+            }
+            if (
+               // vista64Bit and
+                not(silent)
+               ) then
+              begin
+              SDUMessageDlg(
+                            _('DoxBox drivers have been installed successfully.'),
+                            mtInformation
+                           );
+              end;
+            end else
+            begin
+              result := CMDLINE_EXIT_UNKNOWN_ERROR;
+            end;
+          end;
+
+      finally
+        driverFilenames.Free();
+      end;
+end;
+
 // Handle "/install" command line
 //
 // !! IMPORTANT !!
@@ -3161,7 +3293,7 @@ var
   driverPathAndFilename: string;
   driverFilenames: TStringList;
   silent: boolean;
-  vista64Bit: boolean;
+//  vista64Bit: boolean;
 begin
   cmdExitCode := CMDLINE_EXIT_INVALID_CMDLINE;
 
@@ -3171,60 +3303,7 @@ begin
 
     if (uppercase(trim(paramValue)) = uppercase(CMDLINE_ALL)) then
       begin
-      cmdExitCode := CMDLINE_EXIT_UNKNOWN_ERROR;
-
-      driverFilenames:= TStringList.Create();
-      try
-        GetAllDriversUnderCWD(driverFilenames);
-
-        if (driverFilenames.count <= 0) then
-          begin
-          cmdExitCode := CMDLINE_EXIT_FILE_NOT_FOUND;
-          end
-        else
-          begin
-          cmdExitCode := CMDLINE_SUCCESS;
-
-          // If under Vista x64, don't autostart the drivers after
-          // installing - this could cause a bunch of *bloody* *stupid*
-          // warning messages about "unsigned drivers" to be displayed by
-          // the OS
-          vista64Bit := (SDUOSVistaOrLater() and SDUOS64bit());
-          // set test mode
-          if vista64Bit then
-            if not SetTestMode(true,true) then cmdExitCode := CMDLINE_EXIT_UNKNOWN_ERROR;
-
-          if driverControlObj.InstallMultipleDrivers(
-                                                     driverFilenames,
-                                                     FALSE,
-                                                     not(silent),
-                                                     not(vista64Bit)
-                                                    ) then
-            begin
-
-            // If Vista x64, we tell the user to reboot. That way, the drivers
-            // will be started up on boot - and the user won't actually see
-            // any stupid warning messages about "unsigned drivers"
-            if (
-                vista64Bit and
-                not(silent)
-               ) then
-              begin
-              SDUMessageDlg(
-                            _('IMPORTANT: Please reboot before using DoxBox.'),
-                            mtInformation
-                           );
-              end;
-            end else
-            begin
-              cmdExitCode := CMDLINE_EXIT_UNKNOWN_ERROR;
-            end;
-          end;
-
-      finally
-        driverFilenames.Free();
-      end;
-
+        cmdExitCode := InstallAllDrivers(driverControlObj,silent);
       end
     else
       begin
@@ -3265,7 +3344,7 @@ var
   cmdExitCode: integer;
   paramValue: string;
   driveUninstallResult: DWORD;
-    vista64Bit: boolean;
+//    vista64Bit: boolean;
 begin
   cmdExitCode := CMDLINE_EXIT_INVALID_CMDLINE;
 
@@ -3275,9 +3354,9 @@ begin
     if (uppercase(trim(paramValue)) = uppercase(CMDLINE_ALL)) then
       begin
       cmdExitCode := CMDLINE_SUCCESS;
-      vista64Bit := (SDUOSVistaOrLater() and SDUOS64bit());
+//      vista64Bit := (SDUOSVistaOrLater() and SDUOS64bit());
       // set test mode off
-      if vista64Bit then if not SetTestMode(true,false) then cmdExitCode := CMDLINE_EXIT_UNKNOWN_ERROR;
+      // if vista64Bit then if not SetTestMode(true,false) then cmdExitCode := CMDLINE_EXIT_UNKNOWN_ERROR;
 
       if not driverControlObj.UninstallAllDrivers(FALSE) then
         begin
@@ -3418,6 +3497,57 @@ begin
   Result := cmdExitCode;
 end;
 
+// Handle "/settestmode" command line
+// Returns: Exit code
+function TfrmFreeOTFEMain.HandleCommandLineOpts_SetTestMode(): integer;
+var
+  paramValue: string;
+  setOn: boolean;
+  SigningOS,silent :boolean;
+begin
+  Result := CMDLINE_EXIT_INVALID_CMDLINE;
+
+  if SDUCommandLineParameter(CMDLINE_SET_TESTMODE, paramValue) then
+    begin
+    Result := CMDLINE_SUCCESS;
+
+    setOn := false;
+    if (uppercase(paramValue) = uppercase(CMDLINE_ON)) then         setOn := true
+    else if (uppercase(paramValue) <> uppercase(CMDLINE_OFF)) then  Result := CMDLINE_EXIT_INVALID_CMDLINE;
+
+    if Result = CMDLINE_SUCCESS then
+      begin
+      SigningOS := (SDUOSVistaOrLater() and SDUOS64bit());
+      silent  := SDUCommandLineSwitch(CMDLINE_SILENT);
+      if SigningOS then
+        begin
+        if not SetTestMode(silent,setOn) then Result := CMDLINE_EXIT_UNABLE_TO_SET_TESTMODE;
+        end
+      else
+        begin
+        if not silent then SDUMessageDlg(_('This version of Windows does not support test mode'), mtError, [mbOK], 0);
+        end;
+      end;                
+  end
+end;
+
+
+// Handle "/SetInstalled" command 
+// Returns: Exit code
+function TfrmFreeOTFEMain.HandleCommandLineOpts_SetInstalled(): integer;
+var
+  paramValue: string;
+  setOn: boolean;
+begin
+  Result := CMDLINE_EXIT_INVALID_CMDLINE;
+
+  if SDUCommandLineSwitch(CMDLINE_SET_INSTALLED) then
+    begin
+    Result := CMDLINE_SUCCESS;  
+    
+    if not SetInstalled() then Result := CMDLINE_EXIT_UNABLE_TO_SET_INSTALLED;
+    end;
+end;
 
 // Handle "/create" command line
 // Returns: Exit code
@@ -3495,55 +3625,75 @@ var
   ignoreParams: integer;
   settingsFile: string;
 begin
-  cmdExitCode := CMDLINE_EXIT_INVALID_CMDLINE;
+  cmdExitCode := CMDLINE_SUCCESS;
 
   AllowUACEsclation := not(SDUCommandLineSwitch(CMDLINE_NOUACESCALATE));
+// todo: a lot of repirition here bc HandleCommandLineOpts_ fns also call  SDUCommandLineParameter
+//todo: 'else' statements mean one cmd per call - allow compatible ones at same time
 
-  // Driver control dialog
-  if SDUCommandLineSwitch(CMDLINE_DRIVERCONTROL) then
+//these cmds at least  are independent of others
+  if SDUCommandLineParameter(CMDLINE_SET_TESTMODE, paramValue) then
     begin
-    cmdExitCode := HandleCommandLineOpts_DriverControl();
-    end
-  // Portable mode on/off...
-  else if SDUCommandLineParameter(CMDLINE_PORTABLE, paramValue) then
+    cmdExitCode := HandleCommandLineOpts_SetTestMode();
+    end;
+  if cmdExitCode = CMDLINE_SUCCESS then
     begin
-    cmdExitCode := HandleCommandLineOpts_Portable();
-    end
-  else if SDUCommandLineParameter(CMDLINE_DRIVERCONTROL, paramValue) then
-    begin
-    cmdExitCode := HandleCommandLineOpts_DriverControl();
-    end
-  else
-    begin
-    // All command line options below require FreeOTFE to be active before they
-    // can be used
-    if not(ActivateFreeOTFEComponent(TRUE)) then
+    if SDUCommandLineSwitch(CMDLINE_SET_INSTALLED) then
       begin
-      cmdExitCode := CMDLINE_EXIT_UNABLE_TO_CONNECT;
+        cmdExitCode := HandleCommandLineOpts_SetInstalled();
       end
+    end ;
+    
+    
+if cmdExitCode = CMDLINE_SUCCESS then 
+  begin
+      
+     cmdExitCode := CMDLINE_EXIT_INVALID_CMDLINE; 
+    // Driver control dialog
+    if SDUCommandLineSwitch(CMDLINE_DRIVERCONTROL) then
+      begin
+      cmdExitCode := HandleCommandLineOpts_DriverControl();
+      end
+    // Portable mode on/off...
+    else if SDUCommandLineParameter(CMDLINE_PORTABLE, paramValue) then
+      begin
+      cmdExitCode := HandleCommandLineOpts_Portable();
+      end
+    else if SDUCommandLineParameter(CMDLINE_DRIVERCONTROL, paramValue) then
+      begin
+      cmdExitCode := HandleCommandLineOpts_DriverControl();
+      end  
     else
       begin
-      if SDUCommandLineSwitch(CMDLINE_COUNT) then
+      // All command line options below require FreeOTFE to be active before they
+      // can be used
+      if not(ActivateFreeOTFEComponent(TRUE)) then
         begin
-        cmdExitCode := HandleCommandLineOpts_Count();
+        cmdExitCode := CMDLINE_EXIT_UNABLE_TO_CONNECT;
         end
-      else if SDUCommandLineSwitch(CMDLINE_CREATE) then
+      else
         begin
-        cmdExitCode := HandleCommandLineOpts_Create();
-        end
-      else if SDUCommandLineSwitch(CMDLINE_MOUNT) then
-        begin
-        cmdExitCode := HandleCommandLineOpts_Mount();
-        end
-      else if SDUCommandLineParameter(CMDLINE_DISMOUNT, paramValue) then
-        begin
-        cmdExitCode := HandleCommandLineOpts_Dismount();
+        if SDUCommandLineSwitch(CMDLINE_COUNT) then
+          begin
+          cmdExitCode := HandleCommandLineOpts_Count();
+          end
+        else if SDUCommandLineSwitch(CMDLINE_CREATE) then
+          begin
+          cmdExitCode := HandleCommandLineOpts_Create();
+          end
+        else if SDUCommandLineSwitch(CMDLINE_MOUNT) then
+          begin
+          cmdExitCode := HandleCommandLineOpts_Mount();
+          end
+        else if SDUCommandLineParameter(CMDLINE_DISMOUNT, paramValue) then
+          begin
+          cmdExitCode := HandleCommandLineOpts_Dismount();
+          end;
+  
+        DeactivateFreeOTFEComponent();
         end;
-
-      DeactivateFreeOTFEComponent();
       end;
     end;
-
   // Notice: CMDLINE_MINIMIZE handled in the .dpr
 
   // Return TRUE if there were no parameters specified on the command line
@@ -3807,62 +3957,17 @@ procedure TfrmFreeOTFEMain.actInstallExecute(Sender: TObject);
 var
   driverControlObj: TOTFEFreeOTFEDriverControl;
 
-      driverFilenames: TStringList;
-        vista64Bit: boolean;
 begin
   inherited;
+          driverControlObj := TOTFEFreeOTFEDriverControl.Create();
+        try
+          driverControlObj.Silent := SDUCommandLineSwitch(CMDLINE_SILENT);
 
+      InstallAllDrivers(driverControlObj,false);
 
-      driverFilenames:= TStringList.Create();
-      try
-        GetAllDriversUnderCWD(driverFilenames);
-
-        if (driverFilenames.count <= 0) then
-          begin
-            MessageDlg('DoxBox failed to install, no drivers', mtError, [mbOK], 0);
-          end
-        else
-          begin
-
-
-          // If under Vista x64, don't autostart the drivers after
-          // installing - this could cause a bunch of *bloody* *stupid*
-          // warning messages about "unsigned drivers" to be displayed by
-          // the OS
-          vista64Bit := (SDUOSVistaOrLater() and SDUOS64bit());
-          // set test mode
-          if vista64Bit then
-            if not SetTestMode(true,true) then MessageDlg('DoxBox failed to install, can''t set test mode', mtError, [mbOK], 0);
-
-          if driverControlObj.InstallMultipleDrivers(
-                                                     driverFilenames,
-                                                     FALSE,
-                                                     true,
-                                                     not(vista64Bit)
-                                                    ) then
-            begin
-
-            // If Vista x64, we tell the user to reboot. That way, the drivers
-            // will be started up on boot - and the user won't actually see
-            // any stupid warning messages about "unsigned drivers"
-            if (
-                vista64Bit
-               ) then
-              begin
-              SDUMessageDlg(
-                            _('IMPORTANT: Please reboot before using DoxBox.'),
-                            mtInformation
-                           );
-              end;
-            end else
-            begin
-              MessageDlg('DoxBox failed to install, can''t install drivers', mtError, [mbOK], 0);
-            end;
+          finally
+            driverControlObj.Free();
           end;
-
-      finally
-        driverFilenames.Free();
-      end;
 
 
 end;

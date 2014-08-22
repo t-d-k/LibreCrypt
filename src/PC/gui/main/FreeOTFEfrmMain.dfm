@@ -3,7 +3,6 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnResize = FormResize
-  ExplicitWidth = 316
   ExplicitHeight = 372
   PixelsPerInch = 96
   TextHeight = 13
@@ -14,7 +13,6 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
   inherited StatusBar_Status: TStatusBar
     Top = 256
     ExplicitTop = 256
-    ExplicitWidth = 300
   end
   object ToolBar1: TToolBar [2]
     Left = 0
@@ -108,7 +106,6 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
   inherited StatusBar_Hint: TStatusBar
     Top = 237
     ExplicitTop = 237
-    ExplicitWidth = 300
   end
   inherited mmMain: TMainMenu
     inherited File1: TMenuItem
@@ -172,7 +169,10 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
         Caption = 'Install DoxBox Drivers'
       end
       object SetTestMode1: TMenuItem
-        Action = actTestMode
+        Action = actTestModeOn
+      end
+      object DisallowTestsigneddrivers1: TMenuItem
+        Action = actTestModeOff
       end
     end
   end
@@ -246,9 +246,13 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
       Hint = 'Hide console'
       OnExecute = actConsoleHideExecute
     end
-    object actTestMode: TAction
+    object actTestModeOff: TAction
+      Caption = 'Disallow Test-signed drivers'
+      OnExecute = actTestModeOffExecute
+    end
+    object actTestModeOn: TAction
       Caption = 'Allow Test-signed drivers'
-      OnExecute = actTestModeExecute
+      OnExecute = actTestModeOnExecute
     end
     object actInstall: TAction
       Caption = 'Install DoxBox'
@@ -257,7 +261,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
   end
   inherited ilToolbarIcons_Small: TImageList
     Bitmap = {
-      494C010111001300580010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010111001300780010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -926,7 +930,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
   end
   inherited ilToolbarIcons_Large: TImageList
     Bitmap = {
-      494C010111001300580018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010111001300780018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000078000000010020000000000000B4
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2459,8 +2463,8 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
   end
   object pmSystemTray: TPopupMenu
     Images = ilToolbarIcons_Small
-    Left = 284
-    Top = 132
+    Left = 252
+    Top = 180
     object mmRecentlyMounted: TMenuItem
       Caption = '&Recently mounted'
     end
@@ -2506,7 +2510,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     Left = 12
     Top = 164
     Bitmap = {
-      494C010102000400500020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400700020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000002000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
