@@ -102,14 +102,14 @@ kdb = main link with png
 var = title
 
 */
-div[itemtype="title"] {
+var{
   font-size: xx-large;
   font-weight: bold;
   display:block;
   text-align:center;
 }
 
-div[itemtype="main-link"] {
+kdb {
   color: #000000; 
   font-size: xx-large;
   font-weight: bold;
@@ -118,7 +118,7 @@ div[itemtype="main-link"] {
   display:block;
 }
 
-div[itemtype="download-group"]{
+samp{
 	display:inline; 
 	position: absolute;
 	right: 100px;
