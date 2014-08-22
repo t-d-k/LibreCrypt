@@ -868,7 +868,7 @@ function SDUVersionCompareWithBetaFlag(
 // Pause for the given number of ms
 procedure SDUPause(delayLen: integer);
 // Execute the specified commandline and return when the command line returns
-function  SDUWinExecAndWait32(cmdLine: string; cmdShow: integer; workDir: string = ''): cardinal;
+function  SDUWinExecAndWait32(cmdLine: string; cmdShow: integer; workDir: string = '';appName:string=''): cardinal;
 // Returns the control within parentControl which has the specified tag value
 function  SDUGetControlWithTag(tag: integer; parentControl: TControl): TControl;
 // Search out and return the first control found which has ".FocusControl" set
@@ -969,6 +969,8 @@ function SDULoadFontFromReg(rootKey: HKEY; fontKey: string; name: string; font: 
 //replaces any subst/mapping
 function SDUGetFinalPath(path :string): string;
 
+function SDUGetSystemDirectory(): string;
+
 implementation
 
 uses
@@ -994,7 +996,8 @@ uses
   SDUWindows64,
   SDUSpin64Units,
   xmldom, // Required for IDOMDocument, etc
-  XMLdoc; // Required for TXMLDocument
+  XMLdoc,  // Required for TXMLDocument
+  IOUtils; // for  TFile.ReadAllText
 
 
 const
@@ -1805,7 +1808,7 @@ end;
 //                ShowWindow function
 // [IN] workDir - the working dir of the cmdLine (default is ""; no working dir)
 // Returns: The return value of the command, or $FFFFFFFF on failure
-function SDUWinExecAndWait32(cmdLine: string; cmdShow: integer; workDir: string = ''): cardinal;
+function SDUWinExecAndWait32(cmdLine: string; cmdShow: integer; workDir: string = '';appName:string=''): cardinal;
 var
   zAppName:array[0..512] of char;
 //  zCurDir:array[0..255] of char;
@@ -1813,7 +1816,8 @@ var
   StartupInfo:TStartupInfo;
   ProcessInfo:TProcessInformation;
   retVal: DWORD;
-  pWrkDir: PChar;
+  pWrkDir: PWideChar;
+  pAppName: PWideChar;
 begin
   retVal := $FFFFFFFF;
 
@@ -1829,8 +1833,10 @@ begin
     begin
     pWrkDir := PChar(workDir);
     end;
+   pAppName   := nil;
+if  appName<>'' then  pAppName  :=   PWidechar(appName);
 
-  if CreateProcess(nil,
+  if CreateProcess(pAppName,
                    zAppName,              { pointer to command line string }
                    nil,                   { pointer to process security attributes }
                    nil,                   { pointer to thread security attributes }
@@ -3451,6 +3457,7 @@ var
   ifMalloc: IMalloc;
 begin
   retVal := '';
+  //todo: use SHGetKnownFolderPath instead
   if Succeeded((SHGetSpecialFolderLocation(0, CSIDL, pidl))) then
     begin
     if (SHGetPathFromIDList(pidl, retVal)) then
@@ -6608,7 +6615,10 @@ var
   xml: string;
 begin
   retval := tgFailure;
-
+{$IFDEF FORCE_LOCAL_PAD}
+     xml     := TFile.ReadAllText(url);
+      retval := tgOK;
+   {$ELSE}
   if ShowProgressDlg then
     begin
     retval := SDUGetURLProgress_WithUserAgent(
@@ -6626,6 +6636,8 @@ begin
       end;
     end;
 
+
+   {$ENDIF}
   if (retval = tgOK) then
     begin
     if not(SDUGetPADFileVersionInfo_XML(
