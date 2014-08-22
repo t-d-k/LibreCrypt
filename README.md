@@ -8,15 +8,6 @@
 _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
 
-<DIV class="download-group">
-<BUTTON class="download">
-[Download]()
-</BUTTON> 
-<BUTTON class="download-alt">
-[Download DoxBox Portable]()
-</BUTTON>
-</DIV>
-
 ##	Features
 
 * Easy to use, with a 'wizard' for creating new 'DoxBoxes'.
