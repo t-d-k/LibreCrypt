@@ -109,7 +109,7 @@ var {
   text-align:center;
 }
 
-kbd {
+DIV[itemtype="main-link"] {
   color: #000000; 
   font-size: xx-large;
   font-weight: bold;
