@@ -43,7 +43,6 @@ contains
   SDUClasses in 'SDeanUtils\SDUClasses.pas',
   SDUClipbrd in 'SDeanUtils\SDUClipbrd.pas',
   SDUComCtrls in 'SDeanUtils\SDUComCtrls.pas',
-  SDUDialogs in 'SDeanUtils\SDUDialogs.pas',
   SDUDirIterator_U in 'SDeanUtils\SDUDirIterator_U.pas',
   SDUDiskPartitionsPanel in 'SDeanUtils\SDUDiskPartitionsPanel.pas',
   SDUDiskPropertiesDlg in 'SDeanUtils\SDUDiskPropertiesDlg.pas' {SDUDiskPropertiesDialog},
@@ -151,6 +150,7 @@ contains
   OTFEConsts_U in 'OTFE\OTFE\OTFEConsts_U.pas',
   MouseRNG in 'SDeanSecurity\MouseRNG\MouseRNG.pas',
   MouseRNGCaptureDlg_U in 'SDeanSecurity\MouseRNGDialog\MouseRNGCaptureDlg_U.pas' {MouseRNGCaptureDlg},
-  MouseRNGDialog_U in 'SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas';
+  MouseRNGDialog_U in 'SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas',
+  SDUDialogs in 'SDeanUtils\SDUDialogs.pas';
 
 end.

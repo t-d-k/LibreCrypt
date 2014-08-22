@@ -105,7 +105,6 @@
 			<DCCReference Include="SDeanUtils\SDUClasses.pas"/>
 			<DCCReference Include="SDeanUtils\SDUClipbrd.pas"/>
 			<DCCReference Include="SDeanUtils\SDUComCtrls.pas"/>
-			<DCCReference Include="SDeanUtils\SDUDialogs.pas"/>
 			<DCCReference Include="SDeanUtils\SDUDirIterator_U.pas"/>
 			<DCCReference Include="SDeanUtils\SDUDiskPartitionsPanel.pas"/>
 			<DCCReference Include="SDeanUtils\SDUDiskPropertiesDlg.pas">
@@ -296,6 +295,7 @@
 				<Form>MouseRNGCaptureDlg</Form>
 			</DCCReference>
 			<DCCReference Include="SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas"/>
+			<DCCReference Include="SDeanUtils\SDUDialogs.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
@@ -345,20 +345,21 @@
 					</VersionInfoKeys>
 					<Excluded_Packages>
 						<Excluded_Packages Name="C:\Program Files (x86)\Raize\CS5\Bin\CodeSiteExpressPkg_Design160.bpl">CodeSite Express 5.1</Excluded_Packages>
-						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\9.0\Bpl\SnoopPck.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dclIndyProtocols160.bpl">Indy 10 Protocols Design Time</Excluded_Packages>
+						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdplugin160.bpl">LMD 2014 - Common PlugIn Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdprint160.bpl">LMD 2014 - Common PrintPack Components</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dcltee9160.bpl">TeeChart Standard VCL Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\9.0\Bpl\SnoopPck.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\9.0\Bpl\RETSComponentsXE2.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dclFMXtee9160.bpl">TeeChart Standard FMX Components</Excluded_Packages>
-						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdplugin160.bpl">LMD 2014 - Common PlugIn Components</Excluded_Packages>
 						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdinspector160.bpl">LMD 2014 - LMD-Tools InspectorPack Components</Excluded_Packages>
 						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdthemes160.bpl">LMD 2014 - Common ThemesPack Components</Excluded_Packages>
 						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmddocking160.bpl">LMD 2014 - LMD-Tools DockingPack Components</Excluded_Packages>
 						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmddialog160.bpl">LMD 2014 - LMD-Tools DialogPack Desingtime Enhancements</Excluded_Packages>
-						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdprint160.bpl">LMD 2014 - Common PrintPack Components</Excluded_Packages>
 						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdeldb160.bpl">LMD 2014 - ElPack Database Components</Excluded_Packages>
 						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdelpro160.bpl">LMD 2014 - ElPack Professional Components</Excluded_Packages>
 						<Excluded_Packages Name="C:\Apps\TMS Component Pack\DelphiXE2\TMSWizDXE2.bpl">TMS Component Pack Wizards</Excluded_Packages>
+						<Excluded_Packages Name="C:\Program Files (x86)\FastReports\LibD16\dclfrxDB16.bpl">FastReport 4.0 DB Components</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dclIPIndyImpl160.bpl">IP Abstraction Indy Implementation Design Time</Excluded_Packages>
 						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdelcore160.bpl">LMD 2014 - ElPack Core Components</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
