@@ -1,7 +1,14 @@
 <LINK href="docs/styles_common.css" rel="stylesheet" type="text/css">
 <LINK rel="shortcut icon" href="src/Common/Common/images/DoxBox.ico" type="image/x-icon">
-
-<kdb>
+<style>
+var{
+  font-size: xx-large;
+  font-weight: bold;
+  display:block;
+  text-align:center;
+}
+</style>
+<DIV style="text-align:center;">
 
 [![DoxBox logo](src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 
