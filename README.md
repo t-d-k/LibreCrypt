@@ -7,18 +7,18 @@
 
 </DIV>
 
-<var>
+<DIV ITEMTYPE="title">
 _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
-</var>
+</DIV>
 
-<SAMP>
+<DIV ITEMTYPE="download-group">
 <INS>
 [Download]()
 </INS> 
 <DEL>
 [Download DoxBox Portable]()
 </DEL>
-</SAMP>
+</DIV>
 
 ##	Features
 
