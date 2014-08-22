@@ -5,9 +5,12 @@
 [![DoxBox logo](src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 </SPAN>
 <DIV>
+
 <SPAN CLASS="master_title">
-[DoxBox](http://DoxBox.squte.com/)
+
+[DoxBox](DoxBox.squte.com)
 : _Open-Source disk encryption for Windows_
+
 </SPAN>
 
 <FORM class="download-group">
