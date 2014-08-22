@@ -109,7 +109,7 @@ var {
   text-align:center;
 }
 
-DIV[itemtype="main-link"] {
+div[itemtype="main-link"] {
   color: #000000; 
   font-size: xx-large;
   font-weight: bold;
