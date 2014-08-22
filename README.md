@@ -1,18 +1,22 @@
 <LINK href="docs/styles_common.css" rel="stylesheet" type="text/css">
 <LINK rel="shortcut icon" href="src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
-<kbd>
+<DIV itemtype="main-link">
 [![DoxBox logo](src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
-</kbd>
+</DIV>
 
 <var>
 _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </var>
 
-<samp>
-<ins>[Download]()</ins> 
-<del>[Download DoxBox Portable]()</del>
-</samp>
+<SAMP>
+<INS>
+[Download]()
+</INS> 
+<DEL>
+[Download DoxBox Portable]()
+</DEL>
+</SAMP>
 
 ##	Features
 
