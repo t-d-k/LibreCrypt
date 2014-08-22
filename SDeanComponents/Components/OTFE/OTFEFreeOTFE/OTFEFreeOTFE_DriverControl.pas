@@ -41,14 +41,14 @@ type
   TOTFEFreeOTFEDriverControl = class
   private
     FSilent: boolean;
-    SCManager: SC_HANDLE;
+//    SCManager: SC_HANDLE;
 
     function  _MsgDlg(Content: string; DlgType: TMsgDlgType): integer;
 
     function  FreeOTFEOpenService(
                                   service: string;
                                   var serviceHandle: SC_HANDLE
-                                 ): boolean; 
+                                 ): boolean;
     procedure FreeOTFECloseService(serviceHandle: SC_HANDLE);
 
     // Open the Service Control Manager
@@ -132,14 +132,20 @@ const
   // Flag registry key to indicate if driver was installed in portable mode
   REG_PORTABLE_MODE   = 'InstalledPortable';
 
+var
+{windows 7 doesnt like opeing and closing it too much - get 'invalid handle error', so reuse
+  where pos -except when expliclty closed
+}
+{ TODO -otdk -crefactor : better make TOTFEFreeOTFEDriverControl singleton }
 
+    uSCManager: SC_HANDLE = 0;
 
 // ----------------------------------------------------------------------------
 constructor TOTFEFreeOTFEDriverControl.Create();
 begin
   FSilent := FALSE;
 
-  SCManager := 0;
+if uSCManager = 0 then
   if not(SCManagerOpen()) then
     begin
     raise EFreeOTFENeedAdminPrivs.Create(
@@ -155,8 +161,8 @@ end;
 // ----------------------------------------------------------------------------
 destructor TOTFEFreeOTFEDriverControl.Destroy();
 begin
-  SCManagerClose();
-
+ {  dont call SCManagerClose();  - see comment for uSCManager.
+    this isnt a resource leak bc CreateService doesnt actually create anything - only gets handle}
   inherited;
 end;
 
@@ -174,7 +180,7 @@ var
 begin
   retVal := FALSE;
 
-  if (SCManager<>0) then
+  if (uSCManager<>0) then
     begin
     serviceHandle := 0;
     if (FreeOTFEOpenService(service, serviceHandle)) then
@@ -238,13 +244,13 @@ var
 begin
   retVal := TRUE;
 
-  if (SCManager<>0) then
+  if (uSCManager<>0) then
     begin
     resumeHandle:= 0;
     serviceList:= nil;
 
     EnumServicesStatus(
-                       SCManager,  // handle to service control manager database
+                       uSCManager,  // handle to service control manager database
                        SERVICE_DRIVER,  // type of services to enumerate
                        serviceState,  // state of services to enumerate
                        serviceList[0],  // pointer to service status buffer
@@ -260,7 +266,7 @@ begin
       resumeHandle:= 0;
 
       if EnumServicesStatus(
-                            SCManager,  // handle to service control manager database
+                            uSCManager,  // handle to service control manager database
                             SERVICE_DRIVER,  // type of services to enumerate
                             serviceState,  // state of services to enumerate
                             serviceList[0],  // pointer to service status buffer
@@ -309,7 +315,7 @@ begin
   retVal := FALSE;
   X := nil;
 
-  if (SCManager<>0) then
+  if (uSCManager<>0) then
     begin
     serviceHandle := 0;
     if (FreeOTFEOpenService(service, serviceHandle)) then
@@ -432,7 +438,7 @@ begin
   if FreeOTFEOpenService(service, serviceHandle) then
     begin
     lock := LockServiceDatabase(
-                                SCManager  // handle of service control manager database
+                                uSCManager  // handle of service control manager database
                                );
     try
       retVal := ChangeServiceConfig(
@@ -731,34 +737,33 @@ begin
       retVal := retVal AND DRIVER_BIT_ALREADY_INSTALLED;
       allOK := FALSE;
       end;
-
     end;
 
+  // convert mapped drives to unmapped here because admin cant access drives mapped by another user
+  finalFileName := SDUGetFinalPath(filename);
   if (allOK) then
     begin
     // Copy the new driver over to the <windows>\system32\drivers dir...
     // DO NOT DO THIS IF THE DRIVER IS BEING INSTALLED IN PORTABLE MODE!!!
     if not(portableMode) then
       begin
-      allOK := InstallDriverFile(filename, installedFilename);
-      filename := installedFilename;
+      allOK := InstallDriverFile(finalFileName, installedFilename);
+      finalFileName := installedFilename;
       if not(allOK) then
         begin
         retVal := retVal OR DRIVER_BIT_CANT_INSTALL_FILE;
         end;
-
       end;
-
     end;
 
 
   if (allOK) then
     begin
+
+
     // Create the service...
-    // convert mapped drives to unmapped here because admin cant access drives mapped by another user
-    finalFileName := SDUGetFinalPath(filename);
     newServiceHandle := CreateService(
-                                      SCManager,  // handle to service control manager database
+                                      uSCManager,  // handle to service control manager database
                                       PChar(driverName),  // pointer to name of service to start
                                       PChar(driverName),  // pointer to display name
                                       SERVICE_ALL_ACCESS,  // type of access to service
@@ -788,11 +793,13 @@ begin
 
       // Close and reopen the SC Manager handle to ensure that it notices any
       // changes...
-// xxx - IS THIS *REALLY* NEEDED???
+      { TODO -otdk -cinvestigate : IS THIS *REALLY* NEEDED }
       SCManagerClose();
       SCManagerOpen();
 
       retVal := retVal OR DRIVER_BIT_SUCCESS;
+      end else begin
+        MessageDlg(_('Service start failed: ')+SysErrorMessage(GetLastError), mtError, [mbOK], 0);
       end;
     end;  // if allOK
 
@@ -809,7 +816,8 @@ var
   changeFSRedirect: boolean;
   fsRedirectOldValue:  Pointer;
 begin
-  destFilename := SDUGetSpecialFolderPath(CSIDL_SYSTEM)+'\'+ExtractFilename(driverFilename);
+ destFilename := SDUGetSpecialFolderPath(CSIDL_SYSTEM)+'\'+ExtractFilename(driverFilename);
+//  destFilename := 'C:\Windows\sysnative\'+ExtractFilename(driverFilename);
 
   if (driverFilename = destFilename) then
     begin
@@ -842,18 +850,17 @@ function TOTFEFreeOTFEDriverControl.SCManagerOpen(): boolean;
 var
   allOK: boolean;
 begin
-  if (SCManager<>0) then
+  if (uSCManager<>0) then
     begin
     SCManagerClose();
     end;
-
-  SCManager := OpenSCManager(
+  uSCManager := OpenSCManager(
                              nil,                   // pointer to machine name string
                              nil,                   // pointer to database name string
                              SC_MANAGER_ALL_ACCESS  // type of access
                             );
 
-  allOK := (SCManager <> 0);
+  allOK := (uSCManager <> 0);
 
   Result := allOK;
 end;
@@ -862,9 +869,10 @@ end;
 // Close the Service Control Manager
 procedure TOTFEFreeOTFEDriverControl.SCManagerClose();
 begin
-  if (SCManager<>0) then
+  if (uSCManager<>0) then
     begin
-    CloseServiceHandle(SCManager);
+    CloseServiceHandle(uSCManager);
+    uSCManager := 0;   //tdk change
     end;
 
 end;
@@ -882,10 +890,10 @@ var
 begin
   retVal := FALSE;
 
-  if (SCManager<>0) then
+  if (uSCManager<>0) then
     begin
     serviceHandle := OpenService(
-                                 SCManager,            // handle to service control manager database
+                                 uSCManager,            // handle to service control manager database
                                  PChar(service),       // pointer to name of service to start
                                  SERVICE_ALL_ACCESS  // type of access to service
                                 );
