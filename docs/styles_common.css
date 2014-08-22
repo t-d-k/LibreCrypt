@@ -93,23 +93,22 @@ table.note {
 } 
 
 /*
-fscking github doesnt let you use ID or class attributes and even blacklists 'span' (wtf?)
-so have to use little used tags to mark classes
+
 ins=download button,
 del=download-alt button,  
-samp=download-group
-kdb = main link with png
-var = title
+download-group
+master_link = main link with png
+master_title = title
 
 */
-var{
+.master_title{
   font-size: xx-large;
   font-weight: bold;
   display:block;
   text-align:center;
 }
 
-kdb {
+.master_link {
   color: #000000; 
   font-size: xx-large;
   font-weight: bold;
@@ -118,16 +117,14 @@ kdb {
   display:block;
 }
 
-samp{
+.download-group{
 	display:inline; 
 	position: absolute;
 	right: 100px;
 	top: 20px;
-	text-transform:none;
-	font-family:serif;
 }
 
-ins,del{
+.download,.download-alt{
 	background:limegreen;
 	width: 200px;
 	
@@ -136,19 +133,19 @@ ins,del{
 	vertical-align: middle;
 	display:block;
 	padding:0.5em;
-	margin:20px;
+	margin:10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;    
 }
 
-ins  {
+.download  {
 	min-height:60px;
 	font-size: xx-large;
 	text-transform:none;
    	text-decoration: none;
 }
-del {	
+.download-alt {	
 	font-size: small;
 	text-transform:none;
 	text-decoration: none;
