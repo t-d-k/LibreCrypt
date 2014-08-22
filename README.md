@@ -6,7 +6,8 @@
 </SPAN>
 <DIV>
 <SPAN CLASS="master_title">
-[_DoxBox_](http://DoxBox.squte.com/): _Open-Source disk encryption for Windows_
+[DoxBox](http://DoxBox.squte.com/)
+: _Open-Source disk encryption for Windows_
 </SPAN>
 
 <FORM class="download-group">
