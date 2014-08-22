@@ -1,8 +1,10 @@
 <LINK href="docs/styles_common.css" rel="stylesheet" type="text/css">
 <LINK rel="shortcut icon" href="src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
-<DIV itemtype="main-link">
+<DIV ITEMTYPE="main-link">
+
 [![DoxBox logo](src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
+
 </DIV>
 
 <var>
