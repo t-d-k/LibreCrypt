@@ -8,11 +8,12 @@ var{
   text-align:center;
 }
 </style>
+
 <DIV style="text-align:center;">
 
 [![DoxBox logo](src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 
-</kdb>
+</DIV>
 
 <var>
 _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
