@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -12,16 +12,16 @@
 
 <link href="./styles_common.css" rel="stylesheet" type="text/css">
 
-<link rev="made" href="mailto:sdean12@sdean12.org">
-<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](./images/FreeOTFE.gif)](http://DoxBox.squte.com/)
-[DoxBox](http://DoxBox.squte.com/)
+[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
+***
 
       
             
@@ -46,11 +46,11 @@ _IMPORTANT_: This is obvious, _but_... If you are using FTP to transfer your Lin
 ### Creating Linux Volumes
 </A>
 
-_*IMPORTANT: *Ifyou select the wrong options when creating a Linux volume usingFreeOTFE, you will not be able to read it under Linux! (Although this is patently obvious, there are some people who...!)*NOTE:* At time of writing (17th July 2005), although FreeOTFE can read and write LUKS volumes, it cannot create them itself._
+_*IMPORTANT: *Ifyou select the wrong options when creating a Linux volume usingDoxBox, you will not be able to read it under Linux! (Although this is patently obvious, there are some people who...!)*NOTE:* At time of writing (17th July 2005), although DoxBox can read and write LUKS volumes, it cannot create them itself._
 
 To create a new encrypted Linux-compatible volume:
 
-  1. Launch FreeOTFE
+  1. Launch DoxBox
   1. If you are creating a file-based volume (as opposed to an encrypted partition):
   
     2. Select "File | Linux volume | New..."
@@ -103,8 +103,8 @@ To create a new encrypted Linux-compatible volume:
 		
 	
 		
-	1.* Switch back to FreeOTFE, and select "Tools | Overwrite free space..."* Click "Yes" when prompted if you wish to proceed.
-		FreeOTFE will then write pseudorandom data to the drive, which will then be encrypted before being written to the volume file.
+	1.* Switch back to DoxBox, and select "Tools | Overwrite free space..."* Click "Yes" when prompted if you wish to proceed.
+		DoxBox will then write pseudorandom data to the drive, which will then be encrypted before being written to the volume file.
 		
 	
 
@@ -115,7 +115,7 @@ To create a new encrypted Linux-compatible volume:
 
 To create a Linux volume within another volume file:
 
-  1. Create a FreeOTFE/Linux volume as normal, **ensuring that you initialize the volume by mounting it, formatting it, and then overwriting all its free space**.
+  1. Create a DoxBox/Linux volume as normal, **ensuring that you initialize the volume by mounting it, formatting it, and then overwriting all its free space**.
   1. Unmount the "host" volume
   1. Remount the "host" volume, but specify a reasonable offset on the "File options" tab of the Linux mount dialog.
 
@@ -163,7 +163,7 @@ password is **not** simply hashed with RIPEMD-160 - instead, the following proce
   1. This hash is then appended to the first hash to produce 320 bits of data
   1. The appropriate number of bits is taken from the result, and used as the encryption/decryption key.
 
-For this reason, FreeOTFE includes a RIPEMD-160 driver specifically modified ("RIPEMD-160 (Linux; Twice, with A)") to carry out this form of hashing.
+For this reason, DoxBox includes a RIPEMD-160 driver specifically modified ("RIPEMD-160 (Linux; Twice, with A)") to carry out this form of hashing.
 
 (This does not appear to be documented; the above logic was derived from examining "util-linux-2.12p.diff" - one of the files included with loop-AES)
 
@@ -230,7 +230,7 @@ encryption/decryption key used by the cypher:
 
 i.e. This is the same as Cryptoloop uses for its RIPEMD-160 hashing, but is extended to produce a key of arbitrary length, by adding multiple "A" characters to the password and hashing, until a key of the required length is obtained.
 
-FreeOTFE supports this form of key processing, which can be invoked by
+DoxBox supports this form of key processing, which can be invoked by
 selecting the option "Hash with "A"s, if hash output is too short" on
 the Linux mount dialog.
 
@@ -306,7 +306,7 @@ This is made up as follows:
 
 dm-crypt's ESSIV functionality is available with v2.6.10 and later Linux kernels.
 
-The manner in which Linux uses ESSIV differs from FreeOTFE volumes in how the ESSIV encryption key is generated. Both hash the master encryption/decryption key to generate the key used for ESSIV, however dm-crypt uses the full hash output as the ESSIV key. This means that if you have a dm-crypt volume which is encrypted using 256 bit AES, and specify MD5 as the ESSIV hash, the ESSIV process will actually use
+The manner in which Linux uses ESSIV differs from DoxBox volumes in how the ESSIV encryption key is generated. Both hash the master encryption/decryption key to generate the key used for ESSIV, however dm-crypt uses the full hash output as the ESSIV key. This means that if you have a dm-crypt volume which is encrypted using 256 bit AES, and specify MD5 as the ESSIV hash, the ESSIV process will actually use
 AES-128 for creating the "salt" for ESSIV IVs (MD5 generates 128 bit hashes).
 
 It is for this reason, you cannot create a dm-crypt volume under Linux
@@ -319,18 +319,18 @@ doesn't support 512 bit keys, and so dm-crypt fails.
 </A>
 As LUKS is based on dm-crypt, please see also the section above relating to dm-setup.
 
-FreeOTFE supports LUKS to v1.1 of the LUKS specification. This is the latest version at time of writing (2nd December 2007)
+DoxBox supports LUKS to v1.1 of the LUKS specification. This is the latest version at time of writing (2nd December 2007)
 
  
 <SPAN class="tip">
-As well as using the "File | Linux | Mount file/partition..." menu items, LUKS volumes may also be mounted using the main "File | Mount file/partition..." menu items and toolbar buttons. (FreeOTFE detects LUKS volumes by their signature and offers to mount them appropriately)   
+As well as using the "File | Linux | Mount file/partition..." menu items, LUKS volumes may also be mounted using the main "File | Mount file/partition..." menu items and toolbar buttons. (DoxBox detects LUKS volumes by their signature and offers to mount them appropriately)   
 </SPAN>
 
 <A NAME="level_4_heading_6">
 #### ESSIV
 </A>
 
-FreeOTFE supports LUKS with ESSIV, subject to the condition that
+DoxBox supports LUKS with ESSIV, subject to the condition that
 the ESSIV hash used generates hashes with the same, or less, bits than
 the cypher's block size.
 
@@ -357,7 +357,7 @@ encryption cypher used for securing the encrypted disk image.
 Most users will want this option **checked**.
 
 <A NAME="level_4_heading_7">
-#### FreeOTFE Supported LUKS Cyphers
+#### DoxBox Supported LUKS Cyphers
 </A>
 The following table lists compatibility with LUKS cyphers:
 
@@ -372,33 +372,33 @@ The following table lists compatibility with LUKS cyphers:
     <TR>
       <TD>aes</TD>
 
-      <TD>Supported by FreeOTFE.</TD>
+      <TD>Supported by DoxBox.</TD>
     </TR>
     <TR>
       <TD>twofish</TD>
 
-      <TD>Supported by FreeOTFE.</TD>
+      <TD>Supported by DoxBox.</TD>
     </TR>
     <TR>
       <TD>serpent</TD>
 
-      <TD>Supported by FreeOTFE.</TD>
+      <TD>Supported by DoxBox.</TD>
     </TR>
     <TR>
       <TD>cast5</TD>
 
-      <TD>Supported by FreeOTFE.</TD>
+      <TD>Supported by DoxBox.</TD>
     </TR>
     <TR>
       <TD>cast6</TD>
 
-      <TD>Supported by FreeOTFE.</TD>
+      <TD>Supported by DoxBox.</TD>
     </TR>
   </TBODY>
 </TABLE>
 
 <A NAME="level_4_heading_8">
-#### FreeOTFE Supported LUKS Cypher modes
+#### DoxBox Supported LUKS Cypher modes
 </A>
 The following table lists compatibility with LUKS cypher modes:
 
@@ -413,31 +413,31 @@ The following table lists compatibility with LUKS cypher modes:
     <TR>
       <TD>ecb</TD>
 
-      <TD>Not supported by FreeOTFE.  Note: This is a pretty insecure mode - the use of ECB is **highly discouraged**, and FreeOTFE is unlikely to ever support this mode.</TD>
+      <TD>Not supported by DoxBox.  Note: This is a pretty insecure mode - the use of ECB is **highly discouraged**, and DoxBox is unlikely to ever support this mode.</TD>
 
     </TR>
     <TR>
       <TD>cbc-plain</TD>
 
-      <TD>Supported by FreeOTFE.</TD>
+      <TD>Supported by DoxBox.</TD>
 
     </TR>
     <TR>
       <TD>cbc-essiv:**&lt;hash&gt;**</TD>
 
-      <TD>Supported by FreeOTFE</TD>
+      <TD>Supported by DoxBox</TD>
 
     </TR>
     <TR>
       <TD>xts-plain       </TD>
-      <TD>Supported by FreeOTFE</TD>
+      <TD>Supported by DoxBox</TD>
 
     </TR>
   </TBODY>
 </TABLE>
 
 <A NAME="level_4_heading_9">
-#### FreeOTFE Supported LUKS hashes
+#### DoxBox Supported LUKS hashes
 </A>
 The following table lists compatibility with LUKS hashes:
 
@@ -452,22 +452,22 @@ The following table lists compatibility with LUKS hashes:
     <TR>
       <TD>sha1</TD>
 
-      <TD>Supported by FreeOTFE.</TD>
+      <TD>Supported by DoxBox.</TD>
     </TR>
     <TR>
       <TD>sha256</TD>
 
-      <TD>Supported by FreeOTFE.</TD>
+      <TD>Supported by DoxBox.</TD>
     </TR>
     <TR>
       <TD>sha512</TD>
 
-      <TD>Supported by FreeOTFE.</TD>
+      <TD>Supported by DoxBox.</TD>
     </TR>
     <TR>
       <TD>ripemd160</TD>
 
-      <TD>Supported by FreeOTFE.</TD>
+      <TD>Supported by DoxBox.</TD>
     </TR>
   </TBODY>
 </TABLE>
@@ -543,7 +543,7 @@ Further information on Linux volumes may be obtained from:
   </TBODY>
 </TABLE>
 
-Note that for many of the controls on FreeOTFE's Linux mount volume dialog,
+Note that for many of the controls on DoxBox's Linux mount volume dialog,
 the equivalent Cryptoloop ("losetup") parameter for that control is displayed
 in brackets.
 

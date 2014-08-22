@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -12,16 +12,16 @@
 
 <link href="./styles_common.css" rel="stylesheet" type="text/css">
 
-<link rev="made" href="mailto:sdean12@sdean12.org">
-<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](./images/FreeOTFE.gif)](http://DoxBox.squte.com/)
-[DoxBox](http://DoxBox.squte.com/)
+[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
+***
 
       
             
@@ -197,9 +197,7 @@ easily be displayed by clicking button. (Advanced mount options can be
 displayed by default by setting relevant option)
 
     
-    * Password entry dialog is now only dismissed when the volume is
-successfully mounted, or the user cancels the mount when mounting
-a DoxBox
+    * Password entry dialog is now only dismissed when the volume is successfully mounted, or the user cancels the mount when mounting a FreeOTFE volume
 
     
 </UL>
@@ -239,31 +237,17 @@ attempt to auto detect the type of volume used.
 
   * v2.00.00 (18th March 2007)
   <UL>
-    * Implemented support for Windows Vista (although
-previous versions would work under Vista, they had a few minor cosmetic issues under this OS)
-
-    
-    * Added option to allow mounted volumes to be visible to all logged on users, or just the current user
-
-    
-* Added
-option to associate ".vol" files with FreeOTFE, in line with the PDA
-version, and defaulted open/save dialog filters. (Note that you are
-still free to use **any** filename with any filename extension).
-
-* Added ability to store FreeOTFE settings in different places, or not at all if required
-
-    
+    * Implemented support for Windows Vista (although previous versions would work under Vista, they had a few minor cosmetic issues under this OS) 
+    * Added option to allow mounted volumes to be visible to all logged on users, or just the current user 
+    * Added option to associate ".vol" files with FreeOTFE, in line with the PDA version, and defaulted open/save dialog filters. (Note that you are still free to use **any** filename with any filename extension).
+    * Added ability to store FreeOTFE settings in different places, or not at all if required 
     * Updated to automatically prompt user if they want to start portable mode if the main FreeOTFE driver isn't installed/running
-* Added indicator to show portable mode activating* Added ability to combine random number generators (RNGs) when generating random data for new volumes/changing passwords* Added option to start FreeOTFE in portable mode without prompting if no installed drivers are found
-
-    
+    * Added indicator to show portable mode activating* Added ability to combine random number generators (RNGs) when generating random data for new volumes/changing passwords* Added option to start FreeOTFE in portable mode without prompting if no installed drivers are found 
     * Added option to suppress prompting for volume type when volume files are drag 'n' dropped onto FreeOTFE
-    * Added
-additional prompt when creating new volumes to make it clearer when the
-minimum amount of information required had been entered
-* Added option to allow user to specify where their settings should be stored (if they are to be saved)</UL>
-<UL>
+    * Added additional prompt when creating new volumes to make it clearer when the minimum amount of information required had been entered
+    * Added option to allow user to specify where their settings should be stored (if they are to be saved)
+    </UL>
+ <UL>
 * Added
 extra support for "odd" LUKS volumes which don't use the same cypher keylength for IV
 generation as encrypting data (e.g. volumes which use Blowfish-448 for data encryption, and cbc-essiv:sha256
@@ -271,11 +255,7 @@ actually use Blowfish-256 for their ESSIV IVs - this is now supported)
 
     
 * Added detection of (nonstandard) Tiger and Whirlpool hashes when using LUKS volumes* Removed redundant warning about drivers not being started in portable mode when they had been manually installed
-    * Corrected minor cosmetic issue with status bar display* Added OS version ID to human readable CDB dumps* Moved weaker drivers (FreeOTFE4PDAHashNull.dll, FreeOTFE4PDACypherNull.dll
-and FreeOTFE4PDACypherXOR.dll) into a "weak drivers" directory; most
-users shouldn't use these drivers, but they're still included in the
-release if needed
-
+* Corrected minor cosmetic issue with status bar display* Added OS version ID to human readable CDB dumps* Moved weaker drivers (FreeOTFE4PDAHashNull.dll, FreeOTFE4PDACypherNull.dll and FreeOTFE4PDACypherXOR.dll) into a "weak drivers" directory; most users shouldn't use these drivers, but they're still included in the release if needed
   </UL>
 
   * v1.60.00 (28th January 2006)
@@ -296,19 +276,14 @@ release if needed
 
     <UL>
       * Serpent* AES (Gladman library)
-      * RC-6 (Gladman library)
-
-      
-      * Twofish (Gladman library)* MARS (Gladman library; source only pending licence clarification)
+      * RC-6 (Gladman library) 
+      * Twofish (Gladman library)
+      * MARS (Gladman library; source only pending licence clarification)
 
     </UL>
 * Updated to allow volumes to be mounted across networks* Added ability to resize the driver control dialog
-* Corrected fault that prevented LUKS partitions from being mounted* Added
-support for LUKS volumes which use ESSIV, subject to the hashlength of
-the ESSIV hash generating the same number or less bits as the cypher
-used. Note: Although LUKS can create volumes with ESSIV - ESSIV is **not** part of the LUKS specification!
-
-    
+* Corrected fault that prevented LUKS partitions from being mounted
+* Added support for LUKS volumes which use ESSIV, subject to the hashlength of the ESSIV hash generating the same number or less bits as the cypher used. Note: Although LUKS can create volumes with ESSIV - ESSIV is **not** part of the LUKS specification! 
 * Corrected errors that were displayed when a non-admin attempted to access the driver control dialog
 
     
@@ -316,7 +291,8 @@ used. Note: Although LUKS can create volumes with ESSIV - ESSIV is **not** part 
   * v1.00.00 (20th November 2005)
 
   <UL>
-    * Added dismount hotkeys.* Added optional system tray icon (tasktray icon), together with ability to minimize/close FreeOTFE to the system tray.
+    * Added dismount hotkeys.
+    * Added optional system tray icon (tasktray icon), together with ability to minimize/close FreeOTFE to the system tray.
     * Added optional toolbar and statusbar* Added command line support* Improved support for MS Windows XP Themes
     * Switched from Delphi 5 to Delphi 7
 
@@ -325,14 +301,7 @@ used. Note: Although LUKS can create volumes with ESSIV - ESSIV is **not** part 
   * v0.59.00 BETA (29th July 2005)
 
   <UL>
-    * Minor change to FreeOTFE.sys device driver to fix error
-introduced by compiler. Specifically, debug builds work correctly, but
-for release builds the compiler handles the "%" (modulus) operator
-differently for 64 bit arithmetic; calling a kernel function
-("_alldvrm") that doesn't exist in Windows 2000, causing the driver to
-fail to load.
-
-    
+    * Minor change to FreeOTFE.sys device driver to fix error introduced by compiler. Specifically, debug builds work correctly, but for release builds the compiler handles the "%" (modulus) operator differently for 64 bit arithmetic; calling a kernel function ("_alldvrm") that doesn't exist in Windows 2000, causing the driver to fail to load. 
   </UL>
   * v0.58.00 BETA (24th July 2005)
 
@@ -345,19 +314,14 @@ fail to load.
 * v0.57.9900 BETA (8th June 2005 - restricted test release)
     <UL>
       * Added support for encrypted CDs/DVDs
-      * Added support for encrypting disk devices, as well as
-partitions (i.e. You can now encrypt an entire disk, not just
-partitions held on it)
+      * Added support for encrypting disk devices, as well as partitions (i.e. You can now encrypt an entire disk, not just partitions held on it)
     </UL>
   
   * v00.57.00 BETA (28th May 2005)
 
   <UL>
     * Compatibility with Linux volumes improved
-    * Fixed bug found when creating a new volume and storing the
-volume's CDB separately. (The CDB file wasn't being created before the
-CDB was written to it, causing an "Unable to write critical data block"
-error.)
+    * Fixed bug found when creating a new volume and storing the volume's CDB separately. (The CDB file wasn't being created before the CDB was written to it, causing an "Unable to write critical data block" error.)
 
     
   </UL>
@@ -374,9 +338,7 @@ error.)
     * Removed buffering between data transfers to increase reliability.
     * Updated to fix "Format incomplete" problems when formatting as FAT/FAT32 while running under Windows 2000.
     * Added warning to user if an attempt is made to use a volume file created with a later volume format layout ID.
-    * Corrected fault with Windows XP/Windows 2000 differing
-QueryDosDevice behaviour that sometimes prevented FreeOTFE listing all
-cyphers/hash algorithms installed.
+    * Corrected fault with Windows XP/Windows 2000 differing QueryDosDevice behaviour that sometimes prevented FreeOTFE listing all cyphers/hash algorithms installed.
     * Updated to only accept drag 'n dropped files when the drivers are active.
     * Extra checks included to ensure user has at least one hash and cypher driver installed and running.
     * Fixed MB/GB selection in new volume creation.
@@ -389,15 +351,12 @@ cyphers/hash algorithms installed.
   <UL>
     * Fixed major bug causing the main driver to ignore its queue when large amounts of data were written to an encrypted volume.
     * Improved emergency dismount (dismounts faster by cancelling all queued requests to the driver).
-    * Improved progress dialog's responsiveness when overwriting free
-space, preventing it from appearing frozen and giving user a better
-indication of progress.
+    * Improved progress dialog's responsiveness when overwriting free space, preventing it from appearing frozen and giving user a better indication of progress.
     * Fixed minor cosmetic fault on the keyfile creation dialog.
-    * DoxBox creation wizard now gives user more flexibility to specify the sector IV generation method used.
+    * FreeOTFE volume creation wizard now gives user more flexibility to specify the sector IV generation method used.
     * Added support for Linux dm-crypt volumes (e.g. ESSIV).
     * Added progress dialog when creating volume files.
-    * Message shown when FreeOTFE exits and stops portable mode no
-longer displayed, unless there was a problem stopping portable mode.
+    * Message shown when FreeOTFE exits and stops portable mode no longer displayed, unless there was a problem stopping portable mode.
 
     
   </UL>
@@ -409,14 +368,10 @@ longer displayed, unless there was a problem stopping portable mode.
     * Added option to dump critical data block to a human readable file
     * Driver control dialog now indicates state of drivers - making it a **lot** clearer what's happening!
     * Added support for encrypted partitions
-    * User can now change their passwords, and many other DoxBox properties.
+    * User can now change their passwords, and many other FreeOTFE volume properties.
 
     
-    * When volume files
-are mounted and used, their timestamps (created, last accessed and last
-modified) and attributes are recorded. They are then reset on dismount.
-
-    
+    * When volume files are mounted and used, their timestamps (created, last accessed and last modified) and attributes are recorded. They are then reset on dismount. 
     * Volume file timestamps and attributes are reset after dismounting, improving "plausible deniability"
     * Added ability to save settings when mounting Linux volumes
     * Volumes can now be mounted as removable drives (no recycle bin, files deleted directly)
@@ -457,22 +412,8 @@ modified) and attributes are recorded. They are then reset on dismount.
     * Added per-volume IVs
     * Rewrote most of the driver control dialog
     * Critical data block checksum now uses the HMAC of the volume details block, instead of its hash
-    * Fixed
-bug that could cause new volumes to be created with an extra newline
-tacked onto the end of the user's password. If you have problems
-mounting volumes created like this, you should still be able to mount
-them by entering an extra newline (just press &lt;ENTER&gt;) at the end
-of your password.
-    * Fixed bug that caused VolumeFlags to be read back from the volume
-incorrectly. In order to continue support for older (CDB format 1)
-volumes, these volumes will still be read incorrectly, but newer (CDB
-format 2) volumes are processed correctly. To update older volumes to
-use the later CDB format, simply change your password via the "Tools |
-Change volume/keyfile password/details..." menu-item. It is highly
-recommended that you do this anyway, in order to better ensure future
-compatibility
-
-    
+    * Fixed bug that could cause new volumes to be created with an extra newline tacked onto the end of the user's password. If you have problems mounting volumes created like this, you should still be able to mount them by entering an extra newline (just press &lt;ENTER&gt;) at the end of your password.
+    * Fixed bug that caused VolumeFlags to be read back from the volume incorrectly. In order to continue support for older (CDB format 1) volumes, these volumes will still be read incorrectly, but newer (CDB format 2) volumes are processed correctly. To update older volumes to use the later CDB format, simply change your password via the "Tools | Change volume/keyfile password/details..." menu-item. It is highly recommended that you do this anyway, in order to better ensure future compatibility 
     <UL>
 
     </UL>
@@ -481,15 +422,13 @@ compatibility
   * v0.00.02 BETA 1 (11th October 2004)
 
   <UL>
-    * Fix to correct bug with salt handling which prevented FreeOTFE
-volumes from being mounted.
+    * Fix to correct bug with salt handling which prevented FreeOTFE volumes from being mounted.
 
     
   </UL>
   * v0.00.01 BETA 1 (10th October 2004)
   <UL>
-    * First public release for
-compatibility testing
+    * First public release for compatibility testing
   </UL>
 </UL>
 
@@ -579,15 +518,8 @@ as a standard .ZIP file, making installation to a PDA even simpler
   * v2.11.00 (29th June 2007)
 
   <UL>
-    * Added "\" prefix to mountpoint passed to configured explorer
-application when exploring mounted volumes in order to better support
-3rd party software (e.g. Resco Explorer)
-    * Added automatic refresh of FreeOTFE's display if already
-running when a volume is mounted via the commandline/tapping on a
-".vol" file.
-    * Updated to correct minor bug preventing commandline options
-from mounting correctly if no mountpoint is supplied on the commandline.
-
+    * Added "\" prefix to mountpoint passed to configured explorer application when exploring mounted volumes in order to better support 3rd party software (e.g. Resco Explorer)
+    * Added automatic refresh of FreeOTFE's display if already running when a volume is mounted via the commandline/tapping on a ".vol" file. * Updated to correct minor bug preventing commandline options from mounting correctly if no mountpoint is supplied on the commandline.
     
   </UL>
   * v2.10.00 (27th May 2007)
@@ -612,21 +544,16 @@ volume's filename. Mount dialog "mountpoint" control moved to
 
     * Added context menu option to explore mounted volumes, in addition to existing doubletap explore
 
-    * Added option to backup and restore the CDB from volumes with a CDB* Added option to dump critical data block to a human readable file* Added command line support* Added OS version ID to human readable CDB dumps* Moved weaker drivers (FreeOTFE4PDAHashNull.dll, FreeOTFE4PDACypherNull.dll
-and FreeOTFE4PDACypherXOR.dll) into a "weak drivers" directory; most
-users shouldn't use these drivers, but they're still included in the
-release if needed
+    * Added option to backup and restore the CDB from volumes with a CDB* Added option to dump critical data block to a human readable file
+    * Added command line support
+    * Added OS version ID to human readable CDB dumps* Moved weaker drivers (FreeOTFE4PDAHashNull.dll, FreeOTFE4PDACypherNull.dll and FreeOTFE4PDACypherXOR.dll) into a "weak drivers" directory; most users shouldn't use these drivers, but they're still included in the release if needed
 
     </UL>
 * v0.55.00 BETA (4th December 2006)<UL>
 * Corrected error preventing volumes encrypted with the XOR and NULL encryption drivers operating properly* Corrected problem with opening files on some PDAs
-
-    * Redundant drivers moved into separate directory
-
-    * Added further information to documentation with respect to redundant drivers/speeding up the time taken to mount* Added stats report for drivers (developer use only)* FreeOTFE4PDACypherTwofish_HifnCS.dll
-driver removed from PDA binary distribution (driver fails to init
-correctly). Note: Existing volumes can still be mounted and used with
-the remaining two Twofish implementations </UL>
+* Redundant drivers moved into separate directory
+* Added further information to documentation with respect to redundant drivers/speeding up the time taken to mount* Added stats report for drivers (developer use only)* FreeOTFE4PDACypherTwofish_HifnCS.dll driver removed from PDA binary distribution (driver fails to init correctly). Note: Existing volumes can still be mounted and used with the remaining two Twofish implementations 
+</UL>
 * v0.50.00 BETA (11th November 2006)<UL>
 * First public release</UL>
 </UL>

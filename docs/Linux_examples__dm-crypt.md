@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -12,20 +12,20 @@
 
 <link href="./styles_common.css" rel="stylesheet" type="text/css">
 
-<link rev="made" href="mailto:sdean12@sdean12.org">
-<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](./images/FreeOTFE.gif)](http://DoxBox.squte.com/)
-[DoxBox](http://DoxBox.squte.com/)
+[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
+***
 
 ## Linux Examples: dm-crypt
 
-This section gives a series of examples of how to create Linux dm-crypt volumes, and then mount them using FreeOTFE.
+This section gives a series of examples of how to create Linux dm-crypt volumes, and then mount them using DoxBox.
 
 These examples have been
 tested using Fedora Core 3, with a v2.6.11.7 kernel installed; though
@@ -128,31 +128,29 @@ RIPEMD160, using the 32 bit sector IDs as encryption IVs
 
 Creating the volume file under Linux:
 
-<blockquote>
-<pre>
-dd if=/dev/zero of=./volumes/vol_default.vol bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_default.vol
-echo password1234567890ABC | cryptsetup create myMapper /dev/loop0
-dmsetup ls
-dmsetup table
-dmsetup status
-losetup /dev/loop1 /dev/mapper/myMapper 
-mkdosfs /dev/loop1
-mkdir ./test_mountpoint
-mount /dev/loop1 ./test_mountpoint
-cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
-cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
-cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
-cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
-umount ./test_mountpoint
-losetup -d /dev/loop1
-cryptsetup remove myMapper
-losetup -d /dev/loop0
-rm -rf ./test_mountpoint
-</pre>
-</blockquote>
+	
+	dd if=/dev/zero of=./volumes/vol_default.box bs=1K count=100
+	losetup /dev/loop0 ./volumes/vol_default.box
+	echo password1234567890ABC | cryptsetup create myMapper /dev/loop0
+	dmsetup ls
+	dmsetup table
+	dmsetup status
+	losetup /dev/loop1 /dev/mapper/myMapper 
+	mkdosfs /dev/loop1
+	mkdir ./test_mountpoint
+	mount /dev/loop1 ./test_mountpoint
+	cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+	cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+	cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+	cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+	umount ./test_mountpoint
+	losetup -d /dev/loop1
+	cryptsetup remove myMapper
+	losetup -d /dev/loop0
+	rm -rf ./test_mountpoint
 
-Mounting the volume under FreeOTFE:
+
+Mounting the volume under DoxBox:
 
 <OL>
 
@@ -206,64 +204,58 @@ This example demonstrates use of a dm-crypt AES128 volume.
 
 Creating the volume file under Linux:
 
-<blockquote>
-<pre>
-dd if=/dev/zero of=./volumes/vol_aes128.vol bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_aes128.vol
-echo password1234567890ABC | cryptsetup  -c aes -s 128 create myMapper /dev/loop0
-dmsetup ls
-dmsetup table
-dmsetup status
-losetup /dev/loop1 /dev/mapper/myMapper 
-mkdosfs /dev/loop1
-mkdir ./test_mountpoint
-mount /dev/loop1 ./test_mountpoint
-cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
-cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
-cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
-cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
-umount ./test_mountpoint
-losetup -d /dev/loop1
-cryptsetup remove myMapper
-losetup -d /dev/loop0
-rm -rf ./test_mountpoint
-</pre>
-</blockquote>
+	dd if=/dev/zero of=./volumes/vol_aes128.box bs=1K count=100
+	losetup /dev/loop0 ./volumes/vol_aes128.box
+	echo password1234567890ABC | cryptsetup  -c aes -s 128 create myMapper /dev/loop0
+	dmsetup ls
+	dmsetup table
+	dmsetup status
+	losetup /dev/loop1 /dev/mapper/myMapper 
+	mkdosfs /dev/loop1
+	mkdir ./test_mountpoint
+	mount /dev/loop1 ./test_mountpoint
+	cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+	cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+	cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+	cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+	umount ./test_mountpoint
+	losetup -d /dev/loop1
+	cryptsetup remove myMapper
+	losetup -d /dev/loop0
+	rm -rf ./test_mountpoint
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
-<OL>
+1. Select "Linux | Mount..."
+1. Select the volume file
+1. "Key" tab:
 
-* Select "Linux | Mount..."
-* Select the volume file
-* "Key" tab:
-<UL>
-* Enter "password1234567890ABC" as the key
-* Leave GPG executable blank
-* Leave GPG keyfile  blank
-* Leave seed blank
-* Select the "RIPEMD-160 (160/512)" hash.
-* Ensure "Hash with "A"s, if hash output is too short" is checked.
-* Leave iteration count at 0
-</UL>
-* "Encryption" tab:
-<UL>
-* Select the "AES (CBC; 128/128)" cypher
-* Select "32 bit sector ID" as the IV generation method* Set "Sector zero location" to "Start of encrypted data"
-</UL>
-* "File options" tab:
-<UL>
-* Leave offset at 0
-* Leave sizelimit at 0
-</UL>
-* "Mount options" tab:
-<UL>
-* Select any unused drive letter
-* Leave readonly unchecked
-</UL>
-* Click the "OK" button
+	+ Enter "password1234567890ABC" as the key
+	+ Leave GPG executable blank
+	+ Leave GPG keyfile  blank
+	+ Leave seed blank
+	+ Select the "RIPEMD-160 (160/512)" hash.
+	+ Ensure "Hash with "A"s, if hash output is too short" is checked.
+	+ Leave iteration count at 0
 
-</OL>
+1. "Encryption" tab:
+
+	+ Select the "AES (CBC; 128/128)" cypher
+	+ Select "32 bit sector ID" as the IV generation method* Set "Sector zero location" to "Start of encrypted data"
+
+1. "File options" tab:
+
+	+ Leave offset at 0
+	+ Leave sizelimit at 0
+
+1. "Mount options" tab:
+
+	+ Select any unused drive letter
+	+ Leave readonly unchecked
+
+1. Click the "OK" button
+
+
 
 * * * 
 <A NAME="level_3_heading_5">
@@ -276,8 +268,8 @@ Creating the volume file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_aes_essiv_sha256.vol bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_aes_essiv_sha256.vol
+dd if=/dev/zero of=./volumes/vol_aes_essiv_sha256.box bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_aes_essiv_sha256.box
 echo password1234567890ABC | cryptsetup  -c aes-cbc-essiv:sha256 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -298,7 +290,7 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 <OL>
 
@@ -306,35 +298,33 @@ Mounting the volume under FreeOTFE:
 * Select the volume file
 * "Key" tab:
 <UL>
-* Enter "password1234567890ABC" as the key
-* Leave GPG executable blank
-* Leave GPG keyfile  blank
-* Leave seed blank
-* Select the "RIPEMD-160 (160/512)" hash
-
-    * Ensure "Hash with "A"s, if hash output is too short" is checked.
-* Leave iteration count at 0
+	* Enter "password1234567890ABC" as the key
+	* Leave GPG executable blank
+	* Leave GPG keyfile  blank
+	* Leave seed blank
+	* Select the "RIPEMD-160 (160/512)" hash
+	
+			* Ensure "Hash with "A"s, if hash output is too short" is checked.
+	* Leave iteration count at 0
 </UL>
 * "Encryption" tab:
 <UL>
-* Select the "AES (CBC; 256/128)" cypher
-
-    * Select "ESSIV" as the IV generation method
-    * Set "Sector zero location" to "Start of encrypted data"
-
-    * Select "SHA-256 (256/512)" as the IV hash
-* Select "AES (CBC; 256/128)" as the IV cypher
+	* Select the "AES (CBC; 256/128)" cypher	
+	* Select "ESSIV" as the IV generation method
+	* Set "Sector zero location" to "Start of encrypted data"	
+	* Select "SHA-256 (256/512)" as the IV hash
+	* Select "AES (CBC; 256/128)" as the IV cypher
 
 </UL>
 * "File options" tab:
 <UL>
-* Leave offset at 0
-* Leave sizelimit at 0
+	* Leave offset at 0
+	* Leave sizelimit at 0
 </UL>
 * "Mount options" tab:
 <UL>
-* Select any unused drive letter
-* Leave readonly unchecked
+	* Select any unused drive letter
+	* Leave readonly unchecked
 </UL>
 * Click the "OK" button
 
@@ -351,8 +341,8 @@ Creating the volume file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_blowfish_448.vol bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_blowfish_448.vol
+dd if=/dev/zero of=./volumes/vol_blowfish_448.box bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_blowfish_448.box
 echo password1234567890ABC | cryptsetup -c blowfish -s 448 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -373,49 +363,48 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 <OL>
 
-  * Select "Linux | Mount..."
+* Select "Linux | Mount..."
 
-  * Select the volume file
+* Select the volume file
 
-  * "Key" tab:
+* "Key" tab:
 
-  <UL>
-* Enter "password1234567890ABC" as the key
-* Leave GPG executable blank
-* Leave GPG keyfile  blank
-* Leave seed blank
-* Select the "RIPEMD-160 (160/512)" hash
+<UL>
+	* Enter "password1234567890ABC" as the key
+	* Leave GPG executable blank
+	* Leave GPG keyfile  blank
+	* Leave seed blank
+	* Select the "RIPEMD-160 (160/512)" hash	
+	* Ensure "Hash with "A"s, if hash output is too short" is checked.
+	* Leave iteration count at 0
 
-    * Ensure "Hash with "A"s, if hash output is too short" is checked.
-* Leave iteration count at 0
+</UL>
+* "Encryption" tab:
 
-  </UL>
-  * "Encryption" tab:
+<UL>
+	* Select the "Blowfish (CBC; 448/64)" cypher
+	* Select "32 bit sector ID" as the IV generation method* Set "Sector zero location" to "Start of encrypted data"
 
-  <UL>
-* Select the "Blowfish (CBC; 448/64)" cypher
-* Select "32 bit sector ID" as the IV generation method* Set "Sector zero location" to "Start of encrypted data"
+</UL>
+* "File options" tab:
 
-  </UL>
-  * "File options" tab:
+<UL>
+	* Leave offset at 0
+	* Leave sizelimit at 0
 
-  <UL>
-* Leave offset at 0
-* Leave sizelimit at 0
+</UL>
+* "Mount options" tab:
 
-  </UL>
-  * "Mount options" tab:
+<UL>
+	* Select any unused drive letter
+	* Leave readonly unchecked
 
-  <UL>
-* Select any unused drive letter
-* Leave readonly unchecked
-
-  </UL>
-  * Click the "OK" button
+</UL>
+* Click the "OK" button
 
 </OL>
 
@@ -432,8 +421,8 @@ Creating the volume file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_twofish_o3.vol bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_twofish_o3.vol
+dd if=/dev/zero of=./volumes/vol_twofish_o3.box bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_twofish_o3.box
 echo password1234567890ABC | cryptsetup -c twofish -o 3 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -454,7 +443,7 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 <OL>
 
@@ -502,8 +491,8 @@ Creating the volume file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_aes_md5.vol bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_aes_md5.vol
+dd if=/dev/zero of=./volumes/vol_aes_md5.box bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_aes_md5.box
 echo password1234567890ABC | cryptsetup -c aes -h md5 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -524,7 +513,7 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 <OL>
 
@@ -532,21 +521,21 @@ Mounting the volume under FreeOTFE:
 * Select the volume file
 * "Key" tab:
 <UL>
-* Enter "password1234567890ABC" as the key
-* Leave GPG executable blank
-* Leave GPG keyfile blank
-* Leave seed blank
-* Select the "MD5 (128/512)" hash
-* Ensure "Hash with "A"s, if hash output is too short" is checked.
-
-* Leave iteration count at 0
+	* Enter "password1234567890ABC" as the key
+	* Leave GPG executable blank
+	* Leave GPG keyfile blank
+	* Leave seed blank
+	* Select the "MD5 (128/512)" hash
+	* Ensure "Hash with "A"s, if hash output is too short" is checked.
+	
+	* Leave iteration count at 0
 </UL>
 * "Encryption" tab:
 <UL>
 * Select the "AES (CBC; 256/128)" cypher
 
-    * Select "32 bit sector ID" as the IV generation method
-    * Set "Sector zero location" to "Start of encrypted data"
+* Select "32 bit sector ID" as the IV generation method
+* Set "Sector zero location" to "Start of encrypted data"
 
 </UL>
 * "File options" tab:
@@ -579,8 +568,8 @@ Creating the volume file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_blowfish_448_essivsha256_md5.vol bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_blowfish_448_essivsha256_md5.vol
+dd if=/dev/zero of=./volumes/vol_blowfish_448_essivsha256_md5.box bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_blowfish_448_essivsha256_md5.box
 echo password1234567890ABC | cryptsetup -c blowfish-cbc-essiv:sha256 -s 448 -h md5 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -601,7 +590,7 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 <OL>
 
@@ -657,8 +646,8 @@ Creating the volume file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_aes_xts.vol bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_aes_xts.vol
+dd if=/dev/zero of=./volumes/vol_aes_xts.box bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_aes_xts.box
 echo password1234567890ABC | cryptsetup -h sha512 -c aes-xts-plain --key-size 512 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -679,7 +668,7 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 <OL>
 * Select "Linux | Mount..."

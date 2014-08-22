@@ -92,11 +92,11 @@ resourcestring
   SYSTEMTRAYCLICKACTION_DONOTHING                = 'Do nothing';
   SYSTEMTRAYCLICKACTION_DISPLAYCONSOLE           = 'Display console';
   SYSTEMTRAYCLICKACTION_DISPLAYHIDECONSOLETOGGLE = 'Display/hide console toggle';
-  SYSTEMTRAYCLICKACTION_MOUNTFILE                = 'Mount file...';
-  SYSTEMTRAYCLICKACTION_MOUNTPARTITION           = 'Mount partition...';
-  SYSTEMTRAYCLICKACTION_MOUNTLINUXFILE           = 'Mount file (Linux)...';
-  SYSTEMTRAYCLICKACTION_MOUNTLINUXPARTITION      = 'Mount partition (Linux)...';
-  SYSTEMTRAYCLICKACTION_DISMOUNTALL              = 'Dismount all';
+  SYSTEMTRAYCLICKACTION_MOUNTFILE                = 'Open DoxBox...';
+  SYSTEMTRAYCLICKACTION_MOUNTPARTITION           = 'Open DoxBox partition...';
+  SYSTEMTRAYCLICKACTION_MOUNTLINUXFILE           = 'Open DoxBox (Linux)...';
+  SYSTEMTRAYCLICKACTION_MOUNTLINUXPARTITION      = 'Open DoxBox partition (Linux)...';
+  SYSTEMTRAYCLICKACTION_DISMOUNTALL              = 'Lock all';
 
 const
   SystemTrayClickActionTitlePtr: array [TSystemTrayClickAction] of Pointer = (
@@ -126,6 +126,7 @@ type
     OptExploreAfterMount: boolean;
     OptAllowMultipleInstances: boolean;
     OptAutoStartPortable: boolean;
+    OptInstalled: boolean;// has installer been run?
     OptDefaultDriveLetter: ansichar;
     OptDefaultMountAs: TFreeOTFEMountAs;
 
@@ -209,8 +210,10 @@ const
     OPT_DEFAULTDRIVELETTER                       = 'DefaultDriveLetter';
       DFLT_OPT_DEFAULTDRIVELETTER                   = '#';
     OPT_DEFAULTMOUNTAS                           = 'DefaultMountAs';
-      DFLT_OPT_DEFAULTMOUNTAS                       = fomaFixedDisk;
-
+      DFLT_OPT_DEFAULTMOUNTAS                       = fomaRemovableDisk;
+    OPT_OPTINSTALLED                              = 'Installed';
+      DFLT_OPT_OPTINSTALLED                       = FALSE;
+      
   // -- Prompts and messages --
   SECTION_CONFIRMATION = 'Confirmation';
     OPT_PROMPTMOUNTSUCCESSFUL                    = 'OptPromptMountSuccessful';
@@ -231,9 +234,9 @@ const
     OPT_SYSTEMTRAYICONMINTO                      = 'MinTo';
       DFLT_OPT_SYSTEMTRAYICONMINTO                  = FALSE;
     OPT_SYSTEMTRAYICONCLOSETO                    = 'CloseTo';
-      DFLT_OPT_SYSTEMTRAYICONCLOSETO                = FALSE;
+      DFLT_OPT_SYSTEMTRAYICONCLOSETO                = TRUE;
     OPT_SYSTEMTRAYICONACTIONSINGLECLICK          = 'ActionSingleClick';
-      DFLT_OPT_SYSTEMTRAYICONACTIONSINGLECLICK      = stcaDoNothing;
+      DFLT_OPT_SYSTEMTRAYICONACTIONSINGLECLICK      = stcaDisplayConsole;
     OPT_SYSTEMTRAYICONACTIONDOUBLECLICK          = 'ActionDoubleClick';
       DFLT_OPT_SYSTEMTRAYICONACTIONDOUBLECLICK      = stcaDisplayConsole;
 
@@ -300,7 +303,7 @@ var
   useDefaultDriveLetter: string;
 begin
   inherited _Load(iniFile);
-
+// todo: combine load and save, and/or use rtti
   OptDisplayToolbar          := iniFile.ReadBool(SECTION_GENERAL,   OPT_DISPLAYTOOLBAR,         DFLT_OPT_DISPLAYTOOLBAR);
   OptDisplayToolbarLarge     := iniFile.ReadBool(SECTION_GENERAL,   OPT_DISPLAYTOOLBARLARGE,    DFLT_OPT_DISPLAYTOOLBARLARGE);
   OptDisplayToolbarCaptions  := iniFile.ReadBool(SECTION_GENERAL,   OPT_DISPLAYTOOLBARCAPTIONS, DFLT_OPT_DISPLAYTOOLBARCAPTIONS);
@@ -308,6 +311,7 @@ begin
   OptExploreAfterMount       := iniFile.ReadBool(SECTION_GENERAL,   OPT_EXPLOREAFTERMOUNT,      DFLT_OPT_EXPLOREAFTERMOUNT);
   OptAllowMultipleInstances  := iniFile.ReadBool(SECTION_GENERAL,   OPT_ALLOWMULTIPLEINSTANCES, DFLT_OPT_ALLOWMULTIPLEINSTANCES);
   OptAutoStartPortable       := iniFile.ReadBool(SECTION_GENERAL,   OPT_AUTOSTARTPORTABLE,      DFLT_OPT_AUTOSTARTPORTABLE);
+  OptInstalled               := iniFile.ReadBool(SECTION_GENERAL,   OPT_OPTINSTALLED,           DFLT_OPT_OPTINSTALLED); 
   useDefaultDriveLetter      := iniFile.ReadString(SECTION_GENERAL, OPT_DEFAULTDRIVELETTER,     DFLT_OPT_DEFAULTDRIVELETTER);
   // #0 written as "#"
   OptDefaultDriveLetter := AnsiChar(useDefaultDriveLetter[1]);
@@ -358,6 +362,7 @@ begin
       iniFile.WriteBool(SECTION_GENERAL,        OPT_EXPLOREAFTERMOUNT,         OptExploreAfterMount);
       iniFile.WriteBool(SECTION_GENERAL,        OPT_ALLOWMULTIPLEINSTANCES,    OptAllowMultipleInstances);
       iniFile.WriteBool(SECTION_GENERAL,        OPT_AUTOSTARTPORTABLE,         OptAutoStartPortable);
+      iniFile.WriteBool(SECTION_GENERAL,   OPT_OPTINSTALLED,        OptInstalled   ); 
       // #0 written as "#"
       useDefaultDriveLetter := Char(OptDefaultDriveLetter);
       if (OptDefaultDriveLetter = #0) then

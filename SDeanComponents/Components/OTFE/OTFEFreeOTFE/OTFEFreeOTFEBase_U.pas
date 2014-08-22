@@ -49,12 +49,12 @@ const
   MAX_HDDS       = 16;
   MAX_PARTITIONS = 16;
 
-  VOL_FILE_EXTN                        = 'vol';
+  VOL_FILE_EXTN                        = 'box';
 
   // This const is used in rounding up DIOC buffers to the nearest DWORD
   DIOC_BOUNDRY = 4;
 
-  FREEOTFE_URL = 'http://www.FreeOTFE.org/';
+  FREEOTFE_URL = 'http://DoxBox.eu/';
 
   LINUX_KEYFILE_DEFAULT_IS_ASCII = FALSE;
   LINUX_KEYFILE_DEFAULT_NEWLINE = nlLF;

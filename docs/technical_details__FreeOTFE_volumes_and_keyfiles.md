@@ -2,31 +2,31 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
 <meta name="ROBOTS" content="ALL">
 
-<TITLE>Technical Details: FreeOTFE Volumes and Keyfiles</TITLE>
+<TITLE>Technical Details: DoxBox Volumes and Keyfiles</TITLE>
 
 <link href="./styles_common.css" rel="stylesheet" type="text/css">
 
-<link rev="made" href="mailto:sdean12@sdean12.org">
-<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](./images/FreeOTFE.gif)](http://DoxBox.squte.com/)
-[DoxBox](http://DoxBox.squte.com/)
+[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
+***
 
       
             
 
-### Technical Details: FreeOTFE Volumes and Keyfiles
+### Technical Details: DoxBox Volumes and Keyfiles
 
 A DoxBox (regardless of whether its stored in a file or partition) consists of two things:
 
@@ -58,19 +58,9 @@ A full definition of the contents of a CDB/keyfile is supplied in this documenta
 
 <UL>
 
-  * 
-A FreeOTFE keyfile is nothing more than a CDB, the "volume
-details block" of which contains the encryption details used for
-securing the volume it relates to
-
-  * 
-A volume may have one or more keyfiles, in which case they all
-share the same data stored within their respective "volume details
-block", but each one is encrypted with a different user password, salt,
-random padding, etc - making each keyfile unique.
-
-  * 
-Keyfiles are encrypted with the same cypher/hash that the encrypted partition image they relate to is encrypted with.
+  *  A DoxBox keyfile is nothing more than a CDB, the "volume details block" of which contains the encryption details used for securing the volume it relates to
+  *  A volume may have one or more keyfiles, in which case they all share the same data stored within their respective "volume details block", but each one is encrypted with a different user password, salt, random padding, etc - making each keyfile unique. 
+  *  Keyfiles are encrypted with the same cypher/hash that the encrypted partition image they relate to is encrypted with.
 
 </UL>
 

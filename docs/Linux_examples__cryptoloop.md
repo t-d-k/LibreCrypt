@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -12,23 +12,23 @@
 
 <link href="./styles_common.css" rel="stylesheet" type="text/css">
 
-<link rev="made" href="mailto:sdean12@sdean12.org">
-<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](./images/FreeOTFE.gif)](http://DoxBox.squte.com/)
-[DoxBox](http://DoxBox.squte.com/)
+[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
+***
 
       
             
 
 ## Linux Examples: Cryptoloop
 
-This section gives a series of examples of how to create Linux Cryptoloop (losetup) volumes, and then mount them using FreeOTFE.
+This section gives a series of examples of how to create Linux Cryptoloop (losetup) volumes, and then mount them using DoxBox.
 
 These examples have been tested using SuSE 9.2; though they should work for all compatible Linux distributions.
 
@@ -136,7 +136,7 @@ right-padded with 0x00 characters to the required length.
 </A>
 
 This is the simplest form of Linux volume file, and the recommended
-starting point for checking that FreeOTFE is operating correctly.
+starting point for checking that DoxBox is operating correctly.
 
 Creating the volume file under Linux:
 
@@ -151,7 +151,7 @@ Creating the volume file under Linux:
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 1. Select "Linux | Mount..."
 1. Select the volume file
@@ -204,7 +204,7 @@ Creating the volume file under Linux:
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 1. Select "Linux | Mount..."
 1. Select the volume file
@@ -253,7 +253,7 @@ Creating the volume file under Linux:
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 1. Select "Linux | Mount..."
 1. Select the volume file
@@ -298,7 +298,7 @@ Creating the volume file under Linux:
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 <OL>
 
@@ -366,7 +366,7 @@ Creating the volume file under Linux:
 			losetup -d /dev/loop0
 			rm -rf ./test_mountpoint
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 <OL>
 
@@ -430,7 +430,7 @@ Creating the volume file under Linux:
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 1. Select "Linux | Mount..."
 1. Select the volume file
@@ -485,7 +485,7 @@ Creating the volume file under Linux:
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 1. Select "Linux | Mount..."
 1. Select the volume file
@@ -538,7 +538,7 @@ Creating the volume file under Linux:
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 1. Select "Linux | Mount..."
 1. Select the volume file

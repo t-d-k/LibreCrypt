@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -12,16 +12,16 @@
 
 <link href="./styles_common.css" rel="stylesheet" type="text/css">
 
-<link rev="made" href="mailto:sdean12@sdean12.org">
-<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](./images/FreeOTFE.gif)](http://DoxBox.squte.com/)
-[DoxBox](http://DoxBox.squte.com/)
+[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
+***
 
       
             
@@ -29,9 +29,9 @@ _Open-Source disk encryption for Windows_
 ## Miscellaneous Notes
 
 <UL>
-* Please, do _read the documentation_ (the [FAQ section](FAQ.htm), in particular) _before_ emailing
-questions! The [FAQ section](FAQ.htm) in particular may well have the answer you're looking for.
-* Both versions of FreeOTFE, and FreeOTFE Explorer, are fully compatible with one another.
+* Please, do _read the documentation_ (the [FAQ section](FAQ.md), in particular) _before_ emailing
+questions! The [FAQ section](FAQ.md) in particular may well have the answer you're looking for.
+* Both versions of DoxBox, and DoxBox Explorer, are fully compatible with one another.
 * From the main window, doubleclicking on a mounted drive will
 launch explorer on that drive. Rightclicking brings up a context menu.
   
@@ -48,7 +48,7 @@ volumes must be _dismounted_ first before they can be modified in this way.
     
   * An option is included to dump out a human readable version of the volume's critical data block/keyfile's contents (select "Tools | Critical data block | Dump to human readable file..."). This option is primarily intended to assist developers, and to future-proof volumes file by giving you access to the actual master encryption/decryption key used by the volume it dumps out. It should be noted that the inclusion of this option does **not** present a security risk as it **requires** that the user to enter the volume/keyfile's password immediately before it can operate (obviously, the volume/keyfile's password is needed in order to decrypt the critical data block). If an attacker has your volume/keyfile's password, clearly this option will give no further information away.
 
-* A "Revert timestamps" option is available from the "Options" dialog. If selected, on mounting a volume file its timestamps will be noted. When the volume is subsequently dismounted, these timestamps will be restored. By default, the PC version of FreeOTFE, and FreeOTFE Explorer, have this option switched **on**.
+* A "Revert timestamps" option is available from the "Options" dialog. If selected, on mounting a volume file its timestamps will be noted. When the volume is subsequently dismounted, these timestamps will be restored. By default, the PC version of DoxBox, and DoxBox Explorer, have this option switched **on**.
 
 * A password is **not** needed when backing up a volume's CDB as the
 backup copy is not stored in plaintext; it is a literal backup copy of

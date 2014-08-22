@@ -1,7 +1,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -12,15 +12,15 @@
 <link href="./styles_common.css" rel="stylesheet" type="text/css">
 
 <link rev="made" href="mailto:tdk@doxbox.eu">
-<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](./images/FreeOTFE.gif)](http://doxbox.squte.com/)
-[DoxBox](http://DoxBox.squte.com/)
+[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://doxbox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
+***
 
 ## Technical Details: Building the Software
 
@@ -161,11 +161,10 @@ The following list comprehensively describes the configuration used to build the
     * Build Environment\Windows XP Headers</li>
     * Build Environment\Windows XP x86 Libraries</li>
     * Build Environment\Windows XP IA86 Libraries</li>
-   		+ Needed if the build .BAT files (see later) use "chk WXP" - if that's skipped it'll default to WNET (windows .NET)</li>
+   		+ Needed if the build .BAT files (see later) use "chk WXP" - if that's skipped it'll default to WNET (windows .NET)
     * Build Environment\Windows 2000 Headers</li>
     * Build Environment\Windows 2000 Build Environment</li>
-			+ Needed if the build .BAT files (see later) use "chk &lt;something&gt;" - if that's skipped it'll default to WNET (windows
-.net)
+			+ Needed if the build .BAT files (see later) use "chk &lt;something&gt;" - if that's skipped it'll default to WNET (windows .net)
     
 
 <A NAME="level_6_heading_2">
@@ -178,10 +177,10 @@ The following list comprehensively describes the configuration used to build the
 
   <TABLE>
     <TBODY>
-      <TR> <TH>Variable<br> </TH> <TH>Description </TH> <TH>Default value </TH> </TR>
+      <TR> <TH>Variable  </TH> <TH>Description </TH> <TH>Default value </TH> </TR>
       <TR> <TD>FREEOTFE\_DEBUG</TD> 	<TD>Build type flag; set to 1 for debug build, or 0 for release</TD> <TD>0</TD> </TR>
       <TR> <TD>FREEOTFE\_TARGET</TD> 	<TD>Target OS to build for; e.g. WXP/W2K/WNET; note that W2K builds will not operate correctly under Windows XP (e.g. when formatting a volume)</TD> <TD>WXP</TD> </TR>
-      <TR> <TD>PROJECT\_DRIVE</TD> 		<TD>The drive on which you have stored the FreeOTFE source</TD> <TD>E:</TD> </TR>
+      <TR> <TD>PROJECT\_DRIVE</TD> 		<TD>The drive on which you have stored the DoxBox source</TD> <TD>E:</TD> </TR>
       <TR> <TD>PROJECT\_DIR</TD> 			<TD>The full drive and path where the "drivers" directory is located</TD> <TD>_&lt;see file&gt;_</TD> </TR>
       <TR> <TD>MSSDK\_DIR</TD> 				<TD>The directory in which you installed the MS SDK</TD> <TD>C:\MSSDK</TD> </TR>
       <TR> <TD>MSDDK\_DIR</TD> 				<TD>The directory in which you installed the MS DDK</TD> <TD>C:\WINDDK\3790</TD> </TR>
@@ -215,7 +214,8 @@ or:
 
   1.  Enter each of the separate driver directories in turn and launch each project's "my\_build\_sys.bat" In either case, a copy of the binary which is built will be copied into the directory above your "src" directory. 
   After reaching this stage, you should have successfully built your own version of the FreeOTFE drivers!
-<P>
+
+
 Notes:
 
   1.  If FREEOTFE\_TARGET is set to W2K, the resulting binary may not operate correctly under MS Windows XP as a number of functions what are only needed under Windows XP and later are #ifdef'd out. As a result, a "W2K" binary may not operate correctly under Windows XP (e.g. trying to format a volume may result in... Nothing happening). If you want a binary which will operate under _both_ Windows 2000 and Windows XP, set this to WXP. 

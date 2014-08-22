@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -12,23 +12,23 @@
 
 <link href="./styles_common.css" rel="stylesheet" type="text/css">
 
-<link rev="made" href="mailto:sdean12@sdean12.org">
-<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](./images/FreeOTFE.gif)](http://DoxBox.squte.com/)
-[DoxBox](http://DoxBox.squte.com/)
+[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
+***
 
       
             
 
 ## Appendix E: PKCS#11 Driver Libraries
 
-If you have a token which supports the PKCS#11 standard, as most do, your token can be used by FreeOTFE. Below is a list of well known smartcards/tokens which do support this standard, and the suggested library filename to use.
+If you have a token which supports the PKCS#11 standard, as most do, your token can be used by DoxBox. Below is a list of well known smartcards/tokens which do support this standard, and the suggested library filename to use.
 
 Please note that:
 
@@ -37,7 +37,7 @@ Please note that:
 * This list is *_not exhaustive_* - many more tokens are supported than are listed here.
 </OL>
 
-If you are using a token which isn't mentioned on the list below, please check with your token supplier as to what to enter, and [get in touch](contact_details.htm) to have it added to the list.
+If you are using a token which isn't mentioned on the list below, please check with your token supplier as to what to enter, and [get in touch](contact_details.md) to have it added to the list.
 
 <TABLE BORDER=1>
 <TR>
@@ -66,7 +66,7 @@ If you are using a token which isn't mentioned on the list below, please check w
 <TD >eToken PRO</TD>
 <TD >etpkcs11.dll</TD>
 <TD >[(WWW)](http://www.aladdin.com/)</TD>
-<TD >Confirmed working with FreeOTFE</TD>
+<TD >Confirmed working with DoxBox</TD>
 </TR>
 <TR>
 <TD >eToken R2</TD>
@@ -184,7 +184,7 @@ On 1st December2005 Eracom Technologies AG was acquired by SafeNet </TD>
 <TD >ePass 2000_FT11</TD>
 <TD >ngp11v211.dll</TD>
 <TD >[(WWW)](http://www.epass.nl/ and http://www.esoftkey.com/)</TD>
-<TD >Confirmed working with FreeOTFE</TD>
+<TD >Confirmed working with DoxBox</TD>
 </TR>
 <TR>
 <TD >ePass 3000</TD>
@@ -196,7 +196,7 @@ On 1st December2005 Eracom Technologies AG was acquired by SafeNet </TD>
 <TD >ePass 3003</TD>
 <TD >ShuttleCsp11_3003.dll</TD>
 <TD >[(WWW)](http://www.epass.nl/ and http://www.esoftkey.com/)</TD>
-<TD >Confirmed working with FreeOTFE</TD>
+<TD >Confirmed working with DoxBox</TD>
 </TR>
 <TR>
 <TD ROWSPAN="2">Gemplus</TD>
@@ -281,7 +281,7 @@ C:\ Data\ Development\ SmartCardIntegration\ PKCS11wrapper\ JavaToPKCS11\ demo\ 
 <TD >Mozilla or Netscape crypto module</TD>
 <TD >softokn3.dll</TD>
 <TD >	</TD>
-<TD >Cannot be used with FreeOTFE; requires additional parameters to initailize</TD>
+<TD >Cannot be used with DoxBox; requires additional parameters to initailize</TD>
 </TR>
 <TR>
 <TD ROWSPAN="2">nCipher</TD>

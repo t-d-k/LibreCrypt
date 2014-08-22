@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -12,23 +12,23 @@
 
 <link href="./styles_common.css" rel="stylesheet" type="text/css">
 
-<link rev="made" href="mailto:sdean12@sdean12.org">
-<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](./images/FreeOTFE.gif)](http://DoxBox.squte.com/)
-[DoxBox](http://DoxBox.squte.com/)
+[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
+***
 
       
             
 
 ## Linux Examples: LUKS
 
-This section gives a series of examples of how to create Linux LUKS volumes, and then mount them using FreeOTFE.
+This section gives a series of examples of how to create Linux LUKS volumes, and then mount them using DoxBox.
 
 These examples have been
 tested using Fedora Core 3, with a v2.6.20.1 kernel installed and using cryptsetup-luks v1.0; though
@@ -145,34 +145,30 @@ default encryption system: AES128 with the user's password hashed with SHA1, usi
 
 Creating the volume file under Linux:
 
-<blockquote>
-<pre>
-dd if=/dev/zero of=./volumes/vol_default.vol bs=1M count=1
-losetup /dev/loop0 ./volumes/vol_default.vol
-echo password1234567890ABC | cryptsetup-luks luksFormat /dev/loop0
-cryptsetup-luks luksDump /dev/loop0 
-echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
-dmsetup ls
-dmsetup table
-dmsetup status
-cryptsetup-luks status myMapper
-losetup /dev/loop1 /dev/mapper/myMapper
-mkdosfs /dev/loop1
-mkdir ./test_mountpoint
-mount /dev/loop1 ./test_mountpoint
-cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
-cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
-cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
-cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
-umount ./test_mountpoint
-losetup -d /dev/loop1
-cryptsetup-luks luksClose myMapper
-losetup -d /dev/loop0
-rm -rf ./test_mountpoint
-</pre>
-</blockquote>
+	dd if=/dev/zero of=./volumes/vol_default.box bs=1M count=1
+	losetup /dev/loop0 ./volumes/vol_default.box
+	echo password1234567890ABC | cryptsetup-luks luksFormat /dev/loop0
+	cryptsetup-luks luksDump /dev/loop0 
+	echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
+	dmsetup ls
+	dmsetup table
+	dmsetup status
+	cryptsetup-luks status myMapper
+	losetup /dev/loop1 /dev/mapper/myMapper
+	mkdosfs /dev/loop1
+	mkdir ./test_mountpoint
+	mount /dev/loop1 ./test_mountpoint
+	cp ./test_files/SHORT_TEXT.txt        ./test_mountpoint
+	cp ./test_files/BINARY_ZEROS.dat      ./test_mountpoint
+	cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
+	cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
+	umount ./test_mountpoint
+	losetup -d /dev/loop1
+	cryptsetup-luks luksClose myMapper
+	losetup -d /dev/loop0
+	rm -rf ./test_mountpoint
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
   1. Select "Linux | Mount..."
   1. Select the volume file
@@ -190,8 +186,8 @@ Creating the volume file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_aes_256.vol bs=1M count=1
-losetup /dev/loop0 ./volumes/vol_aes_256.vol
+dd if=/dev/zero of=./volumes/vol_aes_256.box bs=1M count=1
+losetup /dev/loop0 ./volumes/vol_aes_256.box
 echo password1234567890ABC | cryptsetup-luks -c aes -s 256 luksFormat /dev/loop0
 cryptsetup-luks luksDump /dev/loop0 
 echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
@@ -215,7 +211,7 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 
 1. Select "Linux | Mount..."
@@ -232,8 +228,8 @@ This example demonstrates use of a LUKS Twofish 128 volume.
 
 Creating the volume file under Linux:
 
-	dd if=/dev/zero of=./volumes/vol_twofish.vol bs=1M count=1
-	losetup /dev/loop0 ./volumes/vol_twofish.vol
+	dd if=/dev/zero of=./volumes/vol_twofish.box bs=1M count=1
+	losetup /dev/loop0 ./volumes/vol_twofish.box
 	echo password1234567890ABC | cryptsetup-luks -c twofish luksFormat /dev/loop0
 	cryptsetup-luks luksDump /dev/loop0 
 	echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
@@ -258,7 +254,7 @@ Creating the volume file under Linux:
 	rm -rf ./test_mountpoint
 
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 1. Select "Linux | Mount..."
 1. Select the losetup volume file
@@ -277,8 +273,8 @@ This example demonstrates use of a LUKS AES 256 volume in XTS mode.
 Creating the volume file under Linux:
 
 
-	dd if=/dev/zero of=./volumes/vol_aes_xts.vol bs=5M count=1
-	losetup /dev/loop0 ./volumes/vol_aes_xts.vol
+	dd if=/dev/zero of=./volumes/vol_aes_xts.box bs=5M count=1
+	losetup /dev/loop0 ./volumes/vol_aes_xts.box
 	echo password1234567890ABC | cryptsetup-luks -c aes-xts-plain -s 512 luksFormat /dev/loop0
 	cryptsetup-luks luksDump /dev/loop0 
 	echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
@@ -303,7 +299,7 @@ Creating the volume file under Linux:
 	rm -rf ./test_mountpoint
 
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 1. Select "Linux | Mount..."
 1. Select the losetup volume file
@@ -321,8 +317,8 @@ This example demonstrates use of a LUKS Serpent 256 volume in XTS mode.
 Creating the volume file under Linux:
 
 
-		dd if=/dev/zero of=./volumes/vol_serpent_xts.vol bs=5M count=1
-		losetup /dev/loop0 ./volumes/vol_serpent_xts.vol
+		dd if=/dev/zero of=./volumes/vol_serpent_xts.box bs=5M count=1
+		losetup /dev/loop0 ./volumes/vol_serpent_xts.box
 		echo password1234567890ABC | cryptsetup-luks -c serpent-xts-plain -s 512 luksFormat /dev/loop0
 		cryptsetup-luks luksDump /dev/loop0 
 		echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
@@ -347,7 +343,7 @@ Creating the volume file under Linux:
 		rm -rf ./test_mountpoint
 
 
-Mounting the volume under FreeOTFE:
+Mounting the volume under DoxBox:
 
 
 

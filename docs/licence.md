@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically encrypted before being stored on your computers hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -14,28 +14,30 @@
 
 
 
-<LInk rev="made" href="mailto:sdean12@sdean12.org">
-
-<LInk rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+<LInk rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](./images/FreeOTFE.gif)](http://DoxBox.squte.com/)
-[DoxBox](http://DoxBox.squte.com/)
+[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 </SPAN>
 
 <SPAN CLASS="master_title">
-_Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
+***
  
             
 
 ## Appendix C: Licence
 * * *
-*Note:* This licence applies to the deliverables and all source code inherited from the FreeOTFE project. All new code, documentation and modifications to existing code is dual licenced under GPL v3 or later and this licence.
+*Note:* This licence applies to the deliverables and all source code inherited from the FreeOTFE project, including 'DoxBox' and related files. All new code, documentation and modifications to existing code is dual licensed under GPL v3 or later and this licence.
 
-In addition the name 'DoxBox', the lock icon and the use of 'Box' as a term for encrypted containers are protected trademarks. 
-Redistributing DoxBox, FreeOTFE or any product derived from them, except under the terms explicitly set out in the licence is a crime [TODO - more warning].
-Distirbuting any software product named 'DoxBox' or using the name in any way that may cause confusion with this product is a violation of trademark law.
+In addition the name 'DoxBox', the black box icon and the use of 'Box' as a term for encrypted data are protected trademarks. 
+
+Redistributing DoxBox, DoxBox Explorer, FreeOTFE or any part of these products or any product derived from them, is forbidden except under the terms explicitly set out in the licence.
+
+**The unauthorized reproduction or distribution of a copyrighted work is illegal. In the United States criminal copyright infringement, including infringement without monetary gain, is investigated by the FBI and is punishable by up to five years in federal prison and a fine of $250,000. In other countries similar penalties apply.**
+
+Distributing any software product named 'DoxBox' or using the name in any way that may cause confusion with this product is a violation of trademark law.
 If in any doubt do not distribute this product.
 
 * * * 
@@ -47,10 +49,9 @@ The following licence covers FreeOTFE, FreeOTFE4PDA, DoxBox and FreeOTFE Explore
 
 The primary purposes of this licence are:
 
-1. To ensure that any improvements made to FreeOTFE/FreeOTFE4PDA/FreeOTFE Explorer/DoxBox can always be incorporated into the main releases
-1. To ensure proper credit is given to these projects
-1. To protect against modified versions of the software claiming to be FreeOTFE/FreeOTFE4PDA/FreeOTFE Explorer/DoxBox , or be named such that they may be confused with them.
-  
++  To ensure that any improvements made to FreeOTFE/FreeOTFE4PDA/FreeOTFE Explorer/DoxBox can always be incorporated into the main releases
++  To ensure proper credit is given to these projects
++  To protect against modified versions of the software claiming to be FreeOTFE/FreeOTFE4PDA/FreeOTFE Explorer/DoxBox, or be named such that they may be confused with them.  
 
 * * * 
 <A NAME="level_3_heading_2">
@@ -82,7 +83,7 @@ The primary purposes of this licence are:
 
 	2. Derivative Works may not use any of the names specified at Exhibit D or that of the Original Author to promote or endorse the Derivative Works without the prior written permission of the Original Author.
 
-	2.Derivative Works in executable form may only be distributed provided that:
+	2. Derivative Works in executable form may only be distributed provided that
 		3. Such distributions include a copy of this licence
 		3. The Source Code used to produce the Derivative Works must be released under this licence
 		3. The Source Code used to produce the Derivative Works must be made freely available to anyone who wishes a copy (including but not limited to the Original Author and any recipient of the  Derivative Works) for a minimum period starting from the time at which the Derivative Works are initially distributed to at least two years after the Derivative Works cease to be distributed.
@@ -123,7 +124,7 @@ The works covered by this licence are:
 
 The notice to be shown is:
 
-> This software is based on FreeOTFE and/or FreeOTFE4PDA, the free disk encryption system for PCs and PDAs, available at [www.FreeOTFE.org](http://www.FreeOTFE.org/) 
+	This software is based on FreeOTFE and/or FreeOTFE4PDA, the free disk encryption system for PCs and PDAs, available at <a href="http://www.FreeOTFE.org/">www.FreeOTFE.org</a>
 
 <A NAME="level_4_heading_4">
 #### Exhibit D

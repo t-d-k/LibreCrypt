@@ -262,7 +262,7 @@ begin
   // it.
   if (SDUMessageDlg(_('WARNING!')+SDUCRLF+
                  SDUCRLF+
-                 _('Stopping a FreeOTFE driver which is currently in use (e.g. by one or more mounted volumes) can lead to SYSTEM INSTABILITY.')+SDUCRLF+
+                 _('Stopping a DoxBox driver which is currently in use (e.g. by one or more mounted volumes) can lead to SYSTEM INSTABILITY.')+SDUCRLF+
                  SDUCRLF+
                  _('This option is intended for experienced users who REALLY know what they''re doing.')+SDUCRLF+
                  SDUCRLF+
@@ -308,7 +308,7 @@ begin
   // it.
   if (SDUMessageDlg(_('WARNING!')+SDUCRLF+
                SDUCRLF+
-               _('Uninstalling a FreeOTFE driver which is currently in use (e.g. by one or more mounted volumes) can lead to SYSTEM INSTABILITY.')+SDUCRLF+
+               _('Uninstalling a DoxBox driver which is currently in use (e.g. by one or more mounted volumes) can lead to SYSTEM INSTABILITY.')+SDUCRLF+
                SDUCRLF+
                _('This option is intended for experienced users who REALLY know what they''re doing.')+SDUCRLF+
                SDUCRLF+

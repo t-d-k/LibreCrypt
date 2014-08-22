@@ -8,7 +8,6 @@
 _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
 
-<H2>
 <DIV class="download-group">
 <BUTTON class="download">
 [Download]()
@@ -17,7 +16,6 @@ _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 [Download DoxBox Portable]()
 </BUTTON>
 </DIV>
-</H2>
 
 ##	Features
 

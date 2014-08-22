@@ -2,7 +2,7 @@ object frmDriverControl: TfrmDriverControl
   Left = 341
   Top = 282
   BorderStyle = bsDialog
-  Caption = 'FreeOTFE Driver Control'
+  Caption = 'DoxBox Driver Control'
   ClientHeight = 369
   ClientWidth = 498
   Color = clBtnFace
@@ -184,7 +184,6 @@ object frmDriverControl: TfrmDriverControl
       Height = 22
       Style = csOwnerDrawFixed
       Anchors = [akTop, akRight]
-      ItemHeight = 16
       TabOrder = 1
       OnChange = cbStartupChange
     end

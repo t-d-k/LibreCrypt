@@ -2,37 +2,36 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
 <meta name="ROBOTS" content="ALL">
 
-<TITLE>Technical Details: FreeOTFE Critical Data Block (CDB) Layout (CDB Format ID 1)</TITLE>
+<TITLE>Technical Details: DoxBox Critical Data Block (CDB) Layout (CDB Format ID 1)</TITLE>
 
 <link href="./styles_common.css" rel="stylesheet" type="text/css">
 
-<link rev="made" href="mailto:sdean12@sdean12.org">
-<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](./images/FreeOTFE.gif)](http://DoxBox.squte.com/)
-[DoxBox](http://DoxBox.squte.com/)
+[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>   
             
 
-### Technical Details: FreeOTFE Critical Data Block (CDB) Layout (CDB Format ID 1)
+### Technical Details: DoxBox Critical Data Block (CDB) Layout (CDB Format ID 1)
 
-<font color="RED">*NOTE: This CDB layout is *_obsolete_*; all new volumes should use the [latest CDB format](technical_details__FreeOTFE_CDB_layout_format_3.htm).*</font>
+<font color="RED">*NOTE: This CDB layout is *_obsolete_*; all new volumes should use the [latest CDB format](technical_details__FreeOTFE_CDB_layout_format_3.md).*</font>
 
 <A NAME="level_4_heading_1">
 #### Overview
 </A>
 
-The following table describes the high-level layout of all FreeOTFE (**not **Linux) volume files:
+The following table describes the high-level layout of all DoxBox (**not **Linux) volume files:
 
 <TABLE style="width: 100%;">
 
@@ -155,7 +154,9 @@ basic parts: A critical data area, and the encrypted partition itself.
 
 <TD>User defined.  (max 2^64 bytes; circa 16777216 TB)</TD>
 
-<TD>This is a literal partition image which represents the volume. This image is encrypted with:  <OL>
+<TD>This is a literal partition image which represents the volume. This image is encrypted with:  
+
+<OL>
 * The master key
 
 * The user's chosen cypher
@@ -453,11 +454,11 @@ contain significantly more known plaintext anyway (e.g. the partition's boot sec
 
 <hr style="width: 100%; height: 2px;">
 <A NAME="level_4_heading_3">
-#### Creating FreeOTFE Volumes
+#### Creating DoxBox Volumes
 </A>
 
 To create a DoxBox file, a fairly significant amount of
-information is required due to freedom that FreeOTFE gives you in
+information is required due to freedom that DoxBox gives you in
 creating volume files. 
 
 Broadly speaking, creating a DoxBox consists of three distinct stages:
@@ -480,7 +481,7 @@ Stage 3 is required in set the volume up for use, and increase security.
 #### Writing the critical data block.
 </A>
 
-The following procedure is used to build up a FreeOTFE's critical volume block:
+The following procedure is used to build up a DoxBox's critical volume block:
 
 <OL>
 
@@ -535,34 +536,20 @@ algorithm. If the hash driver reports that this value is "-1", then "**hk**" sho
 pad it out to 4096 bits (512 bytes) and form the complete "Critical
 data block"
   * Write the "Critical data block" to the volume file, beginning
-from the start of the file for normal FreeOTFE volumes, or from
+from the start of the file for normal DoxBox volumes, or from
 the user's offset in the case of a hidden volume.
 </OL>
 
 <hr style="width: 100%; height: 2px;">
 <A NAME="level_4_heading_5">
-#### Mounting FreeOTFE Volumes
+#### Mounting DoxBox Volumes
 </A>
 
-IMPORTANT: Versions of FreeOTFE (v00.00.0x) that used this CDB
-format had an implementation fault that caused
-the Volume Details Block to be incorrectly parsed when it was read in.
-It incorrectly used the 32 bits starting from offset byte 10 within the
-Volume Details Block (i.e. data storing the part of the encrypted partition image length) as
-the VolumeFlags. This has been compensated for in later versions of
-FreeOTFE, which use a later CDB layout in any case.
+IMPORTANT: Versions of FreeOTFE (v00.00.0x) that used this CDB format had an implementation fault that caused the Volume Details Block to be incorrectly parsed when it was read in. It incorrectly used the 32 bits starting from offset byte 10 within the Volume Details Block (i.e. data storing the part of the encrypted partition image length) as the VolumeFlags. This has been compensated for in later versions of FreeOTFE, which use a later CDB layout in any case.
 
- </p>
+
 
 To mount a DoxBox, the following information must be determined:</p>
-
-<UL>
-
-</UL>
-
-<UL>
-
-</UL>
 
 <OL>
 
@@ -714,7 +701,7 @@ obtained from the decrypted "Volume details block".
 
 As a result of the volume's layout, it is not necessary to store the cypher or hash algorithm used
 for en/decryption anywhere. Nor is it necessary to prompt the user for this information since during mounting
-a FreeOTFE formatted volume, this information can be determined dynamically by attempting the mount using
+a DoxBox formatted volume, this information can be determined dynamically by attempting the mount using
 all possible combinations of installed hash/cypher in conjunction with the check hash.
 
 </p>

@@ -1,6 +1,6 @@
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -10,18 +10,18 @@
 
 <link href="./styles_common.css" rel="stylesheet" type="text/css">
 
-<link rev="made" href="mailto:sdean12@sdean12.org">
-<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](./images/FreeOTFE.gif)](http://doxbox.squte.com/)
-[DoxBox](http://DoxBox.squte.com/)
+[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://doxbox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
+***
 
 
 <SPAN class="tip">
@@ -121,7 +121,7 @@ The latest version of this FAQ, along with the latest DoxBox user manual, can be
 * [On the options dialog, what does the "Save above settings to" option do?](#cd)
 * [Can I save my settings in the same directory as my DoxBox executable?](#ce)
 * [Where, and in what order does DoxBox search for my settings?](#cf)
-* [After associating DoxBox with ".vol" files from the options dialog, I double-clicked my ".vol" volume file, and nothing happened!](#ch)
+* [After associating DoxBox with ".box" files from the options dialog, I double-clicked my ".box" volume file, and nothing happened!](#ch)
 * [What is the difference between the "Overwrite free space..." and "Overwrite entire drive..." options under the "Tools" menu?](#em)
 * [Does DoxBox support encrypting data with multiple cyphers (aka "cascaded" cyphers, or "superencryption")](#eo)
 * [DoxBox supports different languages, but why isn't mine listed?](#eq)
@@ -211,7 +211,7 @@ There are alternatives to DoxBox available on Linux, that are easy to use, secur
 <a name="fo"></a>
 *Q: Why does the documentation sometimes talk about FreeOTFE?*
 
-*A:* DoxBox is based on the FreeOTFE project. this project was abandoned after tis developer Sarah Dean mysteriously disappeared. Under the licence of FreeOTFE any forked project has to have a new name, so the GUI and most of the documentation talks about 'DoxBox'. The main driver is still known as the 'FreeOTFE Driver' and some filenames contain 'FreeOTFE'.
+*A:* DoxBox is based on the FreeOTFE project. This project was abandoned after tis developer Sarah Dean mysteriously disappeared. Under the licence of FreeOTFE any derived project has to have a new name, so the GUI and most of the documentation talks about 'DoxBox'. The main driver is still known as the 'FreeOTFE Driver', and driver filenames contain 'FreeOTFE' because it was not required to change these to conform to the licence.
 
 * * *
 
@@ -280,7 +280,7 @@ The solution is for all new boxes to be filled with random data by default. this
 *A:* 	The most tested encryption scheme used by DoxBox is the LUKS scheme however the native scheme has some extra features. The most widely used supported cypher is AES.
 
 In Windows numerous apps leak data to various places, including temp files, the registry, swap space, and your home folder.
-To minimise this its recommended to only open files on your box using ['Portable Apps'](TODO:link). These generally won't save data in the registry, or your home folder.
+To minimise this its recommended to only open files on your box using ['Portable Apps'](http://portableapps.com/). These generally won't save data in the registry or your home folder.
 The portable apps should be installed on the Box itself, as they save their configuration, including MRU lists in the PortableApp directory.
 Some other things to do:
 - Schedule a free space erasing program to overwrite any free disk space regularly.
@@ -1043,7 +1043,7 @@ Padding takes up additional storage on your hard drive beyond that required by t
 
 *A:* The most common reason for this is because DoxBox cannot gain an exclusive lock on the associated drive. This is normally caused by one or more files being open on the encrypted volume.
 
-"Normal" (non administrator) users may also have problems dismounting drives (see the TODO list this documentation)
+"Normal" (non administrator) users may also have problems dismounting drives (see the TODO list in this documentation)
 
 If a volume cannot be dismounted "normally", you will be prompted if you want to forcefully dismount it; it is only recommended that volumes are dismounted in this way if all open files and documents are closed.
 
@@ -1068,7 +1068,7 @@ In a nutshell, creating a Linux volume only requires a file to be created of the
 
 *A:* Yes; at the end of the day, volume files are just plain straight (albeit very large) files. Just ensure that when you mount them, you mount them as **read only** volumes, (for obvious reasons - even with CDRWs).
 
-It is recommended that volumes which are to be written to CD are formatted using either the FAT or FAT32 filesystem. NTFS volumes will work (under Windows XP), though AFFAIK Windows 2000 is unable to mount NTFS volumes read only (meaning the volume must be copied back to your HDD, the file set to read/write, and **then** mounted).
+It is recommended that volumes which are to be written to CD are formatted using either the FAT or FAT32 filesystem. NTFS volumes will work, though AFFAIK Windows 2000 is unable to mount NTFS volumes read only (meaning the volume must be copied back to your HDD, the file set to read/write, and **then** mounted).
 
   * * *
 
@@ -1095,10 +1095,7 @@ It is **normal** to see this message in the following circumstances:
 
 1. The first time you run DoxBox, when no drivers have been installed
 2. When exiting the driver installation dialog, if the main DoxBox driver hasn't been both **installed** and **started**.
-
-3. When starting DoxBox after installing the main FreeOTFE driver,
-if the driver has not been started (e.g. you rebooted, and the driver
-was set for manual start, as opposed to at system startup)
+3. When starting DoxBox after installing the main FreeOTFE driver, if the driver has not been started (e.g. you rebooted, and the driver was set for manual start, as opposed to at system startup)
 4. When stopping all portable mode drivers, where the main FreeOTFE driver was started in portable mode.
 5. When exiting DoxBox and stopping all portable mode drivers, where the main FreeOTFE driver was started in portable mode.
 
@@ -1213,7 +1210,7 @@ When it starts up, DoxBox will attempt to locate this file and read in your sett
 * * *
 
 <a name="ch"></a>
-*Q: After associating DoxBox with ".vol" files* from the options dialog, I double-clicked my ".vol" volume file, and nothing happened!
+*Q: After associating DoxBox with ".box" files* from the options dialog, I double-clicked my ".box" volume file, and nothing happened!
 
 *A:* The DoxBox drivers must be running in order for you to mount a volume by double-clicking on it. Please either install the DoxBox drivers (see the [portable mode](installation_and_upgrading__PC.md)installation section, or start DoxBox's portable mode ([see](portable_mode.md) section).
 

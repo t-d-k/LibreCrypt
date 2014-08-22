@@ -2,39 +2,39 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. Using this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically, and securely, encrypted before being stored on your computers hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
 <meta name="ROBOTS" content="ALL">
 
-<TITLE>Technical Details: FreeOTFE Critical Data Block (CDB) Layout (CDB Format ID 3)][NOT PLATFORM:PDF </TITLE>
+<TITLE>Technical Details: DoxBox Critical Data Block (CDB) Layout (CDB Format ID 3) </TITLE>
 
 <link href="./styles_common.css" rel="stylesheet" type="text/css">
 
-<link rev="made" href="mailto:sdean12@sdean12.org">
-<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](./images/FreeOTFE.gif)](http://DoxBox.squte.com/)
-[DoxBox](http://DoxBox.squte.com/)
+[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 </SPAN>
 <SPAN CLASS="master_title">
-_Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
+***
 
       
             
 
-### Technical Details: FreeOTFE Critical Data Block (CDB) Layout (CDB Format ID 3)
+### Technical Details: DoxBox Critical Data Block (CDB) Layout (CDB Format ID 3)
 
 <A NAME="level_4_heading_1">
 #### Overview
 </A>
 
-A FreeOTFE critical data block consists of **CDL** bits
+A DoxBox critical data block consists of **CDL** bits
 of data. The following table describes the high-level layout of a
-FreeOTFE CDB:
+DoxBox CDB:
 
 <TABLE style="width: 100%;">
 
