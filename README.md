@@ -5,16 +5,15 @@
 [![DoxBox logo](src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
 </SPAN>
 
-<SPAN CLASS="master_title">
-[DoxBox](ttp://DoxBox.squte.com/)
-: _Open-Source disk encryption for Windows_
-</SPAN>
+<P CLASS="master_title">
+_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
+</P>
 
-<FORM class="download-group">
-<BUTTON href="" class="download">Download</BUTTON> 
-<BUTTON href="" class="download-alt">Download DoxBox Portable</BUTTON>
-</FORM>
+<DIV class="download-group">
+<a href="" class="download">Download</a> 
+<a href="" class="download-alt">Download DoxBox Portable</a>
 </DIV>
+
 ##	Features
 
 * Easy to use, with a 'wizard' for creating new 'DoxBoxes'.
