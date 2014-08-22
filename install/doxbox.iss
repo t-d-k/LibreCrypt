@@ -4,7 +4,7 @@
 #define MyAppName "DoxBox"
 #define MyAppVersion "6.0 Beta"
 #define MyAppPublisher "DoxBox"
-#define MyAppURL "doxbox.eu"
+#define MyAppURL "http:\\DoxBox.eu"
 #define MyAppExeName "DoxBox.exe"
 
 [Setup]
@@ -25,7 +25,7 @@ AllowNoIcons=yes
 OutputBaseFilename=InstallDoxBox_v60Beta
 Compression=lzma
 SolidCompression=yes
-SetupIconFile=P:\Projects\Delphi\doxbox\src\Common\Common\images\FreeOTFE.ico
+SetupIconFile=P:\Projects\Delphi\doxbox\src\Common\Common\images\DoxBox.ico
 ; set test signing on so always restart
 AlwaysRestart=yes
 
@@ -80,12 +80,13 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 
 [Run]
 ; install drivers - show progress if not silent
-Filename: "{app}\{#MyAppExeName}"; Parameters: "/drivercontrol install /filename all /silent"; Description: "Install Drivers"; Flags: runascurrentuser runhidden skipifnotsilent; StatusMsg: "Installing Drivers..."       
-Filename: "{app}\{#MyAppExeName}"; Parameters: "/drivercontrol install /filename all"; Description: "Install Drivers"; Flags: runascurrentuser runhidden skipifsilent; StatusMsg: "Installing Drivers..."       
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+; Filename: "{app}\{#MyAppExeName}"; Parameters: "/drivercontrol install /filename all /silent"; Description: "Install Drivers"; Flags: runascurrentuser runhidden skipifnotsilent; StatusMsg: "Installing Drivers..."       
+; Filename: "{app}\{#MyAppExeName}"; Parameters: "/drivercontrol install /filename all"; Description: "Install Drivers"; Flags: runascurrentuser runhidden skipifsilent; StatusMsg: "Installing Drivers..."       
+Filename: "{app}\{#MyAppExeName}"; Parameters: "/setTestMode on /silent /setInstalled"; Description: "Enable Windows Test Mode"; Flags: runascurrentuser runhidden; StatusMsg: "Enabling Windows Test Mode..."              
+; Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [UninstallRun]
 ; uninstall drivers - show progress if not silent
-Filename: "{app}\{#MyAppExeName}"; Parameters: "/drivercontrol uninstall /drivername all"; Flags: runascurrentuser runhidden; StatusMsg: "Removing Drivers..."       
+Filename: "{app}\{#MyAppExeName}"; Parameters: "/driverControl uninstall /driverName all /SetTestMode off /silent"; Flags: runascurrentuser runhidden; StatusMsg: "Removing Drivers ..."       
 
 
