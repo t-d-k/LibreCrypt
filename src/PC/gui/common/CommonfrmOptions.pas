@@ -447,9 +447,9 @@ begin
       end;
     end;
 
-  // Center "assocate with .vol files" checkbox
+  // Center "assocate with .box files" checkbox
   ckAssociateFiles.Caption := SDUParamSubstitute(
-                                                 _('Associate %1 with ".vol" &files'),
+                                                 _('Associate %1 with ".box" &files'),
                                                  [Application.Title]
                                                 );
   SDUCenterControl(ckAssociateFiles, ccHorizontal);

@@ -15,9 +15,9 @@ const
   APP_BETA_BUILD = -1;
 
   // Online user manual URL...
-  URL_USERGUIDE = 'http://DoxBox.squte.com/docs/Explorer';
+  URL_USERGUIDE = 'http://DoxBox.eu/docs/Explorer';
   // PAD file URL...
-  URL_PADFILE   = 'http://DoxBox.squte.com/PAD/DoxBoxEExplorer.xml';
+  URL_PADFILE   = 'https://raw.githubusercontent.com/t-d-k/doxbox/master/PAD.xml';
 
 
 implementation

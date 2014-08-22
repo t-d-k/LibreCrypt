@@ -49,6 +49,7 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<Icon_MainIcon>..\..\..\Common\Common\images\DoxBox.ico</Icon_MainIcon>
 			<DCC_UnitSearchPath>..\..\..\..\SDeanComponents\Components\SDeanUtils;..\..\..\..\\SDeanComponents\Components\SDeanSecurity\Shredder\;..\..\..\..\SDeanComponents\Components\SDeanSecurity\PKCS#11\;..\..\..\..\SDeanComponents\Components\OTFE\OTFEFreeOTFE\;..\..\..\..\SDeanComponents\Components\SDeanFilesystem\;..\..\..\..\SDeanComponents\Components\SDeanSecurity\MouseRNGDialog\;P:\Projects\Delphi\doxbox\SDeanComponents\Components\OTFE\OTFE\;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\PasswordRichEdit\;P:\Projects\Delphi\doxbox\src\PC\gui\common;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<Manifest_File>None</Manifest_File>
 			<VerInfo_MinorVer>51</VerInfo_MinorVer>
