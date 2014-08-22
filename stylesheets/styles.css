@@ -2,14 +2,15 @@
 
 body {
   padding:50px;
-  font:14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color:#777;
+  font:18px/1.8 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
   font-weight:300;
 }
 
 h1, h2, h3, h4, h5, h6 {
   color:#222;
   margin:0 0 20px;
+  	
 }
 
 p, ul, ol, table, pre, dl {
@@ -94,12 +95,12 @@ th {
 img {
   max-width:100%;
 }
-
+/*
 header {
   width:270px;
   float:left;
   position:fixed;
-}
+}*/
 
 header ul {
   list-style:none;
@@ -120,13 +121,13 @@ header ul {
   box-shadow:inset #fff 0 1px 0, inset rgba(0,0,0,0.03) 0 -1px 0;
   width:270px;
 }
-
+/*
 header li {
   width:89px;
   float:left;
   border-right:1px solid #d2d2d2;
   height:40px;
-}
+}*/
 
 header ul a {
   line-height:1;
@@ -158,12 +159,12 @@ header ul a strong {
   display:block;
   color:#222;
 }
-
+/*
 section {
   width:500px;
   float:right;
   padding-bottom:50px;
-}
+}*/
 
 small {
   font-size:11px;
@@ -175,13 +176,13 @@ hr {
   height:1px;
   margin:0 0 20px;
 }
-
+/*
 footer {
   width:270px;
   float:left;
   position:fixed;
   bottom:50px;
-}
+}*/
 
 @media print, screen and (max-width: 960px) {
   
@@ -252,4 +253,175 @@ footer {
     font-size:12pt;
     color:#444;
   }
+}
+
+body {
+  background-color: white;
+}
+
+td {
+  vertical-align: top
+}
+
+td.screenshot_img {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  vertical-align: middle;
+}
+
+hr {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+
+table.note th {
+  padding: 10px;
+  border-style: none;
+  vertical-align: middle;
+}
+table.note td {
+  padding: 10px;
+  border-style: none;
+  vertical-align: middle;
+}
+div.licence_list_numbering OL {
+  counter-reset: item 
+}
+div.licence_list_numbering OL > LI {
+  display: block 
+}
+div.licence_list_numbering LI:before {
+  content: counters(item, ".") ". "; counter-increment: item 
+}
+div.licence_list_numbering LI.item_not_numbered:before {
+  content: ""
+}
+
+table.note {
+  border-width: 1px;
+  border-spacing: 2px;
+  border-style: outset;
+  border-color: #009F00;
+  border-collapse: collapse;
+  background-color: white;
+  width: 75%;
+}
+
+.tip { 
+	background-color: lightgreen;
+  padding:1em; 
+  background-image: url(images/note_Tip.png);
+  background-position: top left;
+  background-repeat: no-repeat;
+  padding-left:50px;   
+  vertical-align: middle;
+  display: inline-block;
+  min-height: 20px;
+}
+  
+.security_tip {    
+  background-color: pink;    
+  padding:1em;
+  background-image: url(images/note_SecurityTip.png);
+  background-position: top left;
+  background-repeat: no-repeat;
+  padding-left:70px; 
+  vertical-align: middle;
+  display: inline-block;
+  min-height: 20px;
+} 
+
+
+.tech_note {    
+  background-color: pink;    
+  padding:1em;
+  padding-left:100px;
+  background-image: url(images/note_Technical.png);
+  background-position: top left;
+  background-repeat: no-repeat;
+ 
+  vertical-align: middle;
+  display: inline-block;
+  min-height: 20px;
+} 
+
+/*
+
+download button,
+download-alt button,  
+download-group
+master_link = main link with png
+master_title = title
+
+*/
+.master_title{
+  font-size: xx-large;
+  font-weight: bold;
+  display:block;
+  text-align:center;
+}
+
+.master_link {
+  color: #000000; 
+  font-size: xx-large;
+  font-weight: bold;
+  text-decoration: none;
+  text-align:center;
+  display:block;
+}
+
+.download-group{
+	display:inline; 
+	position: absolute;
+	right: 100px;
+	top: 20px;
+}
+
+.download,.download-alt{
+	background:limegreen;
+	width: 200px;
+	
+	font-weight: bold;
+	text-align:center;
+	vertical-align: middle;
+	display:block;
+	padding:0.5em;
+	margin:10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;    
+}
+
+.download  {
+	min-height:60px;
+	font-size: xx-large;
+}
+.download-alt {	
+	font-size: small;
+}
+.github-btn{
+		background:lightgray;
+	width: 190px;
+	
+	font-weight: bold;
+	text-align:center;
+	vertical-align: middle;
+	display:block;
+	padding:0.5em;
+	margin:10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px; 
+	font-size: small;
+}
+
+.header-title {
+  display: inline-block;
+  vertical-align: top;
+  height: 20px;
+  line-height: 110px;
 }
