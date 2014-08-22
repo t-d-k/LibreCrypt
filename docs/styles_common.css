@@ -21,7 +21,7 @@ hr {
 }
 
 .master_title {
-  font-size: x-large;
+  font-size: xx-large;
   font-weight: bold;
   display:block;
   text-align:center;
@@ -29,7 +29,8 @@ hr {
 
 .master_link {
   color: #000000; 
-  font-size: x-large;
+  font-size: xx-large;
+  font-weight: bold;
   text-decoration: none;
   text-align:center;
   display:block;
@@ -105,4 +106,33 @@ table.note {
   min-height: 20px;
 } 
 
+.download-group{
+	display:inline; 
+	position: absolute;
+	right: 100px;
+	top: 20px;
+}
+
+.download, .download-alt{
+	background:limegreen;
+	width: 200px;
+	
+	font-weight: bold;
+	text-align:center;
+	vertical-align: middle;
+	display:block;
+	padding:0.5em;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;    
+}
+
+.download {
+	min-height:60px;
+	font-size: xx-large;
+   
+}
+.download-alt {	
+	font-size: small;
+}
 
