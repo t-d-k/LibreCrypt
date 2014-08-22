@@ -199,9 +199,10 @@ const
   // -- Check for updates section --
   SECTION_CHKUPDATE = 'Updates';
     OPT_CHKUPDATE_FREQ                           = 'CheckFrequency';
-      DFLT_OPT_CHKUPDATE_FREQ                       = ufNever;
+      DFLT_OPT_CHKUPDATE_FREQ                       = ufMonthly;
     OPT_CHKUPDATE_LASTCHECKED                    = 'LastChecked';
-      DFLT_OPT_CHKUPDATE_LASTCHECKED                = '19000101';
+    //this should be release date and updated with each release
+      DFLT_OPT_CHKUPDATE_LASTCHECKED                = '20140820';   { TODO 1 -otdk -ctest : auto update not tested }
     OPT_CHKUPDATE_SUPPRESSNOTIFYVERMAJOR         = 'SuppressNotifyVerMajor';
       DFLT_OPT_CHKUPDATE_SUPPRESSNOTIFYVERMAJOR     = 0;
     OPT_CHKUPDATE_SUPPRESSNOTIFYVERMINOR         = 'SuppressNotifyVerMinor';
@@ -526,7 +527,7 @@ begin
 
     slProfile:
       begin
-      filenameAndPath := SDUGetSpecialFolderPath(CSIDL_PERSONAL)+
+      filenameAndPath := SDUGetSpecialFolderPath(CSIDL_APPDATA)+
                          '\'+
                          iniFilenameOnly
       end;
