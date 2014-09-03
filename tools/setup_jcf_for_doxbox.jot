@@ -1,0 +1,14 @@
+how to format the delphi code:
+	install jedi code formatter
+	get the 'tools' directory from the doxbox project 
+	edit the file tools\jcf_for_doxbox.bat so the directories are correct for the jcf exe and the .cfg file
+	in delphi:
+		click on tools->configure tools
+		click Add...
+		set as follows:
+			title: jcf for doxbox
+			program: path to tools\jcf_for_doxbox.bat
+			working dir: path to tools
+			params:$SAVE $EDNAME
+		click OK, close
+	to format a file, click 'tools'->'jcf for doxbox'. do this before every check-in
