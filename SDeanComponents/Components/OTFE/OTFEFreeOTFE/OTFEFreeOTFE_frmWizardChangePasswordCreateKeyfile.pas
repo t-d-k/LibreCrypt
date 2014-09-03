@@ -131,7 +131,7 @@ type
     function  GetDestSaltLength(): integer;
     function  GetDestKeyIterations(): integer;
     function  GetDestRequestedDriveLetter(): ansichar;
-    function  GetRandomData(): string;
+    function  GetRandomData(): Ansistring;
 
     procedure PopulatePKCS11Tokens();
 
@@ -165,7 +165,7 @@ type
     property DestSaltLength: integer read GetDestSaltLength;
     property DestKeyIterations: integer read GetDestKeyIterations;
     property DestRequestedDriveLetter: ansichar read GetDestRequestedDriveLetter;
-    property RandomData: string read GetRandomData;
+    property RandomData: Ansistring read GetRandomData;
 
   end;
 
@@ -241,7 +241,7 @@ end;
 
 function TfrmWizardChangePasswordCreateKeyfile.GetDestUserKey(): ansistring;
 begin
-  Result := preDestUserKey1.Text;
+  Result := preDestUserKey1.Text; { TODO 1 -otdk -cfix : warn user - no unicode }
 end;
 
 function TfrmWizardChangePasswordCreateKeyfile.GetDestSaltLength(): integer;
@@ -273,7 +273,7 @@ begin
 end;
 
 
-function TfrmWizardChangePasswordCreateKeyfile.GetRandomData(): string;
+function TfrmWizardChangePasswordCreateKeyfile.GetRandomData(): Ansistring;
 begin
   Result := fCombinedRandomData;
 end;

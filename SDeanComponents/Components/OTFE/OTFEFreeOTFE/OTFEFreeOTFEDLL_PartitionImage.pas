@@ -11,7 +11,7 @@ uses
 type
   TOTFEFreeOTFEDLL_PartitionImage = class(TSDPartitionImage)
   protected
-    FFilename: string;
+    FFilename: Ansistring;
     FSize: ULONGLONG;
     FMountedAs: Ansichar;
     FBytesPerSector: integer;
@@ -33,7 +33,7 @@ type
     // maxSize - Size of data to transfer, in *bytes*, not sectors
     function  WriteConsecutiveSectors(startSectorID: uint64; sectors: TStream; maxSize: integer = -1): boolean; override;
   published
-    property  Filename: string read FFilename write FFilename;
+    property  Filename: Ansistring read FFilename write FFilename;
     property  MountedAs: Ansichar read FMountedAs write FMountedAs;
   end;
 

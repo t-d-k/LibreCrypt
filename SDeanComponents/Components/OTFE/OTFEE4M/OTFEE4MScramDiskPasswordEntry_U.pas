@@ -43,14 +43,14 @@ type
     procedure pbKeyboard4Click(Sender: TObject);
     procedure ckHidePasswordsClick(Sender: TObject);
   public
-    FDefaultDrive: char;
+    FDefaultDrive: Ansichar;
     procedure ClearEnteredPasswords();
-    procedure SetDrivesAllowed(drvs: string);
-    procedure SetDrive(dfltDrv: char);
-    function  GetDrive(): char;
+    procedure SetDrivesAllowed(drvs: Ansistring);
+    procedure SetDrive(dfltDrv: Ansichar);
+    function  GetDrive(): Ansichar;
   published
-    property Drive: char read GetDrive write SetDrive;
-    property DrivesAllowed: string write SetDrivesAllowed;
+    property Drive: Ansichar read GetDrive write SetDrive;
+    property DrivesAllowed: Ansistring write SetDrivesAllowed;
   end;
 
 implementation
@@ -251,10 +251,10 @@ begin
 
 end;
 
-procedure TOTFEE4MScramDiskPasswordEntry_F.SetDrive(dfltDrv: char);
+procedure TOTFEE4MScramDiskPasswordEntry_F.SetDrive(dfltDrv: Ansichar);
 begin
   FDefaultDrive:= dfltDrv;
-  dfltDrv := (uppercase(dfltDrv))[1];
+  dfltDrv := AnsiString((uppercase(dfltDrv)))[1];
 
   // This will ensure that we either have the default drive selected, or the
   // first drive
@@ -269,7 +269,7 @@ begin
 
 end;
 
-function TOTFEE4MScramDiskPasswordEntry_F.GetDrive(): char;
+function TOTFEE4MScramDiskPasswordEntry_F.GetDrive(): Ansichar;
 begin
   if cbDrives.items.count<1 then
     begin
@@ -277,12 +277,12 @@ begin
     end
   else
     begin
-    Result := cbDrives.text[1];
+    Result :=AnsiChar( cbDrives.text[1]);
     end;
 
 end;
 
-procedure TOTFEE4MScramDiskPasswordEntry_F.SetDrivesAllowed(drvs: string);
+procedure TOTFEE4MScramDiskPasswordEntry_F.SetDrivesAllowed(drvs: Ansistring);
 var
   i: integer;
 begin

@@ -88,24 +88,24 @@ type
     constructor Create(AOwner : TComponent); override;
     destructor  Destroy(); override;
     function  Title(): string; overload; override;
-    function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; overload; override;
+    function  Mount(volumeFilename: Ansistring; readonly: boolean = FALSE): Ansichar; overload; override;
     function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; overload; override;
-    function  MountDevices(): string; override;
+    function  MountDevices(): Ansistring; override;
     function  CanMountDevice(): boolean; override;
     function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
-    function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
+    function  Dismount(driveLetter: Ansichar; emergency: boolean = FALSE): boolean; overload; override;
     function  IsDriverInstalled(): boolean; overload; override;
     function  IsDriverInstalled(otfeSystem: TOTFESystem): boolean; overload;
     function  Version(): cardinal; overload; override;
     function  VersionStr(): string; overload; override;
     function  IsEncryptedVolFile(volumeFilename: string): boolean; override;
-    function  DrivesMounted(): string; overload; override;
-    function  GetVolFileForDrive(driveLetter: char): string; override;
-    function  GetDriveForVolFile(volumeFilename: string): char; override;
+    function  DrivesMounted(): Ansistring; overload; override;
+    function  GetVolFileForDrive(driveLetter: Ansichar): string; override;
+    function  GetDriveForVolFile(volumeFilename: string): Ansichar; override;
     function  GetMainExe(): string; override;
 
     function  TypeOfEncryptedVolFile(volumeFilename: string; var typeOfFile: TOTFESystem): boolean;
-    function  TypeOfEncryptedDrive(driveLetter: char; var typeOfFile: TOTFESystem): boolean;
+    function  TypeOfEncryptedDrive(driveLetter: Ansichar; var typeOfFile: TOTFESystem): boolean;
 
     // OTF Crypto "internal" name to system type
     function  OTFSystemFromDispName(dispName: string; var OTFSystem: TOTFESystem): boolean;
@@ -114,7 +114,7 @@ type
 
     // For a *mounted* volume, sets OTFSystem to the OTF crypto system used for
     // that volume
-    function  OTFSystemForDrive(driveLetter: char; var OTFSystem: TOTFESystem): boolean;
+    function  OTFSystemForDrive(driveLetter: Ansichar; var OTFSystem: TOTFESystem): boolean;
     // For a *mounted* volume, sets OTFSystem to the OTF crypto system used for
     // that volume
     function  OTFSystemForVolFile(volumeFilename: string; var OTFSystem: TOTFESystem): boolean;
@@ -207,10 +207,10 @@ begin
 
 end;
 
-function TOTFEUnified.Mount(volumeFilename: string; readonly: boolean = FALSE): char;
+function TOTFEUnified.Mount(volumeFilename: Ansistring; readonly: boolean = FALSE): Ansichar;
 var
   stlTemp: TStringList;
-  mountedAs: string;
+  mountedAs: Ansistring;
 begin
   stlTemp := TStringList.Create();
   try
@@ -320,7 +320,7 @@ begin
 end;
 
 
-function TOTFEUnified.Dismount(driveLetter: char; emergency: boolean = FALSE): boolean;
+function TOTFEUnified.Dismount(driveLetter: Ansichar; emergency: boolean = FALSE): boolean;
 var
   OTFSystem: TOTFESystem;
 begin
@@ -416,12 +416,12 @@ begin
 
 end;
 
-function TOTFEUnified.TypeOfEncryptedDrive(driveLetter: char; var typeOfFile: TOTFESystem): boolean;
+function TOTFEUnified.TypeOfEncryptedDrive(driveLetter: Ansichar; var typeOfFile: TOTFESystem): boolean;
 var
   OTFSystemLoop: TOTFESystem;
 begin
   Result := FALSE;
-  driveLetter := (uppercase(driveLetter))[1];
+  driveLetter := AnsiChar((uppercase(driveLetter))[1]);
 
   for OTFSystemLoop:=low(OTFComponents) to high(OTFComponents) do
     begin
@@ -439,9 +439,9 @@ begin
 end;
 
 
-function TOTFEUnified.DrivesMounted(): string;
+function TOTFEUnified.DrivesMounted(): Ansistring;
 var
-  retVal: string;
+  retVal: Ansistring;
   OTFSystemLoop: TOTFESystem;
 begin
   retVal := '';
@@ -458,7 +458,7 @@ begin
 
 end;
 
-function TOTFEUnified.GetVolFileForDrive(driveLetter: char): string;
+function TOTFEUnified.GetVolFileForDrive(driveLetter: Ansichar): string;
 var
   retVal: string;
   OTFSystemLoop: TOTFESystem;
@@ -482,9 +482,9 @@ begin
 end;
 
 
-function TOTFEUnified.GetDriveForVolFile(volumeFilename: string): char;
+function TOTFEUnified.GetDriveForVolFile(volumeFilename: string): Ansichar;
 var
-  retVal: char;
+  retVal: Ansichar;
   OTFSystemLoop: TOTFESystem;
 begin
   retVal := #0;
@@ -541,13 +541,13 @@ begin
 
 end;
 
-function TOTFEUnified.OTFSystemForDrive(driveLetter: char; var OTFSystem: TOTFESystem): boolean;
+function TOTFEUnified.OTFSystemForDrive(driveLetter: Ansichar; var OTFSystem: TOTFESystem): boolean;
 var
   OTFSystemLoop: TOTFESystem;
 begin
   Result := FALSE;
 
-  driveLetter := (uppercase(driveLetter))[1];
+  driveLetter := Ansichar((uppercase(driveLetter))[1]);
   for OTFSystemLoop:=low(OTFComponents) to high(OTFComponents) do
     begin
     if OTFComponents[OTFSystemLoop].Active then
@@ -596,13 +596,13 @@ end;
 // Prompt the user for a device (if appropriate) and password (and drive
 // letter if necessary), then mount the device selected
 // Returns the drive letter of the mounted devices on success, #0 on failure
-function TOTFEUnified.MountDevices(): string;
+function TOTFEUnified.MountDevices(): Ansistring;
 var
   useOTFSystem: TOTFESystem;
   OTFSystemLoop: TOTFESystem;
   matchingOTFE: array [TOTFESystem] of boolean;
   cntMatched: integer;
-  retVal: string;
+  retVal: Ansistring;
   lastMatched: TOTFESystem;
   dlgSelect: TfrmSelectOTFESystem;
 begin

@@ -296,6 +296,99 @@
 			</DCCReference>
 			<DCCReference Include="SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas"/>
 			<DCCReference Include="SDeanUtils\SDUDialogs.pas"/>
+			<DCCReference Include="OTFE\OTFEUnified\OTFEUnified_U.pas"/>
+			<DCCReference Include="Hash\HashAlg_U.pas"/>
+			<DCCReference Include="Hash\HashAlgEngine_U.pas"/>
+			<DCCReference Include="Hash\HashAlgGOST_U.pas"/>
+			<DCCReference Include="Hash\HashAlgGOSTEngine_U.pas"/>
+			<DCCReference Include="Hash\HashAlgMD2_U.pas"/>
+			<DCCReference Include="Hash\HashAlgMD2Engine_U.pas"/>
+			<DCCReference Include="Hash\HashAlgMD4_U.pas"/>
+			<DCCReference Include="Hash\HashAlgMD4Engine_U.pas"/>
+			<DCCReference Include="Hash\HashAlgMD5_U.pas"/>
+			<DCCReference Include="Hash\HashAlgMD5Engine_U.pas"/>
+			<DCCReference Include="Hash\HashAlgRIPEMD_U.pas"/>
+			<DCCReference Include="Hash\HashAlgRIPEMDEngine_U.pas"/>
+			<DCCReference Include="Hash\HashAlgSHA_U.pas"/>
+			<DCCReference Include="Hash\HashAlgSHA1_U.pas"/>
+			<DCCReference Include="Hash\HashAlgSHA1Engine_U.pas"/>
+			<DCCReference Include="Hash\HashAlgSHA256_U.pas"/>
+			<DCCReference Include="Hash\HashAlgSHA256Engine_U.pas"/>
+			<DCCReference Include="Hash\HashAlgSHA384_U.pas"/>
+			<DCCReference Include="Hash\HashAlgSHA384Engine_U.pas"/>
+			<DCCReference Include="Hash\HashAlgSHA512_U.pas"/>
+			<DCCReference Include="Hash\HashAlgSHA512Engine_U.pas"/>
+			<DCCReference Include="Hash\HashAlgSHAEngine_U.pas"/>
+			<DCCReference Include="Hash\HashAlgTiger_U.pas"/>
+			<DCCReference Include="Hash\HashAlgTigerEngine_U.pas"/>
+			<DCCReference Include="Hash\HashAlgTigerSBoxes_U.pas"/>
+			<DCCReference Include="Hash\HashAlgUnified_U.pas"/>
+			<DCCReference Include="Hash\HashValue_U.pas"/>
+			<DCCReference Include="OTFE\OTFEBestCrypt\OTFEBestCrypt_U.pas"/>
+			<DCCReference Include="OTFE\OTFEBestCrypt\OTFEBestCryptBytesToString_U.pas"/>
+			<DCCReference Include="OTFE\OTFEBestCrypt\OTFEBestCryptGetDriveLetter_U.pas">
+				<Form>GetDriveLetter_F</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEBestCrypt\OTFEBestCryptStructures_U.pas"/>
+			<DCCReference Include="OTFE\OTFEE4M\OTFEE4M_U.pas"/>
+			<DCCReference Include="OTFE\OTFEE4M\OTFEE4MMountDevice_U.pas"/>
+			<DCCReference Include="OTFE\OTFEE4M\OTFEE4MMountDevice9x_U.pas">
+				<Form>OTFEE4MMountDevice9x_F</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEE4M\OTFEE4MMountDeviceNT_U.pas">
+				<Form>OTFEE4MMountDeviceNT_F</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEE4M\OTFEE4MPasswordEntry_U.pas">
+				<Form>OTFEE4MPasswordEntry_F</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEE4M\OTFEE4MScramDiskPasswordEntry_U.pas">
+				<Form>OTFEE4MScramDiskPasswordEntry_F</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEE4M\OTFEE4MStructures_U.pas"/>
+			<DCCReference Include="SDeanSecurity\KeyboardDialog\KeyboardDialog_U.pas"/>
+			<DCCReference Include="SDeanSecurity\KeyboardDialog\KeyboardEntryDlg_U.pas">
+				<Form>KeyboardEntryDlg</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFETrueCrypt\OTFETrueCrypt_U.pas"/>
+			<DCCReference Include="OTFE\OTFETrueCrypt\OTFETrueCryptMountDevice_U.pas"/>
+			<DCCReference Include="OTFE\OTFETrueCrypt\OTFETrueCryptMountDevice9x_U.pas">
+				<Form>OTFETrueCryptMountDevice9x_F</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFETrueCrypt\OTFETrueCryptMountDeviceNT_U.pas">
+				<Form>OTFETrueCryptMountDeviceNT_F</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFETrueCrypt\OTFETrueCryptPasswordEntry_U.pas">
+				<Form>OTFETrueCryptPasswordEntry_F</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFETrueCrypt\OTFETrueCryptStructures_U.pas"/>
+			<DCCReference Include="OTFE\OTFEPGPDisk\OTFEPGPDisk_U.pas"/>
+			<DCCReference Include="OTFE\OTFEPGPDisk\OTFEPGPDiskMounting_U.pas">
+				<Form>OTFEPGPDiskMounting_F</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEPGPDisk\OTFEPGPDiskStructures_U.pas"/>
+			<DCCReference Include="OTFE\OTFEScramDisk\OTFEScramDisk_U.pas"/>
+			<DCCReference Include="OTFE\OTFEScramDisk\OTFEScramDiskDismountVolumes_U.pas">
+				<Form>OTFEScramDiskDismountVolumes_F</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEScramDisk\OTFEScramDiskPasswordEntry_U.pas">
+				<Form>OTFEScramDiskPasswordEntry_F</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFEScramDisk\SdStructures_U.pas"/>
+			<DCCReference Include="OTFE\OTFEScramDisk\WindowsMissing_U.pas"/>
+			<DCCReference Include="OTFE\OTFECrossCrypt\CrossCrypt_PasswordConfirm.pas">
+				<Form>CrossCrypt_PasswordConfirm_F</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFECrossCrypt\OTFECrossCrypt_DriverAPI.pas"/>
+			<DCCReference Include="OTFE\OTFECrossCrypt\OTFECrossCrypt_PasswordConfirm.pas">
+				<Form>OTFECrossCrypt_PasswordConfirm_F</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFECrossCrypt\OTFECrossCrypt_PasswordEntry.pas">
+				<Form>OTFECrossCrypt_PasswordEntry_F</Form>
+			</DCCReference>
+			<DCCReference Include="OTFE\OTFECrossCrypt\OTFECrossCrypt_U.pas"/>
+			<DCCReference Include="OTFE\OTFEUnified\OTFEUnified_frmSelectOTFESystem.pas">
+				<Form>frmSelectOTFESystem</Form>
+			</DCCReference>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

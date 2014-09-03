@@ -194,9 +194,9 @@ type
 
     DCB_inquiry_flags: array [0..7] of byte;    // Device Inquiry Flags
 
-    DCB_vendor_id: array [0..7] of char;    // Vendor ID string
+    DCB_vendor_id: array [0..7] of AnsiChar;    // Vendor ID string
 
-    DCB_product_id: array [0..15] of char;    // Product ID string
+    DCB_product_id: array [0..15] of AnsiChar;    // Product ID string
 
     DCB_rev_level: array [0..3] of byte;    // Product revision level
 
@@ -228,22 +228,22 @@ type
 // ==========
 
   TDeviceInfo = packed record
-    dr_lett1 : char;
-    dr_lett1status : char;
-    dr_lett2 : char;
-    dr_lett2status : char;
-    dr_lett3 : char;
-    dr_lett3status : char;
-    dr_lett4 : char;
-    dr_lett4status : char;
-    dr_lett5 : char;
-    dr_lett5status : char;
-    dr_lett6 : char;
-    dr_lett6status : char;
-    dr_lett7 : char;
-    dr_lett7status : char;
-    dr_lett8 : char;
-    dr_lett8status : char;
+    dr_lett1 : AnsiChar;
+    dr_lett1status : AnsiChar;
+    dr_lett2 : AnsiChar;
+    dr_lett2status : AnsiChar;
+    dr_lett3 : AnsiChar;
+    dr_lett3status : AnsiChar;
+    dr_lett4 : AnsiChar;
+    dr_lett4status : AnsiChar;
+    dr_lett5 : AnsiChar;
+    dr_lett5status : AnsiChar;
+    dr_lett6 : AnsiChar;
+    dr_lett6status : AnsiChar;
+    dr_lett7 : AnsiChar;
+    dr_lett7status : AnsiChar;
+    dr_lett8 : AnsiChar;
+    dr_lett8status : AnsiChar;
   end;
 
   TMountType = (mtNotMounted, mtPartition, mtSVLFile, mtWAVFile, mtTimedOut, mtUnknown);
@@ -253,8 +253,8 @@ type
   TSlotInfo = packed record
     SlotNo: Integer;
     MountType: TMountType;
-    HostDriveLetter: string;
-    DriveMountedAs: string;
+    HostDriveLetter: AnsiString;
+    DriveMountedAs: AnsiString;
     CipherType: string;
     FileName: string; // Will be set to partition ID if a partition is mounted.
                       // Under Win9x/Me, set to the drive ID if a partition is
@@ -330,14 +330,14 @@ type
     DrvObjAbandoned: cardinal; // flags1;    //inclusive
     bytespersector: cardinal; // flagsMagic;   //inclusive
     wavoffset: cardinal; // attrib
-    fname: PChar; // previously "FileName"
+    fname: PAnsiChar; // previously "FileName"
     mountdrive: cardinal;
     LogicalDrives: cardinal; // Previously "mountslot"
     mountresult: cardinal; // Set to 3 if file mounts OK - bit 8 set if WAV and buffer cannot allocate
                            // Set to 0x83 (bit 7 set) if file ALREADY mounted
                            // Set to 0 if no slots free
                            // 1 Not mounted
-    critical: PChar;
+    critical: PAnsiChar;
   end;
   // xxx - previously called - DELETE THIS LINE IF NO PROBS - PTNewNTMountFileStruct = ^TNewNTMountFileStruct;
   PTMountFileStruct = ^TMountFileStruct;
@@ -348,9 +348,9 @@ type
     // in comparison to the original ScramDisk source code, which just passed
     // slotNo as the first 4 bytes of infotext
     slotNo: integer;                  // slotNo and infotext - "infotext" in
-    infotext: array [0..255] of char; // the ScramDisk source is 256 bytes
+    infotext: array [0..255] of Ansichar; // the ScramDisk source is 256 bytes
                                       // long, and slotNo doesn't exist in the
-                                      // struct. However, due to the werido way
+                                      // struct. However, due to the wierdo way
                                       // ScramDisk does things (passing slotNo
                                       // in as the first 4 bytes of infotext),
                                       // this is what the Delphi record should
@@ -373,12 +373,12 @@ type
     sumHIGH: cardinal;
     sum3: cardinal; //dummy
     sum4: cardinal; //dummy
-    invalidsum: char;
-    owner: char;
-    spare2: char;
-    spare3: char;
+    invalidsum: Ansichar;
+    owner: Ansichar;
+    spare2: Ansichar;
+    spare3: Ansichar;
     writeEnabled: integer;
-    dummy: array [0..171] of char; // Ugg... ScramDisk shouldn't never
+    dummy: array [0..171] of Ansichar; // Ugg... ScramDisk shouldn't never
                                    // actually use this - it's not part of
                                    // the struct. However, ScramDisk uses a
                                    // 516 byte buffer for when calling
@@ -393,7 +393,7 @@ type
 
 
   TWavInfo = packed record
-    DataPointer : PChar;
+    DataPointer : PAnsiChar;
     FileOffset : Cardinal;
     NumChannels : Word;
     WavType : Word;
@@ -439,12 +439,12 @@ Tbpb = packed record
   bytereserved: byte;
   extendbootsig: byte;
   serialnumber: longword;
-  volname: array [0..10] of char;
+  volname: array [0..10] of AnsiChar;
 
-  padding: array [0..4] of char; // Additional field required to get it to a
+  padding: array [0..4] of AnsiChar; // Additional field required to get it to a
                                  // DWORD boundry
 
-  voltype: array [0..7] of char;
+  voltype: array [0..7] of AnsiChar;
 end;
 
   TCryptVol = packed record
@@ -460,7 +460,7 @@ end;
     cryptsectorfirst : Cardinal;
     cryptsectorlast : Cardinal;
     physdevDCB : PTMYDCB;
-    mainkeys : array[0..2047] of Char;
+    mainkeys : array[0..2047] of AnsiChar;
     mountfilehandle : Integer;
     devicetype : Integer;
 
@@ -469,17 +469,17 @@ end;
     timeoutcount: DWORD;
     spare3 : Integer;
 
-    volname : array[0..15] of Char;
-    digest : array[0..19] of Char;
+    volname : array[0..15] of AnsiChar;
+    digest : array[0..19] of AnsiChar;
     bpb: Tbpb;
     // spare is an array of char with dimensions [0..((20*7)-sizeof(bpb))-1];
     // bpb is 56 bytes long
-    spare: array[0..83] of char;
+    spare: array[0..83] of AnsiChar;
 
     addb : TDDB;
 
     logicaldcb: TMYDCB;
-    mounted_file_name : array[0..511] of Char;
+    mounted_file_name : array[0..511] of AnsiChar;
   end;
   PTCryptVol = ^TCryptVol;
 

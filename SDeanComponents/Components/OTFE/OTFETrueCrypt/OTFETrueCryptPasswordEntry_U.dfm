@@ -47,7 +47,6 @@ object OTFETrueCryptPasswordEntry_F: TOTFETrueCryptPasswordEntry_F
     Width = 49
     Height = 21
     Style = csDropDownList
-    ItemHeight = 13
     TabOrder = 2
   end
   object ckHidePassword: TCheckBox

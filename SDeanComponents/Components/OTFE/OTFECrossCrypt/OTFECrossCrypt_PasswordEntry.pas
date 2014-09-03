@@ -46,7 +46,7 @@ type
     FMinPasswordLength: integer;
 
     FCipher: TCROSSCRYPT_CIPHER_TYPE;
-    FDriveLetter: char;
+    FDriveLetter: Ansichar;
     FMountReadOnly: boolean;
     FMountAsCD: boolean;
     FMultipleKey: boolean;
@@ -81,7 +81,7 @@ type
     property MinPasswordLength: integer read FMinPasswordLength write FMinPasswordLength;
 
     property Cipher: TCROSSCRYPT_CIPHER_TYPE read FCipher write FCipher;
-    property DriveLetter: char read FDriveLetter write FDriveLetter;
+    property DriveLetter: Ansichar read FDriveLetter write FDriveLetter;
     property MountReadOnly: boolean read FMountReadOnly write FMountReadOnly;
     property MountAsCD: boolean read FMountAsCD write FMountAsCD;
     property MultipleKey: boolean read FMultipleKey write FMultipleKey;
@@ -89,7 +89,7 @@ type
     // If this is set, the user will not be able to specify "readonly" or "CD"
     property OnlyReadWrite: boolean read FOnlyReadWrite write FOnlyReadWrite;
 
-    procedure GetSinglePassword(var password: string);
+    procedure GetSinglePassword(var password: Ansistring);
     procedure GetMultiplePasswords(passwords: TStringList);
     procedure AddPassword(password: string);
 
@@ -173,13 +173,13 @@ end;
 
 procedure TOTFECrossCrypt_PasswordEntry_F.pbOKClick(Sender: TObject);
 var
-  tmpDriveStr: string;
+  tmpDriveStr: Ansistring;
   allOK: boolean;
   confirmDlg: TOTFECrossCrypt_PasswordConfirm_F;
   confirmMultiplePw: TStringList;
-  confirmSinglePw: string;
+  confirmSinglePw: Ansistring;
   i: integer;
-  origSinglePw: string;
+  origSinglePw: Ansistring;
   msgDlgReply: word;
   askUser: boolean;
 begin
@@ -476,9 +476,9 @@ end;
 
 
 // Get the single password
-procedure TOTFECrossCrypt_PasswordEntry_F.GetSinglePassword(var password: string);
+procedure TOTFECrossCrypt_PasswordEntry_F.GetSinglePassword(var password: Ansistring);
 begin
-  password := FPasswords.Text;
+  password := FPasswords.Text;  { TODO 1 -otdk -cbug : alert user if use unicode }
 
   // Trim off the CRLF
   Delete(password, (Length(password)-1), 2);

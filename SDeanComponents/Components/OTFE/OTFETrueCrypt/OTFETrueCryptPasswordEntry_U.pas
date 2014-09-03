@@ -31,13 +31,13 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
-    FDefaultDrive: char;
+    FDefaultDrive: AnsiChar;
     FUserCanForceMount: boolean;
     FUserCanMountRemovable: boolean;
     FUserCanMountReadonly: boolean;
     procedure SetDrivesAllowed(drvs: string);
-    procedure SetDrive(dfltDrv: char);
-    function  GetDrive(): char;
+    procedure SetDrive(dfltDrv: AnsiChar);
+    function  GetDrive(): AnsiChar;
     procedure SetDriverCachePassword(cache: boolean);
     function  GetDriverCachePassword(): boolean;
     function  GetMountReadonly(): boolean;
@@ -49,7 +49,7 @@ type
   public
     procedure ClearEnteredPassword();
   published
-    property Drive: char read GetDrive write SetDrive;
+    property Drive: AnsiChar read GetDrive write SetDrive;
     property DrivesAllowed: string write SetDrivesAllowed;
 
     property UserCanMountReadonly: boolean read FUserCanMountReadonly write FUserCanMountReadonly;
@@ -106,10 +106,10 @@ begin
 
 end;
 
-procedure TOTFETrueCryptPasswordEntry_F.SetDrive(dfltDrv: char);
+procedure TOTFETrueCryptPasswordEntry_F.SetDrive(dfltDrv: AnsiChar);
 begin
   FDefaultDrive:= dfltDrv;
-  dfltDrv := (uppercase(dfltDrv))[1];
+  dfltDrv := AnsiString((uppercase(dfltDrv)))[1];
 
   // This will ensure that we either have the default drive selected, or the
   // first drive
@@ -124,7 +124,7 @@ begin
 
 end;
 
-function TOTFETrueCryptPasswordEntry_F.GetDrive(): char;
+function TOTFETrueCryptPasswordEntry_F.GetDrive(): AnsiChar;
 begin
   if cbDrives.items.count<1 then
     begin
@@ -132,7 +132,7 @@ begin
     end
   else
     begin
-    Result := cbDrives.text[1];
+    Result := AnsiChar(cbDrives.text[1]);
     end;
 
 end;

@@ -46,7 +46,7 @@ type
   public
     property MultipleKey: boolean read FMultipleKey write FMultipleKey;
 
-    procedure GetSinglePassword(var password: string);
+    procedure GetSinglePassword(var password: Ansistring);
     procedure GetMultiplePasswords(passwords: TStringList);
 
     // Clear down the dialog's internals...
@@ -169,7 +169,7 @@ end;
 // Get the single password
 procedure TOTFECrossCrypt_PasswordConfirm_F.GetSinglePassword(var password: Ansistring);
 begin
-  password := FPasswords.Text;
+  password := FPasswords.Text;  { TODO 1 -otdk -cbug : alert user if use unicode }
 
   // Trim off the CRLF
   Delete(password, (Length(password)-1), 2);

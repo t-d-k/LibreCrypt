@@ -31,7 +31,7 @@ type
 
 type
   TOTFECrossCryptVolumeInfo = packed record
-    DriveLetter: char;
+    DriveLetter: Ansichar;
     FileName: string;
     UserModeDeviceName: string;
     KernelModeDeviceName: string;
@@ -50,12 +50,12 @@ type
     function  IsServiceRunning(): boolean;
 
 
-    procedure AddKey(ka: POPEN_FILE_INFORMATION; cipher: TCROSSCRYPT_CIPHER_TYPE; var key: string);
+    procedure AddKey(ka: POPEN_FILE_INFORMATION; cipher: TCROSSCRYPT_CIPHER_TYPE; var key: Ansistring);
 
     function  FileDiskMount(
-                            mountDeviceName: string;
+                            mountDeviceName: Ansistring;
                             OpenFileInformation: POPEN_FILE_INFORMATION;
-                            DriveLetter: char;
+                            DriveLetter: Ansichar;
                             CdImage: boolean
                            ): boolean;
 
@@ -85,22 +85,22 @@ type
     destructor  Destroy(); override;
     function  Title(): string; overload; override;
     function  IsDriverInstalled(): boolean; overload; override;
-    function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; overload; override;
+    function  Mount(volumeFilename: Ansistring; readonly: boolean = FALSE): Ansichar; overload; override;
     function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; overload; override;
-    function  MountDevices(): string; override;
+    function  MountDevices(): AnsiString; override;
     function  CanMountDevice(): boolean; override;
     // Note: CrossCrypt doesn't have the concept of an "emergency dismount"
     function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
     // Note: CrossCrypt doesn't have the concept of an "emergency dismount"
-    function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
+    function  Dismount(driveLetter: Ansichar; emergency: boolean = FALSE): boolean; overload; override;
     // Note: You can only get the version ID with CrossCrypt, if there's one or
     //       more volumes mounted.
     //       *Stupid*, but true - a problem with the CrossCrypt driver!
     function  Version(): cardinal; overload; override;
     function  VersionStr(): string; overload; override;
     function  IsEncryptedVolFile(volumeFilename: string): boolean; override;
-    function  DrivesMounted(): string; overload; override;
-    function  GetVolFileForDrive(driveLetter: char): string; override;
+    function  DrivesMounted(): Ansistring; overload; override;
+    function  GetVolFileForDrive(driveLetter: Ansichar): string; override;
     function  GetDriveForVolFile(volumeFilename: string): Ansichar; override;
     function  GetMainExe(): string; override;
 
@@ -111,7 +111,7 @@ type
 
     // Attempt to create and mount a volume file of the specified size
     // Returns the drive letter of the volume file, or #0 on error
-    function  CreateVolume(volumeFilename: string; sizeInBytes: int64): char;
+    function  CreateVolume(volumeFilename: Ansistring; sizeInBytes: int64): Ansichar;
 
     // Returns the number of devices for each of the types disk/CDROM
     function  GetNumberOfDevices(): integer;
@@ -227,9 +227,9 @@ begin
 end;
 
 
-function TOTFECrossCrypt.Mount(volumeFilename: string; readonly: boolean = FALSE): char;
+function TOTFECrossCrypt.Mount(volumeFilename: Ansistring; readonly: boolean = FALSE): Ansichar;
 var
-  retVal: char;
+  retVal: Ansichar;
   filenames: TStringList;
   mountedAs: AnsiString;
 begin
@@ -275,14 +275,14 @@ var
   ka: TOPEN_FILE_INFORMATION;
   retVal: boolean;
   passwordDlg: TOTFECrossCrypt_PasswordEntry_F;
-  tmpPw: string;
+  tmpPw: Ansistring;
   tmpStr: string;
   multiPasswords: TStringList;
   i: integer;
   mountDeviceName: string;
   x: integer;
   currVolumeFilename: string;
-  currVolumeDrive: char;
+  currVolumeDrive: Ansichar;
   fileCheck: boolean;
 begin
   retVal := FALSE;
@@ -476,7 +476,7 @@ end;
 
 
 
-procedure TOTFECrossCrypt.AddKey(ka: POPEN_FILE_INFORMATION; cipher: TCROSSCRYPT_CIPHER_TYPE; var key: string);
+procedure TOTFECrossCrypt.AddKey(ka: POPEN_FILE_INFORMATION; cipher: TCROSSCRYPT_CIPHER_TYPE; var key: Ansistring);
 var
   hashAlg: THashAlg;
   hashValue: THashArray;
@@ -608,9 +608,9 @@ end;
 
 
 function TOTFECrossCrypt.FileDiskMount(
-                                       mountDeviceName: string;
+                                       mountDeviceName: Ansistring;
                                        OpenFileInformation: POPEN_FILE_INFORMATION;
-                                       DriveLetter: char;
+                                       DriveLetter: Ansichar;
                                        CdImage: boolean
                                       ): boolean;
 var
@@ -725,7 +725,7 @@ begin
 end;
 
 
-function TOTFECrossCrypt.Dismount(driveLetter: char; emergency: boolean = FALSE): boolean;
+function TOTFECrossCrypt.Dismount(driveLetter: AnsiChar; emergency: boolean = FALSE): boolean;
 var
   VolumeName: string;
   driveDevice: THandle;
@@ -986,9 +986,9 @@ begin
 end;
 
 
-function TOTFECrossCrypt.DrivesMounted(): string;
+function TOTFECrossCrypt.DrivesMounted(): Ansistring;
 var
-  retVal: string;
+  retVal: Ansistring;
   i: integer;
   driveLetters: TStringList;
   deviceNames: TStringList;
@@ -1028,7 +1028,7 @@ begin
 end;
 
 
-function TOTFECrossCrypt.GetVolFileForDrive(driveLetter: char): string;
+function TOTFECrossCrypt.GetVolFileForDrive(driveLetter: AnsiChar): string;
 var
   retVal: string;
   volumeInfo: TOTFECrossCryptVolumeInfo;
@@ -1051,9 +1051,9 @@ end;
 
 function TOTFECrossCrypt.GetDriveForVolFile(volumeFilename: string): Ansichar;
 var
-  mounted: string;
+  mounted: Ansistring;
   volumeInfo: TOTFECrossCryptVolumeInfo;
-  retVal: char;
+  retVal: Ansichar;
   i: integer;
 begin
   retVal := #0;
@@ -1129,7 +1129,7 @@ begin
 end;
 
 
-function TOTFECrossCrypt.GetVolumeInfo(driveLetter: char; var volumeInfo: TOTFECrossCryptVolumeInfo): boolean;
+function TOTFECrossCrypt.GetVolumeInfo(driveLetter: AnsiChar; var volumeInfo: TOTFECrossCryptVolumeInfo): boolean;
 var
   found: boolean;
   deviceNames: TStringList;
@@ -1478,11 +1478,11 @@ begin
 end;
 
 
-function TOTFECrossCrypt.CreateVolume(volumeFilename: string; sizeInBytes: int64): char;
+function TOTFECrossCrypt.CreateVolume(volumeFilename: Ansistring; sizeInBytes: int64): AnsiChar;
 var
-  retVal: char;
+  retVal: AnsiChar;
   filenames: TStringList;
-  mountedAs: string;
+  mountedAs: Ansistring;
 begin
   retVal := #0;
 
@@ -1511,7 +1511,7 @@ end;
 // Prompt the user for a device (if appropriate) and password (and drive
 // letter if necessary), then mount the device selected
 // Returns the drive letter of the mounted devices on success, #0 on failure
-function TOTFECrossCrypt.MountDevices(): string;
+function TOTFECrossCrypt.MountDevices(): Ansistring;
 begin
   // Not supported...
   Result := #0;

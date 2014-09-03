@@ -63,7 +63,6 @@ object GetDriveLetter_F: TGetDriveLetter_F
     Width = 45
     Height = 21
     Style = csDropDownList
-    ItemHeight = 13
     TabOrder = 0
   end
   object pbOK: TButton

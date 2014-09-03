@@ -192,8 +192,8 @@ type
                                 lpBytesReturned: DWORD; // pointer to variable to receive output byte count
                                 thelpOverlapped: POverlapped  // pointer to overlapped structure for asynchronous operation
                                 ): boolean;
-    procedure NTMountSDPartitions(crit: PChar);
-    procedure MountNTVol(drive: char);
+    procedure NTMountSDPartitions(crit: PAnsiChar);
+    procedure MountNTVol(drive: Ansichar);
     function  openread(filename: string): THandle;
 
     function  NTCheckStreaming(slotNo: integer): boolean;
@@ -201,12 +201,12 @@ type
     procedure ResetTimeStamp(filename: string);
     procedure Refresh_MyComp();
     procedure UniCpy(var output: string; pwidestring: LPWSTR);
-    function  RecursedContainer(drv: char): boolean;
+    function  RecursedContainer(drv: Ansichar): boolean;
     function  NTDismountVolume(brutal: integer; drv: integer; slot: integer): boolean;
     procedure NTReadAllPartitionsNT();
     function  NTReadNTPartition(physdrive: integer; var driveLayout: TDRIVE_LAYOUT_INFORMATION): boolean;
-    procedure SetPreferredDrive(drive: char);
-    function  GetPreferredDrive(): char;
+    procedure SetPreferredDrive(drive: Ansichar);
+    function  GetPreferredDrive(): Ansichar;
 
 
 
@@ -229,7 +229,7 @@ type
     function  LockLogDrive(DriveNo: Integer; Mode :Integer): Integer; virtual;
     function  LockDrive(Drive: string; Mode: Integer): Boolean; virtual;
     procedure BrutalDismountSlot(SlotNo: Integer);virtual;
-    function  PerformMountContainer(Filename: string; clearPasswordsAfterwards: boolean): boolean;
+    function  PerformMountContainer(Filename: Ansistring; clearPasswordsAfterwards: boolean): boolean;
 
     function  GetWordFromStream(ts: TFileStream): WORD;
     function  GetDWordFromStream(ts: TFileStream): DWORD;
@@ -262,44 +262,44 @@ type
 
     // TOTFE functions...
     function  Title(): string; overload; override;
-    function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; overload; override;
+    function  Mount(volumeFilename: Ansistring; readonly: boolean = FALSE): Ansichar; overload; override;
     function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; overload; override;
-    function  MountDevices(): string; override;
+    function  MountDevices(): Ansistring; override;
     function  CanMountDevice(): boolean; override;
     function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
-    function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
+    function  Dismount(driveLetter: Ansichar; emergency: boolean = FALSE): boolean; overload; override;
     function  IsEncryptedVolFile(volumeFilename: string): boolean; override;
-    function  DrivesMounted(): string; override;
-    function  GetVolFileForDrive(driveLetter: char): string; override;
-    function  GetDriveForVolFile(volumeFilename: string): char; override;
+    function  DrivesMounted(): Ansistring; override;
+    function  GetVolFileForDrive(driveLetter: Ansichar): string; override;
+    function  GetDriveForVolFile(volumeFilename: string): Ansichar; override;
     function  Version(): cardinal; override;
     function  VersionStr(): string; override;
     function  GetMainExe(): string; override;
 
-    function  GetSlotForDrive(driveLetter: char): integer;
-    function  GetVolumeInfo(driveLetter: char; var info: TSlotInfo): boolean;
+    function  GetSlotForDrive(driveLetter: Ansichar): integer;
+    function  GetVolumeInfo(driveLetter: Ansichar; var info: TSlotInfo): boolean;
 
 
-    function  IsDriveReadonly(driveLetter: char): boolean; override;
+    function  IsDriveReadonly(driveLetter: Ansichar): boolean; override;
 
     // Compatability with TEnhKrScramDisk
     // !! WARNING TO DEVELOPERS !!!
     // These functions are only included for backward compatability with
     // TEnhkrScramDisk and *may* or *may not* be dropped in a later release.
-    function  MountPrompted(var drive: string): boolean; overload;
+    function  MountPrompted(var drive: Ansistring): boolean; overload;
     function  MountPrompted(volumeFilenames: TStrings; readonly: boolean) : boolean; overload;
-    function  MountPrompted(volumeFilename: string; readonly: boolean): boolean; overload;
+    function  MountPrompted(volumeFilename: Ansistring; readonly: boolean): boolean; overload;
     // Modified MountContainer to mount container file as readonly
-    function  MountContainer(filename: string; readonly: boolean; clearPasswordsAfterwards: boolean): boolean; overload;
+    function  MountContainer(filename: Ansistring; readonly: boolean; clearPasswordsAfterwards: boolean): boolean; overload;
     function  MaxSlots() : integer;
     function  NumberMounted() : integer;
     // Modified Dismounts to undo any readonly changes made
     procedure Dismount(SlotNo : Integer; Brutal : Boolean = TRUE); overload;
     // This next Dismount has been dropped (replaced with TOTFE Dismount
 //    procedure Dismount(Drive : string; Brutal : Boolean = TRUE); overload;
-    function  GetDriveLetterForVolFile(volumeFilename: string): string;
+    function  GetDriveLetterForVolFile(volumeFilename: string): AnsiString;
     function  EnterPasswordsDialog(): boolean;
-    function  MountPartitionsPrompted(): string;
+    function  MountPartitionsPrompted(): Ansistring;
     function  DismountPrompted(): boolean;
 
   published
@@ -311,7 +311,7 @@ type
     property  DefaultPromptDir: string read FDefaultPromptDir write FDefaultPromptDir;
 
     // PreferredDrive was introduced with ScramDisk v3 
-    property  PreferredDrive: char read GetPreferredDrive write SetPreferredDrive;
+    property  PreferredDrive: Ansichar read GetPreferredDrive write SetPreferredDrive;
   end;
 
 type
@@ -491,7 +491,7 @@ var
   lastMountTimeDate: TSystemTime;
   writeProtect: DWORD;
   mountType: TMountType;
-  mountedAs: char;
+  mountedAs: Ansichar;
   fileAttr: integer;
 begin
   CheckActive();
@@ -554,7 +554,7 @@ begin
 
     end;
 
-  mountedAs := Chr(MyCVS[SlotNo].drive + 65);
+  mountedAs := AnsiChar(MyCVS[SlotNo].drive + 65);
   Result.DriveMountedAs := mountedAs;
 
   Result.CipherType := CipherType[MyCVS[SlotNo].cipher];
@@ -700,7 +700,7 @@ end;
 
 { --- Mount routines --- }
 
-function TOTFEScramDisk.PerformMountContainer(Filename: string; clearPasswordsAfterwards: boolean): boolean;
+function TOTFEScramDisk.PerformMountContainer(Filename: Ansistring; clearPasswordsAfterwards: boolean): boolean;
 var
   fs : TMountFileStruct;
   mf : ^TMountFileStruct;
@@ -716,7 +716,7 @@ begin
   mf := @fs;
   mf.delphiUnion.dcb := nil;
   mf.WavOffset := 0;
-  mf.fname := PChar(Filename);
+  mf.fname := PAnsiChar(Filename);
   mf.Critical := nil; // SKF mount only
 
   if CheckWav(Filename, wavInfo)=1 then  //  is it a 16 bit .WAV ?
@@ -780,7 +780,7 @@ end;
 { --- Dismount routines --- }
 
 // "brutal" is "emergency" dismount
-function  TOTFEScramDisk.Dismount(driveLetter: char; emergency: boolean = FALSE): boolean;
+function  TOTFEScramDisk.Dismount(driveLetter: Ansichar; emergency: boolean = FALSE): boolean;
 //procedure TOTFEScramDisk.Dismount(Drive : string; Brutal : Boolean);
 var
   SlotNo : Integer;
@@ -1108,7 +1108,7 @@ end;
 // Clear down the cached passwords
 procedure TOTFEScramDisk.ClearAllPasswords(skipActiveCheck: boolean);
 var
-  junkPassword : array [1..4] of string;
+  junkPassword : array [1..4] of Ansistring;
   i : integer;
   j : integer;
   dwBytesReturned: DWORD;
@@ -1128,7 +1128,7 @@ begin
     randomize;
     for j:=0 to 39 do
       begin
-      junkPassword[i] := junkPassword[i] + chr(random(255));
+      junkPassword[i] := junkPassword[i] + AnsiChar(random(255));
       end;
     end;
 
@@ -1433,10 +1433,10 @@ end;
 // [IN] volumeFilename - the filename of the volume to be mounted
 // [IN] readonly - TRUE to mount as readonly, otherwise set to FALSE
 // Returns TRUE on success, otherwise FALSE
-function  TOTFEScramDisk.Mount(volumeFilename: string; readonly: boolean = FALSE): char;
+function  TOTFEScramDisk.Mount(volumeFilename: Ansistring; readonly: boolean = FALSE): Ansichar;
 var
   stlTemp: TStringList;
-  mountedAs: string;
+  mountedAs: Ansistring;
 begin
   stlTemp := TStringList.Create();
   try
@@ -1459,7 +1459,7 @@ function  TOTFEScramDisk.Mount(volumeFilenames: TStringList; var mountedAs: Ansi
 var
   passwordsEntered: boolean;
   i: integer;
-  tmpDrv: char;
+  tmpDrv: AnsiChar;
   mountedOK: boolean;
 begin
   Result := FALSE;
@@ -1501,13 +1501,13 @@ end;
 // Maintaining compatability with TEnhKrScramDisk
 function TOTFEScramDisk.MountPrompted(volumeFilenames: TStrings; readonly: boolean) : boolean;
 var
-  mountedAs: string;
+  mountedAs: Ansistring;
 begin
   Result := Mount(TStringList(volumeFilenames), mountedAs, readonly);
 
 end;
 
-function TOTFEScramDisk.MountPrompted(volumeFilename: string; readonly: boolean): boolean;
+function TOTFEScramDisk.MountPrompted(volumeFilename: Ansistring; readonly: boolean): boolean;
 begin
   Result := (Mount(volumeFilename, readonly)<>#0);
 
@@ -1556,7 +1556,7 @@ end;
 // Enhanced MountContainer, allows mounting of a container file as
 // readonly
 // Returns: TRUE on success, otherwise FALSE
-function TOTFEScramDisk.MountContainer(filename: string; readonly: boolean; clearPasswordsAfterwards: boolean): boolean;
+function TOTFEScramDisk.MountContainer(filename: Ansistring; readonly: boolean; clearPasswordsAfterwards: boolean): boolean;
 var
   fileAttributes : integer;
   setOK : boolean;
@@ -1665,11 +1665,11 @@ begin
 
 end;
 
-function  TOTFEScramDisk.DrivesMounted(): string;
+function  TOTFEScramDisk.DrivesMounted(): AnsiString;
 var
   slotInfo : TSlotInfo;
   i : integer;
-  mtdDrvs: string;
+  mtdDrvs: AnsiString;
 begin
   CheckActive();
 
@@ -1696,13 +1696,13 @@ end;
 // [IN] volumeFilename - the filename of the volume file to be checked for
 // Returns the drive letter of the mounted volume file, or '' if the file is
 // not mounted
-function TOTFEScramDisk.GetDriveLetterForVolFile(volumeFilename: string): string;
+function TOTFEScramDisk.GetDriveLetterForVolFile(volumeFilename: string): AnsiString;
 begin
   Result := GetDriveForVolFile(volumeFilename);
 
 end;
 
-function  TOTFEScramDisk.GetDriveForVolFile(volumeFilename: string): char;
+function  TOTFEScramDisk.GetDriveForVolFile(volumeFilename: string): Ansichar;
 var
   i: integer;
   currSlotInfo: TSlotInfo;
@@ -1724,7 +1724,7 @@ begin
     end;
 end;
 
-function  TOTFEScramDisk.GetVolFileForDrive(driveLetter: char): string;
+function  TOTFEScramDisk.GetVolFileForDrive(driveLetter: Ansichar): string;
 var
   i: integer;
   slotInfo: TSlotInfo;
@@ -1789,7 +1789,7 @@ end;
 
 
 // Returns -1 on failure
-function TOTFEScramDisk.GetSlotForDrive(driveLetter: char): integer;
+function TOTFEScramDisk.GetSlotForDrive(driveLetter: Ansichar): integer;
 var
   i: integer;
   slotInfo: TSlotInfo;
@@ -1811,7 +1811,7 @@ begin
 
 end;
 
-function TOTFEScramDisk.GetVolumeInfo(driveLetter: char; var info: TSlotInfo): boolean;
+function TOTFEScramDisk.GetVolumeInfo(driveLetter: Ansichar; var info: TSlotInfo): boolean;
 var
   slot: integer;
 begin
@@ -1830,7 +1830,7 @@ end;
 // [OUT] drive - set to the drive letter of the volume just mounted
 //               (should be a list of driver letters, but still...)
 // Returns TRUE on success, otherwise FALSE
-function TOTFEScramDisk.MountPrompted(var drive: string) : boolean;
+function TOTFEScramDisk.MountPrompted(var drive: Ansistring) : boolean;
 var
   mountFilenameDlg : TOpenDialog;
 begin
@@ -1868,11 +1868,11 @@ end;
 
 // Display dialog to ask user for passwords, and then mount all partitions
 // Returns string containing the mounted drives, or empty string on failure
-function TOTFEScramDisk.MountPartitionsPrompted(): string;
+function TOTFEScramDisk.MountPartitionsPrompted(): Ansistring;
 var
   passwordsEntered : boolean;
-  beforeDrvs: string;
-  afterDrvs: string;
+  beforeDrvs: Ansistring;
+  afterDrvs: Ansistring;
   i: integer;
 begin
   CheckActive();
@@ -2396,7 +2396,7 @@ begin
         // Well, Aman doens't, so why should we?
         DefineDosDevice(DDD_RAW_TARGET_PATH, PChar(strDosName), PChar(strSzDevice));
 
-        MountNTVol(char(ord('A') + mp^.mountdrive));
+        MountNTVol(Ansichar(ord('A') + mp^.mountdrive));
 
         h:=openread(strDosName);
         if (h<>INVALID_HANDLE_VALUE) then
@@ -2436,7 +2436,7 @@ end;
 
 
 
-procedure TOTFEScramDisk.NTMountSDPartitions(crit: PChar);
+procedure TOTFEScramDisk.NTMountSDPartitions(crit: PAnsiChar);
 var
   i: integer;
   mf: TMountFileStruct;
@@ -2444,7 +2444,7 @@ begin
 
   for i:=0 to (NTSDPartitionNames.count-1) do
     begin
-    mf.fname := PChar(NTSDPartitionNames[i]);
+    mf.fname := PAnsiChar(AnsiString(NTSDPartitionNames[i]));
     mf.wavoffset:=0;
     mf.critical := crit;
 
@@ -2456,9 +2456,9 @@ end;
 
 // xxx - this should be in a different file? (NT specific)
 // To get the OS to mount the disk just needs the read of the boot sector!!
-procedure TOTFEScramDisk.MountNTVol(drive: char);
+procedure TOTFEScramDisk.MountNTVol(drive: Ansichar);
 var
-  buffer: array [0..511] of char;
+  buffer: array [0..511] of Ansichar;
   strVolMountName: string;
   i: integer;
 begin
@@ -2487,7 +2487,7 @@ end;
 
 
 
-function TOTFEScramDisk.IsDriveReadonly(driveLetter: char): boolean;
+function TOTFEScramDisk.IsDriveReadonly(driveLetter: Ansichar): boolean;
 var
   slotNo: integer;
   slotInfo: TSlotInfo;
@@ -2784,7 +2784,7 @@ end;
 
 // xxx - put NT dismount stuff in a different file?
 // Check to see if any ScramDisk volumes are mounted from the specified drive
-function TOTFEScramDisk.RecursedContainer(drv: char): boolean;
+function TOTFEScramDisk.RecursedContainer(drv: Ansichar): boolean;
 begin
   Result := (length(VolsMountedOnDrive(drv))>0);
 
@@ -2869,7 +2869,7 @@ begin
     exit;
     end;
 
-  if (RecursedContainer(char(MyCVS[slotNo].drive+ord('A')))) then
+  if (RecursedContainer(Ansichar(MyCVS[slotNo].drive+ord('A')))) then
     begin
     FLastErrCode:= OTFE_ERR_DISMOUNT_RECURSIVE;
     // Result already = FALSE
@@ -3031,15 +3031,15 @@ begin
 
 end;
 
-procedure TOTFEScramDisk.SetPreferredDrive(drive: char);
+procedure TOTFEScramDisk.SetPreferredDrive(drive: Ansichar);
 begin
   FStartDrive:=(ord(upcase(drive))-ord('A'));
 
 end;
 
-function TOTFEScramDisk.GetPreferredDrive(): char;
+function TOTFEScramDisk.GetPreferredDrive(): Ansichar;
 begin
-  Result := char(FStartDrive + ord('A'));
+  Result := Ansichar(FStartDrive + ord('A'));
 
 end;
 
@@ -3128,7 +3128,7 @@ end;
 // Prompt the user for a device (if appropriate) and password (and drive
 // letter if necessary), then mount the device selected
 // Returns the drive letters of the mounted devices on success, #0 on failure
-function TOTFEScramDisk.MountDevices(): string;
+function TOTFEScramDisk.MountDevices(): Ansistring;
 begin
   Result := MountPartitionsPrompted();
 end;

@@ -32,7 +32,7 @@ type
     FCloseExplorerWindowsOnDismount: boolean;
     FSaveMountedVolumesHistory: boolean;
     FWipePasswordCacheOnExit: boolean;
-    FLastSelectedDrive: char;
+    FLastSelectedDrive: AnsiChar;
     FLastMountedVolume: TStringList;
 
     function  ld(driveNum: integer; mode: integer): boolean;
@@ -41,10 +41,10 @@ type
     function  locklogdrive(drivenum: integer; mode: integer): boolean;
     function  ioctllock(nDrive: cardinal; permissions: integer; func: integer): integer;
     function  DoDeviceClose(driveNum: integer): boolean;
-    function  EjectStop(driveLetter: char; func: boolean): boolean;
+    function  EjectStop(driveLetter: AnsiChar; func: boolean): boolean;
 
-    function  GetNextUnusedDrvLtr(afterDrv: char): char;
-    function  GetUnusedDriveLetters(): string;
+    function  GetNextUnusedDrvLtr(afterDrv: AnsiChar): AnsiChar;
+    function  GetUnusedDriveLetters(): Ansistring;
 
     function  UseVersionHint(): TTrueCryptVersionHint;
 
@@ -57,9 +57,9 @@ type
     function  Disconnect(): boolean;
     procedure SetActive(AValue : Boolean); override;
 
-    function  GetDisksMounted(var mountedDrives: string; volumeFilenames: TStrings): boolean;
-    function  GetDisksMounted_PRE30(var mountedDrives: string; volumeFilenames: TStrings): boolean;
-    function  GetDisksMounted_30(var mountedDrives: string; volumeFilenames: TStrings): boolean;
+    function  GetDisksMounted(var mountedDrives: Ansistring; volumeFilenames: TStrings): boolean;
+    function  GetDisksMounted_PRE30(var mountedDrives: Ansistring; volumeFilenames: TStrings): boolean;
+    function  GetDisksMounted_30(var mountedDrives: Ansistring; volumeFilenames: TStrings): boolean;
 
     function  Mount_PRE30(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean;
     function  Mount_30(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean;
@@ -86,8 +86,8 @@ type
     // Returns TRUE if "volumeFilename" is a partition, not a file
     function  IsFilePartition(volumeFilename: string): boolean;
 
-    function  Dismount_PRE30(driveLetter: char; emergency: boolean = FALSE): boolean;
-    function  Dismount_30(driveLetter: char; emergency: boolean = FALSE): boolean; 
+    function  Dismount_PRE30(driveLetter: AnsiChar; emergency: boolean = FALSE): boolean;
+    function  Dismount_30(driveLetter: AnsiChar; emergency: boolean = FALSE): boolean;
 
   public
     constructor Create(AOwner : TComponent); override;
@@ -95,33 +95,33 @@ type
 
     // TOTFE functions...
     function  Title(): string; overload; override;
-    function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; override;
+    function  Mount(volumeFilename: Ansistring; readonly: boolean = FALSE): Ansichar; override;
     function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; override;
-    function  MountDevices(): string; override;
+    function  MountDevices(): AnsiString; override;
     function  CanMountDevice(): boolean; override;
-    function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
+    function  Dismount(driveLetter: AnsiChar; emergency: boolean = FALSE): boolean; overload; override;
     // !! WARNING !!
     // Due to limitations of the TrueCrypt driver, only up to the first 64
     // chars of the volumeFilename are significant!
     function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
-    function  DrivesMounted(): string; override;
-    function  GetVolFileForDrive(driveLetter: char): string; override;
+    function  DrivesMounted(): Ansistring; override;
+    function  GetVolFileForDrive(driveLetter: AnsiChar): string; override;
     // !! WARNING !!
     // Due to limitations of the TrueCrypt driver, only up to the first 64
     // chars of the volumeFilename are significant!
-    function  GetDriveForVolFile(volumeFilename: string): char; override;
+    function  GetDriveForVolFile(volumeFilename: string): Ansichar; override;
     function  Version(): cardinal; override;
     function  VersionStr(): string; override;
     function  IsEncryptedVolFile(volumeFilename: string): boolean; override;
     function  GetMainExe(): string; override;
 
 
-    function  GetDriveInfo(driveLetter: char; info: pTOTFETrueCryptVolumeInfo): boolean;
-    function  GetDriveInfo_PRE30(driveLetter: char; info: pTOTFETrueCryptVolumeInfo): boolean;
-    function  GetDriveInfo_30(driveLetter: char; info: pTOTFETrueCryptVolumeInfo): boolean;
-    function  GetDriveInfo_31a(driveLetter: char; info: pTOTFETrueCryptVolumeInfo): boolean;
+    function  GetDriveInfo(driveLetter: AnsiChar; info: pTOTFETrueCryptVolumeInfo): boolean;
+    function  GetDriveInfo_PRE30(driveLetter: AnsiChar; info: pTOTFETrueCryptVolumeInfo): boolean;
+    function  GetDriveInfo_30(driveLetter: AnsiChar; info: pTOTFETrueCryptVolumeInfo): boolean;
+    function  GetDriveInfo_31a(driveLetter: AnsiChar; info: pTOTFETrueCryptVolumeInfo): boolean;
 
-    function  ClearPasswords(driveLetter: char): boolean;
+    function  ClearPasswords(driveLetter: AnsiChar): boolean;
     function  GetAvailableRawDevices(dispNames: TStringList; deviceNames: TStringList): boolean;
 
     // "idx" should be between 1 and TrueCrypt_REGISTRY_SETTINGS_COUNT_LASTMOUNTEVOLUME
@@ -141,7 +141,7 @@ type
     property CloseExplorerWindowsOnDismount: boolean read FCloseExplorerWindowsOnDismount write FCloseExplorerWindowsOnDismount default FALSE;
     property SaveMountedVolumesHistory: boolean read FSaveMountedVolumesHistory write FSaveMountedVolumesHistory default FALSE;
     property WipePasswordCacheOnExit: boolean read FWipePasswordCacheOnExit write FWipePasswordCacheOnExit default FALSE;
-    property LastSelectedDrive: char read FLastSelectedDrive write FLastSelectedDrive default #0;
+    property LastSelectedDrive: AnsiChar read FLastSelectedDrive write FLastSelectedDrive default #0;
 
     property MountDeviceDlg9xStyle: boolean read FMountDeviceDlg9xStyle write FMountDeviceDlg9xStyle default FALSE;
     property VersionHint: TTrueCryptVersionHint read FTrueCryptVersionHint write FTrueCryptVersionHint default tcvAuto;
@@ -338,7 +338,7 @@ begin
 
 end;
 
-function TOTFETrueCrypt.Dismount(driveLetter: char; emergency: boolean = FALSE): boolean;
+function TOTFETrueCrypt.Dismount(driveLetter: AnsiChar; emergency: boolean = FALSE): boolean;
 begin
   if (Version() < $300) then
     begin
@@ -352,12 +352,12 @@ begin
 end;
 
 // Note that the emergency parameter is IGNORED
-function TOTFETrueCrypt.Dismount_PRE30(driveLetter: char; emergency: boolean = FALSE): boolean;
+function TOTFETrueCrypt.Dismount_PRE30(driveLetter: AnsiChar; emergency: boolean = FALSE): boolean;
 var
-  inbuf: array [1..80] of char;
-  outbuf: array [1..80] of char;
+  inbuf: array [1..80] of AnsiChar;
+  outbuf: array [1..80] of AnsiChar;
   bytesRead: DWORD;
-  serviceCmd: string;
+  serviceCmd: Ansistring;
   i: integer;
   nDosDriveNo: integer;
 begin
@@ -416,7 +416,7 @@ begin
 end;
 
 
-function TOTFETrueCrypt.Dismount_30(driveLetter: char; emergency: boolean = FALSE): boolean;
+function TOTFETrueCrypt.Dismount_30(driveLetter: AnsiChar; emergency: boolean = FALSE): boolean;
 var
   nDosDriveNo: integer;
   query: TOTFETrueCrypt_UNMOUNT_STRUCT_30;
@@ -485,7 +485,7 @@ begin
 end;
 
 
-function TOTFETrueCrypt.Mount(volumeFilename: string; readonly: boolean = FALSE): char;
+function TOTFETrueCrypt.Mount(volumeFilename: Ansistring; readonly: boolean = FALSE): Ansichar;
 var
   stlVolumes: TStringList;
   mountedAs: AnsiString;
@@ -528,20 +528,20 @@ var
   dwBytesReturned: DWORD;
   volumeLoop: integer;
   i: integer;
-  driveLetter: char;
-  thePassword: string;
+  driveLetter: AnsiChar;
+  thePassword: Ansistring;
   oneOK: boolean;
   passwordDlg: TOTFETrueCryptPasswordEntry_F;
 
   currAllOK: boolean;
-  mountedDrvLetter: char;
+  mountedDrvLetter: Ansichar;
   drvLtrsFree: string;
   pwEntryDlgTitle: string;
   currVolValid: boolean;
 
-  serviceCmd: string;
-  inbuf: array [1..80] of char;
-  outbuf: array [1..80] of char;
+  serviceCmd: Ansistring;
+  inbuf: array [1..80] of Ansichar;
+  outbuf: array [1..80] of Ansichar;
   bytesRead: DWORD;
 
   tmpFilename: string;
@@ -606,7 +606,7 @@ begin
     CachePasswordsInDriver := passwordDlg.DriverCachePassword;
     LastSelectedDrive := passwordDlg.Drive;
 
-    thePassword := passwordDlg.mePassword.text;
+    thePassword := passwordDlg.mePassword.text; { TODO 1 -otdk -cbug : alert user if use unicode }
     passwordDlg.ClearEnteredPassword();
 
   finally
@@ -627,7 +627,7 @@ begin
     begin
     query.szPassword[i-1] := thePassword[i];
     // Overwrite password chars once used...
-    thePassword[i] := char(Random(256));
+    thePassword[i] := Ansichar(Random(256));
     end;
   // No +1 here; szPassword indexes from zero.
   query.szPassword[length(thePassword)] := #0;
@@ -726,7 +726,7 @@ begin
           else  // if (CurrentOS = TrueCrypt_OS_WIN_NT) then
             begin
             tmpFilename := volumeFilenames[volumeLoop];
-            EjectStop(upcase(tmpFilename[1]), TRUE);
+            EjectStop(AnsiChar(upcase(tmpFilename[1])), TRUE);
 
             // Set oneOK to TRUE if at least *one* volume mounted OK
             oneOK := TRUE;
@@ -769,14 +769,14 @@ var
   dwBytesReturned: DWORD;
   volumeLoop: integer;
   i: integer;
-  driveLetter: char;
-  thePassword: string;
+  driveLetter: AnsiChar;
+  thePassword: Ansistring;
   oneOK: boolean;
   passwordDlg: TOTFETrueCryptPasswordEntry_F;
 
   currAllOK: boolean;
-  mountedDrvLetter: char;
-  drvLtrsFree: string;
+  mountedDrvLetter: AnsiChar;
+  drvLtrsFree: Ansistring;
   pwEntryDlgTitle: string;
   currVolValid: boolean;
 
@@ -850,7 +850,7 @@ begin
     readonly   := passwordDlg.MountReadonly;
     removable  := passwordDlg.MountAsRemovable;
 
-    thePassword := passwordDlg.mePassword.text;
+    thePassword := passwordDlg.mePassword.text; { TODO 1 -otdk -cbug : alert user if use unicode }
     passwordDlg.ClearEnteredPassword();
 
   finally
@@ -871,7 +871,7 @@ begin
     begin
     query.szPassword[i-1] := thePassword[i];
     // Overwrite password chars once used...
-    thePassword[i] := char(Random(256));
+    thePassword[i] := AnsiChar(Random(256));
     end;
   // No +1 here; szPassword indexes from zero.
   query.szPassword[length(thePassword)] := #0;
@@ -1008,9 +1008,9 @@ begin
 end;
 
 
-function TOTFETrueCrypt.DrivesMounted(): string;
+function TOTFETrueCrypt.DrivesMounted(): Ansistring;
 var
-  output: string;
+  output: Ansistring;
 begin
   GetDisksMounted(output, nil);
   Result := SortString(output);
@@ -1020,7 +1020,7 @@ end;
 // !! WARNING !!
 // Under NT, the TrueCrypt driver won't tell us the full filename if it's more than
 // 64 chars long, it will only return the first 60 followed by "..."
-function TOTFETrueCrypt.GetDisksMounted(var mountedDrives: string; volumeFilenames: TStrings): boolean;
+function TOTFETrueCrypt.GetDisksMounted(var mountedDrives: Ansistring; volumeFilenames: TStrings): boolean;
 begin
   if (Version() < $300) then
     begin
@@ -1037,7 +1037,7 @@ end;
 // !! WARNING !!
 // Under NT, the TrueCrypt driver won't tell us the full filename if it's more than
 // 64 chars long, it will only return the first 60 followed by "..."
-function TOTFETrueCrypt.GetDisksMounted_PRE30(var mountedDrives: string; volumeFilenames: TStrings): boolean;
+function TOTFETrueCrypt.GetDisksMounted_PRE30(var mountedDrives: Ansistring; volumeFilenames: TStrings): boolean;
 var
   dwBytesReturned : DWORD;
   query: TOTFETrueCrypt_MOUNT_LIST_STRUCT_PRE30;
@@ -1074,7 +1074,7 @@ begin
       // We cleared the query.ulMountedDrives earlier, so we can do this
       if ((query.ulMountedDrives AND currBit)>0) then
         begin
-        mountedDrives := mountedDrives + chr(ord('A')+i);
+        mountedDrives := mountedDrives + AnsiChar(ord('A')+i);
         if volumeFilenames<>nil then
           begin
           currVolFilename := '';
@@ -1119,7 +1119,7 @@ end;
 // !! WARNING !!
 // Under NT, the TrueCrypt driver won't tell us the full filename if it's more than
 // 64 chars long, it will only return the first 60 followed by "..."
-function TOTFETrueCrypt.GetDisksMounted_30(var mountedDrives: string; volumeFilenames: TStrings): boolean;
+function TOTFETrueCrypt.GetDisksMounted_30(var mountedDrives: Ansistring; volumeFilenames: TStrings): boolean;
 var
   dwBytesReturned : DWORD;
   query: TOTFETrueCrypt_MOUNT_LIST_STRUCT_30;
@@ -1155,7 +1155,7 @@ begin
       // We cleared the query.ulMountedDrives earlier, so we can do this
       if ((query.ulMountedDrives AND currBit)>0) then
         begin
-        mountedDrives := mountedDrives + chr(ord('A')+i);
+        mountedDrives := mountedDrives + AnsiChar(ord('A')+i);
         if volumeFilenames<>nil then
           begin
           currVolFilename := '';
@@ -1200,10 +1200,10 @@ end;
 // !! WARNING !!
 // Under NT, the TrueCrypt driver won't tell us the full filename if it's more than
 // 64 chars long, it will only return the first 60 followed by "..."
-function TOTFETrueCrypt.GetVolFileForDrive(driveLetter: char): string;
+function TOTFETrueCrypt.GetVolFileForDrive(driveLetter: AnsiChar): string;
 var
   mountedFilenames: TStringList;
-  mountedDrives: string;
+  mountedDrives: Ansistring;
 begin
   Result := '';
 
@@ -1230,10 +1230,10 @@ end;
 // If running under NT, then if the lanegth of "volumeFilename" is >64, this
 // function may FAIL as the TrueCrypt driver only gives us the first 60 chars
 // followed by "..." to work with
-function TOTFETrueCrypt.GetDriveForVolFile(volumeFilename: string): char;
+function TOTFETrueCrypt.GetDriveForVolFile(volumeFilename: string): AnsiChar;
 var
   mountedFilenames: TStringList;
-  mountedDrives: string;
+  mountedDrives: Ansistring;
   numChars: integer;
 begin
   Result := #0;
@@ -1272,7 +1272,7 @@ end;
 
 
 
-function TOTFETrueCrypt.GetDriveInfo(driveLetter: char; info: pTOTFETrueCryptVolumeInfo): boolean;
+function TOTFETrueCrypt.GetDriveInfo(driveLetter: AnsiChar; info: pTOTFETrueCryptVolumeInfo): boolean;
 begin
   if (Version() < $300) then
     begin
@@ -1291,7 +1291,7 @@ end;
 
 
 // Function to be used for TrueCrypt versions prior to v3.0
-function TOTFETrueCrypt.GetDriveInfo_PRE30(driveLetter: char; info: pTOTFETrueCryptVolumeInfo): boolean;
+function TOTFETrueCrypt.GetDriveInfo_PRE30(driveLetter: AnsiChar; info: pTOTFETrueCryptVolumeInfo): boolean;
 var
   dwBytesReturned : DWORD;
   query: TOTFETrueCrypt_VOLUME_PROPERTIES_STRUCT_PRE30;
@@ -1371,7 +1371,7 @@ end;
 
 
 // Function to be used for TrueCrypt versions v3.0-v3.1
-function TOTFETrueCrypt.GetDriveInfo_30(driveLetter: char; info: pTOTFETrueCryptVolumeInfo): boolean;
+function TOTFETrueCrypt.GetDriveInfo_30(driveLetter: AnsiChar; info: pTOTFETrueCryptVolumeInfo): boolean;
 var
   dwBytesReturned : DWORD;
   query: TOTFETrueCrypt_VOLUME_PROPERTIES_STRUCT_30;
@@ -1460,7 +1460,7 @@ end;
 
 
 // Function to be used for TrueCrypt versions v3.1a and later
-function TOTFETrueCrypt.GetDriveInfo_31a(driveLetter: char; info: pTOTFETrueCryptVolumeInfo): boolean;
+function TOTFETrueCrypt.GetDriveInfo_31a(driveLetter: AnsiChar; info: pTOTFETrueCryptVolumeInfo): boolean;
 var
   dwBytesReturned : DWORD;
   query: TOTFETrueCrypt_VOLUME_PROPERTIES_STRUCT_31a;
@@ -1553,7 +1553,7 @@ function TOTFETrueCrypt.GetVolumeInfo(volumeFilename: string; info: pTOTFETrueCr
 var
   retVal: boolean;
   tgtVolumeFilename: string;
-  mountedDrives: string;
+  mountedDrives: Ansistring;
   mountedVolumeFilenames: TStringList;
   i: integer;
 begin
@@ -1695,7 +1695,7 @@ begin
 end;
 
 
-function TOTFETrueCrypt.ClearPasswords(driveLetter: char): boolean;
+function TOTFETrueCrypt.ClearPasswords(driveLetter: AnsiChar): boolean;
 var
   dwResult: DWORD;
 begin
@@ -1879,7 +1879,7 @@ begin
   if (mount_list.mountfilehandle<>0) then
     begin
     ShortArrayToString(mount_list.wszVolume, volFilename);
-    EjectStop(upcase(volFilename[1]), FALSE);
+    EjectStop(AnsiChar(upcase(volFilename[1])), FALSE);
     end;
 
   unmount.nDosDriveNo := driveNum;
@@ -1930,7 +1930,7 @@ begin
 
 end;
 
-function TOTFETrueCrypt.EjectStop(driveLetter: char; func: boolean): boolean;
+function TOTFETrueCrypt.EjectStop(driveLetter: AnsiChar; func: boolean): boolean;
 var
   hDevice: THANDLE;
   reg: TDeviceIOControlRegisters;
@@ -2035,10 +2035,10 @@ end;
 }
 
 
-function TOTFETrueCrypt.GetNextUnusedDrvLtr(afterDrv: char): char;
+function TOTFETrueCrypt.GetNextUnusedDrvLtr(afterDrv: AnsiChar): AnsiChar;
 var
   finished: boolean;
-  unusedDrvs: string;
+  unusedDrvs: Ansistring;
 begin
   Result := #0;
   finished := FALSE;
@@ -2046,7 +2046,7 @@ begin
   unusedDrvs := GetUnusedDriveLetters();
   while not(finished) do
     begin
-    afterDrv := chr(ord(afterDrv)+1);
+    afterDrv := AnsiChar(ord(afterDrv)+1);
     if ord(afterDrv)>ord('Z') then
       begin
       finished := TRUE;
@@ -2065,9 +2065,9 @@ begin
 end;
 
 // Returns a string containing the drive letters of "unallocated" drives
-function TOTFETrueCrypt.GetUnusedDriveLetters(): string;
+function TOTFETrueCrypt.GetUnusedDriveLetters(): Ansistring;
 var
-  driveLetters: string;
+  driveLetters: Ansistring;
   DriveNum: Integer;
   DriveBits: set of 0..25;
 begin
@@ -2078,7 +2078,7 @@ begin
     begin
     if not(DriveNum in DriveBits) then
       begin
-      driveLetters := driveLetters + Char(DriveNum + Ord('A'));
+      driveLetters := driveLetters + AnsiChar(DriveNum + Ord('A'));
       end;
     end;
 
@@ -2458,7 +2458,7 @@ procedure TOTFETrueCrypt.LoadSettings();
 var
   registry: TRegistry;
   keyName: string;
-  tmpDriveLetter: string;
+  tmpDriveLetter: Ansistring;
   i: integer;
   tmpLastMountedVolume: string;
 begin
@@ -3063,7 +3063,7 @@ end;
 // Prompt the user for a device (if appropriate) and password (and drive
 // letter if necessary), then mount the device selected
 // Returns the drive letter of the mounted devices on success, #0 on failure
-function TOTFETrueCrypt.MountDevices(): string;
+function TOTFETrueCrypt.MountDevices(): Ansistring;
 var
   mntDeviceDlg: TOTFETrueCryptMountDevice_F;
   finished: boolean;

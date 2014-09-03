@@ -223,21 +223,21 @@ type
   KEY_HANDLE = DWORD;
 
   TVERSION_BUFFER = packed record
-    Signature: array [1..8] of char; // input: "LOCOS97 "; output: "LS06CXX "
+    Signature: array [1..8] of ansichar; // input: "LOCOS97 "; output: "LS06CXX "
     Status: UCHAR;
     Major_version: UCHAR;
     Minor_version: UCHAR;
   end;
 
   TGETMASK_BUFFER_driverOLD = packed record
-    Signature: array [1..8] of char; // input: "LOCOS97 "; output: "LS06CXX "
+    Signature: array [1..8] of ansichar; // input: "LOCOS97 "; output: "LS06CXX "
     Status: UCHAR;
     dummy: array [1..3] of UCHAR;  // word boundry padding
     Mask: DWORD;
   end;
 
   TGETMASK_BUFFER_driverNEW = packed record
-    Signature: array [1..8] of char; // input: "LOCOS97 "; output: "LS06CXX "
+    Signature: array [1..8] of ansichar; // input: "LOCOS97 "; output: "LS06CXX "
     Status: UCHAR;
     dummy: array [1..3] of UCHAR;  // word boundry padding
     Mask: DWORD;
@@ -248,15 +248,15 @@ type
   end;
 
   TDISKINFO_BUFFER_driverOLD = packed record
-    Signature: array [1..8] of char; // input: "LOCOS97 "; output: "LS06CXX "
+    Signature: array [1..8] of ansichar; // input: "LOCOS97 "; output: "LS06CXX "
     Status: UCHAR;
     dummy: array [1..3] of UCHAR;  // word boundry padding
-    filename: array [1..DISKINFO_BUFFER_filename_SIZE] of char;
+    filename: array [1..DISKINFO_BUFFER_filename_SIZE] of ansichar;
     diskNumber: DWORD;
     diskSizeLow: DWORD;
     diskSizeHigh: DWORD;
     keyHandle: DWORD;
-    algDevice: array [1..128] of char;
+    algDevice: array [1..128] of ansichar;
     algorithmID: DWORD;
     readOnly: DWORD;
     process: THandle;
@@ -269,15 +269,15 @@ type
 
 
   TDISKINFO_BUFFER_driverNEW = packed record
-    Signature: array [1..8] of char; // input: "LOCOS97 "; output: "LS06CXX "
+    Signature: array [1..8] of ansichar; // input: "LOCOS97 "; output: "LS06CXX "
     Status: UCHAR;
     dummy: array [1..3] of UCHAR;  // word boundry padding
-    filename: array [1..DISKINFO_BUFFER_filename_SIZE] of char;
+    filename: array [1..DISKINFO_BUFFER_filename_SIZE] of ansichar;
     diskNumber: DWORD;
     diskSizeLow: DWORD;
     diskSizeHigh: DWORD;
     keyHandle: DWORD;
-    algDevice: array [1..128] of char;
+    algDevice: array [1..128] of ansichar;
     algorithmID: DWORD;
     readOnly: DWORD;
     process: THandle;
@@ -292,7 +292,7 @@ type
 
 
   TDISCONNECT_BUFFER = packed record
-    Signature: array [1..8] of char; // input: "LOCOS97 "; output: "LS06CXX "
+    Signature: array [1..8] of ansichar; // input: "LOCOS97 "; output: "LS06CXX "
     Status: UCHAR;
     dummy: array [1..3] of UCHAR;   // word boundry padding
     DiskNumber: DWORD;
@@ -309,7 +309,7 @@ type
   end;
 
   TTESTKEY_BUFFER = packed record
-    Signature: array [1..8] of char; // input: "LOCOS97 "; output: "LS06CXX "
+    Signature: array [1..8] of ansichar; // input: "LOCOS97 "; output: "LS06CXX "
     Status: UCHAR;
     IsValid: UCHAR;
     dummy: array [1..3] of UCHAR;  // word boundry padding
@@ -317,7 +317,7 @@ type
   end;
 
   TENCRYPT_BUFFER = packed record
-    Signature: array [1..8] of char; // input: "LOCOS97 "; output: "LS06CXX "
+    Signature: array [1..8] of ansichar; // input: "LOCOS97 "; output: "LS06CXX "
     Status: UCHAR;
     dummy: array [1..3] of UCHAR;  // word boundry padding
     KeyHandle: KEY_HANDLE;
@@ -327,7 +327,7 @@ type
 
   // This one is for NT only...
   TGETFUNC_BUFFER = packed record
-    Signature: array [1..8] of char; // input: "LOCOS97 "; output: "LS06CXX "
+    Signature: array [1..8] of ansichar; // input: "LOCOS97 "; output: "LS06CXX "
     Status: UCHAR;
     dummy: array [1..3] of UCHAR;  // word boundry padding
     FuncTestKey: Pointer;
@@ -337,14 +337,14 @@ type
   end;
 
   TFLAG_BUFFER = packed record
-    Signature: array [1..8] of char; // input: "LOCOS97 "; output: "LS06CXX "
+    Signature: array [1..8] of ansichar; // input: "LOCOS97 "; output: "LS06CXX "
     Status: UCHAR;
     dummy: array [1..3] of UCHAR;  // word boundry padding
     Flag: DWORD;
   end;
 
   TREFRESH_BUFFER = packed record
-    Signature: array [1..8] of char; // input: "LOCOS97 "; output: "LS06CXX "
+    Signature: array [1..8] of ansichar; // input: "LOCOS97 "; output: "LS06CXX "
     Status: UCHAR;
     dummy: array [1..3] of UCHAR;  // word boundry padding
     HookMask: ULONG;
@@ -378,20 +378,20 @@ type
 
   TBootRecord = packed record
     jmpCode: array [1..3] of byte;
-    OEMid: array [1..8] of char;
+    OEMid: array [1..8] of ansichar;
     bpb: TBPB;
     driveNo: byte;
     reserved: byte;
     extBootSign: byte;
     serialNumber: DWORD;
-    volumeLabel: array [1..11] of char;
-    FatType: array [1..8] of char;
+    volumeLabel: array [1..11] of ansichar;
+    FatType: array [1..8] of ansichar;
   end; // The same as DOS Boot Record structure for FAT12 and FAT16
 
 
   THiddenSector = packed record
     bootRecord: TBootRecord;
-    description: array [1..DESCRIPTION_SIZE] of char; // Description of the file-container
+    description: array [1..DESCRIPTION_SIZE] of ansichar; // Description of the file-container
 
     extent: WORD;                          // 0 (reserved for future)
     version: WORD;                         // 0 (reserved for future)
@@ -414,7 +414,7 @@ type
 
     algorithmId: DWORD;  // Encryption Algorithm identifier
     keyGenId: DWORD;     // Key Generation identifier
-    CheckSum: array [1..CHECKSUM_SIZE] of char; // Not used in version 6 of BestCrypt
+    CheckSum: array [1..CHECKSUM_SIZE] of ansichar; // Not used in version 6 of BestCrypt
   end;
 
   pDWORD = ^DWORD;

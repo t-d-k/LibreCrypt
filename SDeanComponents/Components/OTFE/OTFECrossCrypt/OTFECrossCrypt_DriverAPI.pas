@@ -164,11 +164,11 @@ type
     KeyLength: word;
     FileNameLength: word;
     Key: array [0..MAX_KEYS-1] of array [0..MAX_KEYHASH-1] of byte;
-    DriveLetter: char;
+    DriveLetter: Ansichar;
     // This next one uses an artificially long buffer; DON'T USE
     // siezeof(TOPEN_FILE_INFORMATION) when passing one of these structs to the
     // device driver, as the fixed length of this buffer will screw things up
-    FileName: array [0..MAX_PATH] of char;
+    FileName: array [0..MAX_PATH] of Ansichar;
   end;
 
 

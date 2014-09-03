@@ -108,7 +108,7 @@ resourcestring
   PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR = 'Please report seeing this message using the email address specified in the DoxBox documentation, together with a brief description of what you were attempting to do.';
 
 var
-  _MouseRNGStore: string;
+  _MouseRNGStore: Ansistring;
 
 
 // gpgFilename - Only MANDATORY if RNG_OPT_GPG specified as RNG
@@ -394,7 +394,7 @@ begin
     // Cleardown...
     // This is required in order that CrypGenRandom can overwrite with random
     // data
-    randomData := StringOfChar(#0, bytesRequired);
+    randomData := StringOfChar(AnsiChar(#0), bytesRequired);
 
     allOK:= CryptGenRandom(hProv, bytesRequired, PByte(randomData));
 
@@ -482,7 +482,7 @@ end;
 // Add byte to MouseRNG store
 procedure AddToMouseRNGData(random: Byte);
 begin
-  _MouseRNGStore:= _MouseRNGStore + char(random);
+  _MouseRNGStore:= _MouseRNGStore + Ansichar(random);
 end;
 
 // Get first bytesRequired bytes of data from the MouseRNG store
@@ -516,7 +516,7 @@ begin
   // Simple overwrite
   for i:=1 to length(_MouseRNGStore) do
     begin
-    _MouseRNGStore := char(i);
+    _MouseRNGStore := Ansichar(i);
     end;
 
   _MouseRNGStore := '';

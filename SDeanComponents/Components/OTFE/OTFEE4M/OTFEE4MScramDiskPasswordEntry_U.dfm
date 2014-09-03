@@ -196,11 +196,6 @@ object OTFEE4MScramDiskPasswordEntry_F: TOTFEE4MScramDiskPasswordEntry_F
     Width = 49
     Height = 21
     Style = csDropDownList
-    ItemHeight = 13
     TabOrder = 12
-  end
-  object KeyboardDialog: TKeyboardDialog
-    Left = 124
-    Top = 140
   end
 end

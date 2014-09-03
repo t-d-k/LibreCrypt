@@ -197,12 +197,12 @@ type
     function  GetRNGSet(): TRNGSet;
 
     function  GetIsPartition(): boolean;
-    function  GetVolFilename(): string;
-    procedure SetVolFilename(filename: string);
+    function  GetVolFilename(): Ansistring;
+    procedure SetVolFilename(filename: Ansistring);
     function  GetOffset(): ULONGLONG;
     // Note: The size returned *excludes* the size of the critical data
     function  GetSize(): ULONGLONG;
-    function  GetHashDriver(): string;
+    function  GetHashDriver(): Ansistring;
     function  GetHashGUID(): TGUID;
     function  GetCypherDriver(): Ansistring;
     function  GetCypherGUID(): TGUID;
@@ -255,13 +255,13 @@ type
     procedure FormWizardStepChanged(Sender: TObject);
   public
     property IsPartition: boolean read GetIsPartition;
-    property VolFilename: string read GetVolFilename write SetVolFilename;
+    property VolFilename: Ansistring read GetVolFilename write SetVolFilename;
     property Offset: ULONGLONG read GetOffset;
     // Note: The size returned *excludes* the size of the critical data
     property Size: ULONGLONG read GetSize;
     // HashDriver - Kernel drivers: HashKernelDeviceName
     //              DLL drivers:    HashLibFilename
-    property HashDriver: string read GetHashDriver;
+    property HashDriver: Ansistring read GetHashDriver;
     property HashGUID: TGUID read GetHashGUID;
     // CypherDriver - Kernel drivers: CypherKernelDeviceName
     //                DLL drivers:    CypherLibFilename
@@ -1085,9 +1085,9 @@ begin
             );
 end;
 
-function TfrmWizardCreateVolume.GetVolFilename(): string;
+function TfrmWizardCreateVolume.GetVolFilename(): Ansistring;
 var
-  retVal: string;
+  retVal: Ansistring;
 begin
   retVal := '';
 
@@ -1106,7 +1106,7 @@ begin
   Result := retVal;
 end;
 
-procedure TfrmWizardCreateVolume.SetVolFilename(filename: string);
+procedure TfrmWizardCreateVolume.SetVolFilename(filename: Ansistring);
 begin
   // Note: With the label used, the Caption is the *full* filename, even
   //       though the it's display is the shortened version
@@ -1149,9 +1149,9 @@ begin
   Result := tmpSize;
 end;
 
-function TfrmWizardCreateVolume.GetHashDriver(): string;
+function TfrmWizardCreateVolume.GetHashDriver(): Ansistring;
 var
-  retval: string;
+  retval: Ansistring;
 begin
   retval := '';
 

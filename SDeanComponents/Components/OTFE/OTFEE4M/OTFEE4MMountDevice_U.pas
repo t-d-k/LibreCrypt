@@ -21,7 +21,7 @@ type
     partitionDeviceNames: TStringList;
   public
     E4MComponent: TOTFEE4M;
-    PartitionDevice: string;
+    PartitionDevice: Ansistring;
   end;
 
 implementation

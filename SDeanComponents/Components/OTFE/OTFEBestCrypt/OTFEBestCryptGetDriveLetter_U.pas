@@ -32,8 +32,8 @@ type
     FFilename: string;
     FDefaultDrive: char;
     FAutoMountOptionAlwaysEnabled: boolean;
-    FForcedDriveLetter: char;
-    FProhibitedDriveLetters: string;
+    FForcedDriveLetter: Ansichar;
+    FProhibitedDriveLetters: ansistring;
     procedure RefreshDriveLetters();
   public
     constructor Create(AOwner : TComponent); override;
@@ -43,10 +43,10 @@ type
     property AutoMountOptionAlwaysEnabled: boolean read FAutoMountOptionAlwaysEnabled write FAutoMountOptionAlwaysEnabled;
     // Set ForceDriveLetter to #0 to permit user to select any unused drive
     // letter. Set to a drive letter to only permit that drive
-    property ForceDriveLetter: char read FForcedDriveLetter write FForcedDriveLetter;
+    property ForceDriveLetter: Ansichar read FForcedDriveLetter write FForcedDriveLetter;
     // Set ProhibitedDriveLetters to be a string containing all drive letters
     // that the user may *not* mount a drive as
-    property ProhibitedDriveLetters: string read FProhibitedDriveLetters write FProhibitedDriveLetters;
+    property ProhibitedDriveLetters: ansistring read FProhibitedDriveLetters write FProhibitedDriveLetters;
 
   end;
 

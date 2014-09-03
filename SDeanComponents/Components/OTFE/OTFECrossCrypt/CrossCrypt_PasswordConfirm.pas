@@ -44,6 +44,8 @@ type
 implementation
 
 {$R *.DFM}
+uses
+  OTFECrossCrypt_DriverAPI;//for MULTIKEY_PASSWORD_REQUIREMENT
 
 procedure TCrossCrypt_PasswordConfirm_F.FormShow(Sender: TObject);
 begin

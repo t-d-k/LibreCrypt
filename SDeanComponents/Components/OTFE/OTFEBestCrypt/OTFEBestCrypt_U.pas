@@ -23,16 +23,16 @@ type
     // INI file versions - don't call these! Used by the general routines
     function  INIGetAutomountContainerNum(volumeFilename: string): integer;
     function  INIGetDefaultDrive(volumeFilename: string): char;
-    function  INISetDefaultDriveAutomount(volumeFilename: string; driveLetter: char; automount: boolean = FALSE): boolean;
+    function  INISetDefaultDriveAutomount(volumeFilename: string; driveLetter: ansichar; automount: boolean = FALSE): boolean;
     function  INIDeleteDefaultDrive(volumeFilename: string): boolean;
 
     // Registry versions - don't call these! Used by the general routines
-    function  RegistryVolumeSetDefaultDrive(volumeFilename: string; driveLetter: char): boolean;
+    function  RegistryVolumeSetDefaultDrive(volumeFilename: string; driveLetter: ansichar): boolean;
     function  RegistryVolumeSetAutomounted(volumeFilename: string; automount: boolean): boolean;
     function  GetFilenameASCIIHash(volumeFilename: string): string;
   protected
     hBestCryptVxD : THandle;
-    FPasswordPrompt: string;
+    FPasswordPrompt: ansistring;
     kBestCryptINIFileAutoOpenKey: string;
     function  LoadDLL(DLLFilename: string): THandle;
     function  Connect(): boolean;
@@ -41,11 +41,11 @@ type
     function  Disconnect(): boolean;
     procedure SetActive(AValue : Boolean); override;
 
-    function  GetDriveInfoOLD(driveLetter: char; var volInfo: TDISKINFO_BUFFER_driverOLD): boolean;
-    function  GetDriveInfoNEW(driveLetter: char; var volInfo: TDISKINFO_BUFFER_driverNEW): boolean;
+    function  GetDriveInfoOLD(driveLetter: ansichar; var volInfo: TDISKINFO_BUFFER_driverOLD): boolean;
+    function  GetDriveInfoNEW(driveLetter: ansichar; var volInfo: TDISKINFO_BUFFER_driverNEW): boolean;
 
-    function  MountDriverOLD(volumeFilename: string; readonly: boolean; driveLetter: char; diskSizeLow, diskSizeHigh: DWORD; readInHeader: THiddenSector): char;
-    function  MountDriverNEW(volumeFilename: string; readonly: boolean; driveLetter: char; diskSizeLow, diskSizeHigh: DWORD; readInHeader: THiddenSector): char;
+    function  MountDriverOLD(volumeFilename: ansistring; readonly: boolean; driveLetter: ansichar; diskSizeLow, diskSizeHigh: DWORD; readInHeader: THiddenSector): ansichar;
+    function  MountDriverNEW(volumeFilename: ansistring; readonly: boolean; driveLetter: ansichar; diskSizeLow, diskSizeHigh: DWORD; readInHeader: THiddenSector): ansichar;
 
     // This function is ported from the code segment (function) received by
     // email from Sergey Frolov (Jetico)
@@ -57,26 +57,26 @@ type
     function  VolumeIsAutomounted(volumeFilename: string): boolean;
 
     function  GetDefaultDrive(volumeFilename: string): char;
-    function  SetDefaultDriveAutomount(volumeFilename: string; driveLetter: char; automount: boolean = FALSE): boolean;
+    function  SetDefaultDriveAutomount(volumeFilename: string; driveLetter: ansichar; automount: boolean = FALSE): boolean;
     function  DeleteDefaultDrive(volumeFilename: string): boolean;
 
 
-    function  CreateKeyHandle(volumeFilename: string; var keyHandle: KEY_HANDLE): boolean;
+    function  CreateKeyHandle(volumeFilename: ansistring; var keyHandle: KEY_HANDLE): boolean;
 
     procedure GetAllAlgorithmIDs(algIDs: TStrings);
-    function  GetAlgorithmName(algorithmID: DWORD): string; // just calls GetAlgorithmRegDetails
-    function  GetAlgorithmDriverName(algorithmID: DWORD): string; // just calls GetAlgorithmRegDetails
+    function  GetAlgorithmName(algorithmID: DWORD): Ansistring; // just calls GetAlgorithmRegDetails
+    function  GetAlgorithmDriverName(algorithmID: DWORD): ansistring; // just calls GetAlgorithmRegDetails
     function  GetAlgorithmKeyLength(algorithmID: DWORD): integer; // just calls GetAlgorithmRegDetails
     function  GetAlgorithmVersion(algorithmID: DWORD): cardinal;
     function  GetAlgorithmRegDetails(algorithmID: DWORD; var dispName: string; var driverName: string; var keyLen: integer): boolean;
 
     procedure GetAllKeyGenIDs(keyGenIDs: TStrings);
-    function  GetKeyGenName(keyGenID: DWORD): string; // just calls GetKeyGenRegDetails
+    function  GetKeyGenName(keyGenID: DWORD): ansistring; // just calls GetKeyGenRegDetails
     function  GetKeyGenDLLName(keyGenID: DWORD): string; // just calls GetKeyGenRegDetails
     function  GetKeyGenVersion(keyGenID: DWORD): cardinal;
     function  GetKeyGenRegDetails(keyGenID: DWORD; var dispName: string; var DLLName: string): boolean;
 
-    property  PasswordPrompt: string read FPasswordPrompt write FPasswordPrompt;
+    property  PasswordPrompt: ansistring read FPasswordPrompt write FPasswordPrompt;
 
     constructor Create(AOwner : TComponent); override;
     destructor  Destroy; override;
@@ -84,32 +84,32 @@ type
     // Determine if the specified volume was previously mounted, and then only
     // "half dismounted" (i.e. a dismount was forced, even though the drive was
     // in use at the time)
-    function  VolumeInternallyMounted(volumeFilename: string): char;
+    function  VolumeInternallyMounted(volumeFilename: string): ansichar;
     // Return a list of drive letters for all drives the BestCrypt driver
     // *claims* are mounted; i.e. including drives that have been
     // "half dismounted" (i.e. a dismount was forced, even though the drive was
     // in use at the time)
-    function  InternalDrivesMounted(): string;
+    function  InternalDrivesMounted(): ansistring;
 
 
     // TOTFE functions...
     function  Title(): string; overload; override;
     function  Version(): cardinal; override;
     function  VersionStr(): string; override;
-    function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; overload; override;
+    function  Mount(volumeFilename: ansistring; readonly: boolean = FALSE): Ansichar; overload; override;
     function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; overload; override;
-    function  MountDevices(): string; override;
+    function  MountDevices(): Ansistring; override;
     function  CanMountDevice(): boolean; override;
-    function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
+    function  Dismount(driveLetter: Ansichar; emergency: boolean = FALSE): boolean; overload; override;
     function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
-    function  DrivesMounted(): string; override;
-    function  GetVolFileForDrive(driveLetter: char): string; override;
+    function  DrivesMounted(): ansistring; override;
+    function  GetVolFileForDrive(driveLetter: Ansichar): string; override;
     function  GetDriveForVolFile(volumeFilename: string): Ansichar; override;
     function  IsEncryptedVolFile(volumeFilename: string): boolean; override;
     function  GetMainExe(): string; override;
 
 
-    function  GetVolumeInfo(volumeFilename: string; var info: TBCDiskInfo): boolean; overload;
+    function  GetVolumeInfo(volumeFilename: ansistring; var info: TBCDiskInfo): boolean; overload;
     function  GetVolumeInfo(driveLetter: Ansichar; var info: TBCDiskInfo): boolean; overload;
 
   end;
@@ -118,7 +118,7 @@ procedure Register;
 
 type
   // Function declarations for DLL functions
-  TBCGetNameAndVersion = function(Name: PChar;     // module name
+  TBCGetNameAndVersion = function(Name: PAnsiChar;     // module name
                                   nameSize: UINT;  // size of  Name string in bytes
                                   Major: pDword;   // module’s major version number
                                   Minor: pDword    // module’s minor version number
@@ -140,7 +140,7 @@ type
 
   TBCFreeDataBlock = function(vDataBlock: ppByte): DWORD; stdcall;
 
-  TBCFreeKeyHandle = function(AlgServiceName: PChar;
+  TBCFreeKeyHandle = function(AlgServiceName: PAnsiChar;
                               KeyHandle: DWORD
                               ): DWORD; stdcall;
 
@@ -308,12 +308,12 @@ begin
 
 end;
 
-function TOTFEBestCrypt.DrivesMounted(): string;
+function TOTFEBestCrypt.DrivesMounted(): ansistring;
 var
-  retVal: string;
+  retVal: ansistring;
   i: integer;
   logicalDrives: DWORD;
-  internalMountedDrvs: string;
+  internalMountedDrvs: ansistring;
   currDrv: integer;
 begin
   retVal := '';
@@ -338,16 +338,16 @@ begin
 
 end;
 
-function TOTFEBestCrypt.InternalDrivesMounted(): string;
+function TOTFEBestCrypt.InternalDrivesMounted(): ansistring;
 var
   dwBytesReturned : DWORD;
   queryOLD: TGETMASK_BUFFER_driverOLD;
   queryNEW: TGETMASK_BUFFER_driverNEW;
-  retVal: string;
+  retVal: ansistring;
   i: integer;
   mask: DWORD;
   maskFromQuery: DWORD;
-  signatureFromQuery: string;
+  signatureFromQuery: Ansistring;
   statusFromQuery: UCHAR;
 begin
   CheckActive();
@@ -408,7 +408,7 @@ begin
     begin
     if ((maskFromQuery AND mask)>0) then
       begin
-      retVal := retVal + chr(ord('A')+i);
+      retVal := retVal + AnsiChar(ord('A')+i);
       end;
     mask := mask * 2;
     end;
@@ -457,7 +457,7 @@ begin
 end;
 
 
-function TOTFEBestCrypt.GetDriveInfoOLD(driveLetter: char; var volInfo: TDISKINFO_BUFFER_driverOLD): boolean;
+function TOTFEBestCrypt.GetDriveInfoOLD(driveLetter: ansichar; var volInfo: TDISKINFO_BUFFER_driverOLD): boolean;
 var
   dwBytesReturned : DWORD;
   query: TDISKINFO_BUFFER_driverOLD;
@@ -501,7 +501,7 @@ end;
 
 
 
-function TOTFEBestCrypt.GetDriveInfoNEW(driveLetter: char; var volInfo: TDISKINFO_BUFFER_driverNEW): boolean;
+function TOTFEBestCrypt.GetDriveInfoNEW(driveLetter: ansichar; var volInfo: TDISKINFO_BUFFER_driverNEW): boolean;
 var
   dwBytesReturned : DWORD;
   query: TDISKINFO_BUFFER_driverNEW;
@@ -544,7 +544,7 @@ begin
 end;
 
 
-function TOTFEBestCrypt.Dismount(driveLetter: char; emergency: boolean = FALSE): boolean;
+function TOTFEBestCrypt.Dismount(driveLetter: ansichar; emergency: boolean = FALSE): boolean;
 var
   dwBytesReturned : DWORD;
   query: TDISCONNECT_BUFFER;
@@ -728,7 +728,7 @@ begin
 
 end;
 
-function TOTFEBestCrypt.GetVolFileForDrive(driveLetter: char): string;
+function TOTFEBestCrypt.GetVolFileForDrive(driveLetter: ansichar): string;
 var
   queryOLD: TDISKINFO_BUFFER_driverOLD;
   queryNEW: TDISKINFO_BUFFER_driverNEW;
@@ -766,7 +766,7 @@ end;
 function TOTFEBestCrypt.GetDriveForVolFile(volumeFilename: string): Ansichar;
 var
   i: integer;
-  mountedDrives: string;
+  mountedDrives: ansistring;
   queryOLD: TDISKINFO_BUFFER_driverOLD;
   queryNEW: TDISKINFO_BUFFER_driverNEW;
 begin
@@ -785,7 +785,7 @@ begin
         // HANDLE FOR v2 DRIVERS...
         if GetDriveInfoOLD(mountedDrives[i], queryOLD) then
           begin
-          Result := chr(ord('A')+queryOLD.diskNumber);
+          Result := AnsiChar(ord('A')+queryOLD.diskNumber);
           break;
           end;
 
@@ -795,7 +795,7 @@ begin
         // HANDLE FOR v3 DRIVERS...
         if GetDriveInfoNEW(mountedDrives[i], queryNEW) then
           begin
-          Result := chr(ord('A')+queryNEW.diskNumber);
+          Result := AnsiChar(ord('A')+queryNEW.diskNumber);
           break;
           end;
 
@@ -807,7 +807,7 @@ begin
 end;
 
 
-function TOTFEBestCrypt.GetAlgorithmName(algorithmID: DWORD): string;
+function TOTFEBestCrypt.GetAlgorithmName(algorithmID: DWORD): Ansistring;
 var
   dispName: string;
   driverName: string;
@@ -816,13 +816,13 @@ begin
   Result := '';
   if GetAlgorithmRegDetails(algorithmID, dispName, driverName, keyLen) then
     begin
-    Result := dispName;
+    Result := dispName;   { TODO 1 -otdk -cerror checking : check ansi }
     end;
 
 end;
 
 
-function TOTFEBestCrypt.GetAlgorithmDriverName(algorithmID: DWORD): string;
+function TOTFEBestCrypt.GetAlgorithmDriverName(algorithmID: DWORD): ansistring;
 var
   dispName: string;
   driverName: string;
@@ -831,7 +831,7 @@ begin
   Result := '';
   if GetAlgorithmRegDetails(algorithmID, dispName, driverName, keyLen) then
     begin
-    Result := driverName;
+    Result := driverName; { TODO 1 -otdk -cerror checking : check ansi }
     end;
 
 end;
@@ -864,7 +864,7 @@ begin
 
 end;
 
-function TOTFEBestCrypt.GetKeyGenName(keyGenID: DWORD): string;
+function TOTFEBestCrypt.GetKeyGenName(keyGenID: DWORD): Ansistring;
 var
   dispName: string;
   DLLName: string;
@@ -872,7 +872,7 @@ begin
   Result := '';
   if GetKeyGenRegDetails(keyGenID, dispName, DLLName) then
     begin
-    Result := dispName;
+    Result := dispName;  { TODO 1 -otdk -cerror checking : check ansi }
     end;
 
 end;
@@ -941,13 +941,13 @@ begin
 end;
 
 
-function TOTFEBestCrypt.CreateKeyHandle(volumeFilename: string; var keyHandle: KEY_HANDLE): boolean;
+function TOTFEBestCrypt.CreateKeyHandle(volumeFilename: ansistring; var keyHandle: KEY_HANDLE): boolean;
 var
   keyGenDLLFilename: string;
   keyGenDLL: THandle;
   CreateKeyHandle: TBCCreateKeyHandle;
   hiSe: THiddenSector;
-  algorithmName: string;
+  algorithmName: Ansistring;
   algorithmKeyLength: integer;
   keyReturned: KEY_HANDLE;
   errorCode: DWORD;
@@ -1001,11 +1001,11 @@ begin
         end
       else
         begin
-        if CreateKeyHandle(PChar(algorithmName),
+        if CreateKeyHandle(PAnsiChar(algorithmName),
                            hiSe.algorithmId,
                            DWORD(algorithmKeyLength),
-                           PChar(volumeFilename),
-                           PChar(FPasswordPrompt),
+                           PAnsiChar(volumeFilename),
+                           PAnsiChar(FPasswordPrompt),
                            CFLAG_VERIFY_AND_LOAD_KEY,
                            @pDataBlock,
                            @dataBlockSize,
@@ -1081,14 +1081,14 @@ begin
 end;
 
 
-function TOTFEBestCrypt.Mount(volumeFilename: string; readonly: boolean = FALSE): char;
+function TOTFEBestCrypt.Mount(volumeFilename: ansistring; readonly: boolean = FALSE): Ansichar;
 var
   readInHeader: THiddenSector;
   volFileHandle: THandle;
   previousSizeLow: DWORD;
   driveDlg: TGetDriveLetter_F;
   defDrv: char;
-  driveLetter: char;
+  driveLetter: ansichar;
   diskSizeLow, diskSizeHigh: DWORD;
 begin
   CheckActive();
@@ -1118,7 +1118,7 @@ begin
 
     if driveDlg.ShowModal()=mrOK then
       begin
-      driveLetter := driveDlg.cbDriveLetter.text[1];
+      driveLetter := AnsiChar( driveDlg.cbDriveLetter.text[1]);
       if driveDlg.cbAlwaysThisDrive.checked then
         begin
         SetDefaultDriveAutomount(volumeFilename, driveLetter, driveDlg.cbAutomount.checked);
@@ -1144,7 +1144,7 @@ begin
 
   GetBestCryptFileHeader(volumeFilename, readInHeader);
 
-  volFileHandle := CreateFile(PChar(volumeFilename),
+  volFileHandle := CreateFile(PWideChar(WideString(volumeFilename)),
                               GENERIC_READ,
                               0,
                               nil,
@@ -1182,19 +1182,19 @@ begin
 
 end;
 
-function TOTFEBestCrypt.MountDriverOLD(volumeFilename: string; readonly: boolean; driveLetter: char; diskSizeLow, diskSizeHigh: DWORD; readInHeader: THiddenSector): char;
+function TOTFEBestCrypt.MountDriverOLD(volumeFilename: ansistring; readonly: boolean; driveLetter: ansichar; diskSizeLow, diskSizeHigh: DWORD; readInHeader: THiddenSector): ansichar;
 var
   dwBytesReturned : DWORD;
   queryOLD: TDISKINFO_BUFFER_driverOLD;
   i: integer;
-  algorithmName: string;
+  algorithmName: ansistring;
   keyHandle: KEY_HANDLE;
   volumeOnDrive: string;
   bytesPerSector: DWORD;
   junk1: DWORD;
   junk2: DWORD;
   junk3: DWORD;
-  mountedDriveLetter: char;
+  mountedDriveLetter: ansichar;
 begin
   CheckActive();
 
@@ -1293,7 +1293,7 @@ begin
       end
     else if (queryOLD.status=BCSTATUS_SUCCESS) then
       begin
-      mountedDriveLetter := chr(queryOLD.diskNumber+ord('A'));
+      mountedDriveLetter := Ansichar(queryOLD.diskNumber+ord('A'));
       BroadcastDriveChangeMessage(TRUE, mountedDriveLetter);
       FLastErrCode:= OTFE_ERR_SUCCESS;
       Result := mountedDriveLetter;
@@ -1304,19 +1304,19 @@ begin
 end;
 
 
-function TOTFEBestCrypt.MountDriverNEW(volumeFilename: string; readonly: boolean; driveLetter: char; diskSizeLow, diskSizeHigh: DWORD; readInHeader: THiddenSector): char;
+function TOTFEBestCrypt.MountDriverNEW(volumeFilename: ansistring; readonly: boolean; driveLetter: ansichar; diskSizeLow, diskSizeHigh: DWORD; readInHeader: THiddenSector): ansichar;
 var
   dwBytesReturned : DWORD;
   queryNEW: TDISKINFO_BUFFER_driverNEW;
   i: integer;
-  algorithmName: string;
+  algorithmName: Ansistring;
   keyHandle: KEY_HANDLE;
   volumeOnDrive: string;
   bytesPerSector: DWORD;
   junk1: DWORD;
   junk2: DWORD;
   junk3: DWORD;
-  mountedDriveLetter: char;
+  mountedDriveLetter: Ansichar;
 begin
   CheckActive();
 
@@ -1421,7 +1421,7 @@ begin
       end
     else if (queryNEW.status=BCSTATUS_SUCCESS) then
       begin
-      mountedDriveLetter := chr(queryNEW.diskNumber+ord('A'));
+      mountedDriveLetter := Ansichar(queryNEW.diskNumber+ord('A'));
       BroadcastDriveChangeMessage(TRUE, mountedDriveLetter);
       FLastErrCode:= OTFE_ERR_SUCCESS;
       Result := mountedDriveLetter;
@@ -1591,7 +1591,7 @@ end;
 
 // Setup wether the specified volume filename is automounted, and it's default
 // driver (#0 for no default drive)
-function TOTFEBestCrypt.SetDefaultDriveAutomount(volumeFilename: string; driveLetter: char; automount: boolean): boolean;
+function TOTFEBestCrypt.SetDefaultDriveAutomount(volumeFilename: string; driveLetter: ansichar; automount: boolean): boolean;
 begin
   if RegistryOnlyVersion() then
     begin
@@ -1638,7 +1638,7 @@ begin
 end;
 
 
-function TOTFEBestCrypt.INISetDefaultDriveAutomount(volumeFilename: string; driveLetter: char; automount: boolean): boolean;
+function TOTFEBestCrypt.INISetDefaultDriveAutomount(volumeFilename: string; driveLetter: ansichar; automount: boolean): boolean;
 var
   iniFile: TINIFile;
   containerNum: integer;
@@ -1652,7 +1652,7 @@ begin
     end
   else
     begin
-    driveLetter := (lowercase(driveLetter))[1];
+    driveLetter := AnsiString((LowerCase(driveLetter)))[1];
     end;
 
   iniFile := TINIFile.Create(BESTCRYPT_INI_FILENAME);
@@ -1856,7 +1856,7 @@ var
 begin
   CheckActive();
 
-  algHandle := CreateFile(PChar('\\.\'+GetAlgorithmDriverName(algorithmID)),
+  algHandle := CreateFile(PChar(WideString('\\.\'+GetAlgorithmDriverName(algorithmID))),
                               GENERIC_READ OR GENERIC_WRITE,
                               0,
                               nil,
@@ -1898,12 +1898,12 @@ begin
 
 end;
 
-function TOTFEBestCrypt.GetVolumeInfo(volumeFilename: string; var info: TBCDiskInfo): boolean;
+function TOTFEBestCrypt.GetVolumeInfo(volumeFilename: ansistring; var info: TBCDiskInfo): boolean;
 var
   hi: THiddenSector;
   diOLD: TDISKINFO_BUFFER_driverOLD;
   diNEW: TDISKINFO_BUFFER_driverNEW;
-  mtdAs: char;
+  mtdAs: ansichar;
   tmpFile: TFileStream;
 begin
   volumeFilename := SDUConvertSFNToLFN(volumeFilename);
@@ -1952,12 +1952,12 @@ begin
   Result := TRUE;
 end;
 
-function TOTFEBestCrypt.GetVolumeInfo(driveLetter: char; var info: TBCDiskInfo): boolean;
+function TOTFEBestCrypt.GetVolumeInfo(driveLetter: Ansichar; var info: TBCDiskInfo): boolean;
 var
-  volumeFilename: string;
+  volumeFilename: Ansistring;
 begin
   Result := FALSE;
-  volumeFilename := GetVolFileForDrive(driveLetter);
+  volumeFilename := GetVolFileForDrive(driveLetter);  { TODO 1 -otdk -cerror checking : check ansi }
   if (volumeFilename<>'') then
     begin
     Result := GetVolumeInfo(volumeFilename, info);
@@ -2181,7 +2181,7 @@ end;
 // Set the default drive for the specified volume (later, registry-only versions
 // of BestCrypt; with no INI file)
 // If driveLetter is #0, delete the default drive
-function TOTFEBestCrypt.RegistryVolumeSetDefaultDrive(volumeFilename: string; driveLetter: char): boolean;
+function TOTFEBestCrypt.RegistryVolumeSetDefaultDrive(volumeFilename: string; driveLetter: ansichar): boolean;
 var
   registry: TRegistry;
   keyName: string;
@@ -2297,11 +2297,11 @@ begin
 end;
 
 
-function TOTFEBestCrypt.VolumeInternallyMounted(volumeFilename: string): char;
+function TOTFEBestCrypt.VolumeInternallyMounted(volumeFilename: string): ansichar;
 var
   diOLD: TDISKINFO_BUFFER_driverOLD;
   diNEW: TDISKINFO_BUFFER_driverNEW;
-  drv: char;
+  drv: ansichar;
 begin
   CheckActive();
 
@@ -2353,7 +2353,7 @@ end;
 // Prompt the user for a device (if appropriate) and password (and drive
 // letter if necessary), then mount the device selected
 // Returns the drive letter of the mounted devices on success, #0 on failure
-function TOTFEBestCrypt.MountDevices(): string;
+function TOTFEBestCrypt.MountDevices(): Ansistring;
 begin
   // Not supported...
   Result := #0;

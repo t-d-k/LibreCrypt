@@ -22,7 +22,7 @@ type
     procedure SetActive(AValue : Boolean); override;
     function  Connect(): boolean;
     function  Disconnect(): boolean;
-    function  GetMountedDrives(volumeFilenames: TStringList; var drivesMounted: string): boolean;
+    function  GetMountedDrives(volumeFilenames: TStringList; var drivesMounted: Ansistring): boolean;
   public
     constructor Create(AOwner : TComponent); override;
     destructor  Destroy; override;
@@ -31,21 +31,21 @@ type
     function  Title(): string; overload; override;
     function  Version(): cardinal; override;
     function  VersionStr(): string; override;
-    function  DrivesMounted(): string; override;
-    function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; overload; override;
+    function  DrivesMounted(): Ansistring; override;
+    function  Mount(volumeFilename: Ansistring; readonly: boolean = FALSE): Ansichar; overload; override;
     function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; overload; override;
-    function  MountDevices(): string; override;
+    function  MountDevices(): Ansistring; override;
     function  CanMountDevice(): boolean; override;
     function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
-    function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
+    function  Dismount(driveLetter: Ansichar; emergency: boolean = FALSE): boolean; overload; override;
     function  IsEncryptedVolFile(volumeFilename: string): boolean; override;
     function  GetDriveForVolFile(volumeFilename: string): Ansichar; override;
-    function  GetVolFileForDrive(driveLetter: char): string; override;
+    function  GetVolFileForDrive(driveLetter: Ansichar): string; override;
     function  GetMainExe(): string; override;
 
-    function  GetVolInfo(driveLetter: char): boolean;
+    function  GetVolInfo(driveLetter: Ansichar): boolean;
     function  GetPGPDiskInfo(): boolean;
-    function  HasDriveOpenFiles(driveLetter: char): boolean;
+    function  HasDriveOpenFiles(driveLetter: Ansichar): boolean;
   end;
 
 procedure Register;
@@ -190,7 +190,7 @@ end;
 // xxx - shouldn't this be the other way round?
 //       i.e. Mount(volumeFilename: string;...) calls
 //            Mount(volumeFilenames: TStringList;...) ???
-function TOTFEPGPDisk.Mount(volumeFilename: string; readonly: boolean = FALSE): char;
+function TOTFEPGPDisk.Mount(volumeFilename: Ansistring; readonly: boolean = FALSE): Ansichar;
 var
   appName: string;
   parameters: string;
@@ -283,10 +283,10 @@ begin
 
 end;
 
-function TOTFEPGPDisk.Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean;
+function TOTFEPGPDisk.Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean;
 var
   i: integer;
-  tmpDrv: char;
+  tmpDrv: Ansichar;
 begin
   Result := FALSE;
   mountedAs := '';
@@ -308,7 +308,7 @@ end;
 
 function TOTFEPGPDisk.Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean;
 var
-  driveLetter: char;
+  driveLetter: Ansichar;
 begin
   CheckActive();
 
@@ -322,13 +322,13 @@ begin
 
 end;
 
-function TOTFEPGPDisk.Dismount(driveLetter: char; emergency: boolean = FALSE): boolean;
+function TOTFEPGPDisk.Dismount(driveLetter: Ansichar; emergency: boolean = FALSE): boolean;
 var
   dwBytesReturned : DWORD;
   query: PGPDISK_Rec_AD_Unmount;
   packetHeader: PGPDISK_Rec_ADPacketHeader;
 
-  buffer : array [0..1000] of char;
+  buffer : array [0..1000] of Ansichar;
 
   driveNum: integer;
   drivesMtd: string;
@@ -412,13 +412,13 @@ end;
 
 
 // This function is not particularly useful...
-function TOTFEPGPDisk.GetVolInfo(driveLetter: char): boolean;
+function TOTFEPGPDisk.GetVolInfo(driveLetter: Ansichar): boolean;
 var
   dwBytesReturned : DWORD;
   query: PGPDISK_Rec_AD_QueryVolInfo;
   packetHeader: PGPDISK_Rec_ADPacketHeader;
 
-  buffer : array [0..1000] of char;
+  buffer : array [0..1000] of Ansichar;
 
   blockSize: PGPUInt16;
   totalBlocks: PGPUInt32;
@@ -457,13 +457,13 @@ begin
 end;
 
 
-function TOTFEPGPDisk.HasDriveOpenFiles(driveLetter: char): boolean;
+function TOTFEPGPDisk.HasDriveOpenFiles(driveLetter: Ansichar): boolean;
 var
   dwBytesReturned : DWORD;
   query: PGPDISK_Rec_AD_QueryOpenFiles;
   packetHeader: PGPDISK_Rec_ADPacketHeader;
 
-  buffer : array [0..1000] of char;
+  buffer : array [0..1000] of Ansichar;
 
   answer: PGPBoolean;
 begin
@@ -516,7 +516,7 @@ end;
 function TOTFEPGPDisk.GetDriveForVolFile(volumeFilename: string): Ansichar;
 var
   mtdVolFiles: TStringList;
-  mtdDrives: string;
+  mtdDrives: Ansistring;
 begin
   CheckActive();
 
@@ -539,10 +539,10 @@ begin
 end;
 
 
-function TOTFEPGPDisk.GetVolFileForDrive(driveLetter: char): string;
+function TOTFEPGPDisk.GetVolFileForDrive(driveLetter: Ansichar): string;
 var
   mtdVolFiles: TStringList;
-  mtdDrives: string;
+  mtdDrives: Ansistring;
 begin
   CheckActive();
 
@@ -565,9 +565,9 @@ begin
 end;
 
 
-function TOTFEPGPDisk.DrivesMounted(): string;
+function TOTFEPGPDisk.DrivesMounted(): Ansistring;
 var
-  drivesMounted: string;
+  drivesMounted: Ansistring;
 begin
   GetMountedDrives(nil, drivesMounted);
   Result := SortString(drivesMounted);
@@ -621,7 +621,7 @@ end;
 // drivesMounted[x]
 // (Having said that, drivesMounted should be in alphabetical order, and
 // therefore volumeFilenames will reflect this order)
-function TOTFEPGPDisk.GetMountedDrives(volumeFilenames: TStringList; var drivesMounted: string): boolean;
+function TOTFEPGPDisk.GetMountedDrives(volumeFilenames: TStringList; var drivesMounted: Ansistring): boolean;
 var
   dwBytesReturned : DWORD;
   query: PGPDISK_Rec_AD_GetPGPDiskInfo;
@@ -629,7 +629,7 @@ var
 
   buffer: array [0..1000] of char;
 
-  currDriveLetter: string;
+  currDriveLetter: Ansistring;
   i: integer;
   driveInfo: array [1..PGPDISK_MAX_DRIVES] of PGPDISK_Rec_PGPdiskInfo;
   currDriveFilename: string;
@@ -663,7 +663,7 @@ begin
     begin
     if driveInfo[i].drive<>PGPDISK_INVALID_DRIVE then
       begin
-      currDriveLetter := chr(driveInfo[i].drive+ord('A'));
+      currDriveLetter := Ansichar(driveInfo[i].drive+ord('A'));
       drivesMounted := drivesMounted + currDriveLetter[1];
 
       currDriveFilename := copy(driveInfo[i].path, 1, pos(#0, driveInfo[i].path)-1);
@@ -683,7 +683,7 @@ end;
 // Prompt the user for a device (if appropriate) and password (and drive
 // letter if necessary), then mount the device selected
 // Returns the drive letter of the mounted devices on success, #0 on failure
-function TOTFEPGPDisk.MountDevices(): string;
+function TOTFEPGPDisk.MountDevices(): Ansistring;
 begin
   // Not supported...
   Result := #0;

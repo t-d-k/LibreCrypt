@@ -24,15 +24,15 @@ type
     pbCancel: TButton;
     procedure ckHidePasswordClick(Sender: TObject);
   private
-    FDefaultDrive: char;
-    procedure SetDrivesAllowed(drvs: string);
-    procedure SetDrive(dfltDrv: char);
-    function  GetDrive(): char;
+    FDefaultDrive: Ansichar;
+    procedure SetDrivesAllowed(drvs: Ansistring);
+    procedure SetDrive(dfltDrv: Ansichar);
+    function  GetDrive(): Ansichar;
   public
     procedure ClearEnteredPassword();
   published
-    property Drive: char read GetDrive write SetDrive;
-    property DrivesAllowed: string write SetDrivesAllowed;
+    property Drive: Ansichar read GetDrive write SetDrive;
+    property DrivesAllowed: Ansistring write SetDrivesAllowed;
   end;
 
 implementation
@@ -79,10 +79,10 @@ begin
 
 end;
 
-procedure TOTFEE4MPasswordEntry_F.SetDrive(dfltDrv: char);
+procedure TOTFEE4MPasswordEntry_F.SetDrive(dfltDrv: Ansichar);
 begin
   FDefaultDrive:= dfltDrv;
-  dfltDrv := (uppercase(dfltDrv))[1];
+  dfltDrv := AnsiString(uppercase(dfltDrv))[1];
 
   // This will ensure that we either have the default drive selected, or the
   // first drive
@@ -97,7 +97,7 @@ begin
 
 end;
 
-function TOTFEE4MPasswordEntry_F.GetDrive(): char;
+function TOTFEE4MPasswordEntry_F.GetDrive(): Ansichar;
 begin
   if cbDrives.items.count<1 then
     begin
@@ -105,12 +105,12 @@ begin
     end
   else
     begin
-    Result := cbDrives.text[1];
+    Result := AnsiChar( cbDrives.text[1]);
     end;
 
 end;
 
-procedure TOTFEE4MPasswordEntry_F.SetDrivesAllowed(drvs: string);
+procedure TOTFEE4MPasswordEntry_F.SetDrivesAllowed(drvs: Ansistring);
 var
   i: integer;
 begin

@@ -86,7 +86,7 @@ const
   E4M_OS_WIN_NT = $c;
 
 
-  E4M_VOLUME_FILE_TYPE_NAMES: array [E4M_VOLUME_FILE_TYPE] of string = ('Unknown', 'SFS', 'OLD E4M', 'E4M', 'E4M/SFS partition', 'ScramDisk'); // ScramDisk is last
+  E4M_VOLUME_FILE_TYPE_NAMES: array [E4M_VOLUME_FILE_TYPE] of Ansistring = ('Unknown', 'SFS', 'OLD E4M', 'E4M', 'E4M/SFS partition', 'ScramDisk'); // ScramDisk is last
 
   E4M_VOLUME_SIGNATURES: array [E4M_VOLUME_FILE_TYPE] of string = ('<Unknown has no signature>', 'SFS1', 'CAV', 'E4M', '<E4M/SFS partition has no signature>', '<ScramDisk has no signature>');
 
@@ -105,7 +105,7 @@ const
                                                         40,
                                                         $ffff);
 
-  E4M_CIPHER_NAMES: array [E4M_CIPHER_TYPE] of string = ('None',
+  E4M_CIPHER_NAMES: array [E4M_CIPHER_TYPE] of Ansistring = ('None',
                                                          'MDCSHA',
                                                          'SQUARE',
                                                          'TEA16',
@@ -120,7 +120,7 @@ const
 
 
   E4M_HASH_IDS: array [E4M_HASH_TYPE] of integer = (0, 1, $ffff);
-  E4M_HASH_NAMES: array [E4M_HASH_TYPE] of string = ('SHA1', 'MD5', 'Unknown');
+  E4M_HASH_NAMES: array [E4M_HASH_TYPE] of Ansistring = ('SHA1', 'MD5', 'Unknown');
 
 const SFS_DISKKEY_SIZE = 128;
 const E4M_DISKKEY_SIZE = 288;

@@ -45,10 +45,10 @@ type
     function  locklogdrive(drivenum: integer; mode: integer): boolean;
     function  ioctllock(nDrive: cardinal; permissions: integer; func: integer): integer;
     function  DoDeviceClose(driveNum: integer): boolean;
-    function  EjectStop(driveLetter: char; func: boolean): boolean;
+    function  EjectStop(driveLetter: Ansichar; func: boolean): boolean;
 
-    function  GetNextUnusedDrvLtr(afterDrv: char): char;
-    function  GetUnusedDriveLetters(): string;
+    function  GetNextUnusedDrvLtr(afterDrv: Ansichar): Ansichar;
+    function  GetUnusedDriveLetters(): Ansistring;
   protected
     E4MDriverName: string;
     E4MDriverVersion: cardinal;
@@ -57,10 +57,10 @@ type
     function  Connect(): boolean;
     function  Disconnect(): boolean;
     procedure SetActive(AValue : Boolean); override;
-    function  GetDisksMounted(var mountedDrives: string; volumeFilenames: TStrings): boolean;
+    function  GetDisksMounted(var mountedDrives: Ansistring; volumeFilenames: TStrings): boolean;
     function  GetWordFromHeader(buffer: array of byte; var posInBuffer: integer): cardinal;
     function  GetCipherName(cipherID: integer): string;
-    function  GetVolumeInfo(volumeFilename: string; info: pTOTFEE4MVolumeInfo): boolean;
+    function  GetVolumeInfo(volumeFilename: ansistring; info: pTOTFEE4MVolumeInfo): boolean;
 
     // Property settings (read/written to INI file)
     function  GetCachePasswordInDriver(): boolean;
@@ -69,13 +69,13 @@ type
     procedure SetSaveHistory(save: boolean);
     function  GetMountWarning(): boolean;
     procedure SetMountWarning(mountWarning: boolean);
-    function  GetDefaultDrive(): char;
-    procedure SetDefaultDrive(dfltDrive: char);
+    function  GetDefaultDrive(): Ansichar;
+    procedure SetDefaultDrive(dfltDrive: Ansichar);
     procedure SetSupportScramDisk(support: boolean);
 
     function  IsE4MorSFSEncryptedVolFile(volumeFilename: string): boolean; overload;
     function  IsE4MorSFSEncryptedVolFile(volumeFilename: string; var cancelled: boolean): boolean; overload;
-    function  GetScramDiskPasswords(dlgTitle: string; var passwordDigest: string; var driveLetter: char): boolean;
+    function  GetScramDiskPasswords(dlgTitle: string; var passwordDigest: Ansistring; var driveLetter: ansichar): boolean;
 
     function  GetAvailableRemovables(dispNames: TStringList; deviceNames: TStringList): integer;
     function  GetAvailableFixedDisks(dispNames: TStringList; deviceNames: TStringList): integer;
@@ -91,14 +91,14 @@ type
 
     // TOTFE functions...
     function  Title(): string; overload; override;
-    function  Mount(volumeFilename: string; readonly: boolean = FALSE): char; override;
+    function  Mount(volumeFilename: ansistring; readonly: boolean = FALSE): ansichar; override;
     function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; override;
-    function  MountDevices(): string; override;
+    function  MountDevices(): ansistring; override;
     function  CanMountDevice(): boolean; override;
-    function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
-    function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
-    function  DrivesMounted(): string; override;
-    function  GetVolFileForDrive(driveLetter: char): string; override;
+    function  Dismount(driveLetter: ansichar; emergency: boolean = FALSE): boolean; overload; override;
+    function  Dismount(volumeFilename: String; emergency: boolean = FALSE): boolean; overload; override;
+    function  DrivesMounted(): ANsiString; override;
+    function  GetVolFileForDrive(driveLetter: ansichar): string; override;
     function  GetDriveForVolFile(volumeFilename: string): Ansichar; override;
     function  Version(): cardinal; override;
     function  VersionStr(): string; override;
@@ -106,9 +106,9 @@ type
     function  GetMainExe(): string; override;
 
 
-    function  GetDriveInfo(driveLetter: char): TOTFEE4MVolumeInfo;
+    function  GetDriveInfo(driveLetter: Ansichar): TOTFEE4MVolumeInfo;
     function  VersionCanSupportScramDiskVols(): boolean;
-    function  ClearPasswords(driveLetter: char): boolean;
+    function  ClearPasswords(driveLetter: Ansichar): boolean;
     function  GetAvailableRawDevices(dispNames: TStringList; deviceNames: TStringList): boolean;
 
   published
@@ -117,7 +117,7 @@ type
     property  SaveHistory: boolean read GetSaveHistory write SetSaveHistory default TRUE;
     property  CachePasswordInDriver: boolean read GetCachePasswordInDriver write SetCachePasswordInDriver default FALSE;
     property  MountWarning: boolean read GetMountWarning write SetMountWarning default FALSE;
-    property  DefaultDrive: char read GetDefaultDrive write SetDefaultDrive;
+    property  DefaultDrive: Ansichar read GetDefaultDrive write SetDefaultDrive;
     property  HidePasswordsEnteredCk: boolean read FHidePasswordsEnteredCk write FHidePasswordsEnteredCk default TRUE;
 
     property  MountDeviceDlg9xStyle: boolean read FMountDeviceDlg9xStyle write FMountDeviceDlg9xStyle default FALSE;
@@ -322,7 +322,7 @@ begin
 end;
 
 // Note that the emergency parameter is IGNORED
-function TOTFEE4M.Dismount(driveLetter: char; emergency: boolean = FALSE): boolean;
+function TOTFEE4M.Dismount(driveLetter: Ansichar; emergency: boolean = FALSE): boolean;
 var
   query: TOTFEE4M_UNMOUNT;
   allOK: boolean;
@@ -393,7 +393,7 @@ begin
 end;
 
 
-function TOTFEE4M.Mount(volumeFilename: string; readonly: boolean = FALSE): char;
+function TOTFEE4M.Mount(volumeFilename: Ansistring; readonly: boolean = FALSE): Ansichar;
 var
   stlVolumes: TStringList;
   mountedAs: AnsiString;
@@ -432,9 +432,9 @@ var
   passwordDlg: TOTFEE4MPasswordEntry_F;
 
   currAllOK: boolean;
-  mountedDrvLetter: char;
+  mountedDrvLetter: Ansichar;
   currVolFilename: string;
-  drvLtrsFree: string;
+  drvLtrsFree: Ansistring;
   pwEntryDlgTitle: string;
   currFileValid: boolean;
   isPartition: boolean;
@@ -492,7 +492,7 @@ begin
         FLastErrCode := OTFE_ERR_USER_CANCEL;
         exit;
         end;
-      thePassword := passwordDlg.mePassword.text;
+      thePassword := passwordDlg.mePassword.text; { TODO 1 -otdk -cbug : alert user if use unicode }
       passwordDlg.ClearEnteredPassword();
       driveLetter := passwordDlg.Drive;
     finally
@@ -532,7 +532,7 @@ begin
     begin
     query200.szPassword[i] := thePassword[i];
     query201.szPassword[i] := thePassword[i];
-    thePassword[i] := char(Random(256));
+    thePassword[i] := Ansichar(Random(256));
     end;
   query200.szPassword[length(thePassword)+1] := #0;
   query201.szPassword[length(thePassword)+1] := #0;
@@ -653,7 +653,7 @@ begin
           end;
 
         targetPath := targetPath+driveLetter;
-        currAllOK := DefineDosDevice(DDD_RAW_TARGET_PATH, PChar(dosName), PChar(targetPath));
+        currAllOK := DefineDosDevice(DDD_RAW_TARGET_PATH, PWideChar(dosName), PWideChar(targetPath));
         end;
 
       if currAllOK then
@@ -696,9 +696,9 @@ begin
 end;
 
 
-function TOTFEE4M.DrivesMounted(): string;
+function TOTFEE4M.DrivesMounted(): Ansistring;
 var
-  output: string;
+  output: Ansistring;
 begin
   GetDisksMounted(output, nil);
   Result := SortString(output);
@@ -708,7 +708,7 @@ end;
 // !! WARNING !!
 // Under NT, the E4M driver won't tell us the full filename if it's more than
 // 64 chars long, it will only return the first 60 followed by "..."
-function TOTFEE4M.GetDisksMounted(var mountedDrives: string; volumeFilenames: TStrings): boolean;
+function TOTFEE4M.GetDisksMounted(var mountedDrives: Ansistring; volumeFilenames: TStrings): boolean;
 var
   dwBytesReturned : DWORD;
   query200: TOTFEE4M_200_MOUNT_LIST;
@@ -759,7 +759,7 @@ begin
     if ((query200.ulMountedDrives AND currBit)>0) OR
        ((query201.ulMountedDrives AND currBit)>0) then
       begin
-      mountedDrives := mountedDrives + chr(ord('A')+i-1);
+      mountedDrives := mountedDrives + AnsiChar(ord('A')+i-1);
       if volumeFilenames<>nil then
         begin
         currVolFilename := '';
@@ -791,7 +791,7 @@ begin
           // If we're running under 95/98, we need to do this to prevent problems
           // with E4M returning only the first 60 chars followed by "..." if
           // the volume filename length is >64
-          currVolFilename := GetVolFileForDrive(chr(ord('A')+i-1));
+          currVolFilename := GetVolFileForDrive(AnsiChar(ord('A')+i-1));
           end;
 
         if IsFilePartition(currVolFilename) then
@@ -825,10 +825,10 @@ end;
 // !! WARNING !!
 // Under NT, the E4M driver won't tell us the full filename if it's more than
 // 64 chars long, it will only return the first 60 followed by "..."
-function TOTFEE4M.GetVolFileForDrive(driveLetter: char): string;
+function TOTFEE4M.GetVolFileForDrive(driveLetter: Ansichar): string;
 var
   mountedFilenames: TStringList;
-  mountedDrives: string;
+  mountedDrives: Ansistring;
   mountListN98: TOTFEE4M_9x_MOUNT_LIST_N_STRUCT;
   dwBytes: DWORD;
   volFilename: string;
@@ -894,7 +894,7 @@ end;
 function TOTFEE4M.GetDriveForVolFile(volumeFilename: string): Ansichar;
 var
   mountedFilenames: TStringList;
-  mountedDrives: string;
+  mountedDrives: Ansistring;
   numChars: integer;
 begin
   Result := #0;
@@ -931,7 +931,7 @@ begin
 end;
 
 
-function TOTFEE4M.GetVolumeInfo(volumeFilename: string; info: pTOTFEE4MVolumeInfo): boolean;
+function TOTFEE4M.GetVolumeInfo(volumeFilename: Ansistring; info: pTOTFEE4MVolumeInfo): boolean;
 var
   buffer: array [1..(22 * 512)] of byte;
   posInBuffer: integer;
@@ -1111,7 +1111,7 @@ begin
 end;
 
 
-function TOTFEE4M.GetDriveInfo(driveLetter: char): TOTFEE4MVolumeInfo;
+function TOTFEE4M.GetDriveInfo(driveLetter: Ansichar): TOTFEE4MVolumeInfo;
 var
   i: integer;
   currInfo: pTOTFEE4MVolumeInfo;
@@ -1132,7 +1132,7 @@ begin
 
 end;
 
-function TOTFEE4M.ClearPasswords(driveLetter: char): boolean;
+function TOTFEE4M.ClearPasswords(driveLetter: AnsiChar): boolean;
 var
   dwResult: DWORD;
 begin
@@ -1143,7 +1143,7 @@ begin
                             nil,
                             0,
                             dwResult,
-                            nil);
+                            nil);   { TODO 1 -otdk -cinvestigate : doesnt use drive letter }
 end;
 
 
@@ -1201,7 +1201,7 @@ end;
 procedure TOTFEE4M.UpdateVolInfoList();
 var
   i: integer;
-  mtdDrives: string;
+  mtdDrives: Ansistring;
   currInfo: pTOTFEE4MVolumeInfo;
   volFilenames: TStringList;
   posInStr: integer;
@@ -1460,7 +1460,7 @@ begin
   if (mount_list.mountfilehandle<>0) then
     begin
     ShortArrayToString(mount_list.wszVolume, volFilename);
-    EjectStop(upcase(volFilename[1]), FALSE);
+    EjectStop(AnsiChar(upcase(volFilename[1])), FALSE);
     end;
 
   unmount.nDosDriveNo := driveNum;
@@ -1516,7 +1516,7 @@ begin
 
 end;
 
-function TOTFEE4M.EjectStop(driveLetter: char; func: boolean): boolean;
+function TOTFEE4M.EjectStop(driveLetter: Ansichar; func: boolean): boolean;
 var
   hDevice: THANDLE;
   reg: TDeviceIOControlRegisters;
@@ -1627,7 +1627,7 @@ begin
 
 end;
 
-function TOTFEE4M.GetDefaultDrive(): char;
+function TOTFEE4M.GetDefaultDrive(): Ansichar;
 var
   iniFile: TIniFile;
   dfltDrvColon: string;
@@ -1639,7 +1639,7 @@ begin
     dfltDrvColon := iniFile.ReadString(E4M_INI_SECTION_LASTRUN, E4M_INI_KEY_DRIVELETTER, '');
     if dfltDrvColon<>'' then
       begin
-      Result := dfltDrvColon[1];
+      Result := AnsiChar( dfltDrvColon[1]);
       end;
 
   finally
@@ -1649,7 +1649,7 @@ begin
 end;
 
 
-procedure TOTFEE4M.SetDefaultDrive(dfltDrive: char);
+procedure TOTFEE4M.SetDefaultDrive(dfltDrive: Ansichar);
 var
   iniFile: TIniFile;
 begin
@@ -1746,10 +1746,10 @@ begin
 end;
 
 
-function TOTFEE4M.GetNextUnusedDrvLtr(afterDrv: char): char;
+function TOTFEE4M.GetNextUnusedDrvLtr(afterDrv: Ansichar): Ansichar;
 var
   finished: boolean;
-  unusedDrvs: string;
+  unusedDrvs: Ansistring;
 begin
   Result := #0;
   finished := FALSE;
@@ -1757,7 +1757,7 @@ begin
   unusedDrvs := GetUnusedDriveLetters();
   while not(finished) do
     begin
-    afterDrv := chr(ord(afterDrv)+1);
+    afterDrv := AnsiChar(ord(afterDrv)+1);  { TODO 1 -otdk -cinvestigate : why isnt this just using chars? }
     if ord(afterDrv)>ord('Z') then
       begin
       finished := TRUE;
@@ -1776,9 +1776,9 @@ begin
 end;
 
 // Returns a string containing the drive letters of "unallocated" drives
-function TOTFEE4M.GetUnusedDriveLetters(): string;
+function TOTFEE4M.GetUnusedDriveLetters(): Ansistring;
 var
-  driveLetters: string;
+  driveLetters: Ansistring;
   DriveNum: Integer;
   DriveBits: set of 0..25;
 begin
@@ -1789,7 +1789,7 @@ begin
     begin
     if not(DriveNum in DriveBits) then
       begin
-      driveLetters := driveLetters + Char(DriveNum + Ord('A'));
+      driveLetters := driveLetters + AnsiChar(DriveNum + Ord('A'));
       end;
     end;
 
@@ -1814,7 +1814,7 @@ begin
 end;
 
 // For ScramDisk volumes, get the 4 passwords and SHA1 them together
-function TOTFEE4M.GetScramDiskPasswords(dlgTitle: string; var passwordDigest: string; var driveLetter: char): boolean;
+function TOTFEE4M.GetScramDiskPasswords(dlgTitle: string; var passwordDigest: Ansistring; var driveLetter: Ansichar): boolean;
 var
   hashObj: THashAlgSHA1;
   tempPasswordDigest: THashArray;
@@ -1822,8 +1822,8 @@ var
   passwordEntryDlg: TOTFEE4MScramDiskPasswordEntry_F;
   i: integer;
   j: integer;
-  drvLtrsFree: string;
-  tempDriveLetter: char;
+  drvLtrsFree: Ansistring;
+  tempDriveLetter: Ansichar;
 begin
   Result := FALSE;
 
@@ -1880,7 +1880,7 @@ begin
           begin
           for j:=0 to 3 do
             begin
-            passwordDigest := passwordDigest + char(tempPasswordDigest[(i*4)+(3-j)]);
+            passwordDigest := passwordDigest + Ansichar(tempPasswordDigest[(i*4)+(3-j)]);
             tempPasswordDigest[(i*4)+(3-j)] := Random(256);
             end;
           end;
@@ -2261,7 +2261,7 @@ end;
 // Prompt the user for a device (if appropriate) and password (and drive
 // letter if necessary), then mount the device selected
 // Returns the drive letter of the mounted devices on success, #0 on failure
-function TOTFEE4M.MountDevices(): string;
+function TOTFEE4M.MountDevices(): Ansistring;
 var
   mntDeviceDlg: TOTFEE4MMountDevice_F;
   finished: boolean;

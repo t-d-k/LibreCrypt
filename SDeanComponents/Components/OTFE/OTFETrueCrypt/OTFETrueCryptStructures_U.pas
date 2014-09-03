@@ -297,7 +297,7 @@ type
   TOTFETrueCrypt_MOUNT_STRUCT_PRE30 = packed record
     nReturnCode: integer;  // Return code back from driver
     wszVolume: array [0..(TrueCrypt_TC_MAX_PATH-1)] of WCHAR;  // Volume to be mounted - -1 since we index from 0
-    szPassword: array [0..((TrueCrypt_MAX_PASSWORD+1)-1)] of char;  // User password - -1 since we index from 0
+    szPassword: array [0..((TrueCrypt_MAX_PASSWORD+1)-1)] of AnsiChar;  // User password - -1 since we index from 0
     nPasswordLen: integer;  //  User password length
     bCache: boolean;  // Cache passwords in driver
     junkPadding: array [0..2] of byte;  // junk padding to align with word boundry
@@ -311,7 +311,7 @@ type
   TOTFETrueCrypt_MOUNT_STRUCT_30 = packed record
     nReturnCode: integer;  // Return code back from driver
     wszVolume: array [0..(TrueCrypt_TC_MAX_PATH-1)] of WCHAR;  // Volume to be mounted - -1 since we index from 0
-    szPassword: array [0..((TrueCrypt_MAX_PASSWORD+1)-1)] of char;  // User password - -1 since we index from 0
+    szPassword: array [0..((TrueCrypt_MAX_PASSWORD+1)-1)] of AnsiChar;  // User password - -1 since we index from 0
     nPasswordLen: integer;  //  User password length
     bCache: boolean;  // Cache passwords in driver
     junkPadding1: array [0..2] of byte;  // junk padding to align with word boundry

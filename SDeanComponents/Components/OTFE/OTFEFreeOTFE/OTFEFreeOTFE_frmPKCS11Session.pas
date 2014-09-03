@@ -161,7 +161,7 @@ begin
       end
     else
       begin
-      loginOK := FPKCS11Session.Login(utUser, edPIN.text);
+      loginOK := FPKCS11Session.Login(utUser, edPIN.text); { TODO 1 -otdk -cbug : alert user if unicode pin }
       end;
 
     if not(loginOK) then

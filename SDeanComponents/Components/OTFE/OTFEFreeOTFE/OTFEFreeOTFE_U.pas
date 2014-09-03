@@ -99,12 +99,12 @@ type
 
     function  LDREUDriver(
                           driveLetter: ansichar;
-                          deviceName: string;
+                          deviceName: Ansistring;
                           emergency: boolean
                          ): boolean;
     function  LDREUUserApp(
                           driveLetter: ansichar;
-                          deviceName: string;
+                          deviceName: Ansistring;
                           emergency: boolean;
                           var unableToOpenDrive: boolean
                          ): boolean;
@@ -903,7 +903,7 @@ var
   mainCypherDetails: TFreeOTFECypher_v3;
   kmFilename: string;
   useVolumeFlags: integer;
-  strMetaData: string;
+  strMetaData: Ansistring;
 begin
   retVal := FALSE;
 
@@ -952,7 +952,7 @@ DebugMsg('  size: '+inttostr(size));
     // Copy as much of the hash value as possible to match the key length
     volumeKey := Copy(volumeKey, 1, min((mainCypherDetails.KeySizeRequired div 8), length(volumeKey)));
     // If the hash wasn't big enough, pad out with zeros
-    volumeKey := volumeKey + StringOfChar(#0, ((mainCypherDetails.KeySizeRequired div 8) - Length(volumeKey)));
+    volumeKey := volumeKey + StringOfChar(AnsiChar(#0), ((mainCypherDetails.KeySizeRequired div 8) - Length(volumeKey)));
     end;
 
 
@@ -973,9 +973,9 @@ DebugMsg('  size: '+inttostr(size));
 
   // Subtract sizeof(char) - once for the volume key, once for the volumeIV
   bufferSize := sizeof(ptrDIOCBuffer^)
-                - sizeof(char) + (sizeof(char)*Length(volumeKey))
-                - sizeof(char) + (sizeof(char)*Length(volumeIV))
-                - sizeof(char) + (sizeof(char)*Length(strMetaData));
+                - sizeof(Ansichar) + (sizeof(Ansichar)*Length(volumeKey))
+                - sizeof(Ansichar) + (sizeof(Ansichar)*Length(volumeIV))
+                - sizeof(Ansichar) + (sizeof(Ansichar)*Length(strMetaData));
   // Round up to next "DIOC boundry". Although this always results in an
   // oversized buffer, it's guaranteed to be big enough.
   bufferSize := bufferSize + (DIOC_BOUNDRY - (bufferSize mod DIOC_BOUNDRY));
@@ -1034,9 +1034,9 @@ DebugMsg('  size: '+inttostr(size));
     ptrDIOCBuffer.MetaDataLength := Length(strMetaData);
     // This may seem a little weird, but we do this because the VolumeIV and metaData are
     // immediatly after the master key
-    StrMove(@ptrDIOCBuffer.MasterKey, PChar(volumeKey), Length(volumeKey));
-    StrMove(((PChar(@ptrDIOCBuffer.MasterKey))+length(volumeKey)), PChar(volumeIV), Length(volumeIV));
-    StrMove(((PChar(@ptrDIOCBuffer.MasterKey))+length(volumeKey)+length(volumeIV)), PChar(strMetaData), Length(strMetaData));
+    StrMove(@ptrDIOCBuffer.MasterKey, PAnsiChar(volumeKey), Length(volumeKey));
+    StrMove(((PAnsiChar(@ptrDIOCBuffer.MasterKey))+length(volumeKey)), PAnsiChar(volumeIV), Length(volumeIV));
+    StrMove(((PAnsiChar(@ptrDIOCBuffer.MasterKey))+length(volumeKey)+length(volumeIV)), PAnsiChar(strMetaData), Length(strMetaData));
 
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('+++ ABOUT TO DIOC MOUNT WITH STRUCT:');
@@ -1206,7 +1206,7 @@ end;
 // http://support.microsoft.com/default.aspx?scid=http://support.microsoft.com:80/support/kb/articles/Q165/7/21.asp&NoWebContent=1
 function TOTFEFreeOTFE.LDREUUserApp(
                           driveLetter: ansichar;
-                          deviceName: string;
+                          deviceName: Ansistring;
                           emergency: boolean;
                           var unableToOpenDrive: boolean
                          ): boolean;
@@ -1214,7 +1214,7 @@ var
   driveDevice: THandle;
   BytesReturned: DWORD;
   driveLetterColon: string;
-  driveFile: string;
+  driveFile: Widestring;
   pmr: TPREVENT_MEDIA_REMOVAL;
   allOK: boolean;
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
@@ -1409,7 +1409,7 @@ end;
 // deviceName - Must be of the formst \Device\FreeOTFE\Disks\Disk1
 function TOTFEFreeOTFE.LDREUDriver(
                                    driveLetter: ansichar;
-                                   deviceName: string;
+                                   deviceName: Ansistring;
                                    emergency: boolean
                                  ): boolean;
 var
@@ -1668,7 +1668,7 @@ var
   ptrBufferOffset: Pointer;
   bufferSize: cardinal;
   i: integer;
-  devName: string;
+  devName: Ansistring;
   deviceCount: integer;
   ptrDIOCDeviceNameList: PDIOC_DEVICE_NAME_LIST;
 begin

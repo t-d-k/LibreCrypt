@@ -165,7 +165,7 @@ type
   end;
 
   PGPDISK_Rec_PGPdiskInfo = packed record
-    path: array [1..PGPDISK_MAX_STRING_SIZE] of char;  // path to the PGPdisk
+    path: array [1..PGPDISK_MAX_STRING_SIZE] of Ansichar;  // path to the PGPdisk
 
     drive: PGPUInt8;                                   // drive # of a mounted PGPdisk
     sessionId: PGPUInt64;                              // unique session Id
@@ -194,8 +194,8 @@ type
   end;
 
   PGPDISK_Rec_PGPDiskFileHeaderInfo = packed record
-    headerMagic: array [1..4] of char;  // Magic field. Always PGPDISK_HeaderMagic
-    headerType: array [1..4] of char;   // PGPDISK_PrimaryHeaderType + ???
+    headerMagic: array [1..4] of Ansichar;  // Magic field. Always PGPDISK_HeaderMagic
+    headerType: array [1..4] of Ansichar;   // PGPDISK_PrimaryHeaderType + ???
     headerSize: PGPUInt32;              // Total size of this header, in bytes
     headerCRC: CRC32;                   // CRC of this header
     nextHeaderOffset: PGPUInt64;        // Offset to next header from file start

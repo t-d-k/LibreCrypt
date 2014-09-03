@@ -1,9 +1,9 @@
 object CrossCrypt_PasswordConfirm_F: TCrossCrypt_PasswordConfirm_F
   Left = 408
   Top = 336
-  Width = 300
-  Height = 205
   Caption = 'Password confirmation'
+  ClientHeight = 167
+  ClientWidth = 284
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -41,8 +41,14 @@ object CrossCrypt_PasswordConfirm_F: TCrossCrypt_PasswordConfirm_F
     Top = 52
     Width = 237
     Height = 53
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
     Lines.Strings = (
       'rePasswords')
+    ParentFont = False
     TabOrder = 0
     OnChange = rePasswordsChange
   end

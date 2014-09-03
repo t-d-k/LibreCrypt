@@ -21,7 +21,7 @@ type
     partitionDeviceNames: TStringList;
   public
     TrueCryptComponent: TOTFETrueCrypt;
-    PartitionDevice: string;
+    PartitionDevice: Ansistring;
   end;
 
 implementation

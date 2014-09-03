@@ -619,7 +619,7 @@ type
 
     procedure VolumeMetadataToString(
       metadata: TOTFEFreeOTFEVolumeMetaData;
-      var metadataAsString: string
+      var metadataAsString: ansistring
     );
 
     // ---------
@@ -675,10 +675,10 @@ procedure DebugMsgBinaryPtr(msg: PChar; len:integer);
     // TOTFE standard API
     constructor Create(AOwner : TComponent); override;
     destructor  Destroy(); override;
-    function  Mount(volumeFilename: string; readonly: boolean = FALSE): Ansichar; overload; override;
+    function  Mount(volumeFilename: ansistring; readonly: boolean = FALSE): Ansichar; overload; override;
     function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; overload; override;
     function  CanMountDevice(): boolean; override;
-    function  MountDevices(): string; override;
+    function  MountDevices(): Ansistring; override;
     function  Dismount(volumeFilename: string; emergency: boolean = FALSE): boolean; overload; override;
     // Although this Dismount(...) is introduced as virtual/abstractin TOTFE,
     // it needs to be shown here as well in order to prevent compiler error
@@ -868,7 +868,7 @@ procedure DebugMsgBinaryPtr(msg: PChar; len:integer);
     // Encrypted data returned in "cyphertext"
     // Note: This is pretty much redundant with EncryptSectorData(...)/DecryptSectorData(...)
     function _EncryptData(
-                         cypherKernelModeDeviceName: string;
+                         cypherKernelModeDeviceName: Ansistring;
                          cypherGUID: TGUID;
                          var key: Ansistring;
                          var IV: Ansistring;
@@ -879,7 +879,7 @@ procedure DebugMsgBinaryPtr(msg: PChar; len:integer);
     // Decrypted data returned in "plaintext"
     // Note: This is pretty much redundant with EncryptSectorData(...)/DecryptSectorData(...)
     function _DecryptData(
-                         cypherKernelModeDeviceName: string;
+                         cypherKernelModeDeviceName: Ansistring;
                          cypherGUID: TGUID;
                          var key: Ansistring;
                          var IV: Ansistring;
@@ -890,7 +890,7 @@ procedure DebugMsgBinaryPtr(msg: PChar; len:integer);
     // Encrypt "sector" data using the cypher/cypher driver identified
     // Encrypted data returned in "cyphertext"
     function EncryptSectorData(
-                         cypherKernelModeDeviceName: string;
+                         cypherKernelModeDeviceName: Ansistring;
                          cypherGUID: TGUID;
                          SectorID: LARGE_INTEGER;
                          SectorSize: integer;
@@ -902,7 +902,7 @@ procedure DebugMsgBinaryPtr(msg: PChar; len:integer);
     // Decrypt "sector" data using the cypher/cypher driver identified
     // Decrypted data returned in "plaintext"
     function DecryptSectorData(
-                         cypherKernelModeDeviceName: string;
+                         cypherKernelModeDeviceName: Ansistring;
                          cypherGUID: TGUID;
                          SectorID: LARGE_INTEGER;
                          SectorSize: integer;
@@ -1846,11 +1846,11 @@ end;
 // Convert metadata struct to string
 procedure TOTFEFreeOTFEBase.VolumeMetadataToString(
   metadata: TOTFEFreeOTFEVolumeMetaData;
-  var metadataAsString: string
+  var metadataAsString: Ansistring
 );
 begin
-  metadataAsString := StringOfChar(#0, sizeof(metadata));
-  StrMove(PChar(metadataAsString), @metadata, sizeof(metadata));
+  metadataAsString := StringOfChar(AnsiChar(#0), sizeof(metadata));
+  StrMove(PAnsiChar(metadataAsString), @metadata, sizeof(metadata));
 end;
 
 
@@ -2459,7 +2459,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.Mount(volumeFilename: string; readonly: boolean = FALSE): Ansichar;
+function TOTFEFreeOTFEBase.Mount(volumeFilename: ansistring; readonly: boolean = FALSE): Ansichar;
 var
   tmpStringList: TStringList;
   mountedAs: Ansistring;
@@ -2780,7 +2780,7 @@ end;
 // Encrypt data using the cypher/cypher driver identified
 // Encrypted data returned in "plaintext"
 function TOTFEFreeOTFEBase._EncryptData(
-                     cypherKernelModeDeviceName: string;
+                     cypherKernelModeDeviceName: Ansistring;
                      cypherGUID: TGUID;
                      var key: Ansistring;
                      var IV: Ansistring;
@@ -2805,7 +2805,7 @@ end;
 // Decrypt data using the cypher/cypher driver identified
 // Decrypted data returned in "plaintext"
 function TOTFEFreeOTFEBase._DecryptData(
-                     cypherKernelModeDeviceName: string;
+                     cypherKernelModeDeviceName: Ansistring;
                      cypherGUID: TGUID;
                      var key: Ansistring;
                      var IV: Ansistring;
@@ -2830,7 +2830,7 @@ end;
 // Encrypt data using the cypher/cypher driver identified
 // Encrypted data returned in "plaintext"
 function TOTFEFreeOTFEBase.EncryptSectorData(
-                     cypherKernelModeDeviceName: string;
+                     cypherKernelModeDeviceName: Ansistring;
                      cypherGUID: TGUID;
                      SectorID: LARGE_INTEGER;
                      SectorSize: integer;
@@ -2859,7 +2859,7 @@ end;
 // Decrypt data using the cypher/cypher driver identified
 // Decrypted data returned in "plaintext"
 function TOTFEFreeOTFEBase.DecryptSectorData(
-                     cypherKernelModeDeviceName: string;
+                     cypherKernelModeDeviceName: Ansistring;
                      cypherGUID: TGUID;
                      SectorID: LARGE_INTEGER;
                      SectorSize: integer;
@@ -5253,12 +5253,12 @@ end;
 // Prompt the user for a device (if appropriate) and password (and drive
 // letter if necessary), then mount the device selected
 // Returns the drive letter of the mounted devices on success, #0 on failure
-function TOTFEFreeOTFEBase.MountDevices(): string;
+function TOTFEFreeOTFEBase.MountDevices(): Ansistring;
 var
   selectedPartition: string;
   mountedAs: ansistring;
   frmSelectVolumeType: TfrmSelectVolumeType;
-  retVal: string;
+  retVal: Ansistring;
   mr: integer;
 begin
   mountedAs := '';

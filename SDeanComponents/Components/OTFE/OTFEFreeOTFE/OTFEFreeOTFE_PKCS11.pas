@@ -262,8 +262,8 @@ function DestroyPKCS11CDB(
                      ): boolean;
 function CreatePKCS11CDB(
                       PKCS11Session: TPKCS11Session;
-                      CDBLabel: string;
-                      CDB: string;
+                      CDBLabel: ansistring;
+                      CDB: ansistring;
                       var strError: string
                      ): boolean;
 
@@ -290,7 +290,7 @@ function DestroyPKCS11SecretKey(
                      ): boolean;
 function CreatePKCS11SecretKey(
                       PKCS11Session: TPKCS11Session;
-                      SecretKeyLabel: string;
+                      SecretKeyLabel: ansistring;
                       KeyType: TPKCS11SecretKeyType;
                       var strError: string
                      ): boolean;
@@ -405,7 +405,7 @@ var
   attrValue: TPKCS11Attribute;
   i: integer;
   tmpPKCS11CDB: PPKCS11CDB;
-  strCDB: string;
+  strCDB: Ansistring;
 begin
   allOK := TRUE;
 
@@ -482,8 +482,8 @@ end;
 
 function CreatePKCS11CDB(
                       PKCS11Session: TPKCS11Session;
-                      CDBLabel: string;
-                      CDB: string;
+                      CDBLabel: Ansistring;
+                      CDB: Ansistring;
                       var strError: string
                      ): boolean;
 var
@@ -760,7 +760,7 @@ end;
 
 function CreatePKCS11SecretKey(
                       PKCS11Session: TPKCS11Session;
-                      SecretKeyLabel: string;
+                      SecretKeyLabel: ansistring;
                       KeyType: TPKCS11SecretKeyType;
                       var strError: string
                      ): boolean;

@@ -56,12 +56,12 @@ end;
 
 procedure TOTFEScramDiskDismountVolumes_F.FormShow(Sender: TObject);
 var
-  drivesMounted: string;
+  drivesMounted: Ansistring;
   i : integer;
   slotTitle : string;
   volInfoOK: boolean;
   driveRoot: string;
-  volumeLabel: array [0..MAX_PATH] of char;
+  volumeLabel: array [0..MAX_PATH] of Widechar;
   maxFilenameLen: DWORD;
   sysFlags: DWORD;
 begin

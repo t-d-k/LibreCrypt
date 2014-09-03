@@ -48,7 +48,6 @@ object frmPKCS11Session: TfrmPKCS11Session
     Top = 54
     Width = 145
     Height = 21
-    ItemHeight = 13
     TabOrder = 1
     Text = 'cbToken'
   end

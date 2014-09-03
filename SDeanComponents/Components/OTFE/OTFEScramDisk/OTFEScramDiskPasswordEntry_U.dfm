@@ -182,8 +182,4 @@ object OTFEScramDiskPasswordEntry_F: TOTFEScramDiskPasswordEntry_F
     TabOrder = 11
     OnClick = ckHidePasswordsClick
   end
-  object KeyboardDialog: TKeyboardDialog
-    Left = 112
-    Top = 124
-  end
 end

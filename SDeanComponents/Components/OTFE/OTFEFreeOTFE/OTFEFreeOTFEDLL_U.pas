@@ -2166,7 +2166,7 @@ var
   bufferSize: integer;
   mainCypherDetails: TFreeOTFECypher_v3;
   useVolumeFlags: integer;
-  strMetaData: string;
+  strMetaData: Ansistring;
   mntHandles: TMountedHandle;
   openAccessCode: DWORD;
   openShareMode: DWORD;
@@ -2227,7 +2227,7 @@ DebugMsg('  size: '+inttostr(size));
     // Copy as much of the hash value as possible to match the key length
     volumeKey := Copy(volumeKey, 1, min((mainCypherDetails.KeySizeRequired div 8), length(volumeKey)));
     // If the hash wasn't big enough, pad out with zeros
-    volumeKey := volumeKey + StringOfChar(#0, ((mainCypherDetails.KeySizeRequired div 8) - Length(volumeKey)));
+    volumeKey := volumeKey + StringOfChar(AnsiChar(#0), ((mainCypherDetails.KeySizeRequired div 8) - Length(volumeKey)));
     end;
 
 
@@ -2248,9 +2248,9 @@ DebugMsg('  size: '+inttostr(size));
 
   // Subtract sizeof(char) - once for the volume key, once for the volumeIV
   bufferSize := sizeof(ptrDIOCBuffer^)
-                - sizeof(char) + (sizeof(char)*Length(volumeKey))
-                - sizeof(char) + (sizeof(char)*Length(volumeIV))
-                - sizeof(char) + (sizeof(char)*Length(strMetaData));
+                - sizeof(Ansichar) + (sizeof(Ansichar)*Length(volumeKey))
+                - sizeof(Ansichar) + (sizeof(Ansichar)*Length(volumeIV))
+                - sizeof(Ansichar) + (sizeof(Ansichar)*Length(strMetaData));
   // Round up to next "DIOC boundry". Although this always results in an
   // oversized buffer, it's guaranteed to be big enough.
   bufferSize := bufferSize + (DIOC_BOUNDRY - (bufferSize mod DIOC_BOUNDRY));
@@ -2589,13 +2589,13 @@ begin
       begin
       if (BytesReturned <= sizeof(outBuffer)) then
         begin
-        volumeInfo.Filename         := Copy(outBuffer.Filename, 1, SDUWStrLen(outBuffer.Filename));
+        volumeInfo.Filename         := Copy(outBuffer.Filename, 1, SDUWStrLen(outBuffer.Filename)); { TODO 1 -otdk -cinvestigate : what if unicode filename? }
         volumeInfo.DeviceName       := driveLetter;
-        volumeInfo.IVHashDevice     := Copy(outBuffer.IVHashDeviceName, 1, SDUWStrLen(outBuffer.IVHashDeviceName));
+        volumeInfo.IVHashDevice     := Copy(outBuffer.IVHashDeviceName, 1, SDUWStrLen(outBuffer.IVHashDeviceName));    { TODO 1 -otdk -cinvestigate : what if unicode? }
         volumeInfo.IVHashGUID       := outBuffer.IVHashGUID;
-        volumeInfo.IVCypherDevice   := Copy(outBuffer.IVCypherDeviceName, 1, SDUWStrLen(outBuffer.IVCypherDeviceName));
+        volumeInfo.IVCypherDevice   := Copy(outBuffer.IVCypherDeviceName, 1, SDUWStrLen(outBuffer.IVCypherDeviceName)); { TODO 1 -otdk -cinvestigate : what if unicode? }
         volumeInfo.IVCypherGUID     := outBuffer.IVCypherGUID;
-        volumeInfo.MainCypherDevice := Copy(outBuffer.MainCypherDeviceName, 1, SDUWStrLen(outBuffer.MainCypherDeviceName));
+        volumeInfo.MainCypherDevice := Copy(outBuffer.MainCypherDeviceName, 1, SDUWStrLen(outBuffer.MainCypherDeviceName)); { TODO 1 -otdk -cinvestigate : what if unicode? }
         volumeInfo.MainCypherGUID   := outBuffer.MainCypherGUID;
         volumeInfo.Mounted          := TRUE;
         volumeInfo.ReadOnly         := outBuffer.ReadOnly;

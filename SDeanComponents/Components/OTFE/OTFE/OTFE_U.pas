@@ -63,7 +63,7 @@ type
     FLastErrCode: integer; // See OTFEConsts_U.pas
     procedure DestroyString(var theString: string);
     procedure DestroyTStringList(theTStringList: TStringList);
-    function  SortString(theString: string): string;
+    function  SortString(theString: Ansistring): Ansistring;
 
     // Set the component active/inactive
     // Note: Must raise exception if status is set to TRUE, but the component
@@ -92,7 +92,7 @@ type
     // Prompt the user for a password (and drive letter if necessary), then
     // mount the specified volume file
     // Returns the drive letter of the mounted volume on success, #0 on failure
-    function  Mount(volumeFilename: string; readonly: boolean = FALSE): Ansichar; overload; virtual; abstract;
+    function  Mount(volumeFilename: ansistring; readonly: boolean = FALSE): Ansichar; overload; virtual; abstract;
 
     // As previous Mount, but more than one volumes is specified. Volumes are
     // mounted using the same password
@@ -120,7 +120,7 @@ type
     // Prompt the user for a device (if appropriate) and password (and drive
     // letter if necessary), then mount the device selected
     // Returns the drive letter of the mounted devices on success, #0 on failure
-    function  MountDevices(): string; virtual; abstract;
+    function  MountDevices(): Ansistring; virtual; abstract;
 
     // Determine if OTFE component can mount devices.
     // Returns TRUE if it can, otherwise FALSE
@@ -477,18 +477,18 @@ end;
 
 // -----------------------------------------------------------------------------
 // Sort the contents of a string into alphabetical order, assuming each char
-// only appears once.
-function TOTFE.SortString(theString: string): string;
+// only appears once. and is all upper case
+function TOTFE.SortString(theString: Ansistring): Ansistring;
 var
-  output: string;
-  i: integer;
+  output: Ansistring;
+  i: AnsiChar;
 begin
   output := '';
-  for i:=ord('A') to ord('Z') do
+  for i:='A' to 'Z' do
     begin
-    if pos(chr(i), theString)>0 then
+    if pos(i, theString)>0 then
       begin
-      output := output + chr(i);
+      output := output + i;
       end;
     end;
 
