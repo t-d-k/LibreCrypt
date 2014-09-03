@@ -55,14 +55,14 @@ type
     function KeyTypeToString(keyType: CK_KEY_TYPE): string;
     function CertificateTypeToString(certType: CK_CERTIFICATE_TYPE): string;
 
-    function CopyBinary(ptr: PByte; len: integer): string;
+    function CopyBinary(ptr: PByte; len: integer): Ansistring;
 
     // Get methods...
     function GetValueAsObjClass(): CK_OBJECT_CLASS;
     function GetValueAsBoolean(): boolean;
-    function GetValueAsString(): string;
-    function GetValueAsBigInteger(): string;
-    function GetValueAsByteArray(): string;
+    function GetValueAsString(): AnsiString;
+    function GetValueAsBigInteger(): AnsiString;
+    function GetValueAsByteArray(): AnsiString;
     function GetValueAsCertificateType(): CK_CERTIFICATE_TYPE;
     function GetValueAsNumber(): CK_ULONG;
     function GetValueAsKeyType(): CK_KEY_TYPE;
@@ -75,9 +75,9 @@ type
     // Set methods...
     procedure SetValueAsObjClass(value: CK_OBJECT_CLASS);
     procedure SetValueAsBoolean(value: boolean);
-    procedure SetValueAsString(value: string);
-    procedure SetValueAsBigInteger(value: string);
-    procedure SetValueAsByteArray(value: string);
+    procedure SetValueAsString(value: AnsiString);
+    procedure SetValueAsBigInteger(value: AnsiString);
+    procedure SetValueAsByteArray(value: AnsiString);
     procedure SetValueAsCertificateType(value: CK_CERTIFICATE_TYPE);
     procedure SetValueAsNumber(value: CK_ULONG);
     procedure SetValueAsKeyType(value: CK_KEY_TYPE);
@@ -107,9 +107,9 @@ type
     //       FAttribType
     property ValueAsObjClass: CK_OBJECT_CLASS read GetValueAsObjClass write SetValueAsObjClass;
     property ValueAsBoolean: boolean read GetValueAsBoolean write SetValueAsBoolean;
-    property ValueAsString: string read GetValueAsString write SetValueAsString;
-    property ValueAsBigInteger: string read GetValueAsBigInteger write SetValueAsBigInteger;
-    property ValueAsByteArray: string read GetValueAsByteArray write SetValueAsByteArray;
+    property ValueAsString: Ansistring read GetValueAsString write SetValueAsString;
+    property ValueAsBigInteger: Ansistring read GetValueAsBigInteger write SetValueAsBigInteger;
+    property ValueAsByteArray: Ansistring read GetValueAsByteArray write SetValueAsByteArray;
     property ValueAsCertificateType: CK_CERTIFICATE_TYPE read GetValueAsCertificateType write SetValueAsCertificateType;
     property ValueAsNumber: cardinal read GetValueAsNumber write SetValueAsNumber;
     property ValueAsKeyType: CK_KEY_TYPE read GetValueAsKeyType write SetValueAsKeyType;
@@ -487,15 +487,15 @@ begin
   Result := FLength;
 end;
 
-function TPKCS11Attribute.CopyBinary(ptr: PByte; len: integer): string;
+function TPKCS11Attribute.CopyBinary(ptr: PByte; len: integer): Ansistring;
 var
-  retval: string;
+  retval: Ansistring;
   i: integer;
 begin
   retval := '';
   for i:=0 to (len-1) do
     begin
-    retval := retval + char(PByte(ptr)^);
+    retval := retval + Ansichar(PByte(ptr)^);
     inc(ptr);
     end;
 
@@ -611,32 +611,32 @@ end;
 
 function TPKCS11Attribute.GetValueAsObjClass(): CK_OBJECT_CLASS;
 begin
-  Result := (PCK_OBJECT_CLASS(PChar(FRawData)))^;
+  Result := (PCK_OBJECT_CLASS(PAnsiChar(FRawData)))^;
 end;
 
 function TPKCS11Attribute.GetValueAsBoolean(): boolean;
 begin
-  Result := (((PCK_BBOOL(PChar(FRawData)))^) = CK_TRUE)
+  Result := (((PCK_BBOOL(PAnsiChar(FRawData)))^) = CK_TRUE)
 end;
 
-function TPKCS11Attribute.GetValueAsString(): string;
+function TPKCS11Attribute.GetValueAsString(): Ansistring;
 begin
   Result := FRawData;
 end;
 
-function TPKCS11Attribute.GetValueAsBigInteger(): string;
+function TPKCS11Attribute.GetValueAsBigInteger(): Ansistring;
 begin
   Result := FRawData;
 end;
 
-function TPKCS11Attribute.GetValueAsByteArray(): string;
+function TPKCS11Attribute.GetValueAsByteArray(): Ansistring;
 begin
   Result := FRawData;
 end;
 
 function TPKCS11Attribute.GetValueAsCertificateType(): CK_CERTIFICATE_TYPE;
 begin
-  Result := (PCK_CERTIFICATE_TYPE(PChar(FRawData)))^;
+  Result := (PCK_CERTIFICATE_TYPE(PAnsiChar(FRawData)))^;
 end;
 
 function TPKCS11Attribute.GetValueAsNumber(): CK_ULONG;
@@ -657,7 +657,7 @@ end;
 
 function TPKCS11Attribute.GetValueAsKeyType(): CK_KEY_TYPE;
 begin
-  Result := (PCK_KEY_TYPE(PChar(FRawData)))^;
+  Result := (PCK_KEY_TYPE(PAnsiChar(FRawData)))^;
 end;
 
 function TPKCS11Attribute.GetValueAsDate(): TDate;
@@ -668,7 +668,7 @@ begin
   retval := 0;
   if (length(FRawData) >= sizeof(tmpCK_DATE)) then
     begin
-    tmpCK_DATE := (PCK_DATE(PChar(FRawData)))^;
+    tmpCK_DATE := (PCK_DATE(PAnsiChar(FRawData)))^;
     retval := CK_DATEToDate(tmpCK_DATE);
     end;
 
@@ -677,12 +677,12 @@ end;
 
 function TPKCS11Attribute.GetValueAsMechanismType(): CK_MECHANISM_TYPE;
 begin
-  Result := (PCK_MECHANISM_TYPE(PChar(FRawData)))^;
+  Result := (PCK_MECHANISM_TYPE(PAnsiChar(FRawData)))^;
 end;
 
 function TPKCS11Attribute.GetValueAsHWFeatureType(): CK_HW_FEATURE_TYPE;
 begin
-  Result := (PCK_HW_FEATURE_TYPE(PChar(FRawData)))^;
+  Result := (PCK_HW_FEATURE_TYPE(PAnsiChar(FRawData)))^;
 end;
 
 
@@ -704,17 +704,17 @@ begin
   FRawData := CopyBinary(@tmpCK_BBOOL, sizeof(tmpCK_BBOOL))
 end;
 
-procedure TPKCS11Attribute.SetValueAsString(value: string);
+procedure TPKCS11Attribute.SetValueAsString(value: Ansistring);
 begin
   FRawData := value;
 end;
 
-procedure TPKCS11Attribute.SetValueAsBigInteger(value: string);
+procedure TPKCS11Attribute.SetValueAsBigInteger(value: Ansistring);
 begin
   FRawData := value;
 end;
 
-procedure TPKCS11Attribute.SetValueAsByteArray(value: string);
+procedure TPKCS11Attribute.SetValueAsByteArray(value: Ansistring);
 begin
   FRawData := value;
 end;

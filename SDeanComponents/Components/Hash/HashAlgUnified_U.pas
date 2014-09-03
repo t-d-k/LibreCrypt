@@ -60,7 +60,7 @@ type
     // Most users will only need to use the following methods:
 
     // Simple function to hash a string
-    function  HashString(const theString: string; digest: THashValue): boolean; override;
+    function  HashString(const theString: Ansistring; digest: THashValue): boolean; override;
 
     // Simple function to hash a file's contents
     function  HashFile(const filename: string; digest: THashValue): boolean; override;
@@ -94,7 +94,7 @@ type
     //   Call Update(...)
     //   Call Final(...)
     procedure Init(); override;
-    procedure Update(const input: string); override;
+    procedure Update(const input: Ansistring); override;
     procedure Update(const input: array of byte; const inputLen: cardinal); override;
     // Note: This will operate from the *current* *position* in the stream
     procedure Update(input: TStream; const inputLen: int64); override;
@@ -109,7 +109,7 @@ type
     //
     // The following methods are depreciated, and should not be used in new
     // developments.
-    function  HashString(theString: string): THashArray; overload; override; deprecated;
+    function  HashString(theString: Ansistring): THashArray; overload;  deprecated;
     function  HashFile(filename: string; var digest: THashArray): boolean; override; deprecated;
     function  HashToDisplay(theHash: THashArray): string; override; deprecated;
     function  HashToDataString(theHash: THashArray): string; override; deprecated;
@@ -224,7 +224,7 @@ end;
 
 // -- begin pass-throughs to hash object --
 
-function  THashAlgUnified.HashString(const theString: string; digest: THashValue): boolean;
+function  THashAlgUnified.HashString(const theString: Ansistring; digest: THashValue): boolean;
 begin
   Result := fHashObjs[ActiveHash].HashString(theString, digest);
 end;
@@ -249,7 +249,7 @@ begin
   fHashObjs[ActiveHash].Init();
 end;
 
-procedure THashAlgUnified.Update(const input: string);
+procedure THashAlgUnified.Update(const input: Ansistring);
 begin
   fHashObjs[ActiveHash].Update(input);
 end;
@@ -274,7 +274,7 @@ begin
   fHashObjs[ActiveHash].Final(digest);
 end;
 
-function  THashAlgUnified.HashString(theString: string): THashArray;
+function  THashAlgUnified.HashString(theString: Ansistring): THashArray;
 begin
   Result := fHashObjs[ActiveHash].HashString(theString);
 end;

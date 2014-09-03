@@ -496,7 +496,7 @@ begin
       end
     else
       begin
-      shredderCommandLine := format(FExtFileExe, [itemname]);
+      shredderCommandLine := format(FExtFileExe, [itemname]); { TODO 1 -otdk -cinvestigate : what happens if unicode filename? }
       WinExec(PAnsiChar(shredderCommandLine), SW_MINIMIZE);
       // Assume success
       retval := srSuccess;
@@ -1307,7 +1307,7 @@ begin
 
   if not(FFreeUseInt) then
     begin
-    shredderCommandLine := format(FExtFreeSpaceExe, [driveLetter]);
+    shredderCommandLine := format(FExtFreeSpaceExe, [driveLetter]);  // no data loss in converting to ansi - as driveLetter  is ansichar
     if (WinExec(PAnsiChar(shredderCommandLine), SW_RESTORE))<31 then
       begin
       failure := TRUE;
@@ -1332,7 +1332,7 @@ begin
           end;
 
         // Create a subdir
-        drive := uppercase(driveLetter);
+        drive := AnsiString(uppercase(driveLetter));
         driveLetter := drive[1];
         tempDriveDir := driveLetter + ':\'+OVERWRITE_FREESPACE_TMP_DIR+inttostr(random(10000))+'.tmp';
         diskNumber := ord(drive[1])-ord('A')+1;
@@ -1943,7 +1943,7 @@ begin
     // i.e. we using an external shredder which doesn't need all files to be
     // removed before it can be used
     dirname := SDUConvertLFNToSFN(dirname);
-    shredderCommandLine := format(FExtDirExe, [dirname]);
+    shredderCommandLine := format(FExtDirExe, [dirname]);{ TODO 1 -otdk -cinvestigate : what happens if unicode dirname? }
     winexec(PAnsiChar(shredderCommandLine), SW_MINIMIZE);
     end
   else
@@ -1999,7 +1999,7 @@ begin
             // i.e. we using an external shredder which doesn't need all files to be
             // removed before it can be used
             dirToDestroy := SDUConvertLFNToSFN(currDir);
-            shredderCommandLine := format(FExtDirExe, [dirToDestroy]);
+            shredderCommandLine := format(FExtDirExe, [dirToDestroy]);  { TODO 1 -otdk -cinvestigate : what happens if unicode filename? }
             WinExec(PAnsiChar(shredderCommandLine), SW_MINIMIZE);
             end
           else

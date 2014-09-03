@@ -54,8 +54,8 @@ type
 {$IFNDEF VER185}  // Delphi 2007 defined
 // If you have Delphi 2007, use the definition in Windows.pas (i.e. uses Windows)
   // Delphi 7 doesn't have ULONGLONG
-//  ULONGLONG = Uint64;
-  ULONGLONG = int64;  // Changed from Uint64 to prevent Delphi internal error
+  ULONGLONG = Uint64;//TDK CHANGE
+//  ULONGLONG = int64;  // Changed from Uint64 to prevent Delphi internal error
                       // c1118 in SDUFormatUnits with Uint64 under Delphi7
                       // (from feedback from OracleX <oraclex@mail.ru>)
                       // Note: Because it's using int64 here, overloaded
@@ -558,7 +558,7 @@ function SDUFormatAsBytesAndBytesUnits(
 function SDUParseUnits(
                        prettyValue: string;
                        denominations: array of string;
-                       out value: int64;
+                       out value: Uint64;
                        multiplier: integer = 1000
                      ): boolean; overload;
 {$IFDEF VER185}  // See comment on ULONGLONG definition
@@ -573,7 +573,7 @@ function SDUParseUnits(
 // As SDUParseUnits, but assume units are bytes, KB, MB, GB, etc
 function SDUParseUnitsAsBytesUnits(
                        prettyValue: string;
-                       out value: int64
+                       out value: Uint64
                      ): boolean; overload;
 {$IFDEF VER185}  // See comment on ULONGLONG definition
 function SDUParseUnitsAsBytesUnits(
@@ -932,7 +932,7 @@ function SDUSplitString(wholeString: string; var firstItem: string; var theRest:
 function SDUSplitWideString(wholeString: WideString; var firstItem: WideString; var theRest: WideString; splitOn: WideChar = ' '): boolean;
 // As TryStrToInt, but can handle 64 bit values
 function SDUTryStrToInt(const S: string; out Value: Integer): boolean; overload;
-function SDUTryStrToInt(const S: string; out Value: int64): boolean; overload;
+function SDUTryStrToInt(const S: string; out Value: Uint64): boolean; overload;
 {$IFDEF VER185}  // See comment on ULONGLONG definition
 function SDUTryStrToInt(const S: string; out Value: ULONGLONG): boolean; overload;
 {$ENDIF}
@@ -1297,7 +1297,7 @@ var
 begin
   // uses FileCtrl
   defaultFilename := trim(defaultFilename);
-  if not(directoryexists(defaultFilename)) then
+  if not(SysUtils.DirectoryExists(defaultFilename)) then
     begin
     filename := extractfilename(defaultFilename);
     initDir := extractfilepath(defaultFilename);
@@ -1357,7 +1357,7 @@ begin
 
   Result := '';
 
-  if not(FileExists(sfn)) and not(DirectoryExists(sfn)) then
+  if not(FileExists(sfn)) and not(SysUtils.DirectoryExists(sfn)) then
     begin
     // Result already set to '' so just exit.
     exit;
@@ -1401,7 +1401,7 @@ function SDUConvertLFNToSFN(lfn: string): string;
 var
   sfn: string;
 begin
-  if not(FileExists(lfn)) and not(DirectoryExists(lfn)) then
+  if not(FileExists(lfn)) and not(SysUtils.DirectoryExists(lfn)) then
     begin
     Result := '';
     exit;
@@ -1956,9 +1956,9 @@ begin
       delete(Result, pos(#0, Result), length(Result)-pos(#0, Result)+1);
       end;
     if DriveChar < 'a' then
-      Result := AnsiUpperCaseFileName(Result)
+      Result := AnsiUpperCase(Result)
     else
-      Result := AnsiLowerCaseFileName(Result);
+      Result := AnsiLowerCase(Result);
   end
   else
     Result := SDUVolumeID(DriveChar);
@@ -2567,7 +2567,7 @@ begin
     drivesList.Sort();
     for i:=0 to (drivesList.count - 1) do
       begin
-      retval := retval + drivesList[i];
+      retval := retval + drivesList[i]; //no data loss here - just that stringlist uses widestrings
       end;
   finally
     drivesList.Free();
@@ -3915,7 +3915,7 @@ begin
           ((digitCnt mod 3) = 0)
          ) then
         begin
-        retval :=  ThousandSeparator + retval;
+        retval := FormatSettings.ThousandSeparator + retval;
         end;
 
       retval := inttostr(tmp64Mod) + retval;
@@ -4094,7 +4094,7 @@ end;
 function SDUParseUnits(
                        prettyValue: string;
                        denominations: array of string;
-                       out value: int64;
+                       out value: Uint64;
                        multiplier: integer = 1000
                      ): boolean;
 var
@@ -4257,7 +4257,7 @@ end;
 // ----------------------------------------------------------------------------
 function SDUParseUnitsAsBytesUnits(
                        prettyValue: string;
-                       out value: int64
+                       out value: Uint64
                      ): boolean;
 begin
   Result := SDUParseUnits(
@@ -5968,7 +5968,7 @@ begin
        ) then
       begin
       // ThousandSeparator from SysUtils
-      retval := ThousandSeparator + retval;
+      retval := FormatSettings.ThousandSeparator + retval;
       end;
 
     retval := sVal[i] + retval;
@@ -6266,7 +6266,7 @@ begin
   Result := TryStrToInt(S, Value);
 end;
 
-function SDUTryStrToInt(const S: string; out Value: int64): boolean;
+function SDUTryStrToInt(const S: string; out Value: Uint64): boolean;
 var
   E: Integer;
 begin

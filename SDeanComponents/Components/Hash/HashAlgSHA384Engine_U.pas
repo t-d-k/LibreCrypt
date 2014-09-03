@@ -35,18 +35,18 @@ uses
 type
   // SHA384 context.
   SHA384_CTX = packed record
-    state: array [0..7] of ULONGLONG;  // state (ABCD)
-    count: array [0..1] of ULONGLONG;  // number of bits, modulo 2^64 (lsb first)
+    state: array [0..7] of Uint64;//ULONGLONG;  // state (ABCD)
+    count: array [0..1] of Uint64;//ULONGLONG;  // number of bits, modulo 2^64 (lsb first)
     buffer: array [0..127] of byte;  // input buffer
   end;
 
 type
   THashAlgSHA384Engine = class(THashAlgEngine)
   private
-    procedure SHA384Transform(var state: array of ULONGLONG; block: array of byte; startOffsetInBlock: cardinal);
+    procedure SHA384Transform(var state: array of Uint64{ULONGLONG}; block: array of byte; startOffsetInBlock: cardinal);
 
     procedure Encode(var output: array of byte; var input: array of ULONGLONG; len: cardinal);
-    procedure Decode(var output: array of ULONGLONG; var input: array of byte; len: cardinal);
+    procedure Decode(var output: array of UInt64; var input: array of byte; len: cardinal);
 
     // These are the six SHA functions
     function  Ch(x, y, z: ULONGLONG): ULONGLONG;
@@ -76,7 +76,7 @@ const PADDING384512: array [0..127] of byte = (
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 );
 
-const SHA384512_K: array [0..79] of ULONGLONG = (
+const SHA384512_K: array [0..79] of Uint64 = (// ULONGLONG
   $428a2f98d728ae22, $7137449123ef65cd, $b5c0fbcfec4d3b2f, $e9b5dba58189dbbc,
   $3956c25bf348b538, $59f111f1b605d019, $923f82a4af194f9b, $ab1c5ed5da6d8118,
   $d807aa98a3030242, $12835b0145706fbe, $243185be4ee4b28c, $550c7dc3d5ffb4e2,
@@ -220,7 +220,7 @@ end;
 
 
 // SHA384 basic transformation. Transforms state based on block.
-procedure THashAlgSHA384Engine.SHA384Transform(var state: array of ULONGLONG; block: array of byte; startOffsetInBlock: cardinal);
+procedure THashAlgSHA384Engine.SHA384Transform(var state: array of Uint64{ULONGLONG}; block: array of byte; startOffsetInBlock: cardinal);
 var
   A, B, C, D, E, F, G, H: ULONGLONG;
   W: array [0..79] of ULONGLONG;
@@ -281,7 +281,7 @@ end;
 
 // Encodes input (UINT4) into output (unsigned char). Assumes len is
 // a multiple of 8.
-procedure THashAlgSHA384Engine.Encode(var output: array of byte; var input: array of ULONGLONG; len: cardinal);
+procedure THashAlgSHA384Engine.Encode(var output: array of byte; var input: array of UInt64{ULONGLONG}; len: cardinal);
 var
   i, j: cardinal;
 begin

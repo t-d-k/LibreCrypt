@@ -60,7 +60,7 @@ type
     function  GetIsVolumeLabel(): boolean;
     procedure SetIsVolumeLabel(value: boolean);
   public
-    FilenameDOS: string;
+    FilenameDOS: Ansistring;
 
     TimestampCreation: TTimeStamp;
     DatestampLastAccess: TDate;
@@ -93,7 +93,7 @@ type
     FATType: TFATType;
 
     JMP: array [1..3] of byte;
-    OEMName: string;
+    OEMName: Ansistring;
     BytesPerSector: WORD;
     SectorsPerCluster: byte;
     ReservedSectorCount: WORD;
@@ -108,9 +108,9 @@ type
 
     PhysicalDriveNo: byte;
     ExtendedBootSig: byte;
-    FATFilesystemType: string;
+    FATFilesystemType: Ansistring;
     SerialNumber: DWORD;
-    VolumeLabel: string;
+    VolumeLabel: Ansistring;
     BootSectorSig: WORD;
 
     // FAT32 only
@@ -208,7 +208,7 @@ type
     function  WriteDirEntry(item: TSDDirItem_FAT; stream: TSDUMemoryStream): integer;
     procedure WriteDirEntry_83(item: TSDDirItem_FAT; stream: TSDUMemoryStream);
     function  SeekBlockUnusedDirEntries(cntNeeded: integer; dirData: TSDUMemoryStream): boolean;
-    function  Seek83FileDirNameInDirData(filename: string; dirData: TSDUMemoryStream): boolean;
+    function  Seek83FileDirNameInDirData(filename: Ansistring; dirData: TSDUMemoryStream): boolean;
 
     // Returns TRUE/FALSE, depending on whether clusterID appers in chain or not
     function  IsClusterInChain(clusterID: DWORD; chain: TSDFATClusterChain): boolean;
@@ -226,8 +226,8 @@ type
     procedure TTimeStampToWORD(timeStamp: TTimeStamp; var dateBitmask: WORD; var timeBitmask: WORD; var msec: byte);
     function  TDateToWORD(date: TDate): WORD;
 
-    function  DOSFilenameTo11Chars(DOSFilename: string): string;
-    function  DOSFilenameCheckSum(DOSFilename: string): byte;
+    function  DOSFilenameTo11Chars(DOSFilename: Ansistring): Ansistring;
+    function  DOSFilenameCheckSum(DOSFilename: Ansistring): byte;
 
     function _LoadContentsFromDisk(dirStartCluster: DWORD; items: TSDDirItemList): boolean;
 
@@ -338,7 +338,7 @@ type
     property PreserveTimeDateStamps: boolean read FPreserveTimeDateStamps write FPreserveTimeDateStamps;
 
     // Boot sector information
-    property OEMName: string            read FBootSectorSummary.OEMName;
+    property OEMName: Ansistring            read FBootSectorSummary.OEMName;
     property BytesPerSector: WORD       read FBootSectorSummary.BytesPerSector;
     property SectorsPerCluster: byte    read FBootSectorSummary.SectorsPerCluster;
     property ReservedSectorCount: WORD  read FBootSectorSummary.ReservedSectorCount;
@@ -3041,11 +3041,11 @@ end;
 
 
 // Convert filename from 8.3 format to "NNNNNNNNEEE" format
-function TSDFilesystem_FAT.DOSFilenameTo11Chars(DOSFilename: string): string;
+function TSDFilesystem_FAT.DOSFilenameTo11Chars(DOSFilename: Ansistring): Ansistring;
 var
   i: integer;
   j: integer;
-  retval: string;
+  retval: Ansistring;
 begin
   // Special handling for "." and ".." so the other half of this process
   // doens't get confused by the "." and return a string containing just
@@ -3077,17 +3077,17 @@ begin
       end;
     end;
 
-  retval := retval + StringOfChar(' ', (11 - length(retval)));
+  retval := retval + StringOfChar(AnsiChar(' '), (11 - length(retval)));
 
   Result := retval;
 end;
 
 // This takes a notmal 8.3 filename (e.g. fred.txt)
-function TSDFilesystem_FAT.DOSFilenameCheckSum(DOSFilename: string): byte;
+function TSDFilesystem_FAT.DOSFilenameCheckSum(DOSFilename: Ansistring): byte;
 var
   i: integer;
   retval: byte;
-  useFilename: string;
+  useFilename: Ansistring;
 begin
   useFilename := DOSFilenameTo11Chars(DOSFilename);
   
@@ -3278,7 +3278,7 @@ end;
 // Seek an 8.3 DOS filename in raw directory data, setting dirData.Position to
 // the start of the dir entry
 // Note: This starts searching from the start
-function TSDFilesystem_FAT.Seek83FileDirNameInDirData(filename: string; dirData: TSDUMemoryStream): boolean;
+function TSDFilesystem_FAT.Seek83FileDirNameInDirData(filename: Ansistring; dirData: TSDUMemoryStream): boolean;
 var
   filename11Char: string;
   currFilename: string;
@@ -4610,7 +4610,7 @@ function TSDFilesystem_FAT._Format(fmtType: TFATType): boolean;
 const
   // We use "MSWIN4.1" as this is supposed to be the most common. *Some*
   // systems may check for this, even though they shouldn't
-  DEFAULT_OEMNAME: string = 'MSWIN4.1';
+  DEFAULT_OEMNAME: Ansistring = 'MSWIN4.1';
   //DEFAULT_OEMNAME: string = 'MSDOS5.0';
   // Various sensible defaults
   DEFAULT_FAT_COPIES                  = 2;
@@ -4652,7 +4652,7 @@ var
   allOK: boolean;
   newBootSector: TSDBootSector_FAT;
   i: DWORD;
-  j: DWORD;
+//  j: DWORD;
   useClusterSize: DWORD;
   FATStartSectorID: DWORD;
   stmFAT: TSDUMemoryStream;

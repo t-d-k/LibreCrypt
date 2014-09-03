@@ -558,7 +558,7 @@ begin
                 if WinHttpQueryDataAvailable(hRequest, @byteReceived) then
                   begin
                   // Call StringOfChar(...) to allocate buffer to be used
-                  page := StringOfChar('X', byteReceived);
+                  page := StringOfChar(AnsiChar('X'), byteReceived);
                   if WinHttpReadData(
                                      hRequest,
                                      PAnsiChar(page),

@@ -33,7 +33,7 @@ type
     // Most users will only need to use the following methods:
 
     // Simple function to hash a string
-    function  HashString(const theString: string; digest: THashValue): boolean; overload; virtual;
+    function  HashString(const theString: Ansistring; digest: THashValue): boolean; overload; virtual;
 
     // Simple function to hash a file's contents
     function  HashFile(const filename: string; digest: THashValue): boolean; overload; virtual;
@@ -70,7 +70,7 @@ type
     //   Call Update(...)
     //   Call Final(...)
     procedure Init(); virtual; abstract;
-    procedure Update(const input: string); overload; virtual;
+    procedure Update(const input: Ansistring); overload; virtual;
     procedure Update(const input: array of byte; const inputLen: cardinal); overload; virtual; abstract;
     // Note: This will operate from the *current* *position* in the stream
     procedure Update(input: TStream; const inputLen: int64); overload; virtual;
@@ -153,7 +153,7 @@ begin
 end;
 
 
-function THashAlg.HashString(const theString: string; digest: THashValue): boolean;
+function THashAlg.HashString(const theString: Ansistring; digest: THashValue): boolean;
 var
   stream: TStringStream;
 begin
@@ -225,7 +225,7 @@ begin
 end;
 
 
-procedure THashAlg.Update(const input: string);
+procedure THashAlg.Update(const input: Ansistring);
 var
   buffer: array of byte;
   i: integer;
