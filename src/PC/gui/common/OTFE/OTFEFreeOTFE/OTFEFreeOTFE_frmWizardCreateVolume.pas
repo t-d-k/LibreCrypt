@@ -2481,7 +2481,8 @@ begin
     exit;
     end;
 
-  // Short-circuit - padding currently only supported for file based volumes 
+  // Short-circuit - padding currently only supported for file based volumes
+  { TODO 1 -otdk -csecurity : is this documented? }
   if IsPartition then
     begin
     Result := TRUE;
@@ -2590,7 +2591,7 @@ begin
   for i:=1 to tempArraySize do
     begin
     plaintext := plaintext + Ansichar(random(256));
-    { TODO 2 -otdk -csecurity : This is not secure PRNG - check }
+    { DONE 2 -otdk -csecurity : This is not secure PRNG - but the key is random, so the result is secure }
     end;
 
 

@@ -72,7 +72,7 @@ function GenerateRNGDataMSCryptoAPI(
   var randomData: ansistring
 ): boolean; overload;
 
-// Load cryptlib, if possiblem, and initialise
+// Load cryptlib, if possible, and initialise
 function cryptlibLoad(): boolean;
 // Generate RNG data using cryptlib
 function GenerateRNGDataCryptlib(bytesRequired: integer; var randomData: ansistring): boolean;

@@ -87,7 +87,6 @@ contains
   OTFEFreeOTFE_fmePKCS11_MgrBase in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrBase.pas' {fmePKCS11_MgrBase: TFrame},
   OTFEFreeOTFE_fmePKCS11_MgrKeyfile in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas' {fmePKCS11_MgrKeyfile: TFrame},
   OTFEFreeOTFE_fmePKCS11_MgrSecretKey in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas' {fmePKCS11_MgrSecretKey: TFrame},
-  OTFEFreeOTFE_fmeSelectPartition in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas' {fmeSelectPartition: TFrame},
   OTFEFreeOTFE_frmCypherInfo in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmCypherInfo.pas' {frmCypherInfo},
   OTFEFreeOTFE_frmDriverControl in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmDriverControl.pas' {frmDriverControl},
   OTFEFreeOTFE_frmHashInfo in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmHashInfo.pas' {frmHashInfo},
@@ -103,10 +102,6 @@ contains
   OTFEFreeOTFE_frmSelectPartition_Simple in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectPartition_Simple.pas' {frmSelectPartition_Simple},
   OTFEFreeOTFE_frmSelectVolumeAndOffset in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectVolumeAndOffset.pas' {frmSelectVolumeFileAndOffset},
   OTFEFreeOTFE_frmVolumeType in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmVolumeType.pas' {frmSelectVolumeType},
-  OTFEFreeOTFE_frmWizard in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizard.pas' {frmWizard},
-  OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas' {frmWizardChangePasswordCreateKeyfile},
-  OTFEFreeOTFE_frmWizardCreateVolume in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas' {frmWizardCreateVolume},
-  OTFEFreeOTFE_frmWizardCreateVolumeAdvanced in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas' {frmWizardCreateVolumeAdvanced},
   OTFEFreeOTFE_InstructionRichEdit in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_InstructionRichEdit.pas',
   OTFEFreeOTFE_LUKSAPI in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSAPI.pas',
   OTFEFreeOTFE_LUKSKeyOrKeyfileEntry in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSKeyOrKeyfileEntry.pas' {OTFEFreeOTFELUKSKeyOrKeyfileEntry: TFrame},
@@ -115,7 +110,6 @@ contains
   OTFEFreeOTFE_U in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_U.pas',
   OTFEFreeOTFE_VolumeFileAPI in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas',
   OTFEFreeOTFE_VolumeSelect in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeSelect.pas' {OTFEFreeOTFEVolumeSelect},
-  OTFEFreeOTFE_WizardCommon in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_WizardCommon.pas',
   OTFEFreeOTFEBase_U in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFEBase_U.pas',
   OTFEFreeOTFEDLL_PartitionImage in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_PartitionImage.pas',
   OTFEFreeOTFEDLL_U in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_U.pas',
@@ -212,7 +206,14 @@ contains
   OTFECrossCrypt_U in 'OTFE\OTFECrossCrypt\OTFECrossCrypt_U.pas',
   OTFEUnified_frmSelectOTFESystem in 'OTFE\OTFEUnified\OTFEUnified_frmSelectOTFESystem.pas' {frmSelectOTFESystem},
   SDUForms in '..\..\src\PC\gui\common\SDUForms.pas' {SDUForm},
-  SDUFrames in '..\..\src\PC\gui\common\SDUFrames.pas' {SDUFrame: TFrame};
+  SDUFrames in '..\..\src\PC\gui\common\SDUFrames.pas' {SDUFrame: TFrame},
+  OTFEFreeOTFE_frmWizard in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizard.pas' {frmWizard},
+  OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas' {frmWizardChangePasswordCreateKeyfile},
+  OTFEFreeOTFE_frmWizardCreateVolume in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas' {frmWizardCreateVolume},
+  OTFEFreeOTFE_frmWizardCreateVolumeAdvanced in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas' {frmWizardCreateVolumeAdvanced},
+  OTFEFreeOTFE_WizardCommon in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_WizardCommon.pas',
+  OTFEFreeOTFE_fmeSelectPartition in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas' {fmeSelectPartition: TFrame};
 
 end.
+
 

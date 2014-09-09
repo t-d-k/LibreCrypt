@@ -170,10 +170,6 @@
 				<Form>fmePKCS11_MgrSecretKey</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas">
-				<Form>fmeSelectPartition</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmCypherInfo.pas">
 				<Form>frmCypherInfo</Form>
 			</DCCReference>
@@ -219,18 +215,6 @@
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmVolumeType.pas">
 				<Form>frmSelectVolumeType</Form>
 			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizard.pas">
-				<Form>frmWizard</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas">
-				<Form>frmWizardChangePasswordCreateKeyfile</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas">
-				<Form>frmWizardCreateVolume</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas">
-				<Form>frmWizardCreateVolumeAdvanced</Form>
-			</DCCReference>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_InstructionRichEdit.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSAPI.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSKeyOrKeyfileEntry.pas">
@@ -244,7 +228,6 @@
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeSelect.pas">
 				<Form>OTFEFreeOTFEVolumeSelect</Form>
 			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_WizardCommon.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFEBase_U.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_PartitionImage.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_U.pas"/>
@@ -387,6 +370,23 @@
 			</DCCReference>
 			<DCCReference Include="..\..\src\PC\gui\common\SDUFrames.pas">
 				<Form>SDUFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizard.pas">
+				<Form>frmWizard</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas">
+				<Form>frmWizardChangePasswordCreateKeyfile</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas">
+				<Form>frmWizardCreateVolume</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas">
+				<Form>frmWizardCreateVolumeAdvanced</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_WizardCommon.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas">
+				<Form>fmeSelectPartition</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<BuildConfiguration Include="Release">
