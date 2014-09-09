@@ -128,7 +128,7 @@ type
 
 
   PROTECTED
-    TempCypherDriver:     String;
+    TempCypherDriver:     AnsiString;
     TempCypherGUID:       TGUID;
     TempCypherDetails:    TFreeOTFECypher_v3;
     TempCypherKey:        Ansistring;
@@ -716,7 +716,7 @@ begin
   lvDrives.ViewStyle               := vsReport;
   //    lvDrives.ViewStyle := vsIcon;
   //    lvDrives.ViewStyle := vsList;
-  lvDrives.IconOptions.Arrangement := iaTop;
+  lvDrives.IconOptions.Arrangement := TIconArrangement.iaTop;
 
 
   // Listview columns...
@@ -2026,7 +2026,8 @@ begin
         stopOK := (SDUMessageDlg(_(
           'You have one or more volumes mounted.') + SDUCRLF + SDUCRLF +
           _(
-          'If any of the currently mounted volumes makes use of any of the DoxBox drivers which are currently in portable mode, stopping portable mode is not advisable.') + SDUCRLF + SDUCRLF + _('It is recommended that you dismount all volumes before stopping portable mode.') + SDUCRLF + SDUCRLF + _('Do you wish to continue stopping portable mode?'), mtWarning, [mbYes, mbNo], 0) = mrYes);
+          'If any of the currently mounted volumes makes use of any of the DoxBox drivers which are currently in portable mode, stopping portable mode is not advisable.') + SDUCRLF +
+          SDUCRLF + _('It is recommended that you dismount all volumes before stopping portable mode.') + SDUCRLF + SDUCRLF + _('Do you wish to continue stopping portable mode?'), mtWarning, [mbYes, mbNo], 0) = mrYes);
       end;
     end;
   end;
@@ -2509,16 +2510,8 @@ end;
 
 
 function TfrmFreeOTFEMain.SetTestMode(silent, setOn: Boolean): Boolean;
-var
-  Error: Cardinal;
 begin
   inherited;
-    {   Error :=  WinExec(PAnsiChar('C:\Windows\System32\bcdedit.exe /set TESTSIGNING ON'), SW_SHOWNORMAL);
-      if Error<31 then
-      begin
-      SDUMessageDlg(_('Set Test Mode failed:')+Inttostr(Error), mtError, [mbOK], 0);
-      end;  }
-
 {
   run bcdedit.exe /set TESTSIGNING ON
 
@@ -2545,12 +2538,10 @@ function TfrmFreeOTFEMain.SetInstalled(): Boolean;
 begin
   inherited;
   //needs to be place to save to
-  if Settings.OptSaveSettings = slNone then
-    Settings.OptSaveSettings := slProfile;//exe not supported in win >NT
-  if Result then begin
-    Settings.OptInstalled := True;
-    Result                := Settings.Save();//todo:needed?
-  end;
+  if Settings.OptSaveSettings = slNone then Settings.OptSaveSettings := slProfile;//exe not supported in win >NT
+
+  Settings.OptInstalled := True;
+  Result                := Settings.Save();//todo:needed?
 end;
 
 procedure TfrmFreeOTFEMain.actTestModeOffExecute(Sender: TObject);
@@ -2607,9 +2598,9 @@ resourcestring
   FORMAT_CAPTION = 'Format';
 var
   i:         Integer;
-  currDrive: Char;
+  currDrive: AnsiChar;
   driveNum:  Word;
-  selDrives: String;
+  selDrives: AnsiString;
 begin
   selDrives := GetSelectedDrives();
   for i := 1 to length(selDrives) do begin
@@ -2746,7 +2737,7 @@ begin
           // +ve keysize = specific keysize - get sufficient bits
           getRandomBits := TempCypherDetails.KeySizeRequired;
         end;
-
+               { TODO 1 -otdk -cenhance : use cryptoapi etc if avail }
         if (getRandomBits > 0) then begin
           MouseRNGDialog1.RequiredBits := getRandomBits;
           allOK                        := MouseRNGDialog1.Execute();
@@ -2905,10 +2896,7 @@ end;
 function TfrmFreeOTFEMain.InstallAllDrivers(driverControlObj: TOTFEFreeOTFEDriverControl;
   silent: Boolean): Integer;
 var
-
-  paramValue:            String;
-  driverPathAndFilename: String;
-  driverFilenames:       TStringList;
+  driverFilenames:TStringList;
   //  vista64Bit: boolean;
 begin
 
@@ -2922,28 +2910,26 @@ begin
       Result := CMDLINE_EXIT_FILE_NOT_FOUND;
     end else begin
       Result := CMDLINE_SUCCESS;
+       {
+          from delphi 7 project:"If under Vista x64, don't autostart the drivers after
+          installing - this could cause a bunch of *bloody* *stupid*
+          warning messages about "unsigned drivers" to be displayed by
+          the OS"
 
-      // If under Vista x64, don't autostart the drivers after
-      // installing - this could cause a bunch of *bloody* *stupid*
-      // warning messages about "unsigned drivers" to be displayed by
-      // the OS
+          apparently on vista is not necesary to set test mode - but need to start drivers on os start.
+          test mode is set anyway for all OS's so start drivers now whatever
+
       //          vista64Bit := (SDUOSVistaOrLater() and SDUOS64bit());
-      // set test mode
-      // if vista64Bit then
-      //  if not SetTestMode(true,true) then cmdExitCode := CMDLINE_EXIT_UNKNOWN_ERROR;
-
+       }
       if driverControlObj.InstallMultipleDrivers(
         driverFilenames,
         False,
         not (silent),
         True// not(vista64Bit)
         ) then begin
-
-            { If Vista x64, we tell the user to reboot. That way, the drivers
-            // will be started up on boot - and the user won't actually see
-            // any stupid warning messages about "unsigned drivers"
-            apparently on vista is not necesary to set test mode - but need to start drivers on os start
-            test mode is set anyway for all OS's so start drivers now whatever
+            { from delphi 7 project:"If Vista x64, we tell the user to reboot. That way, the drivers
+             will be started up on boot - and the user won't actually see
+             any stupid warning messages about "unsigned drivers" "
             }
         if (
           // vista64Bit and
@@ -3196,9 +3182,6 @@ end;
  // Handle "/SetInstalled" command 
  // Returns: Exit code
 function TfrmFreeOTFEMain.HandleCommandLineOpts_SetInstalled(): Integer;
-var
-  paramValue: String;
-  setOn:      Boolean;
 begin
   Result := CMDLINE_EXIT_INVALID_CMDLINE;
 
@@ -3505,9 +3488,9 @@ end;
 
 procedure TfrmFreeOTFEMain.actFreeOTFENewExecute(Sender: TObject);
 var
-  prevMounted:      String;
-  newMounted:       String;
-  createdMountedAs: String;
+  prevMounted:      AnsiString;
+  newMounted:       AnsiString;
+  createdMountedAs: AnsiString;
   msg:              WideString;
   i:                Integer;
 begin
