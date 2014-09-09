@@ -3262,7 +3262,7 @@ begin
 
   AllowUACEsclation := not (SDUCommandLineSwitch(CMDLINE_NOUACESCALATE));
   // todo: a lot of repirition here bc HandleCommandLineOpts_ fns also call  SDUCommandLineParameter
-  //todo: 'else' statements mean one cmd per call - allow compatible ones at same time
+  //todo -otdk: 'else' statements mean one cmd per call - allow compatible ones at same time
 
   //these cmds at least  are independent of others
   if SDUCommandLineParameter(CMDLINE_SET_TESTMODE, paramValue) then begin

@@ -303,7 +303,7 @@ var
   useDefaultDriveLetter: string;
 begin
   inherited _Load(iniFile);
-// todo: combine load and save, and/or use rtti
+// todo -otdk : combine load and save, and/or use rtti
   OptDisplayToolbar          := iniFile.ReadBool(SECTION_GENERAL,   OPT_DISPLAYTOOLBAR,         DFLT_OPT_DISPLAYTOOLBAR);
   OptDisplayToolbarLarge     := iniFile.ReadBool(SECTION_GENERAL,   OPT_DISPLAYTOOLBARLARGE,    DFLT_OPT_DISPLAYTOOLBARLARGE);
   OptDisplayToolbarCaptions  := iniFile.ReadBool(SECTION_GENERAL,   OPT_DISPLAYTOOLBARCAPTIONS, DFLT_OPT_DISPLAYTOOLBARCAPTIONS);

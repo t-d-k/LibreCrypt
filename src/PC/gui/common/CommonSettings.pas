@@ -202,7 +202,7 @@ const
       DFLT_OPT_CHKUPDATE_FREQ                       = ufMonthly;
     OPT_CHKUPDATE_LASTCHECKED                    = 'LastChecked';
     //this should be release date and updated with each release
-      DFLT_OPT_CHKUPDATE_LASTCHECKED                = '20140820';   { TODO 1 -otdk -ctest : auto update not tested }
+      DFLT_OPT_CHKUPDATE_LASTCHECKED                = '20140820';   { DONE 1 -otdk -ctest : auto update not tested }
     OPT_CHKUPDATE_SUPPRESSNOTIFYVERMAJOR         = 'SuppressNotifyVerMajor';
       DFLT_OPT_CHKUPDATE_SUPPRESSNOTIFYVERMAJOR     = 0;
     OPT_CHKUPDATE_SUPPRESSNOTIFYVERMINOR         = 'SuppressNotifyVerMinor';
