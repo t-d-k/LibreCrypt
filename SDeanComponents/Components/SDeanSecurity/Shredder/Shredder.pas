@@ -144,7 +144,7 @@ type
     function  OverwriteFileSlack(filename: string): boolean;
 
     // Call this to wipe all file slack on the specified drive
-    function  OverwriteAllFileSlacks(driveLetter: char; silent: boolean = FALSE): TShredResult;
+    function  OverwriteAllFileSlacks(driveLetter: Ansichar; silent: boolean = FALSE): TShredResult;
 
     // You probably don't want to call this one - call
     // OverwriteDriveFreeSpace(...) instead
@@ -1661,13 +1661,13 @@ begin
 end;
 
 
-function TShredder.OverwriteAllFileSlacks(driveLetter: char; silent: boolean): TShredResult;
+function TShredder.OverwriteAllFileSlacks(driveLetter: Ansichar; silent: boolean): TShredResult;
 var
   progressDlg: TSDUProgressDialog;
   rootDir: string;
   problemFiles: TStringList;
   reportDlg: TFileList_F;
-  drive: string;
+  drive: Ansistring;
 begin
   drive := uppercase(driveLetter);
   driveLetter := drive[1];
