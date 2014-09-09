@@ -4373,7 +4373,7 @@ begin
       begin
       retval := SDUGetFileSize(item);
       end
-    else if DirectoryExists(item) then
+    else if sysutils.DirectoryExists(item) then
       begin
       retval := _DetermineTotalSize_MountedDir(isMountedFSNotLocalFS, item);
       end;
@@ -5370,7 +5370,7 @@ begin
       begin
       retval := DeleteFile(item);
       end
-    else if DirectoryExists(item) then
+    else if sysutils.DirectoryExists(item) then
       begin
       try
         RmDir(item);

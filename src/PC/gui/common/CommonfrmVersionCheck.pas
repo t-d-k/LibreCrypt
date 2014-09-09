@@ -182,7 +182,16 @@ begin
     exit;
     end;
 
-  wwwResult := SDUGetPADFileVersionInfo(
+    //prompt to connect to net
+    { TODO 1 -otdk -cenhance : remember result }
+  if not(SDUConfirmYN(
+                         _('A check for an update is due, which requires a connection to the internet. Continue?')
+                        )) then
+                       wwwResult := tgCancel
+
+  else
+
+    wwwResult := SDUGetPADFileVersionInfo(
                                     PADURL,
                                     latestMajorVersion,
                                     latestMinorVersion,

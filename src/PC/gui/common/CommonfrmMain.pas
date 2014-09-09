@@ -955,8 +955,8 @@ begin
     if OpenDialog.Execute() then begin
       MountFilesDetectLUKS(
         TStringList(OpenDialog.Files),
-        ((ofReadOnly in OpenDialog.Options) or FileIsReadOnly(
-        (TStringList(OpenDialog.Files))  [0])  // Only bother checking the first files
+        ((ofReadOnly in OpenDialog.Options) or
+          FileIsReadOnly((TStringList(OpenDialog.Files))  [0])  // Only bother checking the first files
         ),
         ftFreeOTFE
         );
@@ -1071,6 +1071,12 @@ begin
   // If local userguide doens't exist, fallback to online version...
   if not (FileExists(userGuide)) then begin
     userGuide := URL_USERGUIDE;
+
+    if not(SDUConfirmYN(
+                         _('This requires a connection to the internet. Continue?')
+                        )) then exit;
+
+
   end;
 
   // Open HTML userguide
@@ -1361,7 +1367,7 @@ begin
 
     SetupOTFEComponent();
 
-    ReadOnly := SDUCommandLineSwitch(CMDLINE_READONLY);
+    ReadOnly := SDUCommandLineSwitch(CMDLINE_READONLY);   { TODO 1 -otdk -cbug : warn user if not ansi password }
     if not (SDUCommandLineParameter(CMDLINE_PASSWORD, usePassword)) then begin
       usePassword := '';
     end;
