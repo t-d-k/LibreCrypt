@@ -249,6 +249,13 @@
 				<Form>frmCDBDump_FreeOTFE</Form>
 			</DCCReference>
 			<DCCReference Include="FreeOTFEExplorerCheckFilesystem.pas"/>
+			<DCCReference Include="..\common\SDUForms.pas">
+				<Form>SDUForm</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\SDUFrames.pas">
+				<Form>SDUFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

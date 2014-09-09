@@ -118,13 +118,6 @@
 				<Form>SDUFilenameEdit</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="SDeanUtils\SDUForms.pas">
-				<Form>SDUForm</Form>
-			</DCCReference>
-			<DCCReference Include="SDeanUtils\SDUFrames.pas">
-				<Form>SDUFrame</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="SDeanUtils\SDUGeneral.pas"/>
 			<DCCReference Include="SDeanUtils\SDUGraphics.pas"/>
 			<DCCReference Include="SDeanUtils\SDUi18n.pas"/>
@@ -388,6 +381,13 @@
 			<DCCReference Include="OTFE\OTFECrossCrypt\OTFECrossCrypt_U.pas"/>
 			<DCCReference Include="OTFE\OTFEUnified\OTFEUnified_frmSelectOTFESystem.pas">
 				<Form>frmSelectOTFESystem</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\src\PC\gui\common\SDUForms.pas">
+				<Form>SDUForm</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\src\PC\gui\common\SDUFrames.pas">
+				<Form>SDUFrame</Form>
+				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>

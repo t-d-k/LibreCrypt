@@ -51,8 +51,6 @@ contains
   SDUExtCtrls in 'SDeanUtils\SDUExtCtrls.pas',
   SDUFileIterator_U in 'SDeanUtils\SDUFileIterator_U.pas',
   SDUFilenameEdit_U in 'SDeanUtils\SDUFilenameEdit_U.pas' {SDUFilenameEdit: TFrame},
-  SDUForms in 'SDeanUtils\SDUForms.pas' {SDUForm},
-  SDUFrames in 'SDeanUtils\SDUFrames.pas' {SDUFrame: TFrame},
   SDUGeneral in 'SDeanUtils\SDUGeneral.pas',
   SDUGraphics in 'SDeanUtils\SDUGraphics.pas',
   SDUi18n in 'SDeanUtils\SDUi18n.pas',
@@ -212,6 +210,9 @@ contains
   OTFECrossCrypt_PasswordConfirm in 'OTFE\OTFECrossCrypt\OTFECrossCrypt_PasswordConfirm.pas' {OTFECrossCrypt_PasswordConfirm_F},
   OTFECrossCrypt_PasswordEntry in 'OTFE\OTFECrossCrypt\OTFECrossCrypt_PasswordEntry.pas' {OTFECrossCrypt_PasswordEntry_F},
   OTFECrossCrypt_U in 'OTFE\OTFECrossCrypt\OTFECrossCrypt_U.pas',
-  OTFEUnified_frmSelectOTFESystem in 'OTFE\OTFEUnified\OTFEUnified_frmSelectOTFESystem.pas' {frmSelectOTFESystem};
+  OTFEUnified_frmSelectOTFESystem in 'OTFE\OTFEUnified\OTFEUnified_frmSelectOTFESystem.pas' {frmSelectOTFESystem},
+  SDUForms in '..\..\src\PC\gui\common\SDUForms.pas' {SDUForm},
+  SDUFrames in '..\..\src\PC\gui\common\SDUFrames.pas' {SDUFrame: TFrame};
 
 end.
+
