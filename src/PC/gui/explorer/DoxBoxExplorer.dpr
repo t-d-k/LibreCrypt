@@ -34,7 +34,9 @@ uses
   CommonfrmCDBDump_LUKS in '..\common\CommonfrmCDBDump_LUKS.pas' {frmCDBDump_LUKS},
   CommonfrmCDBDump_Base in '..\common\CommonfrmCDBDump_Base.pas' {frmCDBDump_Base},
   CommonfrmCDBDump_FreeOTFE in '..\common\CommonfrmCDBDump_FreeOTFE.pas' {frmCDBDump_FreeOTFE},
-  FreeOTFEExplorerCheckFilesystem in 'FreeOTFEExplorerCheckFilesystem.pas';
+  FreeOTFEExplorerCheckFilesystem in 'FreeOTFEExplorerCheckFilesystem.pas',
+  SDUForms in '..\common\SDUForms.pas' {SDUForm},
+  SDUFrames in '..\common\SDUFrames.pas' {SDUFrame: TFrame};
 
 {$R *.res}
 {$R FreeOTFEExplorerCursors.res}
