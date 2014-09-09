@@ -589,7 +589,7 @@ begin
     // Yeah, I know - this isn't too nice. There's always going to be an extra
     // space at the end of the line. Don't blame me, this is how
     // cryptosetup-luks does things - I'm just replicating it here so that the
-    // output ban be diffed easily
+    // output can be diffed easily
     retVal := retVal + inttohex(ord(x), 2) + ' ';
     end;
 

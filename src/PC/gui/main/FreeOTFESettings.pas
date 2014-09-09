@@ -90,8 +90,8 @@ type
 
 resourcestring
   SYSTEMTRAYCLICKACTION_DONOTHING                = 'Do nothing';
-  SYSTEMTRAYCLICKACTION_DISPLAYCONSOLE           = 'Display console';
-  SYSTEMTRAYCLICKACTION_DISPLAYHIDECONSOLETOGGLE = 'Display/hide console toggle';
+  SYSTEMTRAYCLICKACTION_DISPLAYCONSOLE           = 'Display window';
+  SYSTEMTRAYCLICKACTION_DISPLAYHIDECONSOLETOGGLE = 'Display/hide window toggle';
   SYSTEMTRAYCLICKACTION_MOUNTFILE                = 'Open DoxBox...';
   SYSTEMTRAYCLICKACTION_MOUNTPARTITION           = 'Open DoxBox partition...';
   SYSTEMTRAYCLICKACTION_MOUNTLINUXFILE           = 'Open DoxBox (Linux)...';
