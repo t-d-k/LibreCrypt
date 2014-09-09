@@ -10,10 +10,7 @@
 
 <link href="./styles_common.css" rel="stylesheet" type="text/css">
 
-
 <link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
-
-
 
 <SPAN CLASS="master_link">
 [![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://doxbox.squte.com/)
@@ -22,7 +19,6 @@
 _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
-
 
 <SPAN class="tip">
 The latest version of this FAQ, along with the latest DoxBox user manual, can be found online at the [DoxBox web site](http://DoxBox.squte.com/)
@@ -36,10 +32,11 @@ The latest version of this FAQ, along with the latest DoxBox user manual, can be
 #### New
 * [Why do I need to enable test mode?](#tm)
 * [Why don't you just sign the drivers?](#tm)
-* [Why does the documentation sometimes talk about FreeOTFE?](#fo)
 * [Can I use DoxBox to open my Truecrypt containers?](#tc)
 * [Will DoxBox support operating system encryption?](#os)
 * [Is there any backdoor in DoxBox?](#bd)
+* [What are the differences between DoxBox and Truecrypt?](#tc2)
+* [Why does the documentation sometimes talk about FreeOTFE?](#fo)
 
 <A NAME="level_4_heading_1">
 #### General
@@ -248,7 +245,17 @@ Every app may contain a security flaw, inadvertent or deliberate. software with 
 	
 
 * * *
+* [](#)
+<a name="tc2"></a>
+*Q:What are the differences between DoxBox and Truecrypt?*
 
+*A:* 
+The known diferences are:
+* DoxBox can open native LUKS containers
+* Truecrypt has a Linux version available: tcrypt
+* DoxBox suports multiple hidden containers, TC only one.	
+
+* * *
 
 <a name="al"></a>
 *Q: How can I trust DoxBox?*
@@ -302,7 +309,6 @@ The information content of normal English text is about [1.1](http://pit-claudel
 
 Using special characters and misspellings increases the information content slightly but not as much as you may think, and reduces the memorability/bit ratio.
 
-
 <a name="pass_note">Not absolutely true because a brute force attack has to do the key set up (if a salt is used) to attack the keyphrase </a>
 
 * * *
@@ -339,7 +345,6 @@ In WWII agents made up [poems](http://www.worldwar2history.info/war/espionage/co
 	+ start using your box for secure data	
 
 * * *
-
 
 <A NAME="level_3_heading_2">
 ### General
@@ -391,7 +396,6 @@ This answer was given by the original developer of FreeOTFE, the project DoxBox 
 
 > The answer to that is an emphatic **NO**! FreeOTFE and CrossCrypt are two **completely** separate projects, written by completely different people.
 
-
 > It's easy to see why users may get the idea that FreeOTFE is based on CrossCrypt; CrossCrypt was released first, and the CrossCrypt's GUI (CrossCryptGUI) looks practically identical to FreeOTFE's interface.
  The reality is that **CrossCrypt** itself is a command line based OTFE system; it has no GUI. **CrossCryptGUI** was a project I created to provide a GUI to CrossCrypt to improve its ease of use.
 
@@ -414,14 +418,13 @@ _Q: Is DoxBox based on Linux's "losetup"?_
 * * *
 
 <a name="ac"></a>
-*Q: Right now, DoxBox supports losetup volumes; do you have any plans to include support for DriveCrypt, BestCrypt, etc volumes?*
+*Q: Right now, DoxBox supports LUKS volumes; do you have any plans to include support for Truecrypt, DriveCrypt, BestCrypt, etc volumes?*
 
-*A:* This is unlikely to happen as there is no standard for OTFE volume files (each system uses its own layout). Since adding support for other OTFE systems is non-trivial, and few OTFE systems have released proper technical documentation into the public domain, it may be awhile before such support is added
+*A:* It's possible this will happen /if/ you have the corresponding application installed. Support in a standalone installation of DoxBox will not happen as there is no standard for OTFE volume files (each system uses its own layout). Adding support for other OTFE systems is non-trivial, and few OTFE systems have released proper technical documentation into the public domain.
 
  * * *
  <a name="ad"></a>
 *Q: When I mount a FAT/FAT32 formatted Linux volume under DoxBox everything works perfectly. When I do the same with my ext2/ext3/Reisers/etc volume, I can't see my files!*
-
 
 *A:* DoxBox does one thing: when a volume file is mounted, DoxBox presents a new storage device to the operating system.
  Like all OTFE systems, it has no comprehension **at all** of what FAT/FAT32/NTFS, let alone ext2/ext3/etc - understanding lies well *outside the scope of an OTFE system*, and is the responsibility of the filesystem drivers installed.
@@ -481,7 +484,6 @@ This is separate from any hash algorithm used to process your password, which in
 
 *A:* DoxBox is Open-Source, meaning that if any changes are made that many people disapprove of it is likely to be 'forked', with the 'fork' retaining the original features (such as being gratis). If you are concerned you should make your own copy of the source.
 
-
   * * *
  <a name="ct"></a>
 *Q: What about klonsoft's "LockDisk" and WinCrypto LLC's "CryptoDisk"? Aren't they paid-for packages which are based on DoxBox?*
@@ -492,7 +494,6 @@ This is separate from any hash algorithm used to process your password, which in
 > I have nothing to do with either "LockDisk" or "CryptoDisk", nor any involvement in their creation.
 
 > Personally, I would **strongly recommend against** using these products:
-
 
 > * They have less functionality than DoxBox
 > * They're closed source; there's no way of knowing how secure it is, or what it does
@@ -557,35 +558,24 @@ Typically, when presented with a selection of different hashes to choose from, y
 <a name="aq_2"></a>
 *Q: What to the numbers and letters after a cypher name mean?*
 
-
-
 *A:* When required to choose which cypher you wish to use, DoxBox will present you with a list of all cyphers that are provided by the DoxBox drivers installed. These lists will display cypher names in the format:
   > *&lt;cypher name&gt;* ([**&lt;mode&gt;**; ] **&lt;key size&gt;**/**&lt;block size&gt;**)
 
 Note: The key and block sizes shown are in bits, not bytes.
 
-
 For example:
-
 
 > AES (XTS; 256/128)
 
+This indicates that the cypher is AES, operating in XTS mode with a key size of 256 bits and a block size of 128 bits.
 
-This indicates that the cypher is AES, operating in XTS mode with
-a key size of 256 bits and a block size of 128 bits.
+If the key size shown is zero, then the cypher does need take a key (password) to carry out encryption (e.g. the "Null" test cypher).
 
-If the key size shown is zero, then the cypher does need take a key
-(password) to carry out encryption (e.g. the "Null" test cypher).
+If the key size shown is "-1", then the cypher can accept keys of arbitrary size.
 
-If the key size shown is "-1", then the cypher can accept keys of
-arbitrary size.
+If the block size is "-1", then the cypher encrypts/decrypts arbitrary block size.
 
-If the block size is "-1", then the cypher encrypts/decrypts arbitrary
-block size.
-
-Typically, when presented with a selection of different cyphers to
-choose from, you will see a "?" or "..." button next to the list;
-clicking this button will display full details on the driver.
+Typically, when presented with a selection of different cyphers to choose from, you will see a "?" or "..." button next to the list; clicking this button will display full details on the driver.
 
 * * *
 
@@ -606,17 +596,13 @@ Please see the FAQ "[I tried to create a large volume (> 4GB), and DoxBox stoppe
 <a name="gc"></a>
 *Q: I tried to create a large volume (> 4GB), and DoxBox stopped halfway through with an error - why?*
 
-
-
 *A:* The most probable cause for this is that you were creating a volume file on a FAT/FAT32 filesystem, however FAT/FAT32 filesystems cannot support files larger than (4 GB - 1 byte).
 
- See the FAQ: [What is the largest volume that I can create?](#as) for further information and how to resolve this.
+See the FAQ: [What is the largest volume that I can create?](#as) for further information and how to resolve this.
 
   * * *
  <a name="as"></a>
 *Q: What is the largest volume that I can create?*
-
-
 
 *A:* DoxBox has a theoretical maximum volume size of 2^64 bytes (16777216 TB; 17179869184 GB). For fairly obvious reasons, I have not had the opportunity to test a volume this size!
 
@@ -624,13 +610,10 @@ In practice however, although partition based volumes may be able to realise vol
 
 For example, a FAT32 drive cannot store a volume file which is 4GB or larger. In practical terms, this means that the largest volume you can create on a FAT32 filesystem is 3999 MB. An NTFS formatted drive **can** store volume files **much** larger; in excess of FAT32's 4GB limit, and up to DoxBox's maximum size stated above.
 
-
 * * *
 
 <a name="at"></a>
 *Q: Help! I forgot my password! I know it was something like...*
-
-
 
 *A:* Oops. That was silly of you, wasn't it?
 
@@ -638,8 +621,7 @@ If you've secured your volume with something like AES, then you can pretty much 
 
 If you know what most of your password is though, then you could certainly write an application which would carry out a brute force attack on your volume, assuming those known characters. How long this would take to run would depend on the cypher used, the strength of your password, and how much you remember of it.
 
-Note: This is not a security risk; that last comment **equally applies** to pretty much **any** OTFE system which has been
-implemented correctly.
+Note: This is not a security risk; that last comment **equally applies** to pretty much **any** OTFE system which has been implemented correctly.
 
 * * *
 
@@ -670,9 +652,7 @@ A full list of the cyphers and cypher modes used by DoxBox can be found on the [
 <a name="cp"></a>
 *Q: Which cypher modes does DoxBox support?*
 
-*A:* With the exception of the NULL and XOR cyphers, DoxBox
-offers CBC, LRW and XTS modes, and has the flexibility for other modes to be easily
-added by simply changing drivers.
+*A:* With the exception of the NULL and XOR cyphers, DoxBox offers CBC, LRW and XTS modes, and has the flexibility for other modes to be easily added by simply changing drivers.
 
 A full list of the cyphers and cypher modes used by DoxBox can be found on the [introduction page](description.md)
 
@@ -697,12 +677,10 @@ DoxBox defaults to using the AES-256 cypher in XTS mode together with SHA-512 fo
 
 If you forget your password however, then by definition you will not be able to recover your data (see also the [FAQ](#at)")
 
-
 * * *
 
 <a name="ay"></a>
 *Q: What happens if my volume file is corrupted or damaged in some way? Will I lose all my data?*
-
 
 *A:* As with pretty much **all** OTFE systems, if you were to corrupt a DoxBox is some way, the damage your data would receive would be about the same as if you had stored it directly on your hard drive, without DoxBox encrypting it.
 
@@ -920,7 +898,6 @@ For example, with [Paragon Drive Backup](http://www.paragon-software.com/), if y
 
 However! If you create an encrypted volume on a **partition** (even one filling the entire drive), and back that partition up, Paragon Drive Backup does what it **should** do - generates a compressed backup copy of the **entire** partition, which can then be restored back later.
 
-
 <SPAN class="tip">
 No matter **what** you're backing up, when you setup a backup system for the first time, it is **strongly recommended** that you go through the restore process at least **once** before "setting it and forgetting it". The **absolute worst** time for learning how your software's restore function works is when you actually need it (e.g. after a disk failure, and you want to get your data back)  This advice applies to *ALL* backups, and not just backups of DoxBox volumes.  By doing a "dry run", you can have confidence in both your backups, and in your ability to use them should you need to.    
 </SPAN>
@@ -1019,7 +996,6 @@ Padding takes up additional storage on your hard drive beyond that required by t
 
 * * *
 
-
 <A NAME="level_3_heading_3">
 ### DoxBox Specific (PC)
 </A>
@@ -1080,7 +1056,6 @@ It is recommended that volumes which are to be written to CD are formatted using
 When mounting over a network, simply specify the UNC path (e.g. \\servername\sharename\path\volumefilename) to the volume file begin mounted.
 
 When a volume is mounted over a network in this way, all data read/written to that volume will be sent over the network in encrypted form.
-
 
 If you wish to mount a networked volume file by more than one computer at the same time, you may do so provided that they all mount the volume read only. If any computer has a volume file mounted as read/write, you should dismount all other computers (even if they were accessing the volume as read only), and ensure no other computer mounts the volume until the computer mounted as read/write has dismounted.
 
@@ -1175,19 +1150,14 @@ DoxBox Explorer however, can be used under Linux when run under [Wine](http://ww
 
 See the [Command Line Interface](command_line.md) section for full details of DoxBox's command line options.
 
-
 * * *
 
 <a name="cd"></a>*
 Q: On the options dialog, what does the "Save above settings to" option do?
 
-*A:* This allows you to change where your DoxBox settings are
-stored; in your user profile (only accessible to you), or with the
-DoxBox executable (which is useful if you want to take DoxBox with
-you; on a USB drive, for example).
+*A:* This allows you to change where your DoxBox settings are stored; in your user profile (only accessible to you), or with the DoxBox executable (which is useful if you want to take DoxBox with you; on a USB drive, for example).
 
-You may also choose to not save your settings; in which case, the next
-time you start DoxBox, you will begin again with the default options.
+You may also choose to not save your settings; in which case, the next time you start DoxBox, you will begin again with the default options.
 
 * * *
 
@@ -1232,7 +1202,7 @@ Because the latter option is more destructive, it may only be used when a single
 <a name="eo"></a>
 *Q: Does DoxBox support nesting Boxes inside each other, isn't this a neat idea!*
 
-*A:* Yes; DoxBox allows volumes to be nested one inside another, with **complete** flexibility as to which encryption options are used with each volume.
+*A:* Yes; DoxBox allows volumes to be nested one inside another, with complete flexibility as to which encryption options are used with each volume.
 
 This means that you can (for example) have:
 
@@ -1242,18 +1212,18 @@ This means that you can (for example) have:
 
 In this example, any data stored within the "innermost" AES encrypted volume will be actually be triple-encrypted with AES, Blowfish and Serpent before written to disk.
 
-This is, however a terrible idea because the security will usually be weaker as well access being slower.
+This is, however a bad idea because the security will usually be weaker, as well access being slower.
 
 You might think that it would be stronger because the 'innermost' box, will be encrypted many times and so would be as strong as the strongest cypher used.
 
 However the weakest point in the encryption is not the cypher but the keyphrase (AFAWK).
-I order to nest 2 boxes you nd to remember 2 keyphrases. if s the same there is no increase in security because once one box is cracked the attacker knows the key to the other.
-If the keyphrases are diff then ea one is likely to be half the length of a keyphrase for a single box. that's because most people cant remember a keyphrase long enough for even one box.
-brute forcing 2 keyphrases is much easier than brute forcing one twice  length.
-For example dictionary attacking two separate 20 char keyphrases takes on average 67 Million operations wheres attacking one 40 char keyphrase takes 10^12 operations.
+In order to nest two boxes you need to remember two keyphrases. if they are the same there is no increase in security because once one box is cracked the attacker knows the key to the other.
+If the keyphrases are different then each one is likely to be half the length of a keyphrase for a single box. that's because most people cant remember a keyphrase long enough for even one box.
+Brute forcing two keyphrases is much easier than brute forcing one twice the length.
+For example dictionary-attacking two separate 20 character keyphrases takes on average 67 Million operations whereas attacking one 40 character keyphrase takes 10^12 operations.
 
-If you v no problem remembering multiple keyphrases with 256 bit entropy (the shortest you should be considering) there there will be no decease in security,otherwise use a single Box. 
-f comparison here is a 256 bit keyphrase:
+If you have no problem remembering multiple keyphrases with 256 bit entropy (the shortest you need for the keyphrase not to be the weakest point) there there will be no decease in security, otherwise use a single Box. 
+For comparison here is a 256 bit keyphrase:
 
 >	190748903107813243563013947653698073429170975896029890745233298054250807024355
 
@@ -1280,7 +1250,7 @@ Boxes nested in this manner must be dismounted in the **reverse** order to which
 <a name="es"></a>
 *Q: Can I defragment encrypted volumes?*
 
-*A:* Yes! There are two things that you may wish to defragment:
+*A:* Yes, there are two things that you may wish to defragment:
 
 1. (File based volumes only) The drive on which the volume file is stored (i.e. defragmenting a volume file)
 
@@ -1290,14 +1260,11 @@ Once dismounted, a volume file can be treated **just like any other file**. Volu
 
 By mounting a volume, you can defragment the encrypted data stored within it. Again, you can use any tool for this, with the exception of:
 
-	
 * Raxco's PerfectDisk 2008
 * Diskeeper Corporation's "Diskeeper"
 * The defragmentation tool which comes bundled with Windows (which is a simply a stripped down version of Diskeeper)
-	
 
 The above systems have limitations which prevent them from "seeing" mounted volumes, all other tools will work as normal. Examples of defragmentation tools which work with DoxBox volumes include:
-
 
 * [O&O Defrag](http://www.oo-software.com/)
 * [Defraggler](http://www.defraggler.com/)
@@ -1307,13 +1274,12 @@ The above systems have limitations which prevent them from "seeing" mounted volu
 * [Ultra Defragmenter](http://ultradefrag.sourceforge.net/)
 * ...and the vast majority of other defragmentation tools
 
-
 * * *
 
 <a name="cg"></a>*
 Q: Can I use DoxBox with my USB flash drive?
 
-*A:* Yes!
+*A:* Yes
 DoxBox has been designed to be portable; see the section on [Portable Mode](portable_mode.md) for details on which files to copy onto your USB drive. Alternatively, insert your USB drive and select the "Tools | Copy DoxBox to USB drive..." menu-item to automatically copy DoxBox to your USB drive.
 
 You can then use DoxBox on any PC - even if it doesn't have DoxBox installed.
@@ -1325,10 +1291,9 @@ You can then use DoxBox on any PC - even if it doesn't have DoxBox installed.
 
 *A:* If you used the "Tools | Copy DoxBox to USB drive..." function, and selected the "Setup autorun.inf to launch DoxBox when drive inserted" option,  DoxBox will normally run automatically whenever the drive is inserted (or prompt the user if they want to run it).
 
-However, this does depend on your PC's configuration.
+However, this depends on your PC's configuration.
 
 If DoxBox doesn't launch automatically (and you don't get prompted to launch DoxBox after inserting the drive), you probably have autorun turned off for removable disks.
-
 
 <SPAN CLASS="security_tip">
 It is generally recommended that "autorun" functionality be **disabled**, as this can have security implications; should an untrusted USB drive be plugged in, the program specified in an autorun.inf file on the device may be launched - without offering the user the chance to prevent it  
@@ -1364,7 +1329,7 @@ See also: [Enable Autorun on DVD, CD and other removable media](http://www.moonv
 <a name="db"></a>
 *Q: Can I use DoxBox with "MojoPac"?*
 
-*A:* Yes!
+*A:* Yes
 
 There are two basic ways of encrypting you data using DoxBox while using MojoPac:
 
@@ -1409,11 +1374,14 @@ In the same manner, volumes mounted on the host PC will be accessible from withi
 <a name="go"></a>
 *Q: Does DoxBox try to connect to the internet??*
 
-*A:* No - not by default.
+*A:* Yes, but with a prompt and option to cancel first.
 
-DoxBox and DoxBox Explorer will **only ever** try to connect to the internet if it has been configured to check for updates - and even then, they will only try to connect to the DoxBox web site to retrieve version information.
-
-By default, both DoxBox and DoxBox Explorer are configured such that they will **not** check for updates - this functionality must be explicitly enabled by the user.
+DoxBox and DoxBox Explorer will **only ever** try to connect to the internet if either:
+* They have been configured to check for updates (by default this is on)
+	In this case, they will only try to connect to the GitHub web site to retrieve version information.
+* There has been an error in installation, or the documents have been removed, in which case DoxBox will open the HTML file from the DoxBox website (DoxBox.eu - which currently redirects to DoxBox.squte.com)
+In both cases they will prompt before connecting to the Internet - simply click 'cancel' to prevent this.
+By default, both DoxBox and DoxBox Explorer are configured such that they will automatically check for updates once per month - this can be disabled in the 'settings' dialog.
 
 * * *
 
@@ -1651,8 +1619,6 @@ The only caveat being that your PKCS#11 library provider may only support up to 
 1. Select the PKCS#11 tab
 1. Ensure that the "Auto dismount PKCS#11 volumes when associated token is removed" is checked
 
-
-
 If you dismount, then remount, your volumes with your PKCS#11 token, they should be dismounted when it is removed.
 
 Please note that **only those volumes which were mounted with the removed token** will be automatically dismounted.
@@ -1684,7 +1650,6 @@ These prompts form part of Windows Vista's "User Access Control" (UAC) system, w
 **(This FAQ is only applicable when running under Windows Vista and later; it is not relevant for other operating systems)**
 
 *A:* DoxBox **doesn't** ask you to enter an Administrator's password; it has no use or need for this information. Windows Vista, however, **will** prompt you to enter an Administrator's password whenever you are logged in as a "standard" (i.e. non-Administrator) user, and attempt to carry out any operation which it deems could be harmful to your computer.
-
 
 If you are happy for DoxBox to carry out the operation you requested of it, you should select the relevant option from the consent/credential dialog, and enter the appropriate Administrator's password to allow DoxBox to proceed.
 
@@ -1729,7 +1694,6 @@ These prompts form part of Windows Vista's "User Access Control" (UAC) system, w
 *A:* Functions marked with a "shield" icon require Administrator privileges in order to use them, for security reasons. This is for your security, and more information can be found on the [Microsoft web site](http://technet.microsoft.com/en-us/windowsvista/aa906022.aspx).
 
 * * *
-
 
 <A NAME="level_3_heading_5">
 ### DoxBox Explorer Specific

@@ -67,13 +67,12 @@ packages: <br>
     <tr>
       <td>SDeanUtils</td>
       <td>v2.0.0</td>
-      <td>SDeanUtils: Sarah Dean - General Utility Classes and
-Components <br>
-Includes file and directory iterators for walking through directory
-structures/filesytems, system tray icon (aka tasktray icon), endian
-integers, TSDUStringGrid (enhanced TStringGrid with sorting and column
-resize), named pipes, wrappers for Windows Vista's TaskDialog API, display
-of partition information, file and directory drag and drop component, WinHttp API, multimedia key events, etc<br>
+      <td>SDeanUtils: Sarah Dean - General Utility Classes and Components <br> 
+      Includes file and directory iterators for walking through directory structures/filesytems, 
+      system tray icon (aka tasktray icon), endian integers,
+      TSDUStringGrid (enhanced TStringGrid with sorting and column resize), named pipes,
+      wrappers for Windows Vista's TaskDialog API, display of partition information, 
+      file and directory drag and drop component, WinHttp API, multimedia key events, etc<br>
       </td>
     </tr>
     <tr>
@@ -241,40 +240,21 @@ components are included:
 <ul>
 
   <li>I retain all rights to this software</li>
-  <li>You are free to distribute this software, although no charge may
-be
-made
-of any kind for doing so (that includes any fees for copying and/or the
+  <li>You are free to distribute this software, although no charge may be made of any kind for doing so (that includes any fees for copying and/or the
 distribution media)</li>
-  <li>If you distribute this software, this file must be included with
-it,
-intact
-and unmodified.</li>
-  <li>Any software derived from any part, or using, any of these
-components
-and/or
-their source code are to be released into the public domain with full
-source code
-freely available (Note: This condition may be lifted,
-subject to negotiation; please
-email
-me for further information)</li>
-  <li>Blah, blah, blah ... you use this software at your own risk ...
-blah,
-blah
-... author takes no responsibility ... blah, blah ... (i.e. the usual
-disclaimers,
-etc. Do be careful with the TShredder though - test it out with junk
-files
-before trusting this component</li>
+  <li>If you distribute this software, this file must be included with it, intact and unmodified.</li>
+  <li>Any software derived from any part, or using, any of these components and/or their source code are to be released 
+  into the public domain with full source code freely available (Note: This condition may be lifted, subject to negotiation;
+  please email me for further information)</li>
+  <li>Blah, blah, blah ... you use this software at your own risk ... blah, blah ... author takes no responsibility ... blah, blah ... (i.e. the usual disclaimers,
+  etc. Do be careful with the TShredder though - test it out with junk files before trusting this component</li>
 </ul>
 
 <hr>
 <a name="Download"></a>
 <h2>Download</h2>
 
-The latest version of this software can be downloaded
-from: <a href="http://www.SDean12.org/Download.htm">http://www.SDean12.org/Download.htm</a>
+The latest version of this software can be downloaded from: <a href="http://www.SDean12.org/Download.htm">http://www.SDean12.org/Download.htm</a>
 <hr><a name="Component_Specific_Notes_and_Issues"></a>
 <h2>Component Specific Notes and Issues</h2>
 
@@ -289,21 +269,16 @@ Files created with this function consist of the $00 character, repeated.<br>
 
 <h4>SDUFileIterator</h4>
 
-Note that setting "FileMask" to a string including a path (e.g.
-"C:\test\*.*"), the path will be stripped off and "Directory" will be
-set to that value, while "FileMask" is set to just the mask ("*.*", in
-this example)<br>
+Note that setting "FileMask" to a string including a path (e.g. "C:\test\*.*"), the path will be stripped off and 
+"Directory" will be set to that value, while "FileMask" is set to just the mask ("*.*", in this example)<br>
 
 <h4>SDUSystemTrayIcon</h4>
 
-Usage of this component should be fairly obvious;
-it provides full functionality with respect to creating, animating, etc system tray icons.<br>
+Usage of this component should be fairly obvious; it provides full functionality with respect to creating, animating, etc system tray icons.<br>
 
 <br>
 
-Note that balloon messages will not appear with early versions of MS
-Windows which include an older shell (shell32.dll; e.g. pre-Windows
-2000)<br>
+Note that balloon messages will not appear with early versions of MS Windows which include an older shell (shell32.dll; e.g. pre-Windows 2000)<br>
 
 <br>
 
@@ -317,18 +292,11 @@ SDUSYSTEMTRAYICON_DEBUG - Send debug output to file using SDULogger object (see 
 
 <br>
 
-SDUSystemTrayIcon includes support for "minimize to system tray icon"
-functionality.
-In order to support "close to system tray icon" functionality, certain
-minor
-code changes are required to the form which this must apply for; see
-comments in the "Min/Close to System Tray" test application source for
-details; specifically those below the "Functions required for
-close/minimize to system tray follow" source code comment. These
-changes
-are required in order to override the default operations carried out
-when Close() is called, in order to minimise the form to the system
-tray
+SDUSystemTrayIcon includes support for "minimize to system tray icon" functionality. In order to support "close to system tray icon"
+functionality, certain minor code changes are required to the form which this must apply for; see comments in the 
+"Min/Close to System Tray" test application source for details; specifically those below the 
+"Functions required for close/minimize to system tray follow" source code comment. These changes are required in order
+to override the default operations carried out when Close() is called, in order to minimise the form to the system tray
 instead of closing it.<br>
 
 <br>
@@ -367,10 +335,8 @@ This software is currently under development - do not use.<br>
 
 <h4>HMAC</h4>
 
-This file contains a number of functions that may be
-called to generate HMAC values using a number of different hashes
-including SHA-1, MD5, SHA-512, Tiger - any hash that has an
-implementation based on THash.<br>
+This file contains a number of functions that may be called to generate HMAC values using a number of different hashes
+including SHA-1, MD5, SHA-512, Tiger - any hash that has an implementation based on THash.<br>
 
 <h4>TMouseRNG</h4>
 
@@ -399,11 +365,9 @@ If the component is not sized as shown above, you risk biasing the RNG.<br>
 
 <br>
 
-At both design time and runtime, if the control is dynamically resized,
-then it will take care of the above rules and will automatically adjust
-itself appropriately. This however, does have the effect that the
-window may appear "jerky" when resized; especially for very large
-values of BITS_PER_SAMPLE (say, 4 or 5).<br>
+At both design time and runtime, if the control is dynamically resized, then it will take care of the above rules and 
+will automatically adjust itself appropriately. This however, does have the effect that the window may appear "jerky"
+when resized; especially for very large values of BITS_PER_SAMPLE (say, 4 or 5).<br>
 
 <h4>TMouseRNGDialog </h4>
 
@@ -444,11 +408,9 @@ This is not a Delphi component, but library code intended to be used by applicat
 
 <br>
 
-This implementation reflects the AFSplitter as used by "cryptsetup";
-the Linux LUKS encryption version, and as such it should be noted that
-a single bit change in split data will only change up to &lt;hash
-algorithm's hash length&gt; bits in the recovered data.<br>
-
+This implementation reflects the AFSplitter as used by "cryptsetup"; the Linux LUKS encryption version, and as such it 
+should be noted that a single bit change in split data will only change up to &lt;hash algorithm's hash length&gt;
+bits in the recovered data.<br>
 <h4>CryptoAPI</h4>
 
 This is not a Delphi component, but library code intended to be used by applications.<br>
@@ -476,15 +438,12 @@ which they all depend.<br>
 <pre>function Mount(volumeFilenames: TStringList; var mountedAs: string; readonly: boolean = FALSE): boolean;</pre>
 
 <blockquote>
-This function will prompt the user for a password for each volume file
-instead of accepting one password, and applying it to all the volume
-files specified
+This function will prompt the user for a password for each volume file instead of accepting one password, and applying it to all the volume files specified
 </blockquote>
 
 <br>
 
-Note to self (the following table is really only intended as a
-development aid to the author):<br>
+Note to self (the following table is really only intended as a development aid to the author):<br>
 
 <br>
 
@@ -1322,23 +1281,14 @@ PGPDisk supplied with freeware version of PGP v6.0.2i)</td>
       
       <td style="vertical-align: top;">v2.1<br>
       </td>
-      <td style="vertical-align: top;">Fully
-supported, with minor
-issue if the version ID cannot be determined (TrueCrypt v2.1 and v2.1a
-both identify themselves as version 0x0210 - but the cipher IDs changed
-between these versions! This issue has no effect on security, and can
-be easily eliminated if you use the component correctly)<br>
-      </td>
-    </tr>
+      <td style="vertical-align: top;">Fully supported, with minor issue if the version ID cannot be determined 
+      (TrueCrypt v2.1 and v2.1a both identify themselves as version 0x0210 - but the cipher IDs changed between these versions!
+      This issue has no effect on security, and can be easily eliminated if you use the component correctly)<br> </td> </tr>
     <tr>
       
       <td style="vertical-align: top;">v2.1a<br>
       </td>
-      <td style="vertical-align: top;">Fully supported, with minor
-issue if the version ID cannot be determined (TrueCrypt v2.1 and v2.1a
-both identify themselves as version 0x0210 - but the cipher IDs changed
-between these versions! This issue has no effect on security, and can
-be easily eliminated if you use the component correctly)</td>
+      <td style="vertical-align: top;">Fully supported, with minor issue if the version ID cannot be determined (TrueCrypt v2.1 and v2.1a both identify themselves as version 0x0210 - but the cipher IDs changed between these versions! This issue has no effect on security, and can be easily eliminated if you use the component correctly)</td>
     </tr>
 <tr>
       <td style="vertical-align: top;">v3.0a<br>
@@ -2049,9 +1999,7 @@ the TEdit)<br>
     <ul>
       <li>Added support for encrypted CDs/DVDs<br>
       </li>
-      <li>Added support for encrypting disk devices, as well as
-partitions (i.e. You can now encrypt an entire disk, not just
-partitions held on it)<br>
+      <li>Added support for encrypting disk devices, as well as partitions (i.e. You can now encrypt an entire disk, not just partitions held on it)<br>
       </li>
       <li>Added support for cryptlib (cl32.dll) as an RNG, if installed<br>
       </li>
@@ -2072,14 +2020,10 @@ partitions held on it)<br>
       <li>Updated to support FreeOTFE v0.57.00</li>
       <li>Support for FreeOTFE v0.50.00 and previous widthdrawn, though older volumes may still be mounted.</li>
       <li>Added warning to user if an attempt is made to use a volume file created under a later version of FreeOTFE</li>
-      <li>Corrected fault with Windows XP/Windows 2000 differing
-QueryDosDevice behaviour that sometimes prevented FreeOTFE listing all
-cyphers/hash algorithms installed</li>
-      <li>Removed redundant warnings when attempting to stop/uninstall drivers while no volumes are mounted</li><li>Fixed
-bug found in volume creation wizard when creating a new volume and
-storing the volume's CDB separatly. (The CDB file wasn't being created
-before the CDB was written to it, causing an "Unable to write critical
-data block" error.)</li><li>ESSIV - better support; added user selectable cypher for IV generation with linux volumes</li>
+      <li>Corrected fault with Windows XP/Windows 2000 differing QueryDosDevice behaviour that sometimes prevented FreeOTFE listing all cyphers/hash algorithms installed</li>
+      <li>Removed redundant warnings when attempting to stop/uninstall drivers while no volumes are mounted</li>
+      <li>Fixed bug found in volume creation wizard when creating a new volume and storing the volume's CDB separatly. (The CDB file wasn't being created before the CDB was written to it, causing an "Unable to write critical data block" error.)</li>
+      <li>ESSIV - better support; added user selectable cypher for IV generation with linux volumes</li>
       <li>Fixed bug found when creating a new volume and storing the
 volume's CDB separatly. (The CDB file wasn't being created before the
 CDB was written to it, causing an "Unable to write critical data block"
@@ -2089,15 +2033,11 @@ error.)<br>
     </ul>
     <li>Package: SDeanSecurity</li>
     <ul>
-      <li>Shredder overwrite free space revamped to significantly
-improve progress dialog's responsiveness wrt cancelling and displaying
-progress.</li>
+      <li>Shredder overwrite free space revamped to significantly improve progress dialog's responsiveness wrt cancelling and displaying progress.</li>
     </ul>
     <li>Package: SDeanUtils</li>
     <ul>
-      <li>SDUCreateLargeFile(...) and test application added to
-SDUGeneral to give simple function to create (potentially large) files
-on demand.<br>
+      <li>SDUCreateLargeFile(...) and test application added to SDUGeneral to give simple function to create (potentially large) files on demand.<br>
       </li>
     </ul>
   </ul>
@@ -2112,7 +2052,9 @@ on demand.<br>
   <ul>
     <li>Package: SDeanUtils</li>
     <ul>
-      <li>Changed SDUURLLabel so that the mouse cursor changes to the standard "hand" icon when hovered over the component.</li><li>Added test application for SDUURLLabel</li><li>Added TSpinEdit64 component - a 64 bit version of the TSpin component that comes supplied with Delphi</li>
+      <li>Changed SDUURLLabel so that the mouse cursor changes to the standard "hand" icon when hovered over the component.</li>
+      <li>Added test application for SDUURLLabel</li>
+      <li>Added TSpinEdit64 component - a 64 bit version of the TSpin component that comes supplied with Delphi</li>
       <li>Added SDUParseASCIIToData(...) to SDUGeneral<br>
       </li>
 </ul><li>Package: SDeanSecurity</li>
@@ -2128,21 +2070,16 @@ on demand.<br>
   <ul>
     <ul>
       <li>Setting TOTFEFreeOTFE components to Active when the driver is not installed/running will raise an exception</li><li>Added support for "portable mode drivers"</li>
-      <li>Rewrote most of the "Driver Control" dialog</li><li>Fixed
-bug that caused extra newline to be added to user's password when
-creating a new FreeOTFE volume via the volume creation wizard</li>
+      <li>Rewrote most of the "Driver Control" dialog</li>
+      <li>Fixed bug that caused extra newline to be added to user's password when creating a new FreeOTFE volume via the volume creation wizard</li>
       <li>Added portable mode</li>
       <ul>
-        <li>Starting portable mode will cause the CWD will be checked
-for "*.sys" files, which will be treated as FreeOTFE device drivers,
-installed and started.</li>
+        <li>Starting portable mode will cause the CWD will be checked for "*.sys" files, which will be treated as FreeOTFE device drivers, installed and started.</li>
         <li>Stopping portable mode will stop and uninstall all portable mode drivers<br>
         </li>
       </ul>
-      <li>User passwords are no longer displayed; they are blanked out with "*" characters<br>
-      </li>
-      <li>Added option to backup and restore the CDB from volumes with a CDB<br>
-      </li>
+      <li>User passwords are no longer displayed; they are blanked out with "*" characters<br> </li>
+      <li>Added option to backup and restore the CDB from volumes with a CDB<br> </li>
       <li>Added option to dump critical data block to a human readable file<br>
       </li>
       <li>Added support for keyfiles<br>
@@ -2257,18 +2194,11 @@ addition to existing command line options</li>
     </ul>
     <ul style="margin-left: 40px;">
       <li>Updated CrossCrypt component:</li>
-      <li>Updated CrossCrypt component: Fixed minor bug that caused
-the
-"*"s obscuring the user's password to reveal the characters being typed
-in after "multiline" was selected, and then deselected.</li>
-      <li>Updated CrossCrypt component: Modified volume creation
-dialog
-to prevent users from entering the volume filename directly. Users must
-now specify the filename, and full path to it by clicking the browse
-("...") button.</li>
-      <li>Updated CrossCrypt component: DoMount fixed so volume
-size
-passed in is now an int64, not integer</li>
+      <li>Updated CrossCrypt component: Fixed minor bug that caused the "*"s obscuring the user's password to reveal
+      the characters being typed in after "multiline" was selected, and then deselected.</li>
+      <li>Updated CrossCrypt component: Modified volume creation dialog to prevent users from entering the volume filename 
+      directly. Users must now specify the filename, and full path to it by clicking the browse ("...") button.</li>
+      <li>Updated CrossCrypt component: DoMount fixed so volume size passed in is now an int64, not integer</li>
     </ul>
     <ul>
       <li>Package: SDeanSecurity</li>
@@ -2282,8 +2212,7 @@ passed in is now an int64, not integer</li>
       <li>Package: SDeanUtils</li>
     </ul>
     <ul style="margin-left: 40px;">
-      <li>Added "SDUGetUsedDriveLetters()" and
-"SDUGetUnusedDriveLetters()" functions</li>
+      <li>Added "SDUGetUsedDriveLetters()" and "SDUGetUnusedDriveLetters()" functions</li>
       <li>Fixed fault in SDUFileIterator which caused it to return
 "."
 and ".." directories when IncludeDirNames was TRUE.</li>
@@ -2409,18 +2338,8 @@ volumes (where possible)</li>
     <li>Package: OTFEBestCrypt</li>
     <ul>
       <li>Now at version v1.0.0</li>
-      <li>Updated to support BestCrypt's "half dismounting". When a
-volume can't
-be dismounted as it's in use, BestCrypt "half dismounts" the volume,
-and
-it can't be remounted under any other drive letter until it's mounted
-again
-under the original drive letter, and dismounted properly. "Half
-dismounting"
-a volume also prevents BestCrypt from mounting any other volume as that
-drive letter.</li>
-    </ul>
-    <li>Package: OTFEScramDisk</li>
+      <li>Updated to support BestCrypt's "half dismounting". When a volume can't be dismounted as it's in use, BestCrypt "half dismounts" the volume, and it can't be remounted under any other drive letter until it's mounted again under the original drive letter, and dismounted properly. "Half dismounting" a volume also prevents BestCrypt from mounting any other volume as that drive letter.</li>
+      </ul> <li>Package: OTFEScramDisk</li>
     <ul>
       <li>Now at version v2.0.0</li>
       <li>Upgraded to better support ScramDisk v3</li>

@@ -32,86 +32,65 @@ _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 #### Overview
 </A>
 
-A DoxBox critical data block consists of **CDL** bits
-of data. The following table describes the high-level layout of a
-DoxBox CDB:
+A DoxBox critical data block consists of **CDL** bits of data. The following table describes the high-level layout of a DoxBox CDB:
 
 <TABLE style="width: 100%;">
-
-<TBODY><TR>
-<TD style="background-color: rgb(255, 204, 204);">Critical data block:
-<TABLE>
-<TBODY><TR>
-<TD>Password salt</TD>
-
-<TD style="background-color: rgb(153, 255, 255);">Encrypted block:
-<TABLE>
-<TBODY><TR>
-<TD>Check MAC</TD>
-
-                  <TD>Random padding #3                   </TD>
-<TD>Volume details block: <TABLE>
-<TBODY>
-<TR>
-<TD>CDB format ID </TD>
-<TD>Volume flags</TD>
-<TD>Encrypted partition image length</TD>
-<TD>Master key length</TD>
-<TD>Master key</TD>
-                        <TD ="">Requested drive letter</TD>
-
-                        <TD>Volume IV length</TD>
-
-<TD>Volume IV</TD><TD>Sector IV generation method</TD>
-<TD>Random padding #2</TD>
-
-</TR>
-</TBODY>
-</TABLE>
-</TD>
-
-</TR>
-</TBODY></TABLE>
-</TD><TD>Random padding #1</TD>
-
-</TR>
-</TBODY></TABLE>
-</TD>
-
-</TR>
-</TBODY>
+	
+	<TBODY><TR>
+	<TD style="background-color: rgb(255, 204, 204);">Critical data block:
+	<TABLE>
+		<TBODY>
+		<TR>
+		<TD>Password salt</TD>
+		
+		<TD style="background-color: rgb(153, 255, 255);">Encrypted block:
+		<TABLE>
+			<TBODY><TR>
+			<TD>Check MAC</TD> 
+			<TD>Random padding #3                   </TD>
+			<TD>Volume details block: 
+			<TABLE>
+				<TBODY>
+				<TR>
+				<TD>CDB format ID </TD>
+				<TD>Volume flags</TD>
+				<TD>Encrypted partition image length</TD>
+				<TD>Master key length</TD>
+				<TD>Master key</TD>
+				<TD ="">Requested drive letter</TD>		
+				<TD>Volume IV length</TD>		
+				<TD>Volume IV</TD>
+				<TD>Sector IV generation method</TD>
+				<TD>Random padding #2</TD>		
+				</TR>
+				</TBODY>
+			</TABLE>
+			</TD>	
+			</TR>
+			</TBODY>
+		</TABLE>
+	</TD><TD>Random padding #1</TD>
+	
+	</TR>
+	</TBODY></TABLE>
+	</TD>
+	
+	</TR>
+	</TBODY>
 </TABLE>
 
 Color key:
 
-</p>
-
 <TABLE>
-
-<TBODY>
-<TR>
-<TH>Color
-</TH>
-<TH>Encryption used
-</TH>
-</TR>
-<TR>
-<TD style="background-color: rgb(255, 204, 204);">	</TD>
-
-<TD>Red items are not encrypted</TD>
-
-</TR>
-<TR>
-<TD style="background-color: rgb(153, 255, 255);">	</TD>
-
-<TD>Blue items are encrypted with the user's chosen cypher together with a "critical data key" generated using PKCS#5 PBKDF2 (with HMAC PRF) together with the user's password, salt, and chosen hash algorithm</TD>
-</TR>
-
-</TBODY>
+	
+	<TBODY>
+	<TR> <TH>Color </TH> <TH>Encryption used </TH> </TR>
+	<TR> <TD style="background-color: rgb(255, 204, 204);">	</TD> <TD>Red items are not encrypted</TD> </TR>
+	<TR> <TD style="background-color: rgb(153, 255, 255);">	</TD> <TD>Blue items are encrypted with the user's chosen cypher together with a "critical data key" generated using PKCS#5 PBKDF2 (with HMAC PRF) together with the user's password, salt, and chosen hash algorithm</TD> </TR>	
+	</TBODY>
 </TABLE>
 
-Seem intimidating? Read on, and all will become clear... When broken down into its component parts,
-the CDB structure is reasonably straightforward to understand.
+Seem intimidating? Read on, and all will become clear... When broken down into its component parts, the CDB structure is reasonably straightforward to understand.
 
 </p>
 
@@ -122,48 +101,13 @@ Note: Throughout this document, the following definitions apply:
 <TABLE>
 
   <TBODY>
-    <TR>
-      <TH>Variable
-      </TH>
-      <TH>Definition
-      </TH>
-    </TR>
-    <TR>
-      <TD>_CDL_</TD>
-
-      <TD>Critical Data Length (in bits)  This is defined as 4096 bits.</TD>
-
-    </TR>
-    <TR>
-      <TD>_MML_</TD>
-
-      <TD>Maximum MAC Length (in bits)  This is defined as 512 bits.</TD>
-
-    </TR>
-<TR>
-      <TD>**sl**</TD>
-
-      <TD>Salt length (in bits)  This is the user specified salt length, as specified by the user when the CDB is created</TD>
-
-    </TR>
-    <TR>
-      <TD>**cbs**</TD>
-
-      <TD>Cypher Block Size (in bits)  The block size of the cypher used to encrypt the volume</TD>
-
-    </TR>
-    <TR>
-      <TD>**cks**</TD>
-
-      <TD>Cypher Key Size (in bits)  The key size of the cypher used to encrypt the volume.  If the cypher accepts variable length keysizes, this is set to a user-specified value up to a maximum of 512.</TD>
-
-    </TR>
-    <TR>
-      <TD>**ml**</TD>
-
-      <TD>MAC length (in bits)  This is the length of MAC generated</TD>
-
-    </TR>
+    <TR> <TH>Variable </TH> <TH>Definition </TH> </TR>
+    <TR> <TD>_CDL_</TD> <TD>Critical Data Length (in bits)  This is defined as 4096 bits.</TD> </TR>
+    <TR> <TD>_MML_</TD> <TD>Maximum MAC Length (in bits)  This is defined as 512 bits.</TD> </TR>
+    <TR> <TD>**sl**</TD> <TD>Salt length (in bits)  This is the user specified salt length, as specified by the user when the CDB is created</TD> </TR>
+    <TR> <TD>**cbs**</TD> <TD>Cypher Block Size (in bits)  The block size of the cypher used to encrypt the volume</TD> </TR>
+    <TR> <TD>**cks**</TD> <TD>Cypher Key Size (in bits)  The key size of the cypher used to encrypt the volume.  If the cypher accepts variable length keysizes, this is set to a user-specified value up to a maximum of 512.</TD> </TR>
+    <TR> <TD>**ml**</TD> <TD>MAC length (in bits)  This is the length of MAC generated</TD> </TR>
   </TBODY>
 </TABLE>
 
@@ -175,64 +119,22 @@ Note: Throughout this document, the following definitions apply:
 
 <TABLE>
 
-<TBODY><TR>
-<TD>Password salt</TD>
-
-<TD>Encrypted block</TD><TD>Random padding #1</TD>
-
-</TR>
+<TBODY>
+<TR> <TD>Password salt</TD> <TD>Encrypted block</TD><TD>Random padding #1</TD> </TR>
 </TBODY>
 </TABLE>
 
 <TABLE>
 
 <TBODY>
-<TR>
-<TH>Item name</TH>
-
-<TH>Size (in bits)</TH>
-
-<TH>Description</TH>
-</TR>
-
-<TR>
-<TD>Password salt</TD>
-
-<TD>**sl**  (User specified to a max 512)</TD>
-
-<TD>This data is used together with the user's password to derive the "critical data key". This key is then used to encrypt/decrypt the "Encrypted block".</TD>
-</TR>
-
-<TR>
-<TD>Encrypted block</TD>
-
-<TD>If **cbs**&gt;8 then:  ((**CDL** - **sl**) div **cbs)** * **cbs**  If **cbs**&lt;=8 then:  (**CDL** - **sl**)  This size is referred to as "**leb**"</TD>
-
-<TD>This block contains the actual key which is used to encrypt/decrypt the encrypted partition image.  See below for further breakdown.  </p></TD>
-</TR>
-
-<TR>
-<TD>Random padding #1</TD>
-
-<TD>((**CDL**- **sl**) - **leb**)</TD>
-
-<TD>Random "padding" data. Required to pad out any remaining, unused, bits in the **"critical data block"**</TD>
-
-</TR>
-<TR>
-<TD>*_Total size:_*</TD>
-
-<TD>**CDL**</TD>
-
-<TD></TD>
-
-</TR>
+<TR> <TH>Item name</TH> <TH>Size (in bits)</TH> <TH>Description</TH> </TR>
+<TR> <TD>Password salt</TD> <TD>**sl**  (User specified to a max 512)</TD> <TD>This data is used together with the user's password to derive the "critical data key". This key is then used to encrypt/decrypt the "Encrypted block".</TD> </TR>
+<TR> <TD>Encrypted block</TD> <TD>If **cbs**&gt;8 then:  ((**CDL** - **sl**) div **cbs)** * **cbs**  If **cbs**&lt;=8 then:  (**CDL** - **sl**)  This size is referred to as "**leb**"</TD> <TD>This block contains the actual key which is used to encrypt/decrypt the encrypted partition image.  See below for further breakdown.  </p></TD> </TR>
+<TR> <TD>Random padding #1</TD> <TD>((**CDL**- **sl**) - **leb**)</TD> <TD>Random "padding" data. Required to pad out any remaining, unused, bits in the **"critical data block"**</TD> </TR>
+<TR> <TD>*_Total size:_*</TD> <TD>**CDL**</TD> <TD></TD> </TR>
 </TBODY>
 </TABLE>
 
-</p>
-
-</p>
 
 * * *
 
@@ -240,19 +142,12 @@ Note: Throughout this document, the following definitions apply:
 
 <TABLE>
 
-<TBODY><TR>
-<TD>Check MAC</TD>
-
-      <TD>Random padding #3</TD>
-
-<TD>Volume details block</TD>
-
-</TR>
+<TBODY>
+<TR> <TD>Check MAC</TD> <TD>Random padding #3</TD> <TD>Volume details block</TD> </TR>
 </TBODY>
 </TABLE>
 
-As described above, this entire block is encrypted using the user's
-password, salt, and chosen hash and cypher algorithms. 
+As described above, this entire block is encrypted using the user's password, salt, and chosen hash and cypher algorithms. 
 
 </p>
 
@@ -276,13 +171,7 @@ As this block is encrypted, its length (in bits) must be a multiple of the cyphe
 
 </TR>
 
-    <TR>
-      <TD>Random padding #3</TD>
-
-      <TD>**MML **- **ml**</TD>
-
-      <TD>Random "padding" data. Required to pad out the check MAC to a predetermined number of bits.</TD>
-    </TR>
+ <TR> <TD>Random padding #3</TD> <TD>**MML **- **ml**</TD> <TD>Random "padding" data. Required to pad out the check MAC to a predetermined number of bits.</TD> </TR>
 <TR>
 <TD>Volume details</TD>
 
@@ -322,17 +211,16 @@ As this block is encrypted, its length (in bits) must be a multiple of the cyphe
       <TD>Requested drive letter</TD>
 <TD>Volume IV length</TD>
 
-      <TD>Volume IV</TD>
+<TD>Volume IV</TD>
 
-      <TD>Sector IV generation method</TD>
+<TD>Sector IV generation method</TD>
 <TD>Random padding #2</TD>
 
 </TR>
 </TBODY>
 </TABLE>
 
-Finally, we reach the details that the critical data block was designed
-to protect. All of the items within this block have bit order: MSB first.
+Finally, we reach the details that the critical data block was designed to protect. All of the items within this block have bit order: MSB first.
 
 <TABLE>
 <TBODY><TR>
@@ -350,9 +238,7 @@ to protect. All of the items within this block have bit order: MSB first.
 
 <TD>This is a version ID which identifies the layout of the remainder of the volume details block  When this layout format is used, this will always be set to 3.  </p>
       
-Later volume file layouts may
-have different items in this section, or the layout may change; in which
-case a different version ID will be used here.</p>
+Later volume file layouts may have different items in this section, or the layout may change; in which case a different version ID will be used here.</p>
 </TD>
 </TR>
 
@@ -368,7 +254,14 @@ Bit - Description
 0 - (unused)
 
 1 - Sector ID zero is at the start of the file
- 						 0 = Sector ID zero is at the start of the encrypted data  	   				 1 = Sector ID zero is at the start of the host volume file/partition  2 - (unused) 3 - (unused)  4 - Volume file timestamps normal operation  						 0 = On dismount, volume file timestamps will be reset to the values they were when mounted  						 1 = On dismount, volume file timestamps will be left as-is (i.e. will indicate the date/time the volume was last written to)  			 Note: This bit gets ignored by the GUI, which will operate it according to the user options set at the time the volume is mounted</TD>
+	0 = Sector ID zero is at the start of the encrypted data  	   				 
+	1 = Sector ID zero is at the start of the host volume file/partition  
+2 - (unused) 
+3 - (unused)  
+4 - Volume file timestamps normal operation  						 
+	0 = On dismount, volume file timestamps will be reset to the values they were when mounted
+	1 = On dismount, volume file timestamps will be left as-is (i.e. will indicate the date/time the volume was last written to)
+	Note: This bit gets ignored by the GUI, which will operate it according to the user options set at the time the volume is mounted</TD>
 
 </TR>
 
@@ -420,11 +313,13 @@ Bit - Description
 
       <TD>8</TD>
 
-      <TD>This is set to indicate the
-method of generating sector IVs. Note that if a volume IV is present,
-then it will be XORd with the IV generated using this method, before it
-is used for encryption/decryption. In all cases, the sector IV generated will be right-padded/truncated to the cypher's blocksize.  If the cypher's blocksize is &lt;= 0, then this must be set to 0.  0 - No sector IVs (Null sector IV)  1 - Sector IV is the 32 bit sector ID (LSB first)  2 - Sector IV is the 64 bit sector ID (LSB first)  3 - Hash of the 32 bit sector ID (sector ID is LSB first)  4 - Hash of the 64 bit sector ID (sector ID is LSB first)  5 - ESSIV  The "Volume flags" item is used to determine the location of sector zero (start of encrypted data, or start of host file/partition)</TD>
-
+      <TD>This is set to indicate the method of generating sector IVs. Note that if a volume IV is present, then it will be XORd with the IV generated using this method, before it is used for encryption/decryption. In all cases, the sector IV generated will be right-padded/truncated to the cypher's blocksize.  If the cypher's blocksize is &lt;= 0, then this must be set to 0.  
+      0 - No sector IVs (Null sector IV)  
+      1 - Sector IV is the 32 bit sector ID (LSB first)  
+      2 - Sector IV is the 64 bit sector ID (LSB first)  
+      3 - Hash of the 32 bit sector ID (sector ID is LSB first)  
+      4 - Hash of the 64 bit sector ID (sector ID is LSB first)  
+      5 - ESSIV  The "Volume flags" item is used to determine the location of sector zero (start of encrypted data, or start of host file/partition)</TD>
     </TR>
 <TR>
       <TD>Random padding #2</TD>
@@ -451,35 +346,17 @@ is used for encryption/decryption. In all cases, the sector IV generated will be
 #### Miscellaneous Comments Regarding the CDB Layout
 </A>
 
-The design of the critical data layout eliminates the need for the
-cypher/hash used to be stored anywhere, denying an attacker this
-information and increasing the amount of work required to attack a
-volume file.
+The design of the critical data layout eliminates the need for the cypher/hash used to be stored anywhere, denying an attacker this information and increasing the amount of work required to attack a volume file.
 
-The "password salt" appears **before**
-the "encrypted block", and no indication of the length of salt used is
-stored anywhere in order to prevent an attacker from even knowing where
-the "encrypted block" starts within the CDB.
+The "password salt" appears **before** the "encrypted block", and no indication of the length of salt used is stored anywhere in order to prevent an attacker from even knowing where the "encrypted block" starts within the CDB.
 
-The "Check MAC" is limited to 512 bits. This is limited for
-practical reasons as some kind of limit is required if the critical
-data
-block is to be of a predetermined size. See section on mounting volume
-files for how multiple matching MACs are handled.
+The "Check MAC" is limited to 512 bits. This is limited for practical reasons as some kind of limit is required if the critical data block is to be of a predetermined size. See section on mounting volume files for how multiple matching MACs are handled.
 
 The "Password salt" is (fairly arbitrarily) limited to 512 bits. Again, this is primarily done for practical reasons.
 
-Although at time of writing (March 2005) this limit to the length of salt
-used should be sufficient, the format of the critical data block (with
-included layout version ID) does allow future scope for modification in
-order to allow the critical data block to be extended (e.g. from 4096
-to 8192 bits), should this limit be deemed inadequate..
+Although at time of writing (March 2005) this limit to the length of salt used should be sufficient, the format of the critical data block (with included layout version ID) does allow future scope for modification in order to allow the critical data block to be extended (e.g. from 4096 to 8192 bits), should this limit be deemed inadequate..
 
-The "Encrypted block" does contain a certain amount of data
-that may be reasonably guessed by an attacker (e.g. the CDB format ID), however this would be of very limited use to an attacker
-launching a "known plaintext" attack as the amount of this data is
-minimal, and as with pretty much any OTFE system the encrypted partition image can reasonably expected to
-contain significantly more known plaintext than the CDB anyway (e.g. the partition's boot sector)
+The "Encrypted block" does contain a certain amount of data that may be reasonably guessed by an attacker (e.g. the CDB format ID), however this would be of very limited use to an attacker launching a "known plaintext" attack as the amount of this data is minimal, and as with pretty much any OTFE system the encrypted partition image can reasonably expected to contain significantly more known plaintext than the CDB anyway (e.g. the partition's boot sector)
 
 ##### CDB Encryption
 
@@ -495,24 +372,16 @@ The key used for this encryption/decryption depends on the CDB format used to cr
 
 For older (CDB format 1) volumes, the key is derived as follows:
 
-<OL>
-* The user's password is appended to the salt bits
-* The result is hashed with the user's choice of hash algorithm
-* If the cypher used has a fixed keysize, this hash value generated
-is truncated/right padded with NULLs until it is the same length as the
-cypher's keysize
 
-</OL>
+1. The user's password is appended to the salt bits
+1. The result is hashed with the user's choice of hash algorithm
+1. If the cypher used has a fixed keysize, this hash value generated is truncated/right padded with NULLs until it is the same length as the cypher's keysize
+
+
 
 For newer (CDB format 2) volumes, the key is derived as follows:
 
-<OL>
-* The user's password is passed through "n" iterations (where "n"
-is user specified) of PKCS#5 PBKDF2 using HMAC as the PRF, which is
-turn employs the user's choice of hash algorithm. In doing so, the
-user's password is supplied as the password to PBKDF2, and the salt
-bits are used as the PBKDF2 salt.
-</OL>
+1. The user's password is passed through "n" iterations (where "n" is user specified) of PKCS#5 PBKDF2 using HMAC as the PRF, which is turn employs the user's choice of hash algorithm. In doing so, the user's password is supplied as the password to PBKDF2, and the salt bits are used as the PBKDF2 salt.
 
 <A NAME="level_5_heading_1">
 ##### Check MAC
@@ -520,14 +389,9 @@ bits are used as the PBKDF2 salt.
 
 The manner in which the check bytes within a CDB are calculated depends on the CDB format used.
 
-For older (CDB format 1) volumes, the check bytes are calculated by
-simply hashing the volume details block with the user's choice of hash
-algorithm.
+For older (CDB format 1) volumes, the check bytes are calculated by simply hashing the volume details block with the user's choice of hash algorithm.
 
-For newer (CDB format 2) volumes, the check bytes are calculated by
-passing the volume details block through HMAC with the user's choice of
-hash algorithm. In doing so, the derived key used to encrypt/decrypt
-the CDB is used as the HMAC key.
+For newer (CDB format 2) volumes, the check bytes are calculated by passing the volume details block through HMAC with the user's choice of hash algorithm. In doing so, the derived key used to encrypt/decrypt the CDB is used as the HMAC key.
 
 
 
