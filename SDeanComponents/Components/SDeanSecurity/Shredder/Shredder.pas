@@ -148,7 +148,7 @@ type
 
     // You probably don't want to call this one - call
     // OverwriteDriveFreeSpace(...) instead
-    function  DestroyDevice(itemname: string; quickShred: boolean; silent: boolean = FALSE): boolean;
+    function  DestroyDevice(itemname: string; quickShred: boolean; silent: boolean = FALSE): TShredResult;
 
     // Destroy the specified file or directory
     // Note that, with the internal shredder at any rate, calling WipeFileSlack
@@ -433,18 +433,13 @@ end;
 //              delete the first n bytes
 // Note: Use LastIntShredResult to determine if user cancelled, or there was a
 //       failure in the shredding
-function TShredder.DestroyDevice(itemname: string; quickShred: boolean; silent: boolean = FALSE): boolean;
-var
-  retval: boolean;
+function TShredder.DestroyDevice(itemname: string; quickShred: boolean; silent: boolean = FALSE): TShredResult;
 begin
-  retval := FALSE;
+  result := srError;
   if IsDevice(itemname) then
     begin
-    retval := (InternalShredFile(itemname, quickShred, silent, nil, TRUE) = srSuccess);
+    result := InternalShredFile(itemname, quickShred, silent, nil, TRUE);
     end;
-
-  Result := retval;
-
 end;
 
 

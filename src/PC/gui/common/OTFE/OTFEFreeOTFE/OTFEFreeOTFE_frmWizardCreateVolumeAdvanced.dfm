@@ -22,15 +22,11 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
     Top = 8
     Width = 417
     Height = 365
-    ActivePage = tsPadding
+    ActivePage = tsChaff
     TabOrder = 0
     object tsKeyIterations: TTabSheet
       Caption = 'Key Iterations'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label22: TLabel
         Left = 80
         Top = 192
@@ -65,10 +61,6 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
     end
     object tsSalt: TTabSheet
       Caption = 'Salt'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label15: TLabel
         Left = 110
         Top = 192
@@ -113,10 +105,6 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
     object tsDriveLetter: TTabSheet
       Caption = 'Drive Letter'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 87
         Top = 192
@@ -152,10 +140,6 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
     object tsCDBLocation: TTabSheet
       Caption = 'CDB Location'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object rbCDBInVolFile: TRadioButton
         Left = 14
         Top = 212
@@ -219,36 +203,25 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
     object tsPadding: TTabSheet
       Caption = 'Padding'
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label2: TLabel
-        Left = 320
-        Top = 224
+        Left = 328
+        Top = 296
         Width = 27
         Height = 13
         Caption = 'bytes'
       end
       object Label3: TLabel
-        Left = 12
-        Top = 224
+        Left = 20
+        Top = 296
         Width = 147
         Height = 13
         Caption = 'Amount of padding to append:'
-      end
-      object Label4: TLabel
-        Left = 12
-        Top = 252
-        Width = 115
-        Height = 13
-        Caption = 'Type of overwrite data:'
       end
       object reInstructPadding: TOTFEFreeOTFE_InstructionRichEdit
         Left = 8
         Top = 12
         Width = 389
-        Height = 197
+        Height = 261
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -259,29 +232,60 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
         ParentFont = False
         TabOrder = 0
       end
-      object rbDataEncrypted: TRadioButton
-        Left = 192
-        Top = 272
-        Width = 193
-        Height = 17
-        Caption = 'Encrypted data'
-        TabOrder = 1
-      end
-      object rbDataPseudorandom: TRadioButton
-        Left = 192
-        Top = 252
-        Width = 193
-        Height = 17
-        Caption = 'Pseudorandom data'
-        TabOrder = 2
-      end
       object se64Padding: TSpinEdit64
-        Left = 192
-        Top = 220
+        Left = 200
+        Top = 292
         Width = 121
         Height = 22
         Increment = 1
-        TabOrder = 3
+        TabOrder = 1
+      end
+    end
+    object tsChaff: TTabSheet
+      Caption = 'Chaff'
+      ImageIndex = 5
+      object Label4: TLabel
+        Left = 3
+        Top = 254
+        Width = 115
+        Height = 13
+        Caption = 'Type of overwrite data:'
+      end
+      object Label5: TLabel
+        Left = 0
+        Top = 0
+        Width = 409
+        Height = 91
+        Align = alTop
+        Caption = 
+          'Choose how to overwrite the file or partition the DoxBox is stor' +
+          'ed on.'#13#10'Secure data will make it harder - perhaps impossible - f' +
+          'or an attacker to tell if a '#39'hidden'#39' box has been added at a lat' +
+          'er date.'#13#10'It will also make it hard to tell the exact size of yo' +
+          'ur data. Overwriting with secure data will take longer than with' +
+          ' zeros.'#13#10#39'Zeros'#39' will make it easy for an attacker to tell if a ' +
+          'hidden box has been added and the amount of data stored in your ' +
+          'box, but allow the box to be created faster.'
+        WordWrap = True
+        ExplicitWidth = 396
+      end
+      object rbDataEncrypted: TRadioButton
+        Left = 192
+        Top = 299
+        Width = 193
+        Height = 17
+        Caption = 'Secure pseudorandom data'
+        Checked = True
+        TabOrder = 0
+        TabStop = True
+      end
+      object rbZeros: TRadioButton
+        Left = 192
+        Top = 253
+        Width = 193
+        Height = 17
+        Caption = 'Zeros'
+        TabOrder = 1
       end
     end
   end
@@ -308,7 +312,7 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
   object SaveDialog: TSDUSaveDialog
     Options = [ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     PreserveCWD = False
-    Left = 264
-    Top = 316
+    Left = 392
+    Top = 292
   end
 end

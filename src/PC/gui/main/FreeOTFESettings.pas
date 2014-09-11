@@ -75,7 +75,6 @@ const
                                   @ONNORMALDISMOUNTFAIL_CANCELDISMOUNT
                                  );
 
-
 type
   TSystemTrayClickAction = (
                             stcaDoNothing,

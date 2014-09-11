@@ -31,8 +31,7 @@ _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
   * [Overview](#level_3_heading_1)
   * [Legal Issues](#level_3_heading_2)
   * [Hidden Volumes](#level_3_heading_3)
-  * [More Advanced Hidden Volumes](#level_3_heading_4)
-  * [In Practice](#level_3_heading_5)
+  * [In Practise](#level_3_heading_5)
 </UL>
 
 * * * 
@@ -42,19 +41,12 @@ _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 
 The subject of "plausible deniability" and OTFE systems is a lot more involved than "do my volume files have any kind of identifying signature?"
 
-"Plausible deniability" in OTFE systems is largely based on the _theory_ that you can claim that your volume files are _not_ encrypted data; you don't know _what_ they are - you can't be expected to know every operation that your OS carries out! Perhaps it's some corrupt data that the system recovered at some stage?
+Some people believe they can get "Plausible deniability" by simply claiming that their volume files are _not_ encrypted data; you don't know _what_ they are - you can't be expected to know every operation that your OS carries out! Perhaps it's some corrupt data that the system recovered at some stage?
 
-This _claim_ is only possible with OTFE systems which do not embed any kind of "signature" into their encrypted data (typically an _unencrypted_ critical data area).
-DoxBox files have no such signature.
+However, while DoxBox files have no 'signature' that identifies them as such, this simplistic approach does not offer any significant form of protection because:
 
-However, this simplistic approach to plausible deniability has many drawbacks, and is _highly unlikely_ to offer any significant form of protection; for example:
-
-<OL>
-  * Encrypted data has relatively high entropy - something "corrupt files, recovered automatically by the OS" are _not likely_ to have. (Recovered data is likely to have some form of recognisable structure, or signature, _somewhere_ within it)
-
-  * Having several GB of high-entropy data stored on your HDD, together with an OTFE package, is likely to be viewed as "suspicious" at the very least...
-
-</OL>
+  * Encrypted data has high entropy - i.e. it looks like 'random' data - something "corrupt files, recovered automatically by the OS" do not have. (Recovered data is likely to have some form of recognisable structure, or signature, _somewhere_ within it)
+  * Having several GB of high-entropy data stored on your HDD, together with an OTFE package, is likely to be viewed as "suspicious" at the very least.
 
 * * * 
 <A NAME="level_3_heading_2">
@@ -75,54 +67,72 @@ Depending largely on how the courts may interpret it, a user (as defendant) may 
 
 More advanced OTFE systems go one step further: support for hidden volumes (as DoxBox does).
 
-Here, you have a "normal" DoxBox filled with data that you have no objection to disclosing to an attacker. Opening the Box with a different password causes DoxBox to read a different part of the "host" DoxBox file; giving access to a separate "hidden" DoxBox.
+Here, you have a "normal" DoxBox filled with data that you are prepared to disclose to an attacker. Opening the Box with a different password causes DoxBox to read a different part of the file containing the DoxBox; giving access to a separate "hidden" DoxBox.
 
 Here the concept of "plausible deniability" is much stronger; theoretically an attacker is not able to determine (let alone prove) whether or not such a hidden DoxBox is present.
 
 However, the implementation of such "hidden DoxBoxes" is not as trivial as it may seem at first.
 
-In order for this approach to be successful, the DoxBox file must be initialized by writing random data to it. This is required since the host file may well have been created by simply writing 0x00's to your HDD in order to generate a large enough file. Any hidden volume stored within such a host file may well cause an attacker suspicion as to whether a hidden Box exists. (The hidden Box will appear as a large amount of high-entropy data, stuck in the middle of the file; interrupting the neat pattern of 0x00's!)
+The host file may well have been created by simply writing zeros to your HDD in order to generate a large enough file. Any hidden volume stored within such a host file will stand out from the 'background'. The hidden Box will appear as a large amount of high-entropy data, stuck in the middle of the file; interrupting the neat pattern of zeros, and an attacker will know a hidden Box exists.
 
-The "random data" used for this process cannot simply be pseudorandom data; given the size of a typical volume file (even ones as small as a MB), pseudorandom data can potentially be identified as such, and become predictable. In this case, your hidden volume will not appear as high-entropy data stuck in the middle of a series of 0x00 bytes, but as high-entropy data interrupting any pattern formed by the pseudorandom data!
+So in order for this approach to be successful, the DoxBox file must be initialised by writing it with data indistinguishable from encrypted data. This background data is sometimes referred to as 'chaff'. 
 
-Because truly random data can be difficult to rapidly generate in large quantities using a computer. Pseudorandom data _can_ still be used though: by encrypting it before it is written to the host file. In principle, although not as good as a cryptographically secure RNG, this should give the data written to the volume file a suitable degree of entropy.
+The 'chaff' cannot simply be pseudo-random data; pseudo-random data can potentially be distinguished from encrypted data, and even be predictable. In this case, your hidden volume will not appear as high-entropy data stuck in the middle of a series of 0x00 bytes, but as high-entropy data interrupting a pattern formed by the pseudo-random data.
 
-The easiest way of accomplishing this is, which will work with _any_ OTFE system, is to open the outer DoxBox as per normal and overwrite all of its free space with a single pass of pseudorandom data. The data written to the DoxBox will be encrypted as it is written to the file.
+Truly random data can be difficult to rapidly generate in large quantities using a computer. However data produced by a 'cryptographically secure pseudorandom number generator' (CSPRNG) is thought to be indistinguishable from random data and, importantly, from encrypted data without cracking the cypher.TODO:ref
 
-* * * 
-<A NAME="level_3_heading_4">
-### More Advanced Hidden Volumes
-</A>
+So to attain plausible deniability, DoxBox automatically overwrites any host file or partition, when its created, with the output from a CSPRNG.
 
-The technique described above for mounting and overwriting a volume before creating a hidden volume on it still isn't enough though.
+The CSPRNG data is produced by encrypting pseudorandom data using a truly random key.
 
-If you were to be forced to hand over the key to the outer DoxBox; an attacker could then apply the same analysis - but this time to the mounted (plaintext) version of your host volume. Again, any hidden volume may well stick out in any pattern within the pseudorandom data.
+If no other source of randomness is enabled (on the 'RNG' tab of the advanced dialog) you will have to "waggle" the mouse pointer over the space shown on the dialog displayed.
 
-The solution suggested is to encrypt the pseudorandom data _before_ it is used to overwrite the mounted volume's free space; any attacker attempting to identify a hidden volume, even with the key to the outer "host" volume, would not be able to differentiate between your encrypted pseudorandom data, and an encrypted hidden volume.
+This ensures that if a hidden volume is created, the encrypted data is not distinguishable from the 'background'.
 
-This all assumes the cypher used is strong enough, of course...
+A related issue is that without this 'chaff' an attacker can easily tell the amount of data stored in the volume. This is because there will only be encrypted data in the file where data has been written. 
 
-For obvious reasons, all such overwriting must be carried out _before_ the hidden volume is created (doing so afterwards would probably corrupt your hidden volume!)
+This overwriting can take some time with large volumes. It can be disabled on the 'chaff' tab of the advanced creation dialog.
 
-* * * 
-<A NAME="level_3_heading_5">
-### In Practice
-</A>
+If this is disabled, note the following:
 
-Needless to say, DoxBox offers full functionality with overwriting and the encryption of random data used.
+1. An attacker can easily tell the amount of data stored in the volume.
+1. If at a later date you add a hidden volume to the file, this can easily be found by an attacker (but see below)
+1. If at a later date you create a volume with 'chaff' intending to create a hidden volume in it, an attacker may wonder why this volume is different and conclude it contains a hidden volume.
 
-To ensure the maximum security for your volumes, the following procedure is suggested after creating each new volume:
+The only way to avoid this last - an attacker guessing a volume contains a hidden one, because chaff was used - is to add chaff by default to all volumes and require the user to explicitly disable it. This provides a plausible reason why chaff was used on a particular volume.
 
-1. Mount the new volume
-1. Select the new volume just mounted, and then select the "Tools | Overwrite entire drive..." menu-item. (Note: The "Overwrite free space..." option should _not_ be selected for this purpose, as this will miss overwriting parts of the volume which the filesystem reserves)
-1. Doublecheck that you have selected the right volume, and confirm your actions at the prompt displayed
-1. Select "Encrypted data", and a suitable cypher from the dropdown list. Note that the cypher selected does not have to be the same as the one used to secure your volume.
-1. Click "OK"
-1. Generate some random data to be used as the key for the cypher by "waggling" the mouse pointer over the space shown on the dialog displayed
-1. Click "OK"
-1. Click "Yes" to confirm you wish to proceed
+If you create a volume without using 'chaff' and at a later date you want to add a hidden volume, a way of avoiding making it visible (point 2 above) is to overwrite the free space in the 'outer' volume with CSPRNG data; to do this:
 
-At this point, the volume will be overwritten. Depending on your hardware, _this process may take some time!_ After the overwrite completes, format the drive. The new volume will then be ready for use. To create a hidden volume within the volume just created, dismount the drive and carry out the normal procedure for creating a hidden volume (see the [Advanced Topics](advanced_topics.md) section for instructions on how to do this).
+		1. Mount the outer volume
+		1. Select the new volume just mounted, and then select the "Tools | Overwrite free space..." option  
+		1. Double-check that you have selected the right volume, and confirm your actions at the prompt displayed
+		1. Select "Encrypted data", and a suitable cypher from the drop-down list. Note that the cypher selected does not have to be the same as the one used to secure your volume.
+		1. Click "OK"
+		1. Generate some random data to be used as the key for the cypher by "waggling" the mouse pointer over the space shown on the dialog displayed (if no cryptlib is selected)
+		1. Click "OK"
+		1. Click "Yes" to confirm you wish to proceed
+		
+At this point, the free space will be overwritten. Depending on your hardware, _this process may take some time!_ . To create a hidden volume, dismount the drive and carry out the normal procedure for creating a hidden volume (see the [Advanced Topics](advanced_topics.html) section for instructions on how to do this).	
+		
+Note this will miss overwriting parts of the volume which the filesystem reserves, it is also slower than using 'chaff' to start with (as the data is encrypted 2ce). 
+
+### older versions		
+
+DoxBox v6.0 and FreeOTFE did /not/ use 'chaff' as described above. A manual process was given (similar to that above), however this would have to be done on every volume created - even those without hidden volumes - to achieve plausible deniability.
+
+If you ever intend to use hidden volumes, and you did not follow this process, its recommended to create new volumes in DoxBox v6.1 and move any data over.
+You should do likewise if you did not follow this process, and you wish to prevent an attacker knowing the amount of data stored in the Box.
+
+### practical problems with deniability
+
+TODO:
+
+* repeated access (backups, wear levelling)
+* links, MRU lists
+* registry storing FS ids and device ids
+* deleted files in outer vol.
+* watermarking attacks
+
 
 
 

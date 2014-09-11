@@ -308,7 +308,8 @@ uses
   OTFEFreeOTFE_DriverAPI,
   SDUFileIterator_U,
   pkcs11_slot,
-  OTFEFreeOTFE_PKCS11;
+  OTFEFreeOTFE_PKCS11,
+  OTFEFreeOTFE_frmWizardCreateVolume;//for format drive
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -348,16 +349,6 @@ resourcestring
   POPUP_DISMOUNT = 'Dismount %1: %2';
 
 const
-  // Format disk related functions ripped from the Unofficial Delphi FAQ (UDF)
-  SHFMT_ID_DEFAULT      = $FFFF;
-  // Formating options
-  SHFMT_OPT_QUICKFORMAT = $0000;
-  SHFMT_OPT_FULL        = $0001;
-  SHFMT_OPT_SYSONLY     = $0002;
-  // Error codes
-  SHFMT_ERROR           = $FFFFFFFF;
-  SHFMT_CANCEL          = $FFFFFFFE;
-  SHFMT_NOFORMAT        = $FFFFFFFD;
 
   R_ICON_MOUNTED   = 'MOUNTED';
   R_ICON_UNMOUNTED = 'UNMOUNTED';
@@ -416,11 +407,6 @@ const
   URL_PADFILE_MAIN   = 'https://raw.githubusercontent.com/t-d-k/doxbox/master/PAD.xml';
   // Download URL...
   URL_DOWNLOAD_MAIN  = 'http://DoxBox.eu/download.html';
-
-
-// External function in shell32.dll
-function SHFormatDrive(Handle: HWND; Drive, ID, Options: Word): Longint;
-  STDCALL; EXTERNAL 'shell32.dll' Name 'SHFormatDrive'
 
 
  // This procedure is called after OnCreate, and immediatly before the
@@ -2594,43 +2580,19 @@ begin
 end;
 
 procedure TfrmFreeOTFEMain.actFormatExecute(Sender: TObject);
-resourcestring
-  FORMAT_CAPTION = 'Format';
 var
-  i:         Integer;
-  currDrive: AnsiChar;
-  driveNum:  Word;
   selDrives: AnsiString;
 begin
   selDrives := GetSelectedDrives();
-  for i := 1 to length(selDrives) do begin
-    currDrive := selDrives[i];
-    driveNum  := Ord(currDrive) - Ord('A');
-    SHFormatDrive(Handle, driveNum, SHFMT_ID_DEFAULT, SHFMT_OPT_FULL);
-  end;
-
-  // This is *BIZARRE*.
-  // If you are running under Windows Vista, and you mount a volume for
-  // yourself only, and then try to format it, the format will fail - even if
-  // you UAC escalate to admin
-  // That's one thing - HOWEVER! After it fails, for form's title is set to:
-  //   Format <current volume label> <drive letter>:
-  // FREAKY!
-  // OTOH, it does means we can detect and inform the user that the format
-  // just failed...
-  if (Pos(uppercase(FORMAT_CAPTION), uppercase(self.Caption)) > 0) then begin
-    self.Caption := Application.Title;
-    SDUMessageDlg(
-      _('Your encrypted drive could not be formatted at this time.') + SDUCRLF +
-      SDUCRLF + _(
-      'Please lock this Box and re-open it with the "Mount for all users" option checked, before trying again.'),
-      mtError
-      );
-  end;
+  Format_drive(selDrives,self);
 
   RefreshDrives();
 
 end;
+
+
+
+
 
 procedure TfrmFreeOTFEMain.actOptionsExecute(Sender: TObject);
 var
@@ -3508,7 +3470,7 @@ begin
     // automatically mounted; setup for this
     if (newMounted = prevMounted) then begin
       msg := _('DoxBox created successfully.') + SDUCRLF + SDUCRLF +
-        _('Please mount, format and overwrite this volume''s free space before use.');
+        _('Please mount, and format this volume''s free space before use.');
     end else begin
       // Get new drive on display...
       RefreshDrives();
@@ -3530,7 +3492,7 @@ begin
         'DoxBox created successfully and opened as: %1.'),
         [createdMountedAs]) + SDUCRLF +
         SDUCRLF + _(
-        'Please format and overwrite this drives''s free space before use.');
+        'Please format this drives before use.');
     end;
 
     SDUMessageDlg(msg, mtInformation);

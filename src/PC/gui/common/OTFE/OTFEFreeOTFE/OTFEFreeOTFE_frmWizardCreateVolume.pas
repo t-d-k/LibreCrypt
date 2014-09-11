@@ -149,7 +149,7 @@ type
     FRequestedDriveLetter: ansichar;
     FCDBFilename: string;
     FPaddingLength: ULONGLONG;
-    FPadWithEncryptedData: boolean;
+    FOverwriteWithChaff: boolean;
 
     FNewVolumeMountedAs: Ansichar;
 
@@ -228,7 +228,7 @@ type
 
     procedure GetCDBFileAndOffset(out cdbFile: string; out cdbOffset: ULONGLONG);
 
-    function  OverwritePadding(paddingOffset: ULONGLONG): boolean;
+    function  OverwriteVolWithChaff(): boolean;
     procedure GenerateOverwriteData(
                                     Sender: TObject;
                                     passNumber: integer;
@@ -239,7 +239,7 @@ type
 
     function  CreateNewVolume(): boolean;
     procedure PostCreate();
-    procedure PostMount_Format();
+    procedure PostMount_Format_using_dll();
 
   protected
     procedure SetupInstructions(); override;
@@ -280,7 +280,7 @@ type
     property KeyFilename: string read FCDBFilename write FCDBFilename;
     property CDBInVolFile: boolean read GetCDBInVolFile;
     property PaddingLength: ULONGLONG read FPaddingLength write FPaddingLength;
-    property PadWithEncryptedData: boolean read FPadWithEncryptedData write FPadWithEncryptedData;
+    property OverwriteWithChaff: boolean read FOverwriteWithChaff write FOverwriteWithChaff;
 
     property AutoMountAfterCreate: boolean read GetAutoMountAfterCreate;
     property NewVolumeMountedAs: Ansichar read FNewVolumeMountedAs write FNewVolumeMountedAs;
@@ -291,6 +291,7 @@ type
 
   end;
 
+  procedure Format_drive(drivesToFormat: AnsiString;frm:TForm);
 
 implementation
 
@@ -306,6 +307,8 @@ uses
   OTFEFreeOTFE_PKCS11,
   OTFEFreeOTFE_frmWizardCreateVolumeAdvanced,
   OTFEFreeOTFEDLL_PartitionImage,
+  SDPartitionImage,
+  SDPartitionImage_File,
   SDFilesystem,
   SDFilesystem_FAT;
 
@@ -335,10 +338,26 @@ const
   // (4GB - 1 byte) is the max file a FAT32 system can support
   MAX_FAT_FILESIZE: ULONGLONG = ((ULONGLONG(4) * ULONGLONG(BYTES_IN_GIGABYTE)) - ULONGLONG(1));
 
+  // for shformat
+  // Format disk related functions ripped from the Unofficial Delphi FAQ (UDF)
+  SHFMT_ID_DEFAULT      = $FFFF;
+  // Formating options
+  SHFMT_OPT_QUICKFORMAT = $0000;
+  SHFMT_OPT_FULL        = $0001;
+  SHFMT_OPT_SYSONLY     = $0002;
+  // Error codes
+  SHFMT_ERROR           = $FFFFFFFF;
+  SHFMT_CANCEL          = $FFFFFFFE;
+  SHFMT_NOFORMAT        = $FFFFFFFD;
+
+
 resourcestring
   FILEORPART_OPT_VOLUME_FILE = 'Volume file';
   FILEORPART_OPT_PARTITION   = 'Partition/entire disk';
 
+// External function in shell32.dll
+function SHFormatDrive(Handle: HWND; Drive, ID, Options: Word): Longint;
+  STDCALL; EXTERNAL 'shell32.dll' Name 'SHFormatDrive';
 
 procedure TfrmWizardCreateVolume.FormShow(Sender: TObject);
 var
@@ -361,7 +380,7 @@ begin
   RequestedDriveLetter:= #0;
   KeyFilename:= '';
   PaddingLength:= 0;
-  PadWithEncryptedData:= FALSE;
+  FOverwriteWithChaff:= true;  // preserve plausible deniability by defaulting to true
   TempCypherUseKeyLength := 0;
 
   NewVolumeMountedAs := #0;
@@ -458,7 +477,7 @@ begin
   seMasterKeyLength.Value := DEFAULT_CYPHER_KEY_LENGTH;  // In bits
 
   // tsRNG
-  ckRNGCryptoAPI.checked := TRUE;
+  //MSCryptoAPI enabled as default (in dfm)
   ckRNGcryptlib.Enabled := CanUseCryptlib;
   ckRNGPKCS11.Enabled :=  PKCS11LibraryReady(FreeOTFEObj.PKCS11Library);
 
@@ -614,7 +633,7 @@ begin
     dlg.DriveLetter := RequestedDriveLetter;
     dlg.CDBFilename := KeyFilename;
     dlg.PaddingLength:= PaddingLength;
-    dlg.PadWithEncryptedData:= PadWithEncryptedData;
+    dlg.OverwriteWithChaff:= FOverwriteWithChaff;
 
     if (dlg.ShowModal = mrOK) then
       begin
@@ -623,14 +642,11 @@ begin
       RequestedDriveLetter := dlg.DriveLetter;
       KeyFilename := dlg.CDBFilename;
       PaddingLength := dlg.PaddingLength;
-      PadWithEncryptedData := dlg.PadWithEncryptedData;
+      FOverwriteWithChaff := dlg.OverwriteWithChaff;
 
-      // If padding with encrypted data, note the size of they key required
+      // If overwriting with encrypted data (chaff), find the size of the key required , and ensure can get that random data
       TempCypherUseKeyLength := 0;
-      if (
-          (PaddingLength > 0) and
-          PadWithEncryptedData
-         ) then
+      if FOverwriteWithChaff then
         begin
         FreeOTFEObj.GetSpecificCypherDetails(CypherDriver, CypherGUID, TempCypherDetails);
 
@@ -1508,7 +1524,7 @@ showmessage('destroying wizard');
 
   PurgeMouseRNGData();
 
-  { TODO 1 -otdk -ccleanup : whats this for? }
+  //overwrite any seed asap
   for i:=1 to length(fCombinedRandomData) do
     begin
     fCombinedRandomData[i] := ansichar(i);
@@ -1802,7 +1818,7 @@ var
   userCancel: boolean;
   junkBool: boolean;
   fileCreateProbMsg: string;
-  paddingOffset: ULONGLONG;
+
 begin
   allOK := TRUE;
 
@@ -1822,38 +1838,38 @@ begin
           begin
           volumeFileSize := volumeFileSize + ULONGLONG(CRITICAL_DATA_LENGTH div 8);
           end;
-        paddingOffset := volumeFileSize;
+
         // Add on the size of any padding
         volumeFileSize := volumeFileSize + PaddingLength;
 
         allOK := SDUCreateLargeFile(VolFilename, volumeFileSize, TRUE, userCancel);
-        if allOK then
-          begin
-          // Overwrite any padding with random data.
-          allOK := OverwritePadding(paddingOffset);
-          end
-        // If there was a problem, and not a user cancel, warn user
-        else if userCancel then
-          begin
-          SDUMessageDlg(_('Box creation canceled'), mtInformation);
-          end
-        else
-          begin
-          fileCreateProbMsg := SDUParamSubstitute(_('Unable to create Box; please ensure you have %1 free on the relevant drive'), [SDUFormatAsBytesUnits(volumeFileSize)]);
-          if (volumeFileSize >= MAX_FAT_FILESIZE) then
+        if not allOK  then
+          // If there was a problem, and not a user cancel, warn user
+          if userCancel then
             begin
-            fileCreateProbMsg := fileCreateProbMsg+SDUCRLF+
-                                 SDUCRLF+
-                                 _('Please note that FAT/FAT32 filesystems cannot store files that are 4GB or larger');
+            SDUMessageDlg(_('Box creation canceled'), mtInformation);
+            end
+          else
+            begin
+            fileCreateProbMsg := SDUParamSubstitute(_('Unable to create Box; please ensure you have %1 free on the relevant drive'), [SDUFormatAsBytesUnits(volumeFileSize)]);
+            if (volumeFileSize >= MAX_FAT_FILESIZE) then
+              begin
+              fileCreateProbMsg := fileCreateProbMsg+SDUCRLF+
+                                   SDUCRLF+
+                                   _('Please note that FAT/FAT32 filesystems cannot store files that are 4GB or larger');
+              end;
+            SDUMessageDlg(fileCreateProbMsg, mtError);
             end;
-          SDUMessageDlg(fileCreateProbMsg, mtError);
-          end;
         end;  // if (not(FileExists(filename))) then
       end;  // if not(IsPartition) then
 
+      if allOK then
+      begin
+        // Overwrite volume with SPRNG data, if required
+        // this also overwrites cdb and padding, cdb is created below
+        allOK := OverwriteVolWithChaff();
+      end
     end;  // if (allOK) then
-
-
 
   // Create separate CDB file, if needed
   if (allOK) then
@@ -2056,10 +2072,14 @@ begin
 
     if mountedOK then
       begin
+      { TODO 2 -otdk -cinvestigate : why only DLL - should always format after creation, even if use windows dlg }
       if (FreeOTFEObj is TOTFEFreeOTFEDLL) then
         begin
-        PostMount_Format();
+        PostMount_Format_using_dll();
+        end else begin
+          Format_Drive(FNewVolumeMountedAs,self);
         end;
+
       end;
 
     if not(mountedOK) then
@@ -2072,7 +2092,7 @@ begin
 end;
 
 // Format the volume specified
-procedure TfrmWizardCreateVolume.PostMount_Format();
+procedure TfrmWizardCreateVolume.PostMount_Format_using_dll();
 var
   PartitionImage: TOTFEFreeOTFEDLL_PartitionImage;
   Filesystem: TSDFilesystem_FAT;
@@ -2081,8 +2101,16 @@ begin
     begin
     PartitionImage := TOTFEFreeOTFEDLL_PartitionImage.Create();
     PartitionImage.FreeOTFEObj := TOTFEFreeOTFEDLL(FreeOTFEObj);
-    PartitionImage.Filename := VolFilename;
     PartitionImage.MountedAs := NewVolumeMountedAs;
+   // end else begin
+//   //  TODO test this   - could reformat wrong drive! -for now use format_drive for non dll volumes
+//
+//    PartitionImage := TSDPartitionImage_File.Create();
+////    PartitionImage.FreeOTFEObj := FreeOTFEObj;
+//      (PartitionImage as TSDPartitionImage_File).Filename := VolFilename;
+//
+//    end;
+
     PartitionImage.Mounted := TRUE;
 
     if not(PartitionImage.Mounted) then
@@ -2099,9 +2127,8 @@ begin
       Filesystem.Format();
       PartitionImage.Mounted := FALSE;
       end;
-      
-    end;
 
+   end;
 end;
 
 
@@ -2463,65 +2490,66 @@ begin
 
 end;
 
-function TfrmWizardCreateVolume.OverwritePadding(paddingOffset: ULONGLONG): boolean;
+function TfrmWizardCreateVolume.OverwriteVolWithChaff(): boolean;
 var
   shredder: TShredder;
   allOK: boolean;
   overwriteOK: TShredResult;
   failMsg: string;
-  tmpZero: ULONGLONG;
+//  tmpZero: ULONGLONG;
 begin
   allOK := TRUE;
 
   // Short-circuit - no padding data
-  tmpZero := 0;
-  if (PaddingLength <= tmpZero) then
+//  tmpZero := 0;
+
+ { if (PaddingLength <= tmpZero) then
     begin
     Result := TRUE;
     exit;
-    end;
+    end;}
 
-  // Short-circuit - padding currently only supported for file based volumes
-  { TODO 1 -otdk -csecurity : is this documented? }
+
+{
   if IsPartition then
     begin
     Result := TRUE;
     exit;
     end;
-
-  if PadWithEncryptedData then
+     }
+  if FOverwriteWithChaff then
     begin
     // Initilize zeroed IV for encryption
     TempCypherEncBlockNo := 0;
 
     // Get *real* random data for encryption key
     TempCypherKey := RandomData_PaddingKey;
-    end;
 
-
-  if (allOK) then
-    begin
     shredder:= TShredder.Create(nil);
     try
       shredder.FileDirUseInt := TRUE;
       shredder.IntMethod := smPseudorandom;
       shredder.IntPasses := 1;
-      shredder.IntSegmentOffset := paddingOffset;
-      shredder.IntSegmentLength := PaddingLength;
+      shredder.IntSegmentOffset := 0;     // cdb is written after so can overwrite
+//      shredder.IntSegmentLength := todo; ignored as quickshred = false
 
-      if PadWithEncryptedData then
-        begin
+     // if PadWithEncryptedData then
+//        begin
         // Note: Setting this event overrides shredder.IntMethod
         shredder.OnOverwriteDataReq := GenerateOverwriteData;
-        end
-      else
-        begin
-        shredder.OnOverwriteDataReq := nil;
-        end;
-
+     //   end
+//      else
+//        begin
+//        shredder.OnOverwriteDataReq := nil;
+//        end;
+    { TODO 2 -otdk -ctest : this has not been tested for devices }
+       if IsPartition then
+         overwriteOK := shredder.DestroyDevice(VolFilename,FALSE,FALSE)
+       else
       overwriteOK := shredder.DestroyFileOrDir(
                                                VolFilename,
-                                               TRUE,   // quickShred
+                                               { TODO 1 -otdk -ccheck : check use of quickshred here }
+                                               FALSE,   // quickShred - do all
                                                FALSE,  // silent
                                                TRUE    // leaveFile
                                               );
@@ -2532,13 +2560,13 @@ begin
         end
       else if (overwriteOK = srError) then
         begin
-        failMsg := _('Overwrite of padding data FAILED.');
+        failMsg := _('Overwrite of data FAILED.');
         SDUMessageDlg(failMsg, mtError);
         allOK := FALSE;
         end
       else if (overwriteOK = srUserCancel) then
         begin
-        SDUMessageDlg(_('Overwrite of padding data cancelled by user.'), mtInformation);
+        SDUMessageDlg(_('Overwrite of data cancelled.'), mtInformation);
         allOK := FALSE;
         end;
 
@@ -2631,7 +2659,7 @@ begin
                                  )) then
     begin
     SDUMessageDlg(
-               _('Unable to encrypt pseudorandom data before using for overwrite buffer?!')+SDUCRLF+
+               _('Error: unable to encrypt pseudorandom data before using for overwrite buffer')+SDUCRLF+
                SDUCRLF+
                SDUParamSubstitute(_('Error #: %1'), [FreeOTFEObj.LastErrorCode]),
                mtError
@@ -2655,6 +2683,43 @@ end;
 function TfrmWizardCreateVolume.RNGRequiredBits(): integer;
 begin
   Result := (CRITICAL_DATA_LENGTH + TempCypherUseKeyLength);
+end;
+
+
+procedure Format_drive(drivesToFormat: AnsiString;frm:TForm);
+resourcestring
+  FORMAT_CAPTION = 'Format';
+var
+  i:         Integer;
+  currDrive: AnsiChar;
+  driveNum:  Word;
+begin
+
+  for i := 1 to length(drivesToFormat) do begin
+    currDrive := drivesToFormat[i];
+    driveNum  := Ord(currDrive) - Ord('A');
+    SHFormatDrive(frm.Handle, driveNum, SHFMT_ID_DEFAULT, SHFMT_OPT_FULL);
+  end;
+
+  // This is *BIZARRE*.
+  // If you are running under Windows Vista, and you mount a volume for
+  // yourself only, and then try to format it, the format will fail - even if
+  // you UAC escalate to admin
+  // That's one thing - HOWEVER! After it fails, for form's title is set to:
+  //   Format <current volume label> <drive letter>:
+  // FREAKY!
+  // OTOH, it does means we can detect and inform the user that the format
+  // just failed...
+  if (Pos(uppercase(FORMAT_CAPTION), uppercase(frm.Caption)) > 0) then begin
+    frm.Caption := Application.Title;
+    SDUMessageDlg(
+      _('Your encrypted drive could not be formatted at this time.') + SDUCRLF +
+      SDUCRLF + _(
+      'Please lock this Box and re-open it with the "Mount for all users" option checked, before trying again.'),
+      mtError
+      );
+  end;
+
 end;
 
 END.

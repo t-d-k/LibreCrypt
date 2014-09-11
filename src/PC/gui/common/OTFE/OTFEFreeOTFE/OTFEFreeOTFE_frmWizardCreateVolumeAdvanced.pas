@@ -36,12 +36,14 @@ type
     reInstructCDBLocation: TOTFEFreeOTFE_InstructionRichEdit;
     tsPadding: TTabSheet;
     reInstructPadding: TOTFEFreeOTFE_InstructionRichEdit;
-    rbDataEncrypted: TRadioButton;
-    rbDataPseudorandom: TRadioButton;
     se64Padding: TSpinEdit64;
     Label2: TLabel;
     Label3: TLabel;
+    tsChaff: TTabSheet;
     Label4: TLabel;
+    rbDataEncrypted: TRadioButton;
+    rbZeros: TRadioButton;
+    Label5: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
     procedure pbBrowseKeyfileClick(Sender: TObject);
@@ -60,8 +62,8 @@ type
     procedure SetCDBFilename(CDBFilename: string);
     function  GetPaddingLength(): int64;
     procedure SetPaddingLength(len: int64);
-    function  GetPadWithEncryptedData(): boolean;
-    procedure SetPadWithEncryptedData(encryptPadding: boolean);
+    function  GetOverwriteWithChaff(): boolean;
+    procedure SetOverwriteWithChaff(secChaff: boolean);
   protected
     procedure EnableDisableControls();
 
@@ -75,7 +77,8 @@ type
     property DriveLetter: Ansichar read GetDriveLetter write SetDriveLetter;
     property CDBFilename: string read GetCDBFilename write SetCDBFilename;
     property PaddingLength: int64 read GetPaddingLength write SetPaddingLength;
-    property PadWithEncryptedData: boolean read GetPadWithEncryptedData write SetPadWithEncryptedData;
+    property OverwriteWithChaff: boolean read GetOverwriteWithChaff write SetOverwriteWithChaff;
+
   end;
 
 
@@ -329,6 +332,8 @@ begin
   Result := retval;
 end;
 
+
+
 procedure TfrmWizardCreateVolumeAdvanced.SetCDBFilename(CDBFilename: string);
 begin
   rbCDBInVolFile.checked := TRUE;
@@ -342,6 +347,7 @@ begin
 
 end;
 
+
 function TfrmWizardCreateVolumeAdvanced.GetPaddingLength(): int64;
 begin
   Result := se64Padding.Value;
@@ -352,15 +358,15 @@ begin
   se64Padding.Value := len;
 end;
 
-function TfrmWizardCreateVolumeAdvanced.GetPadWithEncryptedData(): boolean;
+function TfrmWizardCreateVolumeAdvanced.GetOverwriteWithChaff(): boolean;
 begin
   Result := rbDataEncrypted.checked;
 end;
 
-procedure TfrmWizardCreateVolumeAdvanced.SetPadWithEncryptedData(encryptPadding: boolean);
+procedure TfrmWizardCreateVolumeAdvanced.SetOverwriteWithChaff(secChaff: boolean);
 begin
-  rbDataPseudorandom.checked := not(encryptPadding);
-  rbDataEncrypted.checked := encryptPadding;
+  rbDataEncrypted.checked := not(secChaff);
+  rbDataEncrypted.checked := secChaff;
 end;
 
 procedure TfrmWizardCreateVolumeAdvanced.EnableDisableControls();
