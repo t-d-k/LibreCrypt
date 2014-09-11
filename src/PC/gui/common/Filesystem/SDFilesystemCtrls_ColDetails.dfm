@@ -29,7 +29,6 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Width = 35
     Height = 13
     Caption = 'Details:'
-    FocusControl = clbColumns
   end
   object Label3: TLabel
     Left = 12
@@ -37,18 +36,6 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Width = 169
     Height = 13
     Caption = '&Width of selected column (in pixels):'
-    FocusControl = se64Width
-  end
-  object clbColumns: TSDUCheckListBox
-    Left = 12
-    Top = 64
-    Width = 213
-    Height = 261
-    OnClickCheck = clbColumnsClickCheck
-    ItemHeight = 13
-    TabOrder = 0
-    OnClick = clbColumnsClick
-    ReadOnly = False
   end
   object pbMoveUp: TButton
     Left = 240
@@ -105,14 +92,6 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 6
-  end
-  object se64Width: TSpinEdit64
-    Left = 196
-    Top = 340
-    Width = 45
-    Height = 22
-    Increment = 1
-    TabOrder = 7
   end
   object pnlSplitter: TPanel
     Left = 12

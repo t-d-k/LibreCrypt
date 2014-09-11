@@ -25,9 +25,9 @@ const
   ISO639_ALPHA2_ENGLISH = 'en';
 
 //{$IFNDEF _DXGETTEXT}
-function _(msg: widestring): widestring;
+function _(msg: unicodestring): unicodestring;
 //{$ENDIF}
-function  SDUTranslate(msg: widestring): widestring;
+function  SDUTranslate(msg: unicodestring): unicodestring;
 function  SDUPluralMsg(n: integer; singleMsg: widestring; pluralMsg: widestring): widestring; overload;
 function  SDUPluralMsg(n: integer; msgs: array of WideString): widestring; overload;
 procedure SDUSetLanguage(lang: string);
@@ -54,14 +54,12 @@ uses
 {$ENDIF}
   ActnList, Controls, ExtCtrls, Graphics, SysUtils;
 
-//{$IFNDEF _DXGETTEXT}
-function _(msg: widestring): widestring;
+function _(msg: unicodestring): unicodestring;
 begin
   Result := SDUTranslate(msg);
 end;
-//{$ENDIF}
 
-function SDUTranslate(msg: widestring): widestring;
+function SDUTranslate(msg: unicodestring): unicodestring;
 begin
 {$IFDEF _DXGETTEXT}
   Result := gnugettext._(msg);

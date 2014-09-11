@@ -42,7 +42,16 @@ uses
   OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas' {frmWizardChangePasswordCreateKeyfile},
   OTFEFreeOTFE_frmWizardCreateVolume in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas' {frmWizardCreateVolume},
   OTFEFreeOTFE_frmWizardCreateVolumeAdvanced in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas' {frmWizardCreateVolumeAdvanced},
-  OTFEFreeOTFE_WizardCommon in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_WizardCommon.pas';
+  OTFEFreeOTFE_WizardCommon in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_WizardCommon.pas',
+  SDUProgressDlg in '..\common\SDeanUtils\SDUProgressDlg.pas' {SDUProgressDialog},
+  SDUDiskPropertiesDlg in '..\common\SDeanUtils\SDUDiskPropertiesDlg.pas' {SDUDiskPropertiesDialog},
+  SDUFilenameEdit_U in '..\common\SDeanUtils\SDUFilenameEdit_U.pas' {SDUFilenameEdit: TFrame},
+  SDUPartitionPropertiesDlg in '..\common\SDeanUtils\SDUPartitionPropertiesDlg.pas' {SDUPartitionPropertiesDialog},
+  SDFATBootSectorPropertiesDlg in '..\common\Filesystem\SDFATBootSectorPropertiesDlg.pas' {SDFATBootSectorPropertiesDialog},
+  SDFilesystemCtrls_ColDetails in '..\common\Filesystem\SDFilesystemCtrls_ColDetails.pas' {SDFilesystemListView_ColDetails},
+  SDUAboutDlg in '..\common\SDeanUtils\SDUAboutDlg.pas' {SDUAboutDialog},
+  SDUMRUList in '..\common\SDeanUtils\SDUMRUList.pas',
+  SDURegistry in '..\common\SDeanUtils\SDURegistry.pas';
 
 {$R *.res}
 {$R FreeOTFEExplorerCursors.res}

@@ -1,6 +1,7 @@
 unit SDUBase64;
 
 // This source taken from the WWW, full credit to the original author.
+{ TODO 2 -otdk -ccheck : who is the author? licence? }
 
 interface
 

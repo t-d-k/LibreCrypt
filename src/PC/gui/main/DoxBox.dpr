@@ -2,7 +2,6 @@ program DoxBox;
 
 uses
   Forms,
-  SDUi18n,
   FreeOTFEfrmMain in 'FreeOTFEfrmMain.pas' {frmFreeOTFEMain},
   FreeOTFEConsts in 'FreeOTFEConsts.pas',
   FreeOTFEfrmVolProperties in 'FreeOTFEfrmVolProperties.pas' {frmFreeOTFEVolProperties},
@@ -11,7 +10,6 @@ uses
   CommonSettings in '..\common\CommonSettings.pas',
   CommonfrmOptions in '..\common\CommonfrmOptions.pas' {frmOptions},
   Windows,
-  SDUGeneral,
   CommonfrmGridReport in '..\common\CommonfrmGridReport.pas' {frmGridReport},
   CommonfrmGridReport_Hash in '..\common\CommonfrmGridReport_Hash.pas' {frmGridReport_Hash},
   CommonfrmGridReport_Cypher in '..\common\CommonfrmGridReport_Cypher.pas' {frmGridReport_Cypher},
@@ -40,7 +38,20 @@ uses
   OTFEFreeOTFE_frmWizardCreateVolume in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas' {frmWizardCreateVolume},
   OTFEFreeOTFE_frmWizardCreateVolumeAdvanced in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas' {frmWizardCreateVolumeAdvanced},
   OTFEFreeOTFE_WizardCommon in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_WizardCommon.pas',
-  OTFEFreeOTFE_fmeSelectPartition in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas' {fmeSelectPartition: TFrame};
+  OTFEFreeOTFE_fmeSelectPartition in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas' {fmeSelectPartition: TFrame},
+  SDPartitionImage in '..\common\Filesystem\SDPartitionImage.pas',
+  SDPartitionImage_File in '..\common\Filesystem\SDPartitionImage_File.pas',
+  SDUProgressDlg in '..\common\SDeanUtils\SDUProgressDlg.pas' {SDUProgressDialog},
+  SDUDiskPropertiesDlg in '..\common\SDeanUtils\SDUDiskPropertiesDlg.pas' {SDUDiskPropertiesDialog},
+  SDUFilenameEdit_U in '..\common\SDeanUtils\SDUFilenameEdit_U.pas' {SDUFilenameEdit: TFrame},
+  SDUPartitionPropertiesDlg in '..\common\SDeanUtils\SDUPartitionPropertiesDlg.pas' {SDUPartitionPropertiesDialog},
+  SDUMRUList in '..\common\SDeanUtils\SDUMRUList.pas',
+  SDURegistry in '..\common\SDeanUtils\SDURegistry.pas',
+  SDUi18n in '..\common\SDeanUtils\SDUi18n.pas',
+  gnugettext in '..\..\..\..\tools\gnugettext.pas',
+  SDUGeneral in '..\common\SDeanUtils\SDUGeneral.pas',
+  SDFilesystem in '..\common\Filesystem\SDFilesystem.pas',
+  SDFilesystem_FAT in '..\common\Filesystem\SDFilesystem_FAT.pas';
 
 {$R *.RES}
 
@@ -61,7 +72,8 @@ begin
   GLOBAL_VAR_WM_FREEOTFE_REFRESH := RegisterWindowMessage('FREEOTFE_REFRESH');
 
   Application.Initialize;
-{$IFDEF VER185}
+
+{$IFNDEF VER150}
   // Vista fix for Delphi 2007 and later
   Application.MainFormOnTaskbar := TRUE;
 {$ENDIF}
