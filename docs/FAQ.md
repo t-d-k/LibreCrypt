@@ -236,6 +236,7 @@ OS encryption is for higher security to encrypt information leaked to temp files
 I have not found any in my brief maintenance of DoxBox. I have found a weakness in [deniability](#hid_bug), however this was certainly known about by the original developer and is a misfeature not a bug.
 
 Every app may contain a security flaw, inadvertent or deliberate. software with the following features has the minimum risk of such flaws:
+
 * open source. open source code can be checked by anyone. this means a flaw is more likely to be found out, which is a deterrent against putting one in (or allowing one to creep in). you get the benefits of open source even if you do not yourself check the code, in the same way as you benefit from safety inspections of your car even if you've never held a spanner yourself.
 	DoxBox is open source and uses widely used public domain crypt libraries like libtomcrypt
 * widely used and standard encryption algorithms. widely used ones have been studied more and are less likely to contain unknown flaws than proprietary ones.
@@ -251,6 +252,7 @@ Every app may contain a security flaw, inadvertent or deliberate. software with 
 
 *A:* 
 The known diferences are:
+
 * DoxBox can open native LUKS containers
 * Truecrypt has a Linux version available: tcrypt
 * DoxBox suports multiple hidden containers, TC only one.	
@@ -260,7 +262,7 @@ The known diferences are:
 <a name="al"></a>
 *Q: How can I trust DoxBox?*
 
-*A:* Review the source code to your satisfaction, and build your own (see section [Building DoxBox](technical_details__build_notes.md))
+*A:* Review the source code to your satisfaction, and build your own (see section [Building DoxBox](technical_details__build_notes.html))
 
 This is **strongly recommended**, and the best way of ensuring that the software is not compromised.
 
@@ -384,7 +386,7 @@ Most users can simply accept the default algorithms offered, which provides a fa
 
 Using more than one RNG increases the security offered by DoxBox as the combined random data generated will be at least as random as the most random RNG selected. Should one of the RNGs subsequently be found to be weak (i.e. producing data that is not as random as it should be), the random data used will still be as strong as the strongest RNG used.
 
-See the [Technical Details: Random Number Generators (RNGs)](technical_details__RNGs.md) section for further information.
+See the [Technical Details: Random Number Generators (RNGs)](technical_details__RNGs.html) section for further information.
 
 * * *
 
@@ -528,7 +530,7 @@ Please see the FAQ: [By examining a DoxBox/encrypted Linux volume file, can anyo
  <a name="ap"></a>
 *Q: What is "plausible deniability?"*
 
-*A:* See the documentation section on ["Plausible Deniability"](plausible_deniability.md) for details.
+*A:* See the documentation section on ["Plausible Deniability"](plausible_deniability.html) for details.
 
  * * *
  <a name="aq_1"></a>
@@ -637,7 +639,7 @@ Yes, though there is nothing to be gained from compressing encrypted data, as it
 *Q: What hash algorithms does DoxBox use?*
 
 *A:*
-A full list of the hash algorithms used by DoxBox can be found on the [introduction page](description.md)
+A full list of the hash algorithms used by DoxBox can be found on the [introduction page](description.html)
 
 * * *
 
@@ -645,7 +647,7 @@ A full list of the hash algorithms used by DoxBox can be found on the [introduct
 *Q: What encryption algorithms does DoxBox use?*
 
 *A:*
-A full list of the cyphers and cypher modes used by DoxBox can be found on the [introduction page](description.md)
+A full list of the cyphers and cypher modes used by DoxBox can be found on the [introduction page](description.html)
 
 * * *
 
@@ -654,7 +656,7 @@ A full list of the cyphers and cypher modes used by DoxBox can be found on the [
 
 *A:* With the exception of the NULL and XOR cyphers, DoxBox offers CBC, LRW and XTS modes, and has the flexibility for other modes to be easily added by simply changing drivers.
 
-A full list of the cyphers and cypher modes used by DoxBox can be found on the [introduction page](description.md)
+A full list of the cyphers and cypher modes used by DoxBox can be found on the [introduction page](description.html)
 
 * * *
 
@@ -830,7 +832,7 @@ Furthermore, because this attack may allow whatever was in the computer's memory
 <a name="ei"></a>
 *Q: Does DoxBox have any form of password recovery?*
 
-*A:* Yes; DoxBox keyfiles can be used to provide a form of password recovery; see the [Getting Started Guide](getting_started.md)
+*A:* Yes; DoxBox keyfiles can be used to provide a form of password recovery; see the [Getting Started Guide](getting_started.html)
 
 * * *
 
@@ -967,7 +969,7 @@ The ".u3p" file is simply a ZIP archive which has been renamed; it may be rename
 *Q: When dismounting a file based volume, what does DoxBox do with the file timestamps?*
 
 *A:*
-By default, when mounting file based volumes, DoxBox stores the volume file's timestamps, and resets them back again after dismounting. This is carried out for security reasons (see section on [plausible deniability](plausible_deniability.md)).
+By default, when mounting file based volumes, DoxBox stores the volume file's timestamps, and resets them back again after dismounting. This is carried out for security reasons (see section on [plausible deniability](plausible_deniability.html)).
 
 This functionality can be turned off if needed (e.g. to assist backup processes; see FAQ "[How do I backup an encrypted volume?](#et)") by turning off the "Revert volume timestamps on dismount" option on the Options dialog ("View | Options").
 
@@ -980,11 +982,11 @@ This functionality can be turned off if needed (e.g. to assist backup processes;
 A number of tools are available to "detect" encrypted volumes. These typically operate
 by detecting large files with a high amount of entropy and a file size that is a multiple of 512 bytes, or which is a certain "signature size" greater than the last 1MB boundary.
 
-"Padding" is additional (random) data added to the end of the volume, and is used to prevent detection of DoxBox volumes by automated volume-finding tools which only carry out a cursory search for volumes, and rely on the size of files found.
+"Padding" is additional (random) data added to the end of the volume, and is used to prevent detection of DoxBoxes by automated volume-finding tools which only carry out a cursory search for volumes, and rely on the size of files found.
 
-Furthermore, padding also reduces the amount of information an attacker has about a volume, by preventing reliable detection of the size of the mounted volume (subject to the mounted volume being overwritten as described in the [Plausible Deniability](plausible_deniability.md) section).
+Furthermore, padding also reduces the amount of information an attacker has about a volume, by preventing reliable detection of the size of the mounted volume (subject to the mounted volume being overwritten as described in the [Plausible Deniability](plausible_deniability.html) section).
 
-Padding will not prevent a reasonably knowledgeable IT person from being able to reasonably identify an encrypted volume as such - like any security mechanism, padding is simply another tool which would be employed from a larger toolbox. For this reason, it is **not** recommended that padding be relied upon to help secure data against an attacker, and users considering using padding may benefit from reading the section on ["Plausible Deniability"](plausible_deniability.md)
+Padding will not prevent a reasonably knowledgeable IT person from being able to reasonably identify an encrypted volume as such - like any security mechanism, padding is simply another tool which would be employed from a larger toolbox. For this reason, it is **not** recommended that padding be relied upon to help secure data against an attacker, and users considering using padding may benefit from reading the section on ["Plausible Deniability"](plausible_deniability.html)
 
 * * *
 
@@ -1098,7 +1100,7 @@ To prevent the prompt appearing, please uninstall one of the offending drivers.
 
 *A:* No - Although Administrator privileges are needed to install the FreeOTFE drivers, or start/stop portable mode.
 
-To allow "standard" (non Administrator) users to use DoxBox, please install the DoxBox drivers by following the instructions in the [Installation and Upgrading](installation_and_upgrading__PC.md) section. After which, any user will be free to use DoxBox (e.g. to create, mount, dismount and use encrypted volumes)
+To allow "standard" (non Administrator) users to use DoxBox, please install the DoxBox drivers by following the instructions in the [Installation and Upgrading](installation_and_upgrading__PC.html) section. After which, any user will be free to use DoxBox (e.g. to create, mount, dismount and use encrypted volumes)
 
 To access an encrypted volume on a PC which **doesn't** have DoxBox installed, and on which you **don't** have Administrator privileges, please use DoxBox Explorer.
 
@@ -1148,12 +1150,12 @@ DoxBox Explorer however, can be used under Linux when run under [Wine](http://ww
 
 *A:* By creating a shortcut with suitable command line parameters in your "Startup" directory (click the MS Windows "Start" button, then go to "Programs | Startup"), DoxBox can mount volume files after your system starts up/you login.
 
-See the [Command Line Interface](command_line.md) section for full details of DoxBox's command line options.
+See the [Command Line Interface](command_line.html) section for full details of DoxBox's command line options.
 
 * * *
 
-<a name="cd"></a>*
-Q: On the options dialog, what does the "Save above settings to" option do?
+<a name="cd"></a>
+*Q: On the options dialog, what does the "Save above settings to" option do?*
 
 *A:* This allows you to change where your DoxBox settings are stored; in your user profile (only accessible to you), or with the DoxBox executable (which is useful if you want to take DoxBox with you; on a USB drive, for example).
 
@@ -1161,8 +1163,8 @@ You may also choose to not save your settings; in which case, the next time you 
 
 * * *
 
-<a name="ce"></a>*
-Q: Can I save my settings in the same directory as my DoxBox executable?
+<a name="ce"></a>
+*Q: Can I save my settings in the same directory as my DoxBox executable?*
 
 *A:* Yes, you can - and this makes DoxBox more portable, and easier to use, if you want to take it with you on (for example) a USB drive.
 
@@ -1170,8 +1172,8 @@ There is only one exception though; if you are using Windows Vista, and have Use
 
 * * *
 
-<a name="cf"></a>*
-Q: Where, and in what order does DoxBox search for my settings?
+<a name="cf"></a>
+*Q: Where, and in what order does DoxBox search for my settings?*
 
 *A:* If you have chosen to save your settings, DoxBox will store them in a "DoxBox.ini" file stored on your computer at your chosen location
 
@@ -1180,9 +1182,9 @@ When it starts up, DoxBox will attempt to locate this file and read in your sett
 * * *
 
 <a name="ch"></a>
-*Q: After associating DoxBox with ".box" files* from the options dialog, I double-clicked my ".box" volume file, and nothing happened!
+*Q: After associating DoxBox with ".box" files from the options dialog, I double-clicked my ".box" volume file, and nothing happened!*
 
-*A:* The DoxBox drivers must be running in order for you to mount a volume by double-clicking on it. Please either install the DoxBox drivers (see the [portable mode](installation_and_upgrading__PC.md)installation section, or start DoxBox's portable mode ([see](portable_mode.md) section).
+*A:* The DoxBox drivers must be running in order for you to mount a volume by double-clicking on it. Please either install the DoxBox drivers (see the [portable mode](installation_and_upgrading__PC.html)installation section, or start DoxBox's portable mode ([see](portable_mode.html) section).
 
 * * *
 
@@ -1280,7 +1282,7 @@ The above systems have limitations which prevent them from "seeing" mounted volu
 Q: Can I use DoxBox with my USB flash drive?
 
 *A:* Yes
-DoxBox has been designed to be portable; see the section on [Portable Mode](portable_mode.md) for details on which files to copy onto your USB drive. Alternatively, insert your USB drive and select the "Tools | Copy DoxBox to USB drive..." menu-item to automatically copy DoxBox to your USB drive.
+DoxBox has been designed to be portable; see the section on [Portable Mode](portable_mode.html) for details on which files to copy onto your USB drive. Alternatively, insert your USB drive and select the "Tools | Copy DoxBox to USB drive..." menu-item to automatically copy DoxBox to your USB drive.
 
 You can then use DoxBox on any PC - even if it doesn't have DoxBox installed.
 
@@ -1351,7 +1353,7 @@ In order to use DoxBox in this way, you must first either
 * Start DoxBox's portable mode on the **host PC**, or
 * Install and start the DoxBox drivers on the **host PC**
 
-(See the [Portable mode](portable_mode.md) and [Installation](installation_and_upgrading__PC.md) sections for further information
+(See the [Portable mode](portable_mode.html) and [Installation](installation_and_upgrading__PC.html) sections for further information
 
 When running MojoPac, your MojoPac device (i.e. your USB drive, iPod, etc) will appear as **both** the removable drive it is normally mounted as on the host PC (e.g. D:, E:), and as your MojoPac's C: drive.
 
@@ -1377,6 +1379,7 @@ In the same manner, volumes mounted on the host PC will be accessible from withi
 *A:* Yes, but with a prompt and option to cancel first.
 
 DoxBox and DoxBox Explorer will **only ever** try to connect to the internet if either:
+
 * They have been configured to check for updates (by default this is on)
 	In this case, they will only try to connect to the GitHub web site to retrieve version information.
 * There has been an error in installation, or the documents have been removed, in which case DoxBox will open the HTML file from the DoxBox website (DoxBox.eu - which currently redirects to DoxBox.squte.com)
@@ -1466,6 +1469,7 @@ Other possible solutions/information may be found at:
 *WARNING:* Do not let MS Windows format this partition! Although formatting the "virtual drive" DoxBox creates after mounting your encrypted partition is certainly a requirement before it can be used, formatting the partition it resides on could destroy your encrypted data!
 
 The safest course of action is to prevent MS Windows from allocating a drive letter to the encrypted partition. By doing so:
+
 * MS Windows will not prompt you every time this drive is accessed, since you will not be able to accidentally access it
 * You'll be less likely to hit "OK" and format the partition, overwriting your encrypted data!
 To do this, see the FAQ "[How do I "hide" an encrypted partition such that MS Windows doesn't allocate it a drive letter?](#hk)"
@@ -1528,7 +1532,7 @@ By displaying additional information, there is less likelihood of creating a vol
 
 *A:* The more important thing to do in this kind of situation is *STOP* and *THINK*. Before attempting  any kind of recovery, understand what you are going to do and how you are going to do it - **before** doing  anything.
 
-For safety reasons, DoxBox only writes the initial 512 byte CDB to the start of the disk/partition when creating a  new disk/partition based volume (see the [Plausible Deniability](plausible_deniability.md) section for  how to initialize a volume by overwriting it). If you haven't yet mounted the volume and started writing data to it,  or overwriting it, you have a good chance of getting your files back.
+For safety reasons, DoxBox only writes the initial 512 byte CDB to the start of the disk/partition when creating a  new disk/partition based volume (see the [Plausible Deniability](plausible_deniability.html) section for  how to initialize a volume by overwriting it). If you haven't yet mounted the volume and started writing data to it,  or overwriting it, you have a good chance of getting your files back.
 
 Obviously, if you have written data to the encrypted volume (e.g. by selecting one of the overwrite options or  copying files to it), the amount you will be able to recover will decrease.
 
@@ -1566,7 +1570,7 @@ To encrypt a whole disk, proceed as though creating an encrypted partition and s
 * * *
 
 <a name="ex"></a>
-*Q: Does DoxBox encrypt my **entire** encrypted volume using my PKCS#11 token?
+*Q: Does DoxBox encrypt my **entire** encrypted volume using my PKCS#11 token?*
 
 *A:* No, just the volume's CDB/keyfile. Encrypting the entire volume would incur significant performance penalties due to the relatively low power of security tokens when compared to a PC, and need to transfer data **twice** over the USB connection (once to sending the encrypted/plaintext data, and again to receive the plaintext/cyphertext)
 
@@ -1577,7 +1581,7 @@ To encrypt a whole disk, proceed as though creating an encrypted partition and s
 
 *A:* Please ensure that you have configured DoxBox to use your token via the "PKCS#11" tab on the Options dialog ("View | Options...")
 
-See the section on [Security Token/Smartcard Support](pkcs11_support.md) for further details
+See the section on [Security Token/Smartcard Support](pkcs11_support.html) for further details
 
 * * *
 
@@ -1682,7 +1686,7 @@ These prompts form part of Windows Vista's "User Access Control" (UAC) system, w
 
 **(This FAQ is only applicable when running under Windows Vista and later; it is not relevant for other operating systems)**
 
-*A:* The 64 bit versions of MS Windows Vista and MS Windows 7 both use driver signing; please see the section on installing DoxBox on [Windows Vista x64 and Windows 7 x64](impact_of_kernel_driver_signing.md)
+*A:* The 64 bit versions of MS Windows Vista and MS Windows 7 both use driver signing; please see the section on installing DoxBox on [Windows Vista x64 and Windows 7 x64](impact_of_kernel_driver_signing.html)
 
 * * *
 

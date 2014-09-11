@@ -85,6 +85,11 @@ above the "src" directory
 You have now successfully built the GUI frontend!
 
 If required, the compiler definition "FREEOTFE\_TIME_CDB\_DUMP" may be set, in which case the time taken to dump a CDB ("Tools | Critical data block | Dump to human readable file...") will be shown after the dump completes.
+<A NAME="level_4_heading_2">
+##### translation
+</A>
+It is not necessary to do a full install of dxgettext to build with i18n support. Instead you can just add the file gnugettext.pas to the project.
+In order to update any ranslations, however dxgettext must be installed.
 
 
 <A NAME="level_4_heading_2">
@@ -110,7 +115,7 @@ The binary release of this software was built with Microsoft Visual Studio 2010 
 
 At time of writing, the MS Windows SDK (also called the 'WDK') can be downloaded from the Microsoft WWW site. The MS Windows DDK (also called the 'WDK') is available as a download cd image, and can be ordered from the Microsoft WWW site as a free CD, for the cost of delivery.
 
-It should be noted that if you are unable to source the exact versions listed above, earlier versions may well be substituted, although I cannot guarantee success. Later versions should operate correctly. The above list describes the development environment as used to build the binary release of DoxBox.
+It should be noted that if you are unable to source the exact versions listed above, earlier versions may well be substituted, although I cannot guarantee success. Later versions should operate correctly. This list describes the environment used to build the binary release of DoxBox.
 versions used: 
 <TABLE>
 <TBODY>
@@ -119,6 +124,7 @@ versions used:
 <TR><TD>lib tomcrypt           </TD><TD>1.17</TD>    </TR>
 <TR><TD>Gladman library          </TD><TD>downloaded on 04/12/05</TD>    </TR>
 <TR><TD>Twofish library          </TD><TD>Version  1.00		April 1998</TD>    </TR>
+<TR><TD>dxgettext          </TD><TD>GNU gettext for Delphi, C++ Builder and Kylix 1.2 beta</TD>    </TR>
 </TBODY>
 </TABLE>
 
@@ -237,9 +243,9 @@ This is a description for Delphi newbies of the basic steps involved in compilin
 
 To build the GUI, the following software is required:
 
-*   Delphi (Embarcadero Delphi XE2 or later, though previous versions can probably be used with minimal changes, though wouldn't look as nice under Windows Vista)
+*   Delphi (Embarcadero Delphi XE2 or later, though previous versions can probably be used with minimal changes, though wouldn't look as nice under Windows Vista and above)
 *   The SDeanComponents package (v2.00.00 or later)
-* (Optional) GNU gettext for Delphi (dxgettext), available (free) from: [http://dybdahl.dk/dxgettext/](http://dybdahl.dk/dxgettext/) (This package adds support for language translations)
+* (Optional) GNU gettext for Delphi (dxgettext), available (free) from: [http://dybdahl.dk/dxgettext/](http://dybdahl.dk/dxgettext/) (This package adds support for language translations) (see below). It is not necessary to install this to simply rebuild if no strings have changed.
 
 The binary release of this software was built with Embarcadero Delphi XE2.
 
@@ -248,11 +254,32 @@ The binary release of this software was built with Embarcadero Delphi XE2.
     1.  Build the package
     2.  Install the package
     3.  Ensure that the correct path to each component is added to your Delphi environment ("Tools | Environment Options...", "Library" tab)
-  2.  Add the path to the modified Delphi files included in SDeanComponents to fix various bugs relating to Delphi's Windows Vista support to the top of Delphi's standard library paths. (This step probably won't be needed with later versions of Delphi, and shouldn't be carried out with older versions of Delphi, which will have different source)* Open the DoxBox Explorer project ("FreeOTFEExplorer.dpr")
+    
+    Note: Some components in this package are forms containing others in the same package. So, if you open a form in the package before installing it, you may see a message saying 'Field X does not have a corresponding component. Remove the declaration?'. If you do, click 'Cancel', clicking 'yes' will result in the component being deleted from the '.pas' file. 
+  2.  Add the path to the modified Delphi files included in SDeanComponents to fix various bugs relating to Delphi's Windows Vista support to the top of Delphi's standard library paths. (This step probably isn't needed with Delphi XE2, and shouldn't be carried out with versions of Delphi older tha nDelpi 7, which will have different source)
+  3. Open the DoxBox Explorer project ("FreeOTFEExplorer.dpr")
   3.  If you have the dxgettext software installed (see above), ensure that the compiler directive "\_DXGETTEXT" is set. Otherwise, make sure that this compiler directive is _not_ set.
   4 Build the application.
   You should now find a file called "DoxBox.exe" in the directory above the "src" directory
 You have now successfully built the GUI frontend!
+
+##### compiler directives
+
+* FREEOTFE\_MAIN 		defined for main GUI, not explorer
+* FREEOTFE\_EXPLORER defined for doxbox explorer, not main gui
+* \_DXGETTEXT 				see above
+
+##### gettext
+i18n is done using dxgettext, compatible with GNU gettext.
+Unfortunately the project was hosted on Berlios.de, which is now closed as a hosting site, and the project appears abondoned.
+An older version of the project was hosted on sourceforge. Fortunately a patch was submited to the sourceforge forum, containing the latest code.
+In order to build the source with i18n support, only a file gnugettext.pas is needed. For convenience this is part of the github project.
+To retrive this, download dxgettext.7z from TODO and extract the file from the .\dxgettext\dxgettext\sample\ directory.
+TO run the other functions of dxgettext, viz extracting srings from the project and building .mo files:
+
+* install dxgettext from sourceforge, coosing 'no' to 'integate with IDE'
+* apply te patch from dxgettext.7z
+* run the tools from the command line
 
 <A NAME="level_4_heading_4">
 #### Building the DLL drivers
