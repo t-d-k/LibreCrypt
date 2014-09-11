@@ -126,6 +126,39 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           ParentFont = False
           TabOrder = 0
         end
+inline fmeSelectPartition: TfmeSelectPartition
+          Left = 8
+          Top = 120
+          Width = 473
+          Height = 144
+          TabOrder = 1
+          inherited lblErrorWarning: TLabel
+            Top = 125
+          end
+          inherited imgErrorWarning: TImage
+            Top = 123
+          end
+          inherited TabControl1: TTabControl
+            Width = 473
+            Height = 97
+            inherited SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel
+              Width = 280
+              Height = 69
+            end
+            inherited pnlNoPartitionDisplay: TPanel
+              Left = 284
+              Height = 69
+            end
+          end
+          inherited ckShowCDROM: TCheckBox
+            Left = 240
+            Top = 105
+          end
+          inherited ckEntireDisk: TCheckBox
+            Left = 384
+            Top = 105
+          end
+        end
       end
       object tsSrcDetails: TTabSheet
         Caption = 'Src Details'
