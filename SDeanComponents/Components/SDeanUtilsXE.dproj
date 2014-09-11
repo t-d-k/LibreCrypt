@@ -40,6 +40,7 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_UnitSearchPath>P:\Projects\Delphi\doxbox\src\PC\gui\common\SDeanUtils\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<DCC_BplOutput>.\$(Platform)\$(Config)</DCC_BplOutput>
 			<VerInfo_Locale>2057</VerInfo_Locale>
@@ -97,43 +98,15 @@
 			<DCCReference Include="SDeanSecurity\PasswordRichEdit\PasswordRichEdit.pas"/>
 			<DCCReference Include="SDeanUtils\MSntdll.pas"/>
 			<DCCReference Include="SDeanUtils\NetMsg.pas"/>
-			<DCCReference Include="SDeanUtils\SDUAboutDlg.pas">
-				<Form>SDUAboutDialog</Form>
-			</DCCReference>
-			<DCCReference Include="SDeanUtils\SDUBase64.pas"/>
 			<DCCReference Include="SDeanUtils\SDUBlocksPanel.pas"/>
-			<DCCReference Include="SDeanUtils\SDUClasses.pas"/>
 			<DCCReference Include="SDeanUtils\SDUClipbrd.pas"/>
 			<DCCReference Include="SDeanUtils\SDUComCtrls.pas"/>
-			<DCCReference Include="SDeanUtils\SDUDirIterator_U.pas"/>
 			<DCCReference Include="SDeanUtils\SDUDiskPartitionsPanel.pas"/>
-			<DCCReference Include="SDeanUtils\SDUDiskPropertiesDlg.pas">
-				<Form>SDUDiskPropertiesDialog</Form>
-			</DCCReference>
 			<DCCReference Include="SDeanUtils\SDUDropFiles.pas"/>
-			<DCCReference Include="SDeanUtils\SDUEndianIntegers.pas"/>
 			<DCCReference Include="SDeanUtils\SDUExtCtrls.pas"/>
 			<DCCReference Include="SDeanUtils\SDUFileIterator_U.pas"/>
-			<DCCReference Include="SDeanUtils\SDUFilenameEdit_U.pas">
-				<Form>SDUFilenameEdit</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
-			<DCCReference Include="SDeanUtils\SDUGeneral.pas"/>
-			<DCCReference Include="SDeanUtils\SDUGraphics.pas"/>
-			<DCCReference Include="SDeanUtils\SDUi18n.pas"/>
-			<DCCReference Include="SDeanUtils\SDULogger_U.pas"/>
-			<DCCReference Include="SDeanUtils\SDUMRUList.pas"/>
 			<DCCReference Include="SDeanUtils\SDUMultimediaKeys.pas"/>
 			<DCCReference Include="SDeanUtils\SDUNamedPipe_U.pas"/>
-			<DCCReference Include="SDeanUtils\SDUNetMsg.pas"/>
-			<DCCReference Include="SDeanUtils\SDUObjectManager.pas"/>
-			<DCCReference Include="SDeanUtils\SDUPartitionPropertiesDlg.pas">
-				<Form>SDUPartitionPropertiesDialog</Form>
-			</DCCReference>
-			<DCCReference Include="SDeanUtils\SDUProgressDlg.pas">
-				<Form>SDUProgressDialog</Form>
-			</DCCReference>
-			<DCCReference Include="SDeanUtils\SDURegistry.pas"/>
 			<DCCReference Include="SDeanUtils\SDUSpin64Units.pas">
 				<Form>SDUSpin64Unit</Form>
 				<DesignClass>TFrame</DesignClass>
@@ -142,11 +115,6 @@
 			<DCCReference Include="SDeanUtils\SDUStringGrid.pas"/>
 			<DCCReference Include="SDeanUtils\SDUSystemTrayIcon.pas"/>
 			<DCCReference Include="SDeanUtils\SDUSystemTrayIconShellAPI.pas"/>
-			<DCCReference Include="SDeanUtils\SDUSysUtils.pas"/>
-			<DCCReference Include="SDeanUtils\SDUWindows.pas"/>
-			<DCCReference Include="SDeanUtils\SDUWindows64.pas"/>
-			<DCCReference Include="SDeanUtils\SDUWinHTTP.pas"/>
-			<DCCReference Include="SDeanUtils\SDUWinHttp_API.pas"/>
 			<DCCReference Include="SDeanUtils\Spin64.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas"/>
@@ -252,18 +220,7 @@
 				<Form>FileList_F</Form>
 			</DCCReference>
 			<DCCReference Include="SDeanSecurity\MSCryptoAPI\MSCryptoAPI.pas"/>
-			<DCCReference Include="SDeanFilesystem\SDFATBootSectorPropertiesDlg.pas">
-				<Form>SDFATBootSectorPropertiesDialog</Form>
-			</DCCReference>
-			<DCCReference Include="SDeanFilesystem\SDFilesystem.pas"/>
-			<DCCReference Include="SDeanFilesystem\SDFilesystem_FAT.pas"/>
-			<DCCReference Include="SDeanFilesystem\SDFilesystem_Local.pas"/>
 			<DCCReference Include="SDeanFilesystem\SDFilesystemCtrls.pas"/>
-			<DCCReference Include="SDeanFilesystem\SDFilesystemCtrls_ColDetails.pas">
-				<Form>SDFilesystemListView_ColDetails</Form>
-			</DCCReference>
-			<DCCReference Include="SDeanFilesystem\SDPartitionImage.pas"/>
-			<DCCReference Include="SDeanFilesystem\SDPartitionImage_File.pas"/>
 			<DCCReference Include="OTFE\OTFE\OTFE_U.pas"/>
 			<DCCReference Include="OTFE\OTFE\OTFEConsts_U.pas"/>
 			<DCCReference Include="SDeanSecurity\MouseRNG\MouseRNG.pas"/>
@@ -389,6 +346,35 @@
 				<Form>fmeSelectPartition</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUGeneral.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUWinHTTP.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUWinHttp_API.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUi18n.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUGraphics.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUWindows64.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUWindows.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUObjectManager.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUDirIterator_U.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUEndianIntegers.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUClasses.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUSysUtils.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\Filesystem\SDPartitionImage.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\Filesystem\SDPartitionImage_File.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\Filesystem\SDFilesystem.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\Filesystem\SDFilesystem_FAT.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUFilenameEdit_U.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\Filesystem\SDFilesystemCtrls_ColDetails.pas">
+				<Form>SDFilesystemListView_ColDetails</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUDiskPropertiesDlg.pas">
+				<Form>SDUDiskPropertiesDialog</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUPartitionPropertiesDlg.pas">
+				<Form>SDUPartitionPropertiesDialog</Form>
+			</DCCReference>
+			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUProgressDlg.pas">
+				<Form>SDUProgressDialog</Form>
+			</DCCReference>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
@@ -436,29 +422,7 @@
 						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
 						<VersionInfoKeys Name="Comments"/>
 					</VersionInfoKeys>
-					<Excluded_Packages>
-						<Excluded_Packages Name="C:\Program Files (x86)\Raize\CS5\Bin\CodeSiteExpressPkg_Design160.bpl">CodeSite Express 5.1</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\dclIndyProtocols160.bpl">Indy 10 Protocols Design Time</Excluded_Packages>
-						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdplugin160.bpl">LMD 2014 - Common PlugIn Components</Excluded_Packages>
-						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdprint160.bpl">LMD 2014 - Common PrintPack Components</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\dcltee9160.bpl">TeeChart Standard VCL Components</Excluded_Packages>
-						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\9.0\Bpl\SnoopPck.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\9.0\Bpl\RETSComponentsXE2.bpl">(untitled)</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\dclFMXtee9160.bpl">TeeChart Standard FMX Components</Excluded_Packages>
-						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdinspector160.bpl">LMD 2014 - LMD-Tools InspectorPack Components</Excluded_Packages>
-						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdthemes160.bpl">LMD 2014 - Common ThemesPack Components</Excluded_Packages>
-						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmddocking160.bpl">LMD 2014 - LMD-Tools DockingPack Components</Excluded_Packages>
-						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmddialog160.bpl">LMD 2014 - LMD-Tools DialogPack Desingtime Enhancements</Excluded_Packages>
-						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdeldb160.bpl">LMD 2014 - ElPack Database Components</Excluded_Packages>
-						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdelpro160.bpl">LMD 2014 - ElPack Professional Components</Excluded_Packages>
-						<Excluded_Packages Name="C:\Apps\TMS Component Pack\DelphiXE2\TMSWizDXE2.bpl">TMS Component Pack Wizards</Excluded_Packages>
-						<Excluded_Packages Name="C:\Program Files (x86)\FastReports\LibD16\dclfrxDB16.bpl">FastReport 4.0 DB Components</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\dclIPIndyImpl160.bpl">IP Abstraction Indy Implementation Design Time</Excluded_Packages>
-						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdelcore160.bpl">LMD 2014 - ElPack Core Components</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-						<Excluded_Packages Name="C:\Apps\TMS Component Pack\DelphiXE2\TMSDeDXE2.bpl">TMS Component Pack design time support</Excluded_Packages>
-					</Excluded_Packages>
+					<Excluded_Packages/>
 				</Delphi.Personality>
 				<Deployment/>
 				<Platforms>

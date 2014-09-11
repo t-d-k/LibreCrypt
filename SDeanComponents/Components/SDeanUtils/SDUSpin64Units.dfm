@@ -1,6 +1,8 @@
 inherited SDUSpin64Unit: TSDUSpin64Unit
   Width = 213
   Height = 25
+  ExplicitWidth = 213
+  ExplicitHeight = 25
   object se64Value: TSpinEdit64
     Left = 0
     Top = 0
@@ -16,7 +18,6 @@ inherited SDUSpin64Unit: TSDUSpin64Unit
     Width = 77
     Height = 21
     Style = csDropDownList
-    ItemHeight = 13
     TabOrder = 1
     OnChange = cbUnitsChange
   end
