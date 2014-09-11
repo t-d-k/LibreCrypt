@@ -7,7 +7,7 @@ unit OTFEFreeOTFE_WizardCommon;
 // -----------------------------------------------------------------------------
 //
 
-
+  { TODO 1 -otdk -crefactor : rename as random_utils }
 interface
 
 uses
@@ -406,7 +406,7 @@ begin
 end;
 
 
-// Load cryptlib, if possiblem, and initialise
+// Load cryptlib, if possible, and initialise
 function cryptlibLoad(): boolean;
 var
   funcResult: integer;
