@@ -1,0 +1,6 @@
+test volumes all have outer password 'password'. inner, if any, of: 5ekr1t
+
+name										format label																				sector IVs			    
+a								2mb			fat			doxtest1				sha512/ aes 256 xts 				-                    (no chaff, manually overwritten)
+b								1mb			fat			doxtest2				twofish 36 lrw			        -                    (no chaff, verrson 6.0)   
+c								1mb			FAT			c_file					whilrpool/3des      				32 bit sector, additonally XOR ...						password: !"£$%^&*() (version 6.1 with chaff)
