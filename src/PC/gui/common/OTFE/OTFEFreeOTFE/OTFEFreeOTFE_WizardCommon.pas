@@ -12,7 +12,9 @@ interface
 
 uses
   Windows,
-  pkcs11_library;
+  pkcs11_library
+  //doxbox
+  ;
 
 type
   TRNG = (
@@ -39,7 +41,7 @@ function GenerateRandomData(
                             // GPG specific
                             gpgFilename: string;
                             // Output
-                            var randomData: ansistring
+                            var randomData: AnsiString
                            ): boolean; overload;
 function GenerateRandomData(
                             rng: TRNG;
@@ -50,13 +52,13 @@ function GenerateRandomData(
                             // GPG specific
                             gpgFilename: string;
                             // Output
-                            var randomData: ansistring
+                            var randomData: AnsiString
                            ): boolean; overload;
 
 
 // Generate RNG data using GPG, assuming GPG is located under the specified
 // filename
-function GenerateRNGDataGPG(bytesRequired: integer; GPGFilename: string; var randomData: ansistring): boolean;
+// function GenerateRNGDataGPG(bytesRequired: integer; GPGFilename: string; var randomData: TSDUBytes): boolean;
 
 // Generate RNG data using the MS CryptoAPI
 function GenerateRNGDataMSCryptoAPI(
@@ -83,7 +85,7 @@ function GenerateRNGDataPKCS11(
                                PKCS11Library: TPKCS11Library;
                                SlotID: integer;
                                bytesRequired: integer;
-                               var randomData: ansistring
+                               var randomData: AnsiString
                               ): boolean;
 
 // MouseRNG store
@@ -96,11 +98,13 @@ procedure PurgeMouseRNGData();
 implementation
 
 uses
-  OTFEFreeOTFE_cryptlib,
-  OTFEFreeOTFE_PKCS11,
+
   MSCryptoAPI,
   Dialogs,  // Required for showmessage
-  SDUGeneral,
+//dosbox
+SDUGeneral,
+  OTFEFreeOTFE_cryptlib,
+  OTFEFreeOTFE_PKCS11,
   SDUi18n,
   SDUDialogs;
 
@@ -121,12 +125,12 @@ function GenerateRandomData(
                             // GPG specific
                             gpgFilename: string;
                             // Output
-                            var randomData: ansistring
+                            var randomData: AnsiString
                            ): boolean;
 var
   allOK: boolean;
   currRNG: TRNG;
-  currRandom: ansistring;
+  currRandom: AnsiString;
   rngsUsed: integer;
 begin
   allOK := TRUE;
@@ -136,7 +140,8 @@ begin
     begin
     if (currRNG in rngset) then
       begin
-      currRandom := '';
+      // SDUInitAndZeroBuffer(0, currRandom );
+      currRandom   := '';
       allOK := GenerateRandomData(
                                   currRNG,
                                   bytesRequired,
@@ -179,6 +184,7 @@ function GenerateRandomData(
 var
   allOK: boolean;
 begin
+  // SDUInitAndZeroBuffer(0, randomData);
   randomData := '';
   
   // Generate random data, if this hasn't already been done...
@@ -250,11 +256,13 @@ begin
     // GPG...
     rngGPG:
       begin
-      allOK := GenerateRNGDataGPG(
-                                  bytesRequired,
-                                  gpgFilename,
-                                  randomData
-                                 );
+       // not implemented
+        allOK  := false;
+//      allOK := GenerateRNGDataGPG(
+//                                  bytesRequired,
+//                                  gpgFilename,
+//                                  randomData
+//                                 );
       allOK := allOK AND
               (length(randomData) = bytesRequired);
       if not(allOK) then
@@ -305,15 +313,15 @@ begin
   Result := allOK;
 end;
 
-
-function GenerateRNGDataGPG(bytesRequired: integer; GPGFilename: string; var randomData: ansistring): boolean;
+  (*
+function GenerateRNGDataGPG(bytesRequired: integer; GPGFilename: string; var randomData: TSDUBytes): boolean;
 begin
 // xxx - implement GPG integration
 showmessage('Using GPG to generate RNG data has not yet been implemented. Please select another RNG option');
 randomData:= '';
 Result := FALSE;
 end;
-
+     *)
 
 function GenerateRNGDataMSCryptoAPI(
   bytesRequired: integer;
@@ -394,9 +402,9 @@ begin
     // Cleardown...
     // This is required in order that CrypGenRandom can overwrite with random
     // data
-    randomData := StringOfChar(AnsiChar(#0), bytesRequired);
-
-    allOK:= CryptGenRandom(hProv, bytesRequired, PByte(randomData));
+    // SDUInitAndZeroBuffer(bytesRequired, randomData );
+     randomData := StringOfChar(AnsiChar(#0), bytesRequired);
+    allOK:= CryptGenRandom(hProv, bytesRequired, PByte(randomData)); { TODO 1 -otdk -cinvestigate : PByte(string) can you do this? }
 
     CryptReleaseContext(hProv, 0);
     end;
@@ -467,6 +475,7 @@ function GenerateRNGDataCryptlib(bytesRequired: integer; var randomData: ansistr
 var
   allOK: boolean;
 begin
+  // randomData := SDUStringToSDUBytes(cryptlib_RNG(bytesRequired));
   randomData := cryptlib_RNG(bytesRequired);
   allOK := (Length(randomData) = bytesRequired);
 
@@ -476,30 +485,29 @@ end;
 // Initialize MouseRNG random data store
 procedure InitMouseRNGData();
 begin
+ //  SDUInitAndZeroBuffer(0, _MouseRNGStore);
   _MouseRNGStore := '';
 end;
 
 // Add byte to MouseRNG store
 procedure AddToMouseRNGData(random: Byte);
 begin
+  // SDUAddByte(_MouseRNGStore, random);
   _MouseRNGStore:= _MouseRNGStore + Ansichar(random);
 end;
 
 // Get first bytesRequired bytes of data from the MouseRNG store
 function GetMouseRNGData(bytesRequired: integer; var randomData: ansistring): boolean;
-var
-  retval: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
+  // SDUInitAndZeroBuffer(0, randomData);
   randomData := '';
   if ((bytesRequired * 8) <= CountMouseRNGData()) then
     begin
     randomData := Copy(_MouseRNGStore, 1, bytesRequired);
-    retval := TRUE;
+    Result := TRUE;
     end;
-
-  Result := retval;
 end;
 
 // Count the number of *bits* in the MouseRNG store
@@ -516,9 +524,11 @@ begin
   // Simple overwrite
   for i:=1 to length(_MouseRNGStore) do
     begin
+      //  _MouseRNGStore[i] := Byte(i);
     _MouseRNGStore := Ansichar(i);
     end;
 
+  // setlength(_MouseRNGStore,0);
   _MouseRNGStore := '';
 end;
 
@@ -527,7 +537,7 @@ function GenerateRNGDataPKCS11(
                                PKCS11Library: TPKCS11Library;
                                SlotID: integer;
                                bytesRequired: integer;
-                               var randomData: ansistring
+                               var randomData: AnsiString
                               ): boolean;
 var
   allOK: boolean;
