@@ -3,43 +3,43 @@ unit SDFATBootSectorPropertiesDlg;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls,
-  SDUForms,
-  SDFilesystem_FAT;
+  Classes, Controls, Dialogs, Forms,
+  Graphics, Messages, SDFilesystem_FAT, SDUForms,
+  StdCtrls,
+  SysUtils, Variants, Windows;
 
 type
-  TSDFATBootSectorPropertiesDialog = class(TSDUForm)
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
-    Label9: TLabel;
-    Label10: TLabel;
-    Label11: TLabel;
-    Label12: TLabel;
-    edOEMName: TEdit;
-    edBytesPerSector: TEdit;
-    edSectorsPerCluster: TEdit;
+  TSDFATBootSectorPropertiesDialog = class (TSDUForm)
+    Label1:                TLabel;
+    Label2:                TLabel;
+    Label3:                TLabel;
+    Label4:                TLabel;
+    Label5:                TLabel;
+    Label6:                TLabel;
+    Label7:                TLabel;
+    Label8:                TLabel;
+    Label9:                TLabel;
+    Label10:               TLabel;
+    Label11:               TLabel;
+    Label12:               TLabel;
+    edOEMName:             TEdit;
+    edBytesPerSector:      TEdit;
+    edSectorsPerCluster:   TEdit;
     edReservedSectorCount: TEdit;
-    edFATCount: TEdit;
-    edMaxRootEntries: TEdit;
-    edTotalSectors: TEdit;
-    edMediaDescriptor: TEdit;
-    edSectorsPerFAT: TEdit;
-    edSectorsPerTrack: TEdit;
-    edNumberOfHeads: TEdit;
-    edHiddenSectors: TEdit;
-    pbClose: TButton;
+    edFATCount:            TEdit;
+    edMaxRootEntries:      TEdit;
+    edTotalSectors:        TEdit;
+    edMediaDescriptor:     TEdit;
+    edSectorsPerFAT:       TEdit;
+    edSectorsPerTrack:     TEdit;
+    edNumberOfHeads:       TEdit;
+    edHiddenSectors:       TEdit;
+    pbClose:               TButton;
     procedure pbCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-  private
+  PRIVATE
     { Private declarations }
-  public
+  PUBLIC
     Filesystem: TSDFilesystem_FAT;
   end;
 
@@ -54,20 +54,19 @@ end;
 
 procedure TSDFATBootSectorPropertiesDialog.FormShow(Sender: TObject);
 begin
-  edOEMName.text             := Filesystem.OEMName;
-  edBytesPerSector.text      := inttostr(Filesystem.BytesPerSector);
-  edSectorsPerCluster.text   := inttostr(Filesystem.SectorsPerCluster);
-  edReservedSectorCount.text := inttostr(Filesystem.ReservedSectorCount);
-  edFATCount.text            := inttostr(Filesystem.FATCount);
-  edMaxRootEntries.text      := inttostr(Filesystem.MaxRootEntries);
-  edTotalSectors.text        := inttostr(Filesystem.TotalSectors);
-  edMediaDescriptor.text     := '0x'+inttohex(Filesystem.MediaDescriptor, 2);
-  edSectorsPerFAT.text       := inttostr(Filesystem.SectorsPerFAT);
-  edSectorsPerTrack.text     := inttostr(Filesystem.SectorsPerTrack);
-  edNumberOfHeads.text       := inttostr(Filesystem.NumberOfHeads);
-  edHiddenSectors.text       := inttostr(Filesystem.HiddenSectors);
+  edOEMName.Text             := Filesystem.OEMName;
+  edBytesPerSector.Text      := IntToStr(Filesystem.BytesPerSector);
+  edSectorsPerCluster.Text   := IntToStr(Filesystem.SectorsPerCluster);
+  edReservedSectorCount.Text := IntToStr(Filesystem.ReservedSectorCount);
+  edFATCount.Text            := IntToStr(Filesystem.FATCount);
+  edMaxRootEntries.Text      := IntToStr(Filesystem.MaxRootEntries);
+  edTotalSectors.Text        := IntToStr(Filesystem.TotalSectors);
+  edMediaDescriptor.Text     := '0x' + inttohex(Filesystem.MediaDescriptor, 2);
+  edSectorsPerFAT.Text       := IntToStr(Filesystem.SectorsPerFAT);
+  edSectorsPerTrack.Text     := IntToStr(Filesystem.SectorsPerTrack);
+  edNumberOfHeads.Text       := IntToStr(Filesystem.NumberOfHeads);
+  edHiddenSectors.Text       := IntToStr(Filesystem.HiddenSectors);
 
 end;
 
-END.
-
+end.

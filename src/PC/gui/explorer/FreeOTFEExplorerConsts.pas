@@ -1,11 +1,11 @@
 unit FreeOTFEExplorerConsts;
-// Description: 
-// By Sarah Dean
-// Email: sdean12@sdean12.org
-// WWW:   http://www.FreeOTFE.org/
-//
-// -----------------------------------------------------------------------------
-//
+ // Description: 
+ // By Sarah Dean
+ // Email: sdean12@sdean12.org
+ // WWW:   http://www.FreeOTFE.org/
+ //
+ // -----------------------------------------------------------------------------
+ //
 
 
 interface
@@ -24,10 +24,9 @@ const
   SERVICE_MRXDAV    = 'MRXDAV';
 
 resourcestring
-  RS_DRIVEMAPPING_NOT_SUPPORTED_UNDER_VISTA_AND_7 = 'For security reasons, drive mapping is not currently supported under Windows Vista/Windows 7';
+  RS_DRIVEMAPPING_NOT_SUPPORTED_UNDER_VISTA_AND_7 =
+    'For security reasons, drive mapping is not currently supported under Windows Vista/Windows 7';
 
 implementation
 
-END.
-
-
+end.

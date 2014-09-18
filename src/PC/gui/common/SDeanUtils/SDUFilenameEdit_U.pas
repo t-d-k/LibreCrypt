@@ -3,33 +3,33 @@ unit SDUFilenameEdit_U;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, SDUFrames, StdCtrls, SDUDialogs;
+  Classes, Controls, Dialogs, Forms,
+  Graphics, Messages, SDUDialogs, SDUFrames, StdCtrls, SysUtils, Variants, Windows;
 
 type
   TSDUFilenamEditType = (fetOpen, fetSave);
 
-  TSDUFilenameEdit = class(TSDUFrame)
-    edFilename: TEdit;
-    pbBrowse: TButton;
+  TSDUFilenameEdit = class (TSDUFrame)
+    edFilename:  TEdit;
+    pbBrowse:    TButton;
     OpenDialog1: TSDUOpenDialog;
     SaveDialog1: TSDUSaveDialog;
     procedure pbBrowseClick(Sender: TObject);
     procedure FrameEnter(Sender: TObject);
     procedure edFilenameChange(Sender: TObject);
     procedure FrameResize(Sender: TObject);
-  private
+  PRIVATE
     FFilenameEditType: TSDUFilenamEditType;
 
-    FInitialDir: string;
-    FFilter: string;
-    FFilterIndex: integer;
-    FDefaultExt: string;
-    FOnChange: TNotifyEvent;
+    FInitialDir:  String;
+    FFilter:      String;
+    FFilterIndex: Integer;
+    FDefaultExt:  String;
+    FOnChange:    TNotifyEvent;
 
     procedure TweakControlsLayout();
 
-  protected
+  PROTECTED
 {
     function  GetInitialDir(): string;
     procedure SetInitialDir(value: string);
@@ -41,14 +41,14 @@ type
     procedure SetDefaultExt(value: string);
 }
 
-    function  GetFilename(): string;
-    procedure SetFilename(value: string);
+    function GetFilename(): String;
+    procedure SetFilename(Value: String);
 
-    procedure SetFilenameEditType(value: TSDUFilenamEditType);
+    procedure SetFilenameEditType(Value: TSDUFilenamEditType);
 
-    procedure SetEnabled(value: boolean); override;
+    procedure SetEnabled(Value: Boolean); OVERRIDE;
 
-    procedure Resizing(State: TWindowState); override;
+    procedure Resizing(State: TWindowState); OVERRIDE;
 
     procedure DesigningSummary();
 
@@ -56,18 +56,19 @@ type
     procedure BrowseDialogSave();
 
     procedure DoOnChange();
-  public
-    constructor Create(AOwner: TComponent); override;
-    destructor  Destroy(); override;
-  published
-    property TabStop default TRUE;  // Change default to TRUE
-    
-    property FilenameEditType: TSDUFilenamEditType read FFilenameEditType write SetFilenameEditType default fetOpen;
+  PUBLIC
+    constructor Create(AOwner: TComponent); OVERRIDE;
+    destructor Destroy(); OVERRIDE;
+  PUBLISHED
+    property TabStop DEFAULT True;  // Change default to TRUE
 
-    property InitialDir: string read FInitialDir write FInitialDir;
-    property Filter: string read FFilter write FFilter;
-    property FilterIndex: integer read FFilterIndex write FFilterIndex default 1;
-    property DefaultExt: string read FDefaultExt write FDefaultExt;
+    property FilenameEditType: TSDUFilenamEditType Read FFilenameEditType
+      Write SetFilenameEditType DEFAULT fetOpen;
+
+    property InitialDir: String Read FInitialDir Write FInitialDir;
+    property Filter: String Read FFilter Write FFilter;
+    property FilterIndex: Integer Read FFilterIndex Write FFilterIndex DEFAULT 1;
+    property DefaultExt: String Read FDefaultExt Write FDefaultExt;
 {
     property InitialDir: string read GetInitialDir write SetInitialDir;
     property Filter: string read GetFilter write SetFilter;
@@ -75,12 +76,12 @@ type
     property DefaultExt: string read GetDefaultExt write SetDefaultExt;
 }
 
-    property Filename: string read GetFilename write SetFilename;
+    property Filename: String Read GetFilename Write SetFilename;
 
-    property OpenDialog: TSDUOpenDialog read OpenDialog1;
-    property SaveDialog: TSDUSaveDialog read SaveDialog1;
+    property OpenDialog: TSDUOpenDialog Read OpenDialog1;
+    property SaveDialog: TSDUSaveDialog Read SaveDialog1;
 
-    property OnChange: TNotifyEvent read FOnChange write FOnChange;
+    property OnChange: TNotifyEvent Read FOnChange Write FOnChange;
   end;
 
 procedure Register;
@@ -109,15 +110,15 @@ begin
 
   edFilename.Text := '';
 
-  self.height := edFilename.height;
+  self.Height := edFilename.Height;
 
   TweakControlsLayout();
 
   edFilename.Anchors := [akLeft, akRight, akTop];
-  pbBrowse.Anchors := [akRight, akTop];
+  pbBrowse.Anchors   := [akRight, akTop];
 
-  self.Constraints.MinHeight := edFilename.height;
-  self.Constraints.MaxHeight := edFilename.height;
+  self.Constraints.MinHeight := edFilename.Height;
+  self.Constraints.MaxHeight := edFilename.Height;
 end;
 
 destructor TSDUFilenameEdit.Destroy();
@@ -127,15 +128,15 @@ end;
 
 procedure TSDUFilenameEdit.TweakControlsLayout();
 begin
-  pbBrowse.height := edFilename.height;
-  pbBrowse.width := pbBrowse.height;
+  pbBrowse.Height := edFilename.Height;
+  pbBrowse.Width  := pbBrowse.Height;
 
-  edFilename.Top := 0;
-  edFilename.left := 0;
-  edFilename.width := self.width - (pbBrowse.width + CONTROL_MARGIN);
+  edFilename.Top   := 0;
+  edFilename.left  := 0;
+  edFilename.Width := self.Width - (pbBrowse.Width + CONTROL_MARGIN);
 
-  pbBrowse.Top := 0;
-  pbBrowse.left := edFilename.width + CONTROL_MARGIN;
+  pbBrowse.Top  := 0;
+  pbBrowse.left := edFilename.Width + CONTROL_MARGIN;
 end;
 
 {
@@ -192,10 +193,9 @@ end;
 
 procedure TSDUFilenameEdit.DoOnChange();
 begin
-  if Assigned(FOnChange) then
-    begin
+  if Assigned(FOnChange) then begin
     FOnChange(self);
-    end;
+  end;
 end;
 
 procedure TSDUFilenameEdit.FrameEnter(Sender: TObject);
@@ -208,36 +208,32 @@ begin
 
   // Need to check if the browse button has the focus first - otherwise, if the
   // user clicks on the button, the TEdit will get the focus!
-  if not(pbBrowse.Focused) then
-    begin
+  if not (pbBrowse.Focused) then begin
     edFilename.SetFocus();
-    end;
+  end;
 end;
 
 procedure TSDUFilenameEdit.pbBrowseClick(Sender: TObject);
 begin
-  if (FilenameEditType = fetSave) then
-    begin
+  if (FilenameEditType = fetSave) then begin
     BrowseDialogSave();
-    end
-  else
-    begin
+  end else begin
     BrowseDialogOpen();
-    end;
+  end;
 
 end;
 
 procedure TSDUFilenameEdit.BrowseDialogOpen();
 var
   dlg: TSDUOpenDialog;
-  cwd: string;
+  cwd: String;
 begin
   inherited;
 
   // Store and restore the CWD; the dialog changes it
   cwd := SDUGetCWD();
   try
-    dlg:= OpenDialog;
+    dlg := OpenDialog;
 
     dlg.InitialDir  := InitialDir;
     dlg.Filter      := Filter;
@@ -245,10 +241,9 @@ begin
     dlg.DefaultExt  := DefaultExt;
 
     SDUOpenSaveDialogSetup(dlg, Filename);
-    if dlg.Execute() then
-      begin
+    if dlg.Execute() then begin
       Filename := dlg.Filename;
-      end;
+    end;
 
   finally
     SDUSetCWD(cwd);
@@ -259,14 +254,14 @@ end;
 procedure TSDUFilenameEdit.BrowseDialogSave();
 var
   dlg: TSDUSaveDialog;
-  cwd: string;
+  cwd: String;
 begin
   inherited;
 
   // Store and restore the CWD; the dialog changes it
   cwd := SDUGetCWD();
   try
-    dlg:= SaveDialog;
+    dlg := SaveDialog;
 
     dlg.InitialDir  := InitialDir;
     dlg.Filter      := Filter;
@@ -274,10 +269,9 @@ begin
     dlg.DefaultExt  := DefaultExt;
 
     SDUOpenSaveDialogSetup(dlg, Filename);
-    if dlg.Execute() then
-      begin
+    if dlg.Execute() then begin
       Filename := dlg.Filename;
-      end;
+    end;
 
   finally
     SDUSetCWD(cwd);
@@ -285,39 +279,37 @@ begin
 
 end;
 
-function TSDUFilenameEdit.GetFilename(): string;
+function TSDUFilenameEdit.GetFilename(): String;
 begin
   Result := edFilename.Text;
 end;
 
-procedure TSDUFilenameEdit.SetFilename(value: string);
+procedure TSDUFilenameEdit.SetFilename(Value: String);
 begin
-  edFilename.Text := value;
+  edFilename.Text := Value;
 end;
 
-procedure TSDUFilenameEdit.SetEnabled(value: boolean);
+procedure TSDUFilenameEdit.SetEnabled(Value: Boolean);
 begin
   inherited;
-  SDUEnableControl(edFilename, value);
-  SDUEnableControl(pbBrowse, value);
+  SDUEnableControl(edFilename, Value);
+  SDUEnableControl(pbBrowse, Value);
 end;
 
-// Change the button's caption to reflect the open/save type - but only at
-// design time.
-// This makes it easier to see what type of filename edit it is. At runtime,
-// the button's caption will revert to "..."
+ // Change the button's caption to reflect the open/save type - but only at
+ // design time.
+ // This makes it easier to see what type of filename edit it is. At runtime,
+ // the button's caption will revert to "..."
 procedure TSDUFilenameEdit.DesigningSummary();
 begin
-  if (csDesigning in ComponentState) then
-    begin
+  if (csDesigning in ComponentState) then begin
     pbBrowse.Font.Style := [fsBold];
-    pbBrowse.Caption := 'O';
-    if (FilenameEditType = fetSave) then
-      begin
+    pbBrowse.Caption    := 'O';
+    if (FilenameEditType = fetSave) then begin
       pbBrowse.Caption := 'S';
-      end;
-
     end;
+
+  end;
 
 end;
 
@@ -327,9 +319,9 @@ begin
   DesigningSummary();
 end;
 
-procedure TSDUFilenameEdit.SetFilenameEditType(value: TSDUFilenamEditType);
+procedure TSDUFilenameEdit.SetFilenameEditType(Value: TSDUFilenamEditType);
 begin
-  FFilenameEditType := value;
+  FFilenameEditType := Value;
   DesigningSummary();
 end;
 
@@ -339,5 +331,4 @@ begin
   TweakControlsLayout();
 end;
 
-END.
-
+end.

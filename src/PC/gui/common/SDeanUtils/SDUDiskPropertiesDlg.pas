@@ -3,38 +3,38 @@ unit SDUDiskPropertiesDlg;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, CheckLst, SDUCheckLst,
-  SDUGeneral, ExtCtrls, SDUForms;
+  CheckLst, Classes, Controls, Dialogs, ExtCtrls, Forms,
+  Graphics, Messages, SDUCheckLst,
+  SDUForms, SDUGeneral, StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TSDUDiskPropertiesDialog = class(TSDUForm)
-    Label1: TLabel;
-    edTracksPerCylinder: TEdit;
-    pbClose: TButton;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    edSectorsPerTrack: TEdit;
-    edBytesPerSector: TEdit;
-    edMediaType: TEdit;
-    edSizeBytes: TEdit;
-    Label11: TLabel;
-    edCylinders: TEdit;
-    edDiskNumber: TEdit;
-    Label8: TLabel;
-    edDiskSignature: TEdit;
-    Label10: TLabel;
+  TSDUDiskPropertiesDialog = class (TSDUForm)
+    Label1:               TLabel;
+    edTracksPerCylinder:  TEdit;
+    pbClose:              TButton;
+    Label4:               TLabel;
+    Label5:               TLabel;
+    Label6:               TLabel;
+    Label7:               TLabel;
+    edSectorsPerTrack:    TEdit;
+    edBytesPerSector:     TEdit;
+    edMediaType:          TEdit;
+    edSizeBytes:          TEdit;
+    Label11:              TLabel;
+    edCylinders:          TEdit;
+    edDiskNumber:         TEdit;
+    Label8:               TLabel;
+    edDiskSignature:      TEdit;
+    Label10:              TLabel;
     edDiskPartitionCount: TEdit;
-    Label12: TLabel;
-    Label2: TLabel;
-    edSizeUnits: TEdit;
+    Label12:              TLabel;
+    Label2:               TLabel;
+    edSizeUnits:          TEdit;
     procedure FormShow(Sender: TObject);
-  private
+  PRIVATE
     { Private declarations }
-  public
-    DiskNumber: integer;
+  PUBLIC
+    DiskNumber: Integer;
   end;
 
 implementation
@@ -46,45 +46,39 @@ resourcestring
 
 procedure TSDUDiskPropertiesDialog.FormShow(Sender: TObject);
 var
-  layout: TSDUDriveLayoutInformation;
+  layout:       TSDUDriveLayoutInformation;
   diskGeometry: TSDUDiskGeometry;
-  size: ULONGLONG;
+  size:         ULONGLONG;
 begin
-  edDiskNumber.text := inttostr(DiskNumber);
+  edDiskNumber.Text := IntToStr(DiskNumber);
 
-  edDiskPartitionCount.text := RS_UNABLE_TO_OBTAIN_DATA;
-  edDiskSignature.text      := RS_UNABLE_TO_OBTAIN_DATA;
-  if SDUGetDriveLayout(DiskNumber, layout) then
-    begin
-    edDiskPartitionCount.text := inttostr(layout.PartitionCount);
-    edDiskSignature.text      := '0x'+inttohex(layout.Signature, 8);
-    end;
+  edDiskPartitionCount.Text := RS_UNABLE_TO_OBTAIN_DATA;
+  edDiskSignature.Text      := RS_UNABLE_TO_OBTAIN_DATA;
+  if SDUGetDriveLayout(DiskNumber, layout) then begin
+    edDiskPartitionCount.Text := IntToStr(layout.PartitionCount);
+    edDiskSignature.Text      := '0x' + inttohex(layout.Signature, 8);
+  end;
 
-  edCylinders.text          := RS_UNABLE_TO_OBTAIN_DATA;
-  edTracksPerCylinder.text  := RS_UNABLE_TO_OBTAIN_DATA;
-  edSectorsPerTrack.text    := RS_UNABLE_TO_OBTAIN_DATA;
-  edBytesPerSector.text     := RS_UNABLE_TO_OBTAIN_DATA;
-  edSizeBytes.text          := RS_UNABLE_TO_OBTAIN_DATA;
-  edSizeUnits.text          := RS_UNABLE_TO_OBTAIN_DATA;
-  edMediaType.text          := RS_UNABLE_TO_OBTAIN_DATA;
-  if SDUGetDiskGeometry(DiskNumber, diskGeometry) then
-    begin
-    edCylinders.text          := inttostr(diskGeometry.Cylinders.QuadPart);
-    edTracksPerCylinder.text  := inttostr(diskGeometry.TracksPerCylinder);
-    edSectorsPerTrack.text    := inttostr(diskGeometry.SectorsPerTrack);
-    edBytesPerSector.text     := inttostr(diskGeometry.BytesPerSector);
-    size := diskGeometry.Cylinders.QuadPart *
-            diskGeometry.TracksPerCylinder *
-            diskGeometry.SectorsPerTrack *
-            diskGeometry.BytesPerSector;
-    edSizeBytes.text          := SDUIntToStrThousands(size);
-    edSizeUnits.text          := SDUFormatAsBytesUnits(size);
-    edMediaType.text          := '0x'+inttohex(diskGeometry.MediaType, 2) +
-                                 ': ' + TSDUMediaTypeTitle[TSDUMediaType(diskGeometry.MediaType)];
-    end;
+  edCylinders.Text         := RS_UNABLE_TO_OBTAIN_DATA;
+  edTracksPerCylinder.Text := RS_UNABLE_TO_OBTAIN_DATA;
+  edSectorsPerTrack.Text   := RS_UNABLE_TO_OBTAIN_DATA;
+  edBytesPerSector.Text    := RS_UNABLE_TO_OBTAIN_DATA;
+  edSizeBytes.Text         := RS_UNABLE_TO_OBTAIN_DATA;
+  edSizeUnits.Text         := RS_UNABLE_TO_OBTAIN_DATA;
+  edMediaType.Text         := RS_UNABLE_TO_OBTAIN_DATA;
+  if SDUGetDiskGeometry(DiskNumber, diskGeometry) then begin
+    edCylinders.Text         := IntToStr(diskGeometry.Cylinders.QuadPart);
+    edTracksPerCylinder.Text := IntToStr(diskGeometry.TracksPerCylinder);
+    edSectorsPerTrack.Text   := IntToStr(diskGeometry.SectorsPerTrack);
+    edBytesPerSector.Text    := IntToStr(diskGeometry.BytesPerSector);
+    size                     := diskGeometry.Cylinders.QuadPart * diskGeometry.TracksPerCylinder *
+      diskGeometry.SectorsPerTrack * diskGeometry.BytesPerSector;
+    edSizeBytes.Text         := SDUIntToStrThousands(size);
+    edSizeUnits.Text         := SDUFormatAsBytesUnits(size);
+    edMediaType.Text         := '0x' + inttohex(diskGeometry.MediaType, 2) +
+      ': ' + TSDUMediaTypeTitle[TSDUMediaType(diskGeometry.MediaType)];
+  end;
 
 end;
 
-END.
-
-
+end.

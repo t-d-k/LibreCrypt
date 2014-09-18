@@ -3,22 +3,22 @@ unit FreeOTFEExplorerfrmSelectCopyOrMove;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls,
-  SDUForms,
-  FreeOTFEExplorerfrmMain; // Required for TFExplOperation
+  Classes, Controls, Dialogs, Forms,
+  FreeOTFEExplorerfrmMain, Graphics, Messages, SDUForms,
+  StdCtrls,
+  SysUtils, Variants, Windows; // Required for TFExplOperation
 
 type
-  TfrmSelectCopyOrMove = class(TSDUForm)
-    Label1: TLabel;
-    pbCopy: TButton;
+  TfrmSelectCopyOrMove = class (TSDUForm)
+    Label1:   TLabel;
+    pbCopy:   TButton;
     pbCancel: TButton;
-    pbMove: TButton;
+    pbMove:   TButton;
     procedure pbCopyClick(Sender: TObject);
     procedure pbMoveClick(Sender: TObject);
-  private
+  PRIVATE
     { Private declarations }
-  public
+  PUBLIC
     OpType: TFExplOperation;
   end;
 
@@ -28,15 +28,14 @@ implementation
 
 procedure TfrmSelectCopyOrMove.pbCopyClick(Sender: TObject);
 begin
-  OpType := cmCopy;
-  ModalResult := mrOK;
+  OpType      := cmCopy;
+  ModalResult := mrOk;
 end;
 
 procedure TfrmSelectCopyOrMove.pbMoveClick(Sender: TObject);
 begin
-  OpType := cmMove;
-  ModalResult := mrOK;
+  OpType      := cmMove;
+  ModalResult := mrOk;
 end;
 
-END.
-
+end.

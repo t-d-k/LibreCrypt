@@ -11,15 +11,13 @@ unit FreeOTFEfrmMain;
 interface
 
 uses
-
   ActnList,
   Buttons, Classes, ComCtrls, CommonfrmMain, CommonSettings, Controls, Dialogs,
   ExtCtrls, Forms, FreeOTFESettings, Graphics, Grids, ImgList, Menus, Messages,
-
   SDUSystemTrayIcon, Shredder, Spin64, StdCtrls, SysUtils, ToolWin, Windows, XPMan,
 
   //freeotfe
-     MouseRNGDialog_U, OTFE_U,
+  MouseRNGDialog_U, OTFE_U,
   OTFEFreeOTFE_DriverControl,
   OTFEFreeOTFE_U, OTFEFreeOTFEBase_U,
   pkcs11_library, SDUDialogs, SDUForms, SDUMRUList, SDUMultimediaKeys,
@@ -132,7 +130,7 @@ type
 
 
   PROTECTED
-    TempCypherDriver:     AnsiString;
+    TempCypherDriver:     Ansistring;
     TempCypherGUID:       TGUID;
     TempCypherDetails:    TFreeOTFECypher_v3;
     TempCypherKey:        Ansistring;
@@ -242,12 +240,9 @@ type
     procedure WMQueryEndSession(var msg: TWMQueryEndSession); MESSAGE WM_QUERYENDSESSION;
     procedure WMEndSession(var msg: TWMEndSession); MESSAGE WM_ENDSESSION;
 
-    procedure GenerateOverwriteData(Sender: TObject;
-      passNumber: Integer;
-      bytesRequired: Cardinal;
-      var generatedOK: Boolean;
-      var outputBlock: TShredBlock
-      );
+    procedure GenerateOverwriteData(Sender: TObject; passNumber: Integer;
+      bytesRequired: Cardinal; var generatedOK: Boolean;
+      var outputBlock: TShredBlock);
 
     procedure InitApp(); OVERRIDE;
 
@@ -298,7 +293,7 @@ uses
   //DoxBox units
 
   SDUGraphics,
-//  SDUWinSvc,
+  //  SDUWinSvc,
   CommonfrmAbout,
   SDUi18n,
   FreeOTFEConsts,
@@ -447,14 +442,14 @@ begin
       // if 'installed' then install drivers and prompt reboot else prompt portable as below
       if not Settings.OptInstalled then
         goForStartPortable := SDUConfirmYN(
-          _('The main DoxBox driver does not appear to be installed and running on this computer') + SDUCRLF + SDUCRLF +
-          _('Would you like to start DoxBox in portable mode?'));
+          _('The main DoxBox driver does not appear to be installed and running on this computer') +
+          SDUCRLF + SDUCRLF + _('Would you like to start DoxBox in portable mode?'));
     end;
 
     if goForStartPortable then begin
       PortableModeSet(pmaStart, False);
     end else begin
-      if Settings.OptInstalled then  begin
+      if Settings.OptInstalled then begin
         actInstallExecute(nil);
       end else begin
         SDUMessageDlg(
@@ -483,7 +478,7 @@ var
   driveIconNum: Integer;
   i:            Integer;
   volumeInfo:   TOTFEFreeOTFEVolumeInfo;
-  mounted: DriveLetterString;
+  mounted:      DriveLetterString;
   miTmp:        TMenuItem;
   strVolID:     String;
   overlayIdx:   Integer;
@@ -528,7 +523,7 @@ begin
 
 
       // The volume ID/label
-// Cast to prevent compiler error
+      // Cast to prevent compiler error
       strVolID := SDUVolumeID(DriveLetterChar(mounted[i]));
       if strVolID <> '' then begin
         strVolID := '[' + strVolID + ']';
@@ -587,7 +582,7 @@ end;
 procedure TfrmFreeOTFEMain.SystemTrayIconDismount(Sender: TObject);
 var
   miDismount: TMenuItem;
-  drive: DriveLetterChar;
+  drive:      DriveLetterChar;
 begin
   miDismount := TMenuItem(Sender);
 
@@ -620,7 +615,8 @@ end;
  // overlayIdx - Set to an image index within ilDriveIconOverlay, or -1 for no
  //              overlay
  // Returns: The icon's index in ilDriveIcons, or -1 on error
-function TfrmFreeOTFEMain.AddIconForDrive(driveLetter: DriveLetterChar; overlayIdx: Integer): Integer;
+function TfrmFreeOTFEMain.AddIconForDrive(driveLetter: DriveLetterChar;
+  overlayIdx: Integer): Integer;
 var
   iconIdx:       Integer;
   anIcon:        TIcon;
@@ -635,9 +631,7 @@ begin
 
   // Create a suitable icon to represent the drive
   tmpDrivePath  := driveLetter + ':\';
-  imgListHandle := SHGetFileInfo(PChar(tmpDrivePath),
-    0, shfi,
-    sizeof(shfi),
+  imgListHandle := SHGetFileInfo(PChar(tmpDrivePath), 0, shfi, sizeof(shfi),
     SHGFI_SYSICONINDEX or SHGFI_LARGEICON);
   //                                 SHGFI_DISPLAYNAME
 
@@ -969,7 +963,7 @@ procedure TfrmFreeOTFEMain.MountFiles(mountAsSystem: TDragDropFileType;
   filenames: TStringList; ReadOnly, forceHidden: Boolean);
 var
   i:               Integer;
-  mountedAs: DriveLetterString;
+  mountedAs:       DriveLetterString;
   msg:             String;
   mountedOK:       Boolean;
   prettyMountedAs: String;
@@ -983,8 +977,8 @@ begin
     mountedOK := OTFEFreeOTFE.MountFreeOTFE(filenames, mountedAs, ReadOnly);
   end else
   if (mountAsSystem = ftLinux) then begin
-    mountedOK := OTFEFreeOTFE.MountLinux(filenames, mountedAs,
-      ReadOnly, '', '', '', False, LINUX_KEYFILE_DEFAULT_NEWLINE, 0, False, forceHidden);
+    mountedOK := OTFEFreeOTFE.MountLinux(filenames, mountedAs, ReadOnly,
+      '', '', '', False, LINUX_KEYFILE_DEFAULT_NEWLINE, 0, False, forceHidden);
   end else begin
     mountedOK := OTFEFreeOTFE.Mount(filenames, mountedAs, ReadOnly);
   end;
@@ -1000,33 +994,28 @@ begin
   end else begin
     // Mount successful
     prettyMountedAs := PrettyPrintDriveLetters(mountedAs);
-    if (CountValidDrives(mountedAs) = 1) then 
-begin
+    if (CountValidDrives(mountedAs) = 1) then begin
       msg := SDUParamSubstitute(_('Your DoxBox has been opened as drive: %1'), [prettyMountedAs]);
-    end else 
-begin
-      msg := SDUParamSubstitute(_('Your DoxBoxes have been opened as drives: %1'),        [prettyMountedAs]);
+    end else begin
+      msg := SDUParamSubstitute(_('Your DoxBoxes have been opened as drives: %1'),
+        [prettyMountedAs]);
     end;
 
     RefreshDrives();
 
-    if Settings.OptPromptMountSuccessful then 
-begin
+    if Settings.OptPromptMountSuccessful then begin
       SDUMessageDlg(msg, mtInformation);
     end;
 
-    for i := 1 to length(mountedAs) do 
-begin
-   if (mountedAs[i] <> #0) then
-        begin
-      if Settings.OptExploreAfterMount then 
-begin
-        ExploreDrive(mountedAs[i]);
-      end;
+    for i := 1 to length(mountedAs) do begin
+      if (mountedAs[i] <> #0) then begin
+        if Settings.OptExploreAfterMount then begin
+          ExploreDrive(mountedAs[i]);
+        end;
 
-      AutoRunExecute(arPostMount, mountedAs[i], False);
-    end;
+        AutoRunExecute(arPostMount, mountedAs[i], False);
       end;
+    end;
 
   end;
 
@@ -1044,9 +1033,8 @@ begin
   Settings.OptMRUList.RemoveMenuItems(pmSystemTray);
   Settings.OptMRUList.InsertUnder(mmRecentlyMounted);
 
-  mmRecentlyMounted.Visible := ((Settings.OptMRUList.MaxItems >
-    0) and (Settings.OptMRUList.Items.Count >
-    0));
+  mmRecentlyMounted.Visible := ((Settings.OptMRUList.MaxItems > 0) and
+    (Settings.OptMRUList.Items.Count > 0));
 
 end;
 
@@ -1124,7 +1112,7 @@ procedure TfrmFreeOTFEMain.DriveProperties();
 var
   propertiesDlg: TfrmFreeOTFEVolProperties;
   i:             Integer;
-  selDrives: DriveLetterString;
+  selDrives:     DriveLetterString;
 begin
   selDrives := GetSelectedDrives();
   for i := 1 to length(selDrives) do begin
@@ -1147,7 +1135,7 @@ end;
 function TfrmFreeOTFEMain.DismountAll(isEmergency: Boolean = False): Boolean;
 var
   drivesRemaining: DriveLetterString;
-  initialDrives: DriveLetterString;
+  initialDrives:   DriveLetterString;
   i:               Integer;
 begin
   // Change CWD to anywhere other than a mounted drive
@@ -1211,8 +1199,8 @@ function TfrmFreeOTFEMain.DismountDrives(dismountDrives: DriveLetterString;
 var
   i:               Integer;
   j:               Integer;
-  subVols: DriveLetterString;
-  tmpDrv: DriveLetterChar;
+  subVols:         DriveLetterString;
+  tmpDrv:          DriveLetterChar;
   drivesRemaining: DriveLetterString;
   allOK:           Boolean;
 begin
@@ -1240,8 +1228,8 @@ begin
           // At least one of the currently mounted drives is stored on one of
           // the drives to be dismounted - and we're not dismounting that drive
           SDUMessageDlg(
-            SDUParamSubstitute(
-            _('The Box currently opened as %1: must be locked before %2: can be locked'),
+            SDUParamSubstitute(_(
+            'The Box currently opened as %1: must be locked before %2: can be locked'),
             [subVols[j], tmpDrv]),
             mtError
             );
@@ -1287,30 +1275,26 @@ end;
  // Warn the user that some drives remain mounted, and if the dismount attempted
  // wasn't an emergency dismount, then prompt the user if they want to attempt
  // an emergency dismount
-procedure TfrmFreeOTFEMain.ReportDrivesNotDismounted(drivesRemaining: DriveLetterString;  isEmergency: Boolean);
+procedure TfrmFreeOTFEMain.ReportDrivesNotDismounted(drivesRemaining: DriveLetterString;
+  isEmergency: Boolean);
 var
   msg:       String;
   warningOK: Boolean;
   forceOK:   Boolean;
 begin
-  msg := SDUPluralMsg(
-length(drivesRemaining),
-    SDUParamSubstitute(_('Unable to dismount drive: %1'),    [PrettyPrintDriveLetters(drivesRemaining)]), 
-SDUParamSubstitute(    _('Unable to dismount drives: %1'),    [PrettyPrintDriveLetters(drivesRemaining)]));
+  msg := SDUPluralMsg(length(drivesRemaining), SDUParamSubstitute(
+    _('Unable to dismount drive: %1'), [PrettyPrintDriveLetters(drivesRemaining)]),
+    SDUParamSubstitute(_('Unable to dismount drives: %1'),
+    [PrettyPrintDriveLetters(drivesRemaining)]));
 
   // If the dismount attempted was a non-emergency dismount; prompt user if
   // they want to attempt an emergency dismount
   if not (isEmergency) then begin
     forceOK := False;
-    if (Settings.OptOnNormalDismountFail = ondfPromptUser) then 
-begin
-      msg     := msg + SDUCRLF 
-+ SDUCRLF +
- SDUPluralMsg(
-        length(drivesRemaining),
- _(        'Do you wish to force a dismount on this drive?'), 
-_(        'Do you wish to force a dismount on these drives?')
-);
+    if (Settings.OptOnNormalDismountFail = ondfPromptUser) then begin
+      msg     := msg + SDUCRLF + SDUCRLF + SDUPluralMsg(
+        length(drivesRemaining), _('Do you wish to force a dismount on this drive?'),
+        _('Do you wish to force a dismount on these drives?'));
       forceOK := SDUConfirmYN(msg);
     end else
     if (Settings.OptOnNormalDismountFail = ondfForceDismount) then begin
@@ -1322,12 +1306,9 @@ _(        'Do you wish to force a dismount on these drives?')
 
     if forceOK then begin
       warningOK := True;
-      if settings.OptWarnBeforeForcedDismount then 
-begin
-        warningOK := SDUWarnYN(_(
-          'Warning: Emergency dismounts are not recommended') + SDUCRLF +
- SDUCRLF +
-          _('Are you sure you wish to proceed?'));
+      if settings.OptWarnBeforeForcedDismount then begin
+        warningOK := SDUWarnYN(_('Warning: Emergency dismounts are not recommended') +
+          SDUCRLF + SDUCRLF + _('Are you sure you wish to proceed?'));
       end;
 
       if warningOK then begin
@@ -1393,9 +1374,7 @@ begin
   // drivers there are in portable mode, presumably we're running under
   // Vista without admin access - in which case this control just toggles the
   // portable mode status - and DOESN'T turn it on/off
-  if (
-actTogglePortableMode.Enabled and 
-(CountPortableDrivers < 0)) then begin
+  if (actTogglePortableMode.Enabled and (CountPortableDrivers < 0)) then begin
     actTogglePortableMode.Caption := _('Toggle portable mode drivers');
   end else begin
     actTogglePortableMode.Caption := _('Use portable mode drivers');
@@ -1424,11 +1403,11 @@ end;
 
 procedure TfrmFreeOTFEMain.SetStatusBarTextNormal();
 var
-  drvLetter: DriveLetterChar;
+  drvLetter:  DriveLetterChar;
   freeSpace:  Int64;
   totalSpace: Int64;
   statusText: String;
-  selDrives: DriveLetterString;
+  selDrives:  DriveLetterString;
 begin
   statusText := '';
 
@@ -1440,13 +1419,10 @@ begin
     if not (OTFEFreeOTFE.Active) then begin
       statusText := _('FreeOTFE main driver not connected.');
     end else
-    if (length(selDrives) = 0) then 
-begin
-      statusText := SDUPluralMsg(
-lvDrives.Items.Count,
-        SDUParamSubstitute(_('%1 drive mounted.'),        [lvDrives.Items.Count]), 
-SDUParamSubstitute(        _('%1 drives mounted.'), [lvDrives.Items.Count])
-);
+    if (length(selDrives) = 0) then begin
+      statusText := SDUPluralMsg(lvDrives.Items.Count,
+        SDUParamSubstitute(_('%1 drive mounted.'), [lvDrives.Items.Count]),
+        SDUParamSubstitute(_('%1 drives mounted.'), [lvDrives.Items.Count]));
     end else
     if (length(selDrives) > 0) then begin
       if (length(selDrives) = 1) then begin
@@ -1455,28 +1431,18 @@ SDUParamSubstitute(        _('%1 drives mounted.'), [lvDrives.Items.Count])
         totalSpace := DiskSize(Ord(drvLetter) - 64);
 
         if ((freeSpace > -1) and (totalSpace > -1)) then begin
-          statusText := SDUParamSubstitute(
-            _('%1: Free Space: %2; Total size: %3'),
-            [
-drvLetter,
-            SDUFormatUnits(
-            freeSpace,
-            SDUUnitsStorageToTextArr(), UNITS_BYTES_MULTIPLIER,
-            1),
-            SDUFormatUnits(
-            totalSpace,
-            SDUUnitsStorageToTextArr(), UNITS_BYTES_MULTIPLIER,
-            1
-            )]
-            );
+          statusText := SDUParamSubstitute(_('%1: Free Space: %2; Total size: %3'),
+            [drvLetter, SDUFormatUnits(freeSpace,
+            SDUUnitsStorageToTextArr(), UNITS_BYTES_MULTIPLIER, 1),
+            SDUFormatUnits(totalSpace, SDUUnitsStorageToTextArr(),
+            UNITS_BYTES_MULTIPLIER, 1)]);
         end;
       end;
 
       if (statusText = '') then begin
         statusText := SDUPluralMsg(lvDrives.SelCount,
-          SDUParamSubstitute(_('%1 drive selected.'),
-          [length(selDrives)]), SDUParamSubstitute(
-          _('%1 drives selected.'), [length(selDrives)]));
+          SDUParamSubstitute(_('%1 drive selected.'), [length(selDrives)]),
+          SDUParamSubstitute(_('%1 drives selected.'), [length(selDrives)]));
       end;
 
     end;
@@ -1578,8 +1544,7 @@ begin
       SDUPostMessageExistingApp(GLOBAL_VAR_WM_FREEOTFE_REFRESH, 0, 0);
 {$IFEND}
     except
-      on EFreeOTFENeedAdminPrivs do
-        begin
+      on EFreeOTFENeedAdminPrivs do begin
         UACEscalateForDriverInstallation();
         UACEscalateAttempted := True;
       end;
@@ -1617,23 +1582,20 @@ procedure TfrmFreeOTFEMain.ShowOldDriverWarnings();
 begin
   { TODO 1 -otdk -cclean : dont support old drivers }
   // No warnings to be shown in base class
-  if (OTFEFreeOTFE.Version() < FREEOTFE_ID_v03_00_0000) then 
-begin
+  if (OTFEFreeOTFE.Version() < FREEOTFE_ID_v03_00_0000) then begin
     SDUMessageDlg(
-      SDUParamSubstitute(
-      _('The main DoxBox driver installed on this computer dates back to FreeOTFE %1'),
-      [OTFEFreeOTFE.VersionStr()]) + SDUCRLF + SDUCRLF +
-      _(
+      SDUParamSubstitute(_(
+      'The main DoxBox driver installed on this computer dates back to FreeOTFE %1'),
+      [OTFEFreeOTFE.VersionStr()]) + SDUCRLF + SDUCRLF + _(
       'It is highly recommended that you upgrade your DoxBox drivers to v3.00 or later as soon as possible, in order to allow the use of LRW and XTS based volumes.') + SDUCRLF + SDUCRLF + _('See documentation (installation section) for instructions on how to do this.'),
       mtWarning
       );
   end else
   if (OTFEFreeOTFE.Version() < FREEOTFE_ID_v04_30_0000) then begin
     SDUMessageDlg(
-      SDUParamSubstitute(
-      _('The main DoxBox driver installed on this computer dates back to FreeOTFE %1'),
-      [OTFEFreeOTFE.VersionStr()]) + SDUCRLF + SDUCRLF +
-      _(
+      SDUParamSubstitute(_(
+      'The main DoxBox driver installed on this computer dates back to FreeOTFE %1'),
+      [OTFEFreeOTFE.VersionStr()]) + SDUCRLF + SDUCRLF + _(
       'It is highly recommended that you upgrade your DoxBox drivers to those included in v4.30 or later as soon as possible, due to improvements in the main driver.') + SDUCRLF + SDUCRLF + _('See documentation (installation section) for instructions on how to do this.'),
       mtWarning
       );
@@ -1654,13 +1616,9 @@ end;
 
 
 // The array passed in is zero-indexed; populate elements zero to "bytesRequired"
-procedure TfrmFreeOTFEMain.GenerateOverwriteData(
-  Sender: TObject;
-  passNumber: Integer;
-  bytesRequired: Cardinal;
-  var generatedOK: Boolean;
-  var outputBlock: TShredBlock
-  );
+procedure TfrmFreeOTFEMain.GenerateOverwriteData(Sender: TObject;
+  passNumber: Integer; bytesRequired: Cardinal; var generatedOK: Boolean;
+  var outputBlock: TShredBlock);
 var
   i:              Integer;
   tempArraySize:  Cardinal;
@@ -1694,9 +1652,9 @@ begin
 
   // Adjust the IV so that this block of encrypted pseudorandom data should be
   // reasonably unique
- IV := '';
-   // SDUInitAndZeroBuffer(0, IV);
-  if (TempCypherDetails.BlockSize > 0) then  begin
+  IV := '';
+  // SDUInitAndZeroBuffer(0, IV);
+  if (TempCypherDetails.BlockSize > 0) then begin
     // SDUInitAndZeroBuffer((TempCypherDetails.BlockSize div 8), IV);
     IV := StringOfChar(AnsiChar(#0), (TempCypherDetails.BlockSize div 8));
 
@@ -1714,18 +1672,12 @@ begin
   sectorID.QuadPart := TempCypherEncBlockNo;
 
   // Encrypt the pseudorandom data generated
-  if not (OTFEFreeOTFE.EncryptSectorData(
-TempCypherDriver,
-    TempCypherGUID, sectorID,
-    FREEOTFE_v1_DUMMY_SECTOR_SIZE,
-    TempCypherKey, 
-IV,
-    plaintext, cyphertext
-    )) then begin
+  if not (OTFEFreeOTFE.EncryptSectorData(TempCypherDriver, TempCypherGUID,
+    sectorID, FREEOTFE_v1_DUMMY_SECTOR_SIZE, TempCypherKey, IV, plaintext, cyphertext))
+  then begin
     SDUMessageDlg(
       _('Unable to encrypt pseudorandom data before using for overwrite buffer?!') +
-      SDUCRLF + SDUCRLF + SDUParamSubstitute(_('Error #: %1'),
-      [OTFEFreeOTFE.LastErrorCode]),
+      SDUCRLF + SDUCRLF + SDUParamSubstitute(_('Error #: %1'), [OTFEFreeOTFE.LastErrorCode]),
       mtError
       );
 
@@ -1742,7 +1694,8 @@ IV,
 end;
 
 
-function TfrmFreeOTFEMain.PortableModeSet(setTo: TPortableModeAction;  suppressMsgs: Boolean): Boolean;
+function TfrmFreeOTFEMain.PortableModeSet(setTo: TPortableModeAction;
+  suppressMsgs: Boolean): Boolean;
 var
   retval: Boolean;
 begin
@@ -1787,8 +1740,8 @@ begin
     // drivers), we send out a message to any other running instances of
     // FreeOTFE to refresh
 {$IF CompilerVersion >= 18.5}
-      //SendMessage(HWND_BROADCAST, GLOBAL_VAR_WM_FREEOTFE_REFRESH, 0, 0);
-      PostMessage(HWND_BROADCAST, GLOBAL_VAR_WM_FREEOTFE_REFRESH, 0, 0);
+    //SendMessage(HWND_BROADCAST, GLOBAL_VAR_WM_FREEOTFE_REFRESH, 0, 0);
+    PostMessage(HWND_BROADCAST, GLOBAL_VAR_WM_FREEOTFE_REFRESH, 0, 0);
 {$ELSE}
     SDUPostMessageExistingApp(GLOBAL_VAR_WM_FREEOTFE_REFRESH, 0, 0);
 {$IFEND}
@@ -1871,8 +1824,8 @@ begin
       end else begin
         if not (suppressMsgs) then begin
           SDUMessageDlg(
-            _('One or more of your portable DoxBox drivers could not be installed/started.') + SDUCRLF + SDUCRLF + TEXT_NEED_ADMIN + SDUCRLF +
-            SDUCRLF + _(
+            _('One or more of your portable DoxBox drivers could not be installed/started.') +
+            SDUCRLF + SDUCRLF + TEXT_NEED_ADMIN + SDUCRLF + SDUCRLF + _(
             'Please select "File | Drivers..." to check which drivers are currently operating.'),
             mtWarning
             );
@@ -1906,11 +1859,9 @@ begin
       if suppressMsgs then begin
         stopOK := False;
       end else begin
-        stopOK := (SDUMessageDlg(_(
-          'You have one or more volumes mounted.') + SDUCRLF + SDUCRLF +
-          _(
-          'If any of the currently mounted volumes makes use of any of the DoxBox drivers which are currently in portable mode, stopping portable mode is not advisable.') + SDUCRLF +
-          SDUCRLF + _('It is recommended that you dismount all volumes before stopping portable mode.') + SDUCRLF + SDUCRLF + _('Do you wish to continue stopping portable mode?'), mtWarning, [mbYes, mbNo], 0) = mrYes);
+        stopOK := (SDUMessageDlg(_('You have one or more volumes mounted.') +
+          SDUCRLF + SDUCRLF + _(
+          'If any of the currently mounted volumes makes use of any of the DoxBox drivers which are currently in portable mode, stopping portable mode is not advisable.') + SDUCRLF + SDUCRLF + _('It is recommended that you dismount all volumes before stopping portable mode.') + SDUCRLF + SDUCRLF + _('Do you wish to continue stopping portable mode?'), mtWarning, [mbYes, mbNo], 0) = mrYes);
       end;
     end;
   end;
@@ -1934,8 +1885,8 @@ begin
     end else begin
       if not (suppressMsgs) then begin
         SDUMessageDlg(
-          _('One or more of your portable DoxBox drivers could not be stopped/uninstalled.') + SDUCRLF + SDUCRLF + TEXT_NEED_ADMIN + SDUCRLF +
-          SDUCRLF + _(
+          _('One or more of your portable DoxBox drivers could not be stopped/uninstalled.') +
+          SDUCRLF + SDUCRLF + TEXT_NEED_ADMIN + SDUCRLF + SDUCRLF + _(
           'Please select "File | Drivers..." to check which drivers are currently operating.'),
           mtWarning
           );
@@ -2049,21 +2000,15 @@ begin
   if (not (EndSessionFlag) and Settings.OptSystemTrayIconDisplay and
     Settings.OptSystemTrayIconCloseTo and
 {$IFNDEF VER180}
-      (
-       // If Application.MainFormOnTaskbar is set, use the form name,
-       // otherwise check exactly
-       (
-        Application.MainFormOnTaskbar and
-        (application.mainform <> nil) and
-        (application.mainform.name = self.name)
-       ) or
-       (
-        not(Application.MainFormOnTaskbar) and
-//        (application.mainform = self)
-        (application.mainform <> nil) and
-        (application.mainform.name = self.name)
-       )
-      )
+    (
+    // If Application.MainFormOnTaskbar is set, use the form name,
+    // otherwise check exactly
+    (Application.MainFormOnTaskbar and (application.mainform <> nil) and
+    (application.mainform.Name = self.Name)) or (not
+    (Application.MainFormOnTaskbar) and
+    //        (application.mainform = self)
+    (application.mainform <> nil) and (application.mainform.Name =
+    self.Name)))
 {$ELSE}
     (Application.MainForm = self)
 {$ENDIF}
@@ -2088,13 +2033,10 @@ begin
       if (OTFEFreeOTFE.CountDrivesMounted() > 0) then begin
         userConfirm := mrNo;
         if (Settings.OptOnExitWhenMounted = oewmPromptUser) then begin
-          userConfirm := SDUMessageDlg(
-            _('One or more volumes are still mounted.') + SDUCRLF +
-            SDUCRLF + _(
+          userConfirm := SDUMessageDlg(_('One or more volumes are still mounted.') +
+            SDUCRLF + SDUCRLF + _(
             'Do you wish to dismount all volumes before exiting?'),
-            mtConfirmation,
-            [mbYes, mbNo, mbCancel],
-            0);
+            mtConfirmation, [mbYes, mbNo, mbCancel], 0);
         end else
         if (Settings.OptOnExitWhenMounted = oewmDismount) then begin
           userConfirm := mrYes;
@@ -2131,16 +2073,13 @@ begin
   if (CanClose) then begin
     // If there's no drives mounted, and running in portable mode, prompt for
     // portable mode shutdown
-    if ((closingDrivesMounted <= 0) and
-      (OTFEFreeOTFE.DriversInPortableMode() > 0)) then begin
+    if ((closingDrivesMounted <= 0) and (OTFEFreeOTFE.DriversInPortableMode() > 0)) then begin
       userConfirm := mrNo;
       if (Settings.OptOnExitWhenPortableMode = oewpPromptUser) then begin
         userConfirm := SDUMessageDlg(
-          _('One or more of the DoxBox drivers are running in portable mode.') + SDUCRLF + SDUCRLF +
-          _('Do you wish to shutdown portable mode before exiting?'),
-          mtConfirmation,
-          [mbYes, mbNo, mbCancel],
-          0);
+          _('One or more of the DoxBox drivers are running in portable mode.') +
+          SDUCRLF + SDUCRLF + _('Do you wish to shutdown portable mode before exiting?'),
+          mtConfirmation, [mbYes, mbNo, mbCancel], 0);
       end else
       if (Settings.OptOnExitWhenPortableMode = owepPortableOff) then begin
         userConfirm := mrYes;
@@ -2192,21 +2131,15 @@ begin
   if (not (EndSessionFlag) and Settings.OptSystemTrayIconDisplay and
     Settings.OptSystemTrayIconCloseTo and
 {$IFNDEF VER180}
-      (
-       // If Application.MainFormOnTaskbar is set, use the form name,
-       // otherwise check exactly
-       (
-        Application.MainFormOnTaskbar and
-        (application.mainform <> nil) and
-        (application.mainform.name = self.name)
-       ) or
-       (
-        not(Application.MainFormOnTaskbar) and
-//        (application.mainform <> self)
-        (application.mainform <> nil) and
-        (application.mainform.name = self.name)
-       )
-      )
+    (
+    // If Application.MainFormOnTaskbar is set, use the form name,
+    // otherwise check exactly
+    (Application.MainFormOnTaskbar and (application.mainform <> nil) and
+    (application.mainform.Name = self.Name)) or (not
+    (Application.MainFormOnTaskbar) and
+    //        (application.mainform <> self)
+    (application.mainform <> nil) and (application.mainform.Name =
+    self.Name)))
 {$ELSE}
     (Application.MainForm <> self)
 {$ENDIF}
@@ -2243,8 +2176,7 @@ begin
     hotKeyMsg := TWMHotKey(msg);
 
     if OTFEFreeOTFE.Active then begin
-      if (hotKeyMsg.HotKey = HOTKEY_IDENT_DISMOUNT) then 
-begin
+      if (hotKeyMsg.HotKey = HOTKEY_IDENT_DISMOUNT) then begin
         // We'll allow errors in dismount to be reported to the user; it's just
         // a normal dismount
         DismountAll(False);
@@ -2256,8 +2188,8 @@ begin
       end;
     end;
 
-    if ((hotKeyMsg.HotKey = HOTKEY_IDENT_DISMOUNT) or
-      (hotKeyMsg.HotKey = HOTKEY_IDENT_DISMOUNTEMERG)) then begin
+    if ((hotKeyMsg.HotKey = HOTKEY_IDENT_DISMOUNT) or (hotKeyMsg.HotKey =
+      HOTKEY_IDENT_DISMOUNTEMERG)) then begin
       msg.Result := 0;
       retVal     := True;
     end;
@@ -2343,21 +2275,18 @@ begin
       // detect any other running instance yet
 
       // Vista fix for Delphi 2007 and later
-      toEarlyToDetectOtherInstance := FALSE;
-      if (
-          (Application.Mainform = nil) and // Yes, "=" is correct here
-          Application.MainFormOnTaskbar
-         ) then
-        begin
-        toEarlyToDetectOtherInstance := TRUE;
-        end;
+      toEarlyToDetectOtherInstance := False;
+      if ((Application.Mainform = nil) and // Yes, "=" is correct here
+        Application.MainFormOnTaskbar) then begin
+        toEarlyToDetectOtherInstance := True;
+      end;
 {$ELSE}
       toEarlyToDetectOtherInstance := False;
 {$ENDIF}
 
-      if not (toEarlyToDetectOtherInstance) then 
-begin
-        msg     := SDUParamSubstitute(_('Error: Unable to assign hotkey %1'),          [ShortCutToText(hotkey)]);
+      if not (toEarlyToDetectOtherInstance) then begin
+        msg     := SDUParamSubstitute(_('Error: Unable to assign hotkey %1'),
+          [ShortCutToText(hotkey)]);
         msgType := mtError;
 
         // It's not too early to detect other running instances, and there's
@@ -2372,10 +2301,8 @@ begin
         //
         // Because of this, we add a message to the warning if another instance
         // was running
-        if (SDUDetectExistingApp() > 0) then 
-begin
-          msg     := msg + SDUCRLF + 
-SDUCRLF +
+        if (SDUDetectExistingApp() > 0) then begin
+          msg     := msg + SDUCRLF + SDUCRLF +
             _('Another instance of DoxBox is running - the hotkey may already be assigned to that instance.');
           msgType := mtWarning;
         end;
@@ -2404,10 +2331,12 @@ begin
 }
   // could also use SDUWow64DisableWow64FsRedirection
   Result := SDUWinExecAndWait32(SDUGetWindowsDirectory() +
-    '\sysnative\bcdedit.exe /set TESTSIGNING ' + IfThen(setOn, 'ON', 'OFF'), SW_SHOWNORMAL) <> $FFFFFFFF;
+    '\sysnative\bcdedit.exe /set TESTSIGNING ' + IfThen(setOn, 'ON', 'OFF'),
+    SW_SHOWNORMAL) <> $FFFFFFFF;
   if not silent then begin
     if not Result then begin
-      SDUMessageDlg(_('Set Test Mode failed: ') + SysErrorMessage(GetLastError), mtError, [mbOK], 0);
+      SDUMessageDlg(_('Set Test Mode failed: ') + SysErrorMessage(GetLastError),
+        mtError, [mbOK], 0);
     end else begin
       if setOn then
         SDUMessageDlg(_('Please reboot. After rebooting the DoxBox drivers may be loaded'),
@@ -2422,7 +2351,8 @@ function TfrmFreeOTFEMain.SetInstalled(): Boolean;
 begin
   inherited;
   //needs to be place to save to
-  if Settings.OptSaveSettings = slNone then Settings.OptSaveSettings := slProfile;//exe not supported in win >NT
+  if Settings.OptSaveSettings = slNone then
+    Settings.OptSaveSettings := slProfile;//exe not supported in win >NT
 
   Settings.OptInstalled := True;
   Result                := Settings.Save();//todo:needed?
@@ -2455,9 +2385,7 @@ end;
 
 procedure TfrmFreeOTFEMain.actTogglePortableModeExecute(Sender: TObject);
 begin
-  if (
-actTogglePortableMode.Enabled and 
-(CountPortableDrivers < 0)) then begin
+  if (actTogglePortableMode.Enabled and (CountPortableDrivers < 0)) then begin
     PortableModeSet(pmaToggle, False);
   end else
   if actTogglePortableMode.Checked then begin
@@ -2484,13 +2412,11 @@ var
   selDrives: DriveLetterString;
 begin
   selDrives := GetSelectedDrives();
-  Format_drive(selDrives,self);
+  Format_drive(selDrives, self);
 
   RefreshDrives();
 
 end;
-
-
 
 
 
@@ -2522,21 +2448,18 @@ begin
   selDrives := GetSelectedDrives();
   if (length(selDrives) > 1) then begin
     SDUMessageDlg(
-      _(
-      'Due to the destructive nature of overwriting entire drives, only one drive may be selected when this option is chosen.') +
-      SDUCRLF + SDUCRLF +
-      _('Please ensure that only one mounted drive is selected, and retry.')
+      _('Due to the destructive nature of overwriting entire drives, only one drive may be selected when this option is chosen.') + SDUCRLF + SDUCRLF + _('Please ensure that only one mounted drive is selected, and retry.')
       );
   end else begin
     selectedDrive := selDrives[1];
 
-    if SDUWarnYN(_('WARNING!') + SDUCRLF + SDUCRLF +
-      SDUParamSubstitute(_('You are attempting to overwrite drive: %1:'),
-      [selectedDrive]) + SDUCRLF + SDUCRLF +
-      SDUParamSubstitute(
+    if SDUWarnYN(_('WARNING!') + SDUCRLF + SDUCRLF + SDUParamSubstitute(
+      _('You are attempting to overwrite drive: %1:'), [selectedDrive]) +
+      SDUCRLF + SDUCRLF + SDUParamSubstitute(
       _('THIS WILL DESTROY ALL INFORMATION STORED ON DRIVE %1:, and require it to be reformatted'),
       [selectedDrive]) + SDUCRLF + SDUCRLF + _(
-      'Are you ABSOLUTELY SURE you want to do this?')) then begin
+      'Are you ABSOLUTELY SURE you want to do this?'))
+    then begin
       OverwriteDrives(selectedDrive, True);
     end;
   end;
@@ -2555,11 +2478,12 @@ end;
  //                        destroy all data on the drive, and requiring it to be
  //                        reformatted. Set to FALSE to simply overwrite the
  //                        free space on the drive
-procedure TfrmFreeOTFEMain.OverwriteDrives(drives: DriveLetterString; overwriteEntireDrive: Boolean);
+procedure TfrmFreeOTFEMain.OverwriteDrives(drives: DriveLetterString;
+  overwriteEntireDrive: Boolean);
 var
   shredder:                   TShredder;
   i:                          Integer;
-  currDrive: DriveLetterChar;
+  currDrive:                  DriveLetterChar;
   frmOverWriteMethod:         TfrmFreeOTFESelectOverwriteMethod;
   overwriteWithEncryptedData: Boolean;
   allOK:                      Boolean;
@@ -2599,7 +2523,7 @@ begin
           // +ve keysize = specific keysize - get sufficient bits
           getRandomBits := TempCypherDetails.KeySizeRequired;
         end;
-               { TODO 1 -otdk -cenhance : use cryptoapi etc if avail }
+        { TODO 1 -otdk -cenhance : use cryptoapi etc if avail }
         if (getRandomBits > 0) then begin
           MouseRNGDialog1.RequiredBits := getRandomBits;
           allOK                        := MouseRNGDialog1.Execute();
@@ -2628,9 +2552,8 @@ begin
 
 
   if (allOK) then begin
-    if SDUConfirmYN(_('Overwriting on a large volume may take awhile.') + SDUCRLF +
-      SDUCRLF + _(
-      'Are you sure you wish to proceed?')) then begin
+    if SDUConfirmYN(_('Overwriting on a large volume may take awhile.') +
+      SDUCRLF + SDUCRLF + _('Are you sure you wish to proceed?')) then begin
       shredder := TShredder.Create(nil);
       try
         shredder.IntMethod := smPseudorandom;
@@ -2715,34 +2638,23 @@ begin
   cmdExitCode := CMDLINE_EXIT_INVALID_CMDLINE;
   if SDUCommandLineParameter(CMDLINE_PORTABLE, paramValue) then begin
     if (uppercase(paramValue) = uppercase(CMDLINE_TOGGLE)) then begin
-      if PortableModeSet(
-pmaToggle,        SDUCommandLineSwitch(CMDLINE_SILENT)) then 
-begin
+      if PortableModeSet(pmaToggle, SDUCommandLineSwitch(CMDLINE_SILENT)) then begin
         cmdExitCode := CMDLINE_SUCCESS;
       end else begin
         cmdExitCode := CMDLINE_EXIT_UNABLE_TO_START_PORTABLE_MODE;
       end;
     end else
-    if (
-(uppercase(paramValue) = uppercase(CMDLINE_START)) or
-      (uppercase(paramValue) = uppercase(CMDLINE_ON)) or
-      (paramValue = '1')) then 
-begin
-      if PortableModeSet(
-pmaStart,
-        SDUCommandLineSwitch(CMDLINE_SILENT)) then begin
+    if ((uppercase(paramValue) = uppercase(CMDLINE_START)) or
+      (uppercase(paramValue) = uppercase(CMDLINE_ON)) or (paramValue = '1')) then begin
+      if PortableModeSet(pmaStart, SDUCommandLineSwitch(CMDLINE_SILENT)) then begin
         cmdExitCode := CMDLINE_SUCCESS;
       end else begin
         cmdExitCode := CMDLINE_EXIT_UNABLE_TO_START_PORTABLE_MODE;
       end;
-    end 
-else
+    end else
     if ((uppercase(paramValue) = uppercase(CMDLINE_STOP)) or
-      (uppercase(paramValue) = uppercase(CMDLINE_OFF)) or
-      (paramValue = '0')) then begin
-      if PortableModeSet(
-pmaStop,
-        SDUCommandLineSwitch(CMDLINE_SILENT)) then begin
+      (uppercase(paramValue) = uppercase(CMDLINE_OFF)) or (paramValue = '0')) then begin
+      if PortableModeSet(pmaStop, SDUCommandLineSwitch(CMDLINE_SILENT)) then begin
         cmdExitCode := CMDLINE_SUCCESS;
       end else begin
         cmdExitCode := CMDLINE_EXIT_UNABLE_TO_STOP_PORTABLE_MODE;
@@ -2765,7 +2677,7 @@ end;
 function TfrmFreeOTFEMain.InstallAllDrivers(driverControlObj: TOTFEFreeOTFEDriverControl;
   silent: Boolean): Integer;
 var
-  driverFilenames:TStringList;
+  driverFilenames: TStringList;
   //  vista64Bit: boolean;
 begin
 
@@ -2790,11 +2702,8 @@ begin
 
       //          vista64Bit := (SDUOSVistaOrLater() and SDUOS64bit());
        }
-      if driverControlObj.InstallMultipleDrivers(
-        driverFilenames,
-        False,
-        not (silent),
-        True// not(vista64Bit)
+      if driverControlObj.InstallMultipleDrivers(driverFilenames,
+        False, not (silent), True// not(vista64Bit)
         ) then begin
             { from delphi 7 project:"If Vista x64, we tell the user to reboot. That way, the drivers
              will be started up on boot - and the user won't actually see
@@ -2959,8 +2868,7 @@ begin
     end;
 
   except
-      on E:EFreeOTFENeedAdminPrivs do
-        begin
+    on E: EFreeOTFENeedAdminPrivs do begin
       cmdExitCode := CMDLINE_EXIT_ADMIN_PRIVS_NEEDED;
     end;
   end;
@@ -3041,7 +2949,8 @@ begin
           Result := CMDLINE_EXIT_UNABLE_TO_SET_TESTMODE;
       end else begin
         if not silent then
-          SDUMessageDlg(_('This version of Windows does not support test mode'), mtError, [mbOK], 0);
+          SDUMessageDlg(_('This version of Windows does not support test mode'),
+            mtError, [mbOK], 0);
       end;
     end;
   end;
@@ -3144,7 +3053,7 @@ begin
   end;
 
 
-  if cmdExitCode = CMDLINE_SUCCESS then  begin
+  if cmdExitCode = CMDLINE_SUCCESS then begin
 
     cmdExitCode := CMDLINE_EXIT_INVALID_CMDLINE;
     // Driver control dialog
@@ -3258,13 +3167,11 @@ begin
     end;
   end else begin
     // Prevent endless loops of UAC escalation...
-    cmdLineParams := CMDLINE_SWITCH_IND + CMDLINE_NOUACESCALATE + ' ' +
-      cmdLineParams;
+    cmdLineParams := CMDLINE_SWITCH_IND + CMDLINE_NOUACESCALATE + ' ' + cmdLineParams;
 
     // Message supression
     if suppressMsgs then begin
-      cmdLineParams := CMDLINE_SWITCH_IND + CMDLINE_SILENT + ' ' +
-        cmdLineParams;
+      cmdLineParams := CMDLINE_SWITCH_IND + CMDLINE_SILENT + ' ' + cmdLineParams;
     end;
 
     filenameAndPath := ParamStr(0);
@@ -3291,7 +3198,7 @@ var
   i:                Integer;
   volumeInfo:       TOTFEFreeOTFEVolumeInfo;
   drivesToDismount: DriveLetterString;
-  mounted: DriveLetterString;
+  mounted:          DriveLetterString;
 begin
   SetStatusBarText(SDUParamSubstitute(_('Detected removal of token from slot ID: %1'), [SlotID]));
   if Settings.OptPKCS11AutoDismount then begin
@@ -3299,10 +3206,8 @@ begin
     mounted          := OTFEFreeOTFE.DrivesMounted();
     for i := 1 to length(mounted) do begin
       // ...Main FreeOTFE window list...
-      if OTFEFreeOTFE.GetVolumeInfo(mounted[i], volumeInfo) then 
-begin
-        if volumeInfo.MetaDataStructValid then 
-begin
+      if OTFEFreeOTFE.GetVolumeInfo(mounted[i], volumeInfo) then begin
+        if volumeInfo.MetaDataStructValid then begin
           if (volumeInfo.MetaDataStruct.PKCS11SlotID = SlotID) then begin
             drivesToDismount := drivesToDismount + mounted[i];
           end;
@@ -3310,7 +3215,8 @@ begin
       end;
     end;
 
-    SetStatusBarText(SDUParamSubstitute(_('Autodismounting drives: %1'),      [PrettyPrintDriveLetters(drivesToDismount)]));
+    SetStatusBarText(SDUParamSubstitute(_('Autodismounting drives: %1'),
+      [PrettyPrintDriveLetters(drivesToDismount)]));
     DismountDrives(drivesToDismount, False);
   end;
 
@@ -3358,8 +3264,8 @@ end;
 
 procedure TfrmFreeOTFEMain.actFreeOTFENewExecute(Sender: TObject);
 var
-  prevMounted: DriveLetterString;
-  newMounted: DriveLetterString;
+  prevMounted:      DriveLetterString;
+  newMounted:       DriveLetterString;
   createdMountedAs: DriveLetterString;
   msg:              WideString;
   i:                Integer;
@@ -3396,8 +3302,7 @@ begin
         end;
       end;
 
-      msg := SDUParamSubstitute(_(
-        'DoxBox created successfully and opened as: %1.'),
+      msg := SDUParamSubstitute(_('DoxBox created successfully and opened as: %1.'),
         [createdMountedAs]);
     end;
 

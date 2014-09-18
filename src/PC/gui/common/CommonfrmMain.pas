@@ -12,15 +12,16 @@ unit CommonfrmMain;
 interface
 
 uses
-//delphi
-  ActnList, SDUSystemTrayIcon, Shredder, Spin64, StdCtrls, SysUtils, ToolWin, Windows, XPMan  ,    ExtCtrls, Forms, Graphics, Grids, ImgList, Menus, Messages,
+  //delphi
+  ActnList, SDUSystemTrayIcon, Shredder, Spin64, StdCtrls, SysUtils, ToolWin,
+  Windows, XPMan, ExtCtrls, Forms, Graphics, Grids, ImgList, Menus, Messages,
   Buttons, Classes, ComCtrls, Controls, Dialogs,
 
   //freeotfe
-    MouseRNGDialog_U, OTFE_U,
+  MouseRNGDialog_U, OTFE_U,
   OTFEFreeOTFE_DriverControl,
-  OTFEFreeOTFE_U, OTFEFreeOTFEBase_U,   CommonfrmCDBBackupRestore,  CommonSettings,
-  pkcs11_library, SDUDialogs, SDUForms, SDUMRUList, SDUMultimediaKeys,SDUGeneral  ;
+  OTFEFreeOTFE_U, OTFEFreeOTFEBase_U, CommonfrmCDBBackupRestore, CommonSettings,
+  pkcs11_library, SDUDialogs, SDUForms, SDUMRUList, SDUMultimediaKeys, SDUGeneral;
 
 const
   // Command line parameters...
@@ -138,49 +139,49 @@ type
     procedure actMountHiddenExecute(Sender: TObject);
 
   PROTECTED
-    FIconIdx_Small_New:            Integer;
-    FIconIdx_Small_MountFile:      Integer;
-    FIconIdx_Small_MountPartition: Integer;
-    FIconIdx_Small_Dismount:       Integer;
-    FIconIdx_Small_DismountAll:    Integer;
-    FIconIdx_Small_PortableMode:   Integer;
-    FIconIdx_Small_VistaUACShield: Integer;
-    FIconIdx_Small_Properties:     Integer;
-    FIconIdx_Small_Back:           Integer;
-    FIconIdx_Small_Forward:        Integer;
-    FIconIdx_Small_Up:             Integer;
-    FIconIdx_Small_MoveTo:         Integer;
-    FIconIdx_Small_CopyTo:         Integer;
-    FIconIdx_Small_Delete:         Integer;
-    FIconIdx_Small_Views:          Integer;
-    FIconIdx_Small_Extract:        Integer;
-    FIconIdx_Small_Store:          Integer;
-    FIconIdx_Small_ItemProperties: Integer;
-    FIconIdx_Small_Folders:        Integer;
-    FIconIdx_Small_MapNetworkDrive: integer;
-    FIconIdx_Small_DisconnectNetworkDrive: integer;
+    FIconIdx_Small_New:                    Integer;
+    FIconIdx_Small_MountFile:              Integer;
+    FIconIdx_Small_MountPartition:         Integer;
+    FIconIdx_Small_Dismount:               Integer;
+    FIconIdx_Small_DismountAll:            Integer;
+    FIconIdx_Small_PortableMode:           Integer;
+    FIconIdx_Small_VistaUACShield:         Integer;
+    FIconIdx_Small_Properties:             Integer;
+    FIconIdx_Small_Back:                   Integer;
+    FIconIdx_Small_Forward:                Integer;
+    FIconIdx_Small_Up:                     Integer;
+    FIconIdx_Small_MoveTo:                 Integer;
+    FIconIdx_Small_CopyTo:                 Integer;
+    FIconIdx_Small_Delete:                 Integer;
+    FIconIdx_Small_Views:                  Integer;
+    FIconIdx_Small_Extract:                Integer;
+    FIconIdx_Small_Store:                  Integer;
+    FIconIdx_Small_ItemProperties:         Integer;
+    FIconIdx_Small_Folders:                Integer;
+    FIconIdx_Small_MapNetworkDrive:        Integer;
+    FIconIdx_Small_DisconnectNetworkDrive: Integer;
 
-    FIconIdx_Large_New:            Integer;
-    FIconIdx_Large_MountFile:      Integer;
-    FIconIdx_Large_MountPartition: Integer;
-    FIconIdx_Large_Dismount:       Integer;
-    FIconIdx_Large_DismountAll:    Integer;
-    FIconIdx_Large_PortableMode:   Integer;
-    FIconIdx_Large_VistaUACShield: Integer;
-    FIconIdx_Large_Properties:     Integer;
-    FIconIdx_Large_Back:           Integer;
-    FIconIdx_Large_Forward:        Integer;
-    FIconIdx_Large_Up:             Integer;
-    FIconIdx_Large_MoveTo:         Integer;
-    FIconIdx_Large_CopyTo:         Integer;
-    FIconIdx_Large_Delete:         Integer;
-    FIconIdx_Large_Views:          Integer;
-    FIconIdx_Large_Extract:        Integer;
-    FIconIdx_Large_Store:          Integer;
-    FIconIdx_Large_ItemProperties: Integer;
-    FIconIdx_Large_Folders:        Integer;
-    FIconIdx_Large_MapNetworkDrive: integer;
-    FIconIdx_Large_DisconnectNetworkDrive: integer;
+    FIconIdx_Large_New:                    Integer;
+    FIconIdx_Large_MountFile:              Integer;
+    FIconIdx_Large_MountPartition:         Integer;
+    FIconIdx_Large_Dismount:               Integer;
+    FIconIdx_Large_DismountAll:            Integer;
+    FIconIdx_Large_PortableMode:           Integer;
+    FIconIdx_Large_VistaUACShield:         Integer;
+    FIconIdx_Large_Properties:             Integer;
+    FIconIdx_Large_Back:                   Integer;
+    FIconIdx_Large_Forward:                Integer;
+    FIconIdx_Large_Up:                     Integer;
+    FIconIdx_Large_MoveTo:                 Integer;
+    FIconIdx_Large_CopyTo:                 Integer;
+    FIconIdx_Large_Delete:                 Integer;
+    FIconIdx_Large_Views:                  Integer;
+    FIconIdx_Large_Extract:                Integer;
+    FIconIdx_Large_Store:                  Integer;
+    FIconIdx_Large_ItemProperties:         Integer;
+    FIconIdx_Large_Folders:                Integer;
+    FIconIdx_Large_MapNetworkDrive:        Integer;
+    FIconIdx_Large_DisconnectNetworkDrive: Integer;
 
     // This is set to TRUE at the very start of InitApp(...)
     FInitAppCalled:               Boolean;
@@ -222,7 +223,8 @@ type
     procedure DumpDetailsToFile(LUKSDump: Boolean);
 
     procedure ExploreDrive(driveLetter: DriveLetterChar);
-    procedure AutoRunExecute(autorun: TAutorunType; driveLetter: DriveLetterChar; isEmergency: boolean);
+    procedure AutoRunExecute(autorun: TAutorunType; driveLetter: DriveLetterChar;
+      isEmergency: Boolean);
 
     procedure MountFilesDetectLUKS(fileToMount: String; ReadOnly: Boolean;
       defaultType: TDragDropFileType); OVERLOAD;
@@ -317,25 +319,25 @@ const
 
   // These are the hardcoded FreeOTFE icons in ilToolbarIcons_Small/ilToolbarIcons_Large
   // -1 indicates no icon stored
-  ICONIDX_NEW                 = 3;
-  ICONIDX_MOUNTFILE           = 4;
-  ICONIDX_MOUNTPARTITION      = 0;
-  ICONIDX_DISMOUNT            = 1;
-  ICONIDX_DISMOUNTALL         = 2;
-  ICONIDX_PORTABLEMODE        = 5;
-  ICONIDX_VISTASHIELD         = -1;
-  ICONIDX_PROPERTIES          = -1;
-  ICONIDX_EXPLORER_BACK       = 6;
-  ICONIDX_EXPLORER_FORWARD    = 7;
-  ICONIDX_EXPLORER_UP         = 8;
-  ICONIDX_EXPLORER_MOVETO     = 9;
-  ICONIDX_EXPLORER_COPYTO     = 10;
-  ICONIDX_EXPLORER_DELETE     = 11;
-  ICONIDX_EXPLORER_VIEWS      = 12;
-  ICONIDX_EXPLORER_EXTRACT    = 13;
-  ICONIDX_EXPLORER_STORE      = 14;
-  ICONIDX_EXPLORER_PROPERTIES = 15;
-  ICONIDX_EXPLORER_FOLDERS    = 16;
+  ICONIDX_NEW                             = 3;
+  ICONIDX_MOUNTFILE                       = 4;
+  ICONIDX_MOUNTPARTITION                  = 0;
+  ICONIDX_DISMOUNT                        = 1;
+  ICONIDX_DISMOUNTALL                     = 2;
+  ICONIDX_PORTABLEMODE                    = 5;
+  ICONIDX_VISTASHIELD                     = -1;
+  ICONIDX_PROPERTIES                      = -1;
+  ICONIDX_EXPLORER_BACK                   = 6;
+  ICONIDX_EXPLORER_FORWARD                = 7;
+  ICONIDX_EXPLORER_UP                     = 8;
+  ICONIDX_EXPLORER_MOVETO                 = 9;
+  ICONIDX_EXPLORER_COPYTO                 = 10;
+  ICONIDX_EXPLORER_DELETE                 = 11;
+  ICONIDX_EXPLORER_VIEWS                  = 12;
+  ICONIDX_EXPLORER_EXTRACT                = 13;
+  ICONIDX_EXPLORER_STORE                  = 14;
+  ICONIDX_EXPLORER_PROPERTIES             = 15;
+  ICONIDX_EXPLORER_FOLDERS                = 16;
   ICONIDX_EXPLORER_MAPNETWORKDRIVE        = 17;
   ICONIDX_EXPLORER_DISCONNECTNETWORKDRIVE = 18;
 
@@ -361,7 +363,7 @@ uses
   FreeOTFEExplorerConsts,
   FreeOTFEExplorerSettings,
 {$ENDIF}
-// freeotfe
+  // freeotfe
   SDUGraphics,
   CommonfrmAbout,
   SDUi18n,
@@ -392,12 +394,13 @@ resourcestring
   AUTORUN_POST_MOUNT    = 'post mount';
   AUTORUN_PRE_MOUNT     = 'pre dismount';
   AUTORUN_POST_DISMOUNT = 'post dismount';
+
 const
-  AUTORUN_TITLE : array [TAutorunType] of string = (
-                                                    AUTORUN_POST_MOUNT,
-                                                    AUTORUN_PRE_MOUNT,
-                                                    AUTORUN_POST_DISMOUNT
-                                                   );
+  AUTORUN_TITLE: array [TAutorunType] of String = (
+    AUTORUN_POST_MOUNT,
+    AUTORUN_PRE_MOUNT,
+    AUTORUN_POST_DISMOUNT
+    );
 
   AUTORUN_SUBSTITUTE_DRIVE = '%DRIVE';
 
@@ -412,49 +415,49 @@ end;
 procedure TfrmMain.SetupToolbarAndMenuIcons();
 begin
   // Default to hardcoded icons...
-  FIconIdx_Small_New            := ICONIDX_NEW;
-  FIconIdx_Small_MountFile      := ICONIDX_MOUNTFILE;
-  FIconIdx_Small_MountPartition := ICONIDX_MOUNTPARTITION;
-  FIconIdx_Small_Dismount       := ICONIDX_DISMOUNT;
-  FIconIdx_Small_DismountAll    := ICONIDX_DISMOUNTALL;
-  FIconIdx_Small_PortableMode   := ICONIDX_PORTABLEMODE;
-  FIconIdx_Small_VistaUACShield := ICONIDX_VISTASHIELD;
-  FIconIdx_Small_Properties     := ICONIDX_PROPERTIES;
-  FIconIdx_Small_Back           := ICONIDX_EXPLORER_BACK;
-  FIconIdx_Small_Forward        := ICONIDX_EXPLORER_FORWARD;
-  FIconIdx_Small_Up             := ICONIDX_EXPLORER_UP;
-  FIconIdx_Small_MoveTo         := ICONIDX_EXPLORER_MOVETO;
-  FIconIdx_Small_CopyTo         := ICONIDX_EXPLORER_COPYTO;
-  FIconIdx_Small_Delete         := ICONIDX_EXPLORER_DELETE;
-  FIconIdx_Small_Views          := ICONIDX_EXPLORER_VIEWS;
-  FIconIdx_Small_Extract        := ICONIDX_EXPLORER_EXTRACT;
-  FIconIdx_Small_Store          := ICONIDX_EXPLORER_STORE;
-  FIconIdx_Small_ItemProperties := ICONIDX_EXPLORER_PROPERTIES;
-  FIconIdx_Small_Folders        := ICONIDX_EXPLORER_FOLDERS;
-  FIconIdx_Small_MapNetworkDrive:= ICONIDX_EXPLORER_MAPNETWORKDRIVE;
-  FIconIdx_Small_DisconnectNetworkDrive:= ICONIDX_EXPLORER_DISCONNECTNETWORKDRIVE;
+  FIconIdx_Small_New                    := ICONIDX_NEW;
+  FIconIdx_Small_MountFile              := ICONIDX_MOUNTFILE;
+  FIconIdx_Small_MountPartition         := ICONIDX_MOUNTPARTITION;
+  FIconIdx_Small_Dismount               := ICONIDX_DISMOUNT;
+  FIconIdx_Small_DismountAll            := ICONIDX_DISMOUNTALL;
+  FIconIdx_Small_PortableMode           := ICONIDX_PORTABLEMODE;
+  FIconIdx_Small_VistaUACShield         := ICONIDX_VISTASHIELD;
+  FIconIdx_Small_Properties             := ICONIDX_PROPERTIES;
+  FIconIdx_Small_Back                   := ICONIDX_EXPLORER_BACK;
+  FIconIdx_Small_Forward                := ICONIDX_EXPLORER_FORWARD;
+  FIconIdx_Small_Up                     := ICONIDX_EXPLORER_UP;
+  FIconIdx_Small_MoveTo                 := ICONIDX_EXPLORER_MOVETO;
+  FIconIdx_Small_CopyTo                 := ICONIDX_EXPLORER_COPYTO;
+  FIconIdx_Small_Delete                 := ICONIDX_EXPLORER_DELETE;
+  FIconIdx_Small_Views                  := ICONIDX_EXPLORER_VIEWS;
+  FIconIdx_Small_Extract                := ICONIDX_EXPLORER_EXTRACT;
+  FIconIdx_Small_Store                  := ICONIDX_EXPLORER_STORE;
+  FIconIdx_Small_ItemProperties         := ICONIDX_EXPLORER_PROPERTIES;
+  FIconIdx_Small_Folders                := ICONIDX_EXPLORER_FOLDERS;
+  FIconIdx_Small_MapNetworkDrive        := ICONIDX_EXPLORER_MAPNETWORKDRIVE;
+  FIconIdx_Small_DisconnectNetworkDrive := ICONIDX_EXPLORER_DISCONNECTNETWORKDRIVE;
 
-  FIconIdx_Large_New            := ICONIDX_NEW;
-  FIconIdx_Large_MountFile      := ICONIDX_MOUNTFILE;
-  FIconIdx_Large_MountPartition := ICONIDX_MOUNTPARTITION;
-  FIconIdx_Large_Dismount       := ICONIDX_DISMOUNT;
-  FIconIdx_Large_DismountAll    := ICONIDX_DISMOUNTALL;
-  FIconIdx_Large_PortableMode   := ICONIDX_PORTABLEMODE;
-  FIconIdx_Large_VistaUACShield := ICONIDX_VISTASHIELD;
-  FIconIdx_Large_Properties     := ICONIDX_PROPERTIES;
-  FIconIdx_Large_Back           := ICONIDX_EXPLORER_BACK;
-  FIconIdx_Large_Forward        := ICONIDX_EXPLORER_FORWARD;
-  FIconIdx_Large_Up             := ICONIDX_EXPLORER_UP;
-  FIconIdx_Large_MoveTo         := ICONIDX_EXPLORER_MOVETO;
-  FIconIdx_Large_CopyTo         := ICONIDX_EXPLORER_COPYTO;
-  FIconIdx_Large_Delete         := ICONIDX_EXPLORER_DELETE;
-  FIconIdx_Large_Views          := ICONIDX_EXPLORER_VIEWS;
-  FIconIdx_Large_Extract        := ICONIDX_EXPLORER_EXTRACT;
-  FIconIdx_Large_Store          := ICONIDX_EXPLORER_STORE;
-  FIconIdx_Large_ItemProperties := ICONIDX_EXPLORER_PROPERTIES;
-  FIconIdx_Large_Folders        := ICONIDX_EXPLORER_FOLDERS;
-  FIconIdx_Large_MapNetworkDrive:= ICONIDX_EXPLORER_MAPNETWORKDRIVE;
-  FIconIdx_Large_DisconnectNetworkDrive:= ICONIDX_EXPLORER_DISCONNECTNETWORKDRIVE;
+  FIconIdx_Large_New                    := ICONIDX_NEW;
+  FIconIdx_Large_MountFile              := ICONIDX_MOUNTFILE;
+  FIconIdx_Large_MountPartition         := ICONIDX_MOUNTPARTITION;
+  FIconIdx_Large_Dismount               := ICONIDX_DISMOUNT;
+  FIconIdx_Large_DismountAll            := ICONIDX_DISMOUNTALL;
+  FIconIdx_Large_PortableMode           := ICONIDX_PORTABLEMODE;
+  FIconIdx_Large_VistaUACShield         := ICONIDX_VISTASHIELD;
+  FIconIdx_Large_Properties             := ICONIDX_PROPERTIES;
+  FIconIdx_Large_Back                   := ICONIDX_EXPLORER_BACK;
+  FIconIdx_Large_Forward                := ICONIDX_EXPLORER_FORWARD;
+  FIconIdx_Large_Up                     := ICONIDX_EXPLORER_UP;
+  FIconIdx_Large_MoveTo                 := ICONIDX_EXPLORER_MOVETO;
+  FIconIdx_Large_CopyTo                 := ICONIDX_EXPLORER_COPYTO;
+  FIconIdx_Large_Delete                 := ICONIDX_EXPLORER_DELETE;
+  FIconIdx_Large_Views                  := ICONIDX_EXPLORER_VIEWS;
+  FIconIdx_Large_Extract                := ICONIDX_EXPLORER_EXTRACT;
+  FIconIdx_Large_Store                  := ICONIDX_EXPLORER_STORE;
+  FIconIdx_Large_ItemProperties         := ICONIDX_EXPLORER_PROPERTIES;
+  FIconIdx_Large_Folders                := ICONIDX_EXPLORER_FOLDERS;
+  FIconIdx_Large_MapNetworkDrive        := ICONIDX_EXPLORER_MAPNETWORKDRIVE;
+  FIconIdx_Large_DisconnectNetworkDrive := ICONIDX_EXPLORER_DISCONNECTNETWORKDRIVE;
 
   // Load system icons...
   AddStdIcons();
@@ -961,89 +964,81 @@ end;
 
 procedure TfrmMain.ExploreDrive(driveLetter: DriveLetterChar);
 var
-  explorerCommandLine: string;
+  explorerCommandLine: String;
 begin
-  if (driveLetter <> #0) then
-    begin
-    explorerCommandLine := 'explorer '+driveLetter+':\';
+  if (driveLetter <> #0) then begin
+    explorerCommandLine := 'explorer ' + driveLetter + ':\';
 
-    if not(SDUWinExecNoWait32(explorerCommandLine, SW_RESTORE)) then
-      begin
+    if not (SDUWinExecNoWait32(explorerCommandLine, SW_RESTORE)) then begin
       SDUMessageDlg(_('Error running Explorer'), mtError, [mbOK], 0);
-      end;
     end;
+  end;
 
 end;
 
 
 // Launch autorun executable on specified drive
-procedure TfrmMain.AutoRunExecute(autorun: TAutorunType; driveLetter: DriveLetterChar; isEmergency: boolean);
+procedure TfrmMain.AutoRunExecute(autorun: TAutorunType; driveLetter: DriveLetterChar;
+  isEmergency: Boolean);
 var
-  exeFullCmdLine: string;
-  launchOK: boolean;
-  splitCmdLine: TStringList;
-  exeOnly: string;
+  exeFullCmdLine: String;
+  launchOK:       Boolean;
+  splitCmdLine:   TStringList;
+  exeOnly:        String;
 begin
   // Sanity...
-  if (driveLetter = #0) then
-    begin
+  if (driveLetter = #0) then begin
     exit;
-    end;
+  end;
 
   exeFullCmdLine := '';
 
   case autorun of
 
     arPostMount:
-      begin
+    begin
       exeFullCmdLine := Settings.OptPostMountExe;
-      end;
-
-    arPreDismount:
-      begin
-      // We don't bother with predismount in case of emergency
-      if not(isEmergency) then
-        begin
-        exeFullCmdLine := Settings.OptPreDismountExe;
-        end;
-      end;
-
-    arPostDismount:
-      begin
-      exeFullCmdLine := Settings.OptPostDismountExe;
-      end;
-
-    else
-      begin
-      if not(isEmergency) then
-        begin
-        SDUMessageDlg(_('Unknown autorun type?!'), mtError);
-        end;
-      end;
-
     end;
 
-  if (exeFullCmdLine <> '') then
+    arPreDismount:
     begin
+      // We don't bother with predismount in case of emergency
+      if not (isEmergency) then begin
+        exeFullCmdLine := Settings.OptPreDismountExe;
+      end;
+    end;
+
+    arPostDismount:
+    begin
+      exeFullCmdLine := Settings.OptPostDismountExe;
+    end;
+
+  else
+  begin
+    if not (isEmergency) then begin
+      SDUMessageDlg(_('Unknown autorun type?!'), mtError);
+    end;
+  end;
+
+  end;
+
+  if (exeFullCmdLine <> '') then begin
     // Split up, in case user is using a commandline with spaces in the
     // executable path
-    splitCmdLine:= TStringList.Create();
+    splitCmdLine := TStringList.Create();
     try
-      splitCmdLine.QuoteChar := '"';
-      splitCmdLine.Delimiter := ' ';
+      splitCmdLine.QuoteChar     := '"';
+      splitCmdLine.Delimiter     := ' ';
       splitCmdLine.DelimitedText := trim(exeFullCmdLine);
 
       // Relative path with mounted drive letter
-      if (
-          (autorun = arPostMount) or
-          (autorun = arPreDismount)
-         ) then
-        begin
+      if ((autorun = arPostMount) or (autorun = arPreDismount)) then
+      begin
         splitCmdLine[0] := driveLetter + ':' + splitCmdLine[0];
-        end;
+      end;
 
       exeOnly := splitCmdLine[0];
-      
+
       // Recombine to produce new commandline
       exeFullCmdLine := splitCmdLine.DelimitedText;
 
@@ -1052,58 +1047,44 @@ begin
     end;
 
     // Perform substitution, if needed
-    exeFullCmdLine := StringReplace(
-                                    exeFullCmdLine,
-                                    AUTORUN_SUBSTITUTE_DRIVE,
-                                    // Cast to prevent compiler warning
-                                    Char(driveLetter),
-                                    [rfReplaceAll]
-                                   );
+    exeFullCmdLine := StringReplace(exeFullCmdLine,
+      AUTORUN_SUBSTITUTE_DRIVE,
+      // Cast to prevent compiler warning
+      Char(driveLetter),
+      [rfReplaceAll]);
 
     // NOTE: THIS MUST BE UPDATED IF CMDLINE IS TO SUPPORT COMMAND LINE
     //       PARAMETERS!
-    if not(FileExists(exeOnly)) then
-      begin
-      if (
-          not(isEmergency) and
-          Settings.OptPrePostExeWarn
-         ) then
-        begin
+    if not (FileExists(exeOnly)) then begin
+      if (not (isEmergency) and Settings.OptPrePostExeWarn) then begin
         SDUMessageDlg(
-                      SDUParamSubstitute(_('Unable to locate %1 executable:'), [AUTORUN_TITLE[autorun]])+SDUCRLF+
-                      SDUCRLF+
-                      exeOnly,
-                      mtWarning
-                     );
-        end;
-      end
-    else
-      begin
-      if (autorun = arPreDismount) then
-        begin
+          SDUParamSubstitute(_('Unable to locate %1 executable:'),
+          [AUTORUN_TITLE[autorun]]) + SDUCRLF + SDUCRLF + exeOnly,
+          mtWarning
+          );
+      end;
+    end else begin
+      if (autorun = arPreDismount) then begin
         // Launch and block until terminated...
-        launchOK := (SDUWinExecAndWait32(exeFullCmdLine, SW_SHOW, ExtractFilePath(exeFullCmdLine)) <> $FFFFFFFF);
-        end
-      else
-        begin
+        launchOK := (SDUWinExecAndWait32(exeFullCmdLine, SW_SHOW,
+          ExtractFilePath(exeFullCmdLine)) <> $FFFFFFFF);
+      end else begin
         // Fire and forget...
         launchOK := SDUWinExecNoWait32(exeFullCmdLine, SW_RESTORE);
-        end;
+      end;
 
-      if not(launchOK) then
-        begin
-        if not(isEmergency) then
-          begin
+      if not (launchOK) then begin
+        if not (isEmergency) then begin
           SDUMessageDlg(
-                        SDUParamSubstitute(_('Error running %1 executable:'), [AUTORUN_TITLE[autorun]])+SDUCRLF+
-                        SDUCRLF+
-                        exeFullCmdLine,
-                        mtError
-                       );
-          end;
+            SDUParamSubstitute(_('Error running %1 executable:'),
+            [AUTORUN_TITLE[autorun]]) + SDUCRLF + SDUCRLF +
+            exeFullCmdLine,
+            mtError
+            );
         end;
       end;
     end;
+  end;
 
 end;
 
@@ -1139,8 +1120,8 @@ begin
     if OpenDialog.Execute() then begin
       MountFilesDetectLUKS(
         TStringList(OpenDialog.Files),
-        ((ofReadOnly in OpenDialog.Options) or
-          FileIsReadOnly((TStringList(OpenDialog.Files))  [0])  // Only bother checking the first files
+        ((ofReadOnly in OpenDialog.Options) or FileIsReadOnly(
+        (TStringList(OpenDialog.Files))  [0])  // Only bother checking the first files
         ),
         ftFreeOTFE
         );
@@ -1256,10 +1237,9 @@ begin
   if not (FileExists(userGuide)) then begin
     userGuide := URL_USERGUIDE;
 
-    if not(SDUConfirmYN(
-                         _('This requires a connection to the internet. Continue?')
-                        )) then exit;
-
+    if not (SDUConfirmYN(_(
+      'This requires a connection to the internet. Continue?'))) then
+      exit;
 
   end;
 
@@ -1523,18 +1503,18 @@ end;
 function TfrmMain.HandleCommandLineOpts_Mount(): Integer;
 var
   cmdExitCode:           Integer;
-  volume: VolumeFilenameString;
+  volume:                VolumeFilenameString;
   ReadOnly:              Boolean;
-  mountAs: DriveLetterString;
+  mountAs:               DriveLetterString;
   fileOK:                Boolean;
 {$IFDEF FREEOTFE_MAIN}
   useDriveLetter: string;
 {$ENDIF}
-  useKeyfile: KeyFilenameString;
+  useKeyfile:            KeyFilenameString;
   useKeyfileIsASCII:     Boolean;
   useKeyfileNewlineType: TSDUNewline;
-  useLESFile: FilenameString;
-  usePassword: string;
+  useLESFile:            FilenameString;
+  usePassword:           String;
   useSilent:             Boolean;
   strTemp:               String;
   useOffset:             ULONGLONG;
@@ -1551,7 +1531,8 @@ begin
 
     SetupOTFEComponent();
 
-    ReadOnly := SDUCommandLineSwitch(CMDLINE_READONLY);   { TODO 1 -otdk -cbug : warn user if not ansi password }
+    ReadOnly := SDUCommandLineSwitch(CMDLINE_READONLY);
+    { TODO 1 -otdk -cbug : warn user if not ansi password }
     if not (SDUCommandLineParameter(CMDLINE_PASSWORD, usePassword)) then begin
       usePassword := '';
     end;

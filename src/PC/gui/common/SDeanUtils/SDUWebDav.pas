@@ -2,80 +2,80 @@
 unit SDUWebDav;
 
 interface
+
 uses
   Windows, Classes,
-//3rd party
+  //3rd party
   IdContext,
   IdCustomHTTPServer,
   IdWebDav,
   IdSocketHandle,
-//sdu
+  //sdu
   SDFilesystem;
 
 type
 
 
 
-TSDUWebDAV = class(TIdWebDav)
-protected
-FileSystem : TSDCustomFilesystem;
+  TSDUWebDAV = class (TIdWebDav)
+  PROTECTED
+    FileSystem: TSDCustomFilesystem;
 
-    function GetPropFindXMLSingle_FSGetItem(fileOrDir: string; var item: TSDDirItem): boolean; virtual;abstract;
-        // Overridden inherited...
-    procedure DoCommandGet(AContext: TIdContext;
-      ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo); virtual;abstract;
-    procedure DoCommandDELETE(AContext: TIdContext;
-      ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo); virtual;abstract;
-    procedure DoCommandMOVE(AContext: TIdContext;
-      ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo); virtual;abstract;
-    procedure DoCommandPUT(AContext: TIdContext;
-      ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo); virtual;abstract;
-    procedure DoCommandPROPFIND(AContext: TIdContext;
-      ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo); virtual;abstract;
-    procedure DoCommandPROPPATCH(AContext: TIdContext;
-      ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo); virtual;abstract;
-    function  HTTPReqDocToLocalFile(Document: string):string;
-    function  GetPropFindXMLSingle(host: string; fileOrDir: string ;item: TSDDirItem):string;
-   procedure AddDebugLog(cmnt: string);
+    function GetPropFindXMLSingle_FSGetItem(fileOrDir: String; var item: TSDDirItem): Boolean;
+      VIRTUAL; ABSTRACT;
+    // Overridden inherited...
+    procedure DoCommandGet(AContext: TIdContext; ARequestInfo: TIdHTTPRequestInfo;
+      AResponseInfo: TIdHTTPResponseInfo); VIRTUAL; ABSTRACT;
+    procedure DoCommandDELETE(AContext: TIdContext; ARequestInfo: TIdHTTPRequestInfo;
+      AResponseInfo: TIdHTTPResponseInfo); VIRTUAL; ABSTRACT;
+    procedure DoCommandMOVE(AContext: TIdContext; ARequestInfo: TIdHTTPRequestInfo;
+      AResponseInfo: TIdHTTPResponseInfo); VIRTUAL; ABSTRACT;
+    procedure DoCommandPUT(AContext: TIdContext; ARequestInfo: TIdHTTPRequestInfo;
+      AResponseInfo: TIdHTTPResponseInfo); VIRTUAL; ABSTRACT;
+    procedure DoCommandPROPFIND(AContext: TIdContext; ARequestInfo: TIdHTTPRequestInfo;
+      AResponseInfo: TIdHTTPResponseInfo); VIRTUAL; ABSTRACT;
+    procedure DoCommandPROPPATCH(AContext: TIdContext; ARequestInfo: TIdHTTPRequestInfo;
+      AResponseInfo: TIdHTTPResponseInfo); VIRTUAL; ABSTRACT;
+    function HTTPReqDocToLocalFile(Document: String): String;
+    function GetPropFindXMLSingle(host: String; fileOrDir: String; item: TSDDirItem): String;
+    procedure AddDebugLog(cmnt: String);
 
-  public
-     Bindings: TIdSocketHandles;
-     ShareName :string;
+  PUBLIC
+    Bindings:  TIdSocketHandles;
+    ShareName: String;
 
-    constructor Create(AOwner: TComponent); virtual;abstract;
-    destructor  Destroy(); virtual;abstract;
-   function Active:boolean;
+    constructor Create(AOwner: TComponent); VIRTUAL; ABSTRACT;
+    destructor Destroy(); VIRTUAL; ABSTRACT;
+    function Active: Boolean;
 
 
 
-end;
+  end;
 
 
 implementation
 
 { TSDUWebDAV }
 
-function TSDUWebDAV.Active: boolean;
+function TSDUWebDAV.Active: Boolean;
 begin
 
 end;
 
-procedure TSDUWebDAV.AddDebugLog(cmnt: string);
+procedure TSDUWebDAV.AddDebugLog(cmnt: String);
 begin
 
 end;
 
-function TSDUWebDAV.GetPropFindXMLSingle(host, fileOrDir: string;
-  item: TSDDirItem): string;
+function TSDUWebDAV.GetPropFindXMLSingle(host, fileOrDir: String; item: TSDDirItem): String;
 begin
 
 end;
 
-function TSDUWebDAV.HTTPReqDocToLocalFile(Document: string):string;
+function TSDUWebDAV.HTTPReqDocToLocalFile(Document: String): String;
 begin
 
 end;
-
 
 
 

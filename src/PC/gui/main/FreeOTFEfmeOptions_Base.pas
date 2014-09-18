@@ -3,19 +3,19 @@ unit FreeOTFEfmeOptions_Base;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, CommonfmeOptions_Base,
+  Classes, CommonfmeOptions_Base,
   CommonSettings,
-  FreeOTFESettings;
+  Controls, Dialogs, Forms,
+  FreeOTFESettings, Graphics, Messages, SysUtils, Variants, Windows;
 
 type
-  TfmeFreeOTFEOptions_Base = class(TfmeOptions_Base)
-  protected
-    procedure _ReadSettings(config: TFreeOTFESettings); virtual; abstract;
-    procedure _WriteSettings(config: TFreeOTFESettings); virtual; abstract;
-  public
-    procedure ReadSettings(config: TSettings); override;
-    procedure WriteSettings(config: TSettings); override;
+  TfmeFreeOTFEOptions_Base = class (TfmeOptions_Base)
+  PROTECTED
+    procedure _ReadSettings(config: TFreeOTFESettings); VIRTUAL; ABSTRACT;
+    procedure _WriteSettings(config: TFreeOTFESettings); VIRTUAL; ABSTRACT;
+  PUBLIC
+    procedure ReadSettings(config: TSettings); OVERRIDE;
+    procedure WriteSettings(config: TSettings); OVERRIDE;
   end;
 
 
@@ -33,5 +33,4 @@ begin
   _WriteSettings(TFreeOTFESettings(config));
 end;
 
-END.
-
+end.

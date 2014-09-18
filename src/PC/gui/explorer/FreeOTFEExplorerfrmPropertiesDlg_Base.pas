@@ -3,41 +3,41 @@ unit FreeOTFEExplorerfrmPropertiesDlg_Base;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls, ComCtrls,
-  SDUForms,
-  SDFilesystem_FAT;
+  Classes, ComCtrls,
+  Controls, Dialogs, ExtCtrls, Forms,
+  Graphics, Messages, SDFilesystem_FAT, SDUForms,
+  StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfrmPropertiesDialog_Base = class(TSDUForm)
-    pbOK: TButton;
-    pbApply: TButton;
-    pbCancel: TButton;
-    PageControl1: TPageControl;
-    tsGeneral: TTabSheet;
-    edFileType: TLabel;
-    lblFileType: TLabel;
-    edLocation: TLabel;
+  TfrmPropertiesDialog_Base = class (TSDUForm)
+    pbOK:          TButton;
+    pbApply:       TButton;
+    pbCancel:      TButton;
+    PageControl1:  TPageControl;
+    tsGeneral:     TTabSheet;
+    edFileType:    TLabel;
+    lblFileType:   TLabel;
+    edLocation:    TLabel;
     lblSizeOnDisk: TLabel;
-    edSizeOnDisk: TLabel;
-    lblSize: TLabel;
-    edSize: TLabel;
-    lblLocation: TLabel;
+    edSizeOnDisk:  TLabel;
+    lblSize:       TLabel;
+    edSize:        TLabel;
+    lblLocation:   TLabel;
     lblAttributes: TLabel;
-    ckReadOnly: TCheckBox;
-    ckHidden: TCheckBox;
-    edFilename: TEdit;
-    Panel2: TPanel;
-    Panel3: TPanel;
-    imgFileType: TImage;
-    ckArchive: TCheckBox;
+    ckReadOnly:    TCheckBox;
+    ckHidden:      TCheckBox;
+    edFilename:    TEdit;
+    Panel2:        TPanel;
+    Panel3:        TPanel;
+    imgFileType:   TImage;
+    ckArchive:     TCheckBox;
     procedure pbOKClick(Sender: TObject);
     procedure pbApplyClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-  protected
+  PROTECTED
     procedure SetupCtlCheckbox(chkBox: TCheckbox);
     procedure SetupCtlSeparatorPanel(pnl: TPanel);
-  public
+  PUBLIC
     Filesystem: TSDFilesystem_FAT;
   end;
 
@@ -60,9 +60,9 @@ begin
   // Should be enabled for individual files and directories, but since we
   // don't support allowing the user to change the directory/filenames from
   // here (yet)...
-  edFilename.Readonly := TRUE;
-  edFilename.Color := clBtnFace;
-  edFilename.Text := '';
+  edFilename.ReadOnly := True;
+  edFilename.Color    := clBtnFace;
+  edFilename.Text     := '';
 
   SetupCtlCheckbox(ckReadOnly);
   SetupCtlCheckbox(ckHidden);
@@ -70,8 +70,8 @@ begin
   edSizeOnDisk.Caption := _('<not calculated>');
 
   // Updating not currently supported.
-  SDUEnableControl(pbOK, FALSE);
-  SDUEnableControl(pbApply, FALSE);
+  SDUEnableControl(pbOK, False);
+  SDUEnableControl(pbApply, False);
 
 end;
 
@@ -82,7 +82,7 @@ end;
 
 procedure TfrmPropertiesDialog_Base.pbOKClick(Sender: TObject);
 begin
-  ModalResult := mrOK;
+  ModalResult := mrOk;
 end;
 
 procedure TfrmPropertiesDialog_Base.SetupCtlCheckbox(chkBox: TCheckbox);
@@ -93,12 +93,10 @@ end;
 
 procedure TfrmPropertiesDialog_Base.SetupCtlSeparatorPanel(pnl: TPanel);
 begin
-  pnl.Caption := '';
-  pnl.Height := 3;
+  pnl.Caption    := '';
+  pnl.Height     := 3;
   pnl.BevelOuter := bvLowered;
   pnl.BevelInner := bvNone;
 end;
 
-END.
-
-
+end.

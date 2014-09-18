@@ -1,37 +1,37 @@
 unit SDUFrames;
-// Description: Base frame
-// By Sarah Dean
-// Email: sdean12@sdean12.org
-// WWW:   http://www.SDean12.org/
-//
-// -----------------------------------------------------------------------------
-//
+ // Description: Base frame
+ // By Sarah Dean
+ // Email: sdean12@sdean12.org
+ // WWW:   http://www.SDean12.org/
+ //
+ // -----------------------------------------------------------------------------
+ //
 
 
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs;
+  Classes, Controls, Dialogs, Forms,
+  Graphics, Messages, SysUtils, Variants, Windows;
 
 type
-  TSDUFrame = class(TFrame)
-  private
+  TSDUFrame = class (TFrame)
+  PRIVATE
     FOnLoaded: TNotifyEvent;
-    FOnHide: TNotifyEvent;
-    FOnShow: TNotifyEvent;
-    procedure CMShowingChanged(var Message: TMessage); message CM_SHOWINGCHANGED;
-  protected
-    procedure Loaded(); override;
+    FOnHide:   TNotifyEvent;
+    FOnShow:   TNotifyEvent;
+    procedure CMShowingChanged(var Message: TMessage); MESSAGE CM_SHOWINGCHANGED;
+  PROTECTED
+    procedure Loaded(); OVERRIDE;
 
     procedure DoLoaded();
-    procedure DoHide(); dynamic;
-    procedure DoShow(); dynamic;
+    procedure DoHide(); DYNAMIC;
+    procedure DoShow(); DYNAMIC;
 
-  published
-    property OnLoaded: TNotifyEvent read FOnLoaded write FOnLoaded;
-    property OnShow: TNotifyEvent read FOnShow write FOnShow;
-    property OnHide: TNotifyEvent read FOnHide write FOnHide;
+  PUBLISHED
+    property OnLoaded: TNotifyEvent Read FOnLoaded Write FOnLoaded;
+    property OnShow: TNotifyEvent Read FOnShow Write FOnShow;
+    property OnHide: TNotifyEvent Read FOnHide Write FOnHide;
 
   end;
 
@@ -43,54 +43,49 @@ procedure TSDUFrame.Loaded();
 begin
   inherited;
 
-  if not(csDesigning in ComponentState) then
-    begin
+  if not (csDesigning in ComponentState) then begin
     DoLoaded();
-    end;
+  end;
 end;
 
 procedure TSDUFrame.CMShowingChanged(var Message: TMessage);
 begin
   inherited;
 
-  if not(csDesigning in ComponentState) then
-    begin
-    if Showing then
-      begin
+  if not (csDesigning in ComponentState) then begin
+    if Showing then begin
       try
         DoShow;
       except
         Application.HandleException(Self);
       end;
-      end;
-    end
-  else
-    begin
+    end;
+  end else begin
     try
       DoHide;
     except
       Application.HandleException(Self);
     end;
-    end;
+  end;
 
 end;
 
 procedure TSDUFrame.DoLoaded();
 begin
-  if Assigned(FOnLoaded) then FOnLoaded(Self);
+  if Assigned(FOnLoaded) then
+    FOnLoaded(Self);
 end;
 
 procedure TSDUFrame.DoHide();
 begin
-  if Assigned(FOnHide) then FOnHide(Self);
+  if Assigned(FOnHide) then
+    FOnHide(Self);
 end;
 
 procedure TSDUFrame.DoShow();
 begin
-  if Assigned(FOnShow) then FOnShow(Self);
+  if Assigned(FOnShow) then
+    FOnShow(Self);
 end;
 
-END.
-
-
-
+end.

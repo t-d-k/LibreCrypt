@@ -3,44 +3,44 @@ unit FreeOTFEfmeOptions_Advanced;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, Spin64,
-  FreeOTFESettings, SDUStdCtrls, CommonfmeOptions_Base,
-  FreeOTFEfmeOptions_Base;
+  Classes, CommonfmeOptions_Base,
+  Controls, Dialogs, ExtCtrls, Forms,
+  FreeOTFEfmeOptions_Base, FreeOTFESettings, Graphics, Messages, SDUStdCtrls, Spin64,
+  StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfmeOptions_FreeOTFEAdvanced = class(TfmeFreeOTFEOptions_Base)
-    gbAdvanced: TGroupBox;
-    lblDragDrop: TLabel;
-    ckAllowMultipleInstances: TSDUCheckBox;
-    cbDragDrop: TComboBox;
-    ckAutoStartPortable: TSDUCheckBox;
-    ckAdvancedMountDlg: TSDUCheckBox;
-    ckRevertVolTimestamps: TSDUCheckBox;
-    pnlVertSplit: TPanel;
-    seMRUMaxItemCount: TSpinEdit64;
-    lblMRUMaxItemCountInst: TLabel;
-    lblMRUMaxItemCount: TLabel;
+  TfmeOptions_FreeOTFEAdvanced = class (TfmeFreeOTFEOptions_Base)
+    gbAdvanced:                 TGroupBox;
+    lblDragDrop:                TLabel;
+    ckAllowMultipleInstances:   TSDUCheckBox;
+    cbDragDrop:                 TComboBox;
+    ckAutoStartPortable:        TSDUCheckBox;
+    ckAdvancedMountDlg:         TSDUCheckBox;
+    ckRevertVolTimestamps:      TSDUCheckBox;
+    pnlVertSplit:               TPanel;
+    seMRUMaxItemCount:          TSpinEdit64;
+    lblMRUMaxItemCountInst:     TLabel;
+    lblMRUMaxItemCount:         TLabel;
     ckWarnBeforeForcedDismount: TSDUCheckBox;
-    lblOnNormalDismountFail: TLabel;
-    cbOnNormalDismountFail: TComboBox;
-    cbDefaultMountAs: TComboBox;
-    lblDefaultMountAs: TLabel;
-    cbOnExitWhenMounted: TComboBox;
-    lblOnExitWhenMounted: TLabel;
-    cbOnExitWhenPortableMode: TComboBox;
-    lblOnExitWhenPortableMode: TLabel;
+    lblOnNormalDismountFail:    TLabel;
+    cbOnNormalDismountFail:     TComboBox;
+    cbDefaultMountAs:           TComboBox;
+    lblDefaultMountAs:          TLabel;
+    cbOnExitWhenMounted:        TComboBox;
+    lblOnExitWhenMounted:       TLabel;
+    cbOnExitWhenPortableMode:   TComboBox;
+    lblOnExitWhenPortableMode:  TLabel;
     ckAllowNewlinesInPasswords: TSDUCheckBox;
-    ckAllowTabsInPasswords: TSDUCheckBox;
+    ckAllowTabsInPasswords:     TSDUCheckBox;
     procedure ControlChanged(Sender: TObject);
-  private
+  PRIVATE
 
-  protected
-    procedure _ReadSettings(config: TFreeOTFESettings); override;
-    procedure _WriteSettings(config: TFreeOTFESettings); override;
-  public
-    procedure Initialize(); override;
-    procedure EnableDisableControls(); override;
+  PROTECTED
+    procedure _ReadSettings(config: TFreeOTFESettings); OVERRIDE;
+    procedure _WriteSettings(config: TFreeOTFESettings); OVERRIDE;
+  PUBLIC
+    procedure Initialize(); OVERRIDE;
+    procedure EnableDisableControls(); OVERRIDE;
   end;
 
 implementation
@@ -48,12 +48,11 @@ implementation
 {$R *.dfm}
 
 uses
-  SDUi18n,
-  SDUGeneral,
-  SDUDialogs,
-  CommonSettings,
   CommonfrmOptions,
-  OTFEFreeOTFEBase_U;
+  CommonSettings,
+  OTFEFreeOTFEBase_U, SDUDialogs,
+  SDUGeneral,
+  SDUi18n;
 
 const
   CONTROL_MARGIN_LBL_TO_CONTROL = 5;
@@ -90,10 +89,10 @@ const
   // and repeat
   procedure NudgeCheckbox(chkBox: TCheckBox);
   var
-    tmpCaption: string;
-    maxWidth: integer;
-    useWidth: integer;
-    lastTriedWidth: integer;
+    tmpCaption:     String;
+    maxWidth:       Integer;
+    useWidth:       Integer;
+    lastTriedWidth: Integer;
   begin
     tmpCaption := chkBox.Caption;
 
@@ -101,57 +100,50 @@ const
     useWidth := maxWidth;
 
     chkBox.Caption := 'X';
-    chkBox.Width := useWidth;
+    chkBox.Width   := useWidth;
     lastTriedWidth := useWidth;
     chkBox.Caption := tmpCaption;
-    while (
-           (chkBox.Width > maxWidth) and
-           (lastTriedWidth > 0)
-          ) do
-      begin
+    while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0))
+      do begin
       // 5 used here; just needs to be something sensible to reduce the
       // width by; 1 would do pretty much just as well
       useWidth := useWidth - 5;
 
       chkBox.Caption := 'X';
-      chkBox.Width := useWidth;
+      chkBox.Width   := useWidth;
       lastTriedWidth := useWidth;
       chkBox.Caption := tmpCaption;
-      end;
+    end;
 
   end;
 
   procedure NudgeFocusControl(lbl: TLabel);
   begin
-    if (lbl.FocusControl <> nil) then
-      begin
+    if (lbl.FocusControl <> nil) then begin
       lbl.FocusControl.Top := lbl.Top + lbl.Height + CONTROL_MARGIN_LBL_TO_CONTROL;
-      end;
+    end;
 
   end;
 
   procedure NudgeLabel(lbl: TLabel);
   var
-    maxWidth: integer;
+    maxWidth: Integer;
   begin
-    if (pnlVertSplit.left > lbl.left) then
-      begin
+    if (pnlVertSplit.left > lbl.left) then begin
       maxWidth := (pnlVertSplit.left - LABEL_CONTROL_MARGIN) - lbl.left;
-      end
-    else
-      begin
+    end else begin
       maxWidth := (lbl.Parent.Width - LABEL_CONTROL_MARGIN) - lbl.left;
-      end;
+    end;
 
     lbl.Width := maxWidth;
   end;
 
 var
   stlChkBoxOrder: TStringList;
-  YPos: integer;
-  i: integer;
-  currChkBox: TCheckBox;
-  groupboxMargin: integer;
+  YPos:           Integer;
+  i:              Integer;
+  currChkBox:     TCheckBox;
+  groupboxMargin: Integer;
 begin
   inherited;
 
@@ -160,15 +152,15 @@ begin
 
   // Re-jig label size to take cater for differences in translation lengths
   // Size so the max. right is flush with the max right of pbLangDetails
-//  lblDragDrop.width        := (pbLangDetails.left + pbLangDetails.width) - lblDragDrop.left;
-//  lblMRUMaxItemCount.width := (pbLangDetails.left + pbLangDetails.width) - lblMRUMaxItemCount.left;
-  groupboxMargin := ckAutoStartPortable.left;
-  lblDragDrop.width        := (gbAdvanced.width - groupboxMargin) - lblDragDrop.left;
-  lblMRUMaxItemCount.width := (gbAdvanced.width - groupboxMargin) - lblMRUMaxItemCount.left;
+  //  lblDragDrop.width        := (pbLangDetails.left + pbLangDetails.width) - lblDragDrop.left;
+  //  lblMRUMaxItemCount.width := (pbLangDetails.left + pbLangDetails.width) - lblMRUMaxItemCount.left;
+  groupboxMargin           := ckAutoStartPortable.left;
+  lblDragDrop.Width        := (gbAdvanced.Width - groupboxMargin) - lblDragDrop.left;
+  lblMRUMaxItemCount.Width := (gbAdvanced.Width - groupboxMargin) - lblMRUMaxItemCount.left;
 
-  pnlVertSplit.caption := '';
+  pnlVertSplit.Caption    := '';
   pnlVertSplit.bevelouter := bvLowered;
-  pnlVertSplit.width := 3;
+  pnlVertSplit.Width      := 3;
 
   // Here we re-jig the checkboxes so that they are nicely spaced vertically.
   // This is needed as some language translation require the checkboxes to have
@@ -182,26 +174,30 @@ begin
   //      TCheckBox
   //   3) Make sure it's autosize property is TRUE
   //
-  stlChkBoxOrder:= TStringList.Create();
+  stlChkBoxOrder := TStringList.Create();
   try
     // stlChkBoxOrder is used to order the checkboxes in their vertical order;
     // this allows checkboxes to be added into the list below in *any* order,
     // and it'll still work
-    stlChkBoxOrder.Sorted := TRUE;
+    stlChkBoxOrder.Sorted := True;
 
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowMultipleInstances.Top]), ckAllowMultipleInstances);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAutoStartPortable.Top]),      ckAutoStartPortable);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAdvancedMountDlg.Top]),       ckAdvancedMountDlg);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckRevertVolTimestamps.Top]),    ckRevertVolTimestamps);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckWarnBeforeForcedDismount.Top]),    ckWarnBeforeForcedDismount);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowNewlinesInPasswords.Top]),    ckAllowNewlinesInPasswords);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowTabsInPasswords.Top]),   ckAllowTabsInPasswords);
+    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowMultipleInstances.Top]),
+      ckAllowMultipleInstances);
+    stlChkBoxOrder.AddObject(Format('%.5d', [ckAutoStartPortable.Top]), ckAutoStartPortable);
+    stlChkBoxOrder.AddObject(Format('%.5d', [ckAdvancedMountDlg.Top]), ckAdvancedMountDlg);
+    stlChkBoxOrder.AddObject(Format('%.5d', [ckRevertVolTimestamps.Top]),
+      ckRevertVolTimestamps);
+    stlChkBoxOrder.AddObject(Format('%.5d', [ckWarnBeforeForcedDismount.Top]),
+      ckWarnBeforeForcedDismount);
+    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowNewlinesInPasswords.Top]),
+      ckAllowNewlinesInPasswords);
+    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowTabsInPasswords.Top]),
+      ckAllowTabsInPasswords);
 
     currChkBox := TCheckBox(stlChkBoxOrder.Objects[0]);
-    YPos := currChkBox.Top;
-    YPos := YPos + currChkBox.Height;
-    for i:=1 to (stlChkBoxOrder.count - 1) do
-      begin
+    YPos       := currChkBox.Top;
+    YPos       := YPos + currChkBox.Height;
+    for i := 1 to (stlChkBoxOrder.Count - 1) do begin
       currChkBox := TCheckBox(stlChkBoxOrder.Objects[i]);
 
       currChkBox.Top := YPos + CHKBOX_CONTROL_MARGIN;
@@ -211,7 +207,7 @@ begin
 
       YPos := currChkBox.Top;
       YPos := YPos + currChkBox.Height;
-      end;
+    end;
 
   finally
     stlChkBoxOrder.Free();
@@ -228,110 +224,99 @@ begin
 
   // Here we move controls associated with labels, such that they appear
   // underneath the label
-//  NudgeFocusControl(lblLanguage);
+  //  NudgeFocusControl(lblLanguage);
   NudgeFocusControl(lblDragDrop);
-//  NudgeFocusControl(lblDefaultDriveLetter);
-//  NudgeFocusControl(lblMRUMaxItemCount);
+  //  NudgeFocusControl(lblDefaultDriveLetter);
+  //  NudgeFocusControl(lblMRUMaxItemCount);
 
 end;
 
 procedure TfmeOptions_FreeOTFEAdvanced._ReadSettings(config: TFreeOTFESettings);
 var
-  owem: TOnExitWhenMounted;
-  owrp: TOnExitWhenPortableMode;
-  ondf: TOnNormalDismountFail;
-  ma: TFreeOTFEMountAs;
-  ft: TDragDropFileType;
-  idx: integer;
-  useIdx: integer;
+  owem:   TOnExitWhenMounted;
+  owrp:   TOnExitWhenPortableMode;
+  ondf:   TOnNormalDismountFail;
+  ma:     TFreeOTFEMountAs;
+  ft:     TDragDropFileType;
+  idx:    Integer;
+  useIdx: Integer;
 begin
   // Advanced...
-  ckAllowMultipleInstances.checked := config.OptAllowMultipleInstances;
-  ckAutoStartPortable.checked := config.OptAutoStartPortable;
-  ckAdvancedMountDlg.checked := config.OptAdvancedMountDlg;
-  ckRevertVolTimestamps.checked := config.OptRevertVolTimestamps;
-  ckWarnBeforeForcedDismount.checked := config.OptWarnBeforeForcedDismount;
-  ckAllowNewlinesInPasswords.checked := config.OptAllowNewlinesInPasswords;
-  ckAllowTabsInPasswords.checked := config.OptAllowTabsInPasswords;
+  ckAllowMultipleInstances.Checked   := config.OptAllowMultipleInstances;
+  ckAutoStartPortable.Checked        := config.OptAutoStartPortable;
+  ckAdvancedMountDlg.Checked         := config.OptAdvancedMountDlg;
+  ckRevertVolTimestamps.Checked      := config.OptRevertVolTimestamps;
+  ckWarnBeforeForcedDismount.Checked := config.OptWarnBeforeForcedDismount;
+  ckAllowNewlinesInPasswords.Checked := config.OptAllowNewlinesInPasswords;
+  ckAllowTabsInPasswords.Checked     := config.OptAllowTabsInPasswords;
 
   // Populate and set action on exiting when volumes mounted
   cbOnExitWhenMounted.Items.Clear();
-  idx := -1;
+  idx    := -1;
   useIdx := -1;
-  for owem:=low(owem) to high(owem) do
-    begin
-    inc(idx);
+  for owem := low(owem) to high(owem) do begin
+    Inc(idx);
     cbOnExitWhenMounted.Items.Add(OnExitWhenMountedTitle(owem));
-    if (config.OptOnExitWhenMounted = owem) then
-      begin
+    if (config.OptOnExitWhenMounted = owem) then begin
       useIdx := idx;
-      end;
     end;
+  end;
   cbOnExitWhenMounted.ItemIndex := useIdx;
 
   // Populate and set action on exiting when in portable mode
   cbOnExitWhenPortableMode.Items.Clear();
-  idx := -1;
+  idx    := -1;
   useIdx := -1;
-  for owrp:=low(owrp) to high(owrp) do
-    begin
-    inc(idx);
+  for owrp := low(owrp) to high(owrp) do begin
+    Inc(idx);
     cbOnExitWhenPortableMode.Items.Add(OnExitWhenPortableModeTitle(owrp));
-    if (config.OptOnExitWhenPortableMode = owrp) then
-      begin
+    if (config.OptOnExitWhenPortableMode = owrp) then begin
       useIdx := idx;
-      end;
     end;
+  end;
   cbOnExitWhenPortableMode.ItemIndex := useIdx;
 
   // Populate and set action when normal dismount fails
   cbOnNormalDismountFail.Items.Clear();
-  idx := -1;
+  idx    := -1;
   useIdx := -1;
-  for ondf:=low(ondf) to high(ondf) do
-    begin
-    inc(idx);
+  for ondf := low(ondf) to high(ondf) do begin
+    Inc(idx);
     cbOnNormalDismountFail.Items.Add(OnNormalDismountFailTitle(ondf));
-    if (config.OptOnNormalDismountFail = ondf) then
-      begin
+    if (config.OptOnNormalDismountFail = ondf) then begin
       useIdx := idx;
-      end;
     end;
+  end;
   cbOnNormalDismountFail.ItemIndex := useIdx;
 
   // Populate and set default mount type
   cbDefaultMountAs.Items.Clear();
-  idx := -1;
+  idx    := -1;
   useIdx := -1;
-  for ma:=low(ma) to high(ma) do
-    begin
-    if (ma = fomaUnknown) then
-      begin
+  for ma := low(ma) to high(ma) do begin
+    if (ma = fomaUnknown) then begin
       continue;
-      end;
-
-    inc(idx);
-    cbDefaultMountAs.Items.Add(FreeOTFEMountAsTitle(ma));
-    if (config.OptDefaultMountAs = ma) then
-      begin
-      useIdx := idx;
-      end;
     end;
+
+    Inc(idx);
+    cbDefaultMountAs.Items.Add(FreeOTFEMountAsTitle(ma));
+    if (config.OptDefaultMountAs = ma) then begin
+      useIdx := idx;
+    end;
+  end;
   cbDefaultMountAs.ItemIndex := useIdx;
 
   // Populate and set drag drop filetype dropdown
   cbDragDrop.Items.Clear();
-  idx := -1;
+  idx    := -1;
   useIdx := -1;
-  for ft:=low(ft) to high(ft) do
-    begin
-    inc(idx);
+  for ft := low(ft) to high(ft) do begin
+    Inc(idx);
     cbDragDrop.Items.Add(DragDropFileTypeTitle(ft));
-    if (config.OptDragDropFileType = ft) then
-      begin
+    if (config.OptDragDropFileType = ft) then begin
       useIdx := idx;
-      end;
     end;
+  end;
   cbDragDrop.ItemIndex := useIdx;
 
   seMRUMaxItemCount.Value := config.OptMRUList.MaxItems;
@@ -344,76 +329,68 @@ var
   owem: TOnExitWhenMounted;
   owrp: TOnExitWhenPortableMode;
   ondf: TOnNormalDismountFail;
-  ma: TFreeOTFEMountAs;
-  ft: TDragDropFileType;
+  ma:   TFreeOTFEMountAs;
+  ft:   TDragDropFileType;
 begin
   // Advanced...
-  config.OptAllowMultipleInstances := ckAllowMultipleInstances.checked;
-  config.OptAutoStartPortable := ckAutoStartPortable.checked;
-  config.OptAdvancedMountDlg := ckAdvancedMountDlg.checked;
-  config.OptRevertVolTimestamps := ckRevertVolTimestamps.checked;
-  config.OptWarnBeforeForcedDismount := ckWarnBeforeForcedDismount.checked;
-  config.OptAllowNewlinesInPasswords := ckAllowNewlinesInPasswords.checked;
-  config.OptAllowTabsInPasswords := ckAllowTabsInPasswords.checked;
+  config.OptAllowMultipleInstances   := ckAllowMultipleInstances.Checked;
+  config.OptAutoStartPortable        := ckAutoStartPortable.Checked;
+  config.OptAdvancedMountDlg         := ckAdvancedMountDlg.Checked;
+  config.OptRevertVolTimestamps      := ckRevertVolTimestamps.Checked;
+  config.OptWarnBeforeForcedDismount := ckWarnBeforeForcedDismount.Checked;
+  config.OptAllowNewlinesInPasswords := ckAllowNewlinesInPasswords.Checked;
+  config.OptAllowTabsInPasswords     := ckAllowTabsInPasswords.Checked;
 
   // Decode action on exiting when volumes mounted
   config.OptOnExitWhenMounted := oewmPromptUser;
-  for owem:=low(owem) to high(owem) do
-    begin
-    if (OnExitWhenMountedTitle(owem) = cbOnExitWhenMounted.Items[cbOnExitWhenMounted.ItemIndex]) then
-      begin
+  for owem := low(owem) to high(owem) do begin
+    if (OnExitWhenMountedTitle(owem) = cbOnExitWhenMounted.Items[cbOnExitWhenMounted.ItemIndex])
+    then begin
       config.OptOnExitWhenMounted := owem;
       break;
-      end;
     end;
+  end;
 
   // Decode action on exiting when in portable mode
   config.OptOnExitWhenPortableMode := oewpPromptUser;
-  for owrp:=low(owrp) to high(owrp) do
-    begin
-    if (OnExitWhenPortableModeTitle(owrp) = cbOnExitWhenPortableMode.Items[cbOnExitWhenPortableMode.ItemIndex]) then
-      begin
+  for owrp := low(owrp) to high(owrp) do begin
+    if (OnExitWhenPortableModeTitle(owrp) =
+      cbOnExitWhenPortableMode.Items[cbOnExitWhenPortableMode.ItemIndex]) then begin
       config.OptOnExitWhenPortableMode := owrp;
       break;
-      end;
     end;
+  end;
 
   // Decode action when normal dismount fails
   config.OptOnNormalDismountFail := ondfPromptUser;
-  for ondf:=low(ondf) to high(ondf) do
-    begin
-    if (OnNormalDismountFailTitle(ondf) = cbOnNormalDismountFail.Items[cbOnNormalDismountFail.ItemIndex]) then
-      begin
+  for ondf := low(ondf) to high(ondf) do begin
+    if (OnNormalDismountFailTitle(ondf) =
+      cbOnNormalDismountFail.Items[cbOnNormalDismountFail.ItemIndex]) then begin
       config.OptOnNormalDismountFail := ondf;
       break;
-      end;
     end;
+  end;
 
   // Decode default mount type
   config.OptDefaultMountAs := fomaFixedDisk;
-  for ma:=low(ma) to high(ma) do
-    begin
-    if (FreeOTFEMountAsTitle(ma) = cbDefaultMountAs.Items[cbDefaultMountAs.ItemIndex]) then
-      begin
+  for ma := low(ma) to high(ma) do begin
+    if (FreeOTFEMountAsTitle(ma) = cbDefaultMountAs.Items[cbDefaultMountAs.ItemIndex]) then begin
       config.OptDefaultMountAs := ma;
       break;
-      end;
     end;
+  end;
 
   // Decode drag drop filetype
   config.OptDragDropFileType := ftPrompt;
-  for ft:=low(ft) to high(ft) do
-    begin
-    if (DragDropFileTypeTitle(ft) = cbDragDrop.Items[cbDragDrop.ItemIndex]) then
-      begin
+  for ft := low(ft) to high(ft) do begin
+    if (DragDropFileTypeTitle(ft) = cbDragDrop.Items[cbDragDrop.ItemIndex]) then begin
       config.OptDragDropFileType := ft;
       break;
-      end;
     end;
+  end;
 
   config.OptMRUList.MaxItems := seMRUMaxItemCount.Value;
 
 end;
 
-END.
-
+end.

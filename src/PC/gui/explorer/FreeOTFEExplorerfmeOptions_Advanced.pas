@@ -3,43 +3,43 @@ unit FreeOTFEExplorerfmeOptions_Advanced;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, Spin64,
-  FreeOTFEExplorerSettings, SDUStdCtrls, CommonfmeOptions_Base,
+  Classes, CommonfmeOptions_Base,
+  Controls, Dialogs, ExtCtrls, Forms,
   FreeOTFEExplorerfmeOptions_Base,
-  Shredder;
+  FreeOTFEExplorerSettings, Graphics, Messages, SDUStdCtrls, Shredder, Spin64,
+  StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfmeOptions_FreeOTFEExplorerAdvanced = class(TfmeFreeOTFEExplorerOptions_Base)
-    gbAdvanced: TGroupBox;
-    ckAdvancedMountDlg: TSDUCheckBox;
-    ckRevertVolTimestamps: TSDUCheckBox;
-    pnlVertSplit: TPanel;
-    seMRUMaxItemCount: TSpinEdit64;
-    lblMRUMaxItemCountInst: TLabel;
-    lblMRUMaxItemCount: TLabel;
-    seOverwritePasses: TSpinEdit64;
-    lblOverwritePasses: TLabel;
-    lblOverwriteMethod: TLabel;
-    cbOverwriteMethod: TComboBox;
-    lblMoveDeletionMethod: TLabel;
-    cbMoveDeletionMethod: TComboBox;
+  TfmeOptions_FreeOTFEExplorerAdvanced = class (TfmeFreeOTFEExplorerOptions_Base)
+    gbAdvanced:                         TGroupBox;
+    ckAdvancedMountDlg:                 TSDUCheckBox;
+    ckRevertVolTimestamps:              TSDUCheckBox;
+    pnlVertSplit:                       TPanel;
+    seMRUMaxItemCount:                  TSpinEdit64;
+    lblMRUMaxItemCountInst:             TLabel;
+    lblMRUMaxItemCount:                 TLabel;
+    seOverwritePasses:                  TSpinEdit64;
+    lblOverwritePasses:                 TLabel;
+    lblOverwriteMethod:                 TLabel;
+    cbOverwriteMethod:                  TComboBox;
+    lblMoveDeletionMethod:              TLabel;
+    cbMoveDeletionMethod:               TComboBox;
     ckPreserveTimestampsOnStoreExtract: TSDUCheckBox;
-    ckAllowTabsInPasswords: TSDUCheckBox;
-    ckAllowNewlinesInPasswords: TSDUCheckBox;
+    ckAllowTabsInPasswords:             TSDUCheckBox;
+    ckAllowNewlinesInPasswords:         TSDUCheckBox;
     procedure ControlChanged(Sender: TObject);
-  private
+  PRIVATE
 
-  protected
-    procedure _ReadSettings(config: TFreeOTFEExplorerSettings); override;
-    procedure _WriteSettings(config: TFreeOTFEExplorerSettings); override;
+  PROTECTED
+    procedure _ReadSettings(config: TFreeOTFEExplorerSettings); OVERRIDE;
+    procedure _WriteSettings(config: TFreeOTFEExplorerSettings); OVERRIDE;
 
     procedure PopulateOverwriteMethods();
     procedure SetOverwriteMethod(useMethod: TShredMethod);
-    function  GetOverwriteMethod(): TShredMethod;
-  public
-    procedure Initialize(); override;
-    procedure EnableDisableControls(); override;
+    function GetOverwriteMethod(): TShredMethod;
+  PUBLIC
+    procedure Initialize(); OVERRIDE;
+    procedure EnableDisableControls(); OVERRIDE;
   end;
 
 implementation
@@ -47,12 +47,11 @@ implementation
 {$R *.dfm}
 
 uses
-  SDUi18n,
-  SDUGeneral,
-  SDUDialogs,
-  CommonSettings,
   CommonfrmOptions,
-  OTFEFreeOTFEBase_U;
+  CommonSettings,
+  OTFEFreeOTFEBase_U, SDUDialogs,
+  SDUGeneral,
+  SDUi18n;
 
 const
   CONTROL_MARGIN_LBL_TO_CONTROL = 5;
@@ -68,17 +67,16 @@ end;
 
 procedure TfmeOptions_FreeOTFEExplorerAdvanced.EnableDisableControls();
 var
-  userEnterPasses: boolean;
+  userEnterPasses: Boolean;
 begin
   inherited;
 
   userEnterPasses := (TShredMethodPasses[GetOverwriteMethod()] <= 0);
 
   SDUEnableControl(seOverwritePasses, userEnterPasses);
-  if not(userEnterPasses) then
-    begin
+  if not (userEnterPasses) then begin
     seOverwritePasses.Value := TShredMethodPasses[GetOverwriteMethod()];
-    end;
+  end;
 
 end;
 
@@ -98,10 +96,10 @@ const
   // and repeat
   procedure NudgeCheckbox(chkBox: TCheckBox);
   var
-    tmpCaption: string;
-    maxWidth: integer;
-    useWidth: integer;
-    lastTriedWidth: integer;
+    tmpCaption:     String;
+    maxWidth:       Integer;
+    useWidth:       Integer;
+    lastTriedWidth: Integer;
   begin
     tmpCaption := chkBox.Caption;
 
@@ -109,57 +107,50 @@ const
     useWidth := maxWidth;
 
     chkBox.Caption := 'X';
-    chkBox.Width := useWidth;
+    chkBox.Width   := useWidth;
     lastTriedWidth := useWidth;
     chkBox.Caption := tmpCaption;
-    while (
-           (chkBox.Width > maxWidth) and
-           (lastTriedWidth > 0)
-          ) do
-      begin
+    while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0))
+      do begin
       // 5 used here; just needs to be something sensible to reduce the
       // width by; 1 would do pretty much just as well
       useWidth := useWidth - 5;
 
       chkBox.Caption := 'X';
-      chkBox.Width := useWidth;
+      chkBox.Width   := useWidth;
       lastTriedWidth := useWidth;
       chkBox.Caption := tmpCaption;
-      end;
+    end;
 
   end;
 
   procedure NudgeFocusControl(lbl: TLabel);
   begin
-    if (lbl.FocusControl <> nil) then
-      begin
+    if (lbl.FocusControl <> nil) then begin
       lbl.FocusControl.Top := lbl.Top + lbl.Height + CONTROL_MARGIN_LBL_TO_CONTROL;
-      end;
+    end;
 
   end;
 
   procedure NudgeLabel(lbl: TLabel);
   var
-    maxWidth: integer;
+    maxWidth: Integer;
   begin
-    if (pnlVertSplit.left > lbl.left) then
-      begin
+    if (pnlVertSplit.left > lbl.left) then begin
       maxWidth := (pnlVertSplit.left - LABEL_CONTROL_MARGIN) - lbl.left;
-      end
-    else
-      begin
+    end else begin
       maxWidth := (lbl.Parent.Width - LABEL_CONTROL_MARGIN) - lbl.left;
-      end;
+    end;
 
     lbl.Width := maxWidth;
   end;
 
 var
   stlChkBoxOrder: TStringList;
-  YPos: integer;
-  i: integer;
-  currChkBox: TCheckBox;
-  groupboxMargin: integer;
+  YPos:           Integer;
+  i:              Integer;
+  currChkBox:     TCheckBox;
+  groupboxMargin: Integer;
 begin
   inherited;
 
@@ -168,16 +159,16 @@ begin
 
   // Re-jig label size to take cater for differences in translation lengths
   // Size so the max. right is flush with the max right of pbLangDetails
-//  lblMRUMaxItemCount.width := (pbLangDetails.left + pbLangDetails.width) - lblMRUMaxItemCount.left;
-  groupboxMargin := ckAdvancedMountDlg.left;
-  lblMRUMaxItemCount.width := (gbAdvanced.width - groupboxMargin) - lblMRUMaxItemCount.left;
-  lblMoveDeletionMethod.width := (gbAdvanced.width - groupboxMargin) - lblMoveDeletionMethod.left;
-  lblOverwriteMethod.width := (gbAdvanced.width - groupboxMargin) - lblOverwriteMethod.left;
-  lblOverwritePasses.width := (gbAdvanced.width - groupboxMargin) - lblOverwritePasses.left;
+  //  lblMRUMaxItemCount.width := (pbLangDetails.left + pbLangDetails.width) - lblMRUMaxItemCount.left;
+  groupboxMargin              := ckAdvancedMountDlg.left;
+  lblMRUMaxItemCount.Width    := (gbAdvanced.Width - groupboxMargin) - lblMRUMaxItemCount.left;
+  lblMoveDeletionMethod.Width := (gbAdvanced.Width - groupboxMargin) - lblMoveDeletionMethod.left;
+  lblOverwriteMethod.Width    := (gbAdvanced.Width - groupboxMargin) - lblOverwriteMethod.left;
+  lblOverwritePasses.Width    := (gbAdvanced.Width - groupboxMargin) - lblOverwritePasses.left;
 
-  pnlVertSplit.caption := '';
+  pnlVertSplit.Caption    := '';
   pnlVertSplit.bevelouter := bvLowered;
-  pnlVertSplit.width := 3;
+  pnlVertSplit.Width      := 3;
 
   // Here we re-jig the checkboxes so that they are nicely spaced vertically.
   // This is needed as some language translation require the checkboxes to have
@@ -191,24 +182,27 @@ begin
   //      TCheckBox
   //   3) Make sure it's autosize property is TRUE
   //
-  stlChkBoxOrder:= TStringList.Create();
+  stlChkBoxOrder := TStringList.Create();
   try
     // stlChkBoxOrder is used to order the checkboxes in their vertical order;
     // this allows checkboxes to be added into the list below in *any* order,
     // and it'll still work
-    stlChkBoxOrder.Sorted := TRUE;
+    stlChkBoxOrder.Sorted := True;
 
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAdvancedMountDlg.Top]),       ckAdvancedMountDlg);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckRevertVolTimestamps.Top]),    ckRevertVolTimestamps);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckPreserveTimestampsOnStoreExtract.Top]),    ckPreserveTimestampsOnStoreExtract);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowNewlinesInPasswords.Top]),    ckAllowNewlinesInPasswords);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowTabsInPasswords.Top]),   ckAllowTabsInPasswords);
+    stlChkBoxOrder.AddObject(Format('%.5d', [ckAdvancedMountDlg.Top]), ckAdvancedMountDlg);
+    stlChkBoxOrder.AddObject(Format('%.5d', [ckRevertVolTimestamps.Top]),
+      ckRevertVolTimestamps);
+    stlChkBoxOrder.AddObject(Format('%.5d', [ckPreserveTimestampsOnStoreExtract.Top]),
+      ckPreserveTimestampsOnStoreExtract);
+    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowNewlinesInPasswords.Top]),
+      ckAllowNewlinesInPasswords);
+    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowTabsInPasswords.Top]),
+      ckAllowTabsInPasswords);
 
     currChkBox := TCheckBox(stlChkBoxOrder.Objects[0]);
-    YPos := currChkBox.Top;
-    YPos := YPos + currChkBox.Height;
-    for i:=1 to (stlChkBoxOrder.count - 1) do
-      begin
+    YPos       := currChkBox.Top;
+    YPos       := YPos + currChkBox.Height;
+    for i := 1 to (stlChkBoxOrder.Count - 1) do begin
       currChkBox := TCheckBox(stlChkBoxOrder.Objects[i]);
 
       currChkBox.Top := YPos + CHKBOX_CONTROL_MARGIN;
@@ -218,7 +212,7 @@ begin
 
       YPos := currChkBox.Top;
       YPos := YPos + currChkBox.Height;
-      end;
+    end;
 
   finally
     stlChkBoxOrder.Free();
@@ -233,10 +227,10 @@ begin
 
   // Here we move controls associated with labels, such that they appear
   // underneath the label
-//  NudgeFocusControl(lblMRUMaxItemCount);
-//  NudgeFocusControl(lblMoveDeletionMethod);
-//  NudgeFocusControl(lblOverwriteMethod);
-//  NudgeFocusControl(lblOverwritePasses);
+  //  NudgeFocusControl(lblMRUMaxItemCount);
+  //  NudgeFocusControl(lblMoveDeletionMethod);
+  //  NudgeFocusControl(lblOverwriteMethod);
+  //  NudgeFocusControl(lblOverwritePasses);
 
   PopulateOverwriteMethods();
 
@@ -247,74 +241,67 @@ var
   sm: TShredMethod;
 begin
   cbOverwriteMethod.Items.Clear();
-  for sm := low(TShredMethodTitle) to high(TShredMethodTitle) do
-    begin
+  for sm := low(TShredMethodTitle) to high(TShredMethodTitle) do begin
     cbOverwriteMethod.Items.Add(ShredMethodTitle(sm));
-    end;
+  end;
 end;
 
 procedure TfmeOptions_FreeOTFEExplorerAdvanced.SetOverwriteMethod(useMethod: TShredMethod);
 var
-  i: integer;
+  i: Integer;
 begin
-  for i := 0 to (cbOverwriteMethod.items.Count - 1) do
-    begin
-    if (cbOverwriteMethod.items[i] = ShredMethodTitle(useMethod)) then
-      begin
-      cbOverwriteMethod.itemindex := i;
+  for i := 0 to (cbOverwriteMethod.items.Count - 1) do begin
+    if (cbOverwriteMethod.items[i] = ShredMethodTitle(useMethod)) then begin
+      cbOverwriteMethod.ItemIndex := i;
       break;
-      end;
     end;
+  end;
 
 end;
 
 function TfmeOptions_FreeOTFEExplorerAdvanced.GetOverwriteMethod(): TShredMethod;
 var
-  sm: TShredMethod;
+  sm:     TShredMethod;
   retval: TShredMethod;
 begin
   retval := smPseudorandom;
 
-  for sm := low(sm) to high(sm) do
-    begin
-    if (cbOverwriteMethod.items[cbOverwriteMethod.itemindex] = ShredMethodTitle(sm)) then
-      begin
+  for sm := low(sm) to high(sm) do begin
+    if (cbOverwriteMethod.items[cbOverwriteMethod.ItemIndex] = ShredMethodTitle(sm)) then begin
       retval := sm;
       break;
-      end;
     end;
+  end;
 
   Result := retval;
 end;
 
 procedure TfmeOptions_FreeOTFEExplorerAdvanced._ReadSettings(config: TFreeOTFEExplorerSettings);
 var
-  mdm: TMoveDeletionMethod;
-  idx: integer;
-  useIdx: integer;
+  mdm:    TMoveDeletionMethod;
+  idx:    Integer;
+  useIdx: Integer;
 begin
   // Advanced...
-  ckAdvancedMountDlg.checked := config.OptAdvancedMountDlg;
-  ckRevertVolTimestamps.checked := config.OptRevertVolTimestamps;
-  ckPreserveTimestampsOnStoreExtract.checked := config.OptPreserveTimestampsOnStoreExtract;
-  ckAllowNewlinesInPasswords.checked := config.OptAllowNewlinesInPasswords;
-  ckAllowTabsInPasswords.checked := config.OptAllowTabsInPasswords;
+  ckAdvancedMountDlg.Checked                 := config.OptAdvancedMountDlg;
+  ckRevertVolTimestamps.Checked              := config.OptRevertVolTimestamps;
+  ckPreserveTimestampsOnStoreExtract.Checked := config.OptPreserveTimestampsOnStoreExtract;
+  ckAllowNewlinesInPasswords.Checked         := config.OptAllowNewlinesInPasswords;
+  ckAllowTabsInPasswords.Checked             := config.OptAllowTabsInPasswords;
 
   seMRUMaxItemCount.Value := config.OptMRUList.MaxItems;
 
   // Populate and set move deletion method
   cbMoveDeletionMethod.Items.Clear();
-  idx := -1;
+  idx    := -1;
   useIdx := -1;
-  for mdm:=low(mdm) to high(mdm) do
-    begin
-    inc(idx);
+  for mdm := low(mdm) to high(mdm) do begin
+    Inc(idx);
     cbMoveDeletionMethod.Items.Add(MoveDeletionMethodTitle(mdm));
-    if (config.OptMoveDeletionMethod = mdm) then
-      begin
+    if (config.OptMoveDeletionMethod = mdm) then begin
       useIdx := idx;
-      end;
     end;
+  end;
   cbMoveDeletionMethod.ItemIndex := useIdx;
 
   SetOverwriteMethod(config.OptOverwriteMethod);
@@ -328,29 +315,27 @@ var
   mdm: TMoveDeletionMethod;
 begin
   // Advanced...
-  config.OptAdvancedMountDlg := ckAdvancedMountDlg.checked;
-  config.OptRevertVolTimestamps := ckRevertVolTimestamps.checked;
-  config.OptPreserveTimestampsOnStoreExtract := ckPreserveTimestampsOnStoreExtract.checked;
-  config.OptAllowNewlinesInPasswords := ckAllowNewlinesInPasswords.checked;
-  config.OptAllowTabsInPasswords := ckAllowTabsInPasswords.checked;
+  config.OptAdvancedMountDlg                 := ckAdvancedMountDlg.Checked;
+  config.OptRevertVolTimestamps              := ckRevertVolTimestamps.Checked;
+  config.OptPreserveTimestampsOnStoreExtract := ckPreserveTimestampsOnStoreExtract.Checked;
+  config.OptAllowNewlinesInPasswords         := ckAllowNewlinesInPasswords.Checked;
+  config.OptAllowTabsInPasswords             := ckAllowTabsInPasswords.Checked;
 
   config.OptMRUList.MaxItems := seMRUMaxItemCount.Value;
 
   // Decode move deletion method
   config.OptMoveDeletionMethod := mdmPrompt;
-  for mdm:=low(mdm) to high(mdm) do
-    begin
-    if (MoveDeletionMethodTitle(mdm) = cbMoveDeletionMethod.Items[cbMoveDeletionMethod.ItemIndex]) then
-      begin
+  for mdm := low(mdm) to high(mdm) do begin
+    if (MoveDeletionMethodTitle(mdm) = cbMoveDeletionMethod.Items[cbMoveDeletionMethod.ItemIndex])
+    then begin
       config.OptMoveDeletionMethod := mdm;
       break;
-      end;
     end;
+  end;
 
   config.OptOverwriteMethod := GetOverwriteMethod();
   config.OptOverwritePasses := seOverwritePasses.Value;
 
 end;
 
-END.
-
+end.

@@ -11,8 +11,8 @@ implementation
 
 uses
   Dialogs, Forms,
-  SDUGeneral,
   SDUDialogs,
+  SDUGeneral,
   SDUi18n;
 
 {$IFDEF _NEVER_DEFINED}
@@ -27,7 +27,7 @@ const
 
 procedure CheckFilesystem(Filesystem: TSDFilesystem_FAT);
 var
-  allOK: boolean;
+  allOK: Boolean;
 begin
   //SetStatusMsg(_('Checking filesystem...'));
   try
@@ -36,27 +36,21 @@ begin
     //SetStatusMsg('');
   end;
 
-  if allOK then
-    begin
+  if allOK then begin
     SDUMessageDlg(_('Filesystem OK'), mtInformation);
-    end
-  else
-    begin
-    Filesystem.Readonly := TRUE;
+  end else begin
+    Filesystem.ReadOnly := True;
     SDUMessageDlg(
-                  SDUParamSubstitute(
-                                     _('Filesystem errors detected.'+SDUCRLF+
-                                       SDUCRLF+
-                                       'Please mount as a normal drive, and run chkdsk to correct.'+
-                                       SDUCRLF+
-                                       '%1 will continue in readonly mode'),
-                                     [Application.Title]
-                                    ),
-                  mtError
-                  );
-    end;
+      SDUParamSubstitute(_(
+      'Filesystem errors detected.' + SDUCRLF + SDUCRLF +
+      'Please mount as a normal drive, and run chkdsk to correct.' +
+      SDUCRLF +
+      '%1 will continue in readonly mode'),
+      [Application.Title]),
+      mtError
+      );
+  end;
 
 end;
 
-END.
-
+end.

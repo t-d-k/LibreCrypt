@@ -2,11 +2,12 @@
 unit SDUHTTPServer;
 
 interface
+
 const
-HTTPCMD_GET ='get';
-HTTPSTATUS_OK  =200;
-HTTPSTATUS_MULTI_STATUS =-1;
-HTTPSTATUS_TEXT_MULTI_STATUS ='';
+  HTTPCMD_GET                  = 'get';
+  HTTPSTATUS_OK                = 200;
+  HTTPSTATUS_MULTI_STATUS      = -1;
+  HTTPSTATUS_TEXT_MULTI_STATUS = '';
           {
  100: ResponseText := RSHTTPContinue;
     // 2XX: Success

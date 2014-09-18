@@ -3,34 +3,34 @@ unit SDUPartitionPropertiesDlg;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, CheckLst, SDUCheckLst,
-  SDUGeneral, ExtCtrls, SDUForms;
+  CheckLst, Classes, Controls, Dialogs, ExtCtrls, Forms,
+  Graphics, Messages, SDUCheckLst,
+  SDUForms, SDUGeneral, StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TSDUPartitionPropertiesDialog = class(TSDUForm)
-    Label1: TLabel;
-    edStartingOffset: TEdit;
-    pbClose: TButton;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label9: TLabel;
+  TSDUPartitionPropertiesDialog = class (TSDUForm)
+    Label1:                 TLabel;
+    edStartingOffset:       TEdit;
+    pbClose:                TButton;
+    Label4:                 TLabel;
+    Label5:                 TLabel;
+    Label6:                 TLabel;
+    Label7:                 TLabel;
+    Label9:                 TLabel;
     edPartitionLengthBytes: TEdit;
-    edHiddenSectors: TEdit;
-    edPartitionNumber: TEdit;
-    edPartitionType: TEdit;
-    cbPartitionFlags: TSDUCheckListBox;
-    Label11: TLabel;
-    edMountedAs: TEdit;
-    Label8: TLabel;
+    edHiddenSectors:        TEdit;
+    edPartitionNumber:      TEdit;
+    edPartitionType:        TEdit;
+    cbPartitionFlags:       TSDUCheckListBox;
+    Label11:                TLabel;
+    edMountedAs:            TEdit;
+    Label8:                 TLabel;
     edPartitionLengthUnits: TEdit;
     procedure FormShow(Sender: TObject);
-  private
+  PRIVATE
     { Private declarations }
-  public
-    PartitionInfo: TSDUPartitionInfo;
+  PUBLIC
+    PartitionInfo:  TSDUPartitionInfo;
     MountedAsDrive: DriveLetterChar;
   end;
 
@@ -52,46 +52,40 @@ resourcestring
 
 procedure TSDUPartitionPropertiesDialog.FormShow(Sender: TObject);
 var
-  idx: integer;
-  volID: string;
+  idx:   Integer;
+  volID: String;
 begin
-  edPartitionLengthBytes.text := SDUIntToStrThousands(PartitionInfo.PartitionLength);
-  edPartitionLengthUnits.text := SDUFormatAsBytesUnits(PartitionInfo.PartitionLength);
-  edStartingOffset.text       := SDUIntToStrThousands(PartitionInfo.StartingOffset);
-  edHiddenSectors.text        := inttostr(PartitionInfo.HiddenSectors);
-  edPartitionNumber.text      := inttostr(PartitionInfo.PartitionNumber);
-  edPartitionType.text        := '0x'+inttohex(ord(PartitionInfo.PartitionType), 2)+
-                                 ': '+SDUPartitionType(PartitionInfo.PartitionType, TRUE);
+  edPartitionLengthBytes.Text := SDUIntToStrThousands(PartitionInfo.PartitionLength);
+  edPartitionLengthUnits.Text := SDUFormatAsBytesUnits(PartitionInfo.PartitionLength);
+  edStartingOffset.Text       := SDUIntToStrThousands(PartitionInfo.StartingOffset);
+  edHiddenSectors.Text        := IntToStr(PartitionInfo.HiddenSectors);
+  edPartitionNumber.Text      := IntToStr(PartitionInfo.PartitionNumber);
+  edPartitionType.Text        := '0x' + inttohex(Ord(PartitionInfo.PartitionType), 2) +
+    ': ' + SDUPartitionType(PartitionInfo.PartitionType, True);
 
-  edMountedAs.text := RS_UNKNOWN;
-  if (MountedAsDrive = DRIVE_LETTER_UNKNOWN) then
-    begin
+  edMountedAs.Text := RS_UNKNOWN;
+  if (MountedAsDrive = DRIVE_LETTER_UNKNOWN) then begin
     // Do nothing - already set to "Unknown"
-    end
-  else if (MountedAsDrive = DRIVE_LETTER_NONE) then
-    begin
-    edMountedAs.text := RS_NO_DRIVE_LETTER;
-    end
-  else if (MountedAsDrive <> DRIVE_LETTER_NONE) then
-    begin
+  end else
+  if (MountedAsDrive = DRIVE_LETTER_NONE) then begin
+    edMountedAs.Text := RS_NO_DRIVE_LETTER;
+  end else
+  if (MountedAsDrive <> DRIVE_LETTER_NONE) then begin
     volID := trim(SDUVolumeID(MountedAsDrive));
-    if (volID <> '') then
-      begin
-      volID := ' ['+volID+']';
-      end;
-    
-    edMountedAs.text := upcase(MountedAsDrive)+':'+volID;
+    if (volID <> '') then begin
+      volID := ' [' + volID + ']';
     end;
 
-  idx := cbPartitionFlags.Items.Add(RS_BOOTABLE);
+    edMountedAs.Text := upcase(MountedAsDrive) + ':' + volID;
+  end;
+
+  idx                           := cbPartitionFlags.Items.Add(RS_BOOTABLE);
   cbPartitionFlags.Checked[idx] := PartitionInfo.BootIndicator;
-  idx := cbPartitionFlags.Items.Add(RS_REWRITE);
+  idx                           := cbPartitionFlags.Items.Add(RS_REWRITE);
   cbPartitionFlags.Checked[idx] := PartitionInfo.RewritePartition;
-  idx := cbPartitionFlags.Items.Add(RS_RECOGNISED);
+  idx                           := cbPartitionFlags.Items.Add(RS_RECOGNISED);
   cbPartitionFlags.Checked[idx] := PartitionInfo.RecognizedPartition;
 
 end;
 
-END.
-
-
+end.

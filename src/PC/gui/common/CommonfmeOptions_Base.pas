@@ -3,20 +3,20 @@ unit CommonfmeOptions_Base;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, CommonSettings;
+  Classes, CommonSettings, Controls, Dialogs, Forms,
+  Graphics, Messages, SysUtils, Variants, Windows;
 
 type
-  TfmeOptions_Base = class(TFrame)
-  private
+  TfmeOptions_Base = class (TFrame)
+  PRIVATE
     { Private declarations }
-  protected
-  public
-    procedure Initialize(); virtual;
-    procedure EnableDisableControls(); virtual;
-    procedure ReadSettings(config: TSettings); virtual; abstract;
-    function  CheckSettings(): boolean; virtual;
-    procedure WriteSettings(config: TSettings); virtual; abstract;
+  PROTECTED
+  PUBLIC
+    procedure Initialize(); VIRTUAL;
+    procedure EnableDisableControls(); VIRTUAL;
+    procedure ReadSettings(config: TSettings); VIRTUAL; ABSTRACT;
+    function CheckSettings(): Boolean; VIRTUAL;
+    procedure WriteSettings(config: TSettings); VIRTUAL; ABSTRACT;
   end;
 
 implementation
@@ -33,10 +33,9 @@ begin
   // Base class does nothing
 end;
 
-function TfmeOptions_Base.CheckSettings(): boolean; 
+function TfmeOptions_Base.CheckSettings(): Boolean;
 begin
-  Result := TRUE;
+  Result := True;
 end;
 
-END.
-
+end.

@@ -1,11 +1,11 @@
 unit CommonfrmCDBDump_FreeOTFE;
-// Description: 
-// By Sarah Dean
-// Email: sdean12@sdean12.org
-// WWW:   http://www.FreeOTFE.org/
-//
-// -----------------------------------------------------------------------------
-//
+ // Description: 
+ // By Sarah Dean
+ // Email: sdean12@sdean12.org
+ // WWW:   http://www.FreeOTFE.org/
+ //
+ // -----------------------------------------------------------------------------
+ //
 
 
 interface
@@ -21,37 +21,37 @@ uses
   OTFE_U, SDUGeneral;
 
 type
-  TfrmCDBDump_FreeOTFE = class(TfrmCDBDump_Base)
-    lblOffset: TLabel;
-    seSaltLength: TSpinEdit64;
+  TfrmCDBDump_FreeOTFE = class (TfrmCDBDump_Base)
+    lblOffset:         TLabel;
+    seSaltLength:      TSpinEdit64;
     lblSaltLengthBits: TLabel;
-    lblSaltLength: TLabel;
-    seKeyIterations: TSpinEdit64;
-    lblKeyIterations: TLabel;
-    se64UnitOffset: TSDUSpin64Unit_Storage;
-    preUserKey: TPasswordRichEdit;
+    lblSaltLength:     TLabel;
+    seKeyIterations:   TSpinEdit64;
+    lblKeyIterations:  TLabel;
+    se64UnitOffset:    TSDUSpin64Unit_Storage;
+    preUserKey:        TPasswordRichEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ControlChanged(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
-  private
+  PRIVATE
     function GetUserKey(): PasswordString;
 
-    function GetOffset(): int64;
-    function GetSaltLength(): integer;
-    function GetKeyIterations(): integer;
+    function GetOffset(): Int64;
+    function GetSaltLength(): Integer;
+    function GetKeyIterations(): Integer;
 
-  protected
-    procedure EnableDisableControls(); override;
+  PROTECTED
+    procedure EnableDisableControls(); OVERRIDE;
 
-    function  DumpLUKSDataToFile(): boolean; override;
+    function DumpLUKSDataToFile(): Boolean; OVERRIDE;
 
-  public
-    property UserKey: PasswordString read GetUserKey;
+  PUBLIC
+    property UserKey: PasswordString Read GetUserKey;
 
-    property Offset: int64 read GetOffset;
-    property SaltLength: integer read GetSaltLength;
-    property KeyIterations: integer read GetKeyIterations;
+    property Offset: Int64 Read GetOffset;
+    property SaltLength: Integer Read GetSaltLength;
+    property KeyIterations: Integer Read GetKeyIterations;
   end;
 
 
@@ -77,17 +77,17 @@ begin
   Result := PasswordString(preUserKey.Text);
 end;
 
-function TfrmCDBDump_FreeOTFE.GetOffset(): int64;
+function TfrmCDBDump_FreeOTFE.GetOffset(): Int64;
 begin
   Result := se64UnitOffset.Value;
 end;
 
-function TfrmCDBDump_FreeOTFE.GetSaltLength(): integer;
+function TfrmCDBDump_FreeOTFE.GetSaltLength(): Integer;
 begin
   Result := seSaltLength.Value;
 end;
 
-function TfrmCDBDump_FreeOTFE.GetKeyIterations(): integer;
+function TfrmCDBDump_FreeOTFE.GetKeyIterations(): Integer;
 begin
   Result := seKeyIterations.Value;
 end;
@@ -96,35 +96,35 @@ procedure TfrmCDBDump_FreeOTFE.FormCreate(Sender: TObject);
 begin
   inherited;
 
-  self.caption := _('Dump Critical Data Block');
+  self.Caption := _('Dump Critical Data Block');
 
-  preUserKey.Plaintext := TRUE;
+  preUserKey.Plaintext   := True;
   // FreeOTFE volumes CAN have newlines in the user's password
-  preUserKey.WantReturns := TRUE;
-  preUserKey.WordWrap := TRUE;
+  preUserKey.WantReturns := True;
+  preUserKey.WordWrap    := True;
   preUserKey.Lines.Clear();
   preUserKey.PasswordChar := '*';
 
   // se64UnitOffset set in OnShow event (otherwise units not shown correctly)
 
   seSaltLength.Increment := 8;
-  seSaltLength.Value := DEFAULT_SALT_LENGTH;
+  seSaltLength.Value     := DEFAULT_SALT_LENGTH;
 
-  seKeyIterations.MinValue := 1;
-  seKeyIterations.MaxValue := 999999; // Need *some* upper value, otherwise setting MinValue won't work properly
+  seKeyIterations.MinValue  := 1;
+  seKeyIterations.MaxValue  := 999999;
+  // Need *some* upper value, otherwise setting MinValue won't work properly
   seKeyIterations.Increment := DEFAULT_KEY_ITERATIONS_INCREMENT;
-  seKeyIterations.Value := DEFAULT_KEY_ITERATIONS;
+  seKeyIterations.Value     := DEFAULT_KEY_ITERATIONS;
 
 end;
 
 procedure TfrmCDBDump_FreeOTFE.EnableDisableControls();
 begin
-  pbOK.Enabled := (
-                   (VolumeFilename <> '') AND
-                   (feDumpFilename.Filename <> '') AND
-                   (feDumpFilename.Filename <> VolumeFilename) AND // Don't overwrite the volume with the dump!!!
-                   (KeyIterations > 0)
-                  );
+  pbOK.Enabled := ((VolumeFilename <> '') and
+    (feDumpFilename.Filename <> '') and
+    (feDumpFilename.Filename <> VolumeFilename) and
+    // Don't overwrite the volume with the dump!!!
+    (KeyIterations > 0));
 end;
 
 procedure TfrmCDBDump_FreeOTFE.FormShow(Sender: TObject);
@@ -142,16 +142,13 @@ begin
   EnableDisableControls();
 end;
 
-function TfrmCDBDump_FreeOTFE.DumpLUKSDataToFile(): boolean;
+function TfrmCDBDump_FreeOTFE.DumpLUKSDataToFile(): Boolean;
 begin
-  Result := OTFEFreeOTFE.DumpCriticalDataToFile(
-                           VolumeFilename,
-                           Offset,
-                           UserKey,
-                           SaltLength,  // In bits
-                           KeyIterations,
-                           DumpFilename
-                          );
+  Result := OTFEFreeOTFE.DumpCriticalDataToFile(VolumeFilename,
+    Offset, UserKey,
+    SaltLength,  // In bits
+    KeyIterations, DumpFilename
+    );
 end;
 
 procedure TfrmCDBDump_FreeOTFE.pbOKClick(Sender: TObject);
@@ -162,8 +159,8 @@ var
   diffTime: TDateTime;
   Hour, Min, Sec, MSec: Word;
 {$ENDIF}
-  dumpOK: boolean;
-  notepadCommandLine: string;
+  dumpOK:             Boolean;
+  notepadCommandLine: String;
 begin
 {$IFDEF FREEOTFE_TIME_CDB_DUMP}
   startTime := Now();
@@ -171,8 +168,7 @@ begin
 
   dumpOK := DumpLUKSDataToFile();
 
-  if dumpOK then
-    begin
+  if dumpOK then begin
 {$IFDEF FREEOTFE_TIME_CDB_DUMP}
     stopTime := Now();
     diffTime := (stopTime - startTime);
@@ -180,27 +176,21 @@ begin
     showmessage('Time taken to dump CDB: '+inttostr(Hour)+' hours, '+inttostr(Min)+' mins, '+inttostr(Sec)+'.'+inttostr(MSec)+' secs');
 {$ENDIF}
 
-    if (SDUMessageDlg(
-               _('A human readable copy of your critical data block has been written to:')+SDUCRLF+
-               SDUCRLF+
-               DumpFilename+SDUCRLF+
-               SDUCRLF+
-               _('Do you wish to open this file in Windows Notepad?'),
-               mtInformation, [mbYes,mbNo], 0) = mrYes) then
-      begin
-      notepadCommandLine := 'notepad '+DumpFilename;
+    if (SDUMessageDlg(_(
+      'A human readable copy of your critical data block has been written to:') + SDUCRLF +
+      SDUCRLF + DumpFilename + SDUCRLF + SDUCRLF +
+      _('Do you wish to open this file in Windows Notepad?'),
+      mtInformation, [mbYes, mbNo], 0) = mrYes) then begin
+      notepadCommandLine := 'notepad ' + DumpFilename;
 
-      if not(SDUWinExecNoWait32(notepadCommandLine, SW_RESTORE)) then
-        begin
+      if not (SDUWinExecNoWait32(notepadCommandLine, SW_RESTORE)) then begin
         SDUMessageDlg(_('Error running Notepad'), mtError, [], 0);
-        end;
-
       end;
 
-    ModalResult := mrOK;
-    end
-  else
-    begin
+    end;
+
+    ModalResult := mrOk;
+  end else begin
 {$IFDEF FREEOTFE_TIME_CDB_DUMP}
     stopTime := Now();
     diffTime := (stopTime - startTime);
@@ -209,14 +199,12 @@ begin
 {$ENDIF}
 
     SDUMessageDlg(
-               _('Unable to dump out critical data block.')+SDUCRLF+
-               SDUCRLF+
-               _('Please ensure that your password and details are entered correctly, and that this file is not currently in use (e.g. mounted)'),
-               mtError, [mbOK], 0);
-    end;
+      _('Unable to dump out critical data block.') + SDUCRLF +
+      SDUCRLF + _(
+      'Please ensure that your password and details are entered correctly, and that this file is not currently in use (e.g. mounted)'),
+      mtError, [mbOK], 0);
+  end;
 
 end;
 
-END.
-
-
+end.

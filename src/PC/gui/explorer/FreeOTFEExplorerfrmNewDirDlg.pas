@@ -3,28 +3,28 @@ unit FreeOTFEExplorerfrmNewDirDlg;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls,
-  SDUForms;
+  Classes, Controls, Dialogs, Forms,
+  Graphics, Messages, SDUForms, StdCtrls,
+  SysUtils, Variants, Windows;
 
 type
-  TfrmNewDirDlg = class(TSDUForm)
+  TfrmNewDirDlg = class (TSDUForm)
     edDirName: TEdit;
-    Label1: TLabel;
-    pbOK: TButton;
-    pbCancel: TButton;
+    Label1:    TLabel;
+    pbOK:      TButton;
+    pbCancel:  TButton;
     procedure edDirNameChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
-  private
-    function  GetDirName(): WideString;
+  PRIVATE
+    function GetDirName(): WideString;
     procedure SetDirName(newName: WideString);
-  protected
+  PROTECTED
     procedure EnableDisableControls();
 
-  public
+  PUBLIC
 
-  published
-    property DirName: WideString read GetDirName write SetDirName;
+  PUBLISHED
+    property DirName: WideString Read GetDirName Write SetDirName;
   end;
 
 implementation
@@ -46,7 +46,7 @@ end;
 
 function TfrmNewDirDlg.GetDirName(): WideString;
 begin
-  Result := edDirName.text;
+  Result := edDirName.Text;
 end;
 
 procedure TfrmNewDirDlg.SetDirName(newName: WideString);
@@ -58,10 +58,9 @@ end;
 procedure TfrmNewDirDlg.FormShow(Sender: TObject);
 begin
   DirName := '';
-  
+
   EnableDisableControls();
 
 end;
 
-END.
-
+end.

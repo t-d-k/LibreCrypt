@@ -3,16 +3,16 @@ unit SDUForms;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs;
+  Classes, Controls, Dialogs, Forms,
+  Graphics, Messages, SysUtils, Variants, Windows;
 
 type
-  TSDUForm = class(TForm)
-  private
+  TSDUForm = class (TForm)
+  PRIVATE
     { Private declarations }
-  protected
-    procedure DoCreate; override;
-  public
+  PROTECTED
+    procedure DoCreate; OVERRIDE;
+  PUBLIC
     { Public declarations }
   end;
 
@@ -29,6 +29,4 @@ begin
   SDUTranslateComponent(self);
 end;
 
-END.
-
-
+end.

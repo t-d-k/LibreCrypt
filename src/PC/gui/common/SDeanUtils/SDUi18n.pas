@@ -1,19 +1,19 @@
 unit SDUi18n;
-// Description: Internationalization (i18n) Functions
-// By Sarah Dean
-// Email: sdean12@sdean12.org
-// WWW:   http://www.SDean12.org/
-//
-// -----------------------------------------------------------------------------
-//
+ // Description: Internationalization (i18n) Functions
+ // By Sarah Dean
+ // Email: sdean12@sdean12.org
+ // WWW:   http://www.SDean12.org/
+ //
+ // -----------------------------------------------------------------------------
+ //
 
-// This unit implements i18n related code.
-// For now, it largely wraps the dxGetText library atm, but can be used for
-// projects built without dxGetText (in which case, this unit does
-// nothing - for now)
+ // This unit implements i18n related code.
+ // For now, it largely wraps the dxGetText library atm, but can be used for
+ // projects built without dxGetText (in which case, this unit does
+ // nothing - for now)
 
-// Define "_DXGETTEXT" to use dxGetText for translation
-// Leave this undefined for default behaviour
+ // Define "_DXGETTEXT" to use dxGetText for translation
+ // Leave this undefined for default behaviour
 
 
 interface
@@ -27,24 +27,25 @@ const
 //{$IFNDEF _DXGETTEXT}
 function _(msg: unicodestring): unicodestring;
 //{$ENDIF}
-function  SDUTranslate(msg: unicodestring): unicodestring;
-function  SDUPluralMsg(n: integer; singleMsg: widestring; pluralMsg: widestring): widestring; overload;
-function  SDUPluralMsg(n: integer; msgs: array of WideString): widestring; overload;
-procedure SDUSetLanguage(lang: string);
-procedure SDUTranslateComponent(comp: TComponent);
-procedure SDURetranslateComponent(comp: TComponent);
+function SDUTranslate(msg: unicodestring): unicodestring;
+function SDUPluralMsg(n: Integer; singleMsg: WideString; pluralMsg: WideString): WideString;
+  OVERLOAD;
+function SDUPluralMsg(n: Integer; msgs: array of WideString): WideString; OVERLOAD;
+procedure SDUSetLanguage(lang: String);
+procedure SDUTranslateComponent(Comp: TComponent);
+procedure SDURetranslateComponent(Comp: TComponent);
 procedure SDUGetLanguageCodes(langCodes: TStringList);
-function  SDUGetCurrentLanguageCode(): string;
-function  SDUGetTranslatorName(): widestring;
-function  SDUGetTranslatorNameAndEmail(): widestring;
+function SDUGetCurrentLanguageCode(): String;
+function SDUGetTranslatorName(): WideString;
+function SDUGetTranslatorNameAndEmail(): WideString;
 
 procedure SDUTP_GlobalIgnoreClass(IgnClass: TClass);
-procedure SDUTP_GlobalIgnoreClassProperty(IgnClass: TClass; const propertyname: string);
+procedure SDUTP_GlobalIgnoreClassProperty(IgnClass: TClass; const propertyname: String);
 
-// Returns TRUE/FALSE if English
-// (e.g. US English, British English)
-// WARNING: If '' supplied, this will return FALSE
-function SDUIsLanguageCodeEnglish(code: string): boolean;
+ // Returns TRUE/FALSE if English
+ // (e.g. US English, British English)
+ // WARNING: If '' supplied, this will return FALSE
+function SDUIsLanguageCodeEnglish(code: String): Boolean;
 
 implementation
 
@@ -68,51 +69,48 @@ begin
 {$ENDIF}
 end;
 
-function SDUPluralMsg(n: integer; singleMsg: widestring; pluralMsg: widestring): widestring;
+function SDUPluralMsg(n: Integer; singleMsg: WideString; pluralMsg: WideString): WideString;
 begin
   Result := SDUPluralMsg(n, [singleMsg, pluralMsg]);
 end;
 
 // Note: n must be 1 or greater
-function SDUPluralMsg(n: integer; msgs: array of WideString): widestring; overload;
+function SDUPluralMsg(n: Integer; msgs: array of WideString): WideString; OVERLOAD;
 var
   retval: WideString;
 begin
   retval := '';
 
-  if (length(msgs) > 0) then
-    begin
-    if (n > length(msgs)) then
-      begin
+  if (length(msgs) > 0) then begin
+    if (n > length(msgs)) then begin
       n := length(msgs);
-      end
-    else if (n < 1) then
-      begin
+    end else
+    if (n < 1) then begin
       n := 1;
-      end;
+    end;
 
     // -1 as array indexes from zero
-    retval := msgs[n-1];
-    end;
+    retval := msgs[n - 1];
+  end;
 
   Result := retval;
 end;
 
-procedure SDUTranslateComponent(comp: TComponent);
+procedure SDUTranslateComponent(Comp: TComponent);
 begin
 {$IFDEF _DXGETTEXT}
   TranslateComponent(comp);
 {$ENDIF}
 end;
 
-procedure SDURetranslateComponent(comp: TComponent);
+procedure SDURetranslateComponent(Comp: TComponent);
 begin
 {$IFDEF _DXGETTEXT}
   RetranslateComponent(comp);
 {$ENDIF}
 end;
 
-procedure SDUSetLanguage(lang: string);
+procedure SDUSetLanguage(lang: String);
 begin
 {$IFDEF _DXGETTEXT}
   UseLanguage(lang);
@@ -126,7 +124,7 @@ begin
 {$ENDIF}
 end;
 
-procedure SDUTP_GlobalIgnoreClassProperty(IgnClass: TClass; const propertyname: string);
+procedure SDUTP_GlobalIgnoreClassProperty(IgnClass: TClass; const propertyname: String);
 begin
 {$IFDEF _DXGETTEXT}
   TP_GlobalIgnoreClassProperty(IgnClass, propertyname);
@@ -140,7 +138,7 @@ begin
 {$ENDIF}
 end;
 
-function SDUGetCurrentLanguageCode(): string;
+function SDUGetCurrentLanguageCode(): String;
 begin
 {$IFDEF _DXGETTEXT}
   Result := GetCurrentLanguage();
@@ -150,7 +148,7 @@ begin
 
 end;
 
-function SDUGetTranslatorName(): widestring;
+function SDUGetTranslatorName(): WideString;
 var
   retval: WideString;
 begin
@@ -162,22 +160,20 @@ begin
   //aaa := '<b@c.d>';
   //aaa := 'b@c.d';
 
-  if (
-      (Pos('<', retval) > 0) and
-      (Pos('@', retval) > Pos('<', retval)) and // Sanity, in case of "<Berty>" - not an email addr
-      (Pos('>', retval) > Pos('@', retval))     // Sanity, in case of "<Berty>" - not an email addr
-     ) then
-    begin
+  if ((Pos('<', retval) > 0) and (Pos('@', retval) > Pos('<', retval)) and
+    // Sanity, in case of "<Berty>" - not an email addr
+    (Pos('>', retval) > Pos('@', retval))     // Sanity, in case of "<Berty>" - not an email addr
+    ) then begin
     // Trivial version; only handles stuff like "Fred <bert@domain.com>"
     // Really should be able to handle "<ME!> <myaddr@domain.com"
-    retval := copy(retval, 1, (Pos('<', retval)-1));
+    retval := copy(retval, 1, (Pos('<', retval) - 1));
     retval := Trim(retval);
-    end;
+  end;
 
   Result := retval;
 end;
 
-function SDUGetTranslatorNameAndEmail(): widestring;
+function SDUGetTranslatorNameAndEmail(): WideString;
 begin
 {$IFDEF _DXGETTEXT}
   Result := GetTranslatorNameAndEmail();
@@ -187,7 +183,7 @@ begin
 
 end;
 
-function SDUIsLanguageCodeEnglish(code: string): boolean;
+function SDUIsLanguageCodeEnglish(code: String): Boolean;
 begin
   Result := (Pos(ISO639_ALPHA2_ENGLISH, code) = 1);
 end;
@@ -206,70 +202,66 @@ initialization
   SDUTP_GlobalIgnoreClassProperty(TControl, 'ImeName');
   SDUTP_GlobalIgnoreClass(TFont);
   // Database (DB unit)
-//  SDUTP_GlobalIgnoreClassProperty(TField, 'DefaultExpression');
-//  SDUTP_GlobalIgnoreClassProperty(TField, 'FieldName');
-//  SDUTP_GlobalIgnoreClassProperty(TField, 'KeyFields');
-//  SDUTP_GlobalIgnoreClassProperty(TField, 'DisplayName');
-//  SDUTP_GlobalIgnoreClassProperty(TField, 'LookupKeyFields');
-//  SDUTP_GlobalIgnoreClassProperty(TField, 'LookupResultField');
-//  SDUTP_GlobalIgnoreClassProperty(TField, 'Origin');
-//  SDUTP_GlobalIgnoreClass(TParam);
-//  SDUTP_GlobalIgnoreClassProperty(TFieldDef, 'Name');
+  //  SDUTP_GlobalIgnoreClassProperty(TField, 'DefaultExpression');
+  //  SDUTP_GlobalIgnoreClassProperty(TField, 'FieldName');
+  //  SDUTP_GlobalIgnoreClassProperty(TField, 'KeyFields');
+  //  SDUTP_GlobalIgnoreClassProperty(TField, 'DisplayName');
+  //  SDUTP_GlobalIgnoreClassProperty(TField, 'LookupKeyFields');
+  //  SDUTP_GlobalIgnoreClassProperty(TField, 'LookupResultField');
+  //  SDUTP_GlobalIgnoreClassProperty(TField, 'Origin');
+  //  SDUTP_GlobalIgnoreClass(TParam);
+  //  SDUTP_GlobalIgnoreClassProperty(TFieldDef, 'Name');
   // MIDAS/Datasnap
-//  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'CommandText');
-//  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'Filename');
-//  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'Filter');
-//  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'IndexFieldnames');
-//  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'IndexName');
-//  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'MasterFields');
-//  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'Params');
-//  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'ProviderName');
+  //  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'CommandText');
+  //  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'Filename');
+  //  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'Filter');
+  //  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'IndexFieldnames');
+  //  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'IndexName');
+  //  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'MasterFields');
+  //  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'Params');
+  //  SDUTP_GlobalIgnoreClassProperty(TClientDataset, 'ProviderName');
   // Database controls
-//  SDUTP_GlobalIgnoreClassProperty(TDBComboBox, 'DataField');
-//  SDUTP_GlobalIgnoreClassProperty(TDBCheckBox, 'DataField');
-//  SDUTP_GlobalIgnoreClassProperty(TDBEdit, 'DataField');
-//  SDUTP_GlobalIgnoreClassProperty(TDBImage, 'DataField');
-//  SDUTP_GlobalIgnoreClassProperty(TDBListBox, 'DataField');
-//  SDUTP_GlobalIgnoreClassProperty(TDBLookupControl, 'DataField');
-//  SDUTP_GlobalIgnoreClassProperty(TDBLookupControl, 'KeyField');
-//  SDUTP_GlobalIgnoreClassProperty(TDBLookupControl, 'ListField');
-//  SDUTP_GlobalIgnoreClassProperty(TDBMemo, 'DataField');
-//  SDUTP_GlobalIgnoreClassProperty(TDBRadioGroup, 'DataField');
-//  SDUTP_GlobalIgnoreClassProperty(TDBRichEdit, 'DataField');
-//  SDUTP_GlobalIgnoreClassProperty(TDBText, 'DataField');
+  //  SDUTP_GlobalIgnoreClassProperty(TDBComboBox, 'DataField');
+  //  SDUTP_GlobalIgnoreClassProperty(TDBCheckBox, 'DataField');
+  //  SDUTP_GlobalIgnoreClassProperty(TDBEdit, 'DataField');
+  //  SDUTP_GlobalIgnoreClassProperty(TDBImage, 'DataField');
+  //  SDUTP_GlobalIgnoreClassProperty(TDBListBox, 'DataField');
+  //  SDUTP_GlobalIgnoreClassProperty(TDBLookupControl, 'DataField');
+  //  SDUTP_GlobalIgnoreClassProperty(TDBLookupControl, 'KeyField');
+  //  SDUTP_GlobalIgnoreClassProperty(TDBLookupControl, 'ListField');
+  //  SDUTP_GlobalIgnoreClassProperty(TDBMemo, 'DataField');
+  //  SDUTP_GlobalIgnoreClassProperty(TDBRadioGroup, 'DataField');
+  //  SDUTP_GlobalIgnoreClassProperty(TDBRichEdit, 'DataField');
+  //  SDUTP_GlobalIgnoreClassProperty(TDBText, 'DataField');
   // Interbase Express (IBX)
-//  SDUTP_GlobalIgnoreClass(TIBDatabase);
-//  SDUTP_GlobalIgnoreClass(TIBDatabase);
-//  SDUTP_GlobalIgnoreClass(TIBTransaction);
-//  SDUTP_GlobalIgnoreClassProperty(TIBSQL, 'UniqueRelationName');
+  //  SDUTP_GlobalIgnoreClass(TIBDatabase);
+  //  SDUTP_GlobalIgnoreClass(TIBDatabase);
+  //  SDUTP_GlobalIgnoreClass(TIBTransaction);
+  //  SDUTP_GlobalIgnoreClassProperty(TIBSQL, 'UniqueRelationName');
   // Borland Database Engine (BDE)
-//  SDUTP_GlobalIgnoreClass(TSession);
-//  SDUTP_GlobalIgnoreClass(TDatabase);
+  //  SDUTP_GlobalIgnoreClass(TSession);
+  //  SDUTP_GlobalIgnoreClass(TDatabase);
   // ADO components
-//  SDUTP_GlobalIgnoreClass (TADOConnection);
-//  SDUTP_GlobalIgnoreClassProperty(TADOQuery, 'CommandText');
-//  SDUTP_GlobalIgnoreClassProperty(TADOQuery, 'ConnectionString');
-//  SDUTP_GlobalIgnoreClassProperty(TADOQuery, 'DatasetField');
-//  SDUTP_GlobalIgnoreClassProperty(TADOQuery, 'Filter');
-//  SDUTP_GlobalIgnoreClassProperty(TADOQuery, 'IndexFieldNames');
-//  SDUTP_GlobalIgnoreClassProperty(TADOQuery, 'IndexName');
-//  SDUTP_GlobalIgnoreClassProperty(TADOQuery, 'MasterFields');
-//  SDUTP_GlobalIgnoreClassProperty(TADOTable, 'IndexFieldNames');
-//  SDUTP_GlobalIgnoreClassProperty(TADOTable, 'IndexName');
-//  SDUTP_GlobalIgnoreClassProperty(TADOTable, 'MasterFields');
-//  SDUTP_GlobalIgnoreClassProperty(TADOTable, 'TableName');
-//  SDUTP_GlobalIgnoreClassProperty(TADODataset, 'CommandText');
-//  SDUTP_GlobalIgnoreClassProperty(TADODataset, 'ConnectionString');
-//  SDUTP_GlobalIgnoreClassProperty(TADODataset, 'DatasetField');
-//  SDUTP_GlobalIgnoreClassProperty(TADODataset, 'Filter');
-//  SDUTP_GlobalIgnoreClassProperty(TADODataset, 'IndexFieldNames');
-//  SDUTP_GlobalIgnoreClassProperty(TADODataset, 'IndexName');
-//  SDUTP_GlobalIgnoreClassProperty(TADODataset, 'MasterFields');
+  //  SDUTP_GlobalIgnoreClass (TADOConnection);
+  //  SDUTP_GlobalIgnoreClassProperty(TADOQuery, 'CommandText');
+  //  SDUTP_GlobalIgnoreClassProperty(TADOQuery, 'ConnectionString');
+  //  SDUTP_GlobalIgnoreClassProperty(TADOQuery, 'DatasetField');
+  //  SDUTP_GlobalIgnoreClassProperty(TADOQuery, 'Filter');
+  //  SDUTP_GlobalIgnoreClassProperty(TADOQuery, 'IndexFieldNames');
+  //  SDUTP_GlobalIgnoreClassProperty(TADOQuery, 'IndexName');
+  //  SDUTP_GlobalIgnoreClassProperty(TADOQuery, 'MasterFields');
+  //  SDUTP_GlobalIgnoreClassProperty(TADOTable, 'IndexFieldNames');
+  //  SDUTP_GlobalIgnoreClassProperty(TADOTable, 'IndexName');
+  //  SDUTP_GlobalIgnoreClassProperty(TADOTable, 'MasterFields');
+  //  SDUTP_GlobalIgnoreClassProperty(TADOTable, 'TableName');
+  //  SDUTP_GlobalIgnoreClassProperty(TADODataset, 'CommandText');
+  //  SDUTP_GlobalIgnoreClassProperty(TADODataset, 'ConnectionString');
+  //  SDUTP_GlobalIgnoreClassProperty(TADODataset, 'DatasetField');
+  //  SDUTP_GlobalIgnoreClassProperty(TADODataset, 'Filter');
+  //  SDUTP_GlobalIgnoreClassProperty(TADODataset, 'IndexFieldNames');
+  //  SDUTP_GlobalIgnoreClassProperty(TADODataset, 'IndexName');
+  //  SDUTP_GlobalIgnoreClassProperty(TADODataset, 'MasterFields');
   // ActiveX stuff
-//  SDUTP_GlobalIgnoreClass(TWebBrowser);
+  //  SDUTP_GlobalIgnoreClass(TWebBrowser);
 
-
-END.
-
-
-
+end.
