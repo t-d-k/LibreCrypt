@@ -26,7 +26,7 @@ type
     procedure pbFinishClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
-    FOnWizardStepChanged: TNotifyEvent;
+    fOnWizardStepChanged: TNotifyEvent;
   protected
     procedure SetupInstructions(); virtual;
 
@@ -37,10 +37,10 @@ type
     function  NextTabInDir(gotoNext: boolean): TTabSheet;
     function  SkipTab(tabSheet: TTabSheet): boolean; virtual;
   public
-    FreeOTFEObj: TOTFEFreeOTFEBase;
+    fFreeOTFEObj: TOTFEFreeOTFEBase;
 
   published
-    property OnWizardStepChanged: TNotifyEvent read FOnWizardStepChanged write FOnWizardStepChanged;
+    property OnWizardStepChanged: TNotifyEvent read fOnWizardStepChanged write fOnWizardStepChanged;
   end;
 
 
