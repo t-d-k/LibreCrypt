@@ -48,6 +48,16 @@ uses
   SDUi18n,
   SDUGeneral;
 
+{$IFDEF _NEVER_DEFINED}
+// This is just a dummy const to fool dxGetText when extracting message
+// information
+// This const is never used; it's #ifdef'd out - SDUCRLF in the code refers to
+// picks up SDUGeneral.SDUCRLF
+const
+  SDUCRLF = ''#13#10;
+{$ENDIF}
+
+
 procedure TfrmCDBDump_LUKS.FormCreate(Sender: TObject);
 begin
   inherited;
@@ -84,12 +94,12 @@ end;
 
 function TfrmCDBDump_LUKS.DumpLUKSDataToFile(): boolean;
 var
-  userKey: string;
+  userKey: PasswordString;
   keyfile: string;
   keyfileIsASCII: boolean;
   keyfileNewlineType: TSDUNewline;
 begin
-  OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKeyRaw(userKey);
+  OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKey(userKey);
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKeyfile(keyfile);
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKeyfileIsASCII(keyfileIsASCII);
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKeyfileNewlineType(keyfileNewlineType);
@@ -114,7 +124,7 @@ var
   Hour, Min, Sec, MSec: Word;
 {$ENDIF}
   dumpOK: boolean;
-  notepadCommandLine: Ansistring;
+  notepadCommandLine: string;
 begin
 {$IFDEF FREEOTFE_TIME_CDB_DUMP}
   startTime := Now();
@@ -141,7 +151,7 @@ begin
       begin
       notepadCommandLine := 'notepad '+DumpFilename;
 
-      if (WinExec(PAnsiChar(notepadCommandLine), SW_RESTORE))<31 then
+      if not(SDUWinExecNoWait32(notepadCommandLine, SW_RESTORE)) then
         begin
         SDUMessageDlg(_('Error running Notepad'), mtError, [], 0);
         end;

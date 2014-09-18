@@ -14,9 +14,11 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls,
   PasswordRichEdit, Spin64,
+  //dosbox
   OTFEFreeOTFEBase_U, Buttons, SDUForms, SDUFrames,
   SDUSpin64Units, SDUFilenameEdit_U, SDUDialogs, OTFEFreeOTFE_VolumeSelect,
-  CommonfrmCDBDump_Base;
+  CommonfrmCDBDump_Base,
+  OTFE_U, SDUGeneral;
 
 type
   TfrmCDBDump_FreeOTFE = class(TfrmCDBDump_Base)
@@ -33,7 +35,7 @@ type
     procedure ControlChanged(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
   private
-    function GetUserKey(): string;
+    function GetUserKey(): PasswordString;
 
     function GetOffset(): int64;
     function GetSaltLength(): integer;
@@ -45,7 +47,7 @@ type
     function  DumpLUKSDataToFile(): boolean; override;
 
   public
-    property UserKey: string read GetUserKey;
+    property UserKey: PasswordString read GetUserKey;
 
     property Offset: int64 read GetOffset;
     property SaltLength: integer read GetSaltLength;
@@ -58,13 +60,21 @@ implementation
 {$R *.DFM}
 
 uses
-  SDUi18n,
-  SDUGeneral;
+  SDUi18n;
+
+{$IFDEF _NEVER_DEFINED}
+// This is just a dummy const to fool dxGetText when extracting message
+// information
+// This const is never used; it's #ifdef'd out - SDUCRLF in the code refers to
+// picks up SDUGeneral.SDUCRLF
+const
+  SDUCRLF = ''#13#10;
+{$ENDIF}
 
 
-function TfrmCDBDump_FreeOTFE.GetUserKey(): string;
+function TfrmCDBDump_FreeOTFE.GetUserKey(): PasswordString;
 begin
-  Result := preUserKey.Text;
+  Result := PasswordString(preUserKey.Text);
 end;
 
 function TfrmCDBDump_FreeOTFE.GetOffset(): int64;
@@ -153,7 +163,7 @@ var
   Hour, Min, Sec, MSec: Word;
 {$ENDIF}
   dumpOK: boolean;
-  notepadCommandLine: Ansistring;
+  notepadCommandLine: string;
 begin
 {$IFDEF FREEOTFE_TIME_CDB_DUMP}
   startTime := Now();
@@ -180,7 +190,7 @@ begin
       begin
       notepadCommandLine := 'notepad '+DumpFilename;
 
-      if (WinExec(PAnsiChar(notepadCommandLine), SW_RESTORE))<31 then
+      if not(SDUWinExecNoWait32(notepadCommandLine, SW_RESTORE)) then
         begin
         SDUMessageDlg(_('Error running Notepad'), mtError, [], 0);
         end;

@@ -59,6 +59,15 @@ uses
   SDUGeneral,
   CommonSettings;
 
+{$IFDEF _NEVER_DEFINED}
+// This is just a dummy const to fool dxGetText when extracting message
+// information
+// This const is never used; it's #ifdef'd out - SDUCRLF in the code refers to
+// picks up SDUGeneral.SDUCRLF
+const
+  SDUCRLF = ''#13#10;
+{$ENDIF}
+
 
 function TfrmCDBDump_Base.GetVolumeFilename(): string;
 begin
@@ -123,7 +132,7 @@ var
   Hour, Min, Sec, MSec: Word;
 {$ENDIF}
   dumpOK: boolean;
-  notepadCommandLine: Ansistring;
+  notepadCommandLine: string;
 begin
 {$IFDEF FREEOTFE_TIME_CDB_DUMP}
   startTime := Now();
@@ -150,7 +159,7 @@ begin
       begin
       notepadCommandLine := 'notepad '+DumpFilename;
 
-      if (WinExec(PAnsiChar(notepadCommandLine), SW_RESTORE))<31 then
+      if not(SDUWinExecNoWait32(notepadCommandLine, SW_RESTORE)) then
         begin
         SDUMessageDlg(_('Error running Notepad'), mtError, [], 0);
         end;

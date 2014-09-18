@@ -94,6 +94,16 @@ uses
   CommonSettings,
   SDUGraphics;
 
+{$IFDEF _NEVER_DEFINED}
+// This is just a dummy const to fool dxGetText when extracting message
+// information
+// This const is never used; it's #ifdef'd out - SDUCRLF in the code refers to
+// picks up SDUGeneral.SDUCRLF
+const
+  SDUCRLF = ''#13#10;
+{$ENDIF}
+
+
 resourcestring
   // Save dialog related
   FILE_FILTER_FLT_REPORTS  = 'Text report (*.txt)|*.txt|Comma separated values (*.csv)|*.csv|Tab separated values (*.tsv)|*.tsv';

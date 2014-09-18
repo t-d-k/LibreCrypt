@@ -99,7 +99,7 @@ begin
                      SDUParamSubstitute(_('Select location to copy %1 to'), [Application.Title]),
                      rootPath,
                      newPath
-{$IFDEF VER185}
+{$IFNDEF VER180}
                      , // Comma from previous line
                      [sdNewUI, sdNewFolder]
 {$ENDIF}

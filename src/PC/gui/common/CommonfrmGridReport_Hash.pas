@@ -55,6 +55,16 @@ uses
   OTFEFreeOTFEBase_U,
   OTFEFreeOTFE_U;
 
+{$IFDEF _NEVER_DEFINED}
+// This is just a dummy const to fool dxGetText when extracting message
+// information
+// This const is never used; it's #ifdef'd out - SDUCRLF in the code refers to
+// picks up SDUGeneral.SDUCRLF
+const
+  SDUCRLF = ''#13#10;
+{$ENDIF}
+
+
 resourcestring
   // IMPORTANT: If this is updated, GetColumnTitle() MUST ALSO BE UPDATED
   COL_TITLE_HASH_TITLE     = 'Hash title';
@@ -180,14 +190,14 @@ begin
 
         item.Caption := inttostr(currRow);
 
-        AddSubItem(gchDriverTitle,             item, currDriver.Title);
+        AddSubItem(gchDriverTitle,             item, String(currDriver.Title));
         AddSubItem(gchDriverVersion,           item, OTFEFreeOTFE.VersionIDToStr(currDriver.VersionID));
         AddSubItem(gchDriverGUID,              item, GUIDToString(currDriver.DriverGUID));
         AddSubItem(gchDriverDeviceName,        item, currDriver.DeviceName);
         AddSubItem(gchDriverUserModeName,      item, currDriver.DeviceUserModeName);
         AddSubItem(gchDriverKernelModeName,    item, currDriver.LibFNOrDevKnlMdeName);
 
-        AddSubItem(gchHashTitle,               item, currImpl.Title);
+        AddSubItem(gchHashTitle,               item, String(currImpl.Title));
         AddSubItem(gchHashVersion,             item, OTFEFreeOTFE.VersionIDToStr(currImpl.VersionID));
         AddSubItem(gchHashLength,              item, inttostr(currImpl.Length));
         AddSubItem(gchHashBlocksize,           item, inttostr(currImpl.BlockSize));

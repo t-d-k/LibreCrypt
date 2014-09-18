@@ -57,6 +57,16 @@ uses
   OTFEFreeOTFEBase_U,
   OTFEFreeOTFE_U;
 
+{$IFDEF _NEVER_DEFINED}
+// This is just a dummy const to fool dxGetText when extracting message
+// information
+// This const is never used; it's #ifdef'd out - SDUCRLF in the code refers to
+// picks up SDUGeneral.SDUCRLF
+const
+  SDUCRLF = ''#13#10;
+{$ENDIF}
+
+
 resourcestring
   // IMPORTANT: If this is updated, GetColumnTitle() MUST ALSO BE UPDATED
   COL_TITLE_CYPHER_TITLE        = 'Cypher title';
@@ -201,14 +211,14 @@ begin
 
         item.Caption := inttostr(currRow);
 
-        AddSubItem(gccDriverTitle,             item, currDriver.Title);
+        AddSubItem(gccDriverTitle,             item, String(currDriver.Title));
         AddSubItem(gccDriverVersion,           item, OTFEFreeOTFE.VersionIDToStr(currDriver.VersionID));
         AddSubItem(gccDriverGUID,              item, GUIDToString(currDriver.DriverGUID));
         AddSubItem(gccDriverDeviceName,        item, currDriver.DeviceName);
         AddSubItem(gccDriverUserModeName,      item, currDriver.DeviceUserModeName);
         AddSubItem(gccDriverKernelModeName,    item, currDriver.LibFNOrDevKnlMdeName);
 
-        AddSubItem(gccCypherTitle,             item, currImpl.Title);
+        AddSubItem(gccCypherTitle,             item, String(currImpl.Title));
         AddSubItem(gccCypherKeysizeUnderlying, item, inttostr(currImpl.KeySizeUnderlying));
         AddSubItem(gccCypherMode,              item, FreeOTFECypherModeTitle(currImpl.Mode));
         AddSubItem(gccCypherKeysizeRequired,   item, inttostr(currImpl.KeySizeRequired));

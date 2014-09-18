@@ -12,13 +12,15 @@ unit CommonfrmMain;
 interface
 
 uses
-  ActnList,
-  Buttons, Classes, ComCtrls, CommonfrmCDBBackupRestore, CommonSettings, Controls, Dialogs,
-  ExtCtrls, Forms, Graphics, Grids, ImgList, Menus, Messages, MouseRNGDialog_U, OTFE_U,
+//delphi
+  ActnList, SDUSystemTrayIcon, Shredder, Spin64, StdCtrls, SysUtils, ToolWin, Windows, XPMan  ,    ExtCtrls, Forms, Graphics, Grids, ImgList, Menus, Messages,
+  Buttons, Classes, ComCtrls, Controls, Dialogs,
+
+  //freeotfe
+    MouseRNGDialog_U, OTFE_U,
   OTFEFreeOTFE_DriverControl,
-  OTFEFreeOTFE_U, OTFEFreeOTFEBase_U,
-  pkcs11_library, SDUDialogs, SDUForms, SDUMRUList, SDUMultimediaKeys,
-  SDUSystemTrayIcon, Shredder, Spin64, StdCtrls, SysUtils, ToolWin, Windows, XPMan;
+  OTFEFreeOTFE_U, OTFEFreeOTFEBase_U,   CommonfrmCDBBackupRestore,  CommonSettings,
+  pkcs11_library, SDUDialogs, SDUForms, SDUMRUList, SDUMultimediaKeys,SDUGeneral  ;
 
 const
   // Command line parameters...
@@ -42,6 +44,8 @@ const
 
 
 type
+  TAutorunType = (arPostMount, arPreDismount, arPostDismount);
+
   TfrmMain = class (TSDUForm)
     mmMain:                   TMainMenu;
     File1:                    TMenuItem;
@@ -153,6 +157,9 @@ type
     FIconIdx_Small_Store:          Integer;
     FIconIdx_Small_ItemProperties: Integer;
     FIconIdx_Small_Folders:        Integer;
+    FIconIdx_Small_MapNetworkDrive: integer;
+    FIconIdx_Small_DisconnectNetworkDrive: integer;
+
     FIconIdx_Large_New:            Integer;
     FIconIdx_Large_MountFile:      Integer;
     FIconIdx_Large_MountPartition: Integer;
@@ -172,6 +179,8 @@ type
     FIconIdx_Large_Store:          Integer;
     FIconIdx_Large_ItemProperties: Integer;
     FIconIdx_Large_Folders:        Integer;
+    FIconIdx_Large_MapNetworkDrive: integer;
+    FIconIdx_Large_DisconnectNetworkDrive: integer;
 
     // This is set to TRUE at the very start of InitApp(...)
     FInitAppCalled:               Boolean;
@@ -211,6 +220,9 @@ type
     procedure EnableDisableControls(); VIRTUAL;
 
     procedure DumpDetailsToFile(LUKSDump: Boolean);
+
+    procedure ExploreDrive(driveLetter: DriveLetterChar);
+    procedure AutoRunExecute(autorun: TAutorunType; driveLetter: DriveLetterChar; isEmergency: boolean);
 
     procedure MountFilesDetectLUKS(fileToMount: String; ReadOnly: Boolean;
       defaultType: TDragDropFileType); OVERLOAD;
@@ -324,6 +336,8 @@ const
   ICONIDX_EXPLORER_STORE      = 14;
   ICONIDX_EXPLORER_PROPERTIES = 15;
   ICONIDX_EXPLORER_FOLDERS    = 16;
+  ICONIDX_EXPLORER_MAPNETWORKDRIVE        = 17;
+  ICONIDX_EXPLORER_DISCONNECTNETWORKDRIVE = 18;
 
 
 implementation
@@ -336,6 +350,9 @@ uses
   Commctrl,  // Required for ImageList_GetIcon
   ComObj,    // Required for StringToGUID
   Math,      // Required for min
+{$IFDEF UNICODE}
+  AnsiStrings,
+{$ENDIF}
 {$IFDEF FREEOTFE_MAIN}
   FreeOTFEConsts,
   FreeOTFESettings,
@@ -344,7 +361,7 @@ uses
   FreeOTFEExplorerConsts,
   FreeOTFEExplorerSettings,
 {$ENDIF}
-  SDUGeneral,
+// freeotfe
   SDUGraphics,
   CommonfrmAbout,
   SDUi18n,
@@ -355,6 +372,7 @@ uses
   CommonfrmVersionCheck,
   OTFEConsts_U,
   OTFEFreeOTFE_DriverAPI,
+  OTFEFreeOTFE_VolumeFileAPI,
   SDUFileIterator_U,
   CommonfrmGridReport_Hash,
   CommonfrmGridReport_Cypher,
@@ -370,6 +388,18 @@ const
   SDUCRLF = ''#13#10;
 {$ENDIF}
 
+resourcestring
+  AUTORUN_POST_MOUNT    = 'post mount';
+  AUTORUN_PRE_MOUNT     = 'pre dismount';
+  AUTORUN_POST_DISMOUNT = 'post dismount';
+const
+  AUTORUN_TITLE : array [TAutorunType] of string = (
+                                                    AUTORUN_POST_MOUNT,
+                                                    AUTORUN_PRE_MOUNT,
+                                                    AUTORUN_POST_DISMOUNT
+                                                   );
+
+  AUTORUN_SUBSTITUTE_DRIVE = '%DRIVE';
 
 constructor TfrmMain.Create(AOwner: TComponent);
 begin
@@ -401,6 +431,8 @@ begin
   FIconIdx_Small_Store          := ICONIDX_EXPLORER_STORE;
   FIconIdx_Small_ItemProperties := ICONIDX_EXPLORER_PROPERTIES;
   FIconIdx_Small_Folders        := ICONIDX_EXPLORER_FOLDERS;
+  FIconIdx_Small_MapNetworkDrive:= ICONIDX_EXPLORER_MAPNETWORKDRIVE;
+  FIconIdx_Small_DisconnectNetworkDrive:= ICONIDX_EXPLORER_DISCONNECTNETWORKDRIVE;
 
   FIconIdx_Large_New            := ICONIDX_NEW;
   FIconIdx_Large_MountFile      := ICONIDX_MOUNTFILE;
@@ -421,6 +453,8 @@ begin
   FIconIdx_Large_Store          := ICONIDX_EXPLORER_STORE;
   FIconIdx_Large_ItemProperties := ICONIDX_EXPLORER_PROPERTIES;
   FIconIdx_Large_Folders        := ICONIDX_EXPLORER_FOLDERS;
+  FIconIdx_Large_MapNetworkDrive:= ICONIDX_EXPLORER_MAPNETWORKDRIVE;
+  FIconIdx_Large_DisconnectNetworkDrive:= ICONIDX_EXPLORER_DISCONNECTNETWORKDRIVE;
 
   // Load system icons...
   AddStdIcons();
@@ -925,6 +959,155 @@ begin
 end;
 
 
+procedure TfrmMain.ExploreDrive(driveLetter: DriveLetterChar);
+var
+  explorerCommandLine: string;
+begin
+  if (driveLetter <> #0) then
+    begin
+    explorerCommandLine := 'explorer '+driveLetter+':\';
+
+    if not(SDUWinExecNoWait32(explorerCommandLine, SW_RESTORE)) then
+      begin
+      SDUMessageDlg(_('Error running Explorer'), mtError, [mbOK], 0);
+      end;
+    end;
+
+end;
+
+
+// Launch autorun executable on specified drive
+procedure TfrmMain.AutoRunExecute(autorun: TAutorunType; driveLetter: DriveLetterChar; isEmergency: boolean);
+var
+  exeFullCmdLine: string;
+  launchOK: boolean;
+  splitCmdLine: TStringList;
+  exeOnly: string;
+begin
+  // Sanity...
+  if (driveLetter = #0) then
+    begin
+    exit;
+    end;
+
+  exeFullCmdLine := '';
+
+  case autorun of
+
+    arPostMount:
+      begin
+      exeFullCmdLine := Settings.OptPostMountExe;
+      end;
+
+    arPreDismount:
+      begin
+      // We don't bother with predismount in case of emergency
+      if not(isEmergency) then
+        begin
+        exeFullCmdLine := Settings.OptPreDismountExe;
+        end;
+      end;
+
+    arPostDismount:
+      begin
+      exeFullCmdLine := Settings.OptPostDismountExe;
+      end;
+
+    else
+      begin
+      if not(isEmergency) then
+        begin
+        SDUMessageDlg(_('Unknown autorun type?!'), mtError);
+        end;
+      end;
+
+    end;
+
+  if (exeFullCmdLine <> '') then
+    begin
+    // Split up, in case user is using a commandline with spaces in the
+    // executable path
+    splitCmdLine:= TStringList.Create();
+    try
+      splitCmdLine.QuoteChar := '"';
+      splitCmdLine.Delimiter := ' ';
+      splitCmdLine.DelimitedText := trim(exeFullCmdLine);
+
+      // Relative path with mounted drive letter
+      if (
+          (autorun = arPostMount) or
+          (autorun = arPreDismount)
+         ) then
+        begin
+        splitCmdLine[0] := driveLetter + ':' + splitCmdLine[0];
+        end;
+
+      exeOnly := splitCmdLine[0];
+      
+      // Recombine to produce new commandline
+      exeFullCmdLine := splitCmdLine.DelimitedText;
+
+    finally
+      splitCmdLine.Free();
+    end;
+
+    // Perform substitution, if needed
+    exeFullCmdLine := StringReplace(
+                                    exeFullCmdLine,
+                                    AUTORUN_SUBSTITUTE_DRIVE,
+                                    // Cast to prevent compiler warning
+                                    Char(driveLetter),
+                                    [rfReplaceAll]
+                                   );
+
+    // NOTE: THIS MUST BE UPDATED IF CMDLINE IS TO SUPPORT COMMAND LINE
+    //       PARAMETERS!
+    if not(FileExists(exeOnly)) then
+      begin
+      if (
+          not(isEmergency) and
+          Settings.OptPrePostExeWarn
+         ) then
+        begin
+        SDUMessageDlg(
+                      SDUParamSubstitute(_('Unable to locate %1 executable:'), [AUTORUN_TITLE[autorun]])+SDUCRLF+
+                      SDUCRLF+
+                      exeOnly,
+                      mtWarning
+                     );
+        end;
+      end
+    else
+      begin
+      if (autorun = arPreDismount) then
+        begin
+        // Launch and block until terminated...
+        launchOK := (SDUWinExecAndWait32(exeFullCmdLine, SW_SHOW, ExtractFilePath(exeFullCmdLine)) <> $FFFFFFFF);
+        end
+      else
+        begin
+        // Fire and forget...
+        launchOK := SDUWinExecNoWait32(exeFullCmdLine, SW_RESTORE);
+        end;
+
+      if not(launchOK) then
+        begin
+        if not(isEmergency) then
+          begin
+          SDUMessageDlg(
+                        SDUParamSubstitute(_('Error running %1 executable:'), [AUTORUN_TITLE[autorun]])+SDUCRLF+
+                        SDUCRLF+
+                        exeFullCmdLine,
+                        mtError
+                       );
+          end;
+        end;
+      end;
+    end;
+
+end;
+
+
 procedure TfrmMain.actFreeOTFENewExecute(Sender: TObject);
 begin
   // Do nothing; method still required here in order that the actionItem isn't
@@ -1340,18 +1523,18 @@ end;
 function TfrmMain.HandleCommandLineOpts_Mount(): Integer;
 var
   cmdExitCode:           Integer;
-  volume:                String;
+  volume: VolumeFilenameString;
   ReadOnly:              Boolean;
-  mountAs:               Ansistring;
+  mountAs: DriveLetterString;
   fileOK:                Boolean;
 {$IFDEF FREEOTFE_MAIN}
   useDriveLetter: string;
 {$ENDIF}
-  useKeyfile:            String;
+  useKeyfile: KeyFilenameString;
   useKeyfileIsASCII:     Boolean;
   useKeyfileNewlineType: TSDUNewline;
-  useLESFile:            String;
-  usePassword:           String;
+  useLESFile: FilenameString;
+  usePassword: string;
   useSilent:             Boolean;
   strTemp:               String;
   useOffset:             ULONGLONG;

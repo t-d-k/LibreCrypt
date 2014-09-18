@@ -15,8 +15,10 @@ uses
   Classes, // Required for TShortCut
   Controls,  // Required for TDate
   INIFiles,
+  //sdu
   SDUFilenameEdit_U,
-  SDUMRUList;
+  SDUMRUList,
+  SDUGeneral;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -87,6 +89,9 @@ const
                                   slNone
                                  );
 
+  // Section names which are common
+  SECTION_CONFIRMATION = 'Confirmation';
+
 type
 {$M+}  // Required to get rid of compiler warning "W1055 PUBLISHED caused RTTI ($M+) to be added to type '%s'"
   TSettings = class
@@ -104,6 +109,7 @@ type
     OptSaveSettings: TSettingsSaveLocation;
 
     // General...
+    OptExploreAfterMount: boolean;
     OptAdvancedMountDlg: boolean;
     OptRevertVolTimestamps: boolean;
     OptShowPasswords: boolean;
@@ -111,6 +117,10 @@ type
     OptAllowTabsInPasswords: boolean;
     OptLanguageCode: string;
     OptDragDropFileType: TDragDropFileType;
+    OptDefaultDriveLetter: DriveLetterChar;
+
+    // Prompts and messages
+    OptPromptMountSuccessful: boolean;  // If set, display an info msg after successful mount
 
     // Check for updates config...
     OptUpdateChkFrequency: TUpdateFrequency;
@@ -127,6 +137,12 @@ type
 
     // MRU list...
     OptMRUList: TSDUMRUList;
+
+  // Autorun...
+    OptPostMountExe: string;
+    OptPreDismountExe: string;
+    OptPostDismountExe: string;
+    OptPrePostExeWarn: boolean;
 
     constructor Create(); virtual;
     destructor Destroy(); override;
@@ -166,11 +182,13 @@ uses
   Windows,  // Required to get rid of compiler hint re DeleteFile
   SysUtils,  // Required for ChangeFileExt, DeleteFile
   Registry,
-  SDUi18n,
-  SDUGeneral,
-  SDUDialogs,
   Menus,  // Required for ShortCutToText and TextToShortCut
-  ShlObj;  // Required for CSIDL_PERSONAL
+  ShlObj,  // Required for CSIDL_PERSONAL
+  //sdu
+  SDUi18n,
+
+  SDUDialogs;
+
 
 const
   SETTINGS_V1 = 1;
@@ -181,6 +199,8 @@ const
       DFLT_OPT_SETTINGSVERSION                      = SETTINGS_V2;
     OPT_SAVESETTINGS                             = 'SaveSettings';
       DFLT_OPT_SAVESETTINGS                         = slProfile;
+    OPT_EXPLOREAFTERMOUNT                        = 'ExploreAfterMount';
+      DFLT_OPT_EXPLOREAFTERMOUNT                    = FALSE;
     OPT_ADVANCEDMOUNTDLG                         = 'AdvancedMountDlg';
       DFLT_OPT_ADVANCEDMOUNTDLG                     = FALSE;
     OPT_REVERTVOLTIMESTAMPS                      = 'RevertVolTimestamps';
@@ -195,6 +215,12 @@ const
       DFLT_OPT_ALLOWNEWLINESINPASSWORDS             = TRUE;
     OPT_ALLOWTABSINPASSWORDS                     = 'AllowTabsInPasswords';
       DFLT_OPT_ALLOWTABSINPASSWORDS                 = FALSE;
+    OPT_DEFAULTDRIVELETTER                       = 'DefaultDriveLetter';
+      DFLT_OPT_DEFAULTDRIVELETTER                   = '#';
+
+  // -- Prompts and messages --
+    OPT_PROMPTMOUNTSUCCESSFUL                    = 'OptPromptMountSuccessful';
+      DFLT_OPT_PROMPTMOUNTSUCCESSFUL                = TRUE;
 
   // -- Check for updates section --
   SECTION_CHKUPDATE = 'Updates';
@@ -226,6 +252,16 @@ const
     // (No name for this one)
       DFLT_OPT_MRUMAXITEMS                       = 0;
 
+  // -- Autorun section --
+  SECTION_AUTORUN = 'Autorun';
+    OPT_POSTMOUNTEXE                             = 'PostMountExe';
+      DFLT_OPT_POSTMOUNTEXE                         = '';
+    OPT_PREDISMOUNTEXE                           = 'PreDismountExe';
+      DFLT_OPT_PREDISMOUNTEXE                       = '';
+    OPT_POSTDISMOUNTEXE                          = 'PostDismountExe';
+      DFLT_OPT_POSTDISMOUNTEXE                      = '';
+    OPT_PREPOSTEXEWARN                           = 'PrePostExeWarn';
+      DFLT_OPT_PREPOSTEXEWARN                       = TRUE;
 
 function UpdateFrequencyTitle(updateFrequency: TUpdateFrequency): string;
 begin
@@ -313,9 +349,12 @@ begin
 end;
 
 procedure TSettings._Load(iniFile: TCustomINIFile);
+var
+  useDefaultDriveLetter: DriveLetterString;
 begin
   OptSettingsVersion := iniFile.ReadInteger(SECTION_GENERAL, OPT_SETTINGSVERSION, SETTINGS_V1);
 
+  OptExploreAfterMount       := iniFile.ReadBool(SECTION_GENERAL,   OPT_EXPLOREAFTERMOUNT,      DFLT_OPT_EXPLOREAFTERMOUNT);
   OptAdvancedMountDlg        := iniFile.ReadBool(SECTION_GENERAL,   OPT_ADVANCEDMOUNTDLG,       DFLT_OPT_ADVANCEDMOUNTDLG);
   OptRevertVolTimestamps     := iniFile.ReadBool(SECTION_GENERAL,   OPT_REVERTVOLTIMESTAMPS,    DFLT_OPT_REVERTVOLTIMESTAMPS);
   OptShowPasswords           := iniFile.ReadBool(SECTION_GENERAL,   OPT_SHOWPASSWORDS,    DFLT_OPT_SHOWPASSWORDS);
@@ -323,6 +362,15 @@ begin
   OptAllowTabsInPasswords    := iniFile.ReadBool(SECTION_GENERAL,   OPT_ALLOWTABSINPASSWORDS,    DFLT_OPT_ALLOWTABSINPASSWORDS);
   OptLanguageCode            := iniFile.ReadString(SECTION_GENERAL, OPT_LANGUAGECODE,     DFLT_OPT_LANGUAGECODE);
   OptDragDropFileType        := TDragDropFileType(iniFile.ReadInteger(SECTION_GENERAL, OPT_DRAGDROP, DFLT_OPT_DRAGDROP));
+  useDefaultDriveLetter      := DriveLetterString(iniFile.ReadString(SECTION_GENERAL, OPT_DEFAULTDRIVELETTER,     DFLT_OPT_DEFAULTDRIVELETTER));
+  // #0 written as "#"
+  OptDefaultDriveLetter := useDefaultDriveLetter[1];
+  if (OptDefaultDriveLetter = '#') then
+    begin
+    OptDefaultDriveLetter := #0;
+    end;
+
+  OptPromptMountSuccessful    := iniFile.ReadBool(SECTION_CONFIRMATION, OPT_PROMPTMOUNTSUCCESSFUL,       DFLT_OPT_PROMPTMOUNTSUCCESSFUL);
 
   OptUpdateChkFrequency      := TUpdateFrequency(iniFile.ReadInteger(SECTION_CHKUPDATE, OPT_CHKUPDATE_FREQ,        ord(DFLT_OPT_CHKUPDATE_FREQ)));
   OptUpdateChkLastChecked    := SDUISO8601ToTDate(iniFile.ReadString(SECTION_CHKUPDATE,  OPT_CHKUPDATE_LASTCHECKED, DFLT_OPT_CHKUPDATE_LASTCHECKED));
@@ -337,6 +385,11 @@ begin
 
   OptMRUList.MaxItems := DFLT_OPT_MRUMAXITEMS;
   OptMRUList.Load(iniFile, SECTION_MRULIST);
+
+ OptPostMountExe            := iniFile.ReadString(SECTION_AUTORUN,      OPT_POSTMOUNTEXE,          DFLT_OPT_POSTMOUNTEXE);
+  OptPreDismountExe          := iniFile.ReadString(SECTION_AUTORUN,      OPT_PREDISMOUNTEXE,        DFLT_OPT_PREDISMOUNTEXE);
+  OptPostDismountExe         := iniFile.ReadString(SECTION_AUTORUN,      OPT_POSTDISMOUNTEXE,       DFLT_OPT_POSTDISMOUNTEXE);
+  OptPrePostExeWarn          := iniFile.ReadBool(SECTION_AUTORUN,        OPT_PREPOSTEXEWARN,        DFLT_OPT_PREPOSTEXEWARN);
 
 end;
 
@@ -386,12 +439,14 @@ end;
 function TSettings._Save(iniFile: TCustomINIFile): boolean;
 var
   allOK: boolean;
+  useDefaultDriveLetter: DriveLetterChar;
 begin
   allOK := TRUE;
 
   try
     iniFile.WriteInteger(SECTION_GENERAL,     OPT_SETTINGSVERSION,           SETTINGS_V2);
 
+    iniFile.WriteBool(SECTION_GENERAL,        OPT_EXPLOREAFTERMOUNT,         OptExploreAfterMount);
     iniFile.WriteBool(SECTION_GENERAL,        OPT_ADVANCEDMOUNTDLG,          OptAdvancedMountDlg);
     iniFile.WriteBool(SECTION_GENERAL,        OPT_REVERTVOLTIMESTAMPS,       OptRevertVolTimestamps);
     iniFile.WriteBool(SECTION_GENERAL,        OPT_SHOWPASSWORDS,             OptShowPasswords);
@@ -399,6 +454,15 @@ begin
     iniFile.WriteBool(SECTION_GENERAL,        OPT_ALLOWTABSINPASSWORDS,      OptAllowTabsInPasswords);
     iniFile.WriteString(SECTION_GENERAL,      OPT_LANGUAGECODE,              OptLanguageCode);
     iniFile.WriteInteger(SECTION_GENERAL,     OPT_DRAGDROP,                  ord(OptDragDropFileType));
+    // #0 written as "#"
+    useDefaultDriveLetter := OptDefaultDriveLetter;
+    if (OptDefaultDriveLetter = #0) then
+      begin
+      useDefaultDriveLetter := '#';
+      end;
+    iniFile.WriteString(SECTION_GENERAL,      OPT_DEFAULTDRIVELETTER,        String(useDefaultDriveLetter));
+
+    iniFile.WriteBool(SECTION_CONFIRMATION,    OPT_PROMPTMOUNTSUCCESSFUL,    OptPromptMountSuccessful);
 
     iniFile.WriteInteger(SECTION_CHKUPDATE,   OPT_CHKUPDATE_FREQ,            ord(OptUpdateChkFrequency));
     iniFile.WriteString(SECTION_CHKUPDATE,    OPT_CHKUPDATE_LASTCHECKED,     SDUTDateToISO8601(OptUpdateChkLastChecked));
@@ -412,7 +476,12 @@ begin
     iniFile.WriteBool(SECTION_PKCS11,         OPT_PKCS11AUTODISMOUNT,        OptPKCS11AutoDismount);
 
     OptMRUList.Save(iniFile, SECTION_MRULIST);
-    
+
+       iniFile.WriteString(SECTION_AUTORUN,      OPT_POSTMOUNTEXE,              OptPostMountExe);
+    iniFile.WriteString(SECTION_AUTORUN,      OPT_PREDISMOUNTEXE,            OptPreDismountExe);
+    iniFile.WriteString(SECTION_AUTORUN,      OPT_POSTDISMOUNTEXE,           OptPostDismountExe);
+    iniFile.WriteBool(SECTION_AUTORUN,        OPT_PREPOSTEXEWARN,            OptPrePostExeWarn);
+
   except
     on E:Exception do
       begin

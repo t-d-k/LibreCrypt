@@ -67,7 +67,6 @@ object frmInstallOnUSBDrive: TfrmInstallOnUSBDrive
     Width = 145
     Height = 21
     Style = csDropDownList
-    ItemHeight = 13
     TabOrder = 0
   end
   object ckSetupAutoplay: TCheckBox
@@ -110,9 +109,15 @@ object frmInstallOnUSBDrive: TfrmInstallOnUSBDrive
     Width = 417
     Height = 69
     TabStop = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
     Lines.Strings = (
       'reInstructCopyToUSBDrive')
     ParentColor = True
+    ParentFont = False
     PlainText = True
     ReadOnly = True
     TabOrder = 8
