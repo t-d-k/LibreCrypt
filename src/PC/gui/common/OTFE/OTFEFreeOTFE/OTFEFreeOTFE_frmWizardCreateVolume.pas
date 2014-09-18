@@ -11,17 +11,21 @@ unit OTFEFreeOTFE_frmWizardCreateVolume;
 interface
 
 uses
+// delphi
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls, MouseRNG,
+  // sdu common
   Shredder,
   SDUGeneral,
+  //freeotfe specific  
   OTFEFreeOTFEBase_U,
   OTFEFreeOTFE_VolumeFileAPI,  // Required for TVOLUME_CRITICAL_DATA
   OTFEFreeOTFE_DriverAPI,  // Required for CRITICAL_DATA_LEN
   PasswordRichEdit, Spin64,
   OTFEFreeOTFE_WizardCommon, SDUStdCtrls, OTFEFreeOTFE_fmeSelectPartition,
   OTFEFreeOTFE_PasswordRichEdit, SDUForms, SDUFrames, SDUSpin64Units,
-  OTFEFreeOTFE_frmWizard, OTFEFreeOTFE_InstructionRichEdit, SDUDialogs;
+  OTFEFreeOTFE_frmWizard, OTFEFreeOTFE_InstructionRichEdit, SDUDialogs
+  ;
 
 
 type
@@ -144,68 +148,68 @@ type
     procedure se64ByteOffsetChange(Sender: TObject);
   private
     // Advanced options...
-    FKeyIterations: integer;
-    FSaltLength: integer;  // Length in *bits*
-    FRequestedDriveLetter: ansichar;
-    FCDBFilename: string;
-    FPaddingLength: ULONGLONG;
-    FOverwriteWithChaff: boolean;
+    fkeyIterations: integer;
+    fsaltLength: integer;  // Length in *bits*
+    frequestedDriveLetter: ansichar;
+    fCDBFilename: string;
+    fpaddingLength: ULONGLONG;
+    foverwriteWithChaff: boolean;
 
     FNewVolumeMountedAs: Ansichar;
 
     // These are ordered lists corresponding to the items shown in the combobox
-    hashKernelModeDriverNames: TStringList;
-    hashGUIDs: TStringList;
-    cypherKernelModeDriverNames: TStringList;
-    cypherGUIDs: TStringList;
-    IVGenMethodIDs: TStringList;
+    fHashKernelModeDriverNames: TStringList;
+    fHashGUIDs: TStringList;
+    fCypherKernelModeDriverNames: TStringList;
+    fCypherGUIDs: TStringList;
+    fIVGenMethodIDs: TStringList;
 
-    deviceList: TStringList;
-    deviceTitle: TStringList;
+    fDeviceList: TStringList;
+    fDeviceTitle: TStringList;
 
     // Used for overwriting
-    TempCypherDetails: TFreeOTFECypher_v3;
-    TempCypherUseKeyLength: integer;  // In *bits*
-    TempCypherKey: Ansistring;
-    TempCypherEncBlockNo: int64;
+    ftempCypherDetails: TFreeOTFECypher_v3;
+    ftempCypherUseKeyLength: integer;  // In *bits*
+    ftempCypherKey: Ansistring;
+    ftempCypherEncBlockNo: int64;
 
     fCombinedRandomData: ansistring;
 
-    CanUseCryptlib: boolean;
-    FPKCS11TokensAvailable: boolean;
+    fcanUseCryptlib: boolean;
+    fPKCS11TokensAvailable: boolean;
 
     // When the user selects a cypher, we cache it's keysize for later use.
     // This is set to CYPHER_KEYSIZE_NOT_CACHED_FLAG_KEYSIZE to indicate no keysize is cached
-    fCachedCypherKeysize: integer;
+    fcachedCypherKeysize: integer;
     // When the user selects a cypher, we cache it's blocksize for later use.
     // This is set to CYPHER_BLOCKSIZE_NOT_CACHED_FLAG_BLOCKSIZE to indicate no blocksize is cached
-    fCachedCypherBlocksize: integer;
+    fcachedCypherBlocksize: integer;
     // When the user selects a cypher, we cache it's mode for later use.
-    fCachedCypherMode: TFreeOTFECypherMode;
+    fcachedCypherMode: TFreeOTFECypherMode;
 
 
     // Returns the keysize for the user's selected cypher, as returned by the
     // driver
-    function  SelectedCypherKeySize(): integer;
+    function  selectedCypherKeySize(): integer;
     // Returns the blocksize for the user's selected cypher, as returned by the
     // driver
-    function  SelectedCypherBlockSize(): integer;
+    function  selectedCypherBlockSize(): integer;
     // Returns the cypher mode for the user's selected cypher, as returned by
     // the driver
-    function  SelectedCypherMode(): TFreeOTFECypherMode;
+    function  selectedCypherMode(): TFreeOTFECypherMode;
 
     function  GetRNGSet(): TRNGSet;
 
-    function  GetIsPartition(): boolean;
-    function  GetVolFilename(): Ansistring;
+    function  getIsPartition(): boolean;
+    function  getVolFilename(): Ansistring;
     procedure SetVolFilename(filename: Ansistring);
-    function  GetOffset(): ULONGLONG;
+    function  getOffset(): ULONGLONG;
     // Note: The size returned *excludes* the size of the critical data
-    function  GetSize(): ULONGLONG;
-    function  GetHashDriver(): Ansistring;
-    function  GetHashGUID(): TGUID;
-    function  GetCypherDriver(): Ansistring;
-    function  GetCypherGUID(): TGUID;
+    function  getSize(): ULONGLONG;
+    function  getHashDriver(): Ansistring;
+    function  getHashGUID(): TGUID;
+    function  getCypherDriver(): Ansistring;
+    function  getCypherGUID(): TGUID;
     function  GetSectorIVGenMethod(): TFreeOTFESectorIVGenMethod;
     procedure SetSectorIVGenMethod(sectorIVGenMethod: TFreeOTFESectorIVGenMethod);
     function  GetUsePerVolumeIV(): boolean;
@@ -240,6 +244,7 @@ type
     function  CreateNewVolume(): boolean;
     procedure PostCreate();
     procedure PostMount_Format_using_dll();
+    procedure Update_tempCypherUseKeyLength;
 
   protected
     procedure SetupInstructions(); override;
@@ -250,48 +255,49 @@ type
 
     function  SkipTab(tabSheet: TTabSheet): boolean; override;
 
-    function  RNGRequiredBits(): integer;
+    function  RNG_requiredBits(): integer;
 
     procedure FormWizardStepChanged(Sender: TObject);
+
   public
-    property IsPartition: boolean read GetIsPartition;
-    property VolFilename: Ansistring read GetVolFilename write SetVolFilename;
-    property Offset: ULONGLONG read GetOffset;
+    property isPartition: boolean read GetIsPartition;
+    property volFilename: Ansistring read GetVolFilename write SetVolFilename;
+    property offset: ULONGLONG read GetOffset;
     // Note: The size returned *excludes* the size of the critical data
-    property Size: ULONGLONG read GetSize;
+    property size: ULONGLONG read GetSize;
     // HashDriver - Kernel drivers: HashKernelDeviceName
     //              DLL drivers:    HashLibFilename
-    property HashDriver: Ansistring read GetHashDriver;
-    property HashGUID: TGUID read GetHashGUID;
+    property hashDriver: Ansistring read GetHashDriver;
+    property hashGUID: TGUID read GetHashGUID;
     // CypherDriver - Kernel drivers: CypherKernelDeviceName
     //                DLL drivers:    CypherLibFilename
-    property CypherDriver: Ansistring read GetCypherDriver;
-    property CypherGUID: TGUID read GetCypherGUID;
-    property SectorIVGenMethod: TFreeOTFESectorIVGenMethod read GetSectorIVGenMethod;
-    property UsePerVolumeIV: boolean read GetUsePerVolumeIV;
-    property MasterKeyLength: integer read GetMasterKeyLength;  // In *bits*
-    property RandomData_CDB: Ansistring read GetRandomData_CDB;
-    property RandomData_PaddingKey: Ansistring read GetRandomData_PaddingKey;
-    property Password: Ansistring read GetPassword;
+    property cypherDriver: Ansistring read GetCypherDriver;
+    property cypherGUID: TGUID read GetCypherGUID;
+    property sectorIVGenMethod: TFreeOTFESectorIVGenMethod read GetSectorIVGenMethod;
+    property usePerVolumeIV: boolean read GetUsePerVolumeIV;
+    property masterKeyLength: integer read GetMasterKeyLength;  // In *bits*
+    property randomData_CDB: Ansistring read GetRandomData_CDB;
+    property randomData_PaddingKey: Ansistring read GetRandomData_PaddingKey;
+    property password: Ansistring read GetPassword;
 
-    property KeyIterations: integer read FKeyIterations write FKeyIterations;
-    property SaltLength: integer read FSaltLength write FSaltLength;  // In *bits*
-    property RequestedDriveLetter: ansichar read FRequestedDriveLetter write FRequestedDriveLetter;
-    property KeyFilename: string read FCDBFilename write FCDBFilename;
+    property keyIterations: integer read FKeyIterations write FKeyIterations;
+    property saltLength: integer read FSaltLength write FSaltLength;  // In *bits*
+    property requestedDriveLetter: ansichar read FRequestedDriveLetter write FRequestedDriveLetter;
+    property keyFilename: string read FCDBFilename write FCDBFilename;
     property CDBInVolFile: boolean read GetCDBInVolFile;
-    property PaddingLength: ULONGLONG read FPaddingLength write FPaddingLength;
-    property OverwriteWithChaff: boolean read FOverwriteWithChaff write FOverwriteWithChaff;
+    property paddingLength: ULONGLONG read FPaddingLength write FPaddingLength;
+    property overwriteWithChaff: boolean read FOverwriteWithChaff write FOverwriteWithChaff;
 
-    property AutoMountAfterCreate: boolean read GetAutoMountAfterCreate;
-    property NewVolumeMountedAs: Ansichar read FNewVolumeMountedAs write FNewVolumeMountedAs;
+    property autoMountAfterCreate: boolean read GetAutoMountAfterCreate;
+    property newVolumeMountedAs: Ansichar read fnewVolumeMountedAs write fnewVolumeMountedAs;
 
-    property IsHidden: boolean read GetIsHidden;
+    property isHidden: boolean read GetIsHidden;
 
     procedure fmeSelectPartitionChanged(Sender: TObject);
 
   end;
 
-  procedure Format_drive(drivesToFormat: AnsiString;frm:TForm);
+  procedure Format_drive(drivesToFormat: DriveLetterString;frm:TForm);
 
 implementation
 
@@ -373,6 +379,7 @@ begin
   SDUCenterControl(lblWarningPartition, ccHorizontal);
   SDUCenterControl(lblWarningOffset, ccHorizontal);
 
+  // SDUInitAndZeroBuffer(0, fCombinedRandomData );
   fCombinedRandomData := '';
 
   KeyIterations:= DEFAULT_KEY_ITERATIONS;
@@ -381,7 +388,7 @@ begin
   KeyFilename:= '';
   PaddingLength:= 0;
   FOverwriteWithChaff:= true;  // preserve plausible deniability by defaulting to true
-  TempCypherUseKeyLength := 0;
+  ftempCypherUseKeyLength := 0;
 
   NewVolumeMountedAs := #0;
 
@@ -423,7 +430,7 @@ begin
 
   // tsPartitionSelect
   // Setup and make sure nothing is selected
-  fmeSelectPartition.FreeOTFEObj := FreeOTFEObj;
+  fmeSelectPartition.FreeOTFEObj := fFreeOTFEObj;
   fmeSelectPartition.AllowCDROM := FALSE;
   fmeSelectPartition.OnChange := fmeSelectPartitionChanged;
   fmeSelectPartition.Initialize();
@@ -478,8 +485,8 @@ begin
 
   // tsRNG
   //MSCryptoAPI enabled as default (in dfm)
-  ckRNGcryptlib.Enabled := CanUseCryptlib;
-  ckRNGPKCS11.Enabled :=  PKCS11LibraryReady(FreeOTFEObj.PKCS11Library);
+  ckRNGcryptlib.Enabled := fcanUseCryptlib;
+  ckRNGPKCS11.Enabled :=  PKCS11LibraryReady(fFreeOTFEObj.PKCS11Library);
 
   // tsRNGMouseMovement
   InitMouseRNGData();
@@ -496,18 +503,18 @@ begin
   preUserKey1.WantReturns := TRUE;
   preUserKey1.WordWrap := TRUE;
   preUserKey1.Lines.Clear();
-  preUserKey1.PasswordChar := FreeOTFEObj.PasswordChar;
-  preUserKey1.WantReturns  := FreeOTFEObj.AllowNewlinesInPasswords;
-  preUserKey1.WantTabs     := FreeOTFEObj.AllowTabsInPasswords;
+  preUserKey1.PasswordChar := fFreeOTFEObj.PasswordChar;
+  preUserKey1.WantReturns  := fFreeOTFEObj.AllowNewlinesInPasswords;
+  preUserKey1.WantTabs     := fFreeOTFEObj.AllowTabsInPasswords;
 
   preUserKey2.Plaintext := TRUE;
   // FreeOTFE volumes CAN have newlines in the user's password
   preUserKey2.WantReturns := TRUE;
   preUserKey2.WordWrap := TRUE;
   preUserKey2.Lines.Clear();
-  preUserKey2.PasswordChar := FreeOTFEObj.PasswordChar;
-  preUserKey2.WantReturns  := FreeOTFEObj.AllowNewlinesInPasswords;
-  preUserKey2.WantTabs     := FreeOTFEObj.AllowTabsInPasswords;
+  preUserKey2.PasswordChar := fFreeOTFEObj.PasswordChar;
+  preUserKey2.WantReturns  := fFreeOTFEObj.AllowNewlinesInPasswords;
+  preUserKey2.WantTabs     := fFreeOTFEObj.AllowTabsInPasswords;
 
 
   // Set all tabs to show that they have not yet been completed
@@ -559,7 +566,7 @@ begin
   // DLL doesn't currently support partitions
   if (tabSheet = tsFileOrPartition) then
     begin
-    sheetSkipped := (FreeOTFEObj is TOTFEFreeOTFEDLL);
+    sheetSkipped := (fFreeOTFEObj is TOTFEFreeOTFEDLL);
     end;
 
   // If the user isn't creating a volume within a volume file, skip that tab
@@ -619,6 +626,25 @@ begin
   Result := sheetSkipped;
 end;
 
+procedure TfrmWizardCreateVolume.Update_tempCypherUseKeyLength;
+begin
+  // If overwriting with encrypted data (chaff), find the size of the key required
+  ftempCypherUseKeyLength := 0;
+  if FOverwriteWithChaff then begin
+    fFreeOTFEObj.GetSpecificCypherDetails(CypherDriver, CypherGUID, ftempCypherDetails);
+
+    // Get *real* random data for encryption key
+    if (ftempCypherDetails.KeySizeRequired < 0) then  begin
+      // -ve keysize = arbitary keysize supported - just use 512 bits
+      ftempCypherUseKeyLength := 512;
+    end else begin
+      if (ftempCypherDetails.KeySizeRequired > 0) then  begin
+        // +ve keysize = specific keysize - get sufficient bits
+        ftempCypherUseKeyLength := ftempCypherDetails.KeySizeRequired;
+      end;
+    end;
+  end;
+end;
 
 procedure TfrmWizardCreateVolume.pbAdvancedClick(Sender: TObject);
 var
@@ -645,22 +671,10 @@ begin
       FOverwriteWithChaff := dlg.OverwriteWithChaff;
 
       // If overwriting with encrypted data (chaff), find the size of the key required , and ensure can get that random data
-      TempCypherUseKeyLength := 0;
+      ftempCypherUseKeyLength := 0;
       if FOverwriteWithChaff then
         begin
-        FreeOTFEObj.GetSpecificCypherDetails(CypherDriver, CypherGUID, TempCypherDetails);
-
-        // Get *real* random data for encryption key
-        if (TempCypherDetails.KeySizeRequired < 0) then
-          begin
-          // -ve keysize = arbitary keysize supported - just use 512 bits
-          TempCypherUseKeyLength := 512;
-          end
-        else if (TempCypherDetails.KeySizeRequired > 0) then
-          begin
-          // +ve keysize = specific keysize - get sufficient bits
-          TempCypherUseKeyLength := TempCypherDetails.KeySizeRequired;
-          end;
+        Update_tempCypherUseKeyLength;
 
         // If MouseRNG is being used, check that enough random data is availabe...
         if not(CheckTabComplete(tsRNGMouseMovement)) then
@@ -756,7 +770,7 @@ begin
   // in FormShow(...) (i.e. the control is still visible)
   ckAutoMountAfterCreate.Visible := TRUE;
   ckAutoMountAfterCreate.Visible := FALSE;
-  ckAutoMountAfterCreate.Visible := not(FreeOTFEObj is TOTFEFreeOTFEDLL);
+  ckAutoMountAfterCreate.Visible := not(fFreeOTFEObj is TOTFEFreeOTFEDLL);
 
 end;
 
@@ -967,11 +981,11 @@ begin
                                                     _('Random bits generated: %1/%2'),
                                                     [
                                                      randomBitsGenerated,
-                                                     RNGRequiredBits()
+                                                     RNG_requiredBits()
                                                     ]
                                                    );
 
-      allOK := (randomBitsGenerated >= RNGRequiredBits());
+      allOK := (randomBitsGenerated >= RNG_requiredBits());
       MouseRNG.Enabled := not(allOK);
       if MouseRNG.Enabled then
         begin
@@ -1102,24 +1116,21 @@ begin
 end;
 
 function TfrmWizardCreateVolume.GetVolFilename(): Ansistring;
-var
-  retVal: Ansistring;
 begin
-  retVal := '';
+  result := '';
 
   if (IsPartition) then
     begin
-    retVal := fmeSelectPartition.SelectedDevice;
+    result := fmeSelectPartition.SelectedDevice;
     end
   else
     begin
     // Note: With the label used, the Caption is the *full* filename, even
     //       though the it's display is the shortened version
     //       (e.g. "C:\..\filename.vol")
-    retVal:= lblFilename.Caption;
+    result:= lblFilename.Caption;
     end;
 
-  Result := retVal;
 end;
 
 procedure TfrmWizardCreateVolume.SetVolFilename(filename: Ansistring);
@@ -1173,7 +1184,7 @@ begin
 
   if (cbHash.ItemIndex >= 0) then
     begin
-    retval := hashKernelModeDriverNames[cbHash.ItemIndex];
+    retval := fHashKernelModeDriverNames[cbHash.ItemIndex];
     end;
 
   Result := retval;
@@ -1188,7 +1199,7 @@ begin
 
   if (cbHash.ItemIndex >= 0) then
     begin
-    strGUID := hashGUIDs[cbHash.ItemIndex];
+    strGUID := fHashGUIDs[cbHash.ItemIndex];
     end;
 
   Result := StringToGUID(strGUID);
@@ -1202,7 +1213,7 @@ begin
 
   if (cbCypher.ItemIndex >= 0) then
     begin
-    retval := cypherKernelModeDriverNames[cbCypher.ItemIndex];
+    retval := fCypherKernelModeDriverNames[cbCypher.ItemIndex];
     end;
 
   Result := retval;
@@ -1217,7 +1228,7 @@ begin
 
   if (cbCypher.ItemIndex >= 0) then
     begin
-    strGUID := cypherGUIDs[cbCypher.ItemIndex];
+    strGUID := fCypherGUIDs[cbCypher.ItemIndex];
     end;
 
   Result := StringToGUID(strGUID);
@@ -1264,16 +1275,28 @@ end;
 
 
 function TfrmWizardCreateVolume.GetRandomData_CDB(): Ansistring;
+var
+len: Integer;
 begin
+{ TODO 2 -otdk -crefactor : use randpool object that asserts if data isnt available - for now check not empty }
   // Use the first CRITICAL_DATA_LENGTH bits as the CDB random data
+  len  :=(CRITICAL_DATA_LENGTH div 8) ;
+  assert(1+len <= length(fCombinedRandomData),'not enough rand data available');
   Result := Copy(fCombinedRandomData, 1, (CRITICAL_DATA_LENGTH div 8));
 end;
 
 function TfrmWizardCreateVolume.GetRandomData_PaddingKey(): Ansistring;
+var
+i,len: Integer;
 begin
   // Use the last FPadWithEncryptedDataKeyLen bits as the CDB random data,
   // after the CDB random data
-  Result := Copy(fCombinedRandomData, (CRITICAL_DATA_LENGTH div 8) + 1, (TempCypherUseKeyLength div 8));
+  i:=  (CRITICAL_DATA_LENGTH div 8) + 1  ;
+  len := (ftempCypherUseKeyLength div 8)   ;
+  { TODO 2 -otdk -crefactor : use randpool object that asserts if data isnt available - for now check not empty }
+  assert(i+len <= length(fCombinedRandomData),'not enough rand data available');
+  Result := Copy(fCombinedRandomData, i, len);
+
 end;
 
 function TfrmWizardCreateVolume.GetPassword(): Ansistring;
@@ -1328,7 +1351,7 @@ procedure TfrmWizardCreateVolume.MouseRNGByteGenerated(Sender: TObject;
   random: Byte);
 begin
   // Note: This is correct; if it's *less than* CRITICAL_DATA_LEN, then store it
-  if (CountMouseRNGData() < RNGRequiredBits()) then
+  if (CountMouseRNGData() < RNG_requiredBits()) then
     begin
     AddToMouseRNGData(random);
     end;
@@ -1346,7 +1369,7 @@ var
 begin
   tmpDisplayTitles:= TStringList.Create();
   try
-    if (FreeOTFEObj.GetHashList(tmpDisplayTitles, hashKernelModeDriverNames, hashGUIDs)) then
+    if (fFreeOTFEObj.GetHashList(tmpDisplayTitles, fHashKernelModeDriverNames, fHashGUIDs)) then
       begin
       // Strip out all hashes which have:
       //   length <= 0 or blocksize <= 0
@@ -1355,7 +1378,7 @@ begin
       // requires that the hash used has a defined length of greater than zero
       for i:=(tmpDisplayTitles.count-1) downto 0 do
         begin
-        if not(FreeOTFEObj.GetSpecificHashDetails(hashKernelModeDriverNames[i], StringToGUID(hashGUIDs[i]), hashDetails)) then
+        if not(fFreeOTFEObj.GetSpecificHashDetails(fHashKernelModeDriverNames[i], StringToGUID(fHashGUIDs[i]), hashDetails)) then
           begin
           // Just warn user, and ignore...
           SDUMessageDlg(SDUParamSubstitute(_('Unable to obtain hash details for %1'), [tmpDisplayTitles[i]]), mtWarning);
@@ -1372,8 +1395,8 @@ begin
         if not(hashAcceptable) then
           begin
           tmpDisplayTitles.Delete(i);
-          hashKernelModeDriverNames.Delete(i);
-          hashGUIDs.Delete(i);
+          fHashKernelModeDriverNames.Delete(i);
+          fHashGUIDs.Delete(i);
           end;
 
         end;
@@ -1416,7 +1439,7 @@ var
 begin
   tmpDisplayTitles:= TStringList.Create();
   try
-    if (FreeOTFEObj.GetCypherList(tmpDisplayTitles, cypherKernelModeDriverNames, cypherGUIDs)) then
+    if (fFreeOTFEObj.GetCypherList(tmpDisplayTitles, fCypherKernelModeDriverNames, fCypherGUIDs)) then
       begin
       cbCypher.Items.Clear();
       cbCypher.Items.AddStrings(tmpDisplayTitles);
@@ -1478,14 +1501,14 @@ end;
 
 procedure TfrmWizardCreateVolume.FormCreate(Sender: TObject);
 begin
-  hashKernelModeDriverNames:= TStringList.Create();
-  hashGUIDs:= TStringList.Create();
-  cypherKernelModeDriverNames:= TStringList.Create();
-  cypherGUIDs:= TStringList.Create();
-  IVGenMethodIDs:= TStringList.Create();
+  fHashKernelModeDriverNames:= TStringList.Create();
+  fHashGUIDs:= TStringList.Create();
+  fCypherKernelModeDriverNames:= TStringList.Create();
+  fCypherGUIDs:= TStringList.Create();
+  fIVGenMethodIDs:= TStringList.Create();
 
-  deviceList:= TStringList.Create();
-  deviceTitle:= TStringList.Create();
+  fDeviceList:= TStringList.Create();
+  fDeviceTitle:= TStringList.Create();
 
   fCachedCypherKeysize := CYPHER_KEYSIZE_NOT_CACHED_FLAG_KEYSIZE;
   fCachedCypherBlocksize := CYPHER_BLOCKSIZE_NOT_CACHED_FLAG_BLOCKSIZE;
@@ -1493,7 +1516,7 @@ begin
 
   // Start cryptlib, if possible, as early as we can to allow it as much time
   // as possible to poll entropy
-  CanUseCryptlib := cryptlibLoad();
+  fcanUseCryptlib := cryptlibLoad();
 
   OnWizardStepChanged := FormWizardStepChanged;
 
@@ -1506,27 +1529,26 @@ begin
 {$IFDEF FREEOTFE_DEBUG}
 showmessage('destroying wizard');
 {$ENDIF}
-  hashKernelModeDriverNames.Free();
-  hashGUIDs.Free();
-  cypherKernelModeDriverNames.Free();
-  cypherGUIDs.Free();
-  IVGenMethodIDs.Free();
+  fHashKernelModeDriverNames.Free();
+  fHashGUIDs.Free();
+  fCypherKernelModeDriverNames.Free();
+  fCypherGUIDs.Free();
+  fIVGenMethodIDs.Free();
 
-  deviceList.Free();
-  deviceTitle.Free();
+  fDeviceList.Free();
+  fDeviceTitle.Free();
 
   // Shutdown cryptlib, if used
-  if CanUseCryptlib then
+  if fcanUseCryptlib then
     begin
     cryptlibUnload();
-    CanUseCryptlib := FALSE;
+    fcanUseCryptlib := FALSE;
     end;
 
   PurgeMouseRNGData();
 
   //overwrite any seed asap
-  for i:=1 to length(fCombinedRandomData) do
-    begin
+  for i:=1 to length(fCombinedRandomData) do begin
     fCombinedRandomData[i] := ansichar(i);
     end;
 
@@ -1780,11 +1802,12 @@ begin
       exit;
     end;
   end;
-
+  //ensure chaff data is included
+  Update_tempCypherUseKeyLength;
   allOK := GenerateRandomData(
                               GetRNGSet(),
-                              (RNGRequiredBits() div 8),
-                              FreeOTFEObj.PKCS11Library,
+                              (RNG_requiredBits() div 8),
+                              fFreeOTFEObj.PKCS11Library,
                               PKCS11TokenListSelected(cbToken),
                               lblGPGFilename.Caption,
                               fCombinedRandomData
@@ -1867,7 +1890,13 @@ begin
       begin
         // Overwrite volume with SPRNG data, if required
         // this also overwrites cdb and padding, cdb is created below
-        allOK := OverwriteVolWithChaff();
+        { if hidden also overwrite  from Offset? - this is arguably overkill bc should already have been overwritten,
+          but perhaps if didnt do on outer vol then will stop attacker knowing size of data
+          also less info leaked if attacker has b4/after snapshots
+          for now not overwriting for performance
+         }
+         { TODO 1 -otdk -cenhance : instead default FOverwriteWithChaff to false for hidden vols so user can still change}
+         if Offset = 0 then allOK := OverwriteVolWithChaff();
       end
     end;  // if (allOK) then
 
@@ -1888,7 +1917,7 @@ begin
   if (allOK) then
     begin
 {$IFDEF FREEOTFE_DEBUG}
-FreeOTFEObj.DebugMsg('Populating critical data structure...');
+fFreeOTFEObj.DebugMsg('Populating critical data structure...');
 {$ENDIF}
     // Create the volume file header
     // Note: No need to populate CDBMetaData.MACAlgorithm or
@@ -1902,10 +1931,10 @@ FreeOTFEObj.DebugMsg('Populating critical data structure...');
     CDBMetaData.CypherDriver := CypherDriver;
     CDBMetaData.CypherGUID   := CypherGUID;
 {$IFDEF FREEOTFE_DEBUG}
-FreeOTFEObj.DebugMsg('Using hash driver: '+CDBMetaData.HashDriver);
-FreeOTFEObj.DebugMsg('Using hash: '+GUIDToString(CDBMetaData.HashGUID));
-FreeOTFEObj.DebugMsg('Using cypher driver: '+CDBMetaData.CypherDriver);
-FreeOTFEObj.DebugMsg('Using cypher: '+GUIDToString(CDBMetaData.CypherGUID));
+fFreeOTFEObj.DebugMsg('Using hash driver: '+CDBMetaData.HashDriver);
+fFreeOTFEObj.DebugMsg('Using hash: '+GUIDToString(CDBMetaData.HashGUID));
+fFreeOTFEObj.DebugMsg('Using cypher driver: '+CDBMetaData.CypherDriver);
+fFreeOTFEObj.DebugMsg('Using cypher: '+GUIDToString(CDBMetaData.CypherGUID));
 {$ENDIF}
 
 
@@ -1914,21 +1943,24 @@ FreeOTFEObj.DebugMsg('Using cypher: '+GUIDToString(CDBMetaData.CypherGUID));
 
     volumeDetails.VolumeFlags := 0;
 {$IFDEF FREEOTFE_DEBUG}
-FreeOTFEObj.DebugMsg('Volume flags: '+inttostr(volumeDetails.VolumeFlags)+' bits');
+fFreeOTFEObj.DebugMsg('Volume flags: '+inttostr(volumeDetails.VolumeFlags)+' bits');
 {$ENDIF}
 
     volumeDetails.SectorIVGenMethod := SectorIVGenMethod; 
 
+    { TODO 2 -otdk -csecurity : this copies data - but orig data not deleted so may be reused }
     randomPool:= RandomData_CDB;
 
     volumeDetails.MasterKeyLength:= MasterKeyLength;
     // Grab 'n' bytes from the random pool to use as the master key
     volumeDetails.MasterKey := Copy(randomPool, 1, (volumeDetails.MasterKeyLength div 8));
+
+    // SDUDeleteFromStart(randomPool, volumeDetails.MasterKeyLength div 8);
     Delete(randomPool, 1, (volumeDetails.MasterKeyLength div 8));
 {$IFDEF FREEOTFE_DEBUG}
-FreeOTFEObj.DebugMsg('Master key length: '+inttostr(volumeDetails.MasterKeyLength)+' bits');
-FreeOTFEObj.DebugMsg('Master key follows:');
-FreeOTFEObj.DebugMsgBinary(volumeDetails.MasterKey);
+fFreeOTFEObj.DebugMsg('Master key length: '+inttostr(volumeDetails.MasterKeyLength)+' bits');
+fFreeOTFEObj.DebugMsg('Master key follows:');
+fFreeOTFEObj.DebugMsgBinary(volumeDetails.MasterKey);
 {$ENDIF}
 
     // Grab 'n' bytes from the random pool to use as the volume IV
@@ -1942,11 +1974,13 @@ FreeOTFEObj.DebugMsgBinary(volumeDetails.MasterKey);
         end;
       end;
     volumeDetails.VolumeIV := Copy(randomPool, 1, (volumeDetails.VolumeIVLength div 8));
+     // SDUDeleteFromStart(randomPool,volumeDetails.VolumeIVLength div 8 );
+
     Delete(randomPool, 1, (volumeDetails.VolumeIVLength div 8));
 {$IFDEF FREEOTFE_DEBUG}
-FreeOTFEObj.DebugMsg('Volume IV length: '+inttostr(volumeDetails.VolumeIVLength)+' bits');
-FreeOTFEObj.DebugMsg('Volume IV follows:');
-FreeOTFEObj.DebugMsgBinary(volumeDetails.VolumeIV);
+fFreeOTFEObj.DebugMsg('Volume IV length: '+inttostr(volumeDetails.VolumeIVLength)+' bits');
+fFreeOTFEObj.DebugMsg('Volume IV follows:');
+fFreeOTFEObj.DebugMsgBinary(volumeDetails.VolumeIV);
 {$ENDIF}
 
 
@@ -1954,22 +1988,24 @@ FreeOTFEObj.DebugMsgBinary(volumeDetails.VolumeIV);
 
     // Grab 'n' bytes from the random pool to use as the salt
     saltBytes := Copy(randomPool, 1, (SaltLength div 8));
+    // SDUDeleteFromStart(randomPool, (SaltLength div 8));
+{ TODO 1 -otdk -crefactor : have randpool object }
     Delete(randomPool, 1, (SaltLength div 8));
 
 {$IFDEF FREEOTFE_DEBUG}
-FreeOTFEObj.DebugMsg('About to write the critical data...');
-FreeOTFEObj.DebugMsg('Using password: '+Password);
-FreeOTFEObj.DebugMsg('Using salt... ');
-FreeOTFEObj.DebugMsg('-- begin salt --');
-FreeOTFEObj.DebugMsgBinary(saltBytes);
-FreeOTFEObj.DebugMsg('-- end salt --');
+fFreeOTFEObj.DebugMsg('About to write the critical data...');
+fFreeOTFEObj.DebugMsg('Using password: '+Password);
+fFreeOTFEObj.DebugMsg('Using salt... ');
+fFreeOTFEObj.DebugMsg('-- begin salt --');
+fFreeOTFEObj.DebugMsgBinary(saltBytes);
+fFreeOTFEObj.DebugMsg('-- end salt --');
 {$ENDIF}
 
     // Determine filename and offset within file storing CDB
     GetCDBFileAndOffset(cdbFile, cdbOffset);
 
     // Write the header to the file, starting from the specified offset
-    if not(FreeOTFEObj.WriteVolumeCriticalData(
+    if not(fFreeOTFEObj.WriteVolumeCriticalData(
                                    cdbFile,
                                    cdbOffset,
                                    Password,
@@ -2002,7 +2038,7 @@ begin
     cdbFile := KeyFilename;
     cdbOffset := 0;
 {$IFDEF FREEOTFE_DEBUG}
-FreeOTFEObj.DebugMsg('CDB stored in separate keyfile: '+cdbFile);
+fFreeOTFEObj.DebugMsg('CDB stored in separate keyfile: '+cdbFile);
 {$ENDIF}
     end;
 
@@ -2035,7 +2071,7 @@ begin
         end;
 
       MountedDrives := '';
-      if FreeOTFEObj.MountFreeOTFE(
+      if fFreeOTFEObj.MountFreeOTFE(
                             tmpVolumeFiles,
                             Password,
                             cdbFile,
@@ -2054,7 +2090,7 @@ begin
                             MountedDrives
                           ) then
         begin
-        FreeOTFEObj.CountMountedResults(
+        fFreeOTFEObj.CountMountedResults(
                                         MountedDrives,
                                         cntMountOK,
                                         cntMountFailed
@@ -2073,7 +2109,7 @@ begin
     if mountedOK then
       begin
       { TODO 2 -otdk -cinvestigate : why only DLL - should always format after creation, even if use windows dlg }
-      if (FreeOTFEObj is TOTFEFreeOTFEDLL) then
+      if (fFreeOTFEObj is TOTFEFreeOTFEDLL) then
         begin
         PostMount_Format_using_dll();
         end else begin
@@ -2097,16 +2133,16 @@ var
   PartitionImage: TOTFEFreeOTFEDLL_PartitionImage;
   Filesystem: TSDFilesystem_FAT;
 begin
-  if (FreeOTFEObj is TOTFEFreeOTFEDLL) then
+  if (fFreeOTFEObj is TOTFEFreeOTFEDLL) then
     begin
     PartitionImage := TOTFEFreeOTFEDLL_PartitionImage.Create();
-    PartitionImage.FreeOTFEObj := TOTFEFreeOTFEDLL(FreeOTFEObj);
+    PartitionImage.FreeOTFEObj := TOTFEFreeOTFEDLL(fFreeOTFEObj);
     PartitionImage.MountedAs := NewVolumeMountedAs;
    // end else begin
 //   //  TODO test this   - could reformat wrong drive! -for now use format_drive for non dll volumes
 //
 //    PartitionImage := TSDPartitionImage_File.Create();
-////    PartitionImage.FreeOTFEObj := FreeOTFEObj;
+////    PartitionImage.fFreeOTFEObj := fFreeOTFEObj;
 //      (PartitionImage as TSDPartitionImage_File).Filename := VolFilename;
 //
 //    end;
@@ -2168,7 +2204,7 @@ begin
     retval := fCachedCypherKeysize;
     end
   else
-    if not(FreeOTFEObj.GetSpecificCypherDetails(
+    if not(fFreeOTFEObj.GetSpecificCypherDetails(
                                                 CypherDriver,
                                                 CypherGUID,
                                                 cypherDetails
@@ -2204,7 +2240,7 @@ begin
     retval := fCachedCypherBlocksize;
     end
   else
-    if not(FreeOTFEObj.GetSpecificCypherDetails(
+    if not(fFreeOTFEObj.GetSpecificCypherDetails(
                                                 CypherDriver,
                                                 CypherGUID,
                                                 cypherDetails
@@ -2239,7 +2275,7 @@ begin
     retval := fCachedCypherMode;
     end
   else
-    if not(FreeOTFEObj.GetSpecificCypherDetails(
+    if not(fFreeOTFEObj.GetSpecificCypherDetails(
                                                 CypherDriver,
                                                 CypherGUID,
                                                 cypherDetails
@@ -2266,7 +2302,7 @@ var
 begin
   deviceName := GetHashDriver();
   GUID := GetHashGUID();
-  FreeOTFEObj.ShowHashDetailsDlg(deviceName, GUID);
+  fFreeOTFEObj.ShowHashDetailsDlg(deviceName, GUID);
 
 end;
 
@@ -2278,7 +2314,7 @@ var
 begin
   deviceName := GetCypherDriver();
   GUID := GetCypherGUID();
-  FreeOTFEObj.ShowCypherDetailsDlg(deviceName, GUID);
+  fFreeOTFEObj.ShowCypherDetailsDlg(deviceName, GUID);
 
 end;
 
@@ -2353,7 +2389,7 @@ end;
 procedure TfrmWizardCreateVolume.PopulatePKCS11Tokens();
 begin
   FPKCS11TokensAvailable := (PKCS11PopulateTokenList(
-                                                     FreeOTFEObj.PKCS11Library,
+                                                     fFreeOTFEObj.PKCS11Library,
                                                      cbToken
                                                     ) > 0);
 end;
@@ -2402,9 +2438,9 @@ begin
                      'For most users, it is recommended that you use a file; encrypted partitions or physical disks may give greater obscurity or speed.');
 
   reInstructFilename.Text :=
-                   _('Please specify the filename and location of the new DoxBox, by clicking the browse button.'+SDUCRLF+
+                   _('Please specify the filename of the new DoxBox, by clicking the browse button.'+SDUCRLF+
                      SDUCRLF+
-                     'If you wish to create a "hidden" DoxBox within an existing DoxBox, please specify your existing DoxBox file to be used.');
+                     'If you wish to create a "hidden" DoxBox, please specify your existing DoxBox file to be used.');
 
   reInstructPartitionWarning.Text :=
                    _('1) Creating encrypted partitions is POTENTIALLY DESTRUCTIVE.'+SDUCRLF+
@@ -2457,7 +2493,7 @@ begin
                      SDUCRLF+
                      '1) Password salting'+SDUCRLF+
                      '2) The new DoxBox''s master key'+SDUCRLF+
-                     '3) Random padding data'+SDUCRLF+
+                     '3) To seed random ''chaff'' data'+SDUCRLF+
                      SDUCRLF+
                      'In order to generate this data, please select which random number generators you wish to use from the options below.');
 
@@ -2490,6 +2526,10 @@ begin
 
 end;
 
+{overwrites volume with 'chaff' from 'Offset' -
+uses seleced cypher and options as for enxn
+}
+
 function TfrmWizardCreateVolume.OverwriteVolWithChaff(): boolean;
 var
   shredder: TShredder;
@@ -2520,17 +2560,20 @@ begin
   if FOverwriteWithChaff then
     begin
     // Initilize zeroed IV for encryption
-    TempCypherEncBlockNo := 0;
+    ftempCypherEncBlockNo := 0;
 
     // Get *real* random data for encryption key
-    TempCypherKey := RandomData_PaddingKey;
+   ftempCypherKey := RandomData_PaddingKey;
 
     shredder:= TShredder.Create(nil);
     try
       shredder.FileDirUseInt := TRUE;
       shredder.IntMethod := smPseudorandom;
       shredder.IntPasses := 1;
-      shredder.IntSegmentOffset := 0;     // cdb is written after so can overwrite
+      shredder.IntSegmentOffset := GetOffset;
+      // cdb is written after so can overwrite. if hidden dont overwrite main data
+      // will be 0 for non hidden vols
+
 //      shredder.IntSegmentLength := todo; ignored as quickshred = false
 
      // if PadWithEncryptedData then
@@ -2576,9 +2619,10 @@ begin
     end;
 
   end;  // if (allOK) then
+   // SDUInitAndZeroBuffer(0,ftempCypherKey);
 
-  TempCypherKey := '';
-  TempCypherEncBlockNo := 0;
+  ftempCypherKey := '';
+  ftempCypherEncBlockNo := 0;
 
   Result:= allOK;
 end;
@@ -2605,13 +2649,13 @@ begin
   // plus additional random data to pad out to the nearest multiple of the
   // cypher's blocksize bits
   // Cater for if the blocksize was -ve or zero
-  if (TempCypherDetails.BlockSize < 1) then
+  if (ftempCypherDetails.BlockSize < 1) then
     begin
     blocksizeBytes := 1;
     end
   else
     begin
-    blocksizeBytes := (TempCypherDetails.BlockSize div 8);
+    blocksizeBytes := (ftempCypherDetails.BlockSize div 8);
     end;
   tempArraySize := bytesRequired + (blocksizeBytes - (bytesRequired mod blocksizeBytes));
 
@@ -2623,16 +2667,16 @@ begin
     end;
 
 
-  inc(TempCypherEncBlockNo);
+  inc(ftempCypherEncBlockNo);
 
   // Adjust the IV so that this block of encrypted pseudorandom data should be
   // reasonably unique
   IV := '';
-  if (TempCypherDetails.BlockSize > 0) then
+  if (ftempCypherDetails.BlockSize > 0) then
     begin
-    IV := StringOfChar(AnsiChar(#0), (TempCypherDetails.BlockSize div 8));
+    IV := StringOfChar(AnsiChar(#0), (ftempCypherDetails.BlockSize div 8));
 
-    localIV := TempCypherEncBlockNo;
+    localIV := ftempCypherEncBlockNo;
 
     for i:=1 to min(sizeof(localIV), length(IV)) do
       begin
@@ -2644,15 +2688,15 @@ begin
 
   // Adjust the sectorID so that this block of encrypted pseudorandom data
   // should be reasonably unique
-  sectorID.QuadPart := TempCypherEncBlockNo;
+  sectorID.QuadPart := ftempCypherEncBlockNo;
 
   // Encrypt the pseudorandom data generated
-  if not(FreeOTFEObj.EncryptSectorData(
+  if not(fFreeOTFEObj.EncryptSectorData(
                                   CypherDriver,
                                   CypherGUID,
                                   sectorID,
                                   FREEOTFE_v1_DUMMY_SECTOR_SIZE,
-                                  TempCypherKey,
+                                  ftempCypherKey,
                                   IV,
                                   plaintext,
                                   cyphertext
@@ -2661,7 +2705,7 @@ begin
     SDUMessageDlg(
                _('Error: unable to encrypt pseudorandom data before using for overwrite buffer')+SDUCRLF+
                SDUCRLF+
-               SDUParamSubstitute(_('Error #: %1'), [FreeOTFEObj.LastErrorCode]),
+               SDUParamSubstitute(_('Error #: %1'), [fFreeOTFEObj.LastErrorCode]),
                mtError
               );
 
@@ -2680,18 +2724,20 @@ begin
 
 end;
 
-function TfrmWizardCreateVolume.RNGRequiredBits(): integer;
+function TfrmWizardCreateVolume.RNG_requiredBits(): integer;
 begin
-  Result := (CRITICAL_DATA_LENGTH + TempCypherUseKeyLength);
+  Result := CRITICAL_DATA_LENGTH + ftempCypherUseKeyLength;
+  //also same cypher used for chaff
+ if foverwriteWithChaff then Result :=  Result + ftempCypherUseKeyLength;
 end;
 
 
-procedure Format_drive(drivesToFormat: AnsiString;frm:TForm);
+procedure Format_drive(drivesToFormat: DriveLetterString;frm:TForm);
 resourcestring
   FORMAT_CAPTION = 'Format';
 var
   i:         Integer;
-  currDrive: AnsiChar;
+  currDrive: DriveLetterChar;
   driveNum:  Word;
 begin
 

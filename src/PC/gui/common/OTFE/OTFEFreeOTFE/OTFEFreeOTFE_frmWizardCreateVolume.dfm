@@ -1,26 +1,24 @@
 inherited frmWizardCreateVolume: TfrmWizardCreateVolume
   Left = 388
   Top = 258
-  Caption = 'DoxBox Volume Creation Wizard'
+  Caption = 'New DoxBox Wizard'
   Font.Name = 'MS Sans Serif'
   Position = poScreenCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  ExplicitWidth = 613
-  ExplicitHeight = 438
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlRight: TPanel
     inherited pcWizard: TPageControl
-      ActivePage = tsRNGMouseMovement
+      ActivePage = tsFilename
       object tsWelcome: TTabSheet
         Caption = 'Welcome'
         object lblWelcomeBanner: TLabel
-          Left = 36
-          Top = 52
-          Width = 395
+          Left = 126
+          Top = 44
+          Width = 296
           Height = 20
-          Caption = 'Welcome to the DoxBox Volume Creation Wizard.'
+          Caption = 'Welcome to the New DoxBox Wizard.'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -16
@@ -29,17 +27,17 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           ParentFont = False
         end
         object lblWelcomeClickNext: TLabel
-          Left = 164
-          Top = 216
+          Left = 172
+          Top = 272
           Width = 160
           Height = 13
           Caption = 'Please click "Next >" to continue.'
         end
         object reInstructWelcome: TOTFEFreeOTFE_InstructionRichEdit
-          Left = 77
-          Top = 96
-          Width = 333
-          Height = 113
+          Left = 21
+          Top = 70
+          Width = 556
+          Height = 187
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -313,7 +311,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           end
           inherited ilErrorWarning: TImageList
             Bitmap = {
-              494C010103000400140010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400300010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000

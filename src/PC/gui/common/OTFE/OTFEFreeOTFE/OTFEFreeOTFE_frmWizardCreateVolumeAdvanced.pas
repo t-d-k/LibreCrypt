@@ -372,6 +372,7 @@ end;
 procedure TfrmWizardCreateVolumeAdvanced.EnableDisableControls();
 begin
   SDUEnableControl(gbKeyfile, rbCDBInKeyfile.checked);
+  { TODO 1 -otdk -crefactor : disable chaff if hidden - not used }
 end;
 
 END.

@@ -27,6 +27,10 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
     object tsKeyIterations: TTabSheet
       Caption = 'Key Iterations'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label22: TLabel
         Left = 80
         Top = 192
@@ -61,6 +65,10 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
     end
     object tsSalt: TTabSheet
       Caption = 'Salt'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label15: TLabel
         Left = 110
         Top = 192
@@ -105,6 +113,10 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
     object tsDriveLetter: TTabSheet
       Caption = 'Drive Letter'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label1: TLabel
         Left = 87
         Top = 192
@@ -140,6 +152,10 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
     object tsCDBLocation: TTabSheet
       Caption = 'CDB Location'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object rbCDBInVolFile: TRadioButton
         Left = 14
         Top = 212
@@ -203,6 +219,10 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
     object tsPadding: TTabSheet
       Caption = 'Padding'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label2: TLabel
         Left = 328
         Top = 296
@@ -244,6 +264,10 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
     object tsChaff: TTabSheet
       Caption = 'Chaff'
       ImageIndex = 5
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label4: TLabel
         Left = 3
         Top = 254
@@ -254,7 +278,7 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
       object Label5: TLabel
         Left = 0
         Top = 0
-        Width = 409
+        Width = 396
         Height = 91
         Align = alTop
         Caption = 
@@ -267,7 +291,6 @@ object frmWizardCreateVolumeAdvanced: TfrmWizardCreateVolumeAdvanced
           'hidden box has been added and the amount of data stored in your ' +
           'box, but allow the box to be created faster.'
         WordWrap = True
-        ExplicitWidth = 396
       end
       object rbDataEncrypted: TRadioButton
         Left = 192
