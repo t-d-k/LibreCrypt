@@ -174,15 +174,14 @@ inherited frmPropertiesDialog_Volume: TfrmPropertiesDialog_Volume
         Zoom.Allow = False
         TabOrder = 10
         object Series1: TPieSeries
-          Marks.ArrowLength = 8
           Marks.Callout.Brush.Color = clBlack
-          Marks.Callout.Length = 8
           Marks.Visible = False
-          SeriesColor = clRed
           ShowInLegend = False
+          Gradient.Direction = gdRadial
           OtherSlice.Legend.Visible = False
           OtherSlice.Text = 'Other'
           PieValues.Name = 'PieValues'
+          PieValues.Order = loNone
           RotationAngle = 180
         end
       end

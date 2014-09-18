@@ -5,6 +5,7 @@ inherited frmFreeOTFEExplorerMain: TfrmFreeOTFEExplorerMain
   ClientHeight = 514
   ClientWidth = 792
   OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
   OnResize = FormResize
   ExplicitWidth = 808
   ExplicitHeight = 572
@@ -251,6 +252,16 @@ inherited frmFreeOTFEExplorerMain: TfrmFreeOTFEExplorerMain
       Top = 0
       Action = actItemProperties
     end
+    object tbbMapNetworkDrive: TToolButton
+      Left = 353
+      Top = 0
+      Action = actMapNetworkDrive
+    end
+    object tbbDisconnectNetworkDrive: TToolButton
+      Left = 376
+      Top = 0
+      Action = actDisconnectNetworkDrive
+    end
   end
   object ToolBarVolume: TToolBar [3]
     Left = 0
@@ -443,7 +454,10 @@ inherited frmFreeOTFEExplorerMain: TfrmFreeOTFEExplorerMain
       object Options1: TMenuItem [9]
         Action = actOptions
       end
-      object N1: TMenuItem [10]
+      object ChooseDetails1: TMenuItem [10]
+        Action = actChooseDetails
+      end
+      object N1: TMenuItem [11]
         Caption = '-'
       end
     end
@@ -460,7 +474,10 @@ inherited frmFreeOTFEExplorerMain: TfrmFreeOTFEExplorerMain
       object N23: TMenuItem [4]
         Caption = '-'
       end
-      object Overwrite1: TMenuItem [5]
+ object Networkservicestatus1: TMenuItem [5]
+        Action = actWebDAVStatus
+      end
+      object Overwrite1: TMenuItem [6]
         Caption = 'Overwrite'
         Hint = 'Contains commands for overwriting.'
         object Overwritefile1: TMenuItem
@@ -668,6 +685,10 @@ inherited frmFreeOTFEExplorerMain: TfrmFreeOTFEExplorerMain
       Caption = 'F&older...'
       Hint = 'Overwrite a folder on your hard drive'
       OnExecute = actOverwriteDirExecute
+    end
+    object actWebDAVStatus: TAction
+      Caption = 'Network service status...'
+      OnExecute = actWebDAVStatusExecute
     end
   end
   inherited ilToolbarIcons_Small: TImageList
@@ -1338,6 +1359,23 @@ inherited frmFreeOTFEExplorerMain: TfrmFreeOTFEExplorerMain
       007FC003F871C007007FE007C001C00780E3F33FC001C00FE3F3E79FC001C01F
       FEEBE79FE001C03FFF1FFFFFE003FFFF00000000000000000000000000000000
       000000000000}
+    object actChooseDetails: TAction
+      Caption = 'Choose Details...'
+      Hint = 'Configures the columns displayed in the list.'
+      OnExecute = actChooseDetailsExecute
+    end
+    object actMapNetworkDrive: TAction
+      Caption = 'Map Drive'
+      Hint = 'Connects to a network drive.'
+      ImageIndex = 17
+      OnExecute = actMapNetworkDriveExecute
+    end
+    object actDisconnectNetworkDrive: TAction
+      Caption = 'Disconnect'
+      Hint = 'Disconnects from a network drive.'
+      ImageIndex = 18
+      OnExecute = actDisconnectNetworkDriveExecute
+    end
   end
   inherited ilToolbarIcons_Large: TImageList
     Bitmap = {

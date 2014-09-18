@@ -781,3 +781,62 @@ msgid "LRW"
 #  Technical term
 msgid "HMAC"
 
+#  Control
+msgid "edCheckResult"
+
+#  Control
+msgid "edCheckTitle"
+
+#  Control
+msgid "edDirectory"
+
+#  Control
+msgid "edDiskPartitionStyle"
+
+#  Control
+msgid "edIPAddress"
+
+#  Control
+msgid "edMappedDrive"
+
+#  Control
+msgid "edPartitionStyle"
+
+#  Control
+msgid "edServiceMRxDAV"
+
+#  Control
+msgid "edServiceWebClient"
+
+#  Control
+msgid "edShareName"
+
+#  Control
+msgid "edWebDAVServerState"
+
+#  Control
+msgid "edWebDAVShareName"
+
+#  Display placeholder
+msgid "TRANSLATOR CREDIT HERE"
+
+#  Control
+msgid "pnlDivider"
+
+#  Control
+msgid "pnlSeparator"
+
+#  Control
+msgid "reDescription"
+
+#  Control
+msgid "reExplanation"
+
+#  Display placeholder
+msgid "PASSED CAPTION SET AUTOMATICALLY"
+
+#  Display placeholder
+msgid "SKIPPED CAPTION SET AUTOMATICALLY"
+
+#  Display placeholder
+msgid "WARNING CAPTION SIZED AND SET AUTOMATICALLY"

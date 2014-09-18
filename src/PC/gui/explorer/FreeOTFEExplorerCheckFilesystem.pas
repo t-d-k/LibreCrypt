@@ -15,6 +15,16 @@ uses
   SDUDialogs,
   SDUi18n;
 
+{$IFDEF _NEVER_DEFINED}
+// This is just a dummy const to fool dxGetText when extracting message
+// information
+// This const is never used; it's #ifdef'd out - SDUCRLF in the code refers to
+// picks up SDUGeneral.SDUCRLF
+const
+  SDUCRLF = ''#13#10;
+{$ENDIF}
+
+
 procedure CheckFilesystem(Filesystem: TSDFilesystem_FAT);
 var
   allOK: boolean;

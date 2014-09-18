@@ -17,7 +17,6 @@ uses
   FreeOTFEfmeOptions_SystemTray in 'FreeOTFEfmeOptions_SystemTray.pas' {fmeOptions_SystemTray: TFrame},
   FreeOTFEfmeOptions_Hotkeys in 'FreeOTFEfmeOptions_Hotkeys.pas' {fmeOptions_Hotkeys: TFrame},
   CommonfmeOptions_PKCS11 in '..\common\CommonfmeOptions_PKCS11.pas' {fmeOptions_PKCS11: TFrame},
-  FreeOTFEfmeOptions_Autorun in 'FreeOTFEfmeOptions_Autorun.pas' {fmeOptions_Autorun: TFrame},
   FreeOTFEfmeOptions_General in 'FreeOTFEfmeOptions_General.pas' {fmeOptions_FreeOTFEGeneral: TFrame},
   CommonfrmInstallOnUSBDrive in '..\common\CommonfrmInstallOnUSBDrive.pas' {frmInstallOnUSBDrive},
   CommonfrmAbout in '..\common\CommonfrmAbout.pas' {frmAbout},
@@ -51,7 +50,8 @@ uses
   gnugettext in '..\..\..\..\tools\gnugettext.pas',
   SDUGeneral in '..\common\SDeanUtils\SDUGeneral.pas',
   SDFilesystem in '..\common\Filesystem\SDFilesystem.pas',
-  SDFilesystem_FAT in '..\common\Filesystem\SDFilesystem_FAT.pas';
+  SDFilesystem_FAT in '..\common\Filesystem\SDFilesystem_FAT.pas',
+  CommonfmeOptions_Autorun in '..\common\CommonfmeOptions_Autorun.pas' {fmeOptions_Autorun: TFrame};
 
 {$R *.RES}
 

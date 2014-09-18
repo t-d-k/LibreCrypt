@@ -1,16 +1,15 @@
-unit FreeOTFEfmeOptions_AutoRun;
+unit CommonfmeOptions_Autorun;
 
 interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, FreeOTFESettings, StdCtrls, ComCtrls,
+  Dialogs, CommonSettings, StdCtrls, ComCtrls,
   OTFEFreeOTFE_InstructionRichEdit, SDUDialogs, SDUStdCtrls,
-  CommonfmeOptions_Base,
-  FreeOTFEfmeOptions_Base;
+  CommonfmeOptions_Base;
 
 type
-  TfmeOptions_Autorun = class(TfmeFreeOTFEOptions_Base)
+  TfmeOptions_Autorun = class(TfmeOptions_Base)
     gbAutorun: TGroupBox;
     Label33: TLabel;
     Label34: TLabel;
@@ -27,11 +26,10 @@ type
     procedure pbPostMountBrowseClick(Sender: TObject);
     procedure pbPreDismountBrowseClick(Sender: TObject);
     procedure pbPostDismountBrowseClick(Sender: TObject);
-  protected
-    procedure _ReadSettings(config: TFreeOTFESettings); override;
-    procedure _WriteSettings(config: TFreeOTFESettings); override;
   public
     procedure Initialize(); override;
+    procedure ReadSettings(config: TSettings); override;
+    procedure WriteSettings(config: TSettings); override;
   end;
 
 implementation
@@ -98,8 +96,10 @@ begin
 
 end;
 
-procedure TfmeOptions_Autorun._ReadSettings(config: TFreeOTFESettings);
+procedure TfmeOptions_Autorun.ReadSettings(config: TSettings);
 begin
+  inherited;
+
   edPostMountExe.text    := config.OptPostMountExe;
   edPreDismountExe.text  := config.OptPreDismountExe;
   edPostDismountExe.text := config.OptPostDismountExe;
@@ -108,8 +108,10 @@ begin
 
 end;
 
-procedure TfmeOptions_Autorun._WriteSettings(config: TFreeOTFESettings);
+procedure TfmeOptions_Autorun.WriteSettings(config: TSettings);
 begin
+  inherited;
+
   config.OptPostMountExe := edPostMountExe.text;
   config.OptPreDismountExe := edPreDismountExe.text;
   config.OptPostDismountExe := edPostDismountExe.text;

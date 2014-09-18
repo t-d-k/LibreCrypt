@@ -55,7 +55,7 @@ type
 // If you have Delphi 2007, use the definition in Windows.pas (i.e. uses Windows)
   // Delphi 7 doesn't have ULONGLONG
   ULONGLONG = Uint64;//TDK CHANGE
-//  ULONGLONG = int64;  // Changed from Uint64 to prevent Delphi internal error
+ // ULONGLONG = int64;  // Changed from Uint64 to prevent Delphi internal error
                       // c1118 in SDUFormatUnits with Uint64 under Delphi7
                       // (from feedback from OracleX <oraclex@mail.ru>)
                       // Note: Because it's using int64 here, overloaded
@@ -198,6 +198,15 @@ type
   //   MacOSX  normally uses CR
   TSDUNewline_Enum = (nlCRLF, nlCR, nlLF);
   TSDUNewline = TSDUNewline_Enum;
+
+  TSDUBytes       = array of byte;
+
+  DriveLetterString = Ansistring;
+  VolumeFilenameString = string;
+  KeyFilenameString   = string;
+  FilenameString     =string;
+  DriveLetterChar   = AnsiChar;
+  PasswordString   = AnsiString;
 
 resourcestring
   UNITS_STORAGE_BYTES = 'bytes';
@@ -494,6 +503,8 @@ function SDUCopyFile_Compression(
               callback: TCopyProgressCallback = nil
              ): boolean;
 // XOR the characters in two strings together
+// function SDUXOR(a: TSDUBytes; b: TSDUBytes): TSDUBytes;
+
 function SDUXOR(a: ansistring; b: ansistring): ansistring;    { TODO 1 -otdk -cclean : use bytes instead of chars }
 // Calculate x! (factorial X)
 function  SDUFactorial(x: integer): LARGE_INTEGER;
@@ -521,7 +532,7 @@ function SDUFormatUnits(
                      multiplier: integer = 1000;
                      accuracy: integer = 2
                     ): string; overload;
-{$IFDEF VER185}  // See comment on ULONGLONG definition
+{$IFNDEF VER180}  // See comment on ULONGLONG definition
 function SDUFormatUnits(
                      Value: ULONGLONG;
                      denominations: array of string;
@@ -534,7 +545,7 @@ function SDUFormatAsBytesUnits(
                      Value: int64;
                      accuracy: integer = 2
                     ): string; overload;
-{$IFDEF VER185}  // See comment on ULONGLONG definition
+{$IFNDEF VER180}  // See comment on ULONGLONG definition
 function SDUFormatAsBytesUnits(
                      Value: ULONGLONG;
                      accuracy: integer = 2
@@ -573,9 +584,9 @@ function SDUParseUnits(
 // As SDUParseUnits, but assume units are bytes, KB, MB, GB, etc
 function SDUParseUnitsAsBytesUnits(
                        prettyValue: string;
-                       out value: Uint64
+                       out value: uint64
                      ): boolean; overload;
-{$IFDEF VER185}  // See comment on ULONGLONG definition
+{$IFDEF VER185}   // See comment on ULONGLONG definition
 function SDUParseUnitsAsBytesUnits(
                        prettyValue: string;
                        out value: ULONGLONG
@@ -869,6 +880,8 @@ function SDUVersionCompareWithBetaFlag(
 procedure SDUPause(delayLen: integer);
 // Execute the specified commandline and return when the command line returns
 function  SDUWinExecAndWait32(cmdLine: string; cmdShow: integer; workDir: string = '';appName:string=''): cardinal;
+function  SDUWinExecNoWait32(cmdLine: string; cmdShow: integer): Boolean;
+
 // Returns the control within parentControl which has the specified tag value
 function  SDUGetControlWithTag(tag: integer; parentControl: TControl): TControl;
 // Search out and return the first control found which has ".FocusControl" set
@@ -906,13 +919,13 @@ function SDUISO8601ToTDateTime(inDateTime: string): TDateTime;
 // count
 function SDUCountCharInstances(theChar: char; theString: string): integer;
 // These two functions ripped from FileCtrl.pas - see Delphi 4 source
-function SDUVolumeID(DriveChar: ansichar): string;
-function SDUNetworkVolume(DriveChar: ansichar): string;
+function SDUVolumeID(DriveChar: DriveLetterChar): string;
+function SDUNetworkVolume(DriveChar: DriveLetterChar): string;
 {$IFDEF MSWINDOWS}
 // This calls SDUVolumeID/SDUNetworkVolume as appropriate
 // Returns '3.5" Floppy'/'Removable Disk' instead of volume label for these
 // type of drives
-function SDUGetVolumeID(drive: ansichar): string;
+function SDUGetVolumeID(drive: DriveLetterChar): string;
 {$ENDIF}
 // Detect if the current application is already running, and if it is, return
 // a handle to it's main window.
@@ -953,12 +966,12 @@ function SDUIntToHex(val: ULONGLONG; digits: integer): string;
 // Implemented as Delphi 2007 truncates int64 values to 32 bits when
 // using inttostr(...)!
 function SDUIntToStr(val: int64): string; overload;
-{$IFDEF VER185}  // See comment on ULONGLONG definition
+{$IFNDEF VER180}  // See comment on ULONGLONG definition
 function SDUIntToStr(val: ULONGLONG): string; overload;
 {$ENDIF}
 // As SDUIntToStr, but with thousands seperators inserted
 function SDUIntToStrThousands(val: int64): string; overload;
-{$IFDEF VER185}  // See comment on ULONGLONG definition
+{$IFNDEF VER180}  // See comment on ULONGLONG definition
 function SDUIntToStrThousands(val: ULONGLONG): string; overload;
 {$ENDIF}
 // Save the given font's details to the registry
@@ -971,11 +984,26 @@ function SDUGetFinalPath(path :string): string;
 
 function SDUGetSystemDirectory(): string;
 
+{ TODO 1 -otdk -cenhance : convert to using byte array when are sure all callers support it }
+//encodes as ascii for now
+function SDUStringToSDUBytes(rhs :string): TSDUBytes;
+function SDUBytesToString(var value :TSDUBytes): string;
+//initialises value to all zeros
+procedure SDUInitAndZeroBuffer(len:Cardinal;var value :TSDUBytes);
+
+  //adds byte to array
+procedure SDUAddByte(var value :TSDUBytes; byt : byte) ;
+procedure SDUAddArrays(var A :TSDUBytes;const rhs : TSDUBytes) ;
+procedure SDUDeleteFromStart(var A: TSDUBytes; Count: Integer);
+procedure SDUResetLength(var A: TSDUBytes; newLen: Integer);
+
+function SDUMapNetworkDrive(networkShare:string;  useDriveLetter:Char)  :boolean;
+
 implementation
 
 uses
   ComObj,
-{$IFDEF VER185}
+{$IFNDEF VER180}
   WideStrUtils,
 {$ENDIF}
   ShellAPI, // Required for SDUShowFileProperties
@@ -1858,6 +1886,13 @@ if  appName<>'' then  pAppName  :=   PWidechar(appName);
 
 end;
 
+
+function SDUWinExecNoWait32(cmdLine: string; cmdShow: integer): Boolean;
+begin
+result:= ShellExecute(Application.Handle, 'open',PWideChar(cmdLine), nil, nil, cmdShow)> 32 ;
+end;
+
+
 function SDUGetControlWithTag(tag: integer; parentControl: TControl): TControl;
 var
   i: integer;
@@ -1920,7 +1955,7 @@ begin
   ShellExecuteEx(@sei);
 end;
 
-function SDUVolumeID(DriveChar: ansichar): string;
+function SDUVolumeID(DriveChar: DriveLetterChar): string;
 var
   OldErrorMode: Integer;
   NotUsed, VolFlags: DWORD;
@@ -1938,7 +1973,7 @@ begin
   end;
 end;
 
-function SDUNetworkVolume(DriveChar: ansichar): string;
+function SDUNetworkVolume(DriveChar: DriveLetterChar): string;
 var
   Buf: Array [0..MAX_PATH] of widechar;
   DriveStr: array [0..3] of widechar;
@@ -1965,7 +2000,7 @@ begin
 end;
 
 {$IFDEF MSWINDOWS}
-function SDUGetVolumeID(drive: ansichar): string;
+function SDUGetVolumeID(drive: DriveLetterChar): string;
 var
   DriveType: TDriveType;
 begin
@@ -2334,7 +2369,7 @@ var
 begin
   retval := Application.Handle;
 
-{$IFDEF VER185}
+{$IFNDEF VER180}
   // Vista fix for Delphi 2007 and later
   if (
       (Application.Mainform <> nil) and
@@ -3984,7 +4019,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-{$IFDEF VER185}  // See comment on ULONGLONG definition
+{$IFNDEF VER180}  // See comment on ULONGLONG definition
 function SDUFormatUnits(
                      Value: ULONGLONG;
                      denominations: array of string;
@@ -4055,7 +4090,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-{$IFDEF VER185}  // See comment on ULONGLONG definition
+{$IFNDEF VER180}  // See comment on ULONGLONG definition
 function SDUFormatAsBytesUnits(
                      Value: ULONGLONG;
                      accuracy: integer = 2
@@ -4094,7 +4129,7 @@ end;
 function SDUParseUnits(
                        prettyValue: string;
                        denominations: array of string;
-                       out value: Uint64;
+                       out value: uint64;
                        multiplier: integer = 1000
                      ): boolean;
 var
@@ -4173,7 +4208,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-{$IFDEF VER185}  // See comment on ULONGLONG definition
+{$IFDEF VER185}   // See comment on ULONGLONG definition
 function SDUParseUnits(
                        prettyValue: string;
                        denominations: array of string;
@@ -4257,7 +4292,7 @@ end;
 // ----------------------------------------------------------------------------
 function SDUParseUnitsAsBytesUnits(
                        prettyValue: string;
-                       out value: Uint64
+                       out value: uint64
                      ): boolean;
 begin
   Result := SDUParseUnits(
@@ -4465,17 +4500,17 @@ end;
 
 
 // ----------------------------------------------------------------------------
+// function SDUXOR(a: TSDUBytes; b: TSDUBytes): TSDUBytes;
 function SDUXOR(a: ansistring; b: ansistring): ansistring;   { TODO 1 -otdk -cclean : use bytes instead of chars }
 var
-  retval: Ansistring;
   longest: integer;
   byteA: byte;
   byteB: byte;
   i: integer;
 begin
-  retval := '';
-
+   { TODO 1 -otdk -cclean : can simplify }
   longest := max(length(a), length(b));
+  // setlength(result,longest);
   for i:=1 to longest do
     begin
     if (i > length(a)) then
@@ -4496,10 +4531,10 @@ begin
       byteB := ord(b[i]);
       end;
 
-    retval := retval + ansichar(byteA XOR byteB);
+    // result[i] :=  byteA XOR byteB;
+    result := result + ansichar(byteA XOR byteB);
     end;
 
-  Result := retval;
 end;
 
 
@@ -5915,7 +5950,7 @@ begin
   Result := retval;
 end;
 
-{$IFDEF VER185}  // See comment on ULONGLONG definition
+{$IFNDEF VER180} // See comment on ULONGLONG definition
 function SDUIntToStr(val: ULONGLONG): string;
 var
   retval: string;
@@ -5977,7 +6012,7 @@ begin
   Result := retval;
 end;
 
-{$IFDEF VER185}  // See comment on ULONGLONG definition
+{$IFNDEF VER180}  // See comment on ULONGLONG definition
 function SDUIntToStrThousands(val: ULONGLONG): string;
 var
   retval: string;
@@ -6014,7 +6049,7 @@ end;
 procedure SDUPopulateRemovableDrives(cbDrive: TComboBox);
 var
   DriveType: TDriveType;
-  drive: ansichar;
+  drive: DriveLetterChar;
   item: string;
   volTitle: string;
 begin
@@ -6274,7 +6309,7 @@ begin
   Result := E = 0;
 end;
 
-{$IFDEF VER185}  // See comment on ULONGLONG definition
+{$IFDEF VER185} // See comment on ULONGLONG definition
 function SDUTryStrToInt(const S: string; out Value: ULONGLONG): boolean;
 var
   E: Integer;
@@ -7091,7 +7126,7 @@ begin
     WM_SYSKEYUP:                          retval := 'WM_SYSKEYUP';
     WM_SYSCHAR:                           retval := 'WM_SYSCHAR';
     WM_SYSDEADCHAR:                       retval := 'WM_SYSDEADCHAR';
-{$IFDEF VER185}  // Delphi 2007 and later
+{$IFNDEF VER180}  // Delphi 2007 and later
     WM_UNICHAR:                           retval := 'WM_UNICHAR';
 {$ENDIF}
     WM_INITDIALOG:                        retval := 'WM_INITDIALOG';
@@ -7212,7 +7247,7 @@ begin
     WM_DDE_REQUEST:                       retval := 'WM_DDE_REQUEST';
     WM_DDE_POKE:                          retval := 'WM_DDE_POKE';
     WM_DDE_EXECUTE:                       retval := 'WM_DDE_EXECUTE';
-{$IFDEF VER185}  // Delphi 2007 and later
+{$IFNDEF VER180} // Delphi 2007 and later
     WM_DWMCOMPOSITIONCHANGED:             retval := 'WM_DWMCOMPOSITIONCHANGED';
     WM_DWMNCRENDERINGCHANGED:             retval := 'WM_DWMNCRENDERINGCHANGED';
     WM_DWMCOLORIZATIONCOLORCHANGED:       retval := 'WM_DWMCOLORIZATIONCOLORCHANGED';
@@ -7416,6 +7451,117 @@ begin
  GetFinalPathNameByHandle(hFile,lpszFilePath,MAX_PATH,0);
  result :=   lpszFilePath;
  FileClose(hFile);
+end;
+
+//encodes as ascii for now
+function SDUStringToSDUBytes(rhs :string): TSDUBytes;
+var
+  len,i: Integer;
+begin
+len := length(rhs);
+  setlength(result,len);
+  for i := 0 to len do
+    result[i] := Byte(rhs[i]);
+
+end;
+
+
+function SDUBytesToString(var value :TSDUBytes): string;
+var
+  len,i: Integer;
+begin
+  result  := '';
+  for i := 0 to high(value) do
+    result :=result +AnsiChar(value[i]);
+
+end;
+
+//initialises value to all zeros
+procedure SDUInitAndZeroBuffer(len:Cardinal;var value :TSDUBytes);
+var
+i,oldlen :integer;
+  begin
+  // setlength re-alloacates and can change reference - so even if new value is longer: still need to zero old val before resizing
+   oldlen := length(value);
+    for i := 0 to oldlen do
+    value[i] := 0;
+
+     setlength(value,len);
+  for i := 0 to len do
+    value[i] := 0;
+
+  end;
+
+  //adds byte to array
+procedure SDUAddByte(var value :TSDUBytes; byt : byte) ;
+var
+  len,i: Integer;
+  oldref:Pointer;
+begin
+
+oldref := Pointer(@value[0]);
+    len := length(value);
+   setlength(value,len+1);
+ { TODO 1 -otdk -ccheck : can setlength reset ref? if so need to copy and zero }
+   assert(oldref = POinter(@value[0]));
+   value[len] := byt;
+end;
+
+  //adds array to array
+procedure SDUAddArrays(var A :TSDUBytes;const rhs : TSDUBytes) ;
+var
+  len,len_rhs,i: Integer;
+  oldref:Pointer;
+begin
+
+oldref := Pointer(@A[0]);
+    len := length(A);
+    len_rhs :=length(rhs);
+   setlength(A,len+len_rhs);
+ { TODO 1 -otdk -ccheck : can setlength reset ref? if so need to copy and zero }
+   assert(oldref = POinter(@A[0]));
+   for i := 0 to len_rhs do
+      A[i+len] := rhs[i];
+end;
+
+
+procedure SDUDeleteFromStart(var A: TSDUBytes; Count: Integer);
+var
+  len,i: Integer;
+  oldref:Pointer;
+begin
+len := length(A);
+for i := 0 to len-count do
+    A[i] := A[i+count];
+for i := len-count to len do
+   A[i] := A[0];
+
+ oldref := Pointer(@A[0]);
+
+   setlength(A,len-count);
+ { TODO 1 -otdk -ccheck : can setlength reset ref? if so need to copy and zero }
+   assert(oldref = POinter(@A[0]));
+
+end;
+
+//incs length and zeroises any extra data
+procedure SDUResetLength(var A: TSDUBytes; newLen: Integer);
+var
+  len,i: Integer;
+  oldref:Pointer;
+begin
+  len := length(A);
+  oldref := Pointer(@A[0]);
+  setlength(A,newLen);
+   { TODO 1 -otdk -ccheck : can setlength reset ref? if so need to copy and zero }
+   assert(oldref = POinter(@A[0]));
+ for i := len to newLen do
+   A[i] := 0;
+end;
+
+function SDUMapNetworkDrive(networkShare:string;  useDriveLetter:Char)  :boolean;
+begin
+  { TODO 3 -otdk -cfix : implement }
 end;
 
 // ----------------------------------------------------------------------------

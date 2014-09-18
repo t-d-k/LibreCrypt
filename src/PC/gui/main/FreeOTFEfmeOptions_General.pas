@@ -60,6 +60,7 @@ uses
   SDUi18n,
   SDUGeneral,
   SDUDialogs,
+  OTFE_U,
   CommonConsts,
   CommonSettings,
   CommonfrmOptions;
@@ -358,7 +359,7 @@ begin
     end
   else
     begin
-    config.OptDefaultDriveLetter :=ansichar( cbDrive.Items[cbDrive.ItemIndex][1]);
+    config.OptDefaultDriveLetter := DriveLetterChar(cbDrive.Items[cbDrive.ItemIndex][1]);
     end;
 
   // Decode update frequency

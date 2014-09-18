@@ -122,7 +122,6 @@ type
     OptDisplayToolbarLarge: boolean;
     OptDisplayToolbarCaptions: boolean;
     OptDisplayStatusbar: boolean;
-    OptExploreAfterMount: boolean;
     OptAllowMultipleInstances: boolean;
     OptAutoStartPortable: boolean;
     OptInstalled: boolean;// has installer been run?
@@ -130,7 +129,6 @@ type
     OptDefaultMountAs: TFreeOTFEMountAs;
 
     // Prompts and messages
-    OptPromptMountSuccessful: boolean;  // If set, display an info msg after successful mount
     OptWarnBeforeForcedDismount: boolean;
     OptOnExitWhenMounted: TOnExitWhenMounted;
     OptOnExitWhenPortableMode: TOnExitWhenPortableMode;
@@ -148,12 +146,6 @@ type
     OptHKeyKeyDismount: TShortCut;
     OptHKeyEnableDismountEmerg: boolean;
     OptHKeyKeyDismountEmerg: TShortCut;
-
-    // Autorun...
-    OptPostMountExe: ansistring;
-    OptPreDismountExe: ansistring;
-    OptPostDismountExe: ansistring;
-    OptPrePostExeWarn: boolean;
 
     constructor Create(); override;
     destructor Destroy(); override;
@@ -200,23 +192,17 @@ const
       DFLT_OPT_DISPLAYTOOLBARCAPTIONS               = TRUE;
     OPT_DISPLAYSTATUSBAR                         = 'DisplayStatusbar';
       DFLT_OPT_DISPLAYSTATUSBAR                     = TRUE;
-    OPT_EXPLOREAFTERMOUNT                        = 'ExploreAfterMount';
-      DFLT_OPT_EXPLOREAFTERMOUNT                    = FALSE;
     OPT_ALLOWMULTIPLEINSTANCES                   = 'AllowMultipleInstances';
       DFLT_OPT_ALLOWMULTIPLEINSTANCES               = FALSE;
     OPT_AUTOSTARTPORTABLE                        = 'AutoStartPortable';
       DFLT_OPT_AUTOSTARTPORTABLE                    = FALSE;
-    OPT_DEFAULTDRIVELETTER                       = 'DefaultDriveLetter';
-      DFLT_OPT_DEFAULTDRIVELETTER                   = '#';
     OPT_DEFAULTMOUNTAS                           = 'DefaultMountAs';
       DFLT_OPT_DEFAULTMOUNTAS                       = fomaRemovableDisk;
     OPT_OPTINSTALLED                              = 'Installed';
       DFLT_OPT_OPTINSTALLED                       = FALSE;
       
   // -- Prompts and messages --
-  SECTION_CONFIRMATION = 'Confirmation';
-    OPT_PROMPTMOUNTSUCCESSFUL                    = 'OptPromptMountSuccessful';
-      DFLT_OPT_PROMPTMOUNTSUCCESSFUL                = TRUE;
+  // Section name defined in parent class's unit
     OPT_WARNBEFOREFORCEDISMOUNT                  = 'WarnBeforeForcedDismount';
       DFLT_OPT_WARNBEFOREFORCEDISMOUNT              = TRUE;
     OPT_ONEXITWHENMOUNTED                        = 'OnExitWhenMounted';
@@ -249,17 +235,6 @@ const
       DFLT_OPT_HOTKEYENABLEDISMOUNTEMERG            = FALSE;
     OPT_HOTKEYKEYDISMOUNTEMERG                   = 'KeyDismountEmerg';
       DFLT_OPT_HOTKEYKEYDISMOUNTEMERG               = 'Shift+Ctrl+Alt+D';
-
-  // -- Autorun section --
-  SECTION_AUTORUN = 'Autorun';
-    OPT_POSTMOUNTEXE                             = 'PostMountExe';
-      DFLT_OPT_POSTMOUNTEXE                         = '';
-    OPT_PREDISMOUNTEXE                           = 'PreDismountExe';
-      DFLT_OPT_PREDISMOUNTEXE                       = '';
-    OPT_POSTDISMOUNTEXE                          = 'PostDismountExe';
-      DFLT_OPT_POSTDISMOUNTEXE                      = '';
-    OPT_PREPOSTEXEWARN                           = 'PrePostExeWarn';
-      DFLT_OPT_PREPOSTEXEWARN                       = TRUE;
 
 
 function OnExitWhenMountedTitle(value: TOnExitWhenMounted): string;
@@ -298,8 +273,6 @@ begin
 end;
 
 procedure TFreeOTFESettings._Load(iniFile: TCustomINIFile);
-var
-  useDefaultDriveLetter: string;
 begin
   inherited _Load(iniFile);
 // todo -otdk : combine load and save, and/or use rtti
@@ -307,20 +280,10 @@ begin
   OptDisplayToolbarLarge     := iniFile.ReadBool(SECTION_GENERAL,   OPT_DISPLAYTOOLBARLARGE,    DFLT_OPT_DISPLAYTOOLBARLARGE);
   OptDisplayToolbarCaptions  := iniFile.ReadBool(SECTION_GENERAL,   OPT_DISPLAYTOOLBARCAPTIONS, DFLT_OPT_DISPLAYTOOLBARCAPTIONS);
   OptDisplayStatusbar        := iniFile.ReadBool(SECTION_GENERAL,   OPT_DISPLAYSTATUSBAR,       DFLT_OPT_DISPLAYSTATUSBAR);
-  OptExploreAfterMount       := iniFile.ReadBool(SECTION_GENERAL,   OPT_EXPLOREAFTERMOUNT,      DFLT_OPT_EXPLOREAFTERMOUNT);
   OptAllowMultipleInstances  := iniFile.ReadBool(SECTION_GENERAL,   OPT_ALLOWMULTIPLEINSTANCES, DFLT_OPT_ALLOWMULTIPLEINSTANCES);
   OptAutoStartPortable       := iniFile.ReadBool(SECTION_GENERAL,   OPT_AUTOSTARTPORTABLE,      DFLT_OPT_AUTOSTARTPORTABLE);
-  OptInstalled               := iniFile.ReadBool(SECTION_GENERAL,   OPT_OPTINSTALLED,           DFLT_OPT_OPTINSTALLED); 
-  useDefaultDriveLetter      := iniFile.ReadString(SECTION_GENERAL, OPT_DEFAULTDRIVELETTER,     DFLT_OPT_DEFAULTDRIVELETTER);
-  // #0 written as "#"
-  OptDefaultDriveLetter := AnsiChar(useDefaultDriveLetter[1]);
-  if (OptDefaultDriveLetter = '#') then
-    begin
-    OptDefaultDriveLetter := #0;
-    end;
   OptDefaultMountAs        := TFreeOTFEMountAs(iniFile.ReadInteger(SECTION_GENERAL, OPT_DEFAULTMOUNTAS, ord(DFLT_OPT_DEFAULTMOUNTAS)));
 
-  OptPromptMountSuccessful    := iniFile.ReadBool(SECTION_CONFIRMATION, OPT_PROMPTMOUNTSUCCESSFUL,       DFLT_OPT_PROMPTMOUNTSUCCESSFUL);
   OptWarnBeforeForcedDismount := iniFile.ReadBool(SECTION_CONFIRMATION, OPT_WARNBEFOREFORCEDISMOUNT,     DFLT_OPT_WARNBEFOREFORCEDISMOUNT);
   OptOnExitWhenMounted        := TOnExitWhenMounted(iniFile.ReadInteger(SECTION_CONFIRMATION, OPT_ONEXITWHENMOUNTED, ord(DFLT_OPT_ONEXITWHENMOUNTED)));
   OptOnExitWhenPortableMode   := TOnExitWhenPortableMode(iniFile.ReadInteger(SECTION_CONFIRMATION, OPT_ONEXITWHENPORTABLEMODE, ord(DFLT_OPT_ONEXITWHENPORTABLEMODE)));
@@ -337,18 +300,12 @@ begin
   OptHKeyEnableDismountEmerg := iniFile.ReadBool(SECTION_HOTKEY,   OPT_HOTKEYENABLEDISMOUNTEMERG, DFLT_OPT_HOTKEYENABLEDISMOUNTEMERG);
   OptHKeyKeyDismountEmerg    := TextToShortCut(iniFile.ReadString(SECTION_HOTKEY, OPT_HOTKEYKEYDISMOUNTEMERG,    DFLT_OPT_HOTKEYKEYDISMOUNTEMERG));
 
-  OptPostMountExe            := iniFile.ReadString(SECTION_AUTORUN,      OPT_POSTMOUNTEXE,          DFLT_OPT_POSTMOUNTEXE);
-  OptPreDismountExe          := iniFile.ReadString(SECTION_AUTORUN,      OPT_PREDISMOUNTEXE,        DFLT_OPT_PREDISMOUNTEXE);
-  OptPostDismountExe         := iniFile.ReadString(SECTION_AUTORUN,      OPT_POSTDISMOUNTEXE,       DFLT_OPT_POSTDISMOUNTEXE);
-  OptPrePostExeWarn          := iniFile.ReadBool(SECTION_AUTORUN,        OPT_PREPOSTEXEWARN,        DFLT_OPT_PREPOSTEXEWARN);
-
 end;
 
 
 function TFreeOTFESettings._Save(iniFile: TCustomINIFile): boolean;
 var
   allOK: boolean;
-  useDefaultDriveLetter: char;
 begin
   allOK := inherited _Save(iniFile);
   if allOK then
@@ -358,20 +315,10 @@ begin
       iniFile.WriteBool(SECTION_GENERAL,        OPT_DISPLAYTOOLBARLARGE,       OptDisplayToolbarLarge);
       iniFile.WriteBool(SECTION_GENERAL,        OPT_DISPLAYTOOLBARCAPTIONS,    OptDisplayToolbarCaptions);
       iniFile.WriteBool(SECTION_GENERAL,        OPT_DISPLAYSTATUSBAR,          OptDisplayStatusbar);
-      iniFile.WriteBool(SECTION_GENERAL,        OPT_EXPLOREAFTERMOUNT,         OptExploreAfterMount);
       iniFile.WriteBool(SECTION_GENERAL,        OPT_ALLOWMULTIPLEINSTANCES,    OptAllowMultipleInstances);
       iniFile.WriteBool(SECTION_GENERAL,        OPT_AUTOSTARTPORTABLE,         OptAutoStartPortable);
-      iniFile.WriteBool(SECTION_GENERAL,   OPT_OPTINSTALLED,        OptInstalled   ); 
-      // #0 written as "#"
-      useDefaultDriveLetter := Char(OptDefaultDriveLetter);
-      if (OptDefaultDriveLetter = #0) then
-        begin
-        useDefaultDriveLetter := '#';
-        end;
-      iniFile.WriteString(SECTION_GENERAL,      OPT_DEFAULTDRIVELETTER,        useDefaultDriveLetter);
       iniFile.WriteInteger(SECTION_GENERAL,     OPT_DEFAULTMOUNTAS,            ord(OptDefaultMountAs));
 
-      iniFile.WriteBool(SECTION_CONFIRMATION,    OPT_PROMPTMOUNTSUCCESSFUL,    OptPromptMountSuccessful);
       iniFile.WriteBool(SECTION_CONFIRMATION,    OPT_WARNBEFOREFORCEDISMOUNT,  OptWarnBeforeForcedDismount);
       iniFile.WriteInteger(SECTION_CONFIRMATION, OPT_ONEXITWHENMOUNTED,        ord(OptOnExitWhenMounted));
       iniFile.WriteInteger(SECTION_CONFIRMATION, OPT_ONEXITWHENPORTABLEMODE,   ord(OptOnExitWhenPortableMode));
@@ -387,11 +334,6 @@ begin
       iniFile.WriteString(SECTION_HOTKEY,       OPT_HOTKEYKEYDISMOUNT,         ShortCutToText(OptHKeyKeyDismount));
       iniFile.WriteBool(SECTION_HOTKEY,         OPT_HOTKEYENABLEDISMOUNTEMERG, OptHKeyEnableDismountEmerg);
       iniFile.WriteString(SECTION_HOTKEY,       OPT_HOTKEYKEYDISMOUNTEMERG,    ShortCutToText(OptHKeyKeyDismountEmerg));
-
-      iniFile.WriteString(SECTION_AUTORUN,      OPT_POSTMOUNTEXE,              OptPostMountExe);
-      iniFile.WriteString(SECTION_AUTORUN,      OPT_PREDISMOUNTEXE,            OptPreDismountExe);
-      iniFile.WriteString(SECTION_AUTORUN,      OPT_POSTDISMOUNTEXE,           OptPostDismountExe);
-      iniFile.WriteBool(SECTION_AUTORUN,        OPT_PREPOSTEXEWARN,            OptPrePostExeWarn);
 
     except
       on E:Exception do

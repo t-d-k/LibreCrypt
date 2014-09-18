@@ -98,6 +98,14 @@ type
     OptExplorerBarWidth: integer;  // Set to 0 to indicate hidden
     OptListViewLayout: string;
 
+    // WebDAV related...
+    OptWebDAVEnableServer: boolean;
+    OptOverwriteWebDAVCacheOnDismount: boolean;
+    OptWebDAVPort: integer;
+    OptWebDavShareName: string;
+    OptWebDavLogDebug: string;
+    OptWebDavLogAccess: string;
+
     constructor Create(); override;
     destructor Destroy(); override;
 
@@ -175,6 +183,21 @@ const
     OPT_LISTVIEWLAYOUT                           = 'ListViewLayout';
       DFLT_OPT_LISTVIEWLAYOUT                        = '';
 
+  // -- WebDAV section --
+  SECTION_WEBDAV                             = 'WedDAV';
+    OPT_ENABLESERVER                             = 'EnableServer';
+      DFLT_OPT_ENABLESERVER                          = FALSE;
+    OPT_OVERWRITECACHEONDISMOUNT                 = 'OverwriteCacheOnDismount';
+      DFLT_OPT_OVERWRITECACHEONDISMOUNT              = TRUE;
+    OPT_PORT                                     = 'Port';
+      DFLT_OPT_PORT                                  = 80;
+    OPT_SHARENAME                                = 'ShareName';
+      DFLT_OPT_SHARENAME                             = 'FEXPL';
+    OPT_LOGDEBUG                                 = 'LogDebug';
+      DFLT_OPT_LOGDEBUG                              = '';
+    OPT_LOGACCESS                                = 'LogAccess';
+      DFLT_OPT_LOGACCESS                             = '';
+
 
 function DefaultStoreOpTitle(defaultStoreOp: TDefaultStoreOp): string;
 begin
@@ -229,6 +252,14 @@ begin
   OptShowExplorerBar                := TExplorerBarType(iniFile.ReadInteger(SECTION_LAYOUT,  OPT_SHOWEXPLORERBAR,               ord(DFLT_OPT_SHOWEXPLORERBAR)));
   OptShowStatusBar                  := iniFile.ReadBool(SECTION_LAYOUT,     OPT_SHOWSTATUSBAR,                 DFLT_OPT_SHOWSTATUSBAR);
   OptListViewLayout                 := iniFile.ReadString(SECTION_LAYOUT,   OPT_LISTVIEWLAYOUT,                DFLT_OPT_LISTVIEWLAYOUT);
+
+  // WebDAV section...
+  OptWebDAVEnableServer             := iniFile.ReadBool(SECTION_WEBDAV,     OPT_ENABLESERVER,                  DFLT_OPT_ENABLESERVER);
+  OptOverwriteWebDAVCacheOnDismount := iniFile.ReadBool(SECTION_WEBDAV,     OPT_OVERWRITECACHEONDISMOUNT,      DFLT_OPT_OVERWRITECACHEONDISMOUNT);
+  OptWebDAVPort                     := iniFile.ReadInteger(SECTION_WEBDAV,  OPT_PORT,                          DFLT_OPT_PORT);
+  OptWebDavShareName                := iniFile.ReadString(SECTION_WEBDAV,   OPT_SHARENAME,                     DFLT_OPT_SHARENAME);
+  OptWebDavLogDebug                 := iniFile.ReadString(SECTION_WEBDAV,   OPT_LOGDEBUG,                      DFLT_OPT_LOGDEBUG);
+  OptWebDavLogAccess                := iniFile.ReadString(SECTION_WEBDAV,   OPT_LOGACCESS,                     DFLT_OPT_LOGACCESS);
 
 end;
 
@@ -285,6 +316,14 @@ begin
         iniFile.DeleteKey(SECTION_LAYOUT,   OPT_SHOWSTATUSBAR);
         iniFile.DeleteKey(SECTION_LAYOUT,   OPT_LISTVIEWLAYOUT);
         end;
+
+      // WebDAV section...
+      iniFile.WriteBool(SECTION_WEBDAV,    OPT_ENABLESERVER, OptWebDAVEnableServer);
+      iniFile.WriteBool(SECTION_WEBDAV,    OPT_OVERWRITECACHEONDISMOUNT, OptOverwriteWebDAVCacheOnDismount);
+      iniFile.WriteInteger(SECTION_WEBDAV, OPT_PORT,         OptWebDAVPort);
+      iniFile.WriteString(SECTION_WEBDAV,  OPT_SHARENAME,    OptWebDavShareName);
+      iniFile.WriteString(SECTION_WEBDAV,  OPT_LOGDEBUG,     OptWebDavLogDebug);
+      iniFile.WriteString(SECTION_WEBDAV,  OPT_LOGACCESS,    OptWebDavLogAccess);
 
     except
       on E:Exception do

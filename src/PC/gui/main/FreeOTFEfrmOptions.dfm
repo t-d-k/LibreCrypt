@@ -32,6 +32,14 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
         Width = 504
         Height = 382
         TabOrder = 0
+        inherited gbGeneral: TGroupBox
+          inherited lblDefaultDriveLetter: TLabel
+            Width = 89
+          end
+          inherited lblChkUpdatesFreq: TLabel
+            Width = 90
+          end
+        end
       end
     end
     object tsHotkeys: TTabSheet
@@ -42,6 +50,14 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
         Width = 337
         Height = 174
         TabOrder = 0
+        inherited gbHotkeys: TGroupBox
+          inherited Label1: TLabel
+            Width = 37
+          end
+          inherited Label2: TLabel
+            Width = 37
+          end
+        end
       end
     end
     object tcSystemTray: TTabSheet
@@ -62,6 +78,17 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
         Width = 471
         Height = 358
         TabOrder = 0
+        inherited gbAutorun: TGroupBox
+          inherited Label33: TLabel
+            Width = 56
+          end
+          inherited Label34: TLabel
+            Width = 64
+          end
+          inherited Label35: TLabel
+            Width = 69
+          end
+        end
       end
     end
     object tsAdvanced: TTabSheet

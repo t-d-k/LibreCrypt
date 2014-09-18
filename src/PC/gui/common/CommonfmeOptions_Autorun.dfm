@@ -1,8 +1,6 @@
 inherited fmeOptions_Autorun: TfmeOptions_Autorun
   Width = 471
   Height = 358
-  ExplicitWidth = 471
-  ExplicitHeight = 358
   object gbAutorun: TGroupBox
     Left = 7
     Top = 16
@@ -99,14 +97,8 @@ inherited fmeOptions_Autorun: TfmeOptions_Autorun
       Top = 20
       Width = 405
       Height = 161
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = []
       Lines.Strings = (
         'reInstructions')
-      ParentFont = False
       TabOrder = 7
     end
   end

@@ -74,6 +74,15 @@ object SDUProgressDialog: TSDUProgressDialog
         Anchors = [akLeft, akRight, akBottom]
         TabOrder = 0
       end
+      object pgbIndeterminate: TSDProgressBarIndeterminate
+        Left = 260
+        Top = 5
+        Width = 91
+        Height = 11
+        TabOrder = 1
+        Marquee = False
+        MarqueeUpdate = 200
+      end
     end
   end
   object pnlStatusText: TPanel
@@ -84,5 +93,12 @@ object SDUProgressDialog: TSDUProgressDialog
     Align = alTop
     Caption = 'pnlStatusText'
     TabOrder = 1
+    object lblStatus: TSDUTruncatingLabel
+      Left = 5
+      Top = 8
+      Width = 40
+      Height = 13
+      Caption = 'lblStatus'
+    end
   end
 end

@@ -15,7 +15,7 @@ uses
   StdCtrls, ComCtrls,
   CommonSettings, FreeOTFEfmeOptions_SystemTray, FreeOTFEfmeOptions_Hotkeys,
   FreeOTFEfmeOptions_General,
-  FreeOTFEfmeOptions_AutoRun, 
+  CommonfmeOptions_AutoRun, 
   OTFEFreeOTFE_U, ExtCtrls, SDUForms, SDUStdCtrls, CommonfmeOptions_Base,
   FreeOTFEfmeOptions_Base, CommonfrmOptions, CommonfmeOptions_PKCS11,
   FreeOTFEfmeOptions_Advanced;

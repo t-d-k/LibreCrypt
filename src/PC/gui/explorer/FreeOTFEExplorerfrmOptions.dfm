@@ -34,5 +34,27 @@ inherited frmOptions_FreeOTFEExplorer: TfrmOptions_FreeOTFEExplorer
         TabOrder = 0
       end
     end
+    object tsWebDAV: TTabSheet
+      Caption = 'Drive'
+      ImageIndex = 3
+      inline fmeOptions_FreeOTFEExplorerWebDAV1: TfmeOptions_FreeOTFEExplorerWebDAV
+        Left = 6
+        Top = 13
+        Width = 486
+        Height = 335
+        TabOrder = 0
+      end
+    end
+    object tsAutorun: TTabSheet
+      Caption = 'Autorun'
+      ImageIndex = 4
+      inline fmeOptions_Autorun1: TfmeOptions_Autorun
+        Left = 21
+        Top = -10
+        Width = 471
+        Height = 358
+        TabOrder = 0
+      end
+    end
   end
 end

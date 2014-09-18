@@ -7,7 +7,8 @@ uses
   Dialogs, CommonfrmOptions, ComCtrls, StdCtrls, SDUStdCtrls, ExtCtrls,
   OTFEFreeOTFEDLL_U, CommonfmeOptions_Base, CommonfmeOptions_PKCS11,
   FreeOTFEExplorerfmeOptions_General, FreeOTFEExplorerfmeOptions_Base,
-  FreeOTFEExplorerfmeOptions_Advanced;
+  FreeOTFEExplorerfmeOptions_Advanced, FreeOTFEExplorerfmeOptions_WebDAV,
+  CommonfmeOptions_Autorun;
 
 type
   TfrmOptions_FreeOTFEExplorer = class(TfrmOptions)
@@ -15,6 +16,10 @@ type
     fmeOptions_FreeOTFEExplorerGeneral1: TfmeOptions_FreeOTFEExplorerGeneral;
     tsAdvanced: TTabSheet;
     fmeOptions_FreeOTFEExplorerAdvanced1: TfmeOptions_FreeOTFEExplorerAdvanced;
+    tsWebDAV: TTabSheet;
+    fmeOptions_FreeOTFEExplorerWebDAV1: TfmeOptions_FreeOTFEExplorerWebDAV;
+    tsAutorun: TTabSheet;
+    fmeOptions_Autorun1: TfmeOptions_Autorun;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   public

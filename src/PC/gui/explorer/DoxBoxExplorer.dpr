@@ -51,7 +51,11 @@ uses
   SDFilesystemCtrls_ColDetails in '..\common\Filesystem\SDFilesystemCtrls_ColDetails.pas' {SDFilesystemListView_ColDetails},
   SDUAboutDlg in '..\common\SDeanUtils\SDUAboutDlg.pas' {SDUAboutDialog},
   SDUMRUList in '..\common\SDeanUtils\SDUMRUList.pas',
-  SDURegistry in '..\common\SDeanUtils\SDURegistry.pas';
+  SDURegistry in '..\common\SDeanUtils\SDURegistry.pas',
+  SDUGeneral in '..\common\SDeanUtils\SDUGeneral.pas',
+  SDFilesystem_FAT in '..\common\Filesystem\SDFilesystem_FAT.pas',
+  SDUWebDav in '..\common\SDeanUtils\SDUWebDav.pas',
+  SDUHTTPServer in '..\common\SDeanUtils\SDUHTTPServer.pas';
 
 {$R *.res}
 {$R FreeOTFEExplorerCursors.res}

@@ -13,6 +13,8 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls,
+  //doxbox
+  SDUGeneral,
   OTFEFreeOTFEBase_U,
   OTFEFreeOTFE_U,
   SDUForms;
@@ -49,7 +51,7 @@ type
     function GetHiddenOffset(): Int64;
     { Private declarations }
   public
-    DriveLetter: ansichar;
+    DriveLetter: DriveLetterChar;
     OTFEFreeOTFE: TOTFEFreeOTFE;
   end;
 
@@ -61,9 +63,10 @@ implementation
 uses
   ActiveX,  // Required for IsEqualGUID
   ComObj,  // Required for StringToGUID
+  //sdu
   SDUi18n,
   SDUDialogs,
-  SDUGeneral,
+  //doxbox
   OTFEFreeOTFE_DriverAPI;  // Required for NULL_GUID
 
 
