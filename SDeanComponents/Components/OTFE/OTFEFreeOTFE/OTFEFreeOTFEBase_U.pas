@@ -1951,6 +1951,7 @@ var
   mr: integer;
   mainCypherDetails: TFreeOTFECypher_v3;
   mountForAllUsers: boolean;
+  // emptyIV :TSDUBytes;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
   retVal := TRUE;
@@ -2095,7 +2096,7 @@ begin
               // Bail out...
               break;
               end;
-
+            // SDUInitAndZeroBuffer(0, emptyIV);
             if CreateMountDiskDevice(
                                  volumeFilenames[i],
                                  volumeKey,
@@ -2295,7 +2296,7 @@ function TOTFEFreeOTFEBase.MountLUKS(
   volumeFilenames: TStringList;
   var mountedAs: ansistring;
   readonly: boolean = FALSE;
-  password: Ansistring = '';
+  password: PasswordString = '';
   keyfile: string = '';
   keyfileIsASCII: boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
   keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
@@ -5028,7 +5029,7 @@ begin
     begin
     frmWizard:= TfrmWizardCreateVolume.Create(nil);
     try
-      frmWizard.FreeOTFEObj := self;
+      frmWizard.fFreeOTFEObj := self;
 
       mr := frmWizard.ShowModal();
       if (mr = mrOK) then
@@ -5807,7 +5808,7 @@ begin
     dlg:= TfrmWizardChangePasswordCreateKeyfile.Create(nil);
     try
       dlg.ChangePasswordCreateKeyfile := opChangePassword;
-      dlg.FreeOTFEObj := self;
+      dlg.fFreeOTFEObj := self;
       allOK := (dlg.ShowModal() = mrOK);
     finally
       dlg.Free();
@@ -5823,24 +5824,21 @@ end;
 function TOTFEFreeOTFEBase.WizardCreateKeyfile(): boolean;
 var
   dlg: TfrmWizardChangePasswordCreateKeyfile;
-  allOK: boolean;
 begin
-  allOK := FALSE;
+  Result := FALSE;
 
   if WarnIfNoHashOrCypherDrivers() then
     begin
     dlg:= TfrmWizardChangePasswordCreateKeyfile.Create(nil);
     try
       dlg.ChangePasswordCreateKeyfile := opCreateKeyfile;
-      dlg.FreeOTFEObj := self;
-      allOK := (dlg.ShowModal() = mrOK);
+      dlg.fFreeOTFEObj := self;
+      Result := (dlg.ShowModal() = mrOK);
     finally
       dlg.Free();
     end;
     
     end;
-
-  Result := allOK;
 end;
 
 

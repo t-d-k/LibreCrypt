@@ -477,6 +477,7 @@ begin
 end;
 
 
+{ TODO 1 -otdk -crefactor : convert to use bytes instead of ansichar }
 // This may *only* be called *after*:
 //   cryptlib_LoadDLL(...)
 //   cryptlib_cryptInit(...)

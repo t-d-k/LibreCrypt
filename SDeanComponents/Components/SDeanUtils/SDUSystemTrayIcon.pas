@@ -1235,7 +1235,7 @@ function TSDUSystemTrayIcon.IsOnMainForm(): boolean;
 begin
   Result :=
       (owner <> nil) and
-{$IFDEF VER185}
+{$IFNDEF VER180}
       (
        // If Application.MainFormOnTaskbar is set, use the form name,
        // otherwise check exactly
@@ -1268,7 +1268,7 @@ begin
   DebugWM('NewWindowProc', msg);
   handled := FALSE;
   // Note: This is NOT the same as IsOnMainForm(...) in the previous version
-{$IFDEF VER185}
+{$IFNDEF VER180}
   if  (owner <> nil) and
       (
        // If Application.MainFormOnTaskbar is set, use the form name,

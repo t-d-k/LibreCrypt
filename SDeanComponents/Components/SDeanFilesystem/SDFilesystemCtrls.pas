@@ -274,6 +274,7 @@ type
 
     procedure BeginUpdate();
     procedure EndUpdate();
+    procedure ChooseColumns();
 
   published
     property Filesystem: TSDCustomFilesystem read FFilesystem write SetFilesystem;
@@ -1868,6 +1869,11 @@ begin
 
   Result := retval;
 
+end;
+
+procedure TSDCustomFilesystemListView.ChooseColumns;
+begin
+{ TODO 1 -otdk -cfix : implement }
 end;
 
 procedure TSDCustomFilesystemListView.ColRightClick(Column: TListColumn; Point: TPoint);

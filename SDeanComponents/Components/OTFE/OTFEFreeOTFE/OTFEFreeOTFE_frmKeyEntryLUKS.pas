@@ -72,8 +72,8 @@ type
     procedure Initialize();
 
     // Key...
-    function  GetKey(var userKey: Ansistring): boolean;
-    function  SetKey(userKey: Ansistring): boolean;
+    function  GetKey(var userKey: PasswordString): boolean;
+    function  SetKey(userKey: PasswordString): boolean;
     function  SetKeyfile(filename: string): boolean;
     function  GetKeyfileIsASCII(var isASCII: boolean): boolean;
     function  SetKeyfileIsASCII(isASCII: boolean): boolean;
@@ -212,7 +212,7 @@ end;
 
 procedure TfrmKeyEntryLUKS.pbOKClick(Sender: TObject);
 var
-  tmpKey: Ansistring;
+  tmpKey: PasswordString;
   msgZeroLenKey: string;
 begin
   if GetKey(tmpKey) then
@@ -364,12 +364,12 @@ begin
 end;
 
 
-function TfrmKeyEntryLUKS.GetKey(var userKey: Ansistring): boolean;
+function TfrmKeyEntryLUKS.GetKey(var userKey: PasswordString): boolean;
 begin
   Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKey(userKey);
 end;
 
-function TfrmKeyEntryLUKS.SetKey(userKey: Ansistring): boolean;
+function TfrmKeyEntryLUKS.SetKey(userKey: PasswordString): boolean;
 begin
   Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.SetKey(userKey);
 end;

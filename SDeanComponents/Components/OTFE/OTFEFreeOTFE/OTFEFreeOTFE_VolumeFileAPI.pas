@@ -11,8 +11,11 @@ unit OTFEFreeOTFE_VolumeFileAPI;
 interface
 
 uses
-  OTFEFreeOTFE_DriverAPI,
-  Windows;  // Required for DWORD
+
+  Windows,// Required for DWORD
+  //doxbox
+   OTFEFreeOTFE_DriverAPI, SDUGeneral
+  ;
 
 const
   // The CDB version ID to be used in all new CDBs
@@ -87,6 +90,7 @@ const
 type
   // Note: If this is changed, the DumpCriticalDataToFile(...) function should
   //       probably also be changed
+  // not stored in binary form - cna change if needed
   PVolumeDetailsBlock = ^TVolumeDetailsBlock;
   TVolumeDetailsBlock = packed record
     CDBFormatID: byte;
@@ -97,7 +101,7 @@ type
     MasterKeyLength: DWORD;  // In *bits*
     MasterKey: Ansistring;
 
-    RequestedDriveLetter: Ansichar;
+    RequestedDriveLetter: DriveLetterChar;
 
     SectorIVGenMethod: TFreeOTFESectorIVGenMethod;
 

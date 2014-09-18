@@ -7,7 +7,9 @@ uses
   pkcs11_api,
   pkcs11_object,
   pkcs11_attribute,
-  pkcs11_mechanism;
+  pkcs11_mechanism
+//sdu
+  ;
 
 type
   TPKCS11UserType = (utUser, utSecurityOfficer, utContextSpecific);
@@ -245,6 +247,7 @@ begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_GenerateRandom, FN_NAME_C_GenerateRandom);
 
   // Setup the returned string so it's large enough to store the random data
+  // SDUInitAndZeroBuffer(byteCount, randomData );
   randomData := StringOfChar(AnsiChar('X'), byteCount);
 
   LastRV := LibraryFunctionList.CK_C_GenerateRandom(

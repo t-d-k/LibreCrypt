@@ -8,7 +8,9 @@ uses
   pkcs11t,
   pkcs11_library,
   pkcs11_session,
-  pkcs11_object;
+  pkcs11_object
+  //doxbox
+  ;
 
 const
   PKCS11_NO_SLOT_ID = -100; // -1 reserved for Windows.CB_ERR
@@ -320,6 +322,7 @@ implementation
 
 uses
   SysUtils,
+//doxbox
   SDUGeneral,
   SDUi18n,
   pkcs11_attribute,

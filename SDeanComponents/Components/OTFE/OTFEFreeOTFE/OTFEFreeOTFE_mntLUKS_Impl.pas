@@ -1288,15 +1288,14 @@ function TOTFEFreeOTFEBase.ReadLUKSKeyFromFile(
   filename: string;
   treatAsASCII: boolean;
   ASCIINewline: TSDUNewline;
-  out key: Ansistring
+  out key: PasswordString
 ): boolean;
 var
-  retval: boolean;
   newlinePos: integer;
 begin
-  retval := SDUGetFileContent(filename, key);
+  Result := SDUGetFileContent(filename, key);
 
-  if retval then
+  if Result then
     begin
     // If the input file was non-binary, only read in to the first newline
     if treatAsASCII then
@@ -1305,12 +1304,11 @@ begin
       if (newlinePos > 0) then
         begin
         // -1 to actually *exclude* the newline
-        key := Copy(Key, 1, (newlinePos-1));
+        key := Copy(key, 1, (newlinePos-1));
         end;
       end;
     end;
 
-  Result := retval;
 end;
 
 

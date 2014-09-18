@@ -1,4 +1,5 @@
 
+
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEBase.GetRandom(len: integer): string;
 var
@@ -34,6 +35,7 @@ var
   tmpString: Ansistring;
   hashDetails: TFreeOTFEHash;
 begin
+  // SDUInitAndZeroBuffer(0, output);
   output := '';
   
   digestSizeBytes := 0;
@@ -74,6 +76,7 @@ begin
         begin
         break;
         end;
+      // SDUAddArrays(output,hashOutput);
 
       output := output + hashOutput;
       end;  // for i:=0 to (inputDivDigestBytes-1) do
@@ -101,6 +104,7 @@ begin
       for j:=0 to (inputModDigestBytes-1) do
         begin
         // +1 because strings start from 1
+        // SDUAddByte(output,hashOutput[j + 1]);
         output := output + hashOutput[j + 1];
         end;
       end;
@@ -184,6 +188,7 @@ var
 {$ENDIF}
 begin
   allOK := TRUE;
+  // SDUInitAndZeroBuffer(  blockLength,   prev);
 
   prev := StringOfChar(#0, blockLength);
   // -1 because we don't process the last block

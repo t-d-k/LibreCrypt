@@ -4,7 +4,9 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, StdCtrls, SDUStdCtrls, SDUFrames, SDUFilenameEdit_U, ComCtrls,
+  Dialogs, StdCtrls, 
+  //doxbox
+     SDUStdCtrls, SDUFrames, SDUFilenameEdit_U, ComCtrls,
   PasswordRichEdit, OTFEFreeOTFE_PasswordRichEdit, SDUDropFiles,
   OTFEFreeOTFEBase_U,
   SDUGeneral;
@@ -36,9 +38,9 @@ type
 
     procedure EnableDisableControls();
 
-    function  GetKey(var userKey: Ansistring): boolean;
+    function  GetKey(var userKey: PasswordString): boolean;
     function  GetKeyRaw(var userKey: string): boolean;
-    function  SetKey(userKey: Ansistring): boolean;
+    function  SetKey(userKey: PasswordString): boolean;
     function  SetKeyfile(filename: string): boolean;
     function  GetKeyfile(var filename: string): boolean;
     function  GetKeyfileIsASCII(var isASCII: boolean): boolean;
@@ -150,14 +152,14 @@ begin
   Result := TRUE;
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKey(var userKey: Ansistring): boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKey(var userKey: PasswordString): boolean;
 var
   retval: boolean;
   keyfileIsASCII: boolean;
   keyfileNewlineType: TSDUNewline;
 begin
   retval := FALSE;
-  
+
   if rbKeyFromUser.checked then
     begin
     { TODO 1 -otdk -cfix : warn user about losing unicde chars }
@@ -183,9 +185,9 @@ begin
   Result := retval;
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SetKey(userKey: Ansistring): boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SetKey(userKey: PasswordString): boolean;
 begin
-  preUserkey.Text := userKey;
+  preUserkey.Text :=userKey;
   Result := TRUE;
 end;
 

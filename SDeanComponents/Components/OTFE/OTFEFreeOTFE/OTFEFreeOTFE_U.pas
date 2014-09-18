@@ -952,7 +952,8 @@ DebugMsg('  size: '+inttostr(size));
     // Copy as much of the hash value as possible to match the key length
     volumeKey := Copy(volumeKey, 1, min((mainCypherDetails.KeySizeRequired div 8), length(volumeKey)));
     // If the hash wasn't big enough, pad out with zeros
-    volumeKey := volumeKey + StringOfChar(AnsiChar(#0), ((mainCypherDetails.KeySizeRequired div 8) - Length(volumeKey)));
+    // SDUResetLength(volumeKey,mainCypherDetails.KeySizeRequired div 8);
+     volumeKey := volumeKey + StringOfChar(AnsiChar(#0), ((mainCypherDetails.KeySizeRequired div 8) - Length(volumeKey)));
     end;
 
 
@@ -3178,6 +3179,7 @@ DebugMsg('hashByteCount: '+inttostr(hashByteCount));
 
               // Set hashOut so that it has enough characters which can be
               // overwritten with StrMove
+              // SDUInitAndZeroBuffer(hashByteCount,hashOut);
               hashOut := StringOfChar(#0, hashByteCount);
               StrMove(PAnsiChar(hashOut), @ptrDIOCBufferOut.Hash, hashByteCount);
 
@@ -3464,6 +3466,7 @@ DebugMsg('outputByteCount: '+inttostr(outputByteCount));
 
           // Set DK so that it has enough characters which can be
           // overwritten with StrMove
+          // SDUInitAndZeroBuffer(outputByteCount,DK);
           DK := StringOfChar(#0, outputByteCount);
           StrMove(PAnsiChar(DK), @ptrDIOCBufferOut.DerivedKey, outputByteCount);
 
@@ -4268,7 +4271,8 @@ function TOTFEFreeOTFE.ReadWritePlaintextToVolume(
 var
   allOK: boolean;
   deviceName: string;
-  dummyMetadata: TOTFEFreeOTFEVolumeMetaData; 
+  dummyMetadata: TOTFEFreeOTFEVolumeMetaData;
+  // emptyIV:TSDUBytes;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
 
@@ -4285,7 +4289,7 @@ begin
                                    PKCS11_NO_SLOT_ID,  // PKCS11 SlotID
                                    dummyMetadata
                                   );
-                                  
+       // SDUInitAndZeroBuffer(0,emptyIV);
       // Attempt to mount the device
       allOK := MountDiskDevice(
                          deviceName,

@@ -41,7 +41,7 @@ function ReadLUKSKeyFromFile(
   filename: string;
   treatAsASCII: boolean;
   ASCIINewline: TSDUNewline;
-  out key: Ansistring
+  out key: PasswordString
 ): boolean;
 
 

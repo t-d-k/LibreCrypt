@@ -564,6 +564,7 @@ var
   dummyMetadata: TOTFEFreeOTFEVolumeMetaData;
   tempMountDriveLetter: Ansichar;
   stm: TSDUMemoryStream;
+  // emptyIV : TSDUBytes;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
 
@@ -578,7 +579,7 @@ begin
   // Attempt to mount the device
 
   tempMountDriveLetter:= GetNextDriveLetter();
-
+  // SDUInitAndZeroBuffer(0,emptyIV);
   allOK := MountDiskDevice(
                      tempMountDriveLetter,
                      volFilename,
@@ -1586,6 +1587,7 @@ DebugMsg('hashByteCount: '+inttostr(hashByteCount));
 
             // Set hashOut so that it has enough characters which can be
             // overwritten with StrMove
+            // SDUInitAndZeroBuffer(hashByteCount, hashOut );
             hashOut := StringOfChar(Ansichar(#0), hashByteCount);
             StrMove(PAnsiChar(hashOut), @ptrDIOCBufferOut.Hash, hashByteCount);
 
@@ -1825,6 +1827,7 @@ DebugMsg('outputByteCount: '+inttostr(outputByteCount));
 
         // Set DK so that it has enough characters which can be
         // overwritten with StrMove
+        // SDUInitAndZeroBuffer(outputByteCount,DK);
         DK := StringOfChar(AnsiChar(#0), outputByteCount);
         StrMove(PAnsiChar(DK), @ptrDIOCBufferOut.DerivedKey, outputByteCount);
 
@@ -2227,6 +2230,7 @@ DebugMsg('  size: '+inttostr(size));
     // Copy as much of the hash value as possible to match the key length
     volumeKey := Copy(volumeKey, 1, min((mainCypherDetails.KeySizeRequired div 8), length(volumeKey)));
     // If the hash wasn't big enough, pad out with zeros
+    // SDUResetLength(volumeKey,(mainCypherDetails.KeySizeRequired div 8));
     volumeKey := volumeKey + StringOfChar(AnsiChar(#0), ((mainCypherDetails.KeySizeRequired div 8) - Length(volumeKey)));
     end;
 

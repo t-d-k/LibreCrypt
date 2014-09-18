@@ -157,7 +157,7 @@ begin
       not(EndSessionFlag) and
       SDUSystemTrayIcon1.Active and
       ckCloseToIcon.checked and
-{$IFDEF VER185}
+{$IFNDEF VER180}
       (
        // If Application.MainFormOnTaskbar is set, use the form name,
        // otherwise check exactly
@@ -200,7 +200,7 @@ begin
       not(EndSessionFlag) and
       SDUSystemTrayIcon1.Active and
       ckCloseToIcon.checked and
-{$IFDEF VER185}
+{$IFNDEF VER180}
       (
        // If Application.MainFormOnTaskbar is set, use the form name,
        // otherwise check exactly
