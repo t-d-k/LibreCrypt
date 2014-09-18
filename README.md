@@ -5,7 +5,7 @@
 [![DoxBox logo](src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 
 
@@ -17,7 +17,6 @@ _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 <a href="https://github.com/t-d-k/doxbox/releases/download/v6.0-beta/DoxBoxPortable.zip">Download DoxBox Portable</a>
 </BUTTON>
 </DIV>
-
 
 ##	Features
 
@@ -39,7 +38,7 @@ _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 ## coming soon
 New features in version 6.1
 
-* Fix security flaw in plausible deniability inherited from FreeOTFE (see http://DoxBox.eu/doxbox/plausible_deniability.html)
+* Fix security flaw in [plausible deniability](http://DoxBox.eu/doxbox/plausible_deniability.html) inherited from FreeOTFE
 * Prompts before connecting to the internet (issue 1)
 * Translations available
 * Ease of use improvements including automatically formatting a new Box
