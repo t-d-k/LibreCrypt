@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -38,13 +38,12 @@ _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 	* Other MAC algorithms (e.g. PMAC, OMAC)
 	* update Command line utilities
 	* update docs to reflect name change and feature changes
-	* refactor forms out of components into common library 
-	* (Constructive) suggestions welcome.
-	* add native linux support for freeotfe - partic hidden vols
+	* refactor forms out of components into common library	
+	* add ability to create LUKS conainers. -> make this default 
+	* hidden vols on linux with salt? investigate
 	* improve linux scripts
-	* write usage guide
-
-
+	* write quick usage guide
+	* (Constructive) suggestions welcome.
 
 
 

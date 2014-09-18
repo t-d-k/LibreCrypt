@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -43,6 +43,24 @@ _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 		5. Add 'default hidden offset' to volume properties
 		6. Add tool to set windows to allow unsigned drivers 
 		7. Rename and rebrand to 'DoxBox'
+		
+		
+  * FreeOTFE v6.00 (unreleased 2011)
+  
+    * Added password expiry option
+    * Added password strength enforcement option
+    * Added password analysis
+    * Default drive letter processing changed; precedence is now: 1) Drive specified by user at mount time, 2) Any drive set in the volume's CDB, 3) Any default drive letter specified in "Options" dialog, and 4) The first available drive letter.
+    * Added support for "-plain64" Linux volumes
+    * Add support for partition based volumes stored on drives with 4096 byte sectors (file based volumes on such drives already supported in previous versions)
+    * Added support for partition based volumes on GPT partitioned disks
+    * Added Simplified Chinese translation
+    * Updated Croatian language translation
+    * Updated CDB version to v5
+    * Various minor improvements to the drivers to improve sanity checking and builds under WDK v7.1.0 (7600.16385.1)
+    * Various changes to allow the source to build under unicode versions of Delphi (Delphi 2009 and later)
+    * Bugfix to "keyfile contains ASCII password" option when mounting LUKS volumes using keyfiles
+    
 		
   * v5.21 (7th February 2010)
 

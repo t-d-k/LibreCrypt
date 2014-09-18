@@ -1,7 +1,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <TITLE>Advanced Topics</TITLE>
 <link href="styles_common.css" rel="stylesheet" type="text/css">
@@ -204,7 +204,7 @@ However, this does increase the size of the volume by the size of the CDB, which
 
 This is most clearly shown when creating a file based volume: a 2GB volume, for example, will be 2,147,484,160 bytes in length - made up of a 2,147,483,648 byte (2GB) encrypted disk image, plus a 512 byte embedded CDB.
 
-To reduce this, it is possible to create a volume _without_ an embedded CDB; the CDB begin stored in a separate file as a standard DoxBox keyfile.
+To reduce this, it is possible to create a volume _without_ an embedded CDB; the CDB being stored in a separate file as a standard DoxBox keyfile.
 
 In this case, a 2GB volume would comprise of a 2,147,483,648 byte (2GB) encrypted disk image, plus a separate 512 byte keyfile which may be stored in a separate location to the volume.
 
@@ -219,7 +219,7 @@ By default, DoxBox includes the CDB will be included as part of the volume.
 
 "Padding" is additional random data added to the end of a volume file. Any padding added will not be available for use as part of the mounted volume, and serves to increase the size of the volume.
 
-Encrypted volumes typically have a file size that is a multiple of 512 bytes, or a "signature size" beyond the last 1MB boundry. To prevent this, you may wish to append random "padding" data to the new volume.
+Encrypted volumes typically have a file size that is a multiple of 512 bytes, or a "signature size" beyond the last 1MB boundary. To prevent this, you may wish to append random "padding" data to the new volume.
 
 Padding also reduces the amount of information available to an attacker with respect to the maximum amount of the encrypted that may actually be held within the volume.
 
@@ -262,7 +262,7 @@ By default, this is set to 2048 iterations - the same default number used when c
 ##### PKCS#11 secret key
 </A>
 
-This option is only available if PKCS#11 support is enabled (see the section on [Security Token/Smartcard Support](pkcs11_support.md) for more information on how to use this setting.
+This option is only available if PKCS#11 support is enabled (see the section on [Security Token/Smartcard Support](pkcs11_support.md) for more information on how to use this setting).
 
 <A NAME="level_4_heading_11">
 
@@ -323,8 +323,11 @@ By default, this checkbox is checked.
 
 * * *
 
-<A NAME="level_3_heading_6">
 
+
+
+
+<A NAME="level_3_heading_6">
 ### Driver Control
 </A>
 
@@ -430,5 +433,101 @@ The start/stop buttons start and stop the selected driver
 </A>
 
 Uninstalls the selected driver, and removes it from the drivers list.
+
+
+
+<A NAME="level_3_heading_6">
+### Password management
+</A>
+
+
+<A NAME="level_4_heading_13">
+#### Password Expiry
+</A>
+
+When setting the password on a DoxBox volume, the date on which the password was changed is stored in the volume's CDB. If password expiry is turned on (via the "Password Expiry" tab on the Options dialog), the user will be prevented from mounting the volume when a specified number of days from this date have elapsed. Prior to this, the user will be warned when mounting volumes that are nearing their expiry date.
+
+
+Changing the volume's password will reset the "password last changed" date within the volume's CDB, and effectively reset password expiry on that volume.
+
+Note: Password expiry is /not/ intended, and should not be used, as a "volume timeout" feature for distributing "time-limited" volumes which cannot be accessed after a certain period of time. The purpose of password expiry is to assist the user in periodically changing their password to improve security.
+
+
+
+Volumes which have use CDB v4 or earlier (i.e. those created prior to DoxBox v6.00, FreeOTFE Explorer v4.00 and F4PDA v6.00) do not store the necessary "password last updated" date in the CDB, and will not have expiring passwords, even if this functionality is turned on within DoxBox. To upgrade such a volume to allow password expiry, simply change the volume's password. This will update the CDB to v5 or later.
+
+<A NAME="level_4_heading_14">
+#### Password Strength
+</A>
+
+<A NAME="level_5_heading_9">
+##### Password Requirements
+</A>
+
+
+
+The user can set various requirements that new passwords must meet before they will be accepted, including:
+
+* Minimum password length
+* Characters which must represented in the password (e.g. uppercase letters, numbers, punctuation characters)
+* The password must not appear in a user-supplied dictionary (wordlist) file
+* The password cannot be a keyboard pattern (e.g. "qwerty")
+* The password cannot contain a repeated character (e.g. "abc11111xyz", "aaa")
+* The password cannot be a repeated word (e.g. "11111", "fredfred")
+* The password cannot contain a sequential string (e.g. "xyz12345", "abc")
+
+When changing a volume's password, the user can also further require that the new password is not similar to the old password. This is especially important when password expiry is turned on, and prevents the user from reusing their old password with only trivial (and often highly predictable) changes made to it (e.g. Changing "SecurePassword1" to "SecurePassword2", or "SecurePassword2" to "SecurePassword3").
+
+Password similarity is determined by calculating the Levenshtein distance between the old and new passwords. This figure is then changed into a percentage of the length of the longer of the two passwords and checked against a user configured threshold.
+
+For example, if a volumes original password was "myPassword!1111", and the user tried to change it to "myPassword!2222", the Levenshtein distance would be 4. As a percentage of the longest password (15 characters), this would represent a (4 / 15) 26.67% change from the old password. If the user required a minimum 50% change, this password would not be accepted. The new password "theNew%Password!9999" (with a Levenshtein distance of 12 from the old password, representing a (12 / 20) 60% change, would be accepted as being sufficiently different.
+
+
+<A NAME="level_5_heading_10">
+##### Password Analysis
+</A>
+
+
+
+When the user specifies a password for a new volume, or changes an existing volume's password, they have the option of carrying out analysis on the password entered in order to check it against a range of characteristics that are characteristic of weak passwords.
+
+
+
+Unlike many security applications, DoxBox does /not/ include a "password strength" meter, as these typically carry out fairly arbitrary checks, and often yield misleading results.
+
+
+<A NAME="level_5_heading_11">
+##### Dictionary (aka Wordlist) Files
+</A>
+
+Dictionary files (aka wordlist files) are straightforward text files which contain numerous words, one per line.
+
+
+
+DoxBox and DoxBox Explorer can be configured to check passwords against such files, to filter out weak passwords.
+
+
+
+DoxBox also supports wordlists in the Diceware (5 digit number, single space/tab, then word) and Mozilla Firefox (word followed by a single "/") formats.
+
+
+
+Suitable dictionary files are widely available on the Internet; for example:
+
+<TABLE>
+<TBODY>
+
+<TR> <TH>Dictionary/Wordlist</TH> <TH>URL</TH> </TR>
+
+<TR> <TD>The Institute for Language, Speech and Hearing: Moby project</TD> <TD><A HREF="http://icon.shef.ac.uk/Moby/">http://icon.shef.ac.uk/Moby/</A></TD> </TR>
+<TR> <TD>Oxford University</TD> <TD><A HREF="ftp://ftp.ox.ac.uk/pub/wordlists/">ftp://ftp.ox.ac.uk/pub/wordlists/</A></TD> </TR>
+<TR> <TD>packet storm</TD> <TD><A HREF="http://packetstormsecurity.org/Crackers/wordlists/page1/">http://packetstormsecurity.org/Crackers/wordlists/page1/</A></TD> </TR>
+<TR> <TD>The Diceware wordlists</TD> <TD><A HREF="http://world.std.com/~reinhold/diceware.html">http://world.std.com/~reinhold/diceware.html</A></TD> </TR>
+<TR> <TD>outpost9</TD> <TD><A HREF="http://www.outpost9.com/files/WordLists.html">http://www.outpost9.com/files/WordLists.html</A></TD> </TR>
+<TR> <TD>The Mozilla Firefox dictionary</TD> <TD>&lt;Firefox installation directory&gt;\dictionaries</TD> </TR>
+</TBODY>
+</TABLE>
+
+
 
 

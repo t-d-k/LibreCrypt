@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -49,28 +49,18 @@ Thanks go to:
 ### Translations
 </A>
 
-<TABLE>
+
+<TABLE> 
 <TR> <TH>Language</TH> <TH>Translator</TH> </TR>
-
-<TR> <TD>German</TD> <TD>Volkmar Brandmaier ([brandmaier@gmx.net](mailto:brandmaier@gmx.net))</TD> </TR>
-
-<TR> <TD>Italian</TD> <TD>Daniele ([fuzzee@virgilio.it](mailto:fuzzee@virgilio.it))</TD> </TR>
-
-<TR> <TD>French</TD> <TD>Daniel Berthereau ([Daniel.fr@Berthereau.net](mailto:Daniel.fr@Berthereau.net))</TD> </TR>
-
-<TR> <TD>Spanish</TD> <TD>Luis Santalla ([luis.santalla@hotmail.com](mailto:luis.santalla@hotmail.com))</TD> </TR>
-
-<TR> <TD>Czech</TD> <TD>Tomas Ruzicka ([tr3027@seznam.cz](mailto:tr3027@seznam.cz))</TD> </TR>
-
-<TR> <TD>Japanese</TD> <TD>Hiroaki Ohtsuka ([hgc00566@nifty.ne.jp](mailto:hgc00566@nifty.ne.jp))</TD> </TR>
-
-<TR> <TD>Croatian</TD> <TD>Zlatko Zivkovic ([zzivkovic@cogeco.ca](mailto:zzivkovic@cogeco.ca))</TD> </TR>
-
-<TR> <TD>Greek</TD> <TD>Geogeo ([geogeo64@yahoo.gr](mailto:geogeo64@yahoo.gr))</TD> </TR>
-
-<TR> <TD>Russian</TD> <TD>Dmitry Yerokhin ([erodim@mail.ru](mailto:erodim@mail.ru))</TD> </TR>
-
+<TR> <TD>Croatian</TD> <TD> Zlatko Zivkovic (<a href="mailto:zzivkovic@cogeco.ca">zzivkovic@cogeco.ca</A>) <BR> dboki89 (<a href="mailto:dboki89@yahoo.com">dboki89@yahoo.com</A>) </TD> </TR> 
+<TR> <TD>Czech</TD> <TD>Tomas Ruzicka (<a href="mailto:tr3027@seznam.cz">tr3027@seznam.cz</A>)</TD> </TR>
+<TR> <TD>French</TD> <TD>Daniel Berthereau (<a href="mailto:Daniel.fr@Berthereau.net">Daniel.fr@Berthereau.net</A>)</TD> </TR> 
+<TR> <TD>German</TD> <TD>Volkmar Brandmaier (<a href="mailto:brandmaier@gmx.net">brandmaier@gmx.net</A>)</TD> </TR> 
+<TR> <TD>Greek</TD> <TD>Geogeo (<a href="mailto:geogeo64@yahoo.gr">geogeo64@yahoo.gr</A>)</TD> </TR>
+<TR> <TD>Italian</TD> <TD>Daniele (<a href="mailto:fuzzee@virgilio.it">fuzzee@virgilio.it</A>)</TD> </TR>
+<TR> <TD>Japanese</TD> <TD>Hiroaki Ohtsuka (<a href="mailto:hgc00566@nifty.ne.jp">hgc00566@nifty.ne.jp</A>)</TD> </TR> 
+<TR> <TD>Russian</TD> <TD>Dmitry Yerokhin (<a href="mailto:erodim@mail.ru">erodim@mail.ru</A>)</TD> </TR> 
+<TR> <TD>Simplified Chinese</TD> <TD>Erik</TD> </TR>
+<TR> <TD>Spanish</TD> <TD>Luis Santalla (<a href="mailto:luis.santalla@hotmail.com">luis.santalla@hotmail.com</A>)</TD> </TR>
 </TABLE>
-
-
 

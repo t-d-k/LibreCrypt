@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -320,22 +320,13 @@ The following table lists compatibility with LUKS cypher modes:
 
 <TABLE style="text-align: left;">
   <TBODY>
-    <TR>
-      <TH>Mode </TH> <TH>Compatibility </TH>
-    </TR>
-    <TR>
-      <TD>ecb</TD> <TD>Not supported by DoxBox.  Note: This is a pretty insecure mode - the use of ECB is **highly discouraged**, and DoxBox is unlikely to ever support this mode.</TD>
-    </TR>
-    <TR>
-      <TD>cbc-plain</TD> <TD>Supported by DoxBox.</TD>
-    </TR>
-    <TR>
-      <TD>cbc-essiv:**&lt;hash&gt;**</TD> <TD>Supported by DoxBox</TD>
-
-    </TR>
-    <TR>
-      <TD>xts-plain       </TD> <TD>Supported by DoxBox</TD>
-    </TR>
+    <TR> <TH>Mode </TH> <TH>Compatibility </TH> </TR>
+    <TR> <TD>ecb</TD> <TD>Not supported by DoxBox.  Note: This is a pretty insecure mode - the use of ECB is **highly discouraged**, and DoxBox is unlikely to ever support this mode.</TD> </TR>
+    <TR> <TD>cbc-plain</TD> <TD>Supported by DoxBox.</TD> </TR>
+    <TR> <TD>cbc-essiv:**&lt;hash&gt;**</TD> <TD>Supported by DoxBox</TD> </TR>
+		<TR> <TD>lrw-benbi </TD> <TD>Supported by DoxBox</TD> </TR>
+		<TR> <TD>xts-plain       </TD> <TD>Supported by DoxBox</TD> </TR> 
+		<TR> <TD>xts-plain64 </TD> <TD>Supported by DoxBox</TD> </TR>
   </TBODY>
 </TABLE>
 

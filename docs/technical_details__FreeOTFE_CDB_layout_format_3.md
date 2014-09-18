@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -22,10 +22,7 @@
 _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
-
       
-            
-
 ### Technical Details: DoxBox Critical Data Block (CDB) Layout (CDB Format ID 3)
 
 <A NAME="level_4_heading_1">
@@ -57,7 +54,7 @@ A DoxBox critical data block consists of **CDL** bits of data. The following tab
 				<TD>Encrypted partition image length</TD>
 				<TD>Master key length</TD>
 				<TD>Master key</TD>
-				<TD ="">Requested drive letter</TD>		
+				<TD>Requested drive letter</TD>		
 				<TD>Volume IV length</TD>		
 				<TD>Volume IV</TD>
 				<TD>Sector IV generation method</TD>
@@ -69,10 +66,12 @@ A DoxBox critical data block consists of **CDL** bits of data. The following tab
 			</TR>
 			</TBODY>
 		</TABLE>
-	</TD><TD>Random padding #1</TD>
+	</TD>
+         <TD>Random padding #1</TD>
 	
 	</TR>
-	</TBODY></TABLE>
+	</TBODY>
+        </TABLE>
 	</TD>
 	
 	</TR>
@@ -92,11 +91,7 @@ Color key:
 
 Seem intimidating? Read on, and all will become clear... When broken down into its component parts, the CDB structure is reasonably straightforward to understand.
 
-</p>
-
 Note: Throughout this document, the following definitions apply:
-
-</p>
 
 <TABLE>
 
@@ -110,8 +105,6 @@ Note: Throughout this document, the following definitions apply:
     <TR> <TD>**ml**</TD> <TD>MAC length (in bits)  This is the length of MAC generated</TD> </TR>
   </TBODY>
 </TABLE>
-
-</p>
 
 * * *
 
@@ -129,12 +122,11 @@ Note: Throughout this document, the following definitions apply:
 <TBODY>
 <TR> <TH>Item name</TH> <TH>Size (in bits)</TH> <TH>Description</TH> </TR>
 <TR> <TD>Password salt</TD> <TD>**sl**  (User specified to a max 512)</TD> <TD>This data is used together with the user's password to derive the "critical data key". This key is then used to encrypt/decrypt the "Encrypted block".</TD> </TR>
-<TR> <TD>Encrypted block</TD> <TD>If **cbs**&gt;8 then:  ((**CDL** - **sl**) div **cbs)** * **cbs**  If **cbs**&lt;=8 then:  (**CDL** - **sl**)  This size is referred to as "**leb**"</TD> <TD>This block contains the actual key which is used to encrypt/decrypt the encrypted partition image.  See below for further breakdown.  </p></TD> </TR>
+<TR> <TD>Encrypted block</TD> <TD>If **cbs**&gt;8 then:  ((**CDL** - **sl**) div **cbs)** * **cbs**  If **cbs**&lt;=8 then:  (**CDL** - **sl**)  This size is referred to as "**leb**"</TD> <TD>This block contains the actual key which is used to encrypt/decrypt the encrypted partition image. See below for further breakdown. </TD> </TR>
 <TR> <TD>Random padding #1</TD> <TD>((**CDL**- **sl**) - **leb**)</TD> <TD>Random "padding" data. Required to pad out any remaining, unused, bits in the **"critical data block"**</TD> </TR>
 <TR> <TD>*_Total size:_*</TD> <TD>**CDL**</TD> <TD></TD> </TR>
 </TBODY>
 </TABLE>
-
 
 * * *
 
@@ -149,51 +141,16 @@ Note: Throughout this document, the following definitions apply:
 
 As described above, this entire block is encrypted using the user's password, salt, and chosen hash and cypher algorithms. 
 
-</p>
-
 As this block is encrypted, its length (in bits) must be a multiple of the cypher's blocksize.
 
 <TABLE>
-<TBODY><TR>
-<TH>Item name</TH>
-
-<TH>Size (in bits)</TH>
-
-<TH>Description</TH>
-</TR>
-
-<TR>
-<TD>Check MAC</TD>
-
-<TD>_ml  _Up to a maximum of **MML **bits_        _ </TD>
-
-<TD>This is the MAC of the plaintext version of the "Volume details block".  If **hk** is zero or undefined, then this hash will be either truncated to **MML **bits, or right-padded with 0 bits up to a maximum of **MML **bits</TD>
-
-</TR>
-
- <TR> <TD>Random padding #3</TD> <TD>**MML **- **ml**</TD> <TD>Random "padding" data. Required to pad out the check MAC to a predetermined number of bits.</TD> </TR>
-<TR>
-<TD>Volume details</TD>
-
-<TD>**leb****** - **MML ** </TD>
-
-<TD>This stores the details of how to encrypt/decrypt the encrypted partition.</TD>
-</TR>
-
-<TR>
-<TD>*_Total size:_*</TD>
-
-<TD>**leb** </TD>
-
-<TD>       </TD>
-
-</TR>
+<TBODY>
+<TR><TH>Item name</TH><TH>Size (in bits)</TH><TH>Description</TH></TR>
+<TR><TD>Check MAC</TD><TD>_ml  _Up to a maximum of **MML **bits_        _ </TD><TD>This is the MAC of the plaintext version of the "Volume details block".  If **hk** is zero or undefined, then this hash will be either truncated to **MML **bits, or right-padded with 0 bits up to a maximum of **MML **bits</TD></TR>
+<TR> <TD>Random padding #3</TD> <TD>**MML** - **ml**</TD> <TD>Random "padding" data. Required to pad out the check MAC to a predetermined number of bits.</TD> </TR>
+<TR><TD>Volume details</TD><TD>**leb** - **MML ** </TD><TD>This stores the details of how to encrypt/decrypt the encrypted partition.</TD></TR>
+<TR><TD>*_Total size:_*</TD><TD>**leb** </TD><TD>       </TD></TR>
 </TBODY></TABLE>
-
-</p>
-
-</p>
-
 * * *
 
 #### Breakdown: Volume details block layout
@@ -210,9 +167,7 @@ As this block is encrypted, its length (in bits) must be a multiple of the cyphe
 <TD>Master key</TD>
       <TD>Requested drive letter</TD>
 <TD>Volume IV length</TD>
-
 <TD>Volume IV</TD>
-
 <TD>Sector IV generation method</TD>
 <TD>Random padding #2</TD>
 
@@ -236,9 +191,10 @@ Finally, we reach the details that the critical data block was designed to prote
 
 <TD>8</TD>
 
-<TD>This is a version ID which identifies the layout of the remainder of the volume details block  When this layout format is used, this will always be set to 3.  </p>
+<TD>This is a version ID which identifies the layout of the remainder of the volume details block. When this layout format is used, this will always be set to 3.  
       
-Later volume file layouts may have different items in this section, or the layout may change; in which case a different version ID will be used here.</p>
+Later volume file layouts may have different items in this section, or the layout may change; in which case a different version ID will be used here.
+
 </TD>
 </TR>
 
@@ -261,7 +217,8 @@ Bit - Description
 4 - Volume file timestamps normal operation  						 
 	0 = On dismount, volume file timestamps will be reset to the values they were when mounted
 	1 = On dismount, volume file timestamps will be left as-is (i.e. will indicate the date/time the volume was last written to)
-	Note: This bit gets ignored by the GUI, which will operate it according to the user options set at the time the volume is mounted</TD>
+	Note: This bit gets ignored by the GUI, which will operate it according to the user options set at the time the volume is mounted
+</TD>
 
 </TR>
 
@@ -283,7 +240,7 @@ Bit - Description
 <TR>
 <TD>Master key</TD>
 
-<TD>_cks  _</TD>
+<TD>_cks_</TD>
 
 <TD>This is set to the random data generated when the volume was created; and is the en/decryption key used to encrypt the encrypted partition image</TD>
 </TR>
@@ -323,7 +280,7 @@ Bit - Description
     </TR>
 <TR>
       <TD>Random padding #2</TD>
-      <TD>****_  _</TD>
+      <TD></TD>
       <TD>Random "padding" data. Required to pad out the encrypted block to a multiple of **bs**, and to increase the size of this block to the maximum length that can fit within the "critical data block".</TD>
     </TR>
 <TR>
@@ -331,14 +288,12 @@ Bit - Description
 
 <TD>**(leb****** - **MML)**  </TD>
 
-<TD>       </TD>
+<TD>       
+</TD>
 
 </TR>
+
 </TBODY></TABLE>
-
-</p>
-
-</p>
 
 * * *
 
@@ -362,11 +317,8 @@ The "Encrypted block" does contain a certain amount of data that may be reasonab
 
 The encrypted data block within a CDB is encrypted using:
 
-<UL>
 * A key derived from the user's password
 * A NULL IV
-
-</UL>
 
 The key used for this encryption/decryption depends on the CDB format used to create the CDB.
 
@@ -376,8 +328,6 @@ For older (CDB format 1) volumes, the key is derived as follows:
 1. The user's password is appended to the salt bits
 1. The result is hashed with the user's choice of hash algorithm
 1. If the cypher used has a fixed keysize, this hash value generated is truncated/right padded with NULLs until it is the same length as the cypher's keysize
-
-
 
 For newer (CDB format 2) volumes, the key is derived as follows:
 

@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -30,11 +30,8 @@ _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 
 This section gives a series of examples of how to create Linux LUKS volumes, and then mount them using DoxBox.
 
-These examples have been
-tested using Fedora Core 3, with a v2.6.20.1 kernel installed and using cryptsetup-luks v1.0; though
-they should work for all compatible Linux distributions.
+These examples have been tested using Fedora Core 3, with a v2.6.20.1 kernel installed and using cryptsetup v1.0; though they should work for all compatible Linux distributions.
 
-Note: The executable name in the following examples is "cryptsetup-luks"; most systems use "cryptsetup".
 
   * [Initial Setup](#level_3_heading_1)
   * [Defaults](#level_3_heading_2)
@@ -147,13 +144,13 @@ Creating the volume file under Linux:
 
 	dd if=/dev/zero of=./volumes/vol_default.box bs=1M count=1
 	losetup /dev/loop0 ./volumes/vol_default.box
-	echo password1234567890ABC | cryptsetup-luks luksFormat /dev/loop0
-	cryptsetup-luks luksDump /dev/loop0 
-	echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
+	echo password1234567890ABC | cryptsetup luksFormat /dev/loop0
+	cryptsetup luksDump /dev/loop0 
+	echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
 	dmsetup ls
 	dmsetup table
 	dmsetup status
-	cryptsetup-luks status myMapper
+	cryptsetup status myMapper
 	losetup /dev/loop1 /dev/mapper/myMapper
 	mkdosfs /dev/loop1
 	mkdir ./test_mountpoint
@@ -164,7 +161,7 @@ Creating the volume file under Linux:
 	cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
 	umount ./test_mountpoint
 	losetup -d /dev/loop1
-	cryptsetup-luks luksClose myMapper
+	cryptsetup luksClose myMapper
 	losetup -d /dev/loop0
 	rm -rf ./test_mountpoint
 
@@ -188,13 +185,13 @@ Creating the volume file under Linux:
 <pre>
 dd if=/dev/zero of=./volumes/vol_aes_256.box bs=1M count=1
 losetup /dev/loop0 ./volumes/vol_aes_256.box
-echo password1234567890ABC | cryptsetup-luks -c aes -s 256 luksFormat /dev/loop0
-cryptsetup-luks luksDump /dev/loop0 
-echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
+echo password1234567890ABC | cryptsetup -c aes -s 256 luksFormat /dev/loop0
+cryptsetup luksDump /dev/loop0 
+echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
 dmsetup ls
 dmsetup table
 dmsetup status
-cryptsetup-luks status myMapper
+cryptsetup status myMapper
 losetup /dev/loop1 /dev/mapper/myMapper
 mkdosfs /dev/loop1
 mkdir ./test_mountpoint
@@ -205,7 +202,7 @@ cp ./test_files/BINARY_ABC_RPTD.dat   ./test_mountpoint
 cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
 umount ./test_mountpoint
 losetup -d /dev/loop1
-cryptsetup-luks luksClose myMapper
+cryptsetup luksClose myMapper
 losetup -d /dev/loop0
 rm -rf ./test_mountpoint
 </pre>
@@ -230,13 +227,13 @@ Creating the volume file under Linux:
 
 	dd if=/dev/zero of=./volumes/vol_twofish.box bs=1M count=1
 	losetup /dev/loop0 ./volumes/vol_twofish.box
-	echo password1234567890ABC | cryptsetup-luks -c twofish luksFormat /dev/loop0
-	cryptsetup-luks luksDump /dev/loop0 
-	echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
+	echo password1234567890ABC | cryptsetup -c twofish luksFormat /dev/loop0
+	cryptsetup luksDump /dev/loop0 
+	echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
 	dmsetup ls
 	dmsetup table
 	dmsetup status
-	cryptsetup-luks status myMapper
+	cryptsetup status myMapper
 	losetup /dev/loop1 /dev/mapper/myMapper
 	#cat ./test_files/2MB_Z.dat > /dev/loop1
 	#cat ./test_files/2MB_0x00.dat > /dev/loop1
@@ -249,7 +246,7 @@ Creating the volume file under Linux:
 	cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
 	umount ./test_mountpoint
 	losetup -d /dev/loop1
-	cryptsetup-luks luksClose myMapper
+	cryptsetup luksClose myMapper
 	losetup -d /dev/loop0
 	rm -rf ./test_mountpoint
 
@@ -275,13 +272,13 @@ Creating the volume file under Linux:
 
 	dd if=/dev/zero of=./volumes/vol_aes_xts.box bs=5M count=1
 	losetup /dev/loop0 ./volumes/vol_aes_xts.box
-	echo password1234567890ABC | cryptsetup-luks -c aes-xts-plain -s 512 luksFormat /dev/loop0
-	cryptsetup-luks luksDump /dev/loop0 
-	echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
+	echo password1234567890ABC | cryptsetup -c aes-xts-plain64 -s 512 luksFormat /dev/loop0
+	cryptsetup luksDump /dev/loop0 
+	echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
 	dmsetup ls
 	dmsetup table
 	dmsetup status
-	cryptsetup-luks status myMapper
+	cryptsetup status myMapper
 	losetup /dev/loop1 /dev/mapper/myMapper
 	#cat ./test_files/2MB_Z.dat > /dev/loop1
 	#cat ./test_files/2MB_0x00.dat > /dev/loop1
@@ -294,7 +291,7 @@ Creating the volume file under Linux:
 	cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
 	umount ./test_mountpoint
 	losetup -d /dev/loop1
-	cryptsetup-luks luksClose myMapper
+	cryptsetup luksClose myMapper
 	losetup -d /dev/loop0
 	rm -rf ./test_mountpoint
 
@@ -319,13 +316,13 @@ Creating the volume file under Linux:
 
 		dd if=/dev/zero of=./volumes/vol_serpent_xts.box bs=5M count=1
 		losetup /dev/loop0 ./volumes/vol_serpent_xts.box
-		echo password1234567890ABC | cryptsetup-luks -c serpent-xts-plain -s 512 luksFormat /dev/loop0
-		cryptsetup-luks luksDump /dev/loop0 
-		echo password1234567890ABC | cryptsetup-luks luksOpen /dev/loop0 myMapper
+		echo password1234567890ABC | cryptsetup -c serpent-xts-plain64 -s 512 luksFormat /dev/loop0
+		cryptsetup luksDump /dev/loop0 
+		echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
 		dmsetup ls
 		dmsetup table
 		dmsetup status
-		cryptsetup-luks status myMapper
+		cryptsetup status myMapper
 		losetup /dev/loop1 /dev/mapper/myMapper
 		#cat ./test_files/2MB_Z.dat > /dev/loop1
 		#cat ./test_files/2MB_0x00.dat > /dev/loop1
@@ -338,7 +335,7 @@ Creating the volume file under Linux:
 		cp ./test_files/BINARY_00_FF_RPTD.dat ./test_mountpoint
 		umount ./test_mountpoint
 		losetup -d /dev/loop1
-		cryptsetup-luks luksClose myMapper
+		cryptsetup luksClose myMapper
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 

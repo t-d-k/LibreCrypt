@@ -1,6 +1,6 @@
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -95,6 +95,8 @@ The latest version of this FAQ, along with the latest DoxBox user manual, can be
 * [When dismounting a file based volume, what does DoxBox do with the file timestamps?](#hi)
 * [What is volume "padding", and why would I want it?](#hs)
 * [Why **wouldn't** I want to use padding?](#ht)
+* [Where can I get dictionary/wordlist files from?](#je)
+
 
 <A NAME="level_4_heading_2">
 #### DoxBox Specific
@@ -120,7 +122,7 @@ The latest version of this FAQ, along with the latest DoxBox user manual, can be
 * [Where, and in what order does DoxBox search for my settings?](#cf)
 * [After associating DoxBox with ".box" files from the options dialog, I double-clicked my ".box" volume file, and nothing happened!](#ch)
 * [What is the difference between the "Overwrite free space..." and "Overwrite entire drive..." options under the "Tools" menu?](#em)
-* [Does DoxBox support encrypting data with multiple cyphers (aka "cascaded" cyphers, or "superencryption")](#eo)
+* [Does DoxBox support encrypting data with multiple cyphers (aka "cascaded" cyphers, or so-called "superencryption")](#eo)
 * [DoxBox supports different languages, but why isn't mine listed?](#eq)
 * [How do I translate DoxBox into a different language?](#er)
 * [Can I defragment encrypted volumes?](#es)
@@ -173,6 +175,22 @@ The latest version of this FAQ, along with the latest DoxBox user manual, can be
 * [How do I securely overwrite files stored on a flash drive?](#hw)
 * [How do I get DoxBox Explorer to display filename extensions for all files?](#hx)
 * [Can DoxBox Explorer run under Linux?](#hy)
+* [I entered a program in the "Autorun" tab of the Options dialog - why doesn't it run when I mount a volume?](#jb)
+
+* Mapping mounted volumes to drive letters
+
+                                                                                                                        
+	* [Why is drive mapping disabled within DoxBox Explorer under Windows Vista/Windows 7?](#ja)                                   
+	* [Why is the performance of accessing files using drive mapping lower in DoxBox Explorer than with DoxBox?](#jc)
+	* [Does DoxBox Explorer have a maximum path length?]                                                          (#jg)
+	* [Does DoxBox Explorer have any limits to the size of files it can store?]                                   (#jh)
+	* [What does the error "The drive could not be mapped because no network was found" mean?]                      (#ji)
+	* [What does the error "The workstation driver is not installed" mean?]                                         (#jj)
+	* [Why does MS Windows Explorer incorrectly report the storage capacity of a volume mounted using DoxBox Explorer and mapped to a drive letter?](#jk)
+	* [When transferring a file _to_ a DoxBox Explorer mounted volume via the drive letter it is mounted as, why does it report that I have no free space, when my volume is not yet full?](#jo)         
+	* [If I map mounted volumes to drive letters using DoxBox Explorer, can anyone on my LAN see and access the secure volumes?](#jp) 
+	* [Why does DoxBox Explorer open up a local TCP/IP server port?](#jr)
+	* [Why does DoxBox Explorer use HTTP and not HTTPS when mapping a volume to a drive letter?](#js) 
 
 * * *
 ### New
@@ -251,11 +269,14 @@ Every app may contain a security flaw, inadvertent or deliberate. software with 
 *Q:What are the differences between DoxBox and Truecrypt?*
 
 *A:* 
-The known diferences are:
+The main differences are:
 
 * DoxBox can open native LUKS containers
 * Truecrypt has a Linux version available: tcrypt
 * DoxBox suports multiple hidden containers, TC only one.	
+* DoxBox is maintained.
+* Truecrypt supports 'cascading' cyphers. 
+
 
 * * *
 
@@ -274,27 +295,30 @@ However, this is not always practical (many people are not familiar with how to 
 *Q: What's this about a flaw in deniability?*
 
 *A:* 	
-There is a known flaw in the way DoxBox handles Plausible Deniability (PD). For PD to work the file (or partition or disc) containing the Box must be filled with data indistinguishable m encrypted data.
-However by default when creating a 'DoxBox' file, DoxBox only fills it with zeros. 
-While there is a manual option to overwrite a file with crypto data there is a problem with this:
-The fact that a user has done this on a file tells an attacker that this file contains a hidden box. even if the user does with on every Box created, the fact that this is done tells an attacker that at least one must have a hidden Box.
+There is a known flaw in the way DoxBox 6.0 and FreeOTFE handled Plausible Deniability (PD). For PD to work the file (or partition or disc) containing the Box must be filled with data indistinguishable from encrypted data.
+However by default when creating a 'DoxBox' file, DoxBox 6.0 only filled it with zeros. 
+While there is a manual option to overwrite a file with crypto data, there are problems with this:
 
-The solution is for all new boxes to be filled with random data by default. this will be implemented in the next version of DoxBox.
+* The fact that a user has done this on a file tells an attacker that this file contains a hidden box. 
+* Even if the user does this with every Box created, the fact that this is done at all tells an attacker that at least one must have a hidden Box.
+
+The solution is for all new boxes to be filled with random data by default. This is implemented in DoxBox version 6.1.
 
 * * *
 
 <a name="best_practices"></a>
 *Q: How should I use DoxBox for the best security?*
 
-*A:* 	The most tested encryption scheme used by DoxBox is the LUKS scheme however the native scheme has some extra features. The most widely used supported cypher is AES.
+*A:* 	The most tested encryption scheme used by DoxBox is the LUKS scheme, however the native scheme has some extra features. The most widely used supported cypher is AES.
 
 In Windows numerous apps leak data to various places, including temp files, the registry, swap space, and your home folder.
-To minimise this its recommended to only open files on your box using ['Portable Apps'](http://portableapps.com/). These generally won't save data in the registry or your home folder.
+The OS itself stores Most Recently Used (MRU) lists.
+To minimise this it's recommended to only open files on your box using ['Portable Apps'](http://portableapps.com/). These shouldn't save data in the registry or your home folder.
 The portable apps should be installed on the Box itself, as they save their configuration, including MRU lists in the PortableApp directory.
 Some other things to do:
 - Schedule a free space erasing program to overwrite any free disk space regularly.
 - Have a fixed size swap file - this reduces the chance swap will be left un-erased on the disk.
-- Clean out your windows MRU list regularly.
+- Clean out your Windows MRU list regularly.
 - Use open source apps wherever possible.
 - Use simple 'do one thing' apps (e.g. text editors instead of word processors) wherever possible.
 -	enable Windows pagefile overwrite-on shutdown facility (see Microsoft knowledge-base article Q182086: How to Clear the Windows NT Paging File at Shutdown)
@@ -306,7 +330,7 @@ Some other things to do:
 
 *A:* 	There is no mistake.
 
-The normal way to attack encryption like this is to do a 'dictionary' attack that consists of trying many keyphrases automatically. this is because the keyphrase is normally the weakest part of the cypher. in order for the keyphrase to be as strong as the rest of the encryption, it has to have at least as much information content as the 'key' used internally ([*](#pass_note)).
+The normal way to attack encryption like this is to do a 'dictionary' attack that consists of trying many keyphrases automatically. This is because the keyphrase is normally the weakest part of the cypher. in order for the keyphrase to be as strong as the rest of the encryption, it has to have at least as much information content as the 'key' used internally ([*](#pass_note)).
 The information content of normal English text is about [1.1](http://pit-claudel.fr/clement/blog/an-experimental-estimation-of-the-entropy-of-english-in-50-lines-of-python-code/) bits per character (including spaces), so for 256 bits it needs to be about 224 characters long or about 45 words. For comparison, the previous sentence contains 168 characters.
 
 Using special characters and misspellings increases the information content slightly but not as much as you may think, and reduces the memorability/bit ratio.
@@ -370,10 +394,10 @@ Please see the [DoxBox v. DoxBox Explorer Comparison](http://DoxBox.squte.com/ma
 Alternatively, **FEEDBACK!** If you have any comments or suggestions for how DoxBox can be improved - get in touch!
 
  * * *
- <a name="ey"></a>
+<a name="ey"></a>
 *Q: Which of the hash/cypher algorithms should I use?*
 
-*A:* This decision is left up to the user.
+*A:* Th most commonly used cpher is AES, and the most used hash is SHA-2. These are the defaults. 
 
 Most users can simply accept the default algorithms offered, which provides a fairly high degree of security.
 
@@ -534,7 +558,7 @@ Please see the FAQ: [By examining a DoxBox/encrypted Linux volume file, can anyo
 
  * * *
  <a name="aq_1"></a>
-*Q: What to the numbers and letters after a hash name mean?*
+*Q: What do the numbers and letters after a hash name mean?*
 
 *A:* When required to choose which hash you wish to use, DoxBox will present you with a list of all hashes that are provided by the DoxBox drivers installed. These lists will display hash names in the format:
 
@@ -558,7 +582,7 @@ Typically, when presented with a selection of different hashes to choose from, y
 * * *
 
 <a name="aq_2"></a>
-*Q: What to the numbers and letters after a cypher name mean?*
+*Q: What do the numbers and letters after a cypher name mean?*
 
 *A:* When required to choose which cypher you wish to use, DoxBox will present you with a list of all cyphers that are provided by the DoxBox drivers installed. These lists will display cypher names in the format:
   > *&lt;cypher name&gt;* ([**&lt;mode&gt;**; ] **&lt;key size&gt;**/**&lt;block size&gt;**)
@@ -998,6 +1022,14 @@ Padding takes up additional storage on your hard drive beyond that required by t
 
 * * *
 
+<a name="je"></a>
+*Q: Where can I get dictionary/wordlist files from?*
+
+*A:*
+A list of suitable dictionary files can be found in the ["Advanced Topics"](advanced_topics.html) section, under "Dictionary Files".
+
+* * *
+
 <A NAME="level_3_heading_3">
 ### DoxBox Specific (PC)
 </A>
@@ -1395,12 +1427,9 @@ By default, both DoxBox and DoxBox Explorer are configured such that they will a
 
 For example, if you create a "DoxBox_cmdline.bat" file containing the following:
 
-<BLOCKQUOTE>
-<pre>
-DoxBox.exe %1 %2 %3 %4 %5 %6 %7 %8 %9
-@echo Exit code: %ERRORLEVEL%
-</pre>
-</BLOCKQUOTE>
+		DoxBox.exe %1 %2 %3 %4 %5 %6 %7 %8 %9
+		@echo Exit code: %ERRORLEVEL%
+
 
 and use "DoxBox_cmdline.bat" in places of "DoxBox.exe"
 
@@ -1483,7 +1512,7 @@ To do this, see the FAQ "[How do I "hide" an encrypted partition such that MS Wi
 
 Carry out the following steps:
 
-1. Go to "Start -&gt; Settings -&gt; Control Panel -&gt; Administrative tools -&gt; Computer Management"
+1. Go to "Start -> Settings -> Control Panel -> Administrative tools -> Computer Management"
 1. Select "Disk Management"
 1. Right-click on the partition you have setup an encrypted and select "Change Drive Letter and Paths"
 1. Remove any drive letters associated with the partition
@@ -1530,7 +1559,7 @@ By displaying additional information, there is less likelihood of creating a vol
 <a name="eu"></a>
 *Q: I accidentally selected the wrong disk/partition when creating a new volume and now can't see my files! How can I get my data back?*
 
-*A:* The more important thing to do in this kind of situation is *STOP* and *THINK*. Before attempting  any kind of recovery, understand what you are going to do and how you are going to do it - **before** doing  anything.
+*A:* The more important thing to do in this kind of situation is *STOP* and *THINK*. Before attempting any kind of recovery, understand what you are going to do and how you are going to do it - **before** doing  anything.
 
 For safety reasons, DoxBox only writes the initial 512 byte CDB to the start of the disk/partition when creating a  new disk/partition based volume (see the [Plausible Deniability](plausible_deniability.html) section for  how to initialize a volume by overwriting it). If you haven't yet mounted the volume and started writing data to it,  or overwriting it, you have a good chance of getting your files back.
 
@@ -1725,7 +1754,7 @@ DoxBox Explorer supports volumes using the FAT12, FAT16 and FAT32 filesystems. S
 *Q: Does DoxBox Explorer try to connect to the internet?*
 
 *A:*
-No - not unless you configure it to do so; see the FAQ "[Does DoxBox try to connect to the internet?](#go)"
+Yes, but it always prompts first, and can be configured not to do so; see the FAQ "[Does DoxBox try to connect to the internet?](#go)"
 
 * * *
 
@@ -1765,5 +1794,169 @@ To configure DoxBox Explorer to display filename extensions for **all** files, p
 *A:* Yes - DoxBox Explorer can be used under Linux when run under [Wine](http://www.winehq.org/).
 
  * * *
+
+
+
+* * * 
+<a name="jb"></a>
+*Q: I entered a program in the "Autorun" tab of the Options dialog - why doesn't it run when I mount a volume?*
+
+*A:* 
+"Autorun" functionality is only enabled in DoxBox Explorer when the "Map mounted volume to drive letter" option is selected ("Drive" tab on the "Options" dialog)
+
+* * * 
+<a name="ja"></a>
+*Q: Why is drive mapping disabled within DoxBox Explorer under Windows Vista/Windows 7?*
+
+*A:* 
+Although drive mapping is certainly possible under Windows Vista/Windows 7, this functionality is automatically disabled in DoxBox Explorer when run under one of these operating systems, for security reasons.
+
+Specifically, this is due to the manner in which drive mapping is handled under Windows Vista/Windows 7, which prevents DoxBox Explorer from being able to guarantee encrypted data is overwritten when volumes are dismounted.
+
+* * * 
+<a name="jc"></a>
+*Q: Why is the performance of accessing files using drive mapping lower in DoxBox Explorer than with DoxBox?*
+
+*A:* 
+This is due to limitations in way in which Windows handles drive mapping with DoxBox Explorer.
+
+* * * 
+<a name="jg"></a>
+*Q: Does DoxBox Explorer have a maximum path length?*
+
+*A:* 
+*/NO!/* Like DoxBox, DoxBox Explorer has /no limits/ on the maximum path length it can support when extracting or storing files!
+
+However, if a volume mounted using DoxBox Explorer is mapped to a drive letter, MS Windows XP /can/ encounter problems when accessing (e.g. via MS Windows Explorer) deeply nested files that have a path length greater than 260 characters.
+
+You can still extract and store files with much longer paths via the DoxBox Explorer user interface.
+
+Microsoft have released a patch for Windows to eliminate this problem under KB832143: http://support.microsoft.com/kb/832143
+
+MS Windows has no such issue when accessing a mounted volume via a drive letter where that volume is mounted using DoxBox, instead of DoxBox Explorer.
+
+* * * 
+<a name="jh"></a>
+*Q: Does DoxBox Explorer have any limits to the size of files it can store?*
+
+*A:* 
+*/NO!/* DoxBox Explorer doesn't impose any limits on the size of files transferred to or from mounted volumes.
+
+However, if the option to map a mounted volume to a drive letter is selected, then under the following versions of MS Windows:
+
+
+* Windows XP with Service Pack 1 (SP1) with security update 896426 (MS05-028)
+* Windows XP with Service Pack 2 (SP2)
+* Windows Vista-based
+
+
+a maximum file size limit of 50,000,000 bytes (about 47MB) is imposed by the OS when transferring files to/from the mounted drive.
+
+If an attempt is made to access a file larger than this limit, MS Windows may display the error "Cannot Copy <filename>: Cannot read from the source file or disk" - and fail to copy the file.
+
+This error can be prevented by creating and setting the following registry key to increase the maximum file size limit:
+
+
+<TABLE>
+<TR> <TH>Registry key:</TH> <TD>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WebClient\Parameters</TD> </TR>
+<TR> <TH>Name:</TH> <TD>FileSizeLimitInBytes</TD> </TR>
+<TR> <TH>Type:</TH> <TD>DWORD</TD> </TR>
+<TR> <TH>Value:</TH> <TD>&lt;set to file size (in bytes) of the largest file that may be transferred&gt;</TD> </TR>
+</TABLE>
+
+
+There is no such file size limit when extracting or storing files to/from a volume using the "Store"/"Extract" functionality from DoxBox Explorer's user interface.
+
+DoxBox does /*not*/ have this limitation on transferring files to/from mounted DoxBox volumes, and no registry changes are needed to access files using DoxBox, regardless of how big they are.
+
+For further information, see: [KB900900](http://support.microsoft.com/kb/900900/en-us) on the Microsoft WWW site.
+
+* * * 
+<a name="ji"></a>
+*Q: What does the error "The drive could not be mapped because no network was found" mean?*
+
+*A:* 
+To correct this, start the "WebClient" service.
+
+From a command prompt, enter:
+		net start WebClient
+
+
+* * * 
+<a name="jj"></a>
+*Q: What does the error "The workstation driver is not installed" mean?*
+
+*A:* 
+If you get the error:
+
+"The mapped network drive could not be created because the following error has occurred:
+
+The workstation driver is not installed."
+
+This can be due to a bug in MS Windows Server 2003 (resolved in MS Windows Server 2008). Please restart the WebClient redirector service, followed by the WebClient service.
+
+To do this, go to a command prompt, and enter:
+		
+		net stop WebClient
+		net stop MRxDAV
+		net start MRxDAV
+		net start WebClient
+
+
+(Taken from: [msdn](http://blogs.msdn.com/b/carloshm/archive/2008/04/07/webdav-the-workstation-driver-is-not-installed.aspx) )
+
+* * * 
+<a name="jk"></a>
+*Q: Why does MS Windows Explorer incorrectly report the storage capacity of a volume mounted using DoxBox Explorer and mapped to a drive letter?*
+
+*A:* 
+MS Windows Explorer reports the storage capacity and free space on the drive it uses to cache files on; typically your system drive. This is due to a limitation in the protocol used by MS Windows to mount volumes using DoxBox Explorer.
+
+To see the actual capacity, and free space remaining, please use DoxBox Explorer.
+
+Volumes mounted using DoxBox, instead of DoxBox Explorer, do /*not*/ have this limitation, and MS Windows Explorer reports their size correctly.
+
+* * * 
+<a name="jo"></a>
+*Q: When transferring a file /to/ a DoxBox Explorer mounted volume via the drive letter it is mounted as, why does it report that I have no free space, when my volume is not yet full?*
+
+*A:* 
+This is due to a limitation in the protocol used by MS Windows to mount volumes using DoxBox Explorer.
+
+When transferring files to DoxBox Explorer via an assigned drive letter, MS Windows first copies the file to store to a WebDAV cache, typically located on your system drive. If you do not have enough free space on /this/ drive, you cannot transfer the file to the mounted volume via the mapped drive letter - even if the mounted volume has enough free space to store it.
+
+DoxBox Explorer does /*not*/ have this limitation when storing files from a volume using the "Store" functionality from its user interface.
+
+Volumes mounted using DoxBox, instead of DoxBox Explorer, do /*not*/ have this limitation at all, as MS Windows transfers files directly to the mounted volume.
+
+* * * 
+<a name="jp"></a>
+*Q: If I map mounted volumes to drive letters using DoxBox Explorer, can anyone on my LAN see and access the secure volumes?*
+
+*A:* 
+*/NO!/*. DoxBox Explorer's use of WebDAV is restricted to /only/ allow connections coming from the local PC. Other users on your network can /not/ access mounted volumes.
+
+This is accomplished by two means:
+
+1. DoxBox Explorer only binds to the localhost (127.0.0.x) address
+1. The HTTP server explicitly checks and rejects any connections from anywhere other than 127.0.0.1
+
+
+* * * 
+<a name="jr"></a>
+*Q: Why does DoxBox Explorer open up a local TCP/IP server port?*
+
+*A:* 
+DoxBox Explorer does /not/ open any ports, unless the user explicitly turns on the "Map mounted volume to drive letter" option, in which case it opens a single port to allow MS Windows to connect to it for the purposes of mounting the volume under a drive letter.
+
+In this case, the port opened is only accessible to the local system; it cannot be accessed over the internet, or across a LAN.
+
+* * * 
+<a name="js"></a>
+*Q: Why does DoxBox Explorer use HTTP and not HTTPS when mapping a volume to a drive letter?*
+
+*A:* 
+There is no significant difference; only local connections can be made to DoxBox Explorer. Support for HTTPS may be added in the future though.
+
 
 

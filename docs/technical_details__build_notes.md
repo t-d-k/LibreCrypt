@@ -1,7 +1,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. Using this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -179,16 +179,20 @@ The following list comprehensively describes the configuration used to build the
 </A>
 
 1.  Edit "setup\_env\_common.bat" (located under src\drivers\Common\bin), and ensure that the following variables are set appropriately:
-  
+ 		Variables in bold will probably need to be manually changed, depending on the user's setup  
 
   <TABLE>
     <TBODY>
-      <TR> <TH>Variable  </TH> <TH>Description </TH> <TH>Default value </TH> </TR>
+      <TR> <TH>Variable  </TH> <TH>Description </TH> <TH>Default value </TH> </TR>      
+      <TR> <TD>FREEOTFE_CPU</TD>  <TD>The target platform to build the drivers for. Set to either x86 or amd64</TD>  <TD>amd64</TD> </TR>      
       <TR> <TD>FREEOTFE\_DEBUG</TD> 	<TD>Build type flag; set to 1 for debug build, or 0 for release</TD> <TD>0</TD> </TR>
       <TR> <TD>FREEOTFE\_TARGET</TD> 	<TD>Target OS to build for; e.g. WXP/W2K/WNET; note that W2K builds will not operate correctly under Windows XP (e.g. when formatting a volume)</TD> <TD>WXP</TD> </TR>
-      <TR> <TD>PROJECT\_DRIVE</TD> 		<TD>The drive on which you have stored the DoxBox source</TD> <TD>E:</TD> </TR>
+      <TR> <TD>PROJECT\_DRIVE</TD> 		<TD>The drive on which you have stored the DoxBox source </TD> <TD>&lt;The drive the config batch file is stored on&gt;</TD> </TR>
       <TR> <TD>PROJECT\_DIR</TD> 			<TD>The full drive and path where the "drivers" directory is located</TD> <TD>_&lt;see file&gt;_</TD> </TR>
-      <TR> <TD>MSSDK\_DIR</TD> 				<TD>The directory in which you installed the MS SDK</TD> <TD>C:\MSSDK</TD> </TR>
+      
+      <TR> <TD>BIN_OUTPUT_DIR</TD> <TD>The path where the built drivers will be copied to. This directory will automatically be created if it does not already exist.</TD> <TD>/&lt;"bin" directory at the same level as the main "src" directory&gt;/</TD> </TR> 
+      <TR>  <TD>VCVARSALL</TD> <TD>The full path and filename to Visual Studio's VCVARSALL.BAT (or vcvar32.bat, if building with an old version)</TD> <TD>"C:\PROGRA~2\SOFT_DEV\Microsoft Visual Studio 9.0\VC\vcvarsall.bat"</B></TD> </TR> 
+      <TR> <TD>MSSDK\_DIR</TD> 				<TD>The directory in which you installed the Microsoft SDK. Set to 0 if not needed (e.b. Visual Studio 8.0 and later)</TD> <TD>C:\MSSDK</TD> </TR>
       <TR> <TD>MSDDK\_DIR</TD> 				<TD>The directory in which you installed the MS DDK</TD> <TD>C:\WINDDK\3790</TD> </TR>
     </TBODY>
   </TABLE>
@@ -216,6 +220,10 @@ Either:
 
   1.  Open "FreeOTFE.sln" using Visual C++
   2.  Rightclick on each project in turn, and select "Build"
+or:
+
+	1. Run: ...\src\PC\drivers\build_ALL.bat
+  
 or:
 
   1.  Enter each of the separate driver directories in turn and launch each project's "my\_build\_sys.bat" In either case, a copy of the binary which is built will be copied into the directory above your "src" directory. 
