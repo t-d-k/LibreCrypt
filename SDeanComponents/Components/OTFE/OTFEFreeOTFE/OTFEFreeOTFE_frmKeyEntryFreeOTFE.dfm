@@ -2,7 +2,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
   Left = 285
   Top = 236
   BorderStyle = bsDialog
-  Caption = 'FreeOTFE Key Entry'
+  Caption = 'DoxBox Key Dialog'
   ClientHeight = 481
   ClientWidth = 570
   Color = clBtnFace
@@ -71,7 +71,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
           'preUserKey')
         ParentFont = False
         ScrollBars = ssBoth
-        TabOrder = 0
+        TabOrder = 6
         OnKeyDown = preUserKeyKeyDown
       end
       object cbDrive: TComboBox
