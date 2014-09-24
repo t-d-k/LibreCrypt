@@ -401,16 +401,16 @@ type
     // wouldn't normally do (i.e. it's a high level function that wants to
     // know about the inner workings of lower-level functionality; CDB
     // processing)
-    DumpFlag: boolean;
-    DumpCriticalDataKey: ansistring;
-    DumpCheckMAC: string;
-    DumpPlaintextEncryptedBlock: string;
-    DumpVolumeDetailsBlock: string;
+    fdumpFlag: boolean;
+    fdumpCriticalDataKey: ansistring;
+    fdumpCheckMAC: string;
+    fdumpPlaintextEncryptedBlock: string;
+    fdumpVolumeDetailsBlock: string;
   protected
-    fPasswordChar: char;
-    fAllowNewlinesInPasswords: boolean;
-    fAllowTabsInPasswords: boolean;
-    fCachedVersionID: DWORD;
+    fpasswordChar: char;
+    fallowNewlinesInPasswords: boolean;
+    fallowTabsInPasswords: boolean;
+    fcachedVersionID: DWORD;
 
     fPKCS11Library: TPKCS11Library;
 
@@ -1343,7 +1343,7 @@ begin
 
 {$ENDIF}
 
-  DumpFlag := FALSE;
+  fdumpFlag := FALSE;
 
   CachesCreate();
 
@@ -1520,8 +1520,8 @@ begin
     begin
     keyEntryDlg := TfrmKeyEntryFreeOTFE.Create(nil);
     try
-      keyEntryDlg.FreeOTFEObj := self;
-      keyEntryDlg.Silent := silent;
+      keyEntryDlg.fFreeOTFEObj := self;
+      keyEntryDlg.fSilent := silent;
       keyEntryDlg.SetPassword(password);
       keyEntryDlg.SetReadonly(readonly);
       keyEntryDlg.SetOffset(offset);
@@ -1533,7 +1533,7 @@ begin
       // required in case PKCS#11 support is enabled (needed to populate
       // PKCS#11 comboboxes)
       keyEntryDlg.DisplayAdvanced(AdvancedMountDlg);
-      keyEntryDlg.VolumeFiles := volumeFilenames;
+      keyEntryDlg.fVolumeFiles := volumeFilenames;
 
       mr := keyEntryDlg.ShowModal();
       if (mr = mrCancel) then
@@ -1542,7 +1542,7 @@ begin
         end
       else
         begin
-        mountedAs := keyEntryDlg.MountedDrives;
+        mountedAs := keyEntryDlg.fMountedDrives;
         retVal := TRUE;
         end;
 
@@ -1987,7 +1987,7 @@ begin
 
   keyEntryDlg := TfrmKeyEntryLinux.Create(nil);
   try
-    keyEntryDlg.FreeOTFEObj := self;
+    keyEntryDlg.fFreeOTFEObj := self;
     keyEntryDlg.Initialize();
     if (lesFile <> '') then
       begin
@@ -2327,7 +2327,7 @@ begin
 
   keyEntryDlg := TfrmKeyEntryLUKS.Create(nil);
   try
-    keyEntryDlg.FreeOTFEObj := self;
+    keyEntryDlg.fFreeOTFEObj := self;
     keyEntryDlg.Initialize();
     keyEntryDlg.SetReadonly(readonly);
     keyEntryDlg.SetKey(password);
@@ -3699,12 +3699,12 @@ begin
   {$ENDIF}
 
                         // Additional: Store internal information, if dumping
-                        if DumpFlag then
+                        if fdumpFlag then
                           begin
-                          DumpCriticalDataKey        := criticalDataKey;
-                          DumpCheckMAC               := checkDataDecrypted;
-                          DumpPlaintextEncryptedBlock:= decryptedBlock;
-                          DumpVolumeDetailsBlock     := strVolumeDetailsBlock;
+                          fDumpCriticalDataKey        := criticalDataKey;
+                          fDumpCheckMAC               := checkDataDecrypted;
+                          fDumpPlaintextEncryptedBlock:= decryptedBlock;
+                          fDumpVolumeDetailsBlock     := strVolumeDetailsBlock;
                           end;
 
                         end;  // ELSE PART - if not(ParseVolumeDetailsBlock(strVolumeDetailsBlock, currVolumeDetails)) then
@@ -4210,12 +4210,12 @@ DebugMsg('OK.');
 {$ENDIF}
 
                     // Additional: Store internal information, if dumping
-                    if DumpFlag then
+                    if fDumpFlag then
                       begin
-                      DumpCriticalDataKey        := criticalDataKey;
-                      DumpCheckMAC               := checkMAC;
-                      DumpPlaintextEncryptedBlock:= plaintextEncryptedBlock;
-                      DumpVolumeDetailsBlock     := volumeDetailsBlock;
+                      fdumpCriticalDataKey        := criticalDataKey;
+                      fdumpCheckMAC               := checkMAC;
+                      fdumpPlaintextEncryptedBlock:= plaintextEncryptedBlock;
+                      fdumpVolumeDetailsBlock     := volumeDetailsBlock;
                       end;
 
                     end;  // ELSE PART - if not(ParseVolumeDetailsBlock(volumeDetailsBlock, currVolumeDetails)) then
@@ -5524,7 +5524,7 @@ begin
 
   prettyPrintData := TStringList.Create();
   try
-    DumpFlag := TRUE;
+    fdumpFlag := TRUE;
 
     readTimeStart:= Now();
 
@@ -5623,47 +5623,47 @@ begin
         dumpReport.Add(SDUParamSubstitute(_('Cypher GUID              : %1'), [GUIDToString(CDBMetaData.CypherGUID)]));
         dumpReport.Add(_('Critical data key     : '));
         dumpReport.Add('  '+SDUParamSubstitute(_('KDF   : %1'), [FreeOTFEKDFTitle(CDBMetaData.KDFAlgorithm)]));
-        dumpReport.Add('  '+SDUParamSubstitute(_('Length: %1 bits'), [(Length(DumpCriticalDataKey) * 8)]));
+        dumpReport.Add('  '+SDUParamSubstitute(_('Length: %1 bits'), [(Length(fdumpCriticalDataKey) * 8)]));
         dumpReport.Add('  '+_('Key   : '));
         prettyPrintData.Clear();
         SDUPrettyPrintHex(
-                          DumpCriticalDataKey,
+                          fdumpCriticalDataKey,
                           0,
-                          Length(DumpCriticalDataKey),
+                          Length(fdumpCriticalDataKey),
                           prettyPrintData
                          );
         dumpReport.AddStrings(prettyPrintData);
         dumpReport.Add(_('Plaintext encrypted block: '));
-        dumpReport.Add('  '+SDUParamSubstitute(_('Length: %1 bits'), [(Length(DumpPlaintextEncryptedBlock) * 8)]));
+        dumpReport.Add('  '+SDUParamSubstitute(_('Length: %1 bits'), [(Length(fdumpPlaintextEncryptedBlock) * 8)]));
         dumpReport.Add('  '+_('Data  : '));
         prettyPrintData.Clear();
         SDUPrettyPrintHex(
-                          DumpPlaintextEncryptedBlock,
+                          fdumpPlaintextEncryptedBlock,
                           0,
-                          Length(DumpPlaintextEncryptedBlock),
+                          Length(fdumpPlaintextEncryptedBlock),
                           prettyPrintData
                          );
         dumpReport.AddStrings(prettyPrintData);
         dumpReport.Add(_('Check MAC             : '));
         dumpReport.Add('  '+SDUParamSubstitute(_('MAC algorithm: %1'), [FreeOTFEMACTitle(CDBMetaData.MACAlgorithm)]));
-        dumpReport.Add('  '+SDUParamSubstitute(_('Length       : %1 bits'), [(Length(DumpCheckMAC) * 8)]));
+        dumpReport.Add('  '+SDUParamSubstitute(_('Length       : %1 bits'), [(Length(fdumpCheckMAC) * 8)]));
         dumpReport.Add('  '+_('Data         : '));
         prettyPrintData.Clear();
         SDUPrettyPrintHex(
-                          DumpCheckMAC,
+                          fdumpCheckMAC,
                           0,
-                          Length(DumpCheckMAC),
+                          Length(fdumpCheckMAC),
                           prettyPrintData
                          );
         dumpReport.AddStrings(prettyPrintData);
         dumpReport.Add(_('Volume details block  : '));
-        dumpReport.Add('  '+SDUParamSubstitute(_('Length       : %1 bits'), [(Length(DumpVolumeDetailsBlock) * 8)]));
+        dumpReport.Add('  '+SDUParamSubstitute(_('Length       : %1 bits'), [(Length(fdumpVolumeDetailsBlock) * 8)]));
         dumpReport.Add('  '+_('Data         : '));
         prettyPrintData.Clear();
         SDUPrettyPrintHex(
-                          DumpVolumeDetailsBlock,
+                          fdumpVolumeDetailsBlock,
                           0,
-                          Length(DumpVolumeDetailsBlock),
+                          Length(fdumpVolumeDetailsBlock),
                           prettyPrintData
                          );
         dumpReport.AddStrings(prettyPrintData);
@@ -5732,11 +5732,11 @@ begin
         dumpReport.SaveToFile(dumpFilename);
         allOK := TRUE;
       finally
-        DumpFlag := FALSE;
-        DumpCriticalDataKey        := '';
-        DumpCheckMAC               := '';
-        DumpPlaintextEncryptedBlock:= '';
-        DumpVolumeDetailsBlock     := '';
+        fdumpFlag := FALSE;
+        fdumpCriticalDataKey        := '';
+        fdumpCheckMAC               := '';
+        fdumpPlaintextEncryptedBlock:= '';
+        fdumpVolumeDetailsBlock     := '';
 
         dumpReport.Clear();
         dumpReport.Free();

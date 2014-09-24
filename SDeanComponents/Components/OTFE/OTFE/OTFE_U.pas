@@ -218,7 +218,7 @@ type
 // prettyprinted version
 // e.g. DFGI -> D:, F:, G:, I:
 // Any #0 characters in the string passed in will be ignored
-function PrettyPrintDriveLetters(driveLetters: ansistring): string;
+function prettyPrintDriveLetters(driveLetters: ansistring): string;
 
 // Returns the number of characters in "driveLetters" which aren't #0
 function CountValidDrives(driveLetters: ansistring): integer;
@@ -241,7 +241,7 @@ uses
 
 
 // -----------------------------------------------------------------------------
-function PrettyPrintDriveLetters(driveLetters: ansistring): string;
+function prettyPrintDriveLetters(driveLetters: ansistring): string;
 var
   i: integer;
   retval: string;
