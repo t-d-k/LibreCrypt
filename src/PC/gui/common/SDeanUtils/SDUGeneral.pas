@@ -51,7 +51,7 @@ type
   TSDUArrayInteger = array of Integer;
   TSDUArrayString  = array of String;
 
-{$IFNDEF VER185}     // Delphi 2007 defined
+{$IF CompilerVersion >= 18.5}    // Delphi 2007 defined
                      // If you have Delphi 2007, use the definition in Windows.pas (i.e. uses Windows)
                      // Delphi 7 doesn't have ULONGLONG
   ULONGLONG = Uint64;//TDK CHANGE
@@ -62,7 +62,7 @@ type
                      //       functions which provide ULONGLONG and int64
                      //       versions have their ULONGLONG version ifdef'd
                      //       out.
-{$ENDIF}
+{$IFEND}
 
   // Note: DON'T USE A PACKED RECORD HERE!
   TSDUPartitionInfo = record
@@ -534,19 +534,19 @@ function SDUFormatUnits(Value: Int64;
   denominations: array of String;
   multiplier: Integer = 1000;
   accuracy: Integer = 2): String; OVERLOAD;
-{$IFNDEF VER180}// See comment on ULONGLONG definition
+{$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUFormatUnits(Value: ULONGLONG;
   denominations: array of String;
   multiplier: Integer = 1000;
   accuracy: Integer = 2): String; OVERLOAD;
-{$ENDIF}
+{$IFEND}
 // As SDUFormatUnits, but assume units are bytes, KB, MB, GB, etc
 function SDUFormatAsBytesUnits(Value: Int64;
   accuracy: Integer = 2): String; OVERLOAD;
-{$IFNDEF VER180}// See comment on ULONGLONG definition
+{$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUFormatAsBytesUnits(Value: ULONGLONG;
   accuracy: Integer = 2): String; OVERLOAD;
-{$ENDIF}
+{$IFEND}
  // As SDUFormatAsBytesUnits, but return as:
  //   <bytes value> bytes (<units value> <units>)
  // with the <units value> part skipped if it's in bytes
@@ -902,15 +902,15 @@ function SDUGetVolumeID(drive: DriveLetterChar): String;
  // Returns 0 if the application is not currently running
 function SDUDetectExistingApp(): THandle;
 // Send a message to all existing apps
-{$IFNDEF VER185}
+{$IF CompilerVersion < 18.5}
 procedure SDUSendMessageExistingApp(msg: Cardinal; wParam: Integer; lParam: Integer);
   DEPRECATED; // deprecated until it works properly with Delphi 2007; see Assert(...) in implementation
-{$ENDIF}
+{$IFEND}
 // Post a message to all existing apps
-{$IFNDEF VER185}
+{$IF CompilerVersion < 18.5}
 procedure SDUPostMessageExistingApp(msg: Cardinal; wParam: Integer; lParam: Integer);
   DEPRECATED; // deprecated until it works properly with Delphi 2007; see Assert(...) in implementation
-{$ENDIF}
+{$IFEND}
 // Split the string supplied into two parts, before and after the split char
 function SDUSplitString(wholeString: String; var firstItem: String;
   var theRest: String; splitOn: Char = ' '): Boolean;
@@ -940,14 +940,14 @@ function SDUIntToHex(val: ULONGLONG; digits: Integer): String;
  // Implemented as Delphi 2007 truncates int64 values to 32 bits when
  // using inttostr(...)!
 function SDUIntToStr(val: Int64): String; OVERLOAD;
-{$IFNDEF VER180}// See comment on ULONGLONG definition
+{$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUIntToStr(val: ULONGLONG): String; OVERLOAD;
-{$ENDIF}
+{$IFEND}
 // As SDUIntToStr, but with thousands seperators inserted
 function SDUIntToStrThousands(val: Int64): String; OVERLOAD;
-{$IFNDEF VER180}// See comment on ULONGLONG definition
+{$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUIntToStrThousands(val: ULONGLONG): String; OVERLOAD;
-{$ENDIF}
+{$IFEND}
 // Save the given font's details to the registry
 function SDUSaveFontToReg(rootKey: HKEY; fontKey: String; Name: String; font: TFont): Boolean;
 // Load the font's details back from the registry
@@ -977,9 +977,9 @@ implementation
 
 uses
   ComObj,
-{$IFNDEF VER180}
+{$IF CompilerVersion >= 18.5}
   WideStrUtils,
-{$ENDIF}
+{$IFEND}
   ShellAPI, // Required for SDUShowFileProperties
 {$IFDEF MSWINDOWS}
 {$WARN UNIT_PLATFORM OFF}// Useless warning about platform - we're already
@@ -2123,7 +2123,7 @@ begin
 end;
 
 
-{$IFNDEF VER185}
+{$IF CompilerVersion < 18.5}
  // Detect if the current application is already running, and if it is, return
  // a handle to it's main window.
  // Returns 0 if the application is not currently running
@@ -2144,7 +2144,7 @@ begin
 
 end;
 
-{$ENDIF}
+{$IFEND}
 
 
  // This is used by SDUPostMessageExistingApp and carries out a check on the
@@ -2177,7 +2177,7 @@ begin
 end;
 
 
-{$IFNDEF VER185}
+{$IF CompilerVersion > 18.5}
  // Detect if the current application is already running, and if it is, return
  // a handle to it's main window.
  // Returns 0 if the application is not currently running
@@ -2198,7 +2198,7 @@ begin
 
 end;
 
-{$ENDIF}
+{$IFEND}
 
 procedure _SDUDetectExistWindowDetails();
 var
@@ -2227,12 +2227,12 @@ var
 begin
   retval := Application.Handle;
 
-{$IFNDEF VER180}
+{$IF CompilerVersion >= 18.5}
   // Vista fix for Delphi 2007 and later
   if ((Application.Mainform <> nil) and Application.MainFormOnTaskbar) then begin
     retval := Application.Mainform.Handle;
   end;
-{$ENDIF}
+{$IFEND}
 
   Result := retval;
 end;
@@ -3711,7 +3711,7 @@ begin
 end;
 
                 // ----------------------------------------------------------------------------
-{$IFNDEF VER180}// See comment on ULONGLONG definition
+{$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUFormatUnits(Value: ULONGLONG;
   denominations: array of String;
   multiplier: Integer = 1000;
@@ -3756,7 +3756,7 @@ begin
   Result := retVal;
 end;
 
-{$ENDIF}
+{$IFEND}
 
 // ----------------------------------------------------------------------------
 function SDUFormatAsBytesUnits(Value: Int64;
@@ -3769,7 +3769,7 @@ begin
 end;
 
                 // ----------------------------------------------------------------------------
-{$IFNDEF VER180}// See comment on ULONGLONG definition
+{$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUFormatAsBytesUnits(Value: ULONGLONG;
   accuracy: Integer = 2): String;
 begin
@@ -3779,7 +3779,7 @@ begin
     accuracy);
 end;
 
-{$ENDIF}
+{$IFEND}
 
 // ----------------------------------------------------------------------------
 function SDUFormatAsBytesAndBytesUnits(Value: ULONGLONG;
@@ -5452,7 +5452,7 @@ begin
   Result := retval;
 end;
 
-{$IFNDEF VER180}// See comment on ULONGLONG definition
+{$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUIntToStr(val: ULONGLONG): String;
 var
   retval:  String;
@@ -5477,7 +5477,7 @@ begin
   Result := retval;
 end;
 
-{$ENDIF}
+{$IFEND}
 
 
  // ----------------------------------------------------------------------------
@@ -5506,7 +5506,7 @@ begin
   Result := retval;
 end;
 
-{$IFNDEF VER180}// See comment on ULONGLONG definition
+{$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUIntToStrThousands(val: ULONGLONG): String;
 var
   retval: String;
@@ -5531,7 +5531,7 @@ begin
   Result := retval;
 end;
 
-{$ENDIF}
+{$IFEND}
 
  // ----------------------------------------------------------------------------
  // Populate the specified TComboBox with a list of removable drives
@@ -5729,20 +5729,16 @@ end;
 
 
  // ----------------------------------------------------------------------------
- { TODO 1 -otdk -cclean : is there any advantage over 'format'? also doesnt escape % }
+ { TODO 1 -otdk -cclean : cant see any advantage over 'format' - replace with (also cant escape %) }
 function SDUParamSubstitute(const formatStr: String; const params: array of Variant): String;
 var
   i:      Integer;
-  retval: String;
 begin
-  retval := formatStr;
+  result := formatStr;
 
   // Do in "reverse" order in order to process %10 before %1
-  for i := (length(params) - 1) downto 0 do begin
-    retval := StringReplace(retval, '%' + IntToStr(i + 1), params[i], [rfReplaceAll]);
-  end;
-
-  Result := retval;
+  for i := (length(params) - 1) downto 0 do
+    result := StringReplace(result, '%' + IntToStr(i + 1), params[i], [rfReplaceAll]);
 end;
 
 function SDUIsOddNumber(Value: Integer): Boolean;
@@ -6503,9 +6499,9 @@ begin
     WM_SYSKEYUP: retval                    := 'WM_SYSKEYUP';
     WM_SYSCHAR: retval                     := 'WM_SYSCHAR';
     WM_SYSDEADCHAR: retval                 := 'WM_SYSDEADCHAR';
-{$IFNDEF VER180}// Delphi 2007 and later
+{$IF CompilerVersion >= 18.5}// Delphi 2007 and later
     WM_UNICHAR: retval                     := 'WM_UNICHAR';
-{$ENDIF}
+{$IFEND}
     WM_INITDIALOG: retval                  := 'WM_INITDIALOG';
     WM_COMMAND: retval                     := 'WM_COMMAND';
     WM_SYSCOMMAND: retval                  := 'WM_SYSCOMMAND';
@@ -6624,12 +6620,12 @@ begin
     WM_DDE_REQUEST: retval                 := 'WM_DDE_REQUEST';
     WM_DDE_POKE: retval                    := 'WM_DDE_POKE';
     WM_DDE_EXECUTE: retval                 := 'WM_DDE_EXECUTE';
-{$IFNDEF VER180}// Delphi 2007 and later
+{$IF CompilerVersion >= 18.5}// Delphi 2007 and later
     WM_DWMCOMPOSITIONCHANGED: retval       := 'WM_DWMCOMPOSITIONCHANGED';
     WM_DWMNCRENDERINGCHANGED: retval       := 'WM_DWMNCRENDERINGCHANGED';
     WM_DWMCOLORIZATIONCOLORCHANGED: retval := 'WM_DWMCOLORIZATIONCOLORCHANGED';
     WM_DWMWINDOWMAXIMIZEDCHANGE: retval    := 'WM_DWMWINDOWMAXIMIZEDCHANGE';
-{$ENDIF}
+{$IFEND}
     WM_APP: retval                         := 'WM_APP';
   end;
 

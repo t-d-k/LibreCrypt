@@ -29,13 +29,13 @@ function SDUWStrPLCopy(Dest: PWChar; const Source: WideString;
 
 implementation
 
-{$IFNDEF VER180}
+{$IF CompilerVersion >= 18.5}
 uses
   WideStrUtils;
 {$ENDIF}
 
 function SDUFileAge(filename: string; var dateTime: TDateTime): boolean;
-{$IFNDEF VER180}
+{$IF CompilerVersion >= 18.5}
 begin
   Result := FileAge(filename, dateTime);
 end;
@@ -84,7 +84,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-{$IFNDEF VER180}
+{$IF CompilerVersion >= 18.5}
 function SDUWStrLen(const Str: PWideChar): Cardinal;
 begin
   Result := WStrLen(Str);
