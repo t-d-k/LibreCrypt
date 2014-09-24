@@ -96,10 +96,10 @@ begin
   rootPath := GetInstallDrive() + ':\';
   if SelectDirectory(SDUParamSubstitute(_('Select location to copy %1 to'),
     [Application.Title]), rootPath, newPath
-{$IFNDEF VER180}
+{$IF CompilerVersion >= 18.5}
     , // Comma from previous line
     [sdNewUI, sdNewFolder]
-{$ENDIF}
+{$IFEND}
     ) then begin
     // 3 and -2 in order to strip off the "<driveletter>:"
     edPath.Text := Copy(newPath, 3, (length(newPath) - 2));
