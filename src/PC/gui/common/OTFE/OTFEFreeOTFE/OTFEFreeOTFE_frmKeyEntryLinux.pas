@@ -127,7 +127,7 @@ type
     procedure DoCancel();
 
   public
-    FreeOTFEObj: TOTFEFreeOTFEBase;
+    fFreeOTFEObj: TOTFEFreeOTFEBase;
 
     // Key...
     function  GetKey(var userKey: ansistring): boolean;
@@ -270,7 +270,7 @@ var
 begin
   tmpDisplayTitles:= TStringList.Create();
   try
-    if (FreeOTFEObj.GetHashList(tmpDisplayTitles, hashKernelModeDriverNames, hashGUIDs)) then
+    if (fFreeOTFEObj.GetHashList(tmpDisplayTitles, hashKernelModeDriverNames, hashGUIDs)) then
       begin
       cbKeyProcHash.Items.Clear();
       cbKeyProcHash.Items.AddStrings(tmpDisplayTitles);
@@ -301,7 +301,7 @@ var
 begin
   tmpDisplayTitles:= TStringList.Create();
   try
-    if (FreeOTFEObj.GetCypherList(tmpDisplayTitles, cypherKernelModeDriverNames, cypherGUIDs)) then
+    if (fFreeOTFEObj.GetCypherList(tmpDisplayTitles, cypherKernelModeDriverNames, cypherGUIDs)) then
       begin
       cbKeyProcCypher.Items.Clear();
       cbKeyProcCypher.Items.AddStrings(tmpDisplayTitles);
@@ -472,19 +472,19 @@ begin
     end;
 
 
-  if (FreeOTFEObj is TOTFEFreeOTFE) then
+  if (fFreeOTFEObj is TOTFEFreeOTFE) then
     begin
     if (cbDrive.Items.Count>0) then
       begin
       cbDrive.ItemIndex := 0;
 
-      if (TOTFEFreeOTFE(FreeOTFEObj).DefaultDriveLetter <> #0) then
+      if (TOTFEFreeOTFE(fFreeOTFEObj).DefaultDriveLetter <> #0) then
         begin
         // Start from 1; skip the default
         for i:=1 to (cbDrive.items.count-1) do
           begin
           currDriveLetter := ansichar(cbDrive.Items[i][1]);
-          if (currDriveLetter >= TOTFEFreeOTFE(FreeOTFEObj).DefaultDriveLetter) then
+          if (currDriveLetter >= TOTFEFreeOTFE(fFreeOTFEObj).DefaultDriveLetter) then
             begin
             cbDrive.ItemIndex := i;
             break;
@@ -494,9 +494,9 @@ begin
       end;
     end;
 
-  if (FreeOTFEObj is TOTFEFreeOTFE) then
+  if (fFreeOTFEObj is TOTFEFreeOTFE) then
     begin
-    SetMountAs(TOTFEFreeOTFE(FreeOTFEObj).DefaultMountAs);
+    SetMountAs(TOTFEFreeOTFE(fFreeOTFEObj).DefaultMountAs);
     end
   else
     begin
@@ -508,9 +508,9 @@ begin
   preUserKey.WantReturns := FALSE;
   preUserKey.WordWrap := TRUE;
   preUserKey.Lines.Clear();
-  preUserKey.PasswordChar := FreeOTFEObj.PasswordChar;
-  preUserKey.WantReturns  := FreeOTFEObj.AllowNewlinesInPasswords;
-  preUserKey.WantTabs     := FreeOTFEObj.AllowTabsInPasswords;
+  preUserKey.PasswordChar := fFreeOTFEObj.PasswordChar;
+  preUserKey.WantReturns  := fFreeOTFEObj.AllowNewlinesInPasswords;
+  preUserKey.WantTabs     := fFreeOTFEObj.AllowTabsInPasswords;
 
   feGPGExecutable.Filename := '';
   feGPGKeyfile.Filename := '';
@@ -704,7 +704,7 @@ var
 begin
   GetKeyProcHashKernelDeviceName(deviceName);
   GetKeyProcHashGUID(GUID);
-  FreeOTFEObj.ShowHashDetailsDlg(deviceName, GUID);
+  fFreeOTFEObj.ShowHashDetailsDlg(deviceName, GUID);
 
 end;
 
@@ -716,7 +716,7 @@ var
 begin
   GetMainIVHashKernelDeviceName(deviceName);
   GetMainIVHashGUID(GUID);
-  FreeOTFEObj.ShowHashDetailsDlg(deviceName, GUID);
+  fFreeOTFEObj.ShowHashDetailsDlg(deviceName, GUID);
 
 end;
 
@@ -728,7 +728,7 @@ var
 begin
   GetKeyProcCypherKernelDeviceName(deviceName);
   GetKeyProcCypherGUID(GUID);
-  FreeOTFEObj.ShowCypherDetailsDlg(deviceName, GUID);
+  fFreeOTFEObj.ShowCypherDetailsDlg(deviceName, GUID);
 
 end;
 
@@ -739,7 +739,7 @@ var
 begin
   GetMainCypherKernelDeviceName(deviceName);
   GetMainCypherGUID(GUID);
-  FreeOTFEObj.ShowCypherDetailsDlg(deviceName, GUID);
+  fFreeOTFEObj.ShowCypherDetailsDlg(deviceName, GUID);
 
 end;
 
@@ -775,14 +775,14 @@ begin
   preUserKey.SelStart := length(preUserKey.Text);
 
   // Certain controls only visble if used in conjunction with drive mounting
-  lblDrive.Visible := FreeOTFEObj is TOTFEFreeOTFE;
-  cbDrive.Visible := FreeOTFEObj is TOTFEFreeOTFE;
-  lblMountAs.Visible := FreeOTFEObj is TOTFEFreeOTFE;
-  cbMediaType.Visible := FreeOTFEObj is TOTFEFreeOTFE;
-  ckMountForAllUsers.Visible := FreeOTFEObj is TOTFEFreeOTFE;
+  lblDrive.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
+  cbDrive.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
+  lblMountAs.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
+  cbMediaType.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
+  ckMountForAllUsers.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
 
   // Prevent making remaining control look odd, stuck in the middle
-  if not(FreeOTFEObj is TOTFEFreeOTFE) then
+  if not(fFreeOTFEObj is TOTFEFreeOTFE) then
     begin
     ckMountReadonly.top := lblDrive.top;
     ckMountReadonly.left := lblDrive.left;
@@ -1855,7 +1855,7 @@ var
 begin
   GetMainIVCypherKernelDeviceName(deviceName);
   GetMainIVCypherGUID(GUID);
-  FreeOTFEObj.ShowCypherDetailsDlg(deviceName, GUID);
+  fFreeOTFEObj.ShowCypherDetailsDlg(deviceName, GUID);
 
 end;
 

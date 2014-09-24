@@ -235,21 +235,18 @@ end;
 
 function TfrmKeyEntryFreeOTFE.GetMountAs(): TFreeOTFEMountAs;
 var
-  retval: TFreeOTFEMountAs;
   currMountAs: TFreeOTFEMountAs;
 begin
-  retval := low(TFreeOTFEMountAs);
+  Result := low(TFreeOTFEMountAs);
 
   for currMountAs:=low(TFreeOTFEMountAs) to high(TFreeOTFEMountAs) do
     begin
     if (cbMediaType.Items[cbMediaType.ItemIndex] = FreeOTFEMountAsTitle(currMountAs)) then
       begin
-      retval := currMountAs;
+      Result := currMountAs;
       break;
       end;
     end;
-
-  Result := retval;
 end;
 
 function TfrmKeyEntryFreeOTFE.SetMountAs(mountAs: TFreeOTFEMountAs): boolean;
@@ -562,11 +559,10 @@ end;
 function TfrmKeyEntryFreeOTFE.IsVolumeStoredOnReadonlyMedia(): boolean;
 var
   i: integer;
-  retval: boolean;
   currVol: string;
   testDriveColonSlash: string;
 begin
-  retval:= FALSE;
+  Result:= FALSE;
 
   for i:=0 to (fVolumeFiles.count - 1) do
     begin
@@ -584,7 +580,7 @@ begin
           if (TDriveType(GetDriveType(PChar(testDriveColonSlash))) = dtCDROM) then
             begin
             // At least one of the volumes is stored on a CDROM (readonly media)
-            retval := TRUE;
+            Result := TRUE;
             break;
             end;
 
@@ -593,17 +589,14 @@ begin
       end;
 
     end;
-
-  Result := retval;
 end;
 
 function TfrmKeyEntryFreeOTFE.IsVolumeMarkedAsReadonly(): boolean;
 var
   i: integer;
-  retval: boolean;
   currVol: string;
 begin
-  retval:= FALSE;
+  Result:= FALSE;
 
   for i:=0 to (fVolumeFiles.count - 1) do
     begin
@@ -620,7 +613,7 @@ begin
           if FileIsReadOnly(currVol) then
             begin
             // At least one of the volumes is readonly
-            retval := TRUE;
+            Result := TRUE;
             break;
             end;
 
@@ -629,16 +622,12 @@ begin
       end;
 
     end;
-
-  Result := retval;
 end;
 
 
 function TfrmKeyEntryFreeOTFE.CheckInput(): boolean;
-var
-  retval: boolean;
 begin
-  retval:= TRUE;
+  Result:= TRUE;
 
   if (seSaltLength.value mod 8 <> 0) then
     begin
@@ -646,10 +635,8 @@ begin
                   _('Salt length (in bits) must be a multiple of 8'),
                   mtError
                  );
-    retval := FALSE;
+    Result := FALSE;
     end;
-
-  Result := retval;
 end;
 
 procedure TfrmKeyEntryFreeOTFE.pbOKClick(Sender: TObject);

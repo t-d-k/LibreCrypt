@@ -48,6 +48,10 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
     TabOrder = 0
     object tsKey: TTabSheet
       Caption = 'Key'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox1: TGroupBox
         Left = 4
         Top = 4
@@ -315,6 +319,10 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
     object tsEncryption: TTabSheet
       Caption = 'Encryption'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox3: TGroupBox
         Left = 37
         Top = 16

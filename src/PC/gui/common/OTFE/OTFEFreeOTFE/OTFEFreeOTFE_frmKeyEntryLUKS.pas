@@ -52,10 +52,10 @@ type
   private
   protected
     // These are ordered lists corresponding to the items shown in the combobox
-    hashKernelModeDriverNames: TStringList;
-    hashGUIDs: TStringList;
-    cypherKernelModeDriverNames: TStringList;
-    cypherGUIDs: TStringList;
+    fHashKernelModeDriverNames: TStringList;
+    fHashGUIDs: TStringList;
+    fCypherKernelModeDriverNames: TStringList;
+    fCypherGUIDs: TStringList;
 
     procedure PopulateDrives();
     procedure PopulateMountAs();
@@ -67,7 +67,7 @@ type
     procedure DoCancel();
 
   public
-    FreeOTFEObj: TOTFEFreeOTFEBase;
+    fFreeOTFEObj: TOTFEFreeOTFEBase;
 
     procedure Initialize();
 
@@ -115,10 +115,10 @@ uses
 
 procedure TfrmKeyEntryLUKS.FormCreate(Sender: TObject);
 begin
-  hashKernelModeDriverNames:= TStringList.Create();
-  hashGUIDs:= TStringList.Create();
-  cypherKernelModeDriverNames:= TStringList.Create();
-  cypherGUIDs:= TStringList.Create();
+  fhashKernelModeDriverNames:= TStringList.Create();
+  fhashGUIDs:= TStringList.Create();
+ fcypherKernelModeDriverNames:= TStringList.Create();
+  fcypherGUIDs:= TStringList.Create();
 
 end;
 
@@ -169,19 +169,19 @@ var
 begin
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.DefaultOptions();
 
-  if (FreeOTFEObj is TOTFEFreeOTFE) then
+  if (fFreeOTFEObj is TOTFEFreeOTFE) then
     begin
     if (cbDrive.Items.Count>0) then
       begin
       cbDrive.ItemIndex := 0;
 
-      if (TOTFEFreeOTFE(FreeOTFEObj).DefaultDriveLetter <> #0) then
+      if (TOTFEFreeOTFE(fFreeOTFEObj).DefaultDriveLetter <> #0) then
         begin
         // Start from 1; skip the default
         for i:=1 to (cbDrive.items.count-1) do
           begin
           currDriveLetter := ansichar(cbDrive.Items[i][1]);
-          if (currDriveLetter >= TOTFEFreeOTFE(FreeOTFEObj).DefaultDriveLetter) then
+          if (currDriveLetter >= TOTFEFreeOTFE(fFreeOTFEObj).DefaultDriveLetter) then
             begin
             cbDrive.ItemIndex := i;
             break;
@@ -191,9 +191,9 @@ begin
       end;
     end;
 
-  if (FreeOTFEObj is TOTFEFreeOTFE) then
+  if (fFreeOTFEObj is TOTFEFreeOTFE) then
     begin
-    SetMountAs(TOTFEFreeOTFE(FreeOTFEObj).DefaultMountAs);
+    SetMountAs(TOTFEFreeOTFE(fFreeOTFEObj).DefaultMountAs);
     end
   else
     begin
@@ -300,14 +300,14 @@ begin
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.CursorToEndOfPassword();
 
   // Certain controls only visble if used in conjunction with drive mounting
-  lblDrive.Visible := FreeOTFEObj is TOTFEFreeOTFE;
-  cbDrive.Visible := FreeOTFEObj is TOTFEFreeOTFE;
-  lblMountAs.Visible := FreeOTFEObj is TOTFEFreeOTFE;
-  cbMediaType.Visible := FreeOTFEObj is TOTFEFreeOTFE;
-  ckMountForAllUsers.Visible := FreeOTFEObj is TOTFEFreeOTFE;
+  lblDrive.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
+  cbDrive.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
+  lblMountAs.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
+  cbMediaType.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
+  ckMountForAllUsers.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
 
   // Prevent making remaining control look odd, stuck in the middle
-  if not(FreeOTFEObj is TOTFEFreeOTFE) then
+  if not(fFreeOTFEObj is TOTFEFreeOTFE) then
     begin
     ckMountReadonly.top := lblDrive.top;
     ckMountReadonly.left := lblDrive.left;
@@ -320,10 +320,10 @@ end;
 
 procedure TfrmKeyEntryLUKS.FormDestroy(Sender: TObject);
 begin
-  hashKernelModeDriverNames.Free();
-  hashGUIDs.Free();
-  cypherKernelModeDriverNames.Free();
-  cypherGUIDs.Free();
+  fhashKernelModeDriverNames.Free();
+  fhashGUIDs.Free();
+  fcypherKernelModeDriverNames.Free();
+  fcypherGUIDs.Free();
 
 end;
 
@@ -520,7 +520,7 @@ end;
 
 procedure TfrmKeyEntryLUKS.Initialize();
 begin
-  OTFEFreeOTFELUKSKeyOrKeyfileEntry1.FreeOTFEObj := FreeOTFEObj;
+  OTFEFreeOTFELUKSKeyOrKeyfileEntry1.FreeOTFEObj := fFreeOTFEObj;
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.Initialize();
 
   PopulateDrives();
