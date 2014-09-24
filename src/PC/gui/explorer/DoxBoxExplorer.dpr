@@ -55,7 +55,11 @@ uses
   SDUGeneral in '..\common\SDeanUtils\SDUGeneral.pas',
   SDFilesystem_FAT in '..\common\Filesystem\SDFilesystem_FAT.pas',
   SDUWebDav in '..\common\SDeanUtils\SDUWebDav.pas',
-  SDUHTTPServer in '..\common\SDeanUtils\SDUHTTPServer.pas';
+  SDUHTTPServer in '..\common\SDeanUtils\SDUHTTPServer.pas',
+  OTFEFreeOTFE_frmKeyEntryFreeOTFE in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas' {frmKeyEntryFreeOTFE},
+  OTFEFreeOTFE_frmKeyEntryLUKS in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLUKS.pas' {frmKeyEntryLUKS},
+  OTFEFreeOTFE_frmKeyEntryLinux in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLinux.pas' {frmKeyEntryLinux},
+  OTFEFreeOTFE_frmNewVolumeSize in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmNewVolumeSize.pas' {frmNewVolumeSize};
 
 {$R *.res}
 {$R FreeOTFEExplorerCursors.res}

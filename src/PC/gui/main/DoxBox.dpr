@@ -32,12 +32,6 @@ uses
   CommonfrmCDBDump_FreeOTFE in '..\common\CommonfrmCDBDump_FreeOTFE.pas' {frmCDBDump_FreeOTFE},
   SDUForms in '..\common\SDUForms.pas' {SDUForm},
   SDUFrames in '..\common\SDUFrames.pas' {SDUFrame: TFrame},
-  OTFEFreeOTFE_frmWizard in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizard.pas' {frmWizard},
-  OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas' {frmWizardChangePasswordCreateKeyfile},
-  OTFEFreeOTFE_frmWizardCreateVolume in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas' {frmWizardCreateVolume},
-  OTFEFreeOTFE_frmWizardCreateVolumeAdvanced in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas' {frmWizardCreateVolumeAdvanced},
-  OTFEFreeOTFE_WizardCommon in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_WizardCommon.pas',
-  OTFEFreeOTFE_fmeSelectPartition in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas' {fmeSelectPartition: TFrame},
   SDPartitionImage in '..\common\Filesystem\SDPartitionImage.pas',
   SDPartitionImage_File in '..\common\Filesystem\SDPartitionImage_File.pas',
   SDUProgressDlg in '..\common\SDeanUtils\SDUProgressDlg.pas' {SDUProgressDialog},
@@ -51,21 +45,33 @@ uses
   SDUGeneral in '..\common\SDeanUtils\SDUGeneral.pas',
   SDFilesystem in '..\common\Filesystem\SDFilesystem.pas',
   SDFilesystem_FAT in '..\common\Filesystem\SDFilesystem_FAT.pas',
-  CommonfmeOptions_Autorun in '..\common\CommonfmeOptions_Autorun.pas' {fmeOptions_Autorun: TFrame};
+  CommonfmeOptions_Autorun in '..\common\CommonfmeOptions_Autorun.pas' {fmeOptions_Autorun: TFrame},
+  FreeOTFEDLLCypherAPI in '..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas',
+  FreeOTFEDLLHashAPI in '..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas',
+  FreeOTFEDLLMainAPI in '..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas',
+  OTFEFreeOTFE_fmeSelectPartition in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas' {fmeSelectPartition: TFrame},
+  OTFEFreeOTFE_frmKeyEntryFreeOTFE in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas' {frmKeyEntryFreeOTFE},
+  OTFEFreeOTFE_frmKeyEntryLinux in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLinux.pas' {frmKeyEntryLinux},
+  OTFEFreeOTFE_frmKeyEntryLUKS in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLUKS.pas' {frmKeyEntryLUKS},
+  OTFEFreeOTFE_frmWizard in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizard.pas' {frmWizard},
+  OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas' {frmWizardChangePasswordCreateKeyfile},
+  OTFEFreeOTFE_frmWizardCreateVolume in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas' {frmWizardCreateVolume},
+  OTFEFreeOTFE_frmWizardCreateVolumeAdvanced in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas' {frmWizardCreateVolumeAdvanced},
+  OTFEFreeOTFE_WizardCommon in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_WizardCommon.pas';
 
 {$R *.RES}
 
 var
   otherRunningAppWindow: THandle;
   CommandLineOnly: boolean;
-  cmdExitCode: integer;
+  cmdExitCode: eCmdLine_Exit;
   settingsFilename: string;
-{$IFDEF VER185}
+{$IF CompilerVersion >= 18.5}
   // Delphi 7 doesn't need this, but Delphi 2007 (and 2006 as well? Not
   // checked...) need this to honor any "Run minimised" option set in any
   // launching MS Windows shortcut
   sui: TStartUpInfo;
-{$ENDIF}
+{$IFEND}
 
 begin
   GLOBAL_VAR_WM_FREEOTFE_RESTORE := RegisterWindowMessage('FREEOTFE_RESTORE');
@@ -73,10 +79,10 @@ begin
 
   Application.Initialize;
 
-{$IFNDEF VER150}
+{$IF CompilerVersion >= 15.0}
   // Vista fix for Delphi 2007 and later
   Application.MainFormOnTaskbar := TRUE;
-{$ENDIF}
+{$IFEND}
   Application.Title := 'DoxBox';
 
   FreeOTFESettings.Settings:= TFreeOTFESettings.Create();
@@ -123,7 +129,7 @@ begin
         Application.ShowMainForm := TRUE;
         frmFreeOTFEMain.InitApp();
 
-{$IFDEF VER185}
+{$IF CompilerVersion >= 18.5}
         // Delphi 7 doesn't need this, but Delphi 2007 (and 2006 as well? Not
         // checked...) need this to honor any "Run minimised" option set in any
         // launching MS Windows shortcut
@@ -144,7 +150,7 @@ begin
           // *Should* have a corresponding check for SW_MAXIMIZE / SW_SHOWMAXIMIZED
           // here, but not a priority...
           end;
-{$ENDIF}
+{$IFEND}
         if SDUCommandLineSwitch(CMDLINE_MINIMIZE) then
           begin
           Application.Minimize();
@@ -155,11 +161,11 @@ begin
       else
         begin
         // Poke already running application
-{$IFDEF VER185}
+{$IF CompilerVersion >= 18.5}
         SendMessage(HWND_BROADCAST, GLOBAL_VAR_WM_FREEOTFE_RESTORE, 0, 0);
 {$ELSE}
         SDUPostMessageExistingApp(GLOBAL_VAR_WM_FREEOTFE_RESTORE, 0, 0);
-{$ENDIF}
+{$IFEND}
 
 // Alternativly:
 //         SetForegroundWindow(otherRunningAppWindow);
@@ -183,10 +189,10 @@ begin
 
   if (
       CommandLineOnly and
-      (cmdExitCode <> CMDLINE_SUCCESS)
+      (cmdExitCode <> ceSUCCESS)
      ) then
     begin
-    Halt(cmdExitCode); // Note: System.ExitCode may be tested in finalization sections
+    Halt(Integer(cmdExitCode)); // Note: System.ExitCode may be tested in finalization sections
     end;
 
 END.
