@@ -13,6 +13,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       ActivePage = tsFilename
       object tsWelcome: TTabSheet
         Caption = 'Welcome'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lblWelcomeBanner: TLabel
           Left = 126
           Top = 44
@@ -52,6 +56,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsFileOrPartition: TTabSheet
         Caption = 'Volume File or Partition'
         ImageIndex = 14
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructFileOrPartition: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
@@ -128,6 +136,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsPartitionWarning: TTabSheet
         Caption = 'Partition Warning'
         ImageIndex = 16
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object pnlWarningBorder_L: TPanel
           Left = 61
           Top = 236
@@ -311,7 +323,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           end
           inherited ilErrorWarning: TImageList
             Bitmap = {
-              494C010103000400340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400380010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -455,6 +467,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsOffset: TTabSheet
         Caption = 'Offset'
         ImageIndex = 7
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label7: TLabel
           Left = 41
           Top = 284
@@ -551,6 +567,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsSize: TTabSheet
         Caption = 'Size'
         ImageIndex = 6
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label6: TLabel
           Left = 63
           Top = 188
@@ -611,6 +631,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsHashCypherIV: TTabSheet
         Caption = 'Hash, cypher and IV'
         ImageIndex = 2
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label4: TLabel
           Left = 57
           Top = 128
@@ -707,6 +731,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsMasterKeyLength: TTabSheet
         Caption = 'Master Key Length'
         ImageIndex = 11
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label2: TLabel
           Left = 113
           Top = 156
@@ -754,6 +782,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGSelect: TTabSheet
         Caption = 'RNG Select'
         ImageIndex = 4
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructRNGSelect: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
@@ -829,6 +861,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGMouseMovement: TTabSheet
         Caption = 'RNG Mouse movement'
         ImageIndex = 8
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           597
           318)
@@ -873,6 +909,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGPKCS11: TTabSheet
         Caption = 'RNG PKCS token'
         ImageIndex = 17
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lblToken: TLabel
           Left = 123
           Top = 175
@@ -917,6 +957,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGGPG: TTabSheet
         Caption = 'RNG GPG'
         ImageIndex = 10
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructRNGGPG: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
@@ -962,6 +1006,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsPassword: TTabSheet
         Caption = 'Password'
         ImageIndex = 6
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label17: TLabel
           Left = 41
           Top = 148
@@ -1031,6 +1079,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsSummary: TTabSheet
         Caption = 'Summary'
         ImageIndex = 9
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           597
           318)
