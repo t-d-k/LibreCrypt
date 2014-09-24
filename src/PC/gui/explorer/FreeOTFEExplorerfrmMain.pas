@@ -53,14 +53,10 @@ resourcestring
 
 const
   OperationTitlePtr: array [TFExplOperation] of Pointer =
-    (@RS_COPY,
-    @RS_MOVE,
-    @RS_DELETE
+    (@RS_COPY, @RS_MOVE, @RS_DELETE
     );
   OperationVerbTitlePtr: array [TFExplOperation] of Pointer =
-    (@RS_COPYING,
-    @RS_MOVING,
-    @RS_DELETING
+    (@RS_COPYING, @RS_MOVING, @RS_DELETING
     );
 
 type
@@ -227,10 +223,8 @@ type
     Overwritefolder1:                  TMenuItem;
     SDUOpenDialog_Overwrite:           TSDUOpenDialog;
     actWebDAVStatus:                   TAction;
-    N24:                               TMenuItem;
     Networkservicestatus1:             TMenuItem;
     actChooseDetails:                  TAction;
-    N25:                               TMenuItem;
     ChooseDetails1:                    TMenuItem;
     actMapNetworkDrive:                TAction;
     actDisconnectNetworkDrive:         TAction;
@@ -332,8 +326,8 @@ type
     WebDAVObj:    TFreeOTFEExplorerWebDAV;
     FMappedDrive: DriveLetterChar;
 
-    function HandleCommandLineOpts_Create(): Integer; OVERRIDE;
-    function HandleCommandLineOpts_Mount(): Integer; OVERRIDE;
+    function HandleCommandLineOpts_Create(): eCmdLine_Exit; OVERRIDE;
+    function HandleCommandLineOpts_Mount(): eCmdLine_Exit; OVERRIDE;
 
     procedure ReloadSettings(); OVERRIDE;
 
@@ -414,8 +408,7 @@ type
       srcItem: String): ULONGLONG;
     function FSLoadContentsFromDisk(fromMountedFSNotLocalFS: Boolean;
       srcItem: String; srcDirContents: TSDDirItemList): Boolean;
-    function GetLocalFileDetails(pathAndFilename: String;
-      var item: TSDDirItem_FAT): Boolean;
+    function GetLocalFileDetails(pathAndFilename: String; var item: TSDDirItem_FAT): Boolean;
 
     // Move from mounted volume to mounted volume
     procedure MoveTo(items: TStringList); OVERLOAD;
@@ -429,22 +422,16 @@ type
     // Copy from mounted volume to HDD
     procedure Extract(items: TStrings); OVERLOAD;
     procedure Extract(items: TStrings; destDir: String; destFilename: String); OVERLOAD;
-    function PerformOperation(opType: TFExplOperation;
-      srcIsMountedFSNotLocalFS: Boolean;
-      srcItems: TStrings;
-      destIsMountedFSNotLocalFS: Boolean;
-      destDir: String;
-      destFilename:
-      String // When moving/copying a single file, use this as the destination filename
-             // Set to '' to use the source filename's filename
+    function PerformOperation(opType: TFExplOperation; srcIsMountedFSNotLocalFS: Boolean;
+      srcItems: TStrings; destIsMountedFSNotLocalFS: Boolean; destDir: String;
+      destFilename: String
+    // When moving/copying a single file, use this as the destination filename
+    // Set to '' to use the source filename's filename
       ): Boolean; OVERLOAD;
     function ConfirmPerformOperation(opType: TFExplOperation;
-      srcIsMountedFSNotLocalFS: Boolean;
-      srcItems: TStrings;
-      destIsMountedFSNotLocalFS: Boolean;
-      destDir: String;
-      destFilename: String):
-      Boolean;
+      srcIsMountedFSNotLocalFS: Boolean; srcItems: TStrings;
+      destIsMountedFSNotLocalFS: Boolean; destDir: String;
+      destFilename: String): Boolean;
 
     procedure ProgressDlgSetup(opType: TFExplOperation);
     procedure ProgressDlgStart();
@@ -456,27 +443,25 @@ type
     function ProgressDlgHasUserCancelled(): Boolean;
     procedure ProgressDlgStop();
 
-    function _PerformOperation(opType: TFExplOperation;
-      srcIsMountedFSNotLocalFS: Boolean; srcItem: String;
-      destIsMountedFSNotLocalFS: Boolean; destDir: String; destFilename: String;
+    function _PerformOperation(opType: TFExplOperation; srcIsMountedFSNotLocalFS: Boolean;
+      srcItem: String; destIsMountedFSNotLocalFS: Boolean; destDir: String; destFilename: String;
     // When moving/copying a single file, use this as the destination filename
     // Set to '' to use the source filename's filename
       moveDeletionMethod: TMoveDeletionMethod; var promptOverwriteFiles: Boolean;
       var promptOverwriteDirs: Boolean): Boolean; OVERLOAD;
     function _PerformOperation_File(opType: TFExplOperation;
-      srcIsMountedFSNotLocalFS: Boolean; srcItem: String;
-      destIsMountedFSNotLocalFS: Boolean; destDir: String; destFilename: String;
+      srcIsMountedFSNotLocalFS: Boolean; srcItem: String; destIsMountedFSNotLocalFS: Boolean;
+      destDir: String; destFilename: String;
     // When moving/copying a single file, use this as the destination filename
     // Set to '' to use the source filename's filename
       moveDeletionMethod: TMoveDeletionMethod; var promptOverwriteFiles: Boolean;
       var promptOverwriteDirs: Boolean): Boolean;
     function _PerformOperation_File_Actual(opType: TFExplOperation;
-      srcIsMountedFSNotLocalFS: Boolean; srcItem: String;
-      destIsMountedFSNotLocalFS: Boolean; destDir: String; destItem: String;
-      moveDeletionMethod: TMoveDeletionMethod): Boolean;
+      srcIsMountedFSNotLocalFS: Boolean; srcItem: String; destIsMountedFSNotLocalFS: Boolean;
+      destDir: String; destItem: String; moveDeletionMethod: TMoveDeletionMethod): Boolean;
     function _PerformOperation_Dir(opType: TFExplOperation;
-      srcIsMountedFSNotLocalFS: Boolean; srcItem: String;
-      destIsMountedFSNotLocalFS: Boolean; destDir: String; destFilename: String;
+      srcIsMountedFSNotLocalFS: Boolean; srcItem: String; destIsMountedFSNotLocalFS: Boolean;
+      destDir: String; destFilename: String;
     // When moving/copying a single file, use this as the destination filename
     // Set to '' to use the source filename's filename
       moveDeletionMethod: TMoveDeletionMethod; var promptOverwriteFiles: Boolean;
@@ -490,12 +475,11 @@ type
 
     // Returns one of: TRUE / FALSE
     function PromptToReplace(filename: String; existingSize: ULONGLONG;
-      existingDateTime: TDateTime; newSize: ULONGLONG;
-      newDateTime: TDateTime): Boolean;
+      existingDateTime: TDateTime; newSize: ULONGLONG; newDateTime: TDateTime): Boolean;
     // Returns one of: mrYes, mrYesToAll, mrNo, mrCancel
     function PromptToReplaceYYANC(filename: String; existingSize: ULONGLONG;
-      existingDateTime: TDateTime; newSize: ULONGLONG;
-      newDateTime: TDateTime): Integer; OVERLOAD;
+      existingDateTime: TDateTime; newSize: ULONGLONG; newDateTime: TDateTime): Integer;
+      OVERLOAD;
     function PromptToReplaceYYANC(srcIsMountedFSNotLocalFS: Boolean;
       srcPathAndFilename: String; destIsMountedFSNotLocalFS: Boolean;
       destPathAndFilename: String): Integer; OVERLOAD;
@@ -510,7 +494,7 @@ type
   PUBLIC
     // This next line will generate a compiler warning - this is harmless.
     // (We want to use OTFEFreeOTFE as the descendant class in this unit)
-    function OTFEFreeOTFE(): TOTFEFreeOTFEDLL; REINTRODUCE; OVERLOAD;
+//    function OTFEFreeOTFE(): TOTFEFreeOTFEDLL; REINTRODUCE; OVERLOAD;
 
     procedure WMUserPostShow(var msg: TWMEndSession); OVERRIDE;
 
@@ -521,7 +505,7 @@ type
 
     // Handle any command line options; returns TRUE if command line options
     // were passed through
-    function HandleCommandLineOpts(out cmdExitCode: Integer): Boolean; OVERRIDE;
+    function HandleCommandLineOpts(out cmdExitCode: eCmdLine_Exit): Boolean; OVERRIDE;
 
   end;
 
@@ -639,13 +623,11 @@ resourcestring
     'Although DoxBox supports all filesystems, DoxBox Explorer only supports those listed above.';
 
   RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE =
-    'Cannot %1 %2: Cannot find the specified file.' + SDUCRLF +
-    SDUCRLF +
+    'Cannot %1 %2: Cannot find the specified file.' + SDUCRLF + SDUCRLF +
     'Make sure you specify the correct path and file name.';
 
   RS_CANNOT_X_CANNOT_FIND_SPECIFIED_DESTINATION =
-    'Cannot %1 %2: Cannot find the specified destination.' + SDUCRLF +
-    SDUCRLF +
+    'Cannot %1 %2: Cannot find the specified destination.' + SDUCRLF + SDUCRLF +
     'Make sure you specify the correct path and file name.';
 
   RS_UNABLE_TO_CREATE_FOLDER        = 'Unable to create folder ''%1''';
@@ -684,7 +666,8 @@ const
   // String for this instance of FreeOTFE Explorer's clipboard
   CFSTR_FEXPL_SESSION_BASE = 'DoxBoxExplorer:%1';
 
-  ERROR_WORKSTATION_DRIVER_NOT_INSTALLED = $00000836;  // "The workstation driver is not installed."
+  ERROR_WORKSTATION_DRIVER_NOT_INSTALLED = $00000836;
+// "The workstation driver is not installed."
 
 
 var
@@ -728,8 +711,8 @@ begin
 
   if not (ActivateFreeOTFEComponent(True)) then begin
     SDUMessageDlg(
-      _('The DoxBox DLL (FreeOTFE.dll) could not be found on this computer' + SDUCRLF +
-      SDUCRLF + 'Please check your installation'),
+      _('The DoxBox DLL (FreeOTFE.dll) could not be found on this computer' +
+      SDUCRLF + SDUCRLF + 'Please check your installation'),
       mtError
       );
   end;
@@ -820,16 +803,16 @@ begin
   AddToMRUList(filenames);
 
   if (mountAsSystem = ftFreeOTFE) then begin
-    mountedOK := OTFEFreeOTFE.MountFreeOTFE(filenames, mountedAs, ReadOnly);
+    mountedOK := fOTFEFreeOTFEBase.MountFreeOTFE(filenames, mountedAs, ReadOnly);
   end else
   if (mountAsSystem = ftLinux) then begin
-    mountedOK := OTFEFreeOTFE.MountLinux(filenames, mountedAs, ReadOnly);
+    mountedOK := fOTFEFreeOTFEBase.MountLinux(filenames, mountedAs, ReadOnly);
   end else begin
-    mountedOK := OTFEFreeOTFE.Mount(filenames, mountedAs, ReadOnly);
+    mountedOK := fOTFEFreeOTFEBase.Mount(filenames, mountedAs, ReadOnly);
   end;
 
   if not (mountedOK) then begin
-    if (OTFEFreeOTFE.LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
+    if (fOTFEFreeOTFEBase.LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
       SDUMessageDlg(
         _('Unable to open Box.') + SDUCRLF + SDUCRLF +
         _('Please check your keyphrase and settings, and try again.'),
@@ -866,10 +849,10 @@ procedure TfrmFreeOTFEExplorerMain.PostMountGUISetup(driveLetter: DriveLetterCha
 var
   volFilename: String;
 begin
-  volFilename := OTFEFreeOTFE.GetVolFileForDrive(driveLetter);
+  volFilename := fOTFEFreeOTFEBase.GetVolFileForDrive(driveLetter);
 
   PartitionImage         := TOTFEFreeOTFEDLL_PartitionImage.Create();
-  TOTFEFreeOTFEDLL_PartitionImage(PartitionImage).FreeOTFEObj := OTFEFreeOTFE;
+  TOTFEFreeOTFEDLL_PartitionImage(PartitionImage).FreeOTFEObj := fOTFEFreeOTFEBase as TOTFEFreeOTFEDLL;
   TOTFEFreeOTFEDLL_PartitionImage(PartitionImage).Filename := volFilename;
   TOTFEFreeOTFEDLL_PartitionImage(PartitionImage).MountedAs := driveLetter;
   PartitionImage.Mounted := True;
@@ -1190,18 +1173,15 @@ begin
       lastErrorNo  := GetLastError();
       lastErrorMsg := SysErrorMessage(lastErrorNo) + ' (0x' + SDUIntToHex(lastErrorNo, 8) + ')';
       comment      := '';
-      if ((lastErrorNo = ERROR_NO_NET_OR_BAD_PATH) or
-        (lastErrorNo = ERROR_WORKSTATION_DRIVER_NOT_INSTALLED)) then begin
+      if ((lastErrorNo = ERROR_NO_NET_OR_BAD_PATH) or (lastErrorNo =
+        ERROR_WORKSTATION_DRIVER_NOT_INSTALLED)) then begin
         comment := _('Please ensure that the WebClient service is running');
       end;
 
       SDUMessageDlg(
-        SDUParamSubstitute(
-        _('Unable to map volume to %1:' + SDUCRLF +
-        SDUCRLF + '%2' + SDUCRLF +
-        SDUCRLF + '%3'),
-        [useDriveLetter, lastErrorMsg,
-        comment]),
+        SDUParamSubstitute(_('Unable to map volume to %1:' + SDUCRLF +
+        SDUCRLF + '%2' + SDUCRLF + SDUCRLF + '%3'),
+        [useDriveLetter, lastErrorMsg, comment]),
         mtWarning
         );
     end;
@@ -1347,8 +1327,7 @@ begin
   SDFilesystemTreeView1.Filesystem := Filesystem;
 
   // Allow user to rename files...
-  mountedWritable := (Mounted() and not
-    (Filesystem.ReadOnly));
+  mountedWritable := (Mounted() and not (Filesystem.ReadOnly));
 
   SDFilesystemTreeView1.ReadOnly := not (mountedWritable);
   SDFilesystemListView1.ReadOnly := not (mountedWritable);
@@ -1374,9 +1353,7 @@ procedure TfrmFreeOTFEExplorerMain.pbGoClick(Sender: TObject);
 begin
   edPath.Text := trim(edPath.Text);
   if (SDFilesystemTreeView1.GoToPath(edPath.Text, False) = nil) then begin
-    SDUMessageDlg(SDUParamSubstitute(_(
-      'Path not found:' + SDUCRLF + SDUCRLF +
-      '%1'),
+    SDUMessageDlg(SDUParamSubstitute(_('Path not found:' + SDUCRLF + SDUCRLF + '%1'),
       [edPath.Text]), mtError);
   end;
 
@@ -1431,9 +1408,8 @@ procedure TfrmFreeOTFEExplorerMain.mnuExploreViewClick(Sender: TObject);
 begin
   if (SDFilesystemListView1.SelCount > 0) then begin
     SDFilesystemTreeView1.GoToPath(
-      IncludeTrailingPathDelimiter(
-      SDFilesystemListView1.Path) + SDFilesystemListView1.DirItem[
-      SDFilesystemListView1.SelectedIdx].Filename,
+      IncludeTrailingPathDelimiter(SDFilesystemListView1.Path) +
+      SDFilesystemListView1.DirItem[SDFilesystemListView1.SelectedIdx].Filename,
       True
       );
   end;
@@ -1445,8 +1421,7 @@ var
   i:           Integer;
 begin
   pmToolbarBack.Items.Clear();
-  for i := (FNavigateIdx - 1) downto max(0,
-      (FNavigateIdx -
+  for i := (FNavigateIdx - 1) downto max(0, (FNavigateIdx -
       MAX_BACKFORWARD_NAV_MENUITEMS)) do begin
     tmpMenuItem         := TMenuItem.Create(nil);
     tmpMenuItem.Caption := FNavigateHistory[i];
@@ -1464,9 +1439,7 @@ var
 begin
   pmToolbarForward.Items.Clear();
   for i := (FNavigateIdx + 1) to min((FNavigateHistory.Count - 1),
-      (FNavigateIdx +
-      MAX_BACKFORWARD_NAV_MENUITEMS))
-    do begin
+      (FNavigateIdx + MAX_BACKFORWARD_NAV_MENUITEMS)) do begin
     tmpMenuItem         := TMenuItem.Create(nil);
     tmpMenuItem.Caption := FNavigateHistory[i];
     tmpMenuItem.OnClick := OnNavigationMenuItemClick;
@@ -1483,8 +1456,8 @@ begin
   targetIdx := TMenuItem(Sender).Tag;
 
   // Sanity check
-  if ((FNavigateHistory.Count > 0) and (targetIdx >= 0) and
-    (targetIdx <= (FNavigateHistory.Count - 1))) then begin
+  if ((FNavigateHistory.Count > 0) and (targetIdx >= 0) and (targetIdx <=
+    (FNavigateHistory.Count - 1))) then begin
     NavigateToHistoryIdx(targetIdx);
   end;
 
@@ -1507,19 +1480,15 @@ begin
 
   mountedWritable := False;
   if (Filesystem <> nil) then begin
-    mountedWritable := (Mounted() and not
-      (Filesystem.ReadOnly));
+    mountedWritable := (Mounted() and not (Filesystem.ReadOnly));
   end;
 
   // Controls only enabled when mounted...
-  SDUEnableControl(actNavigateBack, (Mounted() and
-    (FNavigateIdx > 0)));
-  SDUEnableControl(actNavigateForward, (Mounted() and
-    (FNavigateIdx < (FNavigateHistory.Count -
-    1))));
+  SDUEnableControl(actNavigateBack, (Mounted() and (FNavigateIdx > 0)));
+  SDUEnableControl(actNavigateForward, (Mounted() and (FNavigateIdx <
+    (FNavigateHistory.Count - 1))));
   SDUEnableControl(edPath, Mounted());
-  SDUEnableControl(pbGo, (Mounted() and
-    (trim(edPath.Text) <> '')));
+  SDUEnableControl(pbGo, (Mounted() and (trim(edPath.Text) <> '')));
 
   // Don't disable the ListView - then the user can still play with the column
   // layout/sizes
@@ -1533,8 +1502,7 @@ begin
   SDUEnableControl(actShowBootSector, Mounted());
   SDUEnableControl(actCheckFilesystem, Mounted());
   SDUEnableControl(actUpDir, (Mounted() and
-    (SDFilesystemTreeView1.PathToNode(SDFilesystemTreeView1.Selected) <>
-    PATH_SEPARATOR)));
+    (SDFilesystemTreeView1.PathToNode(SDFilesystemTreeView1.Selected) <> PATH_SEPARATOR)));
 
   // Controls only enabled when mounted for read/write...
   SDUEnableControl(tbbStore, mountedWritable);
@@ -1543,8 +1511,7 @@ begin
   SDUEnableControl(actStoreDir, mountedWritable);
   SDUEnableControl(actCut, mountedWritable);
   SDUEnableControl(actCopy, mountedWritable);
-  SDUEnableControl(actPaste, (mountedWritable and
-    ClipboardHasFiles()));
+  SDUEnableControl(actPaste, (mountedWritable and ClipboardHasFiles()));
 
   SDUEnableControl(actCreateSubDir, mountedWritable);
   SDUEnableControl(actDelete, mountedWritable);
@@ -1555,31 +1522,26 @@ begin
 
 
   mnuTreeViewExpand.Visible   :=
-    ((SDFilesystemTreeView1.SelectionCount = 1) and
-    not
+    ((SDFilesystemTreeView1.SelectionCount = 1) and not
     (SDFilesystemTreeView1.Selected.Expanded));
   mnuTreeViewCollapse.Visible :=
     ((SDFilesystemTreeView1.SelectionCount = 1) and
-    SDFilesystemTreeView1.Selected.Expanded
-    );
+    SDFilesystemTreeView1.Selected.Expanded);
 
   SDUEnableControl(
     mnuExploreView,
     ((SDFilesystemListView1.SelCount = 1) and
-    SDFilesystemListView1.DirItem[SDFilesystemListView1.SelectedIdx].IsDirectory
-    )
+    SDFilesystemListView1.DirItem[SDFilesystemListView1.SelectedIdx].IsDirectory)
     );
 
   SDUEnableControl(
     mnuViewRename,
-    (not (SDFilesystemListView1.ReadOnly) and
-    (SDFilesystemListView1.SelCount = 1) and
+    (not (SDFilesystemListView1.ReadOnly) and (SDFilesystemListView1.SelCount = 1) and
     mountedWritable)
     );
   SDUEnableControl(
     mnuTreeViewRename,
-    (not (SDFilesystemTreeView1.ReadOnly) and
-    (SDFilesystemTreeView1.SelectionCount = 1) and
+    (not (SDFilesystemTreeView1.ReadOnly) and (SDFilesystemTreeView1.SelectionCount = 1) and
     mountedWritable)
     );
 
@@ -1588,14 +1550,11 @@ begin
   try
     GetSelectedItems(nil, selectedTargets);
 
-    SDUEnableControl(actExtract, (Mounted() and
-      (selectedTargets.Count > 0)));
+    SDUEnableControl(actExtract, (Mounted() and (selectedTargets.Count > 0)));
 
-    SDUEnableControl(actMoveTo, (Mounted() and
-      (selectedTargets.Count > 0)));
+    SDUEnableControl(actMoveTo, (Mounted() and (selectedTargets.Count > 0)));
 
-    SDUEnableControl(actCopyTo, (Mounted() and
-      (selectedTargets.Count > 0)));
+    SDUEnableControl(actCopyTo, (Mounted() and (selectedTargets.Count > 0)));
 
     SDUEnableControl(actItemProperties, actExtract.Enabled);
   finally
@@ -1608,13 +1567,11 @@ begin
   actDisconnectNetworkDrive.Visible := False;
   SDUEnableControl(
     actMapNetworkDrive,
-    (Mounted() and (FMappedDrive = #0) and
-    Settings.OptWebDAVEnableServer)
+    (Mounted() and (FMappedDrive = #0) and Settings.OptWebDAVEnableServer)
     );
   SDUEnableControl(
     actDisconnectNetworkDrive,
-    (Mounted() and (FMappedDrive <> #0) and
-    Settings.OptWebDAVEnableServer)
+    (Mounted() and (FMappedDrive <> #0) and Settings.OptWebDAVEnableServer)
     );
 
   // IMPORTANT!
@@ -1752,10 +1709,8 @@ begin
   StatusBar_Status.Panels[STATUSBAR_PANEL_LOCATION].Width      := 165;
 
   StatusBar_Status.Panels[STATUSBAR_PANEL_STATUS].Width :=
-    self.Width - (StatusBar_Status.Panels[
-    STATUSBAR_PANEL_SELECTEDITEMS].Width +
-    StatusBar_Status.Panels[
-    STATUSBAR_PANEL_LOCATION].Width);
+    self.Width - (StatusBar_Status.Panels[STATUSBAR_PANEL_SELECTEDITEMS].Width +
+    StatusBar_Status.Panels[STATUSBAR_PANEL_LOCATION].Width);
 end;
 
 procedure TfrmFreeOTFEExplorerMain.actAboutExecute(Sender: TObject);
@@ -1764,7 +1719,7 @@ var
 begin
   dlg := TfrmAbout.Create(self);
   try
-    dlg.FreeOTFEObj := OTFEFreeOTFE;
+    dlg.FreeOTFEObj := fOTFEFreeOTFEBase;
     dlg.BetaNumber  := APP_BETA_BUILD;
     dlg.Description := FOTFE_EXPL_DESCRIPTION;
     dlg.ShowModal();
@@ -1950,8 +1905,7 @@ begin
       prevCursor    := Screen.Cursor;
       Screen.Cursor := crHourglass;
       try
-        retval := CreateSubDir(GetSelectedPath(Sender),
-          dlg.DirName);
+        retval := CreateSubDir(GetSelectedPath(Sender), dlg.DirName);
       finally
         Screen.Cursor := prevCursor;
       end;
@@ -1961,11 +1915,8 @@ begin
         //SDUMessageDlg(_('Folder created successfully'), mtInformation);
       end else begin
         SDUMessageDlg(
-          SDUParamSubstitute(
-          RS_UNABLE_TO_CREATE_FOLDER + SDUCRLF +
-          SDUCRLF +
-          RS_PLEASE_ENSURE_ENOUGH_FREE_SPACE,
-          [dlg.DirName]),
+          SDUParamSubstitute(RS_UNABLE_TO_CREATE_FOLDER + SDUCRLF +
+          SDUCRLF + RS_PLEASE_ENSURE_ENOUGH_FREE_SPACE, [dlg.DirName]),
           mtError
           );
       end;
@@ -2005,9 +1956,9 @@ begin
   end;
 
   if (driveLetter = #0) then begin
-    OTFEFreeOTFE.DismountAll();
+    fOTFEFreeOTFEBase.DismountAll();
   end else begin
-    OTFEFreeOTFE.Dismount(driveLetter);
+    fOTFEFreeOTFEBase.Dismount(driveLetter);
   end;
 
   // If *we* put anything on the clipboard, clear it
@@ -2107,14 +2058,11 @@ begin
           if item.IsFile then begin
             promptMsg := SDUParamSubstitute(
               _('Are you sure you want to delete ''%1''?'),
-              [
-              item.Filename]);
+              [item.Filename]);
           end else begin
-            promptMsg := SDUParamSubstitute(
-              _(
+            promptMsg := SDUParamSubstitute(_(
               'Are you sure you want to remove the folder ''%1'' and all its contents?'),
-              [
-              item.Filename]);
+              [item.Filename]);
           end;
         finally
           item.Free();
@@ -2122,8 +2070,7 @@ begin
 
       end else begin
         promptMsg := SDUParamSubstitute(
-          _('Are you sure you want to delete these %1 items?'),
-          [selItems.Count]);
+          _('Are you sure you want to delete these %1 items?'), [selItems.Count]);
       end;
 
       userConfirmed := SDUConfirmYN(promptMsg);
@@ -2180,14 +2127,14 @@ var
 begin
   inherited;
 
-  prevMounted := OTFEFreeOTFE.DrivesMounted;
+  prevMounted := fOTFEFreeOTFEBase.DrivesMounted;
 
-  if not (OTFEFreeOTFE.CreateFreeOTFEVolumeWizard()) then begin
-    if (OTFEFreeOTFE.LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
+  if not (fOTFEFreeOTFEBase.CreateFreeOTFEVolumeWizard()) then begin
+    if (fOTFEFreeOTFEBase.LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
       SDUMessageDlg(_('DoxBox could not be created'), mtError);
     end;
   end else begin
-    newMounted := OTFEFreeOTFE.DrivesMounted;
+    newMounted := fOTFEFreeOTFEBase.DrivesMounted;
 
     // If the "drive letters" mounted have changed, the new volume was
     // automatically mounted; setup for this
@@ -2256,10 +2203,8 @@ begin
     allOK := SDUWarnYN(_('This function will create an UNENCRYPTED disk image.' +
       SDUCRLF + SDUCRLF +
       'If you would like to create an ENCRYPTED disk image, please click "No" below, and then select "File | New..."'
-      +
-      SDUCRLF + SDUCRLF +
-      'Are you sure you with to create an UNENCRYPTED disk image?')
-      );
+      + SDUCRLF + SDUCRLF +
+      'Are you sure you with to create an UNENCRYPTED disk image?'));
   end;
 
   // Create the plaintext image file
@@ -2332,21 +2277,13 @@ var
   confirmMsg: WideString;
 begin
   if (srcItems.Count = 1) then begin
-    confirmMsg := SDUParamSubstitute(_(
-      'Are you sure you wish to %1 ''%2'' to:' + SDUCRLF + SDUCRLF +
-      '  %3'),
-      [OperationTitle(opType),
-      ExtractFilename(srcItems[0]),
-      destDir
-      ]);
+    confirmMsg := SDUParamSubstitute(_('Are you sure you wish to %1 ''%2'' to:' +
+      SDUCRLF + SDUCRLF + '  %3'), [OperationTitle(opType),
+      ExtractFilename(srcItems[0]), destDir]);
   end else begin
     confirmMsg := SDUParamSubstitute(_(
-      'Are you sure you wish to %1 the %2 items dropped to:' + SDUCRLF +
-      SDUCRLF + '%3'),
-      [OperationTitle(opType),
-      srcItems.Count,
-      destDir
-      ]);
+      'Are you sure you wish to %1 the %2 items dropped to:' + SDUCRLF + SDUCRLF + '%3'),
+      [OperationTitle(opType), srcItems.Count, destDir]);
   end;
 
   Result := SDUConfirmYN(confirmMsg);
@@ -2358,9 +2295,7 @@ procedure TfrmFreeOTFEExplorerMain.CopyTo(items: TStringList);
 var
   destDir: String;
 begin
-  destDir := SelectFilesystemDirectory(self,
-    Filesystem, sdtCopy,
-    items);
+  destDir := SelectFilesystemDirectory(self, Filesystem, sdtCopy, items);
   if (destDir <> '') then begin
     CopyTo(items, destDir);
   end;
@@ -2392,9 +2327,7 @@ procedure TfrmFreeOTFEExplorerMain.MoveTo(items: TStringList);
 var
   destDir: String;
 begin
-  destDir := SelectFilesystemDirectory(self,
-    Filesystem, sdtMove,
-    items);
+  destDir := SelectFilesystemDirectory(self, Filesystem, sdtMove, items);
   if (destDir <> '') then begin
     MoveTo(items, destDir);
   end;
@@ -2603,16 +2536,12 @@ begin
         Dec(itemsInSelected);
       end;
 
-      dispMsg := SDUParamSubstitute(_(
-        '%1 objects (Disk free space: %2)'), [
-        itemsInSelected,
+      dispMsg := SDUParamSubstitute(_('%1 objects (Disk free space: %2)'),
+        [itemsInSelected,
         //                                   SDUFormatAsBytesUnits(fsFreeSpace),
         // MS Explorer only displays to 1 decimal place
-        SDUFormatUnits(
-        fsFreeSpace, SDUUnitsStorageToTextArr(),
-        UNITS_BYTES_MULTIPLIER,
-        1  )
-        ]);
+        SDUFormatUnits(fsFreeSpace, SDUUnitsStorageToTextArr(),
+        UNITS_BYTES_MULTIPLIER, 1)]);
 
 
   {
@@ -2654,28 +2583,18 @@ begin
         fileType := SDUGetFileType_Description(selectedItem.Filename);
         date     := DateTimeToStr(TimeStampToDateTime(selectedItem.TimestampLastModified));
 
-        dispMsg := SDUParamSubstitute(
-          _('Type: %1 Date Modified: %2 Size: %3'),
-          [fileType,
-          date, size
-          ]);
+        dispMsg := SDUParamSubstitute(_('Type: %1 Date Modified: %2 Size: %3'),
+          [fileType, date, size]);
       end else begin
-        dispMsg := SDUParamSubstitute(
-          _('%1 object selected'),
-          [SDFilesystemListView1.SelCount]
-          );
+        dispMsg := SDUParamSubstitute(_('%1 object selected'),
+          [SDFilesystemListView1.SelCount]);
       end;
 
     end else begin
       dispMsg := SDUPluralMsg(SDFilesystemListView1.SelCount,
-        [SDUParamSubstitute(
-        _('%1 object selected'),
-        [
-        SDFilesystemListView1.SelCount]),
-        SDUParamSubstitute(
-        _('%1 objects selected'), [
-        SDFilesystemListView1.SelCount])
-        ]);
+        [SDUParamSubstitute(_('%1 object selected'),
+        [SDFilesystemListView1.SelCount]), SDUParamSubstitute(
+        _('%1 objects selected'), [SDFilesystemListView1.SelCount])]);
     end;
   end;
 
@@ -2704,13 +2623,12 @@ begin
   for i := 0 to (SDFilesystemListView1.Items.Count - 1) do begin
     currItem := SDFilesystemListView1.DirItem[i];
 
-    if (SDFilesystemListView1.Items[i].Selected and currItem.IsFile) then
-    begin
+    if (SDFilesystemListView1.Items[i].Selected and currItem.IsFile) then begin
       onlyDirsSelected := False;
     end;
 
-    if ((SDFilesystemListView1.Items[i].Selected or
-      sumAllItems) and currItem.IsFile) then begin
+    if ((SDFilesystemListView1.Items[i].Selected or sumAllItems) and currItem.IsFile) then
+    begin
       totalSize := totalSize + currItem.Size;
     end;
 
@@ -2719,10 +2637,8 @@ begin
   if ((SDFilesystemListView1.SelCount > 0) and onlyDirsSelected) then begin
     // Do nothing - already set to ''
   end else begin
-    retval := SDUFormatUnits(totalSize,
-      SDUUnitsStorageToTextArr(),
-      UNITS_BYTES_MULTIPLIER,
-      2);
+    retval := SDUFormatUnits(totalSize, SDUUnitsStorageToTextArr(),
+      UNITS_BYTES_MULTIPLIER, 2);
   end;
 
   Result := retval;
@@ -2814,7 +2730,7 @@ begin
 
   dlg := TfrmOptions_FreeOTFEExplorer.Create(self);
   try
-    dlg.OTFEFreeOTFEBase := OTFEFreeOTFE;
+    dlg.OTFEFreeOTFEBase := fOTFEFreeOTFEBase;
     if (dlg.ShowModal() = mrOk) then begin
       ReloadSettings();
       actRefreshExecute(nil);
@@ -2835,23 +2751,18 @@ begin
   inherited;
 
   SDUOpenDialog_Overwrite.Options :=
-    SDUOpenDialog_Overwrite.Options +
-    [ofHideReadOnly,
+    SDUOpenDialog_Overwrite.Options + [ofHideReadOnly,
     // i.e. Set to TRUE to remove the readonly checkbox
-    ofPathMustExist,
-    ofFileMustExist
+    ofPathMustExist, ofFileMustExist
     // ofAllowMultiSelect
     ];
   SDUOpenDialog_Overwrite.Options := SDUOpenDialog_Overwrite.Options + [ofDontAddToRecent];
   if SDUOpenDialog_Overwrite.Execute then begin
     overwriteItem := SDUOpenDialog_Overwrite.Filename;
 
-    if SDUWarnYN(SDUParamSubstitute(_(
-      'This will overwrite:' + SDUCRLF + SDUCRLF +
-      '%1' + SDUCRLF + SDUCRLF +
-      'Are you sure you want to do this?'),
-      [overwriteItem])) then
-    begin
+    if SDUWarnYN(SDUParamSubstitute(_('This will overwrite:' + SDUCRLF +
+      SDUCRLF + '%1' + SDUCRLF + SDUCRLF + 'Are you sure you want to do this?'),
+      [overwriteItem])) then begin
       if (ShredderObj.DestroyFileOrDir(overwriteItem, False, False, False) = srError) then begin
         SDUMessageDlg(_('Overwrite failed'), mtError);
       end;
@@ -2866,16 +2777,10 @@ var
 begin
   inherited;
 
-  if SDUSelectDirectory(self.Handle,
-    _('Folder to overwrite:'), '',
-    overwriteItem) then begin
-    if SDUWarnYN(SDUParamSubstitute(_(
-      'This will overwrite:' + SDUCRLF + SDUCRLF +
-      '%1' + SDUCRLF + SDUCRLF +
-      'and everything contained within it.' + SDUCRLF +
-      SDUCRLF +
-      'Are you sure you want to do this?'),
-      [overwriteItem])) then
+  if SDUSelectDirectory(self.Handle, _('Folder to overwrite:'), '', overwriteItem) then begin
+    if SDUWarnYN(SDUParamSubstitute(_('This will overwrite:' + SDUCRLF +
+      SDUCRLF + '%1' + SDUCRLF + SDUCRLF + 'and everything contained within it.' +
+      SDUCRLF + SDUCRLF + 'Are you sure you want to do this?'), [overwriteItem])) then
     begin
       if (ShredderObj.DestroyFileOrDir(overwriteItem, False, False, False) = srError) then begin
         SDUMessageDlg(_('Overwrite failed'), mtError);
@@ -2919,13 +2824,11 @@ begin
 
   if (hitTestTreeNode <> nil) then begin
     mnuTreeViewExpand.Visible   :=
-      ((SDFilesystemTreeView1.SelectionCount = 1) and
-      not
+      ((SDFilesystemTreeView1.SelectionCount = 1) and not
       (SDFilesystemTreeView1.Selected.Expanded));
     mnuTreeViewCollapse.Visible :=
       ((SDFilesystemTreeView1.SelectionCount = 1) and
-      SDFilesystemTreeView1.Selected.Expanded
-      );
+      SDFilesystemTreeView1.Selected.Expanded);
 
     pmTreeView.Tag := Integer(hitTestTreeNode);
 
@@ -3008,8 +2911,7 @@ begin
 
   Accept := False;
 
-  if ((Source = SDFilesystemTreeView1) or (Source = SDFilesystemListView1)) then
-  begin
+  if ((Source = SDFilesystemTreeView1) or (Source = SDFilesystemListView1)) then begin
     // Only accept inter-window drag'n'drop onto the treeview if the drop in on
     // top of a node
     // NOTE: This is slightly different from drag'n'drop from MS Windows
@@ -3027,7 +2929,8 @@ begin
   inherited;
 
   if ((SDFilesystemListView1.SelCount = 1) and
-    SDFilesystemListView1.DirItemSelected.IsFile) then begin
+    SDFilesystemListView1.DirItemSelected.IsFile) then
+  begin
     actExtractExecute(Sender);
   end;
 
@@ -3073,8 +2976,7 @@ var
 begin
   inherited;
 
-  if ((Target = SDFilesystemTreeView1) or (Target = SDFilesystemListView1)) then
-  begin
+  if ((Target = SDFilesystemTreeView1) or (Target = SDFilesystemListView1)) then begin
     // Determine path dropped on
     droppedOnPath := '';
     if (Target = SDFilesystemTreeView1) then begin
@@ -3151,11 +3053,8 @@ begin
       end;
 
       SDUMessageDlg(SDUParamSubstitute(
-        _('A file name cannot contain any of the following characters:'
-        + SDUCRLF + SDUCRLF +
-        '%1'),
-        [invalidCharsForDisplay]
-        ), mtError);
+        _('A file name cannot contain any of the following characters:' +
+        SDUCRLF + SDUCRLF + '%1'), [invalidCharsForDisplay]), mtError);
     end;
   end;
 
@@ -3193,8 +3092,7 @@ begin
         renamedOK := Filesystem.MoveFileOrDir(
           IncludeTrailingPathDelimiter(SDFilesystemListView1.Path) +
           SDFilesystemListView1.DirItem[Item.Index].Filename,
-          IncludeTrailingPathDelimiter(SDFilesystemListView1.Path) + S
-          );
+          IncludeTrailingPathDelimiter(SDFilesystemListView1.Path) + S);
       end;
     end;
   end;
@@ -3228,8 +3126,7 @@ begin
   end else begin
     if IsFilenameValid(S) then begin
       // Carry out the rename operation...
-      renamedOK := Filesystem.MoveFileOrDir(
-        SDFilesystemTreeView1.PathToNode(Node),
+      renamedOK := Filesystem.MoveFileOrDir(SDFilesystemTreeView1.PathToNode(Node),
         IncludeTrailingPathDelimiter(
         ExtractFilePath(SDFilesystemTreeView1.PathToNode(Node))) + S);
     end;
@@ -3557,7 +3454,7 @@ begin
 
   ShredderObj.Free();
 
-  OTFEFreeOTFE.Free();
+  fOTFEFreeOTFEBase.Free();
 
 end;
 
@@ -3577,7 +3474,7 @@ begin
   FInFormShow   := False;
   FInRefreshing := False;
 
-  OTFEFreeOTFEBase := TOTFEFreeOTFEDLL.Create(nil);
+  fOTFEFreeOTFEBase := TOTFEFreeOTFEDLL.Create(nil);
 
   ShredderObj  := TShredder.Create(nil);
   WebDAVObj    := TFreeOTFEExplorerWebDAV.Create(nil);
@@ -3629,11 +3526,9 @@ begin
 
   // Add standard Windows "Go" icon to "Go" button
   goIcon   := TIcon.Create();
-  goBitmap :=Graphics.TBitmap.Create();
+  goBitmap := Graphics.TBitmap.Create();
   try
-    if SDULoadDLLIcon(DLL_SHELL32, True,
-      DLL_SHELL32_GO_ICON, goIcon) then
-    begin
+    if SDULoadDLLIcon(DLL_SHELL32, True, DLL_SHELL32_GO_ICON, goIcon) then begin
       // Must specify 16x16 explicitly as the icon loaded is always 32x32
       SDUConvertIconToBitmap(goIcon, 16, 16, goBitmap, nil);
       pbGO.Glyph.Assign(goBitmap);
@@ -3672,7 +3567,7 @@ begin
   Screen.Cursors[crFreeOTFEDragCopy] := LoadCursor(HInstance, CURSOR_DRAG_COPY);
 
 
-  OTFEFreeOTFE.ExeDir := ExtractFilePath(Application.ExeName);
+  (fOTFEFreeOTFEBase as TOTFEFreeOTFEDLL).ExeDir := ExtractFilePath(Application.ExeName);
 
   // We set these to invisible so that if they're disabled by the user
   // settings, it doens't flicker on then off
@@ -3735,13 +3630,9 @@ end;
 
 procedure TfrmFreeOTFEExplorerMain.PromptForAndImportFile(importToPath: WideString);
 begin
-  SDUOpenDialog_Store.Options := SDUOpenDialog_Store.Options +
-    [ofHideReadOnly,
+  SDUOpenDialog_Store.Options := SDUOpenDialog_Store.Options + [ofHideReadOnly,
     // i.e. Set to TRUE to remove the readonly checkbox
-    ofPathMustExist,
-    ofFileMustExist,
-    ofAllowMultiSelect
-    ];
+    ofPathMustExist, ofFileMustExist, ofAllowMultiSelect];
   SDUOpenDialog_Store.Options := SDUOpenDialog_Store.Options + [ofDontAddToRecent];
   if SDUOpenDialog_Store.Execute then begin
     Store(SDUOpenDialog_Store.Files, importToPath);
@@ -3759,21 +3650,12 @@ var
   retval: Boolean;
 begin
   retval := SDUConfirmYN(SDUParamSubstitute(
-    _('This folder already contains a file named ''%1''.' + SDUCRLF +
-    SDUCRLF +
-    'Would you like to replace the existing file' + SDUCRLF +
-    SDUCRLF + '  %2' + SDUCRLF +
-    '  modified: %3' + SDUCRLF +
-    SDUCRLF +
-    'with this one?' + SDUCRLF +
-    SDUCRLF + '  %4' + SDUCRLF +
-    '  modified: %5'),
-    [ExtractFilename(filename),
-    SDUFormatAsBytesUnits(existingSize),
-    DateTimeToStr(existingDateTime),
-    SDUFormatAsBytesUnits(newSize),
-    newDateTime]
-    ));
+    _('This folder already contains a file named ''%1''.' + SDUCRLF + SDUCRLF +
+    'Would you like to replace the existing file' + SDUCRLF + SDUCRLF +
+    '  %2' + SDUCRLF + '  modified: %3' + SDUCRLF + SDUCRLF + 'with this one?' +
+    SDUCRLF + SDUCRLF + '  %4' + SDUCRLF + '  modified: %5'),
+    [ExtractFilename(filename), SDUFormatAsBytesUnits(existingSize),
+    DateTimeToStr(existingDateTime), SDUFormatAsBytesUnits(newSize), newDateTime]));
 
   Result := retval;
 end;
@@ -3786,23 +3668,13 @@ var
   retval: Integer;
 begin
   retval := SDUMessageDlg(SDUParamSubstitute(
-    _('This folder already contains a file named ''%1''.' + SDUCRLF +
-    SDUCRLF +
-    'Would you like to replace the existing file' + SDUCRLF +
-    SDUCRLF + '  %2' + SDUCRLF +
-    '  modified: %3' + SDUCRLF +
-    SDUCRLF +
-    'with this one?' + SDUCRLF +
-    SDUCRLF + '  %4' + SDUCRLF +
-    '  modified: %5'),
-    [ExtractFilename(filename),
-    SDUFormatAsBytesUnits(existingSize),
-    DateTimeToStr(existingDateTime),
-    SDUFormatAsBytesUnits(newSize),
-    newDateTime]
-    ), mtConfirmation,
-    [mbYes, mbNo, mbCancel, mbYesToAll],
-    0);
+    _('This folder already contains a file named ''%1''.' + SDUCRLF + SDUCRLF +
+    'Would you like to replace the existing file' + SDUCRLF + SDUCRLF +
+    '  %2' + SDUCRLF + '  modified: %3' + SDUCRLF + SDUCRLF + 'with this one?' +
+    SDUCRLF + SDUCRLF + '  %4' + SDUCRLF + '  modified: %5'),
+    [ExtractFilename(filename), SDUFormatAsBytesUnits(existingSize),
+    DateTimeToStr(existingDateTime), SDUFormatAsBytesUnits(newSize), newDateTime]),
+    mtConfirmation, [mbYes, mbNo, mbCancel, mbYesToAll], 0);
 
   Result := retval;
 end;
@@ -3812,9 +3684,8 @@ function TfrmFreeOTFEExplorerMain.PromptToReplaceYYANC(srcIsMountedFSNotLocalFS:
   srcPathAndFilename: String; destIsMountedFSNotLocalFS: Boolean;
   destPathAndFilename: String): Integer;
 
-  procedure GetFileDetails(isMountedFSNotLocalFS: Boolean;
-    pathAndFilename: String; var Size: ULONGLONG;
-  var DateTime: TDateTime);
+  procedure GetFileDetails(isMountedFSNotLocalFS: Boolean; pathAndFilename: String;
+  var Size: ULONGLONG; var DateTime: TDateTime);
   var
     item:           TSDDirItem_FAT;
     CreationTime:   TFileTime;
@@ -3865,9 +3736,8 @@ begin
     destDateTime
     );
 
-  retval := PromptToReplaceYYANC(ExtractFilename(srcPathAndFilename),
-    destSize, destDateTime,
-    srcSize, srcDateTime);
+  retval := PromptToReplaceYYANC(ExtractFilename(srcPathAndFilename), destSize,
+    destDateTime, srcSize, srcDateTime);
 
   Result := retval;
 end;
@@ -3908,9 +3778,7 @@ var
   srcPathStr: String;
   stlPath:    TStringList;
 begin
-  if SDUSelectDirectory(self.Handle,
-    _('Folder to store:'), '',
-    srcPathStr) then begin
+  if SDUSelectDirectory(self.Handle, _('Folder to store:'), '', srcPathStr) then begin
     stlPath := TStringList.Create();
     try
       stlPath.Add(srcPathStr);
@@ -3926,10 +3794,10 @@ begin
   Result := Filesystem.CreateDir(path, newDirName);
 end;
 
-function TfrmFreeOTFEExplorerMain.OTFEFreeOTFE(): TOTFEFreeOTFEDLL;
-begin
-  Result := TOTFEFreeOTFEDLL(OTFEFreeOTFEBase);
-end;
+//function TfrmFreeOTFEExplorerMain.OTFEFreeOTFE(): TOTFEFreeOTFEDLL;
+//begin
+//  Result := TOTFEFreeOTFEDLL(fOTFEFreeOTFEBase);
+//end;
 
 function TfrmFreeOTFEExplorerMain.Mounted(): Boolean;
 var
@@ -4032,50 +3900,45 @@ begin
   Result := retval;
 end;
 
-function TfrmFreeOTFEExplorerMain.HandleCommandLineOpts_Mount(): Integer;
+function TfrmFreeOTFEExplorerMain.HandleCommandLineOpts_Mount(): eCmdLine_Exit;
 var
-  cmdExitCode: Integer;
   preMounted:  DriveLetterString;
   postMounted: DriveLetterString;
 begin
-  preMounted := OTFEFreeOTFE.DrivesMounted;
+  Result := ceSUCCESS;
+  if SDUCommandLineSwitch(CMDLINE_MOUNT) then begin
 
-  cmdExitCode := inherited HandleCommandLineOpts_Mount();
+    preMounted := fOTFEFreeOTFEBase.DrivesMounted;
 
-  postMounted := OTFEFreeOTFE.DrivesMounted;
+    Result := inherited HandleCommandLineOpts_Mount();
 
-  if ((cmdExitCode = CMDLINE_SUCCESS) and (preMounted <> postMounted) and
-                         // Sanity check
-    (postMounted <> '')  // Sanity check
-    ) then begin
-    PostMountGUISetup(postMounted[1]);
-    //    WebDAVStartup();
-    EnableDisableControls();
+    postMounted := fOTFEFreeOTFEBase.DrivesMounted;
+
+    if ((Result = ceSUCCESS) and (preMounted <> postMounted) and
+                           // Sanity check
+      (postMounted <> '')  // Sanity check
+      ) then begin
+      PostMountGUISetup(postMounted[1]);
+      //    WebDAVStartup();
+      EnableDisableControls();
+    end;
   end;
-
-  Result := cmdExitCode;
 end;
 
 
  // Handle "/create" command line
  // Returns: Exit code
-function TfrmFreeOTFEExplorerMain.HandleCommandLineOpts_Create(): Integer;
-var
-  cmdExitCode: Integer;
+function TfrmFreeOTFEExplorerMain.HandleCommandLineOpts_Create(): eCmdLine_Exit;
 begin
-  cmdExitCode := CMDLINE_EXIT_INVALID_CMDLINE;
-
-  if SDUCommandLineSwitch(CMDLINE_CREATE) then begin
+  Result := ceSUCCESS;
+  if SDUCommandLineSwitch(CMDLINE_CREATE) then
     actFreeOTFENewExecute(nil);
-  end;
-
-  Result := cmdExitCode;
 end;
 
 
 procedure TfrmFreeOTFEExplorerMain.WMUserPostShow(var msg: TWMEndSession);
 var
-  junk: Integer;
+  junk: eCmdLine_Exit;
 begin
   inherited;
   HandleCommandLineOpts(junk);
@@ -4085,27 +3948,27 @@ end;
  // Handle any command line options; returns TRUE if command line options
  // were passed through, and "/noexit" wasn't specified as a command line
  // parameter
-function TfrmFreeOTFEExplorerMain.HandleCommandLineOpts(out cmdExitCode: Integer): Boolean;
+function TfrmFreeOTFEExplorerMain.HandleCommandLineOpts(out cmdExitCode: eCmdLine_Exit): Boolean;
 var
-  retval:       Boolean;
   ignoreParams: Integer;
   settingsFile: String;
 begin
-  cmdExitCode := CMDLINE_EXIT_INVALID_CMDLINE;
+  cmdExitCode := ceSUCCESS;
 
   // All command line options below require FreeOTFE to be active before they
   // can be used
-  if SDUCommandLineSwitch(CMDLINE_CREATE) then begin
-    cmdExitCode := HandleCommandLineOpts_Create();
-  end else
-  if SDUCommandLineSwitch(CMDLINE_MOUNT) then begin
+  cmdExitCode := HandleCommandLineOpts_Create();
+
+  if cmdExitCode = ceSUCCESS then
+    cmdExitCode := HandleCommandLineOpts_EnableDevMenu();
+
+  if cmdExitCode = ceSUCCESS then
     cmdExitCode := HandleCommandLineOpts_Mount();
-  end;
 
   // Return TRUE if there were no parameters specified on the command line
   // and "/noexit" wasn't specified
   // Note: Disregard any CMDLINE_SETTINGSFILE and parameter
-  retval := False;
+  result := False;
   if not (SDUCommandLineSwitch(CMDLINE_NOEXIT)) then begin
     ignoreParams := 0;
 
@@ -4116,10 +3979,8 @@ begin
       end;
     end;
 
-    retval := (ParamCount > ignoreParams);
+    result := (ParamCount > ignoreParams);
   end;
-
-  Result := retval;
 end;
 
 procedure TfrmFreeOTFEExplorerMain.OnFreeOTFEExplorerRefreshMsg(var Msg: TMessage);
@@ -4147,18 +4008,15 @@ begin
   if (ucSrcPath = ucDestPath) then begin
     SDUMessageDlg(SDUParamSubstitute(_(
       'Cannot %1 %2: The destination folder is the same as the source folder.'),
-      [OperationTitle(opType),
-      ExtractFilename(srcPathAndFilename)]), mtError);
+      [OperationTitle(opType), ExtractFilename(srcPathAndFilename)]), mtError);
     retval := False;
   end // Sanity check; not trying to move to a subdir?
   else
   if Filesystem.DirectoryExists(srcPathAndFilename) then begin
     if (Pos(uppercase(srcPathAndFilename), ucDestPath) = 1) then begin
       SDUMessageDlg(SDUParamSubstitute(
-        _(
-        'Cannot %1 %2: The destination folder is a subfolder of the source folder'),
-        [OperationTitle(opType),
-        ExtractFilename(srcPathAndFilename)]), mtError);
+        _('Cannot %1 %2: The destination folder is a subfolder of the source folder'),
+        [OperationTitle(opType), ExtractFilename(srcPathAndFilename)]), mtError);
       retval := False;
     end;
   end;
@@ -4254,24 +4112,19 @@ function TfrmFreeOTFEExplorerMain.ClipboardGetItems(out srcIsMountedFSNotLocalFS
   function GetDropEffect(): TFExplOperation;
   var
     dropEffect: DWORD;
-    retval:     TFExplOperation;
   begin
     if not (SDUGetPreferredDropEffectFromClipboard(dropEffect)) then begin
       dropEffect := DROPEFFECT_COPY;
     end;
 
-    retval := cmCopy;
+    Result := cmCopy;
     if ((dropEffect and DROPEFFECT_MOVE) > 0) then begin
-      retval := cmMove;
+      Result := cmMove;
     end;
-
-    Result := retval;
   end;
 
-var
-  retval: Boolean;
 begin
-  retval := False;
+  result := False;
 
   stlItems.Clear();
 
@@ -4280,7 +4133,7 @@ begin
     srcIsMountedFSNotLocalFS := True;
     opType                   := GetDropEffect();
 
-    retval := SDUGetDropFilesFromClipboard(stlItems);
+    result := SDUGetDropFilesFromClipboard(stlItems);
   end // Check for MS Windows Explorer cut/copied files...
   else
   if SDUGetDropFilesFromClipboard(stlItems) then begin
@@ -4289,10 +4142,9 @@ begin
 
     // stlItems already setup, so that's it!
 
-    retval := True;
+    result := True;
   end;
 
-  Result := retval;
 end;
 
 procedure TfrmFreeOTFEExplorerMain.actPasteExecute(Sender: TObject);
@@ -4309,10 +4161,8 @@ begin
     if ClipboardGetItems(srcIsMountedFSNotLocalFS, opType, stlItems) then begin
       destDir := GetSelectedPath(Sender);
 
-      if PerformOperation(opType,
-        srcIsMountedFSNotLocalFS, stlItems,
-        True, destDir,
-        '') then begin
+      if PerformOperation(opType, srcIsMountedFSNotLocalFS, stlItems,
+        True, destDir, '') then begin
         if (opType = cmMove) then begin
           ClipboardClear();
         end;
@@ -4360,9 +4210,8 @@ begin
   // Extracted filenames are the same as the source filenames
   if allOK then begin
     if (destDir = '') then begin
-      allOK := SDUSelectDirectory(self.Handle,
-        _('Select location to extract to:'), '',
-        destDir, BIF_USENEWUI);
+      allOK := SDUSelectDirectory(self.Handle, _('Select location to extract to:'),
+        '', destDir, BIF_USENEWUI);
 
       destFilename := ''; // Sanity
     end;
@@ -4384,9 +4233,7 @@ procedure TfrmFreeOTFEExplorerMain.Store(items: TStrings);
 var
   destDir: String;
 begin
-  destDir := SelectFilesystemDirectory(self,
-    Filesystem, sdtStore,
-    items);
+  destDir := SelectFilesystemDirectory(self, Filesystem, sdtStore, items);
   if (destDir <> '') then begin
     Store(items, destDir);
   end;
@@ -4428,24 +4275,17 @@ begin
 
 end;
 
-function TfrmFreeOTFEExplorerMain.ConfirmPerformOperation(
-  opType: TFExplOperation;
-  srcIsMountedFSNotLocalFS: Boolean;
-  srcItems: TStrings;
-  destIsMountedFSNotLocalFS: Boolean;
-  destDir: String;
-  destFilename: String):
-Boolean;
+function TfrmFreeOTFEExplorerMain.ConfirmPerformOperation(opType: TFExplOperation;
+  srcIsMountedFSNotLocalFS: Boolean; srcItems: TStrings; destIsMountedFSNotLocalFS: Boolean;
+  destDir: String; destFilename: String): Boolean;
 var
   retval: Boolean;
 begin
   retval := False;
 
   if ConfirmOperation(opType, srcItems, destDir) then begin
-    retval := PerformOperation(opType,
-      srcIsMountedFSNotLocalFS, srcItems,
-      destIsMountedFSNotLocalFS, destDir,
-      destFilename);
+    retval := PerformOperation(opType, srcIsMountedFSNotLocalFS, srcItems,
+      destIsMountedFSNotLocalFS, destDir, destFilename);
   end;
 
   Result := retval;
@@ -4533,9 +4373,7 @@ begin
           if ((currSrcSubItem.Filename <> DIR_CURRENT_DIR) and
             (currSrcSubItem.Filename <> DIR_PARENT_DIR)) then begin
             retval := retval + _DetermineTotalSize_MountedDir(
-              isMountedFSNotLocalFS,
-              currSrcSubPathAndFilename
-              );
+              isMountedFSNotLocalFS, currSrcSubPathAndFilename);
           end;
         end;
 
@@ -4574,8 +4412,8 @@ begin
   retval            := False;
 
   // Upfront sanity check ON ALL ITEMS - can't copy/move from/to the same
-  if (((opType = cmCopy) or (opType = cmMove)) and
-    srcIsMountedFSNotLocalFS and destIsMountedFSNotLocalFS) then begin
+  if (((opType = cmCopy) or (opType = cmMove)) and srcIsMountedFSNotLocalFS and
+    destIsMountedFSNotLocalFS) then begin
     for i := 0 to (srcItems.Count - 1) do begin
       if not (CheckDestinationIsntSource(opType, srcItems[i], destDir)) then begin
         // Error message already shown...
@@ -4641,15 +4479,9 @@ begin
     abortAllRemaining := False;
     for i := 0 to (srcItems.Count - 1) do begin
       abortAllRemaining := not (_PerformOperation(
-        opType,
-        srcIsMountedFSNotLocalFS,
-        srcItems[i],
-        destIsMountedFSNotLocalFS,
-        destDir,
-        destFilename,
-        useMoveDeletionMethod,
-        promptOverwriteFiles,
-        promptOverwriteDirs));
+        opType, srcIsMountedFSNotLocalFS, srcItems[i],
+        destIsMountedFSNotLocalFS, destDir, destFilename,
+        useMoveDeletionMethod, promptOverwriteFiles, promptOverwriteDirs));
       if abortAllRemaining then begin
         break;
       end;
@@ -4665,8 +4497,7 @@ begin
   if abortAllRemaining then begin
     if not (userCancelled) then begin
       SDUMessageDlg(
-        SDUParamSubstitute(_('%1 failed.'),
-        [SDUInitialCapital(
+        SDUParamSubstitute(_('%1 failed.'), [SDUInitialCapital(
         OperationTitle(opType))]),
         mtError
         );
@@ -4823,8 +4654,8 @@ begin
   abortAllRemaining := False;
 
   // Sanity check - can't copy/move from/to the same
-  if (((opType = cmCopy) or (opType = cmMove)) and
-    srcIsMountedFSNotLocalFS and destIsMountedFSNotLocalFS) then begin
+  if (((opType = cmCopy) or (opType = cmMove)) and srcIsMountedFSNotLocalFS and
+    destIsMountedFSNotLocalFS) then begin
     if not (CheckDestinationIsntSource(opType, srcItem, destDir)) then begin
       // Error message already shown...
       abortAllRemaining := True;
@@ -4844,10 +4675,8 @@ begin
     end;
     if not (destOK) then begin
       SDUMessageDlg(
-        SDUParamSubstitute(
-        RS_CANNOT_X_CANNOT_FIND_SPECIFIED_DESTINATION,
-        [OperationTitle(opType),
-        ExtractFilename(destDir)]),
+        SDUParamSubstitute(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_DESTINATION,
+        [OperationTitle(opType), ExtractFilename(destDir)]),
         mtError
         );
 
@@ -4866,12 +4695,8 @@ begin
     // If source a file, process as such...
     if srcIsFile then begin
       abortAllRemaining := not (_PerformOperation_File(
-        opType,
-        srcIsMountedFSNotLocalFS,
-        srcItem, destIsMountedFSNotLocalFS,
-        destDir, destFilename,
-        moveDeletionMethod,
-        promptOverwriteFiles,
+        opType, srcIsMountedFSNotLocalFS, srcItem, destIsMountedFSNotLocalFS,
+        destDir, destFilename, moveDeletionMethod, promptOverwriteFiles,
         promptOverwriteDirs));
     end else begin
       // Check if source is a dir...
@@ -4883,23 +4708,15 @@ begin
 
       // If it's a dir, process as such...
       if srcIsDir then begin
-        abortAllRemaining := not (_PerformOperation_Dir(
-          opType,
-          srcIsMountedFSNotLocalFS,
-          srcItem,
-          destIsMountedFSNotLocalFS,
-          destDir,
-          destFilename,
-          moveDeletionMethod,
-          promptOverwriteFiles, promptOverwriteDirs
-          ));
+        abortAllRemaining := not (_PerformOperation_Dir(opType,
+          srcIsMountedFSNotLocalFS, srcItem, destIsMountedFSNotLocalFS,
+          destDir, destFilename, moveDeletionMethod,
+          promptOverwriteFiles, promptOverwriteDirs));
       end else begin
         // Source is neither a file nor dir - abort.
         SDUMessageDlg(
-          SDUParamSubstitute(
-          RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE,
-          [OperationTitle(opType),
-          ExtractFilename(srcItem)]),
+          SDUParamSubstitute(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE,
+          [OperationTitle(opType), ExtractFilename(srcItem)]),
           mtError
           );
 
@@ -4934,8 +4751,8 @@ begin
   abortAllRemaining := False;
 
   // Sanity check - can't copy/move from/to the same
-  if (((opType = cmCopy) or (opType = cmMove)) and
-    srcIsMountedFSNotLocalFS and destIsMountedFSNotLocalFS) then begin
+  if (((opType = cmCopy) or (opType = cmMove)) and srcIsMountedFSNotLocalFS and
+    destIsMountedFSNotLocalFS) then begin
     if not (CheckDestinationIsntSource(opType, srcItem, destDir)) then begin
       // Error message already shown...
       abortAllRemaining := True;
@@ -4950,10 +4767,8 @@ begin
   end;
   if not (srcOK) then begin
     SDUMessageDlg(
-      SDUParamSubstitute(
-      RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE,
-      [OperationTitle(opType),
-      ExtractFilename(srcItem)]),
+      SDUParamSubstitute(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE,
+      [OperationTitle(opType), ExtractFilename(srcItem)]),
       mtError
       );
 
@@ -4974,10 +4789,8 @@ begin
   end;
   if not (destOK) then begin
     SDUMessageDlg(
-      SDUParamSubstitute(
-      RS_CANNOT_X_CANNOT_FIND_SPECIFIED_DESTINATION,
-      [OperationTitle(opType),
-      ExtractFilename(destDir)]),
+      SDUParamSubstitute(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_DESTINATION,
+      [OperationTitle(opType), ExtractFilename(destDir)]),
       mtError
       );
 
@@ -5010,8 +4823,7 @@ begin
         SDUMessageDlg(SDUParamSubstitute(
           _(
           'Cannot create or replace %1: There is already a file with the same name as the folder name you specified. Specify a different name.'),
-          [ExtractFilename(
-          srcItem)]),
+          [ExtractFilename(srcItem)]),
           mtError
           );
 
@@ -5027,11 +4839,8 @@ begin
         if destItemIsFile then begin
           if promptOverwriteFiles then begin
             confirmResult := PromptToReplaceYYANC(
-              srcIsMountedFSNotLocalFS,
-              srcItem,
-              destIsMountedFSNotLocalFS,
-              destItem
-              );
+              srcIsMountedFSNotLocalFS, srcItem,
+              destIsMountedFSNotLocalFS, destItem);
 
             if (confirmResult = mrYes) then begin
               // Do nothing - goodToDoOp already set to TRUE
@@ -5069,16 +4878,14 @@ begin
       end else begin
         if SysUtils.FileExists(destItem) then begin
           // lplp - shouldn't this be the standard overwrite? Maybe...
-          goodToDoOp := sysutils.DeleteFile(destItem);
+          goodToDoOp := SysUtils.DeleteFile(destItem);
         end;
       end;
 
       if not (goodToDoOp) then begin
         SDUMessageDlg(
-          SDUParamSubstitute(
-          RS_UNABLE_TO_DELETE_EXISTING_FILE,
-          [ExtractFilename(
-          destItem)]),
+          SDUParamSubstitute(RS_UNABLE_TO_DELETE_EXISTING_FILE,
+          [ExtractFilename(destItem)]),
           mtError
           );
         abortAllRemaining := True;
@@ -5104,30 +4911,20 @@ begin
     end;
 
     abortAllRemaining := not (_PerformOperation_File_Actual(
-      opType,
-      srcIsMountedFSNotLocalFS,
-      srcItem,
-      destIsMountedFSNotLocalFS,
-      destDir,
-      destItem,
-      moveDeletionMethod
-      ));
+      opType, srcIsMountedFSNotLocalFS, srcItem, destIsMountedFSNotLocalFS,
+      destDir, destItem, moveDeletionMethod));
 
     if abortAllRemaining then begin
       if (opType = cmDelete) then begin
         SDUMessageDlg(
-          SDUParamSubstitute(
-          _('Unable to delete ''%1''.'),
-          [ExtractFilename(
-          srcItem)]),
+          SDUParamSubstitute(_('Unable to delete ''%1''.'),
+          [ExtractFilename(srcItem)]),
           mtError
           );
       end else begin
         SDUMessageDlg(
-          SDUParamSubstitute(
-          _('Unable to create or replace %1.'),
-          [ExtractFilename(
-          srcItem)]),
+          SDUParamSubstitute(_('Unable to create or replace %1.'),
+          [ExtractFilename(srcItem)]),
           mtError
           );
       end;
@@ -5171,16 +4968,13 @@ begin
     ProgressDlgSetLineOne(ExtractFilename(srcItem));
     if (opType = cmDelete) then begin
       ProgressDlgSetLineTwo(
-        SDUParamSubstitute(_('From ''%1'''),
-        [GetLastSegmentFrom(
+        SDUParamSubstitute(_('From ''%1'''), [GetLastSegmentFrom(
         ExtractFilePath(srcItem))])
         );
     end else begin
       ProgressDlgSetLineTwo(
         SDUParamSubstitute(_('From ''%1'' to ''%2'''),
-        [GetLastSegmentFrom(
-        ExtractFilePath(srcItem)),
-        GetLastSegmentFrom(destDir)])
+        [GetLastSegmentFrom(ExtractFilePath(srcItem)), GetLastSegmentFrom(destDir)])
         );
     end;
 
@@ -5198,56 +4992,46 @@ begin
 
     // COPY OPERATIONS...
     if (opType = cmCopy) then begin
-      if (srcIsMountedFSNotLocalFS and destIsMountedFSNotLocalFS) then
-      begin
+      if (srcIsMountedFSNotLocalFS and destIsMountedFSNotLocalFS) then begin
         SetStatusMsg(SDUParamSubstitute(_('Copying: %1'), [srcItem]));
         retval := Filesystem.CopyFile(srcItem, destItem);
       end else
-      if (srcIsMountedFSNotLocalFS and not (destIsMountedFSNotLocalFS)) then
-      begin
+      if (srcIsMountedFSNotLocalFS and not (destIsMountedFSNotLocalFS)) then begin
         SetStatusMsg(SDUParamSubstitute(_('Extracting: %1'), [srcItem]));
         retval := Filesystem.ExtractFile(srcItem, destItem);
       end else
-      if (not (srcIsMountedFSNotLocalFS) and destIsMountedFSNotLocalFS) then
-      begin
+      if (not (srcIsMountedFSNotLocalFS) and destIsMountedFSNotLocalFS) then begin
         SetStatusMsg(SDUParamSubstitute(_('Storing: %1'), [srcItem]));
         retval := _StoreFile(destDir, srcItem);
       end else
-      if (not (srcIsMountedFSNotLocalFS) and not (destIsMountedFSNotLocalFS))
-      then begin
+      if (not (srcIsMountedFSNotLocalFS) and not (destIsMountedFSNotLocalFS)) then begin
         retval := CopyFile(PChar(destItem), PChar(srcItem), False);
       end;
-    end
-    // MOVE OPERATIONS...
+    end // MOVE OPERATIONS...
     else
     if (opType = cmMove) then begin
-      if (srcIsMountedFSNotLocalFS and destIsMountedFSNotLocalFS) then
-      begin
+      if (srcIsMountedFSNotLocalFS and destIsMountedFSNotLocalFS) then begin
         SetStatusMsg(SDUParamSubstitute(_('Moving: %1'), [srcItem]));
         retval := Filesystem.MoveFileOrDir(srcItem, destItem);
       end else
-      if (srcIsMountedFSNotLocalFS and not (destIsMountedFSNotLocalFS)) then
-      begin
+      if (srcIsMountedFSNotLocalFS and not (destIsMountedFSNotLocalFS)) then begin
         SetStatusMsg(SDUParamSubstitute(_('Extracting: %1'), [srcItem]));
         retval := Filesystem.ExtractFile(srcItem, destItem);
         if retval then begin
           Filesystem.DeleteFileOrDir(srcItem);
         end;
       end else
-      if (not (srcIsMountedFSNotLocalFS) and destIsMountedFSNotLocalFS) then
-      begin
+      if (not (srcIsMountedFSNotLocalFS) and destIsMountedFSNotLocalFS) then begin
         SetStatusMsg(SDUParamSubstitute(_('Storing: %1'), [srcItem]));
         retval := _StoreFile(destDir, srcItem);
         if retval then begin
           retval := DeleteLocalFSItemUsingMethod(moveDeletionMethod, srcItem);
         end;
       end else
-      if (not (srcIsMountedFSNotLocalFS) and not (destIsMountedFSNotLocalFS))
-      then begin
+      if (not (srcIsMountedFSNotLocalFS) and not (destIsMountedFSNotLocalFS)) then begin
         retval := MoveFile(PChar(destItem), PChar(srcItem));
       end;
-    end
-    // DELETE OPERATIONS...
+    end // DELETE OPERATIONS...
     else
     if (opType = cmDelete) then begin
       SetStatusMsg(SDUParamSubstitute(_('Deleting: %1'), [srcItem]));
@@ -5283,7 +5067,7 @@ begin
     //    SetStatusMsg(SDUParamSubstitute(_('Deleting: %1'), [item]));
 
     if FileExists(item) then begin
-      retval := sysutils.DeleteFile(item);
+      retval := SysUtils.DeleteFile(item);
     end else
     if SysUtils.DirectoryExists(item) then begin
       try
@@ -5311,12 +5095,8 @@ begin
       promptMsg := _('Overwrite of %1 failed');
     end;
 
-    userPrompt := SDUMessageDlg(SDUParamSubstitute(
-      promptMsg,
-      [ExtractFilename(
-      item)]),
-      mtWarning, [mbAbort,
-      mbRetry, mbIgnore], 0);
+    userPrompt := SDUMessageDlg(SDUParamSubstitute(promptMsg,
+      [ExtractFilename(item)]), mtWarning, [mbAbort, mbRetry, mbIgnore], 0);
 
     if (userPrompt = mrAbort) then begin
       // Do nothing - retval already set to FALSE
@@ -5339,9 +5119,8 @@ procedure TfrmFreeOTFEExplorerMain.OverwritePassStarted(Sender: TObject;
   itemName: String; passNumber: Integer; totalPasses: Integer);
 begin
   ProgressDlgSetLineTwo(
-    SDUParamSubstitute(_(
-    'Overwriting original (Pass: %1 / %2)...'), [passNumber,
-    totalPasses]));
+    SDUParamSubstitute(_('Overwriting original (Pass: %1 / %2)...'),
+    [passNumber, totalPasses]));
 end;
 
 procedure TfrmFreeOTFEExplorerMain.OverwriteCheckForUserCancel(Sender: TObject;
@@ -5376,8 +5155,8 @@ begin
   abortAllRemaining := False;
 
   // Sanity check - can't copy/move from/to the same
-  if (((opType = cmCopy) or (opType = cmMove)) and
-    srcIsMountedFSNotLocalFS and destIsMountedFSNotLocalFS) then begin
+  if (((opType = cmCopy) or (opType = cmMove)) and srcIsMountedFSNotLocalFS and
+    destIsMountedFSNotLocalFS) then begin
     if not (CheckDestinationIsntSource(opType, srcItem, destDir)) then begin
       // Error message already shown...
       abortAllRemaining := True;
@@ -5392,10 +5171,8 @@ begin
   end;
   if not (srcOK) then begin
     SDUMessageDlg(
-      SDUParamSubstitute(
-      RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE,
-      [OperationTitle(opType),
-      ExtractFilename(srcItem)]),
+      SDUParamSubstitute(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE,
+      [OperationTitle(opType), ExtractFilename(srcItem)]),
       mtError
       );
 
@@ -5415,10 +5192,8 @@ begin
   end;
   if not (destOK) then begin
     SDUMessageDlg(
-      SDUParamSubstitute(
-      RS_CANNOT_X_CANNOT_FIND_SPECIFIED_DESTINATION,
-      [OperationTitle(opType),
-      ExtractFilename(destDir)]),
+      SDUParamSubstitute(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_DESTINATION,
+      [OperationTitle(opType), ExtractFilename(destDir)]),
       mtError
       );
 
@@ -5449,8 +5224,7 @@ begin
         SDUMessageDlg(SDUParamSubstitute(
           _(
           'Cannot create or replace %1: There is already a file with the same name as the folder name you specified. Specify a different name.'),
-          [ExtractFilename(
-          srcItem)]),
+          [ExtractFilename(srcItem)]),
           mtError
           );
 
@@ -5465,9 +5239,8 @@ begin
         if destItemExistsDir then begin
           if promptOverwriteDirs then begin
             confirmResult := SDUMessageDlg(SDUParamSubstitute(
-              _(
-              'This folder already contains a folder named ''%1''.' + SDUCRLF +
-              SDUCRLF +
+              _('This folder already contains a folder named ''%1''.' +
+              SDUCRLF + SDUCRLF +
               'If the files in the existing folder have the same name as files in the folder you are moving or copying, they will be replaced. Do you still want to move or copy the folder?'), [ExtractFilename(srcItem)]), mtWarning, [mbYes, mbNo, mbCancel, mbYesToAll], 0);
 
             if (confirmResult = mrYes) then begin
@@ -5516,12 +5289,9 @@ begin
 
         if not (goodToDoOp) then begin
           SDUMessageDlg(
-            SDUParamSubstitute(
-            RS_UNABLE_TO_CREATE_FOLDER + SDUCRLF +
-            SDUCRLF +
-            RS_PLEASE_ENSURE_ENOUGH_FREE_SPACE,
-            [ExtractFilename(
-            destItem)]),
+            SDUParamSubstitute(RS_UNABLE_TO_CREATE_FOLDER + SDUCRLF +
+            SDUCRLF + RS_PLEASE_ENSURE_ENOUGH_FREE_SPACE,
+            [ExtractFilename(destItem)]),
             mtError
             );
           abortAllRemaining := True;
@@ -5535,9 +5305,8 @@ begin
     ) then begin
     srcDirContents := TSDDirItemList.Create();
     try
-      if FSLoadContentsFromDisk(srcIsMountedFSNotLocalFS,
-        srcItem, srcDirContents
-        ) then begin
+      if FSLoadContentsFromDisk(srcIsMountedFSNotLocalFS, srcItem,
+        srcDirContents) then begin
         // These pass FALSE through always
         junkFALSE := False;
 
@@ -5555,31 +5324,19 @@ begin
           // Also skip "..", unless ShowParentDir is TRUE
           if currSrcSubItem.IsFile then begin
             abortAllRemaining := not (_PerformOperation_File(
-              opType,
-              srcIsMountedFSNotLocalFS,
-              currSrcSubPathAndFilename,
-              destIsMountedFSNotLocalFS,
-              destItem,
-              destFilename,
-              moveDeletionMethod,
-              junkFALSE,
-              promptOverwriteDirs
-              ));
+              opType, srcIsMountedFSNotLocalFS,
+              currSrcSubPathAndFilename, destIsMountedFSNotLocalFS,
+              destItem, destFilename, moveDeletionMethod,
+              junkFALSE, promptOverwriteDirs));
           end else
           if currSrcSubItem.IsDirectory then begin
             if ((currSrcSubItem.Filename <> DIR_CURRENT_DIR) and
               (currSrcSubItem.Filename <> DIR_PARENT_DIR)) then begin
               abortAllRemaining :=
-                not (_PerformOperation_Dir(opType,
-                srcIsMountedFSNotLocalFS,
-                currSrcSubPathAndFilename,
-                destIsMountedFSNotLocalFS,
-                destItem,
-                destFilename,
-                moveDeletionMethod,
-                junkFALSE,
-                promptOverwriteDirs
-                ));
+                not (_PerformOperation_Dir(opType, srcIsMountedFSNotLocalFS,
+                currSrcSubPathAndFilename, destIsMountedFSNotLocalFS,
+                destItem, destFilename, moveDeletionMethod,
+                junkFALSE, promptOverwriteDirs));
             end;
           end;
 
@@ -5597,7 +5354,7 @@ begin
   end;
 
   if not (abortAllRemaining) then begin
-    if ((opType = cmMove) or (opType = cmDelete)) then  begin
+    if ((opType = cmMove) or (opType = cmDelete)) then begin
       if srcIsMountedFSNotLocalFS then begin
         Filesystem.DeleteFileOrDir(srcItem);
       end else begin
@@ -5799,8 +5556,7 @@ initialization
   // implemented, this restriction can be removed.
   // The current date/time should be unique enough (unless the user mounts
   // multiple volumes in the same second!)
-  CFSTR_FEXPL_SESSION_DATA := SDUParamSubstitute(
-    CFSTR_FEXPL_SESSION_BASE,
+  CFSTR_FEXPL_SESSION_DATA := SDUParamSubstitute(CFSTR_FEXPL_SESSION_BASE,
     [SDUTDateTimeToISO8601(Now)]);
 
   CF_FEXPL_SESSION_DATA := RegisterClipboardFormat(PChar(CFSTR_FEXPL_SESSION_DATA));

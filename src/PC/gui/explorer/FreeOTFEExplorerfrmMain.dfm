@@ -693,7 +693,7 @@ inherited frmFreeOTFEExplorerMain: TfrmFreeOTFEExplorerMain
   end
   inherited ilToolbarIcons_Small: TImageList
     Bitmap = {
-      494C010111001300440010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101110013005C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1359,27 +1359,10 @@ inherited frmFreeOTFEExplorerMain: TfrmFreeOTFEExplorerMain
       007FC003F871C007007FE007C001C00780E3F33FC001C00FE3F3E79FC001C01F
       FEEBE79FE001C03FFF1FFFFFE003FFFF00000000000000000000000000000000
       000000000000}
-    object actChooseDetails: TAction
-      Caption = 'Choose Details...'
-      Hint = 'Configures the columns displayed in the list.'
-      OnExecute = actChooseDetailsExecute
-    end
-    object actMapNetworkDrive: TAction
-      Caption = 'Map Drive'
-      Hint = 'Connects to a network drive.'
-      ImageIndex = 17
-      OnExecute = actMapNetworkDriveExecute
-    end
-    object actDisconnectNetworkDrive: TAction
-      Caption = 'Disconnect'
-      Hint = 'Disconnects from a network drive.'
-      ImageIndex = 18
-      OnExecute = actDisconnectNetworkDriveExecute
-    end
   end
   inherited ilToolbarIcons_Large: TImageList
     Bitmap = {
-      494C010111001300440018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101110013005C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000078000000010020000000000000B4
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2875,6 +2858,23 @@ inherited frmFreeOTFEExplorerMain: TfrmFreeOTFEExplorerMain
     OnBrowserBackward = actNavigateBackExecute
     OnBrowserForward = actNavigateForwardExecute
   end
+  object actChooseDetails: TAction
+    Caption = 'Choose Details...'
+    Hint = 'Configures the columns displayed in the list.'
+    OnExecute = actChooseDetailsExecute
+  end
+  object actMapNetworkDrive: TAction
+    Caption = 'Map Drive'
+    Hint = 'Connects to a network drive.'
+    ImageIndex = 17
+    OnExecute = actMapNetworkDriveExecute
+  end
+  object actDisconnectNetworkDrive: TAction
+    Caption = 'Disconnect'
+    Hint = 'Disconnects from a network drive.'
+    ImageIndex = 18
+    OnExecute = actDisconnectNetworkDriveExecute
+  end
   object pmTreeView: TPopupMenu
     Images = ilToolbarIcons_Small
     OnPopup = pmViewPopup
@@ -3006,7 +3006,7 @@ inherited frmFreeOTFEExplorerMain: TfrmFreeOTFEExplorerMain
     Left = 330
     Top = 370
     Bitmap = {
-      494C0101010004002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000400440010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000262626003E3E3E002626260000000000000000000000
