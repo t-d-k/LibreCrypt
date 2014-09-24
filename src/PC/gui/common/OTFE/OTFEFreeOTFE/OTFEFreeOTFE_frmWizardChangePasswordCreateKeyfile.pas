@@ -195,18 +195,14 @@ resourcestring
 
 
 function TfrmWizardChangePasswordCreateKeyfile.GetSrcFilename(): String;
-var
-  retVal: String;
 begin
-  retVal := '';
+  Result := '';
 
   if (IsPartition) then begin
-    retVal := fmeSelectPartition.SelectedDevice;
+    Result := fmeSelectPartition.SelectedDevice;
   end else begin
-    retVal := lblSrcFilename.Caption;
+    Result := lblSrcFilename.Caption;
   end;
-
-  Result := retVal;
 end;
 
 function TfrmWizardChangePasswordCreateKeyfile.GetOffset(): Int64;
@@ -577,7 +573,6 @@ begin
 
 
   CheckCurrentTabComplete();
-
 end;
 
 
@@ -587,13 +582,11 @@ begin
     DestFilename := SrcFilename;
   end;
   CheckCurrentTabComplete();
-
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.se64OffsetChange(Sender: TObject);
 begin
   CheckCurrentTabComplete();
-
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.preUserKeyChange(Sender: TObject);
@@ -669,32 +662,29 @@ end;
 
 
 function TfrmWizardChangePasswordCreateKeyfile.GetRNGSet(): TRNGSet;
-var
-  retval: TRNGSet;
 begin
-  retval := [];
+  Result := [];
 
   if ckRNGCryptoAPI.Checked then begin
-    retval := retval + [rngCryptoAPI];
+    Result := Result + [rngCryptoAPI];
   end;
 
   if ckRNGMouseMovement.Checked then begin
-    retval := retval + [rngMouseMovement];
+    Result := Result + [rngMouseMovement];
   end;
 
   if ckRNGcryptlib.Checked then begin
-    retval := retval + [rngcryptlib];
+    Result := Result + [rngcryptlib];
   end;
 
   if ckRNGPKCS11.Checked then begin
-    retval := retval + [rngPKCS11];
+    Result := Result + [rngPKCS11];
   end;
 
   if ckRNGGPG.Checked then begin
-    retval := retval + [rngGPG];
+    Result := Result + [rngGPG];
   end;
 
-  Result := retval;
 end;
 
 

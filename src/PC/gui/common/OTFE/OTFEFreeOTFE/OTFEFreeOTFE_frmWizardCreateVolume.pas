@@ -153,7 +153,7 @@ type
     fpaddingLength:        ULONGLONG;
     foverwriteWithChaff:   Boolean;
 
-    FNewVolumeMountedAs: Ansichar;
+    FnewVolumeMountedAs: Ansichar;
 
     // These are ordered lists corresponding to the items shown in the combobox
     fHashKernelModeDriverNames: TStringList;
@@ -1064,16 +1064,12 @@ begin
 end;
 
 function TfrmWizardCreateVolume.GetHashDriver(): Ansistring;
-var
-  retval: Ansistring;
 begin
-  retval := '';
+  Result := '';
 
   if (cbHash.ItemIndex >= 0) then begin
-    retval := fHashKernelModeDriverNames[cbHash.ItemIndex];
+    Result := fHashKernelModeDriverNames[cbHash.ItemIndex];
   end;
-
-  Result := retval;
 end;
 
 function TfrmWizardCreateVolume.GetHashGUID(): TGUID;
@@ -1091,16 +1087,12 @@ begin
 end;
 
 function TfrmWizardCreateVolume.GetCypherDriver(): Ansistring;
-var
-  retval: Ansistring;
 begin
-  retval := '';
+  Result := '';
 
   if (cbCypher.ItemIndex >= 0) then begin
-    retval := fCypherKernelModeDriverNames[cbCypher.ItemIndex];
+    Result := fCypherKernelModeDriverNames[cbCypher.ItemIndex];
   end;
-
-  Result := retval;
 end;
 
 function TfrmWizardCreateVolume.GetCypherGUID(): TGUID;
@@ -1118,17 +1110,13 @@ begin
 end;
 
 function TfrmWizardCreateVolume.GetSectorIVGenMethod(): TFreeOTFESectorIVGenMethod;
-var
-  retVal: TFreeOTFESectorIVGenMethod;
 begin
-  retVal := foivgUnknown;
+  Result := foivgUnknown;
 
   if (cbSectorIVGenMethod.ItemIndex >= 0) then begin
-    retVal := TFreeOTFESectorIVGenMethod(
+    Result := TFreeOTFESectorIVGenMethod(
       cbSectorIVGenMethod.Items.Objects[cbSectorIVGenMethod.ItemIndex]);
   end;
-
-  Result := retVal;
 end;
 
 procedure TfrmWizardCreateVolume.SetSectorIVGenMethod(sectorIVGenMethod:
@@ -1189,15 +1177,11 @@ begin
 end;
 
 function TfrmWizardCreateVolume.GetMasterKeyLength(): Integer;
-var
-  retval: Integer;
 begin
-  retval := SelectedCypherKeySize();
-  if (retval < 0) then begin
-    retval := seMasterKeyLength.Value;
+  Result := SelectedCypherKeySize();
+  if (Result < 0) then begin
+    Result := seMasterKeyLength.Value;
   end;
-
-  Result := retval;
 end;
 
 
@@ -1565,32 +1549,28 @@ begin
 end;
 
 function TfrmWizardCreateVolume.GetRNGSet(): TRNGSet;
-var
-  retval: TRNGSet;
 begin
-  retval := [];
+  Result := [];
 
   if ckRNGCryptoAPI.Checked then begin
-    retval := retval + [rngCryptoAPI];
+    Result := Result + [rngCryptoAPI];
   end;
 
   if ckRNGMouseMovement.Checked then begin
-    retval := retval + [rngMouseMovement];
+    Result := Result + [rngMouseMovement];
   end;
 
   if ckRNGcryptlib.Checked then begin
-    retval := retval + [rngcryptlib];
+    Result := Result + [rngcryptlib];
   end;
 
   if ckRNGPKCS11.Checked then begin
-    retval := retval + [rngPKCS11];
+    Result := Result + [rngPKCS11];
   end;
 
   if ckRNGGPG.Checked then begin
-    retval := retval + [rngGPG];
+    Result := Result + [rngGPG];
   end;
-
-  Result := retval;
 end;
 
 procedure TfrmWizardCreateVolume.pbFinishClick(Sender: TObject);
@@ -1953,14 +1933,13 @@ end;
 function TfrmWizardCreateVolume.SelectedCypherKeySize(): Integer;
 var
   cypherDetails: TFreeOTFECypher_v3;
-  retval:        Integer;
 begin
-  retval := CYPHER_KEYSIZE_NOT_CACHED_FLAG_KEYSIZE;
+  Result := CYPHER_KEYSIZE_NOT_CACHED_FLAG_KEYSIZE;
   // Determine the keysize of the cypher selected
 
   // If we have it cached alredy, use it
   if (fCachedCypherKeysize <> CYPHER_KEYSIZE_NOT_CACHED_FLAG_KEYSIZE) then begin
-    retval := fCachedCypherKeysize;
+    Result := fCachedCypherKeysize;
   end else
   if not (fFreeOTFEObj.GetSpecificCypherDetails(CypherDriver, CypherGUID,
     cypherDetails)) then begin
@@ -1968,11 +1947,8 @@ begin
   end else begin
     // Cache keysize and return...
     fCachedCypherKeysize := cypherDetails.KeySizeRequired;
-    retval               := fCachedCypherKeysize;
+    Result               := fCachedCypherKeysize;
   end;
-
-  Result := retval;
-
 end;
 
  // Returns the blocksize for the user's selected cyppher, as returned by the
@@ -1981,14 +1957,13 @@ end;
 function TfrmWizardCreateVolume.SelectedCypherBlockSize(): Integer;
 var
   cypherDetails: TFreeOTFECypher_v3;
-  retval:        Integer;
 begin
-  retval := CYPHER_BLOCKSIZE_NOT_CACHED_FLAG_BLOCKSIZE;
+  Result := CYPHER_BLOCKSIZE_NOT_CACHED_FLAG_BLOCKSIZE;
   // Determine the blocksize of the cypher selected
 
   // If we have it cached alredy, use it
   if (fCachedCypherBlocksize <> CYPHER_BLOCKSIZE_NOT_CACHED_FLAG_BLOCKSIZE) then begin
-    retval := fCachedCypherBlocksize;
+    Result := fCachedCypherBlocksize;
   end else
   if not (fFreeOTFEObj.GetSpecificCypherDetails(CypherDriver, CypherGUID,
     cypherDetails)) then begin
@@ -1996,11 +1971,8 @@ begin
   end else begin
     // Cache blocksize and return...
     fCachedCypherBlocksize := cypherDetails.BlockSize;
-    retval                 := fCachedCypherBlocksize;
+    Result                 := fCachedCypherBlocksize;
   end;
-
-  Result := retval;
-
 end;
 
 
@@ -2009,13 +1981,12 @@ end;
 function TfrmWizardCreateVolume.SelectedCypherMode(): TFreeOTFECypherMode;
 var
   cypherDetails: TFreeOTFECypher_v3;
-  retval:        TFreeOTFECypherMode;
 begin
-  retval := focmUnknown;
+  Result := focmUnknown;
 
   // If we have it cached alredy, use it
   if (fCachedCypherMode <> focmUnknown) then begin
-    retval := fCachedCypherMode;
+    Result := fCachedCypherMode;
   end else
   if not (fFreeOTFEObj.GetSpecificCypherDetails(CypherDriver, CypherGUID,
     cypherDetails)) then begin
@@ -2023,11 +1994,8 @@ begin
   end else begin
     // Cache blocksize and return...
     fCachedCypherMode := cypherDetails.Mode;
-    retval            := fCachedCypherMode;
+    Result            := fCachedCypherMode;
   end;
-
-  Result := retval;
-
 end;
 
 

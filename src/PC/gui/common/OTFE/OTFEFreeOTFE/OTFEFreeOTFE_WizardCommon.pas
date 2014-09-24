@@ -351,31 +351,24 @@ end;
 function cryptlibUnload(): Boolean;
 var
   funcResult: Integer;
-  allOK:      Boolean;
 begin
-  allOK := True;
+  Result := True;
 
   // Call "end" function on the DLL
   funcResult := cryptlib_cryptEnd();
-  allOK      := allOK and cryptlib_cryptStatusOK(funcResult);
+  Result      := Result and cryptlib_cryptStatusOK(funcResult);
 
   // Unload the DLL
-  allOK := allOK and cryptlib_UnloadDLL();
-
-  Result := allOK;
+  Result := Result and cryptlib_UnloadDLL();
 end;
 
 
 // Generate RNG data using cryptlib
 function GenerateRNGDataCryptlib(bytesRequired: Integer; var randomData: Ansistring): Boolean;
-var
-  allOK: Boolean;
 begin
   // randomData := SDUStringToSDUBytes(cryptlib_RNG(bytesRequired));
   randomData := cryptlib_RNG(bytesRequired);
-  allOK      := (Length(randomData) = bytesRequired);
-
-  Result := allOK;
+  Result      := (Length(randomData) = bytesRequired);
 end;
 
 // Initialize MouseRNG random data store
