@@ -65,12 +65,17 @@ object frmMain: TfrmMain
       Caption = '&File'
       object miFreeOTFENew: TMenuItem
         Action = actFreeOTFENew
+        ShortCut = 16462
       end
       object miFreeOTFEMountFile: TMenuItem
         Action = actFreeOTFEMountFile
+        Caption = '&Open file...'
+        ShortCut = 16463
       end
       object miDismountMain: TMenuItem
         Action = actDismount
+        Caption = '&Lock'
+        ShortCut = 16460
       end
       object N4: TMenuItem
         Caption = '-'
@@ -83,12 +88,16 @@ object frmMain: TfrmMain
         end
         object miLinuxMountFile: TMenuItem
           Action = actLinuxMountFile
+          Caption = '&Open file...'
         end
         object Mountfilehidden1: TMenuItem
           Action = actMountHidden
+          Caption = '&Mount file (dm-crypt) ...'
         end
         object miLinuxDismount: TMenuItem
           Action = actDismount
+          Caption = '&Lock'
+          ShortCut = 24652
         end
         object N9: TMenuItem
           Caption = '-'
@@ -150,7 +159,7 @@ object frmMain: TfrmMain
         end
       end
     end
-    object Help1: TMenuItem
+    object miHelp: TMenuItem
       Caption = '&Help'
       Hint = 'Contains commands for displaying Help.'
       object Userguide1: TMenuItem
@@ -176,6 +185,13 @@ object frmMain: TfrmMain
       end
       object About1: TMenuItem
         Action = actAbout
+      end
+    end
+    object miDev: TMenuItem
+      Caption = 'Dev Tools'
+      Visible = False
+      object DoTests1: TMenuItem
+        Action = actTest
       end
     end
   end
@@ -288,6 +304,11 @@ object frmMain: TfrmMain
       Hint = 'Dump a CDB to a human readable text file.'
       OnExecute = actCDBPlaintextDumpExecute
     end
+    object actTest: TAction
+      Caption = 'Do Tests'
+      Hint = 'Do tests'
+      OnExecute = actTestExecute
+    end
     object actLUKSDump: TAction
       Caption = '&Dump LUKS details to human readable file...'
       Hint = 'Dump a LUKS volumes header to a human readable text file.'
@@ -298,7 +319,7 @@ object frmMain: TfrmMain
     Left = 68
     Top = 52
     Bitmap = {
-      494C010111001300400010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010111001300700010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -975,7 +996,7 @@ object frmMain: TfrmMain
     Left = 28
     Top = 96
     Bitmap = {
-      494C010111001300400018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010111001300700018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000078000000010020000000000000B4
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
