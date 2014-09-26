@@ -2,6 +2,8 @@ inherited fmePKCS11_MgrKeyfile: TfmePKCS11_MgrKeyfile
   Width = 323
   Height = 266
   OnResize = FrameResize
+  ExplicitWidth = 323
+  ExplicitHeight = 266
   DesignSize = (
     323
     266)
