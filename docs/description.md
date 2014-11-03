@@ -1,7 +1,7 @@
 
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
+<meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
 <meta name="description" content=
 "DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
@@ -11,24 +11,22 @@
 
 <TITLE>Introduction</TITLE>
 
-<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
+[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
-***
-
-     
+***  
             
 ## Introduction
 
-DoxBox: An Open-Source "on-the-fly" transparent disk encryption program for MS  Windows 2000/Vista/Windows 7 PCs (both 32 and 64 bit)
+DoxBox: An Open-Source "on-the-fly" transparent disk encryption program for MS Windows 2000/Vista/Windows 7 PCs (both 32 and 64 bit)
 
 With this software, you can create one or more "virtual disks" on your computer - anything written to these disks is automatically encrypted before being stored on your computers hard drive.
 
@@ -40,7 +38,8 @@ With this software, you can create one or more "virtual disks" on your computer 
 <UL>
 * *Source code freely available*
 * Easy to use; full wizard included for creating new volumes
-* Powerful: Supports numerous hash/encryption algorithms, and provides a greater level of flexibility than any other OTFE system
+* Linux compatibility (Cryptoloop "losetup", dm-crypt and LUKS supported)
+* Powerful: Supports numerous hash/encryption algorithms, and provides a greater level of flexibility than any other transparent encryption system
 * Available in English, Spanish, German, Italian, French, Czech, Japanese, Croatian, Greek and Russian - with support for other language translations
 * Hash algorithms include: MD5, SHA-512, RIPEMD-320, Tiger and _many_ more
 * Cyphers include AES (256 bit), Twofish (256 bit), Blowfish (448 bit), Serpent (256 bit) and _many_ more
@@ -48,22 +47,17 @@ With this software, you can create one or more "virtual disks" on your computer 
 * "Portable mode" included; DoxBox doesn't need to be installed before it can be used - making it ideal for carrying your data securely on USB drives!
 * Security tokens/smartcards supported for extra (optional) security
 * Operates under MS Windows 2000/Vista/Windows 7 platforms
-* Linux compatibility (Cryptoloop "losetup", dm-crypt and LUKS supported)
 * "Hidden" volumes may be concealed within other DoxBoxes, providing "plausible deniability"
 * DoxBoxes have no "signature" to allow them to be identified as such
 * Encrypted volumes can be either file or partition based.
 * Modular design allowing 3rd party drivers to be created, incorporating new hash/cypher algorithms
 * Supports password salting (up to 512 bits), reducing the risks presented by dictionary attacks.
-* Allows users to backup and restore the critical areas of volume files.
-* Keyfile support included; store volumes and their associated metadata separately.
+* 'keyfiles' allow multiple users to share a box witour sharing keyphrases and support key backup.
 * Volume file timestamps and attributes are reset after dismounting, increasing "plausible deniability"
 * Supports volumes files up to 2^63 bytes (8388608 TB) 
-* Comprehensive documentation
-* Naturally, fully supported by [SecureTrayUtil](http://www.SDean12.org/SecureTrayUtil.htm).
-* _*Plus more...!*_
 </UL>
 
-Screenshots of DoxBox are [available](http://DoxBox.squte.com/screenshots_pc_main.html)
+Screenshots of DoxBox are [here](http://DoxBox.eu/screenshots_pc_main.html)
 
 Cyphers included:
 

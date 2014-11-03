@@ -1,7 +1,7 @@
 
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
+<meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
 <meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
@@ -10,16 +10,16 @@
 
 <TITLE>Technical Details: DoxBox Critical Data Block (CDB) Layout (CDB Format ID 2)</TITLE>
 
-<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
+[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
@@ -28,7 +28,7 @@ _[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
 
 ### Technical Details: DoxBox Critical Data Block (CDB) Layout (CDB Format ID 2)
 
-<font color="RED">*NOTE: This CDB layout is *_obsolete_*; all new volumes should use the [latest CDB format](technical_details__FreeOTFE_CDB_layout_format_3.md).*</font>
+<font color="RED">*NOTE: This CDB layout is *_obsolete_*; all new volumes should use the [latest CDB format](technical_details__FreeOTFE_CDB_layout_format_3.html).*</font>
 
 <A NAME="level_4_heading_1">
 #### Overview
@@ -458,7 +458,7 @@ to 8192 bits), should this limit be deemed inadequate..
 The "Encrypted block" does contain a certain amount of data
 that may be reasonably guessed by an attacker (e.g. the CDB format ID), however this would be of very limited use to an attacker
 launching a "known plaintext" attack as the amount of this data is
-minimal, and as with pretty much any OTFE system the encrypted partition image can reasonably expected to
+minimal, and as with pretty much any transparant encryption system the encrypted partition image can reasonably expected to
 contain significantly more known plaintext than the CDB anyway (e.g. the partition's boot sector)
 
 ##### CDB Encryption

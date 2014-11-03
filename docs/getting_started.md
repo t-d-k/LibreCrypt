@@ -1,6 +1,6 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
+<meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
 <meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
@@ -18,7 +18,7 @@
 [![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
       
@@ -47,7 +47,7 @@ After it has been installed, run it the first time as administrator; this will i
 
 After that, it may be run as a non-administrator.
 
-Please see the section on [Installation and Upgrading](installation_and_upgrading.html) for more instructions.
+Please see the section on [Installation and Upgrading](installation_and_upgrading__PC.html) for more instructions.
 
 <A NAME="port">
 ### Portable mode
@@ -56,7 +56,7 @@ Please see the section on [Installation and Upgrading](installation_and_upgradin
 Before DoxBox Portable can be used, it must be unzipped from the portable zipfile.
 It needs to be run as administrator, in order to install the drivers in 'portable mode'. 
 
-Please see the section on [Installation and Upgrading](installation_and_upgrading.html) for more instructions.
+Please see the section on [Installation and Upgrading](installation_and_upgrading__PC.html) for more instructions.
 
 * * * 
 <A NAME="level_3_heading_2">

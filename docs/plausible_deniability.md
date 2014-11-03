@@ -1,6 +1,6 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
+<meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
 <meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
@@ -38,7 +38,7 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 ### Overview
 </A>
 
-The subject of "plausible deniability" and OTFE systems is a lot more involved than "do my volume files have any kind of identifying signature?"
+The subject of "plausible deniability" and transparant encryption systems is a lot more involved than "do my DoxBoxes have any kind of identifying signature?"
 
 Some people believe they can get "Plausible deniability" by simply claiming that their volume files are _not_ encrypted data: "I don't know _what_ they are - I can't be expected to know every operation that my OS carries out! Perhaps it's some corrupt data that the system recovered at some stage?"
 
@@ -140,7 +140,7 @@ PD relies on the enc data looking like background 'chaff'.
 ### Multiple Hidden Volumes
 </A>
 
-In order to increase security further, an OTFE system should not be limited to _just_ a _single_ hidden volume in any given volume, but should allow an arbitrary number of hidden volumes to be created.
+In order to increase security further, a transparant encryption system should not be limited to _just_ a _single_ hidden volume in any given volume, but should allow an arbitrary number of hidden volumes to be created.
 
 This gives better security over systems which only permit a maximum number of hidden volumes within any given host volume. Even if an attacker manages to force the user to reveal that a hidden volume has been stored, there is still no way in which to determine whether _more_ hidden volumes are still present. This has the side effect of reducing any incentive for a user to reveal the presence of _any_ hidden volume, as doing so would not prevent an attacker from continuing to apply pressure on the user on the basis that there _may_ be further hidden volumes.
 

@@ -1,7 +1,7 @@
 
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
+<meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
 <meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
@@ -10,16 +10,16 @@
 
 <TITLE>Security Token/Smartcard Support</TITLE>
 
-<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
+[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
@@ -39,12 +39,10 @@ In both cases case, the token's password (typically called a "PIN" - although no
 
 These two methods can be used independently, or combined together.
 
-<UL>
   * [Initial configuration](#level_3_heading_1)
   * [Secure Keyfile Store](#level_3_heading_2)
   * [Token Encryption](#level_3_heading_3)
   * [PIN Entry](#level_3_heading_4)
-</UL>
 
 * * * 
 <A NAME="level_3_heading_1">
@@ -64,7 +62,7 @@ In order to use tokens, DoxBox must first be configured to use the appropriate P
 <TABLE WIDTH="100%" >
   <TR>
     <TD WIDTH="100%" class="screenshot_img" >
-      <img BORDER="0" src="./images/screenshots/PC/PKCS11Options.png">
+      <img BORDER="0" src="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/screenshots/PC/PKCS11Options.png">
     </TD>
   </TR>
   <TR>
@@ -76,7 +74,7 @@ The menu-item under the "Tools" menu should then be enabled, as should
 the options (when appropriate) on the password entry dialog when
 mounting DoxBox volumes
 
-A list of driver library names supplied by common manufacturers may be found at [Appendix E: PKCS#11 Driver Libraries](pkcs11_drivers.md)
+A list of driver library names supplied by common manufacturers may be found at [Appendix E: PKCS#11 Driver Libraries](pkcs11_drivers.html)
 
 * * * 
 <A NAME="level_3_heading_2">
@@ -91,24 +89,24 @@ Keyfiles may be stored on tokens in a similar fashion to which they can be store
 
 To add a keyfile to your token:
 
-<OL>
-* Create a keyfile for your volume as per normal
-* Plug in/insert your token
-* Go to "Tools | PKCS#11 Token management..."
-* Enter your token's PIN and click "OK"
-* The token management dialog should be displayed; select the "Keyfiles" tab
-* Click "Import..."
-* Select the keyfile previously created and click "OK".
-</OL>
+
+1. Create a keyfile for your volume as per normal
+1. Plug in/insert your token
+1. Go to "Tools | PKCS#11 Token management..."
+1. Enter your token's PIN and click "OK"
+1. The token management dialog should be displayed; select the "Keyfiles" tab
+1. Click "Import..."
+1. Select the keyfile previously created and click "OK".
+
 
 To use a keyfile stored on a token:
 
-<OL>
-* Follow the normal procedure for mounting your DoxBox
-* When shown the password prompt, select "PKCS#11" as the keyfile option; you will then be prompted to authenticate yourself to the token
-* Enter your token's PIN and click "OK"
-* Select the keyfile stored on your token, and proceed as normal by entering your keyfile's password, etc and clicking "OK" to mount
-</OL>
+
+1. Follow the normal procedure for mounting your DoxBox
+1. When shown the password prompt, select "PKCS#11" as the keyfile option; you will then be prompted to authenticate yourself to the token
+1. Enter your token's PIN and click "OK"
+1. Select the keyfile stored on your token, and proceed as normal by entering your keyfile's password, etc and clicking "OK" to mount
+
 
 Note: More than one keyfile can be stored on a single token; however they must all have different names.
 
@@ -151,19 +149,19 @@ It should be noted that the range of cyphers available for use is determined by 
 </OL>
 
 Note:
-<UL>
+
 * More than one secret key can be stored on a single token; however they must all have different names.
 * The same secret key can be used to encrypt more than one volume CDB/keyfile.
-</UL>
+
 
 To use a volume/keyfile which has been double-encrypted by a token:
 
-<OL>
-* Follow the normal procedure for mounting your DoxBox
-* When shown the password prompt, click the "Advanced >>" button to display the "Advanced security details" options
-* Enter your token's PIN and click "OK"
-* Select the secret key used to secure your volume/keyfile, and proceed as normal by entering your volume/keyfile's password, etc and clicking "OK" to mount
-</OL>
+
+1. Follow the normal procedure for mounting your DoxBox
+1. When shown the password prompt, click the "Advanced >>" button to display the "Advanced security details" options
+1. Enter your token's PIN and click "OK"
+1. Select the secret key used to secure your volume/keyfile, and proceed as normal by entering your volume/keyfile's password, etc and clicking "OK" to mount
+
 
 * * * 
 <A NAME="level_3_heading_4">
@@ -175,7 +173,7 @@ DoxBox will only prompt you to enter your token's PIN as and when it's needed. D
 <TABLE WIDTH="100%" >
   <TR>
     <TD WIDTH="100%" class="screenshot_img" >
-      <img BORDER="0" src="./images/screenshots/PC/PKCS11PINEntry.png">
+      <img BORDER="0" src="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/screenshots/PC/PKCS11PINEntry.png">
     </TD>
   </TR>
   <TR>

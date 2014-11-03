@@ -1,5 +1,5 @@
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
+<meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
 <meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
@@ -8,20 +8,20 @@
 
 <TITLE>FAQ</TITLE>
 
-<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
-<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://doxbox.squte.com/)
+[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
 <SPAN class="tip">
-The latest version of this FAQ, along with the latest DoxBox user manual, can be found online at the [DoxBox web site](http://DoxBox.squte.com/)
+The latest version of this FAQ, along with the latest DoxBox user manual, can be found online at the [DoxBox web site](http://DoxBox.eu/)
 </SPAN>
 * * *
 
@@ -382,14 +382,14 @@ In WWII agents made up [poems](http://www.worldwar2history.info/war/espionage/co
 *Q: What are the differences between DoxBox and DoxBox Explorer?*
 
 *A:*
-Please see the [DoxBox v. DoxBox Explorer Comparison](http://DoxBox.squte.com/main_explorer_differences.html)
+Please see the [DoxBox v. DoxBox Explorer Comparison](http://DoxBox.eu/main_explorer_differences.html)
 
 * * *
 
 <a name="el"></a>
 *Q: How can I help the DoxBox project?*
 
-*A:* If you are a native speaker of a language other than English, please take a look at [translating DoxBox](http://DoxBox.squte.com/translations.html) page. The user interface has support for translations into different languages, though at present the actual number of translations into other languages is fairly limited.
+*A:* If you are a native speaker of a language other than English, please take a look at [translating DoxBox](http://DoxBox.eu/translations.html) page. The user interface has support for translations into different languages, though at present the actual number of translations into other languages is fairly limited.
 
 Alternatively, **FEEDBACK!** If you have any comments or suggestions for how DoxBox can be improved - get in touch!
 
@@ -446,14 +446,14 @@ _Q: Is DoxBox based on Linux's "losetup"?_
 <a name="ac"></a>
 *Q: Right now, DoxBox supports LUKS volumes; do you have any plans to include support for Truecrypt, DriveCrypt, BestCrypt, etc volumes?*
 
-*A:* It's possible this will happen /if/ you have the corresponding application installed. Support in a standalone installation of DoxBox will not happen as there is no standard for OTFE volume files (each system uses its own layout). Adding support for other OTFE systems is non-trivial, and few OTFE systems have released proper technical documentation into the public domain.
+*A:* It's possible this will happen /if/ you have the corresponding application installed. Support in a standalone installation of DoxBox will not happen as there is no standard for encrypted volume files (each system uses its own layout). Adding support for other transparent encryption systems is non-trivial, and few transparent encryption systems have released proper technical documentation into the public domain.
 
  * * *
  <a name="ad"></a>
 *Q: When I mount a FAT/FAT32 formatted Linux volume under DoxBox everything works perfectly. When I do the same with my ext2/ext3/Reisers/etc volume, I can't see my files!*
 
 *A:* DoxBox does one thing: when a volume file is mounted, DoxBox presents a new storage device to the operating system.
- Like all OTFE systems, it has no comprehension **at all** of what FAT/FAT32/NTFS, let alone ext2/ext3/etc - understanding lies well *outside the scope of an OTFE system*, and is the responsibility of the filesystem drivers installed.
+ Like all transparent encryption systems, it has no comprehension **at all** of what FAT/FAT32/NTFS, let alone ext2/ext3/etc - understanding lies well *outside the scope of an encryption system*, and is the responsibility of the filesystem drivers installed.
 
 Although Microsoft Windows does come with filesystem drivers for FAT/FAT32/NTFS, it does not (natively) support other filesystems such as ext2.
 
@@ -647,7 +647,7 @@ If you've secured your volume with something like AES, then you can pretty much 
 
 If you know what most of your password is though, then you could certainly write an application which would carry out a brute force attack on your volume, assuming those known characters. How long this would take to run would depend on the cypher used, the strength of your password, and how much you remember of it.
 
-Note: This is not a security risk; that last comment **equally applies** to pretty much **any** OTFE system which has been implemented correctly.
+Note: This is not a security risk; that last comment **equally applies** to **any** encryption system which has been implemented correctly.
 
 * * *
 
@@ -708,7 +708,7 @@ If you forget your password however, then by definition you will not be able to 
 <a name="ay"></a>
 *Q: What happens if my volume file is corrupted or damaged in some way? Will I lose all my data?*
 
-*A:* As with pretty much **all** OTFE systems, if you were to corrupt a DoxBox is some way, the damage your data would receive would be about the same as if you had stored it directly on your hard drive, without DoxBox encrypting it.
+*A:* As with most encryption systems, if you were to corrupt a DoxBox is some way, the damage your data would receive would be about the same as if you had stored it directly on your hard drive, without DoxBox encrypting it.
 
   For example: If you mount a DoxBox file and then write a byte of data, at random, to somewhere on that mounted drive, the effect would be exactly the same as if you had randomly written the same byte to a real hard drive.
 
@@ -741,7 +741,7 @@ The encrypted Linux volume will be fully readable (and writable) using DoxBox - 
 
 For DoxBox volumes, the critical data block can be dumped out (see "Tools | Dump to human readable file..." menu), and the master encryption key used to mount the same volume under Linux (offsetting for the CDB) - again proving that encryption is taking place.
 
-*WARNING:* **Contrary to popular belief**, a user interface which accepts and processes encryption test vectors does **not prove anything!**  It is a trivial task to take a secure cypher, and use it to process test vectors provided by the user, while actually using a very weak and insecure cypher to carry out encryption/decryption on the data being stored!
+*WARNING:* Promises that an app encrypts data prove little, even if specific details like AES/pkcs#5 are cited. For example a hdd enclosure [todo dd encl], see also [todo snakeoil] for  more details.  
 
 * * *
 
@@ -758,9 +758,7 @@ For DoxBox volumes, the critical data block can be dumped out (see "Tools | Dump
 
 They redundant drivers are primarily intended to allow verification of the implementations and increase confidence that they're actually doing what it's supposed to do.
 
-These duplicated drivers do exactly the same thing. It is recommended that if you
-wish to use a cypher which has multiple supplied drivers, that you uninstall one of them. (See
-also: [Which of the duplicated drivers should I use?](#bd))
+These duplicated drivers do exactly the same thing. It is recommended that if you wish to use a cypher which has multiple supplied drivers, that you uninstall one of them. (See also: [Which of the duplicated drivers should I use?](#bd))
 
 * * *
 
@@ -770,18 +768,6 @@ also: [Which of the duplicated drivers should I use?](#bd))
 *A:* It doesn't particularly matter too much; they both do exactly the same thing, but are based on different implementations.
 
 Simply choose one and uninstall the other.
-
-  * * *
- <a name="bi"></a>
-*Q: Can DoxBox generate keyfiles which **only** allow read only  access?*
-
-*A:* Not at present, though if I receive enough requests for it, I may add this functionality.
-
-Until then, it should be borne in mind that anyone with a "read only" keyfile has, pretty much by definition, a copy of your master key and so has the potential to modify their "read only" keyfile, turning it into a "read-write" keyfile.
-
-i.e. It is debatable how much use this functionality has; certainly it
-should not be relied upon to prevent users from gaining write access to
-your volume files.
 
 * * *
 
@@ -822,8 +808,7 @@ This attack is **nothing new**, and has been well known for a **long** time; des
 
 **Solution**
 
-If you mount an OTFE volume, and simply walk away from your computer, the encryption keys used to secure your volume will be held in your computer's physical
-memory (obviously). If someone reboots your computer at that point, there is a risk they could successfully recover your encryption key.
+If you mount an encrypted volume, and simply walk away from your computer, the encryption keys used to secure your volume will be held in your computer's physical memory (obviously). If someone reboots your computer at that point, there is a risk they could successfully recover your encryption key.
 
 However, it is not generally recommended that you simply **walk away from your computer while you have volumes mounted** - if anyone can come along and attempt to launch the above attack, THEY CAN SIMPLY READ THE CONTENTS OF YOUR ENCRYPTED VOLUME DIRECTLY ANYWAY!
 
@@ -877,18 +862,18 @@ If an attacker already has this information, your security has already been comp
  * * *
 
 <a name="gd"></a>
-*Q: How do I resize an encrypted volume?*
+*Q: How do I resize an DoxBox?*
 
-*A:* To change the size of an encrypted volume:
+*A:* To change the size of a DoxBox:
 
-1. Mount your existing volume
+1. Open your existing DoxBox
 1. Create a new DoxBox of the size required
-1. Mount the new volume (overwriting and formatting it if needed)
-1. Copy all data from the old volume to the new one
-1. Dismount both volumes
-1. Delete the old volume
+1. Open the new DoxBox
+1. Copy all data from the old DoxBox to the new one
+1. Lock both DoxBoxes
+1. Delete the old DoxBox
 
-Obviously, this procedure requires enough storage space to hold both the old and newly created volumes.
+Obviously, this procedure requires enough storage space to hold both the old and new DoxBoxes.
 
 It should be noted that, although a number of **other** disk encryption systems **claim** to offer volume resizing functionality, they typically either carrying out the procedure above "behind the scenes" (often failing completely if insufficient storage is available to hold the new volume), or by storing the volume in a "sparse" files - which can lead to security leaks.
 
@@ -1141,13 +1126,13 @@ To access an encrypted volume on a PC which **doesn't** have DoxBox installed, a
 <a name="be"></a>
 *Q: Why do I need Administrator rights to install DoxBox?*
 
-*A:* This is probably the most common FAQ with respect to OTFE systems.
+*A:* This is probably the most common FAQ with respect to transparant encryption systems.
 
-In order for most (if not all) OTFE systems to operate, they require the use of "kernel mode drivers" to carry out drive emulation.
+In order for any transparant encryption system to operate, it requires the use of "kernel mode drivers" to carry out drive emulation.
 
 A "kernel mode driver" is special piece of software which operates at a very low-level within your computer's operating system. As such, it can do pretty much **anything** to your system - including carrying out privileged actions that normal users are not allowed to do (e.g. formatting your HDD). Because of this, Microsoft Windows only allows users with Administrator rights to install such drivers.
 
-*NOTE:* Administrator rights are **not** required in order to use DoxBox once  installed.
+*NOTE:* Administrator rights are **not** required in order to use DoxBox once installed.
 
  To access an encrypted volume on a PC which **doesn't** have DoxBox installed, and on which you **don't** have Administrator privileges, please use DoxBox Explorer.
 
@@ -1155,7 +1140,7 @@ A "kernel mode driver" is special piece of software which operates at a very low
  <a name="bf"></a>
 *Q: Why do I need Administrator rights to start "portable mode"?*
 
-*A:* Administrator rights are required to start "portable mode" starting portable mode implicitly registers the FreeOTFE drivers on the computer it's running on. When portable mode is stopped, they are unregistered.
+*A:* Administrator rights are required to start "portable mode", starting portable mode implicitly registers the FreeOTFE drivers on the computer it's running on. When portable mode is stopped, they are unregistered.
 
 Administrator rights are required for this operation, for the same reasons as given for the answer to "[Why do I need Administrator rights to  install DoxBox?](#be)"
 
@@ -1270,14 +1255,14 @@ Boxes nested in this manner must be dismounted in the **reverse** order to which
 <a name="eq"></a>
 *Q: DoxBox supports different languages, but why isn't mine listed?*
 
-*A:* Please see DoxBox's [translations page](http://DoxBox.squte.com/translations.html) for up-to-date information on language translations.
+*A:* Please see DoxBox's [translations page](http://DoxBox.eu/translations.html) for up-to-date information on language translations.
 
 * * *
 
 <a name="eq"></a>
 *Q: How do I translate DoxBox into a different language?*
 
-*A:* Please see DoxBox's [translations page](http://DoxBox.squte.com/translations.html) for up-to-date information on language translations.
+*A:* Please see DoxBox's [translations page](http://DoxBox.eu/translations.html) for up-to-date information on language translations.
 
 * * *
 
@@ -1414,7 +1399,7 @@ DoxBox and DoxBox Explorer will **only ever** try to connect to the internet if 
 
 * They have been configured to check for updates (by default this is on)
 	In this case, they will only try to connect to the GitHub web site to retrieve version information.
-* There has been an error in installation, or the documents have been removed, in which case DoxBox will open the HTML file from the DoxBox website (DoxBox.eu - which currently redirects to DoxBox.squte.com)
+* There has been an error in installation, or the documents have been removed, in which case DoxBox will open the HTML file from the DoxBox website (DoxBox.eu - which currently redirects to DoxBox.eu)
 In both cases they will prompt before connecting to the Internet - simply click 'cancel' to prevent this.
 By default, both DoxBox and DoxBox Explorer are configured such that they will automatically check for updates once per month - this can be disabled in the 'settings' dialog.
 
@@ -1535,7 +1520,7 @@ By displaying additional information, there is less likelihood of creating a vol
 <TABLE BORDER=0 WIDTH="100%" >
   <TR>
     <TD WIDTH="100%" class="screenshot_img" >
-      <img BORDER="0" src="./images/screenshots/PC/PartitionSelect_FullInfo.png">
+      <img BORDER="0" src="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/screenshots/PC/PartitionSelect_FullInfo.png">
     </TD>
   </TR>
   <TR>
@@ -1546,7 +1531,7 @@ By displaying additional information, there is less likelihood of creating a vol
 <TABLE BORDER=0 WIDTH="100%" >
   <TR>
     <TD WIDTH="100%" class="screenshot_img" >
-      <img BORDER="0" src="./images/screenshots/PC/PartitionSelect_RestrictedInfo.png">
+      <img BORDER="0" src="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/screenshots/PC/PartitionSelect_RestrictedInfo.png">
     </TD>
   </TR>
   <TR>
@@ -1671,7 +1656,7 @@ Whenever you attempt to use any part of DoxBox's functionality which Windows con
 
 The same type of dialog will appear when you attempt to (for example) go to Window's Control Panel, selecting "Date and Time", and then attempting to change the computer's time or date.
 
-Because the DoxBox executable does not have a digital signature that Windows recognises, this dialog claims that "An unidentified program wants access to your computer". This is perfectly normal, and part of Vista's system to help protect you. If you would like to check that your copy of DoxBox is an original, you may do so by checking the hashes/signatures available from the [DoxBox web site](http://DoxBox.squte.com/).
+Because the DoxBox executable does not have a digital signature that Windows recognises, this dialog claims that "An unidentified program wants access to your computer". This is perfectly normal, and part of Vista's system to help protect you. If you would like to check that your copy of DoxBox is an original, you may do so by checking the hashes/signatures available from the [DoxBox web site](http://DoxBox.eu/).
 
 These prompts form part of Windows Vista's "User Access Control" (UAC) system, which you can find out more about from the [Microsoft web site](http://technet.microsoft.com/en-us/windowsvista/aa906022.aspx).
 

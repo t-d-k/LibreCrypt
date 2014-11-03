@@ -1,7 +1,7 @@
 
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-<meta name="keywords" content="disk encryption, security, transparent, AES, OTFE, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
+<meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
 <meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
@@ -10,22 +10,22 @@
 
 <TITLE>Technical Details: DoxBox Critical Data Block (CDB) Layout (CDB Format ID 1)</TITLE>
 
-<link href="./styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="../src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](../src/Common/Common/images/DoxBox128.png)](http://DoxBox.squte.com/)
+[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.squte.com/): Open-Source disk encryption for Windows_
+_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>   
             
 
 ### Technical Details: DoxBox Critical Data Block (CDB) Layout (CDB Format ID 1)
 
-<font color="RED">*NOTE: This CDB layout is *_obsolete_*; all new volumes should use the [latest CDB format](technical_details__FreeOTFE_CDB_layout_format_3.md).*</font>
+<font color="RED">*NOTE: This CDB layout is *_obsolete_*; all new volumes should use the [latest CDB format](technical_details__FreeOTFE_CDB_layout_format_3.html).*</font>
 
 <A NAME="level_4_heading_1">
 #### Overview
@@ -417,65 +417,38 @@ volume file.
 
 The "critical data block" is encrypted.
 
-The "password salt" appears **before**
-the "encrypted block", and no indication of the length of salt used is
-stored anywhere in order to prevent an attacker from even knowing where
-the "encrypted block" starts within the "critical data block".
+The "password salt" appears **before** the "encrypted block", and no indication of the length of salt used is stored anywhere in order to prevent an attacker from even knowing where the "encrypted block" starts within the "critical data block".
 
-The "Check hash" appears **before**
-the volume details block. This may seem a little strange since the size
-of "Check hash" is variable (its actual length is dependent on the
-hash algorithm chosen), but appears first in order to reduce the
-amount of "known" (or predictable) data early on in the volume.
-Theoretically this is desirable as (for example) cyphers operating in
-CBC (or similar) modes which "whiten" data will do so with data that is
-less predictable than would occur if the hash appeared towards the end
-of the block it appears in.
+The "Check hash" appears **before** the volume details block. This may seem a little strange since the size of "Check hash" is variable (its actual length is dependent on the hash algorithm chosen), but appears first in order to reduce the amount of "known" (or predictable) data early on in the volume. Theoretically this is desirable as (for example) cyphers operating in CBC (or similar) modes which "whiten" data will do so with data that is less predictable than would occur if the hash appeared towards the end of the block it appears in.
 
-The "Check hash" is limited to 512 bits. This is limited as, in
-practical terms, some kind of limit is required if the critical data
-block is to be of a predetermined size. See section on mounting volume
-files for how multiple matching check hashes is handled.
+The "Check hash" is limited to 512 bits. This is limited as, in practical terms, some kind of limit is required if the critical data block is to be of a predetermined size. See section on mounting volume files for how multiple matching check hashes is handled.
 
 The "Password salt" is (fairly arbitrarily) limited to 512 bits. Again, this is primarily done for practical reasons.
 
-Although at time of writing (2004) this limit to the length of salt
-used should be sufficient, the format of the critical data block (with
-included layout version ID) does allow future scope for modification in
-order to allow the critical data block to be extended (e.g. from 4096
-to 8192 bits), should this limit be determined as insufficient.
+Although at time of writing (2004) this limit to the length of salt used should be sufficient, the format of the critical data block (with included layout version ID) does allow future scope for modification in order to allow the critical data block to be extended (e.g. from 4096 to 8192 bits), should this limit be determined as insufficient.
 
-The "Encrypted block" does contain a certain amount of data
-that may be reasonably guessed by an attacker (e.g. the critical data
-version), however this would be of very limited use to an attacker
-launching a "known plaintext" attack as the amount of this data is
-minimal, and as with pretty much any OTFE system, the "Encrypted partition image" can reasonably expected to
-contain significantly more known plaintext anyway (e.g. the partition's boot sector)
+The "Encrypted block" does contain a certain amount of data that may be reasonably guessed by an attacker (e.g. the critical data version), however this would be of very limited use to an attacker launching a "known plaintext" attack as the amount of this data is minimal, and as with pretty much any transparant encryption system, the "Encrypted partition image" can reasonably expected to contain significantly more known plaintext anyway (e.g. the partition's boot sector)
 
 <hr style="width: 100%; height: 2px;">
 <A NAME="level_4_heading_3">
 #### Creating DoxBox Volumes
 </A>
 
-To create a DoxBox file, a fairly significant amount of
-information is required due to freedom that DoxBox gives you in
-creating volume files. 
+To create a DoxBox file, a fairly significant amount of information is required due to freedom that DoxBox gives you in creating volume files. 
 
 Broadly speaking, creating a DoxBox consists of three distinct stages:
 
-<OL>
-  * Creating a file large enough on the local filesystem
-  * Writing the critical data block to the volume file
-  * Mounting the volume, formatting it, and "shredding" (overwriting) all free space
-</OL>
 
-Stage 1 is straightforward; write data to the file until is has gained
-the required size. This stage is skipped in the case of creating a
-hidden volume.
+  1. Creating a file large enough on the local filesystem, and overwriting it with 'chaff'
+  1. Writing the critical data block to the volume file
+  1. Mounting the volume, formatting it
+
+
+Stage 1 is straightforward; write data to the file until is has gained the required size. This stage is skipped when creating a hidden volume.
 
 Stage 2 is more complex; and will be described below.
 
-Stage 3 is required in set the volume up for use, and increase security.
+Stage 3 is required to set the volume up for use
 
 <A NAME="level_4_heading_4">
 #### Writing the critical data block.
