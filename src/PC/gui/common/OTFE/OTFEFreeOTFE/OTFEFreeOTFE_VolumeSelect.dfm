@@ -1,20 +1,11 @@
-object OTFEFreeOTFEVolumeSelect: TOTFEFreeOTFEVolumeSelect
-  Left = 0
-  Top = 0
-  Width = 342
-  Height = 26
-  TabOrder = 0
-  DesignSize = (
-    342
-    26)
+inherited OTFEFreeOTFEVolumeSelect: TOTFEFreeOTFEVolumeSelect
+  ParentFont = False
   object bbBrowsePartition: TBitBtn
     Left = 316
     Top = 0
     Width = 21
     Height = 21
     Anchors = [akTop, akRight]
-    TabOrder = 2
-    OnClick = bbBrowsePartitionClick
     Glyph.Data = {
       42010000424D4201000000000000760000002800000011000000110000000100
       040000000000CC000000C40E0000C40E00001000000000000000000000000000
@@ -27,6 +18,8 @@ object OTFEFreeOTFEVolumeSelect: TOTFEFreeOTFEVolumeSelect
       000FFF0003333000000033330FFFFFFF0333300000003333300FFF0033333000
       0000333333300033333330000000333333333333333330000000333333333333
       333330000000}
+    TabOrder = 2
+    OnClick = bbBrowsePartitionClick
   end
   object bbBrowseFile: TBitBtn
     Left = 292
@@ -34,8 +27,6 @@ object OTFEFreeOTFEVolumeSelect: TOTFEFreeOTFEVolumeSelect
     Width = 21
     Height = 21
     Anchors = [akTop, akRight]
-    TabOrder = 1
-    OnClick = bbBrowseFileClick
     Glyph.Data = {
       42010000424D4201000000000000760000002800000011000000110000000100
       040000000000CC000000C40E0000C40E00001000000000000000000000000000
@@ -48,6 +39,8 @@ object OTFEFreeOTFEVolumeSelect: TOTFEFreeOTFEVolumeSelect
       0FFF0FF033333000000033330FFF0F0333333000000033330FFF003333333000
       0000333300000333333330000000333333333333333330000000333333333333
       333330000000}
+    TabOrder = 1
+    OnClick = bbBrowseFileClick
   end
   object edFilename: TEdit
     Left = 0

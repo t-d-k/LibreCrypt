@@ -79,7 +79,8 @@ implementation
 uses
   Math,
   Windows;
-
+ {$R *.dfm}
+ 
 const
   ULL_ONEMEG: ULONGLONG = 1024*1024;
 

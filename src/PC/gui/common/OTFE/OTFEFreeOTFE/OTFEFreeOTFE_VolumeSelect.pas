@@ -2,13 +2,16 @@ unit OTFEFreeOTFE_VolumeSelect;
 
 interface
 
-uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons,
-  OTFEFreeOTFEBase_U, SDUDialogs, SDUFrames;
+uses   Classes, Controls, Dialogs, Forms,
+  Graphics, Messages, SDUDialogs, SDUFrames, StdCtrls, SysUtils, Variants, Windows,
+  Vcl.Buttons,
+
+  OTFEFreeOTFEBase_U;
+
+
 
 type
-  TOpenSave = (fndOpen, fndSave);
+    TOpenSave = (fndOpen, fndSave);
 
   TOTFEFreeOTFEVolumeSelect = class(TSDUFrame)
     bbBrowsePartition: TBitBtn;
@@ -16,6 +19,7 @@ type
     edFilename: TEdit;
     OpenDialog: TSDUOpenDialog;
     SaveDialog: TSDUSaveDialog;
+
     procedure bbBrowseFileClick(Sender: TObject);
     procedure bbBrowsePartitionClick(Sender: TObject);
     procedure edFilenameChange(Sender: TObject);
@@ -25,7 +29,7 @@ type
     FFileSelectFilter: string;
     FFileSelectDefaultExt: string;
     FOnChange: TNotifyEvent;
-    FFileGlyph: TBitmap;
+    FFileGlyph: Vcl.Graphics.TBitmap;
 
     function  GetFilename(): string;
     procedure SetFilename(filename: string);
@@ -58,7 +62,7 @@ procedure Register;
 
 implementation
 
-{$R *.dfm}
+   {$R *.dfm}
 
 uses
   SDUGeneral;
@@ -90,7 +94,6 @@ begin
     end;
 
 end;
-
 procedure TOTFEFreeOTFEVolumeSelect.bbBrowsePartitionClick(Sender: TObject);
 var
   selectedPartition: string;
@@ -103,9 +106,9 @@ begin
       edFilename.text := selectedPartition;
       end;
     end;
-
+//
 end;
-
+//
 constructor TOTFEFreeOTFEVolumeSelect.Create(AOwner: TComponent);
 begin
   inherited;
@@ -114,7 +117,7 @@ begin
 
   self.height := edFilename.height;
 
-  FFileGlyph := TBitmap.Create();
+  FFileGlyph := Vcl.Graphics.TBitmap.Create();
   FFileGlyph.Assign(bbBrowseFile.Glyph);
 
   // Pre-calculate difference in file browse button position/TEdit width when
@@ -173,16 +176,16 @@ begin
     end;
 
 end;
-
+//
 procedure TOTFEFreeOTFEVolumeSelect.edFilenameChange(Sender: TObject);
 begin
   if Assigned(OnChange) then
     begin
     OnChange(self);
     end;
-
+//
 end;
-
+//
 function TOTFEFreeOTFEVolumeSelect.GetEnabled(): boolean;
 begin
   Result := inherited GetEnabled();

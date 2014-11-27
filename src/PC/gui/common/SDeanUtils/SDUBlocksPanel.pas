@@ -8,11 +8,17 @@ unit SDUBlocksPanel;
 interface
 
 uses
+ Classes, CommonSettings, Controls, Dialogs, Forms,
+  Graphics, Messages, SysUtils, Variants, Windows,
+  CommonfmeOptions_Base,
+
+
+  FreeOTFESettings,
   ExtCtrls,
-  Classes,
-  Types,
-  Messages,
-  Graphics;
+
+  Types
+
+  ;
 
 type
   // Note: Both Caption and SubCaption can have CRLFs (e.g. SDUCRLF) in them
@@ -27,7 +33,7 @@ type
   end;
 
 
-  TSDUBlocksPanel = class(TPanel)
+  TSDUBlocksPanel = class(TFrame)
   protected
     FLastXY: TPoint;
     FBlocks: array of TBlock;
@@ -58,31 +64,33 @@ type
     procedure SetItem(idx: integer; blk: TBlock); virtual;
     function  GetCount(): integer; virtual;
 
-    procedure Paint(); override;
+    procedure PaintWindow(DC: HDC); override;
 
   public
     property Item[idx: Integer]: TBlock read GetItem write SetItem;
+    procedure SetCaption(cap:string);
   published
     property Count: integer read GetCount;
     property Selected: integer read FSelected write SetSelected;
     property OnChanged: TNotifyEvent read FOnChanged write FOnChanged;
   end;
 
-procedure Register;
+// procedure Register;
 
 implementation
+{$R *.dfm}
 
 uses
-  Controls,
-  Windows,
+
   Math,
   GraphUtil;
 
+{
 procedure Register;
 begin
   RegisterComponents('SDeanUtils', [TSDUBlocksPanel]);
 end;
-
+}
 constructor TSDUBlocksPanel.Create(AOwner: TComponent);
 begin
   inherited;
@@ -130,13 +138,18 @@ begin
   Result := FBlocks[idx];
 end;
 
+procedure TSDUBlocksPanel.SetCaption(cap: string);
+begin
+  Caption := cap;
+end;
+
 procedure TSDUBlocksPanel.SetItem(idx: integer; blk: TBlock);
 begin
   FBlocks[idx] := blk;
   Invalidate();
 end;
 
-procedure TSDUBlocksPanel.Paint();
+procedure TSDUBlocksPanel.PaintWindow(DC: HDC);
 var
   i: integer;
   x: integer;
@@ -156,10 +169,10 @@ begin
 
     useRect := Rect(0, 0, ClientWidth, ClientHeight);
     InflateRect(useRect, -BevelPixels, -BevelPixels);
-  
+
     // Purge display
-    Canvas.Brush.Color := Color;
-    Canvas.FillRect(useRect);
+    TForm(Parent).Canvas.Brush.Color := Color;
+    TForm(Parent).Canvas.FillRect(useRect);
 
     x := useRect.Left;
     useWidth := useRect.Right - useRect.Left;
@@ -209,29 +222,29 @@ begin
       normalBKColor := blk.BkColor;
       end;
 
-    Canvas.Brush.Color := normalBKColor;
-    Canvas.Brush.Style := bsSolid;
+    TForm(Parent).Canvas.Brush.Color := normalBKColor;
+    TForm(Parent).Canvas.Brush.Style := bsSolid;
 
     insideBounds := FBlockRects[idx];
-    Canvas.FillRect(insideBounds);
+    TForm(Parent).Canvas.FillRect(insideBounds);
     InflateRect(insideBounds, -4, -4);
 
-    Canvas.Pen.Color := normalFGColor;
-    Canvas.Brush.Color := normalBKColor;
-    Canvas.Brush.Style := bsClear;
+    TForm(Parent).Canvas.Pen.Color := normalFGColor;
+    TForm(Parent).Canvas.Brush.Color := normalBKColor;
+    TForm(Parent).Canvas.Brush.Style := bsClear;
 
     if (Selected = idx) then
       begin
-      Canvas.Pen.Color := GetHighLightColor(normalFGColor);
-      Canvas.Brush.Color := GetHighLightColor(normalBKColor);
+      TForm(Parent).Canvas.Pen.Color := GetHighLightColor(normalFGColor);
+      TForm(Parent).Canvas.Brush.Color := GetHighLightColor(normalBKColor);
       // Refill the reduced rect to give highlighted background
-      Canvas.FillRect(insideBounds);
+      TForm(Parent).Canvas.FillRect(insideBounds);
       end;
 
-    Canvas.Brush.Style := bsClear;
+    TForm(Parent).Canvas.Brush.Style := bsClear;
 
-    Canvas.Font.Style := Font.Style + [fsBold];
-    textHeight := Canvas.TextHeight('X');
+    TForm(Parent).Canvas.Font.Style := Font.Style + [fsBold];
+    textHeight := TForm(Parent).Canvas.TextHeight('X');
 
     // We use a TStringList to split the caption up into separate lines if it's
     // for SDUCRLF's in it, then TextRect(...) the strings out as TextRect(...)
@@ -242,7 +255,7 @@ begin
       textTop := insideBounds.top;
       for i:=0 to (stlTextLines.count - 1) do
         begin
-        Canvas.TextRect(
+        TForm(Parent).Canvas.TextRect(
                         insideBounds,
                         insideBounds.left,
                         textTop,
@@ -251,15 +264,15 @@ begin
         textTop := textTop + textHeight;
         end;
 
-      Canvas.Font.Style := Font.Style - [fsBold];
+      TForm(Parent).Canvas.Font.Style := Font.Style - [fsBold];
       // Changed style could have altered the height of the font
-      textHeight := Canvas.TextHeight('X');
+      textHeight := TForm(Parent).Canvas.TextHeight('X');
 
       stlTextLines.text := blk.SubCaption;
       // textTop already set appropriately at this point
       for i:=0 to (stlTextLines.count - 1) do
         begin
-        Canvas.TextRect(
+        TForm(Parent).Canvas.TextRect(
                         insideBounds,
                         insideBounds.left,
                         textTop,
@@ -273,17 +286,17 @@ begin
       end;
 
     // Cell frame...
-    Canvas.Brush.Style := bsSolid;
-    Canvas.Brush.Color := clBlack;
-    Canvas.FrameRect(FBlockRects[idx]);
+    TForm(Parent).Canvas.Brush.Style := bsSolid;
+    TForm(Parent).Canvas.Brush.Color := clBlack;
+    TForm(Parent).Canvas.FrameRect(FBlockRects[idx]);
 
     // Selected dottec focus rect..
     if (Selected = idx) then
       begin
       tmpBounds := FBlockRects[idx];
       InflateRect(tmpBounds, -1, -1);
-      Canvas.Brush.Color := color;
-      Canvas.DrawFocusRect(tmpBounds);
+      TForm(Parent).Canvas.Brush.Color := color;
+      TForm(Parent).Canvas.DrawFocusRect(tmpBounds);
       end;
 
     end;
