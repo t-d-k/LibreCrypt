@@ -32,7 +32,7 @@ implementation
 {$IF CompilerVersion >= 18.5}
 uses
   WideStrUtils;
-{$ENDIF}
+{$IFEND}
 
 function SDUFileAge(filename: string; var dateTime: TDateTime): boolean;
 {$IF CompilerVersion >= 18.5}
@@ -55,7 +55,7 @@ begin
 
   Result := retval;
 end;
-{$ENDIF}
+{$IFEND}
 
 
 function SDUFileTimestamps(
@@ -98,7 +98,7 @@ begin
   while (P^ <> #0) do Inc(P);
   Result := (P - Str);
 end;
-{$ENDIF}
+{$IFEND}
 
 // ----------------------------------------------------------------------------
 function SDUWStrLCopy(Dest: PWChar; const Source: PWChar; MaxLen: Cardinal): PWChar;

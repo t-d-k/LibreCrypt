@@ -27,7 +27,6 @@ uses
 type
   TfmeSelectPartition = class (TFrame)
     TabControl1:             TTabControl;
-    SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel;
     pnlNoPartitionDisplay:   TPanel;
     ckShowCDROM:             TCheckBox;
     ckEntireDisk:            TCheckBox;
@@ -38,6 +37,7 @@ type
     ActionList1:             TActionList;
     actProperties:           TAction;
     Properties1:             TMenuItem;
+    SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel;
     procedure TabControl1Change(Sender: TObject);
     procedure ckShowCDROMClick(Sender: TObject);
     procedure ckEntireDiskClick(Sender: TObject);
@@ -147,6 +147,7 @@ constructor TfmeSelectPartition.Create(AOwner: TComponent);
 begin
   inherited;
   FRemovableDevices := TStringList.Create();
+  SDUDiskPartitionsPanel1.OnChanged := SDUDiskPartitionsPanel1Changed ;
 end;
 
 destructor TfmeSelectPartition.Destroy();
@@ -179,7 +180,7 @@ begin
   // -- end [TAB_FIX] --
 
   // Fallback...
-  SDUDiskPartitionsPanel1.Caption := RS_NO_PARTITIONS_FOUND;
+  SDUDiskPartitionsPanel1.SetCaption(RS_NO_PARTITIONS_FOUND);
 
   SDUDiskPartitionsPanel1.Align := alClient;
   pnlNoPartitionDisplay.Align   := alClient;

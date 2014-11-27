@@ -4,19 +4,19 @@ object OTFEFreeOTFELUKSKeyOrKeyfileEntry: TOTFEFreeOTFELUKSKeyOrKeyfileEntry
   Width = 464
   Height = 138
   TabOrder = 0
-  object lblTreatNewlineAsEOF_2: TLabel
-    Left = 336
-    Top = 120
-    Width = 34
-    Height = 13
-    Caption = 'as EOF'
-  end
   object lblTreatNewlineAsEOF_1: TLabel
     Left = 148
     Top = 120
     Width = 26
     Height = 13
     Caption = '&Treat'
+  end
+  object lblTreatNewlineAsEOF_2: TLabel
+    Left = 336
+    Top = 120
+    Width = 34
+    Height = 13
+    Caption = 'as EOF'
   end
   object preUserKey: TOTFEFreeOTFE_PasswordRichEdit
     Left = 128

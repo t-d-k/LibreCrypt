@@ -20,16 +20,12 @@ inherited frmCDBDump_LUKS: TfrmCDBDump_LUKS
     inherited Label2: TLabel
       FocusControl = OTFEFreeOTFELUKSKeyOrKeyfileEntry1
     end
-    object lblOptional: TLabel [2]
+    object lblOptional: TLabel
       Left = 8
       Top = 68
       Width = 43
       Height = 13
       Caption = '(optional)'
-    end
-    inherited OTFEFreeOTFEVolumeSelect1: TOTFEFreeOTFEVolumeSelect
-      Width = 465
-      ExplicitWidth = 465
     end
     object ckBaseIVCypherOnHashLength: TCheckBox
       Left = 8
@@ -37,14 +33,24 @@ inherited frmCDBDump_LUKS: TfrmCDBDump_LUKS
       Width = 177
       Height = 17
       Caption = 'Base IV cypher on hash length'
-      TabOrder = 2
+      TabOrder = 0
     end
-    object OTFEFreeOTFELUKSKeyOrKeyfileEntry1: TOTFEFreeOTFELUKSKeyOrKeyfileEntry
+    inline OTFEFreeOTFELUKSKeyOrKeyfileEntry1: TOTFEFreeOTFELUKSKeyOrKeyfileEntry
       Left = 116
       Top = 48
       Width = 464
       Height = 138
       TabOrder = 1
+      ExplicitLeft = 116
+      ExplicitTop = 48
+      inherited lblTreatNewlineAsEOF_2: TLabel
+        Width = 35
+        ExplicitWidth = 35
+      end
+      inherited lblTreatNewlineAsEOF_1: TLabel
+        Width = 25
+        ExplicitWidth = 25
+      end
     end
   end
   inherited GroupBox2: TGroupBox

@@ -13,7 +13,6 @@ uses
 
 type
   TOTFEFreeOTFELUKSKeyOrKeyfileEntry = class(TFrame)
-    lblTreatNewlineAsEOF_2: TLabel;
     lblTreatNewlineAsEOF_1: TLabel;
     preUserKey: TOTFEFreeOTFE_PasswordRichEdit;
     rbKeyFromUser: TRadioButton;
@@ -22,6 +21,7 @@ type
     ckKeyfileContainsASCII: TSDUCheckBox;
     cbNewlineType: TComboBox;
     SDUDropFiles_Keyfile: TSDUDropFiles;
+    lblTreatNewlineAsEOF_2: TLabel;
     procedure rbKeyFromClick(Sender: TObject);
     procedure feKeyfileChange(Sender: TObject);
     procedure ckKeyfileContainsASCIIClick(Sender: TObject);

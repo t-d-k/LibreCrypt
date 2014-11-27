@@ -101,7 +101,6 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
           Height = 13
           Caption = '&GPG executable:'
           Enabled = False
-          FocusControl = feGPGExecutable
         end
         object Label21: TLabel
           Left = 12
@@ -283,7 +282,7 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
           Height = 21
           Caption = '?'
           Enabled = False
-          TabOrder = 6
+          TabOrder = 3
           OnClick = pbKeyProcCypherInfoClick
         end
         object cbKeyProcCypher: TComboBox
@@ -293,7 +292,7 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
           Height = 21
           Style = csDropDownList
           Enabled = False
-          TabOrder = 5
+          TabOrder = 4
           OnChange = SelectionChange
         end
         object edKeySeed: TEdit

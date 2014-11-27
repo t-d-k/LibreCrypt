@@ -90,24 +90,6 @@ object frmOptions: TfrmOptions
     object tsPKCS11: TTabSheet
       Caption = 'PKCS#11'
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      inline fmeOptions_PKCS11: TfmeOptions_PKCS11
-        Left = 0
-        Top = 0
-        Width = 492
-        Height = 348
-        TabOrder = 0
-        ExplicitHeight = 348
-        inherited gbPKCS11: TGroupBox
-          inherited lblLibrary: TLabel
-            Width = 80
-            ExplicitWidth = 80
-          end
-        end
-      end
     end
   end
 end

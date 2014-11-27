@@ -82,11 +82,11 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 ; install drivers - show progress if not silent
 ; Filename: "{app}\{#MyAppExeName}"; Parameters: "/drivercontrol install /filename all /silent"; Description: "Install Drivers"; Flags: runascurrentuser runhidden skipifnotsilent; StatusMsg: "Installing Drivers..."       
 ; Filename: "{app}\{#MyAppExeName}"; Parameters: "/drivercontrol install /filename all"; Description: "Install Drivers"; Flags: runascurrentuser runhidden skipifsilent; StatusMsg: "Installing Drivers..."       
-Filename: "{app}\{#MyAppExeName}"; Parameters: "/setTestMode on /silent /setInstalled"; Description: "Enable Windows Test Mode"; Flags: runascurrentuser runhidden; StatusMsg: "Enabling Windows Test Mode..."              
+Filename: "{app}\{#MyAppExeName}"; Parameters: "/setTestMode on /setInstalled"; Description: "Enable Windows Test Mode"; Flags: runascurrentuser runhidden; StatusMsg: "Enabling Windows Test Mode..."              
 ; Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [UninstallRun]
 ; uninstall drivers - show progress if not silent
-Filename: "{app}\{#MyAppExeName}"; Parameters: "/driverControl uninstall /driverName all /SetTestMode off /silent"; Flags: runascurrentuser runhidden; StatusMsg: "Removing Drivers ..."       
+Filename: "{app}\{#MyAppExeName}"; Parameters: "/driverControl uninstall /driverName all /SetTestMode off"; Flags: runascurrentuser runhidden; StatusMsg: "Removing Drivers ..."       
 
 

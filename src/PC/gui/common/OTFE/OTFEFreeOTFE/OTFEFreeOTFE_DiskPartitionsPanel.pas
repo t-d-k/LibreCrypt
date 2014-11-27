@@ -3,6 +3,10 @@ unit OTFEFreeOTFE_DiskPartitionsPanel;
 interface
 
 uses
+ Classes, CommonfmeOptions_Base,
+  CommonSettings,
+  Controls, Dialogs, Forms,
+  FreeOTFESettings, Graphics, Messages, SysUtils, Variants, Windows,
   SDUGeneral,
   SDUDiskPartitionsPanel,
   OTFEFreeOTFEBase_U;
@@ -16,22 +20,22 @@ type
     function IgnorePartition(partInfo: TSDUPartitionInfo): boolean; override;
   public
     SyntheticDriveLayout: boolean;
+
   published
     property FreeOTFEObj: TOTFEFreeOTFEBase read FFreeOTFEObj write FFreeOTFEObj;
 
   end;
 
-procedure Register;
+//procedure Register;
 
 implementation
+{$R *.dfm}
 
-uses
-  Classes;
 
-procedure Register;
-begin
-  RegisterComponents('FreeOTFE', [TOTFEFreeOTFEDiskPartitionsPanel]);
-end;
+//procedure Register;
+//begin
+//  RegisterComponents('FreeOTFE', [TOTFEFreeOTFEDiskPartitionsPanel]);
+//end;
 
 function TOTFEFreeOTFEDiskPartitionsPanel.GetDriveLayout(physicalDiskNo: integer; var driveLayout: TSDUDriveLayoutInformation): boolean;
 var

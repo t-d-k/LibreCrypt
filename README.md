@@ -47,6 +47,8 @@ New features in version 6.1
 *Important: DoxBox in Portable mode will not work on Windows Vista and later 64 bit versions without a extra step before use.*
 
 *DoxBox installed on Windows Vista and later 64 bit versions adds the text "Test Mode" to the Windows desktop. Please see the documentation for details on removing this.*
+*On Windows 8 please turn off 'Safe Boot' and disklocker before installing.*
+*There has been a report that Kaspersky anti-virus falsely reports DoxBox as having the 'generic.Trojan' virus, please disable or replace this before installing.*
 
 * Please follow these instructions to run DoxBox in portable mode on 64 bit Windows; if you do not do this you will get the error "Windows requires a digitally signed driver" when starting the drivers. There is no need to do this if DoxBox is installed.
 	+ Start DoxBox, click 'No' on the prompt to start the portable drivers, and 'OK' on the warning dialog about not having any loaded drivers.
@@ -56,7 +58,6 @@ New features in version 6.1
 	+ After finishing with DoxBox you can click the Tools->"Disallow Test-signed drivers" menu item to remove the "Test Mode" text.
 *	To run in portable mode, you need to have admin rights.  
 *	There is a security flaw in the use of hidden volumes (fixed in 6.1). If you create hidden volumes they may be visible to an attacker. This does not affect normal DoxBoxes and only affects the deniability, not security, of hidden ones.
-<!-- *	Support for E4M, Bestcrypt, Crosscrypt and ScramDisc containers may be added later -->
 *	Backwards compatibility with PDA and Windows CE versions of FreeOTFE will be removed in the next version.
 *	Backwards compatibility with older versions of FreeOTFE (before 5.21) will be removed in the next version. Please convert any FreeOTFE volumes. This can be done by creating a new 'box' and copying the files across.
 *	Support for the following cyphers will be removed in the next version, please convert to another: xor, plain, single DES. Ditto for the 'plain' hash. 

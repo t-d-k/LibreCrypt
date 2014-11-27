@@ -11,8 +11,8 @@ unit SDUGeneral;
 interface
 
 uses
-  Forms, Controls, StdCtrls,
-  ExtCtrls,
+  Controls, ExtCtrls,
+  Forms, StdCtrls,
   Windows, // Required for TWIN32FindData in ConvertSFNPartToLFN, and THandle
   Classes,
   ComCtrls,  // Required in SDUEnableControl to enable/disable TRichedit controls
@@ -23,9 +23,8 @@ uses
   Buttons,   // Required for TBitBtn
   ActnList,  // Required for TAction
   Menus,
-  SysUtils,
-  zlib,
-  SDUWinHTTP;
+  SDUWinHTTP, SysUtils,
+  zlib;
 
 const
   // A reasonable upper limit to the number of partitions that we'll support on
@@ -51,17 +50,17 @@ type
   TSDUArrayInteger = array of Integer;
   TSDUArrayString  = array of String;
 
-{$IF CompilerVersion >= 18.5}    // Delphi 2007 defined
-                     // If you have Delphi 2007, use the definition in Windows.pas (i.e. uses Windows)
-                     // Delphi 7 doesn't have ULONGLONG
-  ULONGLONG = Uint64;//TDK CHANGE
-                     // ULONGLONG = int64;  // Changed from Uint64 to prevent Delphi internal error
-                     // c1118 in SDUFormatUnits with Uint64 under Delphi7
-                     // (from feedback from OracleX <oraclex@mail.ru>)
-                     // Note: Because it's using int64 here, overloaded
-                     //       functions which provide ULONGLONG and int64
-                     //       versions have their ULONGLONG version ifdef'd
-                     //       out.
+{$IF CompilerVersion >= 18.5}// Delphi 2007 defined
+                             // If you have Delphi 2007, use the definition in Windows.pas (i.e. uses Windows)
+                             // Delphi 7 doesn't have ULONGLONG
+  ULONGLONG = Uint64;        //TDK CHANGE
+                             // ULONGLONG = int64;  // Changed from Uint64 to prevent Delphi internal error
+                             // c1118 in SDUFormatUnits with Uint64 under Delphi7
+                             // (from feedback from OracleX <oraclex@mail.ru>)
+                             // Note: Because it's using int64 here, overloaded
+                             //       functions which provide ULONGLONG and int64
+                             //       versions have their ULONGLONG version ifdef'd
+                             //       out.
 {$IFEND}
 
   // Note: DON'T USE A PACKED RECORD HERE!
@@ -422,10 +421,8 @@ function SDUShowStateToString(nCmdShow: Word): String;
 function SDUConvertEndian(const x: Word): Word; OVERLOAD;
 function SDUConvertEndian(const x: DWORD): DWORD; OVERLOAD;
 // Improved SelectDirectory(...), with "New Folder" button
-function SDUSelectDirectory(hOwn: HWND;
-  Caption: String; Root: String;
-  var Path: String;
-  uFlag: DWORD = $25): Boolean;
+function SDUSelectDirectory(hOwn: HWND; Caption: String; Root: String;
+  var Path: String; uFlag: DWORD = $25): Boolean;
 // As Delphi's StringOfChar(...), but operates on WideStrings
 function SDUWideStringOfWideChar(Ch: Widechar; Count: Integer): WideString;
 // Storage units enum to text
@@ -491,18 +488,15 @@ function SDURelativePathToAbsolute(relativePath: String; relativeTo: String): St
  // Copy file/device
  // Note: This is *not* the standard Windows copy functionality; this can copy
  //       from/to devices, etc
-function SDUCopyFile(Source: String; destination: String;
-  startOffset: Int64 = 0; length: Int64 = -1;
-  blocksize: Int64 = 4096;
-  callback: TCopyProgressCallback = nil): Boolean;
+function SDUCopyFile(Source: String; destination: String; startOffset: Int64 = 0;
+  length: Int64 = -1; blocksize: Int64 = 4096; callback: TCopyProgressCallback = nil): Boolean;
  // ----------------------------------------------------------------------------
  // compressNotDecompress - Set to TRUE to compress, FALSE to decompress
  // compressionLevel - Only used if compressNotDecompress is TRUE
  // length - Set to -1 to copy until failure
-function SDUCopyFile_Compression(Source: String;
-  destination: String; compressNotDecompress: Boolean;
-  compressionLevel: TCompressionLevel = clNone; startOffset: Int64 = 0;
-  length: Int64 = -1; blocksize: Int64 = 4096;
+function SDUCopyFile_Compression(Source: String; destination: String;
+  compressNotDecompress: Boolean; compressionLevel: TCompressionLevel = clNone;
+  startOffset: Int64 = 0; length: Int64 = -1; blocksize: Int64 = 4096;
   callback: TCopyProgressCallback = nil): Boolean;
  // XOR the characters in two strings together
  // function SDUXOR(a: TSDUBytes; b: TSDUBytes): TSDUBytes;
@@ -530,28 +524,21 @@ function SDUFormatWithThousandsSeparator(const Value: ULONGLONG): String;
  // unit it can
  // e.g. 2621440, [bytes, KB, MB, GB], and 1024 will give "2.5 MB"
  // May be used with constant units declared in this Delphi unit
-function SDUFormatUnits(Value: Int64;
-  denominations: array of String;
-  multiplier: Integer = 1000;
-  accuracy: Integer = 2): String; OVERLOAD;
+function SDUFormatUnits(Value: Int64; denominations: array of String;
+  multiplier: Integer = 1000; accuracy: Integer = 2): String; OVERLOAD;
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
-function SDUFormatUnits(Value: ULONGLONG;
-  denominations: array of String;
-  multiplier: Integer = 1000;
-  accuracy: Integer = 2): String; OVERLOAD;
+function SDUFormatUnits(Value: ULONGLONG; denominations: array of String;
+  multiplier: Integer = 1000; accuracy: Integer = 2): String; OVERLOAD;
 {$IFEND}
 // As SDUFormatUnits, but assume units are bytes, KB, MB, GB, etc
-function SDUFormatAsBytesUnits(Value: Int64;
-  accuracy: Integer = 2): String; OVERLOAD;
+function SDUFormatAsBytesUnits(Value: Int64; accuracy: Integer = 2): String; OVERLOAD;
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
-function SDUFormatAsBytesUnits(Value: ULONGLONG;
-  accuracy: Integer = 2): String; OVERLOAD;
+function SDUFormatAsBytesUnits(Value: ULONGLONG; accuracy: Integer = 2): String; OVERLOAD;
 {$IFEND}
  // As SDUFormatAsBytesUnits, but return as:
  //   <bytes value> bytes (<units value> <units>)
  // with the <units value> part skipped if it's in bytes
-function SDUFormatAsBytesAndBytesUnits(Value: ULONGLONG;
-  accuracy: Integer = 2): String;
+function SDUFormatAsBytesAndBytesUnits(Value: ULONGLONG; accuracy: Integer = 2): String;
  // Convert the string representation of a value into it's numerical
  // representation
  // Spaces are ignored
@@ -560,9 +547,8 @@ function SDUFormatAsBytesAndBytesUnits(Value: ULONGLONG;
  //      "10 bytes" or "10bytes" -> 10
  //      "10"                    -> 10
  // Note: This function can't handle values with a decimal point atm
-function SDUParseUnits(prettyValue: String;
-  denominations: array of String; out Value: Uint64;
-  multiplier: Integer = 1000): Boolean; OVERLOAD;
+function SDUParseUnits(prettyValue: String; denominations: array of String;
+  out Value: Uint64; multiplier: Integer = 1000): Boolean; OVERLOAD;
 {$IFDEF VER185}  // See comment on ULONGLONG definition
 // As SDUParseUnits, but assume units are bytes, KB, MB, GB, etc
 function SDUParseUnits(
@@ -573,8 +559,7 @@ function SDUParseUnits(
                      ): boolean; overload;
 {$ENDIF}
 // As SDUParseUnits, but assume units are bytes, KB, MB, GB, etc
-function SDUParseUnitsAsBytesUnits(prettyValue: String;
-  out Value: uint64): Boolean; OVERLOAD;
+function SDUParseUnitsAsBytesUnits(prettyValue: String; out Value: uint64): Boolean; OVERLOAD;
 {$IFDEF VER185}   // See comment on ULONGLONG definition
 function SDUParseUnitsAsBytesUnits(
                        prettyValue: string;
@@ -620,17 +605,13 @@ function SDUGetSpecialFolderPath(const CSIDL: Integer): String;
  // Check if shortcut exists
  // Returns TRUE if it exists, otherwise FALSE
  // See CSIDL_DESKTOP, etc consts in ShlObj
-function SDUDoesShortcutExist(ShortcutCSIDL: Integer;
-  ShortcutName: String): Boolean; OVERLOAD;
-function SDUDoesShortcutExist(ShortcutLocation: String;
-  ShortcutName: String): Boolean; OVERLOAD;
+function SDUDoesShortcutExist(ShortcutCSIDL: Integer; ShortcutName: String): Boolean; OVERLOAD;
+function SDUDoesShortcutExist(ShortcutLocation: String; ShortcutName: String): Boolean; OVERLOAD;
  // Delete specified shortcut
  // Returns TRUE on success, otherwise FALSE
  // See CSIDL_DESKTOP, etc consts in ShlObj
-function SDUDeleteShortcut(ShortcutCSIDL: Integer;
-  ShortcutName: String): Boolean; OVERLOAD;
-function SDUDeleteShortcut(ShortcutLocation: String;
-  ShortcutName: String): Boolean; OVERLOAD;
+function SDUDeleteShortcut(ShortcutCSIDL: Integer; ShortcutName: String): Boolean; OVERLOAD;
+function SDUDeleteShortcut(ShortcutLocation: String; ShortcutName: String): Boolean; OVERLOAD;
  // Create a Windows shortcut file (e.g. a desktop shortcut to an executable)
  // Note: This is only suitable for creating shortcuts to files/executables
  //       (.lnk shortcuts) - NOT URLs (WWW sites; .url files)
@@ -659,18 +640,14 @@ function SDUDeleteShortcut(ShortcutLocation: String;
  //
  // See CSIDL_DESKTOP, etc consts in ShlObj
  //
-function SDUCreateShortcut(ShortcutCSIDL: Integer;
-  ShortcutName: String; Target: String;
-  Parameters: String = ''; StartIn: String = '';
+function SDUCreateShortcut(ShortcutCSIDL: Integer; ShortcutName: String;
+  Target: String; Parameters: String = ''; StartIn: String = '';
   // ShortcutKey: TShortCut;  - not yet implemented
-  RunWindowState: TWindowState = wsNormal;
-  Comment: String = ''): Boolean; OVERLOAD;
-function SDUCreateShortcut(ShortcutLocation: String;
-  ShortcutName: String; Target: String;
-  Parameters: String = ''; StartIn: String = '';
+  RunWindowState: TWindowState = wsNormal; Comment: String = ''): Boolean; OVERLOAD;
+function SDUCreateShortcut(ShortcutLocation: String; ShortcutName: String;
+  Target: String; Parameters: String = ''; StartIn: String = '';
   // ShortcutKey: TShortCut;  - not yet implemented
-  RunWindowState: TWindowState = wsNormal;
-  Comment: String = ''): Boolean; OVERLOAD;
+  RunWindowState: TWindowState = wsNormal; Comment: String = ''): Boolean; OVERLOAD;
  // Get the "Run" windowstate specified in the identified shortcut
  // Note: This is only suitable for checking shortcuts to files/executables
  //       (.lnk shortcuts) - NOT URLs (WWW sites; .url files)
@@ -684,8 +661,7 @@ function SDUGetShortCutRunWindowState(ShortcutLocation: String;
  // Returns TRUE on success, FALSE on failure
  // If the file creation was cancelled by the user, this function will return
  // FALSE, but set userCancelled to TRUE
-function SDUCreateLargeFile(filename: String;
-  size: ULONGLONG; showProgress: Boolean;
+function SDUCreateLargeFile(filename: String; size: ULONGLONG; showProgress: Boolean;
   var userCancelled: Boolean): Boolean;
  // Convert the ASCII representation of binary data into binary data
  // ASCIIrep - This must be set to a string containing the ASCII representation
@@ -848,9 +824,12 @@ function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion,
 // Pause for the given number of ms
 procedure SDUPause(delayLen: Integer);
 // Execute the specified commandline and return when the command line returns
-function SDUWinExecAndWait32(cmdLine: String; cmdShow: Integer;
+function SDUWinExecAndWait32(const cmdLine: String; cmdShow: Integer;
   workDir: String = ''; appName: String = ''): Cardinal;
 function SDUWinExecNoWait32(cmdLine: String; cmdShow: Integer): Boolean;
+
+function SDUWinExecAndWaitOutput(const cmdLine: String; res: TStrings;
+  const workDir: String = ''): Cardinal;
 
 // Returns the control within parentControl which has the specified tag value
 function SDUGetControlWithTag(tag: Integer; parentControl: TControl): TControl;
@@ -988,15 +967,15 @@ uses
 {$WARN UNIT_PLATFORM ON}
 {$ENDIF}
   registry,
-  SDUProgressDlg,
   SDUDialogs,
-  SDUWindows,
   SDUi18n,
+  SDUProgressDlg,
+  SDUWindows,
   Spin64,  // Required for TSpinEdit64
   Math,    // Required for Power(...)
   Messages,
-  SDUWindows64,
   SDUSpin64Units,
+  SDUWindows64,
   xmldom,  // Required for IDOMDocument, etc
   XMLdoc,  // Required for TXMLDocument
   IOUtils; // for  TFile.ReadAllText
@@ -1051,9 +1030,7 @@ resourcestring
 
 const
   ZLibCompressionLevelTitlePtr: array [TCompressionLevel] of Pointer =
-    (@ZLIBCOMPRESSLVL_NONE,
-    @ZLIBCOMPRESSLVL_FASTEST,
-    @ZLIBCOMPRESSLVL_DEFAULT,
+    (@ZLIBCOMPRESSLVL_NONE, @ZLIBCOMPRESSLVL_FASTEST, @ZLIBCOMPRESSLVL_DEFAULT,
     @ZLIBCOMPRESSLVL_MAX
     );
 
@@ -1109,8 +1086,7 @@ begin
   // "finished" is set - this is done in this way so that -1 can be specified
   // for "bytes" to indicate that processing should be carried out until the
   // end of "data" is reached
-  while (((bytes = -1) or ((data.Position - offset) < bytes)) and
-      not (finished)) do begin
+  while (((bytes = -1) or ((data.Position - offset) < bytes)) and not (finished)) do begin
 
     bytesRead := data.Read(x, 1);
     if (bytesRead = 0) then begin
@@ -1408,8 +1384,8 @@ procedure SDUEnableControl(control: TControl; enable: Boolean;
 var
   i: Integer;
 begin
-  if not (control is TPageControl) and not (control is TForm) and
-    not (control is TPanel) then begin
+  if not (control is TPageControl) and not (control is TForm) and not (control is TPanel) then
+  begin
     control.Enabled := enable;
   end;
 
@@ -1421,8 +1397,7 @@ begin
       TEdit(control).color := clBtnFace;
     end;
   end else
-  if ((control is THotKey) or (control is TSpinEdit64) or
-    (control is TSpinEdit64)) then begin
+  if ((control is THotKey) or (control is TSpinEdit64) or (control is TSpinEdit64)) then begin
     if enable then begin
       TWinControl(control).Brush.Color := clWindow;
     end else begin
@@ -1723,7 +1698,7 @@ end;
  //                ShowWindow function
  // [IN] workDir - the working dir of the cmdLine (default is ""; no working dir)
  // Returns: The return value of the command, or $FFFFFFFF on failure
-function SDUWinExecAndWait32(cmdLine: String; cmdShow: Integer;
+function SDUWinExecAndWait32(const cmdLine: String; cmdShow: Integer;
   workDir: String = ''; appName: String = ''): Cardinal;
 var
   zAppName:    array[0..512] of Char;
@@ -1731,11 +1706,10 @@ var
   //  WorkDir:String;
   StartupInfo: TStartupInfo;
   ProcessInfo: TProcessInformation;
-  retVal:      DWORD;
   pWrkDir:     PWideChar;
   pAppName:    PWideChar;
 begin
-  retVal := $FFFFFFFF;
+  Result := $FFFFFFFF;
 
   StrPCopy(zAppName, cmdLine);
   FillChar(StartupInfo, Sizeof(StartupInfo), #0);
@@ -1745,9 +1719,8 @@ begin
   StartupInfo.wShowWindow := cmdShow;
 
   pWrkDir := nil;
-  if workDir <> '' then begin
+  if workDir <> '' then
     pWrkDir := PChar(workDir);
-  end;
   pAppName := nil;
   if appName <> '' then
     pAppName := PWidechar(appName);
@@ -1764,15 +1737,101 @@ begin
     StartupInfo,           { pointer to STARTUPINFO }
     ProcessInfo) then      { pointer to PROCESS_INF } begin
     WaitforSingleObject(ProcessInfo.hProcess, INFINITE);
-    GetExitCodeProcess(ProcessInfo.hProcess, retVal);
+    GetExitCodeProcess(ProcessInfo.hProcess, Result);
     CloseHandle(ProcessInfo.hProcess);
     CloseHandle(ProcessInfo.hThread);
   end;
-
-  Result := retVal;
-
 end;
 
+{from DSiWin32 utilities - public domain, changes (c) tdk
+original hdr:
+Executes console process in a hidden window and captures its output in a TStrings
+    object.
+    Totaly reworked on 2006-01-23. New code contributed by matej.
+    Handles only up to 1 MB of console process output.
+    @returns ID of the console process or 0 if process couldn't be started.
+    @author  aoven, Lee_Nover, gabr, matej
+    @since   2003-05-24
+
+    changes made t oconform to codign stds and to be consistent with  SDUWinExecAndWait32
+
+  [IN] cmdLine - the command line to execute
+  [IN] workDir - the working dir of the cmdLine (default is ""; no working dir)
+  Returns: The return value of the command, or $FFFFFFFF on failure,
+ output 'res' contains cmd output
+ }
+function SDUWinExecAndWaitOutput(const cmdLine: String; res: TStrings;
+  const workDir: String): Cardinal;
+const
+  BUF_SIZE = $1000;  // allow 16K for results
+var
+  Security:             TSecurityAttributes;
+  ReadPipe:             THandle;
+  WritePipe:            THandle;
+  StartupInfo:          TStartUpInfo;
+  ProcessInfo:          TProcessInformation;
+  Buffer:               PAnsiChar;
+  TotalBytesRead:       DWORD;
+  BytesRead:            DWORD;
+  AppRunning:           Integer;
+  n:                    Integer;
+  BytesLeftThisMessage: Integer;
+  TotalBytesAvail:      Integer;
+  zAppName:             array[0..512] of Char;
+  pWrkDir:              PWideChar;
+begin
+  Result                        := $FFFFFFFF;
+  Security.nLength              := SizeOf(TSecurityAttributes);
+  Security.bInheritHandle       := True;
+  Security.lpSecurityDescriptor := nil;
+  if CreatePipe(ReadPipe, WritePipe, @Security, 0) then begin
+    Buffer := AllocMem(BUF_SIZE + 1);
+    FillChar(StartupInfo, Sizeof(StartupInfo), #0);
+    StartupInfo.cb          := SizeOf(StartupInfo);
+    StartupInfo.hStdOutput  := WritePipe;
+    StartupInfo.hStdInput   := ReadPipe;
+    StartupInfo.dwFlags     := STARTF_USESTDHANDLES + STARTF_USESHOWWINDOW;
+    StartupInfo.wShowWindow := SW_HIDE;
+    pWrkDir                 := nil;
+    if workDir <> '' then
+      pWrkDir := PChar(workDir);
+
+    StrPCopy(zAppName, cmdLine);
+
+    if CreateProcess(nil, zAppName, @Security, @Security, True,
+      CREATE_NO_WINDOW or NORMAL_PRIORITY_CLASS, nil, pWrkDir, StartupInfo,
+      ProcessInfo) then begin
+      n              := 0;
+      TotalBytesRead := 0;
+      res.Clear;
+      repeat
+        // Increase counter to prevent an endless loop if the process is dead
+        Inc(n, 1);
+        AppRunning := WaitForSingleObject(ProcessInfo.hProcess, 100);
+        if not PeekNamedPipe(ReadPipe, @Buffer[TotalBytesRead], BUF_SIZE,
+          @BytesRead, @TotalBytesAvail, @BytesLeftThisMessage) then
+          break //repeat
+        else
+        if BytesRead > 0 then
+          ReadFile(ReadPipe, Buffer[TotalBytesRead], BytesRead, BytesRead, nil);
+        TotalBytesRead := TotalBytesRead + BytesRead;
+      until (AppRunning <> WAIT_TIMEOUT) or (n > 150);
+      Buffer[TotalBytesRead] := #0;
+      OemToCharA(Buffer, Buffer);
+      {$IFDEF Unicode}
+      res.Text := UnicodeString(StrPas(Buffer));
+      {$ELSE}
+      res.Text := StrPas(Buffer);
+      {$ENDIF Unicode}
+    end;
+    FreeMem(Buffer);
+    GetExitCodeProcess(ProcessInfo.hProcess, Result);
+    CloseHandle(ProcessInfo.hProcess);
+    CloseHandle(ProcessInfo.hThread);
+    CloseHandle(ReadPipe);
+    CloseHandle(WritePipe);
+  end;
+end; // SDUWinExecAndWaitOutput
 
 function SDUWinExecNoWait32(cmdLine: String; cmdShow: Integer): Boolean;
 begin
@@ -1975,8 +2034,8 @@ var
 begin
   Result := 0;
   if (DosDateTimeToFileTime(LongRec(Age).Hi, LongRec(Age).Lo, LocalFileTime) and
-    LocalFileTimeToFileTime(LocalFileTime, FileTime) and
-    SetFileTime(Handle, @FileTime, @FileTime, @FileTime)) then begin
+    LocalFileTimeToFileTime(LocalFileTime, FileTime) and SetFileTime(Handle,
+    @FileTime, @FileTime, @FileTime)) then begin
     exit;
   end;
   Result := GetLastError;
@@ -2362,9 +2421,7 @@ begin
   cEntries := $FFFFFFFF;
   cbBuffer := 16384;
 
-  dwResult := WNetOpenEnum(RESOURCE_REMEMBERED,
-    RESOURCETYPE_DISK, 0,
-    nil, hEnum);
+  dwResult := WNetOpenEnum(RESOURCE_REMEMBERED, RESOURCETYPE_DISK, 0, nil, hEnum);
 
   if (dwResult = NO_ERROR) then begin
     repeat
@@ -2923,9 +2980,7 @@ begin
   fileHandle := CreateFile(PChar(filename),
                               // pointer to name of the file
     GENERIC_READ,             // access (read-write) mode
-    (FILE_SHARE_READ or
-    FILE_SHARE_WRITE or
-    FILE_SHARE_DELETE),
+    (FILE_SHARE_READ or FILE_SHARE_WRITE or FILE_SHARE_DELETE),
                               // share mode
     nil,                      // pointer to security attributes
     OPEN_EXISTING,            // how to create
@@ -3013,11 +3068,9 @@ begin
   for i := 1 to length(ASCIIrep) do begin
     if (
       // If it's a numeric char...
-      ((Ord(ASCIIrep[i]) >= Ord('0')) and
-      (Ord(ASCIIrep[i]) <= Ord('9'))) or
+      ((Ord(ASCIIrep[i]) >= Ord('0')) and (Ord(ASCIIrep[i]) <= Ord('9'))) or
       // ...or "A" - "F"...
-      ((Ord(ASCIIrep[i]) >= Ord('A')) and
-      (Ord(ASCIIrep[i]) <= Ord('F')))) then begin
+      ((Ord(ASCIIrep[i]) >= Ord('A')) and (Ord(ASCIIrep[i]) <= Ord('F')))) then begin
       ASCIIStripped := ASCIIStripped + ASCIIrep[i];
     end;
 
@@ -3052,8 +3105,7 @@ end;
  // Returns TRUE on success, FALSE on failure
  // If the file creation was cancelled by the user, this function will return
  // FALSE, but set userCancelled to TRUE
-function SDUCreateLargeFile(filename: String;
-  size: ULONGLONG; showProgress: Boolean;
+function SDUCreateLargeFile(filename: String; size: ULONGLONG; showProgress: Boolean;
   var userCancelled: Boolean): Boolean;
 const
   BUFFER_SIZE: DWORD = (2 * 1024 * 1024); // 2MB buffer; size not *particularly*
@@ -3351,8 +3403,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function _SDUGenerateShortcutFilename(ShortcutLocation: String;
-  ShortcutName: String): String;
+function _SDUGenerateShortcutFilename(ShortcutLocation: String; ShortcutName: String): String;
 const
   SHORTCUT_EXTENSION = '.lnk';
 begin
@@ -3362,14 +3413,12 @@ end;
  // Check if shortcut exists
  // Returns TRUE if it exists, otherwise FALSE
  // See CSIDL_DESKTOP, etc consts in ShlObj
-function SDUDoesShortcutExist(ShortcutCSIDL: Integer;
-  ShortcutName: String): Boolean;
+function SDUDoesShortcutExist(ShortcutCSIDL: Integer; ShortcutName: String): Boolean;
 begin
   Result := SDUDoesShortcutExist(SDUGetSpecialFolderPath(ShortcutCSIDL), ShortcutName);
 end;
 
-function SDUDoesShortcutExist(ShortcutLocation: String;
-  ShortcutName: String): Boolean;
+function SDUDoesShortcutExist(ShortcutLocation: String; ShortcutName: String): Boolean;
 begin
   Result := FileExists(_SDUGenerateShortcutFilename(ShortcutLocation, ShortcutName));
 end;
@@ -3377,14 +3426,12 @@ end;
  // Delete specified shortcut
  // Returns TRUE on success, otherwise FALSE
  // See CSIDL_DESKTOP, etc consts in ShlObj
-function SDUDeleteShortcut(ShortcutCSIDL: Integer;
-  ShortcutName: String): Boolean;
+function SDUDeleteShortcut(ShortcutCSIDL: Integer; ShortcutName: String): Boolean;
 begin
   Result := SDUDeleteShortcut(SDUGetSpecialFolderPath(ShortcutCSIDL), ShortcutName);
 end;
 
-function SDUDeleteShortcut(ShortcutLocation: String;
-  ShortcutName: String): Boolean;
+function SDUDeleteShortcut(ShortcutLocation: String; ShortcutName: String): Boolean;
 begin
   Result := DeleteFile(_SDUGenerateShortcutFilename(ShortcutLocation, ShortcutName));
 end;
@@ -3415,27 +3462,22 @@ end;
  //
  // See CSIDL_DESKTOP, etc consts in ShlObj
  //
-function SDUCreateShortcut(ShortcutCSIDL: Integer;
-  ShortcutName: String; Target: String;
-  Parameters: String = ''; StartIn: String = '';
+function SDUCreateShortcut(ShortcutCSIDL: Integer; ShortcutName: String;
+  Target: String; Parameters: String = ''; StartIn: String = '';
   // ShortcutKey: TShortCut;  - not yet implemented
-  RunWindowState: TWindowState = wsNormal;
-  Comment: String = ''): Boolean;
+  RunWindowState: TWindowState = wsNormal; Comment: String = ''): Boolean;
 begin
   Result := SDUCreateShortcut(SDUGetSpecialFolderPath(ShortcutCSIDL),
-    ShortcutName, Target,
-    Parameters, StartIn,
+    ShortcutName, Target, Parameters, StartIn,
     // ShortcutKey,  - not yet implemented
     RunWindowState, Comment);
 
 end;
 
-function SDUCreateShortcut(ShortcutLocation: String;
-  ShortcutName: String; Target: String;
-  Parameters: String = ''; StartIn: String = '';
+function SDUCreateShortcut(ShortcutLocation: String; ShortcutName: String;
+  Target: String; Parameters: String = ''; StartIn: String = '';
   // ShortcutKey: TShortCut;  - not yet implemented
-  RunWindowState: TWindowState = wsNormal;
-  Comment: String = ''): Boolean;
+  RunWindowState: TWindowState = wsNormal; Comment: String = ''): Boolean;
 var
   IObject:          IUnknown;
   ISLink:           IShellLink;
@@ -3481,8 +3523,7 @@ end;
  // Note: This is only suitable for checking shortcuts to files/executables
  //       (.lnk shortcuts) - NOT URLs (WWW sites; .url files)
  // See CSIDL_DESKTOP, etc consts in ShlObj
-function SDUGetShortCutRunWindowState(ShortcutCSIDL: Integer;
-  ShortcutName: String): TWindowState;
+function SDUGetShortCutRunWindowState(ShortcutCSIDL: Integer; ShortcutName: String): TWindowState;
 begin
   Result := SDUGetShortCutRunWindowState(SDUGetSpecialFolderPath(ShortcutCSIDL), ShortcutName);
 end;
@@ -3666,10 +3707,8 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-function SDUFormatUnits(Value: Int64;
-  denominations: array of String;
-  multiplier: Integer = 1000;
-  accuracy: Integer = 2): String;
+function SDUFormatUnits(Value: Int64; denominations: array of String;
+  multiplier: Integer = 1000; accuracy: Integer = 2): String;
 var
   retVal:   String;
   z:        Double;
@@ -3683,15 +3722,13 @@ begin
   // Identify the units to be used
   unitsIdx := 0;
   unitsDiv := 1;
-  while ((absValue >= (unitsDiv * multiplier)) and
-      (unitsIdx < high(denominations))) do begin
+  while ((absValue >= (unitsDiv * multiplier)) and (unitsIdx < high(denominations))) do begin
     Inc(unitsIdx);
     unitsDiv := unitsDiv * multiplier;
   end;
 
   useUnits := '';
-  if ((unitsIdx >= low(denominations)) and (unitsIdx <= high(denominations))) then
-  begin
+  if ((unitsIdx >= low(denominations)) and (unitsIdx <= high(denominations))) then begin
     useUnits := denominations[unitsIdx];
   end else
   if (unitsIdx >= high(denominations)) then begin
@@ -3710,12 +3747,10 @@ begin
   Result := retVal;
 end;
 
-                // ----------------------------------------------------------------------------
+                             // ----------------------------------------------------------------------------
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
-function SDUFormatUnits(Value: ULONGLONG;
-  denominations: array of String;
-  multiplier: Integer = 1000;
-  accuracy: Integer = 2): String;
+function SDUFormatUnits(Value: ULONGLONG; denominations: array of String;
+  multiplier: Integer = 1000; accuracy: Integer = 2): String;
 var
   retVal:   String;
   z:        Double;
@@ -3729,15 +3764,13 @@ begin
   // Identify the units to be used
   unitsIdx := 0;
   unitsDiv := 1;
-  while ((absValue >= (unitsDiv * multiplier)) and
-      (unitsIdx < high(denominations))) do begin
+  while ((absValue >= (unitsDiv * multiplier)) and (unitsIdx < high(denominations))) do begin
     Inc(unitsIdx);
     unitsDiv := unitsDiv * multiplier;
   end;
 
   useUnits := '';
-  if ((unitsIdx >= low(denominations)) and (unitsIdx <= high(denominations))) then
-  begin
+  if ((unitsIdx >= low(denominations)) and (unitsIdx <= high(denominations))) then begin
     useUnits := denominations[unitsIdx];
   end else
   if (unitsIdx >= high(denominations)) then begin
@@ -3759,31 +3792,24 @@ end;
 {$IFEND}
 
 // ----------------------------------------------------------------------------
-function SDUFormatAsBytesUnits(Value: Int64;
-  accuracy: Integer = 2): String;
+function SDUFormatAsBytesUnits(Value: Int64; accuracy: Integer = 2): String;
 begin
-  Result := SDUFormatUnits(Value,
-    SDUUnitsStorageToTextArr(),
-    UNITS_BYTES_MULTIPLIER,
+  Result := SDUFormatUnits(Value, SDUUnitsStorageToTextArr(), UNITS_BYTES_MULTIPLIER,
     accuracy);
 end;
 
-                // ----------------------------------------------------------------------------
+                             // ----------------------------------------------------------------------------
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
-function SDUFormatAsBytesUnits(Value: ULONGLONG;
-  accuracy: Integer = 2): String;
+function SDUFormatAsBytesUnits(Value: ULONGLONG; accuracy: Integer = 2): String;
 begin
-  Result := SDUFormatUnits(Value,
-    SDUUnitsStorageToTextArr(),
-    UNITS_BYTES_MULTIPLIER,
+  Result := SDUFormatUnits(Value, SDUUnitsStorageToTextArr(), UNITS_BYTES_MULTIPLIER,
     accuracy);
 end;
 
 {$IFEND}
 
 // ----------------------------------------------------------------------------
-function SDUFormatAsBytesAndBytesUnits(Value: ULONGLONG;
-  accuracy: Integer = 2): String;
+function SDUFormatAsBytesAndBytesUnits(Value: ULONGLONG; accuracy: Integer = 2): String;
 var
   retval:      String;
   sizeAsUnits: String;
@@ -3799,9 +3825,8 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function SDUParseUnits(prettyValue: String;
-  denominations: array of String; out Value: uint64;
-  multiplier: Integer = 1000): Boolean;
+function SDUParseUnits(prettyValue: String; denominations: array of String;
+  out Value: uint64; multiplier: Integer = 1000): Boolean;
 var
   i:               Integer;
   retval:          Boolean;
@@ -3822,9 +3847,8 @@ begin
     SDUSplitString(prettyValue, strNumber, strUnits, ' ');
   end else begin
     for i := 1 to length(prettyValue) do begin
-      if (((prettyValue[i] < '0') or
-        (prettyValue[i] > '9')) and (prettyValue[i] <>
-        '-')  // Allow -ve values
+      if (((prettyValue[i] < '0') or (prettyValue[i] > '9')) and
+        (prettyValue[i] <> '-')  // Allow -ve values
         ) then begin
         strUnits := Copy(prettyValue, i, (length(prettyValue) - i + 1));
         break;
@@ -3947,11 +3971,9 @@ end;
 {$ENDIF}
 
 // ----------------------------------------------------------------------------
-function SDUParseUnitsAsBytesUnits(prettyValue: String;
-  out Value: uint64): Boolean;
+function SDUParseUnitsAsBytesUnits(prettyValue: String; out Value: uint64): Boolean;
 begin
-  Result := SDUParseUnits(prettyValue,
-    SDUUnitsStorageToTextArr(), Value,
+  Result := SDUParseUnits(prettyValue, SDUUnitsStorageToTextArr(), Value,
     UNITS_BYTES_MULTIPLIER);
 end;
 
@@ -4026,10 +4048,8 @@ begin
   for i := low(Controls) to high(Controls) do begin
     currCtrl := Controls[i];
 
-    combinedWidth  := max(combinedWidth,
-      ((currCtrl.Left - minLeft) + currCtrl.Width));
-    combinedHeight := max(combinedHeight,
-      ((currCtrl.top - minTop) + currCtrl.Height));
+    combinedWidth  := max(combinedWidth, ((currCtrl.Left - minLeft) + currCtrl.Width));
+    combinedHeight := max(combinedHeight, ((currCtrl.top - minTop) + currCtrl.Height));
   end;
 
   for i := low(Controls) to high(Controls) do begin
@@ -4037,17 +4057,14 @@ begin
 
     if ((align <> ccNone) and (currCtrl <> nil)) then begin
       if (currCtrl.Parent <> nil) then begin
-        if ((align = ccHorizontal) or (align = ccBoth)) then
-        begin
-          currCtrl.Left := ((currCtrl.Left - minLeft) +
-            trunc(((currCtrl.Parent.Width - combinedWidth) *
-            (pcnt / 100))));
+        if ((align = ccHorizontal) or (align = ccBoth)) then begin
+          currCtrl.Left := ((currCtrl.Left - minLeft) + trunc(
+            ((currCtrl.Parent.Width - combinedWidth) * (pcnt / 100))));
         end;
 
         if ((align = ccVertical) or (align = ccBoth)) then begin
-          currCtrl.Top := ((currCtrl.Top - minTop) +
-            trunc(((currCtrl.Parent.Height - combinedHeight) *
-            (pcnt / 100))));
+          currCtrl.Top := ((currCtrl.Top - minTop) + trunc(
+            ((currCtrl.Parent.Height - combinedHeight) * (pcnt / 100))));
         end;
 
       end;
@@ -4157,10 +4174,8 @@ end;
 
  // ----------------------------------------------------------------------------
  // length - Set to -1 to copy until failure
-function SDUCopyFile(Source: String; destination: String;
-  startOffset: Int64 = 0; length: Int64 = -1;
-  blocksize: Int64 = 4096;
-  callback: TCopyProgressCallback = nil): Boolean;
+function SDUCopyFile(Source: String; destination: String; startOffset: Int64 = 0;
+  length: Int64 = -1; blocksize: Int64 = 4096; callback: TCopyProgressCallback = nil): Boolean;
 var
   srcHandle:                               THandle;
   destHandle:                              THandle;
@@ -4176,23 +4191,16 @@ begin
   allOK          := True;
   copyCancelFlag := False;
 
-  srcHandle := CreateFile(PChar(Source),
-    GENERIC_READ,
-    (FILE_SHARE_READ or
-    FILE_SHARE_WRITE),
-    nil, OPEN_EXISTING,
-    FILE_ATTRIBUTE_NORMAL, 0
-    );
+  srcHandle := CreateFile(PChar(Source), GENERIC_READ,
+    (FILE_SHARE_READ or FILE_SHARE_WRITE), nil, OPEN_EXISTING,
+    FILE_ATTRIBUTE_NORMAL, 0);
   if srcHandle = INVALID_HANDLE_VALUE then begin
     raise EExceptionBadSrc.Create('Can''t open source');
   end;
 
   try
-    destHandle := CreateFile(PChar(destination),
-      CREATE_ALWAYS, FILE_SHARE_READ,
-      nil, OPEN_ALWAYS,
-      FILE_ATTRIBUTE_NORMAL, 0
-      );
+    destHandle := CreateFile(PChar(destination), CREATE_ALWAYS, FILE_SHARE_READ,
+      nil, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 
     if destHandle = INVALID_HANDLE_VALUE then begin
       raise EExceptionBadDest.Create('Can''t open destination');
@@ -4217,10 +4225,8 @@ begin
       try
         finished := False;
         while not (finished) do begin
-          opResult := ReadFile(srcHandle,
-            buffer[0], blocksize,
-            numberOfBytesRead,
-            nil);
+          opResult := ReadFile(srcHandle, buffer[0], blocksize,
+            numberOfBytesRead, nil);
 
           // If we read was successful, and we read some bytes, we haven't
           // finished yet... 
@@ -4234,13 +4240,11 @@ begin
               end;
             end;
 
-            opResult := WriteFile(destHandle,
-              buffer[0], numberOfBytesRead,
-              numberOfBytesWritten,
-              nil);
+            opResult := WriteFile(destHandle, buffer[0],
+              numberOfBytesRead, numberOfBytesWritten, nil);
 
-            if (not (opResult) or (numberOfBytesRead <>
-              numberOfBytesWritten)) then begin
+            if (not (opResult) or (numberOfBytesRead <> numberOfBytesWritten)) then
+            begin
               raise EExceptionWriteError.Create('Unable to write data to output');
             end;
 
@@ -4249,8 +4253,7 @@ begin
               callback(totalBytesCopied, copyCancelFlag);
             end;
 
-            if ((length >= 0) and (totalBytesCopied >=
-              length)) then begin
+            if ((length >= 0) and (totalBytesCopied >= length)) then begin
               finished := True;
             end;
 
@@ -4294,12 +4297,11 @@ end;
  // compressNotDecompress - Set to TRUE to compress, FALSE to decompress
  // compressionLevel - Only used if compressNotDecompress is TRUE
  // length - Set to -1 to copy until failure
-function SDUCopyFile_Compression(Source: String;
-  destination: String; compressNotDecompress: Boolean;
-  compressionLevel: TCompressionLevel = clNone; startOffset: Int64 = 0;
+function SDUCopyFile_Compression(Source: String; destination: String;
+  compressNotDecompress: Boolean; compressionLevel: TCompressionLevel = clNone;
+  startOffset: Int64 = 0;
   // Only valid when compressing 
-  length: Int64 = -1; blocksize: Int64 = 4096;
-  callback: TCopyProgressCallback = nil): Boolean;
+  length: Int64 = -1; blocksize: Int64 = 4096; callback: TCopyProgressCallback = nil): Boolean;
 const
   SDU_COMPRESS_MAGIC             = 'SDU_COMPRESS';
   SDU_COMPRESS_VERSION           = '1.00';
@@ -4420,8 +4422,7 @@ begin
           callback(totalBytesCopied, copyCancelFlag);
         end;
 
-        if ((length >= 0) and (totalBytesCopied >= length)) then
-        begin
+        if ((length >= 0) and (totalBytesCopied >= length)) then begin
           finished := True;
         end;
 
@@ -4468,9 +4469,7 @@ begin
   fileHandle := CreateFile(PChar(filename),
                               // pointer to name of the file
     GENERIC_READ,             // access (read-write) mode
-    (FILE_SHARE_READ or
-    FILE_SHARE_WRITE or
-    FILE_SHARE_DELETE),
+    (FILE_SHARE_READ or FILE_SHARE_WRITE or FILE_SHARE_DELETE),
                               // share mode
     nil,                      // pointer to security attributes
     OPEN_EXISTING,            // how to create
@@ -4520,16 +4519,14 @@ end;
 // ----------------------------------------------------------------------------
 function SDUGetDiskGeometry(driveletter: ansichar; var diskGeometry: TSDUDiskGeometry): Boolean;
 begin
-  Result := SDUGetDiskGeometry(SDUDeviceNameForDrive(driveLetter),
-    diskGeometry);
+  Result := SDUGetDiskGeometry(SDUDeviceNameForDrive(driveLetter), diskGeometry);
 end;
 
 // ----------------------------------------------------------------------------
 function SDUGetDiskGeometry(DiskNumber: Integer; var diskGeometry: TSDUDiskGeometry): Boolean;
   OVERLOAD;
 begin
-  Result := SDUGetDiskGeometry(SDUDeviceNameForDisk(DiskNumber),
-    diskGeometry);
+  Result := SDUGetDiskGeometry(SDUDeviceNameForDisk(DiskNumber), diskGeometry);
 end;
 
  // ----------------------------------------------------------------------------
@@ -4549,9 +4546,7 @@ begin
   fileHandle := CreateFile(PChar(driveDevice),
                               // pointer to name of the file
     GENERIC_READ,             // access (read-write) mode
-    (FILE_SHARE_READ or
-    FILE_SHARE_WRITE or
-    FILE_SHARE_DELETE),
+    (FILE_SHARE_READ or FILE_SHARE_WRITE or FILE_SHARE_DELETE),
                               // share mode
     nil,                      // pointer to security attributes
     OPEN_EXISTING,            // how to create
@@ -4560,11 +4555,8 @@ begin
     );
 
   if (fileHandle <> INVALID_HANDLE_VALUE) then begin
-    if (DeviceIoControl(fileHandle,
-      SDU_IOCTL_DISK_GET_DRIVE_GEOMETRY, nil,
-      0, @DIOCBufferOut,
-      sizeof(DIOCBufferOut), bytesReturned,
-      nil)) then begin
+    if (DeviceIoControl(fileHandle, SDU_IOCTL_DISK_GET_DRIVE_GEOMETRY,
+      nil, 0, @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
       diskGeometry := DIOCBufferOut;
       retval       := True;
     end;
@@ -4578,8 +4570,7 @@ end;
 // ----------------------------------------------------------------------------
 function SDUGetPartitionInfo(driveletter: ansichar; var partInfo: TSDUPartitionInfo): Boolean;
 begin
-  Result := SDUGetPartitionInfo(SDUDeviceNameForDrive(driveLetter),
-    partInfo);
+  Result := SDUGetPartitionInfo(SDUDeviceNameForDrive(driveLetter), partInfo);
 end;
 
 
@@ -4597,9 +4588,7 @@ begin
   fileHandle := CreateFile(PChar(driveDevice),
                               // pointer to name of the file
     GENERIC_READ,             // access (read-write) mode
-    (FILE_SHARE_READ or
-    FILE_SHARE_WRITE or
-    FILE_SHARE_DELETE),
+    (FILE_SHARE_READ or FILE_SHARE_WRITE or FILE_SHARE_DELETE),
                               // share mode
     nil,                      // pointer to security attributes
     OPEN_EXISTING,            // how to create
@@ -4608,11 +4597,8 @@ begin
     );
 
   if (fileHandle <> INVALID_HANDLE_VALUE) then begin
-    if (DeviceIoControl(fileHandle,
-      SDU_IOCTL_DISK_GET_PARTITION_INFO, nil,
-      0, @DIOCBufferOut,
-      sizeof(DIOCBufferOut), bytesReturned,
-      nil)) then begin
+    if (DeviceIoControl(fileHandle, SDU_IOCTL_DISK_GET_PARTITION_INFO,
+      nil, 0, @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
       partInfo := DIOCBufferOut;
       retval   := True;
     end;
@@ -4649,9 +4635,7 @@ begin
   fileHandle := CreateFile(PChar(driveDevice),
                               // pointer to name of the file
     GENERIC_READ,             // access (read-write) mode
-    (FILE_SHARE_READ or
-    FILE_SHARE_WRITE or
-    FILE_SHARE_DELETE),
+    (FILE_SHARE_READ or FILE_SHARE_WRITE or FILE_SHARE_DELETE),
                               // share mode
     nil,                      // pointer to security attributes
     OPEN_EXISTING,            // how to create
@@ -4660,11 +4644,8 @@ begin
     );
 
   if (fileHandle <> INVALID_HANDLE_VALUE) then begin
-    if (DeviceIoControl(fileHandle,
-      SDU_IOCTL_DISK_GET_DRIVE_LAYOUT, nil,
-      0, @DIOCBufferOut,
-      sizeof(DIOCBufferOut), bytesReturned,
-      nil)) then begin
+    if (DeviceIoControl(fileHandle, SDU_IOCTL_DISK_GET_DRIVE_LAYOUT, nil,
+      0, @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
       driveLayout := DIOCBufferOut;
       retval      := True;
     end;
@@ -4781,8 +4762,7 @@ begin
   fileHandle := CreateFile(PChar(filename),
                             // pointer to name of the file
     GENERIC_READ,           // access (read-write) mode
-    (FILE_SHARE_READ or
-    FILE_SHARE_WRITE),
+    (FILE_SHARE_READ or FILE_SHARE_WRITE),
                             // share mode
     nil,                    // pointer to security attributes
     OPEN_EXISTING,          // how to create
@@ -5732,13 +5712,13 @@ end;
  { TODO 1 -otdk -cclean : cant see any advantage over 'format' - replace with (also cant escape %) }
 function SDUParamSubstitute(const formatStr: String; const params: array of Variant): String;
 var
-  i:      Integer;
+  i: Integer;
 begin
-  result := formatStr;
+  Result := formatStr;
 
   // Do in "reverse" order in order to process %10 before %1
   for i := (length(params) - 1) downto 0 do
-    result := StringReplace(result, '%' + IntToStr(i + 1), params[i], [rfReplaceAll]);
+    Result := StringReplace(Result, '%' + IntToStr(i + 1), params[i], [rfReplaceAll]);
 end;
 
 function SDUIsOddNumber(Value: Integer): Boolean;
@@ -5871,10 +5851,8 @@ end;
 
  // ----------------------------------------------------------------------------
  // Taken from: http://www.swissdelphicenter.ch/en/showcode.php?id=1509
-function SDUSelectDirectory(hOwn: HWND;
-  Caption: String; Root: String;
-  var Path: String;
-  uFlag: DWORD = $25): Boolean;
+function SDUSelectDirectory(hOwn: HWND; Caption: String; Root: String;
+  var Path: String; uFlag: DWORD = $25): Boolean;
 const
   BIF_NEWDIALOGSTYLE = $0040;
 var
@@ -6060,11 +6038,8 @@ function SDUGetPADFileVersionInfo(url: String; var majorVersion, minorVersion: I
 var
   junk: Integer;
 begin
-  Result := SDUGetPADFileVersionInfo(url,
-    majorVersion,
-    minorVersion, junk,
-    junk, userAgent,
-    ShowProgressDlg);
+  Result := SDUGetPADFileVersionInfo(url, majorVersion, minorVersion,
+    junk, junk, userAgent, ShowProgressDlg);
 end;
 
 function SDUGetPADFileVersionInfo(url: String;
@@ -6080,10 +6055,8 @@ begin
       retval := tgOK;
    {$ELSE}
   if ShowProgressDlg then begin
-    retval := SDUGetURLProgress_WithUserAgent(
-      _('Checking for latest version...'),
-      url, xml,
-      userAgent);
+    retval := SDUGetURLProgress_WithUserAgent(_('Checking for latest version...'),
+      url, xml, userAgent);
   end else begin
     if SDUWinHTTPRequest_WithUserAgent(url, userAgent, xml) then begin
       retval := tgOK;
@@ -6093,12 +6066,8 @@ begin
 
    {$ENDIF}
   if (retval = tgOK) then begin
-    if not (SDUGetPADFileVersionInfo_XML(xml,
-      majorVersion,
-      minorVersion,
-      revisionVersion,
-      buildVersion)) then
-    begin
+    if not (SDUGetPADFileVersionInfo_XML(xml, majorVersion, minorVersion,
+      revisionVersion, buildVersion)) then begin
       retval := tgFailure;
     end;
 
@@ -6231,8 +6200,7 @@ begin
     if (length(inTime) >= 6) then begin
       // Sanity check in case timezone information has been included, but
       // seconds omitted
-      if (TryStrToInt(inTime[5], junkInt) and
-        TryStrToInt(inTime[5], junkInt)) then begin
+      if (TryStrToInt(inTime[5], junkInt) and TryStrToInt(inTime[5], junkInt)) then begin
         TryStrToInt(Copy(inTime, 5, 2), ASecond);
       end;
     end;
@@ -6341,8 +6309,7 @@ function SDUVersionCompare(A_MajorVersion, A_MinorVersion, A_RevisionVersion,
 var
   retval: Integer;
 begin
-  retval := SDUVersionCompare(A_MajorVersion,
-    A_MinorVersion, B_MajorVersion,
+  retval := SDUVersionCompare(A_MajorVersion, A_MinorVersion, B_MajorVersion,
     B_MinorVersion);
 
   if (retval = 0) then begin
@@ -6361,8 +6328,7 @@ function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion: Integer;
 var
   retval: Integer;
 begin
-  retval := SDUVersionCompare(A_MajorVersion,
-    A_MinorVersion, B_MajorVersion,
+  retval := SDUVersionCompare(A_MajorVersion, A_MinorVersion, B_MajorVersion,
     B_MinorVersion);
   if (retval = 0) then begin
     if (A_BetaVersion > 0) then begin
@@ -6379,9 +6345,8 @@ function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion,
 var
   retval: Integer;
 begin
-  retval := SDUVersionCompare(A_MajorVersion,
-    A_MinorVersion, A_RevisionVersion, A_BuildVersion, B_MajorVersion,
-    B_MinorVersion, B_RevisionVersion, B_BuildVersion);
+  retval := SDUVersionCompare(A_MajorVersion, A_MinorVersion, A_RevisionVersion,
+    A_BuildVersion, B_MajorVersion, B_MinorVersion, B_RevisionVersion, B_BuildVersion);
   if (retval = 0) then begin
     if (A_BetaVersion > 0) then begin
       retval := 1;
@@ -6733,22 +6698,16 @@ begin
     GetWindowPlacement(form.Handle, @placement);
 
     placement.rcNormalPosition.Top  :=
-      SDUTryStrToIntDflt(stlLayout.Values
-      [WINDOW_LAYOUT_TOP], placement.rcNormalPosition.Top
-      );
+      SDUTryStrToIntDflt(stlLayout.Values[WINDOW_LAYOUT_TOP],
+      placement.rcNormalPosition.Top);
     placement.rcNormalPosition.Left :=
-      SDUTryStrToIntDflt(stlLayout.Values
-      [WINDOW_LAYOUT_LEFT], placement.rcNormalPosition.Left
-      );
+      SDUTryStrToIntDflt(stlLayout.Values[WINDOW_LAYOUT_LEFT],
+      placement.rcNormalPosition.Left);
 
-    tmpHeight := SDUTryStrToIntDflt(
-      stlLayout.Values[WINDOW_LAYOUT_HEIGHT],
-      (placement.rcNormalPosition.Bottom -
-      placement.rcNormalPosition.Top));
-    tmpWidth  := SDUTryStrToIntDflt(
-      stlLayout.Values[WINDOW_LAYOUT_WIDTH],
-      (placement.rcNormalPosition.Right -
-      placement.rcNormalPosition.Left));
+    tmpHeight := SDUTryStrToIntDflt(stlLayout.Values[WINDOW_LAYOUT_HEIGHT],
+      (placement.rcNormalPosition.Bottom - placement.rcNormalPosition.Top));
+    tmpWidth  := SDUTryStrToIntDflt(stlLayout.Values[WINDOW_LAYOUT_WIDTH],
+      (placement.rcNormalPosition.Right - placement.rcNormalPosition.Left));
 
     placement.rcNormalPosition.Bottom := placement.rcNormalPosition.Top + tmpHeight;
     placement.rcNormalPosition.Right  := placement.rcNormalPosition.Left + tmpWidth;
@@ -6758,15 +6717,13 @@ begin
     // as the title bar's visible, the user can always drag it back)
     if ((placement.rcNormalPosition.Top >= 0) and
       (placement.rcNormalPosition.Top < Screen.Height) and
-      (placement.rcNormalPosition.Left >= 0) and
-      (placement.rcNormalPosition.Left < Screen.Width)) then begin
+      (placement.rcNormalPosition.Left >= 0) and (placement.rcNormalPosition.Left <
+      Screen.Width)) then begin
       SetWindowPlacement(form.Handle, @placement);
     end;
 
     frmState := TWindowState(SDUTryStrToIntDflt(
-      stlLayout.Values[WINDOW_LAYOUT_STATE],
-      Ord(
-      form.WindowState)));
+      stlLayout.Values[WINDOW_LAYOUT_STATE], Ord(form.WindowState)));
     // Special case - if minimised, call Application.Minimise(...) - otherwise
     // the window looks like it's been "minimised to the desktop" - like an
     // MDI child window with the desktop being the main window

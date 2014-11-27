@@ -10,13 +10,9 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
   TextHeight = 13
   inherited pnlRight: TPanel
     inherited pcWizard: TPageControl
-      ActivePage = tsFilename
+      ActivePage = tsPassword
       object tsWelcome: TTabSheet
         Caption = 'Welcome'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object lblWelcomeBanner: TLabel
           Left = 126
           Top = 44
@@ -56,10 +52,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsFileOrPartition: TTabSheet
         Caption = 'Volume File or Partition'
         ImageIndex = 14
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object reInstructFileOrPartition: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
@@ -73,7 +65,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
-          TabOrder = 0
+          TabOrder = 1
         end
         object rgFileOrPartition: TRadioGroup
           Left = 162
@@ -84,7 +76,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Items.Strings = (
             '1st of two'
             '2nd of two')
-          TabOrder = 1
+          TabOrder = 0
           OnClick = rgFileOrPartitionClick
         end
       end
@@ -136,10 +128,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsPartitionWarning: TTabSheet
         Caption = 'Partition Warning'
         ImageIndex = 16
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object pnlWarningBorder_L: TPanel
           Left = 61
           Top = 236
@@ -262,7 +250,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
-          TabOrder = 0
+          TabOrder = 2
         end
         object ckPartitionHidden: TCheckBox
           Left = 124
@@ -270,7 +258,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Width = 241
           Height = 17
           Caption = '&Create hidden volume within selected partition'
-          TabOrder = 2
+          TabOrder = 0
           OnClick = ckPartitionHiddenClick
         end
         inline fmeSelectPartition: TfmeSelectPartition
@@ -297,9 +285,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             ExplicitWidth = 473
             ExplicitHeight = 97
             inherited SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel
-              Width = 280
               Height = 69
-              ExplicitWidth = 280
               ExplicitHeight = 69
             end
             inherited pnlNoPartitionDisplay: TPanel
@@ -323,7 +309,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           end
           inherited ilErrorWarning: TImageList
             Bitmap = {
-              494C010103000400380010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400540010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -467,10 +453,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsOffset: TTabSheet
         Caption = 'Offset'
         ImageIndex = 7
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object Label7: TLabel
           Left = 41
           Top = 284
@@ -567,10 +549,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsSize: TTabSheet
         Caption = 'Size'
         ImageIndex = 6
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object Label6: TLabel
           Left = 63
           Top = 188
@@ -598,7 +576,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
-          TabOrder = 0
+          TabOrder = 2
         end
         object ckSizeEntirePartitionDisk: TCheckBox
           Left = 199
@@ -606,7 +584,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Width = 141
           Height = 17
           Caption = '&Use entire partition/disk'
-          TabOrder = 2
+          TabOrder = 0
           OnClick = ckSizeEntirePartitionDiskClick
         end
         object se64UnitSize: TSDUSpin64Unit_Storage
@@ -631,10 +609,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsHashCypherIV: TTabSheet
         Caption = 'Hash, cypher and IV'
         ImageIndex = 2
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object Label4: TLabel
           Left = 57
           Top = 128
@@ -665,7 +639,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Width = 145
           Height = 21
           Style = csDropDownList
-          TabOrder = 1
+          TabOrder = 6
           OnChange = cbHashCypherIVGenChange
         end
         object cbCypher: TComboBox
@@ -674,7 +648,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Width = 145
           Height = 21
           Style = csDropDownList
-          TabOrder = 3
+          TabOrder = 2
           OnChange = cbHashCypherIVGenChange
         end
         object reInstructHashCypherIV: TOTFEFreeOTFE_InstructionRichEdit
@@ -698,7 +672,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Width = 21
           Height = 21
           Caption = '?'
-          TabOrder = 2
+          TabOrder = 1
           OnClick = pbHashInfoClick
         end
         object pbCypherInfo: TButton
@@ -716,7 +690,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Width = 260
           Height = 17
           Caption = 'Additionally &XOR sector IV with per volume IV'
-          TabOrder = 6
+          TabOrder = 3
         end
         object cbSectorIVGenMethod: TComboBox
           Left = 193
@@ -731,17 +705,12 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsMasterKeyLength: TTabSheet
         Caption = 'Master Key Length'
         ImageIndex = 11
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object Label2: TLabel
           Left = 113
           Top = 156
           Width = 89
           Height = 13
           Caption = '&Size of master key:'
-          FocusControl = seMasterKeyLength
         end
         object Label9: TLabel
           Left = 300
@@ -782,10 +751,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGSelect: TTabSheet
         Caption = 'RNG Select'
         ImageIndex = 4
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object reInstructRNGSelect: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
@@ -799,7 +764,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Lines.Strings = (
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
-          TabOrder = 0
+          TabOrder = 2
         end
         object gbRNG: TGroupBox
           Left = 139
@@ -853,7 +818,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Width = 97
           Height = 17
           Caption = 'GPG - INVISIBLE CHECKBOX'
-          TabOrder = 2
+          TabOrder = 0
           Visible = False
           OnClick = ckRNGClick
         end
@@ -861,10 +826,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGMouseMovement: TTabSheet
         Caption = 'RNG Mouse movement'
         ImageIndex = 8
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           597
           318)
@@ -909,10 +870,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGPKCS11: TTabSheet
         Caption = 'RNG PKCS token'
         ImageIndex = 17
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object lblToken: TLabel
           Left = 123
           Top = 175
@@ -957,10 +914,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGGPG: TTabSheet
         Caption = 'RNG GPG'
         ImageIndex = 10
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object reInstructRNGGPG: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
@@ -1006,17 +959,12 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsPassword: TTabSheet
         Caption = 'Password'
         ImageIndex = 6
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object Label17: TLabel
           Left = 41
           Top = 148
           Width = 49
           Height = 13
           Caption = '&Password:'
-          FocusControl = preUserKey1
         end
         object Label3: TLabel
           Left = 41
@@ -1079,10 +1027,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsSummary: TTabSheet
         Caption = 'Summary'
         ImageIndex = 9
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           597
           318)
@@ -1130,6 +1074,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
           TabOrder = 0
+          OnClick = pbAdvancedClick
         end
         object ckAutoMountAfterCreate: TCheckBox
           Left = 8

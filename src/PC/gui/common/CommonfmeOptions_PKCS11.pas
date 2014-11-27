@@ -24,6 +24,7 @@ type
     procedure pbVerifyClick(Sender: TObject);
     procedure ControlChanged(Sender: TObject);
     procedure pbAutoDetectClick(Sender: TObject);
+
   PRIVATE
     function LibraryDLL(): String;
     function VerifyLibrary(): Boolean;
@@ -36,6 +37,9 @@ type
     procedure ReadSettings(config: TSettings); OVERRIDE;
     procedure WriteSettings(config: TSettings); OVERRIDE;
     function CheckSettings(): Boolean; OVERRIDE;
+    constructor Create(AOwner: TComponent); OVERRIDE;
+
+
   end;
 
 implementation
@@ -65,6 +69,13 @@ begin
   inherited;
   EnableDisableControls();
 
+end;
+
+constructor TfmeOptions_PKCS11.Create(AOwner: TComponent);
+begin
+  inherited;
+   OTFEFreeOTFEVolumeSelect1.   SelectFor := fndOpen            ;
+   OTFEFreeOTFEVolumeSelect1.     AllowPartitionSelect := True;
 end;
 
 procedure TfmeOptions_PKCS11.pbAutoDetectClick(Sender: TObject);

@@ -14,13 +14,17 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, PasswordRichEdit, Spin64, ExtCtrls,
   MouseRNG,
+  //sdu
+  SDUDialogs
+  ,sdurandpool,   SDUStdCtrls,
                            //doxbox
   OTFEFreeOTFE_DriverAPI,  // Required for CRITICAL_DATA_LEN
   OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U,
-  OTFEFreeOTFE_WizardCommon, SDUStdCtrls, OTFEFreeOTFE_fmeSelectPartition,
+ OTFEFreeOTFE_fmeSelectPartition,
   OTFEFreeOTFE_PasswordRichEdit, SDUForms, SDUFrames, SDUSpin64Units,
-  OTFEFreeOTFE_frmWizard, OTFEFreeOTFE_InstructionRichEdit, SDUDialogs;
+  OTFEFreeOTFE_frmWizard, OTFEFreeOTFE_InstructionRichEdit, SDUBlocksPanel,
+  SDUDiskPartitionsPanel;
 
 type
   TChangePasswordCreateKeyfile = (opChangePassword, opCreateKeyfile);
@@ -92,6 +96,8 @@ type
     pbRefresh:                  TButton;
     fmeSelectPartition:         TfmeSelectPartition;
     se64UnitOffset:             TSDUSpin64Unit_Storage;
+    TSDUDiskPartitionsPanel1: TSDUDiskPartitionsPanel;
+
     procedure FormShow(Sender: TObject);
     procedure edSrcFilenameChange(Sender: TObject);
     procedure se64OffsetChange(Sender: TObject);
@@ -109,7 +115,7 @@ type
     procedure pbRefreshClick(Sender: TObject);
   PRIVATE
 
-    fCombinedRandomData: Ansistring;
+//    fCombinedRandomData: Ansistring;
 
     deviceList:  TStringList;
     deviceTitle: TStringList;
@@ -131,7 +137,7 @@ type
     function GetDestSaltLength(): Integer;
     function GetDestKeyIterations(): Integer;
     function GetDestRequestedDriveLetter(): ansichar;
-    function GetRandomData(): Ansistring;
+//    function GetRandomData(): Ansistring;
 
     procedure PopulatePKCS11Tokens();
 
@@ -165,7 +171,7 @@ type
     property DestSaltLength: Integer Read GetDestSaltLength;
     property DestKeyIterations: Integer Read GetDestKeyIterations;
     property DestRequestedDriveLetter: ansichar Read GetDestRequestedDriveLetter;
-    property RandomData: Ansistring Read GetRandomData;
+//    property RandomData: Ansistring Read GetRandomData;
 
   end;
 
@@ -264,10 +270,10 @@ begin
 end;
 
 
-function TfrmWizardChangePasswordCreateKeyfile.GetRandomData(): Ansistring;
-begin
-  Result := fCombinedRandomData;
-end;
+//function TfrmWizardChangePasswordCreateKeyfile.GetRandomData(): Ansistring;
+//begin
+//  Result := fCombinedRandomData;
+//end;
 
 
 // Returns TRUE if the specified tab should be skipped, otherwise FALSE
@@ -444,7 +450,7 @@ begin
   inherited;
   //SDUInitAndZeroBuffer(0,fCombinedRandomData);
 
-  fCombinedRandomData := '';
+//  fCombinedRandomData := '';
 
   // tsFileOrPartition
   rgFileOrPartition.Items.Clear();
@@ -691,36 +697,32 @@ end;
 procedure TfrmWizardChangePasswordCreateKeyfile.pbFinishClick(Sender: TObject);
 var
   allOK:      Boolean;
-  randomPool: Ansistring;
   saltBytes:  Ansistring;
+  i : integer;
 begin
   inherited;
 
-  allOK := GenerateRandomData(GetRNGSet(), (CRITICAL_DATA_LENGTH div 8),
+    GetRandPool.SetUpRandPool(GetRNGSet(),
     fFreeOTFEObj.PKCS11Library, PKCS11TokenListSelected(cbToken),
-    lblGPGFilename.Caption, fCombinedRandomData);
+    lblGPGFilename.Caption);
 
 
-  if (allOK) then begin
-    randomPool := RandomData;
-
-    // Grab 'n' bytes from the random pool to use as the salt
-    saltBytes := Copy(randomPool, 1, (DestSaltLength div 8));
-    // SDUDeleteFromStart(randomPool, (DestSaltLength div 8));
-    Delete(randomPool, 1, (DestSaltLength div 8));
-
+     // Grab 'n' bytes from the random pool to use as the salt
+     allOK := GetRandPool.GenerateRandomData(DestSaltLength div 8,saltBytes);
+    if (allOK) then begin
     if (ChangePasswordCreateKeyfile = opChangePassword) then begin
       allOK := fFreeOTFEObj.ChangeVolumePassword(SrcFilename,
         Offset, SrcUserKey, SrcSaltLength,  // In bits
         SrcKeyIterations, DestUserKey, saltBytes, DestKeyIterations,
-        DestRequestedDriveLetter, randomPool);
+        DestRequestedDriveLetter);
     end else begin
       allOK := fFreeOTFEObj.CreateKeyfile(SrcFilename, Offset,
         SrcUserKey, SrcSaltLength,  // In bits
         SrcKeyIterations, DestFilename, DestUserKey, saltBytes,
-        DestKeyIterations, DestRequestedDriveLetter, randomPool);
+        DestKeyIterations, DestRequestedDriveLetter);
     end;
 
+    end;
 
     if (allOK) then begin
       SDUMessageDlg(_('Completed successfully.'), mtInformation);
@@ -732,6 +734,9 @@ begin
         );
     end;
 
+      { TODO 1 -otdk -ccleanup : whats this for? }
+  for i := 1 to length(saltBytes) do begin
+    saltBytes[i] := AnsiChar( i);
   end;
 
 end;
@@ -939,10 +944,7 @@ begin
   end;
 
   PurgeMouseRNGData();
-  { TODO 1 -otdk -ccleanup : whats this for? }
-  for i := 1 to length(fCombinedRandomData) do begin
-    fCombinedRandomData[i] := ansichar(i);
-  end;
+
 
 end;
 

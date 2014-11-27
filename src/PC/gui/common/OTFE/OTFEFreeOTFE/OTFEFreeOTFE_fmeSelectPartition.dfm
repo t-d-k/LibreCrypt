@@ -53,18 +53,25 @@ object fmeSelectPartition: TfmeSelectPartition
       'TABS SET AUTOMATICALLY')
     TabIndex = 0
     OnChange = TabControl1Change
-    object SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel
+    inline SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel
       Left = 4
       Top = 24
       Width = 165
       Height = 68
       Align = alLeft
-      Caption = 'SDUDiskPartitionsPanel1'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
       PopupMenu = PopupMenu1
-      TabOrder = 0
+      TabOrder = 1
       TabStop = True
-      Selected = 0
-      OnChanged = SDUDiskPartitionsPanel1Changed
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 165
+      ExplicitHeight = 68
     end
     object pnlNoPartitionDisplay: TPanel
       Left = 376
@@ -74,7 +81,7 @@ object fmeSelectPartition: TfmeSelectPartition
       Align = alRight
       Caption = 'pnlNoPartitionDisplay'
       PopupMenu = PopupMenu1
-      TabOrder = 1
+      TabOrder = 0
     end
   end
   object ckShowCDROM: TCheckBox
@@ -101,7 +108,7 @@ object fmeSelectPartition: TfmeSelectPartition
     Left = 200
     Top = 85
     Bitmap = {
-      494C010103000400040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000400240010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

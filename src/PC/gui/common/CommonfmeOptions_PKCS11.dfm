@@ -1,6 +1,8 @@
 inherited fmeOptions_PKCS11: TfmeOptions_PKCS11
   Width = 492
   Height = 289
+  ExplicitWidth = 492
+  ExplicitHeight = 289
   object gbPKCS11: TGroupBox
     Left = 16
     Top = 16
@@ -66,14 +68,22 @@ inherited fmeOptions_PKCS11: TfmeOptions_PKCS11
         TabOrder = 0
         OnClick = ControlChanged
       end
-      object OTFEFreeOTFEVolumeSelect1: TOTFEFreeOTFEVolumeSelect
+      inline OTFEFreeOTFEVolumeSelect1: TOTFEFreeOTFEVolumeSelect
         Left = 104
         Top = 44
         Width = 310
         Height = 21
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 2
-        SelectFor = fndOpen
-        AllowPartitionSelect = True
+        ExplicitLeft = 104
+        ExplicitTop = 44
+        ExplicitWidth = 310
+        ExplicitHeight = 21
         DesignSize = (
           310
           21)

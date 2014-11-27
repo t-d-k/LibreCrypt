@@ -1105,9 +1105,9 @@ procedure DebugMsgBinaryPtr(msg: PChar; len:integer);
                                    newUserPassword: ansistring;
                                    newSaltBytes: ansistring;
                                    newKeyIterations: integer;
-                                   newRequestedDriveLetter: ansichar;
-                                   newRandomPadData: ansistring  // Note: If insufficient is supplied, the write will *fail*
-                                                             //       The maximum that could possibly be required is CRITICAL_DATA_LENGTH bits.
+                                   newRequestedDriveLetter: ansichar
+
+
                                   ): boolean;
 
     function  CreateKeyfile(
@@ -1120,9 +1120,7 @@ procedure DebugMsgBinaryPtr(msg: PChar; len:integer);
                                keyfileUserPassword: ansistring;
                                keyfileSaltBytes: ansistring;
                                keyfileKeyIterations: integer;
-                               keyfileRequestedDrive: ansichar;
-                               keyfileRandomPadData: ansistring  // Note: If insufficient is supplied, the write will *fail*
-                                                             //       The maximum that could possibly be required is CRITICAL_DATA_LENGTH bits.
+                               keyfileRequestedDrive: ansichar
                               ): boolean;
 
     // ---------
@@ -1229,9 +1227,12 @@ uses
   DbugIntf,  // GExperts
 {$ENDIF}
 {$ENDIF}
-  SDUProgressDlg,
+    //SDU
+    SDUProgressDlg,
   SDUDialogs,
   SDUEndianIntegers,
+   SDURandPool,
+ //DoxBox
   OTFEFreeOTFE_frmVolumeType,
   OTFEFreeOTFE_frmKeyEntryFreeOTFE,
   OTFEFreeOTFE_frmKeyEntryLinux,
@@ -1251,6 +1252,7 @@ uses
   ActiveX,  // Required for IsEqualGUID
   ComObj,  // Required for GUIDToString
   WinSvc;  // Required for SERVICE_ACTIVE
+
 
 
 
@@ -5396,17 +5398,20 @@ function TOTFEFreeOTFEBase.CreateKeyfile(
                                keyfileUserPassword: ansistring;
                                keyfileSaltBytes: ansistring;
                                keyfileKeyIterations: integer;
-                               keyfileRequestedDrive: ansichar;
-                               keyfileRandomPadData: ansistring  // Note: If insufficient is supplied, the write will *fail*
-                                                             //       The maximum that could possibly be required is CRITICAL_DATA_LENGTH bits.
+                               keyfileRequestedDrive: ansichar
+
                               ): boolean;
 var
   volumeDetails: TVolumeDetailsBlock;
   CDBMetaData: TCDBMetaData;
   allOK: boolean;
   userCancel: boolean;
+    keyfileRandomPadData: ansistring;  // Note: If insufficient is supplied, the write will *fail*
+                                                             //       The maximum that could possibly be required is CRITICAL_DATA_LENGTH bits.
 begin
   allOK := FALSE;
+  GetRandPool.GenerateRandomData(CRITICAL_DATA_LENGTH div 8,keyfileRandomPadData) ;
+
 
   if ReadVolumeCriticalData(
                            srcFilename,
@@ -5453,16 +5458,19 @@ function TOTFEFreeOTFEBase.ChangeVolumePassword(
                                newUserPassword: ansistring;
                                newSaltBytes: ansistring;
                                newKeyIterations: integer;
-                               newRequestedDriveLetter: ansichar;
-                               newRandomPadData: ansistring  // Note: If insufficient is supplied, the write will *fail*
+                               newRequestedDriveLetter: ansichar
+
                                                          //       The maximum that could possibly be required is CRITICAL_DATA_LENGTH bits.
                               ): boolean;
 var
   volumeDetails: TVolumeDetailsBlock;
   CDBMetaData: TCDBMetaData;
   allOK: boolean;
+  newRandomPadData: ansistring ; // Note: If insufficient is supplied, the write will *fail*
+   //       The maximum that could possibly be required is CRITICAL_DATA_LENGTH bits.
 begin
-  allOK := FALSE;
+  //todo: better to get random data in WriteVolumeCriticalData
+  allOK := GetRandPool.GenerateRandomData(CRITICAL_DATA_LENGTH,newRandomPadData) ;
 
   if ReadVolumeCriticalData(
                            filename,

@@ -125,6 +125,8 @@ type
     procedure actInstallExecute(Sender: TObject);
     procedure actTestModeOnExecute(Sender: TObject);
     procedure actTestModeOffExecute(Sender: TObject);
+  PRIVATE
+    function IsTestModeOn: Boolean;
 
   PROTECTED
     ftempCypherDriver:     Ansistring;
@@ -227,7 +229,7 @@ type
       suppressMsgs: Boolean);
     procedure UACEscalate(cmdLineParams: String; suppressMsgs: Boolean);
 
-  function DoTests: boolean;OVERRIDE;
+    function DoTests: Boolean; OVERRIDE;
 
   PUBLIC
     // This next line will generate a compiler warning - this is harmless.
@@ -796,48 +798,49 @@ end;
   opens volumes creaed with old versions and checks contents as expected
   regression testing only
 }
-function TfrmFreeOTFEMain.DoTests: boolean;
+function TfrmFreeOTFEMain.DoTests: Boolean;
 var
   mountList:       TStringList;
   mountedAs:       DriveLetterString;
   prettyMountedAs: String;
-  i: Integer;
+  i:               Integer;
 const
-  TEST_VOLS :array[0..1] of string = ('a.box','b.box');
+  TEST_VOLS: array[0..1] of String = ('a.box', 'b.box');
 begin
   inherited;
 
-  result :=    false;
+  Result    := False;
   mountList := TStringList.Create();
   try
-  for i := Low(TEST_VOLS) to High(TEST_VOLS) do begin
-                          // ExtractFileDir(Application.ExeName)+
-    mountList.Add( 'P:\Projects\Delphi\doxbox\test_vols\'+TEST_VOLS[i]);
+    for i := Low(TEST_VOLS) to High(TEST_VOLS) do begin
+      // ExtractFileDir(Application.ExeName)+
+      mountList.Add('P:\Projects\Delphi\doxbox\test_vols\' + TEST_VOLS[i]);
 
-    //call silent
-    result := fOtfeFreeOtfeBase.MountFreeOTFE(mountList, mountedAs, True, '', 'password',0,true,false);
+      //call silent
+      Result := fOtfeFreeOtfeBase.MountFreeOTFE(mountList, mountedAs, True, '',
+        'password', 0, True, False);
 
 
-    if not (result) then begin
-      SDUMessageDlg(
-        _('Unable to open Box.') + SDUCRLF + SDUCRLF +
-        _('Please check your keyphrase and settings, and try again.'),
-        mtError
-        );
+      if not (Result) then begin
+        SDUMessageDlg(
+          _('Unable to open Box.') + SDUCRLF + SDUCRLF +
+          _('Please check your keyphrase and settings, and try again.'),
+          mtError
+          );
         break;
 
-    end else begin
-      RefreshDrives();
-      // Mount successful
-      prettyMountedAs := prettyPrintDriveLetters(mountedAs);
-      if (CountValidDrives(mountedAs) <> 1) then begin
-         SDUMessageDlg(Format('Your DoxBox has NOT been opened as drive: %s', [prettyMountedAs]))
-      end      else begin
-        //test opened OK
+      end else begin
+        RefreshDrives();
+        // Mount successful
+        prettyMountedAs := prettyPrintDriveLetters(mountedAs);
+        if (CountValidDrives(mountedAs) <> 1) then begin
+          SDUMessageDlg(Format('Your DoxBox has NOT been opened as drive: %s', [prettyMountedAs]));
+        end else begin
+          //test opened OK
+
+        end;
 
       end;
-
-    end;
     end;
     DismountAll();
   finally
@@ -1687,7 +1690,7 @@ begin
   plaintext := '';
   for i := 1 to tempArraySize do begin
     plaintext := plaintext + Ansichar(random(256));
-    { TODO 2 -otdk -csecurity : This is not secure PRNG - check }
+    { DONE 2 -otdk -csecurity : This is not secure PRNG - but key is random, so result is CSPRNG -see faq }
   end;
 
 
@@ -2362,6 +2365,29 @@ begin
   UnRegisterHotkey(Application.Handle, hotkeyIdent);
 end;
 
+function TfrmFreeOTFEMain.IsTestModeOn: Boolean;
+var
+  s:    TStringList;
+  r: Cardinal;
+begin
+  Result := False;
+  s      := TStringList.Create();
+  try
+    r := SDUWinExecAndWaitOutput(SDUGetWindowsDirectory() + '\sysnative\bcdedit.exe', s,
+      SDUGetWindowsDirectory());
+    if r <> $FFFFFFFF then begin
+      Result := s.IndexOf('testsigning             Yes') <> -1;
+    end else begin
+      SDUMessageDlg(_('Getting Test Mode status failed: ') + SysErrorMessage(GetLastError),
+        mtError, [mbOK], 0);
+    end;
+
+  finally
+    s.Free;
+  end;
+
+end;
+
 function TfrmFreeOTFEMain.SetTestMode(silent, setOn: Boolean): Boolean;
 begin
   inherited;
@@ -2722,14 +2748,21 @@ begin
 
   Result := ceUNKNOWN_ERROR;
 
-  driverFilenames := TStringList.Create();
-  try
-    GetAllDriversUnderCWD(driverFilenames);
+  if not IsTestModeOn then begin
+    SDUMessageDlg(
+      _('The DoxBox drivers canot be installed as ''Test Mode'' is not enabled, please see the documentation on manually enabling Windows Test Mode.'),
+      mtError
+      );
+  end else begin
 
-    if (driverFilenames.Count <= 0) then begin
-      Result := ceFILE_NOT_FOUND;
-    end else begin
-      Result := ceSUCCESS;
+    driverFilenames := TStringList.Create();
+    try
+      GetAllDriversUnderCWD(driverFilenames);
+
+      if (driverFilenames.Count <= 0) then begin
+        Result := ceFILE_NOT_FOUND;
+      end else begin
+        Result := ceSUCCESS;
        {
           from delphi 7 project:"If under Vista x64, don't autostart the drivers after
           installing - this could cause a bunch of *bloody* *stupid*
@@ -2741,28 +2774,29 @@ begin
 
       //          vista64Bit := (SDUOSVistaOrLater() and SDUOS64bit());
        }
-      if driverControlObj.InstallMultipleDrivers(driverFilenames, False,
-        not (silent), True// not(vista64Bit)
-        ) then begin
+        if driverControlObj.InstallMultipleDrivers(driverFilenames, False,
+          not (silent), True// not(vista64Bit)
+          ) then begin
             { from delphi 7 project:"If Vista x64, we tell the user to reboot. That way, the drivers
              will be started up on boot - and the user won't actually see
              any stupid warning messages about "unsigned drivers" "
             }
-        if (
-          // vista64Bit and
-          not (silent)) then begin
-          SDUMessageDlg(
-            _('DoxBox drivers have been installed successfully.'),
-            mtInformation
-            );
+          if (
+            // vista64Bit and
+            not (silent)) then begin
+            SDUMessageDlg(
+              _('DoxBox drivers have been installed successfully.'),
+              mtInformation
+              );
+          end;
+        end else begin
+          Result := ceUNKNOWN_ERROR;
         end;
-      end else begin
-        Result := ceUNKNOWN_ERROR;
       end;
-    end;
 
-  finally
-    driverFilenames.Free();
+    finally
+      driverFilenames.Free();
+    end;
   end;
 end;
 

@@ -272,7 +272,6 @@
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas">
 				<Form>frmWizardCreateVolumeAdvanced</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_WizardCommon.pas"/>
 			<DCCReference Include="..\common\SDeanUtils\SDUProgressDlg.pas">
 				<Form>SDUProgressDialog</Form>
 			</DCCReference>
@@ -313,6 +312,50 @@
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmNewVolumeSize.pas">
 				<Form>frmNewVolumeSize</Form>
 			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_U.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFEBase_U.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSKeyOrKeyfileEntry.pas">
+				<Form>OTFEFreeOTFELUKSKeyOrKeyfileEntry</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverControl.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DiskPartitionsPanel.pas">
+				<Form>OTFEFreeOTFEDiskPartitionsPanel</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\main\FreeOTFESettings.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUBlocksPanel.pas">
+				<Form>SDUBlocksPanel</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\SDeanUtils\SDUDiskPartitionsPanel.pas">
+				<Form>SDUDiskPartitionsPanel</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PKCS11.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrBase.pas">
+				<Form>fmePKCS11_MgrBase</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeSelect.pas">
+				<Form>OTFEFreeOTFEVolumeSelect</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\SDURandPool.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUWinHTTP.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUWinHttp_API.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUi18n.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUGraphics.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUWindows64.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUWindows.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUClasses.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUDirIterator_U.pas"/>
+			<DCCReference Include="FreeOTFEExplorerfmeOptions_WebDAV.pas">
+				<Form>fmeOptions_FreeOTFEExplorerWebDAV</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerWebDAV.pas"/>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

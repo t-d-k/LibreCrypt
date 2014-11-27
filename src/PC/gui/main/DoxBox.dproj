@@ -93,7 +93,6 @@
 			<DCC_ExeOutput>..\..\..\..\bin\PC</DCC_ExeOutput>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-			<Debugger_RunParams>-dev_menu -noexit</Debugger_RunParams>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
@@ -271,10 +270,6 @@
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas"/>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas">
-				<Form>fmeSelectPartition</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas">
 				<Form>frmKeyEntryFreeOTFE</Form>
 			</DCCReference>
@@ -296,7 +291,18 @@
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas">
 				<Form>frmWizardCreateVolumeAdvanced</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_WizardCommon.pas"/>
+			<DCCReference Include="..\common\OTFE\SDURandPool.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFEBase_U.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DiskPartitionsPanel.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSKeyOrKeyfileEntry.pas">
+				<Form>OTFEFreeOTFELUKSKeyOrKeyfileEntry</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeSelect.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUDiskPartitionsPanel.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUBlocksPanel.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUObjectManager.pas"/>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

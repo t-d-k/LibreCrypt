@@ -2,7 +2,7 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
   Left = 388
   Top = 281
   BorderStyle = bsDialog
-  Caption = 'FreeOTFE LUKS Key Entry'
+  Caption = 'Key Phrase For LUKS Box'
   ClientHeight = 399
   ClientWidth = 548
   Color = clBtnFace
@@ -140,7 +140,7 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
     end
   end
   object GroupBox1: TGroupBox
-    Left = 8
+    Left = 11
     Top = 8
     Width = 529
     Height = 201
@@ -152,7 +152,6 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
       Width = 21
       Height = 13
       Caption = '&Key:'
-      FocusControl = OTFEFreeOTFELUKSKeyOrKeyfileEntry1
     end
     object ckBaseIVCypherOnHashLength: TSDUCheckBox
       Left = 12
@@ -160,15 +159,39 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
       Width = 265
       Height = 17
       Caption = '&Base IV cypher on hash length (where applicable)'
-      TabOrder = 1
+      TabOrder = 0
       AutoSize = True
     end
-    object OTFEFreeOTFELUKSKeyOrKeyfileEntry1: TOTFEFreeOTFELUKSKeyOrKeyfileEntry
+    inline OTFEFreeOTFELUKSKeyOrKeyfileEntry1: TOTFEFreeOTFELUKSKeyOrKeyfileEntry
       Left = 56
       Top = 20
       Width = 464
       Height = 138
-      TabOrder = 0
+      TabOrder = 1
+      ExplicitLeft = 56
+      ExplicitTop = 20
+      inherited lblTreatNewlineAsEOF_1: TLabel
+        Left = 128
+        Top = 115
+        Width = 25
+        ExplicitLeft = 128
+        ExplicitTop = 115
+        ExplicitWidth = 25
+      end
+      inherited lblTreatNewlineAsEOF_2: TLabel
+        Left = 128
+        Top = 129
+        Width = 91
+        ExplicitLeft = 128
+        ExplicitTop = 129
+        ExplicitWidth = 91
+      end
+      inherited cbNewlineType: TComboBox
+        Left = 181
+        Top = 115
+        ExplicitLeft = 181
+        ExplicitTop = 115
+      end
     end
   end
 end

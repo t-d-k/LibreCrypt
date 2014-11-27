@@ -136,6 +136,11 @@ begin
   // Default to backup...
   DlgType := opBackup;
 
+  SelectDestFile.      OnChange := ControlChange;
+SelectDestFile.      SelectFor := fndOpen  ;
+SelectDestFile.      AllowPartitionSelect := True  ;
+
+
 end;
 
 

@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, FreeOTFEExplorerfrmPropertiesDlg_Base, ExtCtrls, StdCtrls, ComCtrls,
-  TeEngine, Series, TeeProcs, Chart;
+  TeEngine, Series, TeeProcs, Gauges;
 
 type
   TfrmPropertiesDialog_Volume = class(TfrmPropertiesDialog_Base)
@@ -24,8 +24,7 @@ type
     lblCapacity: TLabel;
     edCapacity_Bytes: TLabel;
     edCapacity_UsefulUnits: TLabel;
-    chtSpaceChart: TChart;
-    Series1: TPieSeries;
+    chtSpaceChart: TGauge;
     tsTools: TTabSheet;
     gbErrorChecking: TGroupBox;
     Label1: TLabel;
@@ -51,6 +50,7 @@ uses
   FreeOTFEExplorerCheckFilesystem,
   OTFEFreeOTFEDLL_PartitionImage,
   SDPartitionImage_File;
+
 
 
 procedure TfrmPropertiesDialog_Volume.FormShow(Sender: TObject);
@@ -149,12 +149,10 @@ begin
   pnlColorFreeSpace.BevelInner := bvLowered;
   pnlColorFreeSpace.BevelOuter := bvNone;
   pnlColorFreeSpace.Color := COLOR_FREE_SPACE;
-
-  chtSpaceChart.Title.Visible := FALSE;
-  chtSpaceChart.BevelInner := bvNone;
-  chtSpaceChart.BevelOuter := bvNone;
-  chtSpaceChart.Series[0].Add(spaceFree, _('Free space'), COLOR_FREE_SPACE);
-  chtSpaceChart.Series[0].Add(spaceUsed, _('Used space'), COLOR_USED_SPACE);
+  chtSpaceChart.BackColor :=  COLOR_FREE_SPACE   ;
+                chtSpaceChart.ForeColor :=  COLOR_USED_SPACE  ;
+//  chtSpaceChart.Series[0].Add(spaceFree, _('Free space'), COLOR_FREE_SPACE);
+//  chtSpaceChart.Series[0].Add(spaceUsed, _('Used space'), COLOR_USED_SPACE);
 
 
   tmpIcon := TIcon.Create();

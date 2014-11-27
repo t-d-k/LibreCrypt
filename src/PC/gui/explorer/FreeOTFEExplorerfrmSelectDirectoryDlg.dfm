@@ -67,8 +67,14 @@ object frmSelectDirectoryDlg: TfrmSelectDirectoryDlg
     Width = 309
     Height = 41
     Anchors = [akLeft, akTop, akRight]
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
     Lines.Strings = (
       'reInstructions')
+    ParentFont = False
     TabOrder = 0
   end
 end

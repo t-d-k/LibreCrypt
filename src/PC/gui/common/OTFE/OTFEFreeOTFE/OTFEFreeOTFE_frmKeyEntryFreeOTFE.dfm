@@ -80,7 +80,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Width = 113
         Height = 21
         Style = csDropDownList
-        TabOrder = 5
+        TabOrder = 1
         Items.Strings = (
           'Z:')
       end
@@ -275,7 +275,6 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
           Width = 53
           Height = 13
           Caption = '&Salt length:'
-          FocusControl = seSaltLength
         end
         object Label5: TLabel
           Left = 257
@@ -290,7 +289,6 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
           Width = 66
           Height = 13
           Caption = 'Key &iterations:'
-          FocusControl = seKeyIterations
         end
         object Label10: TLabel
           Left = 10
@@ -324,7 +322,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
           Width = 112
           Height = 21
           Style = csDropDownList
-          TabOrder = 2
+          TabOrder = 0
           OnChange = cbMediaTypeChange
         end
       end

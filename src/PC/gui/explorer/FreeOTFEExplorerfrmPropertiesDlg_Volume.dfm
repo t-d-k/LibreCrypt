@@ -3,7 +3,6 @@ inherited frmPropertiesDialog_Volume: TfrmPropertiesDialog_Volume
   PixelsPerInch = 96
   TextHeight = 13
   inherited PageControl1: TPageControl
-    ActivePage = tsTools
     inherited tsGeneral: TTabSheet
       inherited lblSizeOnDisk: TLabel
         Top = 376
@@ -116,6 +115,15 @@ inherited frmPropertiesDialog_Volume: TfrmPropertiesDialog_Volume
         Alignment = taRightJustify
         Caption = 'edCapacity_UsefulUnits'
       end
+      object chtSpaceChart: TGauge [21]
+        Left = 102
+        Top = 216
+        Width = 136
+        Height = 71
+        BorderStyle = bsNone
+        Kind = gkPie
+        Progress = 0
+      end
       object Panel1: TPanel
         Left = 8
         Top = 108
@@ -147,43 +155,6 @@ inherited frmPropertiesDialog_Volume: TfrmPropertiesDialog_Volume
         Height = 9
         Caption = 'Panel4'
         TabOrder = 9
-      end
-      object chtSpaceChart: TChart
-        Left = 102
-        Top = 216
-        Width = 136
-        Height = 71
-        AllowPanning = pmNone
-        BackWall.Brush.Color = clWhite
-        BackWall.Brush.Style = bsClear
-        BackWall.Pen.Visible = False
-        Foot.Font.Color = clBlack
-        Foot.Font.Style = []
-        Title.Text.Strings = (
-          'TChart')
-        Title.Visible = False
-        AxisVisible = False
-        Chart3DPercent = 50
-        ClipPoints = False
-        Frame.Visible = False
-        View3DOptions.Elevation = 315
-        View3DOptions.Orthogonal = False
-        View3DOptions.Perspective = 0
-        View3DOptions.Rotation = 360
-        View3DWalls = False
-        Zoom.Allow = False
-        TabOrder = 10
-        object Series1: TPieSeries
-          Marks.Callout.Brush.Color = clBlack
-          Marks.Visible = False
-          ShowInLegend = False
-          Gradient.Direction = gdRadial
-          OtherSlice.Legend.Visible = False
-          OtherSlice.Text = 'Other'
-          PieValues.Name = 'PieValues'
-          PieValues.Order = loNone
-          RotationAngle = 180
-        end
       end
     end
     object tsTools: TTabSheet

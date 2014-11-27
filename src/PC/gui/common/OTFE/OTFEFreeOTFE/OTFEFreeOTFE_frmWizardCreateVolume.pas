@@ -16,14 +16,14 @@ uses
   StdCtrls, ComCtrls, ExtCtrls, MouseRNG,
   // sdu common
   Shredder,
-  SDUGeneral,
-  //freeotfe specific  
+  SDUGeneral,  SDURandPool, SDUStdCtrls, SDUForms, SDUFrames, SDUSpin64Units,   PasswordRichEdit, Spin64,
+  //freeotfe specific
   OTFEFreeOTFEBase_U,
   OTFEFreeOTFE_VolumeFileAPI,  // Required for TVOLUME_CRITICAL_DATA
   OTFEFreeOTFE_DriverAPI,      // Required for CRITICAL_DATA_LEN
-  PasswordRichEdit, Spin64,
-  OTFEFreeOTFE_WizardCommon, SDUStdCtrls, OTFEFreeOTFE_fmeSelectPartition,
-  OTFEFreeOTFE_PasswordRichEdit, SDUForms, SDUFrames, SDUSpin64Units,
+
+   OTFEFreeOTFE_fmeSelectPartition,
+  OTFEFreeOTFE_PasswordRichEdit,
   OTFEFreeOTFE_frmWizard, OTFEFreeOTFE_InstructionRichEdit, SDUDialogs;
 
 type
@@ -171,7 +171,7 @@ type
     ftempCypherKey:          Ansistring;
     ftempCypherEncBlockNo:   Int64;
 
-    fCombinedRandomData: Ansistring;
+    fCombinedRandomData: Ansistring;//todo: use global randpool rather than this
 
     fcanUseCryptlib:        Boolean;
     fPKCS11TokensAvailable: Boolean;
@@ -304,16 +304,17 @@ uses
   Math,
   ActiveX,  // Required for IsEqualGUID
   ComObj,   // Required for StringToGUID
-  SDUi18n,
+  //sdu
+  SDUi18n,   SDPartitionImage,
+  SDPartitionImage_File,
+  SDFilesystem,
+  SDFilesystem_FAT  ,
+  //freeotfe/doxbox
   OTFEConsts_U, // Required for OTFE_ERR_USER_CANCEL
   OTFEFreeOTFEDLL_U,
   OTFEFreeOTFE_PKCS11,
   OTFEFreeOTFE_frmWizardCreateVolumeAdvanced,
-  OTFEFreeOTFEDLL_PartitionImage,
-  SDPartitionImage,
-  SDPartitionImage_File,
-  SDFilesystem,
-  SDFilesystem_FAT;
+  OTFEFreeOTFEDLL_PartitionImage  ;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -1590,9 +1591,11 @@ begin
   end;
   //ensure chaff data is included
   Update_tempCypherUseKeyLength;
-  allOK := GenerateRandomData(GetRNGSet(), (RNG_requiredBits() div 8),
+  GetRandPool.SetUpRandPool(GetRNGSet(),
     fFreeOTFEObj.PKCS11Library, PKCS11TokenListSelected(cbToken),
-    lblGPGFilename.Caption, fCombinedRandomData);
+    lblGPGFilename.Caption);
+
+  allOK := GetRandPool.GenerateRandomData( (RNG_requiredBits() div 8), fCombinedRandomData);
 
 
   // *All* information required to create the new volume acquired - so create
@@ -2129,7 +2132,7 @@ begin
   inherited;
 
   reInstructWelcome.Text :=
-    _('This "wizard" will guide you through the process of either creating a new DoxBox, or a hidden box within an existing box.' + SDUCRLF + SDUCRLF + 'If you are unsure as to how to answer any of the questions this wizard asks, simply accept the defaults.');
+    _('This wizard will guide you through the process of creating a new DoxBox, or a hidden box within an existing box.' + SDUCRLF + SDUCRLF + 'If you are unsure as to how to answer any of the questions this wizard asks, simply accept the defaults.');
 
   reInstructFileOrPartition.Text :=
     _('Please specify whether the new DoxBox should be created as a file stored on your disk, or take up a disk partition or an entire physical disk' + SDUCRLF + SDUCRLF + 'For most users, it is recommended that you use a file; encrypted partitions or physical disks may give greater obscurity or speed.');
@@ -2137,7 +2140,7 @@ begin
   reInstructFilename.Text :=
     _('Please specify the filename of the new DoxBox, by clicking the browse button.' +
     SDUCRLF + SDUCRLF +
-    'If you wish to create a "hidden" DoxBox, please specify your existing DoxBox file to be used.');
+    'If you wish to create a hidden DoxBox, please specify your existing DoxBox file to be used.');
 
   reInstructPartitionWarning.Text :=
     _('1) Creating encrypted partitions is POTENTIALLY DESTRUCTIVE.' + SDUCRLF +
@@ -2330,7 +2333,7 @@ begin
   plaintext := '';
   for i := 1 to tempArraySize do begin
     plaintext := plaintext + Ansichar(random(256));
-    { DONE 2 -otdk -csecurity : This is not secure PRNG - but the key is random, so the result is secure }
+    { DONE 2 -otdk -csecurity : This is not secure PRNG - but is encrypted below, so the result is secure }
   end;
 
 

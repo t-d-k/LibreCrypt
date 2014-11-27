@@ -95,13 +95,10 @@
 			<DCCReference Include="vclx.dcp"/>
 			<DCCReference Include="xmlrtl.dcp"/>
 			<DCCReference Include="vclsmp.dcp"/>
-			<DCCReference Include="SDeanSecurity\PasswordRichEdit\PasswordRichEdit.pas"/>
 			<DCCReference Include="SDeanUtils\MSntdll.pas"/>
 			<DCCReference Include="SDeanUtils\NetMsg.pas"/>
-			<DCCReference Include="SDeanUtils\SDUBlocksPanel.pas"/>
 			<DCCReference Include="SDeanUtils\SDUClipbrd.pas"/>
 			<DCCReference Include="SDeanUtils\SDUComCtrls.pas"/>
-			<DCCReference Include="SDeanUtils\SDUDiskPartitionsPanel.pas"/>
 			<DCCReference Include="SDeanUtils\SDUDropFiles.pas"/>
 			<DCCReference Include="SDeanUtils\SDUExtCtrls.pas"/>
 			<DCCReference Include="SDeanUtils\SDUFileIterator_U.pas"/>
@@ -116,89 +113,21 @@
 			<DCCReference Include="SDeanUtils\SDUSystemTrayIcon.pas"/>
 			<DCCReference Include="SDeanUtils\SDUSystemTrayIconShellAPI.pas"/>
 			<DCCReference Include="SDeanUtils\Spin64.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_cryptlib.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DiskPartitionsPanel.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverCommon.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverControl.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverCypherAPI.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverHashAPI.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrBase.pas">
-				<Form>fmePKCS11_MgrBase</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas">
-				<Form>fmePKCS11_MgrKeyfile</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas">
-				<Form>fmePKCS11_MgrSecretKey</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmCypherInfo.pas">
-				<Form>frmCypherInfo</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmDriverControl.pas">
-				<Form>frmDriverControl</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmHashInfo.pas">
-				<Form>frmHashInfo</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas">
-				<Form>frmKeyEntryFreeOTFE</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLinux.pas">
-				<Form>frmKeyEntryLinux</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLUKS.pas">
-				<Form>frmKeyEntryLUKS</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmNewVolumeSize.pas">
-				<Form>frmNewVolumeSize</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmPKCS11Management.pas">
-				<Form>frmPKCS11Management</Form>
-			</DCCReference>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmPKCS11NewSecretKey.pas">
 				<Form>frmPKCS11NewSecretKey</Form>
 			</DCCReference>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmPKCS11Session.pas">
 				<Form>frmPKCS11Session</Form>
 			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectHashCypher.pas">
-				<Form>frmSelectHashCypher</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectPartition.pas">
-				<Form>frmSelectPartition</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectPartition_Simple.pas">
-				<Form>frmSelectPartition_Simple</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectVolumeAndOffset.pas">
-				<Form>frmSelectVolumeFileAndOffset</Form>
-			</DCCReference>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmVolumeType.pas">
 				<Form>frmSelectVolumeType</Form>
 			</DCCReference>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_InstructionRichEdit.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSAPI.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSKeyOrKeyfileEntry.pas">
-				<Form>OTFEFreeOTFELUKSKeyOrKeyfileEntry</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PasswordRichEdit.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PKCS11.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_U.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeSelect.pas">
-				<Form>OTFEFreeOTFEVolumeSelect</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFEBase_U.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_PartitionImage.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_U.pas"/>
 			<DCCReference Include="SDeanUtils\SDUCheckLst.pas"/>
 			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_api.pas"/>
 			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_attribute.pas"/>
@@ -229,7 +158,6 @@
 			</DCCReference>
 			<DCCReference Include="SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas"/>
 			<DCCReference Include="SDeanUtils\SDUDialogs.pas"/>
-			<DCCReference Include="OTFE\OTFEUnified\OTFEUnified_U.pas"/>
 			<DCCReference Include="Hash\HashAlg_U.pas"/>
 			<DCCReference Include="Hash\HashAlgEngine_U.pas"/>
 			<DCCReference Include="Hash\HashAlgGOST_U.pas"/>
@@ -319,31 +247,11 @@
 				<Form>OTFECrossCrypt_PasswordEntry_F</Form>
 			</DCCReference>
 			<DCCReference Include="OTFE\OTFECrossCrypt\OTFECrossCrypt_U.pas"/>
-			<DCCReference Include="OTFE\OTFEUnified\OTFEUnified_frmSelectOTFESystem.pas">
-				<Form>frmSelectOTFESystem</Form>
-			</DCCReference>
 			<DCCReference Include="..\..\src\PC\gui\common\SDUForms.pas">
 				<Form>SDUForm</Form>
 			</DCCReference>
 			<DCCReference Include="..\..\src\PC\gui\common\SDUFrames.pas">
 				<Form>SDUFrame</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
-			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizard.pas">
-				<Form>frmWizard</Form>
-			</DCCReference>
-			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas">
-				<Form>frmWizardChangePasswordCreateKeyfile</Form>
-			</DCCReference>
-			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas">
-				<Form>frmWizardCreateVolume</Form>
-			</DCCReference>
-			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas">
-				<Form>frmWizardCreateVolumeAdvanced</Form>
-			</DCCReference>
-			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_WizardCommon.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas">
-				<Form>fmeSelectPartition</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUGeneral.pas"/>
@@ -375,6 +283,15 @@
 			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUProgressDlg.pas">
 				<Form>SDUProgressDialog</Form>
 			</DCCReference>
+			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PKCS11.pas"/>
+			<DCCReference Include="SDeanSecurity\PasswordRichEdit\PasswordRichEdit.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_cryptlib.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas"/>
+			<DCCReference Include="..\..\src\PC\gui\common\OTFE\SDURandPool.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

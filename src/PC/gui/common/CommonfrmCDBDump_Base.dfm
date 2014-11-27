@@ -50,7 +50,6 @@ object frmCDBDump_Base: TfrmCDBDump_Base
       Width = 73
       Height = 13
       Caption = '&Volume/keyfile:'
-      FocusControl = OTFEFreeOTFEVolumeSelect1
     end
     object Label2: TLabel
       Left = 8
@@ -59,18 +58,22 @@ object frmCDBDump_Base: TfrmCDBDump_Base
       Height = 13
       Caption = '&Password:'
     end
-    object OTFEFreeOTFEVolumeSelect1: TOTFEFreeOTFEVolumeSelect
+    inline OTFEFreeOTFEVolumeSelect1: TOTFEFreeOTFEVolumeSelect
       Left = 116
       Top = 20
       Width = 342
       Height = 21
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 0
-      OnChange = OTFEFreeOTFEVolumeSelect1Change
-      SelectFor = fndOpen
-      AllowPartitionSelect = True
-      DesignSize = (
-        342
-        21)
+      ExplicitLeft = 116
+      ExplicitTop = 20
+      ExplicitWidth = 342
+      ExplicitHeight = 21
     end
   end
   object GroupBox2: TGroupBox

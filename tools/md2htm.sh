@@ -4,7 +4,7 @@ do
 	shift
 	
 	# echo ${name}| sed 's/\.md/\.htm/'
-	html="`echo $name | sed 's/\.md/\.htm/'`"
+	html="`echo $name | sed 's/\.md/\.html/'`"
 	# $html="echo ${name} | sed 's/\.md/\.htm/'"
 	echo $html
 	

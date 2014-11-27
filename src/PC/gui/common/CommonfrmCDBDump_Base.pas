@@ -101,9 +101,9 @@ begin
   OTFEFreeOTFEVolumeSelect1.FileSelectFilter     := FILE_FILTER_FLT_VOLUMESANDKEYFILES;
   OTFEFreeOTFEVolumeSelect1.FileSelectDefaultExt := FILE_FILTER_DFLT_VOLUMESANDKEYFILES;
   OTFEFreeOTFEVolumeSelect1.SelectFor            := fndOpen;
+  OTFEFreeOTFEVolumeSelect1.OnChange := OTFEFreeOTFEVolumeSelect1Change;
 
   feDumpFilename.Filename := '';
-
 end;
 
 procedure TfrmCDBDump_Base.FormShow(Sender: TObject);

@@ -76,15 +76,22 @@ object frmCDBBackupRestore: TfrmCDBBackupRestore
       ReadOnly = False
       OnChange = ControlChange
     end
-    object SelectDestFile: TOTFEFreeOTFEVolumeSelect
+    inline SelectDestFile: TOTFEFreeOTFEVolumeSelect
       Left = 116
       Top = 16
       Width = 342
       Height = 21
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 0
-      OnChange = ControlChange
-      SelectFor = fndOpen
-      AllowPartitionSelect = True
+      ExplicitLeft = 116
+      ExplicitTop = 16
+      ExplicitWidth = 342
+      ExplicitHeight = 21
       DesignSize = (
         342
         21)
@@ -129,15 +136,22 @@ object frmCDBBackupRestore: TfrmCDBBackupRestore
       ReadOnly = False
       OnChange = ControlChange
     end
-    object SelectSrcFile: TOTFEFreeOTFEVolumeSelect
+    inline SelectSrcFile: TOTFEFreeOTFEVolumeSelect
       Left = 116
       Top = 20
       Width = 342
       Height = 21
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 0
-      OnChange = ControlChange
-      SelectFor = fndOpen
-      AllowPartitionSelect = True
+      ExplicitLeft = 116
+      ExplicitTop = 20
+      ExplicitWidth = 342
+      ExplicitHeight = 21
       DesignSize = (
         342
         21)

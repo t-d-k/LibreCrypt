@@ -22,8 +22,15 @@
 _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 
-***      
-            
+***
+
+## SafeBoot
+Regardless of which installation procedure is used 'Safe Boot' needs to be disabled first, it is not possible to use Test Signed' drivers with this on.
+Once installed it should be possible to turn it on again.
+
+## Kaspersky
+There has been a report that Kapsersky anti-virus falsely reports DoxBox as a virus. Please disable this before installing.
+          
 ## Installation and Upgrading from a Previous Version
 
 If you wish to use DoxBox in portable mode, you do **not** have to carry out the installation described below; simply :
@@ -44,7 +51,9 @@ A manual installation procedure is also detailed below.
 ## Automatic installation
 </A>
 
-1. Download the DoxBox installer called InstallDoxBox_vNN.exe where NN is the version number, and run it. Accept any prompts.
+1. Download the DoxBox installer called InstallDoxBox_vNN.exe where NN is the version number.
+1. Turn off 'Safe Boot', & Disklocker
+1. Run InstallDoxBox_vNN.exe, accept any prompts.
 1. After prompting you for some simple details, DoxBox will be installed on your PC.
 1. Reboot your PC after the installation is complete.
 1. You will see the text that Windows is in 'Test Mode' on the desktop - to remove this see [here](impact_of_kernel_driver_signing.html). 
@@ -52,6 +61,7 @@ A manual installation procedure is also detailed below.
 1. After that DoxBox may be run normally as a non-administrator.
 
 ### Trouble shooting
+
 
 * If you get a dialog saying "Windows requires a digitally signed driver", you forgot to reboot before running DoxBox. Reboot and try again.
 * If you get a dialog saying "The main DoxBox driver does not appear to be installed", then please report this as a bug, and follow the manual installation below, from stage 4.
