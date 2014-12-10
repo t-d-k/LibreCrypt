@@ -1,6 +1,8 @@
 inherited fmePKCS11_MgrSecretKey: TfmePKCS11_MgrSecretKey
   Width = 323
   Height = 338
+  ExplicitWidth = 323
+  ExplicitHeight = 338
   DesignSize = (
     323
     338)

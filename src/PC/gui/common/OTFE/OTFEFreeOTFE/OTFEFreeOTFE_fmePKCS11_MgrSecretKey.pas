@@ -109,10 +109,9 @@ procedure TfmePKCS11_MgrSecretKey.EnableDisableControls();
 begin
   inherited;
 
-  SDUEnableControl(actDelete, (lvSecretKeys.SelCount > 0));
-
-  SDUEnableControl(actEncrypt, (lvSecretKeys.SelCount = 1));
-  SDUEnableControl(actDecrypt, (lvSecretKeys.SelCount = 1));
+  actDelete.Enabled :=  lvSecretKeys.SelCount > 0;
+  actEncrypt.Enabled := (lvSecretKeys.SelCount = 1);
+  actDecrypt.Enabled := (lvSecretKeys.SelCount = 1);
 end;
 
 procedure TfmePKCS11_MgrSecretKey.Refresh();
