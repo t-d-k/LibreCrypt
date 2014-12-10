@@ -141,8 +141,7 @@ var
 class function TRandPool.GenerateRandomData1Rng(rng: TRNG; bytesRequired: Integer;
   // Output
   var randomData: Ansistring): Boolean;
-var
-  allOK: Boolean;
+
 begin
   // SDUInitAndZeroBuffer(0, randomData);
   randomData := '';
@@ -154,15 +153,15 @@ begin
     begin
       // Nothing to do; the random data has already been generated via the
       // interface
-      allOK := GetMouseRNGData(bytesRequired, randomData);
+      result := GetMouseRNGData(bytesRequired, randomData);
     end;
 
     // MS CryptoAPI...
     rngCryptoAPI:
     begin
-      allOK := GenerateRNGDataMSCryptoAPI(bytesRequired, randomData);
-      allOK := allOK and (length(randomData) = bytesRequired);
-      if not (allOK) then begin
+      result := GenerateRNGDataMSCryptoAPI(bytesRequired, randomData);
+      result := result and (length(randomData) = bytesRequired);
+      if not result then begin
         SDUMessageDlg(
           _('The MS CryptoAPI could not be used to generate random data.') +
           SDUCRLF + SDUCRLF + _('Please select another RNG, and try again'),
@@ -174,9 +173,9 @@ begin
     // cryptlib...
     rngcryptlib:
     begin
-      allOK := GenerateRNGDataCryptlib(bytesRequired, randomData);
-      allOK := allOK and (length(randomData) = bytesRequired);
-      if not (allOK) then begin
+      result := GenerateRNGDataCryptlib(bytesRequired, randomData);
+      result := result and (length(randomData) = bytesRequired);
+      if not result then begin
         SDUMessageDlg(
           _('cryptlib could not be used to generate random data.') + SDUCRLF +
           SDUCRLF + _(
@@ -189,10 +188,10 @@ begin
     // PKCS#11 token...
     rngPKCS11:
     begin
-      allOK := GenerateRNGDataPKCS11(_PKCS11Library, _PKCS11SlotID, bytesRequired,
+      result := GenerateRNGDataPKCS11(_PKCS11Library, _PKCS11SlotID, bytesRequired,
         randomData);
-      allOK := allOK and (length(randomData) = bytesRequired);
-      if not (allOK) then begin
+      result := result and (length(randomData) = bytesRequired);
+      if not result then begin
         SDUMessageDlg(
           _('PKCS#11 token could not be used to generate random data.') +
           SDUCRLF + SDUCRLF + _(
@@ -206,14 +205,14 @@ begin
     rngGPG:
     begin
       // not implemented
-      allOK := False;
+      result := False;
       //      allOK := GenerateRNGDataGPG(
       //                                  bytesRequired,
       //                                  gpgFilename,
       //                                  randomData
       //                                 );
-      allOK := allOK and (length(randomData) = bytesRequired);
-      if not (allOK) then begin
+      result := result and (length(randomData) = bytesRequired);
+      if not result then begin
         SDUMessageDlg(
           _('GPG could not be used to generate random data.') + SDUCRLF +
           SDUCRLF + _('Please doublecheck the path to the GPG executable, and try again.'),
@@ -229,29 +228,26 @@ begin
       mtError
       );
 
-    allOK := False;
+    result := False;
   end;
 
   end;
 
 
   // Sanity check
-  if (allOK) then begin
-    allOK := (length(randomData) = bytesRequired);
-    if not (allOK) then begin
+  if result then begin
+    result := (length(randomData) = bytesRequired);
+    if not result then begin
       SDUMessageDlg(
         _('Insufficient random data generated?!') + SDUCRLF + SDUCRLF +
         PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
         mtError
         );
 
-      allOK := False;
+      result := False;
     end;
 
   end;
-
-
-  Result := allOK;
 end;
 
 
@@ -369,29 +365,21 @@ end;
 function cryptlibLoad(): Boolean;
 var
   funcResult: Integer;
-  allOK:      Boolean;
 begin
-  allOK := cryptlib_LoadDLL();
-  if (allOK) then begin
+  result := cryptlib_LoadDLL();
+  if result then begin
     funcResult := cryptlib_cryptInit();
-    allOK      := cryptlib_cryptStatusOK(funcResult);
-    if (allOK) then begin
+    result      := cryptlib_cryptStatusOK(funcResult);
+    if result then begin
       funcResult := cryptlib_cryptAddRandom(nil, cryptlib_CRYPT_RANDOM_SLOWPOLL);
-      allOK      := cryptlib_cryptStatusOK(funcResult);
+      result      := cryptlib_cryptStatusOK(funcResult);
       // If there was a problem, call end
-      if (not (allOK)) then begin
-        cryptlib_cryptEnd();
-      end;
-
+      if not result then         cryptlib_cryptEnd();
     end;
 
     // If there was a problem, unload the DLL
-    if (not (allOK)) then begin
-      cryptlib_UnloadDLL();
-    end;
+    if not result then       cryptlib_UnloadDLL();
   end;
-
-  Result := allOK;
 end;
 
 

@@ -1484,9 +1484,8 @@ begin
   end;
 
   // Controls only enabled when mounted...
-  SDUEnableControl(actNavigateBack, (Mounted() and (FNavigateIdx > 0)));
-  SDUEnableControl(actNavigateForward, (Mounted() and (FNavigateIdx <
-    (FNavigateHistory.Count - 1))));
+  actNavigateBack.Enabled := Mounted() and (FNavigateIdx > 0);
+  actNavigateForward.Enabled := (Mounted() and (FNavigateIdx <    (FNavigateHistory.Count - 1)));
   SDUEnableControl(edPath, Mounted());
   SDUEnableControl(pbGo, (Mounted() and (trim(edPath.Text) <> '')));
 
@@ -1497,24 +1496,23 @@ begin
   // resizing(?!!!!)
   //  SDUEnableControl(SDFilesystemTreeView1, Mounted());
 
-  SDUEnableControl(actSelectAll, Mounted());
-  SDUEnableControl(actInvertSelection, Mounted());
-  SDUEnableControl(actShowBootSector, Mounted());
-  SDUEnableControl(actCheckFilesystem, Mounted());
-  SDUEnableControl(actUpDir, (Mounted() and
-    (SDFilesystemTreeView1.PathToNode(SDFilesystemTreeView1.Selected) <> PATH_SEPARATOR)));
+  actSelectAll.Enabled :=  Mounted();
+  actInvertSelection.Enabled :=  Mounted();
+actShowBootSector.Enabled :=  Mounted();
+  actCheckFilesystem.Enabled :=  Mounted();
+  actUpDir.Enabled := (Mounted() and    (SDFilesystemTreeView1.PathToNode(SDFilesystemTreeView1.Selected) <> PATH_SEPARATOR));
 
   // Controls only enabled when mounted for read/write...
   SDUEnableControl(tbbStore, mountedWritable);
-  SDUEnableControl(mnuMainStore, mountedWritable);
-  SDUEnableControl(actStoreFile, mountedWritable);
-  SDUEnableControl(actStoreDir, mountedWritable);
-  SDUEnableControl(actCut, mountedWritable);
-  SDUEnableControl(actCopy, mountedWritable);
-  SDUEnableControl(actPaste, (mountedWritable and ClipboardHasFiles()));
+  mnuMainStore.Enabled :=  mountedWritable;
+  actStoreFile.Enabled :=  mountedWritable;
+  actStoreDir.Enabled :=  mountedWritable;
+  actCut .Enabled :=  mountedWritable;
+  actCopy.Enabled :=        mountedWritable;
+  actPaste.Enabled :=  mountedWritable and ClipboardHasFiles();
 
-  SDUEnableControl(actCreateSubDir, mountedWritable);
-  SDUEnableControl(actDelete, mountedWritable);
+  actCreateSubDir.Enabled := mountedWritable;
+  actDelete     .Enabled :=        mountedWritable;
 
   // Only allow drag and drop to store files/dirs if mounted for read/write...
   SDUDropFilesTreeView.Active := mountedWritable;
@@ -1528,35 +1526,30 @@ begin
     ((SDFilesystemTreeView1.SelectionCount = 1) and
     SDFilesystemTreeView1.Selected.Expanded);
 
-  SDUEnableControl(
-    mnuExploreView,
+    mnuExploreView.Enabled :=
     ((SDFilesystemListView1.SelCount = 1) and
-    SDFilesystemListView1.DirItem[SDFilesystemListView1.SelectedIdx].IsDirectory)
-    );
+    SDFilesystemListView1.DirItem[SDFilesystemListView1.SelectedIdx].IsDirectory);
 
-  SDUEnableControl(
-    mnuViewRename,
+    mnuViewRename.Enabled :=
     (not (SDFilesystemListView1.ReadOnly) and (SDFilesystemListView1.SelCount = 1) and
-    mountedWritable)
-    );
-  SDUEnableControl(
-    mnuTreeViewRename,
+    mountedWritable);
+
+    mnuTreeViewRename.Enabled :=
     (not (SDFilesystemTreeView1.ReadOnly) and (SDFilesystemTreeView1.SelectionCount = 1) and
-    mountedWritable)
-    );
+    mountedWritable)            ;
 
 
   selectedTargets := TStringList.Create();
   try
     GetSelectedItems(nil, selectedTargets);
 
-    SDUEnableControl(actExtract, (Mounted() and (selectedTargets.Count > 0)));
+    actExtract.Enabled := (Mounted() and (selectedTargets.Count > 0));
 
-    SDUEnableControl(actMoveTo, (Mounted() and (selectedTargets.Count > 0)));
+    actMoveTo.Enabled := (Mounted() and (selectedTargets.Count > 0));
 
-    SDUEnableControl(actCopyTo, (Mounted() and (selectedTargets.Count > 0)));
+    actCopyTo.Enabled :=  (Mounted() and (selectedTargets.Count > 0));
 
-    SDUEnableControl(actItemProperties, actExtract.Enabled);
+    actItemProperties.Enabled := actExtract.Enabled;
   finally
     selectedTargets.Free();
   end;
@@ -1565,30 +1558,30 @@ begin
   // Remove buttons which are only really used for debug purposes...
   actMapNetworkDrive.Visible        := False;
   actDisconnectNetworkDrive.Visible := False;
-  SDUEnableControl(
-    actMapNetworkDrive,
+
+    actMapNetworkDrive.Enabled :=
     (Mounted() and (FMappedDrive = #0) and Settings.OptWebDAVEnableServer)
-    );
-  SDUEnableControl(
-    actDisconnectNetworkDrive,
+    ;
+
+    actDisconnectNetworkDrive.Enabled :=
     (Mounted() and (FMappedDrive <> #0) and Settings.OptWebDAVEnableServer)
-    );
+    ;
 
   // IMPORTANT!
   // Because the treeview's menuitems have their actionitem set to nil in
   // FormCreate(...), these must be enabled/disabled to match the appropriate
   // actionitem
   // SDUEnableControl(mnuTreeViewExtract, actExtract.enabled);  // Don't mirror this one - if we're displaying the context menu, we can always extract
-  SDUEnableControl(mnuTreeViewStoreFile, actStoreFile.Enabled);
-  SDUEnableControl(mnuTreeViewStoreDir, actStoreDir.Enabled);
-  SDUEnableControl(mnuTreeViewExtract, actExtract.Enabled);
-  SDUEnableControl(mnuTreeViewCut, actCut.Enabled);
-  SDUEnableControl(mnuTreeViewCopy, actCopy.Enabled);
-  SDUEnableControl(mnuTreeViewPaste, actPaste.Enabled);
-  SDUEnableControl(mnuTreeViewCreateSubDir, actCreateSubDir.Enabled);
-  SDUEnableControl(mnuTreeViewDelete, actDelete.Enabled);
-  SDUEnableControl(mnuTreeViewRename, actRename.Enabled);
-  SDUEnableControl(mnuTreeViewItemProperties, actItemProperties.Enabled);
+  mnuTreeViewStoreFile.Enabled := actStoreFile.Enabled;
+  mnuTreeViewStoreDir.Enabled := actStoreDir.Enabled;
+  mnuTreeViewExtract.Enabled := actExtract.Enabled;
+  mnuTreeViewCut.Enabled := actCut.Enabled;
+  mnuTreeViewCopy.Enabled := actCopy.Enabled;
+  mnuTreeViewPaste.Enabled := actPaste.Enabled;
+  mnuTreeViewCreateSubDir.Enabled := actCreateSubDir.Enabled;
+  mnuTreeViewDelete.Enabled := actDelete.Enabled;
+  mnuTreeViewRename.Enabled := actRename.Enabled;
+  mnuTreeViewItemProperties.Enabled :=  actItemProperties.Enabled;
 
 
   // Note: Toolbars setup by inherited method, apart from visible/invisible;

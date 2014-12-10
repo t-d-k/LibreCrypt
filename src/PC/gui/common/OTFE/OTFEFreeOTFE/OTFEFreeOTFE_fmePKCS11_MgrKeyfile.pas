@@ -313,8 +313,8 @@ procedure TfmePKCS11_MgrKeyfile.EnableDisableControls();
 begin
   inherited;
 
-  SDUEnableControl(actExport, (lbCDB.SelCount = 1));
-  SDUEnableControl(actDelete, (lbCDB.SelCount > 0));
+  actExport.Enabled := (lbCDB.SelCount = 1);
+  actDelete.Enabled := (lbCDB.SelCount > 0);
 
 end;
 

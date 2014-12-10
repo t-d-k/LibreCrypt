@@ -769,8 +769,8 @@ function SDUConvertLFNToSFN(lfn: String): String;
 // Enable/disable the specified control, with correct colors
 procedure SDUEnableControl(control: TControl; enable: Boolean;
   affectAssociatedControls: Boolean = True); OVERLOAD;
-procedure SDUEnableControl(control: TAction; enable: Boolean); OVERLOAD;
-procedure SDUEnableControl(control: TMenuItem; enable: Boolean); OVERLOAD;
+//procedure SDUEnableControl(control: TAction; enable: Boolean); OVERLOAD;
+//procedure SDUEnableControl(control: TMenuItem; enable: Boolean); OVERLOAD;
 // Readonly/read-write the specified control, with correct colors
 procedure SDUReadonlyControl(control: TControl; ReadOnly: Boolean;
   affectAssociatedControls: Boolean = True);
@@ -1369,15 +1369,15 @@ begin
   Result := sfn;
 end;
 
-procedure SDUEnableControl(control: TAction; enable: Boolean);
-begin
-  control.Enabled := enable;
-end;
-
-procedure SDUEnableControl(control: TMenuItem; enable: Boolean);
-begin
-  control.Enabled := enable;
-end;
+//procedure SDUEnableControl(control: TAction; enable: Boolean);
+//begin
+//  control.Enabled := enable;
+//end;
+//
+//procedure SDUEnableControl(control: TMenuItem; enable: Boolean);
+//begin
+//  control.Enabled := enable;
+//end;
 
 procedure SDUEnableControl(control: TControl; enable: Boolean;
   affectAssociatedControls: Boolean = True);
@@ -5502,7 +5502,7 @@ begin
     Inc(ctr);
     if ((ctr <> 1) and ((ctr mod 3) = 1)) then begin
       // ThousandSeparator from SysUtils
-      retval := ThousandSeparator + retval;
+      retval := FormatSettings.ThousandSeparator + retval;
     end;
 
     retval := sVal[i] + retval;

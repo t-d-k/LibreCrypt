@@ -90,6 +90,7 @@ type
     SetTestMode1:               TMenuItem;
     actTestModeOff:             TAction;
     DisallowTestsigneddrivers1: TMenuItem;
+    ToolButton1: TToolButton;
 
     procedure actDriversExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -355,21 +356,21 @@ const
   AUTORUN_SUBSTITUTE_DRIVE = '%DRIVE';
 
   // Command line parameters. case insensitive. generally only one action per invocation
-  //swithces only 
+  //swithces only
   CMDLINE_NOUACESCALATE = 'noUACescalate';
   CMDLINE_GUI           = 'gui';
   CMDLINE_FORCE         = 'force';
   CMDLINE_SET_INSTALLED = 'SetInstalled';
   //sets 'installed' flag in ini file, creating if nec. - usually used with CMDLINE_SETTINGSFILE
 
-  // cmds with params   
+  // cmds with params
   CMDLINE_DRIVERCONTROL = 'driverControl';
   CMDLINE_PORTABLE      = 'portable';
   CMDLINE_TOGGLE        = 'toggle';
   CMDLINE_DISMOUNT      = 'dismount';
 
 
-  //  CMDLINE_MOUNTED          = 'mounted'; unused    
+  //  CMDLINE_MOUNTED          = 'mounted'; unused
   CMDLINE_SET_TESTMODE = 'SetTestMode';
 
   // args to Command line parameters...
@@ -1222,16 +1223,13 @@ end;
 function TfrmFreeOTFEMain.DismountSelected(): Boolean;
 var
   toDismount: DriveLetterString;
-  allOK:      Boolean;
 begin
   // First we build up a list of drives to dismount, then we dismount them.
   // This is done since we can't just run through the lvDrives looking for
   // selected items, as they're getting removed while we walk though the list!
   toDismount := GetSelectedDrives();
 
-  allOK := DismountDrives(toDismount, False);
-
-  Result := allOK;
+  Result := DismountDrives(toDismount, False);
 end;
 
 
@@ -1246,9 +1244,8 @@ var
   subVols:         DriveLetterString;
   tmpDrv:          DriveLetterChar;
   drivesRemaining: DriveLetterString;
-  allOK:           Boolean;
 begin
-  allOK           := True;
+  result           := True;
   drivesRemaining := '';
 
   // Change CWD to anywhere other than a mounted drive
@@ -1277,12 +1274,12 @@ begin
             [subVols[j], tmpDrv]),
             mtError
             );
-          allOK := False;
+          result := False;
         end;
       end;
     end;
 
-    if allOK then begin
+    if result then begin
       // Sort out dismount order, in case one drive nested within another
       dismountDrives := fOtfeFreeOtfeBase.DismountOrder(dismountDrives);
 
@@ -1298,7 +1295,7 @@ begin
           AutoRunExecute(arPostDismount, tmpDrv, isEmergency);
         end else begin
           drivesRemaining := drivesRemaining + tmpDrv;
-          allOK           := False;
+          result           := False;
         end;
 
       end;
@@ -1311,8 +1308,6 @@ begin
       RefreshDrives();
     end;
   end;
-
-  Result := allOK;
 end;
 
 
@@ -1837,9 +1832,8 @@ end;
 function TfrmFreeOTFEMain._PortableModeStart(suppressMsgs: Boolean): Boolean;
 var
   driverFilenames: TStringList;
-  allOK:           Boolean;
 begin
-  allOK := False;
+  result := False;
 
   driverFilenames := TStringList.Create();
   try
@@ -1867,7 +1861,7 @@ begin
         //          begin
         //          SDUMessageDlg('Portable mode drivers installed and started.', mtInformation, [mbOK], 0);
         //          end;
-        allOK := True;
+        result := True;
       end else begin
         if not (suppressMsgs) then begin
           SDUMessageDlg(
@@ -1885,16 +1879,13 @@ begin
     driverFilenames.Free();
     ActivateFreeOTFEComponent(suppressMsgs);
   end;
-
-  Result := allOK;
 end;
 
 function TfrmFreeOTFEMain._PortableModeStop(suppressMsgs: Boolean): Boolean;
 var
-  allOK:  Boolean;
   stopOK: Boolean;
 begin
-  allOK := False;
+  Result := False;
 
   // Note that if the component was *not* active, then we can shutdown all
   // portable mode drivers; if we aren't active, this implies the main driver
@@ -1928,7 +1919,7 @@ begin
         end;
       end;
 
-      allOK := True;
+      Result := True;
     end else begin
       if not (suppressMsgs) then begin
         SDUMessageDlg(
@@ -1942,8 +1933,6 @@ begin
 
     ActivateFreeOTFEComponent(suppressMsgs);
   end;
-
-  Result := allOK;
 end;
 
 function TfrmFreeOTFEMain._PortableModeToggle(suppressMsgs: Boolean): Boolean;

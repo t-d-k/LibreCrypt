@@ -824,7 +824,7 @@ end;
 
 procedure TfrmMain.EnableDisableControls();
 begin
-  SDUEnableControl(actPKCS11TokenManagement, Settings.OptPKCS11Enable);
+  actPKCS11TokenManagement.Enabled       :=  Settings.OptPKCS11Enable;
 
   // The FreeOTFE object may not be active...
   actFreeOTFENew.Enabled       := fOtfeFreeOtfeBase.Active;
@@ -843,11 +843,7 @@ begin
   // plus anything below it, we disable the "Copy FreeOTFE to..." menuitem if
   // *this* application is running from a root dir.
   // >3 because the root'll be "X:\"; 3 chars long
-  SDUEnableControl(
-    actInstallOnUSBDrive,
-    (length(ExtractFilePath(ParamStr(0))) > 3)
-    );
-
+  actInstallOnUSBDrive.Enabled :=   (length(ExtractFilePath(ParamStr(0))) > 3);
 end;
 
 procedure TfrmMain.SetStatusBarText(statusText: String);
@@ -873,7 +869,6 @@ begin
       // installed & started
 
   end;
-
 
   if (not (suppressMsgs) and not (fOtfeFreeOtfeBase.Active) and not
     (fshuttingDownFlag)  // Don't complain to user as we're about to exit!

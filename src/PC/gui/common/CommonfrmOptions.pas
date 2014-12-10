@@ -5,8 +5,7 @@ unit CommonfrmOptions;
  // WWW:   http://www.FreeOTFE.org/
  //
  // -----------------------------------------------------------------------------
- //
-
+  { TODO 1 -otdk -crefactor : TfmeOptions_PKCS11; frame is only used here - move into this dialog }
 
 interface
 
@@ -28,7 +27,8 @@ type
     pcOptions:           TPageControl;
     imgNoSaveWarning:    TImage;
     tsPKCS11:            TTabSheet;
-    fmeOptions_PKCS11:   TfmeOptions_PKCS11;
+    fmeOptions_PKCS11: TfmeOptions_PKCS11;
+
     procedure pbOKClick(Sender: TObject);
     procedure pbCancelClick(Sender: TObject);
     procedure ControlChanged(Sender: TObject);

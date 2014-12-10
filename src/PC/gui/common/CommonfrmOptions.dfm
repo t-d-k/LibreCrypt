@@ -90,6 +90,37 @@ object frmOptions: TfrmOptions
     object tsPKCS11: TTabSheet
       Caption = 'PKCS#11'
       ImageIndex = 4
+      inline fmeOptions_PKCS11: TfmeOptions_PKCS11
+        Left = -3
+        Top = 16
+        Width = 492
+        Height = 289
+        TabOrder = 0
+        ExplicitLeft = -3
+        ExplicitTop = 16
+        inherited gbPKCS11: TGroupBox
+          inherited lblLibrary: TLabel
+            Width = 80
+            ExplicitWidth = 80
+          end
+          inherited gbPKCS11AutoActions: TGroupBox
+            inherited OTFEFreeOTFEVolumeSelect1: TOTFEFreeOTFEVolumeSelect
+              inherited bbBrowsePartition: TBitBtn
+                Left = 306
+                ExplicitLeft = 306
+              end
+              inherited bbBrowseFile: TBitBtn
+                Left = 282
+                ExplicitLeft = 282
+              end
+              inherited edFilename: TEdit
+                Width = 279
+                ExplicitWidth = 279
+              end
+            end
+          end
+        end
+      end
     end
   end
 end
