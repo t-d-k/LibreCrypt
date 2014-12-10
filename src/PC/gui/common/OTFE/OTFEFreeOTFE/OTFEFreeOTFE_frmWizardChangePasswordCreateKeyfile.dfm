@@ -6,19 +6,25 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
   Position = poScreenCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  ExplicitWidth = 613
+  ExplicitHeight = 438
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlRight: TPanel
     inherited pcWizard: TPageControl
-      ActivePage = tsFileOrPartition
+      ActivePage = tsRNGGPG
       object tsFileOrPartition: TTabSheet
         Caption = 'Volume File or Partition'
         ImageIndex = 7
+        DesignSize = (
+          597
+          318)
         object rgFileOrPartition: TRadioGroup
-          Left = 164
-          Top = 136
-          Width = 168
+          Left = 3
+          Top = 248
+          Width = 577
           Height = 57
+          Anchors = [akLeft, akRight, akBottom]
           Caption = 'File or Partition'
           Items.Strings = (
             '1st of two'
@@ -29,7 +35,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
         object reInstructFileOrPartition: TOTFEFreeOTFE_InstructionRichEdit
           Left = 8
           Top = 12
-          Width = 473
+          Width = 582
           Height = 77
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -176,7 +182,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           end
           inherited ilErrorWarning: TImageList
             Bitmap = {
-              494C010103000400300010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400440010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -591,6 +597,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Width = 121
           Height = 22
           Increment = 1
+          MinValue = 1
           TabOrder = 4
         end
       end

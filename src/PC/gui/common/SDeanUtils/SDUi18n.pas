@@ -19,7 +19,7 @@ unit SDUi18n;
 interface
 
 uses
-  Classes;
+  Classes,ComCtrls,StdCtrls;
 
 const
   ISO639_ALPHA2_ENGLISH = 'en';
@@ -28,6 +28,8 @@ const
 function _(msg: unicodestring): unicodestring;
 //{$ENDIF}
 function SDUTranslate(msg: unicodestring): unicodestring;
+procedure SDUTranslateComp(var c: TRichEdit);overload;
+procedure SDUTranslateComp(var c: TLabel);  overload;
 function SDUPluralMsg(n: Integer; singleMsg: WideString; pluralMsg: WideString): WideString;
   OVERLOAD;
 function SDUPluralMsg(n: Integer; msgs: array of WideString): WideString; OVERLOAD;
@@ -67,6 +69,22 @@ begin
 {$ELSE}
   Result := msg;
 {$ENDIF}
+end;
+
+procedure SDUTranslateComp(var c: TRichEdit); overload;
+begin
+//tag is used as flag if translated already
+  if c.tag = 0 then
+    c.Text := SDUTranslate(c.Text);
+  c.tag := 1;
+end;
+
+procedure SDUTranslateComp(var c: TLabel);  overload;
+begin
+//tag is used as flag if translated already
+  if c.tag = 0 then
+    c.Caption := SDUTranslate(c.Caption);
+  c.tag := 1;
 end;
 
 function SDUPluralMsg(n: Integer; singleMsg: WideString; pluralMsg: WideString): WideString;
