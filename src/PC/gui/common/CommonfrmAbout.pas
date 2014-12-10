@@ -46,9 +46,8 @@ implementation
 
 uses
   ShellApi,  // Needed for ShellExecute
-  SDUi18n,
-  SDUGeneral,
-  CommonConsts;
+  CommonConsts, SDUGeneral,
+  SDUi18n;
 
 procedure TfrmAbout.FormShow(Sender: TObject);
 const
@@ -71,10 +70,8 @@ begin
     (SDUIsLanguageCodeEnglish(SDUGetCurrentLanguageCode()))) then begin
     lblTranslatorCredit.Visible := True;
     lblTranslatorCredit.Caption :=
-      SDUParamSubstitute(_(
-      '%1 translation by %2'), [_(
-      CONST_LANGUAGE_ENGLISH), SDUGetTranslatorName()]
-      );
+      SDUParamSubstitute(_('%1 translation by %2'),
+      [_(CONST_LANGUAGE_ENGLISH), SDUGetTranslatorName()]);
   end;
 
   imgIcon.Picture.Assign(Application.Icon);
@@ -103,9 +100,8 @@ begin
   // Some translated languages may increase the number of lines the
   // description takes up. Here we increase the height of the dialog to
   // compensate, and nudge the controls below it down
-  descAdjustDown := (lblDescription.Top +
-    lblDescription.Height + CONTROL_MARGIN
-    ) - pnlDividerUpper.Top;
+  descAdjustDown := (lblDescription.Top + lblDescription.Height + CONTROL_MARGIN) -
+    pnlDividerUpper.Top;
 
   self.Height := self.Height + descAdjustDown;
 

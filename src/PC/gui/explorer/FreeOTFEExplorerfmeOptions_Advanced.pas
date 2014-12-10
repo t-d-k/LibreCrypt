@@ -110,8 +110,7 @@ const
     chkBox.Width   := useWidth;
     lastTriedWidth := useWidth;
     chkBox.Caption := tmpCaption;
-    while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0))
-      do begin
+    while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0)) do begin
       // 5 used here; just needs to be something sensible to reduce the
       // width by; 1 would do pretty much just as well
       useWidth := useWidth - 5;

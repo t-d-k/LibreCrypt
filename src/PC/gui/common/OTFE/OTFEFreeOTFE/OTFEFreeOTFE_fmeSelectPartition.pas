@@ -92,8 +92,8 @@ implementation
 uses
   GraphUtil,  // Required for GetHighLightColor(...)
   OTFEFreeOTFE_frmSelectPartition,
-  SDUi18n,
   SDUDiskPropertiesDlg,
+  SDUi18n,
   SDUPartitionPropertiesDlg;
 
 const
@@ -146,8 +146,8 @@ end;
 constructor TfmeSelectPartition.Create(AOwner: TComponent);
 begin
   inherited;
-  FRemovableDevices := TStringList.Create();
-  SDUDiskPartitionsPanel1.OnChanged := SDUDiskPartitionsPanel1Changed ;
+  FRemovableDevices                 := TStringList.Create();
+  SDUDiskPartitionsPanel1.OnChanged := SDUDiskPartitionsPanel1Changed;
 end;
 
 destructor TfmeSelectPartition.Destroy();
@@ -315,8 +315,7 @@ begin
     // If synthetic layout, clear block captions
     if SDUDiskPartitionsPanel1.SyntheticDriveLayout then begin
       blk.Caption    := SDUParamSubstitute(RS_PARTITION,
-        [SDUDiskPartitionsPanel1.PartitionInfo[
-        i].PartitionNumber]);
+        [SDUDiskPartitionsPanel1.PartitionInfo[i].PartitionNumber]);
       blk.SubCaption := '';
     end;
 
@@ -344,8 +343,7 @@ begin
 
   actProperties.Visible := True;
   if (SDUDiskPartitionsPanel1.DiskNumber > NO_DISK) then begin
-    if (ckEntireDisk.Checked or not
-      (SDUDiskPartitionsPanel1.DriveLayoutInformationValid)
+    if (ckEntireDisk.Checked or not (SDUDiskPartitionsPanel1.DriveLayoutInformationValid)
       // Display msg for full disk if no partitions displayed
       ) then begin
       // actProperties.Visible already set to TRUE
@@ -470,9 +468,7 @@ procedure TfmeSelectPartition.NotifyChanged(Sender: TObject);
 begin
   UpdateErrorWarning();
   actProperties.Enabled := (ckEntireDisk.Checked and
-    (SDUDiskPartitionsPanel1.DiskNumber >=
-    0)) or
-    (not (ckEntireDisk.Checked) and
+    (SDUDiskPartitionsPanel1.DiskNumber >= 0)) or (not (ckEntireDisk.Checked) and
     // 0 is the entire disk, partitions start at 1
     (SDUDiskPartitionsPanel1.Selected >= 0));
 
@@ -516,7 +512,8 @@ begin
 
   if (SDUDiskPartitionsPanel1.DiskNumber >= 0) then begin
     if not (SDUDiskPartitionsPanel1.DriveLayoutInformationValid) then begin
-      msg     := SDUParamSubstitute(UNABLE_TO_GET_DISK_LAYOUT, [SDUDiskPartitionsPanel1.DiskNumber]);
+      msg     := SDUParamSubstitute(UNABLE_TO_GET_DISK_LAYOUT,
+        [SDUDiskPartitionsPanel1.DiskNumber]);
       isError := True;
     end else begin
       selectedDriveLetters := '';
@@ -534,7 +531,8 @@ begin
       if (SDUDiskPartitionsPanel1.Selected >= 0) then begin
         selectedDriveLetters :=
           SDUDiskPartitionsPanel1.DriveLetter[SDUDiskPartitionsPanel1.Selected];
-        partInfo             := SDUDiskPartitionsPanel1.PartitionInfo[SDUDiskPartitionsPanel1.Selected];
+        partInfo             :=
+          SDUDiskPartitionsPanel1.PartitionInfo[SDUDiskPartitionsPanel1.Selected];
         bootableFlag         := partInfo.BootIndicator;
         badPartitionNumber   := (partInfo.PartitionNumber = 0);
       end;
@@ -576,8 +574,7 @@ procedure TfmeSelectPartition.EnableDisableControls();
 begin
   SDUEnableControl(
     ckEntireDisk,
-    (not (IsCDROMTabSelected()) and
-    SDUDiskPartitionsPanel1.DriveLayoutInformationValid)
+    (not (IsCDROMTabSelected()) and SDUDiskPartitionsPanel1.DriveLayoutInformationValid)
     );
 
 end;
@@ -625,9 +622,8 @@ begin
     if ckEntireDisk.Checked then begin
       // Return entire disk size
       if SDUGetDiskGeometry(SDUDiskPartitionsPanel1.DiskNumber, diskGeometry) then begin
-        retval := diskGeometry.Cylinders.QuadPart *
-          diskGeometry.TracksPerCylinder * diskGeometry.SectorsPerTrack *
-          diskGeometry.BytesPerSector;
+        retval := diskGeometry.Cylinders.QuadPart * diskGeometry.TracksPerCylinder *
+          diskGeometry.SectorsPerTrack * diskGeometry.BytesPerSector;
       end;
 
     end else begin

@@ -5,7 +5,7 @@ unit CommonfrmOptions;
  // WWW:   http://www.FreeOTFE.org/
  //
  // -----------------------------------------------------------------------------
-  { TODO 1 -otdk -crefactor : TfmeOptions_PKCS11; frame is only used here - move into this dialog }
+ { TODO 1 -otdk -crefactor : TfmeOptions_PKCS11; frame is only used here - move into this dialog }
 
 interface
 
@@ -27,7 +27,7 @@ type
     pcOptions:           TPageControl;
     imgNoSaveWarning:    TImage;
     tsPKCS11:            TTabSheet;
-    fmeOptions_PKCS11: TfmeOptions_PKCS11;
+    fmeOptions_PKCS11:   TfmeOptions_PKCS11;
 
     procedure pbOKClick(Sender: TObject);
     procedure pbCancelClick(Sender: TObject);
@@ -63,9 +63,8 @@ uses
 {$IFDEF FREEOTFE_EXPLORER}
   FreeOTFEExplorerSettings,
 {$ENDIF}
-  SDUi18n,
-  SDUGeneral,
-  SDUDialogs;
+  SDUDialogs, SDUGeneral,
+  SDUi18n;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -107,10 +106,8 @@ begin
 
   case loc of
     slNone: retval     := SAVELOCATION_DO_NOT_SAVE;
-    slExeDir: retval   := SDUParamSubstitute(
-        SAVELOCATION_EXE_DIR,
-        [
-        Application.Title]);
+    slExeDir: retval   := SDUParamSubstitute(SAVELOCATION_EXE_DIR,
+        [Application.Title]);
     slProfile: retval  := SAVELOCATION_USER_PROFILE;
     slRegistry: retval := SAVELOCATION_REGISTRY;
     slCustom: retval   := SAVELOCATION_CUSTOMISED;
@@ -157,8 +154,7 @@ begin
     if (SDUOSVistaOrLater() and (newSettingsLocation = slExeDir)) then begin
       programFilesDir       := SDUGetSpecialFolderPath(SDU_CSIDL_PROGRAM_FILES);
       filename              := Settings.GetSettingsFilename(newSettingsLocation);
-      vistaProgFilesDirWarn := (Pos(uppercase(programFilesDir),
-        uppercase(filename)) > 0);
+      vistaProgFilesDirWarn := (Pos(uppercase(programFilesDir), uppercase(filename)) > 0);
     end;
 
     allOK := not (vistaProgFilesDirWarn);
@@ -168,13 +164,11 @@ begin
       // Don't do special processing on this message
       SDUDialogsStripSingleCRLF     := False;  // Don't do special processing on this message
       SDUMessageDlg(
-        SDUParamSubstitute(
-        _('Under Windows Vista, you cannot save your settings file anywhere under:' + SDUCRLF +
-        SDUCRLF + '%1' + SDUCRLF +
-        SDUCRLF +
-        'due to Vista''s security/mapping system.'),
-        [programFilesDir]) + SDUCRLF + SDUCRLF +
-        _(
+        SDUParamSubstitute(_(
+        'Under Windows Vista, you cannot save your settings file anywhere under:' +
+        SDUCRLF + SDUCRLF + '%1' + SDUCRLF + SDUCRLF +
+        'due to Vista''s security/mapping system.'), [programFilesDir]) +
+        SDUCRLF + SDUCRLF + _(
         'Please either select another location for storing your settings (e.g. your user profile), or move the DoxBox executable such that it is not stored underneath the directory shown above.'),
         mtWarning
         );
@@ -220,22 +214,21 @@ begin
   if allOK then begin
     // If settings aren't going to be saved, and they weren't saved previously,
     // warn user
-    if ((oldSettingsLocation = newSettingsLocation) and
-      (newSettingsLocation = slNone)) then begin
+    if ((oldSettingsLocation = newSettingsLocation) and (newSettingsLocation = slNone)) then
+    begin
       allOK := (SDUMessageDlg(_(
-        'You have not specified a location where DoxBox should save its settings to.') + SDUCRLF +
-        SDUCRLF + _(
-        'Although the settings entered will take effect, they will revert back to their defaults when DoxBox is exited.') +
+        'You have not specified a location where DoxBox should save its settings to.') +
         SDUCRLF + SDUCRLF + _(
+        'Although the settings entered will take effect, they will revert back to their defaults when DoxBox is exited.')
+        + SDUCRLF + SDUCRLF + _(
         'Do you wish to select a location in order to make your settings persistant?'),
-        mtWarning, [mbYes, mbNo],
-        0) = mrNo);
+        mtWarning, [mbYes, mbNo], 0) = mrNo);
     end // If the save settings location has been changed, and we previously
         // saved settings to a file, ask the user if they want to delete their
         // old settings file
     else
-    if ((oldSettingsLocation <> newSettingsLocation) and
-      (oldSettingsLocation <> slNone)) then begin
+    if ((oldSettingsLocation <> newSettingsLocation) and (oldSettingsLocation <> slNone)) then
+    begin
       if (newSettingsLocation = slNone) then begin
         msgSegment := _('You have opted not to save your settings');
       end else begin
@@ -246,31 +239,23 @@ begin
       // If settings were previously stored in a file, prompt user if they want
       // to delete it
       deleteOldLocation := True;
-      if ((oldSettingsLocation = slExeDir) or
-        (oldSettingsLocation = slProfile) or (oldSettingsLocation = slCustom))
-      then begin
-        deleteOldLocation := (SDUMessageDlg(
-          msgSegment + SDUCRLF +
-          SDUCRLF +
-          _(
-          'Would you like DoxBox to delete your previous settings file?') + SDUCRLF +
-          SDUCRLF +
-          _(
+      if ((oldSettingsLocation = slExeDir) or (oldSettingsLocation = slProfile) or
+        (oldSettingsLocation = slCustom)) then begin
+        deleteOldLocation := (SDUMessageDlg(msgSegment + SDUCRLF +
+          SDUCRLF + _(
+          'Would you like DoxBox to delete your previous settings file?') +
+          SDUCRLF + SDUCRLF + _(
           'Note: If you select "No" here, DoxBox may pick up your old settings the next time you start DoxBox'),
-          mtConfirmation,
-          [mbYes, mbNo], 0
-          ) = mrYes);
+          mtConfirmation, [mbYes, mbNo], 0) = mrYes);
       end;
 
       if deleteOldLocation then begin
         if not (Settings.DestroySettingsFile(oldSettingsLocation)) then begin
-          if ((oldSettingsLocation = slExeDir) or
-            (oldSettingsLocation = slProfile) or (oldSettingsLocation =
-            slCustom)) then begin
+          if ((oldSettingsLocation = slExeDir) or (oldSettingsLocation = slProfile) or
+            (oldSettingsLocation = slCustom)) then begin
             SDUMessageDlg(
-              SDUParamSubstitute(_('Your previous settings file stored at:' + SDUCRLF +
-              SDUCRLF + '%1' + SDUCRLF +
-              SDUCRLF +
+              SDUParamSubstitute(_('Your previous settings file stored at:' +
+              SDUCRLF + SDUCRLF + '%1' + SDUCRLF + SDUCRLF +
               'could not be deleted. Please remove this file manually.'),
               [Settings.GetSettingsFilename(oldSettingsLocation)]),
               mtInformation
@@ -278,10 +263,9 @@ begin
           end else
           if (oldSettingsLocation = slRegistry) then begin
             SDUMessageDlg(
-              SDUParamSubstitute(
-              _('Your previous settings file stored in the Windows registry under:' + SDUCRLF +
-              SDUCRLF + '%1' + SDUCRLF +
-              SDUCRLF +
+              SDUParamSubstitute(_(
+              'Your previous settings file stored in the Windows registry under:' + SDUCRLF +
+              SDUCRLF + '%1' + SDUCRLF + SDUCRLF +
               'could not be deleted. Please delete this registry key manually.'),
               [Settings.RegistryKey()]),
               mtInformation
@@ -290,23 +274,20 @@ begin
 
         end;
       end else begin
-        if ((oldSettingsLocation = slExeDir) or
-          (oldSettingsLocation = slProfile) or (oldSettingsLocation =
-          slCustom)) then begin
+        if ((oldSettingsLocation = slExeDir) or (oldSettingsLocation = slProfile) or
+          (oldSettingsLocation = slCustom)) then begin
           SDUMessageDlg(
-            SDUParamSubstitute(
-            _('Your previous settings will remain stored at:' + SDUCRLF + SDUCRLF +
-            '%1'),
+            SDUParamSubstitute(_('Your previous settings will remain stored at:' +
+            SDUCRLF + SDUCRLF + '%1'),
             [Settings.GetSettingsFilename(oldSettingsLocation)]),
             mtInformation
             );
         end else
         if (oldSettingsLocation = slRegistry) then begin
           SDUMessageDlg(
-            SDUParamSubstitute(
-            _('Your previous settings will remain stored in the Windows registry under:' + SDUCRLF +
-            SDUCRLF + '%1'),
-            [Settings.RegistryKey()]),
+            SDUParamSubstitute(_(
+            'Your previous settings will remain stored in the Windows registry under:' +
+            SDUCRLF + SDUCRLF + '%1'), [Settings.RegistryKey()]),
             mtInformation
             );
         end;
@@ -394,9 +375,7 @@ begin
 
   // Center "assocate with .box files" checkbox
   ckAssociateFiles.Caption := SDUParamSubstitute(
-    _('Associate %1 with ".box" &files'),
-    [
-    Application.Title]);
+    _('Associate %1 with ".box" &files'), [Application.Title]);
   SDUCenterControl(ckAssociateFiles, ccHorizontal);
 
   // Reposition the "Settings location" controls, bearing in mind the label
@@ -407,16 +386,13 @@ begin
   lblSettingsLocation.font.style := [fsBold];
 
   // Determine full width of label, combobox and warning image
-  maxWidth := (cbSettingsLocation.Width + CONTROL_MARGIN +
-    lblSettingsLocation.Width + CONTROL_MARGIN +
-    imgNoSaveWarning.Width);
+  maxWidth := (cbSettingsLocation.Width + CONTROL_MARGIN + lblSettingsLocation.Width +
+    CONTROL_MARGIN + imgNoSaveWarning.Width);
 
   lblSettingsLocation.left := (self.Width - maxWidth) div 2;
-  cbSettingsLocation.left  := (lblSettingsLocation.left +
-    lblSettingsLocation.Width +
+  cbSettingsLocation.left  := (lblSettingsLocation.left + lblSettingsLocation.Width +
     CONTROL_MARGIN);
-  imgNoSaveWarning.left    := (cbSettingsLocation.left +
-    cbSettingsLocation.Width +
+  imgNoSaveWarning.left    := (cbSettingsLocation.left + cbSettingsLocation.Width +
     CONTROL_MARGIN);
   // Call enable/disable controls to put the label in bold/clear the bold
   EnableDisableControls();
@@ -454,11 +430,8 @@ begin
   // leftmost one
   tsPKCS11.PageIndex := (pcOptions.PageCount - 1);
 
-  FOrigAssociateFiles      := SDUFileExtnIsRegCmd(
-    VOL_FILE_EXTN,
-    SHELL_VERB,
-    ExtractFilename(
-    ParamStr(0)));
+  FOrigAssociateFiles      := SDUFileExtnIsRegCmd(VOL_FILE_EXTN, SHELL_VERB,
+    ExtractFilename(ParamStr(0)));
   ckAssociateFiles.Checked := FOrigAssociateFiles;
 
   EnableDisableControls();
@@ -491,8 +464,7 @@ begin
   end;
 
   // Adjust "Save settings to:" label
-  lblSettingsLocation.Left := (cbSettingsLocation.left -
-    lblSettingsLocation.Width -
+  lblSettingsLocation.Left := (cbSettingsLocation.left - lblSettingsLocation.Width -
     CONTROL_MARGIN);
 
 end;

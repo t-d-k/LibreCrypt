@@ -79,14 +79,9 @@ resourcestring
 
 const
   ADVANCED_COLS_CYPHER: set of TGridColumn_Cypher =
-    [gccDriverGUID,
-    gccDriverDeviceName,
-    gccDriverUserModeName,
-    gccDriverKernelModeName,
-    gccCypherBlocksize,
-    gccCypherKeysizeRequired,
-    gccCypherGUID
-    ];
+    [gccDriverGUID, gccDriverDeviceName, gccDriverUserModeName,
+    gccDriverKernelModeName, gccCypherBlocksize, gccCypherKeysizeRequired,
+    gccCypherGUID];
 
 
 
@@ -117,8 +112,7 @@ procedure TfrmGridReport_Cypher.AddSubItem(col: TGridColumn_Cypher; item: TListI
 var
   dispValue: String;
 begin
-  if (not (IsColumnAdvanced(ColumnToColIdx(col))) or ckShowAdvanced.Checked) then
-  begin
+  if (not (IsColumnAdvanced(ColumnToColIdx(col))) or ckShowAdvanced.Checked) then begin
     dispValue := Value;
 
     if (col = gccCypherKeysizeUnderlying) then begin
@@ -158,8 +152,7 @@ begin
 
   AddCol('#');
   for i := low(TGridColumn_Cypher) to high(TGridColumn_Cypher) do begin
-    if (not (IsColumnAdvanced(ColumnToColIdx(i))) or ckShowAdvanced.Checked)
-    then begin
+    if (not (IsColumnAdvanced(ColumnToColIdx(i))) or ckShowAdvanced.Checked) then begin
       AddCol(GetColumnTitle(i));
     end;
   end;

@@ -57,14 +57,11 @@ var
 begin
   FSize := SDUGetFileSize(Filename);
 
-  FFileHandle := CreateFile(PChar(Filename),
-    (GENERIC_READ or GENERIC_WRITE),
+  FFileHandle := CreateFile(PChar(Filename), (GENERIC_READ or GENERIC_WRITE),
     //GENERIC_READ,
-    FILE_SHARE_READ, nil,
-    OPEN_EXISTING,
+    FILE_SHARE_READ, nil, OPEN_EXISTING,
     // (FILE_FLAG_RANDOM_ACCES or FILE_FLAG_NO_BUFFERING)
-    FILE_ATTRIBUTE_NORMAL, 0
-    );
+    FILE_ATTRIBUTE_NORMAL, 0);
   if (FFileHandle = INVALID_HANDLE_VALUE) then begin
     raise EPartitionUnableToOpen.Create('Unable to open partition file');
   end else begin

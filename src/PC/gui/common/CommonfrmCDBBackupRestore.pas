@@ -136,10 +136,9 @@ begin
   // Default to backup...
   DlgType := opBackup;
 
-  SelectDestFile.      OnChange := ControlChange;
-SelectDestFile.      SelectFor := fndOpen  ;
-SelectDestFile.      AllowPartitionSelect := True  ;
-
+  SelectDestFile.OnChange             := ControlChange;
+  SelectDestFile.SelectFor            := fndOpen;
+  SelectDestFile.AllowPartitionSelect := True;
 
 end;
 
@@ -200,8 +199,8 @@ begin
     srcSize := SDUGetFileSize(SrcFilename);
     if (srcSize <> (CRITICAL_DATA_LENGTH div 8)) then begin
       SDUMessageDlg(
-        _('The source file you specified does not appear to be the right size for a backup file') + SDUCRLF + SDUCRLF + _(
-        'Please check your settings and try again.'),
+        _('The source file you specified does not appear to be the right size for a backup file') +
+        SDUCRLF + SDUCRLF + _('Please check your settings and try again.'),
         mtError
         );
     end else begin
@@ -210,18 +209,11 @@ begin
       // We don't need this confirmation when BACKING UP - only when RESTORING
       // Backup is relativly safe as it backs up to a file which doesn't exist
       confirm := SDUMessageDlg(SDUParamSubstitute(_(
-        'Please confirm: Do you wish to restore the critial data block from backup file:'
-        +
-        SDUCRLF + SDUCRLF +
-        '%1' + SDUCRLF + SDUCRLF +
-        'Into the volume:' + SDUCRLF +
-        SDUCRLF + '%2' + SDUCRLF +
-        SDUCRLF +
-        'Starting from offset %3 in the volume?'),
-        [SrcFilename, DestFilename,
-        DestOffset]), mtConfirmation,
-        [mbYes, mbNo], 0
-        );
+        'Please confirm: Do you wish to restore the critial data block from backup file:' +
+        SDUCRLF + SDUCRLF + '%1' + SDUCRLF + SDUCRLF + 'Into the volume:' +
+        SDUCRLF + SDUCRLF + '%2' + SDUCRLF + SDUCRLF +
+        'Starting from offset %3 in the volume?'), [SrcFilename,
+        DestFilename, DestOffset]), mtConfirmation, [mbYes, mbNo], 0);
 
       if (confirm = mrYes) then begin
         allOK := True;
@@ -244,17 +236,13 @@ begin
 
   if (DlgType = opBackup) then begin
     if SanityCheckBackup() then begin
-      if OTFEFreeOTFE.BackupVolumeCriticalData(
-        SrcFilename,
-        SrcOffset,
-        DestFilename) then
-      begin
+      if OTFEFreeOTFE.BackupVolumeCriticalData(SrcFilename, SrcOffset,
+        DestFilename) then begin
         SDUMessageDlg(_('Backup operation completed successfully.'), mtInformation);
         allOK := True;
       end else begin
         SDUMessageDlg(
-          _('Backup operation failed.') + SDUCRLF + SDUCRLF +
-          USE_NOT_IN_USE,
+          _('Backup operation failed.') + SDUCRLF + SDUCRLF + USE_NOT_IN_USE,
           mtError
           );
       end;
@@ -264,15 +252,13 @@ begin
   end  // if (dlgType = opBackup) then
   else begin
     if SanityCheckRestore() then begin
-      if OTFEFreeOTFE.RestoreVolumeCriticalData(
-        SrcFilename, DestFilename,
+      if OTFEFreeOTFE.RestoreVolumeCriticalData(SrcFilename, DestFilename,
         DestOffset) then begin
         SDUMessageDlg(_('Restore operation completed successfully.'), mtInformation);
         allOK := True;
       end else begin
         SDUMessageDlg(
-          _('Restore operation failed.') + SDUCRLF + SDUCRLF +
-          USE_NOT_IN_USE,
+          _('Restore operation failed.') + SDUCRLF + SDUCRLF + USE_NOT_IN_USE,
           mtError
           );
       end;
@@ -314,11 +300,9 @@ begin
   // Src and dest must be specified, and different
   // Offsets must be 0 or +ve
   pbOK.Enabled :=
-    (SelectSrcFile.Filename <> '') and
-    (SelectDestFile.Filename <> '') and
+    (SelectSrcFile.Filename <> '') and (SelectDestFile.Filename <> '') and
     (SelectSrcFile.Filename <> SelectDestFile.Filename) and  // Silly!
-    (se64UnitOffsetSrc.Value >= 0) and
-    (se64UnitOffsetDest.Value >= 0);
+    (se64UnitOffsetSrc.Value >= 0) and (se64UnitOffsetDest.Value >= 0);
 
 end;
 

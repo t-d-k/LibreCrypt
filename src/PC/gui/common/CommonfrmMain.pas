@@ -13,15 +13,15 @@ interface
 
 uses
   //delphi
-  ActnList, SDUSystemTrayIcon, Shredder, Spin64, StdCtrls, SysUtils, ToolWin,
-  Windows, XPMan, ExtCtrls, Forms, Graphics, Grids, ImgList, Menus, Messages,
-  Buttons, Classes, ComCtrls, Controls, Dialogs,
-
-  //freeotfe
+  ActnList, Buttons, Classes, ComCtrls, Controls, Dialogs,
+  ExtCtrls, Forms, Graphics, Grids, ImgList, Menus, Messages,
+  SDUSystemTrayIcon, Shredder, Spin64, StdCtrls, SysUtils, ToolWin,
+  Windows, XPMan, //freeotfe
+  CommonfrmCDBBackupRestore, CommonSettings,
   MouseRNGDialog_U, OTFE_U,
   OTFEFreeOTFE_DriverControl,
-  OTFEFreeOTFE_U, OTFEFreeOTFEBase_U, CommonfrmCDBBackupRestore, CommonSettings,
-  pkcs11_library, SDUDialogs, SDUForms, SDUMRUList, SDUMultimediaKeys, SDUGeneral;
+  OTFEFreeOTFE_U, OTFEFreeOTFEBase_U, pkcs11_library, SDUDialogs, SDUForms,
+  SDUGeneral, SDUMRUList, SDUMultimediaKeys;
 
 const
   // Command line parameters...
@@ -74,7 +74,7 @@ type
     View1:                    TMenuItem;
     miRefresh:                TMenuItem;
     OpenDialog:               TSDUOpenDialog;
-    miHelp: TMenuItem;
+    miHelp:                   TMenuItem;
     About1:                   TMenuItem;
     N4:                       TMenuItem;
     miLinuxVolume:            TMenuItem;
@@ -133,9 +133,9 @@ type
     actMountHidden:           TAction;
     Mountfilehidden1:         TMenuItem;
     Label1:                   TLabel;
-    miDev: TMenuItem;
-    actTest: TAction;
-    DoTests1: TMenuItem;
+    miDev:                    TMenuItem;
+    actTest:                  TAction;
+    DoTests1:                 TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure miCreateKeyfileClick(Sender: TObject);
     procedure miChangePasswordClick(Sender: TObject);
@@ -283,13 +283,13 @@ type
     procedure SetStatusBarToHint(Sender: TObject);
     function EnsureOTFEComponentActive: Boolean;
 
-    function DoTests: boolean;VIRTUAL; ABSTRACT;
+    function DoTests: Boolean; VIRTUAL; ABSTRACT;
 
 
   PUBLIC
     constructor Create(AOwner: TComponent); OVERRIDE;
 
-//    function OTFEFreeOTFE(): TOTFEFreeOTFEBase; VIRTUAL;
+    //    function OTFEFreeOTFE(): TOTFEFreeOTFEBase; VIRTUAL;
 
     procedure WMUserPostShow(var msg: TWMEndSession); MESSAGE WM_USER_POST_SHOW;
 
@@ -327,20 +327,20 @@ const
 
   // Command line parameters...
   // CMDLINE_SETTINGSFILE defined in "interface" section; used in HandleCommandLineOpts fn
-  CMDLINE_MOUNT          = 'mount';
-  CMDLINE_FREEOTFE       = 'doxbox';
-  CMDLINE_LINUX          = 'linux';
-  CMDLINE_VOLUME         = 'volume';
-  CMDLINE_READONLY       = 'readonly';
-  CMDLINE_OFFSET         = 'offset';
-  CMDLINE_NOCDBATOFFSET  = 'noCDBatoffset';
-  CMDLINE_PASSWORD       = 'password';
-  CMDLINE_TYPE           = 'type';
-  CMDLINE_FILENAME       = 'filename';
-  CMDLINE_KEYFILE        = 'keyfile';
-  CMDLINE_KEYFILEISASCII = 'keyfileisascii';
-  CMDLINE_KEYFILENEWLINE = 'keyfilenewline';
-  CMDLINE_LESFILE        = 'lesfile';
+  CMDLINE_MOUNT           = 'mount';
+  CMDLINE_FREEOTFE        = 'doxbox';
+  CMDLINE_LINUX           = 'linux';
+  CMDLINE_VOLUME          = 'volume';
+  CMDLINE_READONLY        = 'readonly';
+  CMDLINE_OFFSET          = 'offset';
+  CMDLINE_NOCDBATOFFSET   = 'noCDBatoffset';
+  CMDLINE_PASSWORD        = 'password';
+  CMDLINE_TYPE            = 'type';
+  CMDLINE_FILENAME        = 'filename';
+  CMDLINE_KEYFILE         = 'keyfile';
+  CMDLINE_KEYFILEISASCII  = 'keyfileisascii';
+  CMDLINE_KEYFILENEWLINE  = 'keyfilenewline';
+  CMDLINE_LESFILE         = 'lesfile';
   CMDLINE_ENABLE_DEV_MENU = 'dev_menu';  //enable dev menu
 
   // Toolbar button height is set to the image size + this value
@@ -393,22 +393,21 @@ uses
   FreeOTFEExplorerSettings,
 {$ENDIF}
   // freeotfe
-  SDUGraphics,
   CommonfrmAbout,
-  SDUi18n,
   CommonfrmCDBDump_Base,
-  CommonfrmCDBDump_LUKS,
   CommonfrmCDBDump_FreeOTFE,
+  CommonfrmCDBDump_LUKS,
+  CommonfrmGridReport_Cypher,
+  CommonfrmGridReport_Hash,
   CommonfrmInstallOnUSBDrive,
   CommonfrmVersionCheck,
   OTFEConsts_U,
   OTFEFreeOTFE_DriverAPI,
-  OTFEFreeOTFE_VolumeFileAPI,
-  SDUFileIterator_U,
-  CommonfrmGridReport_Hash,
-  CommonfrmGridReport_Cypher,
+  OTFEFreeOTFE_PKCS11, OTFEFreeOTFE_VolumeFileAPI,
   pkcs11_slot,
-  OTFEFreeOTFE_PKCS11;
+  SDUFileIterator_U,
+  SDUGraphics,
+  SDUi18n;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -824,7 +823,7 @@ end;
 
 procedure TfrmMain.EnableDisableControls();
 begin
-  actPKCS11TokenManagement.Enabled       :=  Settings.OptPKCS11Enable;
+  actPKCS11TokenManagement.Enabled := Settings.OptPKCS11Enable;
 
   // The FreeOTFE object may not be active...
   actFreeOTFENew.Enabled       := fOtfeFreeOtfeBase.Active;
@@ -843,7 +842,7 @@ begin
   // plus anything below it, we disable the "Copy FreeOTFE to..." menuitem if
   // *this* application is running from a root dir.
   // >3 because the root'll be "X:\"; 3 chars long
-  actInstallOnUSBDrive.Enabled :=   (length(ExtractFilePath(ParamStr(0))) > 3);
+  actInstallOnUSBDrive.Enabled := (length(ExtractFilePath(ParamStr(0))) > 3);
 end;
 
 procedure TfrmMain.SetStatusBarText(statusText: String);
@@ -898,7 +897,8 @@ begin
   end;
 
   // Old driver warnings
-  if fOtfeFreeOtfeBase.Active then     ShowOldDriverWarnings();
+  if fOtfeFreeOtfeBase.Active then
+    ShowOldDriverWarnings();
 
   Result := fOtfeFreeOtfeBase.Active;
 end;
@@ -1338,7 +1338,7 @@ begin
       tmpPKCS11Lib             := TPKCS11Library.Create(Settings.OptPKCS11Library);
       tmpPKCS11Lib.OnSlotEvent := PKCS11SlotEvent;
       tmpPKCS11Lib.Initialize();
-      fPkcs11Library              := tmpPKCS11Lib;
+      fPkcs11Library                  := tmpPKCS11Lib;
       fOtfeFreeOtfeBase.PKCS11Library := fPkcs11Library;
     except
       on E: Exception do begin
@@ -1438,10 +1438,10 @@ begin
   end;
 end;
 
-//function TfrmMain.OTFEFreeOTFE(): TOTFEFreeOTFEBase;
-//begin
-//  Result := fOtfeFreeOtfeBase;
-//end;
+ //function TfrmMain.OTFEFreeOTFE(): TOTFEFreeOTFEBase;
+ //begin
+ //  Result := fOtfeFreeOtfeBase;
+ //end;
 
 procedure TfrmMain.StartupUpdateCheck();
 const
@@ -1508,7 +1508,8 @@ end;
 
 procedure TfrmMain.WMUserPostShow(var msg: TWMEndSession);
 begin
-  if not fwmUserPostShowCalledAlready then     StartupUpdateCheck();
+  if not fwmUserPostShowCalledAlready then
+    StartupUpdateCheck();
 
   fwmUserPostShowCalledAlready := True;
 end;
@@ -1530,7 +1531,8 @@ function TfrmMain.HandleCommandLineOpts_EnableDevMenu(): eCmdLine_Exit;
 begin
   Result := ceSUCCESS;
 
-  if SDUCommandLineSwitch(CMDLINE_ENABLE_DEV_MENU) then miDev.Visible := true;
+  if SDUCommandLineSwitch(CMDLINE_ENABLE_DEV_MENU) then
+    miDev.Visible := True;
 end;
 
  // Handle "/mount" command line
@@ -1665,30 +1667,36 @@ begin
 
         if fileOK then begin
           if SDUCommandLineSwitch(CMDLINE_FREEOTFE) then begin
-            mountAs := fOtfeFreeOtfeBase.MountFreeOTFE(volume, ReadOnly, useKeyfile, usePassword,
-              useOffset, useNoCDBAtOffset, useSilent, useSaltLength, useKeyIterations);
+            mountAs := fOtfeFreeOtfeBase.MountFreeOTFE(volume, ReadOnly,
+              useKeyfile, usePassword, useOffset, useNoCDBAtOffset, useSilent,
+              useSaltLength, useKeyIterations);
           end else
           if SDUCommandLineSwitch(CMDLINE_LINUX) then begin
-            mountAs := fOtfeFreeOtfeBase.MountLinux(volume, ReadOnly, useLESFile, usePassword,
-              useKeyfile, useKeyfileIsASCII, useKeyfileNewlineType, useOffset, useSilent);
+            mountAs := fOtfeFreeOtfeBase.MountLinux(volume, ReadOnly, useLESFile,
+              usePassword, useKeyfile, useKeyfileIsASCII, useKeyfileNewlineType,
+              useOffset, useSilent);
           end else
           if (useLESFile <> '') then begin
-            mountAs := fOtfeFreeOtfeBase.MountLinux(volume, ReadOnly, useLESFile, usePassword,
-              useKeyfile, useKeyfileIsASCII, useKeyfileNewlineType, useOffset, useSilent);
+            mountAs := fOtfeFreeOtfeBase.MountLinux(volume, ReadOnly, useLESFile,
+              usePassword, useKeyfile, useKeyfileIsASCII, useKeyfileNewlineType,
+              useOffset, useSilent);
           end else
           if (useKeyfile <> '') then begin
             // If a keyfile was specified, we assume it's a FreeOTFE volume
             // (Strictly speaking, it could be a LUKS volume, but...)
-            mountAs := fOtfeFreeOtfeBase.MountFreeOTFE(volume, ReadOnly, useKeyfile, usePassword,
-              useOffset, useNoCDBAtOffset, useSilent, useSaltLength, useKeyIterations);
+            mountAs := fOtfeFreeOtfeBase.MountFreeOTFE(volume, ReadOnly,
+              useKeyfile, usePassword, useOffset, useNoCDBAtOffset, useSilent,
+              useSaltLength, useKeyIterations);
           end else
           if (Settings.OptDragDropFileType = ftFreeOTFE) then begin
-            mountAs := fOtfeFreeOtfeBase.MountFreeOTFE(volume, ReadOnly, useKeyfile, usePassword,
-              useOffset, useNoCDBAtOffset, useSilent, useSaltLength, useKeyIterations);
+            mountAs := fOtfeFreeOtfeBase.MountFreeOTFE(volume, ReadOnly,
+              useKeyfile, usePassword, useOffset, useNoCDBAtOffset, useSilent,
+              useSaltLength, useKeyIterations);
           end else
           if (Settings.OptDragDropFileType = ftLinux) then begin
-            mountAs := fOtfeFreeOtfeBase.MountLinux(volume, ReadOnly, useLESFile, usePassword,
-              useKeyfile, useKeyfileIsASCII, useKeyfileNewlineType, useOffset, useSilent);
+            mountAs := fOtfeFreeOtfeBase.MountLinux(volume, ReadOnly, useLESFile,
+              usePassword, useKeyfile, useKeyfileIsASCII, useKeyfileNewlineType,
+              useOffset, useSilent);
           end else begin
             mountAs := fOtfeFreeOtfeBase.Mount(volume, ReadOnly);
           end;

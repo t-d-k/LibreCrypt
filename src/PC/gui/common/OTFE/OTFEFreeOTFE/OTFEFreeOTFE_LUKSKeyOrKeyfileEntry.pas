@@ -3,34 +3,34 @@ unit OTFEFreeOTFE_LUKSKeyOrKeyfileEntry;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, StdCtrls, 
-  //doxbox
-     SDUStdCtrls, SDUFrames, SDUFilenameEdit_U, ComCtrls,
-  PasswordRichEdit, OTFEFreeOTFE_PasswordRichEdit, SDUDropFiles,
-  OTFEFreeOTFEBase_U,
-  SDUGeneral;
+  Classes, Controls, Dialogs, Forms,
+  Graphics, Messages, StdCtrls,
+  SysUtils, Variants, Windows, //doxbox
+  ComCtrls,
+  OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFEBase_U,
+  PasswordRichEdit, SDUDropFiles,
+  SDUFilenameEdit_U, SDUFrames, SDUGeneral, SDUStdCtrls;
 
 type
-  TOTFEFreeOTFELUKSKeyOrKeyfileEntry = class(TFrame)
+  TOTFEFreeOTFELUKSKeyOrKeyfileEntry = class (TFrame)
     lblTreatNewlineAsEOF_1: TLabel;
-    preUserKey: TOTFEFreeOTFE_PasswordRichEdit;
-    rbKeyFromUser: TRadioButton;
-    rbKeyFromKeyfile: TRadioButton;
-    feKeyfile: TSDUFilenameEdit;
+    preUserKey:             TOTFEFreeOTFE_PasswordRichEdit;
+    rbKeyFromUser:          TRadioButton;
+    rbKeyFromKeyfile:       TRadioButton;
+    feKeyfile:              TSDUFilenameEdit;
     ckKeyfileContainsASCII: TSDUCheckBox;
-    cbNewlineType: TComboBox;
-    SDUDropFiles_Keyfile: TSDUDropFiles;
+    cbNewlineType:          TComboBox;
+    SDUDropFiles_Keyfile:   TSDUDropFiles;
     lblTreatNewlineAsEOF_2: TLabel;
     procedure rbKeyFromClick(Sender: TObject);
     procedure feKeyfileChange(Sender: TObject);
     procedure ckKeyfileContainsASCIIClick(Sender: TObject);
     procedure preUserKeyChange(Sender: TObject);
-    procedure SDUDropFiles_KeyfileFileDrop(Sender: TObject; DropItem: string;
+    procedure SDUDropFiles_KeyfileFileDrop(Sender: TObject; DropItem: String;
       DropPoint: TPoint);
-  private
+  PRIVATE
     procedure PopulateNewlineType();
-  public
+  PUBLIC
     FreeOTFEObj: TOTFEFreeOTFEBase;
 
     procedure Initialize();
@@ -38,17 +38,17 @@ type
 
     procedure EnableDisableControls();
 
-    function  GetKey(var userKey: PasswordString): boolean;
-    function  GetKeyRaw(var userKey: string): boolean;
-    function  SetKey(userKey: PasswordString): boolean;
-    function  SetKeyfile(filename: string): boolean;
-    function  GetKeyfile(var filename: string): boolean;
-    function  GetKeyfileIsASCII(var isASCII: boolean): boolean;
-    function  SetKeyfileIsASCII(isASCII: boolean): boolean;
-    function  GetKeyfileNewlineType(var nlType: TSDUNewline): boolean;
-    function  SetKeyfileNewlineType(nlType: TSDUNewline): boolean;
+    function GetKey(var userKey: PasswordString): Boolean;
+    function GetKeyRaw(var userKey: String): Boolean;
+    function SetKey(userKey: PasswordString): Boolean;
+    function SetKeyfile(filename: String): Boolean;
+    function GetKeyfile(var filename: String): Boolean;
+    function GetKeyfileIsASCII(var isASCII: Boolean): Boolean;
+    function SetKeyfileIsASCII(isASCII: Boolean): Boolean;
+    function GetKeyfileNewlineType(var nlType: TSDUNewline): Boolean;
+    function SetKeyfileNewlineType(nlType: TSDUNewline): Boolean;
 
-    function  KeyIsUserEntered(): boolean;
+    function KeyIsUserEntered(): Boolean;
 
     procedure CursorToEndOfPassword();
   end;
@@ -66,14 +66,14 @@ end;
 
 procedure TOTFEFreeOTFELUKSKeyOrKeyfileEntry.feKeyfileChange(Sender: TObject);
 begin
-  rbKeyFromKeyfile.checked := TRUE;
+  rbKeyFromKeyfile.Checked := True;
   EnableDisableControls();
 
 end;
 
 procedure TOTFEFreeOTFELUKSKeyOrKeyfileEntry.preUserKeyChange(Sender: TObject);
 begin
-  rbKeyFromUser.checked := TRUE;
+  rbKeyFromUser.Checked := True;
   EnableDisableControls();
 
 end;
@@ -84,8 +84,8 @@ begin
 
 end;
 
-procedure TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SDUDropFiles_KeyfileFileDrop(
-  Sender: TObject; DropItem: string; DropPoint: TPoint);
+procedure TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SDUDropFiles_KeyfileFileDrop(Sender: TObject;
+  DropItem: String; DropPoint: TPoint);
 begin
   feKeyfile.Filename := DropItem;
   EnableDisableControls();
@@ -98,10 +98,13 @@ end;
 
 procedure TOTFEFreeOTFELUKSKeyOrKeyfileEntry.EnableDisableControls();
 begin
-  SDUEnableControl(ckKeyfileContainsASCII, rbKeyFromKeyfile.checked);
-  SDUEnableControl(lblTreatNewlineAsEOF_1, (rbKeyFromKeyfile.checked and ckKeyfileContainsASCII.checked));
-  SDUEnableControl(cbNewlineType,          (rbKeyFromKeyfile.checked and ckKeyfileContainsASCII.checked));
-  SDUEnableControl(lblTreatNewlineAsEOF_2, (rbKeyFromKeyfile.checked and ckKeyfileContainsASCII.checked));
+  SDUEnableControl(ckKeyfileContainsASCII, rbKeyFromKeyfile.Checked);
+  SDUEnableControl(lblTreatNewlineAsEOF_1, (rbKeyFromKeyfile.Checked and
+    ckKeyfileContainsASCII.Checked));
+  SDUEnableControl(cbNewlineType, (rbKeyFromKeyfile.Checked and
+    ckKeyfileContainsASCII.Checked));
+  SDUEnableControl(lblTreatNewlineAsEOF_2, (rbKeyFromKeyfile.Checked and
+    ckKeyfileContainsASCII.Checked));
 
 end;
 
@@ -110,10 +113,9 @@ var
   currNewline: TSDUNewline;
 begin
   cbNewlineType.Items.Clear();
-  for currNewline:=low(TSDUNewline) to high(TSDUNewline) do
-    begin
+  for currNewline := low(TSDUNewline) to high(TSDUNewline) do begin
     cbNewlineType.Items.Add(SDUNEWLINE_TITLE[currNewline]);
-    end;
+  end;
 
 end;
 
@@ -124,16 +126,16 @@ begin
   feKeyfile.OpenDialog.Options := feKeyfile.OpenDialog.Options + [ofDontAddToRecent];
   feKeyfile.SaveDialog.Options := feKeyfile.SaveDialog.Options + [ofDontAddToRecent];
 
-  SDUDropFiles_Keyfile.Active := TRUE;
+  SDUDropFiles_Keyfile.Active := True;
 
 end;
 
 procedure TOTFEFreeOTFELUKSKeyOrKeyfileEntry.DefaultOptions();
 begin
-  preUserKey.Plaintext := TRUE;
+  preUserKey.Plaintext   := True;
   // Linux volumes CAN NOT have newlines in the user's password
-  preUserKey.WantReturns := FALSE;
-  preUserKey.WordWrap := TRUE;
+  preUserKey.WantReturns := False;
+  preUserKey.WordWrap    := True;
   preUserKey.Lines.Clear();
   preUserKey.PasswordChar := FreeOTFEObj.PasswordChar;
   preUserKey.WantReturns  := FreeOTFEObj.AllowNewlinesInPasswords;
@@ -142,105 +144,99 @@ begin
   SetKeyfileIsASCII(LINUX_KEYFILE_DEFAULT_IS_ASCII);
   SetKeyfileNewlineType(LINUX_KEYFILE_DEFAULT_NEWLINE);
 
-  rbKeyFromUser.checked := TRUE;
+  rbKeyFromUser.Checked := True;
 
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKeyRaw(var userKey: string): boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKeyRaw(var userKey: String): Boolean;
 begin
   userKey := preUserkey.Text;
-  Result := TRUE;
+  Result  := True;
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKey(var userKey: PasswordString): boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKey(var userKey: PasswordString): Boolean;
 var
-  retval: boolean;
-  keyfileIsASCII: boolean;
+  retval:             Boolean;
+  keyfileIsASCII:     Boolean;
   keyfileNewlineType: TSDUNewline;
 begin
-  retval := FALSE;
+  retval := False;
 
-  if rbKeyFromUser.checked then
-    begin
+  if rbKeyFromUser.Checked then begin
     { TODO 1 -otdk -cfix : warn user about losing unicde chars }
     userKey := preUserkey.Text;
-    retval := TRUE;
-    end
-  else
-    begin
-    if (feKeyfile.Filename <> '') then
-      begin
+    retval  := True;
+  end else begin
+    if (feKeyfile.Filename <> '') then begin
       GetKeyfileIsASCII(keyfileIsASCII);
       GetKeyfileNewlineType(keyfileNewlineType);
 
       retval := FreeOTFEObj.ReadLUKSKeyFromFile(
-                                    feKeyfile.Filename,
-                                    keyfileIsASCII,
-                                    keyfileNewlineType,
-                                    userKey
-                                   );
-      end;
+        feKeyfile.Filename,
+        keyfileIsASCII,
+        keyfileNewlineType,
+        userKey);
     end;
+  end;
 
   Result := retval;
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SetKey(userKey: PasswordString): boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SetKey(userKey: PasswordString): Boolean;
 begin
-  preUserkey.Text :=userKey;
-  Result := TRUE;
+  preUserkey.Text := userKey;
+  Result          := True;
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SetKeyfile(filename: string): boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SetKeyfile(filename: String): Boolean;
 begin
   feKeyfile.Filename := filename;
-  Result := TRUE;
+  Result             := True;
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKeyfile(var filename: string): boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKeyfile(var filename: String): Boolean;
 begin
   filename := feKeyfile.Filename;
-  Result := TRUE;
+  Result   := True;
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKeyfileIsASCII(var isASCII: boolean): boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKeyfileIsASCII(var isASCII: Boolean): Boolean;
 begin
-  isASCII := ckKeyfileContainsASCII.checked;
-  Result := TRUE;
+  isASCII := ckKeyfileContainsASCII.Checked;
+  Result  := True;
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SetKeyfileIsASCII(isASCII: boolean): boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SetKeyfileIsASCII(isASCII: Boolean): Boolean;
 begin
-  ckKeyfileContainsASCII.checked := isASCII;
-  Result := TRUE;
+  ckKeyfileContainsASCII.Checked := isASCII;
+  Result                         := True;
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKeyfileNewlineType(var nlType: TSDUNewline): boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKeyfileNewlineType(
+  var nlType: TSDUNewline): Boolean;
 var
   currNewline: TSDUNewline;
-  allOK: boolean;
+  allOK:       Boolean;
 begin
-  allOK := FALSE;
+  allOK := False;
 
-  for currNewline:=low(TSDUNewline) to high(TSDUNewline) do
-    begin
-    if (cbNewlineType.Items[cbNewlineType.ItemIndex] = SDUNEWLINE_TITLE[currNewline]) then
-      begin
+  for currNewline := low(TSDUNewline) to high(TSDUNewline) do begin
+    if (cbNewlineType.Items[cbNewlineType.ItemIndex] = SDUNEWLINE_TITLE[currNewline]) then begin
       nlType := currNewline;
-      allOK := TRUE;
+      allOK  := True;
       break;
-      end;
     end;
+  end;
 
   Result := allOK;
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SetKeyfileNewlineType(nlType: TSDUNewline): boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SetKeyfileNewlineType(nlType: TSDUNewline): Boolean;
 var
-  idx: integer;
-  allOK: boolean;
+  idx:   Integer;
+  allOK: Boolean;
 begin
-  idx := cbNewlineType.Items.IndexOf(SDUNEWLINE_TITLE[nlType]);
+  idx                     := cbNewlineType.Items.IndexOf(SDUNEWLINE_TITLE[nlType]);
   cbNewlineType.ItemIndex := idx;
 
   allOK := (idx >= 0);
@@ -248,9 +244,9 @@ begin
   Result := allOK;
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.KeyIsUserEntered(): boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.KeyIsUserEntered(): Boolean;
 begin
-  Result:= rbKeyFromUser.checked;
+  Result := rbKeyFromUser.Checked;
 end;
 
 procedure TOTFEFreeOTFELUKSKeyOrKeyfileEntry.CursorToEndOfPassword();
@@ -259,5 +255,4 @@ begin
   preUserKey.SelStart := length(preUserKey.Text);
 end;
 
-END.
-
+end.

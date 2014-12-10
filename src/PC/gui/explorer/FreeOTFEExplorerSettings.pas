@@ -12,9 +12,9 @@ interface
 
 uses
   Classes, // Required for TShortCut
-  IniFiles,
   ComCtrls,
   CommonSettings,
+  IniFiles,
   Shredder;
 
 {$IFDEF _NEVER_DEFINED}
@@ -39,9 +39,7 @@ resourcestring
 
 const
   DefaultStoreOpTitlePtr: array [TDefaultStoreOp] of Pointer =
-    (@DEFAULT_STORE_OP_PROMPT,
-    @DEFAULT_STORE_OP_COPY,
-    @DEFAULT_STORE_OP_MOVE
+    (@DEFAULT_STORE_OP_PROMPT, @DEFAULT_STORE_OP_COPY, @DEFAULT_STORE_OP_MOVE
     );
 
 type
@@ -54,8 +52,7 @@ resourcestring
 
 const
   MoveDeletionMethodTitlePtr: array [TMoveDeletionMethod] of Pointer =
-    (@MOVE_DELETION_METHOD_PROMPT,
-    @MOVE_DELETION_METHOD_DELETE,
+    (@MOVE_DELETION_METHOD_PROMPT, @MOVE_DELETION_METHOD_DELETE,
     @MOVE_DELETION_METHOD_OVERWRITE
     );
 
@@ -125,12 +122,12 @@ implementation
 uses
   Windows,   // Required to get rid of compiler hint re DeleteFile
   SysUtils,  // Required for ChangeFileExt, DeleteFile
-  Registry,
   Dialogs,
-  SDUi18n,
-  SDUGeneral,
+  Menus, Registry,
   SDUDialogs,
-  Menus,   // Required for ShortCutToText and TextToShortCut
+  SDUGeneral,
+  SDUi18n,
+           // Required for ShortCutToText and TextToShortCut
   ShlObj;  // Required for CSIDL_PERSONAL
 
 const
@@ -236,8 +233,7 @@ begin
   OptShowHiddenItems                  :=
     iniFile.ReadBool(SECTION_GENERAL, OPT_SHOWHIDDENITEMS, DFLT_OPT_SHOWHIDDENITEMS);
   OptHideKnownFileExtns               :=
-    iniFile.ReadBool(SECTION_GENERAL, OPT_HIDEKNOWNFILEEXTNS,
-    DFLT_OPT_HIDEKNOWNFILEEXTNS);
+    iniFile.ReadBool(SECTION_GENERAL, OPT_HIDEKNOWNFILEEXTNS, DFLT_OPT_HIDEKNOWNFILEEXTNS);
   OptDefaultStoreOp                   :=
     TDefaultStoreOp(iniFile.ReadInteger(SECTION_GENERAL, OPT_DEFAULTSTOREOP,
     Ord(DFLT_OPT_DEFAULTSTOREOP)));
@@ -248,8 +244,7 @@ begin
     TShredMethod(iniFile.ReadInteger(SECTION_GENERAL, OPT_OVERWRITEMETHOD,
     Ord(DFLT_OPT_OVERWRITEMETHOD)));
   OptOverwritePasses                  :=
-    iniFile.ReadInteger(SECTION_GENERAL, OPT_OVERWRITEPASSES,
-    DFLT_OPT_OVERWRITEPASSES);
+    iniFile.ReadInteger(SECTION_GENERAL, OPT_OVERWRITEPASSES, DFLT_OPT_OVERWRITEPASSES);
   OptPreserveTimestampsOnStoreExtract :=
     iniFile.ReadBool(SECTION_GENERAL, OPT_PRESERVETIMESTAMPSONSTOREEXTRACT,
     DFLT_OPT_PRESERVETIMESTAMPSONSTOREEXTRACT);
@@ -258,29 +253,22 @@ begin
   OptStoreLayout             :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_STORELAYOUT, DFLT_OPT_STORELAYOUT);
   OptMainWindowLayout        :=
-    iniFile.ReadString(SECTION_LAYOUT, OPT_MAINWINDOWLAYOUT,
-    DFLT_OPT_MAINWINDOWLAYOUT);
+    iniFile.ReadString(SECTION_LAYOUT, OPT_MAINWINDOWLAYOUT, DFLT_OPT_MAINWINDOWLAYOUT);
   OptShowToolbarVolume       :=
-    iniFile.ReadBool(SECTION_LAYOUT, OPT_SHOWTOOLBARVOLUME,
-    DFLT_OPT_SHOWTOOLBARVOLUME);
+    iniFile.ReadBool(SECTION_LAYOUT, OPT_SHOWTOOLBARVOLUME, DFLT_OPT_SHOWTOOLBARVOLUME);
   OptShowToolbarExplorer     :=
-    iniFile.ReadBool(SECTION_LAYOUT, OPT_SHOWTOOLBAREXPLORER,
-    DFLT_OPT_SHOWTOOLBAREXPLORER);
+    iniFile.ReadBool(SECTION_LAYOUT, OPT_SHOWTOOLBAREXPLORER, DFLT_OPT_SHOWTOOLBAREXPLORER);
   OptToolbarVolumeLarge      :=
-    iniFile.ReadBool(SECTION_LAYOUT, OPT_TOOLBARVOLUMELARGE,
-    DFLT_OPT_TOOLBARVOLUMELARGE);
+    iniFile.ReadBool(SECTION_LAYOUT, OPT_TOOLBARVOLUMELARGE, DFLT_OPT_TOOLBARVOLUMELARGE);
   OptToolbarVolumeCaptions   :=
-    iniFile.ReadBool(SECTION_LAYOUT, OPT_TOOLBARVOLUMECAPTIONS,
-    DFLT_OPT_TOOLBARVOLUMECAPTIONS);
+    iniFile.ReadBool(SECTION_LAYOUT, OPT_TOOLBARVOLUMECAPTIONS, DFLT_OPT_TOOLBARVOLUMECAPTIONS);
   OptToolbarExplorerLarge    :=
-    iniFile.ReadBool(SECTION_LAYOUT, OPT_TOOLBAREXPLORERLARGE,
-    DFLT_OPT_TOOLBAREXPLORERLARGE);
+    iniFile.ReadBool(SECTION_LAYOUT, OPT_TOOLBAREXPLORERLARGE, DFLT_OPT_TOOLBAREXPLORERLARGE);
   OptToolbarExplorerCaptions :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_TOOLBAREXPLORERCAPTIONS,
     DFLT_OPT_TOOLBAREXPLORERCAPTIONS);
   OptExplorerBarWidth        :=
-    iniFile.ReadInteger(SECTION_LAYOUT, OPT_EXPLORERBARWIDTH,
-    DFLT_OPT_EXPLORERBARWIDTH);
+    iniFile.ReadInteger(SECTION_LAYOUT, OPT_EXPLORERBARWIDTH, DFLT_OPT_EXPLORERBARWIDTH);
   OptShowAddressBar          :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_SHOWADDRESSBAR, DFLT_OPT_SHOWADDRESSBAR);
   OptShowExplorerBar         :=

@@ -3,11 +3,11 @@ unit FreeOTFEExplorerfrmOverwritePrompt;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls,
-  SDUForms,
-  FreeOTFEExplorerSettings,          // Required for TMoveDeletionMethod
-  FreeOTFEExplorerfrmMain, ExtCtrls; // Required for TFExplOperation
+  Classes, Controls, Dialogs, Forms,
+  FreeOTFEExplorerSettings, Graphics, Messages, SDUForms,
+  StdCtrls,
+  SysUtils, Variants, Windows,       // Required for TMoveDeletionMethod
+  ExtCtrls, FreeOTFEExplorerfrmMain; // Required for TFExplOperation
 
 type
   TfrmOverwritePrompt = class (TSDUForm)

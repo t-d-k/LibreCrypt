@@ -283,8 +283,8 @@ begin
   FilesCount     := 0;
 
   // Short circuit...
-  if ((ExtractFilename(Path) = DIR_CURRENT_DIR) or
-    (ExtractFilename(Path) = DIR_PARENT_DIR)) then begin
+  if ((ExtractFilename(Path) = DIR_CURRENT_DIR) or (ExtractFilename(Path) = DIR_PARENT_DIR))
+  then begin
     Result := True;
     exit;
   end;
@@ -305,11 +305,9 @@ begin
           allOK := LoadContentsFromDisk(Path, dirItems);
           if allOK then begin
             for i := 0 to (dirItems.Count - 1) do begin
-              if (dirItems[i].IsDirectory or
-                dirItems[i].IsFile) then begin
-                allOK := ItemSize(
-                  IncludeTrailingPathDelimiter(Path) + dirItems[i].Filename,
-                  subdirsSize, subdirsDirsCnt,
+              if (dirItems[i].IsDirectory or dirItems[i].IsFile) then begin
+                allOK := ItemSize(IncludeTrailingPathDelimiter(Path) +
+                  dirItems[i].Filename, subdirsSize, subdirsDirsCnt,
                   subditsFileCnt);
                 if allOK then begin
                   TotalSize      := TotalSize + subdirsSize;
@@ -380,8 +378,7 @@ end;
 
 function TSDCustomFilesystem.DirectoryOrFileExists(fullPathToItem: WideString): Boolean;
 begin
-  Result := (FileExists(fullPathToItem) or
-    DirectoryExists(fullPathToItem));
+  Result := (FileExists(fullPathToItem) or DirectoryExists(fullPathToItem));
 end;
 
 procedure TSDCustomFilesystem.LastErrorClear();

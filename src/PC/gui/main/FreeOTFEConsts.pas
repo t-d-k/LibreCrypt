@@ -13,7 +13,7 @@ interface
 const
   // Set to "-1" to indicate release/non-beta
   APP_BETA_BUILD = 0;
-  { TODO 1 -otdk -cenhancement : update homepage }
+  { DONE 1 -otdk -cenhancement : update homepage }
   // Online user manual URL...
   URL_USERGUIDE  = 'http://DoxBox.eu/docs/Main';
 

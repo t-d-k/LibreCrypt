@@ -74,8 +74,8 @@ end;
 constructor TfmeOptions_PKCS11.Create(AOwner: TComponent);
 begin
   inherited;
-   OTFEFreeOTFEVolumeSelect1.   SelectFor := fndOpen            ;
-   OTFEFreeOTFEVolumeSelect1.     AllowPartitionSelect := True;
+  OTFEFreeOTFEVolumeSelect1.SelectFor            := fndOpen;
+  OTFEFreeOTFEVolumeSelect1.AllowPartitionSelect := True;
 end;
 
 procedure TfmeOptions_PKCS11.pbAutoDetectClick(Sender: TObject);
@@ -225,16 +225,14 @@ begin
   SDUEnableControl(feLibFilename, pkcs11Enabled);
   SDUEnableControl(lblLibrary, pkcs11Enabled);
   SDUEnableControl(pbAutoDetect, pkcs11Enabled);
-  SDUEnableControl(pbVerify, (pkcs11Enabled and
-    (LibraryDLL <> '')));
+  SDUEnableControl(pbVerify, (pkcs11Enabled and (LibraryDLL <> '')));
 
 
   SDUEnableControl(gbPKCS11AutoActions, pkcs11Enabled);
   SDUEnableControl(OTFEFreeOTFEVolumeSelect1,
     (pkcs11Enabled and
     // Yes, this is needed; otherwise it'll enable/disable regardless
-    ckPKCS11AutoMount.Checked
-    ));
+    ckPKCS11AutoMount.Checked));
   SDUEnableControl(lblAutoMountVolume, OTFEFreeOTFEVolumeSelect1.Enabled);
 
 end;

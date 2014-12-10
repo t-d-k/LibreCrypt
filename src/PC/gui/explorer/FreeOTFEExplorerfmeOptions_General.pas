@@ -106,13 +106,10 @@ begin
 
   if not (ckStoreLayout.Checked) then begin
     FFlagClearLayoutOnSave := SDUConfirmYN(SDUParamSubstitute(
-      _(
-      'You have turned off the option to automatically save the window layout on exiting.' + SDUCRLF +
-      SDUCRLF +
+      _('You have turned off the option to automatically save the window layout on exiting.'
+      + SDUCRLF + SDUCRLF +
       'Would you like to reset %1 to its default window layout the next time it is started?'),
-      [
-      Application.Title])
-      );
+      [Application.Title]));
   end;
 
 end;
@@ -131,13 +128,10 @@ begin
 
   SDUEnableControl(
     ckDisplayToolbarLarge,
-    (ckDisplayToolbar.Checked or
-    (ckDisplayToolbar.State = cbGrayed))
+    (ckDisplayToolbar.Checked or (ckDisplayToolbar.State = cbGrayed))
     );
   SDUEnableControl(ckDisplayToolbarCaptions,
-    (ckDisplayToolbar.Checked and
-    ckDisplayToolbarLarge.Checked
-    ));
+    (ckDisplayToolbar.Checked and ckDisplayToolbarLarge.Checked));
 
   // Only allow captions if the user has selected large icons
   if (ckDisplayToolbarLarge.state = cbUnchecked) then begin
@@ -172,8 +166,7 @@ const
     chkBox.Width   := useWidth;
     lastTriedWidth := useWidth;
     chkBox.Caption := tmpCaption;
-    while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0))
-      do begin
+    while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0)) do begin
       // 5 used here; just needs to be something sensible to reduce the
       // width by; 1 would do pretty much just as well
       useWidth := useWidth - 5;
@@ -517,8 +510,8 @@ begin
   Result := retval;
 end;
 
-function TfmeOptions_FreeOTFEExplorerGeneral.LanguageControlLanguage(idx: Integer):
-TLanguageTranslation;
+function TfmeOptions_FreeOTFEExplorerGeneral.LanguageControlLanguage(
+  idx: Integer): TLanguageTranslation;
 var
   retval: TLanguageTranslation;
 begin

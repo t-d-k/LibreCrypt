@@ -48,8 +48,7 @@ uses
   FileCtrl,
 {$WARN UNIT_PLATFORM ON}
   SDUDialogs,
-  SDUi18n,
-  SDUGeneral;
+  SDUGeneral, SDUi18n;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -62,9 +61,7 @@ const
 
 procedure TfrmInstallOnUSBDrive.FormShow(Sender: TObject);
 begin
-  self.Caption := SDUParamSubstitute(_(
-    'Copy %1 to USB Drive'), [
-    Application.title]);
+  self.Caption := SDUParamSubstitute(_('Copy %1 to USB Drive'), [Application.title]);
 
   reInstructCopyToUSBDrive.Text :=
     SDUParamSubstitute(_(
@@ -74,8 +71,7 @@ begin
     [Application.Title]);
 
   ckSetupAutoplay.Caption := SDUParamSubstitute(
-    _('&Setup autorun.inf to launch %1 when drive inserted'), [
-    Application.Title]);
+    _('&Setup autorun.inf to launch %1 when drive inserted'), [Application.Title]);
 
   // Replace any " " with "_", otherwise autorun.inf won't be able to launch
   // the executable
@@ -110,8 +106,7 @@ end;
 procedure TfrmInstallOnUSBDrive.pbOKClick(Sender: TObject);
 begin
   if InstallOnUSBDrive() then begin
-    SDUMessageDlg(SDUParamSubstitute(_('%1 copy complete.'),
-      [Application.Title]),
+    SDUMessageDlg(SDUParamSubstitute(_('%1 copy complete.'), [Application.Title]),
       mtInformation);
     ModalResult := mrOk;
   end;
@@ -136,8 +131,7 @@ begin
     if ckSetupAutoplay.Checked then begin
       if (Pos(' ', GetInstallRelativePath()) > 0) then begin
         allOK := (SDUMessageDlg(SDUParamSubstitute(
-          _('The path specified has spaces in it.' + SDUCRLF +
-          SDUCRLF +
+          _('The path specified has spaces in it.' + SDUCRLF + SDUCRLF +
           'Because of this, Windows will be able to display the %1 icon for the drive, but not launch %1 automatically when the drive is inserted.' + SDUCRLF + SDUCRLF + 'Do you wish to continue?'), [Application.Title]), mtWarning, [mbYes, mbNo], 0) = mrYes);
       end;
     end;
@@ -148,12 +142,9 @@ begin
     // Note: GetInstallRelativePath() will return '\', at a minimum
     if (length(GetInstallRelativePath()) <= 1) then begin
       allOK := (SDUMessageDlg(SDUParamSubstitute(
-        _(
-        'You have opted to copy %1 to the root directory of your USB drive, and not a subdirectory.'),
-        [Application.title]) + SDUCRLF +
-        SDUCRLF + _('Are you sure you wish to do this?'),
-        mtWarning, [mbYes, mbNo],
-        0) = mrYes);
+        _('You have opted to copy %1 to the root directory of your USB drive, and not a subdirectory.'),
+        [Application.title]) + SDUCRLF + SDUCRLF + _('Are you sure you wish to do this?'),
+        mtWarning, [mbYes, mbNo], 0) = mrYes);
     end;
   end;
 
@@ -169,8 +160,7 @@ begin
 
     if not (copyOK) then begin
       SDUMessageDlg(
-        SDUParamSubstitute(_('Unable to copy %1 to:' + SDUCRLF +
-        SDUCRLF + '%2'),
+        SDUParamSubstitute(_('Unable to copy %1 to:' + SDUCRLF + SDUCRLF + '%2'),
         [Application.Title, destPath]),
         mtError
         );
@@ -190,8 +180,7 @@ begin
     if ckSetupAutoplay.Checked then begin
       if not (CreateAutorunInfFile()) then begin
         SDUMessageDlg(
-          SDUParamSubstitute(
-          _(
+          SDUParamSubstitute(_(
           '%1 was successfully copied over, but an autoplay (autorun.inf) file could not be created.'),
           [Application.title]),
           mtWarning
@@ -239,7 +228,7 @@ begin
     try
       // Try to delete any existing autorun.inf file
       if FileExists(autorunFilename) then begin
-        sysutils.DeleteFile(autorunFilename);
+        SysUtils.DeleteFile(autorunFilename);
       end;
 
       autorunContent.SaveToFile(autorunFilename);
@@ -292,8 +281,7 @@ begin
 
   SDUEnableControl(
     pbOK,
-    ((cbDrive.ItemIndex >= 0) and
-    (Pos(':', edPath.Text) = 0)  // No ":" allowed in path
+    ((cbDrive.ItemIndex >= 0) and (Pos(':', edPath.Text) = 0)  // No ":" allowed in path
     )
     );
 

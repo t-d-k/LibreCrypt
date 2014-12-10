@@ -62,11 +62,10 @@ implementation
 uses
   Math,
   ShlObj,  // Required for CSIDL_PROGRAMS
-  OTFEFreeOTFEBase_U,
   FreeOTFESettings,
-  SDUi18n,
-  SDUGeneral,
-  SDUDialogs;
+  OTFEFreeOTFEBase_U,
+  SDUDialogs, SDUGeneral,
+  SDUi18n;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -126,18 +125,14 @@ procedure TfrmOptions_FreeOTFE.FormShow(Sender: TObject);
 begin
   inherited;
 
-  FOrigLaunchAtStartup      := SDUDoesShortcutExist(
-    SDU_CSIDL_STARTUP,
-    Application.Title);
+  FOrigLaunchAtStartup      := SDUDoesShortcutExist(SDU_CSIDL_STARTUP, Application.Title);
   ckLaunchAtStartup.Checked := FOrigLaunchAtStartup;
 
   FOrigLaunchMinimisedAtStartup := False;
   if FOrigLaunchAtStartup then begin
     FOrigLaunchMinimisedAtStartup :=
-      (SDUGetShortCutRunWindowState(
-      SDU_CSIDL_STARTUP,
-      Application.Title
-      ) = wsMinimized);
+      (SDUGetShortCutRunWindowState(SDU_CSIDL_STARTUP, Application.Title) =
+      wsMinimized);
 
   end;
   ckLaunchMinimisedAtStartup.Checked := FOrigLaunchMinimisedAtStartup;
@@ -171,10 +166,8 @@ var
 begin
   inherited;
 
-  ckLaunchAtStartup.Caption := SDUParamSubstitute(
-    _('Start %1 at system startup'),
-    [
-    Application.Title]);
+  ckLaunchAtStartup.Caption := SDUParamSubstitute(_('Start %1 at system startup'),
+    [Application.Title]);
 
   ckboxIndent  := ckLaunchMinimisedAtStartup.left - ckLaunchAtStartup.left;
   maxCBoxWidth := max(ckAssociateFiles.Width, ckLaunchAtStartup.Width);

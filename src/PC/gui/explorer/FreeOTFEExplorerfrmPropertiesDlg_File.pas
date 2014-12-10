@@ -45,8 +45,7 @@ var
 begin
   inherited;
 
-  self.Caption := SDUParamSubstitute(_('%1 Properties'),
-    [ExtractFilename(
+  self.Caption := SDUParamSubstitute(_('%1 Properties'), [ExtractFilename(
     PathAndFilename)]);
 
   SetupCtlSeparatorPanel(Panel1);
@@ -66,11 +65,8 @@ begin
       end;
       edSize.Caption :=
         SDUParamSubstitute(_('%1 (%2 bytes)'),
-        [
-        SDUFormatAsBytesUnits(item.Size, 2),
-        SDUIntToStrThousands(
-        item.Size)]
-        );
+        [SDUFormatAsBytesUnits(item.Size, 2), SDUIntToStrThousands(
+        item.Size)]);
 
       edTimestampCreated.Caption  := DateTimeToStr(TimeStampToDateTime(item.TimestampCreation));
       edTimestampModified.Caption :=

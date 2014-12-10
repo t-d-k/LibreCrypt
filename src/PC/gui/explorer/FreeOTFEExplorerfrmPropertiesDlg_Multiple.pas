@@ -63,8 +63,7 @@ begin
 
     filenamesOnlyCommaText := filenamesOnlyCommaText + ExtractFilename(MultipleItems[i]);
   end;
-  self.Caption := SDUParamSubstitute(_('%1 Properties'),
-    [filenamesOnlyCommaText]);
+  self.Caption := SDUParamSubstitute(_('%1 Properties'), [filenamesOnlyCommaText]);
 
 
   totalSize    := 0;
@@ -87,25 +86,18 @@ begin
   edFilename.BevelOuter  := bvNone;
   edFilename.BevelInner  := bvNone;
   edFilename.BorderStyle := bsNone;
-  edFilename.Text        := SDUParamSubstitute(
-    _('%1 Files, %2 Folders'),
-    [totalFileCnt,
-    totalDirCnt
-    ]);
+  edFilename.Text        := SDUParamSubstitute(_('%1 Files, %2 Folders'),
+    [totalFileCnt, totalDirCnt]);
   edFileType.Caption     := _('Multiple types');
   edLocation.Caption     := SDUParamSubstitute(_('All in %1'), [ParentDir]);
   edSize.Caption         := SDUParamSubstitute(_('%1 (%2 bytes)'),
-    [
-    SDUFormatAsBytesUnits(totalSize, 2),
-    SDUIntToStrThousands(
-    totalSize)]);
+    [SDUFormatAsBytesUnits(totalSize, 2), SDUIntToStrThousands(totalSize)]);
 
 
   tmpIcon := TIcon.Create();
   try
-    if SDULoadDLLIcon(DLL_SHELL32, False,
-      DLL_SHELL32_MULTIPLE_FILES, tmpIcon
-      ) then begin
+    if SDULoadDLLIcon(DLL_SHELL32, False, DLL_SHELL32_MULTIPLE_FILES, tmpIcon) then
+    begin
       imgFileType.Picture.Assign(tmpIcon);
     end;
   finally

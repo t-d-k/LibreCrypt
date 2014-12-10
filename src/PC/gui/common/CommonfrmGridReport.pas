@@ -85,9 +85,9 @@ implementation
 uses
   Clipbrd, // Required for clipboard functions
   Math,
-  SDUi18n,
   SDUGeneral,
-{$IFDEF FREEOTFE_MAIN}
+  SDUi18n,
+  {$IFDEF FREEOTFE_MAIN}
   // When run under main FreeOTFE GUI, user can access driver control dialog
   // via main FreeOTFE app
   FreeOTFEfrmMain,
@@ -380,9 +380,8 @@ begin
   end;
 
   for i := 0 to (lvReport.columns.Count - 1) do begin
-    retval := retval + CellText(i, HEADER_ROW) +
-      StringOfChar(' ', (maxTitleX - length(CellText(i, HEADER_ROW)))) +
-      ': ' + CellText(i, rowIdx) + SDUCRLF;
+    retval := retval + CellText(i, HEADER_ROW) + StringOfChar(' ',
+      (maxTitleX - length(CellText(i, HEADER_ROW)))) + ': ' + CellText(i, rowIdx) + SDUCRLF;
   end;
 
   retval := retval + SDUCRLF;

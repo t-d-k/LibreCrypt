@@ -33,13 +33,13 @@ type
 
     procedure EnableDisableControls(); VIRTUAL;
     procedure UpdateUIAfterChangeOnCurrentTab(); VIRTUAL;
-    function IsTabComplete(checkTab: TTabSheet): Boolean; VIRTUAL;  abstract;
+    function IsTabComplete(checkTab: TTabSheet): Boolean; VIRTUAL; ABSTRACT;
 
     procedure UpdateStageDisplay();
     function NextTabInDir(gotoNext: Boolean): TTabSheet;
     function IsTabSkipped(tabSheet: TTabSheet): Boolean; VIRTUAL;
     //is tab required to be completed
-    function IsTabRequired(tabSheet: TTabSheet): Boolean;   VIRTUAL;
+    function IsTabRequired(tabSheet: TTabSheet): Boolean; VIRTUAL;
   PUBLIC
     fFreeOTFEObj: TOTFEFreeOTFEBase;
 
@@ -61,7 +61,7 @@ uses
 
 procedure TfrmWizard.FormShow(Sender: TObject);
 var
-i:integer;
+  i: Integer;
 begin
   // Note: SetupInstructions(...) must be called before inherited - otherwise
   //       the translation system will cause the instructions controls to
@@ -71,7 +71,11 @@ begin
   inherited;
 
   // Set this to TRUE or comment out the next line for debug
-  lblCompleteIndicator.Visible :=  {$IFDEF DEBUG}     True  {$ELSE}   False  {$ENDIF}  ;
+  lblCompleteIndicator.Visible :=
+{$IFDEF DEBUG}     True  {$ELSE}
+    False
+{$ENDIF}
+  ;
 
   // We change the style to one of the "flat" styles so that no border is shown
   pcWizard.Style := tsFlatButtons;
@@ -90,8 +94,8 @@ begin
   pcWizard.ActivePageIndex := 0;
 
   //set up tags. tag=0 means needs to be completed. if not req'd set to 1 initially, else assume incomplete
-   for i := 0 to (pcWizard.PageCount - 1) do
-      pcWizard.Pages[i].tag := IfThen(IsTabRequired(pcWizard.Pages[i]),0,1);
+  for i := 0 to (pcWizard.PageCount - 1) do
+    pcWizard.Pages[i].tag := IfThen(IsTabRequired(pcWizard.Pages[i]), 0, 1);
 
   // hide all tabs - wizard style
   for i := 0 to (pcWizard.PageCount - 1) do
@@ -146,14 +150,14 @@ end;
 
 procedure TfrmWizard.UpdateStageDisplay();
 var
-  totalReqStages,totalStages: Integer;
-  currStage:   Integer;
-  i:           Integer;
+  totalReqStages, totalStages: Integer;
+  currStage:                   Integer;
+  i:                           Integer;
 begin
   // This functions also sets the stage x/y progress display
-  totalStages := pcWizard.PageCount;
+  totalStages    := pcWizard.PageCount;
   totalReqStages := pcWizard.PageCount;
-  currStage   := pcWizard.ActivePageIndex + 1;
+  currStage      := pcWizard.ActivePageIndex + 1;
 
 
   for i := 0 to (pcWizard.PageCount - 1) do begin
@@ -163,42 +167,43 @@ begin
     end else begin
       // skipped tabs have undefined return values from IsTabRequired
       if (not IsTabRequired(pcWizard.Pages[i])) then
-         Dec(totalReqStages);
+        Dec(totalReqStages);
     end;
 
 
     //todo:seems a bit complicated - isn't there an activepageindex property?
-//    if IsTabSkipped(pcWizard.Pages[i]) and  SDUIsTabSheetAfter(pcWizard, pcWizard.Pages[i], pcWizard.ActivePage) then
-//        Dec(currStage);
-      if IsTabSkipped(pcWizard.Pages[i]) and  (pcWizard.ActivePageIndex > i) then
-        Dec(currStage);
+    //    if IsTabSkipped(pcWizard.Pages[i]) and  SDUIsTabSheetAfter(pcWizard, pcWizard.Pages[i], pcWizard.ActivePage) then
+    //        Dec(currStage);
+    if IsTabSkipped(pcWizard.Pages[i]) and (pcWizard.ActivePageIndex > i) then
+      Dec(currStage);
   end;
 
-  pbStage.Min      := 1;
+  pbStage.Min := 1;
   // if have done all required stages, update wit non required ones
-  if currStage<=totalReqStages then begin
-   pbStage.Max      := totalReqStages;
+  if currStage <= totalReqStages then begin
+    pbStage.Max      := totalReqStages;
     pbStage.Position := currStage;
 
-  lblStage.Caption := SDUParamSubstitute(_('Stage %1 of %2'), [currStage, totalReqStages]);
+    lblStage.Caption := SDUParamSubstitute(_('Stage %1 of %2'), [currStage, totalReqStages]);
 
   end else begin
-     pbStage.Max      := totalStages;
+    pbStage.Max      := totalStages;
     pbStage.Position := currStage;
 
-  lblStage.Caption := SDUParamSubstitute(_('Stage %1 of %2 (Optional)'), [currStage, totalStages]);
+    lblStage.Caption := SDUParamSubstitute(_('Stage %1 of %2 (Optional)'), [currStage, totalStages]);
   end;
- 
+
 end;
 
- procedure TfrmWizard.UpdateUIAfterChangeOnCurrentTab;
- var
-   allOK:                    Boolean;
+procedure TfrmWizard.UpdateUIAfterChangeOnCurrentTab;
+var
+  allOK: Boolean;
 begin
   //is tab complete?
-  allOK:= IsTabComplete(pcWizard.ActivePage);
-   pcWizard.ActivePage.Tag := 0;
-  if allOK then     pcWizard.ActivePage.Tag := 1;
+  allOK                   := IsTabComplete(pcWizard.ActivePage);
+  pcWizard.ActivePage.Tag := 0;
+  if allOK then
+    pcWizard.ActivePage.Tag := 1;
 
   EnableDisableControls();
 
@@ -207,7 +212,7 @@ begin
   UpdateStageDisplay();
 end;
 
-// Get the next tabsheet in the specified direction
+ // Get the next tabsheet in the specified direction
  // gotoNext - Set to TRUE to go to the next tab, set to FALSE to go to the
  //            previous tab
 function TfrmWizard.NextTabInDir(gotoNext: Boolean): TTabSheet;
@@ -220,8 +225,8 @@ begin
   // Set sheetSkipped to TRUE to bootstrap the while statement
   sheetSkipped := True;
   while (sheetSkipped) do begin
-    if ((gotoNext and (tmpSheet = pcWizard.Pages[0])) or
-      ((not gotoNext) and (tmpSheet = pcWizard.Pages[pcWizard.PageCount - 1]))) then begin
+    if ((gotoNext and (tmpSheet = pcWizard.Pages[0])) or ((not gotoNext) and
+      (tmpSheet = pcWizard.Pages[pcWizard.PageCount - 1]))) then begin
       // Wrapped; no more pages in the specified direction, so break & return
       // nil
       tmpSheet := nil;
@@ -248,7 +253,7 @@ end;
 //is tab required to be completed (not called for skipped tabs)
 function TfrmWizard.IsTabRequired(tabSheet: TTabSheet): Boolean;
 begin
-  Result := true;
+  Result := True;
 end;
 
 procedure TfrmWizard.EnableDisableControls();
@@ -277,9 +282,14 @@ begin
   pbBack.Default   := False;
   pbNext.Default   := False;
   pbFinish.Default := False;
-  if pbFinish.Enabled then pbFinish.Default := True
-  else if pbNext.Enabled then pbNext.Default := True
-  else if pbBack.Enabled then   pbBack.Default := True;
+  if pbFinish.Enabled then
+    pbFinish.Default := True
+  else
+  if pbNext.Enabled then
+    pbNext.Default := True
+  else
+  if pbBack.Enabled then
+    pbBack.Default := True;
 
 end;
 

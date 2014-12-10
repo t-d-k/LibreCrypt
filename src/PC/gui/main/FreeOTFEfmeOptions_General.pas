@@ -112,9 +112,7 @@ begin
 
   SDUEnableControl(ckDisplayToolbarLarge, ckDisplayToolbar.Checked);
   SDUEnableControl(ckDisplayToolbarCaptions,
-    (ckDisplayToolbar.Checked and
-    ckDisplayToolbarLarge.Checked
-    ));
+    (ckDisplayToolbar.Checked and ckDisplayToolbarLarge.Checked));
 
   // Only allow captions if the user has selected large icons
   if not (ckDisplayToolbarLarge.Checked) then begin
@@ -149,8 +147,7 @@ const
     chkBox.Width   := useWidth;
     lastTriedWidth := useWidth;
     chkBox.Caption := tmpCaption;
-    while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0))
-      do begin
+    while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0)) do begin
       // 5 used here; just needs to be something sensible to reduce the
       // width by; 1 would do pretty much just as well
       useWidth := useWidth - 5;

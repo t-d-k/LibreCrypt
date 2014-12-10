@@ -35,6 +35,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Volume File or Partition'
         ImageIndex = 14
         Constraints.MinHeight = 150
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         DesignSize = (
@@ -74,7 +76,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Align = alBottom
           Alignment = taCenter
           Caption = 'Please click "Next >" to continue.'
-          ExplicitTop = 431
           ExplicitWidth = 160
         end
         object lblInstructFileOrPartition: TLabel
@@ -113,6 +114,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Volume filename'
         ImageIndex = 1
         Constraints.MinHeight = 139
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         object reInstructFilename: TRichEdit
@@ -143,7 +146,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object GroupBox1: TGroupBox
           Left = 0
-          Top = 250
+          Top = 263
           Width = 527
           Height = 67
           Align = alBottom
@@ -180,13 +183,15 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsPartitionWarning: TTabSheet
         Caption = 'Partition Warning'
         ImageIndex = 16
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         object Label15: TLabel
           Left = 0
           Top = 304
           Width = 527
-          Height = 13
+          Height = 26
           Align = alBottom
           Alignment = taCenter
           Caption = 
@@ -201,8 +206,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           ParentColor = False
           ParentFont = False
           WordWrap = True
-          ExplicitTop = 441
-          ExplicitWidth = 688
+          ExplicitTop = 317
+          ExplicitWidth = 526
         end
         object lblWarningPartition: TLabel
           Left = 0
@@ -254,6 +259,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsPartitionSelect: TTabSheet
         Caption = 'Partition Select'
         ImageIndex = 15
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         object Label21: TLabel
@@ -317,8 +324,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Constraints.MinHeight = 151
           TabOrder = 1
           ExplicitTop = 100
-          ExplicitWidth = 885
-          ExplicitHeight = 327
+          ExplicitWidth = 527
+          ExplicitHeight = 203
           inherited lblErrorWarning: TLabel
             Top = 184
             ExplicitTop = 125
@@ -331,8 +338,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Width = 527
             Height = 202
             Constraints.MinHeight = 132
-            ExplicitWidth = 885
-            ExplicitHeight = 326
+            ExplicitWidth = 527
+            ExplicitHeight = 202
             inherited SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel
               Height = 174
               ExplicitHeight = 298
@@ -360,7 +367,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Left = 368
             Top = 65533
             Bitmap = {
-              494C010103000400B00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400B40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -513,6 +520,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Size'
         ImageIndex = 6
         Constraints.MinHeight = 172
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         DesignSize = (
@@ -605,6 +614,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Password'
         ImageIndex = 6
         Constraints.MinHeight = 330
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         DesignSize = (
@@ -679,7 +690,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           ScrollBars = ssBoth
           TabOrder = 1
           OnChange = preUserKeyChange
-          ExplicitWidth = 755
         end
         object preUserKey2: TOTFEFreeOTFE_PasswordRichEdit
           Left = 112
@@ -698,19 +708,19 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           ScrollBars = ssBoth
           TabOrder = 2
           OnChange = preUserKeyChange
-          ExplicitWidth = 755
-          ExplicitHeight = 166
         end
       end
       object tsDriveLetter: TTabSheet
         Caption = 'Drive Letter'
         ImageIndex = 17
         Constraints.MinHeight = 166
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         DesignSize = (
           527
-          330)
+          317)
         object Label11: TLabel
           Left = 313
           Top = 266
@@ -766,14 +776,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Anchors = [akRight, akBottom]
           TabOrder = 1
           OnChange = cbDriveLetterChange
-          ExplicitLeft = 793
-          ExplicitTop = 387
         end
       end
       object tsOffset: TTabSheet
         Caption = 'Offset'
         ImageIndex = 7
         Constraints.MinHeight = 343
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         DesignSize = (
@@ -828,8 +838,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             AlignWithMargins = True
             Left = 4
             Top = 180
-            Width = 287
-            Height = 13
+            Width = 285
+            Height = 39
             Margins.Left = 10
             Margins.Top = 10
             Margins.Right = 10
@@ -846,8 +856,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Font.Style = [fsBold]
             ParentFont = False
             WordWrap = True
-            ExplicitTop = 291
-            ExplicitWidth = 645
           end
           object reInstructWarningOffset: TRichEdit
             Left = 0
@@ -934,6 +942,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Hash, cypher and IV'
         ImageIndex = 2
         Constraints.MinHeight = 202
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         DesignSize = (
@@ -978,7 +988,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Anchors = [akLeft, akBottom]
           TabOrder = 6
           OnChange = cbHashCypherIVGenChange
-          ExplicitTop = 354
         end
         object cbCypher: TComboBox
           Left = 153
@@ -989,7 +998,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Anchors = [akLeft, akBottom]
           TabOrder = 2
           OnChange = cbHashCypherIVGenChange
-          ExplicitTop = 382
         end
         object reInstructHashCypherIV: TRichEdit
           Left = 0
@@ -1057,13 +1065,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Anchors = [akLeft, akBottom]
           TabOrder = 5
           OnChange = cbHashCypherIVGenChange
-          ExplicitTop = 410
         end
       end
       object tsChaff: TTabSheet
         Caption = 'Chaff'
         ImageIndex = 20
         Constraints.MinHeight = 200
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         DesignSize = (
@@ -1109,6 +1118,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Master Key Length'
         ImageIndex = 11
         Constraints.MinHeight = 77
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         DesignSize = (
@@ -1174,6 +1185,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGSelect: TTabSheet
         Caption = 'RNG Select'
         ImageIndex = 4
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         object reInstructRNGSelect: TRichEdit
@@ -1274,6 +1287,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'RNG Mouse movement'
         ImageIndex = 8
         Constraints.MinHeight = 236
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         object lblMouseRNGBits: TLabel
@@ -1289,7 +1304,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Align = alBottom
           Alignment = taCenter
           Caption = 'Random bits generated: 9999/9999'
-          ExplicitTop = 431
           ExplicitWidth = 169
         end
         object reInstructRNGMouseMovement: TRichEdit
@@ -1319,8 +1333,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         object MouseRNG: TMouseRNG
           Left = 0
           Top = 49
-          Width = 526
-          Height = 234
+          Width = 527
+          Height = 235
           TrailLines = 5
           LineWidth = 5
           LineColor = clNavy
@@ -1337,6 +1351,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'RNG PKCS token'
         ImageIndex = 17
         Constraints.MinHeight = 133
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         DesignSize = (
@@ -1360,7 +1376,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Anchors = [akLeft, akBottom]
           TabOrder = 2
           Text = 'cbToken'
-          ExplicitTop = 412
         end
         object pbRefresh: TButton
           Left = 198
@@ -1399,6 +1414,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGGPG: TTabSheet
         Caption = 'RNG GPG'
         ImageIndex = 10
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         object reInstructRNGGPG: TRichEdit
@@ -1465,6 +1482,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         ImageIndex = 15
         Constraints.MinHeight = 168
         Constraints.MinWidth = 266
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         DesignSize = (
@@ -1496,14 +1515,15 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Lines.Strings = (
             
               'Please enter the number of PBKDF2 key iterations to be carried o' +
-              'ut on your password to generate an encryption key.'
+              'ut on your password to generate an '
+            'encryption key.'
             
               'The higher the number, the greater the security offered - but th' +
               'e slower mounting will be.'
             
               'If this value is changed from its default, you will be required ' +
-              'to enter it value every time you mount your volume. For this rea' +
-              'son it is recommended that '
+              'to enter it value every time you mount your '
+            'volume. For this reason it is recommended that '
             
               'most users leave it at its default value, unless there is a part' +
               'icular need to do otherwise.')
@@ -1560,7 +1580,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Left = 3
           Top = 3
           Width = 517
-          Height = 86
+          Height = 65
           Anchors = [akLeft, akTop, akRight]
           Caption = 
             'Please enter the amount of "salt" to be combined with your passw' +
@@ -1591,6 +1611,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'CDB Location'
         ImageIndex = 18
         Constraints.MinHeight = 301
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         DesignSize = (
@@ -1699,6 +1721,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Padding'
         ImageIndex = 19
         Constraints.MinHeight = 188
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         DesignSize = (
@@ -1777,6 +1801,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Summary'
         ImageIndex = 9
         Constraints.MinHeight = 238
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 885
         ExplicitHeight = 454
         DesignSize = (
@@ -1801,8 +1827,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           ReadOnly = True
           ScrollBars = ssBoth
           TabOrder = 1
-          ExplicitWidth = 871
-          ExplicitHeight = 332
         end
         object reInstructSummary: TRichEdit
           Left = 0

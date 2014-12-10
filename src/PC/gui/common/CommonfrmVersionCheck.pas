@@ -35,12 +35,9 @@ type
   end;
 
 procedure CheckForUpdates_UserCheck(PADURL: String);
-procedure CheckForUpdates_AutoCheck(PADURL: String;
-  var Frequency: TUpdateFrequency;
-  var LastChecked: TDate;
-  var SuppressNotifyVerMajor: Integer;
-  var SuppressNotifyVerMinor:
-  Integer);
+procedure CheckForUpdates_AutoCheck(PADURL: String; var Frequency: TUpdateFrequency;
+  var LastChecked: TDate; var SuppressNotifyVerMajor: Integer;
+  var SuppressNotifyVerMinor: Integer);
 
 implementation
 
@@ -57,10 +54,9 @@ uses
   FreeOTFEExplorerConsts,
   FreeOTFEExplorerSettings,
 {$ENDIF}
-  SDUGeneral,
+  SDUDialogs, SDUGeneral,
   SDUi18n,
-  SDUWinHttp,
-  SDUDialogs;
+  SDUWinHttp;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -73,7 +69,8 @@ const
 
 resourcestring
   RS_CHECKING                         = '<checking...>';
-  RS_CONFIRM_AUTOCHECK                = 'Do you want to automatically check for updates in the future?';
+  RS_CONFIRM_AUTOCHECK                =
+    'Do you want to automatically check for updates in the future?';
   RS_UNABLE_TO_DETERMINE_THIS_VERSION = 'Unable to determine which version this software is.';
 
 
@@ -105,18 +102,14 @@ begin
     exit;
   end;
 
-  wwwResult := SDUGetPADFileVersionInfo(PADURL,
-    latestMajorVersion,
-    latestMinorVersion,
-    Application.Title + '/' + SDUGetVersionInfoString(''),
-    True);
+  wwwResult := SDUGetPADFileVersionInfo(PADURL, latestMajorVersion,
+    latestMinorVersion, Application.Title + '/' + SDUGetVersionInfoString(''), True);
   if (wwwResult = tgCancel) then begin
     // Do nothing; just fall out of procedure
   end else
   if (wwwResult <> tgOK) then begin
     SDUMessageDlg(
-      SDUParamSubstitute(
-      _('Unable to determine latest release of %1.'),
+      SDUParamSubstitute(_('Unable to determine latest release of %1.'),
       [Application.Title]),
       mtError
       );
@@ -151,12 +144,9 @@ end;
  //           - update date last checked
  //        - if user still want to be informed
  //           - (DO NOT update date last checked)
-procedure CheckForUpdates_AutoCheck(PADURL: String;
-  var Frequency: TUpdateFrequency;
-  var LastChecked: TDate;
-  var SuppressNotifyVerMajor: Integer;
-  var SuppressNotifyVerMinor:
-  Integer);
+procedure CheckForUpdates_AutoCheck(PADURL: String; var Frequency: TUpdateFrequency;
+  var LastChecked: TDate; var SuppressNotifyVerMajor: Integer;
+  var SuppressNotifyVerMinor: Integer);
 var
   dlg:                TfrmVersionCheck;
   wwwResult:          TTimeoutGet;
@@ -174,51 +164,38 @@ begin
   //prompt to connect to net
   { TODO 1 -otdk -cenhance : remember result }
   if not (SDUConfirmYN(_(
-    'A check for an update is due, which requires a connection to the internet. Continue?')
-    )) then
+    'A check for an update is due, which requires a connection to the internet. Continue?')))
+  then
     wwwResult := tgCancel
 
   else
 
-    wwwResult := SDUGetPADFileVersionInfo(PADURL,
-      latestMajorVersion,
-      latestMinorVersion,
-      Application.Title + '/' + SDUGetVersionInfoString(''),
-      True);
+    wwwResult := SDUGetPADFileVersionInfo(PADURL, latestMajorVersion,
+      latestMinorVersion, Application.Title + '/' + SDUGetVersionInfoString(''), True);
   if (wwwResult = tgCancel) then begin
     if not (SDUConfirmYN(_('Canceled checking for updated version') +
-      SDUCRLF + SDUCRLF + RS_CONFIRM_AUTOCHECK
-      )) then begin
+      SDUCRLF + SDUCRLF + RS_CONFIRM_AUTOCHECK)) then begin
       Frequency := ufNever;
     end;
   end else
   if (wwwResult <> tgOK) then begin
-    if not (SDUErrorYN(SDUParamSubstitute(
-      _('Unable to determine latest release of %1.'),
-      [
-      Application.Title]) + SDUCRLF +
-      SDUCRLF + RS_CONFIRM_AUTOCHECK
-      )) then begin
+    if not (SDUErrorYN(SDUParamSubstitute(_('Unable to determine latest release of %1.'),
+      [Application.Title]) + SDUCRLF + SDUCRLF + RS_CONFIRM_AUTOCHECK)) then begin
       Frequency := ufNever;
     end;
   end else begin
     // If user doesn't want to be informed of this version...
-    if (SDUVersionCompare(latestMajorVersion,
-      latestMinorVersion, SuppressNotifyVerMajor,
-      SuppressNotifyVerMinor) >= 0) then begin
+    if (SDUVersionCompare(latestMajorVersion, latestMinorVersion,
+      SuppressNotifyVerMajor, SuppressNotifyVerMinor) >= 0) then begin
       // Do nothing; just update last checked
       LastChecked := now;
     end else begin
-      if not (SDUGetVersionInfo('',
-        currMajorVersion,
-        currMinorVersion)) then begin
+      if not (SDUGetVersionInfo('', currMajorVersion, currMinorVersion)) then begin
         SDUMessageDlg(RS_UNABLE_TO_DETERMINE_THIS_VERSION, mtError);
       end;
 
-      compareResult := SDUVersionCompareWithBetaFlag(
-        currMajorVersion, currMinorVersion,
-        APP_BETA_BUILD, latestMajorVersion,
-        latestMinorVersion);
+      compareResult := SDUVersionCompareWithBetaFlag(currMajorVersion,
+        currMinorVersion, APP_BETA_BUILD, latestMajorVersion, latestMinorVersion);
 
       if (compareResult = 0) then begin
         // This software is the latest version
@@ -288,16 +265,12 @@ begin
   lblVersionLatest.Caption := 'v' + SDUVersionInfoToString(FLatestMajorVersion,
     FLatestMinorVersion);
 
-  if not (SDUGetVersionInfo('',
-    currMajorVersion,
-    currMinorVersion)) then begin
+  if not (SDUGetVersionInfo('', currMajorVersion, currMinorVersion)) then begin
     lblVersionCurrent.Caption := RS_UNKNOWN;
     SDUMessageDlg(RS_UNABLE_TO_DETERMINE_THIS_VERSION, mtError);
   end else begin
-    compareResult := SDUVersionCompareWithBetaFlag(
-      currMajorVersion, currMinorVersion, APP_BETA_BUILD,
-      FLatestMajorVersion,
-      FLatestMinorVersion);
+    compareResult := SDUVersionCompareWithBetaFlag(currMajorVersion,
+      currMinorVersion, APP_BETA_BUILD, FLatestMajorVersion, FLatestMinorVersion);
 
     lblVersionCurrent.Caption := 'v' + SDUVersionInfoToString(currMajorVersion,
       currMinorVersion, APP_BETA_BUILD);

@@ -1104,8 +1104,7 @@ begin
 
         // ------------
         // Parse the FAT12/FAT16 extended BIOS parameter block, if FAT12/FAT16...
-        if ((newBootSector.FATType = ftFAT12) or (newBootSector.FATType = ftFAT16)) then
-        begin
+        if ((newBootSector.FATType = ftFAT12) or (newBootSector.FATType = ftFAT16)) then begin
           // Note: This will be overwritten with value in the FAT32 extended BIOS parameter block if FAT32...
           stmBootSector.WriteWORD_LE(newBootSector.SectorsPerFAT, BOOTSECTOR_OFFSET_SECTORSPERFAT);
 
@@ -1719,8 +1718,7 @@ begin
   if (maxSize < 0) then begin
     maxDataSize := (data.Size - data.Position);
 
-    if (((FATType = ftFAT12) or (FATType = ftFAT16)) and (clusterID = CLUSTER_ZERO)) then
-    begin
+    if (((FATType = ftFAT12) or (FATType = ftFAT16)) and (clusterID = CLUSTER_ZERO)) then begin
       // Don't worry about max size - checked at point it writes the root dir
     end else begin
       maxSize := min(ClusterSize(), maxDataSize);
@@ -2207,10 +2205,10 @@ begin
         //lplp - handle - REJECT
       end;
 
-      lfnPart := data.ReadWideString(10, (recordOffset +
-        DIR_ENTRY_OFFSET_VFAT_NAME_PART_1));
-      lfnPart := lfnPart + data.ReadWideString(12, (recordOffset +
-        DIR_ENTRY_OFFSET_VFAT_NAME_PART_2));
+      lfnPart := data.ReadWideString(10,
+        (recordOffset + DIR_ENTRY_OFFSET_VFAT_NAME_PART_1));
+      lfnPart := lfnPart + data.ReadWideString(12,
+        (recordOffset + DIR_ENTRY_OFFSET_VFAT_NAME_PART_2));
       lfnPart := lfnPart + data.ReadWideString(
         4, (recordOffset + DIR_ENTRY_OFFSET_VFAT_NAME_PART_3));
 
@@ -2727,8 +2725,7 @@ begin
               retval := (firstFAT.ReadByte = checkFAT.ReadByte);
               if not (retval) then begin
                 LastErrorSet(SDUParamSubstitute(
-                  _('FAT copy #%1 doesn''t match FAT copy #%2'),
-                  [1, i]));
+                  _('FAT copy #%1 doesn''t match FAT copy #%2'), [1, i]));
                 break;
               end;
 
@@ -3160,8 +3157,7 @@ begin
     if allOK then begin
       existingItem := TSDDirItem_FAT.Create();
       if not (GetItem_FAT(IncludeTrailingPathDelimiter(dirToStoreIn) +
-        item.Filename, existingItem))
-      then begin
+        item.Filename, existingItem)) then begin
         existingItem.Free();
         existingItem := nil;
       end;
@@ -4057,8 +4053,7 @@ begin
     if allOK then begin
       for i := 0 to (subItems.Count - 1) do begin
         if not (DeleteFileOrDir(IncludeTrailingPathDelimiter(fullPathToItem) +
-          subItems[i].Filename))
-        then begin
+          subItems[i].Filename)) then begin
           allOK := False;
           break;
         end;
@@ -4302,8 +4297,7 @@ begin
     useClusterSize := 0;
     for i := low(CLUSTERSIZE_BREAKDOWN) to high(CLUSTERSIZE_BREAKDOWN) do begin
       if (PartitionImage.Size <= CLUSTERSIZE_BREAKDOWN[i].MaxPartitionSize) then begin
-        if ((newBootSector.FATType = ftFAT12) or (newBootSector.FATType = ftFAT16)) then
-        begin
+        if ((newBootSector.FATType = ftFAT12) or (newBootSector.FATType = ftFAT16)) then begin
           useClusterSize := CLUSTERSIZE_BREAKDOWN[i].ClusterSize_FAT12FAT16;
         end else begin
           useClusterSize := CLUSTERSIZE_BREAKDOWN[i].ClusterSize_FAT32;
@@ -4488,8 +4482,7 @@ begin
     if allOK then begin
       if (newBootSector.FATType = ftFAT32) then begin
         // Backup boot sector...
-        allOK := PartitionImage.CopySector(0,
-          newBootSector.SectorNoBootSectorCopy);
+        allOK := PartitionImage.CopySector(0, newBootSector.SectorNoBootSectorCopy);
         // Backup FSInfo sector...
         allOK := PartitionImage.CopySector(newBootSector.SectorNoFSInfoSector,
           (newBootSector.SectorNoBootSectorCopy + 1));

@@ -3,28 +3,28 @@ unit OTFEFreeOTFE_fmePKCS11_MgrBase;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs,
-  pkcs11_session, ActnList, Menus;
+  ActnList, Classes, Controls, Dialogs,
+  Forms,
+  Graphics, Menus, Messages, pkcs11_session, SysUtils, Variants, Windows;
 
 type
-  TfmePKCS11_MgrBase = class(TFrame)
+  TfmePKCS11_MgrBase = class (TFrame)
     ActionList1: TActionList;
-    actRefresh: TAction;
-    PopupMenu1: TPopupMenu;
-    Refresh1: TMenuItem;
+    actRefresh:  TAction;
+    PopupMenu1:  TPopupMenu;
+    Refresh1:    TMenuItem;
     procedure actRefreshExecute(Sender: TObject);
-  private
+  PRIVATE
     { Private declarations }
-  protected
+  PROTECTED
     FPKCS11Session: TPKCS11Session;
 
-    procedure Refresh(); virtual;
-  public
-    property PKCS11Session: TPKCS11Session read FPKCS11Session write FPKCS11Session;
+    procedure Refresh(); VIRTUAL;
+  PUBLIC
+    property PKCS11Session: TPKCS11Session Read FPKCS11Session Write FPKCS11Session;
 
-    procedure Initialize(); virtual; abstract;
-    procedure EnableDisableControls(); virtual; abstract;
+    procedure Initialize(); VIRTUAL; ABSTRACT;
+    procedure EnableDisableControls(); VIRTUAL; ABSTRACT;
   end;
 
 implementation
@@ -41,5 +41,4 @@ begin
   EnableDisableControls();
 end;
 
-END.
-
+end.

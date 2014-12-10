@@ -2,59 +2,58 @@ unit OTFEFreeOTFE_VolumeSelect;
 
 interface
 
-uses   Classes, Controls, Dialogs, Forms,
-  Graphics, Messages, SDUDialogs, SDUFrames, StdCtrls, SysUtils, Variants, Windows,
-  Vcl.Buttons,
-
-  OTFEFreeOTFEBase_U;
-
-
+uses
+  Classes, Controls, Dialogs, Forms,
+  Graphics, Messages, OTFEFreeOTFEBase_U, SDUDialogs, SDUFrames, StdCtrls,
+  SysUtils, Variants, Vcl.Buttons,
+  Windows;
 
 type
-    TOpenSave = (fndOpen, fndSave);
+  TOpenSave = (fndOpen, fndSave);
 
-  TOTFEFreeOTFEVolumeSelect = class(TSDUFrame)
+  TOTFEFreeOTFEVolumeSelect = class (TSDUFrame)
     bbBrowsePartition: TBitBtn;
-    bbBrowseFile: TBitBtn;
-    edFilename: TEdit;
-    OpenDialog: TSDUOpenDialog;
-    SaveDialog: TSDUSaveDialog;
+    bbBrowseFile:      TBitBtn;
+    edFilename:        TEdit;
+    OpenDialog:        TSDUOpenDialog;
+    SaveDialog:        TSDUSaveDialog;
 
     procedure bbBrowseFileClick(Sender: TObject);
     procedure bbBrowsePartitionClick(Sender: TObject);
     procedure edFilenameChange(Sender: TObject);
-  private
-    FFileButtonAdjust: integer;
-    FSelectFor: TOpenSave;
-    FFileSelectFilter: string;
-    FFileSelectDefaultExt: string;
-    FOnChange: TNotifyEvent;
-    FFileGlyph: Vcl.Graphics.TBitmap;
+  PRIVATE
+    FFileButtonAdjust:     Integer;
+    FSelectFor:            TOpenSave;
+    FFileSelectFilter:     String;
+    FFileSelectDefaultExt: String;
+    FOnChange:             TNotifyEvent;
+    FFileGlyph:            Vcl.Graphics.TBitmap;
 
-    function  GetFilename(): string;
-    procedure SetFilename(filename: string);
-    function  GetAllowPartitionSelect(): boolean;
-    procedure SetAllowPartitionSelect(allow: boolean);
+    function GetFilename(): String;
+    procedure SetFilename(filename: String);
+    function GetAllowPartitionSelect(): Boolean;
+    procedure SetAllowPartitionSelect(allow: Boolean);
 
-  protected
-    function  GetEnabled(): boolean; override;
-    procedure SetEnabled(setValue: boolean); override;
-  
-  public
+  PROTECTED
+    function GetEnabled(): Boolean; OVERRIDE;
+    procedure SetEnabled(setValue: Boolean); OVERRIDE;
+
+  PUBLIC
     OTFEFreeOTFE: TOTFEFreeOTFEBase;
 
-    constructor Create(AOwner: TComponent); override;
-    destructor  Destroy(); override;
+    constructor Create(AOwner: TComponent); OVERRIDE;
+    destructor Destroy(); OVERRIDE;
 
-  published
-    property OnChange: TNotifyEvent read FOnChange write FOnChange;
+  PUBLISHED
+    property OnChange: TNotifyEvent Read FOnChange Write FOnChange;
 
-    property Filename: string read GetFilename write SetFilename;
-    property SelectFor: TOpenSave read FSelectFor write FSelectFor;
-    property AllowPartitionSelect: boolean read GetAllowPartitionSelect write SetAllowPartitionSelect;
+    property Filename: String Read GetFilename Write SetFilename;
+    property SelectFor: TOpenSave Read FSelectFor Write FSelectFor;
+    property AllowPartitionSelect: Boolean Read GetAllowPartitionSelect
+      Write SetAllowPartitionSelect;
 
-    property FileSelectFilter: string read FFileSelectFilter write FFileSelectFilter;
-    property FileSelectDefaultExt: string read FFileSelectDefaultExt write FFileSelectDefaultExt;
+    property FileSelectFilter: String Read FFileSelectFilter Write FFileSelectFilter;
+    property FileSelectDefaultExt: String Read FFileSelectDefaultExt Write FFileSelectDefaultExt;
 
   end;
 
@@ -77,36 +76,33 @@ var
   dlg: TOpenDialog; // Note: Save dialog inherits from this. Don't use TSDUOpenDialog here
 begin
   dlg := SaveDialog;
-  if (SelectFor = fndOpen) then
-    begin
+  if (SelectFor = fndOpen) then begin
     dlg := OpenDialog;
-    end;
+  end;
 
   dlg.Filter     := FileSelectFilter;
   dlg.DefaultExt := FileSelectDefaultExt;
-  dlg.Options := dlg.Options + [ofDontAddToRecent];
+  dlg.Options    := dlg.Options + [ofDontAddToRecent];
 
-  SDUOpenSaveDialogSetup(dlg, edFilename.text);
+  SDUOpenSaveDialogSetup(dlg, edFilename.Text);
 
-  if dlg.Execute() then
-    begin
-    edFilename.text := dlg.Filename;
-    end;
+  if dlg.Execute() then begin
+    edFilename.Text := dlg.Filename;
+  end;
 
 end;
+
 procedure TOTFEFreeOTFEVolumeSelect.bbBrowsePartitionClick(Sender: TObject);
 var
-  selectedPartition: string;
+  selectedPartition: String;
 begin
-  if (OTFEFreeOTFE <> nil) then
-    begin
+  if (OTFEFreeOTFE <> nil) then begin
     selectedPartition := OTFEFreeOTFE.SelectPartition();
-    if (selectedPartition <> '') then
-      begin
-      edFilename.text := selectedPartition;
-      end;
+    if (selectedPartition <> '') then begin
+      edFilename.Text := selectedPartition;
     end;
-//
+  end;
+  //
 end;
 //
 constructor TOTFEFreeOTFEVolumeSelect.Create(AOwner: TComponent);
@@ -115,83 +111,79 @@ begin
 
   SetFilename('');
 
-  self.height := edFilename.height;
+  self.Height := edFilename.Height;
 
   FFileGlyph := Vcl.Graphics.TBitmap.Create();
   FFileGlyph.Assign(bbBrowseFile.Glyph);
 
   // Pre-calculate difference in file browse button position/TEdit width when
   // switching enabling/disabling partition select
-  FFileButtonAdjust := (
-                        (bbBrowseFile.Left + bbBrowseFile.Width) - // Position of righthand edge of browse file button
-                        (edFilename.Left + edFilename.Width) // Position of righthand edge of filename TEdit
-                       );
+  FFileButtonAdjust := ((bbBrowseFile.Left + bbBrowseFile.Width) -
+    // Position of righthand edge of browse file button
+    (edFilename.Left +
+    edFilename.Width) // Position of righthand edge of filename TEdit
+    );
 
 end;
 
-destructor  TOTFEFreeOTFEVolumeSelect.Destroy();
+destructor TOTFEFreeOTFEVolumeSelect.Destroy();
 begin
   FFileGlyph.Free();
 
   inherited;
 end;
 
-function TOTFEFreeOTFEVolumeSelect.GetFilename(): string;
+function TOTFEFreeOTFEVolumeSelect.GetFilename(): String;
 begin
-  Result := Trim(edFilename.text);
+  Result := Trim(edFilename.Text);
 end;
 
-procedure TOTFEFreeOTFEVolumeSelect.SetFilename(filename: string);
+procedure TOTFEFreeOTFEVolumeSelect.SetFilename(filename: String);
 begin
-  edFilename.text := filename;
+  edFilename.Text := filename;
 end;
 
-function TOTFEFreeOTFEVolumeSelect.GetAllowPartitionSelect(): boolean;
+function TOTFEFreeOTFEVolumeSelect.GetAllowPartitionSelect(): Boolean;
 begin
   Result := bbBrowsePartition.Enabled;
 end;
 
-procedure TOTFEFreeOTFEVolumeSelect.SetAllowPartitionSelect(allow: boolean);
+procedure TOTFEFreeOTFEVolumeSelect.SetAllowPartitionSelect(allow: Boolean);
 begin
-  if (bbBrowsePartition.Visible <> allow) then
-    begin
+  if (bbBrowsePartition.Visible <> allow) then begin
     // Eliminate/allow partition button, remove/restore image from remaining
     // button; replace with "..." text if needed
     bbBrowsePartition.Visible := allow;
 
-    if allow then
-      begin
+    if allow then begin
       bbBrowseFile.Caption := '';
-      bbBrowseFile.Glyph := FFileGlyph;
-      bbBrowseFile.Left := bbBrowseFile.Left - FFileButtonAdjust;
-      edFilename.Width := edFilename.Width - FFileButtonAdjust;
-      end
-    else
-      begin
+      bbBrowseFile.Glyph   := FFileGlyph;
+      bbBrowseFile.Left    := bbBrowseFile.Left - FFileButtonAdjust;
+      edFilename.Width     := edFilename.Width - FFileButtonAdjust;
+    end else begin
       bbBrowseFile.Caption := '...';
-      bbBrowseFile.Glyph := nil;
-      bbBrowseFile.Left := bbBrowseFile.Left + FFileButtonAdjust;
-      edFilename.Width := edFilename.Width + FFileButtonAdjust;
-      end;
+      bbBrowseFile.Glyph   := nil;
+      bbBrowseFile.Left    := bbBrowseFile.Left + FFileButtonAdjust;
+      edFilename.Width     := edFilename.Width + FFileButtonAdjust;
     end;
+  end;
 
 end;
 //
 procedure TOTFEFreeOTFEVolumeSelect.edFilenameChange(Sender: TObject);
 begin
-  if Assigned(OnChange) then
-    begin
+  if Assigned(OnChange) then begin
     OnChange(self);
-    end;
-//
+  end;
+  //
 end;
 //
-function TOTFEFreeOTFEVolumeSelect.GetEnabled(): boolean;
+function TOTFEFreeOTFEVolumeSelect.GetEnabled(): Boolean;
 begin
   Result := inherited GetEnabled();
 end;
 
-procedure TOTFEFreeOTFEVolumeSelect.SetEnabled(setValue: boolean);
+procedure TOTFEFreeOTFEVolumeSelect.SetEnabled(setValue: Boolean);
 begin
   SDUEnableControl(edFilename, setValue);
   inherited;
@@ -200,5 +192,4 @@ begin
   SDUEnableControl(bbBrowsePartition, setValue);
 end;
 
-END.
-
+end.

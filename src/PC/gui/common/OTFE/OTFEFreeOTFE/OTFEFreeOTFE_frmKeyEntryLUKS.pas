@@ -1,61 +1,59 @@
 unit OTFEFreeOTFE_frmKeyEntryLUKS;
-// Description:
-// By Sarah Dean
-// Email: sdean12@sdean12.org
-// WWW:   http://www.SDean12.org/
-//
-// -----------------------------------------------------------------------------
-//
+ // Description:
+ // By Sarah Dean
+ // Email: sdean12@sdean12.org
+ // WWW:   http://www.SDean12.org/
+ //
+ // -----------------------------------------------------------------------------
+ //
 
 
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ComCtrls, ExtCtrls, PasswordRichEdit, Spin64,
-  SDUForms,
-  OTFEFreeOTFE_U,  // Required for TFreeOTFEMountAs
-  OTFEFreeOTFEBase_U,
-  OTFEFreeOTFE_DriverAPI, OTFEFreeOTFE_PasswordRichEdit, SDUFrames,
+  Classes, ComCtrls, Controls, Dialogs,
+  ExtCtrls, Forms, Graphics, Messages, OTFEFreeOTFE_U, PasswordRichEdit, SDUForms,
+  Spin64,
+  StdCtrls, SysUtils, Windows, // Required for TFreeOTFEMountAs
+  OTFEFreeOTFE_DriverAPI, OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFEBase_U,
+  SDUFrames,
   SDUSpin64Units, SDUStdCtrls,  // Required for TFreeOTFESectorIVGenMethod and NULL_GUID
-  SDUGeneral,
-  SDUFilenameEdit_U, SDUDropFiles, OTFEFreeOTFE_LUKSKeyOrKeyfileEntry;
+  OTFEFreeOTFE_LUKSKeyOrKeyfileEntry, SDUDropFiles, SDUFilenameEdit_U, SDUGeneral;
 
 type
-  TfrmKeyEntryLUKS = class(TSDUForm)
-    pbCancel: TButton;
-    pbOK: TButton;
-    GroupBox2: TGroupBox;
-    lblDrive: TLabel;
-    lblMountAs: TLabel;
-    cbDrive: TComboBox;
-    ckMountReadonly: TSDUCheckBox;
-    cbMediaType: TComboBox;
-    GroupBox4: TGroupBox;
-    Label10: TLabel;
-    Label22: TLabel;
-    GroupBox1: TGroupBox;
-    Label1: TLabel;
-    ckBaseIVCypherOnHashLength: TSDUCheckBox;
-    ckMountForAllUsers: TSDUCheckBox;
-    se64UnitSizeLimit: TSDUSpin64Unit_Storage;
+  TfrmKeyEntryLUKS = class (TSDUForm)
+    pbCancel:                           TButton;
+    pbOK:                               TButton;
+    GroupBox2:                          TGroupBox;
+    lblDrive:                           TLabel;
+    lblMountAs:                         TLabel;
+    cbDrive:                            TComboBox;
+    ckMountReadonly:                    TSDUCheckBox;
+    cbMediaType:                        TComboBox;
+    GroupBox4:                          TGroupBox;
+    Label10:                            TLabel;
+    Label22:                            TLabel;
+    GroupBox1:                          TGroupBox;
+    Label1:                             TLabel;
+    ckBaseIVCypherOnHashLength:         TSDUCheckBox;
+    ckMountForAllUsers:                 TSDUCheckBox;
+    se64UnitSizeLimit:                  TSDUSpin64Unit_Storage;
     OTFEFreeOTFELUKSKeyOrKeyfileEntry1: TOTFEFreeOTFELUKSKeyOrKeyfileEntry;
     procedure FormCreate(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
     procedure SelectionChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure preUserkeyKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    procedure preUserkeyKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure pbCancelClick(Sender: TObject);
     procedure ckSelected(Sender: TObject);
-  private
-  protected
+  PRIVATE
+  PROTECTED
     // These are ordered lists corresponding to the items shown in the combobox
-    fHashKernelModeDriverNames: TStringList;
-    fHashGUIDs: TStringList;
+    fHashKernelModeDriverNames:   TStringList;
+    fHashGUIDs:                   TStringList;
     fCypherKernelModeDriverNames: TStringList;
-    fCypherGUIDs: TStringList;
+    fCypherGUIDs:                 TStringList;
 
     procedure PopulateDrives();
     procedure PopulateMountAs();
@@ -66,36 +64,36 @@ type
 
     procedure DoCancel();
 
-  public
+  PUBLIC
     fFreeOTFEObj: TOTFEFreeOTFEBase;
 
     procedure Initialize();
 
     // Key...
-    function  GetKey(var userKey: PasswordString): boolean;
-    function  SetKey(userKey: PasswordString): boolean;
-    function  SetKeyfile(filename: string): boolean;
-    function  GetKeyfileIsASCII(var isASCII: boolean): boolean;
-    function  SetKeyfileIsASCII(isASCII: boolean): boolean;
-    function  GetKeyfileNewlineType(var nlType: TSDUNewline): boolean;
-    function  SetKeyfileNewlineType(nlType: TSDUNewline): boolean;
+    function GetKey(var userKey: PasswordString): Boolean;
+    function SetKey(userKey: PasswordString): Boolean;
+    function SetKeyfile(filename: String): Boolean;
+    function GetKeyfileIsASCII(var isASCII: Boolean): Boolean;
+    function SetKeyfileIsASCII(isASCII: Boolean): Boolean;
+    function GetKeyfileNewlineType(var nlType: TSDUNewline): Boolean;
+    function SetKeyfileNewlineType(nlType: TSDUNewline): Boolean;
 
-    function  GetIVCypherBase(var baseIVCypherOnHashLength: boolean): boolean;
-    function  SetIVCypherBase(baseIVCypherOnHashLength: boolean): boolean;
+    function GetIVCypherBase(var baseIVCypherOnHashLength: Boolean): Boolean;
+    function SetIVCypherBase(baseIVCypherOnHashLength: Boolean): Boolean;
 
     // File options...
-    function  GetSizeLimit(var fileOptSizeLimit: int64): boolean;
-    function  SetSizeLimit(fileOptSizeLimit: int64): boolean;
+    function GetSizeLimit(var fileOptSizeLimit: Int64): Boolean;
+    function SetSizeLimit(fileOptSizeLimit: Int64): Boolean;
 
     // Mount options...
-    function  GetDriveLetter(var mountDriveLetter: ansichar): boolean;
-    function  SetDriveLetter(mountDriveLetter: ansichar): boolean;
-    function  GetReadonly(var mountReadonly: boolean): boolean;
-    function  SetReadonly(mountReadonly: boolean): boolean;
-    function  GetMountAs(var mountAs: TFreeOTFEMountAs): boolean;
-    function  SetMountAs(mountAs: TFreeOTFEMountAs): boolean;
-    function  GetMountForAllUsers(): boolean;
-    procedure SetMountForAllUsers(allUsers: boolean);
+    function GetDriveLetter(var mountDriveLetter: ansichar): Boolean;
+    function SetDriveLetter(mountDriveLetter: ansichar): Boolean;
+    function GetReadonly(var mountReadonly: Boolean): Boolean;
+    function SetReadonly(mountReadonly: Boolean): Boolean;
+    function GetMountAs(var mountAs: TFreeOTFEMountAs): Boolean;
+    function SetMountAs(mountAs: TFreeOTFEMountAs): Boolean;
+    function GetMountForAllUsers(): Boolean;
+    procedure SetMountForAllUsers(allUsers: Boolean);
   end;
 
 
@@ -105,43 +103,40 @@ implementation
 
 
 uses
-  ComObj,  // Required for StringToGUID
+  ComObj,                      // Required for StringToGUID
   OTFEFreeOTFE_VolumeFileAPI,  // Required for SCTRIVGEN_USES_SECTOR_ID and SCTRIVGEN_USES_HASH
-  OTFEFreeOTFEDLL_U,
-  SDUi18n,
+  INIFiles, OTFEFreeOTFEDLL_U,
   SDUDialogs,
-  INIFiles;
-
+  SDUi18n;
 
 procedure TfrmKeyEntryLUKS.FormCreate(Sender: TObject);
 begin
-  fhashKernelModeDriverNames:= TStringList.Create();
-  fhashGUIDs:= TStringList.Create();
- fcypherKernelModeDriverNames:= TStringList.Create();
-  fcypherGUIDs:= TStringList.Create();
+  fhashKernelModeDriverNames   := TStringList.Create();
+  fhashGUIDs                   := TStringList.Create();
+  fcypherKernelModeDriverNames := TStringList.Create();
+  fcypherGUIDs                 := TStringList.Create();
 
 end;
 
 
 procedure TfrmKeyEntryLUKS.PopulateDrives();
 var
-  driveLetters: ansistring;
-  i: integer;
+  driveLetters: Ansistring;
+  i:            Integer;
 begin
   cbDrive.Items.Clear();
   cbDrive.Items.Add(_('Use default'));
   driveLetters := SDUGetUnusedDriveLetters();
-  for i:=1 to length(driveLetters) do
-    begin
+  for i := 1 to length(driveLetters) do begin
     // Skip the drive letters traditionally reserved for floppy disk drives
-//    if (
-//        (driveLetters[i] <> 'A') AND
-//        (driveLetters[i] <> 'B')
-//       ) then
-//      begin
-      cbDrive.Items.Add(driveLetters[i]+':');
-//      end;
-    end;
+    //    if (
+    //        (driveLetters[i] <> 'A') AND
+    //        (driveLetters[i] <> 'B')
+    //       ) then
+    //      begin
+    cbDrive.Items.Add(driveLetters[i] + ':');
+    //      end;
+  end;
 
 end;
 
@@ -151,140 +146,110 @@ var
   currMountAs: TFreeOTFEMountAs;
 begin
   cbMediaType.Items.Clear();
-  for currMountAs:=low(TFreeOTFEMountAs) to high(TFreeOTFEMountAs) do
-    begin
-    if (currMountAs <> fomaUnknown) then
-      begin
+  for currMountAs := low(TFreeOTFEMountAs) to high(TFreeOTFEMountAs) do begin
+    if (currMountAs <> fomaUnknown) then begin
       cbMediaType.Items.Add(FreeOTFEMountAsTitle(currMountAs));
-      end;
-
     end;
+
+  end;
 
 end;
 
 procedure TfrmKeyEntryLUKS.DefaultOptions();
 var
-  i: integer;
+  i:               Integer;
   currDriveLetter: ansichar;
 begin
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.DefaultOptions();
 
-  if (fFreeOTFEObj is TOTFEFreeOTFE) then
-    begin
-    if (cbDrive.Items.Count>0) then
-      begin
+  if (fFreeOTFEObj is TOTFEFreeOTFE) then begin
+    if (cbDrive.Items.Count > 0) then begin
       cbDrive.ItemIndex := 0;
 
-      if (TOTFEFreeOTFE(fFreeOTFEObj).DefaultDriveLetter <> #0) then
-        begin
+      if (TOTFEFreeOTFE(fFreeOTFEObj).DefaultDriveLetter <> #0) then begin
         // Start from 1; skip the default
-        for i:=1 to (cbDrive.items.count-1) do
-          begin
+        for i := 1 to (cbDrive.items.Count - 1) do begin
           currDriveLetter := ansichar(cbDrive.Items[i][1]);
-          if (currDriveLetter >= TOTFEFreeOTFE(fFreeOTFEObj).DefaultDriveLetter) then
-            begin
+          if (currDriveLetter >= TOTFEFreeOTFE(fFreeOTFEObj).DefaultDriveLetter) then begin
             cbDrive.ItemIndex := i;
             break;
-            end;
           end;
         end;
       end;
     end;
+  end;
 
-  if (fFreeOTFEObj is TOTFEFreeOTFE) then
-    begin
+  if (fFreeOTFEObj is TOTFEFreeOTFE) then begin
     SetMountAs(TOTFEFreeOTFE(fFreeOTFEObj).DefaultMountAs);
-    end
-  else
-    begin
+  end else begin
     SetMountAs(fomaFixedDisk);
-    end;
+  end;
 
-  ckBaseIVCypherOnHashLength.checked := TRUE;
+  ckBaseIVCypherOnHashLength.Checked := True;
 
   se64UnitSizeLimit.Value := 0;
 
   // Default to TRUE to allow formatting under Windows Vista
-  ckMountForAllUsers.checked := TRUE;
+  ckMountForAllUsers.Checked := True;
 
 end;
 
 
 procedure TfrmKeyEntryLUKS.pbOKClick(Sender: TObject);
 var
-  tmpKey: PasswordString;
-  msgZeroLenKey: string;
+  tmpKey:        PasswordString;
+  msgZeroLenKey: String;
 begin
-  if GetKey(tmpKey) then
-    begin
-    if (Length(tmpKey)=0) then
-      begin
-      if OTFEFreeOTFELUKSKeyOrKeyfileEntry1.KeyIsUserEntered() then
-        begin
+  if GetKey(tmpKey) then begin
+    if (Length(tmpKey) = 0) then begin
+      if OTFEFreeOTFELUKSKeyOrKeyfileEntry1.KeyIsUserEntered() then begin
         msgZeroLenKey := _('You have not entered a password.');
-        end
-      else
-        begin
+      end else begin
         msgZeroLenKey := _('Keyfile contained a zero-length key.');
-        end;
+      end;
 
-      if (SDUMessageDlg(
-                 msgZeroLenKey+SDUCRLF+
-                 SDUCRLF+
-                 _('Are you sure you wish to proceed?'),
-                 mtConfirmation,
-                 [mbYes, mbNo],
-                 0
-                ) = mrYes) then
-        begin
-        ModalResult := mrOK;
-        end;
-      end
-    else
-      begin
+      if (SDUMessageDlg(msgZeroLenKey + SDUCRLF + SDUCRLF +
+        _('Are you sure you wish to proceed?'), mtConfirmation,
+        [mbYes, mbNo], 0) = mrYes) then begin
+        ModalResult := mrOk;
+      end;
+    end else begin
       // No problems with the password as entered; OK to close the dialog
-      ModalResult := mrOK;
-      end;
-
-    end  // if GetKey(tmpKey) then
-  else
-    begin
-    if not(OTFEFreeOTFELUKSKeyOrKeyfileEntry1.KeyIsUserEntered()) then
-      begin
-      SDUMessageDlg(_('Unable to read keyfile.'), mtError);
-      end;
-
+      ModalResult := mrOk;
     end;
 
+  end  // if GetKey(tmpKey) then
+  else begin
+    if not (OTFEFreeOTFELUKSKeyOrKeyfileEntry1.KeyIsUserEntered()) then begin
+      SDUMessageDlg(_('Unable to read keyfile.'), mtError);
+    end;
+
+  end;
 
 end;
 
 
 procedure TfrmKeyEntryLUKS.EnableDisableControls();
 var
-  junkInt64: int64;
-  junkChar: ansichar;
-  mountAsOK: boolean;
+  junkInt64:  Int64;
+  junkChar:   ansichar;
+  mountAsOK:  Boolean;
   tmpMountAs: TFreeOTFEMountAs;
 begin
   // Ensure we know what to mount as
-  mountAsOK := GetMountAs(tmpMountAs);
-  ckMountReadonly.Enabled := FALSE;
-  if (mountAsOK) then
-    begin
-    if not(FreeOTFEMountAsCanWrite[tmpMountAs]) then
-      begin
-      ckMountReadonly.checked := TRUE;
-      end;
-    SDUEnableControl(ckMountReadonly, FreeOTFEMountAsCanWrite[tmpMountAs]);
+  mountAsOK               := GetMountAs(tmpMountAs);
+  ckMountReadonly.Enabled := False;
+  if (mountAsOK) then begin
+    if not (FreeOTFEMountAsCanWrite[tmpMountAs]) then begin
+      ckMountReadonly.Checked := True;
     end;
-  mountAsOK := mountAsOK AND (tmpMountAs <> fomaUnknown);
+    SDUEnableControl(ckMountReadonly, FreeOTFEMountAsCanWrite[tmpMountAs]);
+  end;
+  mountAsOK := mountAsOK and (tmpMountAs <> fomaUnknown);
 
-  pbOK.Enabled := (
-                   (GetSizeLimit(junkInt64))     AND
-                   (GetDriveLetter(junkChar))    AND
-                   mountAsOK
-                  );
+  pbOK.Enabled := ((GetSizeLimit(junkInt64)) and
+    (GetDriveLetter(junkChar)) and
+    mountAsOK);
 
 end;
 
@@ -300,18 +265,17 @@ begin
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.CursorToEndOfPassword();
 
   // Certain controls only visble if used in conjunction with drive mounting
-  lblDrive.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
-  cbDrive.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
-  lblMountAs.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
-  cbMediaType.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
+  lblDrive.Visible           := fFreeOTFEObj is TOTFEFreeOTFE;
+  cbDrive.Visible            := fFreeOTFEObj is TOTFEFreeOTFE;
+  lblMountAs.Visible         := fFreeOTFEObj is TOTFEFreeOTFE;
+  cbMediaType.Visible        := fFreeOTFEObj is TOTFEFreeOTFE;
   ckMountForAllUsers.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
 
   // Prevent making remaining control look odd, stuck in the middle
-  if not(fFreeOTFEObj is TOTFEFreeOTFE) then
-    begin
-    ckMountReadonly.top := lblDrive.top;
+  if not (fFreeOTFEObj is TOTFEFreeOTFE) then begin
+    ckMountReadonly.top  := lblDrive.top;
     ckMountReadonly.left := lblDrive.left;
-    end;
+  end;
 
   EnableDisableControls();
 
@@ -327,13 +291,11 @@ begin
 
 end;
 
-procedure TfrmKeyEntryLUKS.preUserkeyKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TfrmKeyEntryLUKS.preUserkeyKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  if (key = 27) then
-    begin
+  if (key = 27) then begin
     DoCancel();
-    end;
+  end;
 
 end;
 
@@ -351,147 +313,140 @@ begin
 end;
 
 
-function TfrmKeyEntryLUKS.GetIVCypherBase(var baseIVCypherOnHashLength: boolean): boolean;
+function TfrmKeyEntryLUKS.GetIVCypherBase(var baseIVCypherOnHashLength: Boolean): Boolean;
 begin
-  baseIVCypherOnHashLength := ckBaseIVCypherOnHashLength.checked;
-  Result := TRUE;
+  baseIVCypherOnHashLength := ckBaseIVCypherOnHashLength.Checked;
+  Result                   := True;
 end;
 
-function TfrmKeyEntryLUKS.SetIVCypherBase(baseIVCypherOnHashLength: boolean): boolean;
+function TfrmKeyEntryLUKS.SetIVCypherBase(baseIVCypherOnHashLength: Boolean): Boolean;
 begin
-  ckBaseIVCypherOnHashLength.checked := baseIVCypherOnHashLength;
-  Result := TRUE;
+  ckBaseIVCypherOnHashLength.Checked := baseIVCypherOnHashLength;
+  Result                             := True;
 end;
 
 
-function TfrmKeyEntryLUKS.GetKey(var userKey: PasswordString): boolean;
+function TfrmKeyEntryLUKS.GetKey(var userKey: PasswordString): Boolean;
 begin
   Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKey(userKey);
 end;
 
-function TfrmKeyEntryLUKS.SetKey(userKey: PasswordString): boolean;
+function TfrmKeyEntryLUKS.SetKey(userKey: PasswordString): Boolean;
 begin
   Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.SetKey(userKey);
 end;
 
-function TfrmKeyEntryLUKS.SetKeyfile(filename: string): boolean;
+function TfrmKeyEntryLUKS.SetKeyfile(filename: String): Boolean;
 begin
   Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.SetKeyfile(filename);
 end;
 
-function TfrmKeyEntryLUKS.GetKeyfileIsASCII(var isASCII: boolean): boolean;
+function TfrmKeyEntryLUKS.GetKeyfileIsASCII(var isASCII: Boolean): Boolean;
 begin
   Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKeyfileIsASCII(isASCII);
 end;
 
-function TfrmKeyEntryLUKS.SetKeyfileIsASCII(isASCII: boolean): boolean;
+function TfrmKeyEntryLUKS.SetKeyfileIsASCII(isASCII: Boolean): Boolean;
 begin
   Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.SetKeyfileIsASCII(isASCII);
 end;
 
-function TfrmKeyEntryLUKS.GetKeyfileNewlineType(var nlType: TSDUNewline): boolean;
+function TfrmKeyEntryLUKS.GetKeyfileNewlineType(var nlType: TSDUNewline): Boolean;
 begin
   Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKeyfileNewlineType(nlType);
 end;
 
-function TfrmKeyEntryLUKS.SetKeyfileNewlineType(nlType: TSDUNewline): boolean;
+function TfrmKeyEntryLUKS.SetKeyfileNewlineType(nlType: TSDUNewline): Boolean;
 begin
   Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.SetKeyfileNewlineType(nlType);
 end;
 
 
-function TfrmKeyEntryLUKS.GetSizeLimit(var fileOptSizeLimit: int64): boolean;
+function TfrmKeyEntryLUKS.GetSizeLimit(var fileOptSizeLimit: Int64): Boolean;
 begin
   fileOptSizeLimit := se64UnitSizeLimit.Value;
-  Result := TRUE;
+  Result           := True;
 end;
 
-function TfrmKeyEntryLUKS.SetSizeLimit(fileOptSizeLimit: int64): boolean;
+function TfrmKeyEntryLUKS.SetSizeLimit(fileOptSizeLimit: Int64): Boolean;
 begin
   se64UnitSizeLimit.Value := fileOptSizeLimit;
-  Result := TRUE;
+  Result                  := True;
 end;
 
 // Note: This may return #0 as mountDriveLetter to indicate "any"
-function TfrmKeyEntryLUKS.GetDriveLetter(var mountDriveLetter: ansichar): boolean;
+function TfrmKeyEntryLUKS.GetDriveLetter(var mountDriveLetter: ansichar): Boolean;
 begin
   mountDriveLetter := #0;
   // Note: The item at index zero is "Use default"; #0 is returned for this
-  if (cbDrive.ItemIndex>0) then
-    begin
-    mountDriveLetter :=ansichar( cbDrive.Items[cbDrive.ItemIndex][1]);
-    end;
+  if (cbDrive.ItemIndex > 0) then begin
+    mountDriveLetter := ansichar(cbDrive.Items[cbDrive.ItemIndex][1]);
+  end;
 
-  Result := TRUE;
+  Result := True;
 end;
 
 // mountDriveLetter - Set to #0 to indicate "Use default"
-function TfrmKeyEntryLUKS.SetDriveLetter(mountDriveLetter: ansichar): boolean;
+function TfrmKeyEntryLUKS.SetDriveLetter(mountDriveLetter: ansichar): Boolean;
 var
-  idx: integer;
-  retVal: boolean;
+  idx:    Integer;
+  retVal: Boolean;
 begin
-  retVal := TRUE;
+  retVal := True;
 
-  if (mountDriveLetter = #0) then
-    begin
+  if (mountDriveLetter = #0) then begin
     // The item at idx 0 will *always* be "Use default"
-    idx := 0
-    end
-  else
-    begin
-    idx := cbDrive.Items.IndexOf(mountDriveLetter+':');
-    end;
-
-  if (idx < 0) then
-    begin
     idx := 0;
-    retVal := FALSE;
-    end;
+  end else begin
+    idx := cbDrive.Items.IndexOf(mountDriveLetter + ':');
+  end;
+
+  if (idx < 0) then begin
+    idx    := 0;
+    retVal := False;
+  end;
   cbDrive.ItemIndex := idx;
 
   Result := retVal;
 end;
 
-function TfrmKeyEntryLUKS.GetReadonly(var mountReadonly: boolean): boolean;
+function TfrmKeyEntryLUKS.GetReadonly(var mountReadonly: Boolean): Boolean;
 begin
-  mountReadonly := ckMountReadonly.checked;
-  Result := TRUE;
+  mountReadonly := ckMountReadonly.Checked;
+  Result        := True;
 end;
 
-function TfrmKeyEntryLUKS.SetReadonly(mountReadonly: boolean): boolean;
+function TfrmKeyEntryLUKS.SetReadonly(mountReadonly: Boolean): Boolean;
 begin
-  ckMountReadonly.checked := mountReadonly;
-  Result := TRUE;
+  ckMountReadonly.Checked := mountReadonly;
+  Result                  := True;
 end;
 
-function TfrmKeyEntryLUKS.GetMountAs(var mountAs: TFreeOTFEMountAs): boolean;
+function TfrmKeyEntryLUKS.GetMountAs(var mountAs: TFreeOTFEMountAs): Boolean;
 var
   currMountAs: TFreeOTFEMountAs;
-  allOK: boolean;
+  allOK:       Boolean;
 begin
-  allOK := FALSE;
+  allOK := False;
 
-  for currMountAs:=low(TFreeOTFEMountAs) to high(TFreeOTFEMountAs) do
-    begin
-    if (cbMediaType.Items[cbMediaType.ItemIndex] = FreeOTFEMountAsTitle(currMountAs)) then
-      begin
+  for currMountAs := low(TFreeOTFEMountAs) to high(TFreeOTFEMountAs) do begin
+    if (cbMediaType.Items[cbMediaType.ItemIndex] = FreeOTFEMountAsTitle(currMountAs)) then begin
       mountAs := currMountAs;
-      allOK := TRUE;
+      allOK   := True;
       break;
-      end;
     end;
+  end;
 
   Result := allOK;
 end;
 
 
-function TfrmKeyEntryLUKS.SetMountAs(mountAs: TFreeOTFEMountAs): boolean;
+function TfrmKeyEntryLUKS.SetMountAs(mountAs: TFreeOTFEMountAs): Boolean;
 var
-  idx: integer;
-  allOK: boolean;
+  idx:   Integer;
+  allOK: Boolean;
 begin
-  idx := cbMediaType.Items.IndexOf(FreeOTFEMountAsTitle(mountAs));
+  idx                   := cbMediaType.Items.IndexOf(FreeOTFEMountAsTitle(mountAs));
   cbMediaType.ItemIndex := idx;
 
   allOK := (idx >= 0);
@@ -500,14 +455,14 @@ begin
 end;
 
 
-procedure TfrmKeyEntryLUKS.SetMountForAllUsers(allUsers: boolean);
+procedure TfrmKeyEntryLUKS.SetMountForAllUsers(allUsers: Boolean);
 begin
-  ckMountForAllUsers.checked := allUsers;
+  ckMountForAllUsers.Checked := allUsers;
 end;
 
-function  TfrmKeyEntryLUKS.GetMountForAllUsers(): boolean;
+function TfrmKeyEntryLUKS.GetMountForAllUsers(): Boolean;
 begin
-  Result := ckMountForAllUsers.checked;
+  Result := ckMountForAllUsers.Checked;
 end;
 
 
@@ -529,6 +484,4 @@ begin
   DefaultOptions();
 end;
 
-END.
-
-
+end.

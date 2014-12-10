@@ -536,12 +536,10 @@ begin
         // Only display two most significant units; anything beyond that is
         // not particularly significant
         if (ADay > 0) then begin
-          newLabel := SDUParamSubstitute(_('%1 days, %2 hours'),
-            [ADay, AHour]);
+          newLabel := SDUParamSubstitute(_('%1 days, %2 hours'), [ADay, AHour]);
         end else
         if (AHour > 0) then begin
-          newLabel := SDUParamSubstitute(_('%1 hours, %2 minutes'),
-            [AHour, AMinute]);
+          newLabel := SDUParamSubstitute(_('%1 hours, %2 minutes'), [AHour, AMinute]);
         end else
         if (AMinute > 0) then begin
           newLabel := SDUParamSubstitute(_('%1 minutes, %2 seconds'),

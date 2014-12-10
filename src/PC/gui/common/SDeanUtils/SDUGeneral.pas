@@ -769,9 +769,9 @@ function SDUConvertLFNToSFN(lfn: String): String;
 // Enable/disable the specified control, with correct colors
 procedure SDUEnableControl(control: TControl; enable: Boolean;
   affectAssociatedControls: Boolean = True); OVERLOAD;
-//procedure SDUEnableControl(control: TAction; enable: Boolean); OVERLOAD;
-//procedure SDUEnableControl(control: TMenuItem; enable: Boolean); OVERLOAD;
-// Readonly/read-write the specified control, with correct colors
+ //procedure SDUEnableControl(control: TAction; enable: Boolean); OVERLOAD;
+ //procedure SDUEnableControl(control: TMenuItem; enable: Boolean); OVERLOAD;
+ // Readonly/read-write the specified control, with correct colors
 procedure SDUReadonlyControl(control: TControl; ReadOnly: Boolean;
   affectAssociatedControls: Boolean = True);
 // Set "value" to the value of the command line parameter "-<parameter> value". Returns TRUE/FALSE on success/failure
@@ -1369,15 +1369,15 @@ begin
   Result := sfn;
 end;
 
-//procedure SDUEnableControl(control: TAction; enable: Boolean);
-//begin
-//  control.Enabled := enable;
-//end;
-//
-//procedure SDUEnableControl(control: TMenuItem; enable: Boolean);
-//begin
-//  control.Enabled := enable;
-//end;
+ //procedure SDUEnableControl(control: TAction; enable: Boolean);
+ //begin
+ //  control.Enabled := enable;
+ //end;
+ //
+ //procedure SDUEnableControl(control: TMenuItem; enable: Boolean);
+ //begin
+ //  control.Enabled := enable;
+ //end;
 
 procedure SDUEnableControl(control: TControl; enable: Boolean;
   affectAssociatedControls: Boolean = True);
@@ -1798,9 +1798,8 @@ begin
 
     StrPCopy(zAppName, cmdLine);
 
-    if CreateProcess(nil, zAppName, @Security, @Security, True,
-      CREATE_NO_WINDOW or NORMAL_PRIORITY_CLASS, nil, pWrkDir, StartupInfo,
-      ProcessInfo) then begin
+    if CreateProcess(nil, zAppName, @Security, @Security, True, CREATE_NO_WINDOW or
+      NORMAL_PRIORITY_CLASS, nil, pWrkDir, StartupInfo, ProcessInfo) then begin
       n              := 0;
       TotalBytesRead := 0;
       res.Clear;
@@ -3794,16 +3793,14 @@ end;
 // ----------------------------------------------------------------------------
 function SDUFormatAsBytesUnits(Value: Int64; accuracy: Integer = 2): String;
 begin
-  Result := SDUFormatUnits(Value, SDUUnitsStorageToTextArr(), UNITS_BYTES_MULTIPLIER,
-    accuracy);
+  Result := SDUFormatUnits(Value, SDUUnitsStorageToTextArr(), UNITS_BYTES_MULTIPLIER, accuracy);
 end;
 
                              // ----------------------------------------------------------------------------
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUFormatAsBytesUnits(Value: ULONGLONG; accuracy: Integer = 2): String;
 begin
-  Result := SDUFormatUnits(Value, SDUUnitsStorageToTextArr(), UNITS_BYTES_MULTIPLIER,
-    accuracy);
+  Result := SDUFormatUnits(Value, SDUUnitsStorageToTextArr(), UNITS_BYTES_MULTIPLIER, accuracy);
 end;
 
 {$IFEND}
@@ -4191,9 +4188,8 @@ begin
   allOK          := True;
   copyCancelFlag := False;
 
-  srcHandle := CreateFile(PChar(Source), GENERIC_READ,
-    (FILE_SHARE_READ or FILE_SHARE_WRITE), nil, OPEN_EXISTING,
-    FILE_ATTRIBUTE_NORMAL, 0);
+  srcHandle := CreateFile(PChar(Source), GENERIC_READ, (FILE_SHARE_READ or FILE_SHARE_WRITE),
+    nil, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
   if srcHandle = INVALID_HANDLE_VALUE then begin
     raise EExceptionBadSrc.Create('Can''t open source');
   end;
@@ -4225,8 +4221,7 @@ begin
       try
         finished := False;
         while not (finished) do begin
-          opResult := ReadFile(srcHandle, buffer[0], blocksize,
-            numberOfBytesRead, nil);
+          opResult := ReadFile(srcHandle, buffer[0], blocksize, numberOfBytesRead, nil);
 
           // If we read was successful, and we read some bytes, we haven't
           // finished yet... 
@@ -4240,11 +4235,10 @@ begin
               end;
             end;
 
-            opResult := WriteFile(destHandle, buffer[0],
-              numberOfBytesRead, numberOfBytesWritten, nil);
+            opResult := WriteFile(destHandle, buffer[0], numberOfBytesRead,
+              numberOfBytesWritten, nil);
 
-            if (not (opResult) or (numberOfBytesRead <> numberOfBytesWritten)) then
-            begin
+            if (not (opResult) or (numberOfBytesRead <> numberOfBytesWritten)) then begin
               raise EExceptionWriteError.Create('Unable to write data to output');
             end;
 
@@ -4555,8 +4549,8 @@ begin
     );
 
   if (fileHandle <> INVALID_HANDLE_VALUE) then begin
-    if (DeviceIoControl(fileHandle, SDU_IOCTL_DISK_GET_DRIVE_GEOMETRY,
-      nil, 0, @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
+    if (DeviceIoControl(fileHandle, SDU_IOCTL_DISK_GET_DRIVE_GEOMETRY, nil,
+      0, @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
       diskGeometry := DIOCBufferOut;
       retval       := True;
     end;
@@ -4597,8 +4591,8 @@ begin
     );
 
   if (fileHandle <> INVALID_HANDLE_VALUE) then begin
-    if (DeviceIoControl(fileHandle, SDU_IOCTL_DISK_GET_PARTITION_INFO,
-      nil, 0, @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
+    if (DeviceIoControl(fileHandle, SDU_IOCTL_DISK_GET_PARTITION_INFO, nil,
+      0, @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
       partInfo := DIOCBufferOut;
       retval   := True;
     end;
@@ -4644,8 +4638,8 @@ begin
     );
 
   if (fileHandle <> INVALID_HANDLE_VALUE) then begin
-    if (DeviceIoControl(fileHandle, SDU_IOCTL_DISK_GET_DRIVE_LAYOUT, nil,
-      0, @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
+    if (DeviceIoControl(fileHandle, SDU_IOCTL_DISK_GET_DRIVE_LAYOUT, nil, 0,
+      @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
       driveLayout := DIOCBufferOut;
       retval      := True;
     end;
@@ -6038,8 +6032,8 @@ function SDUGetPADFileVersionInfo(url: String; var majorVersion, minorVersion: I
 var
   junk: Integer;
 begin
-  Result := SDUGetPADFileVersionInfo(url, majorVersion, minorVersion,
-    junk, junk, userAgent, ShowProgressDlg);
+  Result := SDUGetPADFileVersionInfo(url, majorVersion, minorVersion, junk,
+    junk, userAgent, ShowProgressDlg);
 end;
 
 function SDUGetPADFileVersionInfo(url: String;
@@ -6309,8 +6303,7 @@ function SDUVersionCompare(A_MajorVersion, A_MinorVersion, A_RevisionVersion,
 var
   retval: Integer;
 begin
-  retval := SDUVersionCompare(A_MajorVersion, A_MinorVersion, B_MajorVersion,
-    B_MinorVersion);
+  retval := SDUVersionCompare(A_MajorVersion, A_MinorVersion, B_MajorVersion, B_MinorVersion);
 
   if (retval = 0) then begin
     retval := _SDUVersionNumberCompare(A_RevisionVersion, B_RevisionVersion);
@@ -6328,8 +6321,7 @@ function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion: Integer;
 var
   retval: Integer;
 begin
-  retval := SDUVersionCompare(A_MajorVersion, A_MinorVersion, B_MajorVersion,
-    B_MinorVersion);
+  retval := SDUVersionCompare(A_MajorVersion, A_MinorVersion, B_MajorVersion, B_MinorVersion);
   if (retval = 0) then begin
     if (A_BetaVersion > 0) then begin
       retval := 1;
@@ -6698,8 +6690,7 @@ begin
     GetWindowPlacement(form.Handle, @placement);
 
     placement.rcNormalPosition.Top  :=
-      SDUTryStrToIntDflt(stlLayout.Values[WINDOW_LAYOUT_TOP],
-      placement.rcNormalPosition.Top);
+      SDUTryStrToIntDflt(stlLayout.Values[WINDOW_LAYOUT_TOP], placement.rcNormalPosition.Top);
     placement.rcNormalPosition.Left :=
       SDUTryStrToIntDflt(stlLayout.Values[WINDOW_LAYOUT_LEFT],
       placement.rcNormalPosition.Left);

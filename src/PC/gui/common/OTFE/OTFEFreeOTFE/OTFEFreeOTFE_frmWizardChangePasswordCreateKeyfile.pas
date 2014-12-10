@@ -11,20 +11,20 @@ unit OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ComCtrls, PasswordRichEdit, Spin64, ExtCtrls,
-  MouseRNG,
-  //sdu
+  Classes, ComCtrls, Controls, Dialogs,
+  ExtCtrls,
+  Forms, Graphics, Messages, MouseRNG,
+  PasswordRichEdit, Spin64, StdCtrls, SysUtils, Windows, //sdu
   SDUDialogs
-  ,sdurandpool,   SDUStdCtrls,
+  , sdurandpool, SDUStdCtrls,
                            //doxbox
   OTFEFreeOTFE_DriverAPI,  // Required for CRITICAL_DATA_LEN
+  OTFEFreeOTFE_fmeSelectPartition,
+  OTFEFreeOTFE_frmWizard, OTFEFreeOTFE_InstructionRichEdit, OTFEFreeOTFE_PasswordRichEdit,
   OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U,
- OTFEFreeOTFE_fmeSelectPartition,
-  OTFEFreeOTFE_PasswordRichEdit, SDUForms, SDUFrames, SDUSpin64Units,
-  OTFEFreeOTFE_frmWizard, OTFEFreeOTFE_InstructionRichEdit, SDUBlocksPanel,
-  SDUDiskPartitionsPanel;
+  SDUBlocksPanel,
+  SDUDiskPartitionsPanel, SDUForms, SDUFrames, SDUSpin64Units;
 
 type
   TChangePasswordCreateKeyfile = (opChangePassword, opCreateKeyfile);
@@ -96,7 +96,7 @@ type
     pbRefresh:                  TButton;
     fmeSelectPartition:         TfmeSelectPartition;
     se64UnitOffset:             TSDUSpin64Unit_Storage;
-    TSDUDiskPartitionsPanel1: TSDUDiskPartitionsPanel;
+    TSDUDiskPartitionsPanel1:   TSDUDiskPartitionsPanel;
 
     procedure FormShow(Sender: TObject);
     procedure edSrcFilenameChange(Sender: TObject);
@@ -115,7 +115,7 @@ type
     procedure pbRefreshClick(Sender: TObject);
   PRIVATE
 
-//    fCombinedRandomData: Ansistring;
+    //    fCombinedRandomData: Ansistring;
 
     deviceList:  TStringList;
     deviceTitle: TStringList;
@@ -137,7 +137,7 @@ type
     function GetDestSaltLength(): Integer;
     function GetDestKeyIterations(): Integer;
     function GetDestRequestedDriveLetter(): ansiChar;
-//    function GetRandomData(): Ansistring;
+    //    function GetRandomData(): Ansistring;
 
     procedure PopulatePKCS11Tokens();
 
@@ -153,7 +153,7 @@ type
     function IsTabSkipped(tabSheet: TTabSheet): Boolean; OVERRIDE;
 
     procedure FormWizardStepChanged(Sender: TObject);
-    function IsTabComplete(checkTab: TTabSheet): Boolean;   OVERRIDE;
+    function IsTabComplete(checkTab: TTabSheet): Boolean; OVERRIDE;
   PUBLIC
     ChangePasswordCreateKeyfile: TChangePasswordCreateKeyfile;
 
@@ -171,7 +171,7 @@ type
     property DestSaltLength: Integer Read GetDestSaltLength;
     property DestKeyIterations: Integer Read GetDestKeyIterations;
     property DestRequestedDriveLetter: ansichar Read GetDestRequestedDriveLetter; }
-//    property RandomData: Ansistring Read GetRandomData;
+    //    property RandomData: Ansistring Read GetRandomData;
 
   end;
 
@@ -199,7 +199,7 @@ resourcestring
   FILEORPART_OPT_VOLUME_FILE = 'File';
   FILEORPART_OPT_PARTITION   = 'Partition';
 
-   { TODO 2 -otdk -crefactor : this uses a lot of same code and GUI as create volume - turn into frames }
+{ TODO 2 -otdk -crefactor : this uses a lot of same code and GUI as create volume - turn into frames }
 function TfrmWizardChangePasswordCreateKeyfile.GetSrcFilename(): String;
 begin
   Result := '';
@@ -270,50 +270,50 @@ begin
 end;
 
 
-//function TfrmWizardChangePasswordCreateKeyfile.GetRandomData(): Ansistring;
-//begin
-//  Result := fCombinedRandomData;
-//end;
+ //function TfrmWizardChangePasswordCreateKeyfile.GetRandomData(): Ansistring;
+ //begin
+ //  Result := fCombinedRandomData;
+ //end;
 
 
 // Returns TRUE if the specified tab should be skipped in 'next' progression, otherwise FALSE
 function TfrmWizardChangePasswordCreateKeyfile.IsTabSkipped(tabSheet: TTabSheet): Boolean;
 begin
-  result := inherited IsTabSkipped(tabSheet);
+  Result := inherited IsTabSkipped(tabSheet);
 
   // DLL doesn't currently support partitions
   if (tabSheet = tsFileOrPartition) then begin
-    result := (fFreeOTFEObj is TOTFEFreeOTFEDLL);
+    Result := (fFreeOTFEObj is TOTFEFreeOTFEDLL);
   end;
 
   // If the user isn't creating a volume within a volume file, skip that tab
   if (tabSheet = tsSrcFile) then begin
-    result := GetIsPartition();
+    Result := GetIsPartition();
   end;
 
   // If the user isn't creating a volume on a partition, skip that tab
   if (tabSheet = tsPartitionSelect) then begin
-    result := not (GetIsPartition());
+    Result := not (GetIsPartition());
   end;
 
   // If the user isn't creating a keyfile, skip the destination keyfile tabsheet
   if (tabSheet = tsDestFile) then begin
-    result := (ChangePasswordCreateKeyfile <> opCreateKeyfile);
+    Result := (ChangePasswordCreateKeyfile <> opCreateKeyfile);
   end;
 
   // If the user *isn't* using the mouse movement RNG, skip the tsRNGMouseMovement tabsheet
   if (tabSheet = tsRNGMouseMovement) then begin
-    result := not (rngMouseMovement in GetRNGSet());
+    Result := not (rngMouseMovement in GetRNGSet());
   end;
 
   // If the user *isn't* using the PKCS#11 token RNG, skip the tsRNGPKCS11 tabsheet
   if (tabSheet = tsRNGPKCS11) then begin
-    result := not (rngPKCS11 in GetRNGSet());
+    Result := not (rngPKCS11 in GetRNGSet());
   end;
 
   // If the user *isn't* using the GPG RNG, skip the tsRNGGPG tabsheet
   if (tabSheet = tsRNGGPG) then begin
-    result := not (rngGPG in GetRNGSet());
+    Result := not (rngGPG in GetRNGSet());
   end;
 
 end;
@@ -336,52 +336,52 @@ var
 begin
   inherited;
 
-  result := False;
+  Result := False;
 
   if (checkTab = tsFileOrPartition) then begin
     // Ensure one option has been selected
-    result := (rgFileOrPartition.ItemIndex >= 0);
+    Result := (rgFileOrPartition.ItemIndex >= 0);
   end else
   if (checkTab = tsSrcFile) then begin
     // Flag tabsheet complete if a valid filename has been specified
     if (GetIsPartition()) then begin
-      result := True;
+      Result := True;
     end else begin
-      result := FileExists(GetSrcFilename());
+      Result := FileExists(GetSrcFilename());
     end;
 
   end else
   if (checkTab = tsPartitionSelect) then begin
     // If we're creating a volume on a partition, one must be selected
     if (not (GetIsPartition())) then begin
-      result := True;
+      Result := True;
     end else begin
-      result := (fmeSelectPartition.SelectedDevice <> '');
+      Result := (fmeSelectPartition.SelectedDevice <> '');
     end;
 
   end else
   if (checkTab = tsSrcDetails) then begin
     // Check that the number entered is less than the max size...
     if (GetIsPartition()) then begin
-      result := (GetOffset() >= 0);
+      Result := (GetOffset() >= 0);
     end else begin
-      result := (GetOffset() < SDUGetFileSize(GetSrcFilename())) and (GetOffset() >= 0);
+      Result := (GetOffset() < SDUGetFileSize(GetSrcFilename())) and (GetOffset() >= 0);
     end;
 
     // Check that the number entered is less than the size of the file...
     // Src salt length >= 0
     // Note that the password *can* be blank - e.g. with the NULL encryption
     // cypher
-    result := result and (GetSrcSaltLength() >= 0) and (GetSrcKeyIterations() > 0);
+    Result := Result and (GetSrcSaltLength() >= 0) and (GetSrcKeyIterations() > 0);
   end else
   if (checkTab = tsDestFile) then begin
     // Dest filename entered
-    result := (GetDestFilename() <> '');
+    Result := (GetDestFilename() <> '');
 
     // Sanity check - if we're creating a keyfile, ensure user's not trying to
     // overwrite the original volume file!
     if (ChangePasswordCreateKeyfile = opCreateKeyfile) then begin
-      result := result and (GetSrcFilename() <> GetDestFilename());
+      Result := Result and (GetSrcFilename() <> GetDestFilename());
     end;
 
   end else
@@ -390,12 +390,12 @@ begin
     // Note that RNG is always set to something, and others always default
     // Note that the password *can* be blank - e.g. with the NULL encryption
     // cypher
-    result := (preDestUserKey1.Text = preDestUserKey2.Text) and (GetDestSaltLength() >= 0) and
-      (GetDestKeyIterations() > 0);
+    Result := (preDestUserKey1.Text = preDestUserKey2.Text) and
+      (GetDestSaltLength() >= 0) and (GetDestKeyIterations() > 0);
   end else
   if (checkTab = tsRNGSelect) then begin
     // Must have at least one RNG selected
-    result := (GetRNGSet() <> []);
+    Result := (GetRNGSet() <> []);
   end else
   if (checkTab = tsRNGMouseMovement) then begin
     // This is a good place to update the display of the number of random bits
@@ -404,8 +404,8 @@ begin
     lblMouseRNGBits.Caption := SDUParamSubstitute(_('Random bits generated: %1/%2'),
       [randomBitsGenerated, CRITICAL_DATA_LENGTH]);
 
-    result            := (randomBitsGenerated >= CRITICAL_DATA_LENGTH);
-    MouseRNG.Enabled := not (result);
+    Result           := (randomBitsGenerated >= CRITICAL_DATA_LENGTH);
+    MouseRNG.Enabled := not (Result);
     if MouseRNG.Enabled then begin
       MouseRNG.Color := clWindow;
     end else begin
@@ -415,11 +415,11 @@ begin
   end else
   if (checkTab = tsRNGPKCS11) then begin
     // Must have at least one RNG selected
-    result := (FPKCS11TokensAvailable and (cbToken.ItemIndex >= 0));
+    Result := (FPKCS11TokensAvailable and (cbToken.ItemIndex >= 0));
   end else
   if (checkTab = tsRNGGPG) then begin
     // Flag tabsheet complete if a GPG executable has been specified
-    result := (lblGPGFilename.Caption <> '');
+    Result := (lblGPGFilename.Caption <> '');
   end;
 end;
 
@@ -433,7 +433,7 @@ begin
   inherited;
   //SDUInitAndZeroBuffer(0,fCombinedRandomData);
 
-//  fCombinedRandomData := '';
+  //  fCombinedRandomData := '';
 
   // tsFileOrPartition
   rgFileOrPartition.Items.Clear();
@@ -679,23 +679,23 @@ end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.pbFinishClick(Sender: TObject);
 var
-  allOK:      Boolean;
-  saltBytes:  Ansistring;
-  i : integer;
+  allOK:     Boolean;
+  saltBytes: Ansistring;
+  i:         Integer;
 begin
   inherited;
 
-    GetRandPool.SetUpRandPool(GetRNGSet(),
+  GetRandPool.SetUpRandPool(GetRNGSet(),
     fFreeOTFEObj.PKCS11Library, PKCS11TokenListSelected(cbToken),
     lblGPGFilename.Caption);
 
 
-     // Grab 'n' bytes from the random pool to use as the salt
-     allOK := GetRandPool.GenerateRandomData(GetDestSaltLength() div 8,saltBytes);
-    if (allOK) then begin
+  // Grab 'n' bytes from the random pool to use as the salt
+  allOK := GetRandPool.GenerateRandomData(GetDestSaltLength() div 8, saltBytes);
+  if (allOK) then begin
     if (ChangePasswordCreateKeyfile = opChangePassword) then begin
-      allOK := fFreeOTFEObj.ChangeVolumePassword(GetSrcFilename(),
-        GetOffset(), GetSrcUserKey(), GetSrcSaltLength(),  // In bits
+      allOK := fFreeOTFEObj.ChangeVolumePassword(GetSrcFilename(), GetOffset(),
+        GetSrcUserKey(), GetSrcSaltLength(),  // In bits
         GetSrcKeyIterations(), GetDestUserKey(), saltBytes, GetDestKeyIterations(),
         GetDestRequestedDriveLetter());
     end else begin
@@ -705,21 +705,21 @@ begin
         GetDestKeyIterations(), GetDestRequestedDriveLetter());
     end;
 
-    end;
+  end;
 
-    if (allOK) then begin
-      SDUMessageDlg(_('Completed successfully.'), mtInformation);
-      ModalResult := mrOk;
-    end else begin
-      SDUMessageDlg(
-        _('Unable to complete requested operation: please ensure that your Box is not already open or otherwise in use, and that the keyphrase, salt and offset entered are correct.'),
-        mtError
-        );
-    end;
+  if (allOK) then begin
+    SDUMessageDlg(_('Completed successfully.'), mtInformation);
+    ModalResult := mrOk;
+  end else begin
+    SDUMessageDlg(
+      _('Unable to complete requested operation: please ensure that your Box is not already open or otherwise in use, and that the keyphrase, salt and offset entered are correct.'),
+      mtError
+      );
+  end;
 
-      { TODO 1 -otdk -ccleanup : whats this for? }
+  { TODO 1 -otdk -ccleanup : whats this for? }
   for i := 1 to length(saltBytes) do begin
-    saltBytes[i] := AnsiChar( i);
+    saltBytes[i] := AnsiChar(i);
   end;
 
 end;
@@ -929,8 +929,7 @@ end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.PopulatePKCS11Tokens();
 begin
-  FPKCS11TokensAvailable := (PKCS11PopulateTokenList(
-    fFreeOTFEObj.PKCS11Library, cbToken) > 0);
+  FPKCS11TokensAvailable := (PKCS11PopulateTokenList(fFreeOTFEObj.PKCS11Library, cbToken) > 0);
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.pbRefreshClick(Sender: TObject);

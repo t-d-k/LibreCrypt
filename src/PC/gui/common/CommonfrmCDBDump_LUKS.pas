@@ -79,10 +79,8 @@ end;
 
 procedure TfrmCDBDump_LUKS.EnableDisableControls();
 begin
-  pbOK.Enabled := ((VolumeFilename <> '') and
-    (feDumpFilename.Filename <> '') and
-    (feDumpFilename.Filename <>
-    VolumeFilename) // Don't overwrite the volume with the dump!!!
+  pbOK.Enabled := ((VolumeFilename <> '') and (feDumpFilename.Filename <> '') and
+    (feDumpFilename.Filename <> VolumeFilename) // Don't overwrite the volume with the dump!!!
     );
 end;
 
@@ -103,13 +101,9 @@ begin
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKeyfileIsASCII(keyfileIsASCII);
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKeyfileNewlineType(keyfileNewlineType);
 
-  Result := OTFEFreeOTFE.DumpLUKSDataToFile(
-    VolumeFilename,
-    userKey,
-    keyfile, keyfileIsASCII,
-    keyfileNewlineType,
-    LUKSBaseIVCypherOnHashLength,
-    DumpFilename  );
+  Result := OTFEFreeOTFE.DumpLUKSDataToFile(VolumeFilename, userKey,
+    keyfile, keyfileIsASCII, keyfileNewlineType, LUKSBaseIVCypherOnHashLength,
+    DumpFilename);
 end;
 
 procedure TfrmCDBDump_LUKS.pbOKClick(Sender: TObject);
@@ -138,10 +132,10 @@ begin
 {$ENDIF}
 
     if (SDUMessageDlg(_(
-      'A human readable copy of your critical data block has been written to:') + SDUCRLF +
-      SDUCRLF + DumpFilename + SDUCRLF + SDUCRLF +
-      _('Do you wish to open this file in Windows Notepad?'),
-      mtInformation, [mbYes, mbNo], 0) = mrYes) then begin
+      'A human readable copy of your critical data block has been written to:') +
+      SDUCRLF + SDUCRLF + DumpFilename + SDUCRLF + SDUCRLF +
+      _('Do you wish to open this file in Windows Notepad?'), mtInformation,
+      [mbYes, mbNo], 0) = mrYes) then begin
       notepadCommandLine := 'notepad ' + DumpFilename;
 
       if not (SDUWinExecNoWait32(notepadCommandLine, SW_RESTORE)) then begin
@@ -160,9 +154,8 @@ begin
 {$ENDIF}
 
     SDUMessageDlg(
-      _('Unable to dump out critical data block.') + SDUCRLF +
-      SDUCRLF + _(
-      'Please ensure that your password and details are entered correctly, and that this file is not currently in use (e.g. mounted)'),
+      _('Unable to dump out critical data block.') + SDUCRLF + SDUCRLF +
+      _('Please ensure that your password and details are entered correctly, and that this file is not currently in use (e.g. mounted)'),
       mtError, [mbOK], 0);
   end;
 

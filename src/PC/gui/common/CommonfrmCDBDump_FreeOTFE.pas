@@ -11,14 +11,14 @@ unit CommonfrmCDBDump_FreeOTFE;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ComCtrls,
-  PasswordRichEdit, Spin64,
-  //dosbox
-  OTFEFreeOTFEBase_U, Buttons, SDUForms, SDUFrames,
-  SDUSpin64Units, SDUFilenameEdit_U, SDUDialogs, OTFEFreeOTFE_VolumeSelect,
-  CommonfrmCDBDump_Base,
-  OTFE_U, SDUGeneral;
+  Classes, ComCtrls,
+  Controls, Dialogs,
+  Forms, Graphics, Messages, PasswordRichEdit, Spin64,
+  StdCtrls, SysUtils, Windows, //dosbox
+  Buttons, CommonfrmCDBDump_Base,
+  OTFE_U, OTFEFreeOTFE_VolumeSelect,
+  OTFEFreeOTFEBase_U, SDUDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
+  SDUGeneral, SDUSpin64Units;
 
 type
   TfrmCDBDump_FreeOTFE = class (TfrmCDBDump_Base)
@@ -120,8 +120,7 @@ end;
 
 procedure TfrmCDBDump_FreeOTFE.EnableDisableControls();
 begin
-  pbOK.Enabled := ((VolumeFilename <> '') and
-    (feDumpFilename.Filename <> '') and
+  pbOK.Enabled := ((VolumeFilename <> '') and (feDumpFilename.Filename <> '') and
     (feDumpFilename.Filename <> VolumeFilename) and
     // Don't overwrite the volume with the dump!!!
     (KeyIterations > 0));
@@ -144,11 +143,9 @@ end;
 
 function TfrmCDBDump_FreeOTFE.DumpLUKSDataToFile(): Boolean;
 begin
-  Result := OTFEFreeOTFE.DumpCriticalDataToFile(VolumeFilename,
-    Offset, UserKey,
-    SaltLength,  // In bits
-    KeyIterations, DumpFilename
-    );
+  Result := OTFEFreeOTFE.DumpCriticalDataToFile(VolumeFilename, Offset,
+    UserKey, SaltLength,  // In bits
+    KeyIterations, DumpFilename);
 end;
 
 procedure TfrmCDBDump_FreeOTFE.pbOKClick(Sender: TObject);
@@ -177,10 +174,10 @@ begin
 {$ENDIF}
 
     if (SDUMessageDlg(_(
-      'A human readable copy of your critical data block has been written to:') + SDUCRLF +
-      SDUCRLF + DumpFilename + SDUCRLF + SDUCRLF +
-      _('Do you wish to open this file in Windows Notepad?'),
-      mtInformation, [mbYes, mbNo], 0) = mrYes) then begin
+      'A human readable copy of your critical data block has been written to:') +
+      SDUCRLF + SDUCRLF + DumpFilename + SDUCRLF + SDUCRLF +
+      _('Do you wish to open this file in Windows Notepad?'), mtInformation,
+      [mbYes, mbNo], 0) = mrYes) then begin
       notepadCommandLine := 'notepad ' + DumpFilename;
 
       if not (SDUWinExecNoWait32(notepadCommandLine, SW_RESTORE)) then begin
@@ -199,9 +196,8 @@ begin
 {$ENDIF}
 
     SDUMessageDlg(
-      _('Unable to dump out critical data block.') + SDUCRLF +
-      SDUCRLF + _(
-      'Please ensure that your password and details are entered correctly, and that this file is not currently in use (e.g. mounted)'),
+      _('Unable to dump out critical data block.') + SDUCRLF + SDUCRLF +
+      _('Please ensure that your password and details are entered correctly, and that this file is not currently in use (e.g. mounted)'),
       mtError, [mbOK], 0);
   end;
 

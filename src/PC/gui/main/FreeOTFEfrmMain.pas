@@ -90,7 +90,7 @@ type
     SetTestMode1:               TMenuItem;
     actTestModeOff:             TAction;
     DisallowTestsigneddrivers1: TMenuItem;
-    ToolButton1: TToolButton;
+    ToolButton1:                TToolButton;
 
     procedure actDriversExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -388,7 +388,7 @@ const
   CMDLINE_DRIVERSINSTALLED = 'installed';
 
   // Online user manual URL...
-  { TODO -otdk -cenhancement : set project homepage }
+  { DONE -otdk -cenhancement : set project homepage }
   URL_USERGUIDE_MAIN = 'http://DoxBox.eu/docs/Main';
   // PAD file URL...
   URL_PADFILE_MAIN   = 'https://raw.githubusercontent.com/t-d-k/doxbox/master/PAD.xml';
@@ -818,8 +818,8 @@ begin
       mountList.Add('P:\Projects\Delphi\doxbox\test_vols\' + TEST_VOLS[i]);
 
       //call silent
-      Result := fOtfeFreeOtfeBase.MountFreeOTFE(mountList, mountedAs, True, '',
-        'password', 0, True, False);
+      Result := fOtfeFreeOtfeBase.MountFreeOTFE(mountList, mountedAs, True,
+        '', 'password', 0, True, False);
 
 
       if not (Result) then begin
@@ -1245,7 +1245,7 @@ var
   tmpDrv:          DriveLetterChar;
   drivesRemaining: DriveLetterString;
 begin
-  result           := True;
+  Result          := True;
   drivesRemaining := '';
 
   // Change CWD to anywhere other than a mounted drive
@@ -1274,12 +1274,12 @@ begin
             [subVols[j], tmpDrv]),
             mtError
             );
-          result := False;
+          Result := False;
         end;
       end;
     end;
 
-    if result then begin
+    if Result then begin
       // Sort out dismount order, in case one drive nested within another
       dismountDrives := fOtfeFreeOtfeBase.DismountOrder(dismountDrives);
 
@@ -1295,7 +1295,7 @@ begin
           AutoRunExecute(arPostDismount, tmpDrv, isEmergency);
         end else begin
           drivesRemaining := drivesRemaining + tmpDrv;
-          result           := False;
+          Result          := False;
         end;
 
       end;
@@ -1833,7 +1833,7 @@ function TfrmFreeOTFEMain._PortableModeStart(suppressMsgs: Boolean): Boolean;
 var
   driverFilenames: TStringList;
 begin
-  result := False;
+  Result := False;
 
   driverFilenames := TStringList.Create();
   try
@@ -1861,7 +1861,7 @@ begin
         //          begin
         //          SDUMessageDlg('Portable mode drivers installed and started.', mtInformation, [mbOK], 0);
         //          end;
-        result := True;
+        Result := True;
       end else begin
         if not (suppressMsgs) then begin
           SDUMessageDlg(
@@ -2356,14 +2356,14 @@ end;
 
 function TfrmFreeOTFEMain.IsTestModeOn: Boolean;
 var
-  s:    TStringList;
+  s: TStringList;
   r: Cardinal;
 begin
   Result := False;
   s      := TStringList.Create();
   try
-    r := SDUWinExecAndWaitOutput(SDUGetWindowsDirectory() + '\sysnative\bcdedit.exe', s,
-      SDUGetWindowsDirectory());
+    r := SDUWinExecAndWaitOutput(SDUGetWindowsDirectory() + '\sysnative\bcdedit.exe',
+      s, SDUGetWindowsDirectory());
     if r <> $FFFFFFFF then begin
       Result := s.IndexOf('testsigning             Yes') <> -1;
     end else begin
@@ -3089,7 +3089,7 @@ begin
   cmdExitCode := ceSUCCESS;
 
   fallowUACEsclation := not (SDUCommandLineSwitch(CMDLINE_NOUACESCALATE));
-  // todo: a lot of repirition here bc HandleCommandLineOpts_ fns also call  SDUCommandLineParameter
+  // todo: a lot of repetition here bc HandleCommandLineOpts_ fns also call  SDUCommandLineParameter
   //todo -otdk: 'else' statements mean one cmd per call - allow compatible ones at same time
 
   //these cmds at least  are independent of others

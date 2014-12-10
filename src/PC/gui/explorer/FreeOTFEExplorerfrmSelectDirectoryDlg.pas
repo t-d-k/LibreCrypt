@@ -33,10 +33,8 @@ type
     property SelectedPath: String Read FSelectedPath;
   end;
 
-function SelectFilesystemDirectory(AOwner: TComponent;
-  Filesystem: TSDCustomFilesystem;
-  selectDirType: TSelectDirType;
-  items: TStrings): String;
+function SelectFilesystemDirectory(AOwner: TComponent; Filesystem: TSDCustomFilesystem;
+  selectDirType: TSelectDirType; items: TStrings): String;
 
 implementation
 
@@ -45,10 +43,8 @@ implementation
 uses
   SDUGeneral, SDUi18n;
 
-function SelectFilesystemDirectory(AOwner: TComponent;
-  Filesystem: TSDCustomFilesystem;
-  selectDirType: TSelectDirType;
-  items: TStrings): String;
+function SelectFilesystemDirectory(AOwner: TComponent; Filesystem: TSDCustomFilesystem;
+  selectDirType: TSelectDirType; items: TStrings): String;
 var
   dlg:    TfrmSelectDirectoryDlg;
   retval: String;
@@ -92,8 +88,7 @@ begin
   dlgInstructions := _('Please select folder:');
   dlgOKButton     := _('OK');
 
-  itemText := SDUParamSubstitute(_('these %1 items'),
-    [IntToStr(Items.Count)]);
+  itemText := SDUParamSubstitute(_('these %1 items'), [IntToStr(Items.Count)]);
   if (Items.Count = 1) then begin
     itemText := '''' + ExtractFilename(Items[0]) + '''';
   end;
@@ -103,8 +98,7 @@ begin
     begin
       dlgCaption      := _('Move Items');
       dlgInstructions := SDUParamSubstitute(
-        _(
-        'Select the place where you want to move %1. Then click the Move button'),
+        _('Select the place where you want to move %1. Then click the Move button'),
         [itemText]);
       dlgOKButton     := _('Move');
     end;
@@ -113,8 +107,7 @@ begin
     begin
       dlgCaption      := _('Copy Items');
       dlgInstructions := SDUParamSubstitute(
-        _(
-        'Select the place where you want to copy %1. Then click the Copy button'),
+        _('Select the place where you want to copy %1. Then click the Copy button'),
         [itemText]);
       dlgOKButton     := _('Copy');
     end;
@@ -123,8 +116,7 @@ begin
     begin
       dlgCaption      := _('Store Items');
       dlgInstructions := SDUParamSubstitute(
-        _(
-        'Select the place where you want to store %1. Then click the Store button'),
+        _('Select the place where you want to store %1. Then click the Store button'),
         [itemText]);
       dlgOKButton     := _('Store');
     end;

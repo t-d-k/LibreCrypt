@@ -11,14 +11,13 @@ unit CommonSettings;
 interface
 
 uses
-  Dialogs,
-  Classes,   // Required for TShortCut
+  Classes, Dialogs,
+             // Required for TShortCut
   Controls,  // Required for TDate
   INIFiles,
   //sdu
   SDUFilenameEdit_U,
-  SDUMRUList,
-  SDUGeneral;
+  SDUGeneral, SDUMRUList;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -44,11 +43,8 @@ resourcestring
 
 const
   UpdateFrequencyTitlePtr: array [TUpdateFrequency] of Pointer =
-    (@UPDATEFREQ_NEVER,
-    @UPDATEFREQ_DAILY,
-    @UPDATEFREQ_WEEKLY,
-    @UPDATEFREQ_MONTHLY,
-    @UPDATEFREQ_ANNUALLY
+    (@UPDATEFREQ_NEVER, @UPDATEFREQ_DAILY, @UPDATEFREQ_WEEKLY,
+    @UPDATEFREQ_MONTHLY, @UPDATEFREQ_ANNUALLY
     );
 
 type
@@ -61,9 +57,7 @@ resourcestring
 
 const
   DragDropFileTypeTitlePtr: array [TDragDropFileType] of Pointer =
-    (@DRAGDROPFILETYPE_PROMPT,
-    @DRAGDROPFILETYPE_FREEOTFE,
-    @DRAGDROPFILETYPE_LINUX
+    (@DRAGDROPFILETYPE_PROMPT, @DRAGDROPFILETYPE_FREEOTFE, @DRAGDROPFILETYPE_LINUX
     );
 
 type
@@ -181,12 +175,11 @@ implementation
 uses
   Windows,   // Required to get rid of compiler hint re DeleteFile
   SysUtils,  // Required for ChangeFileExt, DeleteFile
-  Registry,
-  Menus,   // Required for ShortCutToText and TextToShortCut
+  Menus, Registry,
+           // Required for ShortCutToText and TextToShortCut
   ShlObj,  // Required for CSIDL_PERSONAL
            //sdu
-  SDUi18n,
-  SDUDialogs;
+  SDUDialogs, SDUi18n;
 
 const
   SETTINGS_V1 = 1;
@@ -344,10 +337,10 @@ var
 begin
   OptSettingsVersion := iniFile.ReadInteger(SECTION_GENERAL, OPT_SETTINGSVERSION, SETTINGS_V1);
 
-  OptExploreAfterMount        := iniFile.ReadBool(SECTION_GENERAL, OPT_EXPLOREAFTERMOUNT,
-    DFLT_OPT_EXPLOREAFTERMOUNT);
-  OptAdvancedMountDlg         := iniFile.ReadBool(SECTION_GENERAL,
-    OPT_ADVANCEDMOUNTDLG, DFLT_OPT_ADVANCEDMOUNTDLG);
+  OptExploreAfterMount        := iniFile.ReadBool(SECTION_GENERAL,
+    OPT_EXPLOREAFTERMOUNT, DFLT_OPT_EXPLOREAFTERMOUNT);
+  OptAdvancedMountDlg         := iniFile.ReadBool(SECTION_GENERAL, OPT_ADVANCEDMOUNTDLG,
+    DFLT_OPT_ADVANCEDMOUNTDLG);
   OptRevertVolTimestamps      := iniFile.ReadBool(SECTION_GENERAL,
     OPT_REVERTVOLTIMESTAMPS, DFLT_OPT_REVERTVOLTIMESTAMPS);
   OptShowPasswords            := iniFile.ReadBool(SECTION_GENERAL, OPT_SHOWPASSWORDS,
@@ -358,10 +351,11 @@ begin
     OPT_ALLOWTABSINPASSWORDS, DFLT_OPT_ALLOWTABSINPASSWORDS);
   OptLanguageCode             := iniFile.ReadString(SECTION_GENERAL, OPT_LANGUAGECODE,
     DFLT_OPT_LANGUAGECODE);
-  OptDragDropFileType         := TDragDropFileType(iniFile.ReadInteger(SECTION_GENERAL,
-    OPT_DRAGDROP, DFLT_OPT_DRAGDROP));
-  useDefaultDriveLetter       := DriveLetterString(iniFile.ReadString(SECTION_GENERAL,
-    OPT_DEFAULTDRIVELETTER, DFLT_OPT_DEFAULTDRIVELETTER));
+  OptDragDropFileType         :=
+    TDragDropFileType(iniFile.ReadInteger(SECTION_GENERAL, OPT_DRAGDROP, DFLT_OPT_DRAGDROP));
+  useDefaultDriveLetter       :=
+    DriveLetterString(iniFile.ReadString(SECTION_GENERAL, OPT_DEFAULTDRIVELETTER,
+    DFLT_OPT_DEFAULTDRIVELETTER));
   // #0 written as "#"
   OptDefaultDriveLetter       := useDefaultDriveLetter[1];
   if (OptDefaultDriveLetter = '#') then begin
@@ -371,10 +365,12 @@ begin
   OptPromptMountSuccessful := iniFile.ReadBool(SECTION_CONFIRMATION,
     OPT_PROMPTMOUNTSUCCESSFUL, DFLT_OPT_PROMPTMOUNTSUCCESSFUL);
 
-  OptUpdateChkFrequency              := TUpdateFrequency(iniFile.ReadInteger(SECTION_CHKUPDATE,
-    OPT_CHKUPDATE_FREQ, Ord(DFLT_OPT_CHKUPDATE_FREQ)));
-  OptUpdateChkLastChecked            := SDUISO8601ToTDate(iniFile.ReadString(SECTION_CHKUPDATE,
-    OPT_CHKUPDATE_LASTCHECKED, DFLT_OPT_CHKUPDATE_LASTCHECKED));
+  OptUpdateChkFrequency              :=
+    TUpdateFrequency(iniFile.ReadInteger(SECTION_CHKUPDATE, OPT_CHKUPDATE_FREQ,
+    Ord(DFLT_OPT_CHKUPDATE_FREQ)));
+  OptUpdateChkLastChecked            :=
+    SDUISO8601ToTDate(iniFile.ReadString(SECTION_CHKUPDATE, OPT_CHKUPDATE_LASTCHECKED,
+    DFLT_OPT_CHKUPDATE_LASTCHECKED));
   OptUpdateChkSuppressNotifyVerMajor :=
     iniFile.ReadInteger(SECTION_CHKUPDATE, OPT_CHKUPDATE_SUPPRESSNOTIFYVERMAJOR,
     DFLT_OPT_CHKUPDATE_SUPPRESSNOTIFYVERMAJOR);
@@ -386,24 +382,24 @@ begin
     DFLT_OPT_PKCS11ENABLE);
   OptPKCS11Library         := iniFile.ReadString(SECTION_PKCS11, OPT_PKCS11LIBRARY,
     DFLT_OPT_PKCS11LIBRARY);
-  OptPKCS11AutoMount       := iniFile.ReadBool(SECTION_PKCS11,
-    OPT_PKCS11AUTOMOUNT, DFLT_OPT_PKCS11AUTOMOUNT);
+  OptPKCS11AutoMount       := iniFile.ReadBool(SECTION_PKCS11, OPT_PKCS11AUTOMOUNT,
+    DFLT_OPT_PKCS11AUTOMOUNT);
   OptPKCS11AutoMountVolume := iniFile.ReadString(SECTION_PKCS11,
     OPT_PKCS11AUTOMOUNTVOLUME, DFLT_OPT_PKCS11AUTOMOUNTVOLUME);
-  OptPKCS11AutoDismount    := iniFile.ReadBool(SECTION_PKCS11,
-    OPT_PKCS11AUTODISMOUNT, DFLT_OPT_PKCS11AUTODISMOUNT);
+  OptPKCS11AutoDismount    := iniFile.ReadBool(SECTION_PKCS11, OPT_PKCS11AUTODISMOUNT,
+    DFLT_OPT_PKCS11AUTODISMOUNT);
 
   OptMRUList.MaxItems := DFLT_OPT_MRUMAXITEMS;
   OptMRUList.Load(iniFile, SECTION_MRULIST);
 
-  OptPostMountExe    := iniFile.ReadString(SECTION_AUTORUN,
-    OPT_POSTMOUNTEXE, DFLT_OPT_POSTMOUNTEXE);
-  OptPreDismountExe  := iniFile.ReadString(SECTION_AUTORUN,
-    OPT_PREDISMOUNTEXE, DFLT_OPT_PREDISMOUNTEXE);
-  OptPostDismountExe := iniFile.ReadString(SECTION_AUTORUN,
-    OPT_POSTDISMOUNTEXE, DFLT_OPT_POSTDISMOUNTEXE);
-  OptPrePostExeWarn  := iniFile.ReadBool(SECTION_AUTORUN,
-    OPT_PREPOSTEXEWARN, DFLT_OPT_PREPOSTEXEWARN);
+  OptPostMountExe    := iniFile.ReadString(SECTION_AUTORUN, OPT_POSTMOUNTEXE,
+    DFLT_OPT_POSTMOUNTEXE);
+  OptPreDismountExe  := iniFile.ReadString(SECTION_AUTORUN, OPT_PREDISMOUNTEXE,
+    DFLT_OPT_PREDISMOUNTEXE);
+  OptPostDismountExe := iniFile.ReadString(SECTION_AUTORUN, OPT_POSTDISMOUNTEXE,
+    DFLT_OPT_POSTDISMOUNTEXE);
+  OptPrePostExeWarn  := iniFile.ReadBool(SECTION_AUTORUN, OPT_PREPOSTEXEWARN,
+    DFLT_OPT_PREPOSTEXEWARN);
 
 end;
 
@@ -432,11 +428,9 @@ begin
     allOK := False;
 
     SDUMessageDlg(
-      _('Your settings could not be saved.') + SDUCRLF + SDUCRLF +
-      SDUParamSubstitute(
-      _('Please ensure that you have suitable access rights in order to write to:' + SDUCRLF +
-      SDUCRLF + '%1'),
-      [PrettyPrintSettingsFile(OptSaveSettings)]),
+      _('Your settings could not be saved.') + SDUCRLF + SDUCRLF + SDUParamSubstitute(
+      _('Please ensure that you have suitable access rights in order to write to:' +
+      SDUCRLF + SDUCRLF + '%1'), [PrettyPrintSettingsFile(OptSaveSettings)]),
       mtError
       );
   end;
@@ -613,8 +607,7 @@ begin
 
     slProfile:
     begin
-      filenameAndPath := SDUGetSpecialFolderPath(CSIDL_APPDATA) +
-        '\' + iniFilenameOnly;
+      filenameAndPath := SDUGetSpecialFolderPath(CSIDL_APPDATA) + '\' + iniFilenameOnly;
     end;
 
     slCustom:

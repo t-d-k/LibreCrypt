@@ -47,11 +47,9 @@ begin
   // ckHotkeyDismount and ckHotkeyDismountEmerg have AutoSize := TRUE
   // Use the autosized controls to determine how big the groupbox needs to be
   maxCkBoxWidth   := max(ckHotkeyDismount.Width, ckHotkeyDismountEmerg.Width);
-  gbHotkeys.Width := max(((ckHotkeyDismount.left * 2) + maxCkBoxWidth),
-    max((hkDismount.left +
-    hkDismount.Width + ckHotkeyDismount.left), (hkDismountEmerg.left +
-    hkDismountEmerg.Width + ckHotkeyDismount.left))
-    );
+  gbHotkeys.Width := max(((ckHotkeyDismount.left * 2) + maxCkBoxWidth), max(
+    (hkDismount.left + hkDismount.Width + ckHotkeyDismount.left),
+    (hkDismountEmerg.left + hkDismountEmerg.Width + ckHotkeyDismount.left)));
 
   SDUCenterControl(gbHotkeys, ccHorizontal);
   SDUCenterControl(gbHotkeys, ccVertical, 25);

@@ -75,13 +75,8 @@ resourcestring
 
 const
   ADVANCED_COLS_HASH: set of TGridColumn_Hash =
-    [gchDriverGUID,
-    gchDriverDeviceName,
-    gchDriverUserModeName,
-    gchDriverKernelModeName,
-    gchHashBlocksize,
-    gchHashGUID
-    ];
+    [gchDriverGUID, gchDriverDeviceName, gchDriverUserModeName,
+    gchDriverKernelModeName, gchHashBlocksize, gchHashGUID];
 
 
 
@@ -111,8 +106,7 @@ procedure TfrmGridReport_Hash.AddSubItem(col: TGridColumn_Hash; item: TListItem;
 var
   dispValue: String;
 begin
-  if (not (IsColumnAdvanced(ColumnToColIdx(col))) or ckShowAdvanced.Checked) then
-  begin
+  if (not (IsColumnAdvanced(ColumnToColIdx(col))) or ckShowAdvanced.Checked) then begin
     dispValue := Value;
 
     if (col = gchHashLength) then begin
@@ -140,8 +134,7 @@ begin
 
   AddCol('#');
   for i := low(TGridColumn_Hash) to high(TGridColumn_Hash) do begin
-    if (not (IsColumnAdvanced(ColumnToColIdx(i))) or ckShowAdvanced.Checked)
-    then begin
+    if (not (IsColumnAdvanced(ColumnToColIdx(i))) or ckShowAdvanced.Checked) then begin
       AddCol(GetColumnTitle(i));
     end;
   end;

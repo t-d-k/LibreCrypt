@@ -456,7 +456,7 @@ begin
   // Windows system with themes, the top panel turns red, and the (red) text
   // can't be read.
   { DONE 1 -otdk -crefactor : clean this up, just use background, - so can use align property }
-  { TODO 1 -otdk -ccomplete : check text doesnt disspear with themse -if so jsu treset colour }
+  { TODO 1 -otdk -ccomplete : check text doesnt dissappear with themes -if so just reset colour }
  { SDUClearPanel(pnlWarningBorder_L);
   SDUClearPanel(pnlWarningBorder_R);
   SDUClearPanel(pnlWarningBorder_T);

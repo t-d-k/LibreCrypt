@@ -71,8 +71,8 @@ begin
     edTracksPerCylinder.Text := IntToStr(diskGeometry.TracksPerCylinder);
     edSectorsPerTrack.Text   := IntToStr(diskGeometry.SectorsPerTrack);
     edBytesPerSector.Text    := IntToStr(diskGeometry.BytesPerSector);
-    size                     := diskGeometry.Cylinders.QuadPart * diskGeometry.TracksPerCylinder *
-      diskGeometry.SectorsPerTrack * diskGeometry.BytesPerSector;
+    size                     := diskGeometry.Cylinders.QuadPart *
+      diskGeometry.TracksPerCylinder * diskGeometry.SectorsPerTrack * diskGeometry.BytesPerSector;
     edSizeBytes.Text         := SDUIntToStrThousands(size);
     edSizeUnits.Text         := SDUFormatAsBytesUnits(size);
     edMediaType.Text         := '0x' + inttohex(diskGeometry.MediaType, 2) +

@@ -42,8 +42,7 @@ var
 begin
   inherited;
 
-  self.Caption := SDUParamSubstitute(_('%1 Properties'), [ExtractFilename(
-    PathAndFilename)]);
+  self.Caption := SDUParamSubstitute(_('%1 Properties'), [ExtractFilename(PathAndFilename)]);
 
   SetupCtlSeparatorPanel(Panel1);
 
@@ -58,8 +57,7 @@ begin
     edSize.Caption := SDUParamSubstitute(_('%1 (%2 bytes)'),
       [SDUFormatAsBytesUnits(totalSize, 2), SDUIntToStrThousands(totalSize)]);
 
-    edContains.Caption := SDUParamSubstitute(_('%1 Files, %2 Folders'),
-      [fileCnt, dirCnt]);
+    edContains.Caption := SDUParamSubstitute(_('%1 Files, %2 Folders'), [fileCnt, dirCnt]);
   end;
 
 

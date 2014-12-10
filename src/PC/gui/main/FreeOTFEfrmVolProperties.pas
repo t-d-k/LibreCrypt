@@ -11,13 +11,12 @@ unit FreeOTFEfrmVolProperties;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls,
-  //doxbox
-  SDUGeneral,
-  OTFEFreeOTFEBase_U,
+  Classes, Controls, Dialogs,
+  Forms, Graphics, Messages, StdCtrls,
+  SysUtils, Windows, //doxbox
   OTFEFreeOTFE_U,
-  SDUForms;
+  OTFEFreeOTFEBase_U,
+  SDUForms, SDUGeneral;
 
 type
   TfrmFreeOTFEVolProperties = class (TSDUForm)
@@ -64,8 +63,8 @@ uses
   ActiveX,  // Required for IsEqualGUID
   ComObj,   // Required for StringToGUID
             //sdu
-  SDUi18n,
   SDUDialogs,
+  SDUi18n,
                            //doxbox
   OTFEFreeOTFE_DriverAPI;  // Required for NULL_GUID
 
@@ -107,19 +106,16 @@ begin
     edSectorIVGenMethod.Text := FreeOTFESectorIVGenMethodTitle[volumeInfo.SectorIVGenMethod];
 
 
-    if ((volumeInfo.IVHashDevice = '') and
-      IsEqualGUID(volumeInfo.IVHashGUID, StringToGUID(NULL_GUID))) then begin
+    if ((volumeInfo.IVHashDevice = '') and IsEqualGUID(volumeInfo.IVHashGUID,
+      StringToGUID(NULL_GUID))) then begin
       edIVHash.Text := _('n/a');
     end else begin
       lblIVHash.Enabled    := True;
       edIVHash.Enabled     := True;
       pbInfoIVHash.Enabled := True;
 
-      if OTFEFreeOTFE.GetSpecificHashDetails(
-        volumeInfo.IVHashDevice,
-        volumeInfo.IVHashGUID,
-        hashDetails  )
-      then begin
+      if OTFEFreeOTFE.GetSpecificHashDetails(volumeInfo.IVHashDevice,
+        volumeInfo.IVHashGUID, hashDetails) then begin
         edIVHash.Text := OTFEFreeOTFE.GetHashDisplayTitle(hashDetails);
       end;
 
@@ -127,19 +123,16 @@ begin
 
 
 
-    if ((volumeInfo.IVCypherDevice = '') and
-      IsEqualGUID(volumeInfo.IVCypherGUID, StringToGUID(NULL_GUID))) then begin
+    if ((volumeInfo.IVCypherDevice = '') and IsEqualGUID(volumeInfo.IVCypherGUID,
+      StringToGUID(NULL_GUID))) then begin
       edIVCypher.Text := _('n/a');
     end else begin
       lblIVCypher.Enabled    := True;
       edIVCypher.Enabled     := True;
       pbInfoIVCypher.Enabled := True;
 
-      if OTFEFreeOTFE.GetSpecificCypherDetails(
-        volumeInfo.IVCypherDevice,
-        volumeInfo.IVCypherGUID,
-        cypherDetails  )
-      then begin
+      if OTFEFreeOTFE.GetSpecificCypherDetails(volumeInfo.IVCypherDevice,
+        volumeInfo.IVCypherGUID, cypherDetails) then begin
         edIVCypher.Text := OTFEFreeOTFE.GetCypherDisplayTitle(cypherDetails);
       end;
 
@@ -147,11 +140,8 @@ begin
 
 
 
-    if OTFEFreeOTFE.GetSpecificCypherDetails(
-      volumeInfo.MainCypherDevice,
-      volumeInfo.MainCypherGUID,
-      cypherDetails  )
-    then begin
+    if OTFEFreeOTFE.GetSpecificCypherDetails(volumeInfo.MainCypherDevice,
+      volumeInfo.MainCypherGUID, cypherDetails) then begin
       edMainCypher.Text := OTFEFreeOTFE.GetCypherDisplayTitle(cypherDetails);
     end;
 
@@ -160,8 +150,7 @@ begin
     edHiddenOffset.Text := IntToStr(GetHiddenOffset());
   end else begin
     SDUMessageDlg(
-      SDUParamSubstitute(_('Unable to get drive properties for drive %1:'),
-      [DriveLetter]),
+      SDUParamSubstitute(_('Unable to get drive properties for drive %1:'), [DriveLetter]),
       mtError
       );
   end;

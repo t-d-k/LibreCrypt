@@ -3,29 +3,29 @@ unit FreeOTFEExplorerfrmOptions;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, CommonfrmOptions, ComCtrls, StdCtrls, SDUStdCtrls, ExtCtrls,
-  OTFEFreeOTFEDLL_U, CommonfmeOptions_Base, CommonfmeOptions_PKCS11,
-  FreeOTFEExplorerfmeOptions_General, FreeOTFEExplorerfmeOptions_Base,
-  FreeOTFEExplorerfmeOptions_Advanced, FreeOTFEExplorerfmeOptions_WebDAV,
-  CommonfmeOptions_Autorun;
+  Classes, ComCtrls, CommonfmeOptions_Autorun, CommonfmeOptions_Base, CommonfmeOptions_PKCS11,
+  CommonfrmOptions, Controls, Dialogs, ExtCtrls,
+  Forms,
+  FreeOTFEExplorerfmeOptions_Advanced, FreeOTFEExplorerfmeOptions_Base,
+  FreeOTFEExplorerfmeOptions_General, FreeOTFEExplorerfmeOptions_WebDAV,
+  Graphics, Messages, OTFEFreeOTFEDLL_U, SDUStdCtrls, StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfrmOptions_FreeOTFEExplorer = class(TfrmOptions)
-    tsGeneral: TTabSheet;
-    fmeOptions_FreeOTFEExplorerGeneral1: TfmeOptions_FreeOTFEExplorerGeneral;
-    tsAdvanced: TTabSheet;
+  TfrmOptions_FreeOTFEExplorer = class (TfrmOptions)
+    tsGeneral:                            TTabSheet;
+    fmeOptions_FreeOTFEExplorerGeneral1:  TfmeOptions_FreeOTFEExplorerGeneral;
+    tsAdvanced:                           TTabSheet;
     fmeOptions_FreeOTFEExplorerAdvanced1: TfmeOptions_FreeOTFEExplorerAdvanced;
-    tsWebDAV: TTabSheet;
-    fmeOptions_FreeOTFEExplorerWebDAV1: TfmeOptions_FreeOTFEExplorerWebDAV;
-    tsAutorun: TTabSheet;
-    fmeOptions_Autorun1: TfmeOptions_Autorun;
+    tsWebDAV:                             TTabSheet;
+    fmeOptions_FreeOTFEExplorerWebDAV1:   TfmeOptions_FreeOTFEExplorerWebDAV;
+    tsAutorun:                            TTabSheet;
+    fmeOptions_Autorun1:                  TfmeOptions_Autorun;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-  public
-    function  OTFEFreeOTFE(): TOTFEFreeOTFEDLL;
+  PUBLIC
+    function OTFEFreeOTFE(): TOTFEFreeOTFEDLL;
 
-    procedure ChangeLanguage(langCode: string); override;
+    procedure ChangeLanguage(langCode: String); OVERRIDE;
   end;
 
 
@@ -35,11 +35,10 @@ implementation
 
 uses
   ShlObj,  // Required for CSIDL_PROGRAMS
-  OTFEFreeOTFEBase_U,
   FreeOTFEExplorerSettings,
-  SDUi18n,
-  SDUGeneral,
-  SDUDialogs;
+  OTFEFreeOTFEBase_U,
+  SDUDialogs, SDUGeneral,
+  SDUi18n;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -49,8 +48,8 @@ uses
 const
   SDUCRLF = ''#13#10;
 {$ENDIF}
-  
-procedure TfrmOptions_FreeOTFEExplorer.ChangeLanguage(langCode: string);
+
+procedure TfrmOptions_FreeOTFEExplorer.ChangeLanguage(langCode: String);
 var
   tmpConfig: TFreeOTFEExplorerSettings;
 begin
@@ -63,10 +62,9 @@ begin
     try
       SDURetranslateComponent(self);
     except
-      on E:Exception do
-        begin
+      on E: Exception do begin
         SDUTranslateComponent(self);
-        end;
+      end;
     end;
 
     AllTabs_InitAndReadSettings(tmpConfig);
@@ -104,5 +102,4 @@ begin
   Result := TOTFEFreeOTFEDLL(OTFEFreeOTFEBase);
 end;
 
-END.
-
+end.

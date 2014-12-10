@@ -54,14 +54,12 @@ begin
   // Use the autosized controls to determine how big the groupbox needs to be
   maxToIconCkBoxWidth    := max(ckMinToIcon.Width, ckCloseToIcon.Width);
   maxgbWidth             := 0;
-  maxgbWidth             := max(maxgbWidth,
-    (ckUseSystemTrayIcon.left * 2) + ckUseSystemTrayIcon.Width);
-  maxgbWidth             := max(maxgbWidth,
-    (ckMinToIcon.left + maxToIconCkBoxWidth +
+  maxgbWidth             := max(maxgbWidth, (ckUseSystemTrayIcon.left * 2) +
+    ckUseSystemTrayIcon.Width);
+  maxgbWidth             := max(maxgbWidth, (ckMinToIcon.left + maxToIconCkBoxWidth +
     ckUseSystemTrayIcon.left));
-  maxgbWidth             := max(maxgbWidth,
-    (gbClickActions.left + gbClickActions.Width +
-    ckUseSystemTrayIcon.left));
+  maxgbWidth             := max(maxgbWidth, (gbClickActions.left +
+    gbClickActions.Width + ckUseSystemTrayIcon.left));
   gbSystemTrayIcon.Width := maxgbWidth;
 
   SDUCenterControl(gbSystemTrayIcon, ccHorizontal);
