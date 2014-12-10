@@ -54,8 +54,6 @@ uses
   OTFEFreeOTFE_frmKeyEntryLUKS in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLUKS.pas' {frmKeyEntryLUKS},
   OTFEFreeOTFE_frmWizard in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizard.pas' {frmWizard},
   OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas' {frmWizardChangePasswordCreateKeyfile},
-  OTFEFreeOTFE_frmWizardCreateVolume in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas' {frmWizardCreateVolume},
-  OTFEFreeOTFE_frmWizardCreateVolumeAdvanced in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolumeAdvanced.pas' {frmWizardCreateVolumeAdvanced},
   SDURandPool in '..\common\OTFE\SDURandPool.pas',
   OTFEFreeOTFEBase_U in '..\common\OTFE\OTFEFreeOTFEBase_U.pas',
   OTFEFreeOTFE_DiskPartitionsPanel in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DiskPartitionsPanel.pas',
@@ -64,7 +62,11 @@ uses
   OTFEFreeOTFE_VolumeSelect in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeSelect.pas',
   SDUDiskPartitionsPanel in '..\common\SDeanUtils\SDUDiskPartitionsPanel.pas',
   SDUBlocksPanel in '..\common\SDeanUtils\SDUBlocksPanel.pas',
-  SDUObjectManager in '..\common\SDeanUtils\SDUObjectManager.pas';
+  SDUObjectManager in '..\common\SDeanUtils\SDUObjectManager.pas',
+  OTFEFreeOTFE_fmePKCS11_MgrBase in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrBase.pas' {fmePKCS11_MgrBase: TFrame},
+  OTFEFreeOTFE_fmePKCS11_MgrKeyfile in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas' {fmePKCS11_MgrKeyfile: TFrame},
+  OTFEFreeOTFE_fmePKCS11_MgrSecretKey in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas' {fmePKCS11_MgrSecretKey: TFrame},
+  OTFEFreeOTFE_frmHashInfo in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmHashInfo.pas' {frmHashInfo};
 
 {$R *.RES}
 

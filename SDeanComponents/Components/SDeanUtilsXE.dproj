@@ -116,15 +116,6 @@
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverCommon.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverCypherAPI.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverHashAPI.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmPKCS11NewSecretKey.pas">
-				<Form>frmPKCS11NewSecretKey</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmPKCS11Session.pas">
-				<Form>frmPKCS11Session</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmVolumeType.pas">
-				<Form>frmSelectVolumeType</Form>
-			</DCCReference>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_InstructionRichEdit.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSAPI.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PasswordRichEdit.pas"/>
