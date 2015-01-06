@@ -16,8 +16,8 @@ uses
   ExtCtrls, Forms, FreeOTFESettings, Graphics, Grids, ImgList, Menus, Messages,
   SDUSystemTrayIcon, Shredder, Spin64, StdCtrls, SysUtils, ToolWin, Windows, XPMan,
 
-  //freeotfe
-  MouseRNGDialog_U, OTFE_U,
+  //doxbox/freeotfe
+  OTFE_U,
   OTFEFreeOTFE_DriverControl,
   OTFEFreeOTFE_U, OTFEFreeOTFEBase_U,
   pkcs11_library, SDUDialogs, SDUForms, SDUGeneral, SDUMRUList, SDUMultimediaKeys;
@@ -26,26 +26,26 @@ type
   TPortableModeAction = (pmaStart, pmaStop, pmaToggle);
 
   TfrmFreeOTFEMain = class (TfrmMain)
-    ToolBar1:                   TToolBar;
-    pnlTopSpacing:              TPanel;
-    ilDriveIcons:               TImageList;
-    lvDrives:                   TListView;
-    pmDrives:                   TPopupMenu;
-    miPopupDismount:            TMenuItem;
-    N2:                         TMenuItem;
-    miPopupProperties:          TMenuItem;
-    N3:                         TMenuItem;
-    miProperties:               TMenuItem;
-    N1:                         TMenuItem;
-    miDismountAllMain:          TMenuItem;
-    miPopupDismountAll:         TMenuItem;
-    miFreeOTFEDrivers:          TMenuItem;
-    miOverwriteFreeSpace:       TMenuItem;
-    miFormat:                   TMenuItem;
-    N6:                         TMenuItem;
-    miPopupFormat:              TMenuItem;
-    miPopupOverwriteFreeSpace:  TMenuItem;
-    MouseRNGDialog1:            TMouseRNGDialog;
+    ToolBar1:                  TToolBar;
+    pnlTopSpacing:             TPanel;
+    ilDriveIcons:              TImageList;
+    lvDrives:                  TListView;
+    pmDrives:                  TPopupMenu;
+    miPopupDismount:           TMenuItem;
+    N2:                        TMenuItem;
+    miPopupProperties:         TMenuItem;
+    N3:                        TMenuItem;
+    miProperties:              TMenuItem;
+    N1:                        TMenuItem;
+    miDismountAllMain:         TMenuItem;
+    miPopupDismountAll:        TMenuItem;
+    miFreeOTFEDrivers:         TMenuItem;
+    miOverwriteFreeSpace:      TMenuItem;
+    miFormat:                  TMenuItem;
+    N6:                        TMenuItem;
+    miPopupFormat:             TMenuItem;
+    miPopupOverwriteFreeSpace: TMenuItem;
+
     N7:                         TMenuItem;
     miPortableModeDrivers:      TMenuItem;
     N8:                         TMenuItem;
@@ -283,7 +283,7 @@ uses
   Math,      // Required for min
   strutils,
   //DoxBox units
-
+  MouseRNGDialog_U,
   SDUGraphics,
   //  SDUWinSvc,
   CommonfrmAbout,
@@ -396,7 +396,7 @@ const
   URL_DOWNLOAD_MAIN  = 'http://DoxBox.eu/download.html';
 
 
- // This procedure is called after OnCreate, and immediatly before the
+ // This procedure is called after OnCreate, and immediately before the
  // Application.Run() is called
 procedure TfrmFreeOTFEMain.InitApp();
 var
@@ -796,54 +796,80 @@ begin
 end;
 
 { tests system tests
-  opens volumes creaed with old versions and checks contents as expected
+  opens volumes created with old versions and checks contents as expected
   regression testing only
 }
 function TfrmFreeOTFEMain.DoTests: Boolean;
 var
-  mountList:       TStringList;
-  mountedAs:       DriveLetterString;
-  prettyMountedAs: String;
-  i:               Integer;
+  mountList:             TStringList;
+  mountedAs:             DriveLetterString;
+  prettyMountedAs, path: String;
+  vl:                    Integer;
 const
-  TEST_VOLS: array[0..1] of String = ('a.box', 'b.box');
+  TEST_VOLS: array[0..8] of String =
+    ('a.box', 'b.box', 'c.box', 'd.box', 'e.box','e.box', 'f.box', 'luks.box','luks_essiv.box');
+  PASSWORDS: array[0..8] of String =
+    ('password', 'password', '!"£$%^&*()', 'password', 'password','5ekr1t', 'password', 'password', 'password');
+  ITERATIONS: array[0..8] of Integer =
+    (2048, 2048, 2048, 2048, 10240, 2048, 2048, 2048, 2048);
+    OFFSET : array[0..8] of Integer =
+    (0, 0,0,0,0,2097152,0,0,0);
 begin
   inherited;
 
-  Result    := False;
+  Result    := True;
   mountList := TStringList.Create();
   try
-    for i := Low(TEST_VOLS) to High(TEST_VOLS) do begin
-      // ExtractFileDir(Application.ExeName)+
-      mountList.Add('P:\Projects\Delphi\doxbox\test_vols\' + TEST_VOLS[i]);
-
-      //call silent
-      Result := fOtfeFreeOtfeBase.MountFreeOTFE(mountList, mountedAs, True,
-        '', 'password', 0, True, False);
-
-
-      if not (Result) then begin
+    //for loop is optimised into reverse order
+    vl := 0;
+    while vl<=high(TEST_VOLS) do begin
+      path := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\test_vols\');
+      //test one at a time as this is normal use
+      mountList.Clear;
+      mountList.Add(path + TEST_VOLS[vl]);
+     mountedAs := '';
+      if fOtfeFreeOtfeBase.IsLUKSVolume(path + TEST_VOLS[vl]) then begin
+        if not fOtfeFreeOtfeBase.MountLUKS(mountList, mountedAs, True, PASSWORDS[vl],
+          '', False, nlLF, True) then
+          Result := False;
+      end else begin
+        //call silently
+        if not fOtfeFreeOtfeBase.MountFreeOTFE(mountList, mountedAs, True,
+          '', PASSWORDS[vl], OFFSET[vl], True, True, 256, ITERATIONS[vl]) then
+          Result := False;
+      end;
+      if not Result then begin
         SDUMessageDlg(
-          _('Unable to open Box.') + SDUCRLF + SDUCRLF +
-          _('Please check your keyphrase and settings, and try again.'),
-          mtError
-          );
-        break;
-
+          _('Unable to open ') + TEST_VOLS[vl] + '.' ,       mtError          );
       end else begin
         RefreshDrives();
         // Mount successful
-        prettyMountedAs := prettyPrintDriveLetters(mountedAs);
+        //        prettyMountedAs := prettyPrintDriveLetters(mountedAs);
         if (CountValidDrives(mountedAs) <> 1) then begin
-          SDUMessageDlg(Format('Your DoxBox has NOT been opened as drive: %s', [prettyMountedAs]));
+          SDUMessageDlg(Format('The DoxBox %s has NOT been opened as drive: %s',
+            [TEST_VOLS[vl], mountedAs]));
+          Result := False;
         end else begin
-          //test opened OK
-
+          //done: test opened OK & file exists
+          if not FileExists(mountedAs + ':\README.txt') then begin
+            SDUMessageDlg(Format('File: %s:\README.txt not found', [mountedAs]));
+            Result := False;
+          end;
         end;
-
+        Application.ProcessMessages;
+        DismountAll(true);
+        Application.ProcessMessages;
+        RefreshDrives();
+        Application.ProcessMessages;
+        if CountValidDrives(fOtfeFreeOtfeBase.DrivesMounted) > 0 then begin
+          SDUMessageDlg(Format('Drive(s) %s not unmounted', [fOtfeFreeOtfeBase.DrivesMounted]));
+          Result := False;
+        end;
       end;
+      inc(vl);
     end;
-    DismountAll();
+    if Result then
+      SDUMessageDlg('All functional tests passed');
   finally
     mountList.Free();
   end;
@@ -2548,6 +2574,7 @@ var
   overwriteOK:                TShredResult;
   currDriveDevice:            String;
   failMsg:                    String;
+  MouseRNGDialog1:            TMouseRNGDialog;
 begin
   overwriteOK                := srSuccess;
   allOK                      := False;
@@ -2580,24 +2607,32 @@ begin
           // +ve keysize = specific keysize - get sufficient bits
           getRandomBits := ftempCypherDetails.KeySizeRequired;
         end;
-        { TODO 1 -otdk -cenhance : use cryptoapi etc if avail }
-        if (getRandomBits > 0) then begin
-          MouseRNGDialog1.RequiredBits := getRandomBits;
-          allOK                        := MouseRNGDialog1.Execute();
-        end;
 
-        if (allOK) then begin
-          SetLength(randomBuffer, (getRandomBits div 8));
-          MouseRNGDialog1.RandomData(getRandomBits, randomBuffer);
+        MouseRNGDialog1 := TMouseRNGDialog.Create();
+        try
 
-          for i := low(randomBuffer) to high(randomBuffer) do begin
-            ftempCypherKey  := ftempCypherKey + Ansichar(randomBuffer[i]);
-            // Overwrite the temp buffer...
-            randomBuffer[i] := random(256);
+
+          { TODO 1 -otdk -cenhance : use cryptoapi etc if avail }
+          if (getRandomBits > 0) then begin
+            MouseRNGDialog1.RequiredBits := getRandomBits;
+            allOK                        := MouseRNGDialog1.Execute();
           end;
-          SetLength(randomBuffer, 0);
-        end;
 
+          if (allOK) then begin
+            SetLength(randomBuffer, (getRandomBits div 8));
+            MouseRNGDialog1.RandomData(getRandomBits, randomBuffer);
+
+            for i := low(randomBuffer) to high(randomBuffer) do begin
+              ftempCypherKey  := ftempCypherKey + Ansichar(randomBuffer[i]);
+              // Overwrite the temp buffer...
+              randomBuffer[i] := random(256);
+            end;
+            SetLength(randomBuffer, 0);
+          end;
+
+        finally
+          MouseRNGDialog1.Free;
+        end;
       end;
 
     end;
