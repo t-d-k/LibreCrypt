@@ -66,7 +66,12 @@ uses
   OTFEFreeOTFE_fmePKCS11_MgrBase in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrBase.pas' {fmePKCS11_MgrBase: TFrame},
   OTFEFreeOTFE_fmePKCS11_MgrKeyfile in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas' {fmePKCS11_MgrKeyfile: TFrame},
   OTFEFreeOTFE_fmePKCS11_MgrSecretKey in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas' {fmePKCS11_MgrSecretKey: TFrame},
-  OTFEFreeOTFE_frmHashInfo in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmHashInfo.pas' {frmHashInfo};
+  OTFEFreeOTFE_frmHashInfo in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmHashInfo.pas' {frmHashInfo},
+  MouseRNGCaptureDlg_U in '..\common\SDeanSecurity\MouseRNGDialog\MouseRNGCaptureDlg_U.pas' {MouseRNGCaptureDlg},
+  MouseRNGDialog_U in '..\common\SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas',
+  OTFEFreeOTFE_frmSelectVolumeAndOffset in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectVolumeAndOffset.pas' {frmSelectVolumeFileAndOffset},
+  SDUEndianIntegers in '..\common\SDeanUtils\SDUEndianIntegers.pas',
+  DbugIntf in 'C:\Program Files (x86)\GExperts for RAD Studio XE2\DbugIntf.pas';
 
 {$R *.RES}
 

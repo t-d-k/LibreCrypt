@@ -20,7 +20,7 @@ type
   ERequiredNot8Multiple = Exception;
   EInternalError = Exception;
 
-  TMouseRNGDialog = class(TComponent)
+  TMouseRNGDialog = class(TObject)
   private
     { Private declarations }
   protected
@@ -32,7 +32,7 @@ type
 
     function  Execute(): boolean;
   published
-    constructor Create(AOwner: TComponent); override;
+    constructor Create();
     destructor  Destroy(); override;
 
     // This value must be set to a multiple of 8
@@ -51,7 +51,7 @@ type
     procedure Wipe();
   end;
 
-procedure Register;
+//procedure Register;
 
 implementation
 
@@ -60,13 +60,13 @@ uses
   Math;  // Required for "min(...)"
 
 
-procedure Register;
-begin
-  RegisterComponents('SDeanSecurity', [TMouseRNGDialog]);
-end;
+//procedure Register;
+//begin
+//  RegisterComponents('SDeanSecurity', [TMouseRNGDialog]);
+//end;
 
 
-constructor TMouseRNGDialog.Create(AOwner: TComponent);
+constructor TMouseRNGDialog.Create();
 begin
   inherited;
 
