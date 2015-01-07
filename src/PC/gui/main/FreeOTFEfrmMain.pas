@@ -133,7 +133,7 @@ type
     ftempCypherDriver:     Ansistring;
     ftempCypherGUID:       TGUID;
     ftempCypherDetails:    TFreeOTFECypher_v3;
-    ftempCypherKey:        Ansistring;
+    ftempCypherKey:        TSDUBytes;
     ftempCypherEncBlockNo: Int64;
 
     fIconMounted:   TIcon;
@@ -881,29 +881,31 @@ begin
 
   if Settings.OptDisplayToolbarLarge then begin
     ToolBar1.Images := ilToolbarIcons_Large;
-
+     (*
     tbbNew.ImageIndex                := FIconIdx_Large_New;
     tbbMountFile.ImageIndex          := FIconIdx_Large_MountFile;
     tbbMountPartition.ImageIndex     := FIconIdx_Large_MountPartition;
     tbbDismount.ImageIndex           := FIconIdx_Large_Dismount;
     tbbDismountAll.ImageIndex        := FIconIdx_Large_DismountAll;
     tbbTogglePortableMode.ImageIndex := FIconIdx_Large_PortableMode;
+    *)
   end else begin
     ToolBar1.Images := ilToolbarIcons_Small;
-
+                    (*
     tbbNew.ImageIndex                := FIconIdx_Small_New;
     tbbMountFile.ImageIndex          := FIconIdx_Small_MountFile;
     tbbMountPartition.ImageIndex     := FIconIdx_Small_MountPartition;
     tbbDismount.ImageIndex           := FIconIdx_Small_Dismount;
     tbbDismountAll.ImageIndex        := FIconIdx_Small_DismountAll;
     tbbTogglePortableMode.ImageIndex := FIconIdx_Small_PortableMode;
+    *)
   end;
-
+     (*
   actDismountAll.ImageIndex            := FIconIdx_Small_DismountAll;
   actFreeOTFEMountPartition.ImageIndex := FIconIdx_Small_MountPartition;
   actTogglePortableMode.ImageIndex     := FIconIdx_Small_PortableMode;
   actProperties.ImageIndex             := FIconIdx_Small_Properties;
-
+          *)
   // Set icons on menuitems
   if (FIconIdx_Small_VistaUACShield >= 0) then begin
     miFreeOTFEDrivers.ImageIndex     := FIconIdx_Small_VistaUACShield;
@@ -2623,7 +2625,7 @@ begin
             MouseRNGDialog1.RandomData(getRandomBits, randomBuffer);
 
             for i := low(randomBuffer) to high(randomBuffer) do begin
-              ftempCypherKey  := ftempCypherKey + Ansichar(randomBuffer[i]);
+            SDUAddByte( ftempCypherKey  ,randomBuffer[i]);
               // Overwrite the temp buffer...
               randomBuffer[i] := random(256);
             end;
@@ -2704,8 +2706,8 @@ begin
 
   ftempCypherDriver     := '';
   ftempCypherGUID       := StringToGUID('{00000000-0000-0000-0000-000000000000}');
-  // SDUInitAndZeroBuffer(0, ftempCypherKey);
-  ftempCypherKey        := '';
+   SDUZeroBuffer( ftempCypherKey);
+//  ftempCypherKey        := '';
   ftempCypherEncBlockNo := 0;
 
 end;
