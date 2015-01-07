@@ -807,13 +807,14 @@ var
   vl:                    Integer;
 const
   TEST_VOLS: array[0..8] of String =
-    ('a.box', 'b.box', 'c.box', 'd.box', 'e.box','e.box', 'f.box', 'luks.box','luks_essiv.box');
+    ('a.box', 'b.box', 'c.box', 'd.box', 'e.box', 'e.box', 'f.box', 'luks.box', 'luks_essiv.box');
   PASSWORDS: array[0..8] of String =
-    ('password', 'password', '!"£$%^&*()', 'password', 'password','5ekr1t', 'password', 'password', 'password');
+    ('password', 'password', '!"£$%^&*()', 'password', 'password', '5ekr1t',
+    'password', 'password', 'password');
   ITERATIONS: array[0..8] of Integer =
     (2048, 2048, 2048, 2048, 10240, 2048, 2048, 2048, 2048);
-    OFFSET : array[0..8] of Integer =
-    (0, 0,0,0,0,2097152,0,0,0);
+  OFFSET: array[0..8] of Integer =
+    (0, 0, 0, 0, 0, 2097152, 0, 0, 0);
 begin
   inherited;
 
@@ -822,15 +823,15 @@ begin
   try
     //for loop is optimised into reverse order
     vl := 0;
-    while vl<=high(TEST_VOLS) do begin
+    while vl <= high(TEST_VOLS) do begin
       path := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\test_vols\');
       //test one at a time as this is normal use
       mountList.Clear;
       mountList.Add(path + TEST_VOLS[vl]);
-     mountedAs := '';
+      mountedAs := '';
       if fOtfeFreeOtfeBase.IsLUKSVolume(path + TEST_VOLS[vl]) then begin
-        if not fOtfeFreeOtfeBase.MountLUKS(mountList, mountedAs, True, PASSWORDS[vl],
-          '', False, nlLF, True) then
+        if not fOtfeFreeOtfeBase.MountLUKS(mountList, mountedAs, True,
+          PASSWORDS[vl], '', False, nlLF, True) then
           Result := False;
       end else begin
         //call silently
@@ -840,7 +841,7 @@ begin
       end;
       if not Result then begin
         SDUMessageDlg(
-          _('Unable to open ') + TEST_VOLS[vl] + '.' ,       mtError          );
+          _('Unable to open ') + TEST_VOLS[vl] + '.', mtError);
       end else begin
         RefreshDrives();
         // Mount successful
@@ -857,7 +858,7 @@ begin
           end;
         end;
         Application.ProcessMessages;
-        DismountAll(true);
+        DismountAll(True);
         Application.ProcessMessages;
         RefreshDrives();
         Application.ProcessMessages;
@@ -866,7 +867,7 @@ begin
           Result := False;
         end;
       end;
-      inc(vl);
+      Inc(vl);
     end;
     if Result then
       SDUMessageDlg('All functional tests passed');
@@ -2625,7 +2626,7 @@ begin
             MouseRNGDialog1.RandomData(getRandomBits, randomBuffer);
 
             for i := low(randomBuffer) to high(randomBuffer) do begin
-            SDUAddByte( ftempCypherKey  ,randomBuffer[i]);
+              SDUAddByte(ftempCypherKey, randomBuffer[i]);
               // Overwrite the temp buffer...
               randomBuffer[i] := random(256);
             end;
@@ -2704,10 +2705,10 @@ begin
     end;  // if (SDUMessageDlg(
   end;  // if (allOK) then
 
-  ftempCypherDriver     := '';
-  ftempCypherGUID       := StringToGUID('{00000000-0000-0000-0000-000000000000}');
-   SDUZeroBuffer( ftempCypherKey);
-//  ftempCypherKey        := '';
+  ftempCypherDriver := '';
+  ftempCypherGUID   := StringToGUID('{00000000-0000-0000-0000-000000000000}');
+  SDUZeroBuffer(ftempCypherKey);
+  //  ftempCypherKey        := '';
   ftempCypherEncBlockNo := 0;
 
 end;

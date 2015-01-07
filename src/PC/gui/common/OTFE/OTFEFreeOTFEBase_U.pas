@@ -166,8 +166,7 @@ resourcestring
 
 const
   FreeOTFEMountAsTitlePtr: array [TFreeOTFEMountAs] of Pointer =
-    (@MOUNT_AS_FIXED_DISK, @MOUNT_AS_REMOVABLE_DISK, @MOUNT_AS_CD,
-    @MOUNT_AS_DVD, @RS_UNKNOWN
+    (@MOUNT_AS_FIXED_DISK, @MOUNT_AS_REMOVABLE_DISK, @MOUNT_AS_CD, @MOUNT_AS_DVD, @RS_UNKNOWN
     );
 
   // Indicate which of the above emulated devices are writable
@@ -632,10 +631,8 @@ procedure DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
     function AFSplit(input: Ansistring; n: Integer; hashKernelModeDeviceName: String;
       hashGUID: TGUID; var output: Ansistring): Boolean;
 
-    function AFMerge(input: Ansistring; n: Integer; 
-hashKernelModeDeviceName: String;
-  hashGUID: TGUID;
- out output: TSDUBytes): Boolean;
+    function AFMerge(input: Ansistring; n: Integer; hashKernelModeDeviceName: String;
+      hashGUID: TGUID; out output: TSDUBytes): Boolean;
 
 
     // ------------------------
@@ -690,12 +687,9 @@ hashKernelModeDeviceName: String;
     function MapToFreeOTFE(baseIVCypherOnHashLength: Boolean;
       var LUKSheader: TLUKSHeader): Boolean;
 
-    function RecoverMasterKey(
-filename: String; userPassword: Ansistring;
-      baseIVCypherOnHashLength: Boolean; 
-var LUKSHeader: TLUKSHeader;
-      var keySlot: Integer; 
-var keyMaterial: TSDUBytes): Boolean;
+    function RecoverMasterKey(filename: String; userPassword: Ansistring;
+      baseIVCypherOnHashLength: Boolean; var LUKSHeader: TLUKSHeader;
+      var keySlot: Integer; var keyMaterial: TSDUBytes): Boolean;
 
     //////////////////////////////////////////////
     // was in OTFEFreeOTFE_mntLUKS_Impl.pas
@@ -768,8 +762,8 @@ var keyMaterial: TSDUBytes): Boolean;
       keyIterations: Integer = DEFAULT_KEY_ITERATIONS): Ansichar; OVERLOAD;
     function MountFreeOTFE(volumeFilenames: TStringList; var mountedAs: Ansistring;
       ReadOnly: Boolean = False; keyfile: String = ''; password: Ansistring = '';
-      offset: ULONGLONG = 0; noCDBAtOffset: Boolean = False;
-      silent: Boolean = False; saltLength: Integer = DEFAULT_SALT_LENGTH;
+      offset: ULONGLONG = 0; noCDBAtOffset: Boolean = False; silent: Boolean = False;
+      saltLength: Integer = DEFAULT_SALT_LENGTH;
       keyIterations: Integer = DEFAULT_KEY_ITERATIONS): Boolean; OVERLOAD;
     function MountFreeOTFE(volumeFilenames: TStringList; UserKey: Ansistring;
       Keyfile: String; CDB: Ansistring; // CDB data (e.g. already read in PKCS#11 token)
@@ -917,8 +911,8 @@ var keyMaterial: TSDUBytes): Boolean;
     // Result returned in "hashOut"
     // driver - Kernel drivers: hashKernelModeDeviceName
     //          DLL drivers:    hashLibFilename
-    function HashData(hashDriver: Ansistring; hashGUID: TGUID;
-      const data: TSDUBytes; out hashOut: TSDUBytes): Boolean; VIRTUAL; ABSTRACT;
+    function HashData(hashDriver: Ansistring; hashGUID: TGUID; const data: TSDUBytes;
+      out hashOut: TSDUBytes): Boolean; VIRTUAL; ABSTRACT;
 
     // Generate MAC of data using hash driver/encryption driver identified
     // Note: "tBits" is in *bits* not *bytes*
@@ -946,12 +940,9 @@ var keyMaterial: TSDUBytes): Boolean;
       HashDriver: Ansistring; HashGUID: TGUID;
     // CypherDriver - Kernel drivers: cypherKernelModeDeviceName
     //                DLL drivers:    cypherLibFilename
-      CypherDriver: Ansistring; CypherGUID: TGUID; 
-Password: PasswordString;
-  Salt: TSDUBytes; 
-Iterations: Integer; dkLenBits: Integer;  // In *bits*
+      CypherDriver: Ansistring; CypherGUID: TGUID; Password: PasswordString;
+      Salt: TSDUBytes; Iterations: Integer; dkLenBits: Integer;  // In *bits*
       out DK: TSDUBytes): Boolean; VIRTUAL; ABSTRACT;
-
 
 
 
@@ -1009,8 +1000,8 @@ Iterations: Integer; dkLenBits: Integer;  // In *bits*
     function BackupVolumeCriticalData(srcFilename: String; srcOffsetWithinFile: Int64;
       destFilename: String): Boolean;
 
-    function RestoreVolumeCriticalData(srcFilename: String;
-      destFilename: String; destOffsetWithinFile: Int64): Boolean;
+    function RestoreVolumeCriticalData(srcFilename: String; destFilename: String;
+      destOffsetWithinFile: Int64): Boolean;
 
     function DumpCriticalDataToFile(volFilename: String; offsetWithinFile: Int64;
       userPassword: Ansistring; saltLength: Integer;  // In bits
@@ -1228,16 +1219,16 @@ var
   tmpString:           TSDUBytes;
   hashDetails:         TFreeOTFEHash;
 begin
-   SDUInitAndZeroBuffer(0, output);
-//  output := '';
+  SDUInitAndZeroBuffer(0, output);
+  //  output := '';
 
   digestSizeBytes     := 0;
   inputDivDigestBytes := 0;
   inputModDigestBytes := 0;
 
-  result := GetSpecificHashDetails(hashKernelModeDeviceName, hashGUID, hashDetails);
+  Result := GetSpecificHashDetails(hashKernelModeDeviceName, hashGUID, hashDetails);
 
-  if (result) then begin
+  if (Result) then begin
     // Hash output
     digestSizeBytes := (hashDetails.Length div 8);
 
@@ -1245,40 +1236,41 @@ begin
     inputModDigestBytes := (length(input) mod digestSizeBytes);
 
     for i := 0 to (inputDivDigestBytes - 1) do begin
-      tmpString := SDUStringToSDUBytes( SDUBigEndian32ToString(SDUDWORDToBigEndian32(i)));
+      tmpString := SDUStringToSDUBytes(SDUBigEndian32ToString(SDUDWORDToBigEndian32(i)));
       for j := 0 to (digestSizeBytes - 1) do begin
         // +1 because strings start from 1
-        SDUAddByte(tmpString, ORd(input[((i * digestSizeBytes) + j + 1)]));
-//        tmpString := tmpString + input[((i * digestSizeBytes) + j + 1)];
+        SDUAddByte(tmpString, Ord(input[((i * digestSizeBytes) + j + 1)]));
+        //        tmpString := tmpString + input[((i * digestSizeBytes) + j + 1)];
       end;
 
-      result := HashData(hashKernelModeDeviceName, hashGUID, tmpString, hashOutput);
+      Result := HashData(hashKernelModeDeviceName, hashGUID, tmpString, hashOutput);
 
-      if not (result) then begin
+      if not (Result) then begin
         break;
       end;
-      SDUAddArrays(output,hashOutput);
+      SDUAddArrays(output, hashOutput);
 
-//      output := output + hashOutput;
+      //      output := output + hashOutput;
     end;  // for i:=0 to (inputDivDigestBytes-1) do
 
   end;
 
-  if (result) then begin
+  if (Result) then begin
     if (inputModDigestBytes > 0) then begin
-      tmpString := SDUStringToSDUBytes( SDUBigEndian32ToString(SDUDWORDToBigEndian32(inputDivDigestBytes)));
+      tmpString := SDUStringToSDUBytes(
+        SDUBigEndian32ToString(SDUDWORDToBigEndian32(inputDivDigestBytes)));
       for j := 0 to (inputModDigestBytes - 1) do begin
         // +1 because strings start from 1
-        SDUAddByte(tmpString, ORd(input[((inputDivDigestBytes * digestSizeBytes) + j + 1)]));
-//        tmpString := tmpString + input[((inputDivDigestBytes * digestSizeBytes) + j + 1)];
+        SDUAddByte(tmpString, Ord(input[((inputDivDigestBytes * digestSizeBytes) + j + 1)]));
+        //        tmpString := tmpString + input[((inputDivDigestBytes * digestSizeBytes) + j + 1)];
       end;
 
-      result := HashData(hashKernelModeDeviceName, hashGUID, tmpString, hashOutput);
+      Result := HashData(hashKernelModeDeviceName, hashGUID, tmpString, hashOutput);
 
       for j := 0 to (inputModDigestBytes - 1) do begin
         // +1 because strings start from 1
-         SDUAddByte(output,hashOutput[j]);
-//        output := output + hashOutput[j + 1];
+        SDUAddByte(output, hashOutput[j]);
+        //        output := output + hashOutput[j + 1];
       end;
     end;
 
@@ -1297,7 +1289,7 @@ var
   processedStripes: TSDUBytes;
   blockLength:      Integer;
 begin
-  result := True;
+  Result := True;
 
   blockLength := length(input);
 
@@ -1342,10 +1334,10 @@ var
   blkNum: integer;
 {$ENDIF}
 begin
-  result := True;
-   SDUInitAndZeroBuffer(  blockLength,   prev);
+  Result := True;
+  SDUInitAndZeroBuffer(blockLength, prev);
 
-//  prev := StringOfChar(#0, blockLength);
+  //  prev := StringOfChar(#0, blockLength);
   // -1 because we don't process the last block
 {$IFDEF FREEOTFE_DEBUG}
   blkNum := 0;
@@ -1365,14 +1357,14 @@ DebugMsgBinary(SDUBytesToString( prev));
     // XOR previous block output with current stripe
     tmpData := '';
     for j := 1 to length(prev) do begin
-      tmpData := tmpData + Ansichar((prev[j-1] xor Ord(blockN[j])));
+      tmpData := tmpData + Ansichar((prev[j - 1] xor Ord(blockN[j])));
     end;
 
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('In between XOR and diffuse ('+inttostr(blkNum)+'):');
 DebugMsgBinary(tmpData);
 {$ENDIF}
-  assert('1234' = SDUBytesToString(SDUStringToSDUBytes('1234')))  ;
+    assert('1234' = SDUBytesToString(SDUStringToSDUBytes('1234')));
     // Hash output
     RepeatedHash(
       hashKernelModeDeviceName,
@@ -1448,7 +1440,7 @@ begin
   // XOR last hash output with last block to obtain original data
   SDUInitAndZeroBuffer(0, output);
   for i := 1 to blockLength do begin
-    SDUAddByte( output,processedStripes[i-1] xor Ord(lastBlock[i]));
+    SDUAddByte(output, processedStripes[i - 1] xor Ord(lastBlock[i]));
   end;
 
 end;
@@ -1588,7 +1580,8 @@ begin
           sizeof(rawLUKSheader.mk_digest_salt)
           );
         LUKSheader.mk_digest_iter := SDUBigEndian32ToDWORD(rawLUKSheader.mk_digest_iter);
-        strGUID                   := Copy(rawLUKSheader.uuid, 1, StrLen(rawLUKSheader.uuid)); //todo: is this index right?
+        strGUID                   := Copy(rawLUKSheader.uuid, 1, StrLen(rawLUKSheader.uuid));
+        //todo: is this index right?
         strGUID                   := '{' + strGUID + '}';
         LUKSheader.uuid           := StringToGUID(strGUID);
 
@@ -1671,9 +1664,8 @@ begin
   // Identify the FreeOTFE cypher driver to be used
   if (allOK) then begin
     allOK := IdentifyCypher(LUKSHeader.cipher_name, (LUKSHeader.key_bytes * 8),
-      LUKSHeader.cipher_mode, baseIVCypherOnHashLength,
-      LUKSHeader.cypherKernelModeDeviceName, LUKSHeader.cypherGUID,
-      LUKSHeader.sectorIVGenMethod, LUKSHeader.IVHashKernelModeDeviceName,
+      LUKSHeader.cipher_mode, baseIVCypherOnHashLength, LUKSHeader.cypherKernelModeDeviceName,
+      LUKSHeader.cypherGUID, LUKSHeader.sectorIVGenMethod, LUKSHeader.IVHashKernelModeDeviceName,
       LUKSHeader.IVHashGUID, LUKSHeader.IVCypherKernelModeDeviceName,
       LUKSHeader.IVCypherGUID);
 
@@ -1698,7 +1690,7 @@ var
   cypherDetails:    TFreeOTFECypher_v3;
   IVCypherDetails:  TFreeOTFECypher_v3;
   keySlot:          Integer;
-  keyMaterial: TSDUBytes;
+  keyMaterial:      TSDUBytes;
   prettyPrintData:  TStringList;
   dumpReport:       TStringList;
   IVHashTitle:      String;
@@ -1852,7 +1844,7 @@ begin
       dumpReport.Add('----------');
       if (keyfile = '') then begin
         userKeyOK := True;
-        dumpReport.Add('User supplied password   : ' +userKey);
+        dumpReport.Add('User supplied password   : ' + userKey);
       end else begin
         dumpReport.Add('Keyfile                  : ' + keyfile);
 
@@ -1962,41 +1954,39 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.RecoverMasterKey(filename: String; 
-userPassword: PasswordString;
-  baseIVCypherOnHashLength: Boolean;
- var LUKSHeader: TLUKSHeader;
-  var keySlot: Integer;
- var keyMaterial: TSDUBytes): Boolean;
+function TOTFEFreeOTFEBase.RecoverMasterKey(filename: String; userPassword: PasswordString;
+  baseIVCypherOnHashLength: Boolean; var LUKSHeader: TLUKSHeader; var keySlot: Integer;
+  var keyMaterial: TSDUBytes): Boolean;
 var
   pwd_PBKDF2ed:          TSDUBytes;
   foundValid:            Boolean;
   i, j:                  Integer;
   keySlotSaltAsString:   TSDUBytes;
-  masterkeySaltAsString: AnsiString;
+  masterkeySaltAsString: Ansistring;
   generatedCheck:        TSDUBytes;
   masterKey:             TSDUBytes;
   splitDataLength:       Integer;
   splitData:             Ansistring;
   tmpVolumeFlags:        Integer;
 begin
-  result := True;
+  Result := True;
 
   keySlot := -1;
 
 
   // Get the LUKS header from the volume...
-  if (result) then     result := ReadLUKSHeader(filename, LUKSHeader);
+  if (Result) then
+    Result := ReadLUKSHeader(filename, LUKSHeader);
 
 
   // Identify the FreeOTFE options to be used...
-  if (result) then begin
-    result := MapToFreeOTFE(baseIVCypherOnHashLength, LUKSHeader);
+  if (Result) then begin
+    Result := MapToFreeOTFE(baseIVCypherOnHashLength, LUKSHeader);
   end;
 
 
 
-  if (result) then begin
+  if (Result) then begin
     masterkeySaltAsString := '';
     for j := low(LUKSHeader.mk_digest_salt) to high(LUKSHeader.mk_digest_salt) do begin
       masterkeySaltAsString := masterkeySaltAsString + Ansichar(LUKSHeader.mk_digest_salt[j]);
@@ -2004,24 +1994,22 @@ begin
   end;
 
 
-  if (result) then begin
+  if (Result) then begin
     // For each keyslot...
     for i := low(LUKSHeader.keySlot) to high(LUKSHeader.keySlot) do begin
       if (LUKSHeader.keySlot[i].Active) then begin
         SDUZeroBuffer(keySlotSaltAsString);
         for j := low(LUKSHeader.keySlot[i].salt) to high(LUKSHeader.keySlot[i].salt) do begin
-          SDUAddByte( keySlotSaltAsString, LUKSHeader.keySlot[i].salt[j]);
+          SDUAddByte(keySlotSaltAsString, LUKSHeader.keySlot[i].salt[j]);
         end;
 
         // PBKDF2 the user's password with the salt
-        if not (DeriveKey(fokdfPBKDF2,
- LUKSheader.hashKernelModeDeviceName,          LUKSheader.hashGUID, 
-LUKSheader.cypherKernelModeDeviceName,
-          LUKSheader.cypherGUID, userPassword,
- keySlotSaltAsString,          LUKSHeader.keySlot[i].iterations, 
-(LUKSHeader.key_bytes * 8),  // In *bits*
+        if not (DeriveKey(fokdfPBKDF2, LUKSheader.hashKernelModeDeviceName,
+          LUKSheader.hashGUID, LUKSheader.cypherKernelModeDeviceName,
+          LUKSheader.cypherGUID, userPassword, keySlotSaltAsString,
+          LUKSHeader.keySlot[i].iterations, (LUKSHeader.key_bytes * 8),  // In *bits*
           pwd_PBKDF2ed)) then begin
-          result := False;
+          Result := False;
           break;
         end;
 
@@ -2038,25 +2026,19 @@ LUKSheader.cypherKernelModeDeviceName,
         if not (ReadWritePlaintextToVolume(True,
           // Read, NOT write
 
-          filename,SDUBytesToString( pwd_PBKDF2ed),
-LUKSheader.sectorIVGenMethod,
-          LUKSheader.IVHashKernelModeDeviceName,
- LUKSheader.IVHashGUID,
-          LUKSheader.IVCypherKernelModeDeviceName,
- LUKSheader.IVCypherGUID,
-          LUKSheader.cypherKernelModeDeviceName,
- LUKSheader.cypherGUID,
-          tmpVolumeFlags, fomaFixedDisk, 
-0,
+          filename, SDUBytesToString(pwd_PBKDF2ed), LUKSheader.sectorIVGenMethod,
+          LUKSheader.IVHashKernelModeDeviceName, LUKSheader.IVHashGUID,
+          LUKSheader.IVCypherKernelModeDeviceName, LUKSheader.IVCypherGUID,
+          LUKSheader.cypherKernelModeDeviceName, LUKSheader.cypherGUID,
+          tmpVolumeFlags, fomaFixedDisk, 0,
                             // Offset from within mounted volume from where to read/write data
           splitDataLength,  // Length of data to read/write. In bytes
           splitData,        // Data to read/write
 
-          (LUKS_SECTOR_SIZE *
- LUKSheader.KeySlot[i].key_material_offset)
+          (LUKS_SECTOR_SIZE * LUKSheader.KeySlot[i].key_material_offset)
           // Offset within volume where encrypted data starts
           )) then begin
-          result := False;
+          Result := False;
           break;
         end;
 
@@ -2070,7 +2052,7 @@ LUKSheader.sectorIVGenMethod,
         // Merge the split data
         if not (AFMerge(splitData, LUKSheader.keySlot[i].stripes,
           LUKSheader.hashKernelModeDeviceName, LUKSheader.hashGUID, masterKey)) then begin
-          result := False;
+          Result := False;
           break;
         end;
 
@@ -2084,10 +2066,10 @@ LUKSheader.sectorIVGenMethod,
         // Generate PBKDF2 of the merged data
         if not (DeriveKey(fokdfPBKDF2, LUKSheader.hashKernelModeDeviceName,
           LUKSheader.hashGUID, LUKSheader.cypherKernelModeDeviceName,
-          LUKSheader.cypherGUID,SDUBytesToString( masterKey),SDUStringToSDUBytes( masterkeySaltAsString),
-          LUKSHeader.mk_digest_iter, (sizeof(LUKSHeader.mk_digest) * 8), generatedCheck))
-        then begin
-          result := False;
+          LUKSheader.cypherGUID, SDUBytesToString(masterKey), SDUStringToSDUBytes(
+          masterkeySaltAsString), LUKSHeader.mk_digest_iter, (sizeof(LUKSHeader.mk_digest) * 8),
+          generatedCheck)) then begin
+          Result := False;
           break;
         end;
 
@@ -2099,7 +2081,7 @@ LUKSheader.sectorIVGenMethod,
         // Check if the PBKDF2 of the merged data matches that of the MK digest
         foundValid := True;
         for j := 1 to length(generatedCheck) do begin
-          if (generatedCheck[j-1] <> LUKSHeader.mk_digest[j - 1]) then begin
+          if (generatedCheck[j - 1] <> LUKSHeader.mk_digest[j - 1]) then begin
             foundValid := False;
             break;
           end;
@@ -2237,8 +2219,7 @@ begin
 
               normalisedTitleLUKSified :=
                 StringReplace(normalisedTitleLUKSified,
-                uppercase(FREEOTFE_WHIRLPOOL), uppercase(LUKS_WHIRLPOOL),
-                []);
+                uppercase(FREEOTFE_WHIRLPOOL), uppercase(LUKS_WHIRLPOOL), []);
             end;
 
             // Check current hash implementation details against volume's
@@ -2494,8 +2475,8 @@ begin
   // Given the information we've determined, identify the FreeOTFE driver to
   // map the details to
   if (allOK) then begin
-    allOK := IdentifyCypher_SearchCyphers(cypherDrivers, cypherName,
-      keySizeBits, useCypherMode, cypherKernelModeDeviceName, cypherGUID);
+    allOK := IdentifyCypher_SearchCyphers(cypherDrivers, cypherName, keySizeBits,
+      useCypherMode, cypherKernelModeDeviceName, cypherGUID);
   end;
 
   // Sort out the IV cypher driver
@@ -2509,13 +2490,12 @@ begin
     // creates the ESSIV cypher - as a result, the ESSIV cypher may have a
     // different keylength to the bulk encryption cypher
     if (baseIVCypherOnHashLength and (sectorIVGenMethod = foivgESSIV)) then begin
-      allOK := GetSpecificHashDetails(IVHashKernelModeDeviceName,
-        IVHashGUID, IVHashDetails);
+      allOK := GetSpecificHashDetails(IVHashKernelModeDeviceName, IVHashGUID,
+        IVHashDetails);
 
       if (allOK) then begin
-        allOK := IdentifyCypher_SearchCyphers(cypherDrivers,
-          cypherName, IVHashDetails.Length, useCypherMode,
-          IVCypherKernelModeDeviceName, IVCypherGUID);
+        allOK := IdentifyCypher_SearchCyphers(cypherDrivers, cypherName,
+          IVHashDetails.Length, useCypherMode, IVCypherKernelModeDeviceName, IVCypherGUID);
       end;
     end;
 
@@ -2845,8 +2825,8 @@ begin
 
         if (useCDB = '') then begin
           // Attempt to obtain the current file's critical data
-          if not (ReadRawVolumeCriticalData(volumeFilenames[i],
-            Offset, useCDB)) then begin
+          if not (ReadRawVolumeCriticalData(volumeFilenames[i], Offset, useCDB)) then
+          begin
             // Bad file...
             LastErrorCode := OTFE_ERR_VOLUME_FILE_NOT_FOUND;
             mountedAs     := mountedAs + #0;
@@ -2859,8 +2839,7 @@ begin
         decryptedCDB := useCDB;
         if ((PKCS11Session <> nil) and (PKCS11SecretKeyRecord <> nil)) then begin
           if not (PKCS11DecryptCDBWithSecretKey(PKCS11Session,
-            PKCS11SecretKeyRecord, useCDB, decryptedCDB, errMsg))
-          then begin
+            PKCS11SecretKeyRecord, useCDB, decryptedCDB, errMsg)) then begin
             LastErrorCode := OTFE_ERR_PKCS11_SECRET_KEY_DECRYPT_FAILURE;
             mountedAs     := mountedAs + #0;
             retVal        := False;
@@ -2903,15 +2882,14 @@ begin
         end;
 
         if CreateMountDiskDevice(currMountFilename, volumeDetails.MasterKey,
-          volumeDetails.SectorIVGenMethod, volumeDetails.VolumeIV,
-          MountReadonly, CDBMetaData.HashDriver, CDBMetaData.HashGUID,
-          CDBMetaData.CypherDriver,  // IV cypher
+          volumeDetails.SectorIVGenMethod, volumeDetails.VolumeIV, MountReadonly,
+          CDBMetaData.HashDriver, CDBMetaData.HashGUID, CDBMetaData.CypherDriver,  // IV cypher
           CDBMetaData.CypherGUID,    // IV cypher
           CDBMetaData.CypherDriver,  // Main cypher
           CDBMetaData.CypherGUID,    // Main cypher
           volumeDetails.VolumeFlags, mountDriveLetter, useFileOffset,
-          volumeDetails.PartitionLen, False, SlotID, MountMountAs,
-          MountForAllUsers) then begin
+          volumeDetails.PartitionLen, False, SlotID, MountMountAs, MountForAllUsers) then
+        begin
           mountedAs := mountedAs + mountDriveLetter;
         end else begin
           mountedAs     := mountedAs + #0;
@@ -3025,8 +3003,8 @@ end;
 function TOTFEFreeOTFEBase.MountLinux(volumeFilename: String; ReadOnly: Boolean = False;
   lesFile: String = ''; password: Ansistring = ''; keyfile: String = '';
   keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
-  keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
-  offset: ULONGLONG = 0; silent: Boolean = False; forceHidden: Boolean = False): Ansichar;
+  keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE; offset: ULONGLONG = 0;
+  silent: Boolean = False; forceHidden: Boolean = False): Ansichar;
 var
   tmpStringList: TStringList;
   mountedAs:     Ansistring;
@@ -3057,8 +3035,8 @@ function TOTFEFreeOTFEBase.MountLinux(volumeFilenames: TStringList;
   var mountedAs: Ansistring; ReadOnly: Boolean = False; lesFile: String = '';
   password: Ansistring = ''; keyfile: String = '';
   keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
-  keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
-  offset: ULONGLONG = 0; silent: Boolean = False; forceHidden: Boolean = False): Boolean;
+  keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE; offset: ULONGLONG = 0;
+  silent: Boolean = False; forceHidden: Boolean = False): Boolean;
 var
   retVal:      Boolean;
   keyEntryDlg: TfrmKeyEntryLinux;
@@ -3109,8 +3087,7 @@ begin
     // Mount as LUKS if they are...
     {  TDK change - test user option to force non-luks (for hidden vols) }
     if (IsLUKSVolume(volumeFilenames[0])) and not forceHidden then begin
-      Result := MountLUKS(volumeFilenames, mountedAs, ReadOnly,
-        password, keyfile, silent);
+      Result := MountLUKS(volumeFilenames, mountedAs, ReadOnly, password, keyfile, silent);
       exit;
     end;
   end;
@@ -3182,8 +3159,8 @@ begin
         // Generate volume key for encryption/decryption
         if retVal then begin
           if not (GenerateLinuxVolumeKey(keyProcHashDriver, keyProcHashGUID,
-            userKey, keyProcSeed, keyProcHashWithAs,
-            mainCypherDetails.KeySizeRequired, volumeKey)) then begin
+            userKey, keyProcSeed, keyProcHashWithAs, mainCypherDetails.KeySizeRequired,
+            volumeKey)) then begin
             LastErrorCode := OTFE_ERR_HASH_FAILURE;
             retVal        := False;
           end;
@@ -3208,12 +3185,11 @@ begin
               break;
             end;
             // SDUInitAndZeroBuffer(0, emptyIV);
-            if CreateMountDiskDevice(volumeFilenames[i],SDUBytesToString( volumeKey),
-              sectorIVGenMethod, '',  // Linux volumes don't have per-volume IVs
+            if CreateMountDiskDevice(volumeFilenames[i], SDUBytesToString(
+              volumeKey), sectorIVGenMethod, '',  // Linux volumes don't have per-volume IVs
               mountReadonly, mainIVHashDriver, mainIVHashGUID,
-              mainIVCypherDriver, mainIVCypherGUID,
-              mainCypherDriver, mainCypherGUID, VolumeFlags,
-              currDriveLetter, fileOptOffset, fileOptSize, True,
+              mainIVCypherDriver, mainIVCypherGUID, mainCypherDriver,
+              mainCypherGUID, VolumeFlags, currDriveLetter, fileOptOffset, fileOptSize, True,
                                   // Linux volume
               PKCS11_NO_SLOT_ID,  // PKCS11 SlotID
               mountMountAs, mountForAllUsers) then begin
@@ -3268,11 +3244,11 @@ function TOTFEFreeOTFEBase.GenerateLinuxVolumeKey(hashDriver: Ansistring;
   hashGUID: TGUID; userKey: Ansistring; seed: Ansistring; hashWithAs: Boolean;
   targetKeylengthBits: Integer; var volumeKey: TSDUBytes): Boolean;
 var
-  seededKey:  Ansistring;
-  hashOutput: TSDUBytes;
-  allOK:      Boolean;
-  len :integer;
-  volumeKeyStr  :  Ansistring;
+  seededKey:    Ansistring;
+  hashOutput:   TSDUBytes;
+  allOK:        Boolean;
+  len:          Integer;
+  volumeKeyStr: Ansistring;
 begin
   allOK := True;
 
@@ -3283,17 +3259,18 @@ begin
   // If the target key length is any size key, or we don't hash with A's, then
   // we simply hash the user's key once with the specified hash
   if ((targetKeylengthBits = -1) or not (hashWithAs)) then begin
-    Result := HashData(hashDriver, hashGUID,SDUStringToSDUBytes(seededKey), volumeKey);
+    Result := HashData(hashDriver, hashGUID, SDUStringToSDUBytes(seededKey), volumeKey);
   end else begin
     // We're been asked to supply a volume key with a fixed, defined length
     while (Result and (Length(volumeKey) < (targetKeylengthBits div 8))) do begin
       // Note: We'll truncate later - don't worry if volumeKey is set to too
       //       many bits at this stage...
-      Result     := Result and HashData(hashDriver, hashGUID,SDUStringToSDUBytes(seededKey), hashOutput);
-//      volumeKey := volumeKey +  hashOutput;
-len := length(volumeKey) + length(hashOutput);
-       SDUAddArrays(volumeKey,hashOutput);
-       assert(length(volumeKey)=len);
+      Result := Result and HashData(hashDriver, hashGUID, SDUStringToSDUBytes(seededKey),
+        hashOutput);
+      //      volumeKey := volumeKey +  hashOutput;
+      len    := length(volumeKey) + length(hashOutput);
+      SDUAddArrays(volumeKey, hashOutput);
+      assert(length(volumeKey) = len);
       // Prepare for next...         SDUBytesToString(
       seededKey := 'A' + seededKey;
     end;
@@ -3308,12 +3285,13 @@ len := length(volumeKey) + length(hashOutput);
       // Copy as much of the hash value as possible to match the key length
 
       // Right-pad if needed
-      volumeKeyStr := SDUBytesToString(volumeKey) ;
-      volumeKeyStr := Copy(volumeKeyStr, 1, min((targetKeylengthBits div 8), length(volumeKeyStr)));
+      volumeKeyStr := SDUBytesToString(volumeKey);
+      volumeKeyStr := Copy(volumeKeyStr, 1, min((targetKeylengthBits div 8),
+        length(volumeKeyStr)));
       volumeKeyStr := volumeKeyStr + StringOfChar(AnsiChar(#0),
         ((targetKeylengthBits div 8) - Length(volumeKeyStr)));
 
-         SDUResetLength(volumeKey,targetKeylengthBits div 8);
+      SDUResetLength(volumeKey, targetKeylengthBits div 8);
       assert(volumeKeyStr = SDUBytesToString(volumeKey));
     end;
 
@@ -3454,7 +3432,7 @@ begin
                                    ));
 {$ENDIF}
 
-          if CreateMountDiskDevice(volumeFilenames[i],SDUBytesToString(volumeKey),
+          if CreateMountDiskDevice(volumeFilenames[i], SDUBytesToString(volumeKey),
             LUKSHeader.sectorIVGenMethod, '',
             // Linux volumes don't have per-volume IVs
             mountReadonly, LUKSHeader.IVHashKernelModeDeviceName,
@@ -3819,8 +3797,8 @@ function TOTFEFreeOTFEBase._DecryptData(cypherKernelModeDeviceName: Ansistring;
   var plaintext: Ansistring): Boolean;
 begin
   // Call generic function...
-  Result := _EncryptDecryptData(False, cypherKernelModeDeviceName,
-    cypherGUID, key, IV, cyphertext, plaintext);
+  Result := _EncryptDecryptData(False, cypherKernelModeDeviceName, cypherGUID,
+    key, IV, cyphertext, plaintext);
 end;
 
 
@@ -3828,9 +3806,8 @@ end;
  // Encrypt data using the cypher/cypher driver identified
  // Encrypted data returned in "plaintext"
 function TOTFEFreeOTFEBase.EncryptSectorData(cypherKernelModeDeviceName: Ansistring;
-  cypherGUID: TGUID; SectorID: LARGE_INTEGER; SectorSize: Integer;
-  var key: TSDUBytes; var IV: Ansistring; var plaintext: Ansistring;
-  var cyphertext: Ansistring): Boolean;
+  cypherGUID: TGUID; SectorID: LARGE_INTEGER; SectorSize: Integer; var key: TSDUBytes;
+  var IV: Ansistring; var plaintext: Ansistring; var cyphertext: Ansistring): Boolean;
 begin
   // Call generic function...
   Result := EncryptDecryptSectorData(True, cypherKernelModeDeviceName,
@@ -3842,9 +3819,8 @@ end;
  // Decrypt data using the cypher/cypher driver identified
  // Decrypted data returned in "plaintext"
 function TOTFEFreeOTFEBase.DecryptSectorData(cypherKernelModeDeviceName: Ansistring;
-  cypherGUID: TGUID; SectorID: LARGE_INTEGER; SectorSize: Integer;
-  var key: TSDUBytes; var IV: Ansistring; var cyphertext: Ansistring;
-  var plaintext: Ansistring): Boolean;
+  cypherGUID: TGUID; SectorID: LARGE_INTEGER; SectorSize: Integer; var key: TSDUBytes;
+  var IV: Ansistring; var cyphertext: Ansistring; var plaintext: Ansistring): Boolean;
 begin
   // Call generic function...
   Result := EncryptDecryptSectorData(False, cypherKernelModeDeviceName,
@@ -3919,8 +3895,8 @@ begin
       (0 or VOL_FLAGS_PRE_CDB_3__HASH_SECTOR_ID_BEFORE_USE)) then begin
       volumeDetailsBlock.SectorIVGenMethod := foivgUnknown;
     end else
-    if ((volumeDetailsBlock.VolumeFlags and (VOL_FLAGS_PRE_CDB_3__USE_SECTOR_ID_AS_IV or
-      0)) = (VOL_FLAGS_PRE_CDB_3__USE_SECTOR_ID_AS_IV or 0)) then begin
+    if ((volumeDetailsBlock.VolumeFlags and (VOL_FLAGS_PRE_CDB_3__USE_SECTOR_ID_AS_IV or 0)) =
+      (VOL_FLAGS_PRE_CDB_3__USE_SECTOR_ID_AS_IV or 0)) then begin
       volumeDetailsBlock.SectorIVGenMethod := foivg64BitSectorID;
     end else
     if ((volumeDetailsBlock.VolumeFlags and (0 or 0)) = (0 or 0)) then begin
@@ -4266,7 +4242,7 @@ var
   allOK:                     Boolean;
   salt:                      Ansistring;
   saltedUserPassword:        Ansistring;
-  derivedKey:                TSDUBytes;  // The key to be used in decrypting the CDB, after
+  derivedKey:                TSDUBytes;   // The key to be used in decrypting the CDB, after
                                           // salting, hashing, HMACing, etc - but before any
                                           // truncating/padding as a result of the cypher's keysize
   hk:                        Integer;     // Hash value length, in *bits*
@@ -4284,7 +4260,7 @@ var
   i:                     Integer;
   tgtVolDetailsBlockLen: Integer;  // In *bits*
   prevCursor:            TCursor;
-  derivedKeyStr,criticalDataKeyStr,checkDataGeneratedStr:ansistring;
+  derivedKeyStr, criticalDataKeyStr, checkDataGeneratedStr: Ansistring;
 begin
   SetLength(validVolumeDetails, 0);
   SetLength(validCDBMetaData, 0);
@@ -4363,7 +4339,7 @@ begin
 
           // HASH THE USER's PASSWORD+SALT...
           if not (HashData(currHashDriver.LibFNOrDevKnlMdeName, currHashImpl.HashGUID,
-          SDUStringToSDUBytes(           saltedUserPassword), derivedKey)) then begin
+            SDUStringToSDUBytes(saltedUserPassword), derivedKey)) then begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('ERROR: Hashing FAILED.');
   {$ENDIF}
@@ -4410,7 +4386,7 @@ begin
 
                 // Determine the criticalDataKey...
                 // Fallback - assign no key (e.g. if the cypher's keysize = 0 bits)
-                criticalDataKey :=SDUStringToSDUBytes( '');
+                criticalDataKey := SDUStringToSDUBytes('');
                 if (ks < 0) then begin
                   // If the cypher's keysize is -1, then the critical data block
                   // en/decryption key is the hash value returned
@@ -4419,14 +4395,15 @@ begin
                   derivedKeyStr := SDUBytesToString(derivedKey);
                   if ((Length(derivedKeyStr) * 8) < ks) then begin
                     // The hash value isn't long enough; right pad with zero bytes
-                    criticalDataKeyStr :=     derivedKeyStr + StringOfChar(AnsiChar(#0), ((ks div 8) - Length(derivedKeyStr)));
+                    criticalDataKeyStr :=
+                      derivedKeyStr + StringOfChar(AnsiChar(#0), ((ks div 8) - Length(derivedKeyStr)));
                   end else begin
                     // The hash value is too long; truncate
                     criticalDataKeyStr := Copy(derivedKeyStr, 1, (ks div 8));
                   end;
-                    // copy derivedKey, and pad if no long enough
-                  SDUAddLimit(criticalDataKey,derivedKey,ks div 8);
-                  SDUResetLength(criticalDataKey,ks div 8);
+                  // copy derivedKey, and pad if no long enough
+                  SDUAddLimit(criticalDataKey, derivedKey, ks div 8);
+                  SDUResetLength(criticalDataKey, ks div 8);
                   assert(criticalDataKeyStr = SDUBytesToString(criticalDataKey));
                 end;  // if (ks > 0) then
 
@@ -4440,8 +4417,8 @@ begin
   {$ENDIF}
                 if not (DecryptSectorData(currCypherDriver.LibFNOrDevKnlMdeName,
                   currCypherImpl.CypherGUID, FREEOTFE_v1_DUMMY_SECTOR_ID,
-                  FREEOTFE_v1_DUMMY_SECTOR_SIZE, criticalDataKey,
-                  IV, encryptedBlock, decryptedBlock)) then begin
+                  FREEOTFE_v1_DUMMY_SECTOR_SIZE, criticalDataKey, IV,
+                  encryptedBlock, decryptedBlock)) then begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('ERROR: Decryption FAILED.');
   {$ENDIF}
@@ -4466,7 +4443,8 @@ begin
 
                   // HASH THE USER DECODED DATA...
                   if not (HashData(currHashDriver.LibFNOrDevKnlMdeName,
-                    currHashImpl.HashGUID,SDUStringToSDUBytes( strVolumeDetailsBlock), checkDataGenerated)) then begin
+                    currHashImpl.HashGUID, SDUStringToSDUBytes(strVolumeDetailsBlock),
+                    checkDataGenerated)) then begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('ERROR: Hash of decrypted data FAILED.');
   {$ENDIF}
@@ -4482,13 +4460,14 @@ begin
                     if ((Length(checkDataGenerated) * 8) < hk) then begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('Check hash generated hash less than hk bits; padding...');
-  {$ENDIF}            checkDataGeneratedStr := SDUBytesToString(checkDataGenerated);
+  {$ENDIF}
+                      checkDataGeneratedStr := SDUBytesToString(checkDataGenerated);
                       checkDataGeneratedStr :=
                         checkDataGeneratedStr + StringOfChar(AnsiChar(#0),
                         (((Length(checkDataGeneratedStr) * 8) - hk) div 8));
 
-                        SDUResetLength(checkDataGenerated,hk);
-                        assert(checkDataGeneratedStr = SDUBytesToString(checkDataGenerated) );
+                      SDUResetLength(checkDataGenerated, hk);
+                      assert(checkDataGeneratedStr = SDUBytesToString(checkDataGenerated));
                     end;
 
                     // If the new checkdata is greater than hk bits, truncate it after the first
@@ -4502,11 +4481,11 @@ begin
                         (Length(checkDataGeneratedStr) - (hk div 8)));
                     end;
 
-                      if ((Length(checkDataGenerated) * 8) > hk) then begin
+                    if ((Length(checkDataGenerated) * 8) > hk) then begin
                       // +1 because we index from 1, not zero
-                       SDUResetLength(checkDataGenerated,hk);
+                      SDUResetLength(checkDataGenerated, hk);
                     end;
-                    assert(checkDataGeneratedStr = SDUBytesToString(checkDataGenerated) );
+                    assert(checkDataGeneratedStr = SDUBytesToString(checkDataGenerated));
 
 
                     if (checkDataDecrypted = SDUBytesToString(checkDataGenerated)) then begin
@@ -4573,7 +4552,7 @@ begin
 
                         // Additional: Store internal information, if dumping
                         if fdumpFlag then begin
-                          fDumpCriticalDataKey         :=SDUBytesToString(criticalDataKey);
+                          fDumpCriticalDataKey         := SDUBytesToString(criticalDataKey);
                           fDumpCheckMAC                := checkDataDecrypted;
                           fDumpPlaintextEncryptedBlock := decryptedBlock;
                           fDumpVolumeDetailsBlock      := strVolumeDetailsBlock;
@@ -4617,8 +4596,8 @@ begin
   // Depending on how many hash/cypher combinations were found, select the
   // appropriate one to use
   if (allOK) then begin
-    allOK := ChooseFromValid(validVolumeDetails, validCDBMetaData,
-      volumeDetails, CDBMetaData);
+    allOK := ChooseFromValid(validVolumeDetails, validCDBMetaData, volumeDetails,
+      CDBMetaData);
   end;
 
 {$IFDEF FREEOTFE_DEBUG}
@@ -4684,10 +4663,10 @@ var
 
   volumeDetailsBlock: Ansistring;
 
-  MACAlgorithm: TFreeOTFEMACAlgorithm;
-  KDFAlgorithm: TFreeOTFEKDFAlgorithm;
-  prevCursor:   TCursor;
-  criticalDataKeyBytes  : TSDUBytes;
+  MACAlgorithm:         TFreeOTFEMACAlgorithm;
+  KDFAlgorithm:         TFreeOTFEKDFAlgorithm;
+  prevCursor:           TCursor;
+  criticalDataKeyBytes: TSDUBytes;
 begin
   SetLength(validVolumeDetails, 0);
   SetLength(validCDBMetaData, 0);
@@ -4794,8 +4773,7 @@ DebugMsg('Checking using hash impl: '+GetHashDisplayTechTitle(currHashImpl));
             // v2 volumes won't work with hash algorithms with <= 0 length, or
             // blocksize, as HMAC/PBKDF2 require these to be fixed
             //  - skip these, and move onto the next hash algorithm (if any)
-            if ((currHashImpl.Length <= 0) or (currHashImpl.BlockSize <= 0)) then
-            begin
+            if ((currHashImpl.Length <= 0) or (currHashImpl.BlockSize <= 0)) then begin
               Continue;
             end;
 
@@ -4810,7 +4788,8 @@ DebugMsg('Checking using hash impl: '+GetHashDisplayTechTitle(currHashImpl));
 
             allOK := DeriveKey(KDFAlgorithm, currHashDriver.LibFNOrDevKnlMdeName,
               currHashImpl.HashGUID, '', StringToGUID(NULL_GUID),
-              userPassword, SDUStringToSDUBytes(salt), keyIterations, maxCDKSize_bits,  // cdkSizeBits
+              userPassword, SDUStringToSDUBytes(salt), keyIterations,
+              maxCDKSize_bits,  // cdkSizeBits
               maxCriticalDataKey);
             if not (allOK) then begin
 {$IFDEF FREEOTFE_DEBUG}
@@ -4855,7 +4834,8 @@ DebugMsg('Checking using cypher impl: '+GetCypherDisplayTechTitle(currCypherImpl
 
 
                 // !!! OPTIMISATION !!!
-                criticalDataKey := Copy(SDUBytesToString(maxCriticalDataKey), 1, (cdkSize_bits div 8));
+                criticalDataKey :=
+                  Copy(SDUBytesToString(maxCriticalDataKey), 1, (cdkSize_bits div 8));
 
 
                 // Calculate "leb"
@@ -4874,13 +4854,13 @@ DebugMsg('Checking using cypher impl: '+GetCypherDisplayTechTitle(currCypherImpl
                 if (currCypherImpl.BlockSize > 0) then begin
                   IV := StringOfChar(AnsiChar(#0), (currCypherImpl.BlockSize div 8));
                 end;
-                criticalDataKeyBytes:=SDUStringToSDUBytes(criticalDataKey);
-                allOK := DecryptSectorData(
+                criticalDataKeyBytes := SDUStringToSDUBytes(criticalDataKey);
+                allOK                := DecryptSectorData(
                   currCypherDriver.LibFNOrDevKnlMdeName,
                   currCypherImpl.CypherGUID, FREEOTFE_v1_DUMMY_SECTOR_ID,
-                  FREEOTFE_v1_DUMMY_SECTOR_SIZE,criticalDataKeyBytes, IV,
+                  FREEOTFE_v1_DUMMY_SECTOR_SIZE, criticalDataKeyBytes, IV,
                   encryptedBlock, plaintextEncryptedBlock);
-                criticalDataKey  := SDUBytesToString(criticalDataKeyBytes);
+                criticalDataKey      := SDUBytesToString(criticalDataKeyBytes);
                 if not (allOK) then begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg(
@@ -5064,8 +5044,8 @@ DebugMsg('Completed checking for all hash/cypher combinations');
   // Depending on how many hash/cypher combinations were found, select the
   // appropriate one to use
   if (allOK) then begin
-    allOK := ChooseFromValid(validVolumeDetails, validCDBMetaData,
-      volumeDetails, CDBMetaData);
+    allOK := ChooseFromValid(validVolumeDetails, validCDBMetaData, volumeDetails,
+      CDBMetaData);
   end;
 
 {$IFDEF FREEOTFE_DEBUG}
@@ -5174,7 +5154,7 @@ end;
 function TOTFEFreeOTFEBase.WriteVolumeCriticalData(filename: String;
   offsetWithinFile: Int64; userPassword: PasswordString; salt: TSDUBytes;
   keyIterations: Integer; volumeDetails: TVolumeDetailsBlock; CDBMetaData: TCDBMetaData
-    // Note: If insufficient is supplied, the write will
+  // Note: If insufficient is supplied, the write will
   //       *fail*
   //       The maximum that could possibly be required
   //       is CRITICAL_DATA_LENGTH bits.
@@ -5184,7 +5164,7 @@ var
   allOK:                                  Boolean;
   sl_bits:                                Integer;  // Salt value length, in *bits*
   criticalDataKey:                        TSDUBytes;
-  criticalDataKeyStr: ansistring;
+  criticalDataKeyStr:                     Ansistring;
   IV:                                     Ansistring;
   cypherDetails:                          TFreeOTFECypher_v3;
   hashDetails:                            TFreeOTFEHash;
@@ -5264,8 +5244,7 @@ DebugMsg('Hash impl: '+hashDetails.Title+' ('+GUIDToString(CDBMetaData.HashGUID)
 
 
   // Sanity checks
-  if ((cypherDetails.BlockSize <= 0) and (volumeDetails.SectorIVGenMethod <> foivgNone)) then
-  begin
+  if ((cypherDetails.BlockSize <= 0) and (volumeDetails.SectorIVGenMethod <> foivgNone)) then begin
     raise EFreeOTFEInternalError.Create(
       'Invalid: Sector IVs cannot be used if cypher blocksize <= 0');
   end;
@@ -5274,8 +5253,7 @@ DebugMsg('Hash impl: '+hashDetails.Title+' ('+GUIDToString(CDBMetaData.HashGUID)
     raise EFreeOTFEInternalError.Create(
       'Invalid: Volume IV cannot be used if cypher blocksize <= 0');
   end;
-  if ((cypherDetails.BlockSize > 0) and ((sl_bits mod cypherDetails.BlockSize) <> 0))
-  then begin
+  if ((cypherDetails.BlockSize > 0) and ((sl_bits mod cypherDetails.BlockSize) <> 0)) then begin
     raise EFreeOTFEInternalError.Create(
       'Invalid: Salt length must be a multiple of the cypher blocksize');
   end;
@@ -5320,7 +5298,7 @@ DebugMsg('Hash impl: '+hashDetails.Title+' ('+GUIDToString(CDBMetaData.HashGUID)
   if (allOK) then begin
     allOK := DeriveKey(CDBMetaData.KDFAlgorithm, CDBMetaData.HashDriver,
       CDBMetaData.HashGUID, CDBMetaData.CypherDriver, CDBMetaData.CypherGUID,
-      userPassword,salt, keyIterations, cdkSize_bits, criticalDataKey);
+      userPassword, salt, keyIterations, cdkSize_bits, criticalDataKey);
     if not (allOK) then begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg(
@@ -5372,7 +5350,7 @@ DebugMsg('ERROR: FAILED to convert critical data structure to string rep.');
 
       // Pad out with "random data #2"...
       if (randomPaddingTwoLength_bits > 0) then begin
-    GetRandPool().GetRandomData(randomPaddingTwoLength_bits div 8,randomPadData);
+        GetRandPool().GetRandomData(randomPaddingTwoLength_bits div 8, randomPadData);
         volumeDetailsBlock := volumeDetailsBlockNoPadding + SDUBytesToString(randomPadData);
         SDUZeroBuffer(randomPadData);
 {
@@ -5393,11 +5371,11 @@ DebugMsg('ERROR: FAILED to convert critical data structure to string rep.');
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('About to HMAC critical data to create check data...');
 {$ENDIF}
-criticalDataKeyStr := SDUBytesToString(criticalDataKey)  ;
-    allOK := MACData(CDBMetaData.MACAlgorithm, CDBMetaData.HashDriver,
+    criticalDataKeyStr := SDUBytesToString(criticalDataKey);
+    allOK              := MACData(CDBMetaData.MACAlgorithm, CDBMetaData.HashDriver,
       CDBMetaData.HashGUID, CDBMetaData.CypherDriver, CDBMetaData.CypherGUID,
       criticalDataKeyStr, volumeDetailsBlock, checkMAC, -1);
-      criticalDataKey:= SDUStringToSDUBytes(criticalDataKeyStr);
+    criticalDataKey    := SDUStringToSDUBytes(criticalDataKeyStr);
     if not (allOK) then begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg(
@@ -5435,8 +5413,8 @@ DebugMsg('Check data generated hash less than CDB_MAX_MAC_LENGTH bits; padding..
       Delete(randomPadData, 1, (randomPaddingThreeLength_bits div 8));  }
 
 
-      GetRandPool().GetRandomData(randomPaddingThreeLength_bits div 8,randomPadData);
-      paddedCheckMAC                :=        checkMAC + SDUBytesToString( randomPadData);
+      GetRandPool().GetRandomData(randomPaddingThreeLength_bits div 8, randomPadData);
+      paddedCheckMAC := checkMAC + SDUBytesToString(randomPadData);
       SDUZeroBuffer(randomPadData);
 
     end else
@@ -5524,8 +5502,9 @@ DebugMsg('ERROR: FAILED to encrypt data block');
     // 1 because we index from 1, not zero
     Delete(randomPadData, 1, (randomPaddingOneLength_bits div 8));  }
 
-     GetRandPool().GetRandomData(randomPaddingOneLength_bits div 8,randomPadData);
-    criticalDataBlock := SDUBytesToString(salt) + encryptedBlock + SDUBytesToString(randomPadData );
+    GetRandPool().GetRandomData(randomPaddingOneLength_bits div 8, randomPadData);
+    criticalDataBlock := SDUBytesToString(salt) + encryptedBlock +
+      SDUBytesToString(randomPadData);
     SDUZeroBuffer(randomPadData);
 
   end;
@@ -6049,8 +6028,7 @@ begin
   if (allOK) then begin
     // Get the FreeOTFE driver to write the critical data block to the named file
     // starting from the specified offset
-    allOK := WriteRawVolumeCriticalData(destFilename, destOffsetWithinFile,
-      criticalData);
+    allOK := WriteRawVolumeCriticalData(destFilename, destOffsetWithinFile, criticalData);
   end;
 
   Result := allOK;
@@ -6118,9 +6096,8 @@ begin
     oldKeyIterations, volumeDetails, CDBMetaData) then begin
     volumeDetails.RequestedDriveLetter := newRequestedDriveLetter;
 
-    allOK := WriteVolumeCriticalData(filename, offsetWithinFile,
-      newUserPassword, newSaltBytes, newKeyIterations, volumeDetails,
-      CDBMetaData{, newRandomPadData});
+    allOK := WriteVolumeCriticalData(filename, offsetWithinFile, newUserPassword,
+      newSaltBytes, newKeyIterations, volumeDetails, CDBMetaData{, newRandomPadData});
   end;
 
   Result := allOK;
@@ -6568,8 +6545,7 @@ var
 begin
   retVal := ReadRawVolumeDataSimple(filename, offsetWithinFile, dataLength, data);
   if not (retVal) then begin
-    retVal := ReadRawVolumeDataBounded(filename, offsetWithinFile,
-      dataLength, data);
+    retVal := ReadRawVolumeDataBounded(filename, offsetWithinFile, dataLength, data);
   end;
 
   Result := retVal;

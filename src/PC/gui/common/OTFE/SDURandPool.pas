@@ -20,13 +20,11 @@ keeps a random pool - reads as needed from OS random sources ad internal 'mouse 
 interface
 
 uses
-  Windows,sysutils,
-  //sdu
+  sysutils,
+  Windows,//sdu
   SDUGeneral,
   //doxbox
   pkcs11_library;
-
-
 
 type
   TRNG = (
@@ -37,8 +35,8 @@ type
     rngGPG
     );
 
-  TRNGSet = set of TRNG;
-  EInsufficientRandom = class(Exception);
+  TRNGSet             = set of TRNG;
+  EInsufficientRandom = class (Exception);
 
   TRandPool = class (TObject)
   PRIVATE
@@ -64,18 +62,18 @@ type
   PUBLIC
                           { public declarations }
     constructor Create(); // singleton - dont call directly - use GetRandPool
-     destructor Destroy();//noramly only called on app exit
-    // Generate RNG data using specified RNG
-    // !! WARNING !!
-    // If RNG_OPT_CRYPTLIB is specified as the RNG, cryptlibLoad must be called
-    // beforehand, and cryptlibUnload after use
+    destructor Destroy(); //noramly only called on app exit
+                          // Generate RNG data using specified RNG
+                          // !! WARNING !!
+                          // If RNG_OPT_CRYPTLIB is specified as the RNG, cryptlibLoad must be called
+                          // beforehand, and cryptlibUnload after use
     class procedure GetRandomData(bytesRequired: Integer;
-      // Output
+    // Output
       out randomData: TSDUBytes);
 
-      class function CanUseCryptLib(): Boolean;
-//obsolete
-  class function GenerateRandomData(bytesRequired: Integer;
+    class function CanUseCryptLib(): Boolean;
+    //obsolete
+    class function GenerateRandomData(bytesRequired: Integer;
     // Output
       var randomData: Ansistring): Boolean;
       OVERLOAD;
@@ -115,7 +113,7 @@ uses
   // Required for showmessage
   //sdu
   SDUDialogs,
-  SDUi18n ,
+  SDUi18n,
   //dosbox
   OTFEFreeOTFE_cryptlib,
   OTFEFreeOTFE_PKCS11;
@@ -134,28 +132,28 @@ function GenerateRNGDataPKCS11(PKCS11Library: TPKCS11Library; SlotID: Integer;
 
 
 var
-  _MouseRNGStore: TSDUBytes;
-  _RandPool:      TRandPool;
-  _rngset:        TRNGSet;
-  _PKCS11Library: TPKCS11Library;
-  _PKCS11SlotID:  Integer;
-  _gpgFilename:   String;
-  _inited:        Boolean = False;
-  _CanUseCryptlib:         Boolean = False;
+  _MouseRNGStore:  TSDUBytes;
+  _RandPool:       TRandPool;
+  _rngset:         TRNGSet;
+  _PKCS11Library:  TPKCS11Library;
+  _PKCS11SlotID:   Integer;
+  _gpgFilename:    String;
+  _inited:         Boolean = False;
+  _CanUseCryptlib: Boolean = False;
 
 // Generate RNG data using cryptlib
 function GenerateRNGDataCryptlib(bytesRequired: Integer; var randomData: TSDUBytes): Boolean;
 begin
-   randomData := SDUStringToSDUBytes(cryptlib_RNG(bytesRequired));
-//  randomData := cryptlib_RNG(bytesRequired);
+  randomData := SDUStringToSDUBytes(cryptlib_RNG(bytesRequired));
+  //  randomData := cryptlib_RNG(bytesRequired);
   Result     := (Length(randomData) = bytesRequired);
 end;
 
 function GenerateRNGDataPKCS11(PKCS11Library: TPKCS11Library; SlotID: Integer;
   bytesRequired: Integer; var randomData: TSDUBytes): Boolean;
 begin
-  result := GetPKCS11RandomData(PKCS11Library, SlotID, bytesRequired, RandomData);
-  if not result then begin
+  Result := GetPKCS11RandomData(PKCS11Library, SlotID, bytesRequired, RandomData);
+  if not Result then begin
     SDUMessageDlg(
       _('The selected PKCS#11 token could not be used to generate random data.') +
       SDUCRLF + SDUCRLF + _('Please select another RNG, and try again'),
@@ -171,9 +169,9 @@ class function TRandPool.GenerateRandomData1Rng(rng: TRNG; bytesRequired: Intege
   out randomData: TSDUBytes): Boolean;
 
 begin
-         { TODO -otdk -crefactor : raise exception on error instead of result }
- SDUInitAndZeroBuffer(0, randomData);
-//  randomData := '';
+  { TODO -otdk -crefactor : raise exception on error instead of result }
+  SDUInitAndZeroBuffer(0, randomData);
+  //  randomData := '';
 
   // Generate random data, if this hasn't already been done...
   case rng of
@@ -252,8 +250,8 @@ begin
 
   else
   begin
-  raise Exception.Create('Unknown RNG selected'+ SDUCRLF + SDUCRLF +
-        PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR );
+    raise Exception.Create('Unknown RNG selected' + SDUCRLF + SDUCRLF +
+      PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR);
    { SDUMessageDlg(
       _('Unknown RNG selected?!') + SDUCRLF + SDUCRLF + PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
       mtError
@@ -268,7 +266,8 @@ begin
   if Result then begin
     Result := (length(randomData) = bytesRequired);
     if not Result then begin
-      raise EInsufficientRandom.Create(Format('%d bytes required %d found',[bytesRequired,length(randomData)]));
+      raise EInsufficientRandom.Create(Format('%d bytes required %d found',
+        [bytesRequired, length(randomData)]));
      { SDUMessageDlg(
         _('Insufficient random data generated?!') + SDUCRLF + SDUCRLF +
         PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
@@ -281,17 +280,16 @@ begin
   end;
 end;
 
-//obsolete
-// gpgFilename - Only MANDATORY if RNG_OPT_GPG specified as RNG
-  class function TRandPool.GenerateRandomData(bytesRequired: Integer;
-    // Output
-      var randomData: Ansistring): Boolean;
-
+ //obsolete
+ // gpgFilename - Only MANDATORY if RNG_OPT_GPG specified as RNG
+class function TRandPool.GenerateRandomData(bytesRequired: Integer;
+  // Output
+  var randomData: Ansistring): Boolean;
 
 var
   randomBytes: TSDUBytes;
 begin
-  GetRandomData(bytesRequired,randomBytes);
+  GetRandomData(bytesRequired, randomBytes);
   randomData := SDUBytesToString(randomBytes);
 end;
 
@@ -316,7 +314,7 @@ var
   currRNG:    TRNG;
   currRandom: TSDUBytes;
   rngsUsed:   Integer;
-  ok:boolean;
+  ok:         Boolean;
 begin
   assert(_inited);
 
@@ -324,11 +322,11 @@ begin
 
   for currRNG := low(TRNG) to high(TRNG) do begin
     if (currRNG in _rngset) then begin
-      SDUInitAndZeroBuffer(0, currRandom );
-      ok      := GenerateRandomData1Rng(currRNG, bytesRequired, currRandom);
+      SDUInitAndZeroBuffer(0, currRandom);
+      ok := GenerateRandomData1Rng(currRNG, bytesRequired, currRandom);
 
       if not ok then begin
-//        break;
+        //        break;
         raise EInsufficientRandom.Create('');
       end else begin
         randomData := SDUXOR(currRandom, randomData);
@@ -339,7 +337,8 @@ begin
 
   end;
 
-  if (rngsUsed <= 0) then raise Exception.Create('No RNG selected');
+  if (rngsUsed <= 0) then
+    raise Exception.Create('No RNG selected');
 end;
 
 
@@ -358,7 +357,7 @@ class function TRandPool.GenerateRNGDataMSCryptoAPI(bytesRequired: Integer;
 begin
 
   Result := GenerateRNGDataMSCryptoAPI(bytesRequired, nil, MS_DEF_PROV,
-      PROV_RSA_FULL, (CRYPT_VERIFYCONTEXT or CRYPT_MACHINE_KEYSET), randomData);
+    PROV_RSA_FULL, (CRYPT_VERIFYCONTEXT or CRYPT_MACHINE_KEYSET), randomData);
 
   if not (Result) then begin
     Result := GenerateRNGDataMSCryptoAPI(bytesRequired, nil, MS_DEF_PROV,
@@ -384,9 +383,9 @@ begin
     // Cleardown...
     // This is required in order that CrypGenRandom can overwrite with random
     // data
-     SDUInitAndZeroBuffer(bytesRequired, randomData );
-//    randomData := StringOfChar(AnsiChar(#0), bytesRequired);
-    Result      := CryptGenRandom(hProv, bytesRequired, PByte(randomData));
+    SDUInitAndZeroBuffer(bytesRequired, randomData);
+    //    randomData := StringOfChar(AnsiChar(#0), bytesRequired);
+    Result := CryptGenRandom(hProv, bytesRequired, PByte(randomData));
     { TODO 1 -otdk -cinvestigate : PByte(string) can you do this? }
 
     CryptReleaseContext(hProv, 0);
@@ -433,19 +432,18 @@ end;
 
 
 
-
 // Initialize MouseRNG random data store
 procedure InitMouseRNGData();
 begin
-   SDUInitAndZeroBuffer(0, _MouseRNGStore);
-//  _MouseRNGStore := '';
+  SDUInitAndZeroBuffer(0, _MouseRNGStore);
+  //  _MouseRNGStore := '';
 end;
 
 // Add byte to MouseRNG store
 procedure AddToMouseRNGData(random: Byte);
 begin
-   SDUAddByte(_MouseRNGStore, random);
-//  _MouseRNGStore := _MouseRNGStore + Ansichar(random);
+  SDUAddByte(_MouseRNGStore, random);
+  //  _MouseRNGStore := _MouseRNGStore + Ansichar(random);
 end;
 
 // Get first bytesRequired bytes of data from the MouseRNG store
@@ -453,8 +451,8 @@ function GetMouseRNGData(bytesRequired: Integer; var randomData: TSDUBytes): Boo
 begin
   Result := False;
 
-   SDUInitAndZeroBuffer(0, randomData);
-//  randomData := '';
+  SDUInitAndZeroBuffer(0, randomData);
+  //  randomData := '';
   if ((bytesRequired * 8) <= CountMouseRNGData()) then begin
     randomData := Copy(_MouseRNGStore, 0, bytesRequired);
     Result     := True;
@@ -473,15 +471,13 @@ var
   i: Integer;
 begin
   // Simple overwrite
-//  for i := 1 to length(_MouseRNGStore) do begin
-//      _MouseRNGStore[i] := Byte(i);
-////    _MouseRNGStore := Ansichar(i);
-//  end;
-   SDUInitAndZeroBuffer(0,_MouseRNGStore );
-//  _MouseRNGStore := '';
+  //  for i := 1 to length(_MouseRNGStore) do begin
+  //      _MouseRNGStore[i] := Byte(i);
+  ////    _MouseRNGStore := Ansichar(i);
+  //  end;
+  SDUInitAndZeroBuffer(0, _MouseRNGStore);
+  //  _MouseRNGStore := '';
 end;
-
-
 
 
 
@@ -490,14 +486,14 @@ end;
 { TRandPool }
 class function TRandPool.CanUseCryptLib: Boolean;
 begin
-  result := _CanUseCryptlib;
+  Result := _CanUseCryptlib;
 end;
 
 constructor TRandPool.Create;
 begin
   assert(_RandPool = nil, 'dont call ctor - use GetRandPool');
 
-    // Start cryptlib, if possible, as early as we can to allow it as much time
+  // Start cryptlib, if possible, as early as we can to allow it as much time
   // as possible to poll entropy
   _CanUseCryptlib := cryptlibLoad();
 end;
@@ -506,8 +502,9 @@ end;
 destructor TRandPool.Destroy;
 begin
   // Shutdown cryptlib, if used
-  if _CanUseCryptlib then     cryptlibUnload();
-  _CanUseCryptlib := false;
+  if _CanUseCryptlib then
+    cryptlibUnload();
+  _CanUseCryptlib := False;
 end;
 
 function GetRandPool(): TRandPool;
@@ -519,7 +516,9 @@ end;
 
 initialization
   _RandPool := nil;
+
 finalization
-  if _RandPool <> nil then FreeandNil(_RandPool);
+  if _RandPool <> nil then
+    FreeAndNil(_RandPool);
 
 end.

@@ -170,7 +170,7 @@ type
     ficonIdx_Small_DismountAll:            Integer;
     ficonIdx_Small_PortableMode:           Integer;
     *)
-    ficonIdx_Small_VistaUACShield:         Integer;
+    ficonIdx_Small_VistaUACShield: Integer;
     (*
     ficonIdx_Small_Properties:             Integer;
     ficonIdx_Small_Back:                   Integer;
@@ -194,7 +194,7 @@ type
     ficonIdx_Large_DismountAll:            Integer;
     ficonIdx_Large_PortableMode:           Integer;
     *)
-    ficonIdx_Large_VistaUACShield:         Integer;
+    ficonIdx_Large_VistaUACShield: Integer;
     (*
     ficonIdx_Large_Properties:             Integer;
     ficonIdx_Large_Back:                   Integer;
@@ -212,9 +212,9 @@ type
     ficonIdx_Large_DisconnectNetworkDrive: Integer;
        *)
     // This is set to TRUE at the very start of InitApp(...)
-    finitAppCalled:               Boolean;
+    finitAppCalled:                Boolean;
     // This is set to TRUE at the end of calling WMUserPostShow(...) is called
-    fwmUserPostShowCalledAlready: Boolean;
+    fwmUserPostShowCalledAlready:  Boolean;
 
     // Flag to indicate that the login session is about to end
     fendSessionFlag:   Boolean;
@@ -351,9 +351,9 @@ const
   // Toolbar button height is set to the image size + this value
   TOOLBAR_ICON_BORDER = 4;
 
-  // These are the hardcoded FreeOTFE icons in ilToolbarIcons_Small/ilToolbarIcons_Large
-  // -1 indicates no icon stored
-  { TODO -otdk -cinvestigate : what exactly is the point of this? }
+ // These are the hardcoded FreeOTFE icons in ilToolbarIcons_Small/ilToolbarIcons_Large
+ // -1 indicates no icon stored
+ { TODO -otdk -cinvestigate : what exactly is the point of this? }
   (*
 
   ICONIDX_NEW                             = 3;
@@ -459,7 +459,7 @@ begin
   FIconIdx_Small_DismountAll            := ICONIDX_DISMOUNTALL;
   FIconIdx_Small_PortableMode           := ICONIDX_PORTABLEMODE;
   *)
-  FIconIdx_Small_VistaUACShield         := -1;
+  FIconIdx_Small_VistaUACShield := -1;
   (*
   FIconIdx_Small_Properties             := ICONIDX_PROPERTIES;
   FIconIdx_Small_Back                   := ICONIDX_EXPLORER_BACK;
@@ -483,7 +483,7 @@ begin
   FIconIdx_Large_DismountAll            := ICONIDX_DISMOUNTALL;
   FIconIdx_Large_PortableMode           := ICONIDX_PORTABLEMODE;
   *)
-  FIconIdx_Large_VistaUACShield         := -1;
+  FIconIdx_Large_VistaUACShield := -1;
   (*
   FIconIdx_Large_Properties             := ICONIDX_PROPERTIES;
   FIconIdx_Large_Back                   := ICONIDX_EXPLORER_BACK;
@@ -501,7 +501,7 @@ begin
   FIconIdx_Large_DisconnectNetworkDrive := ICONIDX_EXPLORER_DISCONNECTNETWORKDRIVE;
     *)
   // Load system icons...
-//  AddStdIcons();
+  //  AddStdIcons();
 
   if SDUOSVistaOrLater() then begin
     // Mark as appropriate with UAC "shield" icons
@@ -527,9 +527,9 @@ end;
 
 procedure TfrmMain.SetIconListsAndIndexes();
 begin
-//  actFreeOTFENew.ImageIndex       := FIconIdx_Small_New;
-//  actFreeOTFEMountFile.ImageIndex := FIconIdx_Small_MountFile;
-//  actDismount.ImageIndex          := FIconIdx_Small_Dismount;
+  //  actFreeOTFENew.ImageIndex       := FIconIdx_Small_New;
+  //  actFreeOTFEMountFile.ImageIndex := FIconIdx_Small_MountFile;
+  //  actDismount.ImageIndex          := FIconIdx_Small_Dismount;
 end;
 
 
@@ -1682,7 +1682,7 @@ begin
         if fileOK then begin
           if SDUCommandLineSwitch(CMDLINE_FREEOTFE) then begin
             mountAs := fOtfeFreeOtfeBase.MountFreeOTFE(volume, ReadOnly,
-              useKeyfile,usePassword, useOffset, useNoCDBAtOffset, useSilent,
+              useKeyfile, usePassword, useOffset, useNoCDBAtOffset, useSilent,
               useSaltLength, useKeyIterations);
           end else
           if SDUCommandLineSwitch(CMDLINE_LINUX) then begin
