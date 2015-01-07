@@ -7,8 +7,9 @@ uses
   pkcs11_api,
   pkcs11_object,
   pkcs11_attribute,
-  pkcs11_mechanism
+  pkcs11_mechanism,
 //sdu
+sdugeneral
   ;
 
 type
@@ -103,7 +104,8 @@ type
     property ReadOnly: boolean read GetReadOnly;
 
     function  SeedRandom(byteCount: integer; seedData: ansistring): boolean;
-    function  GenerateRandom(byteCount: integer; var randomData: ansistring): boolean;
+    function  GenerateRandom(byteCount: integer; var randomData: TSDUBytes): boolean;
+//    function GenerateRandom(byteCount: integer; var randomData: AnsiString): boolean;
 
     function  GetOperationState(var operationState: ansistring): boolean;
     function  SetOperationState(operationState: ansistring; encryptionKeyObj: TPKCS11Object; authenticationKey: TPKCS11Object): boolean;
@@ -242,13 +244,13 @@ begin
   Result := RVSuccess(LastRV);
 end;
 
-function TPKCS11Session.GenerateRandom(byteCount: integer; var randomData: ansistring): boolean;
+function TPKCS11Session.GenerateRandom(byteCount: integer; var randomData: TSDUBytes): boolean;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_GenerateRandom, FN_NAME_C_GenerateRandom);
 
   // Setup the returned string so it's large enough to store the random data
-  // SDUInitAndZeroBuffer(byteCount, randomData );
-  randomData := StringOfChar(AnsiChar('X'), byteCount);
+   SDUInitAndZeroBuffer(byteCount, randomData );
+//  randomData := StringOfChar(AnsiChar('X'), byteCount);
 
   LastRV := LibraryFunctionList.CK_C_GenerateRandom(
                                                 FhSession,
@@ -258,6 +260,23 @@ begin
 
   Result := RVSuccess(LastRV);
 end;
+{
+function TPKCS11Session.GenerateRandom(byteCount: integer; var randomData: AnsiString): boolean;
+begin
+  CheckFnAvailable(@LibraryFunctionList.CK_C_GenerateRandom, FN_NAME_C_GenerateRandom);
+
+  // Setup the returned string so it's large enough to store the random data
+//   SDUInitAndZeroBuffer(byteCount, randomData );
+  randomData := StringOfChar(AnsiChar('X'), byteCount);
+
+  LastRV := LibraryFunctionList.CK_C_GenerateRandom(
+                                                FhSession,
+                                                CK_BYTE_PTR(PByte(randomData)),
+                                                byteCount
+                                               );
+
+  Result := RVSuccess(LastRV);
+end;    }
 
 function TPKCS11Session.GetOperationState(var operationState: ansistring): boolean;
 var

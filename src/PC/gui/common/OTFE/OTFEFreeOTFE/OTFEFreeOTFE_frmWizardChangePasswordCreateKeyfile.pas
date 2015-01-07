@@ -16,7 +16,7 @@ uses
   Forms, Graphics, Messages, MouseRNG,
   PasswordRichEdit, Spin64, StdCtrls, SysUtils, Windows, //sdu
   SDUDialogs
-  , sdurandpool, SDUStdCtrls,
+  , sdurandpool, SDUStdCtrls, SDUGeneral,
                            //doxbox
   OTFEFreeOTFE_DriverAPI,  // Required for CRITICAL_DATA_LEN
   OTFEFreeOTFE_fmeSelectPartition,
@@ -183,7 +183,6 @@ implementation
 uses
   MSCryptoAPI,
   OTFEFreeOTFE_PKCS11, OTFEFreeOTFEDLL_U,
-  SDUGeneral,
   SDUi18n;
 
 {$IFDEF _NEVER_DEFINED}
@@ -680,8 +679,8 @@ end;
 procedure TfrmWizardChangePasswordCreateKeyfile.pbFinishClick(Sender: TObject);
 var
   allOK:     Boolean;
-  saltBytes: Ansistring;
-  i:         Integer;
+  saltBytes: TSDUBytes;
+  salt : ANsiString;
 begin
   inherited;
 
@@ -689,10 +688,10 @@ begin
     fFreeOTFEObj.PKCS11Library, PKCS11TokenListSelected(cbToken),
     lblGPGFilename.Caption);
 
-
+  try
   // Grab 'n' bytes from the random pool to use as the salt
-  allOK := GetRandPool.GenerateRandomData(GetDestSaltLength() div 8, saltBytes);
-  if (allOK) then begin
+  GetRandPool.GetRandomData(GetDestSaltLength() div 8, saltBytes);
+    salt := SDUBytesToString(saltBytes);
     if (ChangePasswordCreateKeyfile = opChangePassword) then begin
       allOK := fFreeOTFEObj.ChangeVolumePassword(GetSrcFilename(), GetOffset(),
         GetSrcUserKey(), GetSrcSaltLength(),  // In bits
@@ -704,6 +703,16 @@ begin
         GetSrcKeyIterations(), GetDestFilename(), GetDestUserKey(), saltBytes,
         GetDestKeyIterations(), GetDestRequestedDriveLetter());
     end;
+    except
+  on E:EInsufficientRandom do begin
+      allOK := false;
+        SDUMessageDlg(
+        _('Insufficient random data generated: '+E.message) + SDUCRLF + SDUCRLF +
+        PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
+        mtError
+        );
+  end;
+
 
   end;
 
@@ -718,10 +727,11 @@ begin
   end;
 
   { TODO 1 -otdk -ccleanup : whats this for? }
-  for i := 1 to length(saltBytes) do begin
+ (* for i := 1 to length(saltBytes) do begin
     saltBytes[i] := AnsiChar(i);
-  end;
+  end;*)
 
+  SDUInitAndZeroBuffer(0,saltBytes);
 end;
 
 
@@ -903,11 +913,7 @@ procedure TfrmWizardChangePasswordCreateKeyfile.FormCreate(Sender: TObject);
 begin
   deviceList  := TStringList.Create();
   deviceTitle := TStringList.Create();
-
-  // Start cryptlib, if possible, as early as we can to allow it as much time
-  // as possible to poll entropy
-  CanUseCryptlib := cryptlibLoad();
-
+  CanUseCryptlib := GetRandPool().CanUseCryptlib;
   fmeSelectPartition.OnChange := fmeSelectPartitionChanged;
 
   OnWizardStepChanged := FormWizardStepChanged;
@@ -918,11 +924,7 @@ begin
   deviceList.Free();
   deviceTitle.Free();
 
-  // Shutdown cryptlib, if used
-  if CanUseCryptlib then begin
-    cryptlibUnload();
-    CanUseCryptlib := False;
-  end;
+
 
   PurgeMouseRNGData();
 end;

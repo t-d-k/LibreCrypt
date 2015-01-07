@@ -263,7 +263,7 @@ type
                                 encryptFlag: boolean;
                                 cypherDriver: Ansistring;
                                 cypherGUID: TGUID;
-                                var key: Ansistring;
+                                var key: TSDUBytes;
                                 var IV: Ansistring;
                                 var inData: Ansistring;
                                 var outData: Ansistring
@@ -275,7 +275,7 @@ type
                                 cypherGUID: TGUID;
                                 SectorID: LARGE_INTEGER;
                                 SectorSize: integer;
-                                var key: Ansistring;
+                                var key: TSDUBytes;
                                 var IV: Ansistring;
                                 var inData: Ansistring;
                                 var outData: Ansistring
@@ -284,8 +284,8 @@ type
     function HashData(
                       hashDriver: Ansistring;
                       hashGUID: TGUID;
-                      var data: Ansistring;
-                      var hashOut: Ansistring
+                      const data: TSDUBytes;
+                      out hashOut: TSDUBytes
                      ): boolean; override;
 
     function MACData(
@@ -306,11 +306,11 @@ type
                     HashGUID: TGUID;
                     CypherDriver: Ansistring;
                     CypherGUID: TGUID;
-                    Password: Ansistring;
-                    Salt: Ansistring;
+                    Password: PasswordString;
+                    Salt: TSDUBytes;
                     Iterations: integer;
                     dkLenBits: integer;  // In *bits*
-                    var DK: Ansistring
+                    out DK: TSDUBytes
                    ): boolean; override;
 
 
@@ -3100,8 +3100,8 @@ end;
 function TOTFEFreeOTFE.HashData(
                       hashDriver: ansistring;
                       hashGUID: TGUID;
-                      var data: Ansistring;
-                      var hashOut: Ansistring
+                      const data: TSDUBytes;
+                      out hashOut: TSDUBytes
                      ): boolean;
 var
   hashHandle: THandle;
@@ -3179,8 +3179,8 @@ DebugMsg('hashByteCount: '+inttostr(hashByteCount));
 
               // Set hashOut so that it has enough characters which can be
               // overwritten with StrMove
-              // SDUInitAndZeroBuffer(hashByteCount,hashOut);
-              hashOut := StringOfChar(#0, hashByteCount);
+               SDUInitAndZeroBuffer(hashByteCount,hashOut);
+//              hashOut := StringOfChar(#0, hashByteCount);
               StrMove(PAnsiChar(hashOut), @ptrDIOCBufferOut.Hash, hashByteCount);
 
               retval := TRUE;
@@ -3377,11 +3377,11 @@ function TOTFEFreeOTFE.DeriveKey(
                     HashGUID: TGUID;
                     CypherDriver: Ansistring;
                     CypherGUID: TGUID;
-                    Password: Ansistring;
-                    Salt: Ansistring;
+                    Password: PasswordString;
+                    Salt: TSDUBytes;
                     Iterations: integer;
                     dkLenBits: integer;  // In *bits*
-                    var DK: Ansistring
+                    out DK: TSDUBytes
                    ): boolean;
 var
   BytesReturned: DWORD;
@@ -3466,8 +3466,8 @@ DebugMsg('outputByteCount: '+inttostr(outputByteCount));
 
           // Set DK so that it has enough characters which can be
           // overwritten with StrMove
-          // SDUInitAndZeroBuffer(outputByteCount,DK);
-          DK := StringOfChar(#0, outputByteCount);
+           SDUInitAndZeroBuffer(outputByteCount,DK);
+//          DK := StringOfChar(#0, outputByteCount);
           StrMove(PAnsiChar(DK), @ptrDIOCBufferOut.DerivedKey, outputByteCount);
 
           retval := TRUE;
@@ -3511,7 +3511,7 @@ function TOTFEFreeOTFE._EncryptDecryptData(
                                    encryptFlag: boolean;
                                    cypherDriver: Ansistring;
                                    cypherGUID: TGUID;
-                                   var key: Ansistring;
+                                   var key: TSDUBytes;
                                    var IV: Ansistring;
                                    var inData: Ansistring;
                                    var outData: Ansistring
@@ -3661,7 +3661,7 @@ function TOTFEFreeOTFE.EncryptDecryptSectorData(
                                    cypherGUID: TGUID;
                                    SectorID: LARGE_INTEGER;
                                    SectorSize: integer;
-                                   var key: Ansistring;
+                                   var key: TSDUBytes;
                                    var IV: Ansistring;
                                    var inData: Ansistring;
                                    var outData: Ansistring

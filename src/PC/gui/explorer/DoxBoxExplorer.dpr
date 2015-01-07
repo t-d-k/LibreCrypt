@@ -93,7 +93,10 @@ uses
   OTFEFreeOTFE_frmSelectHashCypher in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectHashCypher.pas' {frmSelectHashCypher},
   OTFEFreeOTFE_frmSelectVolumeAndOffset in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectVolumeAndOffset.pas',
   OTFEFreeOTFE_frmWizardCreateVolume in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas' {frmWizardCreateVolume},
-  OTFEFreeOTFEDLL_PartitionImage in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_PartitionImage.pas';
+  OTFEFreeOTFEDLL_PartitionImage in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_PartitionImage.pas',
+  MouseRNGCaptureDlg_U in '..\common\SDeanSecurity\MouseRNGDialog\MouseRNGCaptureDlg_U.pas' {MouseRNGCaptureDlg},
+  MouseRNGDialog_U in '..\common\SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas',
+  OTFEFreeOTFE_VolumeFileAPI in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas';
 
 {$R *.res}
 {$R FreeOTFEExplorerCursors.res}

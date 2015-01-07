@@ -556,7 +556,7 @@ uses
   FreeOTFEExplorerfrmSelectCopyOrMove,
   FreeOTFEExplorerfrmSelectDirectoryDlg,
   OTFEFreeOTFE_frmNewVolumeSize
-  , SDFATBootSectorPropertiesDlg,
+  , SDFATBootSectorPropertiesDlg
   //  FreeOTFEExplorerfrmWebDAVStatus { TODO 1 -otdk -cenhance : implement webdav }
   ;
 

@@ -144,10 +144,6 @@
 			<DCCReference Include="OTFE\OTFE\OTFE_U.pas"/>
 			<DCCReference Include="OTFE\OTFE\OTFEConsts_U.pas"/>
 			<DCCReference Include="SDeanSecurity\MouseRNG\MouseRNG.pas"/>
-			<DCCReference Include="SDeanSecurity\MouseRNGDialog\MouseRNGCaptureDlg_U.pas">
-				<Form>MouseRNGCaptureDlg</Form>
-			</DCCReference>
-			<DCCReference Include="SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas"/>
 			<DCCReference Include="SDeanUtils\SDUDialogs.pas"/>
 			<DCCReference Include="Hash\HashAlg_U.pas"/>
 			<DCCReference Include="Hash\HashAlgEngine_U.pas"/>
@@ -201,18 +197,6 @@
 			<DCCReference Include="SDeanSecurity\KeyboardDialog\KeyboardEntryDlg_U.pas">
 				<Form>KeyboardEntryDlg</Form>
 			</DCCReference>
-			<DCCReference Include="OTFE\OTFETrueCrypt\OTFETrueCrypt_U.pas"/>
-			<DCCReference Include="OTFE\OTFETrueCrypt\OTFETrueCryptMountDevice_U.pas"/>
-			<DCCReference Include="OTFE\OTFETrueCrypt\OTFETrueCryptMountDevice9x_U.pas">
-				<Form>OTFETrueCryptMountDevice9x_F</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFETrueCrypt\OTFETrueCryptMountDeviceNT_U.pas">
-				<Form>OTFETrueCryptMountDeviceNT_F</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFETrueCrypt\OTFETrueCryptPasswordEntry_U.pas">
-				<Form>OTFETrueCryptPasswordEntry_F</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFETrueCrypt\OTFETrueCryptStructures_U.pas"/>
 			<DCCReference Include="OTFE\OTFEPGPDisk\OTFEPGPDisk_U.pas"/>
 			<DCCReference Include="OTFE\OTFEPGPDisk\OTFEPGPDiskMounting_U.pas">
 				<Form>OTFEPGPDiskMounting_F</Form>

@@ -1,5 +1,8 @@
 inherited OTFEFreeOTFEVolumeSelect: TOTFEFreeOTFEVolumeSelect
   ParentFont = False
+  DesignSize = (
+    320
+    240)
   object bbBrowsePartition: TBitBtn
     Left = 316
     Top = 0

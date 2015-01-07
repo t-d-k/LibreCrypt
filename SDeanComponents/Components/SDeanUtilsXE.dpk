@@ -76,8 +76,6 @@ contains
   OTFE_U in 'OTFE\OTFE\OTFE_U.pas',
   OTFEConsts_U in 'OTFE\OTFE\OTFEConsts_U.pas',
   MouseRNG in 'SDeanSecurity\MouseRNG\MouseRNG.pas',
-  MouseRNGCaptureDlg_U in 'SDeanSecurity\MouseRNGDialog\MouseRNGCaptureDlg_U.pas' {MouseRNGCaptureDlg},
-  MouseRNGDialog_U in 'SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas',
   SDUDialogs in 'SDeanUtils\SDUDialogs.pas',
   HashAlg_U in 'Hash\HashAlg_U.pas',
   HashAlgEngine_U in 'Hash\HashAlgEngine_U.pas',
@@ -119,12 +117,6 @@ contains
   OTFEE4MStructures_U in 'OTFE\OTFEE4M\OTFEE4MStructures_U.pas',
   KeyboardDialog_U in 'SDeanSecurity\KeyboardDialog\KeyboardDialog_U.pas',
   KeyboardEntryDlg_U in 'SDeanSecurity\KeyboardDialog\KeyboardEntryDlg_U.pas' {KeyboardEntryDlg},
-  OTFETrueCrypt_U in 'OTFE\OTFETrueCrypt\OTFETrueCrypt_U.pas',
-  OTFETrueCryptMountDevice_U in 'OTFE\OTFETrueCrypt\OTFETrueCryptMountDevice_U.pas',
-  OTFETrueCryptMountDevice9x_U in 'OTFE\OTFETrueCrypt\OTFETrueCryptMountDevice9x_U.pas' {OTFETrueCryptMountDevice9x_F},
-  OTFETrueCryptMountDeviceNT_U in 'OTFE\OTFETrueCrypt\OTFETrueCryptMountDeviceNT_U.pas' {OTFETrueCryptMountDeviceNT_F},
-  OTFETrueCryptPasswordEntry_U in 'OTFE\OTFETrueCrypt\OTFETrueCryptPasswordEntry_U.pas' {OTFETrueCryptPasswordEntry_F},
-  OTFETrueCryptStructures_U in 'OTFE\OTFETrueCrypt\OTFETrueCryptStructures_U.pas',
   OTFEPGPDisk_U in 'OTFE\OTFEPGPDisk\OTFEPGPDisk_U.pas',
   OTFEPGPDiskMounting_U in 'OTFE\OTFEPGPDisk\OTFEPGPDiskMounting_U.pas' {OTFEPGPDiskMounting_F},
   OTFEPGPDiskStructures_U in 'OTFE\OTFEPGPDisk\OTFEPGPDiskStructures_U.pas',
@@ -172,5 +164,6 @@ contains
   SDURandPool in '..\..\src\PC\gui\common\OTFE\SDURandPool.pas';
 
 end.
+
 
 

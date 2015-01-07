@@ -2,16 +2,16 @@ test boxes all have nonhidden password 'password'. hidden have: 5ekr1t unless sa
 key iterations 2048 unless said otherwise
 all boxes have a 'readme' file in 
 
-version	name			size		format 	label						cyph											hash						sector IVs															notes		    
-6.0			a					2mb			fat			DOXTEST1				aes 256 xts 							sha512	        -                   	 							(no chaff, manually overwritten)
-6.0			b					1mb			fat			doxtest2				twofish 256 lrw			                 			-                   								(not overwritten)   
-6.1			c					1mb			FAT			C_FILE					3des    (192 bits cbc)		whirlpool	     32 bit sector, additionally XOR ...	password: !"£$%^&*() (double ")
-6.1			d					2mb			fat			D_FILE					twofish 256 xts       		ripemd-320  
-6.1			e.box			4mb			fat			E_FILE					Serpent (256 bit XTS) 		MD5																									key iterations 10240 ofset 0 (default offset is 2097152)
-6.1			e.box			2Mb		  fat			EH_FILE					aes 256 cbc,essiv	not xor	tiger																								at offset 2097152 (default offset)	
-6.1     luks.box	4Mb  		fat     luks 					 	 																																							aes-xts-plain64,keysize: 256 bits
-6.1			f.box											F_FILE					blowfish 128bit cbc				RIPEMD-160 (Linux; Twice, with A) 									null IV, additionally xor ...   
-																																																								
+created by	name						size		format 	label				cyph											hash						sector IVs													notes		    
+6.0					a.box						2mb			fat			DOXTEST1		aes 256 xts 							sha512	        -                   	 							(no chaff, manually overwritten)
+6.0					b.box						1mb			fat			doxtest2		twofish 256 lrw			                 			-                   								(not overwritten)   
+6.1					c.box						1mb			FAT			C_FILE			3des    (192 bits cbc)		whirlpool	     32 bit sector, additionally XOR ...	password: !"£$%^&*() (double ")
+6.1					d.box						2mb			fat			D_FILE			twofish 256 xts       		ripemd-320  
+6.1					e.box						4mb			fat			E_FILE			Serpent (256 bit XTS) 		MD5																									key iterations 10240 offset 0 (default offset is 2097152)
+6.1					e.box						2Mb		  fat			EH_FILE			aes 256 cbc,essiv	not xor	tiger																								at offset 2097152 (default offset)	p:5ekr1t
+6.1					f.box														F_FILE			blowfish 128bit cbc				RIPEMD-160 (Linux; Twice, with A) 									null IV, additionally xor ...
+cryptsetup  luks.box				4Mb  		fat     luks 				aes-xts-plain64																																keysize: 256 bits
+cryptsetup 	luks_essiv.box	4Mb			-				luks				AES (256 bit CBC) 				SHA-256																							essiv																																																									
 
 
 

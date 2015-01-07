@@ -193,12 +193,12 @@ type
     // Used for overwriting
     ftempCypherDetails:      TFreeOTFECypher_v3;
     ftempCypherUseKeyLength: Integer;  // In *bits*
-    ftempCypherKey:          Ansistring;
+    ftempCypherKey:          TSDUBytes;
     ftempCypherEncBlockNo:   Int64;
 
-    fCombinedRandomData: Ansistring;//todo: use global randpool rather than this
+//    fCombinedRandomData: Ansistring;//todo: use global randpool rather than this
 
-    fcanUseCryptlib:        Boolean;
+//    fcanUseCryptlib:        Boolean;
     fPKCS11TokensAvailable: Boolean;
 
     // When the user selects a cypher, we cache it's keysize for later use.
@@ -241,8 +241,8 @@ type
     procedure SetSectorIVGenMethod(sectorIVGenMethod: TFreeOTFESectorIVGenMethod);
     function GetUsePerVolumeIV(): Boolean;
     function GetMasterKeyLength(): Integer;  // Returns length in *bits*
-    function GetRandomData_CDB(): Ansistring;
-    function GetRandomData_PaddingKey(): Ansistring;
+   // function GetRandomData_CDB(): Ansistring;
+    function GetRandomData_PaddingKey(): TSDUBytes;
     function GetPassword(): Ansistring;
 
     function GetIsHidden(): Boolean;
@@ -436,7 +436,7 @@ begin
   SDUCenterControl(lblWarningOffset, ccHorizontal);
 
   // SDUInitAndZeroBuffer(0, fCombinedRandomData );
-  fCombinedRandomData := '';
+//  fCombinedRandomData := '';
 
   seKeyIterations.Value           := DEFAULT_KEY_ITERATIONS;
   seSaltLength.Value              := DEFAULT_SALT_LENGTH;
@@ -538,7 +538,7 @@ begin
 
   // tsRNG
   //MSCryptoAPI enabled as default (in dfm)
-  ckRNGcryptlib.Enabled := fcanUseCryptlib;
+  ckRNGcryptlib.Enabled :=  GetRandPool().CanUseCryptLib;
   ckRNGPKCS11.Enabled   := PKCS11LibraryReady(fFreeOTFEObj.PKCS11Library);
 
   // tsRNGMouseMovement
@@ -1195,7 +1195,7 @@ begin
   Result := ckUsePerVolumeIV.Checked;
 end;
 
-
+   (*
 function TfrmWizardCreateVolume.GetRandomData_CDB(): Ansistring;
 var
   len: Integer;
@@ -1203,21 +1203,24 @@ begin
   { TODO 2 -otdk -crefactor : use randpool object that asserts if data isnt available - for now check not empty }
   // Use the first CRITICAL_DATA_LENGTH bits as the CDB random data
   len := (CRITICAL_DATA_LENGTH div 8);
-  assert(1 + len <= length(fCombinedRandomData), 'not enough rand data available');
-  Result := Copy(fCombinedRandomData, 1, (CRITICAL_DATA_LENGTH div 8));
-end;
+//  assert(1 + len <= length(fCombinedRandomData), 'not enough rand data available');
+//  Result := Copy(fCombinedRandomData, 1, (CRITICAL_DATA_LENGTH div 8));
+  GetRandPool().GetRandomData(len,Result) ;
+  //  raises Exception if fails
+end;   *)
 
-function TfrmWizardCreateVolume.GetRandomData_PaddingKey(): Ansistring;
+function TfrmWizardCreateVolume.GetRandomData_PaddingKey(): TSDUBytes;
 var
-  i, len: Integer;
+  len: Integer;
 begin
   // Use the last FPadWithEncryptedDataKeyLen bits as the CDB random data,
   // after the CDB random data
-  i   := (CRITICAL_DATA_LENGTH div 8) + 1;
+//  i   := (CRITICAL_DATA_LENGTH div 8) + 1;
   len := (ftempCypherUseKeyLength div 8);
   { TODO 2 -otdk -crefactor : use randpool object that asserts if data isnt available - for now check not empty }
-  assert(i + len <= length(fCombinedRandomData), 'not enough rand data available');
-  Result := Copy(fCombinedRandomData, i, len);
+//  assert(i + len <= length(fCombinedRandomData), 'not enough rand data available');
+//  Result := Copy(fCombinedRandomData, i, len);
+GetRandPool().GetRandomData(len,Result) ;
 
 end;
 
@@ -1420,7 +1423,8 @@ begin
 
   // Start cryptlib, if possible, as early as we can to allow it as much time
   // as possible to poll entropy
-  fcanUseCryptlib := cryptlibLoad();
+  GetRandPool();
+//  fcanUseCryptlib :=
 
 
   // tsKeyIterations
@@ -1462,19 +1466,14 @@ showmessage('destroying wizard');
   fDeviceList.Free();
   fDeviceTitle.Free();
 
-  // Shutdown cryptlib, if used
-  if fcanUseCryptlib then begin
-    cryptlibUnload();
-    fcanUseCryptlib := False;
-  end;
-
   PurgeMouseRNGData();
 
   //overwrite any seed asap
+  {
   for i := 1 to length(fCombinedRandomData) do begin
     fCombinedRandomData[i] := ansichar(i);
   end;
-
+   }
 end;
 
 procedure TfrmWizardCreateVolume.rbCDBLocationClick2(Sender: TObject);
@@ -1659,8 +1658,6 @@ begin
 end;
 
 procedure TfrmWizardCreateVolume.pbFinishClick(Sender: TObject);
-var
-  allOK: Boolean;
 begin
   inherited;
 
@@ -1679,17 +1676,27 @@ begin
     fFreeOTFEObj.PKCS11Library, PKCS11TokenListSelected(cbToken),
     lblGPGFilename.Caption);
 
-  allOK := GetRandPool.GenerateRandomData( (RNG_requiredBits() div 8), fCombinedRandomData);
+//  allOK := GetRandPool.GetRandomData( (RNG_requiredBits() div 8), fCombinedRandomData);
 
 
   // *All* information required to create the new volume acquired - so create
   // the new volume
-  if (allOK) then begin
+try
+
     if CreateNewVolume() then begin
       PostCreate();
       ModalResult := mrOk;
     end;
+    except
+on E:EInsufficientRandom do
+  SDUMessageDlg(
+        _('Insufficient random data generated: '+E.message) + SDUCRLF + SDUCRLF +
+        PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
+        mtError
+        );
   end;
+
+//  end;
 
 end;
 
@@ -1698,7 +1705,7 @@ function TfrmWizardCreateVolume.CreateNewVolume(): Boolean;
 var
   volumeDetails:     TVolumeDetailsBlock;
   CDBMetaData:       TCDBMetaData;
-  saltBytes:         Ansistring;
+  saltBytes:         TSDUBytes;
   randomPool:        Ansistring;
   volumeFileSize:    ULONGLONG;
   cdbFile:           String;
@@ -1707,7 +1714,8 @@ var
   junkBool:          Boolean;
   fileCreateProbMsg: String;
   VolFilename :TFilename;
-
+  randBytes:TSDUBytes;
+   saltStr: ansistring;
 begin
   result := True;
   VolFilename:= GetVolFilename();
@@ -1805,14 +1813,17 @@ fFreeOTFEObj.DebugMsg('Volume flags: '+inttostr(volumeDetails.VolumeFlags)+' bit
     volumeDetails.SectorIVGenMethod := GetSectorIVGenMethod();
 
     { TODO 2 -otdk -csecurity : this copies data - but orig data not deleted so may be reused }
-    randomPool := GetRandomData_CDB();
+//    randomPool := GetRandomData_CDB();
 
     volumeDetails.MasterKeyLength := GetMasterKeyLength();
     // Grab 'n' bytes from the random pool to use as the master key
-    volumeDetails.MasterKey       := Copy(randomPool, 1, (volumeDetails.MasterKeyLength div 8));
+    GetRandPool().GetRandomData(volumeDetails.MasterKeyLength div 8,randBytes) ;
+  volumeDetails.MasterKey       := SDUBytesToString( randBytes);
+     assert(length(volumeDetails.MasterKey) = volumeDetails.MasterKeyLength div 8);
+//    volumeDetails.MasterKey       := Copy(randomPool, 1, (volumeDetails.MasterKeyLength div 8));
 
     // SDUDeleteFromStart(randomPool, volumeDetails.MasterKeyLength div 8);
-    Delete(randomPool, 1, (volumeDetails.MasterKeyLength div 8));
+//    Delete(randomPool, 1, (volumeDetails.MasterKeyLength div 8));
 {$IFDEF FREEOTFE_DEBUG}
 fFreeOTFEObj.DebugMsg('Master key length: '+inttostr(volumeDetails.MasterKeyLength)+' bits');
 fFreeOTFEObj.DebugMsg('Master key follows:');
@@ -1826,10 +1837,13 @@ fFreeOTFEObj.DebugMsgBinary(volumeDetails.MasterKey);
       if GetUsePerVolumeIV() then
         volumeDetails.VolumeIVLength := SelectedCypherBlockSize();
 
-    volumeDetails.VolumeIV := Copy(randomPool, 1, (volumeDetails.VolumeIVLength div 8));
+    GetRandPool().GetRandomData(volumeDetails.VolumeIVLength div 8,randBytes) ;
+   volumeDetails.VolumeIV       := SDUBytesToString( randBytes);
+   assert(length(volumeDetails.VolumeIV) = volumeDetails.VolumeIVLength div 8);
+//    volumeDetails.VolumeIV := Copy(randomPool, 1, (volumeDetails.VolumeIVLength div 8));
     // SDUDeleteFromStart(randomPool,volumeDetails.VolumeIVLength div 8 );
 
-    Delete(randomPool, 1, (volumeDetails.VolumeIVLength div 8));
+//    Delete(randomPool, 1, (volumeDetails.VolumeIVLength div 8));
 {$IFDEF FREEOTFE_DEBUG}
 fFreeOTFEObj.DebugMsg('Volume IV length: '+inttostr(volumeDetails.VolumeIVLength)+' bits');
 fFreeOTFEObj.DebugMsg('Volume IV follows:');
@@ -1840,17 +1854,20 @@ fFreeOTFEObj.DebugMsgBinary(volumeDetails.VolumeIV);
     volumeDetails.RequestedDriveLetter := GetDriveLetter();
 
     // Grab 'n' bytes from the random pool to use as the salt
-    saltBytes := Copy(randomPool, 1, (seSaltLength.Value div 8));
+    GetRandPool().GetRandomData(seSaltLength.Value div 8,saltBytes) ;
+    saltStr := SDUBytesToString(saltBytes);
+    assert(length(saltStr) = seSaltLength.Value div 8);
+//    saltBytes := Copy(randomPool, 1, (seSaltLength.Value div 8));
     // SDUDeleteFromStart(randomPool, (seSaltLength.Value div 8));
-    { TODO 1 -otdk -crefactor : have randpool object }
-    Delete(randomPool, 1, (seSaltLength.Value div 8));
+    { DONE 1 -otdk -crefactor : have randpool object }
+//    Delete(randomPool, 1, (seSaltLength.Value div 8));
 
 {$IFDEF FREEOTFE_DEBUG}
 fFreeOTFEObj.DebugMsg('About to write the critical data...');
-fFreeOTFEObj.DebugMsg('Using password: '+Password);
+fFreeOTFEObj.DebugMsg('Using password: '+preUserKey1.Text);
 fFreeOTFEObj.DebugMsg('Using salt... ');
 fFreeOTFEObj.DebugMsg('-- begin salt --');
-fFreeOTFEObj.DebugMsgBinary(saltBytes);
+fFreeOTFEObj.DebugMsgBinary(saltStr);
 fFreeOTFEObj.DebugMsg('-- end salt --');
 {$ENDIF}
 
@@ -1859,7 +1876,7 @@ fFreeOTFEObj.DebugMsg('-- end salt --');
 
     // Write the header to the file, starting from the specified offset
     if not (fFreeOTFEObj.WriteVolumeCriticalData(cdbFile, cdbOffset,
-      GetPassword(), saltBytes, seKeyIterations.Value, volumeDetails, CDBMetaData, randomPool)) then
+      GetPassword(), saltBytes, seKeyIterations.Value, volumeDetails, CDBMetaData{, randomPool})) then
     begin
       SDUMessageDlg(
         _('Unable to write critical data block.'),
@@ -2382,9 +2399,10 @@ begin
     end;
 
   end;  // if (allOK) then
-        // SDUInitAndZeroBuffer(0,ftempCypherKey);
+         SDUInitAndZeroBuffer(0,ftempCypherKey);
 
-  ftempCypherKey        := '';
+//  ftempCypherKey        := '';
+assert(SDUBytesToString(ftempCypherKey) = '');
   ftempCypherEncBlockNo := 0;
 
   Result := allOK;
@@ -2407,6 +2425,7 @@ var
   IV:             Ansistring;
   localIV:        Int64;
   sectorID:       LARGE_INTEGER;
+  tempCipherkeyStr  :             Ansistring;
 begin
   // Generate an array of random data containing "bytesRequired" bytes of data,
   // plus additional random data to pad out to the nearest multiple of the
@@ -2448,6 +2467,7 @@ begin
   sectorID.QuadPart := ftempCypherEncBlockNo;
 
   // Encrypt the pseudorandom data generated
+  tempCipherkeyStr := SDUBytesToString(  ftempCypherKey);
   if not (fFreeOTFEObj.EncryptSectorData(GetCypherDriver(), GetCypherGUID(), sectorID,
     FREEOTFE_v1_DUMMY_SECTOR_SIZE, ftempCypherKey, IV, plaintext, cyphertext)) then begin
     SDUMessageDlg(

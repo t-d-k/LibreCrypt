@@ -80,7 +80,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Width = 113
         Height = 21
         Style = csDropDownList
-        TabOrder = 1
+        TabOrder = 5
         Items.Strings = (
           'Z:')
       end
@@ -304,7 +304,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
           Width = 112
           Height = 22
           Increment = 1
-          TabOrder = 0
+          TabOrder = 2
           OnChange = seSaltLengthChange
         end
         object seKeyIterations: TSpinEdit64

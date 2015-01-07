@@ -205,7 +205,8 @@ type
   KeyFilenameString    = String;
   FilenameString       = String;
   DriveLetterChar      = AnsiChar;
-  PasswordString       = Ansistring;
+//  PasswordString       = TSDUBytes;
+  PasswordString       = AnsiString;
 
 resourcestring
   UNITS_STORAGE_BYTES = 'bytes';
@@ -501,8 +502,9 @@ function SDUCopyFile_Compression(Source: String; destination: String;
  // XOR the characters in two strings together
  // function SDUXOR(a: TSDUBytes; b: TSDUBytes): TSDUBytes;
 
-function SDUXOR(a: Ansistring; b: Ansistring): Ansistring;
- { TODO 1 -otdk -cclean : use bytes instead of chars }
+//function SDUXOR(a: Ansistring; b: Ansistring): Ansistring;
+  function SDUXOR(a: TSDUBytes; b: TSDUBytes): TSDUBytes;
+ { DONE 1 -otdk -cclean : use bytes instead of chars }
  // Calculate x! (factorial X)
 function SDUFactorial(x: Integer): LARGE_INTEGER;
 // Generate all permutations of the characters in "pool"
@@ -939,16 +941,24 @@ function SDUGetSystemDirectory(): String;
 
  { TODO 1 -otdk -cenhance : convert to using byte array when are sure all callers support it }
  //encodes as ascii for now
-function SDUStringToSDUBytes(rhs: String): TSDUBytes;
-function SDUBytesToString(var Value: TSDUBytes): String;
+function SDUStringToSDUBytes(const rhs: AnsiString): TSDUBytes;
+function SDUBytesToString(const Value: TSDUBytes): AnsiString;
 //initialises value to all zeros
 procedure SDUInitAndZeroBuffer(len: Cardinal; var Value: TSDUBytes);
+
+procedure SDUZeroBuffer(buf:TSDUBytes);
+procedure SDUZeroString(buf:AnsiString);
 
 //adds byte to array
 procedure SDUAddByte(var Value: TSDUBytes; byt: Byte);
 procedure SDUAddArrays(var A: TSDUBytes; const rhs: TSDUBytes);
+procedure SDUAddLimit(var lhs: TSDUBytes; const rhs: TSDUBytes;limit:integer);
 procedure SDUDeleteFromStart(var A: TSDUBytes; Count: Integer);
 procedure SDUResetLength(var A: TSDUBytes; newLen: Integer);
+procedure SDUCopy(var aTo: TSDUBytes; const aFrom: TSDUBytes);
+
+//copies from aFrom to aTo up to limit bytes, sets length and zeroises any freed data
+procedure SDUCopyLimit(var aTo: TSDUBytes; const aFrom: TSDUBytes;limit:integer);
 
 function SDUMapNetworkDrive(networkShare: String; useDriveLetter: Char): Boolean;
 
@@ -1518,14 +1528,9 @@ end;
 function SDUCommandLineParameter(parameter: String; var Value: Integer): Boolean;
 var
   strValue: String;
-  retval:   Boolean;
 begin
-  retval := SDUCommandLineParameter(parameter, strValue);
-  if retval then begin
-    retval := TryStrToInt(strValue, Value);
-  end;
-
-  Result := retval;
+  result := SDUCommandLineParameter(parameter, strValue);
+  if result then  result := TryStrToInt(strValue, Value);
 end;
 
 function SDUCommandLineParameter(parameter: String; var Value: String): Boolean;
@@ -4137,34 +4142,50 @@ end;
 
 
  // ----------------------------------------------------------------------------
- // function SDUXOR(a: TSDUBytes; b: TSDUBytes): TSDUBytes;
-function SDUXOR(a: Ansistring; b: Ansistring): Ansistring;
+  function SDUXOR(a: TSDUBytes; b: TSDUBytes): TSDUBytes;
+//function SDUXOR(a: Ansistring; b: Ansistring): Ansistring;
   { TODO 1 -otdk -cclean : use bytes instead of chars }
 var
-  longest: Integer;
+  maxlen,minlen,longest: Integer;
   byteA:   Byte;
   byteB:   Byte;
   i:       Integer;
 begin
-  { TODO 1 -otdk -cclean : can simplify }
+  { DONE 1 -otdk -cclean : can simplify }
+
+  maxlen := max(length(a), length(b));
+  minlen := min(length(a), length(b));
+  setlength(result,maxlen);
+
+
+   for i := 0 to minlen-1 do begin
+     result[i] :=  a[i] XOR b[i];
+   end;
+
+   for i := minlen to maxlen-1 do begin
+    if i < length(a) then       result[i] :=  a[i]    else result[i] :=  b[i];
+   end;
+
+   {
   longest := max(length(a), length(b));
-  // setlength(result,longest);
+  setlength(result,longest);
   for i := 1 to longest do begin
     if (i > length(a)) then begin
       byteA := 0;
     end else begin
-      byteA := Ord(a[i]);
+      byteA := ORd(a[i]);
     end;
 
     if (i > length(b)) then begin
       byteB := 0;
     end else begin
-      byteB := Ord(b[i]);
+      byteB := ORd(b[i]);
     end;
 
-    // result[i] :=  byteA XOR byteB;
+//     result[i] :=  byteA XOR byteB;
     Result := Result + ansichar(byteA xor byteB);
-  end;
+  end;   }
+
 
 end;
 
@@ -6766,26 +6787,23 @@ begin
 end;
 
 //encodes as ascii for now
-function SDUStringToSDUBytes(rhs: String): TSDUBytes;
+function SDUStringToSDUBytes(const rhs: AnsiString): TSDUBytes;
 var
   len, i: Integer;
 begin
   len := length(rhs);
   setlength(Result, len);
-  for i := 0 to len do
-    Result[i] := Byte(rhs[i]);
-
+  for i := 0 to len-1 do
+    Result[i] := Byte(rhs[i+1]);
 end;
 
-
-function SDUBytesToString(var Value: TSDUBytes): String;
+function SDUBytesToString(const Value: TSDUBytes): AnsiString;
 var
   len, i: Integer;
 begin
   Result := '';
   for i := 0 to high(Value) do
     Result := Result + AnsiChar(Value[i]);
-
 end;
 
 //initialises value to all zeros
@@ -6795,11 +6813,11 @@ var
 begin
   // setlength re-alloacates and can change reference - so even if new value is longer: still need to zero old val before resizing
   oldlen := length(Value);
-  for i := 0 to oldlen do
+  for i := 0 to oldlen-1 do
     Value[i] := 0;
 
   setlength(Value, len);
-  for i := 0 to len do
+  for i := 0 to len-1 do
     Value[i] := 0;
 
 end;
@@ -6814,28 +6832,83 @@ begin
   oldref := Pointer(@Value[0]);
   len    := length(Value);
   setlength(Value, len + 1);
-  { TODO 1 -otdk -ccheck : can setlength reset ref? if so need to copy and zero }
-  assert(oldref = POinter(@Value[0]));
+  { TODO 1 -otdk -ccheck : setlength can reset ref. does Mem manager zeroise? if not need to copy and zero }
+//  assert(oldref = POinter(@Value[0]));
   Value[len] := byt;
 end;
 
 //adds array to array
 procedure SDUAddArrays(var A: TSDUBytes; const rhs: TSDUBytes);
 var
+ln :integer;
+begin
+ ln := length(A) + length(rhs);
+ SDUAddLimit(A,rhs,length(rhs))  ;
+ assert( length(A)=ln);
+end;
+
+// adds rhs to end up lhs up to limit bytes
+procedure SDUAddLimit(var lhs: TSDUBytes; const rhs: TSDUBytes;limit:integer);
+var
   len, len_rhs, i: Integer;
   oldref:          Pointer;
 begin
 
-  oldref  := Pointer(@A[0]);
-  len     := length(A);
-  len_rhs := length(rhs);
-  setlength(A, len + len_rhs);
-  { TODO 1 -otdk -ccheck : can setlength reset ref? if so need to copy and zero }
-  assert(oldref = POinter(@A[0]));
-  for i := 0 to len_rhs do
-    A[i + len] := rhs[i];
+  oldref  := Pointer(@lhs[0]);
+  len     := length(lhs);
+
+  len_rhs := min(limit,length(rhs));
+  setlength(lhs, len + len_rhs);
+  { TODO 1 -otdk -ccheck : setlength can reset ref. dose Mem manager zeroise? if not need to copy and zero }
+//  assert((oldref = Pointer(@lhs[0])) or (oldref =nil));
+  for i := 0 to len_rhs-1 do
+    lhs[i + len] := rhs[i];
 end;
 
+//copies from aFrom to aTo, sets length and zeroises any freed data
+procedure SDUCopy(var aTo: TSDUBytes; const aFrom: TSDUBytes);
+begin
+   SDUCopyLimit(aTo,aFrom,length(aFrom));
+end;
+
+//copies from aFrom to aTo up to limit bytes, sets length and zeroises any freed data
+procedure SDUCopyLimit(var aTo: TSDUBytes; const aFrom: TSDUBytes;limit:integer);
+var
+  oldlen, i,newLen: Integer;
+  oldref: Pointer;
+begin
+  oldlen    := length(aTo);
+  oldref := Pointer(@aTo[0]);
+  newLen := min(limit,length(aFrom));
+  // if shortening - overwrite data now not in array
+  for i := oldlen-1 downto newLen  do
+    aTo[i] := 0;
+
+  setlength(aTo, newLen);
+  { TODO 1 -otdk -ccheck : setlength can reset ref. does Mem manager zeroise? if not need to copy and zero }
+//  assert((oldref = Pointer(@aTo[0])) or (oldlen = 0) );
+  //copy  data
+  for i := 0 to newLen-1 do
+    aTo[i] := aFrom[i];
+end;
+
+
+
+procedure SDUZeroBuffer(buf:TSDUBytes);
+var
+  i:integer;
+begin
+  SDUInitAndZeroBuffer(0,buf);
+end;
+
+
+procedure SDUZeroString(buf:AnsiString);
+var
+  i:integer;
+begin
+  for i := 1 to length(buf) do     buf[i] := AnsiChar(#0);
+  setlength(buf,0);
+end;
 
 procedure SDUDeleteFromStart(var A: TSDUBytes; Count: Integer);
 var
@@ -6864,10 +6937,15 @@ var
 begin
   len    := length(A);
   oldref := Pointer(@A[0]);
+  // if shortening - overwrite data now not in array
+  for i := len-1 downto newLen  do
+    A[i] := 0;
+
   setlength(A, newLen);
-  { TODO 1 -otdk -ccheck : can setlength reset ref? if so need to copy and zero }
-  assert(oldref = POinter(@A[0]));
-  for i := len to newLen do
+  { TODO 1 -otdk -ccheck : setlength can reset ref. dose Mem manager zeroise? if not need to copy and zero }
+//  assert((oldref = Pointer(@A[0])) or (oldref = nil));
+  //sero any new data
+  for i := len to newLen-1 do
     A[i] := 0;
 end;
 

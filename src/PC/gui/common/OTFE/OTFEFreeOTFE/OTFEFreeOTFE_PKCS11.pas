@@ -3,12 +3,16 @@ unit OTFEFreeOTFE_PKCS11;
 interface
 
 uses
+//delphi
   Classes,
   StdCtrls,
+  //3rd party
   pkcs11t,
   pkcs11_library,
   pkcs11_session,
-  pkcs11_object
+  pkcs11_object   ,
+  //sdu
+  sdugeneral
   //doxbox
   ;
 
@@ -238,7 +242,7 @@ function GetPKCS11RandomData(
                              PKCS11Library: TPKCS11Library;
                              SlotID: integer;
                              BytesWanted: integer;
-                             var RandomData: ansistring
+                             var RandomData: TSDUBytes
                             ): boolean;
 
 
@@ -322,8 +326,8 @@ implementation
 
 uses
   SysUtils,
-//doxbox
-  SDUGeneral,
+//sdu
+
   SDUi18n,
   pkcs11_attribute,
   pkcs11_slot,
@@ -1002,7 +1006,7 @@ function GetPKCS11RandomData(
                              PKCS11Library: TPKCS11Library;
                              SlotID: integer;
                              BytesWanted: integer;
-                             var RandomData: ansistring
+                             var RandomData: TSDUBytes
                             ): boolean;
 var
   retval: boolean;

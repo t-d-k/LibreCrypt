@@ -162,13 +162,16 @@ type
 
 
   PROTECTED
+ (*
     ficonIdx_Small_New:                    Integer;
     ficonIdx_Small_MountFile:              Integer;
     ficonIdx_Small_MountPartition:         Integer;
     ficonIdx_Small_Dismount:               Integer;
     ficonIdx_Small_DismountAll:            Integer;
     ficonIdx_Small_PortableMode:           Integer;
+    *)
     ficonIdx_Small_VistaUACShield:         Integer;
+    (*
     ficonIdx_Small_Properties:             Integer;
     ficonIdx_Small_Back:                   Integer;
     ficonIdx_Small_Forward:                Integer;
@@ -190,7 +193,9 @@ type
     ficonIdx_Large_Dismount:               Integer;
     ficonIdx_Large_DismountAll:            Integer;
     ficonIdx_Large_PortableMode:           Integer;
+    *)
     ficonIdx_Large_VistaUACShield:         Integer;
+    (*
     ficonIdx_Large_Properties:             Integer;
     ficonIdx_Large_Back:                   Integer;
     ficonIdx_Large_Forward:                Integer;
@@ -205,7 +210,7 @@ type
     ficonIdx_Large_Folders:                Integer;
     ficonIdx_Large_MapNetworkDrive:        Integer;
     ficonIdx_Large_DisconnectNetworkDrive: Integer;
-
+       *)
     // This is set to TRUE at the very start of InitApp(...)
     finitAppCalled:               Boolean;
     // This is set to TRUE at the end of calling WMUserPostShow(...) is called
@@ -348,6 +353,9 @@ const
 
   // These are the hardcoded FreeOTFE icons in ilToolbarIcons_Small/ilToolbarIcons_Large
   // -1 indicates no icon stored
+  { TODO -otdk -cinvestigate : what exactly is the point of this? }
+  (*
+
   ICONIDX_NEW                             = 3;
   ICONIDX_MOUNTFILE                       = 4;
   ICONIDX_MOUNTPARTITION                  = 0;
@@ -369,7 +377,7 @@ const
   ICONIDX_EXPLORER_FOLDERS                = 16;
   ICONIDX_EXPLORER_MAPNETWORKDRIVE        = 17;
   ICONIDX_EXPLORER_DISCONNECTNETWORKDRIVE = 18;
-
+       *)
 
 implementation
 
@@ -443,13 +451,16 @@ end;
 procedure TfrmMain.SetupToolbarAndMenuIcons();
 begin
   // Default to hardcoded icons...
+  (*
   FIconIdx_Small_New                    := ICONIDX_NEW;
   FIconIdx_Small_MountFile              := ICONIDX_MOUNTFILE;
   FIconIdx_Small_MountPartition         := ICONIDX_MOUNTPARTITION;
   FIconIdx_Small_Dismount               := ICONIDX_DISMOUNT;
   FIconIdx_Small_DismountAll            := ICONIDX_DISMOUNTALL;
   FIconIdx_Small_PortableMode           := ICONIDX_PORTABLEMODE;
-  FIconIdx_Small_VistaUACShield         := ICONIDX_VISTASHIELD;
+  *)
+  FIconIdx_Small_VistaUACShield         := -1;
+  (*
   FIconIdx_Small_Properties             := ICONIDX_PROPERTIES;
   FIconIdx_Small_Back                   := ICONIDX_EXPLORER_BACK;
   FIconIdx_Small_Forward                := ICONIDX_EXPLORER_FORWARD;
@@ -471,7 +482,9 @@ begin
   FIconIdx_Large_Dismount               := ICONIDX_DISMOUNT;
   FIconIdx_Large_DismountAll            := ICONIDX_DISMOUNTALL;
   FIconIdx_Large_PortableMode           := ICONIDX_PORTABLEMODE;
-  FIconIdx_Large_VistaUACShield         := ICONIDX_VISTASHIELD;
+  *)
+  FIconIdx_Large_VistaUACShield         := -1;
+  (*
   FIconIdx_Large_Properties             := ICONIDX_PROPERTIES;
   FIconIdx_Large_Back                   := ICONIDX_EXPLORER_BACK;
   FIconIdx_Large_Forward                := ICONIDX_EXPLORER_FORWARD;
@@ -486,9 +499,9 @@ begin
   FIconIdx_Large_Folders                := ICONIDX_EXPLORER_FOLDERS;
   FIconIdx_Large_MapNetworkDrive        := ICONIDX_EXPLORER_MAPNETWORKDRIVE;
   FIconIdx_Large_DisconnectNetworkDrive := ICONIDX_EXPLORER_DISCONNECTNETWORKDRIVE;
-
+    *)
   // Load system icons...
-  AddStdIcons();
+//  AddStdIcons();
 
   if SDUOSVistaOrLater() then begin
     // Mark as appropriate with UAC "shield" icons
@@ -514,9 +527,9 @@ end;
 
 procedure TfrmMain.SetIconListsAndIndexes();
 begin
-  actFreeOTFENew.ImageIndex       := FIconIdx_Small_New;
-  actFreeOTFEMountFile.ImageIndex := FIconIdx_Small_MountFile;
-  actDismount.ImageIndex          := FIconIdx_Small_Dismount;
+//  actFreeOTFENew.ImageIndex       := FIconIdx_Small_New;
+//  actFreeOTFEMountFile.ImageIndex := FIconIdx_Small_MountFile;
+//  actDismount.ImageIndex          := FIconIdx_Small_Dismount;
 end;
 
 
@@ -570,6 +583,7 @@ begin
 
   // Copy certain icons over to the imagelists we use for menuitems/toolbar
   // buttons, and set the stored indexes
+  (*
   AddStdIconToToolbarIcons(
     STD_FILENEW,
     FIconIdx_Small_New,
@@ -585,7 +599,7 @@ begin
     FIconIdx_Small_Properties,
     FIconIdx_Large_Properties
     );
-
+    *)
 end;
 
 // Add an standard Windows Vista UAC shield icon
@@ -1668,7 +1682,7 @@ begin
         if fileOK then begin
           if SDUCommandLineSwitch(CMDLINE_FREEOTFE) then begin
             mountAs := fOtfeFreeOtfeBase.MountFreeOTFE(volume, ReadOnly,
-              useKeyfile, usePassword, useOffset, useNoCDBAtOffset, useSilent,
+              useKeyfile,usePassword, useOffset, useNoCDBAtOffset, useSilent,
               useSaltLength, useKeyIterations);
           end else
           if SDUCommandLineSwitch(CMDLINE_LINUX) then begin
