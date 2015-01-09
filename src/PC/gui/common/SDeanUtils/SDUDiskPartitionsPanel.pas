@@ -73,7 +73,7 @@ type
     property DriveLayoutInformationValid: Boolean Read FDriveLayoutInfoValid;
   end;
 
-procedure Register;
+//procedure Register;
 
 implementation
 
@@ -86,10 +86,10 @@ uses
 const
   ULL_ONEMEG: ULONGLONG = 1024 * 1024;
 
-procedure Register;
-begin
-  RegisterComponents('SDeanUtils', [TSDUDiskPartitionsPanel]);
-end;
+//procedure Register;
+//begin
+//  RegisterComponents('SDeanUtils', [TSDUDiskPartitionsPanel]);
+//end;
 
 
 constructor TSDUDiskPartitionsPanel.Create(AOwner: TComponent);
