@@ -25,27 +25,25 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 ### Keyfiles
 </A>
 
-A "keyfile" is a small file (about 512 bytes) which can optionally be created for a DoxBox, and contains the information required to open it. Keyfiles are encrypted based a user-supplied keyfile password, which must be supplied in order to use the keyfile.
+A "keyfile" is a small file (about 512 bytes) which can optionally be created for a DoxBox, and contains the information required to open it. Keyfiles are encrypted with a password, which must be given in order to use the keyfile.
 
 <P class="tip"> More than one keyfile can be created for the same Box. </P>
 
 Keyfiles are useful as they allow critical information which is required in order to open a Box to be stored separately to the Box which they relate to; on a floppy disk, or USB drive, for example - which would be too small to store the entire DoxBox on. In this way, your DoxBox may be stored on your computer, but the information required to access it can be stored in a physically more secure location (e.g. in a locked safe)
 
-Keyfiles may be used as a form of password recovery, or to reset forgotten passwords. When confidential information is held within a DoxBox, a keyfile can be created for it and stored in a safe location. Should the employee which normally uses the DoxBox be unavailable, or cannot remember the DoxBox's password, it can still be opened using a keyfile that has was previously created for it (together with that keyfile's password) - even if the _DoxBox's password_ has been subsequently changed.
+Keyfiles may be used for password recovery, or to reset forgotten passwords. When confidential information is held within a DoxBox, a keyfile can be created for it and stored in a safe location. Should the employee which normally uses the DoxBox be unavailable, or cannot remember the DoxBox's password, it can still be opened using a keyfile that has was previously created for it (together with that keyfile's password) - even if the _DoxBox's password_ has been subsequently changed.
 
 Keyfiles may also be used to provide multiple users with access to mount and use the same Box; each using a password of their own choosing.
 
 Note: Keyfiles are _specific_ to the Box they are created for! Although a keyfile for one Box may be able to successfully _mount_ another Box, the virtual drive shown will appear to be unformatted - the files within the Box will remain securely encrypted and unreadable.
 
 <A NAME="level_4_heading_1">
-
 #### Creating a new keyfile
 </A>
 
-To create a new volume, select "Tools | Create keyfile..." to display the "keyfile wizard", which will guide you through the process in a series of simple steps.
+To create a new keyfile, select "Tools | Create keyfile..." to display the "keyfile wizard", which will guide you through the process in a series of simple steps.
 
 <A NAME="level_4_heading_2">
-
 #### Mounting a volume using a keyfile
 </A>
 
@@ -185,7 +183,7 @@ Before the user's password is used to encrypt/decrypt the CDB, it is processed u
 
 Part of this processing involves the use of a random "salt" value, which reduces the risk of dictionary based attacks. This tab allows the length of the salt value (in bits) to be set by the user.
 
-_It should be noted that every time a volume which has a non-default (256 bit) salt length is mounted, the user must specify the correct salt length (unless using a keyfile; in which case the keyfiles salt length must be specified) by using the "Advanced" options available on the DoxBox password entry dialog._
+_It should be noted that to open a volume which has a non-default (256 bit), you MUST specify the correct salt length  by using the "Advanced" options available on the DoxBox password entry dialog. If using a keyfile, the keyfiles salt length must be specified._
 
 The default salt length is 256 bits. Any salt length entered must be a multiple of 8 bits.
 

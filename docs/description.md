@@ -52,7 +52,7 @@ With this software, you can create one or more "virtual disks" on your computer 
 * Encrypted volumes can be either file or partition based.
 * Modular design allowing 3rd party drivers to be created, incorporating new hash/cypher algorithms
 * Supports password salting (up to 512 bits), reducing the risks presented by dictionary attacks.
-* 'keyfiles' allow multiple users to share a box witour sharing keyphrases and support key backup.
+* 'keyfiles' allow multiple users to share a box without sharing keyphrases and support key backup.
 * Volume file timestamps and attributes are reset after dismounting, increasing "plausible deniability"
 * Supports volumes files up to 2^63 bytes (8388608 TB) 
 </UL>

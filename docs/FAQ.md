@@ -741,7 +741,7 @@ The encrypted Linux volume will be fully readable (and writable) using DoxBox - 
 
 For DoxBox volumes, the critical data block can be dumped out (see "Tools | Dump to human readable file..." menu), and the master encryption key used to mount the same volume under Linux (offsetting for the CDB) - again proving that encryption is taking place.
 
-*WARNING:* Promises that an app encrypts data prove little, even if specific details like AES/pkcs#5 are cited. For example a hdd enclosure [todo dd encl], see also [todo snakeoil] for  more details.  
+*WARNING:* Promises that an app encrypts data prove little, even if specific details like AES/pkcs#5 are cited. For example a Hard drive enclosure promisng 128-bit AES encryption turned out to encrypt the data only with a very weak Vigenere cipher [http://squte.com/usenet/enclosed-not-encrypted], see [snake-oil](https://www.schneier.com/crypto-gram-9902.html#snakeoil) for  more details.  
 
 * * *
 
