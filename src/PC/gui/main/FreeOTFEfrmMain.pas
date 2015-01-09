@@ -90,7 +90,7 @@ type
     SetTestMode1:               TMenuItem;
     actTestModeOff:             TAction;
     DisallowTestsigneddrivers1: TMenuItem;
-    ToolButton1:                TToolButton;
+    tbbSettings: TToolButton;
 
     procedure actDriversExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -795,26 +795,33 @@ begin
 
 end;
 
-{ tests system tests
+{ tests
+  system tests
   opens volumes created with old versions and checks contents as expected
   regression testing only
+  see testing.jot for more details of volumes
 }
 function TfrmFreeOTFEMain.DoTests: Boolean;
 var
   mountList:             TStringList;
   mountedAs:             DriveLetterString;
-  prettyMountedAs, path: String;
+  prettyMountedAs, path,key_file,les_file: String;
   vl:                    Integer;
 const
-  TEST_VOLS: array[0..8] of String =
-    ('a.box', 'b.box', 'c.box', 'd.box', 'e.box', 'e.box', 'f.box', 'luks.box', 'luks_essiv.box');
-  PASSWORDS: array[0..8] of String =
+  TEST_VOLS: array[0..11] of String =
+    ('a.box', 'b.box', 'c.box', 'd.box', 'e.box', 'e.box', 'f.box', 'luks.box', 'luks_essiv.box', 'a.box', 'b.box','dmcrypt_dx.box');
+  PASSWORDS: array[0..11] of String =
     ('password', 'password', '!"£$%^&*()', 'password', 'password', '5ekr1t',
-    'password', 'password', 'password');
-  ITERATIONS: array[0..8] of Integer =
-    (2048, 2048, 2048, 2048, 10240, 2048, 2048, 2048, 2048);
-  OFFSET: array[0..8] of Integer =
-    (0, 0, 0, 0, 0, 2097152, 0, 0, 0);
+    'password', 'password', 'password','secret','secret', 'password');
+  ITERATIONS: array[0..11] of Integer =
+    (2048, 2048, 2048, 2048, 10240, 2048, 2048, 2048, 2048, 2048, 2048, 2048);
+  OFFSET: array[0..11] of Integer =
+    (0, 0, 0, 0, 0, 2097152, 0, 0, 0,0,0,0);
+  KEY_FILES: array[0..11] of string =
+    ('','','','','','','','','','a.cdb','b.cdb','');
+  LES_FILES: array[0..11] of string =
+    ('','','','','','','','','','','','dmcrypt_dx.les');
+
 begin
   inherited;
 
@@ -829,14 +836,18 @@ begin
       mountList.Clear;
       mountList.Add(path + TEST_VOLS[vl]);
       mountedAs := '';
-      if fOtfeFreeOtfeBase.IsLUKSVolume(path + TEST_VOLS[vl]) then begin
-        if not fOtfeFreeOtfeBase.MountLUKS(mountList, mountedAs, True,
-          PASSWORDS[vl], '', False, nlLF, True) then
+      key_file := '';
+      if KEY_FILES[vl]<>'' then key_file := path +KEY_FILES[vl];
+      if LES_FILES[vl]<>'' then les_file := path +LES_FILES[vl];
+
+      if fOtfeFreeOtfeBase.IsLUKSVolume(path + TEST_VOLS[vl]) or (LES_FILES[vl]<> '') then begin
+        if not fOtfeFreeOtfeBase.MountLinux(mountList,mountedAs,true,les_file,PASSWORDS[vl],
+                                            key_file,false, nlLF,0,true) then
           Result := False;
       end else begin
         //call silently
         if not fOtfeFreeOtfeBase.MountFreeOTFE(mountList, mountedAs, True,
-          '', PASSWORDS[vl], OFFSET[vl], True, True, 256, ITERATIONS[vl]) then
+          key_file, PASSWORDS[vl], OFFSET[vl], false, True, 256, ITERATIONS[vl]) then
           Result := False;
       end;
       if not Result then begin
@@ -847,7 +858,7 @@ begin
         // Mount successful
         //        prettyMountedAs := prettyPrintDriveLetters(mountedAs);
         if (CountValidDrives(mountedAs) <> 1) then begin
-          SDUMessageDlg(Format('The DoxBox %s has NOT been opened as drive: %s',
+          SDUMessageDlg(Format('The Box %s has NOT been opened as drive: %s',
             [TEST_VOLS[vl], mountedAs]));
           Result := False;
         end else begin
@@ -869,11 +880,12 @@ begin
       end;
       Inc(vl);
     end;
-    if Result then
-      SDUMessageDlg('All functional tests passed');
   finally
     mountList.Free();
   end;
+
+  if Result then
+      SDUMessageDlg('All functional tests passed');
 end;
 
 procedure TfrmFreeOTFEMain.SetIconListsAndIndexes();
