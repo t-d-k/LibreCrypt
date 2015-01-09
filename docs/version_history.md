@@ -28,11 +28,15 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 ## Appendix A: Version History
 
 <UL>
-	* DoxBox v6.1.0 (TODO 2014)
+	* DoxBox v6.1.0 (TODO 2015)
 	
 		1. Fixed issue with translations - updated gettext to Delphi 2009 version (see build notes)
-		1. Ensured any new volume is overwritten with Secure PRNG 'chaff' before use by default. This enables plausible deniability of hidden volumes, and also hides the amount of data stored in the volume.
-		1. Formats any new volume after creation.
+		1. Ensured any new volume is overwritten with Secure PRNG 'chaff' before use by default. This enables plausible deniability of hidden volumes, and also hides the amount of data stored in the volume. DoxBox volumes only.
+		1. Formats new volumes after creation.
+		1. Fix bug where was contacting internet for docs and for updates without prompt
+		1. Many UI improvements.
+		1. Rework internal handling of secure data (e.g keys) to reduce risk of leaking to swap space.
+		1. Much refactoring to make more maintainable.
 		
 	* DoxBox v6.0.0 (23 August 2014), based on FreeOTFE v.21
 		
@@ -41,11 +45,12 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 		3. Converted drivers to use Windows Driver Development Kit (WinDDK) 7600.16385.1
 		4. Updated 'command line tools' to build with lib tomcrypt 1.17
 		5. Add 'default hidden offset' to volume properties
+		6. Add ability to mount hidden plain dm-crypt volumes inside LUKS or FreeOtfe volumes
 		6. Add tool to set windows to allow unsigned drivers 
 		7. Rename and rebrand to 'DoxBox'
 		
 		
-  * FreeOTFE v6.00 (unreleased 2011)
+  * FreeOTFE v6.00 (unreleased 2011) some changes have been merged into DoxBox v6.0.0, some have been abandoned
   
     * Added password expiry option
     * Added password strength enforcement option
