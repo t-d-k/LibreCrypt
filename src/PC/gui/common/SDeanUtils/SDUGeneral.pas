@@ -4146,9 +4146,9 @@ end;
 //function SDUXOR(a: Ansistring; b: Ansistring): Ansistring;
   { TODO 1 -otdk -cclean : use bytes instead of chars }
 var
-  maxlen,minlen,longest: Integer;
-  byteA:   Byte;
-  byteB:   Byte;
+  maxlen,minlen: Integer;
+//  byteA:   Byte;
+//  byteB:   Byte;
   i:       Integer;
 begin
   { DONE 1 -otdk -cclean : can simplify }
@@ -6799,7 +6799,7 @@ end;
 
 function SDUBytesToString(const Value: TSDUBytes): AnsiString;
 var
-  len, i: Integer;
+   i: Integer;
 begin
   Result := '';
   for i := 0 to high(Value) do
@@ -6819,13 +6819,12 @@ begin
   setlength(Value, len);
   for i := 0 to len-1 do
     Value[i] := 0;
-
 end;
 
 //adds byte to array
 procedure SDUAddByte(var Value: TSDUBytes; byt: Byte);
 var
-  len, i: Integer;
+  len: Integer;
   oldref: Pointer;
 begin
 
@@ -6892,15 +6891,10 @@ begin
     aTo[i] := aFrom[i];
 end;
 
-
-
 procedure SDUZeroBuffer(buf:TSDUBytes);
-var
-  i:integer;
 begin
   SDUInitAndZeroBuffer(0,buf);
 end;
-
 
 procedure SDUZeroString(buf:AnsiString);
 var
