@@ -17,8 +17,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
   inherited pnlRight: TPanel
     Width = 537
     Height = 422
-    ExplicitWidth = 895
-    ExplicitHeight = 546
+    ExplicitWidth = 537
+    ExplicitHeight = 422
     inherited bvlLine: TBevel
       Top = 359
       Width = 535
@@ -28,9 +28,9 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
     inherited pcWizard: TPageControl
       Width = 535
       Height = 358
-      ActivePage = tsDriveLetter
-      ExplicitWidth = 893
-      ExplicitHeight = 482
+      ActivePage = tsOffset
+      ExplicitWidth = 535
+      ExplicitHeight = 358
       object tsFileOrPartition: TTabSheet
         Caption = 'Volume File or Partition'
         ImageIndex = 14
@@ -114,10 +114,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Volume filename'
         ImageIndex = 1
         Constraints.MinHeight = 139
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 885
-        ExplicitHeight = 454
         object reInstructFilename: TRichEdit
           Left = 0
           Top = 0
@@ -141,8 +137,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
               'ting DoxBox file to be used.')
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 885
-          ExplicitHeight = 380
         end
         object GroupBox1: TGroupBox
           Left = 0
@@ -152,8 +146,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Align = alBottom
           Caption = 'Volume filename'
           TabOrder = 1
-          ExplicitTop = 387
-          ExplicitWidth = 885
           DesignSize = (
             527
             67)
@@ -166,7 +158,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Caption = '&Browse...'
             TabOrder = 0
             OnClick = pbBrowseFilenameClick
-            ExplicitLeft = 794
           end
           object lblFilename: TEdit
             Left = 16
@@ -176,17 +167,12 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Anchors = [akLeft, akRight, akBottom]
             TabOrder = 1
             Text = 'lblFilename'
-            ExplicitWidth = 772
           end
         end
       end
       object tsPartitionWarning: TTabSheet
         Caption = 'Partition Warning'
         ImageIndex = 16
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 885
-        ExplicitHeight = 454
         object Label15: TLabel
           Left = 0
           Top = 304
@@ -251,17 +237,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
               'fore continuing.')
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 885
-          ExplicitHeight = 428
         end
       end
       object tsPartitionSelect: TTabSheet
         Caption = 'Partition Select'
         ImageIndex = 15
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 885
-        ExplicitHeight = 454
         object Label21: TLabel
           AlignWithMargins = True
           Left = 5
@@ -295,7 +275,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             '"hidden" DoxBox.')
           ParentFont = False
           TabOrder = 2
-          ExplicitWidth = 885
         end
         object ckPartitionHidden: TCheckBox
           AlignWithMargins = True
@@ -311,8 +290,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Caption = '&Create hidden volume within selected partition'
           TabOrder = 0
           OnClick = ckPartitionHiddenClick
-          ExplicitTop = 432
-          ExplicitWidth = 875
         end
         inline fmeSelectPartition: TfmeSelectPartition
           Left = 0
@@ -341,32 +318,32 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             ExplicitHeight = 202
             inherited SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel
               Height = 174
-              ExplicitHeight = 298
+              ExplicitHeight = 174
             end
             inherited pnlNoPartitionDisplay: TPanel
               Left = 338
               Height = 174
-              ExplicitLeft = 696
-              ExplicitHeight = 298
+              ExplicitLeft = 338
+              ExplicitHeight = 174
             end
           end
           inherited ckShowCDROM: TCheckBox
             Left = 294
             Top = 164
-            ExplicitLeft = 652
-            ExplicitTop = 288
+            ExplicitLeft = 294
+            ExplicitTop = 164
           end
           inherited ckEntireDisk: TCheckBox
             Left = 438
             Top = 164
-            ExplicitLeft = 796
-            ExplicitTop = 288
+            ExplicitLeft = 438
+            ExplicitTop = 164
           end
           inherited ilErrorWarning: TImageList
             Left = 368
             Top = 65533
             Bitmap = {
-              494C010103000400D00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400D40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -519,10 +496,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Size'
         ImageIndex = 6
         Constraints.MinHeight = 172
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 885
-        ExplicitHeight = 454
         DesignSize = (
           527
           330)
@@ -573,8 +546,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             'larger than this.'#39');')
           ParentFont = False
           TabOrder = 2
-          ExplicitWidth = 885
-          ExplicitHeight = 384
         end
         object ckSizeEntirePartitionDisk: TCheckBox
           Left = 17
@@ -585,7 +556,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Caption = '&Use entire partition/disk'
           TabOrder = 0
           OnClick = ckSizeEntirePartitionDiskClick
-          ExplicitHeight = 436
         end
         object se64UnitSize: TSDUSpin64Unit_Storage
           Left = 207
@@ -605,18 +575,12 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           MaxLength = 0
           ReadOnly = False
           OnChange = SizeChanged
-          ExplicitLeft = 565
-          ExplicitTop = 406
         end
       end
       object tsPassword: TTabSheet
         Caption = 'Password'
         ImageIndex = 6
         Constraints.MinHeight = 330
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 885
-        ExplicitHeight = 454
         DesignSize = (
           527
           330)
@@ -670,7 +634,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 885
         end
         object preUserKey1: TOTFEFreeOTFE_PasswordRichEdit
           Left = 112
@@ -713,16 +676,12 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Drive Letter'
         ImageIndex = 17
         Constraints.MinHeight = 166
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 885
-        ExplicitHeight = 454
         DesignSize = (
           527
-          317)
+          330)
         object Label11: TLabel
           Left = 313
-          Top = 266
+          Top = 279
           Width = 107
           Height = 13
           Anchors = [akRight, akBottom]
@@ -735,7 +694,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Left = 3
           Top = 93
           Width = 514
-          Height = 132
+          Height = 145
           Anchors = [akLeft, akTop, akRight, akBottom]
           AutoSize = False
           Caption = 
@@ -743,12 +702,13 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             'e mounted under. Note: You will be able to change this after the' +
             ' volume has been created.'
           WordWrap = True
+          ExplicitHeight = 132
         end
         object reInstructDriveLetter: TRichEdit
           Left = 0
           Top = 0
           Width = 517
-          Height = 81
+          Height = 94
           Anchors = [akLeft, akTop, akRight, akBottom]
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -768,7 +728,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object cbDriveLetter: TComboBox
           Left = 435
-          Top = 263
+          Top = 276
           Width = 89
           Height = 21
           Style = csDropDownList
@@ -780,17 +740,13 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsOffset: TTabSheet
         Caption = 'Offset'
         ImageIndex = 7
-        Constraints.MinHeight = 343
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 885
-        ExplicitHeight = 454
+        Constraints.MinHeight = 330
         DesignSize = (
           527
-          343)
+          330)
         object Label7: TLabel
           Left = 137
-          Top = 316
+          Top = 303
           Width = 120
           Height = 13
           Anchors = [akRight, akBottom]
@@ -801,17 +757,15 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Left = 0
           Top = 77
           Width = 527
-          Height = 418
+          Height = 405
           Align = alTop
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'pnlWarningOffset'
-          Constraints.MinHeight = 418
+          Constraints.MinHeight = 405
           TabOrder = 1
-          ExplicitWidth = 885
-          ExplicitHeight = 529
           DesignSize = (
             527
-            418)
+            405)
           object lblWarningOffset: TLabel
             AlignWithMargins = True
             Left = 11
@@ -836,7 +790,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           object Label13: TLabel
             AlignWithMargins = True
             Left = 4
-            Top = 180
+            Top = 167
             Width = 285
             Height = 39
             Margins.Left = 10
@@ -855,19 +809,20 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Font.Style = [fsBold]
             ParentFont = False
             WordWrap = True
+            ExplicitTop = 180
           end
           object reInstructWarningOffset: TRichEdit
             Left = 0
             Top = 37
             Width = 525
-            Height = 130
+            Height = 117
             Anchors = [akLeft, akTop, akRight, akBottom]
             Font.Charset = ANSI_CHARSET
             Font.Color = clWindowText
             Font.Height = -11
             Font.Name = 'MS Sans Serif'
             Font.Style = []
-            Constraints.MinHeight = 130
+            Constraints.MinHeight = 117
             Lines.Strings = (
               'THIS TEXT WILL BE AUTOMATICALLY POPULATED.'
               ' 1) Creating hidden Boxes is POTENTIALLY DESTRUCTIVE.'
@@ -886,8 +841,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
               'you wish to mount your hidden DoxBox.'#39');')
             ParentFont = False
             TabOrder = 0
-            ExplicitWidth = 883
-            ExplicitHeight = 241
           end
         end
         object reInstructOffset: TRichEdit
@@ -914,11 +867,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             'different filename.')
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 885
         end
         object se64UnitByteOffset: TSDUSpin64Unit_Storage
           Left = 301
-          Top = 312
+          Top = 299
           Width = 215
           Height = 25
           Anchors = [akRight, akBottom]
@@ -933,8 +885,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           MaxLength = 0
           ReadOnly = False
           OnChange = se64ByteOffsetChange
-          ExplicitLeft = 659
-          ExplicitTop = 423
         end
       end
       object tsHashCypherIV: TTabSheet
@@ -947,10 +897,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         ExplicitHeight = 454
         DesignSize = (
           527
-          317)
+          330)
         object Label4: TLabel
           Left = 17
-          Top = 221
+          Top = 234
           Width = 59
           Height = 13
           Anchors = [akLeft, akBottom]
@@ -960,7 +910,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object Label5: TLabel
           Left = 17
-          Top = 249
+          Top = 262
           Width = 68
           Height = 13
           Anchors = [akLeft, akBottom]
@@ -970,7 +920,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object lblSectorIVGenMethod: TLabel
           Left = 17
-          Top = 277
+          Top = 290
           Width = 52
           Height = 13
           Anchors = [akLeft, akBottom]
@@ -980,7 +930,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object cbHash: TComboBox
           Left = 153
-          Top = 217
+          Top = 230
           Width = 145
           Height = 21
           Style = csDropDownList
@@ -990,7 +940,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object cbCypher: TComboBox
           Left = 153
-          Top = 245
+          Top = 258
           Width = 145
           Height = 21
           Style = csDropDownList
@@ -1002,7 +952,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Left = 0
           Top = 0
           Width = 527
-          Height = 192
+          Height = 205
           Align = alTop
           Anchors = [akLeft, akTop, akRight, akBottom]
           Font.Charset = ANSI_CHARSET
@@ -1020,12 +970,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
               '.'#39');')
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 885
-          ExplicitHeight = 329
         end
         object pbHashInfo: TButton
           Left = 304
-          Top = 218
+          Top = 231
           Width = 21
           Height = 21
           Anchors = [akLeft, akBottom]
@@ -1036,7 +984,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object pbCypherInfo: TButton
           Left = 304
-          Top = 245
+          Top = 258
           Width = 21
           Height = 21
           Anchors = [akLeft, akBottom]
@@ -1047,7 +995,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object ckUsePerVolumeIV: TCheckBox
           Left = 153
-          Top = 297
+          Top = 310
           Width = 260
           Height = 17
           Anchors = [akLeft, akBottom]
@@ -1057,7 +1005,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object cbSectorIVGenMethod: TComboBox
           Left = 153
-          Top = 273
+          Top = 286
           Width = 145
           Height = 21
           Style = csDropDownList
@@ -1076,12 +1024,12 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         ExplicitHeight = 454
         DesignSize = (
           527
-          317)
+          330)
         object lblInstructChaff: TLabel
           Left = 3
           Top = 3
           Width = 521
-          Height = 186
+          Height = 199
           Anchors = [akLeft, akTop, akRight, akBottom]
           AutoSize = False
           Caption = 
@@ -1100,7 +1048,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object rgOverwriteType: TRadioGroup
           Left = 22
-          Top = 215
+          Top = 228
           Width = 480
           Height = 102
           Anchors = [akLeft, akRight, akBottom]
@@ -1123,10 +1071,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         ExplicitHeight = 454
         DesignSize = (
           527
-          317)
+          330)
         object Label2: TLabel
           Left = 17
-          Top = 297
+          Top = 310
           Width = 89
           Height = 13
           Anchors = [akLeft, akBottom]
@@ -1135,7 +1083,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object Label9: TLabel
           Left = 204
-          Top = 297
+          Top = 310
           Width = 16
           Height = 13
           Anchors = [akLeft, akBottom]
@@ -1146,7 +1094,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Left = 0
           Top = 0
           Width = 527
-          Height = 287
+          Height = 300
           Align = alTop
           Anchors = [akLeft, akTop, akRight, akBottom]
           Font.Charset = ANSI_CHARSET
@@ -1162,12 +1110,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
               'o encrypt/decrypt your data.'#39)
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 885
-          ExplicitHeight = 424
         end
         object seMasterKeyLength: TSpinEdit64
           Left = 137
-          Top = 293
+          Top = 306
           Width = 61
           Height = 22
           Anchors = [akLeft, akBottom]
@@ -1219,12 +1165,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             'options below.'#39');')
           ParentFont = False
           TabOrder = 1
-          ExplicitWidth = 885
-          ExplicitHeight = 329
         end
         object gbRNG: TGroupBox
           Left = 0
-          Top = 192
+          Top = 205
           Width = 527
           Height = 125
           Align = alBottom
@@ -1327,13 +1271,12 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             'generated.'#39');')
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 885
         end
         object MouseRNG: TMouseRNG
           Left = 0
           Top = 49
           Width = 527
-          Height = 235
+          Height = 248
           TrailLines = 5
           LineWidth = 5
           LineColor = clNavy
@@ -1356,10 +1299,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         ExplicitHeight = 454
         DesignSize = (
           527
-          317)
+          330)
         object lblToken: TLabel
           Left = 7
-          Top = 278
+          Top = 291
           Width = 34
           Height = 13
           Anchors = [akLeft, akBottom]
@@ -1369,7 +1312,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object cbToken: TComboBox
           Left = 47
-          Top = 275
+          Top = 288
           Width = 145
           Height = 21
           Anchors = [akLeft, akBottom]
@@ -1378,7 +1321,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object pbRefresh: TButton
           Left = 198
-          Top = 273
+          Top = 286
           Width = 75
           Height = 25
           Anchors = [akLeft, akBottom]
@@ -1391,7 +1334,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Left = 0
           Top = 0
           Width = 527
-          Height = 266
+          Height = 279
           Align = alTop
           Anchors = [akLeft, akTop, akRight, akBottom]
           Font.Charset = ANSI_CHARSET
@@ -1406,8 +1349,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
               'random data, from the list shown below'#39');')
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 885
-          ExplicitHeight = 403
         end
       end
       object tsRNGGPG: TTabSheet
@@ -1437,12 +1378,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             'button.'#39)
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 885
-          ExplicitHeight = 381
         end
         object GroupBox2: TGroupBox
           Left = 0
-          Top = 244
+          Top = 257
           Width = 527
           Height = 73
           Align = alBottom
@@ -1487,10 +1426,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         ExplicitHeight = 454
         DesignSize = (
           527
-          317)
+          330)
         object Label1: TLabel
           Left = 272
-          Top = 601
+          Top = 614
           Width = 66
           Height = 13
           Anchors = [akRight, akBottom]
@@ -1503,7 +1442,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Left = 3
           Top = 3
           Width = 517
-          Height = 273
+          Height = 286
           Anchors = [akLeft, akTop, akRight, akBottom]
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -1528,12 +1467,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
               'icular need to do otherwise.')
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 875
-          ExplicitHeight = 410
         end
         object seKeyIterations: TSpinEdit64
           Left = 353
-          Top = 295
+          Top = 308
           Width = 167
           Height = 22
           Anchors = [akRight, akBottom]
@@ -1552,13 +1489,12 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         ExplicitLeft = 8
         ExplicitTop = 22
         ExplicitWidth = 961
-        ExplicitHeight = 330
         DesignSize = (
           527
-          317)
+          330)
         object Label8: TLabel
           Left = 4
-          Top = 459
+          Top = 472
           Width = 67
           Height = 13
           Anchors = [akLeft, akBottom]
@@ -1568,7 +1504,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object Label10: TLabel
           Left = 166
-          Top = 459
+          Top = 472
           Width = 19
           Height = 13
           Anchors = [akLeft, akBottom]
@@ -1595,7 +1531,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object seSaltLength: TSpinEdit64
           Left = 443
-          Top = 91
+          Top = 104
           Width = 81
           Height = 22
           Anchors = [akRight, akBottom]
@@ -1603,7 +1539,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           MaxValue = 9999
           TabOrder = 0
           Value = 512
-          ExplicitTop = 104
         end
       end
       object tsCDBLocation: TTabSheet
@@ -1616,12 +1551,12 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         ExplicitHeight = 454
         DesignSize = (
           527
-          317)
+          330)
         object reInstructCDBLocation: TRichEdit
           Left = 0
           Top = 0
           Width = 527
-          Height = 186
+          Height = 199
           Anchors = [akLeft, akTop, akRight, akBottom]
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -1656,12 +1591,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
               'ase your volume'#39#39's size by 512 bytes.'#39');')
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 885
-          ExplicitHeight = 323
         end
         object rbCDBInVolFile: TRadioButton
           Left = 14
-          Top = 205
+          Top = 218
           Width = 355
           Height = 17
           Anchors = [akLeft, akBottom]
@@ -1672,7 +1605,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object rbCDBInKeyfile: TRadioButton
           Left = 14
-          Top = 228
+          Top = 241
           Width = 355
           Height = 17
           Anchors = [akLeft, akBottom]
@@ -1683,7 +1616,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object gbKeyfile: TGroupBox
           Left = 14
-          Top = 251
+          Top = 264
           Width = 499
           Height = 73
           Anchors = [akLeft, akRight, akBottom]
@@ -1726,10 +1659,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         ExplicitHeight = 454
         DesignSize = (
           527
-          317)
+          330)
         object Label12: TLabel
           Left = 20
-          Top = 422
+          Top = 435
           Width = 143
           Height = 13
           Anchors = [akLeft, akBottom]
@@ -1738,7 +1671,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object Label14: TLabel
           Left = 328
-          Top = 422
+          Top = 435
           Width = 25
           Height = 13
           Anchors = [akLeft, akBottom]
@@ -1749,7 +1682,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Left = 3
           Top = 0
           Width = 521
-          Height = 289
+          Height = 302
           Anchors = [akLeft, akTop, akRight, akBottom]
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -1781,12 +1714,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             '     '#39'actually be held within the volume.'#39');')
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 879
-          ExplicitHeight = 426
         end
         object se64Padding: TSpinEdit64
           Left = 399
-          Top = 295
+          Top = 308
           Width = 121
           Height = 22
           Anchors = [akRight, akBottom]
@@ -1806,12 +1737,12 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         ExplicitHeight = 454
         DesignSize = (
           527
-          317)
+          330)
         object reSummary: TRichEdit
           Left = 4
           Top = 95
           Width = 513
-          Height = 195
+          Height = 208
           Anchors = [akLeft, akTop, akRight, akBottom]
           Color = clBtnFace
           Font.Charset = ANSI_CHARSET
@@ -1842,11 +1773,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 875
         end
         object ckAutoMountAfterCreate: TCheckBox
           Left = 11
-          Top = 296
+          Top = 309
           Width = 309
           Height = 17
           Anchors = [akLeft, akBottom]
@@ -1860,8 +1790,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       Top = 380
       Width = 535
       Constraints.MinWidth = 535
-      ExplicitTop = 504
-      ExplicitWidth = 893
+      ExplicitTop = 380
+      ExplicitWidth = 535
       inherited lblStage: TLabel
         Width = 165
         Anchors = [akLeft, akTop, akRight]
@@ -1873,24 +1803,24 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       end
       inherited pbNext: TButton
         Left = 281
-        ExplicitLeft = 639
+        ExplicitLeft = 281
       end
       inherited pbBack: TButton
         Left = 197
-        ExplicitLeft = 555
+        ExplicitLeft = 197
       end
       inherited pbFinish: TButton
         Left = 365
-        ExplicitLeft = 723
+        ExplicitLeft = 365
       end
       inherited pbCancel: TButton
         Left = 449
-        ExplicitLeft = 807
+        ExplicitLeft = 449
       end
       inherited pbStage: TProgressBar
         Width = 165
         Anchors = [akLeft, akTop, akRight]
-        ExplicitWidth = 523
+        ExplicitWidth = 165
       end
     end
   end

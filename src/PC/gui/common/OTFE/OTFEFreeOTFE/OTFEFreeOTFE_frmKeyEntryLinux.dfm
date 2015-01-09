@@ -2,7 +2,7 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
   Left = 388
   Top = 281
   BorderStyle = bsDialog
-  Caption = 'FreeOTFE Linux Key Entry'
+  Caption = 'DoxBox dm-crypt Key Entry'
   ClientHeight = 406
   ClientWidth = 423
   Color = clBtnFace
@@ -48,10 +48,6 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
     TabOrder = 0
     object tsKey: TTabSheet
       Caption = 'Key'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox1: TGroupBox
         Left = 4
         Top = 4
@@ -262,7 +258,7 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
           Height = 22
           Enabled = False
           Increment = 1
-          TabOrder = 4
+          TabOrder = 5
           Value = 9999
           OnChange = SelectionChange
         end
@@ -282,7 +278,7 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
           Height = 21
           Caption = '?'
           Enabled = False
-          TabOrder = 3
+          TabOrder = 6
           OnClick = pbKeyProcCypherInfoClick
         end
         object cbKeyProcCypher: TComboBox
@@ -318,10 +314,6 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
     object tsEncryption: TTabSheet
       Caption = 'Encryption'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox3: TGroupBox
         Left = 37
         Top = 16
@@ -476,10 +468,6 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
     object tsFileOptions: TTabSheet
       Caption = 'File options'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 35
         Top = 16
@@ -571,10 +559,6 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
     object tsMountOptions: TTabSheet
       Caption = 'Mount options'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox2: TGroupBox
         Left = 75
         Top = 16
@@ -673,12 +657,12 @@ object frmKeyEntryLinux: TfrmKeyEntryLinux
   end
   object OpenSettingsFileDlg: TSDUOpenDialog
     PreserveCWD = False
-    Left = 60
-    Top = 368
+    Left = 68
+    Top = 360
   end
   object SaveSettingsFileDlg: TSDUSaveDialog
     PreserveCWD = False
-    Left = 152
-    Top = 368
+    Left = 160
+    Top = 360
   end
 end
