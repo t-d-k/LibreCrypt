@@ -949,7 +949,7 @@ procedure DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
     // ---------
     // Volume creation
     function CreateFreeOTFEVolumeWizard(): Boolean;
-    function CreateLinuxVolumeWizard(): Boolean;
+    function CreateLinuxVolumeWizard(out aFileName :string): Boolean;
     function CreateLinuxGPGKeyfile(): Boolean;
 
     function WizardChangePassword(): Boolean;
@@ -3087,7 +3087,8 @@ begin
     // Mount as LUKS if they are...
     {  TDK change - test user option to force non-luks (for hidden vols) }
     if (IsLUKSVolume(volumeFilenames[0])) and not forceHidden then begin
-      Result := MountLUKS(volumeFilenames, mountedAs, ReadOnly, password, keyfile, silent);
+      Result := MountLUKS(volumeFilenames, mountedAs, ReadOnly, password, keyfile,keyfileIsASCII,
+      keyfileNewlineType, silent);
       exit;
     end;
   end;
@@ -3246,11 +3247,10 @@ function TOTFEFreeOTFEBase.GenerateLinuxVolumeKey(hashDriver: Ansistring;
 var
   seededKey:    Ansistring;
   hashOutput:   TSDUBytes;
-  allOK:        Boolean;
   len:          Integer;
   volumeKeyStr: Ansistring;
 begin
-  allOK := True;
+  Result := True;
 
   // Salt the user's password
   seededKey := userKey + seed;
@@ -3280,7 +3280,7 @@ begin
 
   // If the target key length is > -1, truncate or we right-pad with 0x00
   // as appropriate
-  if (Result) then begin
+  if Result then begin
     if (targetKeylengthBits > -1) then begin
       // Copy as much of the hash value as possible to match the key length
 
@@ -3298,7 +3298,7 @@ begin
   end;
 
 
-  if not (allOK) then begin
+  if not (Result) then begin
     LastErrorCode := OTFE_ERR_HASH_FAILURE;
   end;
 
@@ -5738,7 +5738,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.CreateLinuxVolumeWizard(): Boolean;
+function TOTFEFreeOTFEBase.CreateLinuxVolumeWizard(out aFileName :string): Boolean;
 var
   volSizeDlg: TfrmNewVolumeSize;
   mr:         Integer;
@@ -5754,10 +5754,11 @@ begin
       LastErrorCode := OTFE_ERR_USER_CANCEL;
     end else
     if (mr = mrOk) then begin
-      if not (SDUCreateLargeFile(volSizeDlg.Filename, volSizeDlg.VolumeSize, True, userCancel))
+      aFileName :=  volSizeDlg.Filename;
+      if not (SDUCreateLargeFile(aFileName, volSizeDlg.VolumeSize, True, userCancel))
       then begin
         if not (userCancel) then begin
-          SDUMessageDlg(_('An error occured while trying to create your DoxBox'),
+          SDUMessageDlg(_('An error occured while trying to create your dm-crypt Box'),
             mtError, [mbOK], 0);
         end;
 
@@ -5769,6 +5770,8 @@ begin
   finally
     volSizeDlg.Free();
   end;
+   { TODO 1 -otdk -csecurity : overwrite with 'chaff' - need to set up cyphers etc. }
+
 
   Result := allOK;
 end;
@@ -6528,7 +6531,6 @@ function TOTFEFreeOTFEBase.ReadRawVolumeCriticalData(filename: String;
 begin
   Result := ReadRawVolumeData(filename, offsetWithinFile, (CRITICAL_DATA_LENGTH div 8),
     criticalData);
-
 end;
 
 

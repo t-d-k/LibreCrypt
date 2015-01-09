@@ -12,6 +12,6 @@ created by	name						size		format 	label				cyph											hash						sector IVs	
 6.1					f.box														F_FILE			blowfish 128bit cbc				RIPEMD-160 (Linux; Twice, with A) 									null IV, additionally xor ...
 cryptsetup  luks.box				4Mb  		fat     luks 				aes-xts-plain64																																keysize: 256 bits
 cryptsetup 	luks_essiv.box	4Mb			-				luks				AES (256 bit CBC) 				SHA-256																							essiv																																																									
-
-
-
+freeotfe    a.box				as above																																																			using keyfile a.cdb p:secret 
+6.1         b.box				as above																																																			using keyfile b.cdb p:secret
+6.1					dmcrypt_dx     2MB							dmcrypt_dx	des 64bit cbc							SHA-512 as with 'A's checked 												plain dm-crypt vol created with doxbox	, empty seed .essiv  IVhash=md5 IVcipher=des, saved as dmcrypt_dx.les

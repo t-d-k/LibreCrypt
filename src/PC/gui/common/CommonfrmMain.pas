@@ -1161,9 +1161,13 @@ begin
 
 end;
 
+//creates plain dmcrypt vol
 procedure TfrmMain.actLinuxNewExecute(Sender: TObject);
+var
+aFileName :string;
 begin
-  if fOtfeFreeOtfeBase.CreateLinuxVolumeWizard() then begin
+//create empty file
+  if fOtfeFreeOtfeBase.CreateLinuxVolumeWizard(aFileName) then begin
     SDUMessageDlg(
       _('Linux volume created successfully.') + SDUCRLF + SDUCRLF +
       _('Don''t forget to mount and format this volume before use.'),
@@ -1173,6 +1177,11 @@ begin
       SDUMessageDlg(_('Linux volume could not be created'), mtError);
     end;
   end;
+ { TODO 1 -otdk -cenhance : wipe volume first}
+   //create enc vol
+    MountFiles(
+        ftLinux,aFileName,
+        false, true        );       
 
 end;
 
