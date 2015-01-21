@@ -57,7 +57,7 @@ table.note {
 .tip { 
 	background-color: lightgreen;
   padding:1em; 
-  background-image: url(images/note_Tip.png);
+  background-image: url(https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/note_Tip.png);
   background-position: top left;
   background-repeat: no-repeat;
   padding-left:50px;   
@@ -69,7 +69,7 @@ table.note {
 .security_tip {    
   background-color: pink;    
   padding:1em;
-  background-image: url(images/note_SecurityTip.png);
+  background-image: url(https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/note_SecurityTip.png);
   background-position: top left;
   background-repeat: no-repeat;
   padding-left:70px; 
@@ -83,7 +83,7 @@ table.note {
   background-color: pink;    
   padding:1em;
   padding-left:100px;
-  background-image: url(images/note_Technical.png);
+  background-image: url(https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/note_Technical.png);
   background-position: top left;
   background-repeat: no-repeat;
  
