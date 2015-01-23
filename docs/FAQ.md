@@ -4,7 +4,7 @@
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>FAQ</TITLE>
 
@@ -21,7 +21,7 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 ***
 
 <SPAN class="tip">
-The latest version of this FAQ, along with the latest DoxBox user manual, can be found online at the [DoxBox web site](http://DoxBox.eu/)
+The latest version of this FAQ, along with the latest DoxBox user manual, can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
 </SPAN>
 * * *
 
