@@ -11,10 +11,13 @@ unit CommonfrmCDBBackupRestore;
 interface
 
 uses
-  Buttons, Classes, Controls, Dialogs,
-  Forms, Graphics, Messages, OTFEFreeOTFE_VolumeSelect, OTFEFreeOTFEBase_U, SDUForms, SDUFrames,
-  SDUSpin64Units, Spin64, StdCtrls,
-  SysUtils, Windows;
+//delphi
+  Buttons, Classes, Controls, Dialogs, Spin64, StdCtrls,SysUtils, Windows,
+  Forms, Graphics, Messages,
+  //sdu
+   SDUForms, SDUFrames,SDUSpin64Units,
+  // doxbox
+   OTFEFreeOTFE_VolumeSelect, OTFEFreeOTFEBase_U;
 
 type
   TCDBOperationType = (opBackup, opRestore);
@@ -36,16 +39,23 @@ type
     procedure pbOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ControlChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+
+  private
+    procedure SetSrcFilename(const Value: String);
+    procedure SetDestFilename(const Value: String);
   PROTECTED
-    FDlgType:      TCDBOperationType;
+    FOpType:      TCDBOperationType;
     FOTFEFreeOTFE: TOTFEFreeOTFEBase;
+    fsilent :Boolean;
+      fsilentResult: TModalResult;
 
     function GetSrcFilename(): String;
     function GetSrcOffset(): Int64;
     function GetDestFilename(): String;
     function GetDestOffset(): Int64;
 
-    procedure SetDlgType(dType: TCDBOperationType);
+    procedure SetOpType(dType: TCDBOperationType);
 
     function SanityCheckBackup(): Boolean;
     function SanityCheckRestore(): Boolean;
@@ -55,11 +65,11 @@ type
   PUBLIC
     OTFEFreeOTFE: TOTFEFreeOTFEBase;
 
-    property DlgType: TCDBOperationType Read FDlgType Write SetDlgType;
-
-    property SrcFilename: String Read GetSrcFilename;
+    property OpType: TCDBOperationType Read FOpType Write SetOpType;
+    property silent : boolean read fsilent write fsilent;
+    property SrcFilename: String Read GetSrcFilename write SetSrcFilename;
     property SrcOffset: Int64 Read GetSrcOffset;
-    property DestFilename: String Read GetDestFilename;
+    property DestFilename: String Read GetDestFilename write SetDestFilename;
     property DestOffset: Int64 Read GetDestOffset;
 
   end;
@@ -68,6 +78,7 @@ type
 implementation
 
 {$R *.DFM}
+
 
 uses
   OTFEFreeOTFE_DriverAPI, SDUDialogs,
@@ -84,20 +95,25 @@ const
 {$ENDIF}
 
 resourcestring
-  USE_NOT_IN_USE = 'Please ensure that the volume is not mounted, or otherwise in use';
+  USE_NOT_IN_USE = 'Please ensure that the Box is not open, or otherwise in use';
 
 procedure TfrmCDBBackupRestore.FormShow(Sender: TObject);
 begin
-  SelectSrcFile.Filename      := '';
+  if not fsilent then begin
+    SelectSrcFile.Filename      := '';
+    SelectDestFile.Filename     := '';
+  end;
+
   SelectSrcFile.OTFEFreeOTFE  := OTFEFreeOTFE;
-  SelectDestFile.Filename     := '';
+
   SelectDestFile.OTFEFreeOTFE := OTFEFreeOTFE;
 
   se64UnitOffsetSrc.Value  := 0;
   se64UnitOffsetDest.Value := 0;
 
-  if (DlgType = opBackup) then begin
-    self.Caption := _('Backup Volume Critical Data Block');
+  { TODO -otdk -crefactor : have permanant  header and volume sections and get rid of swapping round }
+  if (FOpType = opBackup) then begin
+    self.Caption := _('Backup FreeOTFE Volume Header');
 
     gbSrc.Caption          := _('Volume details');
     lblFileDescSrc.Caption := _('&Volume:');
@@ -106,10 +122,11 @@ begin
     lblFileDescDest.Caption := _('&Backup filename:');
 
     // Backup file starts from 0 - don't allow the user to change offset
-    SDUEnableControl(se64UnitOffsetDest, False);
-    SDUEnableControl(lblOffsetDest, False);
+    se64UnitOffsetDest.Visible := false;
+    lblOffsetDest.Visible := false;
+
   end else begin
-    self.Caption := _('Restore Volume Critical Data Block');
+    self.Caption := _('Restore FreeOTFE Volume Header');
 
     gbSrc.Caption          := _('Backup details');
     lblFileDescSrc.Caption := _('&Backup filename:');
@@ -118,28 +135,46 @@ begin
     lblFileDescDest.Caption := _('&Volume:');
 
     // Backup file starts from 0 - don't allow the user to change offset
-    SDUEnableControl(se64UnitOffsetSrc, False);
-    SDUEnableControl(lblOffsetSrc, False);
+    se64UnitOffsetSrc.Visible := False;
+    lblOffsetSrc.Visible := False;
   end;
-
 
   EnableDisableControls();
 
+  if fSilent then begin
+    ModalResult := mrCancel;
+     pbOKClick(self);
+    FSilentResult := ModalResult;
+    // if testing and no errors, then close dlg
+    if ModalResult = mrOk then PostMessage(Handle, WM_CLOSE, 0, 0);
+  end;
+
 end;
 
+
+
+
+procedure TfrmCDBBackupRestore.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  inherited;
+  // Posting WM_CLOSE causes Delphi to reset ModalResult to mrCancel.
+  // As a result, we reset ModalResult here, note will only close automatically if mr = mrok anyway
+  if fsilent then begin
+ ModalResult := FSilentResult;
+  end;
+end;
 
 procedure TfrmCDBBackupRestore.FormCreate(Sender: TObject);
 begin
   SelectSrcFile.SelectFor  := fndOpen;
   SelectDestFile.SelectFor := fndSave;
 
-  // Default to backup...
-  DlgType := opBackup;
-
   SelectDestFile.OnChange             := ControlChange;
-  SelectDestFile.SelectFor            := fndOpen;
-  SelectDestFile.AllowPartitionSelect := True;
+  SelectSrcFile.OnChange             := ControlChange;
 
+  // Default to backup...
+  SetOpType(opBackup);
 end;
 
 
@@ -158,7 +193,7 @@ begin
   // to continue, the user may just slam "YES!" without checking - and if
   // they've transposed the filenames, this would overwrite the volume file!
   // Note: You can only backup to a *file*
-  if FileExists(DestFilename) then begin
+  if FileExists(GetDestFilename) then begin
     SDUMessageDlg(
       _('The file you are attempting to backup to already exists.') + SDUCRLF +
       SDUCRLF + _(
@@ -189,14 +224,14 @@ begin
   // Ensure that both the source (backup) and destination (volume) files
   // exist
   // Note: You can only restore from a *file*
-  if not (FileExists(SrcFilename)) then begin
+  if not (FileExists(GetSrcFilename)) then begin
     SDUMessageDlg(_('The backup file specified does not exist.'), mtError, [mbOK], 0);
   end else begin
     // Note: We're not worried if the destination doens't exist - the restore
     //       operation will simply fail in this case
 
     // Check that the source file is the right size for a backup file
-    srcSize := SDUGetFileSize(SrcFilename);
+    srcSize := SDUGetFileSize(GetSrcFilename);
     if (srcSize <> (CRITICAL_DATA_LENGTH div 8)) then begin
       SDUMessageDlg(
         _('The source file you specified does not appear to be the right size for a backup file') +
@@ -208,12 +243,15 @@ begin
 
       // We don't need this confirmation when BACKING UP - only when RESTORING
       // Backup is relativly safe as it backs up to a file which doesn't exist
-      confirm := SDUMessageDlg(SDUParamSubstitute(_(
-        'Please confirm: Do you wish to restore the critial data block from backup file:' +
-        SDUCRLF + SDUCRLF + '%1' + SDUCRLF + SDUCRLF + 'Into the volume:' +
-        SDUCRLF + SDUCRLF + '%2' + SDUCRLF + SDUCRLF +
-        'Starting from offset %3 in the volume?'), [SrcFilename,
-        DestFilename, DestOffset]), mtConfirmation, [mbYes, mbNo], 0);
+      if fsilent then
+        confirm := mrYes
+      else
+        confirm := SDUMessageDlg(SDUParamSubstitute(_(
+          'Please confirm: Do you wish to restore the critial data block from backup file:' +
+          SDUCRLF + SDUCRLF + '%1' + SDUCRLF + SDUCRLF + 'Into the volume:' +
+          SDUCRLF + SDUCRLF + '%2' + SDUCRLF + SDUCRLF +
+          'Starting from offset %3 in the volume?'), [GetSrcFilename,
+          GetDestFilename, GetDestOffset]), mtConfirmation, [mbYes, mbNo], 0);
 
       if (confirm = mrYes) then begin
         allOK := True;
@@ -234,11 +272,11 @@ var
 begin
   allOK := False;
 
-  if (DlgType = opBackup) then begin
+  if (FOpType = opBackup) then begin
     if SanityCheckBackup() then begin
-      if OTFEFreeOTFE.BackupVolumeCriticalData(SrcFilename, SrcOffset,
-        DestFilename) then begin
-        SDUMessageDlg(_('Backup operation completed successfully.'), mtInformation);
+      if OTFEFreeOTFE.BackupVolumeCriticalData(GetSrcFilename, GetSrcOffset,
+        GetDestFilename) then begin
+        if not fsilent then SDUMessageDlg(_('Backup operation completed successfully.'), mtInformation);
         allOK := True;
       end else begin
         SDUMessageDlg(
@@ -252,9 +290,9 @@ begin
   end  // if (dlgType = opBackup) then
   else begin
     if SanityCheckRestore() then begin
-      if OTFEFreeOTFE.RestoreVolumeCriticalData(SrcFilename, DestFilename,
-        DestOffset) then begin
-        SDUMessageDlg(_('Restore operation completed successfully.'), mtInformation);
+      if OTFEFreeOTFE.RestoreVolumeCriticalData(GetSrcFilename, GetDestFilename,
+        GetDestOffset) then begin
+        if not fsilent then SDUMessageDlg(_('Restore operation completed successfully.'), mtInformation);
         allOK := True;
       end else begin
         SDUMessageDlg(
@@ -279,6 +317,12 @@ begin
   Result := SelectSrcFile.Filename;
 end;
 
+procedure TfrmCDBBackupRestore.SetSrcFilename(const Value: String);
+begin
+  SelectSrcFile.Filename := Value;
+end;
+
+
 function TfrmCDBBackupRestore.GetSrcOffset(): Int64;
 begin
   Result := se64UnitOffsetSrc.Value;
@@ -287,6 +331,11 @@ end;
 function TfrmCDBBackupRestore.GetDestFilename(): String;
 begin
   Result := SelectDestFile.Filename;
+end;
+
+procedure TfrmCDBBackupRestore.SetDestFilename(const Value: String);
+begin
+  SelectDestFile.Filename := Value;
 end;
 
 function TfrmCDBBackupRestore.GetDestOffset(): Int64;
@@ -306,14 +355,16 @@ begin
 
 end;
 
-procedure TfrmCDBBackupRestore.SetDlgType(dType: TCDBOperationType);
+
+
+procedure TfrmCDBBackupRestore.SetOpType(dType: TCDBOperationType);
 begin
-  FDlgType := dType;
+  FOpType := dType;
 
-  SelectSrcFile.AllowPartitionSelect  := (FDlgType = opBackup);
-  SelectDestFile.AllowPartitionSelect := (FDlgType <> opBackup);
+  SelectSrcFile.AllowPartitionSelect  := (FOpType = opBackup);
+  SelectDestFile.AllowPartitionSelect := (FOpType <> opBackup);
 
-  if (FDlgType = opBackup) then begin
+  if (FOpType = opBackup) then begin
     SelectSrcFile.FileSelectFilter      := FILE_FILTER_FLT_VOLUMESANDKEYFILES;
     SelectSrcFile.FileSelectDefaultExt  := FILE_FILTER_DFLT_VOLUMESANDKEYFILES;
     SelectDestFile.FileSelectFilter     := FILE_FILTER_FLT_CDBBACKUPS;
@@ -326,6 +377,7 @@ begin
   end;
 
 end;
+
 
 
 procedure TfrmCDBBackupRestore.ControlChange(Sender: TObject);
