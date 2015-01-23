@@ -1,6 +1,6 @@
 test boxes all have nonhidden password 'password'. hidden have: 5ekr1t unless said otherwise
 key iterations 2048 unless said otherwise
-all boxes have a 'readme' file in 
+all volumes have a 'readme.txt' file in 
 
 created by	name						size		format 	label				cyph											hash						sector IVs													notes		    
 6.0					a.box						2mb			fat			DOXTEST1		aes 256 xts 							sha512	        -                   	 							(no chaff, manually overwritten)
@@ -14,4 +14,9 @@ cryptsetup  luks.box				4Mb  		fat     luks 				aes-xts-plain64																	
 cryptsetup 	luks_essiv.box	4Mb			-				luks				AES (256 bit CBC) 				SHA-256																							essiv																																																									
 freeotfe    a.box				as above																																																			using keyfile a.cdb p:secret 
 6.1         b.box				as above																																																			using keyfile b.cdb p:secret
-6.1					dmcrypt_dx     2MB							dmcrypt_dx	des 64bit cbc							SHA-512 as with 'A's checked 												plain dm-crypt vol created with doxbox	, empty seed .essiv  IVhash=md5 IVcipher=des, saved as dmcrypt_dx.les
+freeotfe		dmcrypt_dx     4MB							dmcrypt_dx	des 64bit cbc							SHA-512 with 'A's checked 										  		plain dm-crypt vol created with doxbox	, empty seed .essiv  IVhash=md5 IVcipher=des, saved as dmcrypt_dx.les default hidden offset is  2097152
+freeotfe 		dmcrypt_dx									    dmcrypt_hid   MARS 128but CBC         ripemd-128 with 'A's not checked  Null IV           offset=2097152,p=5ekr1t saved as dmcrypt_hid.les 2mb fat
+
+keyfiles
+a.cdb   salt 256 iterations 2048 (default) for a.box p:secret
+
