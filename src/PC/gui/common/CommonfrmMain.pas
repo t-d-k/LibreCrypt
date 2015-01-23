@@ -224,6 +224,9 @@ type
     fPkcs11Library: TPKCS11Library;
 
     fOtfeFreeOtfeBase: TOTFEFreeOTFEBase;
+    fFuncTestPending :boolean;// if functional test was selelcted in cmd line but not run yet
+
+   procedure DoAppIdle(Sender: TObject; var Done: Boolean) ; // TIdleEvent
 
     function HandleCommandLineOpts_Create(): eCmdLine_Exit; VIRTUAL; ABSTRACT;
     function HandleCommandLineOpts_Mount(): eCmdLine_Exit; VIRTUAL;
@@ -283,7 +286,7 @@ type
 
     procedure StartupUpdateCheck();
 
-    procedure BackupRestore(dlgType: TCDBOperationType);
+    procedure BackupRestore(dlgType: TCDBOperationType; volPath: TFilename = '';hdrPath: TFilename = '';silent :boolean = false);
 
     procedure SetStatusBarToHint(Sender: TObject);
     function EnsureOTFEComponentActive: Boolean;
@@ -708,7 +711,7 @@ begin
   StatusBar_Hint.Visible   := False;
   StatusBar_Status.Visible := False;
   Application.OnHint       := SetStatusBarToHint;
-
+Application.OnIdle := DoAppIdle;
 end;
 
 
@@ -928,6 +931,16 @@ begin
 
 end;
 
+procedure TfrmMain.DoAppIdle(Sender: TObject; var Done: Boolean);
+begin
+  if fFuncTestPending then begin
+      fFuncTestPending := false;
+    actTestExecute(self);
+
+  end;
+  Done := true;
+end;
+
 procedure TfrmMain.actCDBBackupExecute(Sender: TObject);
 begin
   BackupRestore(opBackup);
@@ -938,19 +951,29 @@ begin
   BackupRestore(opRestore);
 end;
 
-procedure TfrmMain.BackupRestore(dlgType: TCDBOperationType);
+procedure TfrmMain.BackupRestore(dlgType: TCDBOperationType; volPath: TFilename = '';hdrPath: TFilename = '';silent :boolean = false );
 var
   dlg: TfrmCDBBackupRestore;
 begin
   dlg := TfrmCDBBackupRestore.Create(self);
+
   try
+    dlg.silent := silent;
+    if dlgType = opBackup then begin
+      dlg.SrcFilename := volPath;
+    dlg.DestFilename := hdrPath;
+    end else  begin
+      dlg.SrcFilename := hdrPath;
+    dlg.DestFilename := volPath;
+        end;
+    
     dlg.OTFEFreeOTFE := fOtfeFreeOtfeBase;
-    dlg.DlgType      := dlgType;
+    dlg.OpType      := dlgType;
     dlg.ShowModal();
+
   finally
     dlg.Free();
   end;
-
 end;
 
 procedure TfrmMain.miCreateKeyfileClick(Sender: TObject);
@@ -1553,9 +1576,11 @@ end;
 function TfrmMain.HandleCommandLineOpts_EnableDevMenu(): eCmdLine_Exit;
 begin
   Result := ceSUCCESS;
-
-  if SDUCommandLineSwitch(CMDLINE_ENABLE_DEV_MENU) then
+  fFuncTestPending := false;
+  if SDUCommandLineSwitch(CMDLINE_ENABLE_DEV_MENU) then begin
     miDev.Visible := True;
+    fFuncTestPending := true;
+  end;
 end;
 
  // Handle "/mount" command line

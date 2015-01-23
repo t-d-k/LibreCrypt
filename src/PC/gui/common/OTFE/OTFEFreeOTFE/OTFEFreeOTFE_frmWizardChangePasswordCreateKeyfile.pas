@@ -113,6 +113,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure pbRefreshClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   PRIVATE
 
     //    fCombinedRandomData: Ansistring;
@@ -144,8 +145,14 @@ type
     procedure SetupInstructionsCommon();
     procedure SetupInstructionsCreateKeyfile();
     procedure SetupInstructionsChangePassword();
+    procedure SetSrcFilename(const Value: String);
+    procedure SetDestUserKey(const Value: Ansistring);
+    procedure SetIsPartition(const Value: Boolean);
+    procedure SetSrcUserKey(const Value: Ansistring);
 
   PROTECTED
+  fsilent: Boolean;
+      fsilentResult: TModalResult;
     procedure SetupInstructions(); OVERRIDE;
 
     procedure EnableDisableControls(); OVERRIDE;
@@ -160,15 +167,16 @@ type
     procedure fmeSelectPartitionChanged(Sender: TObject);
 
   PUBLISHED
-  {  property IsPartition: Boolean Read GetIsPartition;
-    property SrcFilename: String Read GetSrcFilename;
-    property Offset: Int64 Read GetOffset;
-    property SrcUserKey: Ansistring Read GetSrcUserKey;
-    property SrcSaltLength: Integer Read GetSrcSaltLength;
+    property silent: Boolean read fsilent write fsilent;
+    property IsPartition: Boolean Read GetIsPartition write SetIsPartition;
+    property SrcFilename: String Read GetSrcFilename write SetSrcFilename;
+{    property Offset: Int64 Read GetOffset;}
+    property SrcUserKey: Ansistring Read GetSrcUserKey write SetSrcUserKey;
+{    property SrcSaltLength: Integer Read GetSrcSaltLength;
     property SrcKeyIterations: Integer Read GetSrcKeyIterations;
-    property DestFilename: String Read GetDestFilename Write SetDestFilename;
-    property DestUserKey: Ansistring Read GetDestUserKey;
-    property DestSaltLength: Integer Read GetDestSaltLength;
+    property DestFilename: String Read GetDestFilename Write SetDestFilename;}
+    property DestUserKey: Ansistring Read GetDestUserKey Write SetDestUserKey;
+{    property DestSaltLength: Integer Read GetDestSaltLength;
     property DestKeyIterations: Integer Read GetDestKeyIterations;
     property DestRequestedDriveLetter: ansichar Read GetDestRequestedDriveLetter; }
     //    property RandomData: Ansistring Read GetRandomData;
@@ -201,7 +209,6 @@ resourcestring
 { TODO 2 -otdk -crefactor : this uses a lot of same code and GUI as create volume - turn into frames }
 function TfrmWizardChangePasswordCreateKeyfile.GetSrcFilename(): String;
 begin
-  Result := '';
 
   if GetIsPartition() then begin
     Result := fmeSelectPartition.SelectedDevice;
@@ -209,6 +216,19 @@ begin
     Result := lblSrcFilename.Caption;
   end;
 end;
+
+procedure TfrmWizardChangePasswordCreateKeyfile.SetSrcFilename(
+  const Value: String);
+begin
+  if GetIsPartition() then begin
+//    fmeSelectPartition.SelectedDevice := Value;
+    assert(false,'this feature not supported');
+  end else begin
+    lblSrcFilename.Caption := Value;
+  end;
+end;
+
+
 
 function TfrmWizardChangePasswordCreateKeyfile.GetOffset(): Int64;
 begin
@@ -219,6 +239,12 @@ function TfrmWizardChangePasswordCreateKeyfile.GetSrcUserKey(): Ansistring;
 begin
   { TODO 1 -otdk -cfix : warn user - no unicode }
   Result := preSrcUserKey.Text;
+end;
+
+procedure TfrmWizardChangePasswordCreateKeyfile.SetSrcUserKey(
+  const Value: Ansistring);
+begin
+  preSrcUserKey.Text  := Value;
 end;
 
 function TfrmWizardChangePasswordCreateKeyfile.GetSrcSaltLength(): Integer;
@@ -239,6 +265,13 @@ end;
 function TfrmWizardChangePasswordCreateKeyfile.GetDestUserKey(): Ansistring;
 begin
   Result := preDestUserKey1.Text; { TODO 1 -otdk -cfix : warn user - no unicode }
+end;
+
+procedure TfrmWizardChangePasswordCreateKeyfile.SetDestUserKey(
+  const Value: Ansistring);
+begin
+  preDestUserKey1.Text := Value;
+  preDestUserKey2.Text := Value;
 end;
 
 function TfrmWizardChangePasswordCreateKeyfile.GetDestSaltLength(): Integer;
@@ -433,15 +466,9 @@ begin
   //SDUInitAndZeroBuffer(0,fCombinedRandomData);
 
   //  fCombinedRandomData := '';
-
-  // tsFileOrPartition
-  rgFileOrPartition.Items.Clear();
-  rgFileOrPartition.Items.Add(FILEORPART_OPT_VOLUME_FILE);
-  rgFileOrPartition.Items.Add(FILEORPART_OPT_PARTITION);
-  rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_VOLUME_FILE);
-
-  // tsSrcFile
-  lblSrcFilename.Caption       := '';
+  { TODO -otdk -crefactor : this should all be in formcreate - but need to have global TOTFEFreeOTFEBase object first }
+    // tsSrcFile
+  if not fsilent then lblSrcFilename.Caption       := '';
   seSrcKeyIterations.MinValue  := 1;
   seSrcKeyIterations.MaxValue  := 999999;
   // Need *some* upper value, otherwise setting MinValue won't work properly
@@ -463,7 +490,7 @@ begin
   // FreeOTFE volumes CAN have newlines in the user's password
   preSrcUserKey.WantReturns := True;
   preSrcUserKey.WordWrap    := True;
-  preSrcUserKey.Lines.Clear();
+  if not fsilent then preSrcUserKey.Lines.Clear();
   preSrcUserKey.PasswordChar := fFreeOTFEObj.PasswordChar;
   preSrcUserKey.WantReturns  := fFreeOTFEObj.AllowNewlinesInPasswords;
   preSrcUserKey.WantTabs     := fFreeOTFEObj.AllowTabsInPasswords;
@@ -481,7 +508,7 @@ begin
   // FreeOTFE volumes CAN have newlines in the user's password
   preDestUserKey1.WantReturns := True;
   preDestUserKey1.WordWrap    := True;
-  preDestUserKey1.Lines.Clear();
+  if not fsilent then preDestUserKey1.Lines.Clear();
   preDestUserKey1.PasswordChar := fFreeOTFEObj.PasswordChar;
   preDestUserKey1.WantReturns  := fFreeOTFEObj.AllowNewlinesInPasswords;
   preDestUserKey1.WantTabs     := fFreeOTFEObj.AllowTabsInPasswords;
@@ -490,7 +517,7 @@ begin
   // FreeOTFE volumes CAN have newlines in the user's password
   preDestUserKey2.WantReturns := True;
   preDestUserKey2.WordWrap    := True;
-  preDestUserKey2.Lines.Clear();
+ if not fsilent then  preDestUserKey2.Lines.Clear();
   preDestUserKey2.PasswordChar := fFreeOTFEObj.PasswordChar;
   preDestUserKey2.PasswordChar := fFreeOTFEObj.PasswordChar;
   preDestUserKey2.WantReturns  := fFreeOTFEObj.AllowNewlinesInPasswords;
@@ -529,6 +556,7 @@ begin
   lblGPGFilename.Caption := '';
 
 
+
   // Set all tabs to show that they have not yet been completed
   for i := 0 to (pcWizard.PageCount - 1) do begin
     pcWizard.Pages[i].TabVisible := False;
@@ -561,6 +589,14 @@ begin
 
 
   UpdateUIAfterChangeOnCurrentTab();
+
+  if fSilent then begin
+    ModalResult := mrCancel;
+    pbFinishClick(self);
+    FSilentResult := ModalResult;
+    // if testing and no errors, then close dlg
+    if ModalResult = mrOk then PostMessage(Handle, WM_CLOSE, 0, 0);
+  end;
 end;
 
 
@@ -712,14 +748,13 @@ begin
         mtError
         );
   end;
-
-
   end;
 
   if (allOK) then begin
-    SDUMessageDlg(_('Completed successfully.'), mtInformation);
+    if not fsilent then SDUMessageDlg(_('Completed successfully.'), mtInformation);
     ModalResult := mrOk;
   end else begin
+
     SDUMessageDlg(
       _('Unable to complete requested operation: please ensure that your Box is not already open or otherwise in use, and that the keyphrase, salt and offset entered are correct.'),
       mtError
@@ -893,6 +928,13 @@ begin
     FILEORPART_OPT_PARTITION));
 end;
 
+procedure TfrmWizardChangePasswordCreateKeyfile.SetIsPartition(
+  const Value: Boolean);
+begin
+  if Value then rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_PARTITION)
+  else  rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_VOLUME_FILE);
+end;
+
 procedure TfrmWizardChangePasswordCreateKeyfile.FormWizardStepChanged(Sender: TObject);
 begin
   inherited;
@@ -909,7 +951,19 @@ begin
 
 end;
 
+procedure TfrmWizardChangePasswordCreateKeyfile.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  inherited;
+  // Posting WM_CLOSE causes Delphi to reset ModalResult to mrCancel.
+  // As a result, we reset ModalResult here, note will only close automatically if mr = mrok anyway
+  if fsilent then begin
+ ModalResult := FSilentResult;
+  end;
+end;
+
 procedure TfrmWizardChangePasswordCreateKeyfile.FormCreate(Sender: TObject);
+
 begin
   deviceList  := TStringList.Create();
   deviceTitle := TStringList.Create();
@@ -917,14 +971,21 @@ begin
   fmeSelectPartition.OnChange := fmeSelectPartitionChanged;
 
   OnWizardStepChanged := FormWizardStepChanged;
+  { TODO -otdk -crefactor : populate in designer }
+
+        // tsFileOrPartition
+  rgFileOrPartition.Items.Clear();
+  rgFileOrPartition.Items.Add(FILEORPART_OPT_VOLUME_FILE);
+  rgFileOrPartition.Items.Add(FILEORPART_OPT_PARTITION);
+  rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_VOLUME_FILE);
+
+
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.FormDestroy(Sender: TObject);
 begin
   deviceList.Free();
   deviceTitle.Free();
-
-
 
   PurgeMouseRNGData();
 end;

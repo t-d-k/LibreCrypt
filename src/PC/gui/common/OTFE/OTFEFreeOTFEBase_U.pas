@@ -550,7 +550,7 @@ type
     function PopulateVolumeMetadataStruct(LinuxVolume: Boolean; PKCS11SlotID: Integer;
       var metadata: TOTFEFreeOTFEVolumeMetaData): Boolean;
 
-    function ParseVolumeMetadata(metadataAsString: String;
+    function ParseVolumeMetadata(metadataAsString: AnsiString;
       var metadata: TOTFEFreeOTFEVolumeMetaData): Boolean;
 
     procedure VolumeMetadataToString(metadata: TOTFEFreeOTFEVolumeMetaData;
@@ -952,8 +952,11 @@ procedure DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
     function CreateLinuxVolumeWizard(out aFileName :string): Boolean;
     function CreateLinuxGPGKeyfile(): Boolean;
 
-    function WizardChangePassword(): Boolean;
-    function WizardCreateKeyfile(): Boolean;
+    function WizardChangePassword(SrcFilename :string = '';
+OrigKeyPhrase :AnsiString = '';
+NewKeyPhrase:AnsiString = '';
+silent: Boolean = False): Boolean;
+    function WizardCreateKeyfile(silent: Boolean = False): Boolean;
 
 
     // ---------
@@ -2969,18 +2972,18 @@ end;
 
  // ----------------------------------------------------------------------------
  // Convert string to metadata struct
-function TOTFEFreeOTFEBase.ParseVolumeMetadata(metadataAsString: String;
+function TOTFEFreeOTFEBase.ParseVolumeMetadata(metadataAsString: AnsiString;
   var metadata: TOTFEFreeOTFEVolumeMetaData): Boolean;
 var
   retval:       Boolean;
   tmpStructPtr: POTFEFreeOTFEVolumeMetaData;
 begin
-  retval := (Pos(MetadataSig(), metadataAsString) = 0);
+  retval := (Pos(MetadataSig(), metadataAsString) = 1);
 
   if retval then begin
     retval := (length(metadataAsString) = sizeof(metadata));
     if retval then begin
-      tmpStructPtr := POTFEFreeOTFEVolumeMetaData(PChar(metadataAsString));
+      tmpStructPtr := POTFEFreeOTFEVolumeMetaData(PAnsiChar(metadataAsString));
       metadata     := tmpStructPtr^;
     end;
 
@@ -3098,12 +3101,13 @@ begin
   try
     keyEntryDlg.fFreeOTFEObj := self;
     keyEntryDlg.Initialize();
-    if (lesFile <> '') then begin
+    keyEntryDlg.SetOffset(offset); // do before keyfile as that has offset in
+    if (lesFile <> '') then
       keyEntryDlg.LoadSettings(lesFile);
-    end;
+
     keyEntryDlg.SetReadonly(ReadOnly);
     keyEntryDlg.SetKey(password);
-    keyEntryDlg.SetOffset(offset);
+
 
     if silent then begin
       mr := mrOk;
@@ -4455,13 +4459,12 @@ begin
                   if (allOK) then begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('Decrypted data hashed OK.');
-  {$ENDIF}
+  {$ENDIF}          checkDataGeneratedStr := SDUBytesToString(checkDataGenerated);
                     // If the checkdata newly generated is less than hk bits, right pad it with zero bits
                     if ((Length(checkDataGenerated) * 8) < hk) then begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('Check hash generated hash less than hk bits; padding...');
   {$ENDIF}
-                      checkDataGeneratedStr := SDUBytesToString(checkDataGenerated);
                       checkDataGeneratedStr :=
                         checkDataGeneratedStr + StringOfChar(AnsiChar(#0),
                         (((Length(checkDataGeneratedStr) * 8) - hk) div 8));
@@ -4486,7 +4489,6 @@ begin
                       SDUResetLength(checkDataGenerated, hk);
                     end;
                     assert(checkDataGeneratedStr = SDUBytesToString(checkDataGenerated));
-
 
                     if (checkDataDecrypted = SDUBytesToString(checkDataGenerated)) then begin
                       // We have found the hash and cypher to successfully decrypt!
@@ -4586,13 +4588,9 @@ begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('Completed checking for all hash/cypher combinations');
   {$ENDIF}
-
-
   finally
     Screen.Cursor := prevCursor;
   end;
-
-
   // Depending on how many hash/cypher combinations were found, select the
   // appropriate one to use
   if (allOK) then begin
@@ -6092,7 +6090,7 @@ var
                                 //       The maximum that could possibly be required is CRITICAL_DATA_LENGTH bits.
 begin
   //todo: better to get random data in WriteVolumeCriticalData
-  allOK := GetRandPool.GenerateRandomData(CRITICAL_DATA_LENGTH, newRandomPadData);
+  GetRandPool.GenerateRandomData(CRITICAL_DATA_LENGTH, newRandomPadData);
 
   if ReadVolumeCriticalData(filename, offsetWithinFile, oldUserPassword,
     oldSaltLength,  // In bits
@@ -6390,7 +6388,11 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.WizardChangePassword(): Boolean;
+function TOTFEFreeOTFEBase.WizardChangePassword(
+SrcFilename :string = '';
+OrigKeyPhrase :AnsiString = '';
+NewKeyPhrase:AnsiString = '';
+silent: Boolean = False): Boolean;
 var
   dlg:   TfrmWizardChangePasswordCreateKeyfile;
   allOK: Boolean;
@@ -6402,11 +6404,20 @@ begin
     try
       dlg.ChangePasswordCreateKeyfile := opChangePassword;
       dlg.fFreeOTFEObj                := self;
-      allOK                           := (dlg.ShowModal() = mrOk);
+      dlg.IsPartition := false;
+      dlg.SrcFileName :=            SrcFilename;
+      dlg.SrcUserKey:=         OrigKeyPhrase;
+      dlg.DestUserKey:=        NewKeyPhrase;
+       dlg.silent := silent;
+    //  if silent then begin
+//         dlg.pbFinishClick(self);
+//         allOK := true;
+//      end else begin
+         allOK := (dlg.ShowModal() = mrOk);
+//      end;
     finally
       dlg.Free();
     end;
-
   end;
 
   Result := allOK;
@@ -6414,7 +6425,8 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.WizardCreateKeyfile(): Boolean;
+function TOTFEFreeOTFEBase.WizardCreateKeyfile(
+  silent: Boolean = False): Boolean;
 var
   dlg: TfrmWizardChangePasswordCreateKeyfile;
 begin
@@ -6425,7 +6437,16 @@ begin
     try
       dlg.ChangePasswordCreateKeyfile := opCreateKeyfile;
       dlg.fFreeOTFEObj                := self;
-      Result                          := (dlg.ShowModal() = mrOk);
+
+
+          if silent then begin
+            dlg.pbFinishClick(self);
+            Result := true;
+          end    else begin
+              Result                          := (dlg.ShowModal() = mrOk);
+          end;
+
+
     finally
       dlg.Free();
     end;
