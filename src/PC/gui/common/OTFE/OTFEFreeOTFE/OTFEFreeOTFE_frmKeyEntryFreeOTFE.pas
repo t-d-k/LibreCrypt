@@ -672,7 +672,6 @@ begin
   if fsilent then begin
     ModalResult := FSilentResult;
   end;
-
 end;
 
 procedure TfrmKeyEntryFreeOTFE.FormCreate(Sender: TObject);

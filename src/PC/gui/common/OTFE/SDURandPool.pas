@@ -73,9 +73,9 @@ type
 
     class function CanUseCryptLib(): Boolean;
     //obsolete
-    class function GenerateRandomData(bytesRequired: Integer;
+    class procedure GenerateRandomData(bytesRequired: Integer;
     // Output
-      var randomData: Ansistring): Boolean;
+      var randomData: Ansistring);
       OVERLOAD;
 
     // gpgFilename - Only MANDATORY if RNG_OPT_GPG specified as RNG
@@ -282,9 +282,9 @@ end;
 
  //obsolete
  // gpgFilename - Only MANDATORY if RNG_OPT_GPG specified as RNG
-class function TRandPool.GenerateRandomData(bytesRequired: Integer;
+class procedure TRandPool.GenerateRandomData(bytesRequired: Integer;
   // Output
-  var randomData: Ansistring): Boolean;
+  var randomData: Ansistring);
 
 var
   randomBytes: TSDUBytes;

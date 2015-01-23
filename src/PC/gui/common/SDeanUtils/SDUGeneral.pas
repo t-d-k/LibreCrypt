@@ -5724,7 +5724,8 @@ end;
 
 
  // ----------------------------------------------------------------------------
- { TODO 1 -otdk -cclean : cant see any advantage over 'format' - replace with (also cant escape %) }
+ { TODO 1 -otdk -cclean : cant see much advantage over 'format' (also cant escape %) - so replace with Format() where pos }
+ {replaces %1 etc in string with params - can repeat eg %1 twice}
 function SDUParamSubstitute(const formatStr: String; const params: array of Variant): String;
 var
   i: Integer;

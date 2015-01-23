@@ -143,6 +143,7 @@ begin
         Application.ShowMainForm := TRUE;
         frmFreeOTFEMain.InitApp();
 
+
 {$IF CompilerVersion >= 18.5}
         // Delphi 7 doesn't need this, but Delphi 2007 (and 2006 as well? Not
         // checked...) need this to honor any "Run minimised" option set in any
