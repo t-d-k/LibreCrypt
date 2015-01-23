@@ -69,6 +69,7 @@ const
 
 
 type
+{these dialogs just don't change working dir if PreserveCWD is set}
   TSDUOpenDialog = class(TOpenDialog)
   private
     FPreserveCWD: boolean;
@@ -88,7 +89,7 @@ type
   end;
 
 procedure Register;
-
+   { TODO -otdk -crefactor : what is the point of these functions - needed in >XP? }
 var
   // If set, then any messages displayed will have any single CRLFs stripped
   // out, while double CRLFs (SDU_CRLF+SDUCRLF) will be preserved under
@@ -98,6 +99,8 @@ var
   // word wrapping, such CRLFs will be removed
   SDUDialogsStripSingleCRLF: boolean = TRUE;
 
+  // set to true to suppress all dialogs (ege for testing)
+//  G_SuppressDialogs : boolean = False;
 
 // Display confirmation dialog with OK/Cancel or Yes/No buttons.
 // Returns TRUE if the user selects OK or Yes.
@@ -693,6 +696,8 @@ var
   TDButtons: integer;
   TBIcon: PWChar;
 begin
+//  if G_SuppressDialogs then exit;
+
   allOK := _SDUTaskDialog_LoadDLL();
 
   if SDUDialogsStripSingleCRLF then
@@ -955,4 +960,5 @@ end;
 
 
 END.
+
 
