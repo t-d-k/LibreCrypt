@@ -5,7 +5,7 @@
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>Getting Started Guide</TITLE>
 
@@ -21,7 +21,9 @@
 _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
-      
+<SPAN class="tip">
+The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+</SPAN>       
             
 ## Getting Started Guide
 
@@ -41,8 +43,8 @@ Pretty much everything in DoxBox should be fairly self-explanatory. Most items h
 ### Installation
 </A>
 
-Before DoxBox can be used, it must first be installed. You need to have administrator priveleges to install, after it will prompt you to reboot. 
-After rebooting te words 'test mode' appear on the Desktop.
+Before DoxBox can be used, it must first be installed. You need to have administrator privileges to install, after it will prompt you to reboot. 
+After rebooting the words 'test mode' appear on the Desktop.
 After it has been installed, run it the first time as administrator; this will install the drivers. 
 
 After that, it may be run as a non-administrator.
@@ -53,7 +55,7 @@ Please see the section on [Installation and Upgrading](installation_and_upgradin
 ### Portable mode
 </A>
 
-Before DoxBox Portable can be used, it must be unzipped from the portable zipfile.
+Before DoxBox Portable can be used, it must be unzipped from the portable zip file.
 It needs to be run as administrator, in order to install the drivers in 'portable mode'. 
 
 Please see the section on [Installation and Upgrading](installation_and_upgrading__PC.html) for more instructions.

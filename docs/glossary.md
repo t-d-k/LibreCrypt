@@ -6,7 +6,7 @@
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>Appendix D: Glossary</TITLE>
 
@@ -22,8 +22,9 @@
 _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
-
-      
+<SPAN class="tip">
+The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+</SPAN>      
             
 
 ## Appendix D: Glossary
@@ -38,7 +39,7 @@ See "Critical Data Block"
 
 AKA "CDB"
 
-A block of data holding data vital to the correct mounting and use of an encrypted partition (volume). Among other things, a volume's CDB contains the master key used for encrypting/decrypting data as it is written/read from a the volume. CDBs are *encrypted*. A full description of what DoxBox stores in its CDBs can be found in the [Technical Details](technical_details.htm#technical_details) section.
+The header of FreeOTFE format volumes. A block of data holding data vital to the correct mounting and use of an encrypted partition (volume). Among other things, a volume's CDB contains the master key used for encrypting/decrypting data as it is written/read from a the volume. CDBs are *encrypted*. A full description of what DoxBox stores in its CDBs can be found in the [Technical Details](technical_details.htm#technical_details) section.
 
 *LES file*
 

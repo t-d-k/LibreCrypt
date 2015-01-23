@@ -6,7 +6,7 @@
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>Linux Examples: Cryptoloop</TITLE>
 
@@ -22,7 +22,9 @@
 _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
-
+<SPAN class="tip">
+The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+</SPAN>   
       
             
 
@@ -118,9 +120,7 @@ passes "losetup" a "-e" parameter), Cryptoloop defaults to the following:
   </TBODY>
 </TABLE>
 
-"Hash with "A"s, if hash output is too short" option - this option should 
-**not** be selected; if the hash used outputs too few bits, its output is
-right-padded with 0x00 characters to the required length.
+"Hash with "A"s, if hash output is too short" option - this option should  **not** be selected; if the hash used outputs too few bits, its output is right-padded with 0x00 characters to the required length.
       </TD>
     </TR>
     <TR>
@@ -135,8 +135,7 @@ right-padded with 0x00 characters to the required length.
 ### Example #1: Mounting a Cryptoloop Volume Without Encryption
 </A>
 
-This is the simplest form of Linux volume file, and the recommended
-starting point for checking that DoxBox is operating correctly.
+This is the simplest form of Linux volume file, and the recommended starting point for checking that DoxBox is operating correctly.
 
 Creating the volume file under Linux:
 

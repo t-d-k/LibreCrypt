@@ -1,12 +1,10 @@
-
-
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
 <meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>Appendix B: Credits</TITLE>
 
@@ -23,7 +21,9 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
-      
+<SPAN class="tip">
+The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+</SPAN>      
             
 ## Appendix B: Credits
 
@@ -31,20 +31,18 @@ DoxBox is based on FreeOTFE developed by Sarah Dean.
 
 Thanks go to:
 
-<UL>
 * [Tom St Denis](mailto:tomstdenis@iahu.ca] for the [LibTomCrypt library](http://libtomcrypt.org/)).
 * Hi/fn and Counterpane Systems for the optimised reference implementation of Twofish ([http://www.schneier.com/twofish.html](http://www.schneier.com/twofish.html)).
 * Oliver Taylor for the PKCS#11 and partition display implementation, and his work on the drivers
 * OSR Online ([http://www.osronline.com/](http://www.osronline.com/)) - a good resource for those writing device drivers.
-* [Peter Gutmann](mailto:pgut001@cs.auckland.ac.nz)) for the cryptlib library which (if installed) FreeOTFE can take advantage of an RNG.
+* [Peter Gutmann](mailto:pgut001@cs.auckland.ac.nz)) for the cryptlib library. If installed, DoxBox can take advantage of this as an RNG.
 * [Clemens Fruhwirth](http://clemens.endorphin.org/)), author of the LUKS specification and ESSIV.
 * [David Saunders](mailto:dsaunders@gawab.com)) for setting up the www.FreeOTFE.org domain registration and web site.
 * Gianluca Varenni for his USENET post **way** back in August 2002 relating to the "_alldvrm" driver problem under MS Windows 2000, and the solution he used!
 * [Dr. Brian R. Gladman](mailto:gladman@seven77.demon.co.uk)) for his implementation of the 2nd round AES candidates
 * [Lars B. Dybdahl](mailto:Lars@dybdahl.dk) and [Peter Thörnqvist](mailto:peter3@peter3.com) for dxgettext, an Delphi port of GNU's gettext 
 * [Alexander Okorokov](mailto:oraclex@mail.ru)) for feedback and code improvements
-* [Brian Smith](mailto:bsmith@ringcube.com) for identifying, tracking down and debugging an intermittant driver issue which could cause crashing when dismounting
-</UL>
+* [Brian Smith](mailto:bsmith@ringcube.com) for identifying, tracking down and debugging an intermittent driver issue which could cause crashing when dismounting
 
 * * * 
 <A NAME="level_3_heading_1">

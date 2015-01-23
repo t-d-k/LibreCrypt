@@ -6,7 +6,7 @@
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>Installation and Upgrading from a Previous Version</TITLE>
 
@@ -23,9 +23,12 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 
 ***
+<SPAN class="tip">
+The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+</SPAN>   
 
 ## SafeBoot
-Regardless of which installation procedure is used 'Safe Boot' needs to be disabled first, it is not possible to use Test Signed' drivers with this on.
+Regardless of which installation procedure is used 'Safe Boot' needs to be disabled first, it is not possible to use 'Test Signed' drivers with this on.
 Once installed it should be possible to turn it on again.
 
 ## Kaspersky

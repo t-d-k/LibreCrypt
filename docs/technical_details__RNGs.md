@@ -6,7 +6,7 @@
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>Technical Details: Random Number Generators (RNGs)</TITLE>
 
@@ -22,7 +22,9 @@
 _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
-
+<SPAN class="tip">
+The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+</SPAN>   
       
             
 
@@ -30,24 +32,20 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 
 DoxBox offers a choice of four different random number generators (RNGs) for use when creating new DoxBoxes:
 
-<OL>
 
-  * Microsoft CryptoAPI
-  * Mouse movement
-  * cryptlib
-  * PKCS#11 tokens
+  1. Microsoft CryptoAPI
+  1. Mouse movement
+  1. cryptlib
+  1. PKCS#11 tokens
 
-</OL>
 
 Whichever one is selected must produce 4096 bits (512 bytes) of cryptographically secure random numbers. This random data is used in three ways:
 
-<OL>
 
-  * As the master key used for encrypting/decrypting your data
-  * For salting
-  * As random "padding" to make up otherwise unused space within the DoxBox's critical data block. (See volume layout documentation for further details)
+  1. As the master key used for encrypting/decrypting your data
+  1. For salting
+  1. As random "padding" to make up otherwise unused space within the DoxBox's critical data block. (See volume layout documentation for further details)
 
-</OL>
 
 If more than one RNG is selected, their output will be combined (XOR'd together) and the resulting data used. In this way, the random data generated will never be weaker than the strongest selected RNG.
 

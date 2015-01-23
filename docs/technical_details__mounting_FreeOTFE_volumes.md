@@ -1,12 +1,10 @@
-
-
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
 <meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>Technical Details: Mounting DoxBox Volumes</TITLE>
 
@@ -21,16 +19,13 @@
 <SPAN CLASS="master_title">
 _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
-***
-
-      
+***      
             
 
 ### Technical Details: Mounting DoxBox Volumes
 
 To mount a DoxBox, the following information must be obtained from the user:
 
-</p>
 
 <OL>
  * The volume to be mounted
@@ -103,7 +98,6 @@ In detail, the following procedure is used:
 </OL>
 
 After all possible hash/cypher combinations have been exhausted:
-<UL>
 
 * If no cypher/hash combination successfully decrypted the "Volume details block", the user will be informed that they have entered incorrect details.
 
@@ -111,26 +105,16 @@ After all possible hash/cypher combinations have been exhausted:
 
 * If exactly one cypher/hash combination successfully decrypted the "Volume details block", then the "Encrypted partition image" will be decrypted as necessary using this cypher/hash combination, together with the information obtained from the decrypted "Volume details block".
 
-</UL>
 As a result of the CDB layout, it is not necessary to store either the cypher or hash algorithm used for en/decryption anywhere. Nor is it necessary to prompt the user for this information as this information can be determined dynamically by attempting the mount using all possible combinations of installed hash/cypher and testing if the same check MAC can be generated using the decrypted data.
 
 <A NAME="level_4_heading_1">
 #### Additional information
 </A>
-The driver API supports passing volume "metadata" to the driver when
-mounting a volume. Information passed in this way to the driver is
-simply stored by the driver against the mounted volume, and is not
-processed in any way.
+The driver API supports passing volume "metadata" to the driver when mounting a volume. Information passed in this way to the driver is simply stored by the driver against the mounted volume, and is not processed in any way.
 
-When a user application calls DeviceIOControl with
-IOCTL_FREEOTFE_GET_DISK_DEVICE_STATUS, the number of bytes of volume
-metadata is returned. By calling with IOCTL_FREEOTFE_GET_DISK_DEVICE_METADATA, the actual data that was
-stored when mounting can be retrieved.
+When a user application calls DeviceIOControl with IOCTL_FREEOTFE_GET_DISK_DEVICE_STATUS, the number of bytes of volume metadata is returned. By calling with IOCTL_FREEOTFE_GET_DISK_DEVICE_METADATA, the actual data that was stored when mounting can be retrieved.
 
-This is intended for future development; to enable user applications to
-store information against volumes they mount (e.g. "This is a Linux
-volume", "This is a DoxBox"), which can later be retrieved for
-display to the user.
+This is intended for future development; to enable user applications to store information against volumes they mount (e.g. "This is a Linux volume", "This is a DoxBox"), which can later be retrieved for display to the user.
 
 Volume metadata passed to the driver in this way should be kept to the **absolute minimum possible**.
 

@@ -6,7 +6,7 @@
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>DoxBox</TITLE>
 
@@ -21,20 +21,11 @@
 <SPAN CLASS="master_title">
 _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
-***
-
-      
+***    
             
 # DoxBox
 
 *Version: v6.0 Beta*
-
-
-By Sarah Dean
-
-([sdean12@sdean12.org](mailto:sdean12@sdean12.org))
-
-Last updated: 7th February 2010
 
 [http://DoxBox.eu/](http://DoxBox.eu/)
 

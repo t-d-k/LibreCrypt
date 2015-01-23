@@ -5,7 +5,7 @@
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>Plausible Deniability</TITLE>
 
@@ -78,7 +78,7 @@ So in order for this approach to be successful, the DoxBox file must be initiali
 
 The 'chaff' cannot be just pseudo-random data; pseudo-random data can potentially be distinguished from encrypted data, and even be predictable. In this case, the hidden volume will appear as high-entropy data against a pattern formed by the pseudo-random data.
 
-Truly random data can be difficult to rapidly generate in large quantities using a computer. However data produced by a 'cryptographically secure pseudorandom number generator' (CSPRNG) is thought to be indistinguishable from random data and, importantly, from encrypted data without cracking the cypher.<1--TODO:ref-->
+Truly random data is difficult to generate in large quantities using a computer. However data produced by a 'cryptographically secure pseudorandom number generator' (CSPRNG) is thought to be indistinguishable from random data and, importantly, from encrypted data without cracking the cypher.<1--TODO:ref-->
 
 So to attain plausible deniability, DoxBox automatically overwrites any host file or partition, when its created, with the output from a CSPRNG.
 

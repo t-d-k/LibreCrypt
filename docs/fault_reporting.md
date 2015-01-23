@@ -4,7 +4,7 @@
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>Fault/Bug Reporting</TITLE>
 
@@ -19,11 +19,14 @@
 _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
-     
+
+<SPAN class="tip">
+The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+</SPAN>       
             
 ## Fault/Bug Reporting
 
-Although DoxBox should be pretty stable and have no faults, it's always possible that you may find *something* not quite right. In these cases, it would be *very much appreciated* if you could email a fault report the address shown in the [contact details](contact_details.html).
+Although DoxBox should be pretty stable and have no faults, it's always possible that you may find *something* not quite right. In these cases, it would be *very much appreciated* if you could report it as shown in the [contact details](contact_details.html).
 
 If you have recently upgraded to a newer version of DoxBox, please could you ensure that you have followed the upgrade procedure *exactly* before reporting a fault. (See [Installation and Upgrading from a Previous Version](installation_and_upgrading__PC.html) section)
 
@@ -43,6 +46,4 @@ When reporting a fault with DoxBox, please include as much detail as possible, p
   1. A **small** test volume (e.g. 1MB) which can replicate the problem found (Note: _Please do *not* email volume files, unless asked to!_ An FTP site is available for uploading these)
 
 Some of the items listed above may include potentially sensitive data. In which case, feel free to omit that information - or better still, create a simple test case which replicates the problem, but doesn't include any such data.
-
-
 

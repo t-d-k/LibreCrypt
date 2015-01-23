@@ -6,7 +6,7 @@
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>Linux Volumes</TITLE>
 
@@ -22,7 +22,9 @@
 _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
-
+<SPAN class="tip">
+The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+</SPAN>   
       
             
 
@@ -31,7 +33,6 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
  
 _IMPORTANT_: This is obvious, _but_... If you are using FTP to transfer your Linux volumes between your Linux and MS Windows systems, _make sure you transfer the volume file in binary mode!_
 
-<UL>
   * [Creating Linux Volumes](#level_3_heading_1)
   * [Hiding a Linux Volume Within Another Volume](#level_3_heading_2)
   * [Mounting Volumes Created under Linux](#level_3_heading_3)
@@ -39,7 +40,6 @@ _IMPORTANT_: This is obvious, _but_... If you are using FTP to transfer your Lin
   * [dm-crypt Specific Information](#level_3_heading_5)
   * [LUKS Specific Information](#level_3_heading_6)
   * [Additional Notes on Linux Volumes](#level_3_heading_7)
-</UL>
 
 * * * 
 <A NAME="level_3_heading_1">

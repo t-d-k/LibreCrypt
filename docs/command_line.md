@@ -21,6 +21,9 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
+<SPAN class="tip">
+The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+</SPAN>
 
 ## Command Line Interface
 
@@ -65,14 +68,14 @@ DoxBox supports passing parameters via a command line interface.
 
 DoxBox has command line parameters so most operations can be run from the command line or MS Windows shortcuts.
 #### Note on terminology
-In the DoxBox GUI and documentation aimed at new users, easy to undersand words like 'open', 'DoxBox' and 'lock' are used. In documentation aimed at more advanced users (like this page) standard file system terms are used, as follows:
+In the DoxBox GUI and documentation aimed at new users, easy to understand words like 'open', 'DoxBox' and 'lock' are used. In documentation aimed at more advanced users (like this page) standard file system terms are used, as follows:
 <TABLE>
   <TBODY>    
-<TR> <TD>DoxBox Volume 						</TD><TD> A DoxBox                    </TD>  </TR>
-<TR> <TD>Volume 									</TD><TD> A 'Box', perhaps for a legacy app </TD>  </TR>
-<TR> <TD>Mount a volume 		</TD><TD> Open a Box     </TD>  </TR>
-<TR> <TD>Dismount a volume </TD><TD> Close a Box </TD>  </TR>
-<TR> <TD>Flush keys for a volume 	</TD><TD> Lock a Box   </TD>  </TR>    
+		<TR> <TD>DoxBox Volume</TD>				<TD> A DoxBox                    </TD>  </TR>
+		<TR> <TD>Volume</TD>							<TD> A 'Box', perhaps for a legacy app </TD>  </TR>
+		<TR> <TD>Mount a volume</TD>			<TD> Open a Box     </TD>  </TR>
+		<TR> <TD>Dismount a volume</TD>		<TD> Close a Box </TD>  </TR>
+		<TR> <TD>Flush keys for a volume</TD><TD> Lock a Box   </TD>  </TR>    
   </TBODY>
 </TABLE>
 
@@ -91,35 +94,33 @@ Note: Although there is currently no option to specify which drive letter a volu
   <TBODY>
     <TR>
       <TD style="vertical-align: top;">
-      <pre>/count</pre>
+      	<pre>/count</pre>
       </TD>
       <TD style="vertical-align: top;">Count the number of open DoxBoxes. Exit code indicates the appropriate number (or error code; see below)</TD>
     </TR>
     <TR>
       <TD style="vertical-align: top;">
-      <pre>/create</pre>
+      	<pre>/create</pre>
       </TD>
       <TD style="vertical-align: top;">Create new DoxBox</TD>
     </TR>
-<TR>
+    <TR>
       <TD style="vertical-align: top;">
-      <pre>/dismount {<span style="font-style: italic;">&lt;drive letter&gt;</span>[:] | all}</pre>
+      	<pre>/dismount {<span style="font-style: italic;">&lt;drive letter&gt;</span>[:] | all}</pre>
       </TD>
       <TD style="vertical-align: top;">Dismount indicated drive/all drives</TD>
     </TR>
     <TR>
       <TD style="vertical-align: top;">
-      <pre>/drive <span style="font-style: italic;">&lt;drive letter&gt;</span></pre>
+      	<pre>/drive <span style="font-style: italic;">&lt;drive letter&gt;</span></pre>
       </TD>
       <TD style="vertical-align: top;">Drive letter to be used when mounting the volume</TD>
     </TR>
-<TR>
+    <TR>
       <TD style="vertical-align: top;">
       <pre>/drivercontrol count [/type {total | portable | installed}]</pre>
       </TD>
-      <TD style="vertical-align: top;">Return count of drivers as exit code; total drivers present/count
-installed in portable mode/count formally installed. If "/type" is not
-specified, "/type total" is assumed</TD>
+      <TD style="vertical-align: top;">Return count of drivers as exit code; total drivers present/count installed in portable mode/count formally installed. If "/type" is not specified, "/type total" is assumed</TD>
     </TR>
     <TR>
       <TD style="vertical-align: top;">
@@ -139,7 +140,7 @@ specified, "/type total" is assumed</TD>
       </TD>
       <TD style="vertical-align: top;">Uninstall specified driver, or all installed drivers. Note that this takes the <span style="font-style: italic;">driver name</span>, not the driver's filename (Important: Don't attempt to uninstall drivers which are currently in use; e.g. by a mounted volume)</TD>
     </TR>
-<TR>
+    <TR>
       <TD style="vertical-align: top;">
       <pre>/force</pre>
       </TD>
@@ -151,19 +152,19 @@ specified, "/type total" is assumed</TD>
       </TD>
       <TD style="vertical-align: top;">The specified volume is a DoxBox. If a volume type (DoxBox/Linux) isn't specified, the user will be prompted for this information.</TD>
     </TR>
-<TR>
+    <TR>
       <TD style="vertical-align: top;">
       <pre>/keyfile <span style="font-style: italic;">&lt;keyfile&gt;</span></pre>
       </TD>
-      <TD style="vertical-align: top;">Keyfile to be used when opening a DoxBox. Only valid when opening DoxBoxs</TD>
+      <TD style="vertical-align: top;">Keyfile to be used when opening a DoxBox. Only valid when opening DoxBoxes</TD>
     </TR>
-<TR>
+    <TR>
       <TD style="vertical-align: top;">
       <pre>/keyfileisascii</pre>
       </TD>
       <TD style="vertical-align: top;">Only valid when mounting Linux LUKS volumes. If this flag is specified, the keyfile will be treated as containing ASCII password. Otherwise the keyfile will be treated as containing binary data. Default is to treat as binary.</TD>
     </TR>
-<TR>
+    <TR>
       <TD style="vertical-align: top;">
       <pre>/keyfilenewline {CRLF|LF|CR}</pre>
       </TD>
@@ -175,13 +176,13 @@ specified, "/type total" is assumed</TD>
       </TD>
       <TD style="vertical-align: top;">The number of key iterations</TD>
     </TR>
-<TR>
+    <TR>
       <TD style="vertical-align: top;">
       <pre>/lesfile <span style="font-style: italic;">&lt;LES file&gt;</span></pre>
       </TD>
       <TD style="vertical-align: top;">File from which to read Linux encryption settings from. Only valid when mounting non-LUKS Linux volumes</TD>
     </TR>
-<TR>
+    <TR>
       <TD style="vertical-align: top;">
       <pre>/linux</pre>
       </TD>
@@ -197,7 +198,7 @@ specified, "/type total" is assumed</TD>
       <TD style="vertical-align: top;">
       <pre>/minimize</pre>
       </TD>
-      <TD style="vertical-align: top;">Minimize main window when run</TD>
+      <TD style="vertical-align: top;">Minimise main window when run</TD>
     </TR>
     <TR>
       <TD style="vertical-align: top;">
@@ -253,18 +254,35 @@ specified, "/type total" is assumed</TD>
     </TR>
     <TR>
       <TD style="vertical-align: top;">
-      <pre>/saltlength <span style="font-style: italic;">&lt;saltlength&gt;</span></pre>
+      <pre>/saltlength _&lt;saltlength&gt;_</pre>
       </TD>
       <TD style="vertical-align: top;">The length of the salt (in bits)</TD>
     </TR>
-<TR>
+    <TR>
       <TD style="vertical-align: top;">
-      <pre>/volume <span style="font-style: italic;">&lt;volume&gt;</span></pre>
+      <pre>/volume _&lt;volume&gt;_</pre>
       </TD>
       <TD style="vertical-align: top;">The volume filename/partition to be used. When using a volume file, this should be set to the full path and filename of a volume file. Partitions should be specified in the form: "\Device\Harddisk<span style="font-style: italic;">X</span>\Partition<span style="font-style: italic;">Y</span>", where <span style="font-style: italic;">X</span> is 0 based, while <span style="font-style: italic;">Y</span> starts from 1 to indicate a particular partition, or 0 to indicate the entire disk.
-
-Important: If the volume filename has any spaces in it, then it should be enclosed in double quotes (").</TD>
+      Important: If the volume filename has any spaces in it, then it should be enclosed in double quotes (").</TD>
     </TR>
+    <TR>
+      <TD style="vertical-align: top;">
+      <pre>/SetTestMode _&lt;on|off&gt;_</pre>
+      </TD>
+      <TD style="vertical-align: top;">Set or unset Windows 'test mode' to allow unsigned drivers in 64 bit Windows 7 or above</TD>
+    </TR>
+    <TR>
+      <TD style="vertical-align: top;">
+      <pre>/SetInstalled</pre>
+      </TD>
+      <TD style="vertical-align: top;">Sets a flag in the ini file to indicate the app has been installed. Without this flag, DoxBox will attempt to install the drivers at startup</TD>
+    </TR>
+    <TR>
+      <TD style="vertical-align: top;">
+      <pre>/dev_menu</pre>
+      </TD>
+      <TD style="vertical-align: top;">Enables an extra 'developer' menu, used for testing</TD>
+    </TR>    
   </TBODY>
 </TABLE>
 
@@ -333,11 +351,11 @@ When run at the command line, DoxBox will terminate with one of the following ex
 
 Opening a DoxBox:
 
-> <pre>DoxBox.exe /mount /volume "C:\My Private Data\my encrypted volume.dat" /freeotfe</pre>
+> <pre>DoxBox.exe /mount /volume "C:\My Private Data\my encrypted volume.box" /freeotfe</pre>
 
 Mounting a Linux volume readonly:
 
-> <pre>DoxBox.exe /mount /volume "C:\My Private Data\my encrypted volume.dat" /linux /readonly</pre>
+> <pre>DoxBox.exe /mount /volume "C:\My Private Data\my encrypted volume.box" /linux /readonly</pre>
 
 Mounting a DoxBox partition::
 

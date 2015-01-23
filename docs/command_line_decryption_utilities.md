@@ -1,12 +1,10 @@
-
-
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
 <meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>Appendix F: Command Line Decryption Utilities</TITLE>
 
@@ -21,27 +19,33 @@
 <SPAN CLASS="master_title">
 _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
+
+<SPAN class="tip">
+The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+</SPAN>
 ***
-      
-            
+                
 ## Appendix F: Command Line Decryption Utilities
 
 * * * 
 <A NAME="level_3_heading_1">
 ### Overview
 </A>
-*_Note: The development of the command line decryption utilities has ceased. This functionality has been superceded with the development of DoxBox Explorer_*
 
-DoxBox is relatively unique in that comes complete with software which may be used to decrypt encrypted volumes (provided the correct decryption key is known!).
+DoxBox comes complete with command line software which may be used to decrypt encrypted volumes (provided the correct decryption key is known).
 
 This software is designed to fulfil two main objectives:
 
-  1. To increase and encourage peer review of DoxBox
-  1. To act as a "security blanket" for users - should development of DoxBox ever be dropped, it will still be possible for users to recover their data, regardless of the state of the DoxBox project.
+  1. To ease peer review of DoxBox
+  1. To enable testing of the ciphers in isolation
+  3. To test some algorithms (notably key set up) using a diverse implementation
+  
+In addition it provides an extra insurance that data will be recoverable, because it is written in the portable C language, and uses minimal OS calls, it is less likely to need modification with later versions of Windows.  
 
 Functionally, this software has one task: to decrypt the encrypted partition area of DoxBox files and to write out the plaintext version for examination.
 
-This software is considerably easier to understand than the kernel mode drivers, and does **not** require the Microsoft SDK/DDK to be present. As a result, any competent software engineer should be able to modify the software as appropriate and confirm that data is being encrypted correctly by the DoxBox system.
+This software is considerably easier to understand than the kernel mode drivers, and does **not** require the Microsoft SDK/DDK to be present. As a result, any competent software engineer should be able to confirm that data is being encrypted correctly by the DoxBox software.
+This makes it possible to review and test the cryptographic code in isolation and verify both that it is identical to that used by the source libraries, and that it correctly implements the algorithm.  
 
 This software is **not** intended for general public use, but by those who understand and can write C. In order to use it, modifications to the source code will most probably be required (to change the decryption keys used, if nothing else). For this purpose, the command line decryption utilities are not released in binary form, only as source code which must be compiled by the user.
 
@@ -51,24 +55,17 @@ This software is **not** intended for general public use, but by those who under
 </A>
 Each of the command line decryption utilities is designed to operate in the following manner:
 
-  1. Open the (input) encrypted volume file.
-			* The filename used is **hard coded** to "inFile.dat"; obviously this may be changed as required.
-	
-  1. Open/Create the (output) plaintext volume file.
-			* The filename used is **hard coded** to "outFile.dat"; obviously this may be changed as required.
-	
-  1. Generate an IV, if required
-			* The method of generating the IV may vary, dependent on how the volume was encrypted
-
-			1. Read in a sector's worth of data from the input (encrypted) file
-  1. Decrypt the sector, block by block
-			* The key used here is **hard coded** in the source, and must be the actual key that was used to encrypt the data (obviously!)
-			* The way in which decryption is carried out is cypher, and cypher implementation dependent
-
-  1. Write the decrypted sector to the output (plaintext) file
-  1. Repeat steps 3-6 until all data has been decrypted
-  1. Close the output file
-  1. Close the input file
+  1. Open the (input) encrypted volume file.(The filename used is **hard coded** to "inFile.dat"; obviously this may be changed as required.)	
+  2. Open/Create the (output) plaintext volume file.(The filename used is **hard coded** to "outFile.dat"; obviously this may be changed as required.)	
+  3. Generate an IV, if required. (The method of generating the IV may vary, depending on how the volume was encrypted)
+  4. Read in a sector's worth of data from the input (encrypted) file
+  5. Decrypt the sector, block by block
+   * The key used here is **hard coded** in the source, and must be the actual key that was used to encrypt the data (obviously!)
+   * The way in which decryption is carried out is cypher, and cypher implementation dependent
+  6. Write the decrypted sector to the output (plaintext) file
+  7. Repeat steps 3-6 until all data has been decrypted
+  8. Close the output file
+  9. Close the input file
 
 Please note:
 

@@ -5,7 +5,7 @@ DoxBox: An Open-Source transparent encryption program for PCs. With this softwar
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>Driver signing and DoxBox</TITLE>
 
@@ -21,7 +21,9 @@ DoxBox: An Open-Source transparent encryption program for PCs. With this softwar
 _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
-
+<SPAN class="tip">
+The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+</SPAN>   
 
 ## Instructions  
 

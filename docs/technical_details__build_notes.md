@@ -5,7 +5,7 @@
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>Technical Details: Building the Software</TITLE>
 
@@ -282,10 +282,10 @@ Unfortunately the project was hosted on Berlios.de, which is now closed as a hos
 An older version of the project was hosted on sourceforge. Fortunately a patch was submited to the sourceforge forum, containing the latest code.
 In order to build the source with i18n support, only a file gnugettext.pas is needed. For convenience this is part of the github project.
 To retrive this, download dxgettext.7z from TODO and extract the file from the .\dxgettext\dxgettext\sample\ directory.
-TO run the other functions of dxgettext, viz extracting srings from the project and building .mo files:
+To run the other functions of dxgettext, viz extracting srings from the project and building .mo files:
 
 * install dxgettext from sourceforge, choosing 'no' to 'integate with IDE'
-* apply te patch from dxgettext.7z
+* apply the patch from dxgettext.7z
 * run the tools from the command line
 
 <A NAME="level_4_heading_4">

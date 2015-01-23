@@ -7,7 +7,7 @@
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
-<meta name="ROBOTS" content="ALL">
+
 
 <TITLE>Introduction</TITLE>
 
@@ -23,39 +23,43 @@
 _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***  
+<SPAN class="tip">
+The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+</SPAN>  
             
 ## Introduction
 
 DoxBox: An Open-Source "on-the-fly" transparent disk encryption program for MS Windows 2000/Vista/Windows 7 PCs (both 32 and 64 bit)
 
-With this software, you can create one or more "virtual disks" on your computer - anything written to these disks is automatically encrypted before being stored on your computers hard drive.
+This software can create "virtual disks" on your computer - anything written to these disks is automatically encrypted before being stored on your computer's hard drive.
 
 * * * 
 <A NAME="level_3_heading_1">
 ### Features
 </A>
 
-<UL>
 * *Source code freely available*
-* Easy to use; full wizard included for creating new volumes
+* Easy to use
 * Linux compatibility (Cryptoloop "losetup", dm-crypt and LUKS supported)
-* Powerful: Supports numerous hash/encryption algorithms, and provides a greater level of flexibility than any other transparent encryption system
+* Powerful: Supports more hash and encryption algorithms than any other transparent encryption system
 * Available in English, Spanish, German, Italian, French, Czech, Japanese, Croatian, Greek and Russian - with support for other language translations
+* Supports the modern recommended cypher algorithms such as AES, and XTS  
+* Operates under MS Windows 2000/Vista/Windows 7 platforms
+* "Portable mode" included; DoxBox doesn't need to be installed before it can be used - making it ideal for carrying your data securely on USB drives!
+* "Hidden" volumes may be concealed within other DoxBoxes, providing "plausible deniability"
+
+### Technical details
 * Hash algorithms include: MD5, SHA-512, RIPEMD-320, Tiger and _many_ more
 * Cyphers include AES (256 bit), Twofish (256 bit), Blowfish (448 bit), Serpent (256 bit) and _many_ more
 * Cypher modes supported include XTS, LRW and CBC (including XTS-AES-128 and XTS-AES-256)
-* "Portable mode" included; DoxBox doesn't need to be installed before it can be used - making it ideal for carrying your data securely on USB drives!
 * Security tokens/smartcards supported for extra (optional) security
-* Operates under MS Windows 2000/Vista/Windows 7 platforms
-* "Hidden" volumes may be concealed within other DoxBoxes, providing "plausible deniability"
 * DoxBoxes have no "signature" to allow them to be identified as such
 * Encrypted volumes can be either file or partition based.
 * Modular design allowing 3rd party drivers to be created, incorporating new hash/cypher algorithms
 * Supports password salting (up to 512 bits), reducing the risks presented by dictionary attacks.
 * 'keyfiles' allow multiple users to share a box without sharing keyphrases and support key backup.
 * Volume file timestamps and attributes are reset after dismounting, increasing "plausible deniability"
-* Supports volumes files up to 2^63 bytes (8388608 TB) 
-</UL>
+* DoxBoxes up to 8,388,608 TB 
 
 Screenshots of DoxBox are [here](http://DoxBox.eu/screenshots_pc_main.html)
 
