@@ -550,7 +550,7 @@ type
     function PopulateVolumeMetadataStruct(LinuxVolume: Boolean; PKCS11SlotID: Integer;
       var metadata: TOTFEFreeOTFEVolumeMetaData): Boolean;
 
-    function ParseVolumeMetadata(metadataAsString: AnsiString;
+    function ParseVolumeMetadata(metadataAsString: Ansistring;
       var metadata: TOTFEFreeOTFEVolumeMetaData): Boolean;
 
     procedure VolumeMetadataToString(metadata: TOTFEFreeOTFEVolumeMetaData;
@@ -949,13 +949,11 @@ procedure DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
     // ---------
     // Volume creation
     function CreateFreeOTFEVolumeWizard(): Boolean;
-    function CreateLinuxVolumeWizard(out aFileName :string): Boolean;
+    function CreateLinuxVolumeWizard(out aFileName: String): Boolean;
     function CreateLinuxGPGKeyfile(): Boolean;
 
-    function WizardChangePassword(SrcFilename :string = '';
-OrigKeyPhrase :AnsiString = '';
-NewKeyPhrase:AnsiString = '';
-silent: Boolean = False): Boolean;
+    function WizardChangePassword(SrcFilename: String = ''; OrigKeyPhrase: Ansistring = '';
+      NewKeyPhrase: Ansistring = ''; silent: Boolean = False): Boolean;
     function WizardCreateKeyfile(silent: Boolean = False): Boolean;
 
 
@@ -2828,8 +2826,7 @@ begin
 
         if (useCDB = '') then begin
           // Attempt to obtain the current file's critical data
-          if not (ReadRawVolumeCriticalData(volumeFilenames[i], Offset, useCDB)) then
-          begin
+          if not (ReadRawVolumeCriticalData(volumeFilenames[i], Offset, useCDB)) then begin
             // Bad file...
             LastErrorCode := OTFE_ERR_VOLUME_FILE_NOT_FOUND;
             mountedAs     := mountedAs + #0;
@@ -2891,8 +2888,7 @@ begin
           CDBMetaData.CypherDriver,  // Main cypher
           CDBMetaData.CypherGUID,    // Main cypher
           volumeDetails.VolumeFlags, mountDriveLetter, useFileOffset,
-          volumeDetails.PartitionLen, False, SlotID, MountMountAs, MountForAllUsers) then
-        begin
+          volumeDetails.PartitionLen, False, SlotID, MountMountAs, MountForAllUsers) then begin
           mountedAs := mountedAs + mountDriveLetter;
         end else begin
           mountedAs     := mountedAs + #0;
@@ -2972,7 +2968,7 @@ end;
 
  // ----------------------------------------------------------------------------
  // Convert string to metadata struct
-function TOTFEFreeOTFEBase.ParseVolumeMetadata(metadataAsString: AnsiString;
+function TOTFEFreeOTFEBase.ParseVolumeMetadata(metadataAsString: Ansistring;
   var metadata: TOTFEFreeOTFEVolumeMetaData): Boolean;
 var
   retval:       Boolean;
@@ -3006,8 +3002,8 @@ end;
 function TOTFEFreeOTFEBase.MountLinux(volumeFilename: String; ReadOnly: Boolean = False;
   lesFile: String = ''; password: Ansistring = ''; keyfile: String = '';
   keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
-  keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE; offset: ULONGLONG = 0;
-  silent: Boolean = False; forceHidden: Boolean = False): Ansichar;
+  keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
+  offset: ULONGLONG = 0; silent: Boolean = False; forceHidden: Boolean = False): Ansichar;
 var
   tmpStringList: TStringList;
   mountedAs:     Ansistring;
@@ -3038,8 +3034,8 @@ function TOTFEFreeOTFEBase.MountLinux(volumeFilenames: TStringList;
   var mountedAs: Ansistring; ReadOnly: Boolean = False; lesFile: String = '';
   password: Ansistring = ''; keyfile: String = '';
   keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
-  keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE; offset: ULONGLONG = 0;
-  silent: Boolean = False; forceHidden: Boolean = False): Boolean;
+  keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
+  offset: ULONGLONG = 0; silent: Boolean = False; forceHidden: Boolean = False): Boolean;
 var
   retVal:      Boolean;
   keyEntryDlg: TfrmKeyEntryLinux;
@@ -3090,8 +3086,8 @@ begin
     // Mount as LUKS if they are...
     {  TDK change - test user option to force non-luks (for hidden vols) }
     if (IsLUKSVolume(volumeFilenames[0])) and not forceHidden then begin
-      Result := MountLUKS(volumeFilenames, mountedAs, ReadOnly, password, keyfile,keyfileIsASCII,
-      keyfileNewlineType, silent);
+      Result := MountLUKS(volumeFilenames, mountedAs, ReadOnly, password,
+        keyfile, keyfileIsASCII, keyfileNewlineType, silent);
       exit;
     end;
   end;
@@ -4400,7 +4396,8 @@ begin
                   if ((Length(derivedKeyStr) * 8) < ks) then begin
                     // The hash value isn't long enough; right pad with zero bytes
                     criticalDataKeyStr :=
-                      derivedKeyStr + StringOfChar(AnsiChar(#0), ((ks div 8) - Length(derivedKeyStr)));
+                      derivedKeyStr + StringOfChar(AnsiChar(#0),
+                      ((ks div 8) - Length(derivedKeyStr)));
                   end else begin
                     // The hash value is too long; truncate
                     criticalDataKeyStr := Copy(derivedKeyStr, 1, (ks div 8));
@@ -4459,7 +4456,8 @@ begin
                   if (allOK) then begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('Decrypted data hashed OK.');
-  {$ENDIF}          checkDataGeneratedStr := SDUBytesToString(checkDataGenerated);
+  {$ENDIF}
+                    checkDataGeneratedStr := SDUBytesToString(checkDataGenerated);
                     // If the checkdata newly generated is less than hk bits, right pad it with zero bits
                     if ((Length(checkDataGenerated) * 8) < hk) then begin
   {$IFDEF FREEOTFE_DEBUG}
@@ -4853,8 +4851,8 @@ DebugMsg('Checking using cypher impl: '+GetCypherDisplayTechTitle(currCypherImpl
                   IV := StringOfChar(AnsiChar(#0), (currCypherImpl.BlockSize div 8));
                 end;
                 criticalDataKeyBytes := SDUStringToSDUBytes(criticalDataKey);
-                allOK                := DecryptSectorData(
-                  currCypherDriver.LibFNOrDevKnlMdeName,
+                allOK                :=
+                  DecryptSectorData(currCypherDriver.LibFNOrDevKnlMdeName,
                   currCypherImpl.CypherGUID, FREEOTFE_v1_DUMMY_SECTOR_ID,
                   FREEOTFE_v1_DUMMY_SECTOR_SIZE, criticalDataKeyBytes, IV,
                   encryptedBlock, plaintextEncryptedBlock);
@@ -5736,7 +5734,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.CreateLinuxVolumeWizard(out aFileName :string): Boolean;
+function TOTFEFreeOTFEBase.CreateLinuxVolumeWizard(out aFileName: String): Boolean;
 var
   volSizeDlg: TfrmNewVolumeSize;
   mr:         Integer;
@@ -5752,7 +5750,7 @@ begin
       LastErrorCode := OTFE_ERR_USER_CANCEL;
     end else
     if (mr = mrOk) then begin
-      aFileName :=  volSizeDlg.Filename;
+      aFileName := volSizeDlg.Filename;
       if not (SDUCreateLargeFile(aFileName, volSizeDlg.VolumeSize, True, userCancel))
       then begin
         if not (userCancel) then begin
@@ -5768,7 +5766,7 @@ begin
   finally
     volSizeDlg.Free();
   end;
-   { TODO 1 -otdk -csecurity : overwrite with 'chaff' - need to set up cyphers etc. }
+  { TODO 1 -otdk -csecurity : overwrite with 'chaff' - need to set up cyphers etc. }
 
 
   Result := allOK;
@@ -6388,11 +6386,8 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.WizardChangePassword(
-SrcFilename :string = '';
-OrigKeyPhrase :AnsiString = '';
-NewKeyPhrase:AnsiString = '';
-silent: Boolean = False): Boolean;
+function TOTFEFreeOTFEBase.WizardChangePassword(SrcFilename: String = '';
+  OrigKeyPhrase: Ansistring = ''; NewKeyPhrase: Ansistring = ''; silent: Boolean = False): Boolean;
 var
   dlg:   TfrmWizardChangePasswordCreateKeyfile;
   allOK: Boolean;
@@ -6404,17 +6399,17 @@ begin
     try
       dlg.ChangePasswordCreateKeyfile := opChangePassword;
       dlg.fFreeOTFEObj                := self;
-      dlg.IsPartition := false;
-      dlg.SrcFileName :=            SrcFilename;
-      dlg.SrcUserKey:=         OrigKeyPhrase;
-      dlg.DestUserKey:=        NewKeyPhrase;
-       dlg.silent := silent;
-    //  if silent then begin
-//         dlg.pbFinishClick(self);
-//         allOK := true;
-//      end else begin
-         allOK := (dlg.ShowModal() = mrOk);
-//      end;
+      dlg.IsPartition                 := False;
+      dlg.SrcFileName                 := SrcFilename;
+      dlg.SrcUserKey                  := OrigKeyPhrase;
+      dlg.DestUserKey                 := NewKeyPhrase;
+      dlg.silent                      := silent;
+      //  if silent then begin
+      //         dlg.pbFinishClick(self);
+      //         allOK := true;
+      //      end else begin
+      allOK                           := (dlg.ShowModal() = mrOk);
+      //      end;
     finally
       dlg.Free();
     end;
@@ -6425,8 +6420,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.WizardCreateKeyfile(
-  silent: Boolean = False): Boolean;
+function TOTFEFreeOTFEBase.WizardCreateKeyfile(silent: Boolean = False): Boolean;
 var
   dlg: TfrmWizardChangePasswordCreateKeyfile;
 begin
@@ -6439,12 +6433,12 @@ begin
       dlg.fFreeOTFEObj                := self;
 
 
-          if silent then begin
-            dlg.pbFinishClick(self);
-            Result := true;
-          end    else begin
-              Result                          := (dlg.ShowModal() = mrOk);
-          end;
+      if silent then begin
+        dlg.pbFinishClick(self);
+        Result := True;
+      end else begin
+        Result := (dlg.ShowModal() = mrOk);
+      end;
 
 
     finally

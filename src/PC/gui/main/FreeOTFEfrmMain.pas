@@ -91,7 +91,7 @@ type
     SetTestMode1:               TMenuItem;
     actTestModeOff:             TAction;
     DisallowTestsigneddrivers1: TMenuItem;
-    tbbSettings: TToolButton;
+    tbbSettings:                TToolButton;
 
     procedure actDriversExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -284,7 +284,7 @@ uses
   Math,      // Required for min
   strutils,
   //sdu units
-   pkcs11_slot,
+  pkcs11_slot,
   SDUFileIterator_U,
   SDUi18n,//for format drive
   SDUGraphics,
@@ -294,13 +294,13 @@ uses
 
   //  SDUWinSvc,
   CommonfrmAbout,
-  FreeOTFEConsts,
+  CommonfrmCDBBackupRestore, FreeOTFEConsts,
   FreeOTFEfrmOptions,
   FreeOTFEfrmSelectOverwriteMethod,
   FreeOTFEfrmVolProperties,
   OTFEConsts_U,
   OTFEFreeOTFE_DriverAPI,
-  OTFEFreeOTFE_frmWizardCreateVolume, OTFEFreeOTFE_PKCS11,    CommonfrmCDBBackupRestore;
+  OTFEFreeOTFE_frmWizardCreateVolume, OTFEFreeOTFE_PKCS11;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -819,56 +819,57 @@ end;
 }
 function TfrmFreeOTFEMain.DoTests: Boolean;
 var
-  mountList:             TStringList;
-  mountedAs:             DriveLetterString;
-  prettyMountedAs, vol_path,key_file,les_file: String;
-  vl:                    Integer;
+  mountList: TStringList;
+  mountedAs: DriveLetterString;
+  prettyMountedAs, vol_path, key_file, les_file: String;
+  vl: Integer;
 const
 
   TEST_VOLS: array[0..12] of String =
-    ('a.box', 'b.box', 'c.box', 'd.box', 'e.box', 'e.box', 'f.box', 'luks.box', 'luks_essiv.box', 'a.box', 'b.box','dmcrypt_dx.box','dmcrypt_dx.box');
+    ('a.box', 'b.box', 'c.box', 'd.box', 'e.box', 'e.box', 'f.box', 'luks.box',
+    'luks_essiv.box', 'a.box', 'b.box', 'dmcrypt_dx.box', 'dmcrypt_dx.box');
   PASSWORDS: array[0..12] of String =
     ('password', 'password', '!"£$%^&*()', 'password', 'password', '5ekr1t',
-    'password', 'password', 'password','secret','secret', 'password', '5ekr1t');
+    'password', 'password', 'password', 'secret', 'secret', 'password', '5ekr1t');
   ITERATIONS: array[0..12] of Integer =
     (2048, 2048, 2048, 2048, 10240, 2048, 2048, 2048, 2048, 2048, 2048, 2048, 2048);
   OFFSET: array[0..12] of Integer =
-    (0, 0, 0, 0, 0, 2097152, 0, 0, 0,0,0,0,0);
-  KEY_FILES: array[0..12] of string =
-    ('','','','','','','','','','a.cdb','b.cdb','','');
-  LES_FILES: array[0..12] of string =
-    ('','','','','','','','','','','','dmcrypt_dx.les','dmcrypt_hid.les');
+    (0, 0, 0, 0, 0, 2097152, 0, 0, 0, 0, 0, 0, 0);
+  KEY_FILES: array[0..12] of String =
+    ('', '', '', '', '', '', '', '', '', 'a.cdb', 'b.cdb', '', '');
+  LES_FILES: array[0..12] of String =
+    ('', '', '', '', '', '', '', '', '', '', '', 'dmcrypt_dx.les', 'dmcrypt_hid.les');
 
-    procedure CheckMountedOK;
-    begin
-      RefreshDrives();
-        // Mount successful
-        //        prettyMountedAs := prettyPrintDriveLetters(mountedAs);
-        if (CountValidDrives(mountedAs) <> 1) then begin
-          SDUMessageDlg(Format('The Box %s has NOT been opened as drive: %s',
-            [TEST_VOLS[vl], mountedAs]));
-          Result := False;
-        end else begin
-          //done: test opened OK & file exists
-          if not FileExists(mountedAs + ':\README.txt') then begin
-            SDUMessageDlg(Format('File: %s:\README.txt not found', [mountedAs]));
-            Result := False;
-          end;
-        end;
+  procedure CheckMountedOK;
+  begin
+    RefreshDrives();
+    // Mount successful
+    //        prettyMountedAs := prettyPrintDriveLetters(mountedAs);
+    if (CountValidDrives(mountedAs) <> 1) then begin
+      SDUMessageDlg(Format('The Box %s has NOT been opened as drive: %s',
+        [TEST_VOLS[vl], mountedAs]));
+      Result := False;
+    end else begin
+      //done: test opened OK & file exists
+      if not FileExists(mountedAs + ':\README.txt') then begin
+        SDUMessageDlg(Format('File: %s:\README.txt not found', [mountedAs]));
+        Result := False;
+      end;
     end;
+  end;
 
-    procedure  UnMountAndCheck;
-    begin
-       Application.ProcessMessages;
-        DismountAll(True);
-        Application.ProcessMessages;
-        RefreshDrives();
-        Application.ProcessMessages;
-        if CountValidDrives(fOtfeFreeOtfeBase.DrivesMounted) > 0 then begin
-          SDUMessageDlg(Format('Drive(s) %s not unmounted', [fOtfeFreeOtfeBase.DrivesMounted]));
-          Result := False;
-        end;
+  procedure UnMountAndCheck;
+  begin
+    Application.ProcessMessages;
+    DismountAll(True);
+    Application.ProcessMessages;
+    RefreshDrives();
+    Application.ProcessMessages;
+    if CountValidDrives(fOtfeFreeOtfeBase.DrivesMounted) > 0 then begin
+      SDUMessageDlg(Format('Drive(s) %s not unmounted', [fOtfeFreeOtfeBase.DrivesMounted]));
+      Result := False;
     end;
+  end;
 
 begin
   inherited;
@@ -877,7 +878,7 @@ begin
   mountList := TStringList.Create();
   try
     //for loop is optimised into reverse order , but want to process forwards
-    vl := 0;
+    vl       := 0;
     vol_path := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\test_vols\');
     while vl <= high(TEST_VOLS) do begin
 
@@ -885,26 +886,29 @@ begin
       mountList.Clear;
       mountList.Add(vol_path + TEST_VOLS[vl]);
       mountedAs := '';
-      key_file := '';
-      if KEY_FILES[vl]<>'' then key_file := vol_path +KEY_FILES[vl];
-      if LES_FILES[vl]<>'' then les_file := vol_path +LES_FILES[vl];
+      key_file  := '';
+      if KEY_FILES[vl] <> '' then
+        key_file := vol_path + KEY_FILES[vl];
+      if LES_FILES[vl] <> '' then
+        les_file := vol_path + LES_FILES[vl];
 
-      if fOtfeFreeOtfeBase.IsLUKSVolume(vol_path + TEST_VOLS[vl]) or (LES_FILES[vl]<> '') then begin
-        if not fOtfeFreeOtfeBase.MountLinux(mountList,mountedAs,true,les_file,PASSWORDS[vl],
-                                            key_file,false, nlLF,0,true) then
+      if fOtfeFreeOtfeBase.IsLUKSVolume(vol_path + TEST_VOLS[vl]) or (LES_FILES[vl] <> '') then
+      begin
+        if not fOtfeFreeOtfeBase.MountLinux(mountList, mountedAs, True, les_file, PASSWORDS[vl],
+          key_file, False, nlLF, 0, True) then
           Result := False;
       end else begin
         //call silently
         if not fOtfeFreeOtfeBase.MountFreeOTFE(mountList, mountedAs, True,
-          key_file, PASSWORDS[vl], OFFSET[vl], false, True, 256, ITERATIONS[vl]) then
+          key_file, PASSWORDS[vl], OFFSET[vl], False, True, 256, ITERATIONS[vl]) then
           Result := False;
       end;
       if not Result then begin
         SDUMessageDlg(
           _('Unable to open ') + TEST_VOLS[vl] + '.', mtError);
       end else begin
-       CheckMountedOK ;
-       UnMountAndCheck;
+        CheckMountedOK;
+        UnMountAndCheck;
       end;
       Inc(vl);
     end;
@@ -918,32 +922,36 @@ begin
     open with old password -tested on next test run
     this tests most of code for creating volume as well
   }
-  //don't fail if doesnt exist
-  sysutils. DeleteFile(vol_path + 'a_test.cdbBackup');
-  if result then BackupRestore(opBackup,vol_path + TEST_VOLS[0],vol_path + 'a_test.cdbBackup',true);
-  Result := Result and fOtfeFreeOtfeBase.WizardChangePassword(vol_path + TEST_VOLS[0],PASSWORDS[0],'secret4', true);
+    //don't fail if doesnt exist
+    SysUtils.DeleteFile(vol_path + 'a_test.cdbBackup');
+    if Result then
+      BackupRestore(opBackup, vol_path + TEST_VOLS[0], vol_path + 'a_test.cdbBackup', True);
+    Result := Result and fOtfeFreeOtfeBase.WizardChangePassword(vol_path +
+      TEST_VOLS[0], PASSWORDS[0], 'secret4', True);
 
-  if result then begin
-    mountList.Clear;
-    mountList.Add(vol_path + TEST_VOLS[0]);
-    if not fOtfeFreeOtfeBase.MountFreeOTFE(mountList, mountedAs, True,
-          '', 'secret4', 0, false, True, 256, 2048) then
-          Result := False;
-  end;
-  if result then CheckMountedOK ;
-  UnmountAndCheck;
-  if result then BackupRestore(opRestore,vol_path + TEST_VOLS[0],vol_path + 'a_test.cdbBackup',true);
-  { TODO -otdk -cenhance : use copied file to check is same as orig file }
-  // no need to check mount again as will be checked with next test run
-  Result := Result and sysutils. DeleteFile(vol_path + 'a_test.cdbBackup');
-   finally
+    if Result then begin
+      mountList.Clear;
+      mountList.Add(vol_path + TEST_VOLS[0]);
+      if not fOtfeFreeOtfeBase.MountFreeOTFE(mountList, mountedAs, True, '',
+        'secret4', 0, False, True, 256, 2048) then
+        Result := False;
+    end;
+    if Result then
+      CheckMountedOK;
+    UnmountAndCheck;
+    if Result then
+      BackupRestore(opRestore, vol_path + TEST_VOLS[0], vol_path + 'a_test.cdbBackup', True);
+    { TODO -otdk -cenhance : use copied file to check is same as orig file }
+    // no need to check mount again as will be checked with next test run
+    Result := Result and SysUtils.DeleteFile(vol_path + 'a_test.cdbBackup');
+  finally
     mountList.Free();
   end;
 
   if Result then
     SDUMessageDlg('All functional tests passed')
   else
-    SDUMessageDlg('At least one functional test failed') ;
+    SDUMessageDlg('At least one functional test failed');
 end;
 
 procedure TfrmFreeOTFEMain.SetIconListsAndIndexes();

@@ -224,9 +224,9 @@ type
     fPkcs11Library: TPKCS11Library;
 
     fOtfeFreeOtfeBase: TOTFEFreeOTFEBase;
-    fFuncTestPending :boolean;// if functional test was selelcted in cmd line but not run yet
+    fFuncTestPending:  Boolean;// if functional test was selelcted in cmd line but not run yet
 
-   procedure DoAppIdle(Sender: TObject; var Done: Boolean) ; // TIdleEvent
+    procedure DoAppIdle(Sender: TObject; var Done: Boolean); // TIdleEvent
 
     function HandleCommandLineOpts_Create(): eCmdLine_Exit; VIRTUAL; ABSTRACT;
     function HandleCommandLineOpts_Mount(): eCmdLine_Exit; VIRTUAL;
@@ -286,7 +286,8 @@ type
 
     procedure StartupUpdateCheck();
 
-    procedure BackupRestore(dlgType: TCDBOperationType; volPath: TFilename = '';hdrPath: TFilename = '';silent :boolean = false);
+    procedure BackupRestore(dlgType: TCDBOperationType;
+      volPath: TFilename = ''; hdrPath: TFilename = ''; silent: Boolean = False);
 
     procedure SetStatusBarToHint(Sender: TObject);
     function EnsureOTFEComponentActive: Boolean;
@@ -711,7 +712,7 @@ begin
   StatusBar_Hint.Visible   := False;
   StatusBar_Status.Visible := False;
   Application.OnHint       := SetStatusBarToHint;
-Application.OnIdle := DoAppIdle;
+  Application.OnIdle       := DoAppIdle;
 end;
 
 
@@ -934,11 +935,11 @@ end;
 procedure TfrmMain.DoAppIdle(Sender: TObject; var Done: Boolean);
 begin
   if fFuncTestPending then begin
-      fFuncTestPending := false;
+    fFuncTestPending := False;
     actTestExecute(self);
 
   end;
-  Done := true;
+  Done := True;
 end;
 
 procedure TfrmMain.actCDBBackupExecute(Sender: TObject);
@@ -951,7 +952,8 @@ begin
   BackupRestore(opRestore);
 end;
 
-procedure TfrmMain.BackupRestore(dlgType: TCDBOperationType; volPath: TFilename = '';hdrPath: TFilename = '';silent :boolean = false );
+procedure TfrmMain.BackupRestore(dlgType: TCDBOperationType;
+  volPath: TFilename = ''; hdrPath: TFilename = ''; silent: Boolean = False);
 var
   dlg: TfrmCDBBackupRestore;
 begin
@@ -960,15 +962,15 @@ begin
   try
     dlg.silent := silent;
     if dlgType = opBackup then begin
-      dlg.SrcFilename := volPath;
-    dlg.DestFilename := hdrPath;
-    end else  begin
-      dlg.SrcFilename := hdrPath;
-    dlg.DestFilename := volPath;
-        end;
-    
+      dlg.SrcFilename  := volPath;
+      dlg.DestFilename := hdrPath;
+    end else begin
+      dlg.SrcFilename  := hdrPath;
+      dlg.DestFilename := volPath;
+    end;
+
     dlg.OTFEFreeOTFE := fOtfeFreeOtfeBase;
-    dlg.OpType      := dlgType;
+    dlg.OpType       := dlgType;
     dlg.ShowModal();
 
   finally
@@ -1187,9 +1189,9 @@ end;
 //creates plain dmcrypt vol
 procedure TfrmMain.actLinuxNewExecute(Sender: TObject);
 var
-aFileName :string;
+  aFileName: String;
 begin
-//create empty file
+  //create empty file
   if fOtfeFreeOtfeBase.CreateLinuxVolumeWizard(aFileName) then begin
     SDUMessageDlg(
       _('Linux volume created successfully.') + SDUCRLF + SDUCRLF +
@@ -1200,11 +1202,11 @@ begin
       SDUMessageDlg(_('Linux volume could not be created'), mtError);
     end;
   end;
- { TODO 1 -otdk -cenhance : wipe volume first}
-   //create enc vol
-    MountFiles(
-        ftLinux,aFileName,
-        false, true        );       
+  { TODO 1 -otdk -cenhance : wipe volume first}
+  //create enc vol
+  MountFiles(
+    ftLinux, aFileName,
+    False, True);
 
 end;
 
@@ -1575,11 +1577,11 @@ end;
 
 function TfrmMain.HandleCommandLineOpts_EnableDevMenu(): eCmdLine_Exit;
 begin
-  Result := ceSUCCESS;
-  fFuncTestPending := false;
+  Result           := ceSUCCESS;
+  fFuncTestPending := False;
   if SDUCommandLineSwitch(CMDLINE_ENABLE_DEV_MENU) then begin
-    miDev.Visible := True;
-    fFuncTestPending := true;
+    miDev.Visible    := True;
+    fFuncTestPending := True;
   end;
 end;
 

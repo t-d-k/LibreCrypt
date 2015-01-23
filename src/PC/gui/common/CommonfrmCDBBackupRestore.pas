@@ -11,13 +11,13 @@ unit CommonfrmCDBBackupRestore;
 interface
 
 uses
-//delphi
-  Buttons, Classes, Controls, Dialogs, Spin64, StdCtrls,SysUtils, Windows,
-  Forms, Graphics, Messages,
+  //delphi
+  Buttons, Classes, Controls, Dialogs, Forms, Graphics, Messages,
+  Spin64, StdCtrls, SysUtils, Windows,
   //sdu
-   SDUForms, SDUFrames,SDUSpin64Units,
+  SDUForms, SDUFrames, SDUSpin64Units,
   // doxbox
-   OTFEFreeOTFE_VolumeSelect, OTFEFreeOTFEBase_U;
+  OTFEFreeOTFE_VolumeSelect, OTFEFreeOTFEBase_U;
 
 type
   TCDBOperationType = (opBackup, opRestore);
@@ -41,14 +41,14 @@ type
     procedure ControlChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
 
-  private
+  PRIVATE
     procedure SetSrcFilename(const Value: String);
     procedure SetDestFilename(const Value: String);
   PROTECTED
-    FOpType:      TCDBOperationType;
+    FOpType:       TCDBOperationType;
     FOTFEFreeOTFE: TOTFEFreeOTFEBase;
-    fsilent :Boolean;
-      fsilentResult: TModalResult;
+    fsilent:       Boolean;
+    fsilentResult: TModalResult;
 
     function GetSrcFilename(): String;
     function GetSrcOffset(): Int64;
@@ -66,10 +66,10 @@ type
     OTFEFreeOTFE: TOTFEFreeOTFEBase;
 
     property OpType: TCDBOperationType Read FOpType Write SetOpType;
-    property silent : boolean read fsilent write fsilent;
-    property SrcFilename: String Read GetSrcFilename write SetSrcFilename;
+    property silent: Boolean Read fsilent Write fsilent;
+    property SrcFilename: String Read GetSrcFilename Write SetSrcFilename;
     property SrcOffset: Int64 Read GetSrcOffset;
-    property DestFilename: String Read GetDestFilename write SetDestFilename;
+    property DestFilename: String Read GetDestFilename Write SetDestFilename;
     property DestOffset: Int64 Read GetDestOffset;
 
   end;
@@ -100,11 +100,11 @@ resourcestring
 procedure TfrmCDBBackupRestore.FormShow(Sender: TObject);
 begin
   if not fsilent then begin
-    SelectSrcFile.Filename      := '';
-    SelectDestFile.Filename     := '';
+    SelectSrcFile.Filename  := '';
+    SelectDestFile.Filename := '';
   end;
 
-  SelectSrcFile.OTFEFreeOTFE  := OTFEFreeOTFE;
+  SelectSrcFile.OTFEFreeOTFE := OTFEFreeOTFE;
 
   SelectDestFile.OTFEFreeOTFE := OTFEFreeOTFE;
 
@@ -122,8 +122,8 @@ begin
     lblFileDescDest.Caption := _('&Backup filename:');
 
     // Backup file starts from 0 - don't allow the user to change offset
-    se64UnitOffsetDest.Visible := false;
-    lblOffsetDest.Visible := false;
+    se64UnitOffsetDest.Visible := False;
+    lblOffsetDest.Visible      := False;
 
   end else begin
     self.Caption := _('Restore FreeOTFE Volume Header');
@@ -136,32 +136,31 @@ begin
 
     // Backup file starts from 0 - don't allow the user to change offset
     se64UnitOffsetSrc.Visible := False;
-    lblOffsetSrc.Visible := False;
+    lblOffsetSrc.Visible      := False;
   end;
 
   EnableDisableControls();
 
   if fSilent then begin
     ModalResult := mrCancel;
-     pbOKClick(self);
+    pbOKClick(self);
     FSilentResult := ModalResult;
     // if testing and no errors, then close dlg
-    if ModalResult = mrOk then PostMessage(Handle, WM_CLOSE, 0, 0);
+    if ModalResult = mrOk then
+      PostMessage(Handle, WM_CLOSE, 0, 0);
   end;
 
 end;
 
 
 
-
-procedure TfrmCDBBackupRestore.FormClose(Sender: TObject;
-  var Action: TCloseAction);
+procedure TfrmCDBBackupRestore.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   inherited;
   // Posting WM_CLOSE causes Delphi to reset ModalResult to mrCancel.
   // As a result, we reset ModalResult here, note will only close automatically if mr = mrok anyway
   if fsilent then begin
- ModalResult := FSilentResult;
+    ModalResult := FSilentResult;
   end;
 end;
 
@@ -170,8 +169,8 @@ begin
   SelectSrcFile.SelectFor  := fndOpen;
   SelectDestFile.SelectFor := fndSave;
 
-  SelectDestFile.OnChange             := ControlChange;
-  SelectSrcFile.OnChange             := ControlChange;
+  SelectDestFile.OnChange := ControlChange;
+  SelectSrcFile.OnChange  := ControlChange;
 
   // Default to backup...
   SetOpType(opBackup);
@@ -276,7 +275,8 @@ begin
     if SanityCheckBackup() then begin
       if OTFEFreeOTFE.BackupVolumeCriticalData(GetSrcFilename, GetSrcOffset,
         GetDestFilename) then begin
-        if not fsilent then SDUMessageDlg(_('Backup operation completed successfully.'), mtInformation);
+        if not fsilent then
+          SDUMessageDlg(_('Backup operation completed successfully.'), mtInformation);
         allOK := True;
       end else begin
         SDUMessageDlg(
@@ -292,7 +292,8 @@ begin
     if SanityCheckRestore() then begin
       if OTFEFreeOTFE.RestoreVolumeCriticalData(GetSrcFilename, GetDestFilename,
         GetDestOffset) then begin
-        if not fsilent then SDUMessageDlg(_('Restore operation completed successfully.'), mtInformation);
+        if not fsilent then
+          SDUMessageDlg(_('Restore operation completed successfully.'), mtInformation);
         allOK := True;
       end else begin
         SDUMessageDlg(

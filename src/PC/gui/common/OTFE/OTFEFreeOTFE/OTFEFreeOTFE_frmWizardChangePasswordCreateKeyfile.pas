@@ -16,9 +16,9 @@ uses
   Forms, Graphics, Messages, MouseRNG,
   PasswordRichEdit, Spin64, StdCtrls, SysUtils, Windows, //sdu
   SDUDialogs
-  , sdurandpool, SDUStdCtrls, SDUGeneral,
-                           //doxbox
-  OTFEFreeOTFE_DriverAPI,  // Required for CRITICAL_DATA_LEN
+  , SDUGeneral,
+  sdurandpool, SDUStdCtrls, //doxbox
+  OTFEFreeOTFE_DriverAPI,   // Required for CRITICAL_DATA_LEN
   OTFEFreeOTFE_fmeSelectPartition,
   OTFEFreeOTFE_frmWizard, OTFEFreeOTFE_InstructionRichEdit, OTFEFreeOTFE_PasswordRichEdit,
   OTFEFreeOTFE_U,
@@ -151,8 +151,8 @@ type
     procedure SetSrcUserKey(const Value: Ansistring);
 
   PROTECTED
-  fsilent: Boolean;
-      fsilentResult: TModalResult;
+    fsilent:       Boolean;
+    fsilentResult: TModalResult;
     procedure SetupInstructions(); OVERRIDE;
 
     procedure EnableDisableControls(); OVERRIDE;
@@ -167,11 +167,11 @@ type
     procedure fmeSelectPartitionChanged(Sender: TObject);
 
   PUBLISHED
-    property silent: Boolean read fsilent write fsilent;
-    property IsPartition: Boolean Read GetIsPartition write SetIsPartition;
-    property SrcFilename: String Read GetSrcFilename write SetSrcFilename;
-{    property Offset: Int64 Read GetOffset;}
-    property SrcUserKey: Ansistring Read GetSrcUserKey write SetSrcUserKey;
+    property silent: Boolean Read fsilent Write fsilent;
+    property IsPartition: Boolean Read GetIsPartition Write SetIsPartition;
+    property SrcFilename: String Read GetSrcFilename Write SetSrcFilename;
+    {    property Offset: Int64 Read GetOffset;}
+    property SrcUserKey: Ansistring Read GetSrcUserKey Write SetSrcUserKey;
 {    property SrcSaltLength: Integer Read GetSrcSaltLength;
     property SrcKeyIterations: Integer Read GetSrcKeyIterations;
     property DestFilename: String Read GetDestFilename Write SetDestFilename;}
@@ -217,12 +217,11 @@ begin
   end;
 end;
 
-procedure TfrmWizardChangePasswordCreateKeyfile.SetSrcFilename(
-  const Value: String);
+procedure TfrmWizardChangePasswordCreateKeyfile.SetSrcFilename(const Value: String);
 begin
   if GetIsPartition() then begin
-//    fmeSelectPartition.SelectedDevice := Value;
-    assert(false,'this feature not supported');
+    //    fmeSelectPartition.SelectedDevice := Value;
+    assert(False, 'this feature not supported');
   end else begin
     lblSrcFilename.Caption := Value;
   end;
@@ -241,10 +240,9 @@ begin
   Result := preSrcUserKey.Text;
 end;
 
-procedure TfrmWizardChangePasswordCreateKeyfile.SetSrcUserKey(
-  const Value: Ansistring);
+procedure TfrmWizardChangePasswordCreateKeyfile.SetSrcUserKey(const Value: Ansistring);
 begin
-  preSrcUserKey.Text  := Value;
+  preSrcUserKey.Text := Value;
 end;
 
 function TfrmWizardChangePasswordCreateKeyfile.GetSrcSaltLength(): Integer;
@@ -267,8 +265,7 @@ begin
   Result := preDestUserKey1.Text; { TODO 1 -otdk -cfix : warn user - no unicode }
 end;
 
-procedure TfrmWizardChangePasswordCreateKeyfile.SetDestUserKey(
-  const Value: Ansistring);
+procedure TfrmWizardChangePasswordCreateKeyfile.SetDestUserKey(const Value: Ansistring);
 begin
   preDestUserKey1.Text := Value;
   preDestUserKey2.Text := Value;
@@ -467,9 +464,10 @@ begin
 
   //  fCombinedRandomData := '';
   { TODO -otdk -crefactor : this should all be in formcreate - but need to have global TOTFEFreeOTFEBase object first }
-    // tsSrcFile
-  if not fsilent then lblSrcFilename.Caption       := '';
-  seSrcKeyIterations.MinValue  := 1;
+  // tsSrcFile
+  if not fsilent then
+    lblSrcFilename.Caption := '';
+  seSrcKeyIterations.MinValue := 1;
   seSrcKeyIterations.MaxValue  := 999999;
   // Need *some* upper value, otherwise setting MinValue won't work properly
   seSrcKeyIterations.Increment := DEFAULT_KEY_ITERATIONS_INCREMENT;
@@ -490,7 +488,8 @@ begin
   // FreeOTFE volumes CAN have newlines in the user's password
   preSrcUserKey.WantReturns := True;
   preSrcUserKey.WordWrap    := True;
-  if not fsilent then preSrcUserKey.Lines.Clear();
+  if not fsilent then
+    preSrcUserKey.Lines.Clear();
   preSrcUserKey.PasswordChar := fFreeOTFEObj.PasswordChar;
   preSrcUserKey.WantReturns  := fFreeOTFEObj.AllowNewlinesInPasswords;
   preSrcUserKey.WantTabs     := fFreeOTFEObj.AllowTabsInPasswords;
@@ -508,7 +507,8 @@ begin
   // FreeOTFE volumes CAN have newlines in the user's password
   preDestUserKey1.WantReturns := True;
   preDestUserKey1.WordWrap    := True;
-  if not fsilent then preDestUserKey1.Lines.Clear();
+  if not fsilent then
+    preDestUserKey1.Lines.Clear();
   preDestUserKey1.PasswordChar := fFreeOTFEObj.PasswordChar;
   preDestUserKey1.WantReturns  := fFreeOTFEObj.AllowNewlinesInPasswords;
   preDestUserKey1.WantTabs     := fFreeOTFEObj.AllowTabsInPasswords;
@@ -517,7 +517,8 @@ begin
   // FreeOTFE volumes CAN have newlines in the user's password
   preDestUserKey2.WantReturns := True;
   preDestUserKey2.WordWrap    := True;
- if not fsilent then  preDestUserKey2.Lines.Clear();
+  if not fsilent then
+    preDestUserKey2.Lines.Clear();
   preDestUserKey2.PasswordChar := fFreeOTFEObj.PasswordChar;
   preDestUserKey2.PasswordChar := fFreeOTFEObj.PasswordChar;
   preDestUserKey2.WantReturns  := fFreeOTFEObj.AllowNewlinesInPasswords;
@@ -595,7 +596,8 @@ begin
     pbFinishClick(self);
     FSilentResult := ModalResult;
     // if testing and no errors, then close dlg
-    if ModalResult = mrOk then PostMessage(Handle, WM_CLOSE, 0, 0);
+    if ModalResult = mrOk then
+      PostMessage(Handle, WM_CLOSE, 0, 0);
   end;
 end;
 
@@ -716,7 +718,7 @@ procedure TfrmWizardChangePasswordCreateKeyfile.pbFinishClick(Sender: TObject);
 var
   allOK:     Boolean;
   saltBytes: TSDUBytes;
-  salt : ANsiString;
+  salt:      Ansistring;
 begin
   inherited;
 
@@ -725,8 +727,8 @@ begin
     lblGPGFilename.Caption);
 
   try
-  // Grab 'n' bytes from the random pool to use as the salt
-  GetRandPool.GetRandomData(GetDestSaltLength() div 8, saltBytes);
+    // Grab 'n' bytes from the random pool to use as the salt
+    GetRandPool.GetRandomData(GetDestSaltLength() div 8, saltBytes);
     salt := SDUBytesToString(saltBytes);
     if (ChangePasswordCreateKeyfile = opChangePassword) then begin
       allOK := fFreeOTFEObj.ChangeVolumePassword(GetSrcFilename(), GetOffset(),
@@ -739,19 +741,20 @@ begin
         GetSrcKeyIterations(), GetDestFilename(), GetDestUserKey(), saltBytes,
         GetDestKeyIterations(), GetDestRequestedDriveLetter());
     end;
-    except
-  on E:EInsufficientRandom do begin
-      allOK := false;
-        SDUMessageDlg(
-        _('Insufficient random data generated: '+E.message) + SDUCRLF + SDUCRLF +
+  except
+    on E: EInsufficientRandom do begin
+      allOK := False;
+      SDUMessageDlg(
+        _('Insufficient random data generated: ' + E.message) + SDUCRLF + SDUCRLF +
         PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
         mtError
         );
-  end;
+    end;
   end;
 
   if (allOK) then begin
-    if not fsilent then SDUMessageDlg(_('Completed successfully.'), mtInformation);
+    if not fsilent then
+      SDUMessageDlg(_('Completed successfully.'), mtInformation);
     ModalResult := mrOk;
   end else begin
 
@@ -766,7 +769,7 @@ begin
     saltBytes[i] := AnsiChar(i);
   end;*)
 
-  SDUInitAndZeroBuffer(0,saltBytes);
+  SDUInitAndZeroBuffer(0, saltBytes);
 end;
 
 
@@ -928,11 +931,12 @@ begin
     FILEORPART_OPT_PARTITION));
 end;
 
-procedure TfrmWizardChangePasswordCreateKeyfile.SetIsPartition(
-  const Value: Boolean);
+procedure TfrmWizardChangePasswordCreateKeyfile.SetIsPartition(const Value: Boolean);
 begin
-  if Value then rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_PARTITION)
-  else  rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_VOLUME_FILE);
+  if Value then
+    rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_PARTITION)
+  else
+    rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_VOLUME_FILE);
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.FormWizardStepChanged(Sender: TObject);
@@ -958,27 +962,26 @@ begin
   // Posting WM_CLOSE causes Delphi to reset ModalResult to mrCancel.
   // As a result, we reset ModalResult here, note will only close automatically if mr = mrok anyway
   if fsilent then begin
- ModalResult := FSilentResult;
+    ModalResult := FSilentResult;
   end;
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.FormCreate(Sender: TObject);
 
 begin
-  deviceList  := TStringList.Create();
-  deviceTitle := TStringList.Create();
-  CanUseCryptlib := GetRandPool().CanUseCryptlib;
+  deviceList                  := TStringList.Create();
+  deviceTitle                 := TStringList.Create();
+  CanUseCryptlib              := GetRandPool().CanUseCryptlib;
   fmeSelectPartition.OnChange := fmeSelectPartitionChanged;
 
   OnWizardStepChanged := FormWizardStepChanged;
   { TODO -otdk -crefactor : populate in designer }
 
-        // tsFileOrPartition
+  // tsFileOrPartition
   rgFileOrPartition.Items.Clear();
   rgFileOrPartition.Items.Add(FILEORPART_OPT_VOLUME_FILE);
   rgFileOrPartition.Items.Add(FILEORPART_OPT_PARTITION);
   rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_VOLUME_FILE);
-
 
 end;
 
