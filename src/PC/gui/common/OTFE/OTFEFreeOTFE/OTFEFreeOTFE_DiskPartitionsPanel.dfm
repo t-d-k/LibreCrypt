@@ -1,0 +1,2 @@
+inherited OTFEFreeOTFEDiskPartitionsPanel: TOTFEFreeOTFEDiskPartitionsPanel
+end
