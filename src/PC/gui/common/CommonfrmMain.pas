@@ -1600,7 +1600,8 @@ var
   useKeyfileIsASCII:     Boolean;
   useKeyfileNewlineType: TSDUNewline;
   useLESFile:            FilenameString;
-  usePassword:           String;
+  usePassword:           TSDUBytes;
+  strUsePassword:               String;
   useSilent:             Boolean;
   strTemp:               String;
   useOffset:             ULONGLONG;
@@ -1626,9 +1627,10 @@ begin
 
         ReadOnly := SDUCommandLineSwitch(CMDLINE_READONLY);
         { TODO 1 -otdk -cbug : warn user if not ansi password }
-        if not (SDUCommandLineParameter(CMDLINE_PASSWORD, usePassword)) then begin
-          usePassword := '';
+        if not (SDUCommandLineParameter(CMDLINE_PASSWORD, strUsePassword)) then begin
+          strUsePassword := '';
         end;
+        usePassword := SDUStringToSDUBytes(strUsePassword);
         useSilent := SDUCommandLineSwitch(CMDLINE_SILENT);
 
         useOffset := 0;

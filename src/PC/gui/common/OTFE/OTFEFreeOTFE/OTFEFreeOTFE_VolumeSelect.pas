@@ -172,8 +172,8 @@ end;
 //
 procedure TOTFEFreeOTFEVolumeSelect.edFilenameChange(Sender: TObject);
 begin
-  if Assigned(OnChange) then begin
-    OnChange(self);
+  if Assigned(fOnChange) then begin
+    fOnChange(self);
   end;
   //
 end;

@@ -16,8 +16,8 @@ uses
   Forms, Graphics, Messages, MouseRNG,
   PasswordRichEdit, Spin64, StdCtrls, SysUtils, Windows, //sdu
   SDUDialogs
-  , SDUGeneral,
-  sdurandpool, SDUStdCtrls, //doxbox
+  , sdurandpool, SDUStdCtrls, SDUGeneral,
+                           //doxbox
   OTFEFreeOTFE_DriverAPI,   // Required for CRITICAL_DATA_LEN
   OTFEFreeOTFE_fmeSelectPartition,
   OTFEFreeOTFE_frmWizard, OTFEFreeOTFE_InstructionRichEdit, OTFEFreeOTFE_PasswordRichEdit,
@@ -129,12 +129,12 @@ type
     function GetIsPartition(): Boolean;
     function GetSrcFilename(): String;
     function GetOffset(): Int64;
-    function GetSrcUserKey(): Ansistring;
+    function GetSrcUserKey(): TSDUBytes;
     function GetSrcSaltLength(): Integer;
     function GetSrcKeyIterations(): Integer;
     function GetDestFilename(): String;
     procedure SetDestFilename(filename: String);
-    function GetDestUserKey(): Ansistring;
+    function GetDestUserKey(): TSDUBytes;
     function GetDestSaltLength(): Integer;
     function GetDestKeyIterations(): Integer;
     function GetDestRequestedDriveLetter(): ansiChar;
@@ -146,9 +146,9 @@ type
     procedure SetupInstructionsCreateKeyfile();
     procedure SetupInstructionsChangePassword();
     procedure SetSrcFilename(const Value: String);
-    procedure SetDestUserKey(const Value: Ansistring);
+    procedure SetDestUserKey(const Value: TSDUBytes);
     procedure SetIsPartition(const Value: Boolean);
-    procedure SetSrcUserKey(const Value: Ansistring);
+    procedure SetSrcUserKey(const Value: TSDUBytes);
 
   PROTECTED
     fsilent:       Boolean;
@@ -171,11 +171,11 @@ type
     property IsPartition: Boolean Read GetIsPartition Write SetIsPartition;
     property SrcFilename: String Read GetSrcFilename Write SetSrcFilename;
     {    property Offset: Int64 Read GetOffset;}
-    property SrcUserKey: Ansistring Read GetSrcUserKey Write SetSrcUserKey;
+    property SrcUserKey: TSDUBytes Read GetSrcUserKey Write SetSrcUserKey;
 {    property SrcSaltLength: Integer Read GetSrcSaltLength;
     property SrcKeyIterations: Integer Read GetSrcKeyIterations;
     property DestFilename: String Read GetDestFilename Write SetDestFilename;}
-    property DestUserKey: Ansistring Read GetDestUserKey Write SetDestUserKey;
+    property DestUserKey: TSDUBytes Read GetDestUserKey Write SetDestUserKey;
 {    property DestSaltLength: Integer Read GetDestSaltLength;
     property DestKeyIterations: Integer Read GetDestKeyIterations;
     property DestRequestedDriveLetter: ansichar Read GetDestRequestedDriveLetter; }
@@ -234,15 +234,15 @@ begin
   Result := se64UnitOffset.Value;
 end;
 
-function TfrmWizardChangePasswordCreateKeyfile.GetSrcUserKey(): Ansistring;
+function TfrmWizardChangePasswordCreateKeyfile.GetSrcUserKey(): TSDUBytes;
 begin
   { TODO 1 -otdk -cfix : warn user - no unicode }
-  Result := preSrcUserKey.Text;
+  Result := SDUStringToSDUBytes(preSrcUserKey.Text);
 end;
 
-procedure TfrmWizardChangePasswordCreateKeyfile.SetSrcUserKey(const Value: Ansistring);
+procedure TfrmWizardChangePasswordCreateKeyfile.SetSrcUserKey(const Value: TSDUBytes);
 begin
-  preSrcUserKey.Text := Value;
+  preSrcUserKey.Text := SDUBytesToString(Value);
 end;
 
 function TfrmWizardChangePasswordCreateKeyfile.GetSrcSaltLength(): Integer;
@@ -260,15 +260,15 @@ begin
   lblDestFilename.Caption := filename;
 end;
 
-function TfrmWizardChangePasswordCreateKeyfile.GetDestUserKey(): Ansistring;
+function TfrmWizardChangePasswordCreateKeyfile.GetDestUserKey(): TSDUBytes;
 begin
-  Result := preDestUserKey1.Text; { TODO 1 -otdk -cfix : warn user - no unicode }
+  Result := SDUStringToSDUBytes(preDestUserKey1.Text); { TODO 1 -otdk -cfix : warn user - no unicode }
 end;
 
-procedure TfrmWizardChangePasswordCreateKeyfile.SetDestUserKey(const Value: Ansistring);
+procedure TfrmWizardChangePasswordCreateKeyfile.SetDestUserKey(const Value: TSDUBytes);
 begin
-  preDestUserKey1.Text := Value;
-  preDestUserKey2.Text := Value;
+  preDestUserKey1.Text := SDUBytesToString(Value);
+  preDestUserKey2.Text := SDUBytesToString(Value);
 end;
 
 function TfrmWizardChangePasswordCreateKeyfile.GetDestSaltLength(): Integer;
@@ -557,7 +557,6 @@ begin
   lblGPGFilename.Caption := '';
 
 
-
   // Set all tabs to show that they have not yet been completed
   for i := 0 to (pcWizard.PageCount - 1) do begin
     pcWizard.Pages[i].TabVisible := False;
@@ -718,7 +717,7 @@ procedure TfrmWizardChangePasswordCreateKeyfile.pbFinishClick(Sender: TObject);
 var
   allOK:     Boolean;
   saltBytes: TSDUBytes;
-  salt:      Ansistring;
+ // salt:      Ansistring;
 begin
   inherited;
 
@@ -729,7 +728,7 @@ begin
   try
     // Grab 'n' bytes from the random pool to use as the salt
     GetRandPool.GetRandomData(GetDestSaltLength() div 8, saltBytes);
-    salt := SDUBytesToString(saltBytes);
+  //  salt := SDUBytesToString(saltBytes);
     if (ChangePasswordCreateKeyfile = opChangePassword) then begin
       allOK := fFreeOTFEObj.ChangeVolumePassword(GetSrcFilename(), GetOffset(),
         GetSrcUserKey(), GetSrcSaltLength(),  // In bits
@@ -967,7 +966,6 @@ begin
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.FormCreate(Sender: TObject);
-
 begin
   deviceList                  := TStringList.Create();
   deviceTitle                 := TStringList.Create();

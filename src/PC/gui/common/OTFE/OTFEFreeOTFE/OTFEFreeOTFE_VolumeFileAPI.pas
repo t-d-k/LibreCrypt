@@ -99,14 +99,14 @@ type
     PartitionLen: int64;  // In *bytes*
 
     MasterKeyLength: DWORD;  // In *bits*
-    MasterKey: Ansistring;
+    MasterKey: TSDUBytes;
 
     RequestedDriveLetter: DriveLetterChar;
 
     SectorIVGenMethod: TFreeOTFESectorIVGenMethod;
 
     VolumeIVLength: DWORD;  // In *bits*
-    VolumeIV: Ansistring;
+    VolumeIV: TSDUBytes;
   end;
 
   TVolumeDetailsBlockArray = array of TVolumeDetailsBlock;

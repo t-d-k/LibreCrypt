@@ -324,7 +324,7 @@ const
     );
 
 resourcestring
-  FREEOTFE_DESCRIPTION = 'DoxBox: Open-Source On-The-Fly Encryption';
+  FREEOTFE_DESCRIPTION = 'DoxBox: Open-Source Transparent Encryption';
 
   TEXT_NEED_ADMIN = 'You need administrator privileges in order to carry out this operation.';
 
@@ -588,21 +588,18 @@ end;
 
 
 function TfrmFreeOTFEMain.DetermineDriveOverlay(volumeInfo: TOTFEFreeOTFEVolumeInfo): Integer;
-var
-  retval: Integer;
 begin
-  retval := OVERLAY_IMGIDX_NONE;
+  Result := OVERLAY_IMGIDX_NONE;
 
   if volumeInfo.MetaDataStructValid then begin
     if (volumeInfo.MetaDataStruct.PKCS11SlotID <> PKCS11_NO_SLOT_ID) then begin
-      retval := OVERLAY_IMGIDX_PKCS11TOKEN;
+      Result := OVERLAY_IMGIDX_PKCS11TOKEN;
     end else
     if volumeInfo.MetaDataStruct.LinuxVolume then begin
-      retval := OVERLAY_IMGIDX_LINUX;
+      Result := OVERLAY_IMGIDX_LINUX;
     end;
   end;
 
-  Result := retval;
 end;
 
  { TODO : use diff icons for eg freeotfe/luks/dmcrypt , instead of overlays }
@@ -875,6 +872,9 @@ begin
   inherited;
 
   Result    := True;
+
+  assert('1234' = SDUBytesToString(SDUStringToSDUBytes('1234')));
+
   mountList := TStringList.Create();
   try
     //for loop is optimised into reverse order , but want to process forwards
@@ -894,13 +894,13 @@ begin
 
       if fOtfeFreeOtfeBase.IsLUKSVolume(vol_path + TEST_VOLS[vl]) or (LES_FILES[vl] <> '') then
       begin
-        if not fOtfeFreeOtfeBase.MountLinux(mountList, mountedAs, True, les_file, PASSWORDS[vl],
+        if not fOtfeFreeOtfeBase.MountLinux(mountList, mountedAs, True, les_file,SDUStringToSDUBytes(PASSWORDS[vl]),
           key_file, False, nlLF, 0, True) then
           Result := False;
       end else begin
         //call silently
         if not fOtfeFreeOtfeBase.MountFreeOTFE(mountList, mountedAs, True,
-          key_file, PASSWORDS[vl], OFFSET[vl], False, True, 256, ITERATIONS[vl]) then
+          key_file,SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False, True, 256, ITERATIONS[vl]) then
           Result := False;
       end;
       if not Result then begin
@@ -912,7 +912,6 @@ begin
       end;
       Inc(vl);
     end;
-
 
   {test changing password
     backup freeotfe header ('cdb')
@@ -933,7 +932,7 @@ begin
       mountList.Clear;
       mountList.Add(vol_path + TEST_VOLS[0]);
       if not fOtfeFreeOtfeBase.MountFreeOTFE(mountList, mountedAs, True, '',
-        'secret4', 0, False, True, 256, 2048) then
+        SDUStringToSDUBytes('secret4'), 0, False, True, 256, 2048) then
         Result := False;
     end;
     if Result then
@@ -1130,7 +1129,7 @@ begin
   end else
   if (mountAsSystem = ftLinux) then begin
     mountedOK := fOtfeFreeOtfeBase.MountLinux(filenames, mountedAs, ReadOnly,
-      '', '', '', False, LINUX_KEYFILE_DEFAULT_NEWLINE, 0, False, forceHidden);
+      '',nil, '', False, LINUX_KEYFILE_DEFAULT_NEWLINE, 0, False, forceHidden);
   end else begin
     mountedOK := fOtfeFreeOtfeBase.Mount(filenames, mountedAs, ReadOnly);
   end;
@@ -1844,10 +1843,8 @@ end;
 
 function TfrmFreeOTFEMain.PortableModeSet(setTo: TPortableModeAction;
   suppressMsgs: Boolean): Boolean;
-var
-  retval: Boolean;
 begin
-  retval := False;
+  Result := False;
 
   if not ((fOtfeFreeOtfeBase as TOTFEFreeOTFE).CanUserManageDrivers()) then begin
     // On Vista, escalate UAC
@@ -1869,17 +1866,17 @@ begin
     case setTo of
       pmaStart:
       begin
-        retval := _PortableModeStart(suppressMsgs);
+        Result := _PortableModeStart(suppressMsgs);
       end;
 
       pmaStop:
       begin
-        retval := _PortableModeStop(suppressMsgs);
+        Result := _PortableModeStop(suppressMsgs);
       end;
 
       pmaToggle:
       begin
-        retval := _PortableModeToggle(suppressMsgs);
+        Result := _PortableModeToggle(suppressMsgs);
       end;
 
     end;
@@ -1895,7 +1892,7 @@ begin
 {$IFEND}
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfrmFreeOTFEMain.GetAllDriversUnderCWD(driverFilenames: TStringList);
@@ -2044,31 +2041,26 @@ end;
 
 function TfrmFreeOTFEMain._PortableModeToggle(suppressMsgs: Boolean): Boolean;
 var
-  retval:      Boolean;
   cntPortable: Integer;
 begin
-  retval := False;
+  Result := False;
 
   cntPortable := (fOtfeFreeOtfeBase as TOTFEFreeOTFE).DriversInPortableMode();
 
   if (cntPortable < 0) then begin
     // We *should* be authorised to do this by the time we get here...
-    // Do nothing; retval already set to FALSE
+    // Do nothing; Result already set to FALSE
   end else
   if (cntPortable > 0) then begin
-    retval := PortableModeSet(pmaStop, suppressMsgs);
+    Result := PortableModeSet(pmaStop, suppressMsgs);
   end else begin
-    retval := PortableModeSet(pmaStart, suppressMsgs);
+    Result := PortableModeSet(pmaStart, suppressMsgs);
   end;
-
-  Result := retval;
 end;
-
 
 procedure TfrmFreeOTFEMain.actDismountExecute(Sender: TObject);
 begin
   DismountSelected();
-
 end;
 
 procedure TfrmFreeOTFEMain.actAboutExecute(Sender: TObject);
@@ -2084,7 +2076,6 @@ begin
   finally
     dlg.Free();
   end;
-
 end;
 
 procedure TfrmFreeOTFEMain.actConsoleHideExecute(Sender: TObject);
@@ -2096,14 +2087,11 @@ end;
 procedure TfrmFreeOTFEMain.actDismountAllExecute(Sender: TObject);
 begin
   DismountAll();
-
 end;
-
 
 procedure TfrmFreeOTFEMain.actPropertiesExecute(Sender: TObject);
 begin
   DriveProperties();
-
 end;
 
 // Function required for both close and minimize to system tray icon
@@ -2294,22 +2282,21 @@ end;
  // given time
 function TfrmFreeOTFEMain.MessageHook(var msg: TMessage): Boolean;
 var
-  retVal:    Boolean;
   hotKeyMsg: TWMHotKey;
 begin
-  retVal := False;
+  result := False;
 
   if (msg.Msg = GLOBAL_VAR_WM_FREEOTFE_RESTORE) then begin
     // Restore application
     actConsoleDisplay.Execute();
 
     msg.Result := 0;
-    retVal     := True;
+    result     := True;
   end else
   if (msg.Msg = GLOBAL_VAR_WM_FREEOTFE_REFRESH) then begin
     actRefreshExecute(nil);
     msg.Result := 0;
-    retVal     := True;
+    result     := True;
   end else
   if (msg.Msg = WM_HOTKEY) then begin
     // Hotkey window message handler
@@ -2331,12 +2318,10 @@ begin
     if ((hotKeyMsg.HotKey = HOTKEY_IDENT_DISMOUNT) or (hotKeyMsg.HotKey =
       HOTKEY_IDENT_DISMOUNTEMERG)) then begin
       msg.Result := 0;
-      retVal     := True;
+      result     := True;
     end;
 
   end;
-
-  Result := retVal;
 end;
 
 procedure TfrmFreeOTFEMain.miToolsClick(Sender: TObject);
@@ -3376,17 +3361,14 @@ end;
 function TfrmFreeOTFEMain.GetSelectedDrives(): DriveLetterString;
 var
   i:      Integer;
-  retval: DriveLetterString;
 begin
-  retval := '';
+  result := '';
 
   for i := 0 to (lvDrives.items.Count - 1) do begin
     if lvDrives.Items[i].Selected then begin
-      retval := retval + GetDriveLetterFromLVItem(lvDrives.Items[i]);
+      result := result + GetDriveLetterFromLVItem(lvDrives.Items[i]);
     end;
   end;
-
-  Result := retval;
 end;
 
  //function TfrmFreeOTFEMain.OTFEFreeOTFE(): TOTFEFreeOTFE;

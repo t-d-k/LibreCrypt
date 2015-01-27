@@ -35,7 +35,7 @@ type
     procedure ControlChanged(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
   PRIVATE
-    function GetUserKey(): PasswordString;
+    function GetUserKey(): TSDUBytes;
 
     function GetOffset(): Int64;
     function GetSaltLength(): Integer;
@@ -47,7 +47,7 @@ type
     function DumpLUKSDataToFile(): Boolean; OVERRIDE;
 
   PUBLIC
-    property UserKey: PasswordString Read GetUserKey;
+    property UserKey: TSDUBytes Read GetUserKey;
 
     property Offset: Int64 Read GetOffset;
     property SaltLength: Integer Read GetSaltLength;
@@ -72,9 +72,9 @@ const
 {$ENDIF}
 
 
-function TfrmCDBDump_FreeOTFE.GetUserKey(): PasswordString;
+function TfrmCDBDump_FreeOTFE.GetUserKey(): TSDUBytes;
 begin
-  Result := PasswordString(preUserKey.Text);
+  Result := SDUStringToSDUBytes(preUserKey.Text);
 end;
 
 function TfrmCDBDump_FreeOTFE.GetOffset(): Int64;
@@ -144,7 +144,7 @@ end;
 function TfrmCDBDump_FreeOTFE.DumpLUKSDataToFile(): Boolean;
 begin
   Result := OTFEFreeOTFE.DumpCriticalDataToFile(VolumeFilename, Offset,
-    UserKey, SaltLength,  // In bits
+    GetUserKey, SaltLength,  // In bits
     KeyIterations, DumpFilename);
 end;
 

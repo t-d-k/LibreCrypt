@@ -70,7 +70,7 @@ type
     procedure Initialize();
 
     // Key...
-    function GetKey(var userKey: PasswordString): Boolean;
+    function GetKey(var userKey: TSDUBYtes): Boolean;
     function SetKey(userKey: PasswordString): Boolean;
     function SetKeyfile(filename: String): Boolean;
     function GetKeyfileIsASCII(var isASCII: Boolean): Boolean;
@@ -197,7 +197,7 @@ end;
 
 procedure TfrmKeyEntryLUKS.pbOKClick(Sender: TObject);
 var
-  tmpKey:        PasswordString;
+  tmpKey:        TSDUBYtes;
   msgZeroLenKey: String;
 begin
   if GetKey(tmpKey) then begin
@@ -326,7 +326,7 @@ begin
 end;
 
 
-function TfrmKeyEntryLUKS.GetKey(var userKey: PasswordString): Boolean;
+function TfrmKeyEntryLUKS.GetKey(var userKey: TSDUBYtes): Boolean;
 begin
   Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKey(userKey);
 end;

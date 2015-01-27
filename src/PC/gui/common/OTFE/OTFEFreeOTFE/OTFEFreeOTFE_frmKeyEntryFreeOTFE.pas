@@ -142,7 +142,7 @@ type
     fVolumeFiles:   TStringList;
     fmountedDrives: Ansistring;
 
-    procedure SetPassword(password: Ansistring);
+    procedure SetPassword(password: TSDUBytes);
     procedure SetReadOnly(ReadOnly: Boolean);
     procedure SetKeyfile(keyFilename: String);
     procedure SetOffset(offset: ULONGLONG);
@@ -430,7 +430,7 @@ begin
     fMountedDrives := '';
     { TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
     Result         := fFreeOTFEObj.MountFreeOTFE(fVolumeFiles,
-      Ansistring(preUserkey.Text), useKeyfilename,
+      SDUStringToSDUBytes(preUserkey.Text), useKeyfilename,
       usePKCS11CDB, usedSlotID,
       FPKCS11Session, usePKCS11SecretKey,
       seKeyIterations.Value, GetDriveLetter(),
@@ -943,9 +943,9 @@ begin
 
 end;
 
-procedure TfrmKeyEntryFreeOTFE.SetPassword(password: Ansistring);
+procedure TfrmKeyEntryFreeOTFE.SetPassword(password: TSDUBytes);
 begin
-  preUserKey.Text := password;
+  preUserKey.Text := SDUBytesToString(password);
 end;
 
  // "INS" - "If Not Silent"

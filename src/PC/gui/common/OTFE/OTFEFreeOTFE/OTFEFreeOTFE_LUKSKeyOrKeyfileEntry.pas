@@ -38,7 +38,7 @@ type
 
     procedure EnableDisableControls();
 
-    function GetKey(var userKey: PasswordString): Boolean;
+    function GetKey(var userKey: TSDUBYtes): Boolean;
     function GetKeyRaw(var userKey: String): Boolean;
     function SetKey(userKey: PasswordString): Boolean;
     function SetKeyfile(filename: String): Boolean;
@@ -154,7 +154,7 @@ begin
   Result  := True;
 end;
 
-function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKey(var userKey: PasswordString): Boolean;
+function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKey(var userKey: TSDUBYtes): Boolean;
 var
   retval:             Boolean;
   keyfileIsASCII:     Boolean;
@@ -164,7 +164,7 @@ begin
 
   if rbKeyFromUser.Checked then begin
     { TODO 1 -otdk -cfix : warn user about losing unicde chars }
-    userKey := preUserkey.Text;
+    userKey := SDUStringToSDUBytes( preUserkey.Text);
     retval  := True;
   end else begin
     if (feKeyfile.Filename <> '') then begin

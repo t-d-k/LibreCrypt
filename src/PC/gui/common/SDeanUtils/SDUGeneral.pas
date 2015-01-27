@@ -6847,7 +6847,7 @@ var
 begin
   ln := length(A) + length(rhs);
   SDUAddLimit(A, rhs, length(rhs));
-  assert(length(A) = ln);
+  assert(length(A) = ln); //passed
 end;
 
 // adds rhs to end up lhs up to limit bytes

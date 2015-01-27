@@ -12,11 +12,17 @@ interface
 
 uses
   Classes, ComCtrls, Controls, Dialogs,
-  ExtCtrls, Forms, Graphics, Messages, OTFEFreeOTFE_U, PasswordRichEdit, SDUForms,
-  Spin64,
+  ExtCtrls, Forms, Graphics, Messages, 
+PasswordRichEdit, 
   StdCtrls, SysUtils, Windows, // Required for TFreeOTFEMountAs
+  Spin64,
+//SDU
+  SDUGeneral,
+SDUForms,  SDUDialogs, SDUFilenameEdit_U, SDUFrames,
+ //doxbox
+OTFEFreeOTFE_U, 
   OTFEFreeOTFE_DriverAPI, OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFEBase_U,
-  SDUDialogs, SDUFilenameEdit_U, SDUFrames,
+
   SDUSpin64Units, SDUStdCtrls;  // Required for TFreeOTFESectorIVGenMethod and NULL_GUID
 
 type
@@ -130,7 +136,7 @@ type
 
     // Key...
     function GetKey(var userKey: Ansistring): Boolean;
-    function SetKey(userKey: Ansistring): Boolean;
+    function SetKey(userKey: PasswordString): Boolean;
 
     // Key processing...
     function GetKeyProcSeed(var keyProcSeed: Ansistring): Boolean;
@@ -197,7 +203,7 @@ uses
   ComObj,                      // Required for StringToGUID
   OTFEFreeOTFE_VolumeFileAPI,  // Required for SCTRIVGEN_USES_SECTOR_ID and SCTRIVGEN_USES_HASH
   INIFiles, OTFEFreeOTFEDLL_U,
-  SDUGeneral,
+//sdu
   SDUi18n;
 
 const
@@ -779,7 +785,7 @@ begin
   Result  := True;
 end;
 
-function TfrmKeyEntryLinux.SetKey(userKey: Ansistring): Boolean;
+function TfrmKeyEntryLinux.SetKey(userKey: PasswordString): Boolean;
 begin
   preUserkey.Text := userKey;
   Result          := True;

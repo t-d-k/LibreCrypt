@@ -91,7 +91,7 @@ end;
 
 function TfrmCDBDump_LUKS.DumpLUKSDataToFile(): Boolean;
 var
-  userKey:            PasswordString;
+  userKey:            TSDUBytes;
   keyfile:            String;
   keyfileIsASCII:     Boolean;
   keyfileNewlineType: TSDUNewline;

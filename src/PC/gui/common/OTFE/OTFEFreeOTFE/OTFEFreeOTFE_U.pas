@@ -53,9 +53,9 @@ type
     function  MountDiskDevice(
                               deviceName: string;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
                               volFilename: string;
-                              volumeKey: ansistring;
+                              volumeKey: TSDUBytes;
                               sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                              volumeIV: ansistring;
+                              volumeIV: TSDUBytes;
                               readonly: boolean;
                               IVHashDriver: Ansistring;
                               IVHashGUID: TGUID;
@@ -72,9 +72,9 @@ type
 
     function  CreateMountDiskDevice(
                               volFilename: string;
-                              volumeKey: Ansistring;
+                              volumeKey: TSDUBytes;
                               sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                              volumeIV: Ansistring;
+                              volumeIV: TSDUBytes;
                               readonly: boolean;
                               IVHashDriver: Ansistring;
                               IVHashGUID: TGUID;
@@ -160,7 +160,7 @@ type
                     readNotWrite: boolean;
 
                     volFilename: string;
-                    volumeKey: ansistring;
+                    volumeKey: TSDUBytes;
                     sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
                     IVHashDriver: Ansistring;
                     IVHashGUID: TGUID;
@@ -294,7 +294,7 @@ type
                       HashGUID: TGUID;
                       CypherDriver: Ansistring;
                       CypherGUID: TGUID;
-                      var key: Ansistring;
+                      var key: PasswordString;
                       var data: Ansistring;
                       var MACOut: Ansistring;
                       tBits: integer = -1
@@ -306,7 +306,7 @@ type
                     HashGUID: TGUID;
                     CypherDriver: Ansistring;
                     CypherGUID: TGUID;
-                    Password: PasswordString;
+                    Password: TSDUBytes;
                     Salt: TSDUBytes;
                     Iterations: integer;
                     dkLenBits: integer;  // In *bits*
@@ -458,23 +458,21 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFE.Connect(): boolean;
-var
-  allOK: boolean;
 begin
-  allOK := FALSE;
+  Result := FALSE;
 
   DriverHandle := ConnectDevice(DEVICE_SYMLINK_MAIN_NAME);
 
   if (DriverHandle <> 0) then
     begin
-    allOK := TRUE;
+    Result := TRUE;
     end
   else
     begin
     LastErrorCode := OTFE_ERR_DRIVER_FAILURE;
     end;
 
-  Result := allOK;
+
 end;
 
 
@@ -517,7 +515,6 @@ function TOTFEFreeOTFE.DetectLinux(
   testFilename: string
   ): string;
 var
-  retVal: string;
   deviceName: string;
   i: integer;
   volumeKey: string;
@@ -565,7 +562,7 @@ var
 
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
-  retVal := '';
+  Result := '';
 
   CheckActive();
 
@@ -574,45 +571,45 @@ begin
   // Mount as LUKS if they are...
   if (IsLUKSVolume(volumeFilename)) then
     begin
-    retVal := retVal + 'LUKS volume; no need to do exhaustive search';
+    Result := Result + 'LUKS volume; no need to do exhaustive search';
     exit;
     end;
 
 
-  if (retVal = '') then
+  if (Result = '') then
     begin
     // Obtain details of all hashes...
     SetLength(hashDrivers, 0);
     if not(GetHashDrivers(TFreeOTFEHashDriverArray(hashDrivers))) then
       begin
-      retVal := retVal + 'Unable to get list of hash drivers.';
+      Result := Result + 'Unable to get list of hash drivers.';
       end;
     end;
 
-  if (retVal = '') then
+  if (Result = '') then
     begin
     // Obtain details of all cyphers...
     SetLength(cypherDrivers, 0);
     if not(GetCypherDrivers(TFreeOTFECypherDriverArray(cypherDrivers))) then
       begin
-      retVal := retVal + 'Unable to get list of cypher drivers.';
+      Result := Result + 'Unable to get list of cypher drivers.';
       end;
     end;
 
 
-  if (retVal = '') then
+  if (Result = '') then
     begin
     currDriveLetter := GetNextDriveLetter(mountDriveLetter, #0);
     if (currDriveLetter = #0) then
       begin
       // No more drive letters following the user's specified drive
       // letter - don't mount further drives
-      retVal := retVal + 'Out of drive letters.';
+      Result := Result + 'Out of drive letters.';
       end;
     end;
 
 
-  if (retVal = '') then
+  if (Result = '') then
     begin
     // KEY PROCESSING
     // FOR ALL HASH DRIVERS...
@@ -680,7 +677,7 @@ mc_currImpl := kpc_currImpl;
                                                 volumeKey
                                                )) then
                     begin
-                    retVal := retVal + 'HASH FAILURE: '+keyProcHashDriver+':'+GUIDToString(keyProcHashGUID);
+                    Result := Result + 'HASH FAILURE: '+keyProcHashDriver+':'+GUIDToString(keyProcHashGUID);
                     continue;
                     end;
 
@@ -774,20 +771,20 @@ ivStartSectorInt := 1;
                                     // Test if mounted OK
                                     if FileExists(currDriveLetter+':'+testFilename) then
                                       begin
-                                      retVal := retVal + '---------------------------------------------------------------';
-                                      retVal := retVal + 'OK!';
-                                      retVal := retVal + 'mountedAs: '+currDriveLetter;
-                                      retVal := retVal + 'kph: '+keyProcHashDriver +':'+GUIDToString(keyProcHashGUID );
-                                      retVal := retVal + 'kpc: '+keyProcCypherDriver +':'+GUIDToString(keyProcCypherGUID );
-                                      retVal := retVal + 'mc: '+mainCypherDriver +':'+GUIDToString(mainCypherGUID);
-                                      retVal := retVal + 'hashWithAsInt: '+inttostr(hashWithAsInt);
-                                      retVal := retVal + 'ivh: '+mainIVHashDriver +':'+GUIDToString(mainIVHashGUID );
-                                      retVal := retVal + 'ivc: '+mainIVCypherDriver +':'+GUIDToString(mainIVCypherGUID );
-                                      retVal := retVal + 'sectorIVGenMethod: '+inttostr(ord(sectorIVGenMethod));
-                                      retVal := retVal + 'ivStartSectorInt: '+inttostr(ivStartSectorInt);
-                                      retVal := retVal + '---------------------------------------------------------------';
+                                      Result := Result + '---------------------------------------------------------------';
+                                      Result := Result + 'OK!';
+                                      Result := Result + 'mountedAs: '+currDriveLetter;
+                                      Result := Result + 'kph: '+keyProcHashDriver +':'+GUIDToString(keyProcHashGUID );
+                                      Result := Result + 'kpc: '+keyProcCypherDriver +':'+GUIDToString(keyProcCypherGUID );
+                                      Result := Result + 'mc: '+mainCypherDriver +':'+GUIDToString(mainCypherGUID);
+                                      Result := Result + 'hashWithAsInt: '+inttostr(hashWithAsInt);
+                                      Result := Result + 'ivh: '+mainIVHashDriver +':'+GUIDToString(mainIVHashGUID );
+                                      Result := Result + 'ivc: '+mainIVCypherDriver +':'+GUIDToString(mainIVCypherGUID );
+                                      Result := Result + 'sectorIVGenMethod: '+inttostr(ord(sectorIVGenMethod));
+                                      Result := Result + 'ivStartSectorInt: '+inttostr(ivStartSectorInt);
+                                      Result := Result + '---------------------------------------------------------------';
 SendDateTime('HIT', now);
-SendDebug('retVal: '+retVal);
+SendDebug('Result: '+Result);
                                       end;
 
                                     Dismount(currDriveLetter);
@@ -822,11 +819,11 @@ SendDebug('retVal: '+retVal);
           end;  // for kpc_i:=low(cypherDrivers) to high(cypherDrivers) do
         end;  // for kph_j:=low(kph_currDriver.Hashes) to high(kph_currDriver.Hashes) do
       end;  // for kph_i:=low(hashDrivers) to high(hashDrivers) do
-    end;  //  if (retVal = '') then
+    end;  //  if (Result = '') then
 
 SendDateTime('FINISHED', now);
 
-  Result := retVal;
+
 end;
 {$ENDIF}
 
@@ -835,12 +832,11 @@ end;
 // Attempt to create a new device to be used
 function TOTFEFreeOTFE.CreateDiskDevice(deviceType: DWORD): string;
 var
-  retVal: string;
   DIOCBufferIn: TDIOC_DISK_DEVICE_CREATE;
   DIOCBufferOut: TDIOC_DEVICE_NAME;
   bytesReturned: DWORD;
 begin
-  retVal := '';
+  Result := '';
 
   CheckActive();
 
@@ -863,14 +859,14 @@ begin
                       nil
                      )) then
     begin
-    retVal := copy(DIOCBufferOut.DeviceName, 1, StrLen(DIOCBufferOut.DeviceName));
+    Result := copy(DIOCBufferOut.DeviceName, 1, StrLen(DIOCBufferOut.DeviceName));
 {$IFDEF FREEOTFE_DEBUG}
-DebugMsg('Disk device created: '+retVal);
+DebugMsg('Disk device created: '+Result);
 {$ENDIF}
     end;
 
 
-  Result := retVal;
+
 end;
 
 
@@ -879,9 +875,9 @@ end;
 function TOTFEFreeOTFE.MountDiskDevice(
                                    deviceName: string;
                                    volFilename: string;
-                                   volumeKey: ansistring;
+                                   volumeKey: TSDUBytes;
                                    sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                                   volumeIV: ansistring;
+                                   volumeIV: TSDUBytes;
                                    readonly: boolean;
                                    IVHashDriver: Ansistring;
                                    IVHashGUID: TGUID;
@@ -896,7 +892,6 @@ function TOTFEFreeOTFE.MountDiskDevice(
                                    storageMediaType: TFreeOTFEStorageMediaType = mtFixedMedia
                                   ): boolean;
 var
-  retVal: boolean;
   ptrDIOCBuffer: PDIOC_MOUNT_PC_DRIVER;
   bytesReturned: DWORD;
   bufferSize: integer;
@@ -904,8 +899,9 @@ var
   kmFilename: string;
   useVolumeFlags: integer;
   strMetaData: Ansistring;
+  volumeKeyStr: Ansistring;
 begin
-  retVal := FALSE;
+  result := FALSE;
 
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('In MountDiskDevice');
@@ -939,7 +935,7 @@ DebugMsg('  size: '+inttostr(size));
 
   if not(GetSpecificCypherDetails(mainCypherDriver, mainCypherGUID, mainCypherDetails)) then
     begin
-    Result := retval;
+//
     exit;
     end;
 
@@ -950,10 +946,13 @@ DebugMsg('  size: '+inttostr(size));
     // THIS IS CORRECT; caters for both volumeKey>keysize and
     // volumeKey<keysize
     // Copy as much of the hash value as possible to match the key length
-    volumeKey := Copy(volumeKey, 1, min((mainCypherDetails.KeySizeRequired div 8), length(volumeKey)));
+    volumeKeyStr := SDUBytesToString(volumeKey);
+    volumeKeyStr := Copy(volumeKeyStr, 1, min((mainCypherDetails.KeySizeRequired div 8), length(volumeKeyStr)));
     // If the hash wasn't big enough, pad out with zeros
-    // SDUResetLength(volumeKey,mainCypherDetails.KeySizeRequired div 8);
-     volumeKey := volumeKey + StringOfChar(AnsiChar(#0), ((mainCypherDetails.KeySizeRequired div 8) - Length(volumeKey)));
+
+     volumeKeyStr := volumeKeyStr + StringOfChar(AnsiChar(#0), ((mainCypherDetails.KeySizeRequired div 8) - Length(volumeKeyStr)));
+      SDUResetLength(volumeKey,mainCypherDetails.KeySizeRequired div 8);
+       assert(volumeKeyStr=SDUBytesToString(volumeKey) );// passed
     end;
 
 
@@ -1060,7 +1059,7 @@ DebugMsg('+++ ---end struct---');
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('Mounted OK!');
 {$ENDIF}
-      retVal := TRUE;
+      result := TRUE;
       end;
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('+++ DIOC STRUCT COMPLETE');
@@ -1075,16 +1074,15 @@ DebugMsg('+++ DIOC STRUCT COMPLETE');
 DebugMsg('Exiting MountDiskDevice');
 {$ENDIF}
 
-  Result := retVal;
 end;
 
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFE.CreateMountDiskDevice(
                               volFilename: string;
-                              volumeKey: Ansistring;
+                              volumeKey: TSDUBytes;
                               sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                              volumeIV: Ansistring;
+                              volumeIV: TSDUBytes;
                               readonly: boolean;
                               IVHashDriver: Ansistring;
                               IVHashGUID: TGUID;
@@ -1104,9 +1102,8 @@ function TOTFEFreeOTFE.CreateMountDiskDevice(
 var
   deviceName: string;
   mountMetadata: TOTFEFreeOTFEVolumeMetaData;
-  retval: boolean;
 begin
-  retval:= FALSE;
+  result:= FALSE;
 
   // Attempt to create a new device to be used
   deviceName := CreateDiskDevice(FreeOTFEMountAsDeviceType[MountMountAs]);
@@ -1146,7 +1143,7 @@ begin
                           mountForAllUsers
                          ) then
         begin
-        retval := TRUE;
+        result := TRUE;
         end
       else
         begin
@@ -1164,7 +1161,7 @@ begin
 
     end; 
 
-  Result := retval;
+//
 end;
 
 
@@ -1172,11 +1169,10 @@ end;
 // Attempt to dismount a device
 function TOTFEFreeOTFE.DismountDiskDevice(deviceName: string; emergency: boolean): boolean;
 var
-  retVal: boolean;
   DIOCBuffer: TDIOC_DISMOUNT;
   bytesReturned: DWORD;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -1194,10 +1190,10 @@ begin
                       nil
                      )) then
     begin
-    retVal := TRUE;
+    Result := TRUE;
     end;
 
-  Result := retVal;
+
 end;
 
 
@@ -1217,7 +1213,6 @@ var
   driveLetterColon: string;
   driveFile: Widestring;
   pmr: TPREVENT_MEDIA_REMOVAL;
-  allOK: boolean;
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
 begin
   CheckActive();
@@ -1225,21 +1220,21 @@ begin
   driveLetterColon := upcase(driveLetter)+':';
   driveFile := '\\.\'+driveLetterColon;
 
-  allOK := TRUE;
+  Result := TRUE;
 
-  if (allOK) then
+  if Result then
     begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('getVolumeInfo');
 {$ENDIF}
-    allOK := GetVolumeInfo(driveLetter, volumeInfo);
+    Result := GetVolumeInfo(driveLetter, volumeInfo);
 
     // If we couldn't get the drive info, then we can't even do an
     // emergency dismount; we don't know which FreeOTFE device to dismount
-    if (not(allOK)) then
+    if (not Result) then
       begin
 {$IFDEF FREEOTFE_DEBUG}
-DebugMsg('getVolumeInfo NOT ALLOK');
+DebugMsg('getVolumeInfo NOT Result');
 {$ENDIF}
       emergency := FALSE;
       end;
@@ -1255,7 +1250,7 @@ DebugMsg('getVolumeInfo NOT ALLOK');
 
   // Initialize to flag that we haven't opened it
   driveDevice := INVALID_HANDLE_VALUE;
-  if (allOK) then
+  if Result then
     begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('createfile: '+driveFile);
@@ -1270,7 +1265,7 @@ DebugMsg('createfile: '+driveFile);
                               FILE_FLAG_NO_BUFFERING,
                               0
                              );
-    allOK := (driveDevice <> INVALID_HANDLE_VALUE);
+    Result := (driveDevice <> INVALID_HANDLE_VALUE);
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('driveDevice: '+inttostr(driveDevice)+' (INVALID_HANDLE_VALUE = '+inttostr(INVALID_HANDLE_VALUE));
 {$ENDIF}
@@ -1278,12 +1273,12 @@ DebugMsg('driveDevice: '+inttostr(driveDevice)+' (INVALID_HANDLE_VALUE = '+intto
     
   unableToOpenDrive := (driveDevice = INVALID_HANDLE_VALUE);
 
-  if ( (allOK) or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
+  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
     begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('lockvolume');
 {$ENDIF}
-    allOK := DeviceIoControl(
+    Result := DeviceIoControl(
                              driveDevice,
                              FSCTL_LOCK_VOLUME,
                              nil,
@@ -1296,12 +1291,12 @@ DebugMsg('lockvolume');
     end;
 
 
-  if ( (allOK) or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
+  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
     begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('dismountvolume');
 {$ENDIF}
-    allOK := DeviceIoControl(
+    Result := DeviceIoControl(
                              driveDevice,
                              FSCTL_DISMOUNT_VOLUME,
                              nil,
@@ -1314,13 +1309,13 @@ DebugMsg('dismountvolume');
     end;
 
 
-  if ( (allOK) or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
+  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
     begin
     pmr.PreventMediaRemoval := FALSE;
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('mediaremoval');
 {$ENDIF}
-    allOK := DeviceIoControl(
+    Result := DeviceIoControl(
                              driveDevice,
                              IOCTL_STORAGE_MEDIA_REMOVAL,
                              @pmr,
@@ -1333,13 +1328,13 @@ DebugMsg('mediaremoval');
     end;
 
 
-  if ( (allOK) or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
+  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
     begin
     pmr.PreventMediaRemoval := FALSE;
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('ejectmedia');
 {$ENDIF}
-    allOK := DeviceIoControl(
+    Result := DeviceIoControl(
                              driveDevice,
                              IOCTL_STORAGE_EJECT_MEDIA,
                              nil,
@@ -1354,21 +1349,21 @@ DebugMsg('ejectmedia');
 
   // An explicit call to IOCTL_FREEOTFE_DISMOUNT should be redundant; the
   // IOCTL_STORAGE_EJECT_MEDIA should have already done this
-  if (allOK or emergency) then
+  if (Result or emergency) then
     begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('dismountdevice');
 {$ENDIF}
-    allOK := DismountDiskDevice(volumeInfo.deviceName, emergency);
+    Result := DismountDiskDevice(volumeInfo.deviceName, emergency);
     end;
 
 
-  if ( (allOK) or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
+  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
     begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('unlock');
 {$ENDIF}
-    allOK := DeviceIoControl(
+    Result := DeviceIoControl(
                              driveDevice,
                              FSCTL_UNLOCK_VOLUME,
                              nil,
@@ -1387,19 +1382,19 @@ DebugMsg('unlock');
 DebugMsg('closehandle');
 {$ENDIF}
     // Note that we can't do:
-    //   allOK := allOK and CloseHandle(driveDevice);"
+    //   Result := Result and CloseHandle(driveDevice);"
     // here because lazy evaluation will prevent CloseHandle(...) from being
-    // called if allOK is FALSE - and we *want* CloseHandle(...) called
+    // called if Result is FALSE - and we *want* CloseHandle(...) called
     // regardless, otherwise we end up with FreeOTFE never closing this file
     // handle, and "leaking" this handle
     if not(CloseHandle(driveDevice)) then
       begin
-      allOK := FALSE;
+      Result := FALSE;
       end;
     end;
 
 
-  Result := allOK;
+
 
 end;
 
@@ -1414,12 +1409,11 @@ function TOTFEFreeOTFE.LDREUDriver(
                                    emergency: boolean
                                  ): boolean;
 var
-  retVal: boolean;
   DIOCBuffer: TDIOC_LDREU;
   bytesReturned: DWORD;
   kernelDriveFile: string;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -1444,12 +1438,12 @@ begin
                         nil
                        )) then
       begin
-      retVal := TRUE;
+      Result := TRUE;
       end;
     end;
 
 
-  Result := retVal;
+
 end;
 
 
@@ -1457,11 +1451,10 @@ end;
 // Attempt to destroy a device
 function TOTFEFreeOTFE.DestroyDiskDevice(deviceName: Ansistring): boolean;
 var
-  retVal: boolean;
   DIOCBuffer: TDIOC_DEVICE_NAME;
   bytesReturned: DWORD;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -1478,11 +1471,11 @@ begin
                       nil
                      )) then
     begin
-    retVal := TRUE;
+    Result := TRUE;
     end;
 
 
-  Result := retVal;
+
 end;
 
 
@@ -1492,27 +1485,26 @@ end;
 // http://support.microsoft.com/default.aspx?scid=http://support.microsoft.com:80/support/kb/articles/Q165/7/21.asp&NoWebContent=1
 function TOTFEFreeOTFE.Dismount(driveLetter: ansichar; emergency: boolean = FALSE): boolean;
 var
-  allOK: boolean;
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
   unableToOpenDrive: boolean;
 begin
   CheckActive();
 
-  allOK := TRUE;
+  Result := TRUE;
 
-  if (allOK) then
+  if Result then
     begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('getVolumeInfo');
 {$ENDIF}
-    allOK := GetVolumeInfo(driveLetter, volumeInfo);
+    Result := GetVolumeInfo(driveLetter, volumeInfo);
 
     // If we couldn't get the drive info, then we can't even do an
     // emergency dismount; we don't know which FreeOTFE device to dismount
-    if (not(allOK)) then
+    if (not Result) then
       begin
 {$IFDEF FREEOTFE_DEBUG}
-DebugMsg('getVolumeInfo NOT ALLOK');
+DebugMsg('getVolumeInfo NOT Result');
 {$ENDIF}
       emergency := FALSE;
       end;
@@ -1525,10 +1517,10 @@ DebugMsg('getVolumeInfo NOT ALLOK');
   // If were operating in an emergency, then we don't care if some of these
   // operations fail - it's an EMERGENCY! JUST GET RID OF THE %$!# DRIVE!
 
-  if (allOK) then
+  if Result then
     begin
     unableToOpenDrive := FALSE;
-    allOK := LDREUUserApp(
+    Result := LDREUUserApp(
                           driveLetter,
                           volumeInfo.deviceName,
                           emergency,
@@ -1542,33 +1534,33 @@ DebugMsg('getVolumeInfo NOT ALLOK');
   // Fallback to getting the driver handle the privileged part of the
   // dismount (i.e. opening the volume) and carry out the LDREU
   if (
-      not(allOK) and
+      not Result and
       unableToOpenDrive
      ) then
     begin
-    allOK := LDREUDriver(driveLetter, volumeInfo.deviceName, emergency);
+    Result := LDREUDriver(driveLetter, volumeInfo.deviceName, emergency);
     end;
 
-  if (allOK or emergency) then
+  if (Result or emergency) then
     begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('remove definition');
 {$ENDIF}
-    allOK := DeleteDosDeviceSymlink(volumeInfo.deviceName, driveLetter);
+    Result := DeleteDosDeviceSymlink(volumeInfo.deviceName, driveLetter);
     end;
 
 
   // And finally... Destroy the device
-  if (allOK or emergency) then
+  if (Result or emergency) then
     begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('destroy device');
 {$ENDIF}
-    allOK := DestroyDiskDevice(volumeInfo.deviceName);
+    Result := DestroyDiskDevice(volumeInfo.deviceName);
     end;
 
 
-  Result := allOK;
+
 
 end;
 
@@ -1577,17 +1569,16 @@ end;
 function TOTFEFreeOTFE.Version(): cardinal;
 var
   BytesReturned: DWORD;
-  retVal: cardinal;
   DIOCBuffer: TDIOC_VERSION;
 begin
-  retVal := VERSION_ID_FAILURE;
+  Result := VERSION_ID_FAILURE;
 
   CheckActive();
 
   // If we have the version ID cached, use the cached information
   if (fCachedVersionID <> VERSION_ID_NOT_CACHED) then
     begin
-    retVal := fCachedVersionID;
+    Result := fCachedVersionID;
     end
   else
     begin
@@ -1604,8 +1595,8 @@ begin
       begin
       if BytesReturned=sizeof(DIOCBuffer) then
         begin
-        retVal := DIOCBuffer.VersionID;
-        fCachedVersionID := retVal;
+        Result := DIOCBuffer.VersionID;
+        fCachedVersionID := Result;
         end;
 
       end;
@@ -1613,7 +1604,7 @@ begin
     end;
 
 
-  Result := retVal;
+
 
 end;
 
@@ -1624,10 +1615,9 @@ end;
 function TOTFEFreeOTFE.GetDiskDeviceCount(): cardinal;
 var
   BytesReturned: DWORD;
-  retVal: cardinal;
   DIOCBuffer: TDIOC_DISK_DEVICE_COUNT;
 begin
-  retVal := $FFFFFFFF;
+  Result := $FFFFFFFF;
 
   CheckActive();
 
@@ -1644,13 +1634,13 @@ begin
     begin
     if BytesReturned=sizeof(DIOCBuffer) then
       begin
-      retVal := DIOCBuffer.Count;
+      Result := DIOCBuffer.Count;
       end;
 
     end;
 
 
-  Result := retVal;
+
 
 end;
 
@@ -1664,7 +1654,6 @@ end;
 function TOTFEFreeOTFE.GetDiskDeviceList(deviceNames: TStringList): boolean;
 var
   BytesReturned: DWORD;
-  retVal: boolean;
   ptrBuffer: Pointer;
   ptrBufferOffset: Pointer;
   bufferSize: cardinal;
@@ -1673,7 +1662,7 @@ var
   deviceCount: integer;
   ptrDIOCDeviceNameList: PDIOC_DEVICE_NAME_LIST;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -1719,7 +1708,7 @@ begin
         ptrBufferOffset := Pointer(PAnsiChar(ptrBufferOffset) + FREEOTFE_MAX_FILENAME_LENGTH);
         end;
 
-      retval := TRUE;
+      Result := TRUE;
       end;
 
     end
@@ -1733,7 +1722,7 @@ DebugMsg('devicelist DIOC 2 FAIL');
   FreeMem(ptrBuffer);
 
   
-  Result := retval;
+
 
 end;
 
@@ -1741,12 +1730,11 @@ end;
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFE.DrivesMounted(): ansistring;
 var
-  retVal: ansistring;
   i: integer;
   driveLetters: TStringList;
   deviceNames: TStringList;
 begin
-  retVal := '';
+  Result := '';
 
   CheckActive();
 
@@ -1760,12 +1748,12 @@ begin
           begin
           if (driveLetters[i]<>'') then
             begin
-            retVal := retVal + driveLetters[i];
+            Result := Result + driveLetters[i];
             end;
 
           end;
 
-        retVal := SortString(retVal);
+        Result := SortString(Result);
         end;
 
     finally
@@ -1776,7 +1764,7 @@ begin
   end;
 
 
-  Result := retVal;
+
 end;
 
 
@@ -1795,7 +1783,6 @@ const
   // it...
   MAX_ATTEMPTS = 5;
 var
-  retVal: boolean;
   i: integer;
   driveLetter: ansichar;
   driveColon: string;
@@ -1805,7 +1792,7 @@ var
   currDeviceName: string;
   queryResults: TStringList;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -1871,25 +1858,24 @@ begin
 
       end;
 
-    retVal := TRUE;
+    Result := TRUE;
     end;
 
 
-  Result := retVal;
+
 end;
 
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFE.GetVolumeInfo(driveLetter: ansichar; var volumeInfo: TOTFEFreeOTFEVolumeInfo): boolean;
 var
-  retVal: boolean;
   deviceName: string;
   BytesReturned: DWORD;
   inBuffer: TDIOC_DEVICE_NAME;
   outBuffer: TDIOC_DISK_DEVICE_STATUS_PC_DRIVER;
   tmpSectorIVGenMethod: TFreeOTFESectorIVGenMethod;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -1941,7 +1927,7 @@ DebugMsg('deviceName: '+deviceName);
 
         volumeInfo.Filename := GetUserModeVolumeFilename(volumeInfo.Filename);
 
-        retVal := GetVolumeMetaData(driveLetter, outBuffer.MetaDataLength, volumeInfo.MetaData);
+        Result := GetVolumeMetaData(driveLetter, outBuffer.MetaDataLength, volumeInfo.MetaData);
 
         volumeInfo.MetaDataStructValid := ParseVolumeMetadata(
                                                               volumeInfo.MetaData,
@@ -1955,7 +1941,7 @@ DebugMsg('deviceName: '+deviceName);
 
     end;
 
-  Result := retVal;
+
 
 end;
 
@@ -1963,14 +1949,13 @@ end;
 // expectedLength - Set to the amount of metadata to retrieve
 function TOTFEFreeOTFE.GetVolumeMetaData(driveLetter: ansichar; expectedLength: integer; var metaData: Ansistring): boolean;
 var
-  retVal: boolean;
   deviceName: Ansistring;
   bufferSize: DWORD;
   BytesReturned: DWORD;
   inBuffer: TDIOC_DEVICE_NAME;
   ptrDIOCBuffer: PDIOC_DISK_DEVICE_METADATA;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -2017,7 +2002,7 @@ DebugMsg('Metadata length: '+inttostr(ptrDIOCBuffer.MetaDataLength));
 DebugMsgBinary(metaData);
 {$ENDIF}
 
-          retVal := TRUE;
+          Result := TRUE;
           end;
 
         end;
@@ -2028,7 +2013,7 @@ DebugMsgBinary(metaData);
 
     end;
 
-  Result := retVal;
+
 end;
 
 
@@ -2039,12 +2024,11 @@ end;
 // Returns '' on failure
 function TOTFEFreeOTFE.GetDriveDeviceName(driveLetter: ansichar): string;
 var
-  retVal: string;
   mountedDriveLetters: TStringList;
   deviceNames: TStringList;
   i: integer;
 begin
-  retVal := '';
+  Result := '';
 
   CheckActive();
 
@@ -2058,7 +2042,7 @@ begin
           begin
           if (mountedDriveLetters[i] = driveLetter) then
             begin
-            retVal := deviceNames[i];
+            Result := deviceNames[i];
             break;
             end;
 
@@ -2073,7 +2057,7 @@ begin
     mountedDriveLetters.Free();
   end;
 
-  Result := retVal;
+
 
 end;
 
@@ -2084,12 +2068,11 @@ end;
 // Returns #0 on failure
 function TOTFEFreeOTFE.GetDriveDeviceLetter(deviceName: string): char;
 var
-  retVal: char;
   mountedDriveLetters: TStringList;
   deviceNames: TStringList;
   i: integer;
 begin
-  retVal := #0;
+  Result := #0;
 
   CheckActive();
 
@@ -2103,7 +2086,7 @@ begin
           begin
           if (deviceNames[i] = deviceName) then
             begin
-            retVal := mountedDriveLetters[i][1];
+            Result := mountedDriveLetters[i][1];
             break;
             end;
 
@@ -2118,7 +2101,7 @@ begin
     mountedDriveLetters.Free();
   end;
 
-  Result := retVal;
+
 
 end;
 
@@ -2167,14 +2150,13 @@ function TOTFEFreeOTFE.DosDeviceSymlink(
                                         Global: boolean
                                        ): boolean;
 var
-  retVal: boolean;
   DIOCBuffer: TDIOC_DOS_MOUNTPOINT;
   bytesReturned: DWORD;
   mountpoint: ansistring;
   DIOCCode: DWORD;
   driveLetterColon: Widestring;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -2187,7 +2169,7 @@ begin
 
     if CreateNotDelete then
       begin
-      retval := DefineDosDevice(
+      Result := DefineDosDevice(
                                 DDD_RAW_TARGET_PATH,
                                 PWideChar(driveLetterColon),
                                 PWideChar(deviceName)
@@ -2195,7 +2177,7 @@ begin
       end
     else
       begin
-      retval := DefineDosDevice(
+      Result := DefineDosDevice(
                                 DDD_REMOVE_DEFINITION,
                                 PWideChar(driveLetterColon),
                                 nil
@@ -2231,27 +2213,25 @@ begin
                         nil
                        )) then
       begin
-      retVal := TRUE;
+      Result := TRUE;
 
       BroadcastDriveChangeMessage(CreateNotDelete, DriveLetter);
       end;
     end;
 
 
-  Result := retVal;
+
 end;
 
 
 // ----------------------------------------------------------------------------
 // Delete both local and global DosDevices symlinks, as possible
 function TOTFEFreeOTFE.DeleteDosDeviceSymlink(DeviceName: string; DriveLetter: ansichar): boolean;
-var
-  retval: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   // Note: We do ***NOT*** use
-  //         retval := (
+  //         Result := (
   //                    DosDeviceSymlink(..., TRUE) or
   //                    DosDeviceSymlink(..., FALSE)
   //                   );
@@ -2264,7 +2244,7 @@ begin
                       TRUE
                      ) then
     begin
-    retval := TRUE;
+    Result := TRUE;
     end;
 
   if DosDeviceSymlink(
@@ -2274,11 +2254,11 @@ begin
                       FALSE
                      ) then
     begin
-    retval := TRUE;
+    Result := TRUE;
     end;
 
 
-  Result := retval;
+
 end;
 
 
@@ -2296,9 +2276,8 @@ var
   bufferSize: integer;
   bufferUsed: integer;
   finished: boolean;
-  retval: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   bufferUsed := 0;
 
@@ -2366,7 +2345,7 @@ begin
         offset := offset + length(dev) + 1;
         end;
 
-      retval := TRUE;
+      Result := TRUE;
       end;
 
   finally
@@ -2374,7 +2353,7 @@ begin
   end;
 
 
-  Result := retval;
+
 end;
 
 
@@ -2386,9 +2365,8 @@ var
   deviceNames: TStringList;
   deviceNameMapping: TStringList;
   i, j: integer;
-  retval: ansistring;
 begin
-  retval := '';
+  Result := '';
 
   deviceNames:= TStringList.Create();
   try
@@ -2405,13 +2383,13 @@ begin
               begin
               if (deviceNameMapping[j] = MSDOSKernelModeDeviceName) then
                 begin
-                retval := deviceNames[i];
+                Result := deviceNames[i];
                 break;
                 end;
               end;
               
             // If we've found the name, exit the outer loop as well
-            if (retval<>'') then
+            if (Result<>'') then
               begin
               break;
               end;
@@ -2430,19 +2408,18 @@ begin
     deviceNames.Free();
   end;
 
-  Result := retval;
+
 end;
 
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFE.GetCypherDrivers(var cypherDrivers: TFreeOTFECypherDriverArray): boolean;
 var
-  retVal: boolean;
   deviceNames: TStringList;
   deviceNameMapping: TStringList;
   i, j: integer;
 begin
-  retVal := TRUE;
+  Result := TRUE;
 
   SetLength(cypherDrivers, 0);
 
@@ -2462,17 +2439,17 @@ begin
                 begin
                 // Get the details for the device
                 SetLength(cypherDrivers, (Length(cypherDrivers)+1));
-                retval := GetCypherDriverCyphers(deviceNameMapping[j], cypherDrivers[high(cypherDrivers)]);
+                Result := GetCypherDriverCyphers(deviceNameMapping[j], cypherDrivers[high(cypherDrivers)]);
 
                 // If we got the details, bang on to the next device
                 // Note: If we couldn't get the details, this will have the
                 //       effect of allowing the loop to go round again, but
-                //       this time retval will still be FALSE; if the loop
-                //       eventually exits, then retval will *still* be false,
+                //       this time Result will still be FALSE; if the loop
+                //       eventually exits, then Result will *still* be false,
                 //       signalling an error
                 // Note: This "break" condition differs between the DLL and kernel
                 //       driver versions
-                if retval then
+                if Result then
                   begin
                   break;
                   end;
@@ -2486,8 +2463,8 @@ begin
           deviceNameMapping.Free();
         end;
 
-        // Propogate breakout, if retval is FALSE
-        if (not(retval)) then
+        // Propogate breakout, if Result is FALSE
+        if (not(Result)) then
           begin
           break;
           end;
@@ -2500,7 +2477,7 @@ begin
     deviceNames.Free();
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -2511,7 +2488,6 @@ function TOTFEFreeOTFE._GetCypherDriverCyphers_v1(cypherDriver: ansistring; var 
 var
   cypherHandle: THandle;
   BytesReturned: DWORD;
-  retval: boolean;
   DIOCBuffer: TDIOC_CYPHER_IDENTIFYDRIVER;
   ptrBuffer: Pointer;
   ptrBufferOffset: Pointer;
@@ -2525,11 +2501,11 @@ var
   arrIdx: integer;
   deviceUserModeName: ansistring;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   if CachesGetCypherDriver(cypherDriver, cypherDriverDetails) then
     begin
-    retVal := TRUE;
+    Result := TRUE;
     end
   else
     begin
@@ -2644,7 +2620,7 @@ DebugMsg('Couldn''t connect to: '+deviceUserModeName);
               // Cache the information retrieved
               CachesAddCypherDriver(cypherDriver, cypherDriverDetails);
 
-              retval := TRUE;
+              Result := TRUE;
               end;
 
             end
@@ -2669,7 +2645,7 @@ DebugMsg('Couldn''t connect to: '+deviceUserModeName);
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('Exiting function...');
 {$ENDIF}
-  Result := retval;
+
 
 end;
 
@@ -2680,7 +2656,6 @@ function TOTFEFreeOTFE._GetCypherDriverCyphers_v3(cypherDriver: ansistring; var 
 var
   cypherHandle: THandle;
   BytesReturned: DWORD;
-  retval: boolean;
   DIOCBuffer: TDIOC_CYPHER_IDENTIFYDRIVER;
   ptrBuffer: Pointer;
   ptrBufferOffset: Pointer;
@@ -2694,11 +2669,11 @@ var
   arrIdx: integer;
   deviceUserModeName: ansistring;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   if CachesGetCypherDriver(cypherDriver, cypherDriverDetails) then
     begin
-    retVal := TRUE;
+    Result := TRUE;
     end
   else
     begin
@@ -2812,7 +2787,7 @@ DebugMsg('Couldn''t connect to: '+deviceUserModeName);
               // Cache the information retrieved
               CachesAddCypherDriver(cypherDriver, cypherDriverDetails);
 
-              retval := TRUE;
+              Result := TRUE;
               end;
 
             end
@@ -2837,7 +2812,7 @@ DebugMsg('Couldn''t connect to: '+deviceUserModeName);
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('Exiting function...');
 {$ENDIF}
-  Result := retval;
+
 
 end;
 
@@ -2845,12 +2820,11 @@ end;
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFE.GetHashDrivers(var hashDrivers: TFreeOTFEHashDriverArray): boolean;
 var
-  retVal: boolean;
   deviceNames: TStringList;
   deviceNameMapping: TStringList;
   i, j: integer;
 begin
-  retVal := TRUE;
+  Result := TRUE;
 
   SetLength(hashDrivers, 0);
 
@@ -2870,17 +2844,17 @@ begin
                 begin
                 // Get the details for the device
                 SetLength(hashDrivers, (Length(hashDrivers)+1));
-                retval := GetHashDriverHashes(deviceNameMapping[j], hashDrivers[high(hashDrivers)]);
+                Result := GetHashDriverHashes(deviceNameMapping[j], hashDrivers[high(hashDrivers)]);
 
                 // If we got the details, bang on to the next device
                 // Note: If we couldn't get the details, this will have the
                 //       effect of allowing the loop to go round again, but
-                //       this time retval will still be FALSE; if the loop
-                //       eventually exits, then retval will *still* be false,
+                //       this time Result will still be FALSE; if the loop
+                //       eventually exits, then Result will *still* be false,
                 //       signalling an error
                 // Note: This "break" condition differs between the DLL and kernel
                 //       driver versions
-                if retval then
+                if Result then
                   begin
                   break;
                   end;
@@ -2894,8 +2868,8 @@ begin
           deviceNameMapping.Free();
         end;
 
-        // Propogate breakout, if retval is FALSE
-        if (not(retval)) then
+        // Propogate breakout, if Result is FALSE
+        if (not(Result)) then
           begin
           break;
           end;
@@ -2908,7 +2882,7 @@ begin
     deviceNames.Free();
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -2917,7 +2891,6 @@ function TOTFEFreeOTFE.GetHashDriverHashes(hashDriver: ansistring; var hashDrive
 var
   hashHandle: THandle;
   BytesReturned: DWORD;
-  retval: boolean;
   DIOCBuffer: TDIOC_HASH_IDENTIFYDRIVER;
   ptrBuffer: Pointer;
   ptrBufferOffset: Pointer;
@@ -2930,11 +2903,11 @@ var
   arrIdx: integer;
   deviceUserModeName: ansistring;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   if CachesGetHashDriver(hashDriver, hashDriverDetails) then
     begin
-    retVal := TRUE;
+    Result := TRUE;
     end
   else
     begin
@@ -3030,7 +3003,7 @@ DebugMsg('hash details count: '+inttostr(DIOCBufferHashes.BufCount));
               // Cache the information retrieved
               CachesAddHashDriver(hashDriver, hashDriverDetails);
               
-              retval := TRUE;
+              Result := TRUE;
               end;
 
             end
@@ -3052,7 +3025,7 @@ DebugMsg('gethashdrivers DIOC 2 FAIL');
     end;  // if CachesGetHashDriver(driver, hashDriverDetails) then
 
 
-  Result := retval;
+
 
 end;
 
@@ -3106,7 +3079,6 @@ function TOTFEFreeOTFE.HashData(
 var
   hashHandle: THandle;
   BytesReturned: DWORD;
-  retval: boolean;
   ptrDIOCBufferIn: PDIOC_HASH_DATA_IN;
   bufferSizeIn: DWORD;
   ptrDIOCBufferOut: PDIOC_HASH_DATA_OUT;
@@ -3117,7 +3089,7 @@ var
   expectedHashSizeBits: integer;  // In *bits*
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
-  retval := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -3183,7 +3155,7 @@ DebugMsg('hashByteCount: '+inttostr(hashByteCount));
 //              hashOut := StringOfChar(#0, hashByteCount);
               StrMove(PAnsiChar(hashOut), @ptrDIOCBufferOut.Hash, hashByteCount);
 
-              retval := TRUE;
+              Result := TRUE;
               end
             else
               begin
@@ -3224,7 +3196,7 @@ DebugMsg('Unable to GetSpecificHashDetails');
 {$ENDIF}
     end;  // ELSE PART - if GetSpecificHashDetails(hashKernelModeDeviceName, hashGUID, hashDetails) then
 
-  Result := retval;
+
 
 end;
 
@@ -3244,14 +3216,13 @@ function TOTFEFreeOTFE.MACData(
                       HashGUID: TGUID;
                       CypherDriver: Ansistring;
                       CypherGUID: TGUID;
-                      var key: Ansistring;
+                      var key: PasswordString;
                       var data: Ansistring;
                       var MACOut: Ansistring;
                       tBits: integer = -1
                      ): boolean;
 var
   BytesReturned: DWORD;
-  retval: boolean;
   ptrDIOCBufferIn: PDIOC_GENERATE_MAC_IN_PC_DRIVER;
   bufferSizeIn: DWORD;
   ptrDIOCBufferOut: PDIOC_GENERATE_MAC_OUT;
@@ -3261,7 +3232,7 @@ var
   minBufferSizeOut: integer;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
-  retval := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -3334,7 +3305,7 @@ DebugMsg('outputByteCount: '+inttostr(outputByteCount));
           MACOut := StringOfChar(#0, outputByteCount);
           StrMove(PAnsiChar(MACOut), @ptrDIOCBufferOut.MAC, outputByteCount);
 
-          retval := TRUE;
+          Result := TRUE;
           end
         else
           begin
@@ -3364,7 +3335,7 @@ DebugMsg('MAC DIOC 2 FAIL');
   end;
 
 
-  Result := retval;
+
 
 end;
 
@@ -3377,7 +3348,7 @@ function TOTFEFreeOTFE.DeriveKey(
                     HashGUID: TGUID;
                     CypherDriver: Ansistring;
                     CypherGUID: TGUID;
-                    Password: PasswordString;
+                    Password: TSDUBytes;
                     Salt: TSDUBytes;
                     Iterations: integer;
                     dkLenBits: integer;  // In *bits*
@@ -3385,7 +3356,6 @@ function TOTFEFreeOTFE.DeriveKey(
                    ): boolean;
 var
   BytesReturned: DWORD;
-  retval: boolean;
   ptrDIOCBufferIn: PDIOC_DERIVE_KEY_IN_PC_DRIVER;
   bufferSizeIn: DWORD;
   ptrDIOCBufferOut: PDIOC_DERIVE_KEY_OUT;
@@ -3395,7 +3365,7 @@ var
   minBufferSizeOut: integer;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
-  retval := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -3470,7 +3440,7 @@ DebugMsg('outputByteCount: '+inttostr(outputByteCount));
 //          DK := StringOfChar(#0, outputByteCount);
           StrMove(PAnsiChar(DK), @ptrDIOCBufferOut.DerivedKey, outputByteCount);
 
-          retval := TRUE;
+          Result := TRUE;
           end
         else
           begin
@@ -3500,7 +3470,7 @@ DebugMsg('MAC DIOC 2 FAIL');
   end;
 
 
-  Result := retval;
+
 
 end;
 
@@ -3519,7 +3489,6 @@ function TOTFEFreeOTFE._EncryptDecryptData(
 var
   cypherHandle: THandle;
   BytesReturned: DWORD;
-  retval: boolean;
   ptrDIOCBufferIn: PDIOC_CYPHER_DATA_IN;
   bufferSizeIn: DWORD;
   ptrDIOCBufferOut: PDIOC_CYPHER_DATA_OUT;
@@ -3529,7 +3498,7 @@ var
   dwIoControlCode: DWORD;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
-  retval := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -3604,7 +3573,7 @@ DebugMsg('_6_ supplied: '+inttostr(bufferSizeOut)+' used: '+inttostr(BytesReturn
 
               StrMove(PAnsiChar(outData), @ptrDIOCBufferOut.Data, BytesReturned);
 
-              retval := TRUE;
+              Result := TRUE;
               end
             else
               begin
@@ -3648,7 +3617,7 @@ DebugMsg('Unable to EncryptDecryptData');
 {$ENDIF}
     end;
 
-  Result := retval;
+
 
 end;
 
@@ -3669,7 +3638,6 @@ function TOTFEFreeOTFE.EncryptDecryptSectorData(
 var
   cypherHandle: THandle;
   BytesReturned: DWORD;
-  retval: boolean;
   ptrDIOCBufferIn: PDIOC_CYPHER_SECTOR_DATA_IN;
   bufferSizeIn: DWORD;
   ptrDIOCBufferOut: PDIOC_CYPHER_DATA_OUT;
@@ -3679,7 +3647,7 @@ var
   dwIoControlCode: DWORD;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
-  retval := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -3756,7 +3724,7 @@ DebugMsg('_6_ supplied: '+inttostr(bufferSizeOut)+' used: '+inttostr(BytesReturn
 
               StrMove(PAnsiChar(outData), @ptrDIOCBufferOut.Data, BytesReturned);
 
-              retval := TRUE;
+              Result := TRUE;
               end
             else
               begin
@@ -3791,9 +3759,9 @@ DebugMsg('cypher DIOC 2 FAIL');
       end;
 
       // If there was a problem, fallback to using v1 cypher API
-      if not(retval) then
+      if not(Result) then
         begin
-        retval := _EncryptDecryptData(
+        Result := _EncryptDecryptData(
                                 encryptFlag,
                                 cypherDriver,
                                 cypherGUID,
@@ -3815,7 +3783,7 @@ DebugMsg('Unable to EncryptDecryptData');
 {$ENDIF}
     end;
 
-  Result := retval;
+
 
 end;
 
@@ -3831,11 +3799,10 @@ end;
 // Returns: Drive letter to mount as, or #0 on error
 function TOTFEFreeOTFE.GetNextDriveLetter(userDriveLetter, requiredDriveLetter: Ansichar): Ansichar;
 var
-  retVal: Ansichar;
   freeDriveLetters: Ansistring;
   searchDriveLetter: Ansichar;
 begin
-  retVal:= #0;
+  Result:= #0;
 
   searchDriveLetter := userDriveLetter;
   if (searchDriveLetter = #0) then
@@ -3863,11 +3830,11 @@ begin
 
   if (freeDriveLetters <> '') then
     begin
-    retVal := freeDriveLetters[1];
+    Result := freeDriveLetters[1];
     end;
 
 
-  Result := retVal;
+
 end;
 
 
@@ -3905,12 +3872,11 @@ end;
 //PortableDriverFilenames
 function TOTFEFreeOTFE.PortableStart(driverFilenames: TStringList; showProgress: boolean): boolean; 
 var
-  retval: boolean;
   DriverControlObj: TOTFEFreeOTFEDriverControl;
 begin
   DriverControlObj := TOTFEFreeOTFEDriverControl.Create();
   try
-    retval := DriverControlObj.InstallMultipleDrivers(
+    Result := DriverControlObj.InstallMultipleDrivers(
                                                       driverFilenames,
                                                       TRUE,
                                                       showProgress,
@@ -3923,19 +3889,18 @@ begin
   // In case drivers were added/removed...
   CachesFlush();
 
-  Result := retval;
+
 end;
 
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFE.PortableStop(): boolean;
 var
-  retval: boolean;
   DriverControlObj: TOTFEFreeOTFEDriverControl;
 begin
   DriverControlObj := TOTFEFreeOTFEDriverControl.Create();
   try
-    retval := DriverControlObj.UninstallAllDrivers(TRUE)
+    Result := DriverControlObj.UninstallAllDrivers(TRUE)
   finally
     DriverControlObj.Free();
   end;
@@ -3943,7 +3908,7 @@ begin
   // In case drivers were added/removed...
   CachesFlush();
 
-  Result := retval;
+
 end;
 
 
@@ -3952,13 +3917,12 @@ end;
 // Returns -1 on failure
 function TOTFEFreeOTFE.DriversInPortableMode(): integer;
 var
-  retVal: integer;
   DriverControlObj: TOTFEFreeOTFEDriverControl;
   allDrivers: TStringList;
   wasInstalledPortable: boolean;
   i: integer;
 begin
-  retVal := -1;
+  Result := -1;
 
   try
     DriverControlObj := TOTFEFreeOTFEDriverControl.Create();
@@ -3967,7 +3931,7 @@ begin
       try
         if DriverControlObj.GetFreeOTFEDrivers(allDrivers) then
           begin
-          retVal := 0;
+          Result := 0;
           for i:=0 to (allDrivers.count-1) do
             begin
             // If the driver was installed in portable mode, stop and uninstall it
@@ -3975,7 +3939,7 @@ begin
               begin
               if wasInstalledPortable then
                 begin
-                inc(retVal);
+                inc(Result);
                 end;
 
               end;  // if DriverControlObj.IsDriverInstalledPortable(allDrivers[i], wasInstalledPortable) then
@@ -3995,22 +3959,20 @@ begin
   except
     on EFreeOTFENeedAdminPrivs do
       begin
-      // Do nothing - retVal already set to -1
+      // Do nothing - Result already set to -1
       end;
 
   end;
 
-  Result := retVal;
+
 end;
 
 
 // ----------------------------------------------------------------------------
 // Convert a kernel mode volume filename to a user mode volume filename
 function TOTFEFreeOTFE.GetUserModeVolumeFilename(kernelModeFilename: Ansistring): Ansistring;
-var
-  retVal: string;
 begin
-  retVal := kernelModeFilename;
+  Result := kernelModeFilename;
 
 
   // Kernel mode drivers take volume filenames of the format:
@@ -4025,16 +3987,16 @@ begin
 
 
   // Strip out the filename prefix
-  if Pos('\??\UNC\', retVal) = 1 then
+  if Pos('\??\UNC\', Result) = 1 then
     begin
     // \\server\share\path\filedisk.img
-    delete(retVal, 1, length('\??\UNC\'));
-    retVal := '\\' + retVal;
+    delete(Result, 1, length('\??\UNC\'));
+    Result := '\\' + Result;
     end
-  else if Pos('\??\', retVal) = 1 then
+  else if Pos('\??\', Result) = 1 then
     begin
     // C:\path\filedisk.img
-    delete(retVal, 1, length('\??\'));
+    delete(Result, 1, length('\??\'));
     end
   else
     begin
@@ -4042,17 +4004,15 @@ begin
     // Do nothing.
     end;
 
-  Result := retVal;
+
 end;
 
 
 // ----------------------------------------------------------------------------
 // Convert a user mode volume filename to a kernel mode volume filename
 function TOTFEFreeOTFE.GetKernelModeVolumeFilename(userModeFilename: string): string;
-var
-  retVal: string;
 begin
-  retVal := '';
+  Result := '';
 
 
   // Kernel mode drivers take volume filenames of the format:
@@ -4071,7 +4031,7 @@ begin
     // \\server\share\path\filedisk.img
     // Remove first "\"
     Delete(userModeFilename, 1, 1);
-    retVal := '\??\UNC'+userModeFilename;
+    Result := '\??\UNC'+userModeFilename;
     end
   else if (
            (Pos(':\', userModeFilename) = 2) OR
@@ -4079,15 +4039,15 @@ begin
           ) then
     begin
     // C:\path\filedisk.img
-    retVal := '\??\'+userModeFilename;
+    Result := '\??\'+userModeFilename;
     end
   else
     begin
     // \Device\Harddisk0\Partition1\path\filedisk.img
-    retVal := userModeFilename;
+    Result := userModeFilename;
     end;
 
-  Result := retVal;
+
 end;
 
 
@@ -4111,12 +4071,11 @@ function TOTFEFreeOTFE.ReadRawVolumeDataSimple(
                         ): boolean;
 var
   BytesReturned: DWORD;
-  retVal: boolean;
   kmFilename: string;
   DIOCBufferIn: TDIOC_GET_RAW_DATA_IN;
   ptrDIOCBufferOut: PDIOC_GET_RAW_DATA_OUT;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -4157,7 +4116,7 @@ begin
         data := StringOfChar(AnsiChar(#0), dataLength);
         StrMove(PAnsiChar(data), @ptrDIOCBufferOut.Data, dataLength);
 
-        retVal := TRUE;
+        Result := TRUE;
         end;
 
       end;
@@ -4168,7 +4127,7 @@ begin
   end;
 
 
-  Result := retVal;
+
 end;
 
 
@@ -4184,12 +4143,11 @@ function TOTFEFreeOTFE.WriteRawVolumeDataSimple(
                         ): boolean;
 var
   BytesReturned: DWORD;
-  retVal: boolean;
   kmFilename: string;
   ptrDIOCBuffer: PDIOC_SET_RAW_DATA;
   bufferSize: integer;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -4227,7 +4185,7 @@ begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('Written OK');
   {$ENDIF}
-      retVal := TRUE;
+      Result := TRUE;
       end;
 
   finally
@@ -4235,7 +4193,7 @@ begin
     FreeMem(ptrDIOCBuffer);
   end;
 
-  Result := retVal;
+
 
 end;
 
@@ -4249,7 +4207,7 @@ function TOTFEFreeOTFE.ReadWritePlaintextToVolume(
   readNotWrite: boolean;
 
   volFilename: string;
-  volumeKey: ansistring;
+  volumeKey: TSDUBytes;
   sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
   IVHashDriver: Ansistring;
   IVHashGUID: TGUID;
@@ -4269,7 +4227,6 @@ function TOTFEFreeOTFE.ReadWritePlaintextToVolume(
   storageMediaType: TFreeOTFEStorageMediaType = mtFixedMedia
 ): boolean;
 var
-  allOK: boolean;
   deviceName: string;
   dummyMetadata: TOTFEFreeOTFEVolumeMetaData;
   // emptyIV:TSDUBytes;
@@ -4280,8 +4237,8 @@ begin
 
   // Attempt to create a new device to be used
   deviceName := CreateDiskDevice(FreeOTFEMountAsDeviceType[mountMountAs]);
-  allOK := (deviceName <> '');
-  if (allOK) then
+  Result := (deviceName <> '');
+  if (Result) then
     begin
     try
       PopulateVolumeMetadataStruct(
@@ -4291,12 +4248,12 @@ begin
                                   );
        // SDUInitAndZeroBuffer(0,emptyIV);
       // Attempt to mount the device
-      allOK := MountDiskDevice(
+      Result := MountDiskDevice(
                          deviceName,
                          volFilename,
                          volumeKey,
                          sectorIVGenMethod,
-                         '',
+                         nil,
                          FALSE,
                          IVHashDriver,
                          IVHashGUID,
@@ -4310,13 +4267,13 @@ begin
                          size,
                          FreeOTFEMountAsStorageMediaType[mountMountAs]
                         );
-      if (allOK) then
+      if (Result) then
         begin
         try
           // Read decrypted data from mounted device
           if (readNotWrite) then
             begin
-            allOK := ReadRawVolumeData(
+            Result := ReadRawVolumeData(
                                       deviceName,
                                       dataOffset,
                                       dataLength,
@@ -4325,7 +4282,7 @@ begin
             end
           else
             begin
-            allOK := WriteRawVolumeData(
+            Result := WriteRawVolumeData(
                                       deviceName,
                                       dataOffset,
                                       data
@@ -4337,33 +4294,32 @@ begin
           DismountDiskDevice(deviceName, TRUE);
         end;
 
-        end;  // if (allOK) then
+        end;  // if (Result) then
 
     finally
       // Destroy device
       DestroyDiskDevice(deviceName);
     end;
 
-    end;  // if (allOK) then
+    end;  // if (Result) then
 
-  Result := allOK;
+
 end;
 
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFE.CanUserManageDrivers(): boolean;
 var
-  retval: boolean;
   testControlObj: TOTFEFreeOTFEDriverControl;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   try
     // If we can't create a drive control object (i.e. we don't have admin
     // access to open the SCManager), we'll get an exception here.
     testControlObj:= TOTFEFreeOTFEDriverControl.Create();
     testControlObj.Free();
-    retval := TRUE;
+    Result := TRUE;
   except
     on EFreeOTFENeedAdminPrivs do
       begin
@@ -4372,7 +4328,7 @@ begin
 
   end;
 
-  Result := retval;
+
 end;
 
 

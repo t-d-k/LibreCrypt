@@ -94,10 +94,8 @@ end;
 
 // Note: n must be 1 or greater
 function SDUPluralMsg(n: Integer; msgs: array of WideString): WideString; OVERLOAD;
-var
-  retval: WideString;
 begin
-  retval := '';
+  Result := '';
 
   if (length(msgs) > 0) then begin
     if (n > length(msgs)) then begin
@@ -108,10 +106,8 @@ begin
     end;
 
     // -1 as array indexes from zero
-    retval := msgs[n - 1];
+    Result := msgs[n - 1];
   end;
-
-  Result := retval;
 end;
 
 procedure SDUTranslateComponent(Comp: TComponent);
@@ -167,10 +163,8 @@ begin
 end;
 
 function SDUGetTranslatorName(): WideString;
-var
-  retval: WideString;
 begin
-  retval := SDUGetTranslatorNameAndEmail();
+  Result := SDUGetTranslatorNameAndEmail();
 
   //aaa := 'aa <b@c.d>';
   //aaa := '<b@c.d> aa';
@@ -178,17 +172,16 @@ begin
   //aaa := '<b@c.d>';
   //aaa := 'b@c.d';
 
-  if ((Pos('<', retval) > 0) and (Pos('@', retval) > Pos('<', retval)) and
+  if ((Pos('<', Result) > 0) and (Pos('@', Result) > Pos('<', Result)) and
     // Sanity, in case of "<Berty>" - not an email addr
-    (Pos('>', retval) > Pos('@', retval))     // Sanity, in case of "<Berty>" - not an email addr
+    (Pos('>', Result) > Pos('@', Result))     // Sanity, in case of "<Berty>" - not an email addr
     ) then begin
     // Trivial version; only handles stuff like "Fred <bert@domain.com>"
     // Really should be able to handle "<ME!> <myaddr@domain.com"
-    retval := copy(retval, 1, (Pos('<', retval) - 1));
-    retval := Trim(retval);
+    Result := copy(Result, 1, (Pos('<', Result) - 1));
+    Result := Trim(Result);
   end;
 
-  Result := retval;
 end;
 
 function SDUGetTranslatorNameAndEmail(): WideString;

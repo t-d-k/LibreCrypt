@@ -1,11 +1,12 @@
 object frmAbout: TfrmAbout
   Left = 443
   Top = 498
+  Anchors = [akLeft, akTop, akRight, akBottom]
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
-  Caption = 'CAPTION SET AUTOMATICALLY'
-  ClientHeight = 245
-  ClientWidth = 330
+  Caption = 'About DoxBox'
+  ClientHeight = 293
+  ClientWidth = 435
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,19 +17,19 @@ object frmAbout: TfrmAbout
   Position = poScreenCenter
   OnShow = FormShow
   DesignSize = (
-    330
-    245)
+    435
+    293)
   PixelsPerInch = 96
   TextHeight = 13
   object lblBeta: TLabel
-    Left = 31
-    Top = 40
-    Width = 250
-    Height = 111
+    Left = 8
+    Top = 46
+    Width = 33
+    Height = 13
     Caption = 'BETA'
     Font.Charset = ANSI_CHARSET
     Font.Color = clRed
-    Font.Height = -96
+    Font.Height = -13
     Font.Name = 'Arial'
     Font.Style = [fsBold]
     ParentFont = False
@@ -42,10 +43,11 @@ object frmAbout: TfrmAbout
     Stretch = True
   end
   object lblAppID: TLabel
-    Left = 148
-    Top = 8
-    Width = 98
+    Left = 47
+    Top = 46
+    Width = 381
     Height = 13
+    Anchors = [akLeft, akTop, akRight]
     Caption = 'App version no. here'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -55,62 +57,55 @@ object frmAbout: TfrmAbout
     ParentFont = False
   end
   object lblDescription: TLabel
-    Left = 60
-    Top = 60
-    Width = 163
-    Height = 13
-    Caption = 'CAPTION AUTOMATICALLY SET'
-    Transparent = True
-    WordWrap = True
-  end
-  object lblTitle: TLabel
-    Left = 56
-    Top = 4
-    Width = 62
+    Left = 47
+    Top = 8
+    Width = 370
     Height = 20
-    Caption = 'DoxBox'
+    Anchors = [akLeft, akTop, akRight]
+    Caption = 'DoxBox: Open-Source Transparent Encryption'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    GlowSize = 2
     ParentFont = False
-  end
-  object lblDriverVersion: TLabel
-    Left = 75
-    Top = 124
-    Width = 60
-    Height = 13
-    Caption = 'v99.99.9999'
-    Transparent = True
-  end
-  object lblAuthor: TLabel
-    Left = 56
-    Top = 24
-    Width = 156
-    Height = 13
-    Caption = 'by Sarah Dean, addtions by TDK'
     Transparent = True
     WordWrap = True
   end
-  object Label3: TLabel
-    Left = 144
-    Top = 120
-    Width = 106
-    Height = 26
-    Caption = '<<< This item will be automatically centered'
-    Color = clRed
-    ParentColor = False
-    Visible = False
+  object lblDriverVersion: TLabel
+    Left = 8
+    Top = 164
+    Width = 419
+    Height = 13
+    Alignment = taCenter
+    Anchors = [akLeft, akRight, akBottom]
+    AutoSize = False
+    Caption = 'The main DoxBox driver is either not installed, or not started'
+    Transparent = True
+    ExplicitTop = 157
+    ExplicitWidth = 338
+  end
+  object lblAuthor: TLabel
+    Left = 47
+    Top = 65
+    Width = 380
+    Height = 16
+    Caption = 'by Sarah Dean, additions by TDK'
+    Transparent = True
     WordWrap = True
   end
   object SDUURLLabel1: TSDUURLLabel
-    Left = 95
-    Top = 92
-    Width = 120
+    AlignWithMargins = True
+    Left = 8
+    Top = 145
+    Width = 419
     Height = 13
     Cursor = crHandPoint
-    Caption = 'http://DoxBox.squte.com'
+    Alignment = taCenter
+    Anchors = [akLeft, akRight, akBottom]
+    AutoSize = False
+    Caption = 'http://DoxBox.eu'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
     Font.Height = -11
@@ -120,63 +115,72 @@ object frmAbout: TfrmAbout
     Transparent = True
     NormalColor = clBlue
     HoverColor = clRed
-    URL = 'http://www.doxbox.squte.com/'
+    URL = 'http://doxbox.eu/'
+    ExplicitTop = 138
+    ExplicitWidth = 338
   end
   object lblTranslatorCredit: TLabel
-    Left = 56
-    Top = 40
-    Width = 149
-    Height = 13
+    Left = 8
+    Top = 88
+    Width = 419
+    Height = 51
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    AutoSize = False
     Caption = 'TRANSLATOR CREDIT HERE'
     Transparent = True
     WordWrap = True
   end
   object Label1: TLabel
     Left = 8
-    Top = 154
-    Width = 314
+    Top = 202
+    Width = 419
     Height = 39
     Hint = 
       'This software is based on FreeOTFE and/or FreeOTFE4PDA, the free' +
       ' disk encryption system for PCs and PDAs, available at <A HREF="' +
       'http://www.FreeOTFE.org/">www.FreeOTFE.org</A>'
+    Alignment = taCenter
     Anchors = [akLeft, akRight, akBottom]
     AutoSize = False
     Caption = 
       'This software is based on FreeOTFE and/or FreeOTFE4PDA, the free' +
       ' disk encryption system for PCs and PDAs, available at <A HREF="' +
       'http://www.FreeOTFE.org/">www.FreeOTFE.org</A>'
+    Color = clInfoBk
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clHotLight
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentColor = False
+    ParentFont = False
     WordWrap = True
     ExplicitTop = 157
     ExplicitWidth = 369
   end
+  object Label2: TLabel
+    AlignWithMargins = True
+    Left = 8
+    Top = 186
+    Width = 413
+    Height = 13
+    Alignment = taCenter
+    Anchors = [akLeft, akRight, akBottom]
+    AutoSize = False
+    Caption = 'Icons based on the Nuvola icon set'
+    ExplicitTop = 176
+    ExplicitWidth = 338
+  end
   object pbOK: TButton
-    Left = 124
-    Top = 199
-    Width = 73
-    Height = 25
+    Left = 177
+    Top = 247
+    Width = 81
+    Height = 30
+    Anchors = [akLeft, akBottom]
     Cancel = True
     Caption = 'OK'
     Default = True
     ModalResult = 1
     TabOrder = 0
-  end
-  object pnlDividerUpper: TPanel
-    Left = 57
-    Top = 80
-    Width = 205
-    Height = 2
-    BevelOuter = bvLowered
-    Caption = 'pnlDividerUpper'
-    TabOrder = 1
-  end
-  object pnlDividerLower: TPanel
-    Left = 57
-    Top = 112
-    Width = 205
-    Height = 2
-    BevelOuter = bvLowered
-    Caption = 'Panel1'
-    TabOrder = 2
   end
 end

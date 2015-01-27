@@ -243,7 +243,7 @@ type
     function GetMasterKeyLength(): Integer;  // Returns length in *bits*
    // function GetRandomData_CDB(): Ansistring;
     function GetRandomData_PaddingKey(): TSDUBytes;
-    function GetPassword(): Ansistring;
+    function GetPassword(): TSDUBytes;
 
     function GetIsHidden(): Boolean;
     function GetCDBInVolFile(): Boolean;
@@ -1224,10 +1224,10 @@ GetRandPool().GetRandomData(len,Result) ;
 
 end;
 
-function TfrmWizardCreateVolume.GetPassword(): Ansistring;
+function TfrmWizardCreateVolume.GetPassword(): TSDUBytes;
 begin
   { TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
-  Result := preUserKey1.Text;
+  Result := SDUStringToSDUBytes(preUserKey1.Text);
 end;
 
 function TfrmWizardCreateVolume.GetMasterKeyLength(): Integer;
@@ -1451,8 +1451,6 @@ begin
 end;
 
 procedure TfrmWizardCreateVolume.FormDestroy(Sender: TObject);
-var
-  i: Integer;
 begin
 {$IFDEF FREEOTFE_DEBUG}
 showmessage('destroying wizard');
@@ -1706,7 +1704,7 @@ var
   volumeDetails:     TVolumeDetailsBlock;
   CDBMetaData:       TCDBMetaData;
   saltBytes:         TSDUBytes;
-  randomPool:        Ansistring;
+//  randomPool:        Ansistring;
   volumeFileSize:    ULONGLONG;
   cdbFile:           String;
   cdbOffset:         ULONGLONG;
@@ -1817,8 +1815,8 @@ fFreeOTFEObj.DebugMsg('Volume flags: '+inttostr(volumeDetails.VolumeFlags)+' bit
 
     volumeDetails.MasterKeyLength := GetMasterKeyLength();
     // Grab 'n' bytes from the random pool to use as the master key
-    GetRandPool().GetRandomData(volumeDetails.MasterKeyLength div 8,randBytes) ;
-  volumeDetails.MasterKey       := SDUBytesToString( randBytes);
+    GetRandPool().GetRandomData(volumeDetails.MasterKeyLength div 8,volumeDetails.MasterKey) ;
+  //volumeDetails.MasterKey       := SDUBytesToString( randBytes);
      assert(length(volumeDetails.MasterKey) = volumeDetails.MasterKeyLength div 8);
 //    volumeDetails.MasterKey       := Copy(randomPool, 1, (volumeDetails.MasterKeyLength div 8));
 
@@ -1837,8 +1835,8 @@ fFreeOTFEObj.DebugMsgBinary(volumeDetails.MasterKey);
       if GetUsePerVolumeIV() then
         volumeDetails.VolumeIVLength := SelectedCypherBlockSize();
 
-    GetRandPool().GetRandomData(volumeDetails.VolumeIVLength div 8,randBytes) ;
-   volumeDetails.VolumeIV       := SDUBytesToString( randBytes);
+    GetRandPool().GetRandomData(volumeDetails.VolumeIVLength div 8,volumeDetails.VolumeIV) ;
+ //  volumeDetails.VolumeIV       := SDUBytesToString( randBytes);
    assert(length(volumeDetails.VolumeIV) = volumeDetails.VolumeIVLength div 8);
 //    volumeDetails.VolumeIV := Copy(randomPool, 1, (volumeDetails.VolumeIVLength div 8));
     // SDUDeleteFromStart(randomPool,volumeDetails.VolumeIVLength div 8 );
@@ -1867,7 +1865,7 @@ fFreeOTFEObj.DebugMsg('About to write the critical data...');
 fFreeOTFEObj.DebugMsg('Using password: '+preUserKey1.Text);
 fFreeOTFEObj.DebugMsg('Using salt... ');
 fFreeOTFEObj.DebugMsg('-- begin salt --');
-fFreeOTFEObj.DebugMsgBinary(saltStr);
+fFreeOTFEObj.DebugMsgBinary(saltBytes);
 fFreeOTFEObj.DebugMsg('-- end salt --');
 {$ENDIF}
 
@@ -1876,7 +1874,7 @@ fFreeOTFEObj.DebugMsg('-- end salt --');
 
     // Write the header to the file, starting from the specified offset
     if not (fFreeOTFEObj.WriteVolumeCriticalData(cdbFile, cdbOffset,
-      GetPassword(), saltBytes, seKeyIterations.Value, volumeDetails, CDBMetaData{, randomPool})) then
+      GetPassword(), saltBytes, seKeyIterations.Value, volumeDetails, CDBMetaData)) then
     begin
       SDUMessageDlg(
         _('Unable to write critical data block.'),
@@ -1886,6 +1884,12 @@ fFreeOTFEObj.DebugMsg('-- end salt --');
     end;  // if not(OTFEFreeOTFE.WriteVolumeCriticalData(
 
   end;  // if result then
+
+  //wipe sesitive data allocated
+  SDUZeroBuffer(volumeDetails.MasterKey);
+  SDUZeroBuffer(volumeDetails.VolumeIV);
+  SDUZeroBuffer(saltBytes);
+
 end;
 
 procedure TfrmWizardCreateVolume.GetCDBFileAndOffset(out cdbFile: String;

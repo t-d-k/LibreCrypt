@@ -114,6 +114,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Volume filename'
         ImageIndex = 1
         Constraints.MinHeight = 139
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructFilename: TRichEdit
           Left = 0
           Top = 0
@@ -173,6 +177,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsPartitionWarning: TTabSheet
         Caption = 'Partition Warning'
         ImageIndex = 16
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label15: TLabel
           Left = 0
           Top = 304
@@ -242,6 +250,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsPartitionSelect: TTabSheet
         Caption = 'Partition Select'
         ImageIndex = 15
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label21: TLabel
           AlignWithMargins = True
           Left = 5
@@ -343,7 +355,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Left = 368
             Top = 65533
             Bitmap = {
-              494C010103000400D40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400DC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -496,6 +508,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Size'
         ImageIndex = 6
         Constraints.MinHeight = 172
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -581,6 +597,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Password'
         ImageIndex = 6
         Constraints.MinHeight = 330
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -676,6 +696,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Drive Letter'
         ImageIndex = 17
         Constraints.MinHeight = 166
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -741,6 +765,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Offset'
         ImageIndex = 7
         Constraints.MinHeight = 330
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1138,7 +1166,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Left = 0
           Top = 0
           Width = 527
-          Height = 192
+          Height = 205
           Align = alClient
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -1165,6 +1193,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             'options below.'#39');')
           ParentFont = False
           TabOrder = 1
+          ExplicitHeight = 192
         end
         object gbRNG: TGroupBox
           Left = 0
@@ -1237,7 +1266,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         object lblMouseRNGBits: TLabel
           AlignWithMargins = True
           Left = 10
-          Top = 294
+          Top = 307
           Width = 507
           Height = 13
           Margins.Left = 10
@@ -1362,7 +1391,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Left = 0
           Top = 0
           Width = 527
-          Height = 244
+          Height = 257
           Align = alClient
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -1378,6 +1407,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             'button.'#39)
           ParentFont = False
           TabOrder = 0
+          ExplicitHeight = 244
         end
         object GroupBox2: TGroupBox
           Left = 0
@@ -1489,6 +1519,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         ExplicitLeft = 8
         ExplicitTop = 22
         ExplicitWidth = 961
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)

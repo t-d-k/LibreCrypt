@@ -79,8 +79,10 @@ begin
   // label's autosize to work correctly, and not adjust the label so that it's
   // height is to great as to obscure the "Volume/keyfile" label below it
   lblInstructions.Width := (Self.Width - (lblInstructions.left * 2));
-
+  OTFEFreeOTFEVolumeSelect1.OnChange := OTFEFreeOTFEVolumeSelect1Change;
 end;
+
+
 
 procedure TfrmSelectVolumeFileAndOffset.FormShow(Sender: TObject);
 begin

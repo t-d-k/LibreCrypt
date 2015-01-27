@@ -1,23 +1,30 @@
 inherited frmFreeOTFEMain: TfrmFreeOTFEMain
-  ClientHeight = 314
+  ClientHeight = 324
+  ClientWidth = 319
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnResize = FormResize
-  ExplicitHeight = 372
+  ExplicitWidth = 335
+  ExplicitHeight = 382
   PixelsPerInch = 96
   TextHeight = 13
   inherited Label1: TLabel
-    Top = 275
+    Top = 285
+    Width = 319
+    Alignment = taCenter
+    Font.Color = clHotLight
+    ParentFont = False
     ExplicitTop = 275
   end
   inherited StatusBar_Status: TStatusBar
-    Top = 256
+    Top = 266
+    Width = 319
     ExplicitTop = 256
   end
   object ToolBar1: TToolBar [2]
     Left = 0
     Top = 0
-    Width = 300
+    Width = 319
     Height = 38
     AutoSize = True
     ButtonHeight = 38
@@ -25,6 +32,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     Caption = 'ToolBar1'
     Images = ilToolbarIcons_Large
     TabOrder = 3
+    ExplicitWidth = 300
     object tbbNew: TToolButton
       Left = 0
       Top = 0
@@ -90,17 +98,18 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
   object pnlTopSpacing: TPanel [3]
     Left = 0
     Top = 38
-    Width = 300
+    Width = 319
     Height = 7
     Align = alTop
     Caption = 'pnlTopSpacing'
     TabOrder = 2
+    ExplicitWidth = 300
   end
   object lvDrives: TListView [4]
     Left = 0
     Top = 45
-    Width = 300
-    Height = 192
+    Width = 319
+    Height = 202
     Align = alClient
     Columns = <>
     LargeImages = ilToolbarIcons_Large
@@ -110,9 +119,12 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     OnDblClick = lvDrivesDblClick
     OnResize = lvDrivesResize
     OnSelectItem = lvDrivesSelectItem
+    ExplicitWidth = 300
+    ExplicitHeight = 192
   end
   inherited StatusBar_Hint: TStatusBar
-    Top = 237
+    Top = 247
+    Width = 319
     ExplicitTop = 237
   end
   inherited mmMain: TMainMenu
@@ -300,7 +312,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
   end
   inherited ilToolbarIcons_Small: TImageList
     Bitmap = {
-      494C010109007401140210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109007401200210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       00000000000000000000000000000000000000000000255F92003FA5CE003A9F
       C8003A9EC8003A9EC8003B9EC8003B9EC7003B9EC7003B9EC7003B9EC7003B9E
@@ -713,7 +725,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     Width = 32
     Left = 92
     Bitmap = {
-      494C01010900C401A40220002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010900C401B00220002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000008000000060000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2391,7 +2403,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     Left = 12
     Top = 164
     Bitmap = {
-      494C0101020004004C0120002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400580120002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000002000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
