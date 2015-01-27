@@ -129,9 +129,9 @@ type
     function  MountDiskDevice(
                               deviceName: string;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
                               volFilename: string;
-                              volumeKey: ansistring;
+                              volumeKey: TSDUBytes;
                               sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                              volumeIV: ansistring;
+                              volumeIV: TSDUBytes;
                               readonly: boolean;
                               IVHashDriver: ansistring;
                               IVHashGUID: TGUID;
@@ -148,9 +148,9 @@ type
 
     function  CreateMountDiskDevice(
                               volFilename: string;
-                              volumeKey: Ansistring;
+                              volumeKey: TSDUBytes;
                               sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                              volumeIV: Ansistring;
+                              volumeIV: TSDUBytes;
                               readonly: boolean;
                               IVHashDriver: ansistring;
                               IVHashGUID: TGUID;
@@ -179,9 +179,8 @@ type
 
     function ReadWritePlaintextToVolume(
                     readNotWrite: boolean;
-
                     volFilename: string;
-                    volumeKey: ansistring;
+                    volumeKey: TSDUBytes;
                     sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
                     IVHashDriver: Ansistring;
                     IVHashGUID: TGUID;
@@ -276,7 +275,7 @@ type
                       HashGUID: TGUID;
                       CypherDriver: Ansistring;
                       CypherGUID: TGUID;
-                      var key: Ansistring;
+                      var key: PasswordString;
                       var data: Ansistring;
                       var MACOut: Ansistring;
                       tBits: integer = -1
@@ -288,7 +287,7 @@ type
                     HashGUID: TGUID;
                     CypherDriver: Ansistring;
                     CypherGUID: TGUID;
-                    Password: PasswordString;
+                    Password: TSDUBytes;
                     Salt: TSDUBytes;
                     Iterations: integer;
                     dkLenBits: integer;  // In *bits*
@@ -540,7 +539,7 @@ function TOTFEFreeOTFEDLL.ReadWritePlaintextToVolume(
   readNotWrite: boolean;
 
   volFilename: string;
-  volumeKey: ansistring;
+  volumeKey: TSDUBytes;
   sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
   IVHashDriver: Ansistring;
   IVHashGUID: TGUID;
@@ -565,6 +564,7 @@ var
   tempMountDriveLetter: Ansichar;
   stm: TSDUMemoryStream;
   // emptyIV : TSDUBytes;
+    volumeKeyStr: AnsiString;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
 
@@ -585,7 +585,7 @@ begin
                      volFilename,
                      volumeKey,
                      sectorIVGenMethod,
-                     '',
+                     nil,
                      FALSE,
                      IVHashDriver,
                      IVHashGUID,
@@ -1642,7 +1642,7 @@ function TOTFEFreeOTFEDLL.MACData(
                       HashGUID: TGUID;
                       CypherDriver: Ansistring;
                       CypherGUID: TGUID;
-                      var key: Ansistring;
+                      var key: PasswordString;
                       var data: Ansistring;
                       var MACOut: Ansistring;
                       tBits: integer = -1
@@ -1751,7 +1751,7 @@ function TOTFEFreeOTFEDLL.DeriveKey(
                     HashGUID: TGUID;
                     CypherDriver: Ansistring;
                     CypherGUID: TGUID;
-                    Password: PasswordString;
+                    Password: TSDUBytes;
                     Salt: TSDUBytes;
                     Iterations: integer;
                     dkLenBits: integer;  // In *bits*
@@ -1829,6 +1829,7 @@ DebugMsg('outputByteCount: '+inttostr(outputByteCount));
         // overwritten with StrMove
          SDUInitAndZeroBuffer(outputByteCount,DK);
 //        DK := StringOfChar(AnsiChar(#0), outputByteCount);
+//        SDUCopyArrays(DK,ptrDIOCBufferOut.DerivedKey,);
         StrMove(PAnsiChar(DK), @ptrDIOCBufferOut.DerivedKey, outputByteCount);
 
         retval := TRUE;
@@ -2147,9 +2148,9 @@ end;
 function TOTFEFreeOTFEDLL.MountDiskDevice(
                                    deviceName: string;
                                    volFilename: string;
-                                   volumeKey: ansistring;
+                                   volumeKey: TSDUBytes;
                                    sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                                   volumeIV: ansistring;
+                                   volumeIV: TSDUBytes;
                                    readonly: boolean;
                                    IVHashDriver: ansistring;
                                    IVHashGUID: TGUID;
@@ -2175,6 +2176,7 @@ var
   openShareMode: DWORD;
   diskGeometry: TSDUDiskGeometry;
   useDriveLetter: ansichar;
+  volumeKeyStr :Ansistring;
 begin
   retVal := FALSE;
 
@@ -2223,15 +2225,18 @@ DebugMsg('  size: '+inttostr(size));
 
   // Ensure the volumeKey's length matches that of the cypher's keysize, if
   // the cypher's keysize is >= 0
-  if (mainCypherDetails.KeySizeRequired >= 0) then
-    begin
+  if (mainCypherDetails.KeySizeRequired >= 0) then begin
     // THIS IS CORRECT; caters for both volumeKey>keysize and
     // volumeKey<keysize
     // Copy as much of the hash value as possible to match the key length
-    volumeKey := Copy(volumeKey, 1, min((mainCypherDetails.KeySizeRequired div 8), length(volumeKey)));
-    // If the hash wasn't big enough, pad out with zeros
-    // SDUResetLength(volumeKey,(mainCypherDetails.KeySizeRequired div 8));
-    volumeKey := volumeKey + StringOfChar(AnsiChar(#0), ((mainCypherDetails.KeySizeRequired div 8) - Length(volumeKey)));
+    volumeKeyStr := SDUBytesToString(volumeKey);
+
+    volumeKeyStr := Copy(volumeKeyStr, 1, min((mainCypherDetails.KeySizeRequired div 8), length(volumeKeyStr)));
+        // If the hash wasn't big enough, pad out with zeros
+        volumeKeyStr := volumeKeyStr + StringOfChar(AnsiChar(#0), ((mainCypherDetails.KeySizeRequired div 8) - Length(volumeKeyStr)));
+
+    SDUResetLength(volumeKey,(mainCypherDetails.KeySizeRequired div 8));
+    assert(SDUBytestostring(volumeKey) = volumeKeyStr) ;
     end;
 
 
@@ -2374,9 +2379,9 @@ end;
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.CreateMountDiskDevice(
                               volFilename: string;
-                              volumeKey: Ansistring;
+                              volumeKey: TSDUBytes;
                               sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                              volumeIV: Ansistring;
+                              volumeIV: TSDUBytes;
                               readonly: boolean;
                               IVHashDriver: ansistring;
                               IVHashGUID: TGUID;
