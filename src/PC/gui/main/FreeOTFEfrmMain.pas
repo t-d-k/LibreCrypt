@@ -998,10 +998,11 @@ end;
 
 procedure TfrmFreeOTFEMain.FormCreate(Sender: TObject);
 begin
+ fOtfeFreeOtfeBase := TOTFEFreeOTFE.Create;
   // Prevent endless loops of UAC escalation...
   fallowUACEsclation := False;
 
-  fOtfeFreeOtfeBase := TOTFEFreeOTFE.Create(nil);
+  fOtfeFreeOtfeBase := TOTFEFreeOTFE.Create();
 
   inherited;
 
@@ -1043,7 +1044,7 @@ begin
   fIconMounted.Free();
   fIconUnmounted.Free();
 
-  fOtfeFreeOtfeBase.Free();
+  FreeAndNil(fOtfeFreeOtfeBase);
 end;
 
 procedure TfrmFreeOTFEMain.actRefreshExecute(Sender: TObject);

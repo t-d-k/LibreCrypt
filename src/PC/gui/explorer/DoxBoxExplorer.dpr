@@ -96,7 +96,9 @@ uses
   OTFEFreeOTFEDLL_PartitionImage in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_PartitionImage.pas',
   MouseRNGCaptureDlg_U in '..\common\SDeanSecurity\MouseRNGDialog\MouseRNGCaptureDlg_U.pas' {MouseRNGCaptureDlg},
   MouseRNGDialog_U in '..\common\SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas',
-  OTFEFreeOTFE_VolumeFileAPI in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas';
+  OTFEFreeOTFE_VolumeFileAPI in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas',
+  OTFE_U in '..\common\OTFE\OTFE\OTFE_U.pas',
+  OTFEFreeOTFEDLL_U in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_U.pas';
 
 {$R *.res}
 {$R FreeOTFEExplorerCursors.res}

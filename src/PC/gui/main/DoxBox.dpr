@@ -71,7 +71,8 @@ uses
   MouseRNGDialog_U in '..\common\SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas',
   OTFEFreeOTFE_frmSelectVolumeAndOffset in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectVolumeAndOffset.pas' {frmSelectVolumeFileAndOffset},
   SDUEndianIntegers in '..\common\SDeanUtils\SDUEndianIntegers.pas',
-  DbugIntf in 'C:\Program Files (x86)\GExperts for RAD Studio XE2\DbugIntf.pas';
+  DbugIntf in 'C:\Program Files (x86)\GExperts for RAD Studio XE2\DbugIntf.pas',
+  OTFE_U in '..\common\OTFE\OTFE\OTFE_U.pas';
 
 {$R *.RES}
 

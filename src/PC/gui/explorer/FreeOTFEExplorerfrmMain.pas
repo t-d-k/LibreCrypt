@@ -308,6 +308,7 @@ type
     procedure actChooseDetailsExecute(Sender: TObject);
     procedure actMapNetworkDriveExecute(Sender: TObject);
     procedure actDisconnectNetworkDriveExecute(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   PRIVATE
     PartitionImage: TSDPartitionImage;
     Filesystem:     TSDFilesystem_FAT;
@@ -489,6 +490,7 @@ type
       destDir: String): Boolean;
 
     //    procedure OverwriteAllWebDAVCachedFiles();
+        function DoTests: Boolean; OVERRIDE;
 
   PUBLIC
     // This next line will generate a compiler warning - this is harmless.
@@ -3289,21 +3291,23 @@ begin
 
   if Settings.OptToolbarVolumeLarge then begin
     ToolbarVolume.Images := ilToolbarIcons_Large;
-
+       {
     tbbNew.ImageIndex       := FIconIdx_Large_New;
     tbbMountFile.ImageIndex := FIconIdx_Large_MountFile;
     tbbDismount.ImageIndex  := FIconIdx_Large_Dismount;
+    }
   end else begin
     ToolbarVolume.Images := ilToolbarIcons_Small;
-
+     {
     tbbNew.ImageIndex       := FIconIdx_Small_New;
     tbbMountFile.ImageIndex := FIconIdx_Small_MountFile;
     tbbDismount.ImageIndex  := FIconIdx_Small_Dismount;
+    }
   end;
 
   if Settings.OptToolbarExplorerLarge then begin
     ToolbarExplorer.Images := ilToolbarIcons_Large;
-
+    (*
     tbbNavigateBack.ImageIndex           := FIconIdx_Large_Back;
     tbbNavigateForward.ImageIndex        := FIconIdx_Large_Forward;
     tbbUp.ImageIndex                     := FIconIdx_Large_Up;
@@ -3317,9 +3321,10 @@ begin
     tbbExplorerBarFolders.ImageIndex     := FIconIdx_Large_Folders;
     tbbMapNetworkDrive.ImageIndex        := FIconIdx_Large_MapNetworkDrive;
     tbbDisconnectNetworkDrive.ImageIndex := FIconIdx_Large_DisconnectNetworkDrive;
+    *)
   end else begin
     ToolbarExplorer.Images := ilToolbarIcons_Small;
-
+            (*
     tbbNavigateBack.ImageIndex           := FIconIdx_Small_Back;
     tbbNavigateForward.ImageIndex        := FIconIdx_Small_Forward;
     tbbUp.ImageIndex                     := FIconIdx_Small_Up;
@@ -3333,6 +3338,7 @@ begin
     tbbExplorerBarFolders.ImageIndex     := FIconIdx_Small_Folders;
     tbbMapNetworkDrive.ImageIndex        := FIconIdx_Small_MapNetworkDrive;
     tbbDisconnectNetworkDrive.ImageIndex := FIconIdx_Small_DisconnectNetworkDrive;
+    *)
   end;
 
 end;
@@ -3439,7 +3445,7 @@ begin
 
   ShredderObj.Free();
 
-  fOTFEFreeOTFEBase.Free();
+//  fOTFEFreeOTFEBase.Free();
 
 end;
 
@@ -3456,10 +3462,11 @@ var
   //  sysMagGlassIcon: TIcon;
   settingsFilename: String;
 begin
+fOTFEFreeOTFEBase := TOTFEFreeOTFEDLL.Create();
   FInFormShow   := False;
   FInRefreshing := False;
 
-  fOTFEFreeOTFEBase := TOTFEFreeOTFEDLL.Create(nil);
+
 
   ShredderObj  := TShredder.Create(nil);
   WebDAVObj    := TFreeOTFEExplorerWebDAV.Create(nil);
@@ -3577,6 +3584,12 @@ begin
   // previously selected node appears selected
   SDFilesystemTreeView1.RightClickSelect := True;
 
+end;
+
+procedure TfrmFreeOTFEExplorerMain.FormDestroy(Sender: TObject);
+begin
+  inherited;
+ FreeAndNil(fOtfeFreeOtfeBase);
 end;
 
 procedure TfrmFreeOTFEExplorerMain.FormResize(Sender: TObject);
@@ -5425,6 +5438,137 @@ begin
 {$WARN SYMBOL_PLATFORM ON}
 
   Result := True;
+end;
+
+function TfrmFreeOTFEExplorerMain.DoTests: Boolean;
+var
+  mountList: TStringList;
+  mountedAs: DriveLetterString;
+  prettyMountedAs, vol_path, key_file, les_file: String;
+  vl: Integer;
+const
+  TEST_VOLS: array[0..12] of String =
+    ('a.box', 'b.box', 'c.box', 'd.box', 'e.box', 'e.box', 'f.box', 'luks.box',
+    'luks_essiv.box', 'a.box', 'b.box', 'dmcrypt_dx.box', 'dmcrypt_dx.box');
+  PASSWORDS: array[0..12] of String =
+    ('password', 'password', '!"£$%^&*()', 'password', 'password', '5ekr1t',
+    'password', 'password', 'password', 'secret', 'secret', 'password', '5ekr1t');
+  ITERATIONS: array[0..12] of Integer =
+    (2048, 2048, 2048, 2048, 10240, 2048, 2048, 2048, 2048, 2048, 2048, 2048, 2048);
+  OFFSET: array[0..12] of Integer =
+    (0, 0, 0, 0, 0, 2097152, 0, 0, 0, 0, 0, 0, 0);
+  KEY_FILES: array[0..12] of String =
+    ('', '', '', '', '', '', '', '', '', 'a.cdb', 'b.cdb', '', '');
+  LES_FILES: array[0..12] of String =
+    ('', '', '', '', '', '', '', '', '', '', '', 'dmcrypt_dx.les', 'dmcrypt_hid.les');
+    {
+     TEST_VOLS: array[0..0] of String =
+    ('a.box');
+  PASSWORDS: array[0..0] of String =
+    ('password');
+  ITERATIONS: array[0..0] of Integer =
+    (2048);
+  OFFSET: array[0..0] of Integer =
+    (0);
+  KEY_FILES: array[0..0] of String =
+    ('');
+  LES_FILES: array[0..0] of String =
+    ('');   }
+  procedure CheckMountedOK;
+  var
+   s :string;
+  begin
+//    RefreshDrives();
+    // Mount successful
+    //        prettyMountedAs := prettyPrintDriveLetters(mountedAs);
+     PostMountGUISetup(mountedAs[1]);
+     s:= SDFilesystemListView1.DirItem[0].Filename;//ToNode(SDFilesystemListView1.Items[0]);
+//    s:= GetSelectedPath(nil);
+    if s <> 'readme.txt' then  begin
+        SDUMessageDlg('File: readme.txt not found');
+        Result := False;
+      end;
+    {
+    if (CountValidDrives(mountedAs) <> 1) then begin
+      SDUMessageDlg(Format('The Box %s has NOT been opened as drive: %s',
+        [TEST_VOLS[vl], mountedAs]));
+      Result := False;
+    end else begin
+      //done: test opened OK & file exists
+      if not FileExists(mountedAs + ':\README.txt') then begin
+        SDUMessageDlg(Format('File: %s:\README.txt not found', [mountedAs]));
+        Result := False;
+      end;
+    end;
+    }
+  end;
+
+  procedure UnMountAndCheck;
+  begin
+    Application.ProcessMessages;
+    Dismount();
+    Application.ProcessMessages;
+//    RefreshDrives();
+    Application.ProcessMessages;
+    if CountValidDrives(fOtfeFreeOtfeBase.DrivesMounted) > 0 then begin
+      SDUMessageDlg(Format('Drive(s) %s not unmounted', [fOtfeFreeOtfeBase.DrivesMounted]));
+      Result := False;
+    end;
+  end;
+
+begin
+  inherited;
+
+  Result    := True;
+
+
+  mountList := TStringList.Create();
+  try
+    //for loop is optimised into reverse order , but want to process forwards
+    vl       := 0;
+    vol_path := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\test_vols\');
+    while vl <= high(TEST_VOLS) do begin
+
+      //test one at a time as this is normal use
+      mountList.Clear;
+      mountList.Add(vol_path + TEST_VOLS[vl]);
+      mountedAs := '';
+      key_file  := '';
+      if KEY_FILES[vl] <> '' then
+        key_file := vol_path + KEY_FILES[vl];
+      if LES_FILES[vl] <> '' then
+        les_file := vol_path + LES_FILES[vl];
+
+      if fOtfeFreeOtfeBase.IsLUKSVolume(vol_path + TEST_VOLS[vl]) or (LES_FILES[vl] <> '') then
+      begin
+        if not fOtfeFreeOtfeBase.MountLinux(mountList, mountedAs, True, les_file,SDUStringToSDUBytes(PASSWORDS[vl]),
+          key_file, False, nlLF, 0, True) then
+          Result := False;
+      end else begin
+        //call silently
+        if not fOtfeFreeOtfeBase.MountFreeOTFE(mountList, mountedAs, True,
+          key_file,SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False, True, 256, ITERATIONS[vl]) then
+          Result := False;
+      end;
+      if not Result then begin
+        SDUMessageDlg(
+          _('Unable to open ') + TEST_VOLS[vl] + '.', mtError);
+      end else begin
+       CheckMountedOK;
+        UnMountAndCheck;
+      end;
+      Inc(vl);
+    end;
+
+
+  finally
+    mountList.Free();
+  end;
+
+  if Result then
+    SDUMessageDlg('All functional tests passed')
+  else
+    SDUMessageDlg('At least one functional test failed');
 end;
 
   (*

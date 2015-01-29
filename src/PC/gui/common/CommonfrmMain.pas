@@ -449,6 +449,7 @@ begin
   finitAppCalled               := False;
   fwmUserPostShowCalledAlready := False;
 
+
   inherited;
 end;
 
@@ -680,6 +681,7 @@ end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+
 {$IFDEF FREEOTFE_DEBUG}
   fOtfeFreeOtfeBase.DebugShowMessage := FALSE;  // xxx - disable showmessages(...) of debug if built with debug on
 {$ENDIF}
@@ -1654,7 +1656,7 @@ begin
       if (length(useDriveLetter) = 0) then
         fileOK := FALSE
       else
-        TOTFEFreeOTFE(fOtfeFreeOtfeBase).DefaultDriveLetter := AnsiChar((uppercase(useDriveLetter))[1]);
+        (fOtfeFreeOtfeBase as TOTFEFreeOTFE).DefaultDriveLetter := AnsiChar((uppercase(useDriveLetter))[1]);
 
     end;
 {$ENDIF}

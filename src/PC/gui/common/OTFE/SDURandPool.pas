@@ -62,7 +62,7 @@ type
   PUBLIC
                           { public declarations }
     constructor Create(); // singleton - dont call directly - use GetRandPool
-    destructor Destroy(); //noramly only called on app exit
+    destructor Destroy(); override; //normaly only called on app exit
                           // Generate RNG data using specified RNG
                           // !! WARNING !!
                           // If RNG_OPT_CRYPTLIB is specified as the RNG, cryptlibLoad must be called
@@ -467,8 +467,8 @@ end;
 
 // Purge the current MouseRNG store
 procedure PurgeMouseRNGData();
-var
-  i: Integer;
+//var
+//  i: Integer;
 begin
   // Simple overwrite
   //  for i := 1 to length(_MouseRNGStore) do begin

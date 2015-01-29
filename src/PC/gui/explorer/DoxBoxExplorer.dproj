@@ -89,7 +89,6 @@
 			<DCC_ExeOutput>..\..\..\..\bin\PC</DCC_ExeOutput>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-			<Debugger_RunParams>-dev_menu -noexit</Debugger_RunParams>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<VerInfo_Locale>1033</VerInfo_Locale>
@@ -398,6 +397,8 @@
 			</DCCReference>
 			<DCCReference Include="..\common\SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFE\OTFE_U.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_U.pas"/>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

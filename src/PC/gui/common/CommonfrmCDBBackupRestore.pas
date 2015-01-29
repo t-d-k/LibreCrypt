@@ -46,7 +46,7 @@ type
     procedure SetDestFilename(const Value: String);
   PROTECTED
     FOpType:       TCDBOperationType;
-    FOTFEFreeOTFE: TOTFEFreeOTFEBase;
+//    FOTFEFreeOTFE: TOTFEFreeOTFEBase;
     fsilent:       Boolean;
     fsilentResult: TModalResult;
 

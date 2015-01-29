@@ -141,7 +141,6 @@
 			</DCCReference>
 			<DCCReference Include="SDeanSecurity\MSCryptoAPI\MSCryptoAPI.pas"/>
 			<DCCReference Include="SDeanFilesystem\SDFilesystemCtrls.pas"/>
-			<DCCReference Include="OTFE\OTFE\OTFE_U.pas"/>
 			<DCCReference Include="OTFE\OTFE\OTFEConsts_U.pas"/>
 			<DCCReference Include="SDeanSecurity\MouseRNG\MouseRNG.pas"/>
 			<DCCReference Include="SDeanUtils\SDUDialogs.pas"/>
@@ -172,20 +171,11 @@
 			<DCCReference Include="Hash\HashAlgTigerSBoxes_U.pas"/>
 			<DCCReference Include="Hash\HashAlgUnified_U.pas"/>
 			<DCCReference Include="Hash\HashValue_U.pas"/>
-			<DCCReference Include="OTFE\OTFEBestCrypt\OTFEBestCrypt_U.pas"/>
 			<DCCReference Include="OTFE\OTFEBestCrypt\OTFEBestCryptBytesToString_U.pas"/>
 			<DCCReference Include="OTFE\OTFEBestCrypt\OTFEBestCryptGetDriveLetter_U.pas">
 				<Form>GetDriveLetter_F</Form>
 			</DCCReference>
 			<DCCReference Include="OTFE\OTFEBestCrypt\OTFEBestCryptStructures_U.pas"/>
-			<DCCReference Include="OTFE\OTFEE4M\OTFEE4M_U.pas"/>
-			<DCCReference Include="OTFE\OTFEE4M\OTFEE4MMountDevice_U.pas"/>
-			<DCCReference Include="OTFE\OTFEE4M\OTFEE4MMountDevice9x_U.pas">
-				<Form>OTFEE4MMountDevice9x_F</Form>
-			</DCCReference>
-			<DCCReference Include="OTFE\OTFEE4M\OTFEE4MMountDeviceNT_U.pas">
-				<Form>OTFEE4MMountDeviceNT_F</Form>
-			</DCCReference>
 			<DCCReference Include="OTFE\OTFEE4M\OTFEE4MPasswordEntry_U.pas">
 				<Form>OTFEE4MPasswordEntry_F</Form>
 			</DCCReference>
@@ -197,15 +187,10 @@
 			<DCCReference Include="SDeanSecurity\KeyboardDialog\KeyboardEntryDlg_U.pas">
 				<Form>KeyboardEntryDlg</Form>
 			</DCCReference>
-			<DCCReference Include="OTFE\OTFEPGPDisk\OTFEPGPDisk_U.pas"/>
 			<DCCReference Include="OTFE\OTFEPGPDisk\OTFEPGPDiskMounting_U.pas">
 				<Form>OTFEPGPDiskMounting_F</Form>
 			</DCCReference>
 			<DCCReference Include="OTFE\OTFEPGPDisk\OTFEPGPDiskStructures_U.pas"/>
-			<DCCReference Include="OTFE\OTFEScramDisk\OTFEScramDisk_U.pas"/>
-			<DCCReference Include="OTFE\OTFEScramDisk\OTFEScramDiskDismountVolumes_U.pas">
-				<Form>OTFEScramDiskDismountVolumes_F</Form>
-			</DCCReference>
 			<DCCReference Include="OTFE\OTFEScramDisk\OTFEScramDiskPasswordEntry_U.pas">
 				<Form>OTFEScramDiskPasswordEntry_F</Form>
 			</DCCReference>
@@ -221,7 +206,6 @@
 			<DCCReference Include="OTFE\OTFECrossCrypt\OTFECrossCrypt_PasswordEntry.pas">
 				<Form>OTFECrossCrypt_PasswordEntry_F</Form>
 			</DCCReference>
-			<DCCReference Include="OTFE\OTFECrossCrypt\OTFECrossCrypt_U.pas"/>
 			<DCCReference Include="..\..\src\PC\gui\common\SDUForms.pas">
 				<Form>SDUForm</Form>
 			</DCCReference>

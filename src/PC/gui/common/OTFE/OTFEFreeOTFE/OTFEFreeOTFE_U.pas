@@ -241,7 +241,7 @@ type
   public
     // -----------------------------------------------------------------------
     // TOTFE standard API
-    constructor Create(AOwner : TComponent); override;
+    constructor Create(); override;
     destructor  Destroy(); override;
     function  Dismount(driveLetter: ansichar; emergency: boolean = FALSE): boolean; overload; override;
     function  Version(): cardinal; overload; override;
@@ -357,7 +357,7 @@ type
   end;
 
 
-procedure Register;
+//procedure Register;
 
 
 implementation
@@ -436,14 +436,14 @@ const
 
 
 // ----------------------------------------------------------------------------
-procedure Register;
-begin
-  RegisterComponents('OTFE', [TOTFEFreeOTFE]);
-end;
+//procedure Register;
+//begin
+//  RegisterComponents('OTFE', [TOTFEFreeOTFE]);
+//end;
 
 
 // ----------------------------------------------------------------------------
-constructor TOTFEFreeOTFE.Create(AOwner : TComponent);
+constructor TOTFEFreeOTFE.Create();
 begin
   inherited;
 end;

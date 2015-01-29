@@ -714,7 +714,7 @@ out keyMaterial: TSDUBytes):
 
     // -----------------------------------------------------------------------
     // TOTFE standard API
-    constructor Create(AOwner: TComponent); OVERRIDE;
+    constructor Create(); OVERRIDE;
     destructor Destroy(); OVERRIDE;
     function Mount(volumeFilename: Ansistring; ReadOnly: Boolean = False): Ansichar;
       OVERLOAD; OVERRIDE;
@@ -2584,7 +2584,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-constructor TOTFEFreeOTFEBase.Create(AOwner: TComponent);
+constructor TOTFEFreeOTFEBase.Create();
 {$IFDEF FREEOTFE_DEBUG}
 {$IFNDEF _GEXPERTS}
 var
