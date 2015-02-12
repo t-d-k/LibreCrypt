@@ -832,10 +832,8 @@ begin
 end;
 
 function TSDFilesystem_FAT.DoMount(): Boolean;
-var
-  retval: Boolean;
 begin
-  retval := False;
+  Result := False;
 
   // Assume mounting is successful...
   FMounted := True;
@@ -846,12 +844,12 @@ begin
 
     SetupFFATEntryValues(FATType);
 
-    retval := ReadFAT(DEFAULT_FAT);
+    Result := ReadFAT(DEFAULT_FAT);
   finally
     FMounted := False;
   end;
 
-  Result := retval;
+
 end;
 
 procedure TSDFilesystem_FAT.DoDismount();
@@ -872,12 +870,11 @@ end;
 function TSDFilesystem_FAT.ReadBootSector(): Boolean;
 var
   stmBootSector: TSDUMemoryStream;
-  retval:        Boolean;
   i:             Integer;
 begin
   AssertMounted();
 
-  retval := True;
+  Result := True;
 
   FSerializeCS.Acquire();
   try
@@ -888,19 +885,19 @@ begin
       except
         // Problem...
         on E: Exception do begin
-          retval := False;
+          Result := False;
         end;
       end;
 
-      if retval then begin
+      if Result then begin
         // Sanity check - can we find the Boot sector signature (0x55 0xAA)?
         if (stmBootSector.ReadWORD_LE(BOOTSECTOR_OFFSET_BOOTSECTORSIG) <> FAT_BOOTSECTORSIG) then
         begin
-          retval := False;
+          Result := False;
         end;
       end;
 
-      if retval then begin
+      if Result then begin
         // Attempt to identify filesystem type; FAT12/FAT16/FAT32...
         // Default to FAT16
         FBootSectorSummary.FATType := DetermineFATType(stmBootSector);
@@ -1006,30 +1003,29 @@ begin
     FSerializeCS.Release();
   end;
 
-  if retval then begin
+  if Result then begin
     // Sanity checks...
     if ((FBootSectorSummary.FATCount < 1) or
       // Make sure there's at least *one* FAT
       (trim(FBootSectorSummary.OEMName) = 'NTFS')  // System ID must not be NTFS
       ) then begin
-      retval := False;
+      Result := False;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.WriteBootSector(newBootSector: TSDBootSector_FAT): Boolean;
 var
   stmBootSector: TSDUMemoryStream;
-  retval:        Boolean;
   i:             Integer;
 begin
   // Note: Filesystem *shouldn't* be mounted to do this (e.g. When formatting
   //       for the first time)
   // AssertMounted();
 
-  retval := True;
+  Result := True;
 
   FSerializeCS.Acquire();
   try
@@ -1046,11 +1042,11 @@ begin
         // Problem...
         on E:Exception do
           begin
-          retval := FALSE;
+          Result := FALSE;
           end;
       end;
 }
-      if retval then begin
+      if Result then begin
         // ------------
         // Write the FAT12/FAT16/FAT32 common boot sector...
 
@@ -1151,14 +1147,14 @@ begin
         stmBootSector.WriteWORD_LE(newBootSector.BootSectorSig, BOOTSECTOR_OFFSET_BOOTSECTORSIG);
       end;
 
-      if retval then begin
+      if Result then begin
         try
           stmBootSector.Position := 0;
           PartitionImage.WriteSector(0, stmBootSector);
         except
           // Problem...
           on E: Exception do begin
-            retval := False;
+            Result := False;
           end;
         end;
       end;
@@ -1171,54 +1167,49 @@ begin
     FSerializeCS.Release();
   end;
 
-  Result := retval;
+
 end;
 
 
 function TSDFilesystem_FAT.ReadFAT(fatNo: DWORD): Boolean;
-var
-  retval: Boolean;
 begin
   FreeCachedFAT();
   FFAT := TSDUMemoryStream.Create();
 
-  retval := ReadFAT(fatNo, FFAT);
+  Result := ReadFAT(fatNo, FFAT);
 
-  if not (retval) then begin
+  if not (Result) then begin
     FreeCachedFAT();
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.WriteFAT(fatNo: DWORD): Boolean;
-var
-  retval: Boolean;
 begin
   if ReadOnly then begin
-    retval := False;
+    Result := False;
   end else begin
     FFAT.Position := 0;
-    retval        := WriteFAT(fatNo, FFAT);
+    Result        := WriteFAT(fatNo, FFAT);
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.WriteFATToAllCopies(): Boolean;
 var
-  retval: Boolean;
   i:      Integer;
 begin
-  retval := True;
+  Result := True;
 
   for i := 1 to FATCount do begin
     if not (WriteFAT(i)) then begin
-      retval := False;
+      Result := False;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.ReadFAT(fatNo: DWORD; stmFAT: TSDUMemoryStream): Boolean;
@@ -1275,20 +1266,19 @@ end;
 
 function TSDFilesystem_FAT.ExtractClusterChain(clusterID: DWORD): TSDFATClusterChain;
 var
-  retval:      TSDFATClusterChain;
   chainLength: DWORD;
 begin
   // Determine chain length
-  SetLength(retval, 0);
-  chainLength := _TraverseClusterChain(clusterID, retval);
+  SetLength(Result, 0);
+  chainLength := _TraverseClusterChain(clusterID, Result);
 
   // Get chain
   if (chainLength > 0) then begin
-    SetLength(retval, chainLength);
-    _TraverseClusterChain(clusterID, retval);
+    SetLength(Result, chainLength);
+    _TraverseClusterChain(clusterID, Result);
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -1396,29 +1386,27 @@ end;
 
 function TSDFilesystem_FAT.GetFATEntry_FAT12(clusterID: DWORD): DWORD;
 var
-  retval:    DWORD;
   tmpDouble: Double;
 begin
   tmpDouble     := clusterID * FAT12_ENTRY_SIZE;
   FFAT.Position := trunc(tmpDouble);
-  retval        := FFAT.ReadWORD_LE();
+  Result        := FFAT.ReadWORD_LE();
   if SDUIsOddNumber(clusterID) then begin
-    retval := retval shr 4;
+    Result := Result shr 4;
   end else begin
-    retval := (retval and FFATEntryMask);
+    Result := (Result and FFATEntryMask);
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.GetFATEntry_FAT1632(clusterID: DWORD): DWORD;
 var
-  retval:     DWORD;
   multiplier: DWORD;
   i:          DWORD;
   tmpByte:    Byte;
 begin
-  retval := 0;
+  Result := 0;
 
   // FAT entries are stored LSB first
   // Note: Length of FAT entries VARIES with FAT12/FAT16/FAT32!
@@ -1426,11 +1414,11 @@ begin
   FFAT.Position := (clusterID * FFATEntrySize);
   for i := 1 to FFATEntrySize do begin
     tmpByte    := FFAT.ReadByte;
-    retval     := retval + (tmpByte * multiplier);
+    Result     := Result + (tmpByte * multiplier);
     multiplier := multiplier * $100;
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.MaxClusterID(): DWORD;
@@ -1506,11 +1494,10 @@ end;
  // Returns ERROR_DWORD on failure/if there are no free FAT entries
 function TSDFilesystem_FAT.GetNextEmptyFATEntry(afterClusterID: DWORD = 0): DWORD;
 var
-  retval:         DWORD;
   maskedFATEntry: DWORD;
   i:              DWORD;
 begin
-  retval := ERROR_DWORD;
+  Result := ERROR_DWORD;
 
   if (afterClusterID < FFATEntryUsedStart) then begin
     afterClusterID := FFATEntryUsedStart;
@@ -1519,25 +1506,25 @@ begin
   for i := (afterClusterID + 1) to MaxClusterID() do begin
     maskedFATEntry := GetFATEntry(i) and FFATEntryMask;
     if (maskedFATEntry = FFATEntryFree) then begin
-      retval := i;
+      Result := i;
       break;
     end;
   end;
 
-  Result := retval;
+
 end;
 
  // Mark the next empty FAT entry as reservced/mark it as empty
  // Returns
 function TSDFilesystem_FAT.ReserveFATEntry(afterClusterID: DWORD = 0): DWORD;
 var
-  retval: DWORD;
+  Result: DWORD;
 begin
-  retval := GetNextEmptyFATEntry(afterClusterID);
-  if (retval <> ERROR_DWORD) then begin
-    SetFATEntry(retval, FFATEntryEOCEnd);
+  Result := GetNextEmptyFATEntry(afterClusterID);
+  if (Result <> ERROR_DWORD) then begin
+    SetFATEntry(Result, FFATEntryEOCEnd);
   end;
-  Result := retval;
+
 end;
 
 procedure TSDFilesystem_FAT.UnreserveFATEntry(clusterID: DWORD);
@@ -1550,20 +1537,20 @@ end;
 
 function TSDFilesystem_FAT.CountEmptyFATEntries(): DWORD;
 var
-  retval:         DWORD;
+  Result:         DWORD;
   maskedFATEntry: DWORD;
   i:              DWORD;
 begin
-  retval := 0;
+  Result := 0;
 
   for i := FFATEntryUsedStart to MaxClusterID() do begin
     maskedFATEntry := GetFATEntry(i) and FFATEntryMask;
     if (maskedFATEntry = FFATEntryFree) then begin
-      Inc(retval);
+      Inc(Result);
     end;
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.SetFATEntry(clusterID: DWORD; Value: DWORD): Boolean;
@@ -1584,12 +1571,12 @@ end;
 
 function TSDFilesystem_FAT.SetFATEntry_FAT12(clusterID: DWORD; Value: DWORD): Boolean;
 var
-  retval:    Boolean;
+  Result:    Boolean;
   tmpDouble: Double;
   prevWord:  Word;
   newWord:   Word;
 begin
-  retval := True;
+  Result := True;
 
   tmpDouble     := clusterID * FAT12_ENTRY_SIZE;
   FFAT.Position := trunc(tmpDouble);
@@ -1604,15 +1591,15 @@ begin
   FFAT.Position := trunc(tmpDouble);
   FFAT.WriteWORD_LE(newWord);
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.SetFATEntry_FAT1632(clusterID: DWORD; Value: DWORD): Boolean;
 var
-  retval: Boolean;
+  Result: Boolean;
   i:      DWORD;
 begin
-  retval := True;
+  Result := True;
 
   // FAT entries are stored LSB first
   // Note: Length of FAT entries VARIES with FAT12/FAT16/FAT32!
@@ -1622,7 +1609,7 @@ begin
     Value := Value shr 8;
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -1634,11 +1621,11 @@ function TSDFilesystem_FAT._TraverseClusterChain(clusterID: DWORD;
 var
   maskedFATEntry: DWORD;
   currClusterID:  DWORD;
-  retval:         DWORD;
+  Result:         DWORD;
   finished:       Boolean;
   writeChain:     Boolean;
 begin
-  retval := 0;
+  Result := 0;
 
   writeChain := (length(chain) > 0);
 
@@ -1649,7 +1636,7 @@ begin
       chain[0] := CLUSTER_ZERO;
     end;
 
-    retval := 1; // Single "cluster"
+    Result := 1; // Single "cluster"
   end else begin
     // NOTE: If FAT32, we don't translate cluster 0 to the root cluster here;
     //       that's catered for in the read/write cluster functions
@@ -1663,10 +1650,10 @@ begin
       then begin
         // Include this one
         if writeChain then begin
-          chain[retval] := currClusterID;
+          chain[Result] := currClusterID;
         end;
 
-        Inc(retval);
+        Inc(Result);
 
         currClusterID := maskedFATEntry;
       end else
@@ -1674,10 +1661,10 @@ begin
       then begin
         // Include this one
         if writeChain then begin
-          chain[retval] := currClusterID;
+          chain[Result] := currClusterID;
         end;
 
-        Inc(retval);
+        Inc(Result);
 
         // Finished.
         finished := True;
@@ -1696,7 +1683,7 @@ begin
     end;
   end;
 
-  Result := retval;
+
 end;
 
 // Extract the data for a single, specified, cluster
@@ -1732,16 +1719,16 @@ end;
 function TSDFilesystem_FAT.ReadWriteClusterData(readNotWrite: Boolean;
   clusterID: DWORD; data: TStream; maxSize: Integer): Boolean;
 var
-  retval: Boolean;
+  Result: Boolean;
 begin
   // Special case - FAT12/FAT16 root directory
   if (((FATType = ftFAT12) or (FATType = ftFAT16)) and (clusterID = CLUSTER_ZERO)) then begin
-    retval := ReadWriteFAT1216RootDir(readNotWrite, data);
+    Result := ReadWriteFAT1216RootDir(readNotWrite, data);
   end else begin
-    retval := _ReadWriteClusterData(readNotWrite, clusterID, data, maxSize);
+    Result := _ReadWriteClusterData(readNotWrite, clusterID, data, maxSize);
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT._ReadWriteClusterData(readNotWrite: Boolean;
@@ -1862,7 +1849,7 @@ end;
  // to calculating based on the size of "data"
 function TSDFilesystem_FAT.DetermineClustersNeeded(data: TStream; maxSize: Int64 = -1): DWORD;
 var
-  retval:      DWORD;
+  Result:      DWORD;
   maxDataSize: Int64;
   tmpInt64:    Int64;  // Used to prevent Delphi casting incorrectly
   useSize:     Int64;
@@ -1878,14 +1865,14 @@ begin
   end;
 
   tmpInt64 := (useSize div ClusterSize());
-  retval   := tmpInt64;
+  Result   := tmpInt64;
 
   tmpInt64 := (useSize mod ClusterSize());
   if (tmpInt64 <> 0) then begin
-    Inc(retval);
+    Inc(Result);
   end;
 
-  Result := retval;
+
 end;
 
  // Truncate/extend chain as appropriate such that it can store the data
@@ -1900,10 +1887,10 @@ var
   newChain:         TSDFATClusterChain;
   lastAllocCluster: DWORD;
   nextFreeCluster:  DWORD;
-  retval:           Boolean;
+  Result:           Boolean;
   i:                DWORD;
 begin
-  retval := True;
+  Result := True;
 
   origChainLength := length(chain);
   clustersNeeded  := DetermineClustersNeeded(data, maxSize);
@@ -1932,7 +1919,7 @@ begin
       nextFreeCluster := GetNextEmptyFATEntry(lastAllocCluster);
       if (nextFreeCluster = ERROR_DWORD) then begin
         // Unable to extend...
-        retval := False;
+        Result := False;
         break;
       end;
 
@@ -1941,33 +1928,33 @@ begin
     end;
   end;
 
-  if retval then begin
+  if Result then begin
     chain := newChain;
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.ReadWriteClusterChainData(readNotWrite: Boolean;
   chain: TSDFATClusterChain; data: TStream; maxSize: Int64 = -1): Boolean;
 var
-  retval: Boolean;
+  Result: Boolean;
 begin
   // Special case - FAT12/FAT16 root directory
   if (((FATType = ftFAT12) or (FATType = ftFAT16)) and IsClusterInChain(CLUSTER_ZERO, chain))
   then begin
-    retval := ReadWriteFAT1216RootDir(readNotWrite, data);
+    Result := ReadWriteFAT1216RootDir(readNotWrite, data);
   end else begin
-    retval := _ReadWriteClusterChainData(readNotWrite, chain, data, maxSize);
+    Result := _ReadWriteClusterChainData(readNotWrite, chain, data, maxSize);
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT._ReadWriteClusterChainData(readNotWrite: Boolean;
   chain: TSDFATClusterChain; data: TStream; maxSize: Int64 = -1): Boolean;
 var
-  retval:         Boolean;
+  Result:         Boolean;
   i:              Integer;
   useClusterSize: Int64;
   bytesRemaining: Int64;
@@ -1977,7 +1964,7 @@ begin
     AssertSufficientData(data, maxSize);
   end;
 
-  retval := True;
+  Result := True;
 
   bytesRemaining := maxSize;
   if (bytesRemaining < 0) then begin
@@ -1994,12 +1981,12 @@ begin
     useClusterSize := min(bytesRemaining, ClusterSize());
 
     if readNotWrite then begin
-      retval := ExtractClusterData(chain[i], data, useClusterSize);
+      Result := ExtractClusterData(chain[i], data, useClusterSize);
     end else begin
-      retval := StoreClusterData(chain[i], data, useClusterSize);
+      Result := StoreClusterData(chain[i], data, useClusterSize);
     end;
 
-    if not (retval) then begin
+    if not (Result) then begin
       break;
     end;
 
@@ -2012,11 +1999,11 @@ begin
 
   end;
 
-  if retval then begin
-    retval := (bytesRemaining = 0);
+  if Result then begin
+    Result := (bytesRemaining = 0);
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.ExtractClusterChainData(clusterID: DWORD; filename: String;
@@ -2046,7 +2033,7 @@ var
   hh:     Integer;
   mi:     Integer;
   ss:     Integer;
-  retval: TTimeStamp;
+  Result: TTimeStamp;
 begin
   dd   := (dateBitmask and $1F);
   mm   := ((dateBitmask and $1E0) shr 5);
@@ -2056,14 +2043,14 @@ begin
   hh   := ((timeBitmask and $F800) shr 11);
 
   try
-    retval := DateTimeToTimeStamp(EncodeDateTime(yyyy, mm, dd, hh, mi, ss, msec));
+    Result := DateTimeToTimeStamp(EncodeDateTime(yyyy, mm, dd, hh, mi, ss, msec));
   except
     // Dud date/timestamp
-    retval.Date := 0;
-    retval.Time := 0;
+    Result.Date := 0;
+    Result.Time := 0;
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -2111,20 +2098,20 @@ var
   dd:     Integer;
   mm:     Integer;
   yyyy:   Integer;
-  retval: TDate;
+  Result: TDate;
 begin
   dd   := (dateBitmask and $1F);
   mm   := ((dateBitmask and $1E0) shr 5);
   yyyy := 1980 + ((dateBitmask and $FE00) shr 9);
 
   try
-    retval := EncodeDate(yyyy, mm, dd);
+    Result := EncodeDate(yyyy, mm, dd);
   except
     // Dud date/timestamp
-    retval := 0;
+    Result := 0;
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.TDateToWORD(date: TDate): Word;
@@ -2132,18 +2119,18 @@ var
   dd:     Word;
   mm:     Word;
   yyyy:   Word;
-  retval: Word;
+  Result: Word;
 begin
   try
     DecodeDate(date, yyyy, mm, dd);
     yyyy   := yyyy - 1980;
-    retval := dd + (mm shl 5) + (yyyy shl 9);
+    Result := dd + (mm shl 5) + (yyyy shl 9);
   except
     // Dud date/timestamp
-    retval := 0;
+    Result := 0;
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.ParseDirectory(data: TSDUMemoryStream;
@@ -2161,10 +2148,10 @@ var
   lfnChkSum:      Byte;
   currChkSum:     Byte;
   seqNo:          DWORD;
-  retval:         Boolean;
+  Result:         Boolean;
   caseByte:       Byte;
 begin
-  retval := True;
+  Result := True;
 
   lfn          := '';
   lfnChkSum    := 0;
@@ -2281,12 +2268,12 @@ begin
     recordOffset := recordOffset + DIR_ENTRY_SIZE;
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.SectorIDForCluster(clusterID: DWORD): DWORD;
 var
-  retval: DWORD;
+  Result: DWORD;
 begin
   if ((FATType = ftFAT12) or (FATType = ftFAT16)) then begin
     if (clusterID = CLUSTER_ZERO) then begin
@@ -2297,12 +2284,12 @@ begin
         (1 = 2),
         'SectorIDForCluster(...) called for FAT12/FAT16 volume with CLUSTER_ZERO'
         );
-      retval := 0; // Ger rid of compiler error
+      Result := 0; // Ger rid of compiler error
     end else begin
       // -2 (CLUSTER_FIRST_DATA_CLUSTER) because the 2nd cluster is the zero'th
       // cluster from the start of the data beyond the FATs; clusters 0 and 1
       // are "skipped"
-      retval := ReservedSectorCount +                                     // Reserved sectors
+      Result := ReservedSectorCount +                                     // Reserved sectors
         (FATCount * SectorsPerFAT) +                              // FATs
         ((MaxRootEntries * DIR_ENTRY_SIZE) div BytesPerSector) +  // Root directory
         (SectorsPerCluster * (clusterID - CLUSTER_FIRST_DATA_CLUSTER)); // Cluster required
@@ -2316,55 +2303,55 @@ begin
 
     // -2 because the 2nd cluster is the zero'th cluster from the start of
     // the data beyond the FATs; clusters 0 and 1 are "skipped"
-    retval := ReservedSectorCount +                   // Reserved sectors
+    Result := ReservedSectorCount +                   // Reserved sectors
       (FATCount * SectorsPerFAT) +            // FATs
       (SectorsPerCluster * (clusterID - CLUSTER_FIRST_DATA_CLUSTER));  // Cluster required
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.LoadContentsFromDisk(path: String; items: TSDDirItemList): Boolean;
 var
   startClusterID: DWORD;
-  retval:         Boolean;
+  Result:         Boolean;
 begin
-  retval := False;
+  Result := False;
 
   startClusterID := GetStartingClusterForItem(path);
   if (startClusterID <> ERROR_DWORD) then begin
-    retval := _LoadContentsFromDisk(startClusterID, items);
+    Result := _LoadContentsFromDisk(startClusterID, items);
 
-    if not (retval) then begin
+    if not (Result) then begin
       LastErrorSet(SDUParamSubstitute(_('Unable to read contents of: %1'), [path]));
     end;
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT._LoadContentsFromDisk(dirStartCluster: DWORD;
   items: TSDDirItemList): Boolean;
 var
   ms:     TSDUMemoryStream;
-  retval: Boolean;
+  Result: Boolean;
 begin
   AssertMounted();
 
-  retval := False;
+  Result := False;
 
   ms := TSDUMemoryStream.Create();
   try
     ms.Position := 0;
     if ExtractClusterChainData(dirStartCluster, ms) then begin
       ms.Position := 0;
-      retval      := ParseDirectory(ms, items);
+      Result      := ParseDirectory(ms, items);
     end;
   finally
     ms.Free();
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -2372,20 +2359,20 @@ end;
 function TSDFilesystem_FAT.GetStartingClusterForItem(path: WideString): DWORD;
 var
   item:   TSDDirItem_FAT;
-  retval: DWORD;
+  Result: DWORD;
 begin
-  retval := ERROR_DWORD;
+  Result := ERROR_DWORD;
 
   item := TSDDirItem_FAT.Create();
   try
     if GetItem_FAT(path, item) then begin
-      retval := item.FirstCluster;
+      Result := item.FirstCluster;
     end;
   finally
     item.Free();
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.GetRootDirItem(item: TSDDirItem_FAT): Boolean;
@@ -2531,29 +2518,29 @@ end;
 function TSDFilesystem_FAT.GetItemContent(path: WideString; content: TStream): Boolean;
 var
   item:   TSDDirItem_FAT;
-  retval: Boolean;
+  Result: Boolean;
 begin
-  retval := False;
+  Result := False;
   item   := TSDDirItem_FAT.Create();
   try
     if GetItem_FAT(path, item) then begin
       ExtractClusterChainData(item.FirstCluster, content);
-      retval := True;
+      Result := True;
     end;
   finally
     item.Free();
   end;
 
-  Result := retval;
+
 end;
 
 
 function TSDFilesystem_FAT.GetFileContent(path: WideString; fileContent: TStream): Boolean;
 var
   item:   TSDDirItem_FAT;
-  retval: Boolean;
+  Result: Boolean;
 begin
-  retval := False;
+  Result := False;
   item   := TSDDirItem_FAT.Create();
   try
     if GetItem_FAT(path, item) then begin
@@ -2561,34 +2548,34 @@ begin
         ExtractClusterChainData(item.FirstCluster, fileContent, item.Size);
       end;
 
-      retval := True;
+      Result := True;
     end;
   finally
     item.Free();
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.ExtractFile(srcPath: WideString; extractToFilename: String): Boolean;
 var
   item:             TSDDirItem_FAT;
-  retval:           Boolean;
+  Result:           Boolean;
   attrs:            Integer;
   fileHandle:       THandle;
   ftCreationTime:   TFileTime;
   ftLastAccessTime: TFileTime;
   ftLastWriteTime:  TFileTime;
 begin
-  retval := False;
+  Result := False;
 
   item := TSDDirItem_FAT.Create();
   try
     if GetItem_FAT(srcPath, item) then begin
-      retval := ExtractClusterChainData(item.FirstCluster, extractToFilename, item.Size);
+      Result := ExtractClusterChainData(item.FirstCluster, extractToFilename, item.Size);
 
       // If extraction successful, set file attributes and date/timestamps
-      if not (retval) then begin
+      if not (Result) then begin
         LastErrorSet(
           SDUParamSubstitute(_(
           'Unable to extract cluster chain data starting from cluster: %1'), [item.FirstCluster])
@@ -2643,7 +2630,7 @@ begin
     item.Free();
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.FreeCluster(clusterID: DWORD): Boolean;
@@ -2662,17 +2649,17 @@ end;
 function TSDFilesystem_FAT.FreeClusterChain(clusterChain: TSDFATClusterChain): Boolean;
 var
   i:      Integer;
-  retval: Boolean;
+  Result: Boolean;
 begin
-  retval := True;
+  Result := True;
 
   for i := low(clusterchain) to high(clusterChain) do begin
     if not (FreeCluster(clusterChain[i])) then begin
-      retval := False;
+      Result := False;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 // atm, this only does a rudimentary check that all of the FATs are identical
@@ -2699,31 +2686,31 @@ var
   j:        Int64;
   firstFAT: TSDUMemoryStream;
   checkFAT: TSDUMemoryStream;
-  retval:   Boolean;
+  Result:   Boolean;
 begin
   firstFAT := TSDUMemoryStream.Create();
   try
-    retval := ReadFAT(1, firstFAT);
-    if retval then begin
+    Result := ReadFAT(1, firstFAT);
+    if Result then begin
       // Start from 2; we've already got the first FAT
       for i := 2 to FATCount do begin
         checkFAT := TSDUMemoryStream.Create();
         try
-          retval := ReadFAT(1, checkFAT);
+          Result := ReadFAT(1, checkFAT);
 
           // Compare the FATs...
 
-          if retval then begin
-            retval := (firstFAT.Size = checkFAT.Size);
+          if Result then begin
+            Result := (firstFAT.Size = checkFAT.Size);
           end;
 
-          if retval then begin
+          if Result then begin
             firstFAT.Position := 0;
             checkFAT.Position := 0;
             j                 := 0;
             while (j < firstFAT.Size) do begin
-              retval := (firstFAT.ReadByte = checkFAT.ReadByte);
-              if not (retval) then begin
+              Result := (firstFAT.ReadByte = checkFAT.ReadByte);
+              if not (Result) then begin
                 LastErrorSet(SDUParamSubstitute(
                   _('FAT copy #%1 doesn''t match FAT copy #%2'), [1, i]));
                 break;
@@ -2737,7 +2724,7 @@ begin
           checkFAT.Free();
         end;
 
-        if not (retval) then begin
+        if not (Result) then begin
           break;
         end;
 
@@ -2748,18 +2735,18 @@ begin
     firstFAT.Free();
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.CheckFilesystem_Crosslinks(): Boolean;
 var
-  retval: Boolean;
+  Result: Boolean;
 begin
-  retval := True;
+  Result := True;
 
   //lplp - to implement
 
-  Result := retval;
+
 end;
 
 
@@ -2815,18 +2802,18 @@ end;
  //   \               will return \
 function TSDFilesystem_FAT.PathParent(path: WideString): WideString;
 var
-  retval: WideString;
+  Result: WideString;
   i:      Integer;
 begin
-  retval := '';
+  Result := '';
   if path = PATH_SEPARATOR then begin
-    retval := PATH_SEPARATOR;
+    Result := PATH_SEPARATOR;
   end else begin
     for i := length(path) downto 1 do begin
       if (path[i] = PATH_SEPARATOR) then begin
-        retval := Copy(path, 1, (i - 1));
-        if (retval = '') then begin
-          retval := PATH_SEPARATOR;
+        Result := Copy(path, 1, (i - 1));
+        if (Result = '') then begin
+          Result := PATH_SEPARATOR;
         end;
 
         break;
@@ -2834,7 +2821,7 @@ begin
     end;
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -2843,47 +2830,47 @@ function TSDFilesystem_FAT.DOSFilenameTo11Chars(DOSFilename: Ansistring): Ansist
 var
   i:      Integer;
   j:      Integer;
-  retval: Ansistring;
+  Result: Ansistring;
 begin
   // Special handling for "." and ".." so the other half of this process
   // doens't get confused by the "." and return a string containing just
   // spaces
   if ((DOSFilename = DIR_CURRENT_DIR) or (DOSFilename = DIR_PARENT_DIR)) then begin
-    retval := DOSFilename;
+    Result := DOSFilename;
   end else begin
     for i := 1 to length(DOSFilename) do begin
       if (DOSFilename[i] = '.') then begin
         // Pad out...
         for j := i to 8 do begin
-          retval := retval + ' ';
+          Result := Result + ' ';
         end;
       end else begin
-        retval := retval + DOSFilename[i];
+        Result := Result + DOSFilename[i];
       end;
 
     end;
   end;
 
-  retval := retval + StringOfChar(AnsiChar(' '), (11 - length(retval)));
+  Result := Result + StringOfChar(AnsiChar(' '), (11 - length(Result)));
 
-  Result := retval;
+
 end;
 
 // This takes a notmal 8.3 filename (e.g. fred.txt)
 function TSDFilesystem_FAT.DOSFilenameCheckSum(DOSFilename: Ansistring): Byte;
 var
   i:           Integer;
-  retval:      Byte;
+  Result:      Byte;
   useFilename: Ansistring;
 begin
   useFilename := DOSFilenameTo11Chars(DOSFilename);
 
-  retval := 0;
+  Result := 0;
   for i := 1 to 11 do begin
-    retval := (((retval and $0000001) shl 7) + (retval shr 1) + Ord(useFilename[i])) mod 256;
+    Result := (((Result and $0000001) shl 7) + (Result shr 1) + Ord(useFilename[i])) mod 256;
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -2903,7 +2890,7 @@ var
   maxSeqNo: Byte;
   useSeqNo: Byte;
   checksum: Byte;
-  retval:   Integer;
+  Result:   Integer;
   i:        Integer;
 begin
   tempLFN := item.Filename;
@@ -2918,11 +2905,11 @@ begin
   // Calculate number of directory entries required to store LFN
   maxSeqNo := length(tempLFN) div LFN_CHARS_PER_ENTRY;
   // (Additional directory entry required for 8.3 entry)
-  retval   := maxSeqNo + 1;
+  Result   := maxSeqNo + 1;
 
   if (stream = nil) then begin
     // Bail out
-    Result := retval;
+
     exit;
   end;
 
@@ -2954,7 +2941,7 @@ begin
 
   WriteDirEntry_83(item, stream);
 
-  Result := retval;
+
 end;
 
 procedure TSDFilesystem_FAT.WriteDirEntry_83(item: TSDDirItem_FAT; stream: TSDUMemoryStream);
@@ -3005,13 +2992,13 @@ end;
 function TSDFilesystem_FAT.SeekBlockUnusedDirEntries(cntNeeded: Integer;
   dirData: TSDUMemoryStream): Boolean;
 var
-  retval:          Boolean;
+  Result:          Boolean;
   currRunLength:   Integer;
   runStartOffset:  Int64;
   currEntryOffset: Int64;
   filenameChar:    Byte;
 begin
-  retval := False;
+  Result := False;
 
   currRunLength   := 0;
   runStartOffset  := 0;
@@ -3023,7 +3010,7 @@ begin
       Inc(currRunLength);
       if (currRunLength >= cntNeeded) then begin
         dirData.Position := runStartOffset;
-        retval           := True;
+        Result           := True;
         break;
       end;
     end else begin
@@ -3034,7 +3021,7 @@ begin
     currEntryOffset := currEntryOffset + DIR_ENTRY_SIZE;
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -3047,10 +3034,10 @@ var
   filename11Char: String;
   currFilename:   String;
   currAttributes: Byte;
-  retval:         Boolean;
+  Result:         Boolean;
   recordOffset:   Int64;
 begin
-  retval := False;
+  Result := False;
 
   filename11Char := DOSFilenameTo11Chars(filename);
 
@@ -3067,7 +3054,7 @@ begin
         ((currAttributes and VFAT_ATTRIB_FLAG_DEVICE) <> VFAT_ATTRIB_FLAG_DEVICE)) then begin
         // Reset position to start of dir entry
         dirData.Position := recordOffset;
-        retval           := True;
+        Result           := True;
         break;
       end;
     end;
@@ -3075,7 +3062,7 @@ begin
     recordOffset := recordOffset + DIR_ENTRY_SIZE;
   end;
 
-  Result := retval;
+
 end;
 
 // Extend the specified stream by a cluster filled with zeros
@@ -3097,19 +3084,19 @@ end;
 // Returns TRUE/FALSE, depending on whether clusterID appers in chain or not
 function TSDFilesystem_FAT.IsClusterInChain(clusterID: DWORD; chain: TSDFATClusterChain): Boolean;
 var
-  retval: Boolean;
+  Result: Boolean;
   i:      Integer;
 begin
-  retval := False;
+  Result := False;
 
   for i := low(chain) to high(chain) do begin
     if (chain[i] = clusterID) then begin
-      retval := True;
+      Result := True;
       break;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 // Add the specified cluster to the given chain
@@ -4121,7 +4108,7 @@ var
   allOK:            Boolean;
   dirToStoreInData: TSDUMemoryStream;
   x:                Integer;
-  retval:           String;
+  Result:           String;
   uniqueFound:      Boolean;
 begin
   allOK := True;
@@ -4148,18 +4135,18 @@ begin
       x           := 1;
       uniqueFound := False;
       while not (uniqueFound) do begin
-        retval := IntToStr(x);
+        Result := IntToStr(x);
 
         // Blowout if we couldn't find one. If we haven't found one by the time
         // this kicks out, we've checked 99999999 different DOS filenames - all
         // of which are in use. User needs to be tought how to organise their
         // data better.
-        if (length(retval) > DIR_ENTRY_LENGTH_DOSFILENAME) then begin
-          retval := '';
+        if (length(Result) > DIR_ENTRY_LENGTH_DOSFILENAME) then begin
+          Result := '';
           break;
         end;
 
-        uniqueFound := not (Seek83FileDirNameInDirData(retval, dirToStoreInData));
+        uniqueFound := not (Seek83FileDirNameInDirData(Result, dirToStoreInData));
         Inc(x);
       end;
     end;
@@ -4170,10 +4157,10 @@ begin
   end;
 
   if not (allOK) then begin
-    retval := '';
+    Result := '';
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.Format(): Boolean;
@@ -4654,7 +4641,7 @@ end;
  // FAT12/FAT16/FAT32
 function TSDFilesystem_FAT.DetermineFATType(stmBootSector: TSDUMemoryStream): TFATType;
 var
-  retval:          TFATType;
+  Result:          TFATType;
   //  fsTypeString: string;
   BPB_BytsPerSec:  DWORD;
   BPB_RootEntCnt:  DWORD;
@@ -4674,16 +4661,16 @@ begin
   fsTypeString := stmBootSector.ReadString(BOOTSECTOR_LENGTH_FAT32_FATFSTYPE, BOOTSECTOR_OFFSET_FAT32_FATFSTYPE);
   if (fsTypeString = SIGNATURE_FAT32) then
     begin
-    retval := ftFAT32;
+    Result := ftFAT32;
     end;
   fsTypeString := stmBootSector.ReadString(BOOTSECTOR_LENGTH_FAT1216_FATFSTYPE, BOOTSECTOR_OFFSET_FAT1216_FATFSTYPE);
   if (fsTypeString = SIGNATURE_FAT12) then
     begin
-    retval := ftFAT12;
+    Result := ftFAT12;
     end
   else if (fsTypeString = SIGNATURE_FAT16) then
     begin
-    retval := ftFAT16;
+    Result := ftFAT16;
     end;
 }
 
@@ -4715,17 +4702,17 @@ begin
 
   if (CountofClusters < 4085) then begin
     // Volume is FAT12
-    retval := ftFAT12;
+    Result := ftFAT12;
   end else
   if (CountofClusters < 65525) then begin
     // Volume is FAT16
-    retval := ftFAT16;
+    Result := ftFAT16;
   end else begin
     // Volume is FAT32
-    retval := ftFAT32;
+    Result := ftFAT32;
   end;
 
-  Result := retval;
+
 end;
 
 // Extract FAT12/FAT16 root directory contents
@@ -4863,35 +4850,34 @@ end;
 
 function TSDFilesystem_FAT.IsValidFilename(filename: String): Boolean;
 var
-  retval:         Boolean;
   i:              Integer;
   filenameNoDots: String;
 begin
-  retval := True;
+  Result := True;
 
   filename := trim(filename);
 
   // Filename must have *some* characters in it
-  if retval then begin
-    retval := (length(filename) > 0);
+  if Result then begin
+    Result := (length(filename) > 0);
   end;
 
   // Filename can't just consist of a "." characters
-  if retval then begin
+  if Result then begin
     filenameNoDots := trim(StringReplace(filename, '.', '', [rfReplaceAll]));
-    retval         := (length(filenameNoDots) > 0);
+    Result         := (length(filenameNoDots) > 0);
   end;
 
-  if retval then begin
+  if Result then begin
     for i := 1 to length(FAT_INVALID_FILENAME_CHARS) do begin
       if (Pos(FAT_INVALID_FILENAME_CHARS[i], filename) > 0) then begin
-        retval := False;
+        Result := False;
         break;
       end;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 function TSDFilesystem_FAT.FilesystemTitle(): String;

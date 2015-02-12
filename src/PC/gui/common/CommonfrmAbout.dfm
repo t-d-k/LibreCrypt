@@ -5,8 +5,8 @@ object frmAbout: TfrmAbout
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
   Caption = 'About DoxBox'
-  ClientHeight = 293
-  ClientWidth = 435
+  ClientHeight = 315
+  ClientWidth = 470
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,17 +15,18 @@ object frmAbout: TfrmAbout
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
   OnShow = FormShow
   DesignSize = (
-    435
-    293)
+    470
+    315)
   PixelsPerInch = 96
   TextHeight = 13
   object lblBeta: TLabel
     Left = 8
     Top = 46
     Width = 33
-    Height = 13
+    Height = 16
     Caption = 'BETA'
     Font.Charset = ANSI_CHARSET
     Font.Color = clRed
@@ -45,7 +46,7 @@ object frmAbout: TfrmAbout
   object lblAppID: TLabel
     Left = 47
     Top = 46
-    Width = 381
+    Width = 405
     Height = 13
     Anchors = [akLeft, akTop, akRight]
     Caption = 'App version no. here'
@@ -59,7 +60,7 @@ object frmAbout: TfrmAbout
   object lblDescription: TLabel
     Left = 47
     Top = 8
-    Width = 370
+    Width = 405
     Height = 20
     Anchors = [akLeft, akTop, akRight]
     Caption = 'DoxBox: Open-Source Transparent Encryption'
@@ -72,40 +73,39 @@ object frmAbout: TfrmAbout
     ParentFont = False
     Transparent = True
     WordWrap = True
+    ExplicitWidth = 370
   end
   object lblDriverVersion: TLabel
     Left = 8
-    Top = 164
-    Width = 419
+    Top = 84
+    Width = 454
     Height = 13
     Alignment = taCenter
-    Anchors = [akLeft, akRight, akBottom]
+    Anchors = [akLeft, akTop, akRight]
     AutoSize = False
     Caption = 'The main DoxBox driver is either not installed, or not started'
     Transparent = True
-    ExplicitTop = 157
-    ExplicitWidth = 338
   end
   object lblAuthor: TLabel
     Left = 47
     Top = 65
-    Width = 380
-    Height = 16
-    Caption = 'by Sarah Dean, additions by TDK'
+    Width = 415
+    Height = 13
+    Caption = 'Copyright Sarah Dean, additions by TDK'
     Transparent = True
     WordWrap = True
   end
   object SDUURLLabel1: TSDUURLLabel
     AlignWithMargins = True
     Left = 8
-    Top = 145
-    Width = 419
+    Top = 133
+    Width = 454
     Height = 13
     Cursor = crHandPoint
     Alignment = taCenter
     Anchors = [akLeft, akRight, akBottom]
     AutoSize = False
-    Caption = 'http://DoxBox.eu'
+    Caption = 'Click here to visit the forums'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
     Font.Height = -11
@@ -116,24 +116,25 @@ object frmAbout: TfrmAbout
     NormalColor = clBlue
     HoverColor = clRed
     URL = 'http://doxbox.eu/'
-    ExplicitTop = 138
-    ExplicitWidth = 338
+    ExplicitTop = 201
+    ExplicitWidth = 466
   end
   object lblTranslatorCredit: TLabel
     Left = 8
-    Top = 88
-    Width = 419
-    Height = 51
+    Top = 106
+    Width = 454
+    Height = 21
+    Alignment = taCenter
     Anchors = [akLeft, akTop, akRight, akBottom]
     AutoSize = False
-    Caption = 'TRANSLATOR CREDIT HERE'
+    Caption = 'No translations active (Default is English) '
     Transparent = True
     WordWrap = True
   end
   object Label1: TLabel
     Left = 8
-    Top = 202
-    Width = 419
+    Top = 224
+    Width = 454
     Height = 39
     Hint = 
       'This software is based on FreeOTFE and/or FreeOTFE4PDA, the free' +
@@ -158,22 +159,107 @@ object frmAbout: TfrmAbout
     ExplicitTop = 157
     ExplicitWidth = 369
   end
-  object Label2: TLabel
+  object SDUURLLabel2: TSDUURLLabel
     AlignWithMargins = True
     Left = 8
-    Top = 186
-    Width = 413
+    Top = 169
+    Width = 454
     Height = 13
+    Cursor = crHandPoint
     Alignment = taCenter
     Anchors = [akLeft, akRight, akBottom]
     AutoSize = False
-    Caption = 'Icons based on the Nuvola icon set'
-    ExplicitTop = 176
-    ExplicitWidth = 338
+    Caption = 'Icons are based on the Nuvola icon set'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsUnderline]
+    ParentFont = False
+    Transparent = True
+    NormalColor = clBlue
+    HoverColor = clRed
+    URL = 'http://www.icon-king.com/projects/nuvola/'
+    ExplicitTop = 246
+    ExplicitWidth = 451
+  end
+  object SDUURLLabel3: TSDUURLLabel
+    AlignWithMargins = True
+    Left = 8
+    Top = 187
+    Width = 454
+    Height = 13
+    Cursor = crHandPoint
+    Alignment = taCenter
+    Anchors = [akLeft, akRight, akBottom]
+    AutoSize = False
+    Caption = 'DoxBox uses the FastMM4 memory manager'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsUnderline]
+    ParentFont = False
+    Transparent = True
+    NormalColor = clBlue
+    HoverColor = clRed
+    URL = 'http://sourceforge.net/projects/fastmm/'
+    ExplicitTop = 264
+    ExplicitWidth = 451
+  end
+  object SDUURLLabel4: TSDUURLLabel
+    AlignWithMargins = True
+    Left = 8
+    Top = 205
+    Width = 454
+    Height = 13
+    Cursor = crHandPoint
+    Alignment = taCenter
+    Anchors = [akLeft, akRight, akBottom]
+    AutoSize = False
+    Caption = 
+      'DoxBox uses Peter Gutmann'#39's cryptlib library, click here for com' +
+      'plete source code'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsUnderline]
+    ParentFont = False
+    Transparent = True
+    NormalColor = clBlue
+    HoverColor = clRed
+    URL = 'https://www.cs.auckland.ac.nz/~pgut001/cryptlib/index.html'
+    ExplicitTop = 247
+    ExplicitWidth = 447
+  end
+  object SDUURLLabel5: TSDUURLLabel
+    AlignWithMargins = True
+    Left = 8
+    Top = 151
+    Width = 454
+    Height = 13
+    Cursor = crHandPoint
+    Alignment = taCenter
+    Anchors = [akLeft, akRight, akBottom]
+    AutoSize = False
+    Caption = 'The source to DoxBox is available from GitHub.'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsUnderline]
+    ParentFont = False
+    Transparent = True
+    NormalColor = clBlue
+    HoverColor = clRed
+    URL = 'https://github.com/t-d-k/doxbox'
+    ExplicitTop = 228
+    ExplicitWidth = 451
   end
   object pbOK: TButton
-    Left = 177
-    Top = 247
+    Left = 194
+    Top = 269
     Width = 81
     Height = 30
     Anchors = [akLeft, akBottom]

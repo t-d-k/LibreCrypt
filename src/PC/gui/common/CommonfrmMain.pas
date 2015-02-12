@@ -223,7 +223,7 @@ type
 
     fPkcs11Library: TPKCS11Library;
 
-    fOtfeFreeOtfeBase: TOTFEFreeOTFEBase;
+//    fOtfeFreeOtfeBase: TOTFEFreeOTFEBase; call OTFEFreeOTFEBase_U.GetFreeOTFE
     fFuncTestPending:  Boolean;// if functional test was selelcted in cmd line but not run yet
 
     procedure DoAppIdle(Sender: TObject; var Done: Boolean); // TIdleEvent
@@ -683,7 +683,7 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 begin
 
 {$IFDEF FREEOTFE_DEBUG}
-  fOtfeFreeOtfeBase.DebugShowMessage := FALSE;  // xxx - disable showmessages(...) of debug if built with debug on
+  GetFreeOTFEBase().DebugShowMessage := FALSE;  // xxx - disable showmessages(...) of debug if built with debug on
 {$ENDIF}
 
 {$IFDEF VER180}
@@ -715,6 +715,8 @@ begin
   StatusBar_Status.Visible := False;
   Application.OnHint       := SetStatusBarToHint;
   Application.OnIdle       := DoAppIdle;
+
+
 end;
 
 
@@ -729,23 +731,23 @@ end;
 
 procedure TfrmMain.SetupOTFEComponent();
 begin
-  fOtfeFreeOtfeBase.AdvancedMountDlg    := Settings.OptAdvancedMountDlg;
-  fOtfeFreeOtfeBase.RevertVolTimestamps := Settings.OptRevertVolTimestamps;
-  fOtfeFreeOtfeBase.PasswordChar        := '*';
-  if Settings.OptShowPasswords then begin
-    fOtfeFreeOtfeBase.PasswordChar := #0;
+  GetFreeOTFEBase().AdvancedMountDlg    := gSettings.OptAdvancedMountDlg;
+  GetFreeOTFEBase().RevertVolTimestamps := gSettings.OptRevertVolTimestamps;
+  GetFreeOTFEBase().PasswordChar        := '*';
+  if gSettings.OptShowPasswords then begin
+    GetFreeOTFEBase().PasswordChar := #0;
   end;
-  fOtfeFreeOtfeBase.AllowNewlinesInPasswords := Settings.OptAllowNewlinesInPasswords;
-  fOtfeFreeOtfeBase.AllowTabsInPasswords     := Settings.OptAllowTabsInPasswords;
+  GetFreeOTFEBase().AllowNewlinesInPasswords := gSettings.OptAllowNewlinesInPasswords;
+  GetFreeOTFEBase().AllowTabsInPasswords     := gSettings.OptAllowTabsInPasswords;
 
-  // fOtfeFreeOtfeBase.PKCS11Library setup in SetupPKCS11(...)
+  // GetFreeOTFEBase().PKCS11Library setup in SetupPKCS11(...)
 
 end;
 
 // Reload settings, setting up any components as needed
 procedure TfrmMain.ReloadSettings();
 begin
-  SDUSetLanguage(Settings.OptLanguageCode);
+  SDUSetLanguage(gSettings.OptLanguageCode);
   try
     SDURetranslateComponent(self);
   except
@@ -782,10 +784,10 @@ end;
 procedure TfrmMain.AddToMRUList(filenames: TStringList);
 begin
   if (filenames <> nil) then begin
-    Settings.OptMRUList.Add(filenames);
+    gSettings.OptMRUList.Add(filenames);
 
-    if (Settings.OptSaveSettings <> slNone) then begin
-      Settings.Save();
+    if (gSettings.OptSaveSettings <> slNone) then begin
+      gSettings.Save();
     end;
   end;
 
@@ -795,7 +797,7 @@ end;
 
 procedure TfrmMain.RefreshMRUList();
 begin
-  Settings.OptMRUList.OnClick := MRUListItemClicked;
+  gSettings.OptMRUList.OnClick := MRUListItemClicked;
 
 end;
 
@@ -830,7 +832,7 @@ begin
   // pretty low, so this is included to make life easier for LUKS users)
   mountType := ftLinux;
   for i := 0 to (filesToMount.Count - 1) do begin
-    if not (fOtfeFreeOtfeBase.IsLUKSVolume(filesToMount[i])) then begin
+    if not (GetFreeOTFEBase().IsLUKSVolume(filesToMount[i])) then begin
       mountType := defaultType;
       break;
     end;
@@ -843,19 +845,20 @@ end;
 
 procedure TfrmMain.EnableDisableControls();
 begin
-  actPKCS11TokenManagement.Enabled := Settings.OptPKCS11Enable;
+
+  actPKCS11TokenManagement.Enabled := gSettings.OptPKCS11Enable;
 
   // The FreeOTFE object may not be active...
-  actFreeOTFENew.Enabled       := fOtfeFreeOtfeBase.Active;
-  actFreeOTFEMountFile.Enabled := fOtfeFreeOtfeBase.Active;
+  actFreeOTFENew.Enabled       := GetFreeOTFEBase().Active;
+  actFreeOTFEMountFile.Enabled := GetFreeOTFEBase().Active;
   // Linux menuitem completely disabled if not active...
-  miLinuxVolume.Enabled        := fOtfeFreeOtfeBase.Active;
+  miLinuxVolume.Enabled        := GetFreeOTFEBase().Active;
   actLinuxNew.Enabled          := miLinuxVolume.Enabled;
   actLinuxMountFile.Enabled    := miLinuxVolume.Enabled;
 
-  miChangePassword.Enabled := fOtfeFreeOtfeBase.Active;
-  miCreateKeyfile.Enabled  := fOtfeFreeOtfeBase.Active;
-  miCDB.Enabled            := fOtfeFreeOtfeBase.Active;
+  miChangePassword.Enabled := GetFreeOTFEBase().Active;
+  miCreateKeyfile.Enabled  := GetFreeOTFEBase().Active;
+  miCDB.Enabled            := GetFreeOTFEBase().Active;
 
 
   // Because the copy system "dumbly" copies the dir *this* executable is in,
@@ -863,6 +866,7 @@ begin
   // *this* application is running from a root dir.
   // >3 because the root'll be "X:\"; 3 chars long
   actInstallOnUSBDrive.Enabled := (length(ExtractFilePath(ParamStr(0))) > 3);
+
 end;
 
 procedure TfrmMain.SetStatusBarText(statusText: String);
@@ -877,7 +881,7 @@ var
 begin
   obsoleteDriver := False;
   try
-    fOtfeFreeOtfeBase.Active := True;
+    GetFreeOTFEBase().Active := True;
   except
     on EFreeOTFEObsoleteDriver do begin
       obsoleteDriver := True;
@@ -889,7 +893,7 @@ begin
 
   end;
 
-  if (not (suppressMsgs) and not (fOtfeFreeOtfeBase.Active) and not
+  if (not (suppressMsgs) and not (GetFreeOTFEBase().Active) and not
     (fshuttingDownFlag)  // Don't complain to user as we're about to exit!
     ) then begin
     if (obsoleteDriver) then begin
@@ -917,10 +921,10 @@ begin
   end;
 
   // Old driver warnings
-  if fOtfeFreeOtfeBase.Active then
+  if GetFreeOTFEBase().Active then
     ShowOldDriverWarnings();
 
-  Result := fOtfeFreeOtfeBase.Active;
+  Result := GetFreeOTFEBase().Active;
 end;
 
 procedure TfrmMain.ShowOldDriverWarnings();
@@ -930,7 +934,7 @@ end;
 
 procedure TfrmMain.DeactivateFreeOTFEComponent();
 begin
-  fOtfeFreeOtfeBase.Active := False;
+  GetFreeOTFEBase().Active := False;
 
 end;
 
@@ -939,6 +943,7 @@ begin
   if fFuncTestPending then begin
     fFuncTestPending := False;
     actTestExecute(self);
+//    Close;
 
   end;
   Done := True;
@@ -971,7 +976,7 @@ begin
       dlg.DestFilename := volPath;
     end;
 
-    dlg.OTFEFreeOTFE := fOtfeFreeOtfeBase;
+//    dlg.OTFEFreeOTFE := fOtfeFreeOtfeBase;
     dlg.OpType       := dlgType;
     dlg.ShowModal();
 
@@ -982,12 +987,12 @@ end;
 
 procedure TfrmMain.miCreateKeyfileClick(Sender: TObject);
 begin
-  fOtfeFreeOtfeBase.WizardCreateKeyfile();
+  GetFreeOTFEBase().WizardCreateKeyfile();
 end;
 
 procedure TfrmMain.miChangePasswordClick(Sender: TObject);
 begin
-  fOtfeFreeOtfeBase.WizardChangePassword();
+  GetFreeOTFEBase().WizardChangePassword();
 end;
 
 procedure TfrmMain.actCDBPlaintextDumpExecute(Sender: TObject);
@@ -1006,14 +1011,14 @@ procedure TfrmMain.DumpDetailsToFile(LUKSDump: Boolean);
 var
   dlg: TfrmCDBDump_Base;
 begin
-  if fOtfeFreeOtfeBase.WarnIfNoHashOrCypherDrivers() then begin
+  if GetFreeOTFEBase().WarnIfNoHashOrCypherDrivers() then begin
     if LUKSDump then begin
       dlg := TfrmCDBDump_LUKS.Create(self);
     end else begin
       dlg := TfrmCDBDump_FreeOTFE.Create(self);
     end;
     try
-      dlg.OTFEFreeOTFE := fOtfeFreeOtfeBase;
+//      dlg.OTFEFreeOTFE := fOtfeFreeOtfeBase;
       dlg.ShowModal();
     finally
       dlg.Free();
@@ -1059,20 +1064,20 @@ begin
 
     arPostMount:
     begin
-      exeFullCmdLine := Settings.OptPostMountExe;
+      exeFullCmdLine := gSettings.OptPostMountExe;
     end;
 
     arPreDismount:
     begin
       // We don't bother with predismount in case of emergency
       if not (isEmergency) then begin
-        exeFullCmdLine := Settings.OptPreDismountExe;
+        exeFullCmdLine := gSettings.OptPreDismountExe;
       end;
     end;
 
     arPostDismount:
     begin
-      exeFullCmdLine := Settings.OptPostDismountExe;
+      exeFullCmdLine := gSettings.OptPostDismountExe;
     end;
 
   else
@@ -1115,7 +1120,7 @@ begin
     // NOTE: THIS MUST BE UPDATED IF CMDLINE IS TO SUPPORT COMMAND LINE
     //       PARAMETERS!
     if not (FileExists(exeOnly)) then begin
-      if (not (isEmergency) and Settings.OptPrePostExeWarn) then begin
+      if (not (isEmergency) and gSettings.OptPrePostExeWarn) then begin
         SDUMessageDlg(
           SDUParamSubstitute(_('Unable to locate %1 executable:'),
           [AUTORUN_TITLE[autorun]]) + SDUCRLF + SDUCRLF + exeOnly,
@@ -1168,7 +1173,7 @@ end;
 
 procedure TfrmMain.actFreeOTFEMountFileExecute(Sender: TObject);
 begin
-  if fOtfeFreeOtfeBase.WarnIfNoHashOrCypherDrivers() then begin
+  if GetFreeOTFEBase().WarnIfNoHashOrCypherDrivers() then begin
     SDUOpenSaveDialogSetup(OpenDialog, '');
     FreeOTFEGUISetupOpenSaveDialog(OpenDialog);
     assert(OpenDialog <> nil);
@@ -1194,13 +1199,13 @@ var
   aFileName: String;
 begin
   //create empty file
-  if fOtfeFreeOtfeBase.CreateLinuxVolumeWizard(aFileName) then begin
+  if GetFreeOTFEBase().CreateLinuxVolumeWizard(aFileName) then begin
     SDUMessageDlg(
       _('Linux volume created successfully.') + SDUCRLF + SDUCRLF +
       _('Don''t forget to mount and format this volume before use.'),
       mtInformation);
   end else begin
-    if (fOtfeFreeOtfeBase.LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
+    if (GetFreeOTFEBase().LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
       SDUMessageDlg(_('Linux volume could not be created'), mtError);
     end;
   end;
@@ -1218,7 +1223,7 @@ var
 begin
   dlg := TfrmGridReport_Hash.Create(self);
   try
-    dlg.OTFEFreeOTFE := fOtfeFreeOtfeBase;
+//    dlg.OTFEFreeOTFE := fOtfeFreeOtfeBase;
     dlg.ShowModal();
   finally
     dlg.Free();
@@ -1232,7 +1237,7 @@ var
 begin
   dlg := TfrmGridReport_Cypher.Create(self);
   try
-    dlg.OTFEFreeOTFE := fOtfeFreeOtfeBase;
+//    dlg.OTFEFreeOTFE := fOtfeFreeOtfeBase;
     dlg.ShowModal();
   finally
     dlg.Free();
@@ -1243,7 +1248,7 @@ end;
 
 procedure TfrmMain.LinuxMountFile(forceHidden: Boolean);
 begin
-  if fOtfeFreeOtfeBase.WarnIfNoHashOrCypherDrivers() then begin
+  if GetFreeOTFEBase().WarnIfNoHashOrCypherDrivers() then begin
     SDUOpenSaveDialogSetup(OpenDialog, '');
     FreeOTFEGUISetupOpenSaveDialog(OpenDialog);
 
@@ -1275,7 +1280,7 @@ end;
 
 procedure TfrmMain.actPKCS11TokenManagementExecute(Sender: TObject);
 begin
-  fOtfeFreeOtfeBase.ShowPKCS11ManagementDlg();
+  GetFreeOTFEBase().ShowPKCS11ManagementDlg();
 end;
 
 procedure TfrmMain.actRefreshExecute(Sender: TObject);
@@ -1383,18 +1388,18 @@ begin
   ShutdownPKCS11();
 
   tmpPKCS11Lib := nil;
-  if (Settings.OptPKCS11Enable and (Settings.OptPKCS11Library <> '')) then begin
+  if (gSettings.OptPKCS11Enable and (gSettings.OptPKCS11Library <> '')) then begin
     try
-      tmpPKCS11Lib             := TPKCS11Library.Create(Settings.OptPKCS11Library);
+      tmpPKCS11Lib             := TPKCS11Library.Create(gSettings.OptPKCS11Library);
       tmpPKCS11Lib.OnSlotEvent := PKCS11SlotEvent;
       tmpPKCS11Lib.Initialize();
       fPkcs11Library                  := tmpPKCS11Lib;
-      fOtfeFreeOtfeBase.PKCS11Library := fPkcs11Library;
+      GetFreeOTFEBase().PKCS11Library := fPkcs11Library;
     except
       on E: Exception do begin
         if not (suppressMsgs) then begin
           SDUMessageDlg(
-            _('Unable to initialize PKCS#11 support:') + SDUCRLF + SDUCRLF + E.Message,
+            _('Unable to initialize PKCS#11 support:') + SDUCRLF + SDUCRLF + E.Message ,
             mtError
             );
         end;
@@ -1412,7 +1417,7 @@ end;
 procedure TfrmMain.ShutdownPKCS11();
 begin
   // Sanity; strip from FreeOTFE copmponent
-  fOtfeFreeOtfeBase.PKCS11Library := nil;
+  GetFreeOTFEBase().PKCS11Library := nil;
 
   if (fPkcs11Library <> nil) then begin
     try
@@ -1437,18 +1442,18 @@ var
 begin
   SetStatusBarText(SDUParamSubstitute(_('Detected insertion of token into slot ID: %1'),
     [SlotID]));
-  if Settings.OptPKCS11AutoMount then begin
+  if gSettings.OptPKCS11AutoMount then begin
     // Attempt automount...
     tmpFilename := TStringList.Create;
     try
-      tmpFilename.Add(Settings.OptPKCS11AutoMountVolume);
-      mountNameOnly := ExtractFilename(Settings.OptPKCS11AutoMountVolume);
+      tmpFilename.Add(gSettings.OptPKCS11AutoMountVolume);
+      mountNameOnly := ExtractFilename(gSettings.OptPKCS11AutoMountVolume);
       SetStatusBarText(SDUParamSubstitute(_('Automounting: %1'), [mountNameOnly]));
       MountFilesDetectLUKS(
         tmpFilename,
         False,
 {$IFDEF FREEOTFE_MAIN}
-                           Settings.OptDragDropFileType
+                           gSettings.OptDragDropFileType
 {$ENDIF}
 {$IFDEF FREEOTFE_EXPLORER}
                            ftPrompt  // lplp
@@ -1468,7 +1473,7 @@ var
   slot: TPKCS11Slot;
 begin
   // Sanity check; we can't do anything if FreeOTFE component's not available
-  if fOtfeFreeOtfeBase.Active then begin
+  if GetFreeOTFEBase().Active then begin
     SetStatusBarText(SDUParamSubstitute(_('Slot event on slot ID: %1'), [SlotID]));
 
     lib  := TPKCS11Library(Sender);
@@ -1500,7 +1505,7 @@ var
   nextCheck: TDate;
 begin
   nextCheck := SDUISO8601ToTDate(NEVERCHECK);
-  case Settings.OptUpdateChkFrequency of
+  case gSettings.OptUpdateChkFrequency of
     ufNever:
     begin
       // Already set to date far in future...
@@ -1523,14 +1528,14 @@ begin
     ufMonthly:
     begin
       // Add on the number of days in the month it was last checked
-      nextCheck := Settings.OptUpdateChkLastChecked +
-        DaysInMonth(Settings.OptUpdateChkLastChecked);
+      nextCheck := gSettings.OptUpdateChkLastChecked +
+        DaysInMonth(gSettings.OptUpdateChkLastChecked);
     end;
 
     ufAnnually:
     begin
-      nextCheck := Settings.OptUpdateChkLastChecked +
-        DaysInYear(Settings.OptUpdateChkLastChecked);
+      nextCheck := gSettings.OptUpdateChkLastChecked +
+        DaysInYear(gSettings.OptUpdateChkLastChecked);
     end;
 
   end;
@@ -1539,13 +1544,13 @@ begin
   if (nextCheck <= Now()) then begin
     CheckForUpdates_AutoCheck(
       URL_PADFILE,
-      Settings.OptUpdateChkFrequency,
-      Settings.OptUpdateChkLastChecked,
-      Settings.OptUpdateChkSuppressNotifyVerMajor,
-      Settings.OptUpdateChkSuppressNotifyVerMinor
+      gSettings.OptUpdateChkFrequency,
+      gSettings.OptUpdateChkLastChecked,
+      gSettings.OptUpdateChkSuppressNotifyVerMajor,
+      gSettings.OptUpdateChkSuppressNotifyVerMinor
       );
     // Save any changes to the auto check for updates settings...
-    Settings.Save();
+    gSettings.Save();
   end;
 
 end;
@@ -1572,7 +1577,7 @@ end;
 function TfrmMain.EnsureOTFEComponentActive(): Boolean;
 begin
   Result := True;
-  if not fOtfeFreeOtfeBase.Active then
+  if not GetFreeOTFEBase().Active then
     Result := ActivateFreeOTFEComponent(True);
 end;
 
@@ -1656,7 +1661,7 @@ begin
       if (length(useDriveLetter) = 0) then
         fileOK := FALSE
       else
-        (fOtfeFreeOtfeBase as TOTFEFreeOTFE).DefaultDriveLetter := AnsiChar((uppercase(useDriveLetter))[1]);
+        GetFreeOTFE().DefaultDriveLetter := AnsiChar((uppercase(useDriveLetter))[1]);
 
     end;
 {$ENDIF}
@@ -1721,38 +1726,38 @@ begin
 
         if fileOK then begin
           if SDUCommandLineSwitch(CMDLINE_FREEOTFE) then begin
-            mountAs := fOtfeFreeOtfeBase.MountFreeOTFE(volume, ReadOnly,
+            mountAs := GetFreeOTFEBase().MountFreeOTFE(volume, ReadOnly,
               useKeyfile, usePassword, useOffset, useNoCDBAtOffset, useSilent,
               useSaltLength, useKeyIterations);
           end else
           if SDUCommandLineSwitch(CMDLINE_LINUX) then begin
-            mountAs := fOtfeFreeOtfeBase.MountLinux(volume, ReadOnly, useLESFile,
+            mountAs := GetFreeOTFEBase().MountLinux(volume, ReadOnly, useLESFile,
               usePassword, useKeyfile, useKeyfileIsASCII, useKeyfileNewlineType,
               useOffset, useSilent);
           end else
           if (useLESFile <> '') then begin
-            mountAs := fOtfeFreeOtfeBase.MountLinux(volume, ReadOnly, useLESFile,
+            mountAs := GetFreeOTFEBase().MountLinux(volume, ReadOnly, useLESFile,
               usePassword, useKeyfile, useKeyfileIsASCII, useKeyfileNewlineType,
               useOffset, useSilent);
           end else
           if (useKeyfile <> '') then begin
             // If a keyfile was specified, we assume it's a FreeOTFE volume
             // (Strictly speaking, it could be a LUKS volume, but...)
-            mountAs := fOtfeFreeOtfeBase.MountFreeOTFE(volume, ReadOnly,
+            mountAs := GetFreeOTFEBase().MountFreeOTFE(volume, ReadOnly,
               useKeyfile, usePassword, useOffset, useNoCDBAtOffset, useSilent,
               useSaltLength, useKeyIterations);
           end else
-          if (Settings.OptDragDropFileType = ftFreeOTFE) then begin
-            mountAs := fOtfeFreeOtfeBase.MountFreeOTFE(volume, ReadOnly,
+          if (gSettings.OptDragDropFileType = ftFreeOTFE) then begin
+            mountAs := GetFreeOTFEBase().MountFreeOTFE(volume, ReadOnly,
               useKeyfile, usePassword, useOffset, useNoCDBAtOffset, useSilent,
               useSaltLength, useKeyIterations);
           end else
-          if (Settings.OptDragDropFileType = ftLinux) then begin
-            mountAs := fOtfeFreeOtfeBase.MountLinux(volume, ReadOnly, useLESFile,
+          if (gSettings.OptDragDropFileType = ftLinux) then begin
+            mountAs := GetFreeOTFEBase().MountLinux(volume, ReadOnly, useLESFile,
               usePassword, useKeyfile, useKeyfileIsASCII, useKeyfileNewlineType,
               useOffset, useSilent);
           end else begin
-            mountAs := fOtfeFreeOtfeBase.Mount(volume, ReadOnly);
+            mountAs := GetFreeOTFEBase().Mount(volume, ReadOnly);
           end;
           Result := ceSUCCESS;
           if (mountAs = #0) then

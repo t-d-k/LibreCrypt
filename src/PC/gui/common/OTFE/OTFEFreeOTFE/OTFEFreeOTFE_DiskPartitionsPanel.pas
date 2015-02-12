@@ -13,16 +13,20 @@ uses
 type
   TOTFEFreeOTFEDiskPartitionsPanel = class (TSDUDiskPartitionsPanel)
   PRIVATE
-    FFreeOTFEObj: TOTFEFreeOTFEBase;
+//    FFreeOTFEObj: TOTFEFreeOTFEBase;
   PROTECTED
+  fSyntheticDriveLayout: Boolean;
     function GetDriveLayout(physicalDiskNo: Integer;
       var driveLayout: TSDUDriveLayoutInformation): Boolean; OVERRIDE;
     function IgnorePartition(partInfo: TSDUPartitionInfo): Boolean; OVERRIDE;
   PUBLIC
-    SyntheticDriveLayout: Boolean;
+
 
   PUBLISHED
-    property FreeOTFEObj: TOTFEFreeOTFEBase Read FFreeOTFEObj Write FFreeOTFEObj;
+//    property FreeOTFEObj: TOTFEFreeOTFEBase Read FFreeOTFEObj Write FFreeOTFEObj;
+
+    property SyntheticDriveLayout: Boolean Read fSyntheticDriveLayout;
+
 
   end;
 
@@ -41,23 +45,22 @@ implementation
 function TOTFEFreeOTFEDiskPartitionsPanel.GetDriveLayout(physicalDiskNo: Integer;
   var driveLayout: TSDUDriveLayoutInformation): Boolean;
 var
-  retval:     Boolean;
   hddDevices: TStringList;
   title:      TStringList;
   i:          Integer;
   partNo:     Integer;
   tmpPart:    TSDUPartitionInfo;
 begin
-  SyntheticDriveLayout := False;
-  retval               := inherited GetDriveLayout(physicalDiskNo, driveLayout);
+  fSyntheticDriveLayout := False;
+  Result               := inherited GetDriveLayout(physicalDiskNo, driveLayout);
 
-  if not (retval) then begin
+  if not (Result) then begin
     // Fallback...
-    if (FreeOTFEObj <> nil) then begin
+
       hddDevices := TStringList.Create();
       title      := TStringList.Create();
       try
-        if FreeOTFEObj.HDDDeviceList(physicalDiskNo, hddDevices, title) then begin
+        if GetFreeOTFEBase.HDDDeviceList(physicalDiskNo, hddDevices, title) then begin
           driveLayout.PartitionCount := 0;
           driveLayout.Signature      := $00000000;
 
@@ -79,8 +82,8 @@ begin
             end;
           end;
 
-          SyntheticDriveLayout := True;
-          retval               := True;
+          fSyntheticDriveLayout := True;
+          Result               := True;
         end;
 
       finally
@@ -89,23 +92,21 @@ begin
       end;
 
     end;
-  end;
 
-  Result := retval;
+
+
 end;
 
 function TOTFEFreeOTFEDiskPartitionsPanel.IgnorePartition(partInfo: TSDUPartitionInfo): Boolean;
-var
-  retval: Boolean;
 begin
-  if SyntheticDriveLayout then begin
+  if fSyntheticDriveLayout then begin
     // Synthetic drive layout; don't ignore any partitions
-    retval := False;
+    Result := False;
   end else begin
-    retval := inherited IgnorePartition(partInfo);
+    Result := inherited IgnorePartition(partInfo);
   end;
 
-  Result := retval;
+
 end;
 
 end.

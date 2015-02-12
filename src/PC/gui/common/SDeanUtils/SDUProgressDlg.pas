@@ -792,10 +792,10 @@ begin
     Result := CommonAVIId[FCommonAVI]
   else
   if FFileName <> '' then
-    Result := Integer(FFileName)
+    Result := Integer(Pointer(FFileName))
   else
   if FResName <> '' then
-    Result := Integer(FResName)
+    Result := Integer(Pointer(FResName))
   else
     Result := FResId;
 end;

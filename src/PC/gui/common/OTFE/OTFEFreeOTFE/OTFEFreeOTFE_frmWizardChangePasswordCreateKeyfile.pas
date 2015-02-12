@@ -312,7 +312,7 @@ begin
 
   // DLL doesn't currently support partitions
   if (tabSheet = tsFileOrPartition) then begin
-    Result := (fFreeOTFEObj is TOTFEFreeOTFEDLL);
+    Result := (GetFreeOTFEBase() is TOTFEFreeOTFEDLL);
   end;
 
   // If the user isn't creating a volume within a volume file, skip that tab
@@ -475,13 +475,13 @@ begin
 
   // tsPartitionSelect
   // Setup and make sure nothing is selected
-  fmeSelectPartition.FreeOTFEObj := fFreeOTFEObj;
+//  fmeSelectPartition.FreeOTFEObj := fFreeOTFEObj;
   // Only list CDROMs if we're creating a keyfile
   //  - CDROMs can't have their passwords changed
   fmeSelectPartition.AllowCDROM  := (ChangePasswordCreateKeyfile = opCreateKeyfile);
   fmeSelectPartition.OnChange    := fmeSelectPartitionChanged;
   fmeSelectPartition.Tag         := 1;
-  fmeSelectPartition.Initialize();
+//  fmeSelectPartition.Initialize();
 
   // tsSrcDetails
   preSrcUserKey.Plaintext   := True;
@@ -490,9 +490,9 @@ begin
   preSrcUserKey.WordWrap    := True;
   if not fsilent then
     preSrcUserKey.Lines.Clear();
-  preSrcUserKey.PasswordChar := fFreeOTFEObj.PasswordChar;
-  preSrcUserKey.WantReturns  := fFreeOTFEObj.AllowNewlinesInPasswords;
-  preSrcUserKey.WantTabs     := fFreeOTFEObj.AllowTabsInPasswords;
+  preSrcUserKey.PasswordChar := GetFreeOTFEBase().PasswordChar;
+  preSrcUserKey.WantReturns  := GetFreeOTFEBase().AllowNewlinesInPasswords;
+  preSrcUserKey.WantTabs     := GetFreeOTFEBase().AllowTabsInPasswords;
 
   se64UnitOffset.Value := 0;
 
@@ -509,9 +509,9 @@ begin
   preDestUserKey1.WordWrap    := True;
   if not fsilent then
     preDestUserKey1.Lines.Clear();
-  preDestUserKey1.PasswordChar := fFreeOTFEObj.PasswordChar;
-  preDestUserKey1.WantReturns  := fFreeOTFEObj.AllowNewlinesInPasswords;
-  preDestUserKey1.WantTabs     := fFreeOTFEObj.AllowTabsInPasswords;
+  preDestUserKey1.PasswordChar := GetFreeOTFEBase().PasswordChar;
+  preDestUserKey1.WantReturns  := GetFreeOTFEBase().AllowNewlinesInPasswords;
+  preDestUserKey1.WantTabs     := GetFreeOTFEBase().AllowTabsInPasswords;
 
   preDestUserKey2.Plaintext   := True;
   // FreeOTFE volumes CAN have newlines in the user's password
@@ -519,10 +519,10 @@ begin
   preDestUserKey2.WordWrap    := True;
   if not fsilent then
     preDestUserKey2.Lines.Clear();
-  preDestUserKey2.PasswordChar := fFreeOTFEObj.PasswordChar;
-  preDestUserKey2.PasswordChar := fFreeOTFEObj.PasswordChar;
-  preDestUserKey2.WantReturns  := fFreeOTFEObj.AllowNewlinesInPasswords;
-  preDestUserKey2.WantTabs     := fFreeOTFEObj.AllowTabsInPasswords;
+  preDestUserKey2.PasswordChar := GetFreeOTFEBase().PasswordChar;
+  preDestUserKey2.PasswordChar := GetFreeOTFEBase().PasswordChar;
+  preDestUserKey2.WantReturns  := GetFreeOTFEBase().AllowNewlinesInPasswords;
+  preDestUserKey2.WantTabs     := GetFreeOTFEBase().AllowTabsInPasswords;
 
   seDestSaltLength.Increment := 8;
   seDestSaltLength.Value     := DEFAULT_SALT_LENGTH;
@@ -545,7 +545,7 @@ begin
   // tsRNGSelect
   ckRNGCryptoAPI.Checked := True;
   ckRNGcryptlib.Enabled  := CanUseCryptlib;
-  ckRNGPKCS11.Enabled    := PKCS11LibraryReady(fFreeOTFEObj.PKCS11Library);
+  ckRNGPKCS11.Enabled    := PKCS11LibraryReady(GetFreeOTFEBase().PKCS11Library);
 
   // tsRNGMouseMovement
   InitMouseRNGData();
@@ -581,7 +581,7 @@ begin
   pcWizard.ActivePageIndex := 0;
 
   // DLL doesn't currently support partitions
-  if (fFreeOTFEObj is TOTFEFreeOTFEDLL) then begin
+  if (GetFreeOTFEBase() is TOTFEFreeOTFEDLL) then begin
     pcWizard.ActivePageIndex := 1;
     // Mark as completed
     tsFileOrPartition.Tag    := 1;
@@ -722,7 +722,7 @@ begin
   inherited;
 
   GetRandPool.SetUpRandPool(GetRNGSet(),
-    fFreeOTFEObj.PKCS11Library, PKCS11TokenListSelected(cbToken),
+    GetFreeOTFEBase().PKCS11Library, PKCS11TokenListSelected(cbToken),
     lblGPGFilename.Caption);
 
   try
@@ -730,12 +730,12 @@ begin
     GetRandPool.GetRandomData(GetDestSaltLength() div 8, saltBytes);
   //  salt := SDUBytesToString(saltBytes);
     if (ChangePasswordCreateKeyfile = opChangePassword) then begin
-      allOK := fFreeOTFEObj.ChangeVolumePassword(GetSrcFilename(), GetOffset(),
+      allOK := GetFreeOTFEBase().ChangeVolumePassword(GetSrcFilename(), GetOffset(),
         GetSrcUserKey(), GetSrcSaltLength(),  // In bits
         GetSrcKeyIterations(), GetDestUserKey(), saltBytes, GetDestKeyIterations(),
         GetDestRequestedDriveLetter());
     end else begin
-      allOK := fFreeOTFEObj.CreateKeyfile(GetSrcFilename(), GetOffset(),
+      allOK := GetFreeOTFEBase().CreateKeyfile(GetSrcFilename(), GetOffset(),
         GetSrcUserKey(), GetSrcSaltLength(),  // In bits
         GetSrcKeyIterations(), GetDestFilename(), GetDestUserKey(), saltBytes,
         GetDestKeyIterations(), GetDestRequestedDriveLetter());
@@ -993,7 +993,7 @@ end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.PopulatePKCS11Tokens();
 begin
-  FPKCS11TokensAvailable := (PKCS11PopulateTokenList(fFreeOTFEObj.PKCS11Library, cbToken) > 0);
+  FPKCS11TokensAvailable := (PKCS11PopulateTokenList(GetFreeOTFEBase().PKCS11Library, cbToken) > 0);
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.pbRefreshClick(Sender: TObject);

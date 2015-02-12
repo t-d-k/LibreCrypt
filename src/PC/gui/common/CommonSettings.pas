@@ -505,10 +505,8 @@ begin
 end;
 
 function TSettings.PrettyPrintSettingsFile(loc: TSettingsSaveLocation): String;
-var
-  retval: String;
 begin
-  retval := '';
+  Result := '';
 
   case loc of
     slNone:
@@ -520,12 +518,12 @@ begin
     slProfile,
     slCustom:
     begin
-      retval := GetSettingsFilename(loc);
+      Result := GetSettingsFilename(loc);
     end;
 
     slRegistry:
     begin
-      retval := RegistryKey();
+      Result := RegistryKey();
     end;
 
   else
@@ -535,17 +533,16 @@ begin
 
   end;
 
-  Result := retval;
+
 end;
 
 
 function TSettings.DestroySettingsFile(loc: TSettingsSaveLocation): Boolean;
 var
   filename: String;
-  retval:   Boolean;
   registry: TRegistry;
 begin
-  retval := True;
+  Result := True;
 
   case loc of
     slNone:
@@ -559,7 +556,7 @@ begin
     begin
       filename := GetSettingsFilename(loc);
       if (filename <> '') then begin
-        retval := DeleteFile(filename);
+        Result := DeleteFile(filename);
       end;
     end;
 
@@ -568,7 +565,7 @@ begin
       registry := TRegistry.Create();
       try
         registry.RootKey := HKEY_CURRENT_USER;
-        retval           := registry.DeleteKey(RegistryKey());
+        Result           := registry.DeleteKey(RegistryKey());
       finally
         registry.Free();
       end;
@@ -581,7 +578,7 @@ begin
 
   end;
 
-  Result := retval;
+
 end;
 
 function TSettings.GetSettingsFilename(loc: TSettingsSaveLocation): String;
@@ -630,16 +627,15 @@ function TSettings.IdentifyWhereSettingsStored(): TSettingsSaveLocation;
 var
   sl:            TSettingsSaveLocation;
   filename:      String;
-  retval:        TSettingsSaveLocation;
   checkLocation: TSettingsSaveLocation;
   registry:      TRegistry;
 begin
-  retval := slNone;
+  Result := slNone;
 
   if (CustomLocation <> '') then begin
     // If a custom location has been specified, we use it even if the file
     // doesn't exist
-    retval := slCustom;
+    Result := slCustom;
   end else begin
     for sl := low(SettingsSaveLocationSearchOrder) to high(SettingsSaveLocationSearchOrder) do
     begin
@@ -649,7 +645,7 @@ begin
         (checkLocation = slCustom)) then begin
         filename := GetSettingsFilename(checkLocation);
         if ((filename <> '') and FileExists(filename)) then begin
-          retval := checkLocation;
+          Result := checkLocation;
           break;
         end;
       end else
@@ -659,7 +655,7 @@ begin
         try
           registry.RootKey := HKEY_CURRENT_USER;
           if registry.OpenKeyReadOnly(RegistryKey()) then begin
-            retval := checkLocation;
+            Result := checkLocation;
             break;
           end;
         finally
@@ -671,7 +667,7 @@ begin
     end;
   end;
 
-  Result := retval;
+
 end;
 
 procedure TSettings.Assign(copyFrom: TSettings);
@@ -699,33 +695,31 @@ end;
 function TSettings.GetSettingsObj(): TCustomIniFile;
 var
   filename: String;
-  retval:   TCustomIniFile;
 begin
-  retval := nil;
+  Result := nil;
 
   if (OptSaveSettings = slNone) then begin
     // Create "ini file" with blank filename; all calls to read from this will
     // fail; resulting in the default values being returned/used
-    retval := TINIFile.Create('');
+    Result := TINIFile.Create('');
   end else
   if ((OptSaveSettings = slExeDir) or (OptSaveSettings = slProfile) or
     (OptSaveSettings = slCustom)) then begin
     filename := GetSettingsFilename(OptSaveSettings);
     try
-      retval := TINIFile.Create(filename);
+      Result := TINIFile.Create(filename);
     except
       on E: Exception do begin
         // Problem - e.g. can't create .INI file
-        retval := nil;
+        Result := nil;
       end;
     end;
 
   end else
   if (OptSaveSettings = slRegistry) then begin
-    retval := TRegistryINIFile.Create(RegistryKey());
+    Result := TRegistryINIFile.Create(RegistryKey());
   end;
 
-  Result := retval;
 end;
 
 end.

@@ -7,6 +7,14 @@ unit OTFEFreeOTFE_U;
 //
 // -----------------------------------------------------------------------------
 //
+    {
+TOTFEFreeOTFE is a wrapper round the driver and also does all drive operations,
+enc data, create new vols, etc
+is a singleton class, only ever one instance - this is enforced by assertion in
+base class ctor
+set up instance by calling OTFEFreeOTFEBase_U.SetFreeOTFEType then get instance
+by calling OTFEFreeOTFEBase_U.GetFreeOTFE or  TOTFEFreeOTFE.GetFreeOTFE
+}
 
 
 interface
@@ -357,7 +365,8 @@ type
   end;
 
 
-//procedure Register;
+  {returns an instance of the only object. call SetFreeOTFEType first}
+  function GetFreeOTFE :  TOTFEFreeOTFE;
 
 
 implementation
@@ -951,7 +960,7 @@ DebugMsg('  size: '+inttostr(size));
     // If the hash wasn't big enough, pad out with zeros
 
      volumeKeyStr := volumeKeyStr + StringOfChar(AnsiChar(#0), ((mainCypherDetails.KeySizeRequired div 8) - Length(volumeKeyStr)));
-      SDUResetLength(volumeKey,mainCypherDetails.KeySizeRequired div 8);
+      SafeSetLength(volumeKey,mainCypherDetails.KeySizeRequired div 8);
        assert(volumeKeyStr=SDUBytesToString(volumeKey) );// passed
     end;
 
@@ -4332,10 +4341,14 @@ begin
 end;
 
 
-// ----------------------------------------------------------------------------
 
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
+{returns an instance of the only object. call SetFreeOTFEType first}
+function GetFreeOTFE :  TOTFEFreeOTFE;
+begin
+  assert (GetFreeOTFEBase is TOTFEFreeOTFE,'call SetFreeOTFEType with correct type');
+  result :=GetFreeOTFEBase as TOTFEFreeOTFE;
+end;
+
 
 END.
 

@@ -1,5 +1,14 @@
 unit OTFEFreeOTFEDLL_U;
 
+    {
+TOTFEFreeOTFEDLL is a wrapper round the DLL and also does all drive operations,
+enc data, create new vols, etc
+is a singleton class, only ever one instance - this is enforced by assertion in
+base class ctor
+set up instance by calling OTFEFreeOTFEBase_U.SetFreeOTFEType then get instance
+by calling OTFEFreeOTFEBase_U.GetFreeOTFE or  TOTFEFreeOTFEDLL.GetFreeOTFE
+}
+
 interface
 
 uses
@@ -330,21 +339,27 @@ type
 
   published
     // The directory under which the "DLL" dir resides
-    property ExeDir: string read FExeDir write FExeDir;
+//    property ExeDir: string read FExeDir ;
   end;
 
-//procedure Register;
+{returns an instance of the only object. call SetFreeOTFEType first}
+function GetFreeOTFEDLL :  TOTFEFreeOTFEDLL;
 
 implementation
 
 uses
+// delphi
 dialogs,
   SysUtils, Math, Controls, Forms,
+  strutils,
+  //sdu
   SDUSysUtils,
-  OTFEConsts_U,
+
   SDUi18n,
   SDUClasses,
   SDUFileIterator_U,
+  //doxbox
+   OTFEConsts_U,
   OTFEFreeOTFE_frmKeyEntryFreeOTFE,
   OTFEFreeOTFE_frmKeyEntryLinux,
   OTFEFreeOTFE_frmKeyEntryLUKS,
@@ -357,7 +372,8 @@ const
   DLL_MAIN_DRIVER = 'FreeOTFE.dll';
 
   // Subdirs which should be searched for drivers
-  DRIVERS_SUBDIR = 'DLL';
+  DRIVERS32_SUBDIR = 'DLL32';
+  DRIVERS64_SUBDIR = 'DLL64';
 
 
 // ----------------------------------------------------------------------------
@@ -373,6 +389,7 @@ begin
   MountedHandles := TStringList.Create();
   fCachedDiskGeometry:= TStringList.Create();
 
+  fExeDir := ExtractFilePath(Application.ExeName);
 end;
 
 
@@ -394,6 +411,7 @@ begin
     end;
 
   MountedHandles.Free();
+  fCachedDiskGeometry.Free();
   inherited;
 end;
 
@@ -404,59 +422,57 @@ end;
 // http://support.microsoft.com/default.aspx?scid=http://support.microsoft.com:80/support/kb/articles/Q165/7/21.asp&NoWebContent=1
 function TOTFEFreeOTFEDLL.Dismount(driveLetter: ansichar; emergency: boolean = FALSE): boolean;
 var
-  allOK: boolean;
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
 //  unableToOpenDrive: boolean;
 begin
   CheckActive();
 
-  allOK := TRUE;
+  Result := TRUE;
 
-  if (allOK) then
+  if (Result) then
     begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('getVolumeInfo');
 {$ENDIF}
-    allOK := GetVolumeInfo(driveLetter, volumeInfo);
+    Result := GetVolumeInfo(driveLetter, volumeInfo);
 
     // If we couldn't get the drive info, then we can't even do an
     // emergency dismount; we don't know which FreeOTFE device to dismount
-    if (not(allOK)) then
+    if (not(Result)) then
       begin
 {$IFDEF FREEOTFE_DEBUG}
-DebugMsg('getVolumeInfo NOT ALLOK');
+DebugMsg('getVolumeInfo NOT Result');
 {$ENDIF}
       emergency := FALSE;
       end;
     end;
 
 
-  if (allOK or emergency) then
+  if (Result or emergency) then
     begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('dismountdevice');
 {$ENDIF}
-    allOK := DismountDiskDevice(driveLetter, emergency);
+    Result := DismountDiskDevice(driveLetter, emergency);
     end;
                  
-  Result := allOK;
+
 end;
 
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.Version(): cardinal;
 var
-  retVal: cardinal;
   majorVersion, minorVersion, revisionVersion, buildVersion: integer;
 begin
-  retVal := VERSION_ID_FAILURE;
+  Result := VERSION_ID_FAILURE;
 
   CheckActive();
 
   // If we have the version ID cached, use the cached information
   if (fCachedVersionID <> VERSION_ID_NOT_CACHED) then
     begin
-    retVal := fCachedVersionID;
+    Result := fCachedVersionID;
     end
   else
     begin
@@ -468,18 +484,18 @@ begin
                          buildVersion
                         ) then
       begin
-      retVal := (
+      Result := (
                  (majorVersion shl 24) +
                  (minorVersion shl 16) +
                  (revisionVersion)
                 );
-      fCachedVersionID := retVal;
+      fCachedVersionID := Result;
       end;
 
     end;
 
 
-  Result := retVal;
+
 
 end;
 
@@ -488,37 +504,34 @@ end;
 function TOTFEFreeOTFEDLL.DrivesMounted(): ansistring;
 var
   i: integer;
-  retval: ansistring;
 begin
   // DLL version doesn't have concept of drive letters as in system drive
   // letters, but uses them to reference different mounted volumes
-  retval := '';
+  Result := '';
   for i:=0 to (MountedHandles.count - 1) do
     begin
-    retval := retval + MountedHandles[i];   // unicode->ansi not a data loss because only ansistring stored
+    Result := Result + MountedHandles[i];   // unicode->ansi not a data loss because only ansistring stored
     end;
     
-  Result := retval;
+
 end;
 
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.Connect(): boolean;
-var
-  allOK: boolean;
 begin
-  allOK := FALSE;
+  Result := FALSE;
 
   if LoadLibraryMain(DriverAPI) then
     begin
-    allOK := TRUE;
+    Result := TRUE;
     end
   else
     begin
     LastErrorCode := OTFE_ERR_DRIVER_FAILURE;
     end;
 
-  Result := allOK;
+
 end;
 
 
@@ -559,7 +572,6 @@ function TOTFEFreeOTFEDLL.ReadWritePlaintextToVolume(
   storageMediaType: TFreeOTFEStorageMediaType = mtFixedMedia
 ): boolean;
 var
-  allOK: boolean;
   dummyMetadata: TOTFEFreeOTFEVolumeMetaData;
   tempMountDriveLetter: Ansichar;
   stm: TSDUMemoryStream;
@@ -580,7 +592,7 @@ begin
 
   tempMountDriveLetter:= GetNextDriveLetter();
   // SDUInitAndZeroBuffer(0,emptyIV);
-  allOK := MountDiskDevice(
+  Result := MountDiskDevice(
                      tempMountDriveLetter,
                      volFilename,
                      volumeKey,
@@ -599,33 +611,29 @@ begin
                      size,
                      FreeOTFEMountAsStorageMediaType[mountMountAs]
                     );
-  if allOK then
-    begin
+  if Result then    begin
     try
       stm := TSDUMemoryStream.Create();
       try
       // Read decrypted data from mounted device
       if (readNotWrite) then
         begin
-        allOK := ReadData_Bytes(
+        Result := ReadData_Bytes(
                                   tempMountDriveLetter,
                                   dataOffset,
                                   dataLength,
                                   stm
                                  );
-        if allOK then
-          begin
+        if Result then          begin
           stm.Position := 0;
           data := stm.ReadString(dataLength, 0);
           end;
 
-        end
-      else
-        begin
+        end                 else        begin
         stm.Position := 0;
         stm.WriteString(data, dataLength, 0);
 
-        allOK := WriteData_Bytes(
+        Result := WriteData_Bytes(
                                   tempMountDriveLetter,
                                   dataOffset,
                                   dataLength,
@@ -642,25 +650,24 @@ begin
       DismountDiskDevice(tempMountDriveLetter, TRUE);
     end;
 
-    end;  // if (allOK) then
+    end;  // if (Result) then
 
-  Result := allOK;
+
 end;
 
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.LoadLibraryMain(var api: TMainAPI): boolean;
 var
-  retval: boolean;
   libFilename: string;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   libFilename := MainDLLFilename();
   api.hDLL := LoadLibrary(PChar(libFilename));
   if (api.hDLL <> 0) then
     begin
-    retval := TRUE;
+    Result := TRUE;
     api.LibFilename := libFilename;
 
     @api.DSK_Init := GetProcAddress(
@@ -669,7 +676,7 @@ begin
                                                   );
     if (@api.DSK_Init = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.DSK_Deinit := GetProcAddress(
@@ -678,7 +685,7 @@ begin
                                                   );
     if (@api.DSK_Deinit = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.DSK_Open := GetProcAddress(
@@ -687,7 +694,7 @@ begin
                                                   );
     if (@api.DSK_Open = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.DSK_Close := GetProcAddress(
@@ -696,7 +703,7 @@ begin
                                                   );
     if (@api.DSK_Close = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.DSK_IOControl := GetProcAddress(
@@ -705,7 +712,7 @@ begin
                                                   );
     if (@api.DSK_IOControl = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.DSK_Seek := GetProcAddress(
@@ -714,7 +721,7 @@ begin
                                                   );
     if (@api.DSK_Seek = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.DSK_Read := GetProcAddress(
@@ -723,7 +730,7 @@ begin
                                                   );
     if (@api.DSK_Read = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.DSK_Write := GetProcAddress(
@@ -732,7 +739,7 @@ begin
                                                   );
     if (@api.DSK_Write = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.DSK_PowerDown := GetProcAddress(
@@ -741,7 +748,7 @@ begin
                                                   );
     if (@api.DSK_PowerDown = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.DSK_PowerUp := GetProcAddress(
@@ -750,7 +757,7 @@ begin
                                                   );
     if (@api.DSK_PowerUp = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
 
@@ -761,7 +768,7 @@ begin
                                                   );
     if (@api.MainDLLFnMACData = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.MainDLLFnDeriveKey := GetProcAddress(
@@ -770,17 +777,17 @@ begin
                                                   );
     if (@api.MainDLLFnDeriveKey = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
 
-    if not(retval) then
+    if not(Result) then
       begin
       FreeLibrary(api.hDLL);
       end;
     end;
 
-  Result := retval;
+
 end;
 
 procedure TOTFEFreeOTFEDLL.FreeLibraryMain(var api: TMainAPI);
@@ -795,15 +802,13 @@ end;
 
 
 function TOTFEFreeOTFEDLL.LoadLibraryHash(const libFilename: string; var api: THashAPI): boolean;
-var
-  retval: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   api.hDLL := LoadLibrary(PChar(libFilename));
   if (api.hDLL <> 0) then
     begin
-    retval := TRUE;
+    Result := TRUE;
     api.LibFilename := libFilename;
 
     @api.HashDLLFnIdentifyDriver := GetProcAddress(
@@ -812,7 +817,7 @@ begin
                                                   );
     if (@api.HashDLLFnIdentifyDriver = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.HashDLLFnIdentifySupported := GetProcAddress(
@@ -821,7 +826,7 @@ begin
                                                   );
     if (@api.HashDLLFnIdentifySupported = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.HashDLLFnGetHashDetails := GetProcAddress(
@@ -830,7 +835,7 @@ begin
                                                   );
     if (@api.HashDLLFnGetHashDetails = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.HashDLLFnHash := GetProcAddress(
@@ -839,35 +844,33 @@ begin
                                                   );
     if (@api.HashDLLFnHash = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
 
-    if not(retval) then
+    if not(Result) then
       begin
       FreeLibrary(api.hDLL);
       end;
     end;
 
-  Result := retval;
+
 end;
 
 function TOTFEFreeOTFEDLL.LoadLibraryCachedHash(const libFilename: string; var api: THashAPI): boolean;
-var
-  retval: boolean;
 begin
-  retval:= CachesGetHashAPI(libFilename, api);
+  Result:= CachesGetHashAPI(libFilename, api);
 
-  if not(retval) then
+  if not(Result) then
     begin
-    retval := LoadLibraryHash(libFilename, api);
-    if retval then
+    Result := LoadLibraryHash(libFilename, api);
+    if Result then
       begin
       CachesAddHashAPI(libFilename, api);
       end;
     end;
 
-  Result := retval;
+
 end;
 
 procedure TOTFEFreeOTFEDLL.FreeLibraryHash(var api: THashAPI);
@@ -881,15 +884,13 @@ begin
 end;
 
 function TOTFEFreeOTFEDLL.LoadLibraryCypher(const libFilename: string; var api: TCypherAPI): boolean;
-var
-  retval: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   api.hDLL := LoadLibrary(PChar(libFilename));
   if (api.hDLL <> 0) then
     begin
-    retval := TRUE;
+    Result := TRUE;
     api.LibFilename := libFilename;
 
     @api.CypherDLLFnIdentifyDriver := GetProcAddress(
@@ -898,7 +899,7 @@ begin
                                                   );
     if (@api.CypherDLLFnIdentifyDriver = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.CypherDLLFnIdentifySupported_v1 := GetProcAddress(
@@ -907,7 +908,7 @@ begin
                                                   );
     if (@api.CypherDLLFnIdentifySupported_v1 = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.CypherDLLFnIdentifySupported_v3 := GetProcAddress(
@@ -916,7 +917,7 @@ begin
                                                   );
     if (@api.CypherDLLFnIdentifySupported_v3 = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.CypherDLLFnGetCypherDetails_v1 := GetProcAddress(
@@ -925,7 +926,7 @@ begin
                                                   );
     if (@api.CypherDLLFnGetCypherDetails_v1 = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.CypherDLLFnGetCypherDetails_v3 := GetProcAddress(
@@ -934,7 +935,7 @@ begin
                                                   );
     if (@api.CypherDLLFnGetCypherDetails_v3 = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.CypherDLLFnEncrypt := GetProcAddress(
@@ -943,7 +944,7 @@ begin
                                                   );
     if (@api.CypherDLLFnEncrypt = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.CypherDLLFnEncryptSector := GetProcAddress(
@@ -952,7 +953,7 @@ begin
                                                   );
     if (@api.CypherDLLFnEncryptSector = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.CypherDLLFnEncryptWithASCII := GetProcAddress(
@@ -961,7 +962,7 @@ begin
                                                   );
     if (@api.CypherDLLFnEncryptWithASCII = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.CypherDLLFnEncryptSectorWithASCII := GetProcAddress(
@@ -970,7 +971,7 @@ begin
                                                   );
     if (@api.CypherDLLFnEncryptSectorWithASCII = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.CypherDLLFnDecrypt := GetProcAddress(
@@ -979,7 +980,7 @@ begin
                                                   );
     if (@api.CypherDLLFnDecrypt = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.CypherDLLFnDecryptSector := GetProcAddress(
@@ -988,7 +989,7 @@ begin
                                                   );
     if (@api.CypherDLLFnDecryptSector = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.CypherDLLFnDecryptWithASCII := GetProcAddress(
@@ -997,7 +998,7 @@ begin
                                                   );
     if (@api.CypherDLLFnDecryptWithASCII = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     @api.CypherDLLFnDecryptSectorWithASCII := GetProcAddress(
@@ -1006,35 +1007,33 @@ begin
                                                   );
     if (@api.CypherDLLFnDecryptSectorWithASCII = nil) then
       begin
-      retval := FALSE;
+      Result := FALSE;
       end;
 
 
-    if not(retval) then
+    if not(Result) then
       begin
       FreeLibrary(api.hDLL);
       end;
     end;
 
-  Result := retval;
+
 end;
 
 function TOTFEFreeOTFEDLL.LoadLibraryCachedCypher(const libFilename: string; var api: TCypherAPI): boolean;
-var
-  retval: boolean;
 begin
-  retval:= CachesGetCypherAPI(libFilename, api);
+  Result:= CachesGetCypherAPI(libFilename, api);
 
-  if not(retval) then
+  if not(Result) then
     begin
-    retval := LoadLibraryCypher(libFilename, api);
-    if retval then
+    Result := LoadLibraryCypher(libFilename, api);
+    if Result then
       begin
       CachesAddCypherAPI(libFilename, api);
       end;
     end;
 
-  Result := retval;
+
 end;
 
 procedure TOTFEFreeOTFEDLL.FreeLibraryCypher(var api: TCypherAPI);
@@ -1051,12 +1050,13 @@ end;
 procedure TOTFEFreeOTFEDLL.GetAllDriversUnderExeDir(driverFilenames: TStringList);
 var
   fileIterator: TSDUFileIterator;
-  filename: string;
+  filename,dllDir: string;
 begin
+  dllDir := Ifthen( SDUApp64bit(), DRIVERS64_SUBDIR, DRIVERS32_SUBDIR);
   // Compile a list of drivers in the ExeDir
   fileIterator:= TSDUFileIterator.Create(nil);
   try
-    fileIterator.Directory := IncludeTrailingPathDelimiter(ExeDir) + DRIVERS_SUBDIR;
+    fileIterator.Directory := IncludeTrailingPathDelimiter(fExeDir) + dllDir;
     fileIterator.FileMask := '*.dll';
     fileIterator.RecurseSubDirs := FALSE;
     fileIterator.OmitStartDirPrefix := FALSE;
@@ -1079,11 +1079,10 @@ end;
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.GetHashDrivers(var hashDrivers: TFreeOTFEHashDriverArray): boolean;
 var
-  retVal: boolean;
   dllNames: TStringList;
   j: integer;
 begin
-  retVal := TRUE;
+  Result := TRUE;
 
   SetLength(hashDrivers, 0);
 
@@ -1096,11 +1095,11 @@ begin
         begin
         // Get the details for the device
         SetLength(hashDrivers, (Length(hashDrivers)+1));
-        retval := GetHashDriverHashes(dllNames[j], hashDrivers[high(hashDrivers)]);       // unicode->ansi not a data loss because only ansistring stored
+        Result := GetHashDriverHashes(dllNames[j], hashDrivers[high(hashDrivers)]);       // unicode->ansi not a data loss because only ansistring stored
 
         // Note: This "break" condition differs between the DLL and kernel
         //       driver versions
-        if not(retval) then
+        if not(Result) then
           begin
           break;
           end;
@@ -1112,16 +1111,15 @@ begin
     dllNames.Free();
   end;
 
-  Result := retval;
+
 end;
 
 function TOTFEFreeOTFEDLL.GetCypherDrivers(var cypherDrivers: TFreeOTFECypherDriverArray): boolean;
 var
-  retVal: boolean;
   dllNames: TStringList;
   j: integer;
 begin
-  retVal := TRUE;
+  Result := TRUE;
 
   SetLength(cypherDrivers, 0);
 
@@ -1134,11 +1132,11 @@ begin
         begin
         // Get the details for the device
         SetLength(cypherDrivers, (Length(cypherDrivers)+1));
-        retval := GetCypherDriverCyphers(dllNames[j], cypherDrivers[high(cypherDrivers)]);   // unicode->ansi not a data loss because only ansistring stored
+        Result := GetCypherDriverCyphers(dllNames[j], cypherDrivers[high(cypherDrivers)]);   // unicode->ansi not a data loss because only ansistring stored
 
         // Note: This "break" condition differs between the DLL and kernel
         //       driver versions
-        if not(retval) then
+        if not(Result) then
           begin
           break;
           end;
@@ -1150,13 +1148,12 @@ begin
     dllNames.Free();
   end;
 
-  Result := retval;
+
 end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.GetHashDriverHashes(hashDriver: ansistring; var hashDriverDetails: TFreeOTFEHashDriver): boolean;
 var
-  retval: boolean;
   DIOCBuffer: TDIOC_HASH_IDENTIFYDRIVER;
   ptrBuffer: Pointer;
   ptrBufferOffset: Pointer;
@@ -1169,11 +1166,11 @@ var
   arrIdx: integer;
   hashAPI: THashAPI;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   if CachesGetHashDriver(hashDriver, hashDriverDetails) then
     begin
-    retVal := TRUE;
+    Result := TRUE;
     end
   else
     begin
@@ -1235,7 +1232,7 @@ DebugMsg('hash details count: '+inttostr(DIOCBufferHashes.BufCount));
           // Cache the information retrieved
           CachesAddHashDriver(hashDriver, hashDriverDetails);
               
-          retval := TRUE;
+          Result := TRUE;
           end
         else
           begin
@@ -1252,7 +1249,7 @@ DebugMsg('gethashdrivers DIOC 2 FAIL');
     end;  // if CachesGetHashDriver(hashDriver, hashDriverDetails) then
 
 
-  Result := retval;
+
 
 end;
 
@@ -1262,7 +1259,6 @@ end;
 // Don't call this function directly! Call GetCypherDriverCyphers(...) instead!
 function TOTFEFreeOTFEDLL._GetCypherDriverCyphers_v1(cypherDriver: ansistring; var cypherDriverDetails: TFreeOTFECypherDriver): boolean;
 var
-  retval: boolean;
   DIOCBuffer: TDIOC_CYPHER_IDENTIFYDRIVER;
   ptrBuffer: Pointer;
   ptrBufferOffset: Pointer;
@@ -1276,11 +1272,11 @@ var
   arrIdx: integer;
   cypherAPI: TCypherAPI;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   if CachesGetCypherDriver(cypherDriver, cypherDriverDetails) then
     begin
-    retVal := TRUE;
+    Result := TRUE;
     end
   else
     begin
@@ -1362,7 +1358,7 @@ DebugMsg('cypher details count: '+inttostr(DIOCBufferCyphers.BufCount));
           // Cache the information retrieved
           CachesAddCypherDriver(cypherDriver, cypherDriverDetails);
 
-          retval := TRUE;
+          Result := TRUE;
           end
         else
           begin
@@ -1382,7 +1378,7 @@ DebugMsg('getcypherdrivers DIOC 2 FAIL');
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('Exiting function...');
 {$ENDIF}
-  Result := retval;
+
 
 end;
 
@@ -1391,7 +1387,6 @@ end;
 // Don't call this function directly! Call GetCypherDriverCyphers(...) instead!
 function TOTFEFreeOTFEDLL._GetCypherDriverCyphers_v3(cypherDriver: ansistring; var cypherDriverDetails: TFreeOTFECypherDriver): boolean;
 var
-  retval: boolean;
   DIOCBuffer: TDIOC_CYPHER_IDENTIFYDRIVER;
   ptrBuffer: Pointer;
   ptrBufferOffset: Pointer;
@@ -1405,11 +1400,11 @@ var
   arrIdx: integer;
   cypherAPI: TCypherAPI;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   if CachesGetCypherDriver(cypherDriver, cypherDriverDetails) then
     begin
-    retVal := TRUE;
+    Result := TRUE;
     end
   else
     begin
@@ -1490,7 +1485,7 @@ DebugMsg('cypher details count: '+inttostr(DIOCBufferCyphers.BufCount));
           // Cache the information retrieved
           CachesAddCypherDriver(cypherDriver, cypherDriverDetails);
 
-          retval := TRUE;
+          Result := TRUE;
           end
         else
           begin
@@ -1510,7 +1505,7 @@ DebugMsg('getcypherdrivers DIOC 2 FAIL');
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('Exiting function...');
 {$ENDIF}
-  Result := retval;
+
 
 end;
 
@@ -1524,7 +1519,6 @@ function TOTFEFreeOTFEDLL.HashData(
 out hashOut: TSDUBytes
                      ): boolean;
 var
-  retval: boolean;
   ptrDIOCBufferIn: PDIOC_HASH_DATA_IN;
   bufferSizeIn: DWORD;
   ptrDIOCBufferOut: PDIOC_HASH_DATA_OUT;
@@ -1536,7 +1530,7 @@ var
   bitsReturned: DWORD;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
-  retval := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -1591,7 +1585,7 @@ DebugMsg('hashByteCount: '+inttostr(hashByteCount));
 //            hashOut := StringOfChar(Ansichar(#0), hashByteCount);
             StrMove(PAnsiChar(hashOut), @ptrDIOCBufferOut.Hash, hashByteCount);
 
-            retval := TRUE;
+            Result := TRUE;
             end
           else
             begin
@@ -1622,7 +1616,7 @@ DebugMsg('Unable to GetSpecificHashDetails');
 {$ENDIF}
     end;  // ELSE PART - if GetSpecificHashDetails(hashKernelModeDeviceName, hashGUID, hashDetails) then
 
-  Result := retval;
+
 
 end;
 
@@ -1648,7 +1642,6 @@ function TOTFEFreeOTFEDLL.MACData(
                       tBits: integer = -1
                      ): boolean;
 var
-  retval: boolean;
   ptrDIOCBufferIn: PDIOC_GENERATE_MAC_IN_PC_DLL;
   bufferSizeIn: DWORD;
   ptrDIOCBufferOut: PDIOC_GENERATE_MAC_OUT;
@@ -1658,7 +1651,7 @@ var
   minBufferSizeOut: integer;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
-  retval := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -1717,7 +1710,7 @@ DebugMsg('outputByteCount: '+inttostr(outputByteCount));
         MACOut := StringOfChar(Ansichar(#0), outputByteCount);
         StrMove(PAnsiChar(MACOut), @ptrDIOCBufferOut.MAC, outputByteCount);
 
-        retval := TRUE;
+        Result := TRUE;
         end
       else
         begin
@@ -1738,7 +1731,7 @@ DebugMsg('MAC DIOC 2 FAIL');
   end;
 
 
-  Result := retval;
+
 
 end;
 
@@ -1758,7 +1751,6 @@ function TOTFEFreeOTFEDLL.DeriveKey(
                     out DK: TSDUBytes
                    ): boolean;
 var
-  retval: boolean;
   ptrDIOCBufferIn: PDIOC_DERIVE_KEY_IN_PC_DLL;
   bufferSizeIn: DWORD;
   ptrDIOCBufferOut: PDIOC_DERIVE_KEY_OUT;
@@ -1768,7 +1760,7 @@ var
   minBufferSizeOut: integer;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
-  retval := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -1832,7 +1824,7 @@ DebugMsg('outputByteCount: '+inttostr(outputByteCount));
 //        SDUCopyArrays(DK,ptrDIOCBufferOut.DerivedKey,);
         StrMove(PAnsiChar(DK), @ptrDIOCBufferOut.DerivedKey, outputByteCount);
 
-        retval := TRUE;
+        Result := TRUE;
         end
       else
         begin
@@ -1853,7 +1845,7 @@ DebugMsg('MAC DIOC 2 FAIL');
   end;
 
 
-  Result := retval;
+
 
 end;
 
@@ -1870,7 +1862,6 @@ function TOTFEFreeOTFEDLL._EncryptDecryptData(
                                    var outData: Ansistring
                                   ): boolean;
 var
-  retval: boolean;
   ptrDIOCBufferIn: PDIOC_CYPHER_DATA_IN;
   bufferSizeIn: DWORD;
   ptrDIOCBufferOut: PDIOC_CYPHER_DATA_OUT;
@@ -1880,7 +1871,7 @@ var
   dllOpOK: boolean;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
-  retval := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -1948,7 +1939,7 @@ DebugMsg('couldn''t connect to: '+cypherDriver);
 
             StrMove(PAnsiChar(outData), @ptrDIOCBufferOut.Data, ptrDIOCBufferIn.DataLength);
 
-            retval := TRUE;
+            Result := TRUE;
             end
           else
             begin
@@ -1982,7 +1973,7 @@ DebugMsg('Unable to EncryptDecryptData');
 {$ENDIF}
     end;
 
-  Result := retval;
+
 
 end;
 
@@ -2001,7 +1992,6 @@ function TOTFEFreeOTFEDLL.EncryptDecryptSectorData(
                                    var outData: Ansistring
                                   ): boolean;
 var
-  retval: boolean;
   ptrDIOCBufferIn: PDIOC_CYPHER_SECTOR_DATA_IN;
   bufferSizeIn: DWORD;
   ptrDIOCBufferOut: PDIOC_CYPHER_DATA_OUT;
@@ -2011,7 +2001,7 @@ var
   dllOpOK: boolean;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
-  retval := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -2081,7 +2071,7 @@ DebugMsg('couldn''t connect to: '+cypherDriver);
 
             StrMove(PAnsiChar(outData), @ptrDIOCBufferOut.Data, ptrDIOCBufferIn.DataLength);
 
-            retval := TRUE;
+            Result := TRUE;
             end
           else
             begin
@@ -2106,9 +2096,9 @@ DebugMsg('cypher DIOC 2 FAIL');
       end;
 
       // If there was a problem, fallback to using v1 cypher API
-      if not(retval) then
+      if not(Result) then
         begin
-        retval := _EncryptDecryptData(
+        Result := _EncryptDecryptData(
                                 encryptFlag,
                                 cypherDriver,
                                 cypherGUID,
@@ -2130,15 +2120,18 @@ DebugMsg('Unable to EncryptDecryptData');
 {$ENDIF}
     end;
 
-  Result := retval;
+
 
 end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.MainDLLFilename(): string;
+var
+  dllDir :string;
 begin
-
-  Result := IncludeTrailingPathDelimiter(ExeDir) + DRIVERS_SUBDIR + '\' + DLL_MAIN_DRIVER;
+  //the dll version required is based on if the *app* is 32 or 64 bit - not the OS
+  dllDir := Ifthen( SDUApp64bit(), DRIVERS64_SUBDIR, DRIVERS32_SUBDIR);
+  Result := IncludeTrailingPathDelimiter(fExeDir) + dllDir + '\' + DLL_MAIN_DRIVER;
   Result :=SDUGetFinalPath(Result);
 end;
 
@@ -2165,7 +2158,6 @@ function TOTFEFreeOTFEDLL.MountDiskDevice(
                                    storageMediaType: TFreeOTFEStorageMediaType = mtFixedMedia
                                   ): boolean;
 var
-  retVal: boolean;
   ptrDIOCBuffer: PDIOC_MOUNT_PC_DLL;
   bufferSize: integer;
   mainCypherDetails: TFreeOTFECypher_v3;
@@ -2178,7 +2170,7 @@ var
   useDriveLetter: ansichar;
   volumeKeyStr :Ansistring;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   // Sanity check
   Assert(
@@ -2219,7 +2211,7 @@ DebugMsg('  size: '+inttostr(size));
 
   if not(GetSpecificCypherDetails(mainCypherDriver, mainCypherGUID, mainCypherDetails)) then
     begin
-    Result := retval;
+
     exit;
     end;
 
@@ -2235,7 +2227,7 @@ DebugMsg('  size: '+inttostr(size));
         // If the hash wasn't big enough, pad out with zeros
         volumeKeyStr := volumeKeyStr + StringOfChar(AnsiChar(#0), ((mainCypherDetails.KeySizeRequired div 8) - Length(volumeKeyStr)));
 
-    SDUResetLength(volumeKey,(mainCypherDetails.KeySizeRequired div 8));
+    SafeSetLength(volumeKey,(mainCypherDetails.KeySizeRequired div 8));
     assert(SDUBytestostring(volumeKey) = volumeKeyStr) ;
     end;
 
@@ -2355,7 +2347,7 @@ DebugMsg('Opened OK!');
           DeleteHandles(useDriveLetter);
           AddHandles(useDriveLetter, mntHandles);
 
-          retval := TRUE;
+          Result := TRUE;
           end
         else
           begin
@@ -2373,7 +2365,7 @@ DebugMsg('Opened OK!');
 DebugMsg('Exiting MountDiskDevice');
 {$ENDIF}
 
-  Result := retVal;
+
 end;
 
 // ----------------------------------------------------------------------------
@@ -2400,9 +2392,8 @@ function TOTFEFreeOTFEDLL.CreateMountDiskDevice(
                              ): boolean;
 var
   mountMetadata: TOTFEFreeOTFEVolumeMetaData;
-  retval: boolean;
 begin
-  retval:= FALSE;
+  Result:= FALSE;
 
   PopulateVolumeMetadataStruct(
                                MetaData_LinuxVolume,
@@ -2431,10 +2422,10 @@ begin
                      FreeOTFEMountAsStorageMediaType[MountMountAs]
                     ) then
     begin
-      retval := TRUE;
+      Result := TRUE;
     end;
 
-  Result := retval;
+
 end;
 
 
@@ -2442,13 +2433,12 @@ end;
 // Attempt to dismount a device
 function TOTFEFreeOTFEDLL.DismountDiskDevice(deviceName: string; emergency: boolean): boolean;
 var
-  retVal: boolean;
   DIOCBuffer: TDIOC_FORCE_DISMOUNTS;
   bytesReturned: DWORD;
   handles: TMountedHandle;
   useDriveLetter: Ansichar;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -2482,10 +2472,10 @@ begin
     DeleteDiskGeometry(useDriveLetter);
     DeleteHandles(useDriveLetter);
 
-    retval := TRUE;
+    Result := TRUE;
     end;
 
-  Result := retVal;
+
 end;
 
 // ----------------------------------------------------------------------------
@@ -2503,19 +2493,18 @@ function TOTFEFreeOTFEDLL.GetHandles(driveLetter: ansichar; var handles: TMounte
 var
   ptrMountedHandles: PMountedHandle;
   idx: integer;
-  retval: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
   
   idx := MountedHandles.IndexOf(uppercase(driveLetter));
   if (idx >= 0) then
     begin
     ptrMountedHandles := PMountedHandle(MountedHandles.Objects[idx]);
     handles := ptrMountedHandles^;
-    retval := TRUE;
+    Result := TRUE;
     end;
 
-  Result := retval;
+
 end;
 
 // ----------------------------------------------------------------------------
@@ -2539,14 +2528,13 @@ end;
 function TOTFEFreeOTFEDLL.GetNextDriveLetter(userDriveLetter, requiredDriveLetter: Ansichar): Ansichar;
 var
   c: Ansichar;
-  retval: Ansichar;
 begin
-  retval := #0;
+  Result := #0;
   for c:='A' to 'Z' do
     begin
     if (MountedHandles.IndexOf(c) < 0) then
       begin
-      retval := c;
+      Result := c;
       break;
       end;
     end;
@@ -2554,11 +2542,11 @@ begin
   // Sanity check; although this isn't actually true (we could go onto numbers,
   // lowercase, etc), it is if we keep with the drive letter paradigm...
   Assert(
-         (retval <> #0),
+         (Result <> #0),
          'Unable to open more then 26 volumes at the same time'
         ); 
 
-  Result := retval;
+
 end;
 
 
@@ -2572,13 +2560,12 @@ end;
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.GetVolumeInfo(driveLetter: ansichar; var volumeInfo: TOTFEFreeOTFEVolumeInfo): boolean;
 var
-  retVal: boolean;
   BytesReturned: DWORD;
   outBuffer: TDIOC_DISK_DEVICE_STATUS_PC_DLL;
   tmpSectorIVGenMethod: TFreeOTFESectorIVGenMethod;
   handles: TMountedHandle;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   CheckActive();
 
@@ -2622,8 +2609,8 @@ begin
         volumeInfo.DriveLetter := AnsiChar(driveLetter);
 
 // Functionality in DLL/PDA driver to retrieve metadata not currently implemented!
-        retval := TRUE;
-//        retVal := GetVolumeMetaData(driveLetter, outBuffer.MetaDataLength, volumeInfo.MetaData);
+        Result := TRUE;
+//        Result := GetVolumeMetaData(driveLetter, outBuffer.MetaDataLength, volumeInfo.MetaData);
 //        volumeInfo.MetaDataStructValid := ParseVolumeMetadata(
 //                                                              volumeInfo.MetaData,
 //                                                              volumeInfo.MetaDataStruct
@@ -2634,7 +2621,7 @@ begin
 
     end;
 
-  Result := retVal;
+
 
 end;
 
@@ -2642,9 +2629,8 @@ end;
 function TOTFEFreeOTFEDLL.Seek(driveLetter: Ansichar; offset: DWORD): boolean;
 var
   handles: TMountedHandle;
-  retval: boolean;
 begin
-  retval:= FALSE;
+  Result:= FALSE;
 
   CheckActive();
 
@@ -2659,7 +2645,7 @@ begin
       end;
     end;
 
-  Result := retval;
+
 end;
 
 // ----------------------------------------------------------------------------
@@ -2671,13 +2657,12 @@ function TOTFEFreeOTFEDLL.ReadData_Sectors(
 ): boolean;
 var
   handles: TMountedHandle;
-  retval: boolean;
   ptrBuffer: PByte;
   sgReq: TSG_REQ;
   bufferSize: DWORD;
   bytesReturned: DWORD;
 begin
-  retval:= FALSE;
+  Result:= FALSE;
 
   CheckActive();
 
@@ -2708,7 +2693,7 @@ begin
         if (sgReq.sr_status = ERROR_SUCCESS) then
           begin
           stm.Write(ptrBuffer^, bufferSize);
-          retval := TRUE;
+          Result := TRUE;
           end;
         end;
     finally
@@ -2716,7 +2701,7 @@ begin
     end;
     end;
 
-  Result := retval;
+
 end;
 
 // ----------------------------------------------------------------------------
@@ -2728,13 +2713,12 @@ function TOTFEFreeOTFEDLL.WriteData_Sectors(
 ): boolean;
 var
   handles: TMountedHandle;
-  retval: boolean;
   ptrBuffer: PByte;
   sgReq: TSG_REQ;
   bufferSize: DWORD;
   bytesReturned: DWORD;
 begin
-  retval:= FALSE;
+  Result:= FALSE;
 
   CheckActive();
 
@@ -2766,7 +2750,7 @@ begin
         begin
         if (sgReq.sr_status = ERROR_SUCCESS) then
           begin
-          retval := TRUE;
+          Result := TRUE;
           end;
         end;
     finally
@@ -2774,7 +2758,7 @@ begin
     end;
     end;
 
-  Result := retval;
+
 end;
 
 
@@ -2786,7 +2770,6 @@ function TOTFEFreeOTFEDLL.ReadData_Bytes(
                       Data: TStream
                     ): boolean;
 var
-  retval: boolean;
   diskGeometry: TSDUDiskGeometry;
   sectorID_i64: int64;
   sectorID: DWORD;
@@ -2796,7 +2779,7 @@ var
   partialSector: boolean;
   tmpStream: TSDUMemoryStream;
 begin
-  retval := TRUE;
+  Result := TRUE;
 
   // Short circuit...
   if (DataLength = 0) then
@@ -2805,26 +2788,26 @@ begin
     exit;
     end;
 
-  if retval then
+  if Result then
     begin
-    retval := GetDiskGeometry(DriveLetter, diskGeometry);
+    Result := GetDiskGeometry(DriveLetter, diskGeometry);
     end;
 
   sectorID := 0;
-  if retval then
+  if Result then
     begin
     if (Offset mod int64(diskGeometry.BytesPerSector) <> 0) then
       begin
       //lplp - xxx - eliminate this restriction
       showmessage('NON-SECTOR (offset + length) READS must start from a sector offset in current implementation');
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     sectorID_i64 := Offset div int64(diskGeometry.BytesPerSector);
     sectorID := sectorID_i64 and $FFFFFFFF;
     end;
 
-  if retval then
+  if Result then
     begin
     // If the amount of data to transfer isn't a multiple of the sector size, we
     // have to use a temp stream to hold the data 
@@ -2835,7 +2818,7 @@ begin
       inc(cntSectors);
       tmpStream:= TSDUMemoryStream.Create();
       try
-        retval := ReadData_Sectors(DriveLetter, sectorID, cntSectors, tmpStream);
+        Result := ReadData_Sectors(DriveLetter, sectorID, cntSectors, tmpStream);
         tmpStream.Position := 0;
         Data.CopyFrom(tmpStream, DataLength);
       finally
@@ -2845,12 +2828,12 @@ begin
       end
     else
       begin
-      retval := ReadData_Sectors(DriveLetter, sectorID, cntSectors, Data);
+      Result := ReadData_Sectors(DriveLetter, sectorID, cntSectors, Data);
       end;
 
     end;
 
-  Result := retval;
+
 end;
 
 
@@ -2862,7 +2845,6 @@ function TOTFEFreeOTFEDLL.WriteData_Bytes(
                       Data: TStream
                     ): boolean;
 var
-  retval: boolean;
   diskGeometry: TSDUDiskGeometry;
   sectorID_i64: int64;
   sectorID: DWORD;
@@ -2872,7 +2854,7 @@ var
   partialSector: boolean;
   tmpStream: TSDUMemoryStream;
 begin
-  retval := TRUE;
+  Result := TRUE;
 
   // Short circuit...
   if (DataLength = 0) then
@@ -2881,26 +2863,26 @@ begin
     exit;
     end;
 
-  if retval then
+  if Result then
     begin
-    retval := GetDiskGeometry(DriveLetter, diskGeometry);
+    Result := GetDiskGeometry(DriveLetter, diskGeometry);
     end;
 
   sectorID := 0;
-  if retval then
+  if Result then
     begin
     if (Offset mod int64(diskGeometry.BytesPerSector) <> 0) then
       begin
       //lplp - xxx - eliminate this restriction
       showmessage('NON-SECTOR (offset + length) WRITES must start from a sector offset in current implementation');
-      retval := FALSE;
+      Result := FALSE;
       end;
 
     sectorID_i64 := Offset div int64(diskGeometry.BytesPerSector);
     sectorID := sectorID_i64 and $FFFFFFFF;
     end;
 
-  if retval then
+  if Result then
     begin
     // If the amount of data to transfer isn't a multiple of the sector size, we
     // have to use a temp stream to hold the data
@@ -2923,7 +2905,7 @@ begin
           tmpStream.Position := 0;
           tmpStream.CopyFrom(Data, DataLength);
           tmpStream.Position := 0;
-          retval := WriteData_Sectors(DriveLetter, sectorID, cntSectors, tmpStream);
+          Result := WriteData_Sectors(DriveLetter, sectorID, cntSectors, tmpStream);
           end;
           
       finally
@@ -2933,11 +2915,11 @@ begin
       end
     else
       begin
-      retval := WriteData_Sectors(DriveLetter, sectorID, cntSectors, Data);
+      Result := WriteData_Sectors(DriveLetter, sectorID, cntSectors, Data);
       end;
     end;
 
-  Result := retval;
+
 end;
 
 
@@ -2948,10 +2930,9 @@ function TOTFEFreeOTFEDLL._GetDiskGeometry(
 ): boolean;
 var
   handles: TMountedHandle;
-  retval: boolean;
   bytesReturned: DWORD;
 begin
-  retval:= FALSE;
+  Result:= FALSE;
 
   CheckActive();
 
@@ -2967,11 +2948,11 @@ begin
                            @bytesReturned
                           ) then
       begin
-      retval := TRUE;
+      Result := TRUE;
       end;
     end;
 
-  Result := retval;
+
 end;
 
 // ----------------------------------------------------------------------------
@@ -2989,19 +2970,18 @@ function TOTFEFreeOTFEDLL.GetDiskGeometry(driveLetter: Ansichar; var diskGeometr
 var
   ptrDiskGeometry: PSDUDiskGeometry;
   idx: integer;
-  retval: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
   
   idx := fCachedDiskGeometry.IndexOf(uppercase(driveLetter));
   if (idx >= 0) then
     begin
     ptrDiskGeometry := PSDUDiskGeometry(fCachedDiskGeometry.Objects[idx]);
     diskGeometry := ptrDiskGeometry^;
-    retval := TRUE;
+    Result := TRUE;
     end;
 
-  Result := retval;
+
 end;
 
 // ----------------------------------------------------------------------------
@@ -3119,8 +3099,12 @@ begin
   Result := cacheHit;
 end;
 
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
+{returns an instance of the only object. call SetFreeOTFEType first}
+function GetFreeOTFEDLL :  TOTFEFreeOTFEDLL;
+begin
+  assert (GetFreeOTFEBase is TOTFEFreeOTFEDLL,'call SetFreeOTFEType with correct type');
+  result := GetFreeOTFEBase as TOTFEFreeOTFEDLL;
+end;
 
 END.
 

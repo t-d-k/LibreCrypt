@@ -348,20 +348,16 @@ begin
   StringToFree.Buffer := nil;
 end;
 
-
 function UNICODE_STRINGToWideString(inStr: TUNICODE_STRING): WideString;
 var
-  retval: WideString;
   i: integer;
 begin
-  retval := '';
+  result := '';
   // -1 because index from 0
   for i:=0 to ((inStr.Length div 2) - 1) do
     begin
-    retval := retval + inStr.Buffer[i];
+    result := result + inStr.Buffer[i];
     end;
-
-  Result := retval;
 end;
 
 procedure  InitializeObjectAttributes(

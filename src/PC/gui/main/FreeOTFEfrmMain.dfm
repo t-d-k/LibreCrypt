@@ -3,6 +3,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
   ClientWidth = 319
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
+  OnDestroy = FormDestroy
   OnResize = FormResize
   ExplicitWidth = 335
   ExplicitHeight = 382
@@ -20,7 +21,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
   inherited StatusBar_Status: TStatusBar
     Top = 266
     Width = 319
-    ExplicitTop = 256
+    ExplicitTop = 266
     ExplicitWidth = 319
   end
   object ToolBar1: TToolBar [2]
@@ -34,7 +35,6 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     Caption = 'ToolBar1'
     Images = ilToolbarIcons_Large
     TabOrder = 3
-    ExplicitWidth = 300
     object tbbNew: TToolButton
       Left = 0
       Top = 0
@@ -105,7 +105,6 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     Align = alTop
     Caption = 'pnlTopSpacing'
     TabOrder = 2
-    ExplicitWidth = 300
   end
   object lvDrives: TListView [4]
     Left = 0
@@ -121,13 +120,11 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     OnDblClick = lvDrivesDblClick
     OnResize = lvDrivesResize
     OnSelectItem = lvDrivesSelectItem
-    ExplicitWidth = 300
-    ExplicitHeight = 192
   end
   inherited StatusBar_Hint: TStatusBar
     Top = 247
     Width = 319
-    ExplicitTop = 237
+    ExplicitTop = 247
     ExplicitWidth = 319
   end
   inherited mmMain: TMainMenu
@@ -315,7 +312,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
   end
   inherited ilToolbarIcons_Small: TImageList
     Bitmap = {
-      494C010109007401240210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109007401800210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       00000000000000000000000000000000000000000000255F92003FA5CE003A9F
       C8003A9EC8003A9EC8003B9EC8003B9EC7003B9EC7003B9EC7003B9EC7003B9E
@@ -728,7 +725,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     Width = 32
     Left = 92
     Bitmap = {
-      494C01010900C401B40220002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010900C401100320002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000008000000060000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2406,7 +2403,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     Left = 12
     Top = 164
     Bitmap = {
-      494C0101020004005C0120002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400B80120002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000002000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

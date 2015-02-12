@@ -46,7 +46,7 @@ type
     procedure AllTabs_InitAndReadSettings(config: TSettings); VIRTUAL;
     procedure AllTabs_WriteSettings(config: TSettings);
   PUBLIC
-    OTFEFreeOTFEBase: TOTFEFreeOTFEBase;
+//    OTFEFreeOTFEBase: TOTFEFreeOTFEBase;
 
     procedure ChangeLanguage(langCode: String); VIRTUAL; ABSTRACT;
   end;
@@ -83,10 +83,9 @@ const
 
 function TfrmOptions.GetSettingsLocation(): TSettingsSaveLocation;
 var
-  retval: TSettingsSaveLocation;
   sl:     TSettingsSaveLocation;
 begin
-  retval := Settings.OptSaveSettings;
+  retval := gSettings.OptSaveSettings;
   for sl := low(sl) to high(sl) do begin
     if (SettingsLocationDisplay(sl) = cbSettingsLocation.Items[cbSettingsLocation.ItemIndex]) then
     begin
@@ -99,8 +98,6 @@ begin
 end;
 
 function TfrmOptions.SettingsLocationDisplay(loc: TSettingsSaveLocation): String;
-var
-  retval: String;
 begin
   retval := '';
 
@@ -142,7 +139,7 @@ begin
   allOK := True;
 
   // Decode settings save location
-  oldSettingsLocation := Settings.OptSaveSettings;
+  oldSettingsLocation := gSettings.OptSaveSettings;
   newSettingsLocation := GetSettingsLocation();
 
   if allOK then begin
@@ -153,7 +150,7 @@ begin
     vistaProgFilesDirWarn := False;
     if (SDUOSVistaOrLater() and (newSettingsLocation = slExeDir)) then begin
       programFilesDir       := SDUGetSpecialFolderPath(SDU_CSIDL_PROGRAM_FILES);
-      filename              := Settings.GetSettingsFilename(newSettingsLocation);
+      filename              := gSettings.GetSettingsFilename(newSettingsLocation);
       vistaProgFilesDirWarn := (Pos(uppercase(programFilesDir), uppercase(filename)) > 0);
     end;
 
@@ -201,12 +198,12 @@ begin
   end;
 
   if allOK then begin
-    Settings.OptSaveSettings := newSettingsLocation;
+    gSettings.OptSaveSettings := newSettingsLocation;
 
-    AllTabs_WriteSettings(Settings);
+    AllTabs_WriteSettings(gSettings);
 
-    if (Settings.OptSaveSettings <> slNone) then begin
-      allOK := Settings.Save();
+    if (gSettings.OptSaveSettings <> slNone) then begin
+      allOK := gSettings.Save();
     end;
 
   end;
@@ -250,14 +247,14 @@ begin
       end;
 
       if deleteOldLocation then begin
-        if not (Settings.DestroySettingsFile(oldSettingsLocation)) then begin
+        if not (gSettings.DestroySettingsFile(oldSettingsLocation)) then begin
           if ((oldSettingsLocation = slExeDir) or (oldSettingsLocation = slProfile) or
             (oldSettingsLocation = slCustom)) then begin
             SDUMessageDlg(
               SDUParamSubstitute(_('Your previous settings file stored at:' +
               SDUCRLF + SDUCRLF + '%1' + SDUCRLF + SDUCRLF +
               'could not be deleted. Please remove this file manually.'),
-              [Settings.GetSettingsFilename(oldSettingsLocation)]),
+              [gSettings.GetSettingsFilename(oldSettingsLocation)]),
               mtInformation
               );
           end else
@@ -267,7 +264,7 @@ begin
               'Your previous settings file stored in the Windows registry under:' + SDUCRLF +
               SDUCRLF + '%1' + SDUCRLF + SDUCRLF +
               'could not be deleted. Please delete this registry key manually.'),
-              [Settings.RegistryKey()]),
+              [gSettings.RegistryKey()]),
               mtInformation
               );
           end;
@@ -279,7 +276,7 @@ begin
           SDUMessageDlg(
             SDUParamSubstitute(_('Your previous settings will remain stored at:' +
             SDUCRLF + SDUCRLF + '%1'),
-            [Settings.GetSettingsFilename(oldSettingsLocation)]),
+            [gSettings.GetSettingsFilename(oldSettingsLocation)]),
             mtInformation
             );
         end else
@@ -287,7 +284,7 @@ begin
           SDUMessageDlg(
             SDUParamSubstitute(_(
             'Your previous settings will remain stored in the Windows registry under:' +
-            SDUCRLF + SDUCRLF + '%1'), [Settings.RegistryKey()]),
+            SDUCRLF + SDUCRLF + '%1'), [gSettings.RegistryKey()]),
             mtInformation
             );
         end;
@@ -336,14 +333,14 @@ begin
   idx    := -1;
   useIdx := -1;
   for sl := low(sl) to high(sl) do begin
-    if ((sl = slCustom) and (Settings.CustomLocation = '')) then begin
+    if ((sl = slCustom) and (gSettings.CustomLocation = '')) then begin
       // Skip this one; no custom location set
       continue;
     end;
 
     Inc(idx);
     cbSettingsLocation.Items.Add(SettingsLocationDisplay(sl));
-    if (Settings.OptSaveSettings = sl) then begin
+    if (gSettings.OptSaveSettings = sl) then begin
       useIdx := idx;
     end;
   end;
@@ -422,9 +419,9 @@ end;
 procedure TfrmOptions.FormShow(Sender: TObject);
 begin
   // Special handling...
-  fmeOptions_PKCS11.OTFEFreeOTFE := OTFEFreeOTFEBase;
+//  fmeOptions_PKCS11.OTFEFreeOTFE := OTFEFreeOTFEBase;
 
-  AllTabs_InitAndReadSettings(Settings);
+  AllTabs_InitAndReadSettings(gSettings);
 
   // Push the PKCS#11 tab to the far end; the "General" tab should be the
   // leftmost one
@@ -472,7 +469,7 @@ end;
 procedure TfrmOptions.pbCancelClick(Sender: TObject);
 begin
   // Reset langugage used, in case it was changed by the user
-  SDUSetLanguage(Settings.OptLanguageCode);
+  SDUSetLanguage(gSettings.OptLanguageCode);
 
   ModalResult := mrCancel;
 

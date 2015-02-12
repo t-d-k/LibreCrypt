@@ -5,25 +5,35 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
   TextHeight = 13
   inherited lblSettingsLocation: TLabel
     Top = 416
+    ExplicitTop = 416
   end
   inherited imgNoSaveWarning: TImage
     Top = 414
+    ExplicitTop = 414
   end
   inherited pbOK: TButton
     Top = 508
+    ExplicitTop = 508
   end
   inherited pbCancel: TButton
     Top = 508
+    ExplicitTop = 508
   end
   inherited cbSettingsLocation: TComboBox
     Top = 412
+    ExplicitTop = 412
   end
   inherited ckAssociateFiles: TSDUCheckBox
     Top = 444
+    ExplicitTop = 444
   end
   inherited pcOptions: TPageControl
     Height = 396
     ActivePage = tsAdvanced
+    ExplicitHeight = 396
+    inherited tsPKCS11: TTabSheet
+      ExplicitHeight = 368
+    end
     object tsGeneral: TTabSheet
       Caption = 'General'
       inline fmeOptions_FreeOTFEGeneral1: TfmeOptions_FreeOTFEGeneral
@@ -32,12 +42,16 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
         Width = 504
         Height = 382
         TabOrder = 0
+        ExplicitLeft = -12
+        ExplicitTop = -14
         inherited gbGeneral: TGroupBox
           inherited lblDefaultDriveLetter: TLabel
             Width = 89
+            ExplicitWidth = 89
           end
           inherited lblChkUpdatesFreq: TLabel
             Width = 90
+            ExplicitWidth = 90
           end
         end
       end
@@ -50,12 +64,16 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
         Width = 337
         Height = 174
         TabOrder = 0
+        ExplicitLeft = 64
+        ExplicitTop = 28
         inherited gbHotkeys: TGroupBox
           inherited Label1: TLabel
             Width = 37
+            ExplicitWidth = 37
           end
           inherited Label2: TLabel
             Width = 37
+            ExplicitWidth = 37
           end
         end
       end
@@ -68,6 +86,22 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
         Width = 320
         Height = 240
         TabOrder = 0
+        ExplicitLeft = 64
+        ExplicitTop = 36
+        ExplicitWidth = 320
+        ExplicitHeight = 240
+        inherited gbSystemTrayIcon: TGroupBox
+          inherited gbClickActions: TGroupBox
+            inherited Label1: TLabel
+              Width = 115
+              ExplicitWidth = 115
+            end
+            inherited Label2: TLabel
+              Width = 262
+              ExplicitWidth = 262
+            end
+          end
+        end
       end
     end
     object tsAutorun: TTabSheet
@@ -78,15 +112,20 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
         Width = 471
         Height = 358
         TabOrder = 0
+        ExplicitLeft = 21
+        ExplicitTop = 10
         inherited gbAutorun: TGroupBox
           inherited Label33: TLabel
             Width = 56
+            ExplicitWidth = 56
           end
           inherited Label34: TLabel
             Width = 64
+            ExplicitWidth = 64
           end
           inherited Label35: TLabel
             Width = 69
+            ExplicitWidth = 69
           end
         end
       end
@@ -99,6 +138,38 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
         Width = 504
         Height = 382
         TabOrder = 0
+        ExplicitLeft = -12
+        ExplicitTop = -14
+        inherited gbAdvanced: TGroupBox
+          inherited lblDragDrop: TLabel
+            Width = 136
+            ExplicitWidth = 136
+          end
+          inherited lblMRUMaxItemCountInst: TLabel
+            Width = 134
+            ExplicitWidth = 134
+          end
+          inherited lblMRUMaxItemCount: TLabel
+            Width = 158
+            ExplicitWidth = 158
+          end
+          inherited lblOnNormalDismountFail: TLabel
+            Width = 188
+            ExplicitWidth = 188
+          end
+          inherited lblDefaultMountAs: TLabel
+            Width = 92
+            ExplicitWidth = 92
+          end
+          inherited lblOnExitWhenMounted: TLabel
+            Width = 157
+            ExplicitWidth = 157
+          end
+          inherited lblOnExitWhenPortableMode: TLabel
+            Width = 152
+            ExplicitWidth = 152
+          end
+        end
       end
     end
   end

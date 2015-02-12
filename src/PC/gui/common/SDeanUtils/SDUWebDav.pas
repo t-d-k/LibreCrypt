@@ -43,9 +43,8 @@ type
   PUBLIC
     Bindings:  TIdSocketHandles;
     ShareName: String;
-
     constructor Create(AOwner: TComponent); VIRTUAL; ABSTRACT;
-    destructor Destroy(); VIRTUAL; ABSTRACT;
+    destructor Destroy();override;  ABSTRACT;
     function Active: Boolean;
 
 

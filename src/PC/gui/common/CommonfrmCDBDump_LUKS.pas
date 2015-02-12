@@ -69,7 +69,7 @@ procedure TfrmCDBDump_LUKS.FormShow(Sender: TObject);
 begin
   inherited;
 
-  OTFEFreeOTFELUKSKeyOrKeyfileEntry1.FreeOTFEObj := OTFEFreeOTFE;
+//  OTFEFreeOTFELUKSKeyOrKeyfileEntry1.FreeOTFEObj := OTFEFreeOTFE;
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.Initialize();
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.DefaultOptions();
 
@@ -101,7 +101,7 @@ begin
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKeyfileIsASCII(keyfileIsASCII);
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKeyfileNewlineType(keyfileNewlineType);
 
-  Result := OTFEFreeOTFE.DumpLUKSDataToFile(VolumeFilename, userKey,
+  Result := GetFreeOTFEBase().DumpLUKSDataToFile(VolumeFilename, userKey,
     keyfile, keyfileIsASCII, keyfileNewlineType, LUKSBaseIVCypherOnHashLength,
     DumpFilename);
 end;

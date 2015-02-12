@@ -41,7 +41,7 @@ type
     //is tab required to be completed
     function IsTabRequired(tabSheet: TTabSheet): Boolean; VIRTUAL;
   PUBLIC
-    fFreeOTFEObj: TOTFEFreeOTFEBase;
+//    fFreeOTFEObj: TOTFEFreeOTFEBase;
 
   PUBLISHED
     property OnWizardStepChanged: TNotifyEvent Read fOnWizardStepChanged
@@ -72,7 +72,10 @@ begin
 
   // Set this to TRUE or comment out the next line for debug
   lblCompleteIndicator.Visible :=
-{$IFDEF DEBUG}     True  {$ELSE}
+{$IFDEF DEBUG}
+//True
+false
+{$ELSE}
     False
 {$ENDIF}
   ;

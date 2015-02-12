@@ -26,7 +26,7 @@ type
     procedure EnableDisableControls();
 
   public
-    OTFEFreeOTFE: TOTFEFreeOTFEBase;
+//    OTFEFreeOTFE: TOTFEFreeOTFEBase;
     procedure SetDlgPurpose(encryptNotDecrypt: boolean);
     function Volume(): string;
     function Offset(): int64;
@@ -87,7 +87,7 @@ end;
 procedure TfrmSelectVolumeFileAndOffset.FormShow(Sender: TObject);
 begin
   OTFEFreeOTFEVolumeSelect1.Filename := '';
-  OTFEFreeOTFEVolumeSelect1.OTFEFreeOTFE := OTFEFreeOTFE;
+//  OTFEFreeOTFEVolumeSelect1.OTFEFreeOTFE := OTFEFreeOTFE;
   OTFEFreeOTFEVolumeSelect1.SelectFor := fndOpen;
   OTFEFreeOTFEVolumeSelect1.FileSelectFilter     := FILE_FILTER_FLT_VOLUMESANDKEYFILES;
   OTFEFreeOTFEVolumeSelect1.FileSelectDefaultExt := FILE_FILTER_DFLT_VOLUMESANDKEYFILES;

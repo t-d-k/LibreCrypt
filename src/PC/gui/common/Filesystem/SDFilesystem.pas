@@ -338,42 +338,40 @@ end;
 
 function TSDCustomFilesystem.FileExists(fullPathToItem: WideString): Boolean;
 var
-  retval: Boolean;
   item:   TSDDirItem;
 begin
-  retval := False;
+  Result := False;
 
   item := TSDDirItem.Create();
   try
     if GetItem(fullPathToItem, item) then begin
-      retval := item.IsFile;
+      Result := item.IsFile;
     end;
 
   finally
     item.Free();
   end;
 
-  Result := retval;
+
 end;
 
 function TSDCustomFilesystem.DirectoryExists(fullPathToItem: WideString): Boolean;
 var
-  retval: Boolean;
   item:   TSDDirItem;
 begin
-  retval := False;
+  Result := False;
 
   item := TSDDirItem.Create();
   try
     if GetItem(fullPathToItem, item) then begin
-      retval := item.IsDirectory;
+      Result := item.IsDirectory;
     end;
 
   finally
     item.Free();
   end;
 
-  Result := retval;
+
 end;
 
 function TSDCustomFilesystem.DirectoryOrFileExists(fullPathToItem: WideString): Boolean;
@@ -392,16 +390,14 @@ begin
 end;
 
 function TSDCustomFilesystem.CheckWritable(): Boolean;
-var
-  retval: Boolean;
 begin
-  retval := True;
+  Result := True;
   if self.ReadOnly then begin
     LastErrorSet(_('Filesystem mounted readonly'));
-    retval := False;
+    Result := False;
   end;
 
-  Result := retval;
+
 end;
 
 procedure TSDCustomFilesystem.SetMounted(newMounted: Boolean);

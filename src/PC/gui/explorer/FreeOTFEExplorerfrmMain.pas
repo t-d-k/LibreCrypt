@@ -3,12 +3,14 @@ unit FreeOTFEExplorerfrmMain;
 interface
 
 uses
+//delphi
   ActnList,
   Buttons, Classes, ComCtrls,
-  CommonfrmMain,
-  CommonSettings, Controls, Dialogs, ExtCtrls, Forms,
-  FreeOTFEExplorerSettings,
-  FreeOTFEExplorerWebDAV, Graphics, ImgList, Menus, Messages, OTFE_U, OTFEConsts_U,
+   Controls, Dialogs, ExtCtrls, Forms,   StdCtrls, SysUtils, ToolWin, Variants, Windows, XPMan,
+   Graphics, ImgList, Menus, Messages,
+  //sdu libs
+
+    OTFE_U, OTFEConsts_U,
   OTFEFreeOTFEBase_U, OTFEFreeOTFEDLL_PartitionImage,
   OTFEFreeOTFEDLL_U, SDFilesystem,
   SDFilesystem_FAT,
@@ -22,8 +24,13 @@ uses
   SDUMultimediaKeys,
   SDUProgressDlg,
   Shredder,
-  StdCtrls, SysUtils, ToolWin,
-  Variants, Windows, XPMan;
+
+  //doxbox
+  CommonfrmMain,
+  CommonSettings,
+  FreeOTFEExplorerSettings,
+  FreeOTFEExplorerWebDAV
+  ;
 
 const
   WM_FREEOTFE_EXPLORER_REFRESH = WM_USER + 1;
@@ -230,6 +237,7 @@ type
     actDisconnectNetworkDrive:         TAction;
     tbbMapNetworkDrive:                TToolButton;
     tbbDisconnectNetworkDrive:         TToolButton;
+    tbbSettings: TToolButton;
     procedure pbGoClick(Sender: TObject);
     procedure edPathKeyPress(Sender: TObject; var Key: Char);
     procedure mnuTreeViewExpandClick(Sender: TObject);
@@ -321,10 +329,10 @@ type
     FNavigateHistory: TStringList;
     FNavigateIdx:     Integer;
 
-    ShredderObj:    TShredder;
+    fShredderObj:    TShredder;
     FOpProgressDlg: TSDUWindowsProgressDialog;
 
-    WebDAVObj:    TFreeOTFEExplorerWebDAV;
+    fWebDAVObj:    TFreeOTFEExplorerWebDAV;
     FMappedDrive: DriveLetterChar;
 
     function HandleCommandLineOpts_Create(): eCmdLine_Exit; OVERRIDE;
@@ -577,8 +585,7 @@ const
 // Just overwrite local WebDAV cache files with zeros, then truncate to 0 bytes
 
 resourcestring
-  FOTFE_EXPL_DESCRIPTION =
-    'An explorer-type application to allow access to DoxBox volumes, without requiring administrator rights to install any drivers';
+
 
   // Toolbar captions
   RS_TOOLBAR_CAPTION_BACK           = 'Back';
@@ -704,7 +711,7 @@ begin
   // But! Only if no main window layout has been stored! If it has, we set it
   // to default
   // SEE CALL TO SDUSetFormLayout(...) FOR DETAILS
-  if (Settings.OptMainWindowLayout = '') then begin
+  if (gSettings.OptMainWindowLayout = '') then begin
     self.Position := poScreenCenter;
   end else begin
     self.Position := poDefault;
@@ -745,24 +752,24 @@ begin
   SetTitleCaption();
 
   // Off man out...
-  ToolBarVolume.Visible   := Settings.OptShowToolbarVolume;
-  ToolBarExplorer.Visible := Settings.OptShowToolbarExplorer;
+  ToolBarVolume.Visible   := gSettings.OptShowToolbarVolume;
+  ToolBarExplorer.Visible := gSettings.OptShowToolbarExplorer;
 
   // Treeview...
-  SDFilesystemTreeView1.ShowHiddenItems    := Settings.OptShowHiddenItems;
+  SDFilesystemTreeView1.ShowHiddenItems    := gSettings.OptShowHiddenItems;
   // Listview...
-  SDFilesystemListView1.ShowHiddenItems    := Settings.OptShowHiddenItems;
-  SDFilesystemListView1.HideKnownFileExtns := Settings.OptHideKnownFileExtns;
+  SDFilesystemListView1.ShowHiddenItems    := gSettings.OptShowHiddenItems;
+  SDFilesystemListView1.HideKnownFileExtns := gSettings.OptHideKnownFileExtns;
 
-  ShredderObj.FileDirUseInt               := True;
-  ShredderObj.OnStartingFileOverwritePass := OverwritePassStarted;
-  ShredderObj.OnCheckForUserCancel        := OverwriteCheckForUserCancel;
-  ShredderObj.IntMethod                   := Settings.OptOverwriteMethod;
-  ShredderObj.IntPasses                   := Settings.OptOverwritePasses;
+  fShredderObj.FileDirUseInt               := True;
+  fShredderObj.OnStartingFileOverwritePass := OverwritePassStarted;
+  fShredderObj.OnCheckForUserCancel        := OverwriteCheckForUserCancel;
+  fShredderObj.IntMethod                   := gSettings.OptOverwriteMethod;
+  fShredderObj.IntPasses                   := gSettings.OptOverwritePasses;
 
   if (Filesystem <> nil) then begin
     if (Filesystem is TSDFilesystem_FAT) then begin
-      Filesystem.PreserveTimeDateStamps := Settings.OptPreserveTimestampsOnStoreExtract;
+      Filesystem.PreserveTimeDateStamps := gSettings.OptPreserveTimestampsOnStoreExtract;
     end;
   end;
 
@@ -804,16 +811,16 @@ begin
   AddToMRUList(filenames);
 
   if (mountAsSystem = ftFreeOTFE) then begin
-    mountedOK := fOTFEFreeOTFEBase.MountFreeOTFE(filenames, mountedAs, ReadOnly);
+    mountedOK := GetFreeOTFEDLL().MountFreeOTFE(filenames, mountedAs, ReadOnly);
   end else
   if (mountAsSystem = ftLinux) then begin
-    mountedOK := fOTFEFreeOTFEBase.MountLinux(filenames, mountedAs, ReadOnly);
+    mountedOK := GetFreeOTFEDLL().MountLinux(filenames, mountedAs, ReadOnly);
   end else begin
-    mountedOK := fOTFEFreeOTFEBase.Mount(filenames, mountedAs, ReadOnly);
+    mountedOK := GetFreeOTFEDLL().Mount(filenames, mountedAs, ReadOnly);
   end;
 
   if not (mountedOK) then begin
-    if (fOTFEFreeOTFEBase.LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
+    if (GetFreeOTFEDLL().LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
       SDUMessageDlg(
         _('Unable to open Box.') + SDUCRLF + SDUCRLF +
         _('Please check your keyphrase and settings, and try again.'),
@@ -832,8 +839,8 @@ begin
   inherited;
 
   // Refresh menuitems...
-  Settings.OptMRUList.RemoveMenuItems(mmMain);
-  Settings.OptMRUList.InsertAfter(miLinuxVolume);
+  gSettings.OptMRUList.RemoveMenuItems(mmMain);
+  gSettings.OptMRUList.InsertAfter(miLinuxVolume);
 
 end;
 
@@ -850,11 +857,11 @@ procedure TfrmFreeOTFEExplorerMain.PostMountGUISetup(driveLetter: DriveLetterCha
 var
   volFilename: String;
 begin
-  volFilename := fOTFEFreeOTFEBase.GetVolFileForDrive(driveLetter);
+  volFilename := GetFreeOTFEDLL().GetVolFileForDrive(driveLetter);
 
   PartitionImage         := TOTFEFreeOTFEDLL_PartitionImage.Create();
   TOTFEFreeOTFEDLL_PartitionImage(PartitionImage).FreeOTFEObj :=
-    fOTFEFreeOTFEBase as TOTFEFreeOTFEDLL;
+    GetFreeOTFEDLL() as TOTFEFreeOTFEDLL;
   TOTFEFreeOTFEDLL_PartitionImage(PartitionImage).Filename := volFilename;
   TOTFEFreeOTFEDLL_PartitionImage(PartitionImage).MountedAs := driveLetter;
   PartitionImage.Mounted := True;
@@ -867,7 +874,7 @@ begin
 
   if (PartitionImage <> nil) then begin
     Filesystem                        := TSDFilesystem_FAT.Create();
-    Filesystem.PreserveTimeDateStamps := Settings.OptPreserveTimestampsOnStoreExtract;
+    Filesystem.PreserveTimeDateStamps := gSettings.OptPreserveTimestampsOnStoreExtract;
 
     Filesystem.PartitionImage := PartitionImage;
     try
@@ -1138,7 +1145,7 @@ var
 begin
   retval := False;
 
-  useDriveLetter := GetNextDriveLetter(#0, Settings.OptDefaultDriveLetter);
+  useDriveLetter := GetNextDriveLetter(#0, gSettings.OptDefaultDriveLetter);
 
   if (useDriveLetter = #0) then begin
     if displayErrors then begin
@@ -1152,20 +1159,20 @@ begin
 
 
   //  networkShare := '\\'+WebDAVObj.Bindings[0].IP+'\'+WebDAVObj.ShareName;
-  networkShare := 'http://' + WebDAVObj.Bindings[0].IP + '/' + WebDAVObj.ShareName + '/';
+  networkShare := 'http://' + fWebDAVObj.Bindings[0].IP + '/' + fWebDAVObj.ShareName + '/';
 
   // Cast to prevent compiler error
   if SDUMapNetworkDrive(networkShare, Char(useDriveLetter)) then begin
     FMappedDrive := useDriveLetter;
     retval       := True;
 
-    if Settings.OptPromptMountSuccessful then begin
+    if gSettings.OptPromptMountSuccessful then begin
       msg := SDUParamSubstitute(_('Your FreeOTFE volume has been mounted as drive: %1'),
         [useDriveLetter + ':']);
       SDUMessageDlg(msg, mtInformation);
     end;
 
-    if Settings.OptExploreAfterMount then begin
+    if gSettings.OptExploreAfterMount then begin
       ExploreDrive(useDriveLetter);
     end;
 
@@ -1562,10 +1569,10 @@ begin
   actDisconnectNetworkDrive.Visible := False;
 
   actMapNetworkDrive.Enabled :=
-    (Mounted() and (FMappedDrive = #0) and Settings.OptWebDAVEnableServer);
+    (Mounted() and (FMappedDrive = #0) and gSettings.OptWebDAVEnableServer);
 
   actDisconnectNetworkDrive.Enabled :=
-    (Mounted() and (FMappedDrive <> #0) and Settings.OptWebDAVEnableServer);
+    (Mounted() and (FMappedDrive <> #0) and gSettings.OptWebDAVEnableServer);
 
   // IMPORTANT!
   // Because the treeview's menuitems have their actionitem set to nil in
@@ -1712,9 +1719,6 @@ var
 begin
   dlg := TfrmAbout.Create(self);
   try
-    dlg.FreeOTFEObj := fOTFEFreeOTFEBase;
-    dlg.BetaNumber  := APP_BETA_BUILD;
-    dlg.Description := FOTFE_EXPL_DESCRIPTION;
     dlg.ShowModal();
   finally
     dlg.Free();
@@ -1949,9 +1953,9 @@ begin
   end;
 
   if (driveLetter = #0) then begin
-    fOTFEFreeOTFEBase.DismountAll();
+    GetFreeOTFEDLL().DismountAll();
   end else begin
-    fOTFEFreeOTFEBase.Dismount(driveLetter);
+    GetFreeOTFEDLL().Dismount(driveLetter);
   end;
 
   // If *we* put anything on the clipboard, clear it
@@ -1983,7 +1987,7 @@ begin
 
   if (PartitionImage <> nil) then begin
     Filesystem                        := TSDFilesystem_FAT.Create();
-    Filesystem.PreserveTimeDateStamps := Settings.OptPreserveTimestampsOnStoreExtract;
+    Filesystem.PreserveTimeDateStamps := gSettings.OptPreserveTimestampsOnStoreExtract;
 
     Filesystem.PartitionImage := PartitionImage;
     try
@@ -2119,14 +2123,14 @@ var
 begin
   inherited;
 
-  prevMounted := fOTFEFreeOTFEBase.DrivesMounted;
+  prevMounted := GetFreeOTFEDLL().DrivesMounted;
 
-  if not (fOTFEFreeOTFEBase.CreateFreeOTFEVolumeWizard()) then begin
-    if (fOTFEFreeOTFEBase.LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
+  if not (GetFreeOTFEDLL().CreateFreeOTFEVolumeWizard()) then begin
+    if (GetFreeOTFEDLL().LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
       SDUMessageDlg(_('DoxBox could not be created'), mtError);
     end;
   end else begin
-    newMounted := fOTFEFreeOTFEBase.DrivesMounted;
+    newMounted := GetFreeOTFEDLL().DrivesMounted;
 
     // If the "drive letters" mounted have changed, the new volume was
     // automatically mounted; setup for this
@@ -2476,22 +2480,22 @@ begin
     // Note: If Settings.OptStoreLayout is TRUE, then the layout would have
     //       been deleted from the settings the last time settings were
     //       saved - so this should be using the defaults
-    SDUSetFormLayout(self, Settings.OptMainWindowLayout);
+    SDUSetFormLayout(self, gSettings.OptMainWindowLayout);
 
-    ToolBarVolume.Visible         := Settings.OptShowToolbarVolume;
-    ToolBarExplorer.Visible       := Settings.OptShowToolbarExplorer;
-    pnlAddressBar.Visible         := Settings.OptShowAddressBar;
+    ToolBarVolume.Visible         := gSettings.OptShowToolbarVolume;
+    ToolBarExplorer.Visible       := gSettings.OptShowToolbarExplorer;
+    pnlAddressBar.Visible         := gSettings.OptShowAddressBar;
     // Important: Must turn these next two on/off in this order!
-    Splitter1.Visible             := (Settings.OptShowExplorerBar <> ebNone);
-    SDFilesystemTreeView1.Visible := (Settings.OptShowExplorerBar = ebFolders);
-    StatusBar_Status.Visible      := Settings.OptShowStatusbar;
+    Splitter1.Visible             := (gSettings.OptShowExplorerBar <> ebNone);
+    SDFilesystemTreeView1.Visible := (gSettings.OptShowExplorerBar = ebFolders);
+    StatusBar_Status.Visible      := gSettings.OptShowStatusbar;
     StatusBar_Hint.Visible        := False;
 
-    if (Settings.OptExplorerBarWidth > 0) then begin
-      SDFilesystemTreeView1.Width := Settings.OptExplorerBarWidth;
+    if (gSettings.OptExplorerBarWidth > 0) then begin
+      SDFilesystemTreeView1.Width := gSettings.OptExplorerBarWidth;
     end;
 
-    SDFilesystemListView1.Layout := Settings.OptListViewLayout;
+    SDFilesystemListView1.Layout := gSettings.OptListViewLayout;
 
     EnableDisableControls();
   finally
@@ -2713,12 +2717,12 @@ begin
   inherited;
 
   // Odd man out...
-  Settings.OptShowToolbarVolume   := ToolBarVolume.Visible;
-  Settings.OptShowToolbarExplorer := ToolBarExplorer.Visible;
+  gSettings.OptShowToolbarVolume   := ToolBarVolume.Visible;
+  gSettings.OptShowToolbarExplorer := ToolBarExplorer.Visible;
 
   dlg := TfrmOptions_FreeOTFEExplorer.Create(self);
   try
-    dlg.OTFEFreeOTFEBase := fOTFEFreeOTFEBase;
+//    dlg.OTFEFreeOTFEBase := fOTFEFreeOTFEBase;
     if (dlg.ShowModal() = mrOk) then begin
       ReloadSettings();
       actRefreshExecute(nil);
@@ -2751,7 +2755,7 @@ begin
     if SDUWarnYN(SDUParamSubstitute(_('This will overwrite:' + SDUCRLF +
       SDUCRLF + '%1' + SDUCRLF + SDUCRLF + 'Are you sure you want to do this?'),
       [overwriteItem])) then begin
-      if (ShredderObj.DestroyFileOrDir(overwriteItem, False, False, False) = srError) then begin
+      if (fShredderObj.DestroyFileOrDir(overwriteItem, False, False, False) = srError) then begin
         SDUMessageDlg(_('Overwrite failed'), mtError);
       end;
     end;
@@ -2769,7 +2773,7 @@ begin
     if SDUWarnYN(SDUParamSubstitute(_('This will overwrite:' + SDUCRLF +
       SDUCRLF + '%1' + SDUCRLF + SDUCRLF + 'and everything contained within it.' +
       SDUCRLF + SDUCRLF + 'Are you sure you want to do this?'), [overwriteItem])) then begin
-      if (ShredderObj.DestroyFileOrDir(overwriteItem, False, False, False) = srError) then begin
+      if (fShredderObj.DestroyFileOrDir(overwriteItem, False, False, False) = srError) then begin
         SDUMessageDlg(_('Overwrite failed'), mtError);
       end;
     end;
@@ -3289,7 +3293,7 @@ procedure TfrmFreeOTFEExplorerMain.SetIconListsAndIndexes();
 begin
   inherited;
 
-  if Settings.OptToolbarVolumeLarge then begin
+  if gSettings.OptToolbarVolumeLarge then begin
     ToolbarVolume.Images := ilToolbarIcons_Large;
        {
     tbbNew.ImageIndex       := FIconIdx_Large_New;
@@ -3305,7 +3309,7 @@ begin
     }
   end;
 
-  if Settings.OptToolbarExplorerLarge then begin
+  if gSettings.OptToolbarExplorerLarge then begin
     ToolbarExplorer.Images := ilToolbarIcons_Large;
     (*
     tbbNavigateBack.ImageIndex           := FIconIdx_Large_Back;
@@ -3387,15 +3391,15 @@ begin
   // Visible/invisible are set in EnableDisableControls()
 
   // Toolbar captions...
-  if Settings.OptToolbarVolumeLarge then begin
-    ToolBarVolume.ShowCaptions := Settings.OptToolbarVolumeCaptions;
+  if gSettings.OptToolbarVolumeLarge then begin
+    ToolBarVolume.ShowCaptions := gSettings.OptToolbarVolumeCaptions;
   end else begin
     ToolBarVolume.ShowCaptions := False;
   end;
 
   // Toolbar captions...
-  if Settings.OptToolbarExplorerLarge then begin
-    ToolBarExplorer.ShowCaptions := Settings.OptToolbarExplorerCaptions;
+  if gSettings.OptToolbarExplorerLarge then begin
+    ToolBarExplorer.ShowCaptions := gSettings.OptToolbarExplorerCaptions;
   end else begin
     ToolBarExplorer.ShowCaptions := False;
   end;
@@ -3419,31 +3423,24 @@ procedure TfrmFreeOTFEExplorerMain.FormClose(Sender: TObject; var Action: TClose
 begin
   inherited;
 
-  FNavigateHistory.Free();
-
   // We save settings here, in case the user changed any of the toolbar
   // visible/invisible, etc settings
   // Note that if the user hasn't configured a location to save their settings,
   // this save will have no effect
-  Settings.OptMainWindowLayout    := SDUGetFormLayout(self);
-  Settings.OptExplorerBarWidth    := SDFilesystemTreeView1.Width;
-  Settings.OptListViewLayout      := SDFilesystemListView1.Layout;
-  Settings.OptShowToolbarVolume   := ToolBarVolume.Visible;
-  Settings.OptShowToolbarExplorer := ToolBarExplorer.Visible;
-  Settings.OptShowAddressBar      := pnlAddressBar.Visible;
-  Settings.OptShowExplorerBar     := ebNone;
+  gSettings.OptMainWindowLayout    := SDUGetFormLayout(self);
+  gSettings.OptExplorerBarWidth    := SDFilesystemTreeView1.Width;
+  gSettings.OptListViewLayout      := SDFilesystemListView1.Layout;
+  gSettings.OptShowToolbarVolume   := ToolBarVolume.Visible;
+  gSettings.OptShowToolbarExplorer := ToolBarExplorer.Visible;
+  gSettings.OptShowAddressBar      := pnlAddressBar.Visible;
+  gSettings.OptShowExplorerBar     := ebNone;
   if SDFilesystemTreeView1.Visible then begin
-    Settings.OptShowExplorerBar := ebFolders;
+    gSettings.OptShowExplorerBar := ebFolders;
   end;
-  Settings.OptShowStatusbar := (StatusBar_Status.Visible or StatusBar_Hint.Visible);
+  gSettings.OptShowStatusbar := (StatusBar_Status.Visible or StatusBar_Hint.Visible);
 
-  Settings.Save();
-  Settings.Free();
+  gSettings.Save();
 
-  //  WebDAVShutdown();
-  WebDAVObj.Free();
-
-  ShredderObj.Free();
 
 //  fOTFEFreeOTFEBase.Free();
 
@@ -3462,23 +3459,27 @@ var
   //  sysMagGlassIcon: TIcon;
   settingsFilename: String;
 begin
-fOTFEFreeOTFEBase := TOTFEFreeOTFEDLL.Create();
+  gSettings          := TFreeOTFEExplorerSettings.Create();
+  SetFreeOTFEType(TOTFEFreeOTFEDLL);
+//  fOTFEFreeOTFEBase := TOTFEFreeOTFEDLL.Create();
+
+
   FInFormShow   := False;
   FInRefreshing := False;
 
 
 
-  ShredderObj  := TShredder.Create(nil);
-  WebDAVObj    := TFreeOTFEExplorerWebDAV.Create(nil);
+  fShredderObj  := TShredder.Create(nil);
+  fWebDAVObj    := TFreeOTFEExplorerWebDAV.Create(nil);
   FMappedDrive := #0;
 
-  Settings          := TFreeOTFEExplorerSettings.Create();
-  CommonSettingsObj := Settings;
+
+  CommonSettingsObj := gSettings;
   if SDUCommandLineParameter(CMDLINE_SETTINGSFILE, settingsFilename) then begin
     settingsFilename        := SDURelativePathToAbsolute(settingsFilename);
-    Settings.CustomLocation := settingsFilename;
+    gSettings.CustomLocation := settingsFilename;
   end;
-  Settings.Load();
+  gSettings.Load();
 
   inherited;
 
@@ -3559,7 +3560,6 @@ fOTFEFreeOTFEBase := TOTFEFreeOTFEDLL.Create();
   Screen.Cursors[crFreeOTFEDragCopy] := LoadCursor(HInstance, CURSOR_DRAG_COPY);
 
 
-  (fOTFEFreeOTFEBase as TOTFEFreeOTFEDLL).ExeDir := ExtractFilePath(Application.ExeName);
 
   // We set these to invisible so that if they're disabled by the user
   // settings, it doens't flicker on then off
@@ -3584,12 +3584,24 @@ fOTFEFreeOTFEBase := TOTFEFreeOTFEDLL.Create();
   // previously selected node appears selected
   SDFilesystemTreeView1.RightClickSelect := True;
 
+
 end;
 
 procedure TfrmFreeOTFEExplorerMain.FormDestroy(Sender: TObject);
 begin
   inherited;
- FreeAndNil(fOtfeFreeOtfeBase);
+  FreeAndNil(gSettings );
+//   FreeAndNil(fOtfeFreeOtfeBase);
+
+
+
+  FreeAndNil( fShredderObj );
+ FreeAndNil( fWebDAVObj );
+ //  WebDAVShutdown();
+
+
+  FNavigateHistory.Free();
+
 end;
 
 procedure TfrmFreeOTFEExplorerMain.FormResize(Sender: TObject);
@@ -3906,11 +3918,11 @@ begin
   Result := ceSUCCESS;
   if SDUCommandLineSwitch(CMDLINE_MOUNT) then begin
 
-    preMounted := fOTFEFreeOTFEBase.DrivesMounted;
+    preMounted := GetFreeOTFEDLL().DrivesMounted;
 
     Result := inherited HandleCommandLineOpts_Mount();
 
-    postMounted := fOTFEFreeOTFEBase.DrivesMounted;
+    postMounted := GetFreeOTFEDLL().DrivesMounted;
 
     if ((Result = ceSUCCESS) and (preMounted <> postMounted) and
                            // Sanity check
@@ -4247,10 +4259,10 @@ var
 begin
   allOK := True;
 
-  if (Settings.OptDefaultStoreOp = dsoCopy) then begin
+  if (gSettings.OptDefaultStoreOp = dsoCopy) then begin
     opType := cmCopy;
   end else
-  if (Settings.OptDefaultStoreOp = dsoMove) then begin
+  if (gSettings.OptDefaultStoreOp = dsoMove) then begin
     opType := cmMove;
   end else begin
     opType := cmCopy; // Get rid of compiler warning
@@ -4429,7 +4441,7 @@ begin
   end;
 
 
-  useMoveDeletionMethod := Settings.OptMoveDeletionMethod;
+  useMoveDeletionMethod := gSettings.OptMoveDeletionMethod;
   if ((opType = cmMove) and not (srcIsMountedFSNotLocalFS)) then begin
     if (useMoveDeletionMethod = mdmPrompt) then begin
       dlgOverwritePrompt := TfrmOverwritePrompt.Create(self);
@@ -5078,7 +5090,7 @@ begin
     ProgressDlgSetLineTwo(_('Overwriting original...'));
     SetStatusMsg(SDUParamSubstitute(_('Overwriting: %1'), [item]));
 
-    retval := (ShredderObj.DestroyFileOrDir(item, False, True) = srSuccess);
+    retval := (fShredderObj.DestroyFileOrDir(item, False, True) = srSuccess);
   end;
 
   // If there was a problem, allow the user to abort/retry/ignore
@@ -5444,36 +5456,34 @@ function TfrmFreeOTFEExplorerMain.DoTests: Boolean;
 var
   mountList: TStringList;
   mountedAs: DriveLetterString;
-  prettyMountedAs, vol_path, key_file, les_file: String;
+  vol_path, key_file, les_file,projPath: String;
   vl: Integer;
 const
   TEST_VOLS: array[0..12] of String =
-    ('a.box', 'b.box', 'c.box', 'd.box', 'e.box', 'e.box', 'f.box', 'luks.box',
-    'luks_essiv.box', 'a.box', 'b.box', 'dmcrypt_dx.box', 'dmcrypt_dx.box');
+    ('a.box', 'b.box', 'c.box', 'd.box', 'e.box',
+     'e.box', 'f.box', 'luks.box',  'luks_essiv.box', 'a.box',
+      'b.box', 'dmcrypt_dx.box', 'dmcrypt_dx.box');
   PASSWORDS: array[0..12] of String =
-    ('password', 'password', '!"£$%^&*()', 'password', 'password', '5ekr1t',
-    'password', 'password', 'password', 'secret', 'secret', 'password', '5ekr1t');
+    ('password', 'password', '!"£$%^&*()', 'password', 'password',
+     '5ekr1t',    'password', 'password', 'password', 'secret',
+      'secret', 'password', '5ekr1t');
   ITERATIONS: array[0..12] of Integer =
-    (2048, 2048, 2048, 2048, 10240, 2048, 2048, 2048, 2048, 2048, 2048, 2048, 2048);
+    (2048, 2048, 2048, 2048, 10240,
+     2048, 2048, 2048, 2048, 2048,
+     2048, 2048, 2048);
   OFFSET: array[0..12] of Integer =
-    (0, 0, 0, 0, 0, 2097152, 0, 0, 0, 0, 0, 0, 0);
+    (0, 0, 0, 0, 0,
+     2097152, 0, 0, 0, 0,
+      0, 0, 0);
   KEY_FILES: array[0..12] of String =
-    ('', '', '', '', '', '', '', '', '', 'a.cdb', 'b.cdb', '', '');
+    ('', '', '', '', '',
+    '', '', '', '', 'a.cdb',
+    'b.cdb', '', '');
   LES_FILES: array[0..12] of String =
-    ('', '', '', '', '', '', '', '', '', '', '', 'dmcrypt_dx.les', 'dmcrypt_hid.les');
-    {
-     TEST_VOLS: array[0..0] of String =
-    ('a.box');
-  PASSWORDS: array[0..0] of String =
-    ('password');
-  ITERATIONS: array[0..0] of Integer =
-    (2048);
-  OFFSET: array[0..0] of Integer =
-    (0);
-  KEY_FILES: array[0..0] of String =
-    ('');
-  LES_FILES: array[0..0] of String =
-    ('');   }
+    ('', '', '', '', '',
+     '', '', '', '', '',
+      '', 'dmcrypt_dx.les', 'dmcrypt_hid.les');
+
   procedure CheckMountedOK;
   var
    s :string;
@@ -5484,7 +5494,7 @@ const
      PostMountGUISetup(mountedAs[1]);
      s:= SDFilesystemListView1.DirItem[0].Filename;//ToNode(SDFilesystemListView1.Items[0]);
 //    s:= GetSelectedPath(nil);
-    if s <> 'readme.txt' then  begin
+    if LowerCase(s) <> 'readme.txt' then  begin
         SDUMessageDlg('File: readme.txt not found');
         Result := False;
       end;
@@ -5510,8 +5520,8 @@ const
     Application.ProcessMessages;
 //    RefreshDrives();
     Application.ProcessMessages;
-    if CountValidDrives(fOtfeFreeOtfeBase.DrivesMounted) > 0 then begin
-      SDUMessageDlg(Format('Drive(s) %s not unmounted', [fOtfeFreeOtfeBase.DrivesMounted]));
+    if CountValidDrives(GetFreeOTFEDLL().DrivesMounted) > 0 then begin
+      SDUMessageDlg(Format('Drive(s) %s not unmounted', [GetFreeOTFEDLL().DrivesMounted]));
       Result := False;
     end;
   end;
@@ -5526,7 +5536,13 @@ begin
   try
     //for loop is optimised into reverse order , but want to process forwards
     vl       := 0;
-    vol_path := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\test_vols\');
+    // debug ver is in subdir
+    {$IFDEF DEBUG}
+      projPath := 'P:\Projects\Delphi\doxbox\';
+    {$ELSE}
+    projPath := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\';
+    {$ENDIF}
+    vol_path := projPath + 'test_vols\';
     while vl <= high(TEST_VOLS) do begin
 
       //test one at a time as this is normal use
@@ -5539,14 +5555,14 @@ begin
       if LES_FILES[vl] <> '' then
         les_file := vol_path + LES_FILES[vl];
 
-      if fOtfeFreeOtfeBase.IsLUKSVolume(vol_path + TEST_VOLS[vl]) or (LES_FILES[vl] <> '') then
+      if GetFreeOTFEDLL().IsLUKSVolume(vol_path + TEST_VOLS[vl]) or (LES_FILES[vl] <> '') then
       begin
-        if not fOtfeFreeOtfeBase.MountLinux(mountList, mountedAs, True, les_file,SDUStringToSDUBytes(PASSWORDS[vl]),
+        if not GetFreeOTFEDLL().MountLinux(mountList, mountedAs, True, les_file,SDUStringToSDUBytes(PASSWORDS[vl]),
           key_file, False, nlLF, 0, True) then
           Result := False;
       end else begin
         //call silently
-        if not fOtfeFreeOtfeBase.MountFreeOTFE(mountList, mountedAs, True,
+        if not GetFreeOTFEDLL().MountFreeOTFE(mountList, mountedAs, True,
           key_file,SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False, True, 256, ITERATIONS[vl]) then
           Result := False;
       end;

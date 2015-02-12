@@ -135,7 +135,6 @@ end;
 function TfmeOptions_SystemTray.GetClickAction(cbox: TComboBox): TSystemTrayClickAction;
 var
   stca:   TSystemTrayClickAction;
-  retval: TSystemTrayClickAction;
 begin
   retval := stcaDoNothing;
 

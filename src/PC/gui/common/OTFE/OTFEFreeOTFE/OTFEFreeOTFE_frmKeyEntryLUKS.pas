@@ -65,7 +65,7 @@ type
     procedure DoCancel();
 
   PUBLIC
-    fFreeOTFEObj: TOTFEFreeOTFEBase;
+//    fFreeOTFEObj: TOTFEFreeOTFEBase;
 
     procedure Initialize();
 
@@ -162,15 +162,15 @@ var
 begin
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.DefaultOptions();
 
-  if (fFreeOTFEObj is TOTFEFreeOTFE) then begin
+  if (GetFreeOTFEBase() is TOTFEFreeOTFE) then begin
     if (cbDrive.Items.Count > 0) then begin
       cbDrive.ItemIndex := 0;
 
-      if (TOTFEFreeOTFE(fFreeOTFEObj).DefaultDriveLetter <> #0) then begin
+      if (GetFreeOTFE().DefaultDriveLetter <> #0) then begin
         // Start from 1; skip the default
         for i := 1 to (cbDrive.items.Count - 1) do begin
           currDriveLetter := ansichar(cbDrive.Items[i][1]);
-          if (currDriveLetter >= TOTFEFreeOTFE(fFreeOTFEObj).DefaultDriveLetter) then begin
+          if (currDriveLetter >= GetFreeOTFE().DefaultDriveLetter) then begin
             cbDrive.ItemIndex := i;
             break;
           end;
@@ -179,8 +179,8 @@ begin
     end;
   end;
 
-  if (fFreeOTFEObj is TOTFEFreeOTFE) then begin
-    SetMountAs(TOTFEFreeOTFE(fFreeOTFEObj).DefaultMountAs);
+  if (GetFreeOTFEBase() is TOTFEFreeOTFE) then begin
+    SetMountAs(GetFreeOTFE().DefaultMountAs);
   end else begin
     SetMountAs(fomaFixedDisk);
   end;
@@ -265,14 +265,14 @@ begin
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.CursorToEndOfPassword();
 
   // Certain controls only visble if used in conjunction with drive mounting
-  lblDrive.Visible           := fFreeOTFEObj is TOTFEFreeOTFE;
-  cbDrive.Visible            := fFreeOTFEObj is TOTFEFreeOTFE;
-  lblMountAs.Visible         := fFreeOTFEObj is TOTFEFreeOTFE;
-  cbMediaType.Visible        := fFreeOTFEObj is TOTFEFreeOTFE;
-  ckMountForAllUsers.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
+  lblDrive.Visible           := GetFreeOTFEBase() is TOTFEFreeOTFE;
+  cbDrive.Visible            := GetFreeOTFEBase() is TOTFEFreeOTFE;
+  lblMountAs.Visible         := GetFreeOTFEBase() is TOTFEFreeOTFE;
+  cbMediaType.Visible        := GetFreeOTFEBase() is TOTFEFreeOTFE;
+  ckMountForAllUsers.Visible := GetFreeOTFEBase() is TOTFEFreeOTFE;
 
   // Prevent making remaining control look odd, stuck in the middle
-  if not (fFreeOTFEObj is TOTFEFreeOTFE) then begin
+  if not (GetFreeOTFEBase() is TOTFEFreeOTFE) then begin
     ckMountReadonly.top  := lblDrive.top;
     ckMountReadonly.left := lblDrive.left;
   end;
@@ -475,7 +475,7 @@ end;
 
 procedure TfrmKeyEntryLUKS.Initialize();
 begin
-  OTFEFreeOTFELUKSKeyOrKeyfileEntry1.FreeOTFEObj := fFreeOTFEObj;
+//  OTFEFreeOTFELUKSKeyOrKeyfileEntry1.FreeOTFEObj := fFreeOTFEObj;
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.Initialize();
 
   PopulateDrives();

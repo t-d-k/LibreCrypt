@@ -148,7 +148,7 @@ type
 
 var
   // Global variable
-  Settings: TFreeOTFESettings;
+  gSettings: TFreeOTFESettings;
 
 function OnExitWhenMountedTitle(Value: TOnExitWhenMounted): String;
 function OnExitWhenPortableModeTitle(Value: TOnExitWhenPortableMode): String;

@@ -47,11 +47,13 @@ type
     procedure pbInfoMainCypherClick(Sender: TObject);
     procedure pbInfoIVCypherClick(Sender: TObject);
   PRIVATE
+    fDriveLetter:  DriveLetterChar;
     function GetHiddenOffset(): Int64;
+
     { Private declarations }
   PUBLIC
-    DriveLetter:  DriveLetterChar;
-    OTFEFreeOTFE: TOTFEFreeOTFE;
+     property DriveLetter :  DriveLetterChar read fDriveLetter write fDriveLetter;
+//    OTFEFreeOTFE: TOTFEFreeOTFE;
   end;
 
 implementation
@@ -75,7 +77,7 @@ var
   hashDetails:   TFreeOTFEHash;
   cypherDetails: TFreeOTFECypher_v3;
 begin
-  edDrive.Text := DriveLetter + ':';
+  edDrive.Text := fDriveLetter + ':';
 
   edVolumeFile.Text        := RS_UNKNOWN;
   edReadOnly.Text          := RS_UNKNOWN;
@@ -94,7 +96,7 @@ begin
   pbInfoIVCypher.Enabled := False;
 
 
-  if OTFEFreeOTFE.GetVolumeInfo(DriveLetter, volumeInfo) then begin
+  if GetFreeOTFEBase().GetVolumeInfo(fDriveLetter, volumeInfo) then begin
     edVolumeFile.Text := volumeInfo.Filename;
     if volumeInfo.ReadOnly then begin
       edReadOnly.Text := _('Readonly');
@@ -114,9 +116,9 @@ begin
       edIVHash.Enabled     := True;
       pbInfoIVHash.Enabled := True;
 
-      if OTFEFreeOTFE.GetSpecificHashDetails(volumeInfo.IVHashDevice,
+      if GetFreeOTFEBase().GetSpecificHashDetails(volumeInfo.IVHashDevice,
         volumeInfo.IVHashGUID, hashDetails) then begin
-        edIVHash.Text := OTFEFreeOTFE.GetHashDisplayTitle(hashDetails);
+        edIVHash.Text := GetFreeOTFEBase().GetHashDisplayTitle(hashDetails);
       end;
 
     end;
@@ -131,18 +133,18 @@ begin
       edIVCypher.Enabled     := True;
       pbInfoIVCypher.Enabled := True;
 
-      if OTFEFreeOTFE.GetSpecificCypherDetails(volumeInfo.IVCypherDevice,
+      if GetFreeOTFEBase().GetSpecificCypherDetails(volumeInfo.IVCypherDevice,
         volumeInfo.IVCypherGUID, cypherDetails) then begin
-        edIVCypher.Text := OTFEFreeOTFE.GetCypherDisplayTitle(cypherDetails);
+        edIVCypher.Text := GetFreeOTFEBase().GetCypherDisplayTitle(cypherDetails);
       end;
 
     end;
 
 
 
-    if OTFEFreeOTFE.GetSpecificCypherDetails(volumeInfo.MainCypherDevice,
+    if GetFreeOTFEBase().GetSpecificCypherDetails(volumeInfo.MainCypherDevice,
       volumeInfo.MainCypherGUID, cypherDetails) then begin
-      edMainCypher.Text := OTFEFreeOTFE.GetCypherDisplayTitle(cypherDetails);
+      edMainCypher.Text := GetFreeOTFEBase().GetCypherDisplayTitle(cypherDetails);
     end;
 
     edDeviceName.Text := volumeInfo.DeviceName;
@@ -150,7 +152,7 @@ begin
     edHiddenOffset.Text := IntToStr(GetHiddenOffset());
   end else begin
     SDUMessageDlg(
-      SDUParamSubstitute(_('Unable to get drive properties for drive %1:'), [DriveLetter]),
+      SDUParamSubstitute(_('Unable to get drive properties for drive %1:'), [fDriveLetter]),
       mtError
       );
   end;
@@ -162,8 +164,8 @@ procedure TfrmFreeOTFEVolProperties.pbInfoIVHashClick(Sender: TObject);
 var
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
 begin
-  if OTFEFreeOTFE.GetVolumeInfo(DriveLetter, volumeInfo) then begin
-    OTFEFreeOTFE.ShowHashDetailsDlg(volumeInfo.IVHashDevice, volumeInfo.IVHashGUID);
+  if GetFreeOTFEBase().GetVolumeInfo(fDriveLetter, volumeInfo) then begin
+    GetFreeOTFEBase().ShowHashDetailsDlg(volumeInfo.IVHashDevice, volumeInfo.IVHashGUID);
   end;
 
 end;
@@ -172,8 +174,8 @@ procedure TfrmFreeOTFEVolProperties.pbInfoMainCypherClick(Sender: TObject);
 var
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
 begin
-  if OTFEFreeOTFE.GetVolumeInfo(DriveLetter, volumeInfo) then begin
-    OTFEFreeOTFE.ShowCypherDetailsDlg(volumeInfo.MainCypherDevice, volumeInfo.MainCypherGUID);
+  if GetFreeOTFEBase().GetVolumeInfo(fDriveLetter, volumeInfo) then begin
+    GetFreeOTFEBase().ShowCypherDetailsDlg(volumeInfo.MainCypherDevice, volumeInfo.MainCypherGUID);
   end;
 
 end;
@@ -182,8 +184,8 @@ procedure TfrmFreeOTFEVolProperties.pbInfoIVCypherClick(Sender: TObject);
 var
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
 begin
-  if OTFEFreeOTFE.GetVolumeInfo(DriveLetter, volumeInfo) then begin
-    OTFEFreeOTFE.ShowCypherDetailsDlg(volumeInfo.IVCypherDevice, volumeInfo.IVCypherGUID);
+  if GetFreeOTFEBase().GetVolumeInfo(fDriveLetter, volumeInfo) then begin
+    GetFreeOTFEBase().ShowCypherDetailsDlg(volumeInfo.IVCypherDevice, volumeInfo.IVCypherGUID);
   end;
 
 end;
@@ -194,7 +196,7 @@ var
   Total, Avail, Used: Int64;
   Disk:               Byte;
 begin
-  Disk   := Byte(DriveLetter) - $40;
+  Disk   := Byte(fDriveLetter) - $40;
   Total  := DiskSize(Disk);
   Avail  := DiskFree(Disk);
   Used   := Total - Avail;

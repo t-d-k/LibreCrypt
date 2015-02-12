@@ -93,7 +93,6 @@ end;
 function TfrmGridReport_Cypher.ColIdxToColumn(colIdx: Integer): TGridColumn_Cypher;
 var
   i:      TGridColumn_Cypher;
-  retval: TGridColumn_Cypher;
 begin
   retval := low(TGridColumn_Cypher);
 
@@ -171,7 +170,7 @@ var
 begin
   inherited;
 
-  if OTFEFreeOTFE.GetCypherDrivers(allData) then begin
+  if GetFreeOTFEBase().GetCypherDrivers(allData) then begin
     currRow := 0;
     for i := low(allData) to high(allData) do begin
       currDriver := allData[i];
@@ -187,7 +186,7 @@ begin
 
         AddSubItem(gccDriverTitle, item, String(currDriver.Title));
         AddSubItem(gccDriverVersion, item,
-          OTFEFreeOTFE.VersionIDToStr(currDriver.VersionID));
+          GetFreeOTFEBase().VersionIDToStr(currDriver.VersionID));
         AddSubItem(gccDriverGUID, item, GUIDToString(currDriver.DriverGUID));
         AddSubItem(gccDriverDeviceName, item, currDriver.DeviceName);
         AddSubItem(gccDriverUserModeName, item, currDriver.DeviceUserModeName);
@@ -199,7 +198,7 @@ begin
         AddSubItem(gccCypherKeysizeRequired, item, IntToStr(currImpl.KeySizeRequired));
         AddSubItem(gccCypherBlocksize, item, IntToStr(currImpl.BlockSize));
         AddSubItem(gccCypherVersion, item,
-          OTFEFreeOTFE.VersionIDToStr(currImpl.VersionID));
+          GetFreeOTFEBase().VersionIDToStr(currImpl.VersionID));
         AddSubItem(gccCypherGUID, item, GUIDToString(currImpl.CypherGUID));
       end;
     end;
@@ -221,7 +220,7 @@ begin
   inherited;
 
   retval := 0;
-  if OTFEFreeOTFE.GetCypherDrivers(allData) then begin
+  if GetFreeOTFEBase().GetCypherDrivers(allData) then begin
     retval := high(allData) - low(allData) + 1;
   end;
 
@@ -230,7 +229,6 @@ end;
 
 function TfrmGridReport_Cypher.CountImplementations(): Integer;
 var
-  retval:     Integer;
   allData:    TFreeOTFECypherDriverArray;
   i:          Integer;
   currDriver: TFreeOTFECypherDriver;
@@ -238,7 +236,7 @@ begin
   inherited;
 
   retval := 0;
-  if OTFEFreeOTFE.GetCypherDrivers(allData) then begin
+  if GetFreeOTFEBase().GetCypherDrivers(allData) then begin
     for i := low(allData) to high(allData) do begin
       currDriver := allData[i];
       retval     := retval + currDriver.CypherCount;
@@ -265,7 +263,7 @@ begin
 
   if (CountImplementations() <= 0) then begin
     msg := _('No cypher algorithms could be found.');
-    if (OTFEFreeOTFE is TOTFEFreeOTFE) then begin
+    if (GetFreeOTFEBase() is TOTFEFreeOTFE) then begin
       msg := msg + SDUCRLF + SDUCRLF +
         _('Please start portable mode, or click "Drivers..." to install one or more cypher drivers');
     end;
@@ -276,8 +274,6 @@ begin
 end;
 
 function TfrmGridReport_Cypher.GetColumnTitle(column: TGridColumn_Cypher): WideString;
-var
-  retval: WideString;
 begin
   retval := RS_UNKNOWN;
 

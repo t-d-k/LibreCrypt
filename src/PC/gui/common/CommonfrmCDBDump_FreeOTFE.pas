@@ -143,7 +143,7 @@ end;
 
 function TfrmCDBDump_FreeOTFE.DumpLUKSDataToFile(): Boolean;
 begin
-  Result := OTFEFreeOTFE.DumpCriticalDataToFile(VolumeFilename, Offset,
+  Result := GetFreeOTFEBase().DumpCriticalDataToFile(VolumeFilename, Offset,
     GetUserKey, SaltLength,  // In bits
     KeyIterations, DumpFilename);
 end;

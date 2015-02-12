@@ -63,7 +63,7 @@ type
     procedure EnableDisableControls();
 
   PUBLIC
-    OTFEFreeOTFE: TOTFEFreeOTFEBase;
+//    OTFEFreeOTFE: TOTFEFreeOTFEBase;
 
     property OpType: TCDBOperationType Read FOpType Write SetOpType;
     property silent: Boolean Read fsilent Write fsilent;
@@ -104,9 +104,9 @@ begin
     SelectDestFile.Filename := '';
   end;
 
-  SelectSrcFile.OTFEFreeOTFE := OTFEFreeOTFE;
+//  SelectSrcFile.OTFEFreeOTFE := OTFEFreeOTFE;
 
-  SelectDestFile.OTFEFreeOTFE := OTFEFreeOTFE;
+//  SelectDestFile.OTFEFreeOTFE := OTFEFreeOTFE;
 
   se64UnitOffsetSrc.Value  := 0;
   se64UnitOffsetDest.Value := 0;
@@ -273,7 +273,7 @@ begin
 
   if (FOpType = opBackup) then begin
     if SanityCheckBackup() then begin
-      if OTFEFreeOTFE.BackupVolumeCriticalData(GetSrcFilename, GetSrcOffset,
+      if GetFreeOTFEBase().BackupVolumeCriticalData(GetSrcFilename, GetSrcOffset,
         GetDestFilename) then begin
         if not fsilent then
           SDUMessageDlg(_('Backup operation completed successfully.'), mtInformation);
@@ -290,7 +290,7 @@ begin
   end  // if (dlgType = opBackup) then
   else begin
     if SanityCheckRestore() then begin
-      if OTFEFreeOTFE.RestoreVolumeCriticalData(GetSrcFilename, GetDestFilename,
+      if GetFreeOTFEBase().RestoreVolumeCriticalData(GetSrcFilename, GetDestFilename,
         GetDestOffset) then begin
         if not fsilent then
           SDUMessageDlg(_('Restore operation completed successfully.'), mtInformation);

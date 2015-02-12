@@ -24,8 +24,8 @@ uses
 
 const
   // The filename of the DLL
-  CRYPTLIB_DLL = 'cl32.dll';
-
+  CRYPTLIB32_DLL = 'cryptlib\cl32.dll';
+  CRYPTLIB64_DLL = 'cryptlib\cl64.dll';
 type
   // #define TC_RET  __declspec( dllXXport )  int  __stdcall  /* DLL XXport ret.val.*/
   TC_RET = integer;
@@ -181,8 +181,6 @@ const
   // The maximum size of a text string (e.g.key owner name) 
   cryptlib_CRYPT_MAX_TEXTSIZE = 64;
 
-
-
   // Status Codes
 
   // No error in function call
@@ -237,7 +235,7 @@ type
   Pcryptlib_CRYPT_QUERY_INFO = ^Tcryptlib_CRYPT_QUERY_INFO;
   Tcryptlib_CRYPT_QUERY_INFO = record
     // Algorithm information
-    algoName: array [0..(cryptlib_CRYPT_MAX_TEXTSIZE-1)] of char;  // Algorithm name
+    algoName: array [0..(cryptlib_CRYPT_MAX_TEXTSIZE-1)] of Ansichar;  // Algorithm name
     blockSize: integer;   // Block size of the algorithm
     minKeySize: integer;  // Minimum key size in bytes
     keySize: integer;     // Recommended key size in bytes
@@ -349,7 +347,12 @@ function cryptlib_RNG(lengthBytes: integer): ansistring;
 implementation
 
 uses
-  Math;  // Required for min(...)
+//delphi
+  Math,// Required for min(...)
+  strutils,//for ifthen
+  //sdu
+  sdugeneral
+  ;
 
 // Internal - populate the global variable function pointers
 procedure _cryptlib_GetDLLProcAddresses(); forward;
@@ -385,28 +388,26 @@ begin
   Result := (status = cryptlib_CRYPT_OK);
 end;
 
-
-
 function cryptlib_LoadDLL(): boolean;
 var
-  allOK: boolean;
+  dll : widestring;
 begin
-  allOK := FALSE;
+  result := FALSE;
 
   // If the lib is already loaded, just return TRUE
-  if (hCryptLibDLL <> 0) then
-    begin
-    allOK := TRUE;
-    end
-  else
-    begin
-    hCryptLibDLL := LoadLibrary(CRYPTLIB_DLL);
+  if (hCryptLibDLL <> 0) then     begin
+    result := TRUE;
+  end  else    begin
+    //the dll version required is based on if the *app* is 32 or 64 bit - not the OS
+    dll := Ifthen( SDUApp64bit(), CRYPTLIB64_DLL, CRYPTLIB32_DLL);
+
+    hCryptLibDLL := LoadLibrary(PChar(dll));
     if (hCryptLibDLL <> 0) then
       begin
       // DLL loaded, get function addresses
       try
         _cryptlib_GetDLLProcAddresses();
-        allOK := TRUE;
+        result := TRUE;
       except
         on ECryptLibBadDLL do
           begin
@@ -419,7 +420,6 @@ begin
 
     end;
 
-  Result := allOK;
 end;
 
 
@@ -501,13 +501,12 @@ const
 var
   funcResult: integer;
   buffer: PAnsiChar;
-  retVal: ansistring;
   allOK: boolean;
   cryptContext: TCRYPT_CONTEXT;
   cypherKeysizeBytes: integer;  // In *bytes*
   info: Tcryptlib_CRYPT_QUERY_INFO;
 begin
-  retVal := '';
+  Result := '';
 
   // Identify the minimum keysize of the encryption algorithm; this should be
   // the number of random bits cryptlib generates
@@ -526,7 +525,7 @@ begin
   try
     while (
            allOK AND
-           (length(retVal) < lengthBytes)
+           (length(Result) < lengthBytes)
           ) do
       begin
       funcResult := cryptlib_cryptCreateContext(
@@ -552,9 +551,9 @@ begin
 
           if (allOK) then
             begin
-            retVal := retVal + Copy(buffer, 1, min(
+            Result := Result + Copy(buffer, 1, min(
                                              cypherKeysizeBytes,
-                                             (lengthBytes - Length(retVal))
+                                             (lengthBytes - Length(Result))
                                             ));
             end;
           end;
@@ -576,11 +575,10 @@ begin
   // Return an empty string on error
   if not(allOK) then
     begin
-    retVal := '';
+    Result := '';
     end;
 
     
-  Result := retVal;
 end;
 
 

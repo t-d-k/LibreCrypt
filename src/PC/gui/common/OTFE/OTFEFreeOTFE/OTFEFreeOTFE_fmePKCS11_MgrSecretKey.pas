@@ -44,7 +44,7 @@ type
   PROTECTED
     procedure Refresh(); OVERRIDE;
   PUBLIC
-    FreeOTFEObj: TOTFEFreeOTFEBase;
+//    FreeOTFEObj: TOTFEFreeOTFEBase;
     procedure Initialize(); OVERRIDE;
     procedure EnableDisableControls(); OVERRIDE;
   end;
@@ -308,7 +308,7 @@ begin
   // Get file/partition to secure with secret key and any offset
   dlg := TfrmSelectVolumeFileAndOffset.Create(nil);
   try
-    dlg.OTFEFreeOTFE := FreeOTFEObj;
+//    dlg.OTFEFreeOTFE := FreeOTFEObj;
     dlg.SetDlgPurpose(encryptNotDecrypt);
 
     if (dlg.ShowModal = mrOk) then begin
@@ -348,7 +348,7 @@ begin
 
       // Read CDB...
       if allOK then begin
-        if not (FreeOTFEObj.ReadRawVolumeCriticalData(
+        if not (GetFreeOTFEBase().ReadRawVolumeCriticalData(
           fileToSecure,
           offset,
           cdbBefore)) then begin
@@ -383,7 +383,7 @@ begin
 
       // ...Write CDB.
       if allOK then begin
-        if not (FreeOTFEObj.WriteRawVolumeCriticalData(
+        if not (GetFreeOTFEBase().WriteRawVolumeCriticalData(
           fileToSecure,
           offset,
           cdbAfter)) then begin

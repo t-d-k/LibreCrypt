@@ -1,6 +1,9 @@
 program DoxBox;
-
+    {$IFDEF EnableMemoryLeakReporting }
+error
+{$ENDIF}
 uses
+  FastMM4,
   Forms,
   FreeOTFEfrmMain in 'FreeOTFEfrmMain.pas' {frmFreeOTFEMain},
   FreeOTFEConsts in 'FreeOTFEConsts.pas',
@@ -72,7 +75,23 @@ uses
   OTFEFreeOTFE_frmSelectVolumeAndOffset in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectVolumeAndOffset.pas' {frmSelectVolumeFileAndOffset},
   SDUEndianIntegers in '..\common\SDeanUtils\SDUEndianIntegers.pas',
   DbugIntf in 'C:\Program Files (x86)\GExperts for RAD Studio XE2\DbugIntf.pas',
-  OTFE_U in '..\common\OTFE\OTFE\OTFE_U.pas';
+  OTFE_U in '..\common\OTFE\OTFE\OTFE_U.pas',
+  SDUWinHTTP in '..\common\SDeanUtils\SDUWinHTTP.pas',
+  SDUWinHttp_API in '..\common\SDeanUtils\SDUWinHttp_API.pas',
+  MSCryptoAPI in '..\common\SDeanSecurity\MSCryptoAPI\MSCryptoAPI.pas',
+  pkcs11_library in '..\common\SDeanSecurity\PKCS#11\pkcs11_library.pas',
+  pkcs11_slot in '..\common\SDeanSecurity\PKCS#11\pkcs11_slot.pas',
+  pkcs11t in '..\common\SDeanSecurity\PKCS#11\pkcs11t.pas',
+  pkcs11_api in '..\common\SDeanSecurity\PKCS#11\pkcs11_api.pas',
+  pkcs11_token in '..\common\SDeanSecurity\PKCS#11\pkcs11_token.pas',
+  pkcs11f in '..\common\SDeanSecurity\PKCS#11\pkcs11f.pas',
+  pkcs11_session in '..\common\SDeanSecurity\PKCS#11\pkcs11_session.pas',
+  pkcs11_slot_event_thread in '..\common\SDeanSecurity\PKCS#11\pkcs11_slot_event_thread.pas',
+  pkcs11_mechanism in '..\common\SDeanSecurity\PKCS#11\pkcs11_mechanism.pas',
+  pkcs11_attribute in '..\common\SDeanSecurity\PKCS#11\pkcs11_attribute.pas',
+  pkcs11_object in '..\common\SDeanSecurity\PKCS#11\pkcs11_object.pas',
+  PKCS11KnownLibs in '..\common\SDeanSecurity\PKCS#11\PKCS11KnownLibs.pas',
+  PKCS11LibrarySelectDlg in '..\common\SDeanSecurity\PKCS#11\PKCS11LibrarySelectDlg.pas' {PKCS11LibrarySelectDialog};
 
 {$R *.RES}
 
@@ -92,6 +111,23 @@ begin
   GLOBAL_VAR_WM_FREEOTFE_RESTORE := RegisterWindowMessage('FREEOTFE_RESTORE');
   GLOBAL_VAR_WM_FREEOTFE_REFRESH := RegisterWindowMessage('FREEOTFE_REFRESH');
 
+{$IFNDEF AlwaysClearFreedMemory}
+// #error - this needs to be set to clear down any freed memory
+ {$ENDIF}
+{$IFDEF DEBUG}
+  System.ReportMemoryLeaksOnShutdown := true;
+{$ELSE}
+  // this doesnt appear to work (built-in version only?),  so SuppressMessageBoxes set as well
+  System.ReportMemoryLeaksOnShutdown := false;
+  FastMM4.SuppressMessageBoxes := true;
+{$ENDIF}
+
+{ see http://sourceforge.net/p/fastmm/code/HEAD/tree/FastMM4Options.inc:
+  With this option enabled freed memory will immediately be cleared inside the
+  FreeMem routine. This incurs a big performance hit, but may be worthwhile for
+  additional peace of mind when working with highly sensitive data. This option
+  supersedes the ClearMemoryBeforeReturningToOS option.}
+
   Application.Initialize;
 
 {$IF CompilerVersion >= 15.0}
@@ -100,16 +136,16 @@ begin
 {$IFEND}
   Application.Title := 'DoxBox';
 
-  FreeOTFESettings.Settings:= TFreeOTFESettings.Create();
+  FreeOTFESettings.gSettings:= TFreeOTFESettings.Create();
   try
-    CommonSettings.CommonSettingsObj := FreeOTFESettings.Settings;
+    CommonSettings.CommonSettingsObj := FreeOTFESettings.gSettings;
     if SDUCommandLineParameter(CMDLINE_SETTINGSFILE, settingsFilename) then
       begin
       settingsFilename := SDURelativePathToAbsolute(settingsFilename);
-      FreeOTFESettings.Settings.CustomLocation := settingsFilename;
+      FreeOTFESettings.gSettings.CustomLocation := settingsFilename;
       end;
 
-    FreeOTFESettings.Settings.Load();
+    FreeOTFESettings.gSettings.Load();
 
     Application.ShowMainForm := FALSE;
     // NOTE: The main form's Visible property is set to FALSE anyway - it *HAS*
@@ -136,7 +172,7 @@ begin
       // If no running app was found then
       if (
           (otherRunningAppWindow = 0) or
-          Settings.OptAllowMultipleInstances
+          gSettings.OptAllowMultipleInstances
          ) then
         begin
         // We continue to run the main app
@@ -147,7 +183,7 @@ begin
 
 {$IF CompilerVersion >= 18.5}
         // Delphi 7 doesn't need this, but Delphi 2007 (and 2006 as well? Not
-        // checked...) need this to honor any "Run minimised" option set in any
+        // checked...) need this to honour any "Run minimised" option set in any
         // launching MS Windows shortcut
         GetStartUpInfo(sui);
         if ((sui.dwFlags and STARTF_USESHOWWINDOW) > 0) then
@@ -199,7 +235,7 @@ begin
     //       Instead, this is free'd off in the FormDestroy(...) method
     if not(Application.ShowMainForm) then
       begin
-      FreeOTFESettings.Settings.Free();
+      FreeOTFESettings.gSettings.Free();
       end;
   end;
 

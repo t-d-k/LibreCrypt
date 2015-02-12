@@ -37,7 +37,7 @@ type
 
     procedure fmeSelectPartitionChanged(Sender: TObject);
   public
-    OTFEFreeOTFE: TOTFEFreeOTFEBase;
+//    OTFEFreeOTFE: TOTFEFreeOTFEBase;
 
   published
     property Partition: string read GetPartition;
@@ -68,7 +68,7 @@ end;
 
 procedure TfrmSelectPartition.FormShow(Sender: TObject);
 begin
-  fmeSelectPartition.FreeOTFEObj := OTFEFreeOTFE;
+//  fmeSelectPartition.FreeOTFEObj := OTFEFreeOTFE;
   fmeSelectPartition.AllowCDROM := TRUE;
   fmeSelectPartition.OnChange := fmeSelectPartitionChanged;
   fmeSelectPartition.Initialize();

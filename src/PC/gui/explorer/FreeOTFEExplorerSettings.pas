@@ -115,7 +115,7 @@ function MoveDeletionMethodTitle(moveDeletionMethod: TMoveDeletionMethod): Strin
 
 var
   // Global variable
-  Settings: TFreeOTFEExplorerSettings;
+  gSettings: TFreeOTFEExplorerSettings;
 
 implementation
 

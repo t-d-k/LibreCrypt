@@ -69,7 +69,6 @@ type
     function IsCDROMTabSelected(): Boolean;
     procedure SelectionErrorWarning(var msg: String; var isWarning: Boolean; var isError: Boolean);
   PUBLIC
-    FreeOTFEObj: TOTFEFreeOTFEBase;
 
     constructor Create(AOwner: TComponent); OVERRIDE;
     destructor Destroy(); OVERRIDE;
@@ -171,7 +170,7 @@ procedure TfmeSelectPartition.Initialize();
 begin
   actProperties.Enabled := False;
 
-  SDUDiskPartitionsPanel1.FreeOTFEObj := FreeOTFEObj;
+//  SDUDiskPartitionsPanel1.FreeOTFEObj := FreeOTFEObj;
 
   // -- begin [TAB_FIX] --
   ToggleControl(SDUDiskPartitionsPanel1);
@@ -218,7 +217,7 @@ begin
   TabControl1.Tabs.Clear();
   FRemovableDevices.Clear();
 
-  if FreeOTFEObj.HDDNumbersList(diskNo) then begin
+  if GetFreeOTFEBase().HDDNumbersList(diskNo) then begin
     for i := low(diskNo) to high(diskNo) do begin
       deviceIndicator := HIWORD_DISK + DWORD(diskNo[i]);
       TabControl1.Tabs.AddObject(SDUParamSubstitute(_('Disk #%1'), [diskNo[i]]),
@@ -230,7 +229,7 @@ begin
     cdromDevices := TStringList.Create();
     title        := TStringList.Create();
     try
-      if FreeOTFEObj.CDROMDeviceList(cdromDevices, title) then begin
+      if GetFreeOTFEBase().CDROMDeviceList(cdromDevices, title) then begin
         FRemovableDevices.Assign(cdromDevices);
         for i := 0 to (title.Count - 1) do begin
           deviceIndicator := HIWORD_CDROM + DWORD(i);

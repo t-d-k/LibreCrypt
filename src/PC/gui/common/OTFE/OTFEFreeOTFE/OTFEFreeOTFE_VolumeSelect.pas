@@ -39,7 +39,7 @@ type
     procedure SetEnabled(setValue: Boolean); OVERRIDE;
 
   PUBLIC
-    OTFEFreeOTFE: TOTFEFreeOTFEBase;
+//    OTFEFreeOTFE: TOTFEFreeOTFEBase;
 
     constructor Create(AOwner: TComponent); OVERRIDE;
     destructor Destroy(); OVERRIDE;
@@ -96,8 +96,8 @@ procedure TOTFEFreeOTFEVolumeSelect.bbBrowsePartitionClick(Sender: TObject);
 var
   selectedPartition: String;
 begin
-  if (OTFEFreeOTFE <> nil) then begin
-    selectedPartition := OTFEFreeOTFE.SelectPartition();
+  if (GetFreeOTFEBase() <> nil) then begin
+    selectedPartition := GetFreeOTFEBase().SelectPartition();
     if (selectedPartition <> '') then begin
       edFilename.Text := selectedPartition;
     end;

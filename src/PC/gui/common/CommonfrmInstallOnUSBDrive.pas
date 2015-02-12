@@ -288,8 +288,6 @@ begin
 end;
 
 function TfrmInstallOnUSBDrive.GetInstallDrive(): Char;
-var
-  retval: Char;
 begin
   retval := #0;
 
@@ -307,8 +305,6 @@ begin
 end;
 
 function TfrmInstallOnUSBDrive.GetInstallRelativePath(): String;
-var
-  retval: String;
 begin
   retval := trim(edPath.Text);
   if (Pos('\', retval) <> 1) then begin

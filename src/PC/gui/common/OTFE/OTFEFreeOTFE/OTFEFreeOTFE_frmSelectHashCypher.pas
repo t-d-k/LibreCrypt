@@ -15,7 +15,7 @@ uses
   StdCtrls, Grids,
   OTFEFreeOTFEBase_U,
   OTFEFreeOTFE_VolumeFileAPI, Menus, SDUForms;
-
+  { TODO -otdk -cui : doesnt look good - replace custom draw with simple grid }
 type
   TfrmSelectHashCypher = class(TSDUForm)
     Label1: TLabel;

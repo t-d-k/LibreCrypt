@@ -31,7 +31,7 @@ type
   PRIVATE
     procedure PopulateNewlineType();
   PUBLIC
-    FreeOTFEObj: TOTFEFreeOTFEBase;
+//    FreeOTFEObj: TOTFEFreeOTFEBase;
 
     procedure Initialize();
     procedure DefaultOptions();
@@ -137,9 +137,9 @@ begin
   preUserKey.WantReturns := False;
   preUserKey.WordWrap    := True;
   preUserKey.Lines.Clear();
-  preUserKey.PasswordChar := FreeOTFEObj.PasswordChar;
-  preUserKey.WantReturns  := FreeOTFEObj.AllowNewlinesInPasswords;
-  preUserKey.WantTabs     := FreeOTFEObj.AllowTabsInPasswords;
+  preUserKey.PasswordChar := GetFreeOTFEBase().PasswordChar;
+  preUserKey.WantReturns  := GetFreeOTFEBase().AllowNewlinesInPasswords;
+  preUserKey.WantTabs     := GetFreeOTFEBase().AllowTabsInPasswords;
 
   SetKeyfileIsASCII(LINUX_KEYFILE_DEFAULT_IS_ASCII);
   SetKeyfileNewlineType(LINUX_KEYFILE_DEFAULT_NEWLINE);
@@ -171,7 +171,7 @@ begin
       GetKeyfileIsASCII(keyfileIsASCII);
       GetKeyfileNewlineType(keyfileNewlineType);
 
-      retval := FreeOTFEObj.ReadLUKSKeyFromFile(
+      retval := GetFreeOTFEBase().ReadLUKSKeyFromFile(
         feKeyfile.Filename,
         keyfileIsASCII,
         keyfileNewlineType,

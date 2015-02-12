@@ -44,7 +44,7 @@ type
     function DumpLUKSDataToFile(): Boolean; VIRTUAL; ABSTRACT;
 
   PUBLIC
-    OTFEFreeOTFE: TOTFEFreeOTFEBase;
+//    OTFEFreeOTFE: TOTFEFreeOTFEBase;
 
     property VolumeFilename: String Read GetVolumeFilename;
     property DumpFilename: String Read GetDumpFilename;
@@ -108,7 +108,7 @@ end;
 
 procedure TfrmCDBDump_Base.FormShow(Sender: TObject);
 begin
-  OTFEFreeOTFEVolumeSelect1.OTFEFreeOTFE := OTFEFreeOTFE;
+//  OTFEFreeOTFEVolumeSelect1.OTFEFreeOTFE := OTFEFreeOTFE;
 
   FreeOTFEGUISetupOpenSaveDialog(feDumpFilename);
   feDumpFilename.Filter     := FILE_FILTER_FLT_TEXTFILES;

@@ -6,15 +6,23 @@ unit CommonfrmAbout;
  //
  // -----------------------------------------------------------------------------
  //
-
+  // layer 2
 
 interface
 
 uses
+  //delphi and 3rd party libs - layer 0
   Classes, Controls, Dialogs,
   ExtCtrls,
-  Forms, Graphics, Messages, OTFEFreeOTFEBase_U, SDUForms, SDUStdCtrls, StdCtrls,
-  SysUtils, Windows;
+  Forms, Graphics, Messages, StdCtrls,
+  SysUtils, Windows,
+  //sdu  - layer 1
+  SDUForms, SDUStdCtrls,
+  //doxbox utils -also layer 1
+  OTFEFreeOTFEBase_U
+   // doxbox forms - layer 2
+    //main form - layer 3
+  ;
 
 type
   TfrmAbout = class (TForm)
@@ -28,24 +36,51 @@ type
     SDUURLLabel1:        TSDUURLLabel;
     lblTranslatorCredit: TLabel;
     Label1:              TLabel;
-    Label2: TLabel;
+    SDUURLLabel2:        TSDUURLLabel;
+    SDUURLLabel3:        TSDUURLLabel;
+    SDUURLLabel4:        TSDUURLLabel;
+    SDUURLLabel5:        TSDUURLLabel;
     procedure FormShow(Sender: TObject);
-  protected
-  procedure SetDescription(value: String);
+    procedure FormCreate(Sender: TObject);
+  PROTECTED
+
+    //     procedure SetDescription(value: String);
   PUBLIC
-    FreeOTFEObj: TOTFEFreeOTFEBase;
-    BetaNumber:  Integer;
-    property description :string write SetDescription;
+
   end;
 
+const
+   {$IFDEF FREEOTFE_MAIN}
+  APP_DESCRIPTION = 'DoxBox: Open-Source Transparent Encryption';
+  {$ELSE}
+  APP_DESCRIPTION =
+    'DoxBox Explorer: Access DoxBoxes without administrator rights';
+  {$ENDIF}
 implementation
 
 {$R *.DFM}
 
 uses
+             //delphi and 3rd party libs - layer 0
   ShellApi,  // Needed for ShellExecute
-  CommonConsts, SDUGeneral,
-  SDUi18n;
+  CommonConsts,
+  //sdu & doxbox utils  - layer 1
+  SDUGeneral,
+  SDUi18n,
+  {$IFDEF FREEOTFE_MAIN}
+  FreeOTFEConsts    // for APP_BETA_BUILD
+{$ELSE}
+  FreeOTFEExplorerConsts
+{$ENDIF}
+  // doxbox forms - layer 2
+  //main form - layer 3
+  ;
+
+procedure TfrmAbout.FormCreate(Sender: TObject);
+begin
+  lblDescription.Caption := _(APP_DESCRIPTION);
+
+end;
 
 procedure TfrmAbout.FormShow(Sender: TObject);
 const
@@ -56,42 +91,40 @@ var
   revisionVersion: Integer;
   buildVersion:    Integer;
   OTFEVersion:     String;
-//  descAdjustDown:  Integer;
+  //  descAdjustDown:  Integer;
 begin
-  self.Caption     := Format(_('About %s'), [Application.Title]);
-//  lblTitle.Caption := Application.Title;
+  self.Caption := Format(_('About %s'), [Application.Title]);
+  //  lblTitle.Caption := Application.Title;
 
-//  lblAppID.left := lblTitle.left + lblTitle.Width + CONTROL_MARGIN;
+  //  lblAppID.left := lblTitle.left + lblTitle.Width + CONTROL_MARGIN;
 
-  lblTranslatorCredit.Visible := False;
+  //  lblTranslatorCredit.Visible := False;
   if ((SDUGetCurrentLanguageCode() <> '') and not
     (SDUIsLanguageCodeEnglish(SDUGetCurrentLanguageCode()))) then begin
-    lblTranslatorCredit.Visible := True;
+    //    lblTranslatorCredit.Visible := True;
     lblTranslatorCredit.Caption :=
-      Format(_('%s translation by %s'),
-      [_(CONST_LANGUAGE_ENGLISH), SDUGetTranslatorName()]);
+      Format(_('%s translation by %s'), [_(CONST_LANGUAGE_ENGLISH), SDUGetTranslatorName()]);
   end;
 
   imgIcon.Picture.Assign(Application.Icon);
 
   SDUGetVersionInfo('', majorVersion, minorVersion, revisionVersion, buildVersion);
   lblAppID.Caption := 'v' + SDUGetVersionInfoString('');
-  if BetaNumber > -1 then begin
-    lblAppID.Caption := lblAppID.Caption + ' BETA ' + IntToStr(BetaNumber);
+  if APP_BETA_BUILD > -1 then begin
+    lblAppID.Caption := lblAppID.Caption + ' BETA ' + IntToStr(APP_BETA_BUILD);
   end;
 
-  lblBeta.Visible := (BetaNumber > -1);
+  lblBeta.Visible := (APP_BETA_BUILD > -1);
 
 
-  if FreeOTFEObj.Active then begin
-    OTFEVersion := FreeOTFEObj.VersionStr();
+  if GetFreeOTFEBase().Active then begin
+    OTFEVersion := GetFreeOTFEBase().VersionStr();
     if (OTFEVersion <> '') then begin
       OTFEVersion := Format(_('FreeOTFE driver: %s'), [OTFEVersion]);
     end;
   end else begin
     OTFEVersion := _('The main DoxBox driver is either not installed, or not started');
   end;
-
 
 
 
@@ -114,16 +147,13 @@ begin
   SDUCenterControl(lblDescription, ccHorizontal);  }
 
   lblDriverVersion.Caption := OTFEVersion;
-//  SDUCenterControl(lblDriverVersion, ccHorizontal);
+  //  SDUCenterControl(lblDriverVersion, ccHorizontal);
 
-//  pnlDividerUpper.Caption := '';
-//  pnlDividerLower.Caption := '';
+  //  pnlDividerUpper.Caption := '';
+  //  pnlDividerLower.Caption := '';
 
 end;
 
-procedure TfrmAbout.SetDescription(value: String);
-begin
-    lblDescription.Caption := value;
-end;
+
 
 end.

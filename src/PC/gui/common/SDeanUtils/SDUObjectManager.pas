@@ -24,6 +24,7 @@ type
     // Stringlist containing full path and name of objects found
     // The objects in this TStringList are PObjMgrEntry
     FAllObjects: TStringList;
+    fPrintOut: TStringList;
 
     procedure ProcessSymLink(objEntry: PObjMgrEntry);
     procedure ProcessDirectory(objEntry: PObjMgrEntry);
@@ -42,7 +43,7 @@ type
     procedure WalkDir(StartDir: WideString);
 
   PUBLIC
-    PrintOut: TStringList;
+
 
     constructor Create();
     destructor Destroy(); OVERRIDE;
@@ -72,7 +73,7 @@ const
 constructor TSDUObjManager.Create();
 begin
   inherited;
-  PrintOut := TStringList.Create();
+  fPrintOut := TStringList.Create();
 
   FAllObjects        := TStringList.Create();
   FAllObjects.Sorted := True;
@@ -85,7 +86,7 @@ begin
   ClearScannedObjects();
 
   FAllObjects.Free();
-  PrintOut.Free();
+  fPrintOut.Free();
   inherited;
 end;
 
@@ -272,7 +273,7 @@ end;
 
 procedure TSDUObjManager.Print(line: String);
 begin
-  PrintOut.Add(line);
+  fPrintOut.Add(line);
 end;
 
 procedure TSDUObjManager.Print(line: WideString);
@@ -280,7 +281,7 @@ var
   x: String;
 begin
   x := line;
-  PrintOut.Add(x);
+  fPrintOut.Add(x);
 end;
 
 function TSDUObjManager.UnderlyingDeviceForName(startName: String): String;

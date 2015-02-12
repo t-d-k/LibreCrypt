@@ -88,18 +88,17 @@ end;
 function TfrmGridReport_Hash.ColIdxToColumn(colIdx: Integer): TGridColumn_Hash;
 var
   i:      TGridColumn_Hash;
-  retval: TGridColumn_Hash;
 begin
-  retval := low(TGridColumn_Hash);
+  Result := low(TGridColumn_Hash);
 
   for i := low(TGridColumn_Hash) to high(TGridColumn_Hash) do begin
     if (ColumnToColIdx(i) = colIdx) then begin
-      retval := i;
+      Result := i;
       break;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfrmGridReport_Hash.AddSubItem(col: TGridColumn_Hash; item: TListItem; Value: String);
@@ -153,7 +152,7 @@ var
 begin
   inherited;
 
-  if OTFEFreeOTFE.GetHashDrivers(allData) then begin
+  if GetFreeOTFEBase().GetHashDrivers(allData) then begin
     currRow := 0;
     for i := low(allData) to high(allData) do begin
       currDriver := allData[i];
@@ -169,7 +168,7 @@ begin
 
         AddSubItem(gchDriverTitle, item, String(currDriver.Title));
         AddSubItem(gchDriverVersion, item,
-          OTFEFreeOTFE.VersionIDToStr(currDriver.VersionID));
+          GetFreeOTFEBase().VersionIDToStr(currDriver.VersionID));
         AddSubItem(gchDriverGUID, item, GUIDToString(currDriver.DriverGUID));
         AddSubItem(gchDriverDeviceName, item, currDriver.DeviceName);
         AddSubItem(gchDriverUserModeName, item, currDriver.DeviceUserModeName);
@@ -177,7 +176,7 @@ begin
 
         AddSubItem(gchHashTitle, item, String(currImpl.Title));
         AddSubItem(gchHashVersion, item,
-          OTFEFreeOTFE.VersionIDToStr(currImpl.VersionID));
+          GetFreeOTFEBase().VersionIDToStr(currImpl.VersionID));
         AddSubItem(gchHashLength, item, IntToStr(currImpl.Length));
         AddSubItem(gchHashBlocksize, item, IntToStr(currImpl.BlockSize));
         AddSubItem(gchHashGUID, item, GUIDToString(currImpl.HashGUID));
@@ -195,37 +194,35 @@ end;
 
 function TfrmGridReport_Hash.CountDrivers(): Integer;
 var
-  retval:  Integer;
   allData: TFreeOTFEHashDriverArray;
 begin
   inherited;
 
-  retval := 0;
-  if OTFEFreeOTFE.GetHashDrivers(allData) then begin
-    retval := high(allData) - low(allData) + 1;
+  Result := 0;
+  if GetFreeOTFEBase().GetHashDrivers(allData) then begin
+    Result := high(allData) - low(allData) + 1;
   end;
 
-  Result := retval;
+
 end;
 
 function TfrmGridReport_Hash.CountImplementations(): Integer;
 var
-  retval:     Integer;
   allData:    TFreeOTFEHashDriverArray;
   i:          Integer;
   currDriver: TFreeOTFEHashDriver;
 begin
   inherited;
 
-  retval := 0;
-  if OTFEFreeOTFE.GetHashDrivers(allData) then begin
+  Result := 0;
+  if GetFreeOTFEBase().GetHashDrivers(allData) then begin
     for i := low(allData) to high(allData) do begin
       currDriver := allData[i];
-      retval     := retval + currDriver.HashCount;
+      Result     := Result + currDriver.HashCount;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfrmGridReport_Hash.FormCreate(Sender: TObject);
@@ -245,7 +242,7 @@ begin
 
   if (CountImplementations() <= 0) then begin
     msg := _('No hash algorithms could be found.');
-    if (OTFEFreeOTFE is TOTFEFreeOTFE) then begin
+    if (GetFreeOTFEBase() is TOTFEFreeOTFE) then begin
       msg := msg + SDUCRLF + SDUCRLF +
         _('Please start portable mode, or click "Drivers..." to install one or more hash drivers');
     end;
@@ -256,27 +253,23 @@ begin
 end;
 
 function TfrmGridReport_Hash.GetColumnTitle(column: TGridColumn_Hash): WideString;
-var
-  retval: WideString;
 begin
-  retval := RS_UNKNOWN;
+  Result := RS_UNKNOWN;
 
   case column of
-    gchDriverTitle: retval          := COL_TITLE_DRIVER_TITLE;
-    gchDriverVersion: retval        := COL_TITLE_DRIVER_VERSION;
-    gchDriverGUID: retval           := COL_TITLE_DRIVER_GUID;
-    gchDriverDeviceName: retval     := COL_TITLE_DRIVER_DEVICE_NAME;
-    gchDriverUserModeName: retval   := COL_TITLE_DRIVER_USER_MODE_NAME;
-    gchDriverKernelModeName: retval := COL_TITLE_DRIVER_KERNEL_MODE_NAME;
+    gchDriverTitle: Result          := COL_TITLE_DRIVER_TITLE;
+    gchDriverVersion: Result        := COL_TITLE_DRIVER_VERSION;
+    gchDriverGUID: Result           := COL_TITLE_DRIVER_GUID;
+    gchDriverDeviceName: Result     := COL_TITLE_DRIVER_DEVICE_NAME;
+    gchDriverUserModeName: Result   := COL_TITLE_DRIVER_USER_MODE_NAME;
+    gchDriverKernelModeName: Result := COL_TITLE_DRIVER_KERNEL_MODE_NAME;
 
-    gchHashTitle: retval     := COL_TITLE_HASH_TITLE;
-    gchHashVersion: retval   := COL_TITLE_HASH_VERSION;
-    gchHashLength: retval    := COL_TITLE_HASH_LENGTH;
-    gchHashBlocksize: retval := COL_TITLE_HASH_BLOCKSIZE;
-    gchHashGUID: retval      := COL_TITLE_HASH_GUID;
+    gchHashTitle: Result     := COL_TITLE_HASH_TITLE;
+    gchHashVersion: Result   := COL_TITLE_HASH_VERSION;
+    gchHashLength: Result    := COL_TITLE_HASH_LENGTH;
+    gchHashBlocksize: Result := COL_TITLE_HASH_BLOCKSIZE;
+    gchHashGUID: Result      := COL_TITLE_HASH_GUID;
   end;
-
-  Result := retval;
 end;
 
 end.

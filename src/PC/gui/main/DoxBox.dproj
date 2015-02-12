@@ -10,7 +10,7 @@
 			<Base>True</Base>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<Platform Condition="'$(Platform)'==''">Win32</Platform>
-			<TargetedPlatforms>1</TargetedPlatforms>
+			<TargetedPlatforms>3</TargetedPlatforms>
 			<AppType>Application</AppType>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
@@ -31,6 +31,12 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win64)'!=''">
+			<Cfg_1_Win64>true</Cfg_1_Win64>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
 		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
 			<Cfg_1_Win32>true</Cfg_1_Win32>
 			<CfgParent>Cfg_1</CfgParent>
@@ -42,6 +48,12 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win64)'!=''">
+			<Cfg_2_Win64>true</Cfg_2_Win64>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
 		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
 			<Cfg_2_Win32>true</Cfg_2_Win32>
 			<CfgParent>Cfg_2</CfgParent>
@@ -49,9 +61,11 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
-			<DCC_Define>FREEOTFE_MAIN;_DXGETTEXT;$(DCC_Define)</DCC_Define>
+			<DCC_ExeOutput>..\..\..\..\bin\PC\$(Config)\$(Platform)</DCC_ExeOutput>
+			<DCC_DcuOutput>P:\Projects\Delphi\doxbox\src\PC\gui\main\dcus\$(Config)\$(Platform)</DCC_DcuOutput>
+			<DCC_Define>FREEOTFE_MAIN;_DXGETTEXT;AlwaysClearFreedMemory;$(DCC_Define)</DCC_Define>
 			<VerInfo_PreRelease>true</VerInfo_PreRelease>
-			<DCC_UnitSearchPath>P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanUtils;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\MouseRNGDialog;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\PKCS#11;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\Shredder;P:\Projects\Delphi\doxbox\SDeanComponents\Components\OTFE\OTFEFreeOTFE;P:\Projects\Delphi\doxbox\SDeanComponents\Components\OTFE\OTFE\;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\PasswordRichEdit;P:\Projects\Delphi\doxbox\src\PC\gui\common\OTFE\OTFEFreeOTFE;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_UnitSearchPath>P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanUtils;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\PKCS#11;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\Shredder;P:\Projects\Delphi\doxbox\SDeanComponents\Components\OTFE\OTFEFreeOTFE;P:\Projects\Delphi\doxbox\SDeanComponents\Components\OTFE\OTFE\;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\PasswordRichEdit;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\MouseRNG\;P:\Projects\Delphi\doxbox\src\PC\gui\common\OTFE\OTFEFreeOTFE;P:\Projects\Delphi\doxbox\src\PC\gui\common\SDeanUtils;P:\Projects\Delphi\doxbox\src\3rd_party\FastMM\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<Icon_MainIcon>..\..\..\Common\Common\images\DoxBox.ico</Icon_MainIcon>
 			<Manifest_File>None</Manifest_File>
 			<VerInfo_MajorVer>6</VerInfo_MajorVer>
@@ -61,7 +75,10 @@
 			<VerInfo_Keys>CompanyName=DoxBox;FileDescription=DoxBox: Open-Source transparent disk encryption;FileVersion=6.0.0.0;InternalName=DoxBox;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=DoxBox;OriginalFilename=DoxBox.exe;ProductName=DoxBox;ProductVersion=6.0;Comments=http://doxbox.eu</VerInfo_Keys>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win64)'!=''">
-			<Icon_MainIcon>FreeOTFE_Icon.ico</Icon_MainIcon>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
 			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
@@ -70,14 +87,17 @@
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
-			<DCC_DcuOutput>P:\Projects\Delphi\doxbox\src\PC\gui\main\release_dcus\</DCC_DcuOutput>
 			<Version>7.0</Version>
 			<DCC_DebugInformation>False</DCC_DebugInformation>
 			<DCC_WriteableConstants>True</DCC_WriteableConstants>
 			<DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
-			<DCC_ExeOutput>..\..\..\bin\PC</DCC_ExeOutput>
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
@@ -85,14 +105,25 @@
 			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
+			<DCC_RangeChecking>true</DCC_RangeChecking>
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+			<DCC_DebugDCUs>true</DCC_DebugDCUs>
+			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+			<BRCC_Defines>FullDebugMode;LogErrorsToFile;$(BRCC_Defines)</BRCC_Defines>
 			<VerInfo_Keys>CompanyName=DoxBox;FileDescription=DoxBox: Open-Source transparent disk encryption;FileVersion=6.0.0.0;InternalName=DoxBox;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=DoxBox;OriginalFilename=DoxBox;ProductName=DoxBox;ProductVersion=6.0;Comments=http://doxbox.eu</VerInfo_Keys>
 			<VerInfo_Debug>true</VerInfo_Debug>
-			<DCC_DcuOutput>P:\Projects\Delphi\doxbox\src\PC\gui\main\debug_dcus\</DCC_DcuOutput>
 			<Version>7.0</Version>
 			<DCC_WriteableConstants>True</DCC_WriteableConstants>
-			<DCC_ExeOutput>..\..\..\..\bin\PC</DCC_ExeOutput>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
+			<DCC_ExeOutput>..\..\..\..\bin\PC\</DCC_ExeOutput>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
+			<DCC_RangeChecking>true</DCC_RangeChecking>
 			<DCC_DebugDCUs>true</DCC_DebugDCUs>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<VerInfo_Locale>1033</VerInfo_Locale>
@@ -143,7 +174,7 @@
 					<Excluded_Packages/>
 				</Delphi.Personality>
 				<Platforms>
-					<Platform value="Win64">False</Platform>
+					<Platform value="Win64">True</Platform>
 					<Platform value="Win32">True</Platform>
 				</Platforms>
 				<ModelSupport>False</ModelSupport>
@@ -323,6 +354,24 @@
 			<DCCReference Include="..\common\SDeanUtils\SDUEndianIntegers.pas"/>
 			<DCCReference Include="C:\Program Files (x86)\GExperts for RAD Studio XE2\DbugIntf.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFE\OTFE_U.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUWinHTTP.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUWinHttp_API.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\MSCryptoAPI\MSCryptoAPI.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_library.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_slot.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11t.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_api.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_token.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11f.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_session.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_slot_event_thread.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_mechanism.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_attribute.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_object.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\PKCS11KnownLibs.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\PKCS11LibrarySelectDlg.pas">
+				<Form>PKCS11LibrarySelectDialog</Form>
+			</DCCReference>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

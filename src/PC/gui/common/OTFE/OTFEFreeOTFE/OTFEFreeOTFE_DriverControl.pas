@@ -1335,7 +1335,7 @@ begin
           begin
           // Set driver to autostart on reboot - but not if portable mode;
           // the driver may be located on a removable device
-          SetServiceAutoStart(currDriverName, not(portableMode));
+          SetServiceAutoStart(currDriverName, not portableMode);
           end;
 
         end;

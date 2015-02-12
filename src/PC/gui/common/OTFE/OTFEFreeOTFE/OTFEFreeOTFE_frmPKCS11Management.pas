@@ -25,7 +25,7 @@ type
     FPKCS11Session: TPKCS11Session;
 
   public
-    FreeOTFEObj: TOTFEFreeOTFEBase;
+//    FreeOTFEObj: TOTFEFreeOTFEBase;
     property PKCS11Session: TPKCS11Session read FPKCS11Session write FPKCS11Session;
   end;
 
@@ -49,7 +49,7 @@ end;
 
 procedure TfrmPKCS11Management.FormShow(Sender: TObject);
 begin
-  fmePKCS11_MgrSecretKey1.FreeOTFEObj := FreeOTFEObj;
+//  fmePKCS11_MgrSecretKey1.FreeOTFEObj := FreeOTFEObj;
   fmePKCS11_MgrSecretKey1.PKCS11Session := PKCS11Session;
   fmePKCS11_MgrSecretKey1.Initialize();
 

@@ -7,22 +7,23 @@ unit OTFEFreeOTFE_frmKeyEntryLinux;
  // -----------------------------------------------------------------------------
  //
 
+//this is for new and existing dmcrypt volumes - not LUKS
+
 
 interface
 
 uses
   Classes, ComCtrls, Controls, Dialogs,
-  ExtCtrls, Forms, Graphics, Messages, 
-PasswordRichEdit, 
+  ExtCtrls, Forms, Graphics, Messages,
+  PasswordRichEdit,
   StdCtrls, SysUtils, Windows, // Required for TFreeOTFEMountAs
   Spin64,
-//SDU
+  //SDU
+  SDUDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
   SDUGeneral,
-SDUForms,  SDUDialogs, SDUFilenameEdit_U, SDUFrames,
- //doxbox
-OTFEFreeOTFE_U, 
-  OTFEFreeOTFE_DriverAPI, OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFEBase_U,
-
+  //doxbox
+  OTFEFreeOTFE_DriverAPI, OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFE_U,
+  OTFEFreeOTFEBase_U,
   SDUSpin64Units, SDUStdCtrls;  // Required for TFreeOTFESectorIVGenMethod and NULL_GUID
 
 type
@@ -132,41 +133,40 @@ type
     procedure DoCancel();
 
   PUBLIC
-    fFreeOTFEObj: TOTFEFreeOTFEBase;
+//    fFreeOTFEObj: TOTFEFreeOTFEBase;
 
     // Key...
-    function GetKey(var userKey: Ansistring): Boolean;
-    function SetKey(userKey: PasswordString): Boolean;
+    procedure GetKey(var userKey: Ansistring);
+    procedure SetKey(userKey: PasswordString);
 
     // Key processing...
-    function GetKeyProcSeed(var keyProcSeed: Ansistring): Boolean;
-    function SetKeyProcSeed(keyProcSeed: String): Boolean;
+    procedure GetKeyProcSeed(var keyProcSeed: Ansistring);
+    procedure SetKeyProcSeed(keyProcSeed: String);
     function GetKeyProcHashKernelDeviceName(var keyProcHashDriver: String): Boolean;
     function GetKeyProcHashGUID(var keyProcHashGUID: TGUID): Boolean;
     function SetKeyProcHash(keyProcHashDriver: String; keyProcHashGUID: TGUID): Boolean;
-    function GetKeyProcHashWithAs(var hashWithAs: Boolean): Boolean;
-    function SetKeyProcHashWithAs(hashWithAs: Boolean): Boolean;
+    procedure GetKeyProcHashWithAs(var hashWithAs: Boolean);
+    procedure SetKeyProcHashWithAs(hashWithAs: Boolean);
     function GetKeyProcCypherKernelDeviceName(var keyProcCypherDriver: String): Boolean;
     function GetKeyProcCypherGUID(var keyProcCypherGUID: TGUID): Boolean;
     function SetKeyProcCypher(keyProcCypherDriver: String; keyProcCypherGUID: TGUID): Boolean;
     // Note: GetKeyProcCypherIterationCount returns the number of iterations
     //       required; if the user entered "2" on the dialog, then 2000 will
     //       be returned by this function
-    function GetKeyProcCypherIterationCount(var keyProcCypherIterations: Integer): Boolean;
-    function SetKeyProcCypherIterationCount(keyProcCypherIterations: Integer): Boolean;
+    procedure GetKeyProcCypherIterationCount(out keyProcCypherIterations: Integer);
+    procedure SetKeyProcCypherIterationCount(keyProcCypherIterations: Integer);
 
     // File options...
-    function GetOffset(var fileOptoffset: Int64): Boolean;
-    function SetOffset(fileOptoffset: Int64): Boolean;
-    function GetSizeLimit(var fileOptSizeLimit: Int64): Boolean;
-    function SetSizeLimit(fileOptSizeLimit: Int64): Boolean;
+    procedure GetOffset(out fileOptoffset: Int64);
+    procedure SetOffset(fileOptoffset: Int64);
+    procedure GetSizeLimit(out fileOptSizeLimit: Int64);
+    procedure SetSizeLimit(fileOptSizeLimit: Int64);
 
     // Encryption options...
     function GetMainCypherKernelDeviceName(var mainCypherDriver: Ansistring): Boolean;
     function GetMainCypherGUID(var mainCypherGUID: TGUID): Boolean;
     function SetMainCypher(mainCypherDriver: String; mainCypherGUID: TGUID): Boolean;
-    function GetMainIVSectorZeroPos(var startOfVolFile: Boolean;
-      var startOfEndData: Boolean): Boolean;
+    procedure GetMainIVSectorZeroPos(out startOfVolFile: Boolean; out startOfEndData: Boolean);
     // Note: At most *one* of the parameters passed to SetMainIVSectorZeroPos(...) can be set to TRUE
     function SetMainIVSectorZeroPos(startOfVolFile: Boolean; startOfEndData: Boolean): Boolean;
     function GetMainSectorIVGenMethod(var sectorIVGenMethod: TFreeOTFESectorIVGenMethod): Boolean;
@@ -179,10 +179,10 @@ type
     function SetMainIVCypher(mainIVCypherDriver: String; mainIVCypherGUID: TGUID): Boolean;
 
     // Mount options...
-    function GetDriveLetter(var mountDriveLetter: ansichar): Boolean;
+    procedure GetDriveLetter(out mountDriveLetter: ansichar);
     function SetDriveLetter(mountDriveLetter: ansichar): Boolean;
-    function GetReadonly(var mountReadonly: Boolean): Boolean;
-    function SetReadonly(mountReadonly: Boolean): Boolean;
+    procedure GetReadonly(var mountReadonly: Boolean);
+    procedure SetReadonly(mountReadonly: Boolean);
     function GetMountAs(var mountAs: TFreeOTFEMountAs): Boolean;
     function SetMountAs(mountAs: TFreeOTFEMountAs): Boolean;
     function GetMountForAllUsers(): Boolean;
@@ -203,7 +203,7 @@ uses
   ComObj,                      // Required for StringToGUID
   OTFEFreeOTFE_VolumeFileAPI,  // Required for SCTRIVGEN_USES_SECTOR_ID and SCTRIVGEN_USES_HASH
   INIFiles, OTFEFreeOTFEDLL_U,
-//sdu
+  //sdu
   SDUi18n;
 
 const
@@ -276,7 +276,7 @@ var
 begin
   tmpDisplayTitles := TStringList.Create();
   try
-    if (fFreeOTFEObj.GetHashList(tmpDisplayTitles, hashKernelModeDriverNames, hashGUIDs)) then
+    if (GetFreeOTFEBase().GetHashList(tmpDisplayTitles, hashKernelModeDriverNames, hashGUIDs)) then
     begin
       cbKeyProcHash.Items.Clear();
       cbKeyProcHash.Items.AddStrings(tmpDisplayTitles);
@@ -286,8 +286,9 @@ begin
     end else begin
       SDUMessageDlg(
         _('Unable to obtain list of hashes.') + SDUCRLF + SDUCRLF +
-        _('Please ensure that you have one or more FreeOTFE hash drivers installed and started.') + SDUCRLF + SDUCRLF +
-        _('If you have only just installed FreeOTFE, you may need to restart your computer.'),
+        _('Please ensure that you have one or more FreeOTFE hash drivers installed and started.') +
+        SDUCRLF + SDUCRLF + _(
+        'If you have only just installed FreeOTFE, you may need to restart your computer.'),
         mtError
         );
     end;
@@ -303,7 +304,7 @@ var
 begin
   tmpDisplayTitles := TStringList.Create();
   try
-    if (fFreeOTFEObj.GetCypherList(tmpDisplayTitles, cypherKernelModeDriverNames, cypherGUIDs))
+    if (GetFreeOTFEBase().GetCypherList(tmpDisplayTitles, cypherKernelModeDriverNames, cypherGUIDs))
     then begin
       cbKeyProcCypher.Items.Clear();
       cbKeyProcCypher.Items.AddStrings(tmpDisplayTitles);
@@ -315,10 +316,9 @@ begin
       cbSectorIVCypher.Items.AddStrings(tmpDisplayTitles);
     end else begin
       SDUMessageDlg(
-        _('Unable to obtain list of cyphers.') + SDUCRLF +
-        SDUCRLF + _(
-        'Please ensure that you have one or more FreeOTFE cypher drivers installed and started.') + SDUCRLF +
-        SDUCRLF + _(
+        _('Unable to obtain list of cyphers.') + SDUCRLF + SDUCRLF +
+        _('Please ensure that you have one or more FreeOTFE cypher drivers installed and started.') +
+        SDUCRLF + SDUCRLF + _(
         'If you have only just installed FreeOTFE, you may need to restart your computer.'),
         mtError
         );
@@ -456,15 +456,15 @@ begin
   end;
 
 
-  if (fFreeOTFEObj is TOTFEFreeOTFE) then begin
+  if (GetFreeOTFEBase() is TOTFEFreeOTFE) then begin
     if (cbDrive.Items.Count > 0) then begin
       cbDrive.ItemIndex := 0;
 
-      if (TOTFEFreeOTFE(fFreeOTFEObj).DefaultDriveLetter <> #0) then begin
+      if (GetFreeOTFE().DefaultDriveLetter <> #0) then begin
         // Start from 1; skip the default
         for i := 1 to (cbDrive.items.Count - 1) do begin
           currDriveLetter := ansichar(cbDrive.Items[i][1]);
-          if (currDriveLetter >= TOTFEFreeOTFE(fFreeOTFEObj).DefaultDriveLetter) then begin
+          if (currDriveLetter >= GetFreeOTFE().DefaultDriveLetter) then begin
             cbDrive.ItemIndex := i;
             break;
           end;
@@ -473,8 +473,8 @@ begin
     end;
   end;
 
-  if (fFreeOTFEObj is TOTFEFreeOTFE) then begin
-    SetMountAs(TOTFEFreeOTFE(fFreeOTFEObj).DefaultMountAs);
+  if (GetFreeOTFEBase() is TOTFEFreeOTFE) then begin
+    SetMountAs(GetFreeOTFE().DefaultMountAs);
   end else begin
     SetMountAs(fomaFixedDisk);
   end;
@@ -484,9 +484,9 @@ begin
   preUserKey.WantReturns := False;
   preUserKey.WordWrap    := True;
   preUserKey.Lines.Clear();
-  preUserKey.PasswordChar := fFreeOTFEObj.PasswordChar;
-  preUserKey.WantReturns  := fFreeOTFEObj.AllowNewlinesInPasswords;
-  preUserKey.WantTabs     := fFreeOTFEObj.AllowTabsInPasswords;
+  preUserKey.PasswordChar := GetFreeOTFEBase().PasswordChar;
+  preUserKey.WantReturns  := GetFreeOTFEBase().AllowNewlinesInPasswords;
+  preUserKey.WantTabs     := GetFreeOTFEBase().AllowTabsInPasswords;
 
   feGPGExecutable.Filename := '';
   feGPGKeyfile.Filename    := '';
@@ -507,29 +507,25 @@ procedure TfrmKeyEntryLinux.pbOKClick(Sender: TObject);
 var
   tmpKey: Ansistring;
 begin
-  if GetKey(tmpKey) then begin
-    if (Length(tmpKey) = 0) then begin
-      if (SDUMessageDlg(_('You have not entered a Keyphrase.') + SDUCRLF +
-        SDUCRLF + _('Are you sure you wish to proceed?'),
-        mtConfirmation, [mbYes, mbNo],
-        0) = mrYes) then begin
-        ModalResult := mrOk;
-      end;
-    end else
-    if (Length(tmpKey) < 20) then begin
-      if (SDUMessageDlg(_(
-        'The Keyphrase you entered has less than 20 characters, and may not be compatible with some Linux volumes.') +
-        SDUCRLF + SDUCRLF + _('Do you wish to proceed?'),
-        mtWarning, [mbYes, mbNo],
-        0) = mrYes) then begin
-        ModalResult := mrOk;
-      end;
-    end else begin
-      // No problems with the password as entered; OK to close the dialog
+  GetKey(tmpKey);
+  if (Length(tmpKey) = 0) then begin
+    if (SDUMessageDlg(_('You have not entered a Keyphrase.') + SDUCRLF +
+      SDUCRLF + _('Are you sure you wish to proceed?'), mtConfirmation,
+      [mbYes, mbNo], 0) = mrYes) then begin
       ModalResult := mrOk;
     end;
-
-  end;  // if GetKey(tmpKey) then
+  end else
+  if (Length(tmpKey) < 20) then begin
+    if (SDUMessageDlg(_(
+      'The Keyphrase you entered has less than 20 characters, and may not be compatible with some Linux volumes.') +
+      SDUCRLF + SDUCRLF + _('Do you wish to proceed?'), mtWarning,
+      [mbYes, mbNo], 0) = mrYes) then begin
+      ModalResult := mrOk;
+    end;
+  end else begin
+    // No problems with the password as entered; OK to close the dialog
+    ModalResult := mrOk;
+  end;
 
 end;
 
@@ -565,7 +561,8 @@ begin
     (cbKeyProcCypher.Enabled));
   SDUEnableControl(pbMainCypherInfo, (cbMainCypher.ItemIndex >= 0));
   SDUEnableControl(pbIVHashInfo, (cbSectorIVHash.ItemIndex >= 0) and (cbSectorIVHash.Enabled));
-  SDUEnableControl(pbIVCypherInfo, (cbSectorIVCypher.ItemIndex >= 0) and (cbSectorIVCypher.Enabled));
+  SDUEnableControl(pbIVCypherInfo, (cbSectorIVCypher.ItemIndex >= 0) and
+    (cbSectorIVCypher.Enabled));
 
   SDUEnableControl(lblIVHash, cbSectorIVHash.Enabled);
   SDUEnableControl(lblIVCypher, cbSectorIVCypher.Enabled);
@@ -618,20 +615,13 @@ begin
   mountAsOK := mountAsOK and (tmpMountAs <> fomaUnknown);
 
 
-
-  pbOK.Enabled := ((filePresentGPGExe) and
-    (filePresentGPGKeyfile) and
-    (cbKeyProcHash.ItemIndex >= 0) and
-    iterationCypherOK and
-    (GetOffset(junkInt64)) and
-    (GetSizeLimit(junkInt64)) and
-    (GetDriveLetter(junkChar)) and
-    (cbMainCypher.ItemIndex >= 0) and
-    (sectorIVGenMethod <> foivgUnknown) and
-    IVStartSectorOK and
-    IVHashOK and
-    IVCypherOK and
-    mountAsOK);
+  GetOffset(junkInt64);
+  GetSizeLimit(junkInt64);
+  GetDriveLetter(junkChar);
+  pbOK.Enabled := ((filePresentGPGExe) and (filePresentGPGKeyfile) and
+    (cbKeyProcHash.ItemIndex >= 0) and iterationCypherOK and
+    (cbMainCypher.ItemIndex >= 0) and (sectorIVGenMethod <> foivgUnknown) and
+    IVStartSectorOK and IVHashOK and IVCypherOK and mountAsOK);
 
   // Items NOT YET IMPLEMENTED
   //  - after implementing; DON'T FORGET TO ENABLE THE ASSOCIATED LABELS!
@@ -656,7 +646,7 @@ var
 begin
   GetKeyProcHashKernelDeviceName(deviceName);
   GetKeyProcHashGUID(GUID);
-  fFreeOTFEObj.ShowHashDetailsDlg(deviceName, GUID);
+  GetFreeOTFEBase().ShowHashDetailsDlg(deviceName, GUID);
 
 end;
 
@@ -668,7 +658,7 @@ var
 begin
   GetMainIVHashKernelDeviceName(deviceName);
   GetMainIVHashGUID(GUID);
-  fFreeOTFEObj.ShowHashDetailsDlg(deviceName, GUID);
+  GetFreeOTFEBase().ShowHashDetailsDlg(deviceName, GUID);
 
 end;
 
@@ -680,7 +670,7 @@ var
 begin
   GetKeyProcCypherKernelDeviceName(deviceName);
   GetKeyProcCypherGUID(GUID);
-  fFreeOTFEObj.ShowCypherDetailsDlg(deviceName, GUID);
+  GetFreeOTFEBase().ShowCypherDetailsDlg(deviceName, GUID);
 
 end;
 
@@ -691,7 +681,7 @@ var
 begin
   GetMainCypherKernelDeviceName(deviceName);
   GetMainCypherGUID(GUID);
-  fFreeOTFEObj.ShowCypherDetailsDlg(deviceName, GUID);
+  GetFreeOTFEBase().ShowCypherDetailsDlg(deviceName, GUID);
 
 end;
 
@@ -727,14 +717,14 @@ begin
   preUserKey.SelStart := length(preUserKey.Text);
 
   // Certain controls only visble if used in conjunction with drive mounting
-  lblDrive.Visible           := fFreeOTFEObj is TOTFEFreeOTFE;
-  cbDrive.Visible            := fFreeOTFEObj is TOTFEFreeOTFE;
-  lblMountAs.Visible         := fFreeOTFEObj is TOTFEFreeOTFE;
-  cbMediaType.Visible        := fFreeOTFEObj is TOTFEFreeOTFE;
-  ckMountForAllUsers.Visible := fFreeOTFEObj is TOTFEFreeOTFE;
+  lblDrive.Visible           := GetFreeOTFEBase() is TOTFEFreeOTFE;
+  cbDrive.Visible            := GetFreeOTFEBase() is TOTFEFreeOTFE;
+  lblMountAs.Visible         := GetFreeOTFEBase() is TOTFEFreeOTFE;
+  cbMediaType.Visible        := GetFreeOTFEBase() is TOTFEFreeOTFE;
+  ckMountForAllUsers.Visible := GetFreeOTFEBase() is TOTFEFreeOTFE;
 
   // Prevent making remaining control look odd, stuck in the middle
-  if not (fFreeOTFEObj is TOTFEFreeOTFE) then begin
+  if not (GetFreeOTFEBase() is TOTFEFreeOTFE) then begin
     ckMountReadonly.top  := lblDrive.top;
     ckMountReadonly.left := lblDrive.left;
 
@@ -778,57 +768,47 @@ begin
 end;
 
 
-function TfrmKeyEntryLinux.GetKey(var userKey: Ansistring): Boolean;
+procedure TfrmKeyEntryLinux.GetKey(var userKey: Ansistring);
 begin
   { TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
   userKey := preUserkey.Text;
-  Result  := True;
 end;
 
-function TfrmKeyEntryLinux.SetKey(userKey: PasswordString): Boolean;
+procedure TfrmKeyEntryLinux.SetKey(userKey: PasswordString);
 begin
   preUserkey.Text := userKey;
-  Result          := True;
 end;
 
-function TfrmKeyEntryLinux.GetKeyProcSeed(var keyProcSeed: Ansistring): Boolean;
+procedure TfrmKeyEntryLinux.GetKeyProcSeed(var keyProcSeed: Ansistring);
 begin
   keyProcSeed := edKeySeed.Text;   { TODO 1 -otdk -cclean : allow unicode }
-  Result      := True;
 end;
 
-function TfrmKeyEntryLinux.SetKeyProcSeed(keyProcSeed: String): Boolean;
+procedure TfrmKeyEntryLinux.SetKeyProcSeed(keyProcSeed: String);
 begin
   edKeySeed.Text := keyProcSeed;
-  Result         := True;
 end;
 
 function TfrmKeyEntryLinux.GetKeyProcHashKernelDeviceName(var keyProcHashDriver: String): Boolean;
-var
-  retVal: Boolean;
 begin
-  retVal := False;
+  Result := False;
 
   if (cbKeyProcHash.ItemIndex >= 0) then begin
     keyProcHashDriver := hashKernelModeDriverNames[cbKeyProcHash.ItemIndex];
-    retVal            := True;
+    Result            := True;
   end;
 
-  Result := retVal;
 end;
 
 function TfrmKeyEntryLinux.GetKeyProcHashGUID(var keyProcHashGUID: TGUID): Boolean;
-var
-  retVal: Boolean;
 begin
-  retVal := False;
+  Result := False;
 
   if (cbKeyProcHash.ItemIndex >= 0) then begin
     keyProcHashGUID := StringToGUID(hashGUIDs[cbKeyProcHash.ItemIndex]);
-    retVal          := True;
+    Result          := True;
   end;
 
-  Result := retVal;
 end;
 
 
@@ -836,35 +816,32 @@ function TfrmKeyEntryLinux.SetKeyProcHash(keyProcHashDriver: String;
   keyProcHashGUID: TGUID): Boolean;
 var
   i:   Integer;
-  idx: Integer;
 begin
-  idx := -1;
+  cbKeyProcHash.ItemIndex := -1;
 
   // Locate the appropriate array idx
   for i := 0 to (hashKernelModeDriverNames.Count - 1) do begin
-    if ((hashKernelModeDriverNames[i] = keyProcHashDriver) and
-      (hashGUIDs[i] = GUIDToString(keyProcHashGUID))) then begin
-      idx := i;
+       //  hashKernelModeDriverNames is dll name for explorer, else reg key so use 'or' GUIDs as well
+       { TODO -otdk -cUI: are these GUIDs the same across PCs? if not use cypher name etc }
+    if {((hashKernelModeDriverNames[i] = keyProcHashDriver) or}
+    (hashGUIDs[i] = GUIDToString(keyProcHashGUID)) then begin
+      cbKeyProcHash.ItemIndex := i;
       break;
     end;
 
   end;
 
-  cbKeyProcHash.ItemIndex := idx;
-
-  Result := (idx <> -1);
+  Result := cbKeyProcHash.ItemIndex <> -1;
 end;
 
-function TfrmKeyEntryLinux.GetKeyProcHashWithAs(var hashWithAs: Boolean): Boolean;
+procedure TfrmKeyEntryLinux.GetKeyProcHashWithAs(var hashWithAs: Boolean);
 begin
   hashWithAs := ckHashWithAs.Checked;
-  Result     := True;
 end;
 
-function TfrmKeyEntryLinux.SetKeyProcHashWithAs(hashWithAs: Boolean): Boolean;
+procedure TfrmKeyEntryLinux.SetKeyProcHashWithAs(hashWithAs: Boolean);
 begin
   ckHashWithAs.Checked := hashWithAs;
-  Result               := True;
 end;
 
 
@@ -873,113 +850,99 @@ end;
  // Returns FALSE is a cypher is required, but one is not selected
 function TfrmKeyEntryLinux.GetKeyProcCypherKernelDeviceName(
   var keyProcCypherDriver: String): Boolean;
-var
-  retVal: Boolean;
 begin
-  retVal := False;
+  Result := False;
 
   if (seKeyProcCypherIterations.Value > 0) then begin
     if (cbKeyProcCypher.ItemIndex >= 0) then begin
       keyProcCypherDriver := cypherKernelModeDriverNames[cbKeyProcCypher.ItemIndex];
-      retVal              := True;
+      Result              := True;
     end;
   end else begin
     // No cypher selected, but none needed
     keyProcCypherDriver := '';
-    retVal              := True;
+    Result              := True;
   end;
 
-  Result := retVal;
 end;
 
  // This returns TRUE if a cypher is selected, or if no cypher is needed (in
  // which case, NULL_GUID is returned)
  // Returns FALSE is a cypher is required, but one is not selected
 function TfrmKeyEntryLinux.GetKeyProcCypherGUID(var keyProcCypherGUID: TGUID): Boolean;
-var
-  retVal: Boolean;
 begin
-  retVal := False;
+  Result := False;
 
   if (seKeyProcCypherIterations.Value > 0) then begin
     if (cbKeyProcCypher.ItemIndex >= 0) then begin
       keyProcCypherGUID := StringToGUID(cypherGUIDs[cbKeyProcCypher.ItemIndex]);
-      retVal            := True;
+      Result            := True;
     end;
   end else begin
     // No cypher selected, but none needed
     keyProcCypherGUID := StringToGUID(NULL_GUID);
-    retVal            := True;
+    Result            := True;
   end;
 
-  Result := retVal;
 end;
 
 function TfrmKeyEntryLinux.SetKeyProcCypher(keyProcCypherDriver: String;
   keyProcCypherGUID: TGUID): Boolean;
 var
-  i:   Integer;
-  idx: Integer;
+  i: Integer;
 begin
-  idx := -1;
+  cbKeyProcCypher.ItemIndex := -1;
 
   // Locate the appropriate array idx
   for i := 0 to (cypherKernelModeDriverNames.Count - 1) do begin
-    if ((cypherKernelModeDriverNames[i] = keyProcCypherDriver) and
-      (cypherGUIDs[i] = GUIDToString(keyProcCypherGUID))) then begin
-      idx := i;
+       //  hashKernelModeDriverNames is dll name for explorer, else reg key so use 'or' GUIDs as well
+       { TODO -otdk -cUI: are these GUIDs the same across PCs? if not use cypher name etc }
+    if {((cypherKernelModeDriverNames[i] = keyProcCypherDriver) or}
+    (cypherGUIDs[i] = GUIDToString(keyProcCypherGUID)) then begin
+      cbKeyProcCypher.ItemIndex := i;
       break;
     end;
 
   end;
 
-  cbKeyProcCypher.ItemIndex := idx;
-
-  Result := (idx <> -1);
+  Result := cbKeyProcCypher.ItemIndex <> -1;
 end;
 
 
-function TfrmKeyEntryLinux.GetKeyProcCypherIterationCount(
-  var keyProcCypherIterations: Integer): Boolean;
+procedure TfrmKeyEntryLinux.GetKeyProcCypherIterationCount(out keyProcCypherIterations: Integer);
 begin
   keyProcCypherIterations := seKeyProcCypherIterations.Value * 1000;
-  Result                  := True;
 end;
 
-function TfrmKeyEntryLinux.SetKeyProcCypherIterationCount(keyProcCypherIterations:
-  Integer): Boolean;
+procedure TfrmKeyEntryLinux.SetKeyProcCypherIterationCount(keyProcCypherIterations: Integer);
 begin
   // Note that if "1" passed in, this will be set to 0
   seKeyProcCypherIterations.Value := keyProcCypherIterations div 1000;
-  Result                          := True;
+
 end;
 
-function TfrmKeyEntryLinux.GetOffset(var fileOptoffset: Int64): Boolean;
+procedure TfrmKeyEntryLinux.GetOffset(out fileOptoffset: Int64);
 begin
   fileOptoffset := se64UnitOffset.Value;
-  Result        := True;
 end;
 
-function TfrmKeyEntryLinux.SetOffset(fileOptoffset: Int64): Boolean;
+procedure TfrmKeyEntryLinux.SetOffset(fileOptoffset: Int64);
 begin
   se64UnitOffset.Value := fileOptoffset;
-  Result               := True;
 end;
 
-function TfrmKeyEntryLinux.GetSizeLimit(var fileOptSizeLimit: Int64): Boolean;
+procedure TfrmKeyEntryLinux.GetSizeLimit(out fileOptSizeLimit: Int64);
 begin
   fileOptSizeLimit := se64UnitSizeLimit.Value;
-  Result           := True;
 end;
 
-function TfrmKeyEntryLinux.SetSizeLimit(fileOptSizeLimit: Int64): Boolean;
+procedure TfrmKeyEntryLinux.SetSizeLimit(fileOptSizeLimit: Int64);
 begin
   se64UnitSizeLimit.Value := fileOptSizeLimit;
-  Result                  := True;
 end;
 
 // Note: This may return #0 as mountDriveLetter to indicate "any"
-function TfrmKeyEntryLinux.GetDriveLetter(var mountDriveLetter: ansichar): Boolean;
+procedure TfrmKeyEntryLinux.GetDriveLetter(out mountDriveLetter: ansichar);
 begin
   mountDriveLetter := #0;
   // Note: The item at index zero is "Use default"; #0 is returned for this
@@ -987,16 +950,14 @@ begin
     mountDriveLetter := AnsiChar(cbDrive.Items[cbDrive.ItemIndex][1]);
   end;
 
-  Result := True;
 end;
 
 // mountDriveLetter - Set to #0 to indicate "Use default"
 function TfrmKeyEntryLinux.SetDriveLetter(mountDriveLetter: ansichar): Boolean;
 var
-  idx:    Integer;
-  retVal: Boolean;
+  idx: Integer;
 begin
-  retVal := True;
+  Result := True;
 
   if (mountDriveLetter = #0) then begin
     // The item at idx 0 will *always* be "Use default"
@@ -1007,23 +968,20 @@ begin
 
   if (idx < 0) then begin
     idx    := 0;
-    retVal := False;
+    Result := False;
   end;
   cbDrive.ItemIndex := idx;
 
-  Result := retVal;
 end;
 
-function TfrmKeyEntryLinux.GetReadonly(var mountReadonly: Boolean): Boolean;
+procedure TfrmKeyEntryLinux.GetReadonly(var mountReadonly: Boolean);
 begin
   mountReadonly := ckMountReadonly.Checked;
-  Result        := True;
 end;
 
-function TfrmKeyEntryLinux.SetReadonly(mountReadonly: Boolean): Boolean;
+procedure TfrmKeyEntryLinux.SetReadonly(mountReadonly: Boolean);
 begin
   ckMountReadonly.Checked := mountReadonly;
-  Result                  := True;
 end;
 
 
@@ -1031,33 +989,24 @@ end;
 function TfrmKeyEntryLinux.GetMountAs(var mountAs: TFreeOTFEMountAs): Boolean;
 var
   currMountAs: TFreeOTFEMountAs;
-  allOK:       Boolean;
 begin
-  allOK := False;
+  Result := False;
 
   for currMountAs := low(TFreeOTFEMountAs) to high(TFreeOTFEMountAs) do begin
     if (cbMediaType.Items[cbMediaType.ItemIndex] = FreeOTFEMountAsTitle(currMountAs)) then begin
       mountAs := currMountAs;
-      allOK   := True;
+      Result  := True;
       break;
     end;
   end;
-
-  Result := allOK;
 end;
 
 
 function TfrmKeyEntryLinux.SetMountAs(mountAs: TFreeOTFEMountAs): Boolean;
-var
-  idx:   Integer;
-  allOK: Boolean;
 begin
-  idx                   := cbMediaType.Items.IndexOf(FreeOTFEMountAsTitle(mountAs));
-  cbMediaType.ItemIndex := idx;
-
-  allOK := (idx >= 0);
-
-  Result := allOK;
+  cbMediaType.ItemIndex :=
+    cbMediaType.Items.IndexOf(FreeOTFEMountAsTitle(mountAs));
+  Result                := cbMediaType.ItemIndex >= 0;
 end;
 
 
@@ -1074,103 +1023,91 @@ end;
 
 function TfrmKeyEntryLinux.GetMainCypherKernelDeviceName(
   var mainCypherDriver: Ansistring): Boolean;
-var
-  retVal: Boolean;
 begin
-  retVal := False;
+  Result := False;
 
   if (cbMainCypher.ItemIndex >= 0) then begin
     mainCypherDriver := cypherKernelModeDriverNames[cbMainCypher.ItemIndex];
     // unicode->ansi not a data loss because only ansistring stored
-    retVal           := True;
+    Result           := True;
   end;
 
-  Result := retVal;
 end;
 
 function TfrmKeyEntryLinux.GetMainCypherGUID(var mainCypherGUID: TGUID): Boolean;
-var
-  retVal: Boolean;
 begin
-  retVal := False;
+  Result := False;
 
   if (cbMainCypher.ItemIndex >= 0) then begin
     mainCypherGUID := StringToGUID(cypherGUIDs[cbMainCypher.ItemIndex]);
-    retVal         := True;
+    Result         := True;
   end;
 
-  Result := retVal;
 end;
 
 function TfrmKeyEntryLinux.SetMainCypher(mainCypherDriver: String; mainCypherGUID: TGUID): Boolean;
 var
-  i:   Integer;
-  idx: Integer;
+  i: Integer;
 begin
-  idx := -1;
+  cbMainCypher.ItemIndex := -1;
 
   // Locate the appropriate array idx
   for i := 0 to (cypherKernelModeDriverNames.Count - 1) do begin
-    if ((cypherKernelModeDriverNames[i] = mainCypherDriver) and
-      (cypherGUIDs[i] = GUIDToString(mainCypherGUID))) then begin
-      idx := i;
+       //  hashKernelModeDriverNames is dll name for explorer, else reg key so use 'or' GUIDs as well
+       { TODO -otdk -cUI: are these GUIDs the same across PCs? if not use cypher name etc }
+    if {(cypherKernelModeDriverNames[i] = mainCypherDriver) or}
+    (cypherGUIDs[i] = GUIDToString(mainCypherGUID)) then begin
+      cbMainCypher.ItemIndex := i;
       break;
     end;
 
   end;
 
-  cbMainCypher.ItemIndex := idx;
-
-  Result := (idx <> -1);
+  Result := cbMainCypher.ItemIndex <> -1;
 end;
 
 function TfrmKeyEntryLinux.GetMainSectorIVGenMethod(
   var sectorIVGenMethod: TFreeOTFESectorIVGenMethod): Boolean;
-var
-  retVal: Boolean;
 begin
-  retVal := False;
+  Result := False;
 
   if (cbSectorIVGenMethod.ItemIndex >= 0) then begin
     sectorIVGenMethod := TFreeOTFESectorIVGenMethod(
       cbSectorIVGenMethod.Items.Objects[cbSectorIVGenMethod.ItemIndex]);
-    retVal            := True;
+    Result            := True;
   end;
 
-  Result := retVal;
 end;
 
 function TfrmKeyEntryLinux.SetMainSectorIVGenMethod(sectorIVGenMethod:
   TFreeOTFESectorIVGenMethod): Boolean;
 var
   i:   Integer;
-  idx: Integer;
 begin
-  idx := -1;
+  cbSectorIVGenMethod.ItemIndex := -1;
 
   // Locate the appropriate idx
   for i := 0 to (cbSectorIVGenMethod.Items.Count - 1) do begin
     if (TFreeOTFESectorIVGenMethod(cbSectorIVGenMethod.Items.Objects[i]) = sectorIVGenMethod) then
     begin
-      idx := i;
+      cbSectorIVGenMethod.ItemIndex := i;
       break;
     end;
   end;
 
-  cbSectorIVGenMethod.ItemIndex := idx;
 
-  Result := (idx <> -1);
+  Result := (cbSectorIVGenMethod.ItemIndex <> -1);
 end;
 
 
-function TfrmKeyEntryLinux.GetMainIVSectorZeroPos(var startOfVolFile: Boolean;
-  var startOfEndData: Boolean): Boolean;
+procedure TfrmKeyEntryLinux.GetMainIVSectorZeroPos(out startOfVolFile: Boolean;
+  out startOfEndData: Boolean);
 begin
   // !! WARNING !!
   // Important that the radiogroup indexes are correct!
   startOfVolFile := (rgSectorIVSectorZeroPos.ItemIndex = 0);
   startOfEndData := (rgSectorIVSectorZeroPos.ItemIndex = 1);
-  Result         := True;
+
 end;
 
 
@@ -1199,10 +1136,9 @@ end;
 function TfrmKeyEntryLinux.GetMainIVHashKernelDeviceName(
   var mainIVHashDriver: Ansistring): Boolean;
 var
-  retVal:            Boolean;
   sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
 begin
-  retVal := False;
+  Result := False;
 
 
   if GetMainSectorIVGenMethod(sectorIVGenMethod) then begin
@@ -1212,28 +1148,25 @@ begin
       if (cbSectorIVHash.ItemIndex >= 0) then begin
         mainIVHashDriver := hashKernelModeDriverNames[cbSectorIVHash.ItemIndex];
         // unicode->ansi not a data loss because only ansistring stored
-        retVal           := True;
+        Result           := True;
       end;
     end else begin
       // No hash required for IV generation, just return '' and TRUE
       mainIVHashDriver := '';
-      retVal           := True;
+      Result           := True;
     end;
 
   end;
 
-
-  Result := retVal;
 end;
 
  // Note: This function will return NULL_GUID if none is selected, and still return TRUE
  // It will also return NULL_GUID if no hash *can* be selected (the control is disabled)
 function TfrmKeyEntryLinux.GetMainIVHashGUID(var mainIVHashGUID: TGUID): Boolean;
 var
-  retVal:            Boolean;
   sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
 begin
-  retVal := False;
+  Result := False;
 
 
   if GetMainSectorIVGenMethod(sectorIVGenMethod) then begin
@@ -1242,40 +1175,40 @@ begin
       // ...and the user has selected one, return it
       if (cbSectorIVHash.ItemIndex >= 0) then begin
         mainIVHashGUID := StringToGUID(hashGUIDs[cbSectorIVHash.ItemIndex]);
-        retVal         := True;
+        Result         := True;
       end;
     end else begin
       // No hash required for IV generation, just return '' and TRUE
       mainIVHashGUID := StringToGUID(NULL_GUID);
-      retVal         := True;
+      Result         := True;
     end;
 
   end;
 
-
-  Result := retVal;
 end;
 
 function TfrmKeyEntryLinux.SetMainIVHash(mainIVHashDriver: String; mainIVHashGUID: TGUID): Boolean;
 var
-  i:   Integer;
-  idx: Integer;
+  i: Integer;
 begin
-  idx := -1;
+  cbSectorIVHash.ItemIndex := -1;
 
   // Locate the appropriate array idx
   for i := 0 to (hashKernelModeDriverNames.Count - 1) do begin
-    if ((hashKernelModeDriverNames[i] = mainIVHashDriver) and
-      (hashGUIDs[i] = GUIDToString(mainIVHashGUID))) then begin
-      idx := i;
+    //  hashKernelModeDriverNames is dll name for explorer, else reg key so use 'or' GUIDs as well
+    { TODO -otdk -cUI: are these GUIDs the same across PCs? if not use cypher name etc }
+
+    if {((hashKernelModeDriverNames[i] = mainIVHashDriver) or}
+    (hashGUIDs[i] = GUIDToString(mainIVHashGUID)) then begin
+      cbSectorIVHash.ItemIndex := i;
       break;
     end;
 
   end;
 
-  cbSectorIVHash.ItemIndex := idx;
 
-  Result := (idx <> -1);
+
+  Result := (cbSectorIVHash.ItemIndex <> -1);
 end;
 
 
@@ -1284,10 +1217,9 @@ end;
 function TfrmKeyEntryLinux.GetMainIVCypherKernelDeviceName(
   var mainIVCypherDriver: Ansistring): Boolean;
 var
-  retVal:            Boolean;
   sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
 begin
-  retVal := False;
+  Result := False;
 
 
   if GetMainSectorIVGenMethod(sectorIVGenMethod) then begin
@@ -1297,18 +1229,16 @@ begin
       if (cbSectorIVCypher.ItemIndex >= 0) then begin
         mainIVCypherDriver := cypherKernelModeDriverNames[cbSectorIVCypher.ItemIndex];
         // unicode->ansi not a data loss because only ansistring stored
-        retVal             := True;
+        Result             := True;
       end;
     end else begin
       // No hash required for IV generation, just return '' and TRUE
       mainIVCypherDriver := '';
-      retVal             := True;
+      Result             := True;
     end;
 
   end;
 
-
-  Result := retVal;
 end;
 
 
@@ -1316,10 +1246,9 @@ end;
  // It will also return NULL_GUID if no hash *can* be selected (the control is disabled)
 function TfrmKeyEntryLinux.GetMainIVCypherGUID(var mainIVCypherGUID: TGUID): Boolean;
 var
-  retVal:            Boolean;
   sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
 begin
-  retVal := False;
+  Result := False;
 
 
   if GetMainSectorIVGenMethod(sectorIVGenMethod) then begin
@@ -1328,51 +1257,43 @@ begin
       // ...and the user has selected one, return it
       if (cbSectorIVCypher.ItemIndex >= 0) then begin
         mainIVCypherGUID := StringToGUID(cypherGUIDs[cbSectorIVCypher.ItemIndex]);
-        retVal           := True;
+        Result           := True;
       end;
     end else begin
       // No hash required for IV generation, just return '' and TRUE
       mainIVCypherGUID := StringToGUID(NULL_GUID);
-      retVal           := True;
+      Result           := True;
     end;
-
   end;
-
-
-  Result := retVal;
 end;
 
 function TfrmKeyEntryLinux.SetMainIVCypher(mainIVCypherDriver: String;
   mainIVCypherGUID: TGUID): Boolean;
 var
-  i:   Integer;
-  idx: Integer;
+  i: Integer;
 begin
-  idx := -1;
+  cbSectorIVCypher.ItemIndex := -1;
 
   // Locate the appropriate array idx
   for i := 0 to (cypherKernelModeDriverNames.Count - 1) do begin
-    if ((cypherKernelModeDriverNames[i] = mainIVCypherDriver) and
-      (cypherGUIDs[i] = GUIDToString(mainIVCypherGUID))) then begin
-      idx := i;
+       //  hashKernelModeDriverNames is dll name for explorer, else reg key so use 'or' GUIDs as well
+       { TODO -otdk -cUI: are these GUIDs the same across PCs? if not use cypher name etc }
+    if {((cypherKernelModeDriverNames[i] = mainIVCypherDriver) or}
+    (cypherGUIDs[i] = GUIDToString(mainIVCypherGUID)) then begin
+      cbSectorIVCypher.ItemIndex := i;
       break;
     end;
 
   end;
 
-  cbSectorIVCypher.ItemIndex := idx;
-
-  Result := (idx <> -1);
+  Result := (cbSectorIVCypher.ItemIndex <> -1);
 end;
 
 
 procedure TfrmKeyEntryLinux.ckSelected(Sender: TObject);
 begin
   EnableDisableControls();
-
 end;
-
-
 
 procedure TfrmKeyEntryLinux.pbLoadClick(Sender: TObject);
 begin
@@ -1388,7 +1309,6 @@ end;
 
 procedure TfrmKeyEntryLinux.LoadSettings(filename: String);
 var
-  allOK:                          Boolean;
   settingsFile:                   TINIFile;
   tmpString:                      String;
   tmpStringName, tmpStringGUID:   String;
@@ -1398,49 +1318,51 @@ var
   tmpSectorIVGenMethod:           TFreeOTFESectorIVGenMethod;
   found:                          Boolean;
   ignoreIfCantSet:                Boolean;  // Set to TRUE for parameters which we don't
+  Ok:                             Boolean;
   // really care about
   // e.g. If not hash algorithm is required for the
   //      IV, we can ignore it if we can't show the
   //      hash read in
 begin
-  allOK := True;
+  Ok := True;
 
   settingsFile := TINIFile.Create(filename);
   try
     // -------
     // Key processing...
     tmpString := settingsFile.ReadString(SETTINGS_SECTION_KEY, SETTINGS_VALUE_KeyProcSeed, '');
-    allOK     := allOK and SetKeyProcSeed(tmpString);
+    SetKeyProcSeed(tmpString);
 
     tmpStringName := settingsFile.ReadString(SETTINGS_SECTION_KEY,
       SETTINGS_VALUE_KeyProcHashKernelDeviceName, '');
     tmpStringGUID := settingsFile.ReadString(SETTINGS_SECTION_KEY,
       SETTINGS_VALUE_KeyProcHashGUID, NULL_GUID);
-    allOK         := allOK and SetKeyProcHash(tmpStringName, StringToGUID(tmpStringGUID));
+    //  still apply est of file even if one field cnat be set
+    if not SetKeyProcHash(tmpStringName, StringToGUID(tmpStringGUID)) then
+      Ok := False;
 
     tmpBoolean := settingsFile.ReadBool(SETTINGS_SECTION_KEY, SETTINGS_VALUE_HashWithAs, True);
-    allOK      := allOK and SetKeyProcHashWithAs(tmpBoolean);
+    SetKeyProcHashWithAs(tmpBoolean);
 
     tmpInteger := settingsFile.ReadInteger(SETTINGS_SECTION_KEY,
       SETTINGS_VALUE_KeyProcCypherIterationCount, 0);
-    allOK      := allOK and SetKeyProcCypherIterationCount(tmpInteger);
+    SetKeyProcCypherIterationCount(tmpInteger);
 
     // Only pay attention to errors in getting the cypher if:
     // 1) We can get the cypher iteration count
     // 2) The cypher iteration count greater than zero
     ignoreIfCantSet := True;
-    if (GetKeyProcCypherIterationCount(tmpInteger)) then begin
-      if (tmpInteger > 0) then begin
-        ignoreIfCantSet := False;
-      end;
-    end;
+    GetKeyProcCypherIterationCount(tmpInteger);
+    if (tmpInteger > 0) then
+      ignoreIfCantSet := False;
+
     tmpStringName := settingsFile.ReadString(SETTINGS_SECTION_KEY,
       SETTINGS_VALUE_KeyProcCypherKernelDeviceName, '');
     tmpStringGUID := settingsFile.ReadString(SETTINGS_SECTION_KEY,
       SETTINGS_VALUE_KeyProcCypherGUID, NULL_GUID);
-    allOK         := allOK and (SetKeyProcCypher(tmpStringName, StringToGUID(tmpStringGUID)) or
-      ignoreIfCantSet);
-
+    if not SetKeyProcCypher(tmpStringName, StringToGUID(tmpStringGUID)) and
+      (not ignoreIfCantSet) then
+      Ok := False;
 
     // -------
     // Encryption options...
@@ -1448,7 +1370,8 @@ begin
       SETTINGS_VALUE_MainCypherKernelDeviceName, '');
     tmpStringGUID := settingsFile.ReadString(SETTINGS_SECTION_ENCRYPTION,
       SETTINGS_VALUE_MainCypherGUID, NULL_GUID);
-    allOK         := allOK and SetMainCypher(tmpStringName, StringToGUID(tmpStringGUID));
+    if not SetMainCypher(tmpStringName, StringToGUID(tmpStringGUID)) then
+      Ok := False;
 
     tmpInteger := settingsFile.ReadInteger(SETTINGS_SECTION_ENCRYPTION,
       SETTINGS_VALUE_MainIVGenMethod, FreeOTFESectorIVGenMethodID[foivgUnknown]);
@@ -1456,13 +1379,14 @@ begin
     for tmpSectorIVGenMethod := low(TFreeOTFESectorIVGenMethod)
       to high(TFreeOTFESectorIVGenMethod) do begin
       if (FreeOTFESectorIVGenMethodID[tmpSectorIVGenMethod] = tmpInteger) then begin
-        allOK := allOK and SetMainSectorIVGenMethod(tmpSectorIVGenMethod);
+        if not SetMainSectorIVGenMethod(tmpSectorIVGenMethod) then
+          Ok := False;
         found := True;
         break;
       end;
     end;
-    allOK := allOK and found;
-
+    if not found then
+      Ok := False;
 
     // Ignore errors in the IV's sector zero location if:
     //   1) We couldn't get the sector IV generation method, or
@@ -1483,7 +1407,8 @@ begin
     if (tmpString = IV_SECTOR_ID_START_ENCRYPTED_VOLUME) then begin
       startOfVolFile := True;
     end;
-    allOK := allOK and (SetMainIVSectorZeroPos(startOfVolFile, startOfEndData) or ignoreIfCantSet);
+    if not SetMainIVSectorZeroPos(startOfVolFile, startOfEndData) and (not ignoreIfCantSet) then
+      Ok := False;
 
     // Ignore errors in the IV's hash algorithm if:
     //   1) We couldn't get the sector IV generation method, or
@@ -1498,8 +1423,9 @@ begin
       SETTINGS_VALUE_MainIVHashKernelDeviceName, '');
     tmpStringGUID := settingsFile.ReadString(SETTINGS_SECTION_ENCRYPTION,
       SETTINGS_VALUE_MainIVHashGUID, NULL_GUID);
-    allOK         := allOK and (SetMainIVHash(tmpStringName, StringToGUID(tmpStringGUID)) or
-      ignoreIfCantSet);
+    if not SetMainIVHash(tmpStringName, StringToGUID(tmpStringGUID)) and
+      (not ignoreIfCantSet) then
+      Ok := False;
 
     // Ignore errors in the IV's cypher algorithm if:
     //   1) We couldn't get the sector IV generation method, or
@@ -1514,19 +1440,18 @@ begin
       SETTINGS_VALUE_MainIVCypherKernelDeviceName, '');
     tmpStringGUID := settingsFile.ReadString(SETTINGS_SECTION_ENCRYPTION,
       SETTINGS_VALUE_MainIVCypherGUID, NULL_GUID);
-    allOK         := allOK and (SetMainIVCypher(tmpStringName, StringToGUID(tmpStringGUID)) or
-      ignoreIfCantSet);
-
+    if not SetMainIVCypher(tmpStringName, StringToGUID(tmpStringGUID)) and
+      (not ignoreIfCantSet) then
+      Ok := False;
 
     // -------
     // File options...
     tmpString := settingsFile.ReadString(SETTINGS_SECTION_FILE_OPTIONS,
       SETTINGS_VALUE_Offset, '0');
-    allOK     := allOK and SetOffset(strtoint64(tmpString));
+    SetOffset(strtoint64(tmpString));
 
     tmpString := settingsFile.ReadString(SETTINGS_SECTION_FILE_OPTIONS, SETTINGS_VALUE_Size, '0');
-    allOK     := allOK and SetSizeLimit(strtoint64(tmpString));
-
+    SetSizeLimit(strtoint64(tmpString));
 
     // -------
     // Mount options...
@@ -1540,22 +1465,24 @@ begin
     if (tmpString = '-') then begin
       tmpString := #0;
     end;
-    allOK := allOK and SetDriveLetter(AnsiChar(tmpString[1]));
+    if not SetDriveLetter(AnsiChar(tmpString[1])) then
+      Ok := False;
 
     tmpBoolean := settingsFile.ReadBool(SETTINGS_SECTION_MOUNT_OPTIONS,
       SETTINGS_VALUE_Readonly, False);
-    allOK      := allOK and SetReadonly(tmpBoolean);
+    SetReadonly(tmpBoolean);
 
     tmpInteger := settingsFile.ReadInteger(SETTINGS_SECTION_MOUNT_OPTIONS,
       SETTINGS_VALUE_MountAs, Ord(fomaFixedDisk));
-    allOK      := SetMountAs(TFreeOTFEMountAs(tmpInteger));
+    if not SetMountAs(TFreeOTFEMountAs(tmpInteger)) then
+      Ok := False;
 
 
   finally
     settingsFile.Free();
   end;
 
-  if not (allOK) then begin
+  if not Ok then begin
     SDUMessageDlg(
       _('One or more of your settings may not have loaded correctly; please check settings before continuing.'),
       mtWarning
@@ -1586,9 +1513,9 @@ begin
     try
       // -------
       // Key processing...
-      if (GetKeyProcSeed(tmpAnsiString)) then begin
-        settingsFile.WriteString(SETTINGS_SECTION_KEY, SETTINGS_VALUE_KeyProcSeed, tmpAnsiString);
-      end;
+      GetKeyProcSeed(tmpAnsiString);
+      settingsFile.WriteString(SETTINGS_SECTION_KEY, SETTINGS_VALUE_KeyProcSeed, tmpAnsiString);
+
 
       if (GetKeyProcHashKernelDeviceName(tmpString)) then begin
         settingsFile.WriteString(SETTINGS_SECTION_KEY, SETTINGS_VALUE_KeyProcHashKernelDeviceName,
@@ -1600,31 +1527,28 @@ begin
           GUIDToString(tmpGUID));
       end;
 
-      if (GetKeyProcHashWithAs(tmpBoolean)) then begin
-        settingsFile.WriteBool(SETTINGS_SECTION_KEY, SETTINGS_VALUE_HashWithAs, tmpBoolean);
-      end;
+      GetKeyProcHashWithAs(tmpBoolean);
+      settingsFile.WriteBool(SETTINGS_SECTION_KEY, SETTINGS_VALUE_HashWithAs, tmpBoolean);
 
-      if (GetKeyProcCypherIterationCount(tmpInteger)) then begin
-        settingsFile.WriteInteger(SETTINGS_SECTION_KEY, SETTINGS_VALUE_KeyProcCypherIterationCount,
-          tmpInteger);
-      end;
+      GetKeyProcCypherIterationCount(tmpInteger);
+      settingsFile.WriteInteger(SETTINGS_SECTION_KEY, SETTINGS_VALUE_KeyProcCypherIterationCount,
+        tmpInteger);
+
 
       // Only store the key processing cypher if the key is to be processed
       // with > 0 iterations of the cypher
-      if (GetKeyProcCypherIterationCount(tmpInteger)) then begin
-        if (tmpInteger > 0) then begin
-          if (GetKeyProcCypherKernelDeviceName(tmpString)) then begin
-            settingsFile.WriteString(SETTINGS_SECTION_KEY,
-              SETTINGS_VALUE_KeyProcCypherKernelDeviceName, tmpString);
-          end;
+      GetKeyProcCypherIterationCount(tmpInteger);
+      if (tmpInteger > 0) then begin
+        if (GetKeyProcCypherKernelDeviceName(tmpString)) then begin
+          settingsFile.WriteString(SETTINGS_SECTION_KEY,
+            SETTINGS_VALUE_KeyProcCypherKernelDeviceName, tmpString);
+        end;
 
-          if (GetKeyProcCypherGUID(tmpGUID)) then begin
-            settingsFile.WriteString(SETTINGS_SECTION_KEY, SETTINGS_VALUE_KeyProcCypherGUID,
-              GUIDToString(tmpGUID));
-          end;
+        if (GetKeyProcCypherGUID(tmpGUID)) then begin
+          settingsFile.WriteString(SETTINGS_SECTION_KEY, SETTINGS_VALUE_KeyProcCypherGUID,
+            GUIDToString(tmpGUID));
         end;
       end;
-
 
       // -------
       // Encryption options...
@@ -1646,20 +1570,19 @@ begin
       // Only store the IV sector zero location if it's needed
       if (GetMainSectorIVGenMethod(tmpSectorIVGenMethod)) then begin
         if (SCTRIVGEN_USES_SECTOR_ID[tmpSectorIVGenMethod]) then begin
-          if (GetMainIVSectorZeroPos(startOfVolFile, startOfEndData)) then begin
-            if (startOfVolFile) then begin
-              settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION,
-                SETTINGS_VALUE_MainIVSectorZeroPos, IV_SECTOR_ID_START_ENCRYPTED_VOLUME);
-            end else
-            if (startOfEndData) then begin
-              settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION,
-                SETTINGS_VALUE_MainIVSectorZeroPos, IV_SECTOR_ID_START_ENCRYPTED_DATA);
-            end else begin
-              settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION,
-                SETTINGS_VALUE_MainIVSectorZeroPos, IV_SECTOR_ID_START_UNSET);
-            end;
-
+          GetMainIVSectorZeroPos(startOfVolFile, startOfEndData);
+          if (startOfVolFile) then begin
+            settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION,
+              SETTINGS_VALUE_MainIVSectorZeroPos, IV_SECTOR_ID_START_ENCRYPTED_VOLUME);
+          end else
+          if (startOfEndData) then begin
+            settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION,
+              SETTINGS_VALUE_MainIVSectorZeroPos, IV_SECTOR_ID_START_ENCRYPTED_DATA);
+          end else begin
+            settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION,
+              SETTINGS_VALUE_MainIVSectorZeroPos, IV_SECTOR_ID_START_UNSET);
           end;
+
         end;
       end;
 
@@ -1696,33 +1619,32 @@ begin
 
       // -------
       // File options...
-      if (GetOffset(tmpInt64)) then begin
-        settingsFile.WriteString(SETTINGS_SECTION_FILE_OPTIONS, SETTINGS_VALUE_Offset,
-          IntToStr(tmpInt64));
-      end;
+      GetOffset(tmpInt64);
+      settingsFile.WriteString(SETTINGS_SECTION_FILE_OPTIONS, SETTINGS_VALUE_Offset,
+        IntToStr(tmpInt64));
 
-      if (GetSizeLimit(tmpInt64)) then begin
-        settingsFile.WriteString(SETTINGS_SECTION_FILE_OPTIONS, SETTINGS_VALUE_Size,
-          IntToStr(tmpInt64));
-      end;
+
+      GetSizeLimit(tmpInt64);
+      settingsFile.WriteString(SETTINGS_SECTION_FILE_OPTIONS, SETTINGS_VALUE_Size,
+        IntToStr(tmpInt64));
 
 
       // -------
       // Mount options...
-      if (GetDriveLetter(tmpChar)) then begin
-        // If the user selected "Use default", we encode the #0 to something
-        // we can store
-        if (tmpChar = #0) then begin
-          tmpChar := '-';
-        end;
-        settingsFile.WriteString(SETTINGS_SECTION_MOUNT_OPTIONS,
-          SETTINGS_VALUE_DriveLetter, tmpChar);
+      GetDriveLetter(tmpChar);
+      // If the user selected "Use default", we encode the #0 to something
+      // we can store
+      if (tmpChar = #0) then begin
+        tmpChar := '-';
       end;
+      settingsFile.WriteString(SETTINGS_SECTION_MOUNT_OPTIONS,
+        SETTINGS_VALUE_DriveLetter, tmpChar);
 
-      if (GetReadonly(tmpBoolean)) then begin
-        settingsFile.WriteBool(SETTINGS_SECTION_MOUNT_OPTIONS, SETTINGS_VALUE_Readonly,
-          tmpBoolean);
-      end;
+
+      GetReadonly(tmpBoolean);
+      settingsFile.WriteBool(SETTINGS_SECTION_MOUNT_OPTIONS, SETTINGS_VALUE_Readonly,
+        tmpBoolean);
+
 
       if (GetMountAs(tmpMountAs)) then begin
         settingsFile.WriteInteger(SETTINGS_SECTION_MOUNT_OPTIONS,
@@ -1746,7 +1668,7 @@ var
 begin
   GetMainIVCypherKernelDeviceName(deviceName);
   GetMainIVCypherGUID(GUID);
-  fFreeOTFEObj.ShowCypherDetailsDlg(deviceName, GUID);
+  GetFreeOTFEBase().ShowCypherDetailsDlg(deviceName, GUID);
 
 end;
 

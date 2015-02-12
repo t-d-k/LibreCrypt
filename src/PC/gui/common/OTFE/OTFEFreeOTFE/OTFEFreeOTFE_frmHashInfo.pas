@@ -50,12 +50,13 @@ type
     procedure FormShow(Sender: TObject);
   PRIVATE
     { Private declarations }
+       // These two items uniquely identify which should be shown
+    fShowDriverName: String;
+    fShowGUID:       TGUID;
   PUBLIC
-    OTFEFreeOTFEObj: TOTFEFreeOTFEBase;
-
-    // These two items uniquely identify which should be shown
-    ShowDriverName: String;
-    ShowGUID:       TGUID;
+//    OTFEFreeOTFEObj: TOTFEFreeOTFEBase;
+     property ShowDriverName : String write fShowDriverName ;
+     property ShowGUID : TGUID write fShowGUID;
   end;
 
 
@@ -102,7 +103,7 @@ begin
   edHashLength.Text    := RS_UNABLE_LOCATE_HASH;
   edHashBlockSize.Text := RS_UNABLE_LOCATE_HASH;
 
-  if (OTFEFreeOTFEObj is TOTFEFreeOTFEDLL) then begin
+  if (GetFreeOTFEBase() is TOTFEFreeOTFEDLL) then begin
     lblDeviceName.Caption := _('Library:');
 
     lblDeviceUserModeName.Visible      := False;
@@ -113,14 +114,14 @@ begin
   end;
 
   SetLength(hashDrivers, 0);
-  if OTFEFreeOTFEObj.GetHashDrivers(TFreeOTFEHashDriverArray(hashDrivers)) then begin
+  if GetFreeOTFEBase().GetHashDrivers(TFreeOTFEHashDriverArray(hashDrivers)) then begin
     for i := low(hashDrivers) to high(hashDrivers) do begin
       currHashDriver := hashDrivers[i];
 
-      if ((currHashDriver.LibFNOrDevKnlMdeName = ShowDriverName) or
-        (currHashDriver.DeviceUserModeName = ShowDriverName)) then begin
+      if ((currHashDriver.LibFNOrDevKnlMdeName = fShowDriverName) or
+        (currHashDriver.DeviceUserModeName = fShowDriverName)) then begin
         edDriverGUID.Text := GUIDToString(currHashDriver.DriverGUID);
-        if (OTFEFreeOTFEObj is TOTFEFreeOTFEDLL) then begin
+        if (GetFreeOTFEBase() is TOTFEFreeOTFEDLL) then begin
           edDriverDeviceName.Text := currHashDriver.LibFNOrDevKnlMdeName;
         end else begin
           edDriverDeviceName.Text           := currHashDriver.DeviceName;
@@ -129,16 +130,16 @@ begin
         end;
         edDriverTitle.Text     := currHashDriver.Title;
         edDriverVersionID.Text :=
-          OTFEFreeOTFEObj.VersionIDToStr(currHashDriver.VersionID);
+          GetFreeOTFEBase().VersionIDToStr(currHashDriver.VersionID);
         edDriverHashCount.Text := IntToStr(currHashDriver.HashCount);
 
         for j := low(hashDrivers[i].Hashes) to high(hashDrivers[i].Hashes) do begin
           currHash := hashDrivers[i].Hashes[j];
 
-          if (IsEqualGUID(currHash.HashGUID, ShowGUID)) then begin
+          if (IsEqualGUID(currHash.HashGUID, fShowGUID)) then begin
             edHashGUID.Text      := GUIDToString(currHash.HashGUID);
             edHashTitle.Text     := currHash.Title;
-            edHashVersionID.Text := OTFEFreeOTFEObj.VersionIDToStr(currHash.VersionID);
+            edHashVersionID.Text := GetFreeOTFEBase().VersionIDToStr(currHash.VersionID);
 
             tmpString := SDUParamSubstitute(COUNT_BITS, [currHash.Length]);
             if (currHash.Length = -1) then begin

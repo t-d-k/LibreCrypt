@@ -23,7 +23,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   PUBLIC
-    function OTFEFreeOTFE(): TOTFEFreeOTFEDLL;
+//    function OTFEFreeOTFE(): TOTFEFreeOTFEDLL;
 
     procedure ChangeLanguage(langCode: String); OVERRIDE;
   end;
@@ -55,7 +55,7 @@ var
 begin
   tmpConfig := TFreeOTFEExplorerSettings.Create();
   try
-    tmpConfig.Assign(Settings);
+    tmpConfig.Assign(gSettings);
     AllTabs_WriteSettings(tmpConfig);
 
     SDUSetLanguage(langCode);
@@ -97,9 +97,9 @@ begin
 
 end;
 
-function TfrmOptions_FreeOTFEExplorer.OTFEFreeOTFE(): TOTFEFreeOTFEDLL;
-begin
-  Result := TOTFEFreeOTFEDLL(OTFEFreeOTFEBase);
-end;
+//function TfrmOptions_FreeOTFEExplorer.OTFEFreeOTFE(): TOTFEFreeOTFEDLL;
+//begin
+//  Result := TOTFEFreeOTFEDLL(OTFEFreeOTFEBase);
+//end;
 
 end.

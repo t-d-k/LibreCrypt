@@ -64,7 +64,7 @@ type
     procedure PopulateGrid(); VIRTUAL;
     function IsColumnAdvanced(colIdx: Integer): Boolean; VIRTUAL;
   PUBLIC
-    OTFEFreeOTFE: TOTFEFreeOTFEBase;
+//    OTFEFreeOTFE: TOTFEFreeOTFEBase;
   end;
 
 resourcestring
@@ -252,7 +252,7 @@ begin
     try
       // Add header if text report
       if (useFormat = clfText) then begin
-        OTFEFreeOTFE.AddStdDumpHeader(stlContent, self.Caption);
+        GetFreeOTFEBase().AddStdDumpHeader(stlContent, self.Caption);
         stlContent.Add(_('Summary'));
         stlContent.Add(StringOfChar('-', length(_('Summary'))));
         stlContent.Add(SDUParamSubstitute(_('Total drivers   : %1'), [CountDrivers()]));
@@ -298,7 +298,6 @@ end;
 
 function TfrmGridReport.FormatRow_xSV_Header(seperatorChar: Char): String;
 var
-  retval: String;
   i:      Integer;
 begin
   retval := '';
@@ -316,7 +315,6 @@ end;
 
 function TfrmGridReport.FormatRow_xSV_Item(rowIdx: Integer; seperatorChar: Char): String;
 var
-  retval:   String;
   i:        Integer;
   item:     TListItem;
   itemText: String;
@@ -367,7 +365,6 @@ end;
 
 function TfrmGridReport.FormatRow_Text(rowIdx: Integer): String;
 var
-  retval:    String;
   i:         Integer;
   maxTitleX: Integer;
 begin

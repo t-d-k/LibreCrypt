@@ -50,7 +50,7 @@ type
     function DoOKClicked(): Boolean; OVERRIDE;
 
   PUBLIC
-    function OTFEFreeOTFE(): TOTFEFreeOTFE;
+//    function OTFEFreeOTFE(): TOTFEFreeOTFE;
 
     procedure ChangeLanguage(langCode: String); OVERRIDE;
   end;
@@ -82,7 +82,7 @@ var
 begin
   tmpConfig := TFreeOTFESettings.Create();
   try
-    tmpConfig.Assign(Settings);
+    tmpConfig.Assign(gSettings);
     AllTabs_WriteSettings(tmpConfig);
 
     SDUSetLanguage(langCode);
@@ -142,10 +142,10 @@ begin
 
 end;
 
-function TfrmOptions_FreeOTFE.OTFEFreeOTFE(): TOTFEFreeOTFE;
-begin
-  Result := TOTFEFreeOTFE(OTFEFreeOTFEBase);
-end;
+//function TfrmOptions_FreeOTFE.OTFEFreeOTFE(): TOTFEFreeOTFE;
+//begin
+//  Result := TOTFEFreeOTFE(OTFEFreeOTFEBase);
+//end;
 
 procedure TfrmOptions_FreeOTFE.EnableDisableControls();
 begin

@@ -23,7 +23,8 @@ uses
   Buttons,   // Required for TBitBtn
   ActnList,  // Required for TAction
   Menus,
-  SDUWinHTTP, SysUtils,
+  SDUWinHTTP,
+  SysUtils,
   zlib;
 
 const
@@ -199,7 +200,6 @@ type
   TSDUNewline      = TSDUNewline_Enum;
 
   TSDUBytes = array of Byte;
-
   DriveLetterString    = Ansistring;
   VolumeFilenameString = String;
   KeyFilenameString    = String;
@@ -504,6 +504,7 @@ function SDUCopyFile_Compression(Source: String; destination: String;
 
 //function SDUXOR(a: Ansistring; b: Ansistring): Ansistring;
 function SDUXOR(a: TSDUBytes; b: TSDUBytes): TSDUBytes;
+function SDUXORStr(a: Ansistring; b: Ansistring): Ansistring;
  { DONE 1 -otdk -cclean : use bytes instead of chars }
  // Calculate x! (factorial X)
 function SDUFactorial(x: Integer): LARGE_INTEGER;
@@ -724,6 +725,8 @@ function SDUOSVistaOrLater(): Boolean;
 function SDUOSCPUSize(): Integer;
 // Returns TRUE if running on 64 bit OS (e.g. Windows XP x64)
 function SDUOS64bit(): Boolean;
+//is the *app* 64 bit?
+function SDUApp64bit(): Boolean;
 // Register the specified filename extension to launch the command given
 function SDUFileExtnRegCmd(fileExtn: String; menuItem: String; command: String): Boolean;
 function SDUFileExtnUnregCmd(fileExtn: String; menuItem: String): Boolean;
@@ -899,7 +902,7 @@ function SDUSplitString(wholeString: String; var firstItem: String;
 function SDUSplitWideString(wholeString: WideString; var firstItem: WideString;
   var theRest: WideString; splitOn: Widechar = ' '): Boolean;
 // As TryStrToInt, but can handle 64 bit values
-function SDUTryStrToInt(const S: String; out Value: Integer): Boolean; OVERLOAD;
+//function SDUTryStrToInt(const S: String; out Value: Integer): Boolean; OVERLOAD;
 function SDUTryStrToInt(const S: String; out Value: Uint64): Boolean; OVERLOAD;
 {$IFDEF VER185}  // See comment on ULONGLONG definition
 function SDUTryStrToInt(const S: string; out Value: ULONGLONG): boolean; overload;
@@ -943,18 +946,20 @@ function SDUGetSystemDirectory(): String;
  //encodes as ascii for now
 function SDUStringToSDUBytes(const rhs: Ansistring): TSDUBytes;
 function SDUBytesToString(const Value: TSDUBytes): Ansistring;
-//initialises value to all zeros
-procedure SDUInitAndZeroBuffer(len: Cardinal; var Value: TSDUBytes);
-
+//sets bytes to all zeros and sets length to 0
+procedure SDUInitAndZeroBuffer(len: Cardinal; var val: TSDUBytes);
+//sets bytes to all zeros
 procedure SDUZeroBuffer(buf: TSDUBytes);
-procedure SDUZeroString(buf: Ansistring);
+procedure SDUZeroString(var buf: Ansistring);
 
 //adds byte to array
 procedure SDUAddByte(var Value: TSDUBytes; byt: Byte);
 procedure SDUAddArrays(var A: TSDUBytes; const rhs: TSDUBytes);
+// adds rhs to end up lhs up to 'limit' bytes from rhs
 procedure SDUAddLimit(var lhs: TSDUBytes; const rhs: TSDUBytes; limit: Integer);
-procedure SDUDeleteFromStart(var A: TSDUBytes; Count: Integer);
-procedure SDUResetLength(var A: TSDUBytes; newLen: Integer);
+procedure SDUDeleteFromStart(var A: TSDUBytes; Count: Integer); //del count from start of array
+//same as setLength , but seroing any freed bytes. even if AlwaysClearFreedMemory not set
+procedure SafeSetLength(var A: TSDUBytes; newLen: Integer);
 procedure SDUCopy(var aTo: TSDUBytes; const aFrom: TSDUBytes);
 
 //copies from aFrom to aTo up to limit bytes, sets length and zeroises any freed data
@@ -1189,81 +1194,77 @@ function SDUPrettyPrintHexStr(data: Pointer; offset: Longint; bytes: Longint;
   Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; OVERLOAD;
 var
   sl:     TStringList;
-  retVal: String;
 begin
-  retVal := '';
+  Result := '';
 
   sl := TStringList.Create();
   try
     if SDUPrettyPrintHex(data, offset, bytes, sl, Width, dispOffsetWidth) then begin
-      retVal := sl.Text;
+      Result := sl.Text;
     end;
 
   finally
     sl.Free();
   end;
 
-  Result := retVal;
+
 end;
 
 function SDUPrettyPrintHexStr(data: String; offset: Longint; bytes: Longint;
   Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; OVERLOAD;
 var
   sl:     TStringList;
-  retVal: String;
 begin
-  retVal := '';
+  Result := '';
 
   sl := TStringList.Create();
   try
     if SDUPrettyPrintHex(data, offset, bytes, sl, Width, dispOffsetWidth) then begin
-      retVal := sl.Text;
+      Result := sl.Text;
     end;
 
   finally
     sl.Free();
   end;
 
-  Result := retVal;
+
 end;
 
 function SDUPrettyPrintHexStr(data: TStream; offset: Longint; bytes: Longint;
   Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; OVERLOAD;
 var
   sl:     TStringList;
-  retVal: String;
 begin
-  retVal := '';
+  Result := '';
 
   sl := TStringList.Create();
   try
     if SDUPrettyPrintHex(data, offset, bytes, sl, Width, dispOffsetWidth) then begin
-      retVal := sl.Text;
+      Result := sl.Text;
     end;
 
   finally
     sl.Free();
   end;
 
-  Result := retVal;
+
 end;
 
 function SDUPrettyPrintHexStrSimple(data: String): String;
 var
-  retval: String;
   i:      Integer;
 begin
-  retval := '';
+  Result := '';
 
   for i := 1 to length(data) do begin
-    if (retval <> '') then begin
-      retval := retval + ' ';
+    if (Result <> '') then begin
+      Result := Result + ' ';
     end;
 
-    retval := retval + '0x' + inttohex(Ord(data[i]), 2);
+    Result := Result + '0x' + inttohex(Ord(data[i]), 2);
   end;
 
-  Result := retval;
+
 end;
 
  // Setup a Open/Save dialog with supplied default filename & path
@@ -1654,31 +1655,27 @@ end;
 
 function SDUVersionInfoToString(majorVersion: Integer; minorVersion: Integer;
   betaVersion: Integer = -1): String;
-var
-  retval: String;
 begin
-  retval := Format('%d.%.2d', [majorVersion, minorVersion]);
+  Result := Format('%d.%.2d', [majorVersion, minorVersion]);
 
   if (betaVersion > 0) then begin
-    retval := retval + ' ' + RS_BETA + ' ' + IntToStr(betaVersion);
+    Result := Result + ' ' + RS_BETA + ' ' + IntToStr(betaVersion);
   end;
 
-  Result := retval;
+
 end;
 
 function SDUVersionInfoToString(majorVersion: Integer; minorVersion: Integer;
   revisionVersion: Integer; buildVersion: Integer; betaVersion: Integer = -1): String;
-var
-  retval: String;
 begin
-  retval := Format('%d.%.2d.%.2d.%.4d', [majorVersion, minorVersion, revisionVersion,
+  Result := Format('%d.%.2d.%.2d.%.4d', [majorVersion, minorVersion, revisionVersion,
     buildVersion]);
 
   if (betaVersion > 0) then begin
-    retval := retval + ' ' + RS_BETA + ' ' + IntToStr(betaVersion);
+    Result := Result + ' ' + RS_BETA + ' ' + IntToStr(betaVersion);
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -2050,45 +2047,42 @@ end;
 function SDUDateTimeToFileTime(dateTime: TDateTime): TFileTime;
 var
   sysTime: TSystemTime;
-  retval:  TFileTime;
 begin
   try
     DateTimeToSystemTime(dateTime, sysTime);
-    SystemTimeToFileTime(sysTime, retval);
-    LocalFileTimeToFileTime(retval, retval);
+    SystemTimeToFileTime(sysTime, Result);
+    LocalFileTimeToFileTime(Result, Result);
   except
-    retval.dwHighDateTime := 0;
-    retval.dwLowDateTime  := 0;
+    Result.dwHighDateTime := 0;
+    Result.dwLowDateTime  := 0;
   end;
 
-  Result := retval;
+
 end;
 
 function SDUFileTimeToDateTime(fileTime: TFileTime): TDateTime;
 var
   sysTime: TSystemTime;
-  retval:  TDateTime;
 begin
   try
     FileTimeToLocalFileTime(fileTime, fileTime);
     FileTimeToSystemTime(fileTime, sysTime);
-    retval := SystemTimeToDateTime(sysTime);
+    Result := SystemTimeToDateTime(sysTime);
   except
-    retval := 0;
+    Result := 0;
   end;
 
-  Result := retval;
+
 end;
 
 function SDUFileTimeToTimeStamp(fileTime: TFileTime): TTimeStamp;
 var
   dt:     TDateTime;
-  retval: TTimeStamp;
 begin
   dt     := SDUFileTimeToDateTime(fileTime);
-  retval := DateTimeToTimeStamp(dt);
+  Result := DateTimeToTimeStamp(dt);
 
-  Result := retval;
+
 end;
 
  // Counts the number of instances of theChar in theString, and returns this
@@ -2286,59 +2280,53 @@ begin
 end;
 
 function _SDUDetectExistWindowDetails_ThisClassHandle(): THandle;
-var
-  retval: THandle;
 begin
-  retval := Application.Handle;
+  Result := Application.Handle;
 
 {$IF CompilerVersion >= 18.5}
   // Vista fix for Delphi 2007 and later
   if ((Application.Mainform <> nil) and Application.MainFormOnTaskbar) then begin
-    retval := Application.Mainform.Handle;
+    Result := Application.Mainform.Handle;
   end;
 {$IFEND}
 
-  Result := retval;
+
 end;
 
 
 // Split the string supplied into two parts, before and after the split char
 function SDUSplitString(wholeString: String; var firstItem: String;
   var theRest: String; splitOn: Char = ' '): Boolean;
-var
-  retval: Boolean;
 begin
   firstItem := wholeString;
   if pos(splitOn, wholeString) > 0 then begin
     firstItem := copy(wholeString, 1, (pos(splitOn, wholeString) - 1));
     theRest   := copy(wholeString, length(firstItem) + length(splitOn) + 1,
       (length(wholeString) - (length(firstItem) + length(splitOn))));
-    retval    := True;
+    Result    := True;
   end else begin
     theRest := '';
-    retval  := (firstItem <> '');
+    Result  := (firstItem <> '');
   end;
 
-  Result := retval;
+
 end;
 
 function SDUSplitWideString(wholeString: WideString; var firstItem: WideString;
   var theRest: WideString; splitOn: Widechar = ' '): Boolean;
-var
-  retval: Boolean;
 begin
   firstItem := wholeString;
   if Pos(splitOn, wholeString) > 0 then begin
     firstItem := copy(wholeString, 1, (pos(splitOn, wholeString) - 1));
     theRest   := copy(wholeString, length(firstItem) + length(splitOn) + 1,
       (length(wholeString) - (length(firstItem) + length(splitOn))));
-    retval    := True;
+    Result    := True;
   end else begin
     theRest := '';
-    retval  := (firstItem <> '');
+    Result  := (firstItem <> '');
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -2418,10 +2406,9 @@ var
   lpnrDrvLoc: PNETRESOURCE;
   cEntries:   DWORD;
   cbBuffer:   DWORD;
-  retval:     WideString;
   localName:  String;
 begin
-  retval := '';
+  Result := '';
 
   cEntries := $FFFFFFFF;
   cbBuffer := 16384;
@@ -2438,7 +2425,7 @@ begin
           if lpnrDrvLoc^.lpLocalName <> nil then begin
             localName := lpnrDrvLoc^.lpLocalName;
             if (length(localName) > 0) then begin
-              retval := retval + lpnrDrvLoc^.lpLocalName[0];
+              Result := Result + lpnrDrvLoc^.lpLocalName[0];
             end;
           end;
           Inc(lpnrDrvLoc);
@@ -2456,8 +2443,8 @@ begin
 
     WNetCloseEnum(hEnum);
   end;
-
-  Result := retval; { TODO 1 -otdk -cclean : warning wide->ansi }
+  result :=Result;
+   { TODO 1 -otdk -cclean : warning wide->ansi }
 end;
 
 
@@ -2466,14 +2453,13 @@ end;
  // Return value is all in uppercase
 function SDUGetUsedDriveLetters(): Ansistring;
 var
-  retval:     Ansistring;
   DriveNum:   Integer;
   DriveBits:  set of 0..25;
   drivesList: TStringList;
   netDrives:  Ansistring;
   i:          Integer;
 begin
-  retval := '';
+  Result := '';
 
   drivesList := TStringList.Create();
   try
@@ -2497,13 +2483,13 @@ begin
 
     drivesList.Sort();
     for i := 0 to (drivesList.Count - 1) do begin
-      retval := retval + drivesList[i]; //no data loss here - just that stringlist uses widestrings
+      Result := Result + drivesList[i]; //no data loss here - just that stringlist uses widestrings
     end;
   finally
     drivesList.Free();
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -2511,18 +2497,17 @@ function SDUGetUnusedDriveLetters(): Ansistring;
 var
   x:                ansichar;
   usedDriveLetters: Ansistring;
-  retval:           Ansistring;
 begin
-  retval := '';
+  Result := '';
 
   usedDriveLetters := SDUGetUsedDriveLetters();
   for x := 'A' to 'Z' do begin
     if (pos(x, usedDriveLetters) = 0) then begin
-      retval := retval + x;
+      Result := Result + x;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -2647,9 +2632,8 @@ end;
 function SDUFileExtnGetRegCmd(fileExtn: String; menuItem: String): String;
 var
   registry: TRegistry;
-  retval:   String;
 begin
-  retval := '';
+  Result := '';
 
   if (Pos('.', fileExtn) <> 1) then begin
     fileExtn := '.' + fileExtn;
@@ -2661,7 +2645,7 @@ begin
     registry.Access  := KEY_READ;
 
     if registry.OpenKey('\' + fileExtn + '\shell\' + menuItem + '\command', False) then begin
-      retval := registry.ReadString('');
+      Result := registry.ReadString('');
       registry.CloseKey();
     end;
 
@@ -2669,18 +2653,17 @@ begin
     registry.Free();
   end;
 
-  Result := retval;
+
 end;
 
 function SDUFileExtnIsRegCmd(fileExtn: String; menuItem: String; executable: String): Boolean;
 var
-  retval:  Boolean;
   command: String;
 begin
   command := SDUFileExtnGetRegCmd(fileExtn, menuItem);
-  retval  := (Pos(uppercase(executable), uppercase(command)) > 0);
+  Result  := (Pos(uppercase(executable), uppercase(command)) > 0);
 
-  Result := retval;
+
 end;
 
 
@@ -2790,7 +2773,6 @@ end;
 function SDUFileExtnIsRegd(fileExtn: String; menuItem: String): Boolean;
 var
   registry: TRegistry;
-  retval:   Boolean;
 begin
   if (Pos('.', fileExtn) <> 1) then begin
     fileExtn := '.' + fileExtn;
@@ -2801,13 +2783,13 @@ begin
     registry.RootKey := HKEY_CLASSES_ROOT;
     registry.Access  := KEY_READ;
 
-    retval := registry.KeyExists('\' + fileExtn + '\shell\' + menuItem + '\command');
+    Result := registry.KeyExists('\' + fileExtn + '\shell\' + menuItem + '\command');
 
   finally
     registry.Free();
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -2816,18 +2798,17 @@ function SDUInstalledOS(): TInstalledOS;
 const
   SM_SERVERR2 = 98;
 var
-  retVal:          TInstalledOS;
   osVersionInfoEx: SDUWindows.OSVERSIONINFOEX;
 begin
   if (Win32Platform <> VER_PLATFORM_WIN32_NT) then begin
     // Windows 95/98/Me
     if (Win32MinorVersion = 0) then begin
-      retVal := osWindows95;
+      Result := osWindows95;
     end else
     if (Win32MinorVersion = 10) then begin
-      retVal := osWindows98;
+      Result := osWindows98;
     end else begin
-      retVal := osWindowsMe;
+      Result := osWindowsMe;
     end;
   end else begin
     // Windows NT based and later
@@ -2847,10 +2828,10 @@ begin
     // Windows 2000             5.0
 
     // Fallback...
-    retVal := osWindowsNT;
+    Result := osWindowsNT;
 
     if (Win32MajorVersion < 5) then begin
-      retVal := osWindowsNT;
+      Result := osWindowsNT;
     end else
     if (Win32MajorVersion >= 5) then begin
       osVersionInfoEx.dwOSVersionInfoSize := sizeof(osVersionInfoEx);
@@ -2858,51 +2839,51 @@ begin
 
       if (Win32MajorVersion = 5) then begin
         // Fallback...
-        retVal := osWindows2000;
+        Result := osWindows2000;
 
         if (Win32MinorVersion = 0) then begin
-          retVal := osWindows2000;
+          Result := osWindows2000;
         end else
         if (Win32MinorVersion = 1) then begin
-          retVal := osWindowsXP; // On Windows XP 64 bit, Win32MinorVersion is 2 ?!
+          Result := osWindowsXP; // On Windows XP 64 bit, Win32MinorVersion is 2 ?!
         end else
         if (Win32MinorVersion = 2) then begin
-          retVal := osWindowsServer2003; // On Windows XP 64 bit, Win32MinorVersion is 2 ?!
+          Result := osWindowsServer2003; // On Windows XP 64 bit, Win32MinorVersion is 2 ?!
 
           if (GetSystemMetrics(SM_SERVERR2) <> 1) then begin
-            retVal := osWindowsServer2003R2;
+            Result := osWindowsServer2003R2;
           end;
         end;
       end else
       if (Win32MajorVersion = 6) then begin
         // Fallback
-        retVal := osWindowsVista;
+        Result := osWindowsVista;
 
         if (Win32MinorVersion = 0) then begin
-          retVal := osWindowsVista;
+          Result := osWindowsVista;
 
           if (OSVERSIONINFOEX.wProductType <> VER_NT_WORKSTATION) then begin
-            retVal := osWindowsServer2008;
+            Result := osWindowsServer2008;
           end;
         end else
         if (Win32MinorVersion = 1) then begin
-          retVal := osWindows7;
+          Result := osWindows7;
 
           if (OSVERSIONINFOEX.wProductType <> VER_NT_WORKSTATION) then begin
-            retVal := osWindowsServer2008R2;
+            Result := osWindowsServer2008R2;
           end;
         end;
 
       end else // if (Win32MajorVersion >= 6) then
       begin
         // Fallback
-        retVal := osWindows7;
+        Result := osWindows7;
       end;
     end;
 
   end;
 
-  Result := retVal;
+
 end;
 
 
@@ -2910,7 +2891,6 @@ end;
 function SDUOSVistaOrLater(): Boolean;
 begin
   Result := (SDUInstalledOS >= osWindowsVista);
-
 end;
 
  // Returns 32/64, depending on version of *OS* running (e.g. Windows XP x64
@@ -2920,13 +2900,12 @@ const
   PROC_ARCH_32_BIT = 'x86';
 var
   //  procArch: string;
-  retval:  Integer;
   isWow64: Boolean;
 begin
-  retval := 32;
+  Result := 32;
 
 {
-  if (retval = 32) then
+  if (Result = 32) then
     begin
     procArch := trim(GetEnvironmentVariable(EVN_VAR_PROC_ARCHITECTURE));
     // If it's set to something, but not x86, assume it's a 64 bit system
@@ -2935,11 +2914,11 @@ begin
         (uppercase(procArch) <> uppercase(PROC_ARCH_32_BIT))
        ) then
       begin
-      retval := 64;
+      Result := 64;
       end;
     end;
 
-  if (retval = 32) then
+  if (Result = 32) then
     begin
     procArch := trim(GetEnvironmentVariable(EVN_VAR_PROC_ARCH_W3264));
     // If it's set to something, but not x86, assume it's a 64 bit system
@@ -2948,20 +2927,20 @@ begin
         (uppercase(procArch) <> uppercase(PROC_ARCH_32_BIT))
        ) then
       begin
-      retval := 64;
+      Result := 64;
       end;
     end;
 }
 
-  if (retval = 32) then begin
+  if (Result = 32) then begin
     if SDUIsWow64Process(GetCurrentProcess, isWow64) then begin
       if isWow64 then begin
-        retval := 64;
+        Result := 64;
       end;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 // Returns TRUE if running on 64 bit OS (e.g. Windows XP x64)
@@ -2970,16 +2949,25 @@ begin
   Result := (SDUOSCPUSize() = 64);
 end;
 
+//is the *app* 64 bit?
+function SDUApp64bit(): Boolean;
+begin
+   {$ifdef WIN32}
+    result := false;
+    {$ELSE}
+    result := true;
+    {$ENDIF}
+end;
+
  // Get size of file
  // This is just a slightly easier to use version of GetFileSize
  // Returns file size, or -1 on error
 function SDUGetFileSize(const filename: String): ULONGLONG;
 var
   fileHandle:        THandle;
-  retVal:            ULONGLONG;
   sizeLow, sizeHigh: DWORD;
 begin
-  retVal := 0;
+  Result := 0;
 
   // Open file and get it's size
   fileHandle := CreateFile(PChar(filename),
@@ -2997,14 +2985,12 @@ begin
     sizeLow := GetFileSize(fileHandle, @sizeHigh);
 
     if not ((sizeLow = $FFFFFFFF) and (GetLastError() <> NO_ERROR)) then begin
-      retVal := ULONGLONG(sizeHigh) shl 32;
-      retVal := (retval or ULONGLONG(sizeLow));
+      Result := ULONGLONG(sizeHigh) shl 32;
+      Result := (Result or ULONGLONG(sizeLow));
     end;
 
     CloseHandle(fileHandle);
   end;
-
-  Result := retVal;
 end;
 
  // On a TPageControl, determine if the one tabsheet appears *after* another
@@ -3058,12 +3044,11 @@ end;
  // Note: Whitespace in ASCIIrep is *ignored*
 function SDUParseASCIIToData(ASCIIrep: String; var data: String): Boolean;
 var
-  retval:        Boolean;
   tmpStr:        String;
   i:             Integer;
   ASCIIStripped: String;
 begin
-  retval := False;
+  Result := False;
 
   // Uppercase ASCIIrep...
   ASCIIrep := uppercase(ASCIIrep);
@@ -3093,10 +3078,10 @@ begin
       data := data + chr(SDUHexToInt(tmpStr));
     end;
 
-    retval := True;
+    Result := True;
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -3290,7 +3275,7 @@ end;
 function SDUGetSpecialFolderPath(const CSIDL: Integer): String;
 var
   pidl:     PItemIDList;
-  retVal:   array [0..MAX_PATH] of Char;
+  retVal:   array [0..MAX_PATH] of WideChar;
   ifMalloc: IMalloc;
 begin
   retVal := '';
@@ -3303,8 +3288,8 @@ begin
       end;
     end;
   end;
+  result := retVal;
 
-  Result := retVal;
 end;
 
 
@@ -3489,7 +3474,6 @@ var
   IPFile:           IPersistFile;
   shortcutFilename: WideString;
   useShowCmd:       Integer;
-  retval:           Boolean;
 begin
   IObject := CreateComObject(CLSID_ShellLink);
   ISLink  := IObject as IShellLink;
@@ -3518,9 +3502,9 @@ begin
   ISLink.SetDescription(PChar(Comment));
 
   shortcutFilename := _SDUGenerateShortcutFilename(ShortcutLocation, ShortcutName);
-  retval           := (IPFile.Save(PWChar(shortcutFilename), False) = S_OK);
+  Result           := (IPFile.Save(PWChar(shortcutFilename), False) = S_OK);
 
-  Result := retval;
+
 end;
 
 
@@ -3541,9 +3525,8 @@ var
   IPFile:           IPersistFile;
   shortcutFilename: WideString;
   useShowCmd:       Integer;
-  retval:           TWindowState;
 begin
-  retval := wsNormal;
+  Result := wsNormal;
 
   IObject := CreateComObject(CLSID_ShellLink);
   ISLink  := IObject as IShellLink;
@@ -3556,14 +3539,14 @@ begin
     if (useShowCmd = SW_SHOWMINNOACTIVE) then
       // From MSDN WWW site - don't use SW_SHOWMINIMISE here
     begin
-      retval := wsMinimized;
+      Result := wsMinimized;
     end else
     if (useShowCmd = SW_SHOWMAXIMIZED) then begin
-      retval := wsMaximized;
+      Result := wsMaximized;
     end;
   end;
 
-  Result := retval;
+
 end;
 
  // ----------------------------------------------------------------------------
@@ -3588,15 +3571,13 @@ end;
 
 function SDUBooleanToStr(Value: Boolean; strTrue: String = 'True';
   strFalse: String = 'False'): String;
-var
-  retVal: String;
 begin
-  retVal := strFalse;
+  Result := strFalse;
   if Value then begin
-    retVal := strTrue;
+    Result := strTrue;
   end;
 
-  Result := retVal;
+
 end;
 
 function SDUBoolToChar(Value: Boolean; chars: String = 'TF'): Char;
@@ -3605,20 +3586,18 @@ begin
 end;
 
 function SDUBooleanToChar(Value: Boolean; chars: String = 'TF'): Char;
-var
-  retVal: Char;
 begin
   // Sanity check
   if (length(chars) < 2) then begin
     raise Exception.Create('Exactly zero or two characters must be passed to BoolToChar');
   end;
 
-  retVal := chars[2];
+  Result := chars[2];
   if Value then begin
-    retVal := chars[1];
+    Result := chars[1];
   end;
 
-  Result := retVal;
+
 end;
 
 
@@ -3680,17 +3659,16 @@ var
   tmp64Zero: ULONGLONG;
   tmp64Ten:  ULONGLONG;
   tmp64Mod:  ULONGLONG;
-  retval:    String;
   digitCnt:  Integer;
 begin
-  retval := '';
+  Result := '';
 
   tmp64     := Value;
   tmp64Zero := 0;
   tmp64Ten  := 10;
 
   if (Value = tmp64Zero) then begin
-    retval := IntToStr(0);
+    Result := IntToStr(0);
   end else begin
     digitCnt := -1;
     while (tmp64 > tmp64Zero) do begin
@@ -3698,16 +3676,16 @@ begin
 
       Inc(digitCnt);
       if ((digitCnt > 0) and ((digitCnt mod 3) = 0)) then begin
-        retval := FormatSettings.ThousandSeparator + retval;
+        Result := FormatSettings.ThousandSeparator + Result;
       end;
 
-      retval := IntToStr(tmp64Mod) + retval;
+      Result := IntToStr(tmp64Mod) + Result;
 
       tmp64 := tmp64 div tmp64Ten;
     end;
   end;
 
-  Result := retval;
+
 
 end;
 
@@ -3715,7 +3693,6 @@ end;
 function SDUFormatUnits(Value: Int64; denominations: array of String;
   multiplier: Integer = 1000; accuracy: Integer = 2): String;
 var
-  retVal:   String;
   z:        Double;
   useUnits: String;
   unitsIdx: Integer;
@@ -3747,9 +3724,9 @@ begin
 
   z := SDUFloatTrunc((Value / unitsDiv), accuracy);
 
-  retVal := Format('%.' + IntToStr(accuracy) + 'f', [z]) + ' ' + useUnits;
+  Result := Format('%.' + IntToStr(accuracy) + 'f', [z]) + ' ' + useUnits;
 
-  Result := retVal;
+
 end;
 
                              // ----------------------------------------------------------------------------
@@ -3757,7 +3734,6 @@ end;
 function SDUFormatUnits(Value: ULONGLONG; denominations: array of String;
   multiplier: Integer = 1000; accuracy: Integer = 2): String;
 var
-  retVal:   String;
   z:        Double;
   useUnits: String;
   unitsIdx: Integer;
@@ -3789,9 +3765,9 @@ begin
 
   z := SDUFloatTrunc((Value / unitsDiv), accuracy);
 
-  retVal := Format('%.' + IntToStr(accuracy) + 'f', [z]) + ' ' + useUnits;
+  Result := Format('%.' + IntToStr(accuracy) + 'f', [z]) + ' ' + useUnits;
 
-  Result := retVal;
+
 end;
 
 {$IFEND}
@@ -3814,16 +3790,15 @@ end;
 // ----------------------------------------------------------------------------
 function SDUFormatAsBytesAndBytesUnits(Value: ULONGLONG; accuracy: Integer = 2): String;
 var
-  retval:      String;
   sizeAsUnits: String;
 begin
-  retval      := SDUIntToStr(Value) + ' ' + SDUUnitsStorageToText(usBytes);
+  Result      := SDUIntToStr(Value) + ' ' + SDUUnitsStorageToText(usBytes);
   sizeAsUnits := SDUFormatAsBytesUnits(Value);
   if (Pos(SDUUnitsStorageToText(usBytes), sizeAsUnits) <= 0) then begin
-    retval := retval + ' (' + sizeAsUnits + ')';
+    Result := Result + ' (' + sizeAsUnits + ')';
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -3832,13 +3807,12 @@ function SDUParseUnits(prettyValue: String; denominations: array of String;
   out Value: uint64; multiplier: Integer = 1000): Boolean;
 var
   i:               Integer;
-  retval:          Boolean;
   strNumber:       String;
   strUnits:        String;
   unitsMultiplier: Int64;
   foundMultiplier: Boolean;
 begin
-  retval := True;
+  Result := True;
 
   Value := 0;
 
@@ -3877,18 +3851,18 @@ begin
       unitsMultiplier := unitsMultiplier * multiplier;
     end;
 
-    retval := retval and foundMultiplier;
+    Result := Result and foundMultiplier;
   end;
 
-  if retval then begin
-    retval := SDUTryStrToInt(strNumber, Value);
+  if Result then begin
+    Result := SDUTryStrToInt(strNumber, Value);
   end;
 
-  if retval then begin
+  if Result then begin
     Value := Value * unitsMultiplier;
   end;
 
-  Result := retval;
+
 end;
 
 // ----------------------------------------------------------------------------
@@ -3901,13 +3875,12 @@ function SDUParseUnits(
                      ): boolean;
 var
   i: integer;
-  retval: boolean;
   strNumber: string;
   strUnits: string;
   unitsMultiplier: ULONGLONG;
   foundMultiplier: boolean;
 begin
-  retval := TRUE;
+  Result := TRUE;
 
   value := 0;
 
@@ -3955,21 +3928,21 @@ begin
       unitsMultiplier := unitsMultiplier * multiplier;
       end;
 
-      retval := retval and foundMultiplier;
+      Result := Result and foundMultiplier;
     end;
 
-  if retval then
+  if Result then
     begin
-    retval := SDUTryStrToInt(strNumber, value);
+    Result := SDUTryStrToInt(strNumber, value);
 
     end;
 
-  if retval then
+  if Result then
     begin
     value := value * unitsMultiplier;
     end;
 
-  Result := retval;
+
 end;
 {$ENDIF}
 
@@ -4118,77 +4091,80 @@ end;
  // Calculate x! (factorial X)
 function SDUFactorial(x: Integer): LARGE_INTEGER;
 var
-  retVal: LARGE_INTEGER;
   i:      Integer;
 begin
-  retVal.QuadPart := 1;
+  Result.QuadPart := 1;
 
   if (x = 0) then begin
-    retVal.QuadPart := 0;
+    Result.QuadPart := 0;
   end;
 
   for i := 1 to x do begin
-    retVal.QuadPart := retVal.QuadPart * i;
+    Result.QuadPart := Result.QuadPart * i;
 
 {$IFOPT Q+}
-    if (retVal.QuadPart <= 0) then
+    if (Result.QuadPart <= 0) then
       begin
       raise EIntOverflow.Create('Overflow when calculating '+inttostr(i)+'!');
       end;
 {$ENDIF}
   end;
 
-  Result := retVal;
+
 end;
 
 
 // ----------------------------------------------------------------------------
 function SDUXOR(a: TSDUBytes; b: TSDUBytes): TSDUBytes;
   //function SDUXOR(a: Ansistring; b: Ansistring): Ansistring;
-  { TODO 1 -otdk -cclean : use bytes instead of chars }
+  { DONE 1 -otdk -cclean : use bytes instead of chars }
 var
   maxlen, minlen: Integer;
-  //  byteA:   Byte;
-  //  byteB:   Byte;
   i:              Integer;
 begin
-  { DONE 1 -otdk -cclean : can simplify }
 
   maxlen := max(length(a), length(b));
   minlen := min(length(a), length(b));
   setlength(Result, maxlen);
 
-
-  for i := 0 to minlen - 1 do begin
+  for i := 0 to minlen - 1 do
     Result[i] := a[i] xor b[i];
-  end;
 
-  for i := minlen to maxlen - 1 do begin
+  for i := minlen to maxlen - 1 do
     if i < length(a) then
       Result[i] := a[i]
     else
       Result[i] := b[i];
-  end;
+end;
 
-   {
+
+// ----------------------------------------------------------------------------
+function SDUXORStr(a: Ansistring; b: Ansistring): Ansistring;
+var
+  byteA:      Byte;
+  byteB:      Byte;
+  i, longest: Integer;
+
+begin
+  { DONE 1 -otdk -cclean : can simplify }
+  Result := '';
+
   longest := max(length(a), length(b));
-  setlength(result,longest);
   for i := 1 to longest do begin
     if (i > length(a)) then begin
       byteA := 0;
     end else begin
-      byteA := ORd(a[i]);
+      byteA := Ord(a[i]);
     end;
 
     if (i > length(b)) then begin
       byteB := 0;
     end else begin
-      byteB := ORd(b[i]);
+      byteB := Ord(b[i]);
     end;
 
-//     result[i] :=  byteA XOR byteB;
     Result := Result + ansichar(byteA xor byteB);
-  end;   }
+  end;
 
 end;
 
@@ -4477,10 +4453,9 @@ end;
 function SDUGetFileSizeTwo(filename: String): LARGE_INTEGER;
 var
   fileHandle:        THandle;
-  retVal:            LARGE_INTEGER;
   sizeLow, sizeHigh: DWORD;
 begin
-  retVal.QuadPart := -1;
+  Result.QuadPart := -1;
   sizeHigh        := 0;
 
   // Open file and get it's size
@@ -4499,14 +4474,14 @@ begin
     sizeLow := SetFilePointer(fileHandle, 0, @sizeHigh, FILE_END);
 
     if not ((sizeLow = $FFFFFFFF) and (GetLastError() <> NO_ERROR)) then begin
-      retVal.HighPart := sizeHigh;
-      retVal.LowPart  := sizeLow;
+      Result.HighPart := sizeHigh;
+      Result.LowPart  := sizeLow;
     end;
 
     CloseHandle(fileHandle);
   end;
 
-  Result := retVal;
+
 end;
 
 
@@ -4523,15 +4498,14 @@ end;
 function SDUGetPartitionSize_Device(driveDevice: String): ULONGLONG;
 var
   partInfo: TSDUPartitionInfo;
-  retVal:   ULONGLONG;
 begin
-  retVal := 0;
+  Result := 0;
 
   if SDUGetPartitionInfo(driveDevice, partInfo) then begin
-    retVal := partInfo.PartitionLength;
+    Result := partInfo.PartitionLength;
   end;
 
-  Result := retVal;
+
 end;
 
 // ----------------------------------------------------------------------------
@@ -4554,11 +4528,10 @@ end;
 function SDUGetDiskGeometry(driveDevice: String; var diskGeometry: TSDUDiskGeometry): Boolean;
 var
   fileHandle:    THandle;
-  retVal:        Boolean;
   DIOCBufferOut: TSDUDiskGeometry;
   bytesReturned: DWORD;
 begin
-  retval := False;
+  Result := False;
 
   // Open file and get it's size
   fileHandle := CreateFile(PChar(driveDevice),
@@ -4576,13 +4549,13 @@ begin
     if (DeviceIoControl(fileHandle, SDU_IOCTL_DISK_GET_DRIVE_GEOMETRY, nil,
       0, @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
       diskGeometry := DIOCBufferOut;
-      retval       := True;
+      Result       := True;
     end;
 
     CloseHandle(fileHandle);
   end;
 
-  Result := retVal;
+
 end;
 
 // ----------------------------------------------------------------------------
@@ -4596,11 +4569,10 @@ end;
 function SDUGetPartitionInfo(driveDevice: String; var partInfo: TSDUPartitionInfo): Boolean;
 var
   fileHandle:    THandle;
-  retVal:        Boolean;
   DIOCBufferOut: TSDUPartitionInfo;
   bytesReturned: DWORD;
 begin
-  retval := False;
+  Result := False;
 
   // Open file and get it's size
   fileHandle := CreateFile(PChar(driveDevice),
@@ -4618,13 +4590,13 @@ begin
     if (DeviceIoControl(fileHandle, SDU_IOCTL_DISK_GET_PARTITION_INFO, nil,
       0, @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
       partInfo := DIOCBufferOut;
-      retval   := True;
+      Result   := True;
     end;
 
     CloseHandle(fileHandle);
   end;
 
-  Result := retVal;
+
 end;
 
 
@@ -4643,11 +4615,10 @@ function SDUGetDriveLayout_Device(driveDevice: String;
   var driveLayout: TSDUDriveLayoutInformation): Boolean;
 var
   fileHandle:    THandle;
-  retVal:        Boolean;
   DIOCBufferOut: TSDUDriveLayoutInformation;
   bytesReturned: DWORD;
 begin
-  retval := False;
+  Result := False;
 
   // Open file and get it's size
   fileHandle := CreateFile(PChar(driveDevice),
@@ -4665,13 +4636,13 @@ begin
     if (DeviceIoControl(fileHandle, SDU_IOCTL_DISK_GET_DRIVE_LAYOUT, nil, 0,
       @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
       driveLayout := DIOCBufferOut;
-      retval      := True;
+      Result      := True;
     end;
 
     CloseHandle(fileHandle);
   end;
 
-  Result := retVal;
+
 end;
 
 
@@ -4687,7 +4658,6 @@ end;
 // ----------------------------------------------------------------------------
 function SDURelativePathToAbsolute(relativePath: String; relativeTo: String): String;
 var
-  retval:        String;
   concat:        String;
   pathLen:       Integer;
   tmpStr:        String;
@@ -4700,7 +4670,7 @@ begin
   relativeTo   := trim(relativeTo);
   relativePath := trim(relativePath);
 
-  retval := relativePath;
+  Result := relativePath;
 
   if (Pos('\\', relativePath) = 1) then begin
     // UNC path; already absolute
@@ -4742,10 +4712,10 @@ begin
     GetFullPathName(PChar(concat), length(tmpStr), PChar(tmpStr), junkPChar);
 
     // Strip off any terminating NULLs and return
-    retval := StrPas(PChar(tmpStr));
+    Result := StrPas(PChar(tmpStr));
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -4891,588 +4861,583 @@ end;
 
 // ----------------------------------------------------------------------------
 function SDUPartitionType(PartitionTypeID: Byte; LongDesc: Boolean): String;
-var
-  retval: String;
 begin
-  retval := RS_UNKNOWN;
+  Result := RS_UNKNOWN;
 
   if LongDesc then begin
     // Partition types taken (31st May 2008) from:
     //  http://www.win.tue.nl/~aeb/partitions/partition_types-1.html
     case PartitionTypeID of
-      $00: retval := 'Empty';
-      $01: retval := 'DOS 12-bit FAT';
-      $02: retval := 'XENIX root';
-      $03: retval := 'XENIX /usr';
-      $04: retval := 'DOS 3.0+ 16-bit FAT (up to 32M)';
-      $05: retval := 'DOS 3.3+ Extended Partition';
-      $06: retval := 'DOS 3.31+ 16-bit FAT (over 32M)';
-      $07: retval := 'Windows NT NTFS';  // Most likely of the below
+      $00: Result := 'Empty';
+      $01: Result := 'DOS 12-bit FAT';
+      $02: Result := 'XENIX root';
+      $03: Result := 'XENIX /usr';
+      $04: Result := 'DOS 3.0+ 16-bit FAT (up to 32M)';
+      $05: Result := 'DOS 3.3+ Extended Partition';
+      $06: Result := 'DOS 3.31+ 16-bit FAT (over 32M)';
+      $07: Result := 'Windows NT NTFS';  // Most likely of the below
       {
-      $07: retval := 'OS/2 IFS (e.g., HPFS)';
-      $07: retval := 'Windows NT NTFS';
-      $07: retval := 'Advanced Unix';
-      $07: retval := 'QNX2.x pre-1988 (see below under IDs 4d-4f)';
+      $07: Result := 'OS/2 IFS (e.g., HPFS)';
+      $07: Result := 'Windows NT NTFS';
+      $07: Result := 'Advanced Unix';
+      $07: Result := 'QNX2.x pre-1988 (see below under IDs 4d-4f)';
       }
-      $08: retval := 'OS/2/AIX boot/SplitDrive/Commodore DOS/DELL multispan partition/QNX';
+      $08: Result := 'OS/2/AIX boot/SplitDrive/Commodore DOS/DELL multispan partition/QNX';
       {
-      $08: retval := 'OS/2 (v1.0-1.3 only)';
-      $08: retval := 'AIX boot partition';
-      $08: retval := 'SplitDrive';
-      $08: retval := 'Commodore DOS';
-      $08: retval := 'DELL partition spanning multiple drives';
-      $08: retval := 'QNX 1.x and 2.x ("qny")';
+      $08: Result := 'OS/2 (v1.0-1.3 only)';
+      $08: Result := 'AIX boot partition';
+      $08: Result := 'SplitDrive';
+      $08: Result := 'Commodore DOS';
+      $08: Result := 'DELL partition spanning multiple drives';
+      $08: Result := 'QNX 1.x and 2.x ("qny")';
       }
-      $09: retval := 'AIX data/Coherent filesystem/QNX';
+      $09: Result := 'AIX data/Coherent filesystem/QNX';
       {
-      $09: retval := 'AIX data partition';
-      $09: retval := 'Coherent filesystem';
-      $09: retval := 'QNX 1.x and 2.x ("qnz")';
+      $09: Result := 'AIX data partition';
+      $09: Result := 'Coherent filesystem';
+      $09: Result := 'QNX 1.x and 2.x ("qnz")';
       }
-      $0a: retval := 'OS/2 Boot Manager/Coherent swap/OPUS';
+      $0a: Result := 'OS/2 Boot Manager/Coherent swap/OPUS';
       {
-      $0a: retval := 'OS/2 Boot Manager';
-      $0a: retval := 'Coherent swap partition';
-      $0a: retval := 'OPUS';
+      $0a: Result := 'OS/2 Boot Manager';
+      $0a: Result := 'Coherent swap partition';
+      $0a: Result := 'OPUS';
       }
-      $0b: retval := 'WIN95 OSR2 FAT32';
-      $0c: retval := 'WIN95 OSR2 FAT32, LBA-mapped';
-      $0e: retval := 'WIN95: DOS 16-bit FAT, LBA-mapped';
-      $0f: retval := 'WIN95: Extended partition, LBA-mapped';
-      $10: retval := 'OPUS (?)';
-      $11: retval := 'Hidden FAT'; // Most useful of the below
+      $0b: Result := 'WIN95 OSR2 FAT32';
+      $0c: Result := 'WIN95 OSR2 FAT32, LBA-mapped';
+      $0e: Result := 'WIN95: DOS 16-bit FAT, LBA-mapped';
+      $0f: Result := 'WIN95: Extended partition, LBA-mapped';
+      $10: Result := 'OPUS (?)';
+      $11: Result := 'Hidden FAT'; // Most useful of the below
       {
-      $11: retval := 'Hidden DOS 12-bit FAT';
-      $11: retval := 'Leading Edge DOS 3.x logically sectored FAT';
+      $11: Result := 'Hidden DOS 12-bit FAT';
+      $11: Result := 'Leading Edge DOS 3.x logically sectored FAT';
       }
-      $12: retval := 'Configuration/diagnostics partition';
-      $14: retval := 'Hidden FAT'; // Most useful of the below
+      $12: Result := 'Configuration/diagnostics partition';
+      $14: Result := 'Hidden FAT'; // Most useful of the below
       {
-      $14: retval := 'Hidden DOS 16-bit FAT <32M';
-      $14: retval := 'AST DOS with logically sectored FAT';
+      $14: Result := 'Hidden DOS 16-bit FAT <32M';
+      $14: Result := 'AST DOS with logically sectored FAT';
       }
-      $16: retval := 'Hidden DOS 16-bit FAT >=32M';
-      $17: retval := 'Hidden IFS (e.g., HPFS)';
-      $18: retval := 'AST SmartSleep Partition';
-      $19: retval := 'Unused';
-      $1b: retval := 'Hidden WIN95 OSR2 FAT32';
-      $1c: retval := 'Hidden WIN95 OSR2 FAT32, LBA-mapped';
-      $1e: retval := 'Hidden WIN95 16-bit FAT, LBA-mapped';
-      $20: retval := 'Unused';
-      $21: retval := 'Reserved/Unused';
+      $16: Result := 'Hidden DOS 16-bit FAT >=32M';
+      $17: Result := 'Hidden IFS (e.g., HPFS)';
+      $18: Result := 'AST SmartSleep Partition';
+      $19: Result := 'Unused';
+      $1b: Result := 'Hidden WIN95 OSR2 FAT32';
+      $1c: Result := 'Hidden WIN95 OSR2 FAT32, LBA-mapped';
+      $1e: Result := 'Hidden WIN95 16-bit FAT, LBA-mapped';
+      $20: Result := 'Unused';
+      $21: Result := 'Reserved/Unused';
       {
-      $21: retval := 'Reserved';
-      $21: retval := 'Unused';
+      $21: Result := 'Reserved';
+      $21: Result := 'Unused';
       }
-      $22: retval := 'Unused';
-      $23: retval := 'Reserved';
-      $24: retval := 'NEC DOS 3.x';
-      $26: retval := 'Reserved';
-      $27: retval := 'PQservice/Windows RE hidden/MirOS/RouterBOOT';
+      $22: Result := 'Unused';
+      $23: Result := 'Reserved';
+      $24: Result := 'NEC DOS 3.x';
+      $26: Result := 'Reserved';
+      $27: Result := 'PQservice/Windows RE hidden/MirOS/RouterBOOT';
       {
-      $27: retval := 'PQservice';
-      $27: retval := 'Windows RE hidden partition';
-      $27: retval := 'MirOS partition';
-      $27: retval := 'RouterBOOT kernel partition';
+      $27: Result := 'PQservice';
+      $27: Result := 'Windows RE hidden partition';
+      $27: Result := 'MirOS partition';
+      $27: Result := 'RouterBOOT kernel partition';
       }
-      $2a: retval := 'AtheOS File System (AFS)';
-      $2b: retval := 'SyllableSecure (SylStor)';
-      $31: retval := 'Reserved';
-      $32: retval := 'NOS';
-      $33: retval := 'Reserved';
-      $34: retval := 'Reserved';
-      $35: retval := 'JFS on OS/2 or eCS';
-      $36: retval := 'Reserved';
-      $38: retval := 'THEOS ver 3.2 2gb partition';
-      $39: retval := 'Plan 9 partition/THEOS ver 4 spanned';
+      $2a: Result := 'AtheOS File System (AFS)';
+      $2b: Result := 'SyllableSecure (SylStor)';
+      $31: Result := 'Reserved';
+      $32: Result := 'NOS';
+      $33: Result := 'Reserved';
+      $34: Result := 'Reserved';
+      $35: Result := 'JFS on OS/2 or eCS';
+      $36: Result := 'Reserved';
+      $38: Result := 'THEOS ver 3.2 2gb partition';
+      $39: Result := 'Plan 9 partition/THEOS ver 4 spanned';
       {
-      $39: retval := 'Plan 9 partition';
-      $39: retval := 'THEOS ver 4 spanned partition';
+      $39: Result := 'Plan 9 partition';
+      $39: Result := 'THEOS ver 4 spanned partition';
       }
-      $3a: retval := 'THEOS ver 4 4gb partition';
-      $3b: retval := 'THEOS ver 4 extended partition';
-      $3c: retval := 'PartitionMagic recovery partition';
-      $3d: retval := 'Hidden NetWare';
-      $40: retval := 'Venix 80286';
-      $41: retval := 'Linux/MINIX'; // Most likely of the below
+      $3a: Result := 'THEOS ver 4 4gb partition';
+      $3b: Result := 'THEOS ver 4 extended partition';
+      $3c: Result := 'PartitionMagic recovery partition';
+      $3d: Result := 'Hidden NetWare';
+      $40: Result := 'Venix 80286';
+      $41: Result := 'Linux/MINIX'; // Most likely of the below
       {
-      $41: retval := 'Linux/MINIX (sharing disk with DRDOS)';
-      $41: retval := 'Personal RISC Boot';
-      $41: retval := 'PPC PReP (Power PC Reference Platform) Boot';
+      $41: Result := 'Linux/MINIX (sharing disk with DRDOS)';
+      $41: Result := 'Personal RISC Boot';
+      $41: Result := 'PPC PReP (Power PC Reference Platform) Boot';
       }
-      $42: retval := 'Linux swap'; // Most likely of the below
+      $42: Result := 'Linux swap'; // Most likely of the below
       {
-      $42: retval := 'Linux swap (sharing disk with DRDOS)';
-      $42: retval := 'SFS (Secure Filesystem)';
-      $42: retval := 'Windows 2000 dynamic extended partition marker';
+      $42: Result := 'Linux swap (sharing disk with DRDOS)';
+      $42: Result := 'SFS (Secure Filesystem)';
+      $42: Result := 'Windows 2000 dynamic extended partition marker';
       }
-      $43: retval := 'Linux native (sharing disk with DRDOS)';
-      $44: retval := 'GoBack partition';
-      $45: retval := 'Boot-US boot manager/Priam/EUMEL/Elan';
+      $43: Result := 'Linux native (sharing disk with DRDOS)';
+      $44: Result := 'GoBack partition';
+      $45: Result := 'Boot-US boot manager/Priam/EUMEL/Elan';
       {
-      $45: retval := 'Boot-US boot manager';
-      $45: retval := 'Priam';
-      $45: retval := 'EUMEL/Elan';
+      $45: Result := 'Boot-US boot manager';
+      $45: Result := 'Priam';
+      $45: Result := 'EUMEL/Elan';
       }
-      $46: retval := 'EUMEL/Elan';
-      $47: retval := 'EUMEL/Elan';
-      $48: retval := 'EUMEL/Elan';
-      $4a: retval := 'Mark Aitchison''s ALFS/THIN';  // AdaOS (Withdrawn)
+      $46: Result := 'EUMEL/Elan';
+      $47: Result := 'EUMEL/Elan';
+      $48: Result := 'EUMEL/Elan';
+      $4a: Result := 'Mark Aitchison''s ALFS/THIN';  // AdaOS (Withdrawn)
       {
-      $4a: retval := 'Mark Aitchison's ALFS/THIN lightweight filesystem for DOS';
-      $4a: retval := 'AdaOS Aquila (Withdrawn)';
+      $4a: Result := 'Mark Aitchison's ALFS/THIN lightweight filesystem for DOS';
+      $4a: Result := 'AdaOS Aquila (Withdrawn)';
       }
-      $4c: retval := 'Oberon partition';
-      $4d: retval := 'QNX4.x';
-      $4e: retval := 'QNX4.x 2nd part';
-      $4f: retval := 'QNX4.x 3rd part/Oberon';
+      $4c: Result := 'Oberon partition';
+      $4d: Result := 'QNX4.x';
+      $4e: Result := 'QNX4.x 2nd part';
+      $4f: Result := 'QNX4.x 3rd part/Oberon';
       {
-      $4f: retval := 'QNX4.x 3rd part';
-      $4f: retval := 'Oberon partition';
+      $4f: Result := 'QNX4.x 3rd part';
+      $4f: Result := 'Oberon partition';
       }
-      $50: retval := 'OnTrack Disk Manager/Lynx RTOS/Native Oberon';
+      $50: Result := 'OnTrack Disk Manager/Lynx RTOS/Native Oberon';
       {
-      $50: retval := 'OnTrack Disk Manager (older versions) RO';
-      $50: retval := 'Lynx RTOS';
-      $50: retval := 'Native Oberon (alt)';
+      $50: Result := 'OnTrack Disk Manager (older versions) RO';
+      $50: Result := 'Lynx RTOS';
+      $50: Result := 'Native Oberon (alt)';
       }
-      $51: retval := 'OnTrack Disk Manager RW (DM6 Aux1)/Novell';
+      $51: Result := 'OnTrack Disk Manager RW (DM6 Aux1)/Novell';
       {
-      $51: retval := 'OnTrack Disk Manager RW (DM6 Aux1)';
-      $51: retval := 'Novell';
+      $51: Result := 'OnTrack Disk Manager RW (DM6 Aux1)';
+      $51: Result := 'Novell';
       }
-      $52: retval := 'CP/M / Microport SysV/AT';
+      $52: Result := 'CP/M / Microport SysV/AT';
       {
-      $52: retval := 'CP/M';
-      $52: retval := 'Microport SysV/AT';
+      $52: Result := 'CP/M';
+      $52: Result := 'Microport SysV/AT';
       }
-      $53: retval := 'Disk Manager 6.0 Aux3';
-      $54: retval := 'Disk Manager 6.0 Dynamic Drive Overlay (DDO)';
-      $55: retval := 'EZ-Drive';
-      $56: retval := 'Golden Bow VFeature/DM converted to EZ-BIOS/AT&T MS-DOS';
+      $53: Result := 'Disk Manager 6.0 Aux3';
+      $54: Result := 'Disk Manager 6.0 Dynamic Drive Overlay (DDO)';
+      $55: Result := 'EZ-Drive';
+      $56: Result := 'Golden Bow VFeature/DM converted to EZ-BIOS/AT&T MS-DOS';
       {
-      $56: retval := 'Golden Bow VFeature Partitioned Volume.';
-      $56: retval := 'DM converted to EZ-BIOS';
-      $56: retval := 'AT&T MS-DOS 3.x';
+      $56: Result := 'Golden Bow VFeature Partitioned Volume.';
+      $56: Result := 'DM converted to EZ-BIOS';
+      $56: Result := 'AT&T MS-DOS 3.x';
       }
-      $57: retval := 'DrivePro/VNDI';
+      $57: Result := 'DrivePro/VNDI';
       {
-      $57: retval := 'DrivePro';
-      $57: retval := 'VNDI Partition';
+      $57: Result := 'DrivePro';
+      $57: Result := 'VNDI Partition';
       }
-      $5c: retval := 'Priam EDisk';
-      $61: retval := 'SpeedStor';
-      $63: retval := 'Unix System V (SCO, ISC Unix, UnixWare, ...), Mach, GNU Hurd';
-      $64: retval := 'PC-ARMOUR protected/Novell Netware 286, 2.xx';
+      $5c: Result := 'Priam EDisk';
+      $61: Result := 'SpeedStor';
+      $63: Result := 'Unix System V (SCO, ISC Unix, UnixWare, ...), Mach, GNU Hurd';
+      $64: Result := 'PC-ARMOUR protected/Novell Netware 286, 2.xx';
       {
-      $64: retval := 'PC-ARMOUR protected partition';
-      $64: retval := 'Novell Netware 286, 2.xx';
+      $64: Result := 'PC-ARMOUR protected partition';
+      $64: Result := 'Novell Netware 286, 2.xx';
       }
-      $65: retval := 'Novell Netware 386, 3.xx or 4.xx';
-      $66: retval := 'Novell Netware SMS Partition';
-      $67: retval := 'Novell';
-      $68: retval := 'Novell';
-      $69: retval := 'Novell Netware 5+, Novell Netware NSS Partition';
-      $6e: retval := '??';
-      $70: retval := 'DiskSecure Multi-Boot';
-      $71: retval := 'Reserved';
-      $72: retval := 'V7/x86';
-      $73: retval := 'Reserved';
-      $74: retval := 'Reserved/Scramdisk';
+      $65: Result := 'Novell Netware 386, 3.xx or 4.xx';
+      $66: Result := 'Novell Netware SMS Partition';
+      $67: Result := 'Novell';
+      $68: Result := 'Novell';
+      $69: Result := 'Novell Netware 5+, Novell Netware NSS Partition';
+      $6e: Result := '??';
+      $70: Result := 'DiskSecure Multi-Boot';
+      $71: Result := 'Reserved';
+      $72: Result := 'V7/x86';
+      $73: Result := 'Reserved';
+      $74: Result := 'Reserved/Scramdisk';
       {
-      $74: retval := 'Reserved';
-      $74: retval := 'Scramdisk partition';
+      $74: Result := 'Reserved';
+      $74: Result := 'Scramdisk partition';
       }
-      $75: retval := 'IBM PC/IX';
-      $76: retval := 'Reserved';
-      $77: retval := 'M2FS/M2CS / VNDI';
+      $75: Result := 'IBM PC/IX';
+      $76: Result := 'Reserved';
+      $77: Result := 'M2FS/M2CS / VNDI';
       {
-      $77: retval := 'M2FS/M2CS partition';
-      $77: retval := 'VNDI Partition';
+      $77: Result := 'M2FS/M2CS partition';
+      $77: Result := 'VNDI Partition';
       }
-      $78: retval := 'XOSL FS';
-      $7e: retval := 'Unused';
-      $7f: retval := 'Unused';
-      $80: retval := 'MINIX until 1.4a';
-      $81: retval := 'MINIX since 1.4b, early Linux/Mitac disk manager';
+      $78: Result := 'XOSL FS';
+      $7e: Result := 'Unused';
+      $7f: Result := 'Unused';
+      $80: Result := 'MINIX until 1.4a';
+      $81: Result := 'MINIX since 1.4b, early Linux/Mitac disk manager';
       {
-      $81: retval := 'MINIX since 1.4b, early Linux';
-      $81: retval := 'Mitac disk manager';
+      $81: Result := 'MINIX since 1.4b, early Linux';
+      $81: Result := 'Mitac disk manager';
       }
-      $82: retval := 'Prime/Solaris x86/Linux swap';
+      $82: Result := 'Prime/Solaris x86/Linux swap';
       {
-      $82: retval := 'Prime';
-      $82: retval := 'Solaris x86';
-      $82: retval := 'Linux swap';
+      $82: Result := 'Prime';
+      $82: Result := 'Solaris x86';
+      $82: Result := 'Linux swap';
       }
-      $83: retval := 'Linux native partition';
-      $84: retval := 'OS/2 hidden C: drive/Hibernation partition';
+      $83: Result := 'Linux native partition';
+      $84: Result := 'OS/2 hidden C: drive/Hibernation partition';
       {
-      $84: retval := 'OS/2 hidden C: drive';
-      $84: retval := 'Hibernation partition';
+      $84: Result := 'OS/2 hidden C: drive';
+      $84: Result := 'Hibernation partition';
       }
-      $85: retval := 'Linux extended partition';
-      $86: retval := 'Old Linux RAID superblock/FAT16 volume set';
+      $85: Result := 'Linux extended partition';
+      $86: Result := 'Old Linux RAID superblock/FAT16 volume set';
       {
-      $86: retval := 'Old Linux RAID partition superblock';
-      $86: retval := 'FAT16 volume set';
+      $86: Result := 'Old Linux RAID partition superblock';
+      $86: Result := 'FAT16 volume set';
       }
-      $87: retval := 'NTFS volume set';
-      $88: retval := 'Linux plaintext partition table';
-      $8a: retval := 'Linux Kernel Partition (used by AiR-BOOT)';
-      $8b: retval := 'Legacy Fault Tolerant FAT32 volume';
-      $8c: retval := 'Legacy Fault Tolerant FAT32 volume using BIOS extd INT 13h';
-      $8d: retval := 'Free FDISK hidden Primary DOS FAT12 partitition';
-      $8e: retval := 'Linux Logical Volume Manager partition';
-      $90: retval := 'Free FDISK hidden Primary DOS FAT16 partitition';
-      $91: retval := 'Free FDISK hidden DOS extended partitition';
-      $92: retval := 'Free FDISK hidden Primary DOS large FAT16 partitition';
-      $93: retval := 'Hidden Linux native/Amoeba';
+      $87: Result := 'NTFS volume set';
+      $88: Result := 'Linux plaintext partition table';
+      $8a: Result := 'Linux Kernel Partition (used by AiR-BOOT)';
+      $8b: Result := 'Legacy Fault Tolerant FAT32 volume';
+      $8c: Result := 'Legacy Fault Tolerant FAT32 volume using BIOS extd INT 13h';
+      $8d: Result := 'Free FDISK hidden Primary DOS FAT12 partitition';
+      $8e: Result := 'Linux Logical Volume Manager partition';
+      $90: Result := 'Free FDISK hidden Primary DOS FAT16 partitition';
+      $91: Result := 'Free FDISK hidden DOS extended partitition';
+      $92: Result := 'Free FDISK hidden Primary DOS large FAT16 partitition';
+      $93: Result := 'Hidden Linux native/Amoeba';
       {
-      $93: retval := 'Hidden Linux native partition';
-      $93: retval := 'Amoeba';
+      $93: Result := 'Hidden Linux native partition';
+      $93: Result := 'Amoeba';
       }
-      $94: retval := 'Amoeba bad block table';
-      $95: retval := 'MIT EXOPC native partitions';
-      $97: retval := 'Free FDISK hidden Primary DOS FAT32 partitition';
-      $98: retval := 'Free FDISK hidden Primary DOS FAT32 (LBA)/Datalight ROM-DOS Super-Boot';
+      $94: Result := 'Amoeba bad block table';
+      $95: Result := 'MIT EXOPC native partitions';
+      $97: Result := 'Free FDISK hidden Primary DOS FAT32 partitition';
+      $98: Result := 'Free FDISK hidden Primary DOS FAT32 (LBA)/Datalight ROM-DOS Super-Boot';
       {
-      $98: retval := 'Free FDISK hidden Primary DOS FAT32 partitition (LBA)';
-      $98: retval := 'Datalight ROM-DOS Super-Boot Partition';
+      $98: Result := 'Free FDISK hidden Primary DOS FAT32 partitition (LBA)';
+      $98: Result := 'Datalight ROM-DOS Super-Boot Partition';
       }
-      $99: retval := 'DCE376 logical drive';
-      $9a: retval := 'Free FDISK hidden Primary DOS FAT16 partitition (LBA)';
-      $9b: retval := 'Free FDISK hidden DOS extended partitition (LBA)';
-      $9f: retval := 'BSD/OS';
-      $a0: retval := 'Laptop hibernation partition';
-      $a1: retval := 'Laptop hibernation partition/HP Volume Expansion (SpeedStor variant)';
+      $99: Result := 'DCE376 logical drive';
+      $9a: Result := 'Free FDISK hidden Primary DOS FAT16 partitition (LBA)';
+      $9b: Result := 'Free FDISK hidden DOS extended partitition (LBA)';
+      $9f: Result := 'BSD/OS';
+      $a0: Result := 'Laptop hibernation partition';
+      $a1: Result := 'Laptop hibernation partition/HP Volume Expansion (SpeedStor variant)';
       {
-      $a1: retval := 'Laptop hibernation partition';
-      $a1: retval := 'HP Volume Expansion (SpeedStor variant)';
+      $a1: Result := 'Laptop hibernation partition';
+      $a1: Result := 'HP Volume Expansion (SpeedStor variant)';
       }
-      $a3: retval := 'HP Volume Expansion (SpeedStor variant)';
-      $a4: retval := 'HP Volume Expansion (SpeedStor variant)';
-      $a5: retval := 'BSD/386, 386BSD, NetBSD, FreeBSD';
-      $a6: retval := 'OpenBSD/HP Volume Expansion (SpeedStor variant)';
+      $a3: Result := 'HP Volume Expansion (SpeedStor variant)';
+      $a4: Result := 'HP Volume Expansion (SpeedStor variant)';
+      $a5: Result := 'BSD/386, 386BSD, NetBSD, FreeBSD';
+      $a6: Result := 'OpenBSD/HP Volume Expansion (SpeedStor variant)';
       {
-      $a6: retval := 'OpenBSD';
-      $a6: retval := 'HP Volume Expansion (SpeedStor variant)';
+      $a6: Result := 'OpenBSD';
+      $a6: Result := 'HP Volume Expansion (SpeedStor variant)';
       }
-      $a7: retval := 'NeXTStep';
-      $a8: retval := 'Mac OS-X';
-      $a9: retval := 'NetBSD';
-      $aa: retval := 'Olivetti Fat 12 1.44MB Service Partition';
-      $ab: retval := 'Mac OS-X Boot partition/GO! partition';
+      $a7: Result := 'NeXTStep';
+      $a8: Result := 'Mac OS-X';
+      $a9: Result := 'NetBSD';
+      $aa: Result := 'Olivetti Fat 12 1.44MB Service Partition';
+      $ab: Result := 'Mac OS-X Boot partition/GO! partition';
       {
-      $ab: retval := 'Mac OS-X Boot partition';
-      $ab: retval := 'GO! partition';
+      $ab: Result := 'Mac OS-X Boot partition';
+      $ab: Result := 'GO! partition';
       }
-      $ae: retval := 'ShagOS filesystem';
-      $af: retval := 'ShagOS swap partition/MacOS X HFS';
+      $ae: Result := 'ShagOS filesystem';
+      $af: Result := 'ShagOS swap partition/MacOS X HFS';
       {
-      $af: retval := 'ShagOS swap partition';
-      $af: retval := 'MacOS X HFS';
+      $af: Result := 'ShagOS swap partition';
+      $af: Result := 'MacOS X HFS';
       }
-      $b0: retval := 'BootStar Dummy';
-      $b1: retval := 'HP Volume Expansion (SpeedStor variant)';
-      $b3: retval := 'HP Volume Expansion (SpeedStor variant)';
-      $b4: retval := 'HP Volume Expansion (SpeedStor variant)';
-      $b6: retval :=
+      $b0: Result := 'BootStar Dummy';
+      $b1: Result := 'HP Volume Expansion (SpeedStor variant)';
+      $b3: Result := 'HP Volume Expansion (SpeedStor variant)';
+      $b4: Result := 'HP Volume Expansion (SpeedStor variant)';
+      $b6: Result :=
           'HP Volume Expansion (SpeedStor variant)/Corrupted Windows NT mirror set (master), FAT16 file system';
       {
-      $b6: retval := 'HP Volume Expansion (SpeedStor variant)';
-      $b6: retval := 'Corrupted Windows NT mirror set (master), FAT16 file system';
+      $b6: Result := 'HP Volume Expansion (SpeedStor variant)';
+      $b6: Result := 'Corrupted Windows NT mirror set (master), FAT16 file system';
       }
-      $b7: retval :=
+      $b7: Result :=
           'Corrupted Windows NT mirror set (master), NTFS file system/BSDI BSD/386 filesystem';
       {
-      $b7: retval := 'Corrupted Windows NT mirror set (master), NTFS file system';
-      $b7: retval := 'BSDI BSD/386 filesystem';
+      $b7: Result := 'Corrupted Windows NT mirror set (master), NTFS file system';
+      $b7: Result := 'BSDI BSD/386 filesystem';
       }
-      $b8: retval := 'BSDI BSD/386 swap partition';
-      $bb: retval := 'Boot Wizard hidden';
-      $bc: retval := 'Acronis backup partition';
-      $be: retval := 'Solaris 8 boot partition';
-      $bf: retval := 'New Solaris x86 partition';
-      $c0: retval := 'CTOS/REAL/32 secure/NTFT/DR-DOS/Novell DOS secured';
+      $b8: Result := 'BSDI BSD/386 swap partition';
+      $bb: Result := 'Boot Wizard hidden';
+      $bc: Result := 'Acronis backup partition';
+      $be: Result := 'Solaris 8 boot partition';
+      $bf: Result := 'New Solaris x86 partition';
+      $c0: Result := 'CTOS/REAL/32 secure/NTFT/DR-DOS/Novell DOS secured';
       {
-      $c0: retval := 'CTOS';
-      $c0: retval := 'REAL/32 secure small partition';
-      $c0: retval := 'NTFT Partition';
-      $c0: retval := 'DR-DOS/Novell DOS secured partition';
+      $c0: Result := 'CTOS';
+      $c0: Result := 'REAL/32 secure small partition';
+      $c0: Result := 'NTFT Partition';
+      $c0: Result := 'DR-DOS/Novell DOS secured partition';
       }
-      $c1: retval := 'DRDOS/secured (FAT-12)';
-      $c2: retval := 'Unused/Hidden Linux';
+      $c1: Result := 'DRDOS/secured (FAT-12)';
+      $c2: Result := 'Unused/Hidden Linux';
       {
-      $c2: retval := 'Unused';
-      $c2: retval := 'Hidden Linux';
+      $c2: Result := 'Unused';
+      $c2: Result := 'Hidden Linux';
       }
-      $c3: retval := 'Hidden Linux swap';
-      $c4: retval := 'DRDOS/secured (FAT-16, < 32M)';
-      $c5: retval := 'DRDOS/secured (extended)';
-      $c6: retval := 'DRDOS/secured (FAT-16, >= 32M)/Windows NT corrupted FAT16 volume/stripe set';
+      $c3: Result := 'Hidden Linux swap';
+      $c4: Result := 'DRDOS/secured (FAT-16, < 32M)';
+      $c5: Result := 'DRDOS/secured (extended)';
+      $c6: Result := 'DRDOS/secured (FAT-16, >= 32M)/Windows NT corrupted FAT16 volume/stripe set';
       {
-      $c6: retval := 'DRDOS/secured (FAT-16, >= 32M)';
-      $c6: retval := 'Windows NT corrupted FAT16 volume/stripe set';
+      $c6: Result := 'DRDOS/secured (FAT-16, >= 32M)';
+      $c6: Result := 'Windows NT corrupted FAT16 volume/stripe set';
       }
-      $c7: retval := 'Windows NT corrupted NTFS volume/stripe set / Syrinx boot';
+      $c7: Result := 'Windows NT corrupted NTFS volume/stripe set / Syrinx boot';
       {
-      $c7: retval := 'Windows NT corrupted NTFS volume/stripe set';
-      $c7: retval := 'Syrinx boot';
+      $c7: Result := 'Windows NT corrupted NTFS volume/stripe set';
+      $c7: Result := 'Syrinx boot';
       }
-      $c8: retval := 'Reserved for DR-DOS 8.0+';
-      $c9: retval := 'Reserved for DR-DOS 8.0+';
-      $ca: retval := 'Reserved for DR-DOS 8.0+';
-      $cb: retval := 'DR-DOS 7.04+ secured FAT32 (CHS)/';
-      $cc: retval := 'DR-DOS 7.04+ secured FAT32 (LBA)/';
-      $cd: retval := 'CTOS Memdump?';
-      $ce: retval := 'DR-DOS 7.04+ FAT16X (LBA)/';
-      $cf: retval := 'DR-DOS 7.04+ secured EXT DOS (LBA)/';
-      $d0: retval := 'REAL/32 secure big/Multiuser DOS secured';
+      $c8: Result := 'Reserved for DR-DOS 8.0+';
+      $c9: Result := 'Reserved for DR-DOS 8.0+';
+      $ca: Result := 'Reserved for DR-DOS 8.0+';
+      $cb: Result := 'DR-DOS 7.04+ secured FAT32 (CHS)/';
+      $cc: Result := 'DR-DOS 7.04+ secured FAT32 (LBA)/';
+      $cd: Result := 'CTOS Memdump?';
+      $ce: Result := 'DR-DOS 7.04+ FAT16X (LBA)/';
+      $cf: Result := 'DR-DOS 7.04+ secured EXT DOS (LBA)/';
+      $d0: Result := 'REAL/32 secure big/Multiuser DOS secured';
       {
-      $d0: retval := 'REAL/32 secure big partition';
-      $d0: retval := 'Multiuser DOS secured partition';
+      $d0: Result := 'REAL/32 secure big partition';
+      $d0: Result := 'Multiuser DOS secured partition';
       }
-      $d1: retval := 'Old Multiuser DOS secured FAT12';
-      $d4: retval := 'Old Multiuser DOS secured FAT16 <32M';
-      $d5: retval := 'Old Multiuser DOS secured extended partition';
-      $d6: retval := 'Old Multiuser DOS secured FAT16 >=32M';
-      $d8: retval := 'CP/M-86';
-      $da: retval := 'Non-FS Data/Powercopy Backup';
+      $d1: Result := 'Old Multiuser DOS secured FAT12';
+      $d4: Result := 'Old Multiuser DOS secured FAT16 <32M';
+      $d5: Result := 'Old Multiuser DOS secured extended partition';
+      $d6: Result := 'Old Multiuser DOS secured FAT16 >=32M';
+      $d8: Result := 'CP/M-86';
+      $da: Result := 'Non-FS Data/Powercopy Backup';
       {
-      $da: retval := 'Non-FS Data';
-      $da: retval := 'Powercopy Backup';
+      $da: Result := 'Non-FS Data';
+      $da: Result := 'Powercopy Backup';
       }
-      $db: retval :=
+      $db: Result :=
           'Digital Research CP/M, Concurrent CP/M, Concurrent DOS / CTOS / KDG Telemetry SCPU boot';
       {
-      $db: retval := 'Digital Research CP/M, Concurrent CP/M, Concurrent DOS';
-      $db: retval := 'CTOS (Convergent Technologies OS -Unisys)';
-      $db: retval := 'KDG Telemetry SCPU boot';
+      $db: Result := 'Digital Research CP/M, Concurrent CP/M, Concurrent DOS';
+      $db: Result := 'CTOS (Convergent Technologies OS -Unisys)';
+      $db: Result := 'KDG Telemetry SCPU boot';
       }
-      $dd: retval := 'Hidden CTOS Memdump?';
-      $de: retval := 'Dell PowerEdge Server utilities (FAT fs)';
-      $df: retval := 'DG/UX virtual disk manager partition / BootIt EMBRM';
+      $dd: Result := 'Hidden CTOS Memdump?';
+      $de: Result := 'Dell PowerEdge Server utilities (FAT fs)';
+      $df: Result := 'DG/UX virtual disk manager partition / BootIt EMBRM';
       {
-      $df: retval := 'DG/UX virtual disk manager partition';
-      $df: retval := 'BootIt EMBRM';
+      $df: Result := 'DG/UX virtual disk manager partition';
+      $df: Result := 'BootIt EMBRM';
       }
-      $e0: retval := 'Reserved by STMicroelectronics for a filesystem called ST AVFS';
-      $e1: retval := 'DOS access or SpeedStor 12-bit FAT extended partition';
-      $e3: retval := 'DOS R/O or SpeedStor';
-      $e4: retval := 'SpeedStor 16-bit FAT extended partition < 1024 cyl.';
-      $e5: retval := 'Tandy MSDOS with logically sectored FAT';
-      $e6: retval := 'Storage Dimensions SpeedStor';
-      $e8: retval := 'LUKS';
-      $eb: retval := 'BeOS BFS';
-      $ec: retval := 'SkyOS SkyFS';
-      $ed: retval := 'Unused';
-      $ee: retval := 'Indication that this legacy MBR is followed by an EFI header';
-      $ef: retval := 'Partition that contains an EFI file system';
-      $f0: retval := 'Linux/PA-RISC boot loader';
-      $f1: retval := 'Storage Dimensions SpeedStor';
-      $f2: retval := 'DOS 3.3+ secondary partition';
-      $f3: retval := 'Reserved';
-      $f4: retval := 'SpeedStor large partition/Prologue single-volume partition';
+      $e0: Result := 'Reserved by STMicroelectronics for a filesystem called ST AVFS';
+      $e1: Result := 'DOS access or SpeedStor 12-bit FAT extended partition';
+      $e3: Result := 'DOS R/O or SpeedStor';
+      $e4: Result := 'SpeedStor 16-bit FAT extended partition < 1024 cyl.';
+      $e5: Result := 'Tandy MSDOS with logically sectored FAT';
+      $e6: Result := 'Storage Dimensions SpeedStor';
+      $e8: Result := 'LUKS';
+      $eb: Result := 'BeOS BFS';
+      $ec: Result := 'SkyOS SkyFS';
+      $ed: Result := 'Unused';
+      $ee: Result := 'Indication that this legacy MBR is followed by an EFI header';
+      $ef: Result := 'Partition that contains an EFI file system';
+      $f0: Result := 'Linux/PA-RISC boot loader';
+      $f1: Result := 'Storage Dimensions SpeedStor';
+      $f2: Result := 'DOS 3.3+ secondary partition';
+      $f3: Result := 'Reserved';
+      $f4: Result := 'SpeedStor large partition/Prologue single-volume partition';
       {
-      $f4: retval := 'SpeedStor large partition';
-      $f4: retval := 'Prologue single-volume partition';
+      $f4: Result := 'SpeedStor large partition';
+      $f4: Result := 'Prologue single-volume partition';
       }
-      $f5: retval := 'Prologue multi-volume partition';
-      $f6: retval := 'Storage Dimensions SpeedStor';
-      $f7: retval := 'Unused';
-      $f9: retval := 'pCache';
-      $fa: retval := 'Bochs';
-      $fb: retval := 'VMware File System partition';
-      $fc: retval := 'VMware Swap partition';
-      $fd: retval := 'Linux raid partition with autodetect using persistent superblock';
-      $fe: retval :=
+      $f5: Result := 'Prologue multi-volume partition';
+      $f6: Result := 'Storage Dimensions SpeedStor';
+      $f7: Result := 'Unused';
+      $f9: Result := 'pCache';
+      $fa: Result := 'Bochs';
+      $fb: Result := 'VMware File System partition';
+      $fc: Result := 'VMware Swap partition';
+      $fd: Result := 'Linux raid partition with autodetect using persistent superblock';
+      $fe: Result :=
           'SpeedStor > 1024 cyl./LANstep/IBM PS/2 IML/Windows NT Disk Administrator hidden partition/Linux Logical Volume Manager partition (old)';
       {
-      $fe: retval := 'SpeedStor > 1024 cyl.';
-      $fe: retval := 'LANstep';
-      $fe: retval := 'IBM PS/2 IML (Initial Microcode Load) partition,';
-      $fe: retval := 'Windows NT Disk Administrator hidden partition';
-      $fe: retval := 'Linux Logical Volume Manager partition (old)';
+      $fe: Result := 'SpeedStor > 1024 cyl.';
+      $fe: Result := 'LANstep';
+      $fe: Result := 'IBM PS/2 IML (Initial Microcode Load) partition,';
+      $fe: Result := 'Windows NT Disk Administrator hidden partition';
+      $fe: Result := 'Linux Logical Volume Manager partition (old)';
       }
-      $ff: retval := 'Xenix Bad Block Table';
+      $ff: Result := 'Xenix Bad Block Table';
     end;
   end else begin
     // Partition types taken (31st May 2008) from:
     //   Linux fdisk v1.0 
     case PartitionTypeID of
-      $00: retval := 'Empty';
-      $01: retval := 'FAT12';
-      $02: retval := 'XENIX root';
-      $03: retval := 'XENIX usr';
-      $04: retval := 'Small FAT16';
-      $05: retval := 'Extended';
-      $06: retval := 'FAT16';
-      $07: retval := 'HPFS/NTFS';
-      $08: retval := 'AIX';
-      $09: retval := 'AIX bootable';
-      $0a: retval := 'OS/2 boot mgr';
-      $0b: retval := 'FAT32';
-      $0c: retval := 'FAT32 LBA';
-      $0e: retval := 'FAT16 LBA';
-      $0f: retval := 'Extended LBA';
-      $10: retval := 'OPUS';
-      $11: retval := 'Hidden FAT12';
-      $12: retval := 'Compaq diag';
-      $14: retval := 'Hidd Sm FAT16';
-      $16: retval := 'Hidd FAT16';
-      $17: retval := 'Hidd HPFS/NTFS';
-      $18: retval := 'AST SmartSleep';
-      $1b: retval := 'Hidd FAT32';
-      $1c: retval := 'Hidd FAT32 LBA';
-      $1e: retval := 'Hidd FAT16 LBA';
-      $24: retval := 'NEC DOS';
-      $39: retval := 'Plan 9';
-      $3c: retval := 'PMagic recovery';
-      $40: retval := 'Venix 80286';
-      $41: retval := 'PPC PReP Boot';
-      $42: retval := 'SFS';
-      $4d: retval := 'QNX4.x';
-      $4e: retval := 'QNX4.x 2nd part';
-      $4f: retval := 'QNX4.x 3rd part';
-      $50: retval := 'OnTrack DM';
-      $51: retval := 'OnTrackDM6 Aux1';
-      $52: retval := 'CP/M';
-      $53: retval := 'OnTrackDM6 Aux3';
-      $54: retval := 'OnTrack DM6';
-      $55: retval := 'EZ Drive';
-      $56: retval := 'Golden Bow';
-      $5c: retval := 'Priam Edisk';
-      $61: retval := 'SpeedStor';
-      $63: retval := 'GNU HURD/SysV';
-      $64: retval := 'Netware 286';
-      $65: retval := 'Netware 386';
-      $70: retval := 'DiskSec MltBoot';
-      $75: retval := 'PC/IX';
-      $80: retval := 'Minix <1.4a';
-      $81: retval := 'Minix >1.4b';
-      $82: retval := 'Linux swap';
-      $83: retval := 'Linux';
-      $84: retval := 'OS/2 hidden C:';
-      $85: retval := 'Linux extended';
-      $86: retval := 'NTFS volume set';
-      $87: retval := 'NTFS volume set';
-      $88: retval := 'Linux plaintext';
-      $8e: retval := 'Linux LVM';
-      $93: retval := 'Amoeba';
-      $94: retval := 'Amoeba BBT';
-      $9f: retval := 'BSD/OS';
-      $a0: retval := 'Thinkpad hib';
-      $a5: retval := 'FreeBSD';
-      $a6: retval := 'OpenBSD';
-      $a7: retval := 'NeXTSTEP';
-      $a8: retval := 'Darwin UFS';
-      $a9: retval := 'NetBSD';
-      $ab: retval := 'Darwin boot';
-      $b7: retval := 'BSDI fs';
-      $b8: retval := 'BSDI swap';
-      $bb: retval := 'Boot Wizard Hid';
-      $be: retval := 'Solaris boot';
-      $bf: retval := 'Solaris';
-      $c1: retval := 'DRDOS/2 FAT12';
-      $c4: retval := 'DRDOS/2 smFAT16';
-      $c6: retval := 'DRDOS/2 FAT16';
-      $c7: retval := 'Syrinx';
-      $da: retval := 'Non-FS data';
-      $db: retval := 'CP/M / CTOS';
-      $de: retval := 'Dell Utility';
-      $df: retval := 'BootIt';
-      $e1: retval := 'DOS access';
-      $e3: retval := 'DOS R/O';
-      $e4: retval := 'SpeedStor';
-      $eb: retval := 'BeOS fs';
-      $ee: retval := 'EFI GPT';
-      $ef: retval := 'EFI FAT';
-      $f0: retval := 'Lnx/PA-RISC bt';
-      $f1: retval := 'SpeedStor';
-      $f2: retval := 'DOS secondary';
-      $f4: retval := 'SpeedStor';
-      $fd: retval := 'Lnx RAID auto';
-      $fe: retval := 'LANstep';
-      $ff: retval := 'XENIX BBT';
+      $00: Result := 'Empty';
+      $01: Result := 'FAT12';
+      $02: Result := 'XENIX root';
+      $03: Result := 'XENIX usr';
+      $04: Result := 'Small FAT16';
+      $05: Result := 'Extended';
+      $06: Result := 'FAT16';
+      $07: Result := 'HPFS/NTFS';
+      $08: Result := 'AIX';
+      $09: Result := 'AIX bootable';
+      $0a: Result := 'OS/2 boot mgr';
+      $0b: Result := 'FAT32';
+      $0c: Result := 'FAT32 LBA';
+      $0e: Result := 'FAT16 LBA';
+      $0f: Result := 'Extended LBA';
+      $10: Result := 'OPUS';
+      $11: Result := 'Hidden FAT12';
+      $12: Result := 'Compaq diag';
+      $14: Result := 'Hidd Sm FAT16';
+      $16: Result := 'Hidd FAT16';
+      $17: Result := 'Hidd HPFS/NTFS';
+      $18: Result := 'AST SmartSleep';
+      $1b: Result := 'Hidd FAT32';
+      $1c: Result := 'Hidd FAT32 LBA';
+      $1e: Result := 'Hidd FAT16 LBA';
+      $24: Result := 'NEC DOS';
+      $39: Result := 'Plan 9';
+      $3c: Result := 'PMagic recovery';
+      $40: Result := 'Venix 80286';
+      $41: Result := 'PPC PReP Boot';
+      $42: Result := 'SFS';
+      $4d: Result := 'QNX4.x';
+      $4e: Result := 'QNX4.x 2nd part';
+      $4f: Result := 'QNX4.x 3rd part';
+      $50: Result := 'OnTrack DM';
+      $51: Result := 'OnTrackDM6 Aux1';
+      $52: Result := 'CP/M';
+      $53: Result := 'OnTrackDM6 Aux3';
+      $54: Result := 'OnTrack DM6';
+      $55: Result := 'EZ Drive';
+      $56: Result := 'Golden Bow';
+      $5c: Result := 'Priam Edisk';
+      $61: Result := 'SpeedStor';
+      $63: Result := 'GNU HURD/SysV';
+      $64: Result := 'Netware 286';
+      $65: Result := 'Netware 386';
+      $70: Result := 'DiskSec MltBoot';
+      $75: Result := 'PC/IX';
+      $80: Result := 'Minix <1.4a';
+      $81: Result := 'Minix >1.4b';
+      $82: Result := 'Linux swap';
+      $83: Result := 'Linux';
+      $84: Result := 'OS/2 hidden C:';
+      $85: Result := 'Linux extended';
+      $86: Result := 'NTFS volume set';
+      $87: Result := 'NTFS volume set';
+      $88: Result := 'Linux plaintext';
+      $8e: Result := 'Linux LVM';
+      $93: Result := 'Amoeba';
+      $94: Result := 'Amoeba BBT';
+      $9f: Result := 'BSD/OS';
+      $a0: Result := 'Thinkpad hib';
+      $a5: Result := 'FreeBSD';
+      $a6: Result := 'OpenBSD';
+      $a7: Result := 'NeXTSTEP';
+      $a8: Result := 'Darwin UFS';
+      $a9: Result := 'NetBSD';
+      $ab: Result := 'Darwin boot';
+      $b7: Result := 'BSDI fs';
+      $b8: Result := 'BSDI swap';
+      $bb: Result := 'Boot Wizard Hid';
+      $be: Result := 'Solaris boot';
+      $bf: Result := 'Solaris';
+      $c1: Result := 'DRDOS/2 FAT12';
+      $c4: Result := 'DRDOS/2 smFAT16';
+      $c6: Result := 'DRDOS/2 FAT16';
+      $c7: Result := 'Syrinx';
+      $da: Result := 'Non-FS data';
+      $db: Result := 'CP/M / CTOS';
+      $de: Result := 'Dell Utility';
+      $df: Result := 'BootIt';
+      $e1: Result := 'DOS access';
+      $e3: Result := 'DOS R/O';
+      $e4: Result := 'SpeedStor';
+      $eb: Result := 'BeOS fs';
+      $ee: Result := 'EFI GPT';
+      $ef: Result := 'EFI FAT';
+      $f0: Result := 'Lnx/PA-RISC bt';
+      $f1: Result := 'SpeedStor';
+      $f2: Result := 'DOS secondary';
+      $f4: Result := 'SpeedStor';
+      $fd: Result := 'Lnx RAID auto';
+      $fe: Result := 'LANstep';
+      $ff: Result := 'XENIX BBT';
     end;
   end;
 
-  Result := retval;
+
 end;
 
 // ----------------------------------------------------------------------------
 function SDUIntToHex(val: ULONGLONG; digits: Integer): String;
 var
-  retval: String;
   tmpVal: ULONGLONG;
   LSB:    Integer;
 begin
-  retval := '';
+  Result := '';
 
   tmpVal := val;
   while (tmpVal > 0) do begin
     lsb    := tmpVal and $FF;
-    retval := inttohex(LSB, 2) + retval;
+    Result := inttohex(LSB, 2) + Result;
     tmpVal := tmpVal shr 8;
   end;
 
-  if (length(retval) < digits) then begin
-    retval := StringOfChar('0', (digits - length(retval))) + retval;
+  if (length(Result) < digits) then begin
+    Result := StringOfChar('0', (digits - length(Result))) + Result;
   end;
 
-  Result := retval;
+
 end;
 
  // ----------------------------------------------------------------------------
  // Delphi's inttostr(...) function truncates 64 bit values to 32 bits
 function SDUIntToStr(val: Int64): String;
 var
-  retval:  String;
   tmpVal:  Int64;
   LSB:     Integer;
   tmpZero: Int64;
 begin
-  retval := '';
+  Result := '';
 
   tmpZero := 0;
   if (val = tmpZero) then begin
-    retval := '0';
+    Result := '0';
   end else begin
     tmpVal := val;
     while (tmpVal > 0) do begin
       lsb    := tmpVal mod 10;
-      retval := IntToStr(LSB) + retval;
+      Result := IntToStr(LSB) + Result;
       tmpVal := tmpVal div 10;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUIntToStr(val: ULONGLONG): String;
 var
-  retval:  String;
   tmpVal:  ULONGLONG;
   LSB:     Integer;
   tmpZero: ULONGLONG;
 begin
-  retval := '';
+  Result := '';
 
   tmpZero := 0;
   if (val = tmpZero) then begin
-    retval := '0';
+    Result := '0';
   end else begin
     tmpVal := val;
     while (tmpVal > 0) do begin
       lsb    := tmpVal mod 10;
-      retval := IntToStr(LSB) + retval;
+      Result := IntToStr(LSB) + Result;
       tmpVal := tmpVal div 10;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 {$IFEND}
@@ -5482,51 +5447,49 @@ end;
  // As SDUIntToStr, but with thousands seperators inserted
 function SDUIntToStrThousands(val: Int64): String;
 var
-  retval: String;
   sVal:   String;
   i:      Integer;
   ctr:    Integer;
 begin
   sVal := SDUIntToStr(val);
 
-  retval := '';
+  Result := '';
   ctr    := 0;
   for i := length(sVal) downto 1 do begin
     Inc(ctr);
     if ((ctr <> 1) and ((ctr mod 3) = 1)) then begin
       // ThousandSeparator from SysUtils
-      retval := FormatSettings.ThousandSeparator + retval;
+      Result := FormatSettings.ThousandSeparator + Result;
     end;
 
-    retval := sVal[i] + retval;
+    Result := sVal[i] + Result;
   end;
 
-  Result := retval;
+
 end;
 
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUIntToStrThousands(val: ULONGLONG): String;
 var
-  retval: String;
   sVal:   String;
   i:      Integer;
   ctr:    Integer;
 begin
   sVal := SDUIntToStr(val);
 
-  retval := '';
+  Result := '';
   ctr    := 0;
   for i := length(sVal) downto 1 do begin
     Inc(ctr);
     if ((ctr <> 1) and ((ctr mod 3) = 1)) then begin
       // ThousandSeparator from SysUtils
-      retval := FormatSettings.ThousandSeparator + retval;
+      Result := FormatSettings.ThousandSeparator + Result;
     end;
 
-    retval := sVal[i] + retval;
+    Result := sVal[i] + Result;
   end;
 
-  Result := retval;
+
 end;
 
 {$IFEND}
@@ -5568,9 +5531,8 @@ end;
 function SDUFileCopy(srcFilename: String; destFilename: String): Boolean;
 var
   fileOpStruct: TSHFileOpStruct;
-  retval:       Boolean;
 begin
-  retval                             := False;
+  Result                             := False;
   // srcFilename and destFilename *MUST* end in a double NULL for
   // SHFileOperation to operate correctly
   srcFilename                        := srcFilename + #0 + #0;
@@ -5585,10 +5547,10 @@ begin
   fileOpStruct.lpszProgressTitle     := nil;
 
   if (SHFileOperation(fileOpStruct) = 0) then begin
-    retval := not (fileOpStruct.fAnyOperationsAborted);
+    Result := not (fileOpStruct.fAnyOperationsAborted);
   end;
 
-  Result := retval;
+
 end;
 
  // ----------------------------------------------------------------------------
@@ -5607,9 +5569,8 @@ function SDUGetFileType_Description(const filename: String; out knownFiletype: B
 var
   extn:     String;
   registry: TRegistry;
-  retval:   String;
 begin
-  retval        := '';
+  Result        := '';
   knownFiletype := False;
 
   extn := ExtractFileExt(filename);
@@ -5622,12 +5583,12 @@ begin
   try
     registry.RootKey := HKEY_CLASSES_ROOT;
     if registry.OpenKeyReadOnly('\' + extn) then begin
-      retval := registry.ReadString('');
+      Result := registry.ReadString('');
       registry.CloseKey;
 
       // Some store a redirect to the main file type here
-      if registry.OpenKeyReadOnly('\' + retval) then begin
-        retval := registry.ReadString('');
+      if registry.OpenKeyReadOnly('\' + Result) then begin
+        Result := registry.ReadString('');
         registry.CloseKey;
       end;
 
@@ -5639,13 +5600,13 @@ begin
 
   // If couldn't get details, try again with lowercase
   //  - IF NOT ALREADY TRYING THIS!
-  if (retval = '') then begin
+  if (Result = '') then begin
     if (lowercase(filename) <> filename) then begin
-      retval := SDUGetFileType_Description(lowercase(filename), knownFiletype);
+      Result := SDUGetFileType_Description(lowercase(filename), knownFiletype);
     end else begin
       // Strip out "." from extension
       extn   := StringReplace(extn, '.', '', [rfReplaceAll]);
-      retval := SDUParamSubstitute(_('%1 File'), [uppercase(extn)]);
+      Result := SDUParamSubstitute(_('%1 File'), [uppercase(extn)]);
     end;
   end else begin
     // Found in calling *this* routine.
@@ -5654,7 +5615,7 @@ begin
   end;
 
 
-  Result := retval;
+
 end;
 
  // ----------------------------------------------------------------------------
@@ -5753,10 +5714,10 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function SDUTryStrToInt(const S: String; out Value: Integer): Boolean;
-begin
-  Result := TryStrToInt(S, Value);
-end;
+//function SDUTryStrToInt(const S: String; out Value: Integer): Boolean;
+//begin
+//  Result := TryStrToInt(S, Value);
+//end;
 
 function SDUTryStrToInt(const S: String; out Value: Uint64): Boolean;
 var
@@ -5780,14 +5741,12 @@ end;
  // As TryStrToInt, but if it fails to convert the string, return the default
  // value passed in
 function SDUTryStrToIntDflt(Value: String; deflt: Integer): Integer;
-var
-  retval: Integer;
 begin
-  if not (TryStrToInt(Value, retval)) then begin
-    retval := deflt;
+  if not (TryStrToInt(Value, Result)) then begin
+    Result := deflt;
   end;
 
-  Result := retval;
+
 end;
 
 // ----------------------------------------------------------------------------
@@ -5799,53 +5758,49 @@ end;
 // ----------------------------------------------------------------------------
 function SDUIntToBinary(Value: Integer; digits: Integer = 8): String;
 var
-  retval:  String;
   currBit: Char;
 begin
-  retval := '';
-  while ((length(retval) < digits) or (Value > 0)) do begin
+  Result := '';
+  while ((length(Result) < digits) or (Value > 0)) do begin
     currBit := '0';
     if ((Value and 1) > 0) then begin
       currBit := '1';
     end;
 
-    retval := currBit + retval;
+    Result := currBit + Result;
 
     Value := (Value shr 1);
   end;
 
-  Result := retval;
+
 end;
 
 function SDUUnitsStorageToText(units: TUnits_Storage): String;
-var
-  retval: String;
 begin
-  retval := RS_UNKNOWN;
+  Result := RS_UNKNOWN;
 
   case units of
-    usBytes: retval := UNITS_STORAGE_BYTES;
-    usKB: retval    := UNITS_STORAGE_KB;
-    usMB: retval    := UNITS_STORAGE_MB;
-    usGB: retval    := UNITS_STORAGE_GB;
-    usTB: retval    := UNITS_STORAGE_TB;
+    usBytes: Result := UNITS_STORAGE_BYTES;
+    usKB: Result    := UNITS_STORAGE_KB;
+    usMB: Result    := UNITS_STORAGE_MB;
+    usGB: Result    := UNITS_STORAGE_GB;
+    usTB: Result    := UNITS_STORAGE_TB;
   end;
 
-  Result := retval;
+
 end;
 
 function SDUUnitsStorageToTextArr(): TSDUArrayString;
 var
-  retval: TSDUArrayString;
   i:      TUnits_Storage;
 begin
-  SetLength(retval, 0);
+  SetLength(Result, 0);
   for i := low(i) to high(i) do begin
-    SetLength(retval, length(retval) + 1);
-    retval[length(retval) - 1] := SDUUnitsStorageToText(i);
+    SetLength(Result, length(Result) + 1);
+    Result[length(Result) - 1] := SDUUnitsStorageToText(i);
   end;
 
-  Result := retval;
+
 end;
 
 function UNITS_BYTES_DENOMINATINON(): TSDUArrayString;
@@ -5856,15 +5811,14 @@ end;
 // ----------------------------------------------------------------------------
 function SDUWideStringOfWideChar(Ch: Widechar; Count: Integer): WideString;
 var
-  retval: WideString;
   i:      Integer;
 begin
-  retval := '';
+  Result := '';
   for i := 1 to Count do begin
-    retval := retval + Ch;
+    Result := Result + Ch;
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -5881,7 +5835,6 @@ var
   ShellMalloc:                IMalloc;
   IDesktopFolder:             IShellFolder;
   Dummy:                      Longword;
-  retval:                     Boolean;
 
   function BrowseCallbackProc(hwnd: HWND; uMsg: UINT; lParam: Cardinal;
     lpData: Cardinal): Integer; STDCALL;
@@ -5901,7 +5854,7 @@ var
   end;
 
 begin
-  retval := False;
+  Result := False;
   FillChar(BrowseInfo, SizeOf(BrowseInfo), 0);
   if (ShGetMalloc(ShellMalloc) = S_OK) and (ShellMalloc <> nil) then begin
     Buffer := ShellMalloc.Alloc(MAX_PATH);
@@ -5922,8 +5875,8 @@ begin
         lParam         := Integer(PChar(Path));
       end;
       ItemIDList := ShBrowseForFolder(BrowseInfo);
-      retval     := (ItemIDList <> nil);
-      if retval then begin
+      Result     := (ItemIDList <> nil);
+      if Result then begin
         ShGetPathFromIDList(ItemIDList, Buffer);
         ShellMalloc.Free(ItemIDList);
         Path := StrPas(Buffer);
@@ -5933,11 +5886,11 @@ begin
     end;
   end;
 
-  if retval then begin
-    retval := (Path <> '');
+  if Result then begin
+    Result := (Path <> '');
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -5972,7 +5925,6 @@ var
   //  padAppID: string;
 
   i:          Integer;
-  retval:     Boolean;
   versionStr: String;
   stlVersion: TStringList;
 begin
@@ -5999,7 +5951,7 @@ begin
       stlVersion.Delimiter     := '.';
       stlVersion.DelimitedText := versionStr;
 
-      retval := (stlVersion.Count > 0);
+      Result := (stlVersion.Count > 0);
 
       majorVersion    := 0;
       minorVersion    := 0;
@@ -6009,13 +5961,13 @@ begin
         stlVersion[i] := trim(stlVersion[i]);
 
         case i of
-          0: retval := TryStrToInt(stlVersion[i], majorVersion);
-          1: retval := TryStrToInt(stlVersion[i], minorVersion);
-          2: retval := TryStrToInt(stlVersion[i], revisionVersion);
-          3: retval := TryStrToInt(stlVersion[i], buildVersion);
+          0: Result := TryStrToInt(stlVersion[i], majorVersion);
+          1: Result := TryStrToInt(stlVersion[i], minorVersion);
+          2: Result := TryStrToInt(stlVersion[i], revisionVersion);
+          3: Result := TryStrToInt(stlVersion[i], buildVersion);
         end;
 
-        if not (retval) then begin
+        if not (Result) then begin
           break;
         end;
 
@@ -6029,7 +5981,7 @@ begin
     doc.Free();
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -6065,50 +6017,48 @@ function SDUGetPADFileVersionInfo(url: String;
   var majorVersion, minorVersion, revisionVersion, buildVersion: Integer;
   userAgent: WideString = DEFAULT_HTTP_USERAGENT; ShowProgressDlg: Boolean = True): TTimeoutGet;
 var
-  retval: TTimeoutGet;
   xml:    String;
 begin
-  retval := tgFailure;
+  Result := tgFailure;
 {$IFDEF FORCE_LOCAL_PAD}
      xml     := TFile.ReadAllText(url);
-      retval := tgOK;
+      Result := tgOK;
    {$ELSE}
   if ShowProgressDlg then begin
-    retval := SDUGetURLProgress_WithUserAgent(_('Checking for latest version...'),
+    Result := SDUGetURLProgress_WithUserAgent(_('Checking for latest version...'),
       url, xml, userAgent);
   end else begin
     if SDUWinHTTPRequest_WithUserAgent(url, userAgent, xml) then begin
-      retval := tgOK;
+      Result := tgOK;
     end;
   end;
 
 
    {$ENDIF}
-  if (retval = tgOK) then begin
+  if (Result = tgOK) then begin
     if not (SDUGetPADFileVersionInfo_XML(xml, majorVersion, minorVersion,
       revisionVersion, buildVersion)) then begin
-      retval := tgFailure;
+      Result := tgFailure;
     end;
 
   end;
 
-  Result := retval;
+
 end;
 
 
 // ----------------------------------------------------------------------------
 function SDUGetPADFileVersionInfoString(url: String): String;
 var
-  retval: String;
   xml:    String;
 begin
-  retval := '';
+  Result := '';
 
   if SDUWinHTTPRequest(url, xml) then begin
-    retval := SDUGetPADFileVersionInfoString_XML(xml);
+    Result := SDUGetPADFileVersionInfoString_XML(xml);
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -6126,16 +6076,15 @@ end;
 function SDUTTimeToISO8601(inTime: TTime; includeSeconds: Boolean = True): String;
 var
   AHour, AMinute, ASecond, AMilliSecond: Word;
-  retval:                                String;
 begin
   DecodeTime(inTime, AHour, AMinute, ASecond, AMilliSecond);
   if includeSeconds then begin
-    retval := Format('%.2d:%.2d:%.2d', [AHour, AMinute, ASecond]);
+    Result := Format('%.2d:%.2d:%.2d', [AHour, AMinute, ASecond]);
   end else begin
-    retval := Format('%.2d:%.2d', [AHour, AMinute]);
+    Result := Format('%.2d:%.2d', [AHour, AMinute]);
   end;
 
-  Result := retval;
+
 end;
 
 // Encode date to YYYY-MM-DDTHH:MM format
@@ -6285,19 +6234,17 @@ end;
 
 // ----------------------------------------------------------------------------
 function _SDUVersionNumberCompare(A, B: Integer): Integer;
-var
-  retval: Integer;
 begin
-  retval := 0;
+  Result := 0;
 
   if (A > B) then begin
-    retval := -1;
+    Result := -1;
   end else
   if (B > A) then begin
-    retval := 1;
+    Result := 1;
   end;
 
-  Result := retval;
+
 end;
 
  // Check version IDs
@@ -6307,338 +6254,326 @@ end;
  //   1 if B is later
 function SDUVersionCompare(A_MajorVersion, A_MinorVersion: Integer;
   B_MajorVersion, B_MinorVersion: Integer): Integer;
-var
-  retval: Integer;
 begin
-  retval := 0;
+  Result := 0;
 
-  if (retval = 0) then begin
-    retval := _SDUVersionNumberCompare(A_MajorVersion, B_MajorVersion);
+  if (Result = 0) then begin
+    Result := _SDUVersionNumberCompare(A_MajorVersion, B_MajorVersion);
   end;
-  if (retval = 0) then begin
-    retval := _SDUVersionNumberCompare(A_MinorVersion, B_MinorVersion);
+  if (Result = 0) then begin
+    Result := _SDUVersionNumberCompare(A_MinorVersion, B_MinorVersion);
   end;
 
-  Result := retval;
+
 end;
 
 function SDUVersionCompare(A_MajorVersion, A_MinorVersion, A_RevisionVersion,
   A_BuildVersion: Integer; B_MajorVersion, B_MinorVersion, B_RevisionVersion,
   B_BuildVersion: Integer): Integer;
-var
-  retval: Integer;
 begin
-  retval := SDUVersionCompare(A_MajorVersion, A_MinorVersion, B_MajorVersion, B_MinorVersion);
+  Result := SDUVersionCompare(A_MajorVersion, A_MinorVersion, B_MajorVersion, B_MinorVersion);
 
-  if (retval = 0) then begin
-    retval := _SDUVersionNumberCompare(A_RevisionVersion, B_RevisionVersion);
+  if (Result = 0) then begin
+    Result := _SDUVersionNumberCompare(A_RevisionVersion, B_RevisionVersion);
   end;
-  if (retval = 0) then begin
-    retval := _SDUVersionNumberCompare(A_BuildVersion, B_BuildVersion);
+  if (Result = 0) then begin
+    Result := _SDUVersionNumberCompare(A_BuildVersion, B_BuildVersion);
   end;
 
-  Result := retval;
+
 end;
 
 
 function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion: Integer;
   A_BetaVersion: Integer; B_MajorVersion, B_MinorVersion: Integer): Integer;
-var
-  retval: Integer;
 begin
-  retval := SDUVersionCompare(A_MajorVersion, A_MinorVersion, B_MajorVersion, B_MinorVersion);
-  if (retval = 0) then begin
+  Result := SDUVersionCompare(A_MajorVersion, A_MinorVersion, B_MajorVersion, B_MinorVersion);
+  if (Result = 0) then begin
     if (A_BetaVersion > 0) then begin
-      retval := 1;
+      Result := 1;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion,
   A_RevisionVersion, A_BuildVersion: Integer; A_BetaVersion: Integer;
   B_MajorVersion, B_MinorVersion, B_RevisionVersion, B_BuildVersion: Integer): Integer;
-var
-  retval: Integer;
 begin
-  retval := SDUVersionCompare(A_MajorVersion, A_MinorVersion, A_RevisionVersion,
+  Result := SDUVersionCompare(A_MajorVersion, A_MinorVersion, A_RevisionVersion,
     A_BuildVersion, B_MajorVersion, B_MinorVersion, B_RevisionVersion, B_BuildVersion);
-  if (retval = 0) then begin
+  if (Result = 0) then begin
     if (A_BetaVersion > 0) then begin
-      retval := 1;
+      Result := 1;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 // ----------------------------------------------------------------------------
 function SDUWMToString(msgID: Cardinal): String;
-var
-  retval: String;
 begin
-  retval := inttohex(msgID, 8);
+  Result := inttohex(msgID, 8);
 
   case msgID of
-    WM_NULL: retval                        := 'WM_NULL';
-    WM_CREATE: retval                      := 'WM_CREATE';
-    WM_DESTROY: retval                     := 'WM_DESTROY';
-    WM_MOVE: retval                        := 'WM_MOVE';
-    WM_SIZE: retval                        := 'WM_SIZE';
-    WM_ACTIVATE: retval                    := 'WM_ACTIVATE';
-    WM_SETFOCUS: retval                    := 'WM_SETFOCUS';
-    WM_KILLFOCUS: retval                   := 'WM_KILLFOCUS';
-    WM_ENABLE: retval                      := 'WM_ENABLE';
-    WM_SETREDRAW: retval                   := 'WM_SETREDRAW';
-    WM_SETTEXT: retval                     := 'WM_SETTEXT';
-    WM_GETTEXT: retval                     := 'WM_GETTEXT';
-    WM_GETTEXTLENGTH: retval               := 'WM_GETTEXTLENGTH';
-    WM_PAINT: retval                       := 'WM_PAINT';
-    WM_CLOSE: retval                       := 'WM_CLOSE';
-    WM_QUERYENDSESSION: retval             := 'WM_QUERYENDSESSION';
-    WM_QUIT: retval                        := 'WM_QUIT';
-    WM_QUERYOPEN: retval                   := 'WM_QUERYOPEN';
-    WM_ERASEBKGND: retval                  := 'WM_ERASEBKGND';
-    WM_SYSCOLORCHANGE: retval              := 'WM_SYSCOLORCHANGE';
-    WM_ENDSESSION: retval                  := 'WM_ENDSESSION';
-    WM_SYSTEMERROR: retval                 := 'WM_SYSTEMERROR';
-    WM_SHOWWINDOW: retval                  := 'WM_SHOWWINDOW';
-    WM_CTLCOLOR: retval                    := 'WM_CTLCOLOR';
-    WM_WININICHANGE: retval                := 'WM_WININICHANGE/WM_WININICHANGE';
-    WM_DEVMODECHANGE: retval               := 'WM_DEVMODECHANGE';
-    WM_ACTIVATEAPP: retval                 := 'WM_ACTIVATEAPP';
-    WM_FONTCHANGE: retval                  := 'WM_FONTCHANGE';
-    WM_TIMECHANGE: retval                  := 'WM_TIMECHANGE';
-    WM_CANCELMODE: retval                  := 'WM_CANCELMODE';
-    WM_SETCURSOR: retval                   := 'WM_SETCURSOR';
-    WM_MOUSEACTIVATE: retval               := 'WM_MOUSEACTIVATE';
-    WM_CHILDACTIVATE: retval               := 'WM_CHILDACTIVATE';
-    WM_QUEUESYNC: retval                   := 'WM_QUEUESYNC';
-    WM_GETMINMAXINFO: retval               := 'WM_GETMINMAXINFO';
-    WM_PAINTICON: retval                   := 'WM_PAINTICON';
-    WM_ICONERASEBKGND: retval              := 'WM_ICONERASEBKGND';
-    WM_NEXTDLGCTL: retval                  := 'WM_NEXTDLGCTL';
-    WM_SPOOLERSTATUS: retval               := 'WM_SPOOLERSTATUS';
-    WM_DRAWITEM: retval                    := 'WM_DRAWITEM';
-    WM_MEASUREITEM: retval                 := 'WM_MEASUREITEM';
-    WM_DELETEITEM: retval                  := 'WM_DELETEITEM';
-    WM_VKEYTOITEM: retval                  := 'WM_VKEYTOITEM';
-    WM_CHARTOITEM: retval                  := 'WM_CHARTOITEM';
-    WM_SETFONT: retval                     := 'WM_SETFONT';
-    WM_GETFONT: retval                     := 'WM_GETFONT';
-    WM_SETHOTKEY: retval                   := 'WM_SETHOTKEY';
-    WM_GETHOTKEY: retval                   := 'WM_GETHOTKEY';
-    WM_QUERYDRAGICON: retval               := 'WM_QUERYDRAGICON';
-    WM_COMPAREITEM: retval                 := 'WM_COMPAREITEM';
-    WM_GETOBJECT: retval                   := 'WM_GETOBJECT';
-    WM_COMPACTING: retval                  := 'WM_COMPACTING';
-    WM_COMMNOTIFY: retval                  := 'WM_COMMNOTIFY';
-    WM_WINDOWPOSCHANGING: retval           := 'WM_WINDOWPOSCHANGING';
-    WM_WINDOWPOSCHANGED: retval            := 'WM_WINDOWPOSCHANGED';
-    WM_POWER: retval                       := 'WM_POWER';
-    WM_COPYDATA: retval                    := 'WM_COPYDATA';
-    WM_CANCELJOURNAL: retval               := 'WM_CANCELJOURNAL';
-    WM_NOTIFY: retval                      := 'WM_NOTIFY';
-    WM_INPUTLANGCHANGEREQUEST: retval      := 'WM_INPUTLANGCHANGEREQUEST';
-    WM_INPUTLANGCHANGE: retval             := 'WM_INPUTLANGCHANGE';
-    WM_TCARD: retval                       := 'WM_TCARD';
-    WM_HELP: retval                        := 'WM_HELP';
-    WM_USERCHANGED: retval                 := 'WM_USERCHANGED';
-    WM_NOTIFYFORMAT: retval                := 'WM_NOTIFYFORMAT';
-    WM_CONTEXTMENU: retval                 := 'WM_CONTEXTMENU';
-    WM_STYLECHANGING: retval               := 'WM_STYLECHANGING';
-    WM_STYLECHANGED: retval                := 'WM_STYLECHANGED';
-    WM_DISPLAYCHANGE: retval               := 'WM_DISPLAYCHANGE';
-    WM_GETICON: retval                     := 'WM_GETICON';
-    WM_SETICON: retval                     := 'WM_SETICON';
-    WM_NCCREATE: retval                    := 'WM_NCCREATE';
-    WM_NCDESTROY: retval                   := 'WM_NCDESTROY';
-    WM_NCCALCSIZE: retval                  := 'WM_NCCALCSIZE';
-    WM_NCHITTEST: retval                   := 'WM_NCHITTEST';
-    WM_NCPAINT: retval                     := 'WM_NCPAINT';
-    WM_NCACTIVATE: retval                  := 'WM_NCACTIVATE';
-    WM_GETDLGCODE: retval                  := 'WM_GETDLGCODE';
-    WM_NCMOUSEMOVE: retval                 := 'WM_NCMOUSEMOVE';
-    WM_NCLBUTTONDOWN: retval               := 'WM_NCLBUTTONDOWN';
-    WM_NCLBUTTONUP: retval                 := 'WM_NCLBUTTONUP';
-    WM_NCLBUTTONDBLCLK: retval             := 'WM_NCLBUTTONDBLCLK';
-    WM_NCRBUTTONDOWN: retval               := 'WM_NCRBUTTONDOWN';
-    WM_NCRBUTTONUP: retval                 := 'WM_NCRBUTTONUP';
-    WM_NCRBUTTONDBLCLK: retval             := 'WM_NCRBUTTONDBLCLK';
-    WM_NCMBUTTONDOWN: retval               := 'WM_NCMBUTTONDOWN';
-    WM_NCMBUTTONUP: retval                 := 'WM_NCMBUTTONUP';
-    WM_NCMBUTTONDBLCLK: retval             := 'WM_NCMBUTTONDBLCLK';
-    WM_NCXBUTTONDOWN: retval               := 'WM_NCXBUTTONDOWN';
-    WM_NCXBUTTONUP: retval                 := 'WM_NCXBUTTONUP';
-    WM_NCXBUTTONDBLCLK: retval             := 'WM_NCXBUTTONDBLCLK';
-    WM_INPUT: retval                       := 'WM_INPUT';
-    WM_KEYFIRST: retval                    := 'WM_KEYDOWN';
-    WM_KEYUP: retval                       := 'WM_KEYUP';
-    WM_CHAR: retval                        := 'WM_CHAR';
-    WM_DEADCHAR: retval                    := 'WM_DEADCHAR';
-    WM_SYSKEYDOWN: retval                  := 'WM_SYSKEYDOWN';
-    WM_SYSKEYUP: retval                    := 'WM_SYSKEYUP';
-    WM_SYSCHAR: retval                     := 'WM_SYSCHAR';
-    WM_SYSDEADCHAR: retval                 := 'WM_SYSDEADCHAR';
+    WM_NULL: Result                        := 'WM_NULL';
+    WM_CREATE: Result                      := 'WM_CREATE';
+    WM_DESTROY: Result                     := 'WM_DESTROY';
+    WM_MOVE: Result                        := 'WM_MOVE';
+    WM_SIZE: Result                        := 'WM_SIZE';
+    WM_ACTIVATE: Result                    := 'WM_ACTIVATE';
+    WM_SETFOCUS: Result                    := 'WM_SETFOCUS';
+    WM_KILLFOCUS: Result                   := 'WM_KILLFOCUS';
+    WM_ENABLE: Result                      := 'WM_ENABLE';
+    WM_SETREDRAW: Result                   := 'WM_SETREDRAW';
+    WM_SETTEXT: Result                     := 'WM_SETTEXT';
+    WM_GETTEXT: Result                     := 'WM_GETTEXT';
+    WM_GETTEXTLENGTH: Result               := 'WM_GETTEXTLENGTH';
+    WM_PAINT: Result                       := 'WM_PAINT';
+    WM_CLOSE: Result                       := 'WM_CLOSE';
+    WM_QUERYENDSESSION: Result             := 'WM_QUERYENDSESSION';
+    WM_QUIT: Result                        := 'WM_QUIT';
+    WM_QUERYOPEN: Result                   := 'WM_QUERYOPEN';
+    WM_ERASEBKGND: Result                  := 'WM_ERASEBKGND';
+    WM_SYSCOLORCHANGE: Result              := 'WM_SYSCOLORCHANGE';
+    WM_ENDSESSION: Result                  := 'WM_ENDSESSION';
+    WM_SYSTEMERROR: Result                 := 'WM_SYSTEMERROR';
+    WM_SHOWWINDOW: Result                  := 'WM_SHOWWINDOW';
+    WM_CTLCOLOR: Result                    := 'WM_CTLCOLOR';
+    WM_WININICHANGE: Result                := 'WM_WININICHANGE/WM_WININICHANGE';
+    WM_DEVMODECHANGE: Result               := 'WM_DEVMODECHANGE';
+    WM_ACTIVATEAPP: Result                 := 'WM_ACTIVATEAPP';
+    WM_FONTCHANGE: Result                  := 'WM_FONTCHANGE';
+    WM_TIMECHANGE: Result                  := 'WM_TIMECHANGE';
+    WM_CANCELMODE: Result                  := 'WM_CANCELMODE';
+    WM_SETCURSOR: Result                   := 'WM_SETCURSOR';
+    WM_MOUSEACTIVATE: Result               := 'WM_MOUSEACTIVATE';
+    WM_CHILDACTIVATE: Result               := 'WM_CHILDACTIVATE';
+    WM_QUEUESYNC: Result                   := 'WM_QUEUESYNC';
+    WM_GETMINMAXINFO: Result               := 'WM_GETMINMAXINFO';
+    WM_PAINTICON: Result                   := 'WM_PAINTICON';
+    WM_ICONERASEBKGND: Result              := 'WM_ICONERASEBKGND';
+    WM_NEXTDLGCTL: Result                  := 'WM_NEXTDLGCTL';
+    WM_SPOOLERSTATUS: Result               := 'WM_SPOOLERSTATUS';
+    WM_DRAWITEM: Result                    := 'WM_DRAWITEM';
+    WM_MEASUREITEM: Result                 := 'WM_MEASUREITEM';
+    WM_DELETEITEM: Result                  := 'WM_DELETEITEM';
+    WM_VKEYTOITEM: Result                  := 'WM_VKEYTOITEM';
+    WM_CHARTOITEM: Result                  := 'WM_CHARTOITEM';
+    WM_SETFONT: Result                     := 'WM_SETFONT';
+    WM_GETFONT: Result                     := 'WM_GETFONT';
+    WM_SETHOTKEY: Result                   := 'WM_SETHOTKEY';
+    WM_GETHOTKEY: Result                   := 'WM_GETHOTKEY';
+    WM_QUERYDRAGICON: Result               := 'WM_QUERYDRAGICON';
+    WM_COMPAREITEM: Result                 := 'WM_COMPAREITEM';
+    WM_GETOBJECT: Result                   := 'WM_GETOBJECT';
+    WM_COMPACTING: Result                  := 'WM_COMPACTING';
+    WM_COMMNOTIFY: Result                  := 'WM_COMMNOTIFY';
+    WM_WINDOWPOSCHANGING: Result           := 'WM_WINDOWPOSCHANGING';
+    WM_WINDOWPOSCHANGED: Result            := 'WM_WINDOWPOSCHANGED';
+    WM_POWER: Result                       := 'WM_POWER';
+    WM_COPYDATA: Result                    := 'WM_COPYDATA';
+    WM_CANCELJOURNAL: Result               := 'WM_CANCELJOURNAL';
+    WM_NOTIFY: Result                      := 'WM_NOTIFY';
+    WM_INPUTLANGCHANGEREQUEST: Result      := 'WM_INPUTLANGCHANGEREQUEST';
+    WM_INPUTLANGCHANGE: Result             := 'WM_INPUTLANGCHANGE';
+    WM_TCARD: Result                       := 'WM_TCARD';
+    WM_HELP: Result                        := 'WM_HELP';
+    WM_USERCHANGED: Result                 := 'WM_USERCHANGED';
+    WM_NOTIFYFORMAT: Result                := 'WM_NOTIFYFORMAT';
+    WM_CONTEXTMENU: Result                 := 'WM_CONTEXTMENU';
+    WM_STYLECHANGING: Result               := 'WM_STYLECHANGING';
+    WM_STYLECHANGED: Result                := 'WM_STYLECHANGED';
+    WM_DISPLAYCHANGE: Result               := 'WM_DISPLAYCHANGE';
+    WM_GETICON: Result                     := 'WM_GETICON';
+    WM_SETICON: Result                     := 'WM_SETICON';
+    WM_NCCREATE: Result                    := 'WM_NCCREATE';
+    WM_NCDESTROY: Result                   := 'WM_NCDESTROY';
+    WM_NCCALCSIZE: Result                  := 'WM_NCCALCSIZE';
+    WM_NCHITTEST: Result                   := 'WM_NCHITTEST';
+    WM_NCPAINT: Result                     := 'WM_NCPAINT';
+    WM_NCACTIVATE: Result                  := 'WM_NCACTIVATE';
+    WM_GETDLGCODE: Result                  := 'WM_GETDLGCODE';
+    WM_NCMOUSEMOVE: Result                 := 'WM_NCMOUSEMOVE';
+    WM_NCLBUTTONDOWN: Result               := 'WM_NCLBUTTONDOWN';
+    WM_NCLBUTTONUP: Result                 := 'WM_NCLBUTTONUP';
+    WM_NCLBUTTONDBLCLK: Result             := 'WM_NCLBUTTONDBLCLK';
+    WM_NCRBUTTONDOWN: Result               := 'WM_NCRBUTTONDOWN';
+    WM_NCRBUTTONUP: Result                 := 'WM_NCRBUTTONUP';
+    WM_NCRBUTTONDBLCLK: Result             := 'WM_NCRBUTTONDBLCLK';
+    WM_NCMBUTTONDOWN: Result               := 'WM_NCMBUTTONDOWN';
+    WM_NCMBUTTONUP: Result                 := 'WM_NCMBUTTONUP';
+    WM_NCMBUTTONDBLCLK: Result             := 'WM_NCMBUTTONDBLCLK';
+    WM_NCXBUTTONDOWN: Result               := 'WM_NCXBUTTONDOWN';
+    WM_NCXBUTTONUP: Result                 := 'WM_NCXBUTTONUP';
+    WM_NCXBUTTONDBLCLK: Result             := 'WM_NCXBUTTONDBLCLK';
+    WM_INPUT: Result                       := 'WM_INPUT';
+    WM_KEYFIRST: Result                    := 'WM_KEYDOWN';
+    WM_KEYUP: Result                       := 'WM_KEYUP';
+    WM_CHAR: Result                        := 'WM_CHAR';
+    WM_DEADCHAR: Result                    := 'WM_DEADCHAR';
+    WM_SYSKEYDOWN: Result                  := 'WM_SYSKEYDOWN';
+    WM_SYSKEYUP: Result                    := 'WM_SYSKEYUP';
+    WM_SYSCHAR: Result                     := 'WM_SYSCHAR';
+    WM_SYSDEADCHAR: Result                 := 'WM_SYSDEADCHAR';
 {$IF CompilerVersion >= 18.5}// Delphi 2007 and later
-    WM_UNICHAR: retval                     := 'WM_UNICHAR';
+    WM_UNICHAR: Result                     := 'WM_UNICHAR';
 {$IFEND}
-    WM_INITDIALOG: retval                  := 'WM_INITDIALOG';
-    WM_COMMAND: retval                     := 'WM_COMMAND';
-    WM_SYSCOMMAND: retval                  := 'WM_SYSCOMMAND';
-    WM_TIMER: retval                       := 'WM_TIMER';
-    WM_HSCROLL: retval                     := 'WM_HSCROLL';
-    WM_VSCROLL: retval                     := 'WM_VSCROLL';
-    WM_INITMENU: retval                    := 'WM_INITMENU';
-    WM_INITMENUPOPUP: retval               := 'WM_INITMENUPOPUP';
-    WM_MENUSELECT: retval                  := 'WM_MENUSELECT';
-    WM_MENUCHAR: retval                    := 'WM_MENUCHAR';
-    WM_ENTERIDLE: retval                   := 'WM_ENTERIDLE';
-    WM_MENURBUTTONUP: retval               := 'WM_MENURBUTTONUP';
-    WM_MENUDRAG: retval                    := 'WM_MENUDRAG';
-    WM_MENUGETOBJECT: retval               := 'WM_MENUGETOBJECT';
-    WM_UNINITMENUPOPUP: retval             := 'WM_UNINITMENUPOPUP';
-    WM_MENUCOMMAND: retval                 := 'WM_MENUCOMMAND';
-    WM_CHANGEUISTATE: retval               := 'WM_CHANGEUISTATE';
-    WM_UPDATEUISTATE: retval               := 'WM_UPDATEUISTATE';
-    WM_QUERYUISTATE: retval                := 'WM_QUERYUISTATE';
-    WM_CTLCOLORMSGBOX: retval              := 'WM_CTLCOLORMSGBOX';
-    WM_CTLCOLOREDIT: retval                := 'WM_CTLCOLOREDIT';
-    WM_CTLCOLORLISTBOX: retval             := 'WM_CTLCOLORLISTBOX';
-    WM_CTLCOLORBTN: retval                 := 'WM_CTLCOLORBTN';
-    WM_CTLCOLORDLG: retval                 := 'WM_CTLCOLORDLG';
-    WM_CTLCOLORSCROLLBAR: retval           := 'WM_CTLCOLORSCROLLBAR';
-    WM_CTLCOLORSTATIC: retval              := 'WM_CTLCOLORSTATIC';
-    WM_MOUSEFIRST: retval                  := 'WM_MOUSEMOVE';
-    WM_LBUTTONDOWN: retval                 := 'WM_LBUTTONDOWN';
-    WM_LBUTTONUP: retval                   := 'WM_LBUTTONUP';
-    WM_LBUTTONDBLCLK: retval               := 'WM_LBUTTONDBLCLK';
-    WM_RBUTTONDOWN: retval                 := 'WM_RBUTTONDOWN';
-    WM_RBUTTONUP: retval                   := 'WM_RBUTTONUP';
-    WM_RBUTTONDBLCLK: retval               := 'WM_RBUTTONDBLCLK';
-    WM_MBUTTONDOWN: retval                 := 'WM_MBUTTONDOWN';
-    WM_MBUTTONUP: retval                   := 'WM_MBUTTONUP';
-    WM_MBUTTONDBLCLK: retval               := 'WM_MBUTTONDBLCLK';
-    WM_MOUSEWHEEL: retval                  := 'WM_MOUSEWHEEL';
-    WM_PARENTNOTIFY: retval                := 'WM_PARENTNOTIFY';
-    WM_ENTERMENULOOP: retval               := 'WM_ENTERMENULOOP';
-    WM_EXITMENULOOP: retval                := 'WM_EXITMENULOOP';
-    WM_NEXTMENU: retval                    := 'WM_NEXTMENU';
-    WM_SIZING: retval                      := 'WM_SIZING';
-    WM_CAPTURECHANGED: retval              := 'WM_CAPTURECHANGED';
-    WM_MOVING: retval                      := 'WM_MOVING';
-    WM_POWERBROADCAST: retval              := 'WM_POWERBROADCAST';
-    WM_DEVICECHANGE: retval                := 'WM_DEVICECHANGE';
-    WM_IME_STARTCOMPOSITION: retval        := 'WM_IME_STARTCOMPOSITION';
-    WM_IME_ENDCOMPOSITION: retval          := 'WM_IME_ENDCOMPOSITION';
-    WM_IME_COMPOSITION: retval             := 'WM_IME_COMPOSITION';
-    WM_IME_SETCONTEXT: retval              := 'WM_IME_SETCONTEXT';
-    WM_IME_NOTIFY: retval                  := 'WM_IME_NOTIFY';
-    WM_IME_CONTROL: retval                 := 'WM_IME_CONTROL';
-    WM_IME_COMPOSITIONFULL: retval         := 'WM_IME_COMPOSITIONFULL';
-    WM_IME_SELECT: retval                  := 'WM_IME_SELECT';
-    WM_IME_CHAR: retval                    := 'WM_IME_CHAR';
-    WM_IME_REQUEST: retval                 := 'WM_IME_REQUEST';
-    WM_IME_KEYDOWN: retval                 := 'WM_IME_KEYDOWN';
-    WM_IME_KEYUP: retval                   := 'WM_IME_KEYUP';
-    WM_MDICREATE: retval                   := 'WM_MDICREATE';
-    WM_MDIDESTROY: retval                  := 'WM_MDIDESTROY';
-    WM_MDIACTIVATE: retval                 := 'WM_MDIACTIVATE';
-    WM_MDIRESTORE: retval                  := 'WM_MDIRESTORE';
-    WM_MDINEXT: retval                     := 'WM_MDINEXT';
-    WM_MDIMAXIMIZE: retval                 := 'WM_MDIMAXIMIZE';
-    WM_MDITILE: retval                     := 'WM_MDITILE';
-    WM_MDICASCADE: retval                  := 'WM_MDICASCADE';
-    WM_MDIICONARRANGE: retval              := 'WM_MDIICONARRANGE';
-    WM_MDIGETACTIVE: retval                := 'WM_MDIGETACTIVE';
-    WM_MDISETMENU: retval                  := 'WM_MDISETMENU';
-    WM_ENTERSIZEMOVE: retval               := 'WM_ENTERSIZEMOVE';
-    WM_EXITSIZEMOVE: retval                := 'WM_EXITSIZEMOVE';
-    WM_DROPFILES: retval                   := 'WM_DROPFILES';
-    WM_MDIREFRESHMENU: retval              := 'WM_MDIREFRESHMENU';
-    WM_MOUSEHOVER: retval                  := 'WM_MOUSEHOVER';
-    WM_MOUSELEAVE: retval                  := 'WM_MOUSELEAVE';
-    WM_NCMOUSEHOVER: retval                := 'WM_NCMOUSEHOVER';
-    WM_NCMOUSELEAVE: retval                := 'WM_NCMOUSELEAVE';
-    WM_WTSSESSION_CHANGE: retval           := 'WM_WTSSESSION_CHANGE';
-    WM_TABLET_FIRST: retval                := 'WM_TABLET_FIRST';
-    WM_TABLET_LAST: retval                 := 'WM_TABLET_LAST';
-    WM_CUT: retval                         := 'WM_CUT';
-    WM_COPY: retval                        := 'WM_COPY';
-    WM_PASTE: retval                       := 'WM_PASTE';
-    WM_CLEAR: retval                       := 'WM_CLEAR';
-    WM_UNDO: retval                        := 'WM_UNDO';
-    WM_RENDERFORMAT: retval                := 'WM_RENDERFORMAT';
-    WM_RENDERALLFORMATS: retval            := 'WM_RENDERALLFORMATS';
-    WM_DESTROYCLIPBOARD: retval            := 'WM_DESTROYCLIPBOARD';
-    WM_DRAWCLIPBOARD: retval               := 'WM_DRAWCLIPBOARD';
-    WM_PAINTCLIPBOARD: retval              := 'WM_PAINTCLIPBOARD';
-    WM_VSCROLLCLIPBOARD: retval            := 'WM_VSCROLLCLIPBOARD';
-    WM_SIZECLIPBOARD: retval               := 'WM_SIZECLIPBOARD';
-    WM_ASKCBFORMATNAME: retval             := 'WM_ASKCBFORMATNAME';
-    WM_CHANGECBCHAIN: retval               := 'WM_CHANGECBCHAIN';
-    WM_HSCROLLCLIPBOARD: retval            := 'WM_HSCROLLCLIPBOARD';
-    WM_QUERYNEWPALETTE: retval             := 'WM_QUERYNEWPALETTE';
-    WM_PALETTEISCHANGING: retval           := 'WM_PALETTEISCHANGING';
-    WM_PALETTECHANGED: retval              := 'WM_PALETTECHANGED';
-    WM_HOTKEY: retval                      := 'WM_HOTKEY';
-    WM_PRINT: retval                       := 'WM_PRINT';
-    WM_PRINTCLIENT: retval                 := 'WM_PRINTCLIENT';
-    WM_APPCOMMAND: retval                  := 'WM_APPCOMMAND';
-    WM_THEMECHANGED: retval                := 'WM_THEMECHANGED';
-    WM_HANDHELDFIRST: retval               := 'WM_HANDHELDFIRST';
-    WM_HANDHELDLAST: retval                := 'WM_HANDHELDLAST';
-    WM_PENWINFIRST: retval                 := 'WM_PENWINFIRST';
-    WM_PENWINLAST: retval                  := 'WM_PENWINLAST';
-    WM_COALESCE_FIRST: retval              := 'WM_COALESCE_FIRST';
-    WM_COALESCE_LAST: retval               := 'WM_COALESCE_LAST';
-    WM_DDE_FIRST: retval                   := 'WM_DDE_INITIATE';
-    WM_DDE_TERMINATE: retval               := 'WM_DDE_TERMINATE';
-    WM_DDE_ADVISE: retval                  := 'WM_DDE_ADVISE';
-    WM_DDE_UNADVISE: retval                := 'WM_DDE_UNADVISE';
-    WM_DDE_ACK: retval                     := 'WM_DDE_ACK';
-    WM_DDE_DATA: retval                    := 'WM_DDE_DATA';
-    WM_DDE_REQUEST: retval                 := 'WM_DDE_REQUEST';
-    WM_DDE_POKE: retval                    := 'WM_DDE_POKE';
-    WM_DDE_EXECUTE: retval                 := 'WM_DDE_EXECUTE';
+    WM_INITDIALOG: Result                  := 'WM_INITDIALOG';
+    WM_COMMAND: Result                     := 'WM_COMMAND';
+    WM_SYSCOMMAND: Result                  := 'WM_SYSCOMMAND';
+    WM_TIMER: Result                       := 'WM_TIMER';
+    WM_HSCROLL: Result                     := 'WM_HSCROLL';
+    WM_VSCROLL: Result                     := 'WM_VSCROLL';
+    WM_INITMENU: Result                    := 'WM_INITMENU';
+    WM_INITMENUPOPUP: Result               := 'WM_INITMENUPOPUP';
+    WM_MENUSELECT: Result                  := 'WM_MENUSELECT';
+    WM_MENUCHAR: Result                    := 'WM_MENUCHAR';
+    WM_ENTERIDLE: Result                   := 'WM_ENTERIDLE';
+    WM_MENURBUTTONUP: Result               := 'WM_MENURBUTTONUP';
+    WM_MENUDRAG: Result                    := 'WM_MENUDRAG';
+    WM_MENUGETOBJECT: Result               := 'WM_MENUGETOBJECT';
+    WM_UNINITMENUPOPUP: Result             := 'WM_UNINITMENUPOPUP';
+    WM_MENUCOMMAND: Result                 := 'WM_MENUCOMMAND';
+    WM_CHANGEUISTATE: Result               := 'WM_CHANGEUISTATE';
+    WM_UPDATEUISTATE: Result               := 'WM_UPDATEUISTATE';
+    WM_QUERYUISTATE: Result                := 'WM_QUERYUISTATE';
+    WM_CTLCOLORMSGBOX: Result              := 'WM_CTLCOLORMSGBOX';
+    WM_CTLCOLOREDIT: Result                := 'WM_CTLCOLOREDIT';
+    WM_CTLCOLORLISTBOX: Result             := 'WM_CTLCOLORLISTBOX';
+    WM_CTLCOLORBTN: Result                 := 'WM_CTLCOLORBTN';
+    WM_CTLCOLORDLG: Result                 := 'WM_CTLCOLORDLG';
+    WM_CTLCOLORSCROLLBAR: Result           := 'WM_CTLCOLORSCROLLBAR';
+    WM_CTLCOLORSTATIC: Result              := 'WM_CTLCOLORSTATIC';
+    WM_MOUSEFIRST: Result                  := 'WM_MOUSEMOVE';
+    WM_LBUTTONDOWN: Result                 := 'WM_LBUTTONDOWN';
+    WM_LBUTTONUP: Result                   := 'WM_LBUTTONUP';
+    WM_LBUTTONDBLCLK: Result               := 'WM_LBUTTONDBLCLK';
+    WM_RBUTTONDOWN: Result                 := 'WM_RBUTTONDOWN';
+    WM_RBUTTONUP: Result                   := 'WM_RBUTTONUP';
+    WM_RBUTTONDBLCLK: Result               := 'WM_RBUTTONDBLCLK';
+    WM_MBUTTONDOWN: Result                 := 'WM_MBUTTONDOWN';
+    WM_MBUTTONUP: Result                   := 'WM_MBUTTONUP';
+    WM_MBUTTONDBLCLK: Result               := 'WM_MBUTTONDBLCLK';
+    WM_MOUSEWHEEL: Result                  := 'WM_MOUSEWHEEL';
+    WM_PARENTNOTIFY: Result                := 'WM_PARENTNOTIFY';
+    WM_ENTERMENULOOP: Result               := 'WM_ENTERMENULOOP';
+    WM_EXITMENULOOP: Result                := 'WM_EXITMENULOOP';
+    WM_NEXTMENU: Result                    := 'WM_NEXTMENU';
+    WM_SIZING: Result                      := 'WM_SIZING';
+    WM_CAPTURECHANGED: Result              := 'WM_CAPTURECHANGED';
+    WM_MOVING: Result                      := 'WM_MOVING';
+    WM_POWERBROADCAST: Result              := 'WM_POWERBROADCAST';
+    WM_DEVICECHANGE: Result                := 'WM_DEVICECHANGE';
+    WM_IME_STARTCOMPOSITION: Result        := 'WM_IME_STARTCOMPOSITION';
+    WM_IME_ENDCOMPOSITION: Result          := 'WM_IME_ENDCOMPOSITION';
+    WM_IME_COMPOSITION: Result             := 'WM_IME_COMPOSITION';
+    WM_IME_SETCONTEXT: Result              := 'WM_IME_SETCONTEXT';
+    WM_IME_NOTIFY: Result                  := 'WM_IME_NOTIFY';
+    WM_IME_CONTROL: Result                 := 'WM_IME_CONTROL';
+    WM_IME_COMPOSITIONFULL: Result         := 'WM_IME_COMPOSITIONFULL';
+    WM_IME_SELECT: Result                  := 'WM_IME_SELECT';
+    WM_IME_CHAR: Result                    := 'WM_IME_CHAR';
+    WM_IME_REQUEST: Result                 := 'WM_IME_REQUEST';
+    WM_IME_KEYDOWN: Result                 := 'WM_IME_KEYDOWN';
+    WM_IME_KEYUP: Result                   := 'WM_IME_KEYUP';
+    WM_MDICREATE: Result                   := 'WM_MDICREATE';
+    WM_MDIDESTROY: Result                  := 'WM_MDIDESTROY';
+    WM_MDIACTIVATE: Result                 := 'WM_MDIACTIVATE';
+    WM_MDIRESTORE: Result                  := 'WM_MDIRESTORE';
+    WM_MDINEXT: Result                     := 'WM_MDINEXT';
+    WM_MDIMAXIMIZE: Result                 := 'WM_MDIMAXIMIZE';
+    WM_MDITILE: Result                     := 'WM_MDITILE';
+    WM_MDICASCADE: Result                  := 'WM_MDICASCADE';
+    WM_MDIICONARRANGE: Result              := 'WM_MDIICONARRANGE';
+    WM_MDIGETACTIVE: Result                := 'WM_MDIGETACTIVE';
+    WM_MDISETMENU: Result                  := 'WM_MDISETMENU';
+    WM_ENTERSIZEMOVE: Result               := 'WM_ENTERSIZEMOVE';
+    WM_EXITSIZEMOVE: Result                := 'WM_EXITSIZEMOVE';
+    WM_DROPFILES: Result                   := 'WM_DROPFILES';
+    WM_MDIREFRESHMENU: Result              := 'WM_MDIREFRESHMENU';
+    WM_MOUSEHOVER: Result                  := 'WM_MOUSEHOVER';
+    WM_MOUSELEAVE: Result                  := 'WM_MOUSELEAVE';
+    WM_NCMOUSEHOVER: Result                := 'WM_NCMOUSEHOVER';
+    WM_NCMOUSELEAVE: Result                := 'WM_NCMOUSELEAVE';
+    WM_WTSSESSION_CHANGE: Result           := 'WM_WTSSESSION_CHANGE';
+    WM_TABLET_FIRST: Result                := 'WM_TABLET_FIRST';
+    WM_TABLET_LAST: Result                 := 'WM_TABLET_LAST';
+    WM_CUT: Result                         := 'WM_CUT';
+    WM_COPY: Result                        := 'WM_COPY';
+    WM_PASTE: Result                       := 'WM_PASTE';
+    WM_CLEAR: Result                       := 'WM_CLEAR';
+    WM_UNDO: Result                        := 'WM_UNDO';
+    WM_RENDERFORMAT: Result                := 'WM_RENDERFORMAT';
+    WM_RENDERALLFORMATS: Result            := 'WM_RENDERALLFORMATS';
+    WM_DESTROYCLIPBOARD: Result            := 'WM_DESTROYCLIPBOARD';
+    WM_DRAWCLIPBOARD: Result               := 'WM_DRAWCLIPBOARD';
+    WM_PAINTCLIPBOARD: Result              := 'WM_PAINTCLIPBOARD';
+    WM_VSCROLLCLIPBOARD: Result            := 'WM_VSCROLLCLIPBOARD';
+    WM_SIZECLIPBOARD: Result               := 'WM_SIZECLIPBOARD';
+    WM_ASKCBFORMATNAME: Result             := 'WM_ASKCBFORMATNAME';
+    WM_CHANGECBCHAIN: Result               := 'WM_CHANGECBCHAIN';
+    WM_HSCROLLCLIPBOARD: Result            := 'WM_HSCROLLCLIPBOARD';
+    WM_QUERYNEWPALETTE: Result             := 'WM_QUERYNEWPALETTE';
+    WM_PALETTEISCHANGING: Result           := 'WM_PALETTEISCHANGING';
+    WM_PALETTECHANGED: Result              := 'WM_PALETTECHANGED';
+    WM_HOTKEY: Result                      := 'WM_HOTKEY';
+    WM_PRINT: Result                       := 'WM_PRINT';
+    WM_PRINTCLIENT: Result                 := 'WM_PRINTCLIENT';
+    WM_APPCOMMAND: Result                  := 'WM_APPCOMMAND';
+    WM_THEMECHANGED: Result                := 'WM_THEMECHANGED';
+    WM_HANDHELDFIRST: Result               := 'WM_HANDHELDFIRST';
+    WM_HANDHELDLAST: Result                := 'WM_HANDHELDLAST';
+    WM_PENWINFIRST: Result                 := 'WM_PENWINFIRST';
+    WM_PENWINLAST: Result                  := 'WM_PENWINLAST';
+    WM_COALESCE_FIRST: Result              := 'WM_COALESCE_FIRST';
+    WM_COALESCE_LAST: Result               := 'WM_COALESCE_LAST';
+    WM_DDE_FIRST: Result                   := 'WM_DDE_INITIATE';
+    WM_DDE_TERMINATE: Result               := 'WM_DDE_TERMINATE';
+    WM_DDE_ADVISE: Result                  := 'WM_DDE_ADVISE';
+    WM_DDE_UNADVISE: Result                := 'WM_DDE_UNADVISE';
+    WM_DDE_ACK: Result                     := 'WM_DDE_ACK';
+    WM_DDE_DATA: Result                    := 'WM_DDE_DATA';
+    WM_DDE_REQUEST: Result                 := 'WM_DDE_REQUEST';
+    WM_DDE_POKE: Result                    := 'WM_DDE_POKE';
+    WM_DDE_EXECUTE: Result                 := 'WM_DDE_EXECUTE';
 {$IF CompilerVersion >= 18.5}// Delphi 2007 and later
-    WM_DWMCOMPOSITIONCHANGED: retval       := 'WM_DWMCOMPOSITIONCHANGED';
-    WM_DWMNCRENDERINGCHANGED: retval       := 'WM_DWMNCRENDERINGCHANGED';
-    WM_DWMCOLORIZATIONCOLORCHANGED: retval := 'WM_DWMCOLORIZATIONCOLORCHANGED';
-    WM_DWMWINDOWMAXIMIZEDCHANGE: retval    := 'WM_DWMWINDOWMAXIMIZEDCHANGE';
+    WM_DWMCOMPOSITIONCHANGED: Result       := 'WM_DWMCOMPOSITIONCHANGED';
+    WM_DWMNCRENDERINGCHANGED: Result       := 'WM_DWMNCRENDERINGCHANGED';
+    WM_DWMCOLORIZATIONCOLORCHANGED: Result := 'WM_DWMCOLORIZATIONCOLORCHANGED';
+    WM_DWMWINDOWMAXIMIZEDCHANGE: Result    := 'WM_DWMWINDOWMAXIMIZEDCHANGE';
 {$IFEND}
-    WM_APP: retval                         := 'WM_APP';
+    WM_APP: Result                         := 'WM_APP';
   end;
 
-  Result := retval;
+
 end;
 
 
  // ----------------------------------------------------------------------------
  // Convert ShowWindow(...) show state to string
 function SDUShowStateToString(nCmdShow: Word): String;
-var
-  retval: String;
 begin
-  retval := '<Unknown>';
+  Result := '<Unknown>';
   case nCmdShow of
-    //    SW_FORCEMINIMIZE:   retval := 'SW_FORCEMINIMIZE';
-    SW_HIDE: retval            := 'SW_HIDE';
-    //    SW_MAXIMIZE:        retval := 'SW_MAXIMIZE';
-    SW_MINIMIZE: retval        := 'SW_MINIMIZE';
-    SW_RESTORE: retval         := 'SW_RESTORE';
-    SW_SHOW: retval            := 'SW_SHOW';
-    SW_SHOWDEFAULT: retval     := 'SW_SHOWDEFAULT';
-    SW_SHOWMAXIMIZED: retval   := 'SW_SHOWMAXIMIZED';
-    SW_SHOWMINIMIZED: retval   := 'SW_SHOWMINIMIZED';
-    SW_SHOWMINNOACTIVE: retval := 'SW_SHOWMINNOACTIVE';
-    SW_SHOWNA: retval          := 'SW_SHOWNA';
-    SW_SHOWNOACTIVATE: retval  := 'SW_SHOWNOACTIVATE';
-    SW_SHOWNORMAL: retval      := 'SW_SHOWNORMAL';
+    //    SW_FORCEMINIMIZE:   Result := 'SW_FORCEMINIMIZE';
+    SW_HIDE: Result            := 'SW_HIDE';
+    //    SW_MAXIMIZE:        Result := 'SW_MAXIMIZE';
+    SW_MINIMIZE: Result        := 'SW_MINIMIZE';
+    SW_RESTORE: Result         := 'SW_RESTORE';
+    SW_SHOW: Result            := 'SW_SHOW';
+    SW_SHOWDEFAULT: Result     := 'SW_SHOWDEFAULT';
+    SW_SHOWMAXIMIZED: Result   := 'SW_SHOWMAXIMIZED';
+    SW_SHOWMINIMIZED: Result   := 'SW_SHOWMINIMIZED';
+    SW_SHOWMINNOACTIVE: Result := 'SW_SHOWMINNOACTIVE';
+    SW_SHOWNA: Result          := 'SW_SHOWNA';
+    SW_SHOWNOACTIVATE: Result  := 'SW_SHOWNOACTIVATE';
+    SW_SHOWNORMAL: Result      := 'SW_SHOWNORMAL';
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -6647,7 +6582,6 @@ end;
 function SDUGetFormLayout(form: TForm): String;
 var
   stlLayout: TStringList;
-  retval:    String;
   placement: TWindowPlacement;
 begin
   // If the window's maximised, the forms top, left, width and height are set
@@ -6672,12 +6606,12 @@ begin
 
     stlLayout.Delimiter := ',';
     stlLayout.QuoteChar := '"';
-    retval              := stlLayout.DelimitedText;
+    Result              := stlLayout.DelimitedText;
   finally
     stlLayout.Free();
   end;
 
-  Result := retval;
+
 end;
 
  // ----------------------------------------------------------------------------
@@ -6759,16 +6693,12 @@ end;
  // ----------------------------------------------------------------------------
  // Returns the string passed in, but with the initial letter capitalized
 function SDUInitialCapital(Value: String): String;
-var
-  retval: String;
 begin
-  retval := Value;
-
-  if (length(retval) > 0) then begin
-    retval[1] := upcase(retval[1]);
+  Result := Value;
+  if (length(Result) > 0) then begin
+    Result[1] := upcase(Result[1]);
   end;
 
-  Result := retval;
 end;
 
 
@@ -6811,32 +6741,22 @@ begin
 end;
 
 //initialises value to all zeros
-procedure SDUInitAndZeroBuffer(len: Cardinal; var Value: TSDUBytes);
-var
-  i, oldlen: Integer;
+procedure SDUInitAndZeroBuffer(len: Cardinal; var val: TSDUBytes);
 begin
   // setlength re-alloacates and can change reference - so even if new value is longer: still need to zero old val before resizing
-  oldlen := length(Value);
-  for i := 0 to oldlen - 1 do
-    Value[i] := 0;
-
-  setlength(Value, len);
-  for i := 0 to len - 1 do
-    Value[i] := 0;
+  //use SafeSetLength so if change size, any freed data zeroed
+  SafeSetLength(val, len);
+  SDUZeroBuffer(val);
 end;
 
 //adds byte to array
 procedure SDUAddByte(var Value: TSDUBytes; byt: Byte);
 var
-  len:    Integer;
-  oldref: Pointer;
+  len: Integer;
 begin
-
-  oldref := Pointer(@Value[0]);
-  len    := length(Value);
-  setlength(Value, len + 1);
-  { TODO 1 -otdk -ccheck : setlength can reset ref. does Mem manager zeroise? if not need to copy and zero }
-  //  assert(oldref = POinter(@Value[0]));
+  len := length(Value);
+  SafeSetLength(Value, len + 1);
+  { DONE 1 -otdk -ccheck : setlength can reallocate array but  AlwaysClearFreedMemory is used to zero any freed mem }
   Value[len] := byt;
 end;
 
@@ -6847,23 +6767,20 @@ var
 begin
   ln := length(A) + length(rhs);
   SDUAddLimit(A, rhs, length(rhs));
-  assert(length(A) = ln); //passed
+  assert(length(A) = ln);
 end;
 
-// adds rhs to end up lhs up to limit bytes
+// adds rhs to end of lhs, up to 'limit' bytes from rhs
 procedure SDUAddLimit(var lhs: TSDUBytes; const rhs: TSDUBytes; limit: Integer);
 var
   len, len_rhs, i: Integer;
-  oldref:          Pointer;
 begin
 
-  oldref := Pointer(@lhs[0]);
-  len    := length(lhs);
+  len := length(lhs);
 
   len_rhs := min(limit, length(rhs));
-  setlength(lhs, len + len_rhs);
-  { TODO 1 -otdk -ccheck : setlength can reset ref. dose Mem manager zeroise? if not need to copy and zero }
-  //  assert((oldref = Pointer(@lhs[0])) or (oldref =nil));
+  SafeSetLength(lhs, len + len_rhs);
+  { DONE 1 -otdk -ccheck : setlength can realloate array but  AlwaysClearFreedMemory is used to zeroise any freed mem }
   for i := 0 to len_rhs - 1 do
     lhs[i + len] := rhs[i];
 end;
@@ -6877,30 +6794,27 @@ end;
 //copies from aFrom to aTo up to limit bytes, sets length and zeroises any freed data
 procedure SDUCopyLimit(var aTo: TSDUBytes; const aFrom: TSDUBytes; limit: Integer);
 var
-  oldlen, i, newLen: Integer;
-  oldref:            Pointer;
+  i, newLen: Integer;
 begin
-  oldlen := length(aTo);
-  oldref := Pointer(@aTo[0]);
   newLen := min(limit, length(aFrom));
-  // if shortening - overwrite data now not in array
-  for i := oldlen - 1 downto newLen do
-    aTo[i] := 0;
+  // if shortening - SafeSetLength overwrites data now not in array
 
-  setlength(aTo, newLen);
-  { TODO 1 -otdk -ccheck : setlength can reset ref. does Mem manager zeroise? if not need to copy and zero }
-  //  assert((oldref = Pointer(@aTo[0])) or (oldlen = 0) );
+  SafeSetLength(aTo, newLen);
+  { DONE 1 -otdk -ccheck : setlength can reset ref. if inc'ing, then Mem manager zeroises. if shrotening SafeSetLength zeros deleted bytes }
   //copy  data
   for i := 0 to newLen - 1 do
     aTo[i] := aFrom[i];
 end;
 
 procedure SDUZeroBuffer(buf: TSDUBytes);
+var
+  i: Integer;
 begin
-  SDUInitAndZeroBuffer(0, buf);
+  for i := low(buf) to high(buf) do
+    buf[i] := 0;
 end;
 
-procedure SDUZeroString(buf: Ansistring);
+procedure SDUZeroString(var buf: Ansistring);
 var
   i: Integer;
 begin
@@ -6912,40 +6826,52 @@ end;
 procedure SDUDeleteFromStart(var A: TSDUBytes; Count: Integer);
 var
   len, i: Integer;
-  oldref: Pointer;
 begin
   len := length(A);
-  for i := 0 to len - Count do
+  for i := 0 to len - Count - 1 do
     A[i] := A[i + Count];
-  for i := len - Count to len do
+  for i := len - Count to len - 1 do
     A[i] := A[0];
 
-  oldref := Pointer(@A[0]);
-
-  setlength(A, len - Count);
-  { TODO 1 -otdk -ccheck : can setlength reset ref? if so need to copy and zero }
-  assert(oldref = POinter(@A[0]));
-
+  SafeSetLength(A, len - Count);
+  { Done 1 -otdk -ccheck : setlength doesnt zero removed bytes, but SafeSetLength does }
 end;
 
-//incs length and zeroises any extra data
-procedure SDUResetLength(var A: TSDUBytes; newLen: Integer);
+//incs/decs length and zeroises any data
+procedure SafeSetLength(var A: TSDUBytes; newLen: Integer);
 var
   len, i: Integer;
-  oldref: Pointer;
+  temp:   TSDUBytes;
 begin
-  len    := length(A);
-  oldref := Pointer(@A[0]);
-  // if shortening - overwrite data now not in array
+  len := length(A);
+  // if shortening - overwrite data now not in array (FastMM4 doest do this - prob runtime keeps 'capacity' field and doesnt free it)
   for i := len - 1 downto newLen do
     A[i] := 0;
 
-  setlength(A, newLen);
-  { TODO 1 -otdk -ccheck : setlength can reset ref. dose Mem manager zeroise? if not need to copy and zero }
-  //  assert((oldref = Pointer(@A[0])) or (oldref = nil));
-  //sero any new data
-  for i := len to newLen - 1 do
-    A[i] := 0;
+   {$IFDEF AlwaysClearFreedMemory}
+     setlength(A, newLen);
+     { done 1 -otdk -ccheck : setlength can reset ref. but Mem manager zeros so no need to copy and zero }
+   {$ELSE}
+    {AlwaysClearFreedMemory should always be set bc there are cases where data on heap but TSDUBytes
+      isnt used - but in case it isnt, at least deal with TSDUBytes being re allocated}
+  if newLen < len then begin
+    // no reallocation so dealt with above
+    setlength(A, newLen);
+  end else begin
+    // copy to temp array, zero old, assign temp to old (is a reference), delete temp reference
+    setlength(temp, newLen); // temp array is all zeros - done by delphi runtime
+    for i := 0 to len - 1 do
+      temp[i] := A[i];  // newLen >= len
+
+    for i := 0 to len-1 do
+      A[i] := 0; //wipe old data
+
+    A := temp;   //assigns var, is ref counted
+    temp := nil; // deletes old ref
+  end;
+   {$ENDIF}
+
+  //any new data is zeroed by delphi runtime
 end;
 
 function SDUMapNetworkDrive(networkShare: String; useDriveLetter: Char): Boolean;

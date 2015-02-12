@@ -16,7 +16,7 @@ inherited fmeOptions_SystemTray: TfmeOptions_SystemTray
       Width = 245
       Height = 17
       Caption = '&Display system tray icon'
-      TabOrder = 0
+      TabOrder = 3
       OnClick = ckUseSystemTrayIconClick
       AutoSize = True
     end

@@ -71,8 +71,7 @@ type
     procedure SetActive(status: Boolean); virtual;
 
     // Raises exception if the component isn't active
-    // Returns FActive (TRUE/FALSE)
-    function  CheckActive(): boolean;
+    procedure CheckActive();
 
     // Broadcast a message, notifying everyone that a drive has been
     // added/removed
@@ -496,20 +495,14 @@ begin
 
 end;
 
-// -----------------------------------------------------------------------------
 // Raises exception if the component isn't active
-// Returns FActive (TRUE/FALSE)
-function TOTFE.CheckActive(): boolean;
+procedure TOTFE.CheckActive();
 begin
   FLastErrCode:= OTFE_ERR_SUCCESS;
-  if not(FActive) then
-    begin
+  if not(FActive) then     begin
     FLastErrCode := OTFE_ERR_NOT_ACTIVE;
     raise EOTFEException.Create(OTFE_EXCPT_NOT_ACTIVE);
-    end;
-
-  Result := FActive;
-
+  end;
 end;
 
 // -----------------------------------------------------------------------------

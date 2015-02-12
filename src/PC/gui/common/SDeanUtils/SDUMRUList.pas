@@ -199,12 +199,11 @@ end;
 
 function TSDUMRUList.Load(iniFile: TCustomIniFile; MRUSection: String = 'MRU'): Boolean;
 var
-  retval:   Boolean;
   i:        Integer;
   cnt:      Integer;
   readItem: String;
 begin
-  retval := False;
+  Result := False;
   try
     MaxItems := iniFile.ReadInteger(MRUSection, 'MaxItems', MaxItems);
     cnt      := iniFile.ReadInteger(MRUSection, 'Items', 0);
@@ -215,25 +214,24 @@ begin
       FItems.Add(readItem);
     end;
 
-    retval := True;
+    Result := True;
   except
     on E: Exception do begin
-      // Do nothing; just swallow the error - retval already set to FALSE
+      // Do nothing; just swallow the error - Result already set to FALSE
     end;
   end;
 
-  Result := retval;
+
 end;
 
 
 function TSDUMRUList.Load(reg: TSDURegistry; MRUSubKey: String = 'MRU'): Boolean;
 var
-  retval:   Boolean;
   i:        Integer;
   cnt:      Integer;
   readItem: String;
 begin
-  retval := False;
+  Result := False;
   try
     if reg.OpenKey(MRUSubKey, False) then begin
       MaxItems := reg.ReadInteger('MaxItems', MaxItems);
@@ -245,24 +243,23 @@ begin
         FItems.Add(readItem);
       end;
 
-      retval := True;
+      Result := True;
     end;
   except
     on E: Exception do begin
-      // Do nothing; just swallow the error - retval already set to FALSE
+      // Do nothing; just swallow the error - Result already set to FALSE
     end;
   end;
 
-  Result := retval;
+
 end;
 
 
 function TSDUMRUList.Save(iniFile: TCustomIniFile; MRUSection: String = 'MRU'): Boolean;
 var
-  retval: Boolean;
   i:      Integer;
 begin
-  retval := False;
+  Result := False;
   try
     try
       iniFile.EraseSection(MRUSection);
@@ -279,23 +276,22 @@ begin
       iniFile.WriteString(MRUSection, IntToStr(i), Items[i]);
     end;
 
-    retval := True;
+    Result := True;
   except
     on E: Exception do begin
-      // Do nothing; just swallow the error - retval already set to FALSE
+      // Do nothing; just swallow the error - Result already set to FALSE
     end;
   end;
 
-  Result := retval;
+
 end;
 
 
 function TSDUMRUList.Save(reg: TSDURegistry; MRUSubKey: String = 'MRU'): Boolean;
 var
-  retval: Boolean;
   i:      Integer;
 begin
-  retval := False;
+  Result := False;
   try
     reg.DeleteKey(MRUSubKey);
     if reg.OpenKey(MRUSubKey, True) then begin
@@ -306,15 +302,15 @@ begin
         reg.WriteString(IntToStr(i), Items[i]);
       end;
 
-      retval := True;
+      Result := True;
     end;
   except
     on E: Exception do begin
-      // Do nothing; just swallow the error - retval already set to FALSE
+      // Do nothing; just swallow the error - Result already set to FALSE
     end;
   end;
 
-  Result := retval;
+
 end;
 
 end.

@@ -258,14 +258,13 @@ end;
 function TSDUDiskPartitionsPanel.GetDriveLetterForPartition(DiskNo: Integer;
   PartitionNo: Integer): ansichar;
 var
-  retval:              ansichar;
   partitionDevice:     String;
   partitionUnderlying: String;
   driveLetter:         Char;
   idx:                 Integer;
   tmpDeviceName:       String;
 begin
-  retval := #0;
+  result := #0;
 
   if (objMgr = nil) then begin
     objMgr := TSDUObjManager.Create();
@@ -291,26 +290,25 @@ begin
   // disk/partition we're interested in...
   idx := driveDevices.IndexOf(partitionUnderlying);
   if (idx >= 0) then begin
-    retval := ansichar(Integer(driveDevices.Objects[idx]));
+    result := ansichar(Integer(driveDevices.Objects[idx]));
   end;
 
-  Result := retval;
+
 end;
 
 // Returns #0 if no partition selected/no drive letter assigned to partition
 function TSDUDiskPartitionsPanel.GetDriveLetter(idx: Integer): ansichar;
 var
-  retval:   ansichar;
   partInfo: TSDUPartitionInfo;
 begin
-  retval := #0;
+  result := #0;
 
   if (idx >= 0) then begin
     partInfo := PartitionInfo[idx];
-    retval   := GetDriveLetterForPartition(DiskNumber, partInfo.PartitionNumber);
+    result   := GetDriveLetterForPartition(DiskNumber, partInfo.PartitionNumber);
   end;
 
-  Result := retval;
+
 end;
 
 function TSDUDiskPartitionsPanel.GetDriveLayout(physicalDiskNo: Integer;
@@ -320,10 +318,8 @@ begin
 end;
 
 function TSDUDiskPartitionsPanel.IgnorePartition(partInfo: TSDUPartitionInfo): Boolean;
-var
-  retval: Boolean;
 begin
-  retval := (
+  result := (
     // USE CAUTION! We don't want the user selecting a partition, and
     // ending up using the whole HDD (partition number zero)
     (not (ShowPartitionsWithPNZero) and
@@ -334,7 +330,7 @@ begin
     (partInfo.PartitionType = $05) or (partInfo.PartitionType =
     $0F));
 
-  Result := retval;
+
 end;
 
 end.

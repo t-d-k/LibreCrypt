@@ -52,8 +52,6 @@ begin
 end;
 
 function TSDPartitionImage_File.DoMount(): Boolean;
-var
-  retval: Boolean;
 begin
   FSize := SDUGetFileSize(Filename);
 
@@ -84,7 +82,6 @@ function TSDPartitionImage_File.ReadConsecutiveSectors(startSectorID: uint64;
   sectors: TStream; maxSize: Integer = -1): Boolean;
 var
   hs:        THandleStream;
-  retval:    Boolean;
   useLength: Integer;
 begin
   // Short circuit...
@@ -119,7 +116,6 @@ function TSDPartitionImage_File.WriteConsecutiveSectors(startSectorID: uint64;
   sectors: TStream; maxSize: Integer = -1): Boolean;
 var
   hs:        THandleStream;
-  retval:    Boolean;
   useLength: Integer;
 begin
   if ReadOnly then begin

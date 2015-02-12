@@ -48,16 +48,23 @@ object frmPKCS11Management: TfrmPKCS11Management
         Height = 302
         Align = alClient
         TabOrder = 0
+        ExplicitWidth = 409
+        ExplicitHeight = 302
         inherited lvSecretKeys: TListView
           Width = 383
           Height = 145
+          ExplicitWidth = 383
+          ExplicitHeight = 145
         end
         inherited gbSecretKey: TGroupBox
           Top = 188
+          ExplicitTop = 188
         end
         inherited gbKeyfile: TGroupBox
           Left = 255
           Top = 188
+          ExplicitLeft = 255
+          ExplicitTop = 188
         end
       end
     end
@@ -71,20 +78,29 @@ object frmPKCS11Management: TfrmPKCS11Management
         Height = 302
         Align = alClient
         TabOrder = 0
+        ExplicitWidth = 409
+        ExplicitHeight = 302
         inherited pbImport: TButton
           Top = 264
+          ExplicitTop = 264
         end
         inherited pbDelete: TButton
           Left = 307
           Top = 264
           Width = 89
+          ExplicitLeft = 307
+          ExplicitTop = 264
+          ExplicitWidth = 89
         end
         inherited pbExport: TButton
           Top = 264
+          ExplicitTop = 264
         end
         inherited lbCDB: TListBox
           Width = 383
           Height = 217
+          ExplicitWidth = 383
+          ExplicitHeight = 217
         end
       end
     end

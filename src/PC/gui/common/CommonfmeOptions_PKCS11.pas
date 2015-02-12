@@ -30,7 +30,7 @@ type
     function VerifyLibrary(): Boolean;
 
   PUBLIC
-    OTFEFreeOTFE: TOTFEFreeOTFEBase;
+//    OTFEFreeOTFE: TOTFEFreeOTFEBase;
 
     procedure EnableDisableControls(); OVERRIDE;
     procedure Initialize(); OVERRIDE;
@@ -123,12 +123,12 @@ begin
   feLibFilename.Filter             := FILTER_LIBRARY_FILES;
   feLibFilename.FilterIndex        := 0;
 
-  OTFEFreeOTFEVolumeSelect1.OTFEFreeOTFE         := OTFEFreeOTFE;
+//  OTFEFreeOTFEVolumeSelect1.OTFEFreeOTFE         := OTFEFreeOTFE;
   OTFEFreeOTFEVolumeSelect1.FileSelectFilter     := FILE_FILTER_FLT_VOLUMES;
   OTFEFreeOTFEVolumeSelect1.FileSelectDefaultExt := FILE_FILTER_DFLT_VOLUMES;
 
   // Disallow partition selection if running under DLL version
-  OTFEFreeOTFEVolumeSelect1.AllowPartitionSelect := not (OTFEFreeOTFE is TOTFEFreeOTFEDLL);
+  OTFEFreeOTFEVolumeSelect1.AllowPartitionSelect := not (GetFreeOTFEBase() is TOTFEFreeOTFEDLL);
 
 end;
 
