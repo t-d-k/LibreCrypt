@@ -1,6 +1,7 @@
 program DoxBoxExplorer;
 
 uses
+  FastMM4,
   Forms,
   FreeOTFEExplorerfrmMain in 'FreeOTFEExplorerfrmMain.pas' {frmFreeOTFEExplorerMain},
   FreeOTFEExplorerfrmNewDirDlg in 'FreeOTFEExplorerfrmNewDirDlg.pas' {frmNewDirDlg},
@@ -92,18 +93,52 @@ uses
   OTFEFreeOTFE_frmVolumeType in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmVolumeType.pas' {frmSelectVolumeType},
   OTFEFreeOTFE_frmSelectHashCypher in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectHashCypher.pas' {frmSelectHashCypher},
   OTFEFreeOTFE_frmSelectVolumeAndOffset in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectVolumeAndOffset.pas',
-  OTFEFreeOTFE_frmWizardCreateVolume in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas' {frmWizardCreateVolume},
   OTFEFreeOTFEDLL_PartitionImage in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_PartitionImage.pas',
   MouseRNGCaptureDlg_U in '..\common\SDeanSecurity\MouseRNGDialog\MouseRNGCaptureDlg_U.pas' {MouseRNGCaptureDlg},
   MouseRNGDialog_U in '..\common\SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas',
   OTFEFreeOTFE_VolumeFileAPI in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas',
   OTFE_U in '..\common\OTFE\OTFE\OTFE_U.pas',
-  OTFEFreeOTFEDLL_U in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_U.pas';
+  OTFEFreeOTFEDLL_U in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_U.pas',
+  OTFEFreeOTFE_frmWizardCreateVolume in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas' {frmWizardCreateVolume},
+  pkcs11_api in '..\common\SDeanSecurity\PKCS#11\pkcs11_api.pas',
+  pkcs11_attribute in '..\common\SDeanSecurity\PKCS#11\pkcs11_attribute.pas',
+  pkcs11_library in '..\common\SDeanSecurity\PKCS#11\pkcs11_library.pas',
+  pkcs11_mechanism in '..\common\SDeanSecurity\PKCS#11\pkcs11_mechanism.pas',
+  pkcs11_object in '..\common\SDeanSecurity\PKCS#11\pkcs11_object.pas',
+  pkcs11_session in '..\common\SDeanSecurity\PKCS#11\pkcs11_session.pas',
+  pkcs11_slot in '..\common\SDeanSecurity\PKCS#11\pkcs11_slot.pas',
+  pkcs11_slot_event_thread in '..\common\SDeanSecurity\PKCS#11\pkcs11_slot_event_thread.pas',
+  pkcs11_token in '..\common\SDeanSecurity\PKCS#11\pkcs11_token.pas',
+  pkcs11f in '..\common\SDeanSecurity\PKCS#11\pkcs11f.pas',
+  PKCS11KnownLibs in '..\common\SDeanSecurity\PKCS#11\PKCS11KnownLibs.pas',
+  PKCS11LibrarySelectDlg in '..\common\SDeanSecurity\PKCS#11\PKCS11LibrarySelectDlg.pas' {PKCS11LibrarySelectDialog},
+  pkcs11t in '..\common\SDeanSecurity\PKCS#11\pkcs11t.pas',
+  MSCryptoAPI in '..\common\SDeanSecurity\MSCryptoAPI\MSCryptoAPI.pas',
+  OTFEFreeOTFE_DriverAPI in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas',
+  SDUEndianIntegers in '..\common\SDeanUtils\SDUEndianIntegers.pas',
+  OTFEFreeOTFE_cryptlib in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_cryptlib.pas',
+  FreeOTFEDLLMainAPI in '..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas',
+  FreeOTFEDLLHashAPI in '..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas',
+  FreeOTFEDLLCypherAPI in '..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas',
+  SDFilesystem in '..\common\Filesystem\SDFilesystem.pas',
+  SDPartitionImage in '..\common\Filesystem\SDPartitionImage.pas',
+  SDPartitionImage_File in '..\common\Filesystem\SDPartitionImage_File.pas';
 
 {$R *.res}
 {$R FreeOTFEExplorerCursors.res}
 
 begin
+{$IFNDEF AlwaysClearFreedMemory}
+// #error - this needs to be set to clear down any freed memory
+ {$ENDIF}
+{$IFDEF DEBUG}
+  System.ReportMemoryLeaksOnShutdown := true;
+{$ELSE}
+  // this doesnt appear to work with fastMM4 (built-in version only?),  so SuppressMessageBoxes set as well
+  System.ReportMemoryLeaksOnShutdown := false;
+  FastMM4.SuppressMessageBoxes := true;
+{$ENDIF}
+
   Application.Initialize;
 {$IFDEF VER185}
   // Vista fix for Delphi 2007 and later

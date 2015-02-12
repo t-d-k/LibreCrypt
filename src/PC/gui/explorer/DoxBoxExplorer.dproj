@@ -10,7 +10,7 @@
 			<Base>True</Base>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<Platform Condition="'$(Platform)'==''">Win32</Platform>
-			<TargetedPlatforms>1</TargetedPlatforms>
+			<TargetedPlatforms>3</TargetedPlatforms>
 			<AppType>Application</AppType>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
@@ -31,6 +31,12 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win64)'!=''">
+			<Cfg_1_Win64>true</Cfg_1_Win64>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
 		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
 			<Cfg_1_Win32>true</Cfg_1_Win32>
 			<CfgParent>Cfg_1</CfgParent>
@@ -42,6 +48,12 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win64)'!=''">
+			<Cfg_2_Win64>true</Cfg_2_Win64>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
 		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
 			<Cfg_2_Win32>true</Cfg_2_Win32>
 			<CfgParent>Cfg_2</CfgParent>
@@ -49,8 +61,11 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_ExeOutput>..\..\..\..\bin\PC\$(Config)\$(Platform)</DCC_ExeOutput>
+			<DCC_DcuOutput>P:\Projects\Delphi\doxbox\src\PC\gui\explorer\dcus\$(Config)\$(Platform)</DCC_DcuOutput>
+			<DCC_Define>FREEOTFE_EXPLORER;$(DCC_Define)</DCC_Define>
 			<Icon_MainIcon>..\..\..\Common\Common\images\DoxBox.ico</Icon_MainIcon>
-			<DCC_UnitSearchPath>..\..\..\..\SDeanComponents\Components\SDeanUtils;..\..\..\..\\SDeanComponents\Components\SDeanSecurity\Shredder\;..\..\..\..\SDeanComponents\Components\SDeanSecurity\PKCS#11\;..\..\..\..\SDeanComponents\Components\OTFE\OTFEFreeOTFE\;..\..\..\..\SDeanComponents\Components\SDeanFilesystem\;..\..\..\..\SDeanComponents\Components\SDeanSecurity\MouseRNGDialog\;P:\Projects\Delphi\doxbox\SDeanComponents\Components\OTFE\OTFE\;P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanSecurity\PasswordRichEdit\;P:\Projects\Delphi\doxbox\src\PC\gui\common;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_UnitSearchPath>..\..\..\..\SDeanComponents\Components\SDeanUtils;..\..\..\..\\SDeanComponents\Components\SDeanSecurity\Shredder\;..\..\..\..\\SDeanComponents\Components\SDeanSecurity\MouseRNG\;..\..\..\..\SDeanComponents\Components\SDeanSecurity\PasswordRichEdit\;..\..\..\..\SDeanComponents\Components\SDeanFilesystem\;..\..\..\..\SDeanComponents\Components\OTFE\OTFEFreeOTFE\;..\..\..\..\\SDeanComponents\Components\OTFE\OTFE\;..\common\SDeanUtils\;..\common;..\..\..\3rd_party\FastMM\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<Manifest_File>None</Manifest_File>
 			<VerInfo_MinorVer>51</VerInfo_MinorVer>
 			<VerInfo_MajorVer>3</VerInfo_MajorVer>
@@ -60,9 +75,14 @@
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win64)'!=''">
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<DCC_UsePackage>vclx;vcl;$(DCC_UsePackage)</DCC_UsePackage>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<DCC_Define>AlwaysClearFreedMemory;$(DCC_Define)</DCC_Define>
 			<DCC_UsePackage>vclx;vcl;bdertl;TeeUI;TeeDB;Tee;$(DCC_UsePackage)</DCC_UsePackage>
 			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
@@ -70,12 +90,16 @@
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
-			<DCC_DcuOutput>P:\Projects\Delphi\doxbox\src\PC\gui\explorer\release_dcus\</DCC_DcuOutput>
 			<Version>7.0</Version>
 			<DCC_DebugInformation>False</DCC_DebugInformation>
 			<DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
@@ -83,12 +107,24 @@
 			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
-			<DCC_DcuOutput>P:\Projects\Delphi\doxbox\src\PC\gui\explorer\debug_dcus\</DCC_DcuOutput>
+			<DCC_RangeChecking>true</DCC_RangeChecking>
+			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
+			<DCC_Optimize>false</DCC_Optimize>
+			<DCC_DebugDCUs>true</DCC_DebugDCUs>
+			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
 			<Version>7.0</Version>
-			<DCC_Define>FREEOTFE_EXPLORER;$(DCC_Define)</DCC_Define>
-			<DCC_ExeOutput>..\..\..\..\bin\PC</DCC_ExeOutput>
+			<DCC_Define>DEBUG;FullDebugMode;LogMemoryLeakDetailToFile;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<DCC_ExeOutput>..\..\..\..\bin\PC\</DCC_ExeOutput>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<Debugger_RunParams>-dev_menu -noexit</Debugger_RunParams>
+			<DCC_MapFile>2</DCC_MapFile>
+			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<VerInfo_Locale>1033</VerInfo_Locale>
@@ -133,20 +169,13 @@
 					<Source>
 						<Source Name="MainSource">DoxBoxExplorer.dpr</Source>
 					</Source>
-					<Excluded_Packages>
-						<Excluded_Packages Name="C:\Apps\TMS Component Pack\DelphiXE2\TMSWizDXE2.bpl">TMS Component Pack Wizards</Excluded_Packages>
-						<Excluded_Packages Name="C:\Program Files (x86)\FastReports\LibD16\dclfrxDB16.bpl">FastReport 4.0 DB Components</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\dclIPIndyImpl160.bpl">IP Abstraction Indy Implementation Design Time</Excluded_Packages>
-						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdelcore160.bpl">LMD 2014 - ElPack Core Components</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-						<Excluded_Packages Name="C:\Apps\TMS Component Pack\DelphiXE2\TMSDeDXE2.bpl">TMS Component Pack design time support</Excluded_Packages>
-					</Excluded_Packages>
+					<Excluded_Packages/>
 				</Delphi.Personality>
 				<Platforms>
-					<Platform value="Win64">False</Platform>
+					<Platform value="Win64">True</Platform>
 					<Platform value="Win32">True</Platform>
 				</Platforms>
+				<ModelSupport>False</ModelSupport>
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>
 		</ProjectExtensions>
@@ -388,9 +417,6 @@
 				<Form>frmSelectHashCypher</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectVolumeAndOffset.pas"/>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas">
-				<Form>frmWizardCreateVolume</Form>
-			</DCCReference>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_PartitionImage.pas"/>
 			<DCCReference Include="..\common\SDeanSecurity\MouseRNGDialog\MouseRNGCaptureDlg_U.pas">
 				<Form>MouseRNGCaptureDlg</Form>
@@ -399,6 +425,34 @@
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFE\OTFE_U.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_U.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas">
+				<Form>frmWizardCreateVolume</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_api.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_attribute.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_library.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_mechanism.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_object.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_session.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_slot.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_slot_event_thread.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_token.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11f.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\PKCS11KnownLibs.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\PKCS11LibrarySelectDlg.pas">
+				<Form>PKCS11LibrarySelectDialog</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11t.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\MSCryptoAPI\MSCryptoAPI.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUEndianIntegers.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_cryptlib.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas"/>
+			<DCCReference Include="..\common\Filesystem\SDFilesystem.pas"/>
+			<DCCReference Include="..\common\Filesystem\SDPartitionImage.pas"/>
+			<DCCReference Include="..\common\Filesystem\SDPartitionImage_File.pas"/>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

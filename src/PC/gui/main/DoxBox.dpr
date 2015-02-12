@@ -1,7 +1,13 @@
 program DoxBox;
-    {$IFDEF EnableMemoryLeakReporting }
-error
-{$ENDIF}
+
+ {
+ layers used are:
+ //delphi and 3rd party libs - layer 0
+  //sdu & doxbox utils - layer 1
+   // doxbox forms - layer 2
+    //main form - layer 3
+  }
+
 uses
   FastMM4,
   Forms,
