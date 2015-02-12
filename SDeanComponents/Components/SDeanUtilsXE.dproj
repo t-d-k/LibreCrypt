@@ -6,7 +6,7 @@
 			<FrameworkType>VCL</FrameworkType>
 			<Base>True</Base>
 			<Config Condition="'$(Config)'==''">Debug</Config>
-			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<Platform Condition="'$(Platform)'==''">Win64</Platform>
 			<TargetedPlatforms>3</TargetedPlatforms>
 			<AppType>Package</AppType>
 		</PropertyGroup>
@@ -120,26 +120,10 @@
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSAPI.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PasswordRichEdit.pas"/>
 			<DCCReference Include="SDeanUtils\SDUCheckLst.pas"/>
-			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_api.pas"/>
-			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_attribute.pas"/>
-			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_library.pas"/>
-			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_mechanism.pas"/>
-			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_object.pas"/>
-			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_session.pas"/>
-			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_slot.pas"/>
-			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_slot_event_thread.pas"/>
-			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11_token.pas"/>
-			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11f.pas"/>
-			<DCCReference Include="SDeanSecurity\PKCS#11\PKCS11KnownLibs.pas"/>
-			<DCCReference Include="SDeanSecurity\PKCS#11\PKCS11LibrarySelectDlg.pas">
-				<Form>PKCS11LibrarySelectDialog</Form>
-			</DCCReference>
-			<DCCReference Include="SDeanSecurity\PKCS#11\pkcs11t.pas"/>
 			<DCCReference Include="SDeanSecurity\Shredder\Shredder.pas"/>
 			<DCCReference Include="SDeanSecurity\Shredder\FileList_U.pas">
 				<Form>FileList_F</Form>
 			</DCCReference>
-			<DCCReference Include="SDeanSecurity\MSCryptoAPI\MSCryptoAPI.pas"/>
 			<DCCReference Include="SDeanFilesystem\SDFilesystemCtrls.pas"/>
 			<DCCReference Include="OTFE\OTFE\OTFEConsts_U.pas"/>
 			<DCCReference Include="SDeanSecurity\MouseRNG\MouseRNG.pas"/>
@@ -243,14 +227,12 @@
 				<Form>SDUProgressDialog</Form>
 			</DCCReference>
 			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PKCS11.pas"/>
 			<DCCReference Include="SDeanSecurity\PasswordRichEdit\PasswordRichEdit.pas"/>
 			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas"/>
 			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas"/>
 			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas"/>
 			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_cryptlib.pas"/>
 			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\OTFE\SDURandPool.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

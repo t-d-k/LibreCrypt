@@ -56,22 +56,8 @@ contains
   OTFEFreeOTFE_LUKSAPI in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSAPI.pas',
   OTFEFreeOTFE_PasswordRichEdit in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PasswordRichEdit.pas',
   SDUCheckLst in 'SDeanUtils\SDUCheckLst.pas',
-  pkcs11_api in 'SDeanSecurity\PKCS#11\pkcs11_api.pas',
-  pkcs11_attribute in 'SDeanSecurity\PKCS#11\pkcs11_attribute.pas',
-  pkcs11_library in 'SDeanSecurity\PKCS#11\pkcs11_library.pas',
-  pkcs11_mechanism in 'SDeanSecurity\PKCS#11\pkcs11_mechanism.pas',
-  pkcs11_object in 'SDeanSecurity\PKCS#11\pkcs11_object.pas',
-  pkcs11_session in 'SDeanSecurity\PKCS#11\pkcs11_session.pas',
-  pkcs11_slot in 'SDeanSecurity\PKCS#11\pkcs11_slot.pas',
-  pkcs11_slot_event_thread in 'SDeanSecurity\PKCS#11\pkcs11_slot_event_thread.pas',
-  pkcs11_token in 'SDeanSecurity\PKCS#11\pkcs11_token.pas',
-  pkcs11f in 'SDeanSecurity\PKCS#11\pkcs11f.pas',
-  PKCS11KnownLibs in 'SDeanSecurity\PKCS#11\PKCS11KnownLibs.pas',
-  PKCS11LibrarySelectDlg in 'SDeanSecurity\PKCS#11\PKCS11LibrarySelectDlg.pas' {PKCS11LibrarySelectDialog},
-  pkcs11t in 'SDeanSecurity\PKCS#11\pkcs11t.pas',
   Shredder in 'SDeanSecurity\Shredder\Shredder.pas',
   FileList_U in 'SDeanSecurity\Shredder\FileList_U.pas' {FileList_F},
-  MSCryptoAPI in 'SDeanSecurity\MSCryptoAPI\MSCryptoAPI.pas',
   SDFilesystemCtrls in 'SDeanFilesystem\SDFilesystemCtrls.pas',
   OTFEConsts_U in 'OTFE\OTFE\OTFEConsts_U.pas',
   MouseRNG in 'SDeanSecurity\MouseRNG\MouseRNG.pas',
@@ -144,14 +130,12 @@ contains
   SDUPartitionPropertiesDlg in '..\..\src\PC\gui\common\SDeanUtils\SDUPartitionPropertiesDlg.pas' {SDUPartitionPropertiesDialog},
   SDUProgressDlg in '..\..\src\PC\gui\common\SDeanUtils\SDUProgressDlg.pas' {SDUProgressDialog},
   OTFEFreeOTFE_VolumeFileAPI in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas',
-  OTFEFreeOTFE_PKCS11 in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PKCS11.pas',
   PasswordRichEdit in 'SDeanSecurity\PasswordRichEdit\PasswordRichEdit.pas',
   FreeOTFEDLLCypherAPI in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas',
   FreeOTFEDLLHashAPI in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas',
   FreeOTFEDLLMainAPI in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas',
   OTFEFreeOTFE_cryptlib in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_cryptlib.pas',
-  OTFEFreeOTFE_DriverAPI in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas',
-  SDURandPool in '..\..\src\PC\gui\common\OTFE\SDURandPool.pas';
+  OTFEFreeOTFE_DriverAPI in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas';
 
 end.
 
