@@ -115,12 +115,11 @@ var
   i: integer;
   cntFound: integer;
   lastFound: TPKCS11KnownLibrary;
-  retval: string;
   progressDlg: TSDUProgressDialog;
   prevCursor: TCursor;
   canceled: boolean;
 begin
-  retval := '';
+  Result := '';
 
   canceled := FALSE;
   prevCursor := Screen.Cursor;
@@ -143,8 +142,8 @@ begin
       cntFound := 0;
       for i:=low(PKCS11_KNOWN_LIBRARIES) to high(PKCS11_KNOWN_LIBRARIES) do
         begin
-        progressDlg.StatusText := SDUParamSubstitute(
-                                                     _('Checking for: [%1] %2'),
+        progressDlg.StatusText := Format(
+                                                     _('Checking for: [%s] %s'),
                                                      [
                                                       PKCS11_KNOWN_LIBRARIES[i].DLLFilename,
                                                       PKCS11KnownLibraryPrettyDesc(PKCS11_KNOWN_LIBRARIES[i])
@@ -177,25 +176,25 @@ begin
 
     if canceled then
       begin
-      retval := PKCS11_USER_CANCELED;
+      Result := PKCS11_USER_CANCELED;
       end
     else
       begin
       if (cntFound = 1) then
         begin
         // Only one found; return it's filename
-        retval := lastFound.DLLFilename;
+        Result := lastFound.DLLFilename;
         end
       else if (cntFound > 1) then
         begin
         // Multiple found; prompt user to select which one to usef
         if (dlg.ShowModal() = mrOK) then
           begin
-          retval := dlg.SelectedLibrary.DLLFilename;
+          Result := dlg.SelectedLibrary.DLLFilename;
           end
         else
           begin
-          retval := PKCS11_USER_CANCELED;
+          Result := PKCS11_USER_CANCELED;
           end;
         end;
       end;
@@ -204,32 +203,31 @@ begin
     dlg.Free();
   end;
 
-  Result := retval;
+
 end;
 
 
 function PKCS11VerifyLibrary(LibraryDLL: string): boolean;
 var
   lib: TPKCS11Library;
-  allOK: boolean;
 begin
-  allOK := TRUE;
+  result := TRUE;
 
-  if allOK then
+  if result then
     begin
     LibraryDLL := trim(LibraryDLL);
-    allOK:= (LibraryDLL <> '');
+    result:= (LibraryDLL <> '');
     end;
 
-  if allOK then
+  if result then
     begin
-    allOK:= FALSE;
+    result:= FALSE;
     try
       lib:= TPKCS11Library.Create(LibraryDLL);
       try
         lib.Initialize();
         lib.Finalize();
-        allOK := TRUE;
+        result := TRUE;
       finally
         lib.Free();
       end;
@@ -243,7 +241,6 @@ begin
 
     end;
 
-  Result := allOK;
 end;
 
 
@@ -282,14 +279,15 @@ end;
 
 procedure TPKCS11Library.LoadDLL(DLLfilename: string);
 begin
-  FDLLHandle := LoadLibrary(PChar(DLLfilename));
-  if FDLLHandle=0 then
-    begin
+  //  need to use LoadLibraryEx so it uses path if user specified one
+  FDLLHandle := LoadLibraryEx(PChar(DLLfilename),THandle(nil),LOAD_WITH_ALTERED_SEARCH_PATH);
+
+  if FDLLHandle=0 then                         begin
     raise EPKCS11DLLNotFound.Create(SDUParamSubstitute(E_EPKCS11_DLLNOTFOUND, [DLLfilename]));
     end;
 
   FFilename:= DLLfilename;
-  
+
   GetProcs();
 
   // Sanity check; we've got at least *some* functionality, right?
@@ -299,10 +297,9 @@ begin
       (@LibraryFunctionList.CK_C_GetSlotList = nil) and
       (@LibraryFunctionList.CK_C_GetSlotInfo = nil) and
       (@LibraryFunctionList.CK_C_OpenSession = nil)
-     ) then
-    begin
+     ) then     begin
     raise EPKCS11DLLNoAPI.Create(E_EPKCS11_DLLNOAPI);
-    end;
+ end;
 
 end;
 
@@ -423,16 +420,15 @@ end;
 
 function TPKCS11Library.GetCountSlots({onlySlotsWithTokenPresent: boolean}): integer;
 var
-  retval: integer;
   slotsArray: TPKCS11SlotArray;
 begin
-  retval := 0;
+  Result := 0;
   if GetSlotList({onlySlotsWithTokenPresent, }slotsArray) then
     begin
-    retval := length(slotsArray);
+    Result := length(slotsArray);
     end;
 
-  Result := retval;
+
 end;
 
 // This method populates FCachedSlotsArray
@@ -504,10 +500,9 @@ end;
 
 function TPKCS11Library.GetSlotByArrayIdx(arrIdx: integer): TPKCS11Slot;
 var
-  retval: TPKCS11Slot;
   slotsArray: TPKCS11SlotArray;
 begin
-  retval := nil;
+  Result := nil;
   if GetSlotList({FALSE, }slotsArray) then
     begin
     // Sanity check
@@ -516,19 +511,18 @@ begin
       raise EPKCS11ListIndexOutOFBounds.Create(E_EPKCS11_LISTINDEXOUTOFBOUNDS);
       end;
 
-    retval := slotsArray[(low(slotsArray) + arrIdx)];
+    Result := slotsArray[(low(slotsArray) + arrIdx)];
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Library.GetSlotBySlotID(slotID: integer): TPKCS11Slot;
 var
-  retval: TPKCS11Slot;
   slotsArray: TPKCS11SlotArray;
   i: integer;
 begin
-  retval := nil;
+  Result := nil;
 
   if GetSlotList({FALSE, }slotsArray) then
     begin
@@ -536,43 +530,39 @@ begin
       begin
       if (slotsArray[i].SlotID = slotID) then
         begin
-        retval := slotsArray[i];
+        Result := slotsArray[i];
         break
         end;
       end;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Library.Initialize(): boolean;
-var
-  retval: boolean;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_Initialize, FN_NAME_C_Initialize);
   LastRV := LibraryFunctionList.CK_C_Initialize(nil);
-  retval := RVSuccess(LastRV);
-  if retval then
+  Result := RVSuccess(LastRV);
+  if Result then
     begin
     FInitializeCalled := TRUE;
     EventThreadStart();
     end;
-  Result := retval;
+
 end;
 
 function TPKCS11Library.Finalize(): boolean;
-var
-  retval: boolean;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_Finalize, FN_NAME_C_Finalize);
   LastRV := LibraryFunctionList.CK_C_Finalize(nil);
-  retval := RVSuccess(LastRV);
-  if retval then
+  Result := RVSuccess(LastRV);
+  if Result then
     begin
     FInitializeCalled := FALSE;
     EventThreadStop();
     end;
-  Result := retval;
+
 end;
 
 function TPKCS11Library.GetInfo(var info: CK_INFO): boolean;
@@ -587,77 +577,72 @@ end;
 
 function TPKCS11Library.GetCryptokiVersion(): CK_VERSION;
 var
-  retval: CK_VERSION;
   info: CK_INFO;
 begin
-  retval := NULL_VERSION;
+  Result := NULL_VERSION;
 
   if (GetInfo(info)) then
     begin
-    retval := info.cryptokiVersion;
+    Result := info.cryptokiVersion;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Library.GetManufacturerID(): string;
 var
-  retval: string;
   info: CK_INFO;
 begin
-  retval := '';
+  Result := '';
 
   if (GetInfo(info)) then
     begin
-    retval := UTF8CHARArrayToString(TCK_UTF8CHARArray_32(info.manufacturerID));
+    Result := UTF8CHARArrayToString(TCK_UTF8CHARArray_32(info.manufacturerID));
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Library.GetFlags(): CK_FLAGS;
 var
-  retval: CK_FLAGS;
   info: CK_INFO;
 begin
-  retval := 0;
+  Result := 0;
 
   if (GetInfo(info)) then
     begin
-    retval := info.Flags;
+    Result := info.Flags;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Library.GetLibraryDescription(): string;
 var
-  retval: string;
   info: CK_INFO;
 begin
-  retval := '';
+  Result := '';
 
   if (GetInfo(info)) then
     begin
-    retval := UTF8CHARArrayToString(TCK_UTF8CHARArray_32(info.libraryDescription));
+    Result := UTF8CHARArrayToString(TCK_UTF8CHARArray_32(info.libraryDescription));
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Library.GetLibraryVersion(): CK_VERSION;
 var
-  retval: CK_VERSION;
   info: CK_INFO;
 begin
-  retval := NULL_VERSION;
+  Result := NULL_VERSION;
 
   if (GetInfo(info)) then
     begin
-    retval := info.libraryVersion;
+    Result := info.libraryVersion;
     end;
 
-  Result := retval;
+
 end;
 
 procedure TPKCS11Library.EventThreadStart();

@@ -15,6 +15,13 @@ type
 
 const
   PKCS11_KNOWN_LIBRARIES: array [1..68] of TPKCS11KnownLibrary = (
+                           //this is by far the most common as included in forefox, so comes first
+                             //todo: can include in app? mpl?
+                           (
+                           DLLFilename: 'softokn3.dll';
+                           Manufacturer: 'Mozilla/Netscape';
+                           Device: 'Mozilla or Netscape crypto module';
+                          ),
                           (
                            DLLFilename: 'acospkcs11.dll';
                            Manufacturer: 'ACS';
@@ -184,11 +191,6 @@ const
                            DLLFilename: 'id2cbox.dll';
                            Manufacturer: 'ID2';
                            Device: '';
-                          ),
-                          (
-                           DLLFilename: 'softokn3.dll';
-                           Manufacturer: 'Mozilla/Netscape';
-                           Device: 'Mozilla or Netscape crypto module';
                           ),
                           (
                            DLLFilename: 'cknfast.dll';
