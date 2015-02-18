@@ -1,4 +1,4 @@
-test boxes all have nonhidden password 'password'. hidden have: 5ekr1t unless said otherwise
+test boxes all have nonhidden password 'password'. hidden have: 5ekr1t and keyfiles have password:secret unless said otherwise
 key iterations 2048 unless said otherwise
 all volumes have a 'readme.txt' file in 
 
