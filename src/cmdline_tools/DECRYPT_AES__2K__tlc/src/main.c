@@ -16,13 +16,15 @@
 //#define CBC 1
 //#include <mycrypt.h>
 //#include <mycrypt_cipher.h>
-#include <mycrypt_custom.h>
+// #include <mycrypt_custom.h>
 
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+
+#include <tomcrypt.h>
 
 #define SECTOR_SIZE 512
 
@@ -258,7 +260,7 @@ printf("ka\n");
             }
 
         // Reinitialize the IV to zero
-                if ((errnum = cbc_encrypt(&key[0], &tmpstore[0], &cbc)) != CRYPT_OK)
+                if ((errnum = cbc_encrypt(&key[0], &tmpstore[0],sizeof(key) ,&cbc)) != CRYPT_OK)
                     {
                     printf ("CBC result: %s\n", error_to_string(errnum));
                     exit (-1);
@@ -275,7 +277,7 @@ printf("ka\n");
             exit (-1);
             }
 
-                if ((errnum = cbc_encrypt(&key[16], &tmpstore[16], &cbc)) != CRYPT_OK)
+                if ((errnum = cbc_encrypt(&key[16], &tmpstore[16],16, &cbc)) != CRYPT_OK)
                     {
                     printf ("CBC result: %s\n", error_to_string(errnum));
                     exit (-1);
@@ -361,7 +363,7 @@ printf("a\n");
             x = (unsigned int)(int)(SECTOR_SIZE / aes_desc.block_length);
             for (i = 0; i < x; i++)
                 {
-                if ((errnum = cbc_decrypt(inBufPtr, outBufPtr, &cbc)) != CRYPT_OK)
+                if ((errnum = cbc_decrypt(inBufPtr, outBufPtr,aes_desc.block_length, &cbc)) != CRYPT_OK)
                     {
                     printf ("CBC result: %s\n", error_to_string(errnum));
                     exit (-1);

@@ -15,13 +15,16 @@
 #define CBC 1
 //#include <mycrypt.h>
 //#include <mycrypt_cipher.h>
-#include <mycrypt_custom.h>
+//#include <mycrypt_custom.h>
 
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+
+#include <tomcrypt.h>
+
 
 #define SECTOR_SIZE 512
 
@@ -252,7 +255,7 @@ void main(void)
             x = (unsigned int)(int)(SECTOR_SIZE / twofish_desc.block_length);
             for (i = 0; i < x; i++)
                 {
-                if ((errnum = cbc_decrypt(inBufPtr, outBufPtr, &cbc)) != CRYPT_OK)
+                if ((errnum = cbc_decrypt(inBufPtr, outBufPtr,twofish_desc.block_length, &cbc)) != CRYPT_OK)
                     {
                     printf ("CBC result: %s\n", error_to_string(errnum));
                     exit (-1);

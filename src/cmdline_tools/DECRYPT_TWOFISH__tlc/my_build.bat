@@ -1,23 +1,21 @@
-@echo off
-
+rem @echo off
+@echo on
 rem Set the build environment
-call ..\..\drivers\Common\bin\setup_env_common.bat
+call ..\cmdline_common.bat
+set PROJECT_DIR=%PROJECT_BASE_DIR%DECRYPT_TWOFISH__tlc\
 
+cd %PROJECT_DIR%
+rem call ..\..\PC\drivers\Common\bin\setup_env_common.bat
 
 
 rem Move into the correct src directory...
-%PROJECT_DRIVE%
-cd %PROJECT_DIR%\..\cmdline_tools\DECRYPT_TWOFISH__tlc\src
 
-echo Building...
+cd %PROJECT_DIR%src
 
-copy ..\..\..\3rd_party\libtomcrypt\crypt-0.94\twofish.c .
-copy ..\..\..\3rd_party\libtomcrypt\crypt-0.94\twofish_tab.c .
-copy ..\..\..\3rd_party\libtomcrypt\crypt-0.94\crypt.c .
-copy ..\..\..\3rd_party\libtomcrypt\crypt-0.94\cbc.c .
+echo Building ...
 
-copy ..\..\..\3rd_party\libtomcrypt\crypt-0.94\strings.c .
+cl -I%LTC_HDR_DIR% /Fe..\DECRYPT_TWOFISH__tlc.exe main.c %LTC_CRYPT%crypt.c %LTC_TWOFISH%twofish.c %LTC_TWOFISH%twofish_tab.c ^
+%LTC_CBC%cbc_decrypt.c %LTC_CBC%cbc_encrypt.c %LTC_MISC%error_to_string.c %LTC_CBC%cbc_start.c  %LTC_CRYPT%crypt_find_cipher.c ^
+%LTC_CRYPT%crypt_register_cipher.c %LTC_CRYPT%crypt_cipher_is_valid.c %LTC_CRYPT%crypt_cipher_descriptor.c
 
-rem Note that we don't include "twofish_tab.c" in this list - it's #included by aes.c
-cl -I..\..\..\3rd_party\libtomcrypt\crypt-0.94 /Fe..\DECRYPT_TWOFISH__tlc.exe main.c crypt.c twofish.c cbc.c strings.c
-
+cd ..

@@ -44,7 +44,8 @@
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\TWOFISH2.C" />
+    <ClCompile Include="..\..\3rd_party\libtomcrypt\crypt-1.17\src\hashes\rmd160.c" />
+    <ClCompile Include="..\..\3rd_party\Twofish\twofish-optimized-c\TWOFISH2.C" />
     <ClCompile Include="src\main.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

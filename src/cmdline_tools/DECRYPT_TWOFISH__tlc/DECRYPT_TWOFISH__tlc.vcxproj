@@ -40,15 +40,22 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</IntDir>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TWOFISH_DECRYPTER__tlc.exe</NMakeOutput>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\TomK.ROBINSONS\other\Education_personal\sync\Projects\Delphi\doxbox\src\3rd_party\libtomcrypt\crypt-1.17\src\headers\;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\TomK.ROBINSONS\other\Education_personal\sync\Projects\Delphi\doxbox\src\3rd_party\libtomcrypt\crypt-1.17\src\headers\;$(LibraryPath)</LibraryPath>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">LTC_CBC_MODE</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-0.94\cbc.c" />
-    <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-0.94\crypt.c" />
+    <ClCompile Include="..\..\3rd_party\libtomcrypt\crypt-1.17\src\ciphers\twofish\twofish.c" />
+    <ClCompile Include="..\..\3rd_party\libtomcrypt\crypt-1.17\src\ciphers\twofish\twofish_tab.c" />
+    <ClCompile Include="..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt.c" />
+    <ClCompile Include="..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_decrypt.c" />
+    <ClCompile Include="..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_encrypt.c" />
     <ClCompile Include="src\main.c" />
-    <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-0.94\twofish.c" />
-    <ClCompile Include="..\..\..\3rd_party\libtomcrypt\crypt-0.94\twofish_tab.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
