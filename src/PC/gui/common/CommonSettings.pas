@@ -12,7 +12,7 @@ interface
 
 uses
   Classes, Dialogs,
-             // Required for TShortCut
+  // Required for TShortCut
   Controls,  // Required for TDate
   INIFiles,
   //sdu
@@ -32,19 +32,21 @@ const
   SECTION_GENERAL = 'General';
 
 type
-  TUpdateFrequency = (ufNever, ufDaily, ufWeekly, ufMonthly, ufAnnually);
-
+  //ufRandom = once per thousdand startups
+  TUpdateFrequency = (ufNever, ufDaily, ufWeekly, ufMonthly, ufAnnually, ufRandom);
+{ TODO -otdk -crefactor : why resource strings? - array easier }
 resourcestring
   UPDATEFREQ_NEVER    = 'Never';
   UPDATEFREQ_DAILY    = 'Daily';
   UPDATEFREQ_WEEKLY   = 'Weekly';
   UPDATEFREQ_MONTHLY  = 'Monthly';
   UPDATEFREQ_ANNUALLY = 'Annually';
+  UPDATEFREQ_RANDOM   = 'Randomly';
 
 const
   UpdateFrequencyTitlePtr: array [TUpdateFrequency] of Pointer =
-    (@UPDATEFREQ_NEVER, @UPDATEFREQ_DAILY, @UPDATEFREQ_WEEKLY,
-    @UPDATEFREQ_MONTHLY, @UPDATEFREQ_ANNUALLY
+    (@UPDATEFREQ_NEVER, @UPDATEFREQ_DAILY, @UPDATEFREQ_WEEKLY, @UPDATEFREQ_MONTHLY,
+    @UPDATEFREQ_ANNUALLY, @UPDATEFREQ_RANDOM
     );
 
 type
@@ -75,8 +77,8 @@ resourcestring
 const
   SettingsSaveLocationSearchOrder: array [TSettingsSaveLocation] of TSettingsSaveLocation = (
     slCustom,  // Custom first; if the user's
-               // specified a custom location,
-               // use it before anything else
+    // specified a custom location,
+    // use it before anything else
     slExeDir,
     slProfile,
     slRegistry,
@@ -88,37 +90,39 @@ const
 
 type
 {$M+}// Required to get rid of compiler warning "W1055 PUBLISHED caused RTTI ($M+) to be added to type '%s'"
+
+  { TODO -otdk -crefactor : use rtti to read and write -much easier, just define properties + defaults }
   TSettings = class
-  PRIVATE
+  private
     FCustomLocation: String;
-  PROTECTED
+  protected
     function IdentifyWhereSettingsStored(): TSettingsSaveLocation;
 
-    procedure _Load(iniFile: TCustomINIFile); VIRTUAL;
-    function _Save(iniFile: TCustomINIFile): Boolean; VIRTUAL;
+    procedure _Load(iniFile: TCustomINIFile); virtual;
+    function _Save(iniFile: TCustomINIFile): Boolean; virtual;
 
     function GetSettingsObj(): TCustomIniFile;
-  PUBLIC
+  public
     OptSettingsVersion: Integer;
     OptSaveSettings:    TSettingsSaveLocation;
 
     // General...
-    OptExploreAfterMount:        Boolean;
-    OptAdvancedMountDlg:         Boolean;
-    OptRevertVolTimestamps:      Boolean;
-    OptShowPasswords:            Boolean;
+    OptExploreAfterMount:    Boolean;
+    OptAdvancedMountDlg:     Boolean;
+    OptRevertVolTimestamps:  Boolean;
+    OptShowPasswords:        Boolean;
     OptAllowNewlinesInPasswords: Boolean;
-    OptAllowTabsInPasswords:     Boolean;
-    OptLanguageCode:             String;
-    OptDragDropFileType:         TDragDropFileType;
-    OptDefaultDriveLetter:       DriveLetterChar;
+    OptAllowTabsInPasswords: Boolean;
+    OptLanguageCode:         String;
+    OptDragDropFileType:     TDragDropFileType;
+    OptDefaultDriveLetter:   DriveLetterChar;
 
-                                        // Prompts and messages
+    // Prompts and messages
     OptPromptMountSuccessful: Boolean;  // If set, display an info msg after successful mount
 
     // Check for updates config...
-    OptUpdateChkFrequency:              TUpdateFrequency;
-    OptUpdateChkLastChecked:            TDate;
+    OptUpdateChkFrequency:   TUpdateFrequency;
+    OptUpdateChkLastChecked: TDate;
     OptUpdateChkSuppressNotifyVerMajor: Integer;
     OptUpdateChkSuppressNotifyVerMinor: Integer;
 
@@ -138,11 +142,11 @@ type
     OptPostDismountExe: String;
     OptPrePostExeWarn:  Boolean;
 
-    constructor Create(); VIRTUAL;
-    destructor Destroy(); OVERRIDE;
+    constructor Create(); virtual;
+    destructor Destroy(); override;
 
-    procedure Load(); VIRTUAL;
-    function Save(): Boolean; VIRTUAL;
+    procedure Load(); virtual;
+    function Save(): Boolean; virtual;
 
     procedure Assign(copyFrom: TSettings);
 
@@ -151,9 +155,9 @@ type
 
     function PrettyPrintSettingsFile(loc: TSettingsSaveLocation): String;
 
-    function RegistryKey(): String; VIRTUAL; ABSTRACT;
+    function RegistryKey(): String; virtual; abstract;
 
-  PUBLISHED
+  published
     property CustomLocation: String Read FCustomLocation Write FCustomLocation;
   end;
 
@@ -167,8 +171,8 @@ function DragDropFileTypeTitle(dragDropfileType: TDragDropFileType): String;
 // These functions are duplicated in FreeOTFESettings.pas and FreeOTFEExplorerSettings.pas - can't move to CommonSettings.pas as they both use "Settings" object which is different for each of them
  // Turn on/off option on open/save dialogs to add file selected under Start
  // menu's "Documents", depending on whether MRU list is enabled or not
-procedure FreeOTFEGUISetupOpenSaveDialog(dlg: TCommonDialog); OVERLOAD;
-procedure FreeOTFEGUISetupOpenSaveDialog(fe: TSDUFilenameEdit); OVERLOAD;
+procedure FreeOTFEGUISetupOpenSaveDialog(dlg: TCommonDialog); overload;
+procedure FreeOTFEGUISetupOpenSaveDialog(fe: TSDUFilenameEdit); overload;
 
 implementation
 
@@ -186,44 +190,44 @@ const
   SETTINGS_V2 = 2;
 
   // -- General section --
-  OPT_SETTINGSVERSION               = 'SettingsVersion';
-  DFLT_OPT_SETTINGSVERSION          = SETTINGS_V2;
-  OPT_SAVESETTINGS                  = 'SaveSettings';
-  DFLT_OPT_SAVESETTINGS             = slProfile;
-  OPT_EXPLOREAFTERMOUNT             = 'ExploreAfterMount';
-  DFLT_OPT_EXPLOREAFTERMOUNT        = False;
-  OPT_ADVANCEDMOUNTDLG              = 'AdvancedMountDlg';
-  DFLT_OPT_ADVANCEDMOUNTDLG         = False;
-  OPT_REVERTVOLTIMESTAMPS           = 'RevertVolTimestamps';
-  DFLT_OPT_REVERTVOLTIMESTAMPS      = True;
-  OPT_SHOWPASSWORDS                 = 'ShowPasswords';
-  DFLT_OPT_SHOWPASSWORDS            = False;
-  OPT_LANGUAGECODE                  = 'LanguageCode';
-  DFLT_OPT_LANGUAGECODE             = '';
-  OPT_DRAGDROP                      = 'DragDropFileType';
-  DFLT_OPT_DRAGDROP                 = Ord(ftFreeOTFE);
-  OPT_ALLOWNEWLINESINPASSWORDS      = 'AllowNewlinesInPasswords';
+  OPT_SETTINGSVERSION           = 'SettingsVersion';
+  DFLT_OPT_SETTINGSVERSION      = SETTINGS_V2;
+  OPT_SAVESETTINGS              = 'SaveSettings';
+  DFLT_OPT_SAVESETTINGS         = slProfile;
+  OPT_EXPLOREAFTERMOUNT         = 'ExploreAfterMount';
+  DFLT_OPT_EXPLOREAFTERMOUNT    = False;
+  OPT_ADVANCEDMOUNTDLG          = 'AdvancedMountDlg';
+  DFLT_OPT_ADVANCEDMOUNTDLG     = False;
+  OPT_REVERTVOLTIMESTAMPS       = 'RevertVolTimestamps';
+  DFLT_OPT_REVERTVOLTIMESTAMPS  = True;
+  OPT_SHOWPASSWORDS             = 'ShowPasswords';
+  DFLT_OPT_SHOWPASSWORDS        = False;
+  OPT_LANGUAGECODE              = 'LanguageCode';
+  DFLT_OPT_LANGUAGECODE         = '';
+  OPT_DRAGDROP                  = 'DragDropFileType';
+  DFLT_OPT_DRAGDROP             = Ord(ftFreeOTFE);
+  OPT_ALLOWNEWLINESINPASSWORDS  = 'AllowNewlinesInPasswords';
   DFLT_OPT_ALLOWNEWLINESINPASSWORDS = True;
-  OPT_ALLOWTABSINPASSWORDS          = 'AllowTabsInPasswords';
-  DFLT_OPT_ALLOWTABSINPASSWORDS     = False;
-  OPT_DEFAULTDRIVELETTER            = 'DefaultDriveLetter';
-  DFLT_OPT_DEFAULTDRIVELETTER       = '#';
+  OPT_ALLOWTABSINPASSWORDS      = 'AllowTabsInPasswords';
+  DFLT_OPT_ALLOWTABSINPASSWORDS = False;
+  OPT_DEFAULTDRIVELETTER        = 'DefaultDriveLetter';
+  DFLT_OPT_DEFAULTDRIVELETTER   = '#';
 
   // -- Prompts and messages --
   OPT_PROMPTMOUNTSUCCESSFUL      = 'OptPromptMountSuccessful';
   DFLT_OPT_PROMPTMOUNTSUCCESSFUL = True;
 
   // -- Check for updates section --
-  SECTION_CHKUPDATE                         = 'Updates';
-  OPT_CHKUPDATE_FREQ                        = 'CheckFrequency';
-  DFLT_OPT_CHKUPDATE_FREQ                   = ufMonthly;
-  OPT_CHKUPDATE_LASTCHECKED                 = 'LastChecked';
+  SECTION_CHKUPDATE                    = 'Updates';
+  OPT_CHKUPDATE_FREQ                   = 'CheckFrequency';
+  DFLT_OPT_CHKUPDATE_FREQ              = ufRandom;
+  OPT_CHKUPDATE_LASTCHECKED            = 'LastChecked';
   //this should be release date and updated with each release
-  DFLT_OPT_CHKUPDATE_LASTCHECKED            = '20140820';
+  DFLT_OPT_CHKUPDATE_LASTCHECKED       = '20140820';
   { DONE 1 -otdk -ctest : auto update not tested }
-  OPT_CHKUPDATE_SUPPRESSNOTIFYVERMAJOR      = 'SuppressNotifyVerMajor';
+  OPT_CHKUPDATE_SUPPRESSNOTIFYVERMAJOR = 'SuppressNotifyVerMajor';
   DFLT_OPT_CHKUPDATE_SUPPRESSNOTIFYVERMAJOR = 0;
-  OPT_CHKUPDATE_SUPPRESSNOTIFYVERMINOR      = 'SuppressNotifyVerMinor';
+  OPT_CHKUPDATE_SUPPRESSNOTIFYVERMINOR = 'SuppressNotifyVerMinor';
   DFLT_OPT_CHKUPDATE_SUPPRESSNOTIFYVERMINOR = 0;
 
   // -- PKCS#11 section --
@@ -405,18 +409,17 @@ end;
 
 function TSettings.Save(): Boolean;
 var
-  allOK:   Boolean;
   iniFile: TCustomINIFile;
 begin
-  allOK := False;
+  Result := False;
 
   if (OptSaveSettings = slNone) then begin
-    allOK := True;
+    Result := True;
   end else begin
     iniFile := GetSettingsObj();
     if (iniFile <> nil) then begin
       try
-        allOK := _Save(iniFile);
+        Result := _Save(iniFile);
 
       finally
         iniFile.Free();
@@ -424,8 +427,7 @@ begin
     end;
   end;
 
-  if not (allOK) then begin
-    allOK := False;
+  if not Result then begin
 
     SDUMessageDlg(
       _('Your settings could not be saved.') + SDUCRLF + SDUCRLF + SDUParamSubstitute(
@@ -435,15 +437,13 @@ begin
       );
   end;
 
-  Result := allOK;
 end;
 
 function TSettings._Save(iniFile: TCustomINIFile): Boolean;
 var
-  allOK:                 Boolean;
   useDefaultDriveLetter: DriveLetterChar;
 begin
-  allOK := True;
+  Result := True;
 
   try
     iniFile.WriteInteger(SECTION_GENERAL, OPT_SETTINGSVERSION, SETTINGS_V2);
@@ -497,11 +497,10 @@ begin
 
   except
     on E: Exception do begin
-      allOK := False;
+      Result := False;
     end;
   end;
 
-  Result := allOK;
 end;
 
 function TSettings.PrettyPrintSettingsFile(loc: TSettingsSaveLocation): String;
@@ -526,13 +525,12 @@ begin
       Result := RegistryKey();
     end;
 
-  else
-  begin
-    SDUMessageDlg(UNKNOWN_SETTINGS_LOCATION, mtError);
-  end;
+    else
+    begin
+      SDUMessageDlg(UNKNOWN_SETTINGS_LOCATION, mtError);
+    end;
 
   end;
-
 
 end;
 
@@ -571,13 +569,12 @@ begin
       end;
     end;
 
-  else
-  begin
-    SDUMessageDlg(UNKNOWN_SETTINGS_LOCATION, mtError);
-  end;
+    else
+    begin
+      SDUMessageDlg(UNKNOWN_SETTINGS_LOCATION, mtError);
+    end;
 
   end;
-
 
 end;
 
@@ -593,29 +590,21 @@ begin
   case loc of
     slNone,
     slRegistry:
-    begin
       // Do nothing; already set to empty string
-    end;
+      ;
 
     slExeDir:
-    begin
       filenameAndPath := ExtractFilePath(ParamStr(0)) + iniFilenameOnly;
-    end;
 
     slProfile:
-    begin
       filenameAndPath := SDUGetSpecialFolderPath(CSIDL_APPDATA) + '\' + iniFilenameOnly;
-    end;
+
 
     slCustom:
-    begin
       filenameAndPath := CustomLocation;
-    end;
 
-  else
-  begin
-    SDUMessageDlg(UNKNOWN_SETTINGS_LOCATION, mtError);
-  end;
+    else
+      SDUMessageDlg(UNKNOWN_SETTINGS_LOCATION, mtError);
 
   end;
 
@@ -666,7 +655,6 @@ begin
 
     end;
   end;
-
 
 end;
 

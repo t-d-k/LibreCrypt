@@ -216,10 +216,13 @@ type
     // This is set to TRUE at the end of calling WMUserPostShow(...) is called
     fwmUserPostShowCalledAlready:  Boolean;
 
+
     // Flag to indicate that the login session is about to end
     fendSessionFlag:   Boolean;
     // Flag to indicate that the executable is about to exit
-    fshuttingDownFlag: Boolean;
+    fIsAppShuttingDown: Boolean;
+    // was there an error on last run? (detected with 'AppRunning' setting)
+    fWasLastRunError : Boolean;
 
     fPkcs11Library: TPKCS11Library;
 
@@ -894,7 +897,7 @@ begin
   end;
 
   if (not (suppressMsgs) and not (GetFreeOTFEBase().Active) and not
-    (fshuttingDownFlag)  // Don't complain to user as we're about to exit!
+    fIsAppShuttingDown  // Don't complain to user as we're about to exit!
     ) then begin
     if (obsoleteDriver) then begin
       SDUMessageDlg(
@@ -1499,17 +1502,16 @@ end;
  //end;
 
 procedure TfrmMain.StartupUpdateCheck();
-const
-  NEVERCHECK = '20371231';
 var
   nextCheck: TDate;
+  doCheck:Boolean;
 begin
-  nextCheck := SDUISO8601ToTDate(NEVERCHECK);
+doCheck := false;//fix warning
+nextCheck := 0;//fix warning
   case gSettings.OptUpdateChkFrequency of
-    ufNever:
-    begin
-      // Already set to date far in future...
-    end;
+    ufNever:  doCheck := false;
+      // for ufRandom - check once per 1000 calls
+    ufRandom : doCheck := Random(1000)=123;
 
 {
     ufDaily:
@@ -1537,11 +1539,17 @@ begin
       nextCheck := gSettings.OptUpdateChkLastChecked +
         DaysInYear(gSettings.OptUpdateChkLastChecked);
     end;
-
+    else begin
+      assert(FALSE,'UPDATE TfrmMain.StartupUpdateCheck');
+      doCheck := true;
+    end;
   end;
 
 
-  if (nextCheck <= Now()) then begin
+  if gSettings.OptUpdateChkFrequency in [ufMonthly,ufAnnually] then
+     doCheck := nextCheck <= Now();
+
+  if doCheck then begin
     CheckForUpdates_AutoCheck(
       URL_PADFILE,
       gSettings.OptUpdateChkFrequency,
@@ -1549,7 +1557,7 @@ begin
       gSettings.OptUpdateChkSuppressNotifyVerMajor,
       gSettings.OptUpdateChkSuppressNotifyVerMinor
       );
-    // Save any changes to the auto check for updates settings...
+    // Save any changes to the auto check for updates settings (eg check date)...
     gSettings.Save();
   end;
 

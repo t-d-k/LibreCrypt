@@ -1,6 +1,6 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{67750E61-845A-48C8-971C-36BDC081172E}</ProjectGuid>
+			<ProjectGuid>{71A86DE5-0972-46AA-81E0-29EE1A3E3ABD}</ProjectGuid>
 		</PropertyGroup>
 		<ItemGroup>
 			<Projects Include="main\DoxBox.dproj">
