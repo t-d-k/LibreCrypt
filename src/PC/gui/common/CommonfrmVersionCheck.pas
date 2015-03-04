@@ -162,7 +162,7 @@ begin
   end;
 
   //prompt to connect to net
-  { TODO 1 -otdk -cenhance : remember result }
+  { DONE 1 -otdk -cenhance : remember result }
   if not (SDUConfirmYN(_(
     'A check for an update is due, which requires a connection to the internet. Continue?')))
   then
@@ -173,10 +173,16 @@ begin
     wwwResult := SDUGetPADFileVersionInfo(PADURL, latestMajorVersion,
       latestMinorVersion, Application.Title + '/' + SDUGetVersionInfoString(''), True);
   if (wwwResult = tgCancel) then begin
-    if not (SDUConfirmYN(_('Canceled checking for updated version') +
-      SDUCRLF + SDUCRLF + RS_CONFIRM_AUTOCHECK)) then begin
+    // if can't save settings then no point in asking whether to check again (will automatically)
+    if gSettings.OptSaveSettings = slNone then begin
+        SDUMessageDlg(_('Canceled checking for updated version'),mtInformation);
+     end else begin
+     if not (SDUConfirmYN(_('Canceled checking for updated version') +
+      SDUCRLF + SDUCRLF + RS_CONFIRM_AUTOCHECK)) then
       Frequency := ufNever;
+
     end;
+    
   end else
   if (wwwResult <> tgOK) then begin
     if not (SDUErrorYN(SDUParamSubstitute(_('Unable to determine latest release of %1.'),

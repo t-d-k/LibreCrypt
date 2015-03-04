@@ -29,6 +29,7 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Width = 35
     Height = 13
     Caption = 'Details:'
+    FocusControl = clbColumns
   end
   object Label3: TLabel
     Left = 12
@@ -36,6 +37,18 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Width = 169
     Height = 13
     Caption = '&Width of selected column (in pixels):'
+    FocusControl = se64Width
+  end
+  object clbColumns: TSDUCheckListBox
+    Left = 12
+    Top = 64
+    Width = 213
+    Height = 261
+    OnClickCheck = clbColumnsClickCheck
+    ItemHeight = 13
+    TabOrder = 0
+    OnClick = clbColumnsClick
+    ReadOnly = False
   end
   object pbMoveUp: TButton
     Left = 240
@@ -43,7 +56,7 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Width = 75
     Height = 25
     Caption = 'Move &Up'
-    TabOrder = 0
+    TabOrder = 1
     OnClick = pbMoveUpClick
   end
   object pbMoveDown: TButton
@@ -52,7 +65,7 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Width = 75
     Height = 25
     Caption = 'Move &Down'
-    TabOrder = 1
+    TabOrder = 2
     OnClick = pbMoveDownClick
   end
   object pbShow: TButton
@@ -61,7 +74,7 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Width = 75
     Height = 25
     Caption = '&Show'
-    TabOrder = 2
+    TabOrder = 3
     OnClick = pbShowClick
   end
   object pbHide: TButton
@@ -70,7 +83,7 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Width = 75
     Height = 25
     Caption = '&Hide'
-    TabOrder = 3
+    TabOrder = 4
     OnClick = pbHideClick
   end
   object pbOK: TButton
@@ -80,7 +93,7 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     Height = 25
     Caption = 'OK'
     Default = True
-    TabOrder = 4
+    TabOrder = 5
     OnClick = pbOKClick
   end
   object pbCancel: TButton
@@ -93,12 +106,20 @@ object SDFilesystemListView_ColDetails: TSDFilesystemListView_ColDetails
     ModalResult = 2
     TabOrder = 6
   end
+  object se64Width: TSpinEdit64
+    Left = 196
+    Top = 340
+    Width = 45
+    Height = 22
+    Increment = 1
+    TabOrder = 7
+  end
   object pnlSplitter: TPanel
     Left = 12
     Top = 372
     Width = 297
     Height = 13
     Caption = 'pnlSplitter'
-    TabOrder = 5
+    TabOrder = 8
   end
 end
