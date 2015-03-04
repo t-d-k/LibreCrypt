@@ -28,13 +28,17 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
     inherited pcWizard: TPageControl
       Width = 535
       Height = 358
-      ActivePage = tsOffset
+      ActivePage = tsPartitionSelect
       ExplicitWidth = 535
       ExplicitHeight = 358
       object tsFileOrPartition: TTabSheet
         Caption = 'Volume File or Partition'
         ImageIndex = 14
         Constraints.MinHeight = 150
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -96,8 +100,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             'Normally you should use a file; encrypted partitions or  disks m' +
             'ay give greater obscurity or speed.'
           WordWrap = True
-          ExplicitLeft = 20
-          ExplicitTop = 68
           ExplicitWidth = 452
         end
         object lblInstructFileOrPartition2: TLabel
@@ -110,9 +112,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             'Firstly, please specify whether the new DoxBox should be created' +
             ' as a file stored on your disk, or take up a disk partition.'
           WordWrap = True
-          ExplicitLeft = 26
-          ExplicitTop = 72
-          ExplicitWidth = 497
+          ExplicitWidth = 525
         end
         object rgFileOrPartition: TRadioGroup
           Left = 10
@@ -132,10 +132,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Volume filename'
         ImageIndex = 1
         Constraints.MinHeight = 139
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructFilename1: TLabel
           Left = 0
           Top = 0
-          Width = 527
+          Width = 368
           Height = 13
           Align = alTop
           Caption = 
@@ -148,12 +152,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 368
         end
         object reInstructFilename2: TLabel
           Left = 0
           Top = 13
-          Width = 527
+          Width = 425
           Height = 13
           Align = alTop
           Caption = 
@@ -166,8 +169,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitTop = 26
-          ExplicitWidth = 425
         end
         object GroupBox1: TGroupBox
           Left = 0
@@ -204,10 +205,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsPartitionWarning: TTabSheet
         Caption = 'Partition Warning'
         ImageIndex = 16
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Label15: TLabel
           Left = 0
           Top = 304
-          Width = 527
+          Width = 526
           Height = 26
           Align = alBottom
           Alignment = taCenter
@@ -223,12 +228,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           ParentColor = False
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 526
         end
         object lblWarningPartition: TLabel
           Left = 0
           Top = 0
-          Width = 527
+          Width = 61
           Height = 13
           Align = alTop
           Alignment = taCenter
@@ -241,12 +245,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = [fsBold, fsUnderline]
           ParentColor = False
           ParentFont = False
-          ExplicitWidth = 61
         end
         object reInstructPartitionWarning1: TLabel
           Left = 0
           Top = 13
-          Width = 527
+          Width = 314
           Height = 13
           Align = alTop
           Caption = '1) Creating encrypted partitions is POTENTIALLY DESTRUCTIVE.'
@@ -257,12 +260,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 314
         end
         object reInstructPartitionWarning2: TLabel
           Left = 0
           Top = 26
-          Width = 527
+          Width = 492
           Height = 13
           Align = alTop
           Caption = 
@@ -275,14 +277,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitLeft = 3
-          ExplicitTop = 53
-          ExplicitWidth = 492
         end
         object reInstructPartitionWarning3: TLabel
           Left = 0
           Top = 39
-          Width = 527
+          Width = 402
           Height = 13
           Align = alTop
           Caption = 
@@ -295,8 +294,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitLeft = -3
-          ExplicitTop = 71
         end
       end
       object tsPartitionSelect: TTabSheet
@@ -370,38 +367,38 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           end
           inherited TabControl1: TTabControl
             Width = 527
-            Height = 189
+            Height = 228
             Constraints.MinHeight = 132
             ExplicitWidth = 527
-            ExplicitHeight = 189
+            ExplicitHeight = 228
             inherited SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel
-              Height = 161
+              Height = 200
               ExplicitHeight = 161
             end
             inherited pnlNoPartitionDisplay: TPanel
               Left = 338
-              Height = 161
+              Height = 200
               ExplicitLeft = 338
               ExplicitHeight = 161
             end
           end
           inherited ckShowCDROM: TCheckBox
-            Left = 294
-            Top = 151
-            ExplicitLeft = 294
-            ExplicitTop = 151
+            Left = 279
+            Top = 234
+            ExplicitLeft = 279
+            ExplicitTop = 234
           end
           inherited ckEntireDisk: TCheckBox
-            Left = 438
-            Top = 151
-            ExplicitLeft = 438
-            ExplicitTop = 151
+            Left = 442
+            Top = 234
+            ExplicitLeft = 442
+            ExplicitTop = 234
           end
           inherited ilErrorWarning: TImageList
             Left = 368
             Top = 65533
             Bitmap = {
-              494C010103000400180110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400200110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -554,6 +551,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Size'
         ImageIndex = 6
         Constraints.MinHeight = 172
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -634,6 +635,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Password'
         ImageIndex = 6
         Constraints.MinHeight = 330
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -736,6 +741,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Drive Letter'
         ImageIndex = 17
         Constraints.MinHeight = 166
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -794,6 +803,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Offset'
         ImageIndex = 7
         Constraints.MinHeight = 330
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -917,7 +930,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Font.Style = []
             ParentFont = False
             WordWrap = True
-            ExplicitTop = 60
             ExplicitWidth = 523
           end
           object reInstructWarningOffset4: TLabel
@@ -937,7 +949,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Font.Style = []
             ParentFont = False
             WordWrap = True
-            ExplicitTop = 112
             ExplicitWidth = 516
           end
           object reInstructWarningOffset3: TLabel
@@ -956,7 +967,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Font.Style = []
             ParentFont = False
             WordWrap = True
-            ExplicitTop = 86
             ExplicitWidth = 519
           end
         end
@@ -983,6 +993,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Hash, cypher and IV'
         ImageIndex = 2
         Constraints.MinHeight = 202
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1099,6 +1113,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Chaff'
         ImageIndex = 20
         Constraints.MinHeight = 200
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1168,6 +1186,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Master Key Length'
         ImageIndex = 11
         Constraints.MinHeight = 77
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1226,10 +1248,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGSelect: TTabSheet
         Caption = 'RNG Select'
         ImageIndex = 4
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructRNGSelect1: TLabel
           Left = 0
           Top = 0
-          Width = 527
+          Width = 521
           Height = 26
           Align = alTop
           Caption = 
@@ -1242,12 +1268,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 521
         end
         object reInstructRNGSelect2: TLabel
           Left = 0
           Top = 26
-          Width = 527
+          Width = 91
           Height = 13
           Align = alTop
           Caption = '1) Password salting'
@@ -1258,12 +1283,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 91
         end
         object reInstructRNGSelect4: TLabel
           Left = 0
           Top = 52
-          Width = 527
+          Width = 183
           Height = 13
           Align = alTop
           Caption = '3) To seed pseudorandom '#39#39'chaff'#39#39' data'
@@ -1274,12 +1298,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 183
         end
         object reInstructRNGSelect3: TLabel
           Left = 0
           Top = 39
-          Width = 527
+          Width = 157
           Height = 13
           Align = alTop
           Caption = '2) The new DoxBox'#39#39's master key'
@@ -1290,12 +1313,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 157
         end
         object reInstructRNGSelect5: TLabel
           Left = 0
           Top = 65
-          Width = 527
+          Width = 521
           Height = 26
           Align = alTop
           Caption = 
@@ -1308,7 +1330,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 521
         end
         object gbRNG: TGroupBox
           Left = 0
@@ -1372,11 +1393,15 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'RNG Mouse movement'
         ImageIndex = 8
         Constraints.MinHeight = 236
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lblMouseRNGBits: TLabel
           AlignWithMargins = True
           Left = 10
           Top = 307
-          Width = 507
+          Width = 169
           Height = 13
           Margins.Left = 10
           Margins.Top = 10
@@ -1385,12 +1410,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Align = alBottom
           Alignment = taCenter
           Caption = 'Random bits generated: 9999/9999'
-          ExplicitWidth = 169
         end
         object reInstructRNGMouseMovement1: TLabel
           Left = 0
           Top = 0
-          Width = 527
+          Width = 297
           Height = 13
           Align = alTop
           Caption = 'You have selected mouse movement to generate random data.'
@@ -1401,12 +1425,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 297
         end
         object reInstructRNGMouseMovement2: TLabel
           Left = 0
           Top = 13
-          Width = 527
+          Width = 461
           Height = 13
           Align = alTop
           Caption = 
@@ -1419,7 +1442,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 461
         end
         object MouseRNG: TMouseRNG
           Left = 0
@@ -1440,6 +1462,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'RNG PKCS token'
         ImageIndex = 17
         Constraints.MinHeight = 133
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1494,11 +1520,15 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGGPG: TTabSheet
         Caption = 'RNG GPG'
         ImageIndex = 10
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructRNGGPG: TLabel
           Left = 0
           Top = 0
-          Width = 527
-          Height = 257
+          Width = 518
+          Height = 42
           Align = alClient
           Caption = 
             'In order to use GPG to generate random data, please specify the ' +
@@ -1511,8 +1541,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 518
-          ExplicitHeight = 42
         end
         object GroupBox2: TGroupBox
           Left = 0
@@ -1552,6 +1580,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         ImageIndex = 15
         Constraints.MinHeight = 168
         Constraints.MinWidth = 266
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1620,7 +1652,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitTop = 20
+          ExplicitWidth = 509
         end
         object seKeyIterations: TSpinEdit64
           Left = 353
@@ -1638,6 +1670,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Salt'
         ImageIndex = 16
         Constraints.MinHeight = 156
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1727,6 +1763,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'CDB Location'
         ImageIndex = 18
         Constraints.MinHeight = 301
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1813,6 +1853,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Padding'
         ImageIndex = 19
         Constraints.MinHeight = 188
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1875,6 +1919,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Summary'
         ImageIndex = 9
         Constraints.MinHeight = 238
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1979,7 +2027,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
     Filter = 'GPG (gpg.exe)|gpg.exe|Executables (*.exe)|*.exe|All files|*.*'
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     PreserveCWD = False
-    Left = 480
+    Left = 488
     Top = 240
   end
   object keySaveDialog: TSDUSaveDialog

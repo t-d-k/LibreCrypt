@@ -1704,7 +1704,7 @@ var
   junkBool:          Boolean;
   fileCreateProbMsg: String;
   VolFilename :TFilename;
-  randBytes:TSDUBytes;
+//  randBytes:TSDUBytes;
    saltStr: ansistring;
 begin
   result := True;
