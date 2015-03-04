@@ -242,7 +242,7 @@ There are alternatives to DoxBox available on Linux, that are easy to use, secur
 
 *A:* No. DoxBox supports full disc encryption if the OS is on another disc, but does not support encryption of the OS partition.
 
-OS encryption is for higher security to encrypt information leaked to temp files, the registry, swap etc. but Windows and Microsoft software is inherently insecure, it has been known to leak data to [word documents](http://news.bbc.co.uk/1/hi/technology/3154479.stm) , to be pwned simply by [visiting a web] page(http://www.symantec.com/connect/blogs/emerging-threat-microsoft-internet-explorer-zero-day-cve-2014-1776-remote-code-execution-vulne), and an out-of-the box Windows machine is hacked within 4 minutes of [connecting to the internet](http://www.theregister.co.uk/2008/07/15/unpatched_pc_survival_drops/). it makes no sense to use Microsoft Windows if you need high security. I recommend using Ubuntu Linux which has full disc encryption as an install option for people who need this level of trust.  If you  use Windows and still are worried about leaking of temp files, registry etc, please see the section on ['best practices'](#best_practices)
+OS encryption is for higher security to encrypt information leaked to temp files, the registry, swap etc. but Windows and Microsoft software is inherently insecure, it has been known to leak data to [word documents](http://news.bbc.co.uk/1/hi/technology/3154479.stm) , to be pwned simply by [visiting a web] page(http://www.symantec.com/connect/blogs/emerging-threat-microsoft-internet-explorer-zero-day-cve-2014-1776-remote-code-execution-vulne), and an out-of-the box Windows machine is hacked within 4 minutes of [connecting to the internet](http://www.theregister.co.uk/2008/07/15/unpatched_pc_survival_drops/). it makes no sense to use Microsoft Windows if you need high security. I recommend using Ubuntu Linux which has full disc encryption as an install option for people who need this level of trust.  If you use Windows and still are worried about leaking of temp files, registry etc, please see the section on ['best practices'](#best_practices)
 
 * * *
 
@@ -295,37 +295,48 @@ However, this is not always practical (many people are not familiar with how to 
 *Q: What's this about a flaw in deniability?*
 
 *A:* 	
-There is a known flaw in the way DoxBox 6.0 and FreeOTFE handled Plausible Deniability (PD). For PD to work the file (or partition or disc) containing the Box must be filled with data indistinguishable from encrypted data.
+There was a known flaw in the way DoxBox 6.0 and FreeOTFE handled Plausible Deniability (PD). For PD to work the file (or partition or disc) containing the Box must be filled with data indistinguishable from encrypted data.
 However by default when creating a 'DoxBox' file, DoxBox 6.0 only filled it with zeros. 
 While there is a manual option to overwrite a file with crypto data, there are problems with this:
 
 * The fact that a user has done this on a file tells an attacker that this file contains a hidden box. 
 * Even if the user does this with every Box created, the fact that this is done at all tells an attacker that at least one must have a hidden Box.
 
-The solution is for all new boxes to be filled with random data by default. This is implemented in DoxBox version 6.1.
+The solution is for all new boxes to be filled with random data ('chaff') by default. This was introduced in DoxBox version 6.1.
 
 * * *
 
 <a name="best_practices"></a>
-*Q: How should I use DoxBox for the best security?*
+  *Q: How should I use DoxBox for the best security?*
 
-*A:* 	The most tested encryption scheme used by DoxBox is the LUKS scheme, however the native scheme has some extra features. The most widely used supported cypher is AES.
+  *A:*
+  * Increase the hash iterations
+  The recommended minimum number of key iterations for PBKDF2 is 10,000, with 100,000 preferable (depending on your PC speed), however the default in the 'New DoxBox Wizard' is 2048.
+  A higher number of iterations cannot be set as the default, because that would force users to change the value whenever an older Box was opened.
+  To ensure the best security, set this value to the highest that will open the box in a reasonable amount of time when creating a new Box. This value must be remembered and entered whenever opening the box afterwards.
+  An alternative is to use a LUKS containers, which contain the number of iterations in the header,.
 
-In Windows numerous apps leak data to various places, including temp files, the registry, swap space, and your home folder.
-The OS itself stores Most Recently Used (MRU) lists.
-To minimise this it's recommended to only open files on your box using ['Portable Apps'](http://portableapps.com/). These shouldn't save data in the registry or your home folder.
-The portable apps should be installed on the Box itself, as they save their configuration, including MRU lists in the PortableApp directory.
-Some other things to do:
-- Schedule a free space erasing program to overwrite any free disk space regularly.
-- Have a fixed size swap file - this reduces the chance swap will be left un-erased on the disk.
-- Clean out your Windows MRU list regularly.
-- Use open source apps wherever possible.
-- Use simple 'do one thing' apps (e.g. text editors instead of word processors) wherever possible.
--	enable Windows pagefile overwrite-on shutdown facility (see Microsoft knowledge-base article Q182086: How to Clear the Windows NT Paging File at Shutdown)
+  * Cypher choice
+  The most tested encryption scheme used by DoxBox is the LUKS scheme, however the native scheme has some extra features. The most widely used supported cypher is AES.
 
-* * *
+  * Temporary files
+  In Windows numerous apps leak data to various places, including temp files, the registry, swap space, and your home folder.
+  The OS itself stores Most Recently Used (MRU) lists.
+  To minimise this it's recommended to only open files on your box using ['Portable Apps'](http://portableapps.com/). These shouldn't save data in the registry or your home folder.
+  The portable apps should be installed on the Box itself, as they save their configuration, including MRU lists in the PortableApp directory.
+  An even more secure alternative is to use a [http://www.wikihow.com/Use-Microsoft-Virtual-PC](virtual machine), and store it's 'virtual hard disc' and configuration in the Box.
 
-<a name="pass_length"></a>
+  * Some other things to do:
+  - Schedule a free space erasing program to overwrite any free disk space regularly.
+  - Have a fixed size swap file - this reduces the chance swap will be left un-erased on the disk.
+  - Clean out your Windows MRU list regularly.
+  - Use open source apps wherever possible.
+  - Use simple 'do one thing' apps (e.g. text editors instead of word processors) wherever possible.
+  - enable Windows pagefile overwrite-on shutdown facility (see Microsoft knowledge-base article Q182086: How to Clear the Windows NT Paging File at Shutdown)
+
+  * * *
+
+  <a name="pass_length"></a>
 *Q: The help says I should have a keyphrase with one character per bit of the key. This is impossible to remember, so you must have made a mistake*
 
 *A:* 	There is no mistake.
@@ -1414,7 +1425,6 @@ For example, if you create a "DoxBox_cmdline.bat" file containing the following:
 
 		DoxBox.exe %1 %2 %3 %4 %5 %6 %7 %8 %9
 		@echo Exit code: %ERRORLEVEL%
-
 
 and use "DoxBox_cmdline.bat" in places of "DoxBox.exe"
 

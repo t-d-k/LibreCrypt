@@ -31,10 +31,9 @@ DoxBox/DoxBox Explorer come in a number of parts:
 	2. A number of kernel drivers, written in C
 * DoxBox Explorer:
 	1. A front-end GUI, written in Delphi
-	2. A number of kernel drivers, written in C, built for Win32
+	2. A number of DLLs, written in C, built for Win32 and Win64
 
 * A number of command line decryption utilities, also written in C.
-
 
 1. [DoxBox](#level_3_heading_1) 
 1. [DoxBox Explorer](#level_3_heading_3)
@@ -56,22 +55,21 @@ DoxBox/DoxBox Explorer come in a number of parts:
 </A>
 
 
-This is a description for Delphi newbies of the basic steps involved in compiling the DoxBox GUI.
+  This is a description for Delphi newbies of the basic steps involved in compiling the DoxBox GUI.
 
-To build the GUI, the following software is required:
+  To build the GUI, the following software is required:
 
-*   Delphi (Embarcadero Delphi XE2 or later, is ecommended. Previous versions can probably be used with minimal changes, though wouldn't look
-as nice under Windows Vista)
+  *   Delphi (Embarcadero Delphi XE2 or later, is recommended. Previous versions may possibly be used, but are untested)
 
-* The SDeanComponents package (v2.00.00 or later)  
-* (Optional) GNU gettext for Delphi (dxgettext), available (free) from: [http://dybdahl.dk/dxgettext/](http://dybdahl.dk/dxgettext/) (This package adds support for language translations)
-
-The binary release of this software was built with Embarcadero Delphi XE2.
+  * The SDeanUtilsXE package, included in the project source.
+  * (Optional) GNU gettext for Delphi (dxgettext), available (free) from: [http://dybdahl.dk/dxgettext/](http://dybdahl.dk/dxgettext/) (This package adds support for language translations)
+  *The FastMM memory manager, from (http://sourceforge.net/projects/fastmm/](http://sourceforge.net/projects/fastmm/). This wipes memory after use.
+  The binary release of this software was built with Embarcadero Delphi XE2.
 
   1.  Open the SDeanUtilsXE package
-    1.  Build the package
-    2.  Install the package
-    3.  for each component, ensure that the correct path to the component is added to your Delphi environment ("Tools | Environment Options...", "Library" tab)
+  1.  Build the package
+  2.  Install the package
+  3.  for each component, ensure that the correct path to the component is added to your Delphi environment ("Tools | Environment Options...", "Library" tab)
   2.  Add the path to the modified Delphi files included in SDeanComponents to fix various bugs relating to Delphi's Windows Vista support to the top of Delphi's standard library paths. (This step probably won't be needed with later versions of Delphi, and shouldn't be carried out with older versions of Delphi, which will have different source)
   * Open the DoxBox project ("FreeOTFE.dpr")
 
@@ -79,13 +77,13 @@ The binary release of this software was built with Embarcadero Delphi XE2.
 
   * Build the application.
 
-* You should now find a file called "DoxBox.exe" in the directory
-above the "src" directory
+  * You should now find a file called "DoxBox.exe" in the directory
+  above the "src" directory
 
-You have now successfully built the GUI frontend!
+  You have now successfully built the GUI frontend!
 
-If required, the compiler definition "FREEOTFE\_TIME_CDB\_DUMP" may be set, in which case the time taken to dump a CDB ("Tools | Critical data block | Dump to human readable file...") will be shown after the dump completes.
-<A NAME="level_4_heading_2">
+  If required, the compiler definition "FREEOTFE\_TIME_CDB\_DUMP" may be set, in which case the time taken to dump a CDB ("Tools | Critical data block | Dump to human readable file...") will be shown after the dump completes.
+  <A NAME="level_4_heading_2">
 ##### translation
 </A>
 It is not necessary to do a full install of dxgettext to build with i18n support. Instead you can just add the file gnugettext.pas to the project.
@@ -102,7 +100,7 @@ To build these drivers, the following software is required:
 
 <UL>
   
-* Microsoft Visual Studio 2008 (older versions may well be used, changing "vcvarsall" to "vcvars32", and similar changes)
+* Microsoft Visual Studio 2010 (older versions may well be used, changing "vcvarsall" to "vcvars32", and similar changes)
 <UL>
   
 * If using an older version of MS Visual Studio, the MS Windows SDK (February 2003 version) is also needed
@@ -141,7 +139,7 @@ The following list comprehensively describes the configuration used to build the
 1.  Install VC++
 1. Put a copy of "vcvarsall.bat" into one of the directories in your path
 
-2.  Configure the VC++ editor:
+2.  Configure the VS editor:
 
 	*   To use spaces, not tabs	
 	*   To indent braces
@@ -294,8 +292,8 @@ To run the other functions of dxgettext, viz extracting srings from the project 
 
 To build the DLLs used by DoxBox Explorer:
 
-1. Open "FreeOTFE4PDA.sln" using Visual C++
-1. Set the build configuration within Visual C++ to "Release" - "Win32"
+1. Open "DoxBoxDLLs.sln" using Visual Studio
+1. Set the build configuration within Visual Studio to "Release" - "Win32"
 1. Right-click on each project in turn, and select "Rebuild". Note: Don't bother building the "GUI" project; at present, this can only be built for the Windows Mobile platform.
 
 A copy of the binary which is built will be copied into the directory above your "src" directory.
@@ -310,7 +308,7 @@ _Note: The development of the command line decryption utilities has ceased. This
 
 To build the command line decryption utilities, the following software is required:
 
-  *   A C compiler (Visual C++ .NET was used to write and test this software)
+  *   A C compiler (Visual Studio 2010 was used to write and test this software)
 Please follow the following steps:
 
   1.  Install and configure up the build environment, as described as per building the backend drivers, _you may omit the SDK and DDK_.
