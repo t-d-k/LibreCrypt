@@ -34,38 +34,41 @@ resourcestring
 
 
 type
-  TOnExitWhenMounted = (oewmDismount, oewmPromptUser, oewmLeaveMounted);
+  eOnExitWhenMounted = (oewmDismount, oewmPromptUser, oewmLeaveMounted);
 
 resourcestring
   ONEXITWHENMOUNTED_DISMOUNT     = 'Lock all boxes';
   ONEXITWHENMOUNTED_LEAVEMOUNTED = 'Leave boxes open';
 
 const
-  OnExitWhenMountedTitlePtr: array [TOnExitWhenMounted] of Pointer =
+  OnExitWhenMountedTitlePtr: array [eOnExitWhenMounted] of Pointer =
     (@ONEXITWHENMOUNTED_DISMOUNT, @RS_PROMPT_USER, @ONEXITWHENMOUNTED_LEAVEMOUNTED
     );
 
 type
-  TOnExitWhenPortableMode = (owepPortableOff, oewpPromptUser, oewpDoNothing);
+  eOnExitWhenPortableMode = (owepPortableOff, oewpPromptUser, oewpDoNothing);
 
 resourcestring
   ONEXITWHENPORTABLEMODE_PORTABLEOFF = 'Turn off portable mode';
 
 const
-  OnExitWhenPortableModeTitlePtr: array [TOnExitWhenPortableMode] of Pointer =
+  OnExitWhenPortableModeTitlePtr: array [eOnExitWhenPortableMode] of Pointer =
     (@ONEXITWHENPORTABLEMODE_PORTABLEOFF, @RS_PROMPT_USER, @RS_DO_NOTHING
     );
 
 
 type
-  TOnNormalDismountFail = (ondfForceDismount, ondfPromptUser, ondfCancelDismount);
+  eOnNormalDismountFail = (ondfForceDismount, ondfPromptUser, ondfCancelDismount);
+
+  // is app running? used to detect crashes
+  eAppRunning = (arDontKnow{no settings file}, arRunning{set in InitApp}, arClosed{set in Form.close});
 
 resourcestring
   ONNORMALDISMOUNTFAIL_FORCEDISMOUNT  = 'Force dismount';
   ONNORMALDISMOUNTFAIL_CANCELDISMOUNT = 'Cancel dismount';
 
 const
-  OnNormalDismountFailTitlePtr: array [TOnNormalDismountFail] of Pointer =
+  OnNormalDismountFailTitlePtr: array [eOnNormalDismountFail] of Pointer =
     (@ONNORMALDISMOUNTFAIL_FORCEDISMOUNT, @RS_PROMPT_USER,
     @ONNORMALDISMOUNTFAIL_CANCELDISMOUNT
     );
@@ -118,12 +121,12 @@ type
     OptInstalled:              Boolean;// has installer been run?
     OptDefaultDriveLetter:     ansichar;
     OptDefaultMountAs:         TFreeOTFEMountAs;
-
+    feAppRunning        :         eAppRunning;
     // Prompts and messages
     OptWarnBeforeForcedDismount: Boolean;
-    OptOnExitWhenMounted:        TOnExitWhenMounted;
-    OptOnExitWhenPortableMode:   TOnExitWhenPortableMode;
-    OptOnNormalDismountFail:     TOnNormalDismountFail;
+    OptOnExitWhenMounted:        eOnExitWhenMounted;
+    OptOnExitWhenPortableMode:   eOnExitWhenPortableMode;
+    OptOnNormalDismountFail:     eOnNormalDismountFail;
 
     // System tray icon...
     OptSystemTrayIconDisplay:           Boolean;
@@ -150,9 +153,9 @@ var
   // Global variable
   gSettings: TFreeOTFESettings;
 
-function OnExitWhenMountedTitle(Value: TOnExitWhenMounted): String;
-function OnExitWhenPortableModeTitle(Value: TOnExitWhenPortableMode): String;
-function OnNormalDismountFailTitle(Value: TOnNormalDismountFail): String;
+function OnExitWhenMountedTitle(Value: eOnExitWhenMounted): String;
+function OnExitWhenPortableModeTitle(Value: eOnExitWhenPortableMode): String;
+function OnNormalDismountFailTitle(Value: eOnNormalDismountFail): String;
 function SystemTrayClickActionTitle(Value: TSystemTrayClickAction): String;
 
 implementation
@@ -191,6 +194,8 @@ const
   DFLT_OPT_DEFAULTMOUNTAS         = fomaRemovableDisk;
   OPT_OPTINSTALLED                = 'Installed';
   DFLT_OPT_OPTINSTALLED           = False;
+  OPT_APPRUNNING                 = 'AppRunning';
+  DFLT_OPT_APPRUNNING            = arDontKnow;
 
   // -- Prompts and messages --
   // Section name defined in parent class's unit
@@ -228,17 +233,17 @@ const
   DFLT_OPT_HOTKEYKEYDISMOUNTEMERG    = 'Shift+Ctrl+Alt+D';
 
 
-function OnExitWhenMountedTitle(Value: TOnExitWhenMounted): String;
+function OnExitWhenMountedTitle(Value: eOnExitWhenMounted): String;
 begin
   Result := LoadResString(OnExitWhenMountedTitlePtr[Value]);
 end;
 
-function OnExitWhenPortableModeTitle(Value: TOnExitWhenPortableMode): String;
+function OnExitWhenPortableModeTitle(Value: eOnExitWhenPortableMode): String;
 begin
   Result := LoadResString(OnExitWhenPortableModeTitlePtr[Value]);
 end;
 
-function OnNormalDismountFailTitle(Value: TOnNormalDismountFail): String;
+function OnNormalDismountFailTitle(Value: eOnNormalDismountFail): String;
 begin
   Result := LoadResString(OnNormalDismountFailTitlePtr[Value]);
 end;
@@ -281,17 +286,20 @@ begin
     DFLT_OPT_AUTOSTARTPORTABLE);
   OptDefaultMountAs         := TFreeOTFEMountAs(iniFile.ReadInteger(SECTION_GENERAL,
     OPT_DEFAULTMOUNTAS, Ord(DFLT_OPT_DEFAULTMOUNTAS)));
+  feAppRunning      :=
+    eAppRunning(iniFile.ReadInteger(SECTION_GENERAL,
+    OPT_APPRUNNING, Ord(DFLT_OPT_APPRUNNING)));
 
   OptWarnBeforeForcedDismount := iniFile.ReadBool(SECTION_CONFIRMATION,
     OPT_WARNBEFOREFORCEDISMOUNT, DFLT_OPT_WARNBEFOREFORCEDISMOUNT);
   OptOnExitWhenMounted        :=
-    TOnExitWhenMounted(iniFile.ReadInteger(SECTION_CONFIRMATION, OPT_ONEXITWHENMOUNTED,
+    eOnExitWhenMounted(iniFile.ReadInteger(SECTION_CONFIRMATION, OPT_ONEXITWHENMOUNTED,
     Ord(DFLT_OPT_ONEXITWHENMOUNTED)));
   OptOnExitWhenPortableMode   :=
-    TOnExitWhenPortableMode(iniFile.ReadInteger(SECTION_CONFIRMATION,
+    eOnExitWhenPortableMode(iniFile.ReadInteger(SECTION_CONFIRMATION,
     OPT_ONEXITWHENPORTABLEMODE, Ord(DFLT_OPT_ONEXITWHENPORTABLEMODE)));
   OptOnNormalDismountFail     :=
-    TOnNormalDismountFail(iniFile.ReadInteger(SECTION_CONFIRMATION,
+    eOnNormalDismountFail(iniFile.ReadInteger(SECTION_CONFIRMATION,
     OPT_ONNORMALDISMOUNTFAIL, Ord(DFLT_OPT_ONNORMALDISMOUNTFAIL)));
 
   OptSystemTrayIconDisplay           :=
@@ -323,11 +331,9 @@ end;
 
 
 function TFreeOTFESettings._Save(iniFile: TCustomINIFile): Boolean;
-var
-  allOK: Boolean;
 begin
-  allOK := inherited _Save(iniFile);
-  if allOK then begin
+  Result := inherited _Save(iniFile);
+  if Result then begin
     try
       iniFile.WriteBool(SECTION_GENERAL, OPT_DISPLAYTOOLBAR, OptDisplayToolbar);
       iniFile.WriteBool(SECTION_GENERAL, OPT_DISPLAYTOOLBARLARGE,
@@ -342,6 +348,8 @@ begin
         OptAutoStartPortable);
       iniFile.WriteInteger(SECTION_GENERAL, OPT_DEFAULTMOUNTAS,
         Ord(OptDefaultMountAs));
+     iniFile.WriteInteger(SECTION_GENERAL, OPT_APPRUNNING,
+        Ord(feAppRunning));
 
       iniFile.WriteBool(SECTION_CONFIRMATION, OPT_WARNBEFOREFORCEDISMOUNT,
         OptWarnBeforeForcedDismount);
@@ -351,6 +359,9 @@ begin
         Ord(OptOnExitWhenPortableMode));
       iniFile.WriteInteger(SECTION_CONFIRMATION, OPT_ONNORMALDISMOUNTFAIL,
         Ord(OptOnNormalDismountFail));
+
+
+
 
       iniFile.WriteBool(SECTION_SYSTEMTRAYICON, OPT_SYSTEMTRAYICONDISPLAY,
         OptSystemTrayIconDisplay);
@@ -374,12 +385,11 @@ begin
 
     except
       on E: Exception do begin
-        allOK := False;
+        Result := False;
       end;
     end;
   end;
 
-  Result := allOK;
 end;
 
 function TFreeOTFESettings.RegistryKey(): String;

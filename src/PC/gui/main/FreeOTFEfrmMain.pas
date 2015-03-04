@@ -12,13 +12,13 @@ interface
 
 uses
   ActnList,
-  Buttons, Classes, ComCtrls, CommonfrmMain, CommonSettings, Controls, Dialogs,
-  ExtCtrls, Forms, FreeOTFESettings, Graphics, Grids, ImgList, Menus, Messages,
+  Buttons, Classes, ComCtrls, Controls, Dialogs,
+  ExtCtrls, Forms,  Graphics, Grids, ImgList, Menus, Messages,  Spin64, StdCtrls, SysUtils, ToolWin, Windows, XPMan,
   //sdu
-  SDUSystemTrayIcon, Shredder, Spin64, StdCtrls, SysUtils, ToolWin, Windows, XPMan,
+  SDUSystemTrayIcon, Shredder,
 
   //doxbox/freeotfe
-  OTFE_U,
+  OTFE_U,  FreeOTFESettings,  CommonfrmMain, CommonSettings,
   OTFEFreeOTFE_DriverControl,
   OTFEFreeOTFE_U, OTFEFreeOTFEBase_U,
   pkcs11_library, SDUDialogs, SDUForms, SDUGeneral, SDUMRUList, SDUMultimediaKeys;
@@ -401,10 +401,15 @@ const
  // Application.Run() is called
 procedure TfrmFreeOTFEMain.InitApp();
 var
-  goForStartPortable: Boolean;
+  goForStartPortable, errLastRun: Boolean;
 begin
   inherited;
 
+  // if appRunning set when app started, that means it didnt shut down properly last time
+  errLastRun := gSettings.feAppRunning = arRunning;
+  gSettings.feAppRunning := arRunning;
+  // save immediately in case any errors starting drivers etc.
+  gSettings.Save;
   // Hook Windows messages first; if we're running under Vista and the user UAC
   // escalates to start portable mode (below), we don't want to miss any
   // refresh messages the escalated process may send us!
@@ -439,12 +444,14 @@ begin
     end;
 
     if goForStartPortable then begin
-      PortableModeSet(pmaStart, False);
+      if errLastRun then MessageDlg(_('Portable mode will not be started automatically because DoxBox shut down last time it was run.'),mtWarning,[mbOK], 0)
+      else PortableModeSet(pmaStart, False);
     end else begin
-      if gSettings.OptInstalled then begin
-        actInstallExecute(nil);
+      if gSettings.OptInstalled and not errLastRun then begin
+         actInstallExecute(nil);
       end else begin
-        SDUMessageDlg(
+       if errLastRun and gSettings.OptInstalled then MessageDlg(_('The drivers will not be installed automatically because DoxBox shut down last time it was run.'),mtWarning,[mbOK],0);
+       SDUMessageDlg(
           _(
           'Please see the "installation" section of the accompanying documentation for instructions on how to install the DoxBox drivers.'),
           mtInformation,
@@ -1258,7 +1265,7 @@ begin
   inherited;
 
   fendSessionFlag   := False;
-  fshuttingDownFlag := False;
+  fIsAppShuttingDown := False;
 
   fIconMounted          := TIcon.Create();
   fIconMounted.Handle   := LoadImage(hInstance, PChar(R_ICON_MOUNTED), IMAGE_ICON,
@@ -2272,7 +2279,7 @@ begin
       // wanted to do this, and they can tell they've stopped as the
       // application will just exit; only popping up a messagebox if there's a
       // problem
-      if not (fshuttingDownFlag) then begin
+      if not fIsAppShuttingDown then begin
         if not (suppressMsgs) then begin
           SDUMessageDlg(_('Portable mode drivers stopped and uninstalled.'),
             mtInformation, [mbOK], 0);
@@ -2405,10 +2412,10 @@ begin
     // active, and we can't activate it, then no FreeOTFE volumes are mounted
     if not (GetFreeOTFE().Active) then begin
       // Prevent any warnings...
-      fshuttingDownFlag := True;
+      fIsAppShuttingDown := True;
       ActivateFreeOTFEComponent(False);
       // Reset flag
-      fshuttingDownFlag := False;
+      fIsAppShuttingDown := False;
     end;
 
     if (GetFreeOTFE().Active) then begin
@@ -2443,10 +2450,10 @@ begin
 
     if not (oldActive) then begin
       // Prevent any warnings...
-      fshuttingDownFlag := True;
+      fIsAppShuttingDown := True;
       DeactivateFreeOTFEComponent();
       // Reset flag
-      fshuttingDownFlag := False;
+      fIsAppShuttingDown := False;
     end;
 
   end;
@@ -2475,9 +2482,9 @@ begin
         CanClose := False;
       end else
       if (userConfirm = mrYes) then begin
-        fshuttingDownFlag := True;
+        fIsAppShuttingDown := True;
         CanClose          := PortableModeSet(pmaStop, False);
-        fshuttingDownFlag := CanClose;
+        fIsAppShuttingDown := CanClose;
       end else begin
         CanClose := True;
       end;
@@ -2527,7 +2534,11 @@ begin
     ) then begin
     Action := caMinimize;
   end;
-
+  // log closed OK
+if Action in [caHide, caFree]  then begin
+gSettings.feAppRunning := arClosed;
+gSettings.Save;
+end;
 end;
 
 
@@ -2663,7 +2674,7 @@ begin
 {$IFEND}
 
       if not (toEarlyToDetectOtherInstance) then begin
-        msg     := SDUParamSubstitute(_('Error: Unable to assign hotkey %1'),
+        msg     := Format(_('Error: Unable to assign hotkey %s'),
           [ShortCutToText(hotkey)]);
         msgType := mtError;
 
