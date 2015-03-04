@@ -26,7 +26,8 @@ typedef struct _LSA_UNICODE_STRING {
  UNICODE_STRING, 
  *PUNICODE_STRING;
 *)
-TUNICODE_STRING = packed record
+//  do NOT pack (for 64 bit windows) see  https://forums.embarcadero.com/thread.jspa?threadID=109440
+TUNICODE_STRING = record
   Length: USHORT;
   MaximumLength: USHORT;
   Buffer: PWideChar;
@@ -44,7 +45,9 @@ typedef struct _OBJECT_ATTRIBUTES {
 } OBJECT_ATTRIBUTES, *POBJECT_ATTRIBUTES;
 typedef CONST OBJECT_ATTRIBUTES *PCOBJECT_ATTRIBUTES;
 *)
-TOBJECT_ATTRIBUTES = packed record
+
+//  do NOT pack (for 64 bit windows) see  https://forums.embarcadero.com/thread.jspa?threadID=109440
+TOBJECT_ATTRIBUTES =  record
   Length: ULONG;
   RootDirectory: THandle;
   ObjectName: PUNICODE_STRING;
@@ -330,14 +333,18 @@ begin
 end;
 
 
-procedure AllocRtlInitUnicodeString(DestinationString: PUNICODE_STRING; SourceString: WideString);
+procedure AllocRtlInitUnicodeString(DestinationString: PUNICODE_STRING; SourceString: Widestring);
 var
   newString: PWideChar;
 begin
-  newString := AllocMem((length(SourceString) + 1)* sizeof(newString^));
+  newString := AllocMem((length(SourceString) + 1)* sizeof(WideChar));
   CopyMemory(newstring, PWideString(SourceString), (length(SourceString) * sizeof(newString^)) );
   newString[length(SourceString)] := #0;
+  //this doesnt seem to wokr on 64 bit windows
   RtlInitUnicodeString(DestinationString, newString);
+//  DestinationString.Length := (length(SourceString) + 1)* sizeof(WideChar);
+//  DestinationString.MaximumLength := DestinationString.Length;
+//  DestinationString.Buffer := newstring;
 end;
 
 procedure FreeRtlInitUnicodeString(StringToFree: PUNICODE_STRING);
