@@ -2,6 +2,7 @@ package OTFEUnified;
 
 {$R *.res}
 {$R 'OTFEUnified_U.dcr'}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
@@ -23,6 +24,7 @@ package OTFEUnified;
 {$WRITEABLECONST ON}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
+{$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'OTFE: Unified OTFE Delphi Component'}
 {$IMPLICITBUILD OFF}
 

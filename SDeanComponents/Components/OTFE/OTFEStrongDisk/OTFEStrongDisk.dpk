@@ -2,6 +2,7 @@ package OTFEStrongDisk;
 
 {$R *.res}
 {$R 'OTFEStrongDisk_U.dcr'}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS OFF}
 {$BOOLEVAL OFF}
@@ -23,6 +24,7 @@ package OTFEStrongDisk;
 {$WRITEABLECONST ON}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
+{$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'OTFE: StrongDisk Delphi Component'}
 {$IMPLICITBUILD OFF}
 

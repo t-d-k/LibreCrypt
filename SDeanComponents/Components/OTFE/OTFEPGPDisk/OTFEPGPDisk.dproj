@@ -1,52 +1,164 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ProjectGuid>{7d897449-7d57-4055-88d0-a0443409c78a}</ProjectGuid>
-    <MainSource>OTFEPGPDisk.dpk</MainSource>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
-    <DCC_DependencyCheckOutputName>C:\Documents and Settings\All Users\Documents\RAD Studio\5.0\Bpl\OTFEPGPDisk.bpl</DCC_DependencyCheckOutputName>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Version>7.0</Version>
-    <DCC_AssertionsAtRuntime>False</DCC_AssertionsAtRuntime>
-    <DCC_DebugInformation>False</DCC_DebugInformation>
-    <DCC_WriteableConstants>True</DCC_WriteableConstants>
-    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
-    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
-    <DCC_Define>RELEASE</DCC_Define>
-    <DCC_UNSAFE_TYPE>True</DCC_UNSAFE_TYPE>
-    <DCC_UNSAFE_CODE>True</DCC_UNSAFE_CODE>
-    <DCC_UNSAFE_CAST>True</DCC_UNSAFE_CAST>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Version>7.0</Version>
-    <DCC_AssertionsAtRuntime>False</DCC_AssertionsAtRuntime>
-    <DCC_DebugInformation>False</DCC_DebugInformation>
-    <DCC_WriteableConstants>True</DCC_WriteableConstants>
-    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
-    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
-  </PropertyGroup>
-  <ProjectExtensions>
-    <Borland.Personality>Delphi.Personality</Borland.Personality>
-    <Borland.ProjectType>Package</Borland.ProjectType>
-    <BorlandProject>
-<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><Package_Options><Package_Options Name="PackageDescription">OTFE: PGPDisk Delphi Component</Package_Options><Package_Options Name="ImplicitBuild">False</Package_Options><Package_Options Name="DesigntimeOnly">False</Package_Options><Package_Options Name="RuntimeOnly">False</Package_Options></Package_Options><Language><Language Name="ProjectLang">$00000809</Language></Language><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">1</VersionInfo><VersionInfo Name="MinorVer">0</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">138</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">2057</VersionInfo><VersionInfo Name="CodePage">1252</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName">Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="FileDescription">TOTFEPGPDisk (PGPDisk Delphi Component)</VersionInfoKeys><VersionInfoKeys Name="FileVersion">1.0.0.138</VersionInfoKeys><VersionInfoKeys Name="InternalName">OTFEPGPDiskDelphiComponent</VersionInfoKeys><VersionInfoKeys Name="LegalCopyright">(c) Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename">OTFEPGPDisk.bpl</VersionInfoKeys><VersionInfoKeys Name="ProductName">OTFE PGPDisk Delphi Component</VersionInfoKeys><VersionInfoKeys Name="ProductVersion">1.0.0</VersionInfoKeys><VersionInfoKeys Name="Comments">http://www.SDean12.org/</VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">OTFEPGPDisk.dpk</Source></Source></Delphi.Personality></BorlandProject></BorlandProject>
-  </ProjectExtensions>
-  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
-  <ItemGroup>
-    <DelphiCompile Include="OTFEPGPDisk.dpk">
-      <MainSource>MainSource</MainSource>
-    </DelphiCompile>
-    <DCCReference Include="C:\Documents and Settings\Administrator\OTFE.dcp" />
-    <DCCReference Include="C:\Documents and Settings\Administrator\SDeanUtils.dcp" />
-    <DCCReference Include="C:\Documents and Settings\Administrator\vcl.dcp" />
-    <DCCReference Include="OTFEPGPDiskMounting_U.pas">
-      <Form>PGPDiskMounting_F</Form>
-    </DCCReference>
-    <DCCReference Include="OTFEPGPDiskStructures_U.pas" />
-    <DCCReference Include="OTFEPGPDisk_U.dcr" />
-    <DCCReference Include="OTFEPGPDisk_U.dcr" />
-    <DCCReference Include="OTFEPGPDisk_U.pas" />
-  </ItemGroup>
-</Project>
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{7d897449-7d57-4055-88d0-a0443409c78a}</ProjectGuid>
+			<MainSource>OTFEPGPDisk.dpk</MainSource>
+			<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+			<DCC_DependencyCheckOutputName>C:\Documents and Settings\All Users\Documents\RAD Studio\5.0\Bpl\OTFEPGPDisk.bpl</DCC_DependencyCheckOutputName>
+			<FrameworkType>VCL</FrameworkType>
+			<ProjectVersion>13.4</ProjectVersion>
+			<Base>True</Base>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<TargetedPlatforms>1</TargetedPlatforms>
+			<AppType>Package</AppType>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+			<Base_Win64>true</Base_Win64>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+			<Base_Win32>true</Base_Win32>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
+			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win;$(DCC_Namespace)</DCC_Namespace>
+			<DCC_WriteableConstants>true</DCC_WriteableConstants>
+			<DCC_Description>OTFE: PGPDisk Delphi Component</DCC_Description>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+			<VerInfo_Build>138</VerInfo_Build>
+			<DCC_AssertionsAtRuntime>false</DCC_AssertionsAtRuntime>
+			<VerInfo_Locale>2057</VerInfo_Locale>
+			<GenDll>true</GenDll>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<VerInfo_Keys>CompanyName=Sarah Dean;FileDescription=TOTFEPGPDisk (PGPDisk Delphi Component);FileVersion=1.0.0.138;InternalName=OTFEPGPDiskDelphiComponent;LegalCopyright=(c) Sarah Dean;LegalTrademarks=;OriginalFilename=OTFEPGPDisk.bpl;ProductName=OTFE PGPDisk Delphi Component;ProductVersion=1.0.0;Comments=http://www.SDean12.org/</VerInfo_Keys>
+			<GenPackage>true</GenPackage>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win64)'!=''">
+			<Icon_MainIcon>OTFEPGPDisk_Icon4.ico</Icon_MainIcon>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<Icon_MainIcon>OTFEPGPDisk_Icon4.ico</Icon_MainIcon>
+			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<Version>7.0</Version>
+			<DCC_AssertionsAtRuntime>False</DCC_AssertionsAtRuntime>
+			<DCC_DebugInformation>False</DCC_DebugInformation>
+			<DCC_WriteableConstants>True</DCC_WriteableConstants>
+			<DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_UNSAFE_TYPE>True</DCC_UNSAFE_TYPE>
+			<DCC_UNSAFE_CODE>True</DCC_UNSAFE_CODE>
+			<DCC_UNSAFE_CAST>True</DCC_UNSAFE_CAST>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<Version>7.0</Version>
+			<DCC_AssertionsAtRuntime>False</DCC_AssertionsAtRuntime>
+			<DCC_DebugInformation>False</DCC_DebugInformation>
+			<DCC_WriteableConstants>True</DCC_WriteableConstants>
+			<DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+		</PropertyGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>Package</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Parameters>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+					</Parameters>
+					<Language>
+						<Language Name="ProjectLang">$00000809</Language>
+					</Language>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">138</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">2057</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName">Sarah Dean</VersionInfoKeys>
+						<VersionInfoKeys Name="FileDescription">TOTFEPGPDisk (PGPDisk Delphi Component)</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.0.0.138</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName">OTFEPGPDiskDelphiComponent</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalCopyright">(c) Sarah Dean</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename">OTFEPGPDisk.bpl</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductName">OTFE PGPDisk Delphi Component</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductVersion">1.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments">http://www.SDean12.org/</VersionInfoKeys>
+					</VersionInfoKeys>
+					<Source>
+						<Source Name="MainSource">OTFEPGPDisk.dpk</Source>
+					</Source>
+				</Delphi.Personality>
+				<Platforms>
+					<Platform value="Win64">False</Platform>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+		<ItemGroup>
+			<DelphiCompile Include="$(MainSource)">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="OTFEPGPDisk_U.dcr"/>
+			<DCCReference Include="vcl.dcp"/>
+			<DCCReference Include="SDeanUtils.dcp"/>
+			<DCCReference Include="OTFE.dcp"/>
+			<DCCReference Include="OTFEPGPDisk_U.pas"/>
+			<DCCReference Include="OTFEPGPDiskStructures_U.pas"/>
+			<DCCReference Include="OTFEPGPDiskMounting_U.pas">
+				<Form>PGPDiskMounting_F</Form>
+			</DCCReference>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+	</Project>
