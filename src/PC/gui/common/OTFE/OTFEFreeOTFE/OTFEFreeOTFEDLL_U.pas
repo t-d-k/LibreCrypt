@@ -87,6 +87,7 @@ type
   TOTFEFreeOTFEDLL = class(TOTFEFreeOTFEBase)
   private
     FExeDir: string;
+    function GetDLLDir: string;
 
   protected
     DriverAPI: TMainAPI;
@@ -369,11 +370,6 @@ dialogs,
 const
   DLL_HASH_FILE_PREFIX   = 'FreeOTFEHash';
   DLL_CYPHER_FILE_PREFIX = 'FreeOTFECypher';
-  DLL_MAIN_DRIVER = 'FreeOTFE.dll';
-
-  // Subdirs which should be searched for drivers
-  DRIVERS32_SUBDIR = 'DLL32';
-  DRIVERS64_SUBDIR = 'DLL64';
 
 
 // ----------------------------------------------------------------------------
@@ -576,7 +572,7 @@ var
   tempMountDriveLetter: Ansichar;
   stm: TSDUMemoryStream;
   // emptyIV : TSDUBytes;
-    volumeKeyStr: AnsiString;
+//    volumeKeyStr: AnsiString;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
 
@@ -1047,16 +1043,34 @@ begin
 end;
 
 
+function TOTFEFreeOTFEDLL.GetDLLDir(): string;
+const
+  { Subdir which should be searched for drivers
+      path is <exepath>/DLLs/<config>/<Platform>
+      eg .\bin\PC\DLLs\Debug\Win32
+      }
+  CONFIG =
+  // use debug DLLS or not, debug ones are much slower
+  {$IFDEF DEBUG_DLLS}
+     'Debug'
+  {$ELSE}
+  'Release'
+  {$ENDIF}
+      ;
+begin
+  //the dll version required is based on if the *app* is 32 or 64 bit - not the OS
+  result := IncludeTrailingPathDelimiter(fExeDir) + CONFIG+'\'+ Ifthen( SDUApp64bit(), 'x64', 'Win32');
+end;
+
 procedure TOTFEFreeOTFEDLL.GetAllDriversUnderExeDir(driverFilenames: TStringList);
 var
   fileIterator: TSDUFileIterator;
-  filename,dllDir: string;
+  filename: string;
 begin
-  dllDir := Ifthen( SDUApp64bit(), DRIVERS64_SUBDIR, DRIVERS32_SUBDIR);
   // Compile a list of drivers in the ExeDir
   fileIterator:= TSDUFileIterator.Create(nil);
   try
-    fileIterator.Directory := IncludeTrailingPathDelimiter(fExeDir) + dllDir;
+    fileIterator.Directory := GetDLLDir();
     fileIterator.FileMask := '*.dll';
     fileIterator.RecurseSubDirs := FALSE;
     fileIterator.OmitStartDirPrefix := FALSE;
@@ -1064,8 +1078,7 @@ begin
 
     fileIterator.Reset();
     filename := fileIterator.Next();
-    while (filename<>'') do
-      begin
+    while (filename<>'') do  begin
       driverFilenames.Add(filename);
       filename := fileIterator.Next();
       end;
@@ -2126,12 +2139,10 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.MainDLLFilename(): string;
-var
-  dllDir :string;
+const
+  DLL_MAIN_DRIVER = 'FreeOTFE.dll';
 begin
-  //the dll version required is based on if the *app* is 32 or 64 bit - not the OS
-  dllDir := Ifthen( SDUApp64bit(), DRIVERS64_SUBDIR, DRIVERS32_SUBDIR);
-  Result := IncludeTrailingPathDelimiter(fExeDir) + dllDir + '\' + DLL_MAIN_DRIVER;
+  Result := GetDLLDir() +  '\' + DLL_MAIN_DRIVER;
   Result :=SDUGetFinalPath(Result);
 end;
 
