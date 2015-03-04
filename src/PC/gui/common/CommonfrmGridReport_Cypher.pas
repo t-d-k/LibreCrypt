@@ -94,16 +94,16 @@ function TfrmGridReport_Cypher.ColIdxToColumn(colIdx: Integer): TGridColumn_Cyph
 var
   i:      TGridColumn_Cypher;
 begin
-  retval := low(TGridColumn_Cypher);
+  Result := low(TGridColumn_Cypher);
 
   for i := low(TGridColumn_Cypher) to high(TGridColumn_Cypher) do begin
     if (ColumnToColIdx(i) = colIdx) then begin
-      retval := i;
+      Result := i;
       break;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfrmGridReport_Cypher.AddSubItem(col: TGridColumn_Cypher; item: TListItem;
@@ -214,17 +214,16 @@ end;
 
 function TfrmGridReport_Cypher.CountDrivers(): Integer;
 var
-  retval:  Integer;
   allData: TFreeOTFECypherDriverArray;
 begin
   inherited;
 
-  retval := 0;
+  Result := 0;
   if GetFreeOTFEBase().GetCypherDrivers(allData) then begin
-    retval := high(allData) - low(allData) + 1;
+    Result := high(allData) - low(allData) + 1;
   end;
 
-  Result := retval;
+
 end;
 
 function TfrmGridReport_Cypher.CountImplementations(): Integer;
@@ -235,15 +234,15 @@ var
 begin
   inherited;
 
-  retval := 0;
+  Result := 0;
   if GetFreeOTFEBase().GetCypherDrivers(allData) then begin
     for i := low(allData) to high(allData) do begin
       currDriver := allData[i];
-      retval     := retval + currDriver.CypherCount;
+      Result     := Result + currDriver.CypherCount;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfrmGridReport_Cypher.FormCreate(Sender: TObject);
@@ -275,26 +274,23 @@ end;
 
 function TfrmGridReport_Cypher.GetColumnTitle(column: TGridColumn_Cypher): WideString;
 begin
-  retval := RS_UNKNOWN;
-
+  Result := RS_UNKNOWN;
   case column of
-    gccDriverTitle: retval          := COL_TITLE_DRIVER_TITLE;
-    gccDriverVersion: retval        := COL_TITLE_DRIVER_VERSION;
-    gccDriverGUID: retval           := COL_TITLE_DRIVER_GUID;
-    gccDriverDeviceName: retval     := COL_TITLE_DRIVER_DEVICE_NAME;
-    gccDriverUserModeName: retval   := COL_TITLE_DRIVER_USER_MODE_NAME;
-    gccDriverKernelModeName: retval := COL_TITLE_DRIVER_KERNEL_MODE_NAME;
+    gccDriverTitle: Result          := COL_TITLE_DRIVER_TITLE;
+    gccDriverVersion: Result        := COL_TITLE_DRIVER_VERSION;
+    gccDriverGUID: Result           := COL_TITLE_DRIVER_GUID;
+    gccDriverDeviceName: Result     := COL_TITLE_DRIVER_DEVICE_NAME;
+    gccDriverUserModeName: Result   := COL_TITLE_DRIVER_USER_MODE_NAME;
+    gccDriverKernelModeName: Result := COL_TITLE_DRIVER_KERNEL_MODE_NAME;
 
-    gccCypherTitle: retval             := COL_TITLE_CYPHER_TITLE;
-    gccCypherKeysizeUnderlying: retval := COL_TITLE_CYPHER_KEYSIZE;
-    gccCypherMode: retval              := COL_TITLE_CYPHER_MODE;
-    gccCypherVersion: retval           := COL_TITLE_CYPHER_VERSION;
-    gccCypherKeysizeRequired: retval   := COL_TITLE_CYPHER_KEYSIZE_REQD;
-    gccCypherBlocksize: retval         := COL_TITLE_CYPHER_BLOCKSIZE;
-    gccCypherGUID: retval              := COL_TITLE_CYPHER_GUID;
+    gccCypherTitle: Result             := COL_TITLE_CYPHER_TITLE;
+    gccCypherKeysizeUnderlying: Result := COL_TITLE_CYPHER_KEYSIZE;
+    gccCypherMode: Result              := COL_TITLE_CYPHER_MODE;
+    gccCypherVersion: Result           := COL_TITLE_CYPHER_VERSION;
+    gccCypherKeysizeRequired: Result   := COL_TITLE_CYPHER_KEYSIZE_REQD;
+    gccCypherBlocksize: Result         := COL_TITLE_CYPHER_BLOCKSIZE;
+    gccCypherGUID: Result              := COL_TITLE_CYPHER_GUID;
   end;
-
-  Result := retval;
 end;
 
 end.

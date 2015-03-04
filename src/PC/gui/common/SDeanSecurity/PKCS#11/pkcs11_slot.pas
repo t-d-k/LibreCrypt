@@ -58,19 +58,17 @@ uses
 
 // Note: *Caller* is responsible for freeing returned attribute object
 function TPKCS11Slot.Token(): TPKCS11Token;
-var
-  retval: TPKCS11Token;
 begin
   if (not(TokenPresent)) then
     begin
     raise EPKCS11TokenNotPresent.Create(E_EPKCS11_TOKENNOTPRESENT);
     end;
 
-  retval := TPKCS11Token.Create();
-  retval.SlotID := SlotID;
-  retval.LibraryFunctionList := LibraryFunctionList;
+  Result := TPKCS11Token.Create();
+  Result.SlotID := SlotID;
+  Result.LibraryFunctionList := LibraryFunctionList;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Slot.GetSlotInfo(var info: CK_SLOT_INFO): boolean;
@@ -83,92 +81,86 @@ end;
 
 function TPKCS11Slot.GetDescription(): string;
 var
-  retval: string;
   info: CK_SLOT_INFO;
 begin
-  retval := '';
+  Result := '';
 
   if (GetSlotInfo(info)) then
     begin
-    retval := UTF8CHARArrayToString(TCK_UTF8CHARArray_64(info.slotDescription));
+    Result := UTF8CHARArrayToString(TCK_UTF8CHARArray_64(info.slotDescription));
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Slot.GetManufacturerID(): string;
 var
-  retval: string;
   info: CK_SLOT_INFO;
 begin
-  retval := '';
+  Result := '';
 
   if (GetSlotInfo(info)) then
     begin
-    retval := UTF8CHARArrayToString(TCK_UTF8CHARArray_32(info.manufacturerID));
+    Result := UTF8CHARArrayToString(TCK_UTF8CHARArray_32(info.manufacturerID));
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Slot.GetFlags(): CK_FLAGS;
 var
-  retval: CK_FLAGS;
   info: CK_SLOT_INFO;
 begin
-  retval := 0;
+  Result := 0;
 
   if (GetSlotInfo(info)) then
     begin
-    retval := info.Flags;
+    Result := info.Flags;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Slot.GetHardwareVersion(): CK_VERSION;
 var
-  retval: CK_VERSION;
   info: CK_SLOT_INFO;
 begin
-  retval := NULL_VERSION;
+  Result := NULL_VERSION;
 
   if (GetSlotInfo(info)) then
     begin
-    retval := info.hardwareVersion;
+    Result := info.hardwareVersion;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Slot.GetFirmwareVersion(): CK_VERSION;
 var
-  retval: CK_VERSION;
   info: CK_SLOT_INFO;
 begin
-  retval := NULL_VERSION;
+  Result := NULL_VERSION;
 
   if (GetSlotInfo(info)) then
     begin
-    retval := info.firmwareVersion;
+    Result := info.firmwareVersion;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Slot.CheckInfoFlagSet(testFlag: integer): boolean;
 var
-  retval: boolean;
   info: CK_SLOT_INFO;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   if (GetSlotInfo(info)) then
     begin
-    retval := SDUBitWiseTest(info.flags, testFlag);
+    Result := SDUBitWiseTest(info.flags, testFlag);
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Slot.GetTokenPresent(): boolean;

@@ -46,7 +46,6 @@ type
     procedure AllTabs_InitAndReadSettings(config: TSettings); VIRTUAL;
     procedure AllTabs_WriteSettings(config: TSettings);
   PUBLIC
-//    OTFEFreeOTFEBase: TOTFEFreeOTFEBase;
 
     procedure ChangeLanguage(langCode: String); VIRTUAL; ABSTRACT;
   end;
@@ -85,32 +84,33 @@ function TfrmOptions.GetSettingsLocation(): TSettingsSaveLocation;
 var
   sl:     TSettingsSaveLocation;
 begin
-  retval := gSettings.OptSaveSettings;
+  Result := gSettings.OptSaveSettings;
   for sl := low(sl) to high(sl) do begin
-    if (SettingsLocationDisplay(sl) = cbSettingsLocation.Items[cbSettingsLocation.ItemIndex]) then
-    begin
-      retval := sl;
+    if (SettingsLocationDisplay(sl) = cbSettingsLocation.Items[cbSettingsLocation.ItemIndex]) then begin
+      Result := sl;
       break;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 function TfrmOptions.SettingsLocationDisplay(loc: TSettingsSaveLocation): String;
 begin
-  retval := '';
+  Result := '';
 
   case loc of
-    slNone: retval     := SAVELOCATION_DO_NOT_SAVE;
-    slExeDir: retval   := SDUParamSubstitute(SAVELOCATION_EXE_DIR,
+    slNone: Result     := SAVELOCATION_DO_NOT_SAVE;
+    slExeDir: Result   := SDUParamSubstitute(SAVELOCATION_EXE_DIR,
         [Application.Title]);
-    slProfile: retval  := SAVELOCATION_USER_PROFILE;
-    slRegistry: retval := SAVELOCATION_REGISTRY;
-    slCustom: retval   := SAVELOCATION_CUSTOMISED;
+    slProfile: Result  := SAVELOCATION_USER_PROFILE;
+    slRegistry: Result := SAVELOCATION_REGISTRY;
+    slCustom: Result   := SAVELOCATION_CUSTOMISED;
+    else
+      assert(false);
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfrmOptions.pbOKClick(Sender: TObject);
@@ -123,7 +123,6 @@ end;
 
 function TfrmOptions.DoOKClicked(): Boolean;
 var
-  allOK:                         Boolean;
   oldSettingsLocation:           TSettingsSaveLocation;
   newSettingsLocation:           TSettingsSaveLocation;
   msgSegment:                    String;
@@ -136,13 +135,13 @@ var
   currTabSheet:                  TTabSheet;
   deleteOldLocation:             Boolean;
 begin
-  allOK := True;
+  Result := True;
 
   // Decode settings save location
   oldSettingsLocation := gSettings.OptSaveSettings;
   newSettingsLocation := GetSettingsLocation();
 
-  if allOK then begin
+  if Result then begin
     // If user tried to save settings under C:\Program Files\... while
     // running under Vista, let the user know that Vista's security
     // system screws this up (it maps the save to somewhere in the user's
@@ -154,9 +153,9 @@ begin
       vistaProgFilesDirWarn := (Pos(uppercase(programFilesDir), uppercase(filename)) > 0);
     end;
 
-    allOK := not (vistaProgFilesDirWarn);
+    Result := not (vistaProgFilesDirWarn);
 
-    if not (allOK) then begin
+    if not (Result) then begin
       prevSDUDialogsStripSingleCRLF := SDUDialogsStripSingleCRLF;
       // Don't do special processing on this message
       SDUDialogsStripSingleCRLF     := False;  // Don't do special processing on this message
@@ -175,7 +174,7 @@ begin
 
   end;
 
-  if allOK then begin
+  if Result then begin
     // For each tab, scan it's controls; if it's one of our frames, get it to
     // process...
     for i := 0 to (pcOptions.PageCount - 1) do begin
@@ -184,36 +183,36 @@ begin
         if (currTabSheet.Controls[j] is TfmeOptions_Base) then begin
           if not (TfmeOptions_Base(currTabSheet.Controls[j]).CheckSettings()) then begin
             pcOptions.ActivePage := pcOptions.Pages[i];
-            allOK                := False;
+            Result                := False;
             break;
           end;
         end;
       end;
 
       // Break out of loop early if problem detected
-      if not (allOK) then begin
+      if not (Result) then begin
         break;
       end;
     end;
   end;
 
-  if allOK then begin
+  if Result then begin
     gSettings.OptSaveSettings := newSettingsLocation;
 
     AllTabs_WriteSettings(gSettings);
 
     if (gSettings.OptSaveSettings <> slNone) then begin
-      allOK := gSettings.Save();
+      Result := gSettings.Save();
     end;
 
   end;
 
-  if allOK then begin
+  if Result then begin
     // If settings aren't going to be saved, and they weren't saved previously,
     // warn user
     if ((oldSettingsLocation = newSettingsLocation) and (newSettingsLocation = slNone)) then
     begin
-      allOK := (SDUMessageDlg(_(
+      Result := (SDUMessageDlg(_(
         'You have not specified a location where DoxBox should save its settings to.') +
         SDUCRLF + SDUCRLF + _(
         'Although the settings entered will take effect, they will revert back to their defaults when DoxBox is exited.')
@@ -292,7 +291,7 @@ begin
     end;
   end;
 
-  if allOK then begin
+  if Result then begin
     if (ckAssociateFiles.Checked <> FOrigAssociateFiles) then begin
       if ckAssociateFiles.Checked then begin
         SDUFileExtnRegCmd(
@@ -318,7 +317,6 @@ begin
 
   end;
 
-  Result := allOK;
 end;
 
 

@@ -39,15 +39,13 @@ end;
 
 
 function SDUDWORDToBigEndian32(number: DWORD): TSDUBigEndian32;
-var
-  retval: TSDUBigEndian32;
 begin
-  retval[0] := (number and $FF000000) shr 32;
-  retval[1] := (number and $00FF0000) shr 16;
-  retval[2] := (number and $0000FF00) shr 8;
-  retval[3] := (number and $000000FF);
+  Result[0] := (number and $FF000000) shr 32;
+  Result[1] := (number and $00FF0000) shr 16;
+  Result[2] := (number and $0000FF00) shr 8;
+  Result[3] := (number and $000000FF);
 
-  Result := retval;
+
 end;
 
 END.

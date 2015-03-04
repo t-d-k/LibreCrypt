@@ -31,7 +31,7 @@ type
   public
 
     function  Execute(): boolean;
-  published
+//  published
     constructor Create();
     destructor  Destroy(); override;
 

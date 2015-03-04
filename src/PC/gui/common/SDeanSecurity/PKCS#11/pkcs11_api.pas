@@ -173,112 +173,109 @@ begin
 end;
 
 function TPKCS11API.RVToString(rv: CK_RV): string;
-var
-  retval: string;
 begin
-  retval := '0x'+inttohex(rv, 8);
+  Result := '0x'+inttohex(rv, 8);
 
   case rv of
-    CKR_OK:                               retval := 'CKR_OK';
-    CKR_CANCEL:                           retval := 'CKR_CANCEL';
-    CKR_HOST_MEMORY:                      retval := 'CKR_HOST_MEMORY';
-    CKR_SLOT_ID_INVALID:                  retval := 'CKR_SLOT_ID_INVALID';
-    CKR_GENERAL_ERROR:                    retval := 'CKR_GENERAL_ERROR';
-    CKR_FUNCTION_FAILED:                  retval := 'CKR_FUNCTION_FAILED';
-    CKR_ARGUMENTS_BAD:                    retval := 'CKR_ARGUMENTS_BAD';
-    CKR_NO_EVENT:                         retval := 'CKR_NO_EVENT';
-    CKR_NEED_TO_CREATE_THREADS:           retval := 'CKR_NEED_TO_CREATE_THREADS';
-    CKR_CANT_LOCK:                        retval := 'CKR_CANT_LOCK';
-    CKR_ATTRIBUTE_READ_ONLY:              retval := 'CKR_ATTRIBUTE_READ_ONLY';
-    CKR_ATTRIBUTE_SENSITIVE:              retval := 'CKR_ATTRIBUTE_SENSITIVE';
-    CKR_ATTRIBUTE_TYPE_INVALID:           retval := 'CKR_ATTRIBUTE_TYPE_INVALID';
-    CKR_ATTRIBUTE_VALUE_INVALID:          retval := 'CKR_ATTRIBUTE_VALUE_INVALID';
-    CKR_DATA_INVALID:                     retval := 'CKR_DATA_INVALID';
-    CKR_DATA_LEN_RANGE:                   retval := 'CKR_DATA_LEN_RANGE';
-    CKR_DEVICE_ERROR:                     retval := 'CKR_DEVICE_ERROR';
-    CKR_DEVICE_MEMORY:                    retval := 'CKR_DEVICE_MEMORY';
-    CKR_DEVICE_REMOVED:                   retval := 'CKR_DEVICE_REMOVED';
-    CKR_ENCRYPTED_DATA_INVALID:           retval := 'CKR_ENCRYPTED_DATA_INVALID';
-    CKR_ENCRYPTED_DATA_LEN_RANGE:         retval := 'CKR_ENCRYPTED_DATA_LEN_RANGE';
-    CKR_FUNCTION_CANCELED:                retval := 'CKR_FUNCTION_CANCELED';
-    CKR_FUNCTION_NOT_PARALLEL:            retval := 'CKR_FUNCTION_NOT_PARALLEL';
-    CKR_FUNCTION_NOT_SUPPORTED:           retval := 'CKR_FUNCTION_NOT_SUPPORTED';
-    CKR_KEY_HANDLE_INVALID:               retval := 'CKR_KEY_HANDLE_INVALID';
-    CKR_KEY_SIZE_RANGE:                   retval := 'CKR_KEY_SIZE_RANGE';
-    CKR_KEY_TYPE_INCONSISTENT:            retval := 'CKR_KEY_TYPE_INCONSISTENT';
-    CKR_KEY_NOT_NEEDED:                   retval := 'CKR_KEY_NOT_NEEDED';
-    CKR_KEY_CHANGED:                      retval := 'CKR_KEY_CHANGED';
-    CKR_KEY_NEEDED:                       retval := 'CKR_KEY_NEEDED';
-    CKR_KEY_INDIGESTIBLE:                 retval := 'CKR_KEY_INDIGESTIBLE';
-    CKR_KEY_FUNCTION_NOT_PERMITTED:       retval := 'CKR_KEY_FUNCTION_NOT_PERMITTED';
-    CKR_KEY_NOT_WRAPPABLE:                retval := 'CKR_KEY_NOT_WRAPPABLE';
-    CKR_KEY_UNEXTRACTABLE:                retval := 'CKR_KEY_UNEXTRACTABLE';
-    CKR_MECHANISM_INVALID:                retval := 'CKR_MECHANISM_INVALID';
-    CKR_MECHANISM_PARAM_INVALID:          retval := 'CKR_MECHANISM_PARAM_INVALID';
-    CKR_OBJECT_HANDLE_INVALID:            retval := 'CKR_OBJECT_HANDLE_INVALID';
-    CKR_OPERATION_ACTIVE:                 retval := 'CKR_OPERATION_ACTIVE';
-    CKR_OPERATION_NOT_INITIALIZED:        retval := 'CKR_OPERATION_NOT_INITIALIZED';
-    CKR_PIN_INCORRECT:                    retval := 'CKR_PIN_INCORRECT';
-    CKR_PIN_INVALID:                      retval := 'CKR_PIN_INVALID';
-    CKR_PIN_LEN_RANGE:                    retval := 'CKR_PIN_LEN_RANGE';
-    CKR_PIN_EXPIRED:                      retval := 'CKR_PIN_EXPIRED';
-    CKR_PIN_LOCKED:                       retval := 'CKR_PIN_LOCKED';
-    CKR_SESSION_CLOSED:                   retval := 'CKR_SESSION_CLOSED';
-    CKR_SESSION_COUNT:                    retval := 'CKR_SESSION_COUNT';
-    CKR_SESSION_HANDLE_INVALID:           retval := 'CKR_SESSION_HANDLE_INVALID';
-    CKR_SESSION_PARALLEL_NOT_SUPPORTED:   retval := 'CKR_SESSION_PARALLEL_NOT_SUPPORTED';
-    CKR_SESSION_READ_ONLY:                retval := 'CKR_SESSION_READ_ONLY';
-    CKR_SESSION_EXISTS:                   retval := 'CKR_SESSION_EXISTS';
-    CKR_SESSION_READ_ONLY_EXISTS:         retval := 'CKR_SESSION_READ_ONLY_EXISTS';
-    CKR_SESSION_READ_WRITE_SO_EXISTS:     retval := 'CKR_SESSION_READ_WRITE_SO_EXISTS';
-    CKR_SIGNATURE_INVALID:                retval := 'CKR_SIGNATURE_INVALID';
-    CKR_SIGNATURE_LEN_RANGE:              retval := 'CKR_SIGNATURE_LEN_RANGE';
-    CKR_TEMPLATE_INCOMPLETE:              retval := 'CKR_TEMPLATE_INCOMPLETE';
-    CKR_TEMPLATE_INCONSISTENT:            retval := 'CKR_TEMPLATE_INCONSISTENT';
-    CKR_TOKEN_NOT_PRESENT:                retval := 'CKR_TOKEN_NOT_PRESENT';
-    CKR_TOKEN_NOT_RECOGNIZED:             retval := 'CKR_TOKEN_NOT_RECOGNIZED';
-    CKR_TOKEN_WRITE_PROTECTED:            retval := 'CKR_TOKEN_WRITE_PROTECTED';
-    CKR_UNWRAPPING_KEY_HANDLE_INVALID:    retval := 'CKR_UNWRAPPING_KEY_HANDLE_INVALID';
-    CKR_UNWRAPPING_KEY_SIZE_RANGE:        retval := 'CKR_UNWRAPPING_KEY_SIZE_RANGE';
-    CKR_UNWRAPPING_KEY_TYPE_INCONSISTENT: retval := 'CKR_UNWRAPPING_KEY_TYPE_INCONSISTENT';
-    CKR_USER_ALREADY_LOGGED_IN:           retval := 'CKR_USER_ALREADY_LOGGED_IN';
-    CKR_USER_NOT_LOGGED_IN:               retval := 'CKR_USER_NOT_LOGGED_IN';
-    CKR_USER_PIN_NOT_INITIALIZED:         retval := 'CKR_USER_PIN_NOT_INITIALIZED';
-    CKR_USER_TYPE_INVALID:                retval := 'CKR_USER_TYPE_INVALID';
-    CKR_USER_ANOTHER_ALREADY_LOGGED_IN:   retval := 'CKR_USER_ANOTHER_ALREADY_LOGGED_IN';
-    CKR_USER_TOO_MANY_TYPES:              retval := 'CKR_USER_TOO_MANY_TYPES';
-    CKR_WRAPPED_KEY_INVALID:              retval := 'CKR_WRAPPED_KEY_INVALID';
-    CKR_WRAPPED_KEY_LEN_RANGE:            retval := 'CKR_WRAPPED_KEY_LEN_RANGE';
-    CKR_WRAPPING_KEY_HANDLE_INVALID:      retval := 'CKR_WRAPPING_KEY_HANDLE_INVALID';
-    CKR_WRAPPING_KEY_SIZE_RANGE:          retval := 'CKR_WRAPPING_KEY_SIZE_RANGE';
-    CKR_WRAPPING_KEY_TYPE_INCONSISTENT:   retval := 'CKR_WRAPPING_KEY_TYPE_INCONSISTENT';
-    CKR_RANDOM_SEED_NOT_SUPPORTED:        retval := 'CKR_RANDOM_SEED_NOT_SUPPORTED';
-    CKR_RANDOM_NO_RNG:                    retval := 'CKR_RANDOM_NO_RNG';
-    CKR_DOMAIN_PARAMS_INVALID:            retval := 'CKR_DOMAIN_PARAMS_INVALID';
-    CKR_BUFFER_TOO_SMALL:                 retval := 'CKR_BUFFER_TOO_SMALL';
-    CKR_SAVED_STATE_INVALID:              retval := 'CKR_SAVED_STATE_INVALID';
-    CKR_INFORMATION_SENSITIVE:            retval := 'CKR_INFORMATION_SENSITIVE';
-    CKR_STATE_UNSAVEABLE:                 retval := 'CKR_STATE_UNSAVEABLE';
-    CKR_CRYPTOKI_NOT_INITIALIZED:         retval := 'CKR_CRYPTOKI_NOT_INITIALIZED';
-    CKR_CRYPTOKI_ALREADY_INITIALIZED:     retval := 'CKR_CRYPTOKI_ALREADY_INITIALIZED';
-    CKR_MUTEX_BAD:                        retval := 'CKR_MUTEX_BAD';
-    CKR_MUTEX_NOT_LOCKED:                 retval := 'CKR_MUTEX_NOT_LOCKED';
-    CKR_NEW_PIN_MODE:                     retval := 'CKR_NEW_PIN_MODE';
-    CKR_NEXT_OTP:                         retval := 'CKR_NEXT_OTP';
-    CKR_FUNCTION_REJECTED:                retval := 'CKR_FUNCTION_REJECTED';
-    CKR_VENDOR_DEFINED:                   retval := 'CKR_VENDOR_DEFINED';
+    CKR_OK:                               Result := 'CKR_OK';
+    CKR_CANCEL:                           Result := 'CKR_CANCEL';
+    CKR_HOST_MEMORY:                      Result := 'CKR_HOST_MEMORY';
+    CKR_SLOT_ID_INVALID:                  Result := 'CKR_SLOT_ID_INVALID';
+    CKR_GENERAL_ERROR:                    Result := 'CKR_GENERAL_ERROR';
+    CKR_FUNCTION_FAILED:                  Result := 'CKR_FUNCTION_FAILED';
+    CKR_ARGUMENTS_BAD:                    Result := 'CKR_ARGUMENTS_BAD';
+    CKR_NO_EVENT:                         Result := 'CKR_NO_EVENT';
+    CKR_NEED_TO_CREATE_THREADS:           Result := 'CKR_NEED_TO_CREATE_THREADS';
+    CKR_CANT_LOCK:                        Result := 'CKR_CANT_LOCK';
+    CKR_ATTRIBUTE_READ_ONLY:              Result := 'CKR_ATTRIBUTE_READ_ONLY';
+    CKR_ATTRIBUTE_SENSITIVE:              Result := 'CKR_ATTRIBUTE_SENSITIVE';
+    CKR_ATTRIBUTE_TYPE_INVALID:           Result := 'CKR_ATTRIBUTE_TYPE_INVALID';
+    CKR_ATTRIBUTE_VALUE_INVALID:          Result := 'CKR_ATTRIBUTE_VALUE_INVALID';
+    CKR_DATA_INVALID:                     Result := 'CKR_DATA_INVALID';
+    CKR_DATA_LEN_RANGE:                   Result := 'CKR_DATA_LEN_RANGE';
+    CKR_DEVICE_ERROR:                     Result := 'CKR_DEVICE_ERROR';
+    CKR_DEVICE_MEMORY:                    Result := 'CKR_DEVICE_MEMORY';
+    CKR_DEVICE_REMOVED:                   Result := 'CKR_DEVICE_REMOVED';
+    CKR_ENCRYPTED_DATA_INVALID:           Result := 'CKR_ENCRYPTED_DATA_INVALID';
+    CKR_ENCRYPTED_DATA_LEN_RANGE:         Result := 'CKR_ENCRYPTED_DATA_LEN_RANGE';
+    CKR_FUNCTION_CANCELED:                Result := 'CKR_FUNCTION_CANCELED';
+    CKR_FUNCTION_NOT_PARALLEL:            Result := 'CKR_FUNCTION_NOT_PARALLEL';
+    CKR_FUNCTION_NOT_SUPPORTED:           Result := 'CKR_FUNCTION_NOT_SUPPORTED';
+    CKR_KEY_HANDLE_INVALID:               Result := 'CKR_KEY_HANDLE_INVALID';
+    CKR_KEY_SIZE_RANGE:                   Result := 'CKR_KEY_SIZE_RANGE';
+    CKR_KEY_TYPE_INCONSISTENT:            Result := 'CKR_KEY_TYPE_INCONSISTENT';
+    CKR_KEY_NOT_NEEDED:                   Result := 'CKR_KEY_NOT_NEEDED';
+    CKR_KEY_CHANGED:                      Result := 'CKR_KEY_CHANGED';
+    CKR_KEY_NEEDED:                       Result := 'CKR_KEY_NEEDED';
+    CKR_KEY_INDIGESTIBLE:                 Result := 'CKR_KEY_INDIGESTIBLE';
+    CKR_KEY_FUNCTION_NOT_PERMITTED:       Result := 'CKR_KEY_FUNCTION_NOT_PERMITTED';
+    CKR_KEY_NOT_WRAPPABLE:                Result := 'CKR_KEY_NOT_WRAPPABLE';
+    CKR_KEY_UNEXTRACTABLE:                Result := 'CKR_KEY_UNEXTRACTABLE';
+    CKR_MECHANISM_INVALID:                Result := 'CKR_MECHANISM_INVALID';
+    CKR_MECHANISM_PARAM_INVALID:          Result := 'CKR_MECHANISM_PARAM_INVALID';
+    CKR_OBJECT_HANDLE_INVALID:            Result := 'CKR_OBJECT_HANDLE_INVALID';
+    CKR_OPERATION_ACTIVE:                 Result := 'CKR_OPERATION_ACTIVE';
+    CKR_OPERATION_NOT_INITIALIZED:        Result := 'CKR_OPERATION_NOT_INITIALIZED';
+    CKR_PIN_INCORRECT:                    Result := 'CKR_PIN_INCORRECT';
+    CKR_PIN_INVALID:                      Result := 'CKR_PIN_INVALID';
+    CKR_PIN_LEN_RANGE:                    Result := 'CKR_PIN_LEN_RANGE';
+    CKR_PIN_EXPIRED:                      Result := 'CKR_PIN_EXPIRED';
+    CKR_PIN_LOCKED:                       Result := 'CKR_PIN_LOCKED';
+    CKR_SESSION_CLOSED:                   Result := 'CKR_SESSION_CLOSED';
+    CKR_SESSION_COUNT:                    Result := 'CKR_SESSION_COUNT';
+    CKR_SESSION_HANDLE_INVALID:           Result := 'CKR_SESSION_HANDLE_INVALID';
+    CKR_SESSION_PARALLEL_NOT_SUPPORTED:   Result := 'CKR_SESSION_PARALLEL_NOT_SUPPORTED';
+    CKR_SESSION_READ_ONLY:                Result := 'CKR_SESSION_READ_ONLY';
+    CKR_SESSION_EXISTS:                   Result := 'CKR_SESSION_EXISTS';
+    CKR_SESSION_READ_ONLY_EXISTS:         Result := 'CKR_SESSION_READ_ONLY_EXISTS';
+    CKR_SESSION_READ_WRITE_SO_EXISTS:     Result := 'CKR_SESSION_READ_WRITE_SO_EXISTS';
+    CKR_SIGNATURE_INVALID:                Result := 'CKR_SIGNATURE_INVALID';
+    CKR_SIGNATURE_LEN_RANGE:              Result := 'CKR_SIGNATURE_LEN_RANGE';
+    CKR_TEMPLATE_INCOMPLETE:              Result := 'CKR_TEMPLATE_INCOMPLETE';
+    CKR_TEMPLATE_INCONSISTENT:            Result := 'CKR_TEMPLATE_INCONSISTENT';
+    CKR_TOKEN_NOT_PRESENT:                Result := 'CKR_TOKEN_NOT_PRESENT';
+    CKR_TOKEN_NOT_RECOGNIZED:             Result := 'CKR_TOKEN_NOT_RECOGNIZED';
+    CKR_TOKEN_WRITE_PROTECTED:            Result := 'CKR_TOKEN_WRITE_PROTECTED';
+    CKR_UNWRAPPING_KEY_HANDLE_INVALID:    Result := 'CKR_UNWRAPPING_KEY_HANDLE_INVALID';
+    CKR_UNWRAPPING_KEY_SIZE_RANGE:        Result := 'CKR_UNWRAPPING_KEY_SIZE_RANGE';
+    CKR_UNWRAPPING_KEY_TYPE_INCONSISTENT: Result := 'CKR_UNWRAPPING_KEY_TYPE_INCONSISTENT';
+    CKR_USER_ALREADY_LOGGED_IN:           Result := 'CKR_USER_ALREADY_LOGGED_IN';
+    CKR_USER_NOT_LOGGED_IN:               Result := 'CKR_USER_NOT_LOGGED_IN';
+    CKR_USER_PIN_NOT_INITIALIZED:         Result := 'CKR_USER_PIN_NOT_INITIALIZED';
+    CKR_USER_TYPE_INVALID:                Result := 'CKR_USER_TYPE_INVALID';
+    CKR_USER_ANOTHER_ALREADY_LOGGED_IN:   Result := 'CKR_USER_ANOTHER_ALREADY_LOGGED_IN';
+    CKR_USER_TOO_MANY_TYPES:              Result := 'CKR_USER_TOO_MANY_TYPES';
+    CKR_WRAPPED_KEY_INVALID:              Result := 'CKR_WRAPPED_KEY_INVALID';
+    CKR_WRAPPED_KEY_LEN_RANGE:            Result := 'CKR_WRAPPED_KEY_LEN_RANGE';
+    CKR_WRAPPING_KEY_HANDLE_INVALID:      Result := 'CKR_WRAPPING_KEY_HANDLE_INVALID';
+    CKR_WRAPPING_KEY_SIZE_RANGE:          Result := 'CKR_WRAPPING_KEY_SIZE_RANGE';
+    CKR_WRAPPING_KEY_TYPE_INCONSISTENT:   Result := 'CKR_WRAPPING_KEY_TYPE_INCONSISTENT';
+    CKR_RANDOM_SEED_NOT_SUPPORTED:        Result := 'CKR_RANDOM_SEED_NOT_SUPPORTED';
+    CKR_RANDOM_NO_RNG:                    Result := 'CKR_RANDOM_NO_RNG';
+    CKR_DOMAIN_PARAMS_INVALID:            Result := 'CKR_DOMAIN_PARAMS_INVALID';
+    CKR_BUFFER_TOO_SMALL:                 Result := 'CKR_BUFFER_TOO_SMALL';
+    CKR_SAVED_STATE_INVALID:              Result := 'CKR_SAVED_STATE_INVALID';
+    CKR_INFORMATION_SENSITIVE:            Result := 'CKR_INFORMATION_SENSITIVE';
+    CKR_STATE_UNSAVEABLE:                 Result := 'CKR_STATE_UNSAVEABLE';
+    CKR_CRYPTOKI_NOT_INITIALIZED:         Result := 'CKR_CRYPTOKI_NOT_INITIALIZED';
+    CKR_CRYPTOKI_ALREADY_INITIALIZED:     Result := 'CKR_CRYPTOKI_ALREADY_INITIALIZED';
+    CKR_MUTEX_BAD:                        Result := 'CKR_MUTEX_BAD';
+    CKR_MUTEX_NOT_LOCKED:                 Result := 'CKR_MUTEX_NOT_LOCKED';
+    CKR_NEW_PIN_MODE:                     Result := 'CKR_NEW_PIN_MODE';
+    CKR_NEXT_OTP:                         Result := 'CKR_NEXT_OTP';
+    CKR_FUNCTION_REJECTED:                Result := 'CKR_FUNCTION_REJECTED';
+    CKR_VENDOR_DEFINED:                   Result := 'CKR_VENDOR_DEFINED';
   end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11API.UTF8CHARArrayToString(arr: TCK_UTF8CHARArray_16): string;
 var
-  retval: string;
   tmpChar: char;
   i: integer;
 begin
-  retval:= '';
+  Result:= '';
   for i:=low(arr) to high(arr) do
     begin
     tmpChar := char(arr[i]);
@@ -290,21 +287,20 @@ begin
       tmpChar := '.';
     end;
 
-    retval:= retval + tmpChar;
+    Result:= Result + tmpChar;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11API.UTF8CHARArrayToString(arr: TCK_UTF8CHARArray_32): string;
 const
   NON_PRINTABLE_CHAR_PLACEHOLDER = '.';
 var
-  retval: string;
   tmpChar: char;
   i: integer;
 begin
-  retval:= '';
+  Result:= '';
   for i:=low(arr) to high(arr) do
     begin
     tmpChar := char(arr[i]);
@@ -316,19 +312,18 @@ begin
       tmpChar := NON_PRINTABLE_CHAR_PLACEHOLDER;
     end;
 
-    retval:= retval + tmpChar;
+    Result:= Result + tmpChar;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11API.UTF8CHARArrayToString(arr: TCK_UTF8CHARArray_64): string;
 var
-  retval: string;
   tmpChar: char;
   i: integer;
 begin
-  retval:= '';
+  Result:= '';
   for i:=low(arr) to high(arr) do
     begin
     tmpChar := char(arr[i]);
@@ -340,10 +335,10 @@ begin
       tmpChar := '.';
     end;
 
-    retval:= retval + tmpChar;
+    Result:= Result + tmpChar;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11API.VersionToString(version: CK_VERSION): string;
@@ -357,7 +352,6 @@ end;
 // Returns: Delphi version of date, set to zero on failure
 function TPKCS11API.CK_DATEToDate(ckDate: CK_DATE): TDate;
 var
-  retval: TDate;
   stryyyy: string;
   strmo: string;
   strdd: string;
@@ -365,7 +359,7 @@ var
   mo: integer;
   dd: integer;
 begin
-  retval := 0;
+  Result := 0;
 
   stryyyy := char(ckDate.year[0]) +
              char(ckDate.year[1]) +
@@ -382,16 +376,15 @@ begin
       TryStrToInt(strdd, dd)
      ) then
     begin
-    retval := EncodeDate(yyyy, mo, dd);
+    Result := EncodeDate(yyyy, mo, dd);
     end;
 
-  Result := retval;
+
 end;
 
 // Returns: CK_Date version of Delphi date, set to 00000000
 function TPKCS11API.DateToCK_DATE(date: TDate): CK_DATE;
 var
-  retval: CK_DATE;
   yyyy: word;
   mo: word;
   dd: word;
@@ -406,20 +399,20 @@ begin
     end;
 
   tmpStr := Format('%.4d', [integer(yyyy)]);
-  retval.year[0] := ord(tmpStr[1]);
-  retval.year[1] := ord(tmpStr[2]);
-  retval.year[2] := ord(tmpStr[3]);
-  retval.year[3] := ord(tmpStr[4]);
+  Result.year[0] := ord(tmpStr[1]);
+  Result.year[1] := ord(tmpStr[2]);
+  Result.year[2] := ord(tmpStr[3]);
+  Result.year[3] := ord(tmpStr[4]);
 
   tmpStr := Format('%.2d', [integer(mo)]);
-  retval.month[0] := ord(tmpStr[1]);
-  retval.month[1] := ord(tmpStr[2]);
+  Result.month[0] := ord(tmpStr[1]);
+  Result.month[1] := ord(tmpStr[2]);
 
   tmpStr := Format('%.2d', [integer(dd)]);
-  retval.day[0] := ord(tmpStr[1]);
-  retval.day[1] := ord(tmpStr[2]);
+  Result.day[0] := ord(tmpStr[1]);
+  Result.day[1] := ord(tmpStr[2]);
 
-  Result := retval;
+
 end;
 
 

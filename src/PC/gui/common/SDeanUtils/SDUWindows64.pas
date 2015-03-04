@@ -46,12 +46,10 @@ var
   fnWow64DisableWow64FsRedirection: TWow64DisableWow64FsRedirection;
 
 function SDULoadLibKernel32(): boolean;
-var
-  retval: boolean;
 begin
   hLibKernel32 := LoadLibrary(KERNEL32_DLL);
-  retval := (hLibKernel32 <> 0);
-  if not(retval) then
+  Result := (hLibKernel32 <> 0);
+  if not(Result) then
     begin
     SDUFreeLibKernel32();
     end
@@ -63,7 +61,7 @@ begin
     @fnWow64DisableWow64FsRedirection := GetProcAddress(hLibKernel32, 'Wow64DisableWow64FsRedirection');
     end;
 
-  Result := retval;
+
 end;
 
 procedure SDUFreeLibKernel32();
@@ -83,60 +81,53 @@ end;
 
 function SDUIsWow64Process(const hProcess: THandle; out Wow64Process: boolean): boolean;
 var
-  retval: boolean;
   wow64Retval: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   if (@fnIsWow64Process <> nil) then
     begin
-    retval := fnIsWow64Process(hProcess, @wow64Retval);
+    Result := fnIsWow64Process(hProcess, @wow64Retval);
     Wow64Process := wow64Retval;
     end;
 
-  Result := retval;
+
 end;
 
 function SDUWow64EnableWow64FsRedirection(Enable: boolean): boolean;
-var
-  retval: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   if (@fnWow64EnableWow64FsRedirection <> nil) then
     begin
-    retval := fnWow64EnableWow64FsRedirection(Enable);
+    Result := fnWow64EnableWow64FsRedirection(Enable);
     end;
 
-  Result := retval;
+
 end;
 
 function SDUWow64RevertWow64FsRedirection(const OldValue: Pointer): boolean;
-var
-  retval: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   if (@fnWow64RevertWow64FsRedirection <> nil) then
     begin
-    retval := fnWow64RevertWow64FsRedirection(OldValue);
+    Result := fnWow64RevertWow64FsRedirection(OldValue);
     end;
 
-  Result := retval;
+
 end;
 
 function SDUWow64DisableWow64FsRedirection(out OldValue: Pointer): boolean;
-var
-  retval: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   if (@fnWow64DisableWow64FsRedirection <> nil) then
     begin
-    retval := fnWow64DisableWow64FsRedirection(@OldValue);
+    Result := fnWow64DisableWow64FsRedirection(@OldValue);
     end;
 
-  Result := retval;
+
 end;
 
 

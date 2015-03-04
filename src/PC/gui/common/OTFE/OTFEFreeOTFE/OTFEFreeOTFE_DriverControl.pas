@@ -175,10 +175,9 @@ end;
 function TOTFEFreeOTFEDriverControl.GetServiceState(service: string; var state: DWORD): boolean;
 var
   serviceHandle: SC_HANDLE;
-  retVal: boolean;
   serviceStatus: SERVICE_STATUS;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   if (uSCManager<>0) then
     begin
@@ -191,7 +190,7 @@ begin
                            ) then
         begin
         state := serviceStatus.dwCurrentState;
-        retVal := TRUE;
+        Result := TRUE;
         end;
 
       FreeOTFECloseService(serviceHandle);
@@ -199,7 +198,7 @@ begin
 
     end;
 
-  Result := retVal;
+
 end;
 
 
@@ -208,15 +207,13 @@ end;
 // driverNames - Set to a TStringList object which will have the driver names
 //               *added* to it
 function TOTFEFreeOTFEDriverControl.GetFreeOTFEDrivers(var driverNames: TStringList): boolean;
-var
-  retVal: boolean;
 begin
-  retVal := TRUE;
+  Result := TRUE;
 
-  retVal := retVal AND GetFreeOTFEDriversInState(SERVICE_ACTIVE, driverNames);
-  retVal := retVal AND GetFreeOTFEDriversInState(SERVICE_INACTIVE, driverNames);
+  Result := Result AND GetFreeOTFEDriversInState(SERVICE_ACTIVE, driverNames);
+  Result := Result AND GetFreeOTFEDriversInState(SERVICE_INACTIVE, driverNames);
 
-  Result := retVal;
+
 end;
 
 
@@ -232,7 +229,6 @@ type
   TEnumServices = array[0..(LARGE_NUMBER_OF_SERVICES-1)] of TEnumServiceStatus;
   PEnumServices = ^TEnumServices;
 var
-  retVal: boolean;
   bytesSupplied: DWORD;
   bytesNeeded: DWORD;
   cntServicesReturned: DWORD;
@@ -242,7 +238,7 @@ var
   currDriverName: string;
   flagFreeOTFEDriver: boolean;
 begin
-  retVal := TRUE;
+  Result := TRUE;
 
   if (uSCManager<>0) then
     begin
@@ -300,7 +296,7 @@ begin
     
     end;
 
-  Result := retVal;
+
 end;
 
 
@@ -310,9 +306,8 @@ var
   serviceHandle: SC_HANDLE;
   serviceStatus: SERVICE_STATUS;
   X: PChar;  // No idea why this is needed though...
-  retVal: boolean;
 begin
-  retVal := FALSE;
+  Result := FALSE;
   X := nil;
 
   if (uSCManager<>0) then
@@ -322,7 +317,7 @@ begin
       begin
       if start then
         begin
-        retVal := StartService(
+        Result := StartService(
                                serviceHandle, // handle of service
                                0,  // number of arguments
                                X   // address of array of argument string pointers
@@ -330,7 +325,7 @@ begin
         end
       else
         begin
-        retVal := ControlService(
+        Result := ControlService(
                               serviceHandle,	// handle to service
                               SERVICE_CONTROL_STOP,	// control code
                               serviceStatus  // pointer to service status structure
@@ -342,19 +337,18 @@ begin
 
     end;
 
-  Result := retVal;
+
 end;
 
 
 function TOTFEFreeOTFEDriverControl.DriverConfig(service: string; var autoStart: boolean; var fullDriverFilename: string): boolean;
 var
-  retVal: boolean;
   serviceHandle: SC_HANDLE;
   serviceConfig: LPQUERY_SERVICE_CONFIGW;
   bytesNeeded: DWORD;
   bytesSupplied: DWORD;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   if FreeOTFEOpenService(service, serviceHandle) then
     begin
@@ -388,7 +382,7 @@ begin
           delete(fullDriverFilename, 1, length('\??\'));
           end;
 
-        retVal:= TRUE;
+        Result:= TRUE;
         end;
 
     finally
@@ -398,7 +392,7 @@ begin
     FreeOTFECloseService(serviceHandle);
     end;
 
-  Result := retVal;
+
 end;
 
 
@@ -407,12 +401,11 @@ end;
 // Returns: TRUE/FALSE on success/failure
 function TOTFEFreeOTFEDriverControl.GetServiceAutoStart(service: string; var autoStart: boolean): boolean;
 var
-  retVal: boolean;
   junkFilename: string;
 begin
-  retVal := DriverConfig(service, autoStart, junkFilename);
+  Result := DriverConfig(service, autoStart, junkFilename);
 
-  Result := retVal;
+
 end;
 
 
@@ -422,10 +415,9 @@ function TOTFEFreeOTFEDriverControl.SetServiceAutoStart(service: string; autoSta
 var
   startType: DWORD;
   serviceHandle: SC_HANDLE;
-  retVal: boolean;
   lock: SC_LOCK;
 begin
-  retVal:= FALSE;
+  Result:= FALSE;
 
   // Determine const to use...
   startType:= SERVICE_DEMAND_START;
@@ -441,7 +433,7 @@ begin
                                 uSCManager  // handle of service control manager database
                                );
     try
-      retVal := ChangeServiceConfig(
+      Result := ChangeServiceConfig(
                                     serviceHandle,  // handle to service
                                     SERVICE_NO_CHANGE,  // type of service
                                     startType,  // when to start service
@@ -465,7 +457,7 @@ begin
     end;
 
 
-  Result := retVal;
+
 end;
 
 
@@ -478,14 +470,13 @@ end;
 function TOTFEFreeOTFEDriverControl.UninstallDriver(service: string): DWORD;
 var
   serviceHandle: SC_HANDLE;
-  retVal: DWORD;
   rebootReq: boolean;
   serviceState: DWORD;
   portableMode: boolean;
   driverFilename: string;
   junkAutoStart: boolean;
 begin
-  retVal:= 0;
+  Result:= 0;
 
   rebootReq:= FALSE;
 
@@ -534,11 +525,11 @@ begin
       // Note: This *should* cause the service to be removed
       FreeOTFECloseService(serviceHandle);
 
-      retVal := retVal OR DRIVER_BIT_SUCCESS;
+      Result := Result OR DRIVER_BIT_SUCCESS;
 
       if rebootReq then
         begin
-        retVal := retVal OR DRIVER_BIT_REBOOT_REQ;
+        Result := Result OR DRIVER_BIT_REBOOT_REQ;
         end;
 
       // Delete the associated driver file
@@ -546,7 +537,7 @@ begin
         begin
         if not(UninstallDriverFile(driverFilename)) then
           begin
-          retVal := retVal OR DRIVER_BIT_FILE_REMAINS;
+          Result := Result OR DRIVER_BIT_FILE_REMAINS;
           end;
         end;
 
@@ -561,20 +552,19 @@ begin
   SCManagerClose();
   SCManagerOpen();
 
-  Result:= retVal;
+  Result:= Result;
 end;
 
 
 // Delete the associated driver file
 function TOTFEFreeOTFEDriverControl.UninstallDriverFile(driverFilename: string): boolean;
 var
-  retVal: boolean;
   changeFSRedirect: boolean;
   fsRedirectOldValue: pointer;
 begin
   changeFSRedirect := SDUWow64DisableWow64FsRedirection(fsRedirectOldValue);
   try
-    retVal := DeleteFile(driverFilename);
+    Result := DeleteFile(driverFilename);
   finally
     if changeFSRedirect then
       begin
@@ -582,7 +572,7 @@ begin
       end;
   end;
 
-  Result := retVal;
+
 end;
 
 
@@ -600,9 +590,8 @@ var
   startedOK: boolean;
   serviceState: DWORD;
   msgReboot: string;
-  retval: boolean;
 begin
-  retval:= FALSE;
+  Result:= FALSE;
 
   msgSpecific := '';
 
@@ -636,7 +625,7 @@ begin
 
       if startedOK then
         begin
-        retval := TRUE;
+        Result := TRUE;
         msgSpecific := _('This driver has been installed, started, and is now available for use');
         end
       else
@@ -696,7 +685,7 @@ begin
       end;
     end;
 
-  Result := retval;
+
 end;
 
 
@@ -719,13 +708,12 @@ function TOTFEFreeOTFEDriverControl.InstallDriver(
   var driverName: string
 ): DWORD;
 var
-  retVal: DWORD;
   newServiceHandle: SC_HANDLE;
   installedFilename,finalFileName: string;
   allOK: boolean;
   alreadyInstalled: boolean;
 begin
-  retVal := 0;
+  Result := 0;
   allOK := TRUE;
 
   driverName := GetServiceNameForFilename(filename);
@@ -734,7 +722,7 @@ begin
     begin
     if (alreadyInstalled) then
       begin
-      retVal := retVal AND DRIVER_BIT_ALREADY_INSTALLED;
+      Result := Result AND DRIVER_BIT_ALREADY_INSTALLED;
       allOK := FALSE;
       end;
     end;
@@ -751,7 +739,7 @@ begin
       finalFileName := installedFilename;
       if not(allOK) then
         begin
-        retVal := retVal OR DRIVER_BIT_CANT_INSTALL_FILE;
+        Result := Result OR DRIVER_BIT_CANT_INSTALL_FILE;
         end;
       end;
     end;
@@ -797,13 +785,13 @@ begin
       SCManagerClose();
       SCManagerOpen();
 
-      retVal := retVal OR DRIVER_BIT_SUCCESS;
+      Result := Result OR DRIVER_BIT_SUCCESS;
       end else begin
         MessageDlg(_('Service start failed: ')+SysErrorMessage(GetLastError), mtError, [mbOK], 0);
       end;
     end;  // if allOK
 
-  Result := retVal;
+
 end;
 
 
@@ -812,7 +800,6 @@ end;
 // destFilename will be set to the full filename of the installed file
 function TOTFEFreeOTFEDriverControl.InstallDriverFile(driverFilename: string; var destFilename: string): boolean;
 var
-  retVal: boolean;
   changeFSRedirect: boolean;
   fsRedirectOldValue:  Pointer;
 begin
@@ -822,13 +809,13 @@ begin
   if (driverFilename = destFilename) then
     begin
     // Skip copying if file is already in position...
-    retVal := TRUE;
+    Result := TRUE;
     end
   else
     begin
       changeFSRedirect := SDUWow64DisableWow64FsRedirection(fsRedirectOldValue);
       try
-        retVal := CopyFile(
+        Result := CopyFile(
                            PChar(driverFilename),  // pointer to name of an existing file
                            PChar(destFilename),    // pointer to filename to copy to
                            FALSE                   // flag for operation if file exists
@@ -841,7 +828,7 @@ begin
       end;
     end;
 
-  Result := retVal;
+
 end;
 
 
@@ -885,10 +872,8 @@ function TOTFEFreeOTFEDriverControl.FreeOTFEOpenService(
   service: string;
   var serviceHandle: SC_HANDLE
 ): boolean;
-var
-  retVal: boolean;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   if (uSCManager<>0) then
     begin
@@ -899,7 +884,7 @@ begin
                                 );
     if (serviceHandle <> 0) then
       begin
-      retVal := TRUE;
+      Result := TRUE;
       end
     else
       begin
@@ -914,7 +899,7 @@ begin
 {$IFDEF FREEOTFE_DEBUG}
 showmessage('FreeOTFEOpenService: '+inttohex(serviceHandle, 8)+' ['+service+']');
 {$ENDIF}
-  Result := retVal;
+
 end;
 
 
@@ -935,9 +920,8 @@ end;
 function TOTFEFreeOTFEDriverControl.SetDriverReg(service: string; name: string; value: string): boolean;
 var
   regObj: TRegistry;
-  retVal: boolean;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   regObj := TRegistry.Create();
   try
@@ -949,9 +933,9 @@ begin
       begin
       try
         RegObj.WriteString(name, value);
-        retVal := TRUE;
+        Result := TRUE;
       except
-        // Do nothing; retVal already defaults to FALSE
+        // Do nothing; Result already defaults to FALSE
       end;
 
       RegObj.CloseKey();
@@ -961,7 +945,7 @@ begin
     regObj.Free();
   end;
 
-  Result := retVal;
+
 end;
 
 
@@ -971,9 +955,8 @@ end;
 function TOTFEFreeOTFEDriverControl.SetDriverReg(service: string; name: string; value: boolean): boolean;
 var
   regObj: TRegistry;
-  retVal: boolean;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   regObj := TRegistry.Create();
   try
@@ -985,9 +968,9 @@ begin
       begin
       try
         RegObj.WriteBool(name, value);
-        retVal := TRUE;
+        Result := TRUE;
       except
-        // Do nothing; retVal already defaults to FALSE
+        // Do nothing; Result already defaults to FALSE
       end;
 
       RegObj.CloseKey();
@@ -997,7 +980,7 @@ begin
     regObj.Free();
   end;
 
-  Result := retVal;
+
 end;
 
 
@@ -1009,9 +992,8 @@ Commented out; not used atm
 function TOTFEFreeOTFEDriverControl.GetDriverRegString(service: string; name: string; var value: string): boolean;
 var
   regObj: TRegistry;
-  retVal: boolean;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   regObj := TRegistry.Create();
   try
@@ -1024,10 +1006,10 @@ begin
         if (RegObj.ValueExists(name)) then
           begin
           value := RegObj.ReadString(name);
-          retVal := TRUE;
+          Result := TRUE;
           end;
       except
-        // Do nothing; retVal already defaults to FALSE
+        // Do nothing; Result already defaults to FALSE
       end;
 
       RegObj.CloseKey();
@@ -1037,7 +1019,7 @@ begin
     regObj.Free();
   end;
 
-  Result := retVal;
+
 end;
 }
 
@@ -1048,9 +1030,8 @@ end;
 function TOTFEFreeOTFEDriverControl.GetDriverRegBoolean(service: string; name: string; var value: boolean): boolean;
 var
   regObj: TRegistry;
-  retVal: boolean;
 begin
-  retVal := FALSE;
+  Result := FALSE;
 
   regObj := TRegistry.Create();
   try
@@ -1062,10 +1043,10 @@ begin
         if (RegObj.ValueExists(name)) then
           begin
           value := RegObj.ReadBool(name);
-          retVal := TRUE;
+          Result := TRUE;
           end;
       except
-        // Do nothing; retVal already defaults to FALSE
+        // Do nothing; Result already defaults to FALSE
       end;
 
       RegObj.CloseKey();
@@ -1075,7 +1056,7 @@ begin
     regObj.Free();
   end;
 
-  Result := retVal;
+
 end;
 
 
@@ -1133,17 +1114,15 @@ begin
 end;
 
 function TOTFEFreeOTFEDriverControl._MsgDlg(Content: string; DlgType: TMsgDlgType): integer;
-var
-  retval: integer;
 begin
-  retval := 0;
+  Result := 0;
 
   if not(Silent) then
     begin
-    retval := SDUMessageDlg(Content, DlgType, [mbOK], 0);
+    Result := SDUMessageDlg(Content, DlgType, [mbOK], 0);
     end;
 
-  Result := retval;
+
 end;
 
 
@@ -1152,43 +1131,41 @@ end;
 function TOTFEFreeOTFEDriverControl.CountDrivers(): integer;
 var
   driverNames: TStringlist;
-  retval: integer;
 begin
-  retval := -1;
+  Result := -1;
   driverNames:= TStringlist.Create();
   try
     if GetFreeOTFEDrivers(driverNames) then
       begin
-      retval := driverNames.count;
+      Result := driverNames.count;
       end;
   finally
     driverNames.Free();
   end;
 
-  Result := retval;
+
 end;
 
 // Return total count of drivers in portable/non portable mode
 function TOTFEFreeOTFEDriverControl.CountDrivers(portableMode: boolean): integer;
 var
   driverNames: TStringlist;
-  retval: integer;
   testPortable: boolean;
   i: integer;
 begin
-  retval := -1;
+  Result := -1;
   driverNames:= TStringlist.Create();
   try
     if GetFreeOTFEDrivers(driverNames) then
       begin
-      retval := 0;
+      Result := 0;
       for i:=0 to (driverNames.count - 1) do
         begin
         if IsDriverInstalledPortable(driverNames[i], testPortable) then
           begin
           if (testPortable = portableMode) then
             begin
-            inc(retval);
+            inc(Result);
             end;
           end;
         end;
@@ -1197,7 +1174,7 @@ begin
     driverNames.Free();
   end;
 
-  Result := retval;
+
 end;
 
 function TOTFEFreeOTFEDriverControl.InstallMultipleDrivers(
@@ -1207,7 +1184,6 @@ function TOTFEFreeOTFEDriverControl.InstallMultipleDrivers(
   startAfterInstall: boolean
 ): boolean;
 var
-  retVal: boolean;
   i: integer;
   status: DWORD;
   installedOK: boolean;
@@ -1218,7 +1194,7 @@ var
   prevCursor: TCursor;
   alreadyInstalled: boolean;
 begin
-  retVal := TRUE;
+  Result := TRUE;
 
   progressDlg := nil;
   prevCursor := Screen.Cursor;
@@ -1302,7 +1278,7 @@ begin
         begin
         if not(startAfterInstall) then
           begin
-          // Set flag anyway so that retval is set correctly later
+          // Set flag anyway so that Result is set correctly later
           startedOK := TRUE;
           end
         else
@@ -1340,7 +1316,7 @@ begin
 
         end;
 
-      retVal := (retVal AND startedOK);
+      Result := (Result AND startedOK);
 
       if (progressDlg <> nil) then
         begin
@@ -1367,13 +1343,12 @@ begin
       end;
   end;
 
-  Result := retVal;
+
 end;
 
 
 function TOTFEFreeOTFEDriverControl.UninstallAllDrivers(portableModeOnly: boolean): boolean;
 var
-  retVal: boolean;
   DriverControlObj: TOTFEFreeOTFEDriverControl;
   allDrivers: TStringList;
   wasInstalledPortable: boolean;
@@ -1381,7 +1356,7 @@ var
   status: DWORD;
   allOK: boolean;
 begin
-  retVal := TRUE;
+  Result := TRUE;
 
   DriverControlObj := TOTFEFreeOTFEDriverControl.Create();
   try
@@ -1406,7 +1381,7 @@ begin
               // Uninstall the driver
               status := DriverControlObj.UninstallDriver(allDrivers[i]);
               allOK := ((status AND DRIVER_BIT_SUCCESS) = DRIVER_BIT_SUCCESS);
-              retVal := (retVal AND allOK);
+              Result := (Result AND allOK);
               end;
 
             end;  // if DriverControlObj.IsDriverInstalledPortable(allDrivers[i], wasInstalledPortable) then
@@ -1423,7 +1398,7 @@ begin
     DriverControlObj.Free();
   end;
 
-  Result := retVal;
+
 end;
 
 

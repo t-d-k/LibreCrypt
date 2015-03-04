@@ -232,9 +232,9 @@ end;
 
 procedure TfmeOptions_FreeOTFEAdvanced._ReadSettings(config: TFreeOTFESettings);
 var
-  owem:   TOnExitWhenMounted;
-  owrp:   TOnExitWhenPortableMode;
-  ondf:   TOnNormalDismountFail;
+  owem:   eOnExitWhenMounted;
+  owrp:   eOnExitWhenPortableMode;
+  ondf:   eOnNormalDismountFail;
   ma:     TFreeOTFEMountAs;
   ft:     TDragDropFileType;
   idx:    Integer;
@@ -325,9 +325,9 @@ end;
 
 procedure TfmeOptions_FreeOTFEAdvanced._WriteSettings(config: TFreeOTFESettings);
 var
-  owem: TOnExitWhenMounted;
-  owrp: TOnExitWhenPortableMode;
-  ondf: TOnNormalDismountFail;
+  owem: eOnExitWhenMounted;
+  owrp: eOnExitWhenPortableMode;
+  ondf: eOnNormalDismountFail;
   ma:   TFreeOTFEMountAs;
   ft:   TDragDropFileType;
 begin

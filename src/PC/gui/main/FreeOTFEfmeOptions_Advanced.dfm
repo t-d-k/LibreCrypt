@@ -1,6 +1,8 @@
 inherited fmeOptions_FreeOTFEAdvanced: TfmeOptions_FreeOTFEAdvanced
   Width = 504
   Height = 382
+  ExplicitWidth = 504
+  ExplicitHeight = 382
   object gbAdvanced: TGroupBox
     Left = 16
     Top = 16
@@ -11,7 +13,7 @@ inherited fmeOptions_FreeOTFEAdvanced: TfmeOptions_FreeOTFEAdvanced
     object lblDragDrop: TLabel
       Left = 264
       Top = 24
-      Width = 151
+      Width = 140
       Height = 26
       Caption = 'Assume files &dragged onto DoxBox are encrypted using:'
       FocusControl = cbDragDrop
@@ -85,7 +87,6 @@ inherited fmeOptions_FreeOTFEAdvanced: TfmeOptions_FreeOTFEAdvanced
       Width = 145
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 3
     end
     object ckAutoStartPortable: TSDUCheckBox
@@ -93,9 +94,7 @@ inherited fmeOptions_FreeOTFEAdvanced: TfmeOptions_FreeOTFEAdvanced
       Top = 112
       Width = 221
       Height = 30
-      Caption = 
-        'Autostart &portable mode if DoxBox drivers not installed/runni' +
-        'ng'
+      Caption = 'Autostart &portable mode if DoxBox drivers not installed/running'
       Color = clBtnFace
       ParentColor = False
       TabOrder = 6
@@ -155,7 +154,6 @@ inherited fmeOptions_FreeOTFEAdvanced: TfmeOptions_FreeOTFEAdvanced
       Width = 145
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 13
     end
     object cbDefaultMountAs: TComboBox
@@ -164,7 +162,6 @@ inherited fmeOptions_FreeOTFEAdvanced: TfmeOptions_FreeOTFEAdvanced
       Width = 145
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 10
     end
     object cbOnExitWhenMounted: TComboBox
@@ -173,7 +170,6 @@ inherited fmeOptions_FreeOTFEAdvanced: TfmeOptions_FreeOTFEAdvanced
       Width = 145
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 11
     end
     object cbOnExitWhenPortableMode: TComboBox
@@ -182,7 +178,6 @@ inherited fmeOptions_FreeOTFEAdvanced: TfmeOptions_FreeOTFEAdvanced
       Width = 145
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 12
     end
     object ckAllowNewlinesInPasswords: TSDUCheckBox

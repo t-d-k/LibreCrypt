@@ -390,9 +390,8 @@ end;
 function TfrmKeyEntryLUKS.SetDriveLetter(mountDriveLetter: ansichar): Boolean;
 var
   idx:    Integer;
-  retVal: Boolean;
 begin
-  retVal := True;
+  Result := True;
 
   if (mountDriveLetter = #0) then begin
     // The item at idx 0 will *always* be "Use default"
@@ -403,11 +402,11 @@ begin
 
   if (idx < 0) then begin
     idx    := 0;
-    retVal := False;
+    Result := False;
   end;
   cbDrive.ItemIndex := idx;
 
-  Result := retVal;
+
 end;
 
 function TfrmKeyEntryLUKS.GetReadonly(var mountReadonly: Boolean): Boolean;

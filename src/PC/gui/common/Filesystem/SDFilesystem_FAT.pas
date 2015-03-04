@@ -1517,8 +1517,6 @@ end;
  // Mark the next empty FAT entry as reservced/mark it as empty
  // Returns
 function TSDFilesystem_FAT.ReserveFATEntry(afterClusterID: DWORD = 0): DWORD;
-var
-  Result: DWORD;
 begin
   Result := GetNextEmptyFATEntry(afterClusterID);
   if (Result <> ERROR_DWORD) then begin
@@ -1537,7 +1535,6 @@ end;
 
 function TSDFilesystem_FAT.CountEmptyFATEntries(): DWORD;
 var
-  Result:         DWORD;
   maskedFATEntry: DWORD;
   i:              DWORD;
 begin
@@ -1571,7 +1568,6 @@ end;
 
 function TSDFilesystem_FAT.SetFATEntry_FAT12(clusterID: DWORD; Value: DWORD): Boolean;
 var
-  Result:    Boolean;
   tmpDouble: Double;
   prevWord:  Word;
   newWord:   Word;
@@ -1596,7 +1592,6 @@ end;
 
 function TSDFilesystem_FAT.SetFATEntry_FAT1632(clusterID: DWORD; Value: DWORD): Boolean;
 var
-  Result: Boolean;
   i:      DWORD;
 begin
   Result := True;
@@ -1621,7 +1616,6 @@ function TSDFilesystem_FAT._TraverseClusterChain(clusterID: DWORD;
 var
   maskedFATEntry: DWORD;
   currClusterID:  DWORD;
-  Result:         DWORD;
   finished:       Boolean;
   writeChain:     Boolean;
 begin
@@ -1718,8 +1712,6 @@ end;
 
 function TSDFilesystem_FAT.ReadWriteClusterData(readNotWrite: Boolean;
   clusterID: DWORD; data: TStream; maxSize: Integer): Boolean;
-var
-  Result: Boolean;
 begin
   // Special case - FAT12/FAT16 root directory
   if (((FATType = ftFAT12) or (FATType = ftFAT16)) and (clusterID = CLUSTER_ZERO)) then begin
@@ -1849,7 +1841,6 @@ end;
  // to calculating based on the size of "data"
 function TSDFilesystem_FAT.DetermineClustersNeeded(data: TStream; maxSize: Int64 = -1): DWORD;
 var
-  Result:      DWORD;
   maxDataSize: Int64;
   tmpInt64:    Int64;  // Used to prevent Delphi casting incorrectly
   useSize:     Int64;
@@ -1887,7 +1878,6 @@ var
   newChain:         TSDFATClusterChain;
   lastAllocCluster: DWORD;
   nextFreeCluster:  DWORD;
-  Result:           Boolean;
   i:                DWORD;
 begin
   Result := True;
@@ -1937,8 +1927,6 @@ end;
 
 function TSDFilesystem_FAT.ReadWriteClusterChainData(readNotWrite: Boolean;
   chain: TSDFATClusterChain; data: TStream; maxSize: Int64 = -1): Boolean;
-var
-  Result: Boolean;
 begin
   // Special case - FAT12/FAT16 root directory
   if (((FATType = ftFAT12) or (FATType = ftFAT16)) and IsClusterInChain(CLUSTER_ZERO, chain))
@@ -1954,7 +1942,6 @@ end;
 function TSDFilesystem_FAT._ReadWriteClusterChainData(readNotWrite: Boolean;
   chain: TSDFATClusterChain; data: TStream; maxSize: Int64 = -1): Boolean;
 var
-  Result:         Boolean;
   i:              Integer;
   useClusterSize: Int64;
   bytesRemaining: Int64;
@@ -2033,7 +2020,6 @@ var
   hh:     Integer;
   mi:     Integer;
   ss:     Integer;
-  Result: TTimeStamp;
 begin
   dd   := (dateBitmask and $1F);
   mm   := ((dateBitmask and $1E0) shr 5);
@@ -2098,7 +2084,6 @@ var
   dd:     Integer;
   mm:     Integer;
   yyyy:   Integer;
-  Result: TDate;
 begin
   dd   := (dateBitmask and $1F);
   mm   := ((dateBitmask and $1E0) shr 5);
@@ -2119,7 +2104,6 @@ var
   dd:     Word;
   mm:     Word;
   yyyy:   Word;
-  Result: Word;
 begin
   try
     DecodeDate(date, yyyy, mm, dd);
@@ -2148,7 +2132,6 @@ var
   lfnChkSum:      Byte;
   currChkSum:     Byte;
   seqNo:          DWORD;
-  Result:         Boolean;
   caseByte:       Byte;
 begin
   Result := True;
@@ -2272,8 +2255,6 @@ begin
 end;
 
 function TSDFilesystem_FAT.SectorIDForCluster(clusterID: DWORD): DWORD;
-var
-  Result: DWORD;
 begin
   if ((FATType = ftFAT12) or (FATType = ftFAT16)) then begin
     if (clusterID = CLUSTER_ZERO) then begin
@@ -2314,7 +2295,6 @@ end;
 function TSDFilesystem_FAT.LoadContentsFromDisk(path: String; items: TSDDirItemList): Boolean;
 var
   startClusterID: DWORD;
-  Result:         Boolean;
 begin
   Result := False;
 
@@ -2334,7 +2314,6 @@ function TSDFilesystem_FAT._LoadContentsFromDisk(dirStartCluster: DWORD;
   items: TSDDirItemList): Boolean;
 var
   ms:     TSDUMemoryStream;
-  Result: Boolean;
 begin
   AssertMounted();
 
@@ -2359,7 +2338,6 @@ end;
 function TSDFilesystem_FAT.GetStartingClusterForItem(path: WideString): DWORD;
 var
   item:   TSDDirItem_FAT;
-  Result: DWORD;
 begin
   Result := ERROR_DWORD;
 
@@ -2518,7 +2496,6 @@ end;
 function TSDFilesystem_FAT.GetItemContent(path: WideString; content: TStream): Boolean;
 var
   item:   TSDDirItem_FAT;
-  Result: Boolean;
 begin
   Result := False;
   item   := TSDDirItem_FAT.Create();
@@ -2538,7 +2515,6 @@ end;
 function TSDFilesystem_FAT.GetFileContent(path: WideString; fileContent: TStream): Boolean;
 var
   item:   TSDDirItem_FAT;
-  Result: Boolean;
 begin
   Result := False;
   item   := TSDDirItem_FAT.Create();
@@ -2560,7 +2536,6 @@ end;
 function TSDFilesystem_FAT.ExtractFile(srcPath: WideString; extractToFilename: String): Boolean;
 var
   item:             TSDDirItem_FAT;
-  Result:           Boolean;
   attrs:            Integer;
   fileHandle:       THandle;
   ftCreationTime:   TFileTime;
@@ -2649,7 +2624,6 @@ end;
 function TSDFilesystem_FAT.FreeClusterChain(clusterChain: TSDFATClusterChain): Boolean;
 var
   i:      Integer;
-  Result: Boolean;
 begin
   Result := True;
 
@@ -2686,7 +2660,6 @@ var
   j:        Int64;
   firstFAT: TSDUMemoryStream;
   checkFAT: TSDUMemoryStream;
-  Result:   Boolean;
 begin
   firstFAT := TSDUMemoryStream.Create();
   try
@@ -2739,8 +2712,6 @@ begin
 end;
 
 function TSDFilesystem_FAT.CheckFilesystem_Crosslinks(): Boolean;
-var
-  Result: Boolean;
 begin
   Result := True;
 
@@ -2802,7 +2773,6 @@ end;
  //   \               will return \
 function TSDFilesystem_FAT.PathParent(path: WideString): WideString;
 var
-  Result: WideString;
   i:      Integer;
 begin
   Result := '';
@@ -2830,7 +2800,6 @@ function TSDFilesystem_FAT.DOSFilenameTo11Chars(DOSFilename: Ansistring): Ansist
 var
   i:      Integer;
   j:      Integer;
-  Result: Ansistring;
 begin
   // Special handling for "." and ".." so the other half of this process
   // doens't get confused by the "." and return a string containing just
@@ -2860,7 +2829,6 @@ end;
 function TSDFilesystem_FAT.DOSFilenameCheckSum(DOSFilename: Ansistring): Byte;
 var
   i:           Integer;
-  Result:      Byte;
   useFilename: Ansistring;
 begin
   useFilename := DOSFilenameTo11Chars(DOSFilename);
@@ -2890,7 +2858,6 @@ var
   maxSeqNo: Byte;
   useSeqNo: Byte;
   checksum: Byte;
-  Result:   Integer;
   i:        Integer;
 begin
   tempLFN := item.Filename;
@@ -2992,7 +2959,6 @@ end;
 function TSDFilesystem_FAT.SeekBlockUnusedDirEntries(cntNeeded: Integer;
   dirData: TSDUMemoryStream): Boolean;
 var
-  Result:          Boolean;
   currRunLength:   Integer;
   runStartOffset:  Int64;
   currEntryOffset: Int64;
@@ -3034,7 +3000,6 @@ var
   filename11Char: String;
   currFilename:   String;
   currAttributes: Byte;
-  Result:         Boolean;
   recordOffset:   Int64;
 begin
   Result := False;
@@ -3084,7 +3049,6 @@ end;
 // Returns TRUE/FALSE, depending on whether clusterID appers in chain or not
 function TSDFilesystem_FAT.IsClusterInChain(clusterID: DWORD; chain: TSDFATClusterChain): Boolean;
 var
-  Result: Boolean;
   i:      Integer;
 begin
   Result := False;
@@ -4108,7 +4072,6 @@ var
   allOK:            Boolean;
   dirToStoreInData: TSDUMemoryStream;
   x:                Integer;
-  Result:           String;
   uniqueFound:      Boolean;
 begin
   allOK := True;
@@ -4641,7 +4604,6 @@ end;
  // FAT12/FAT16/FAT32
 function TSDFilesystem_FAT.DetermineFATType(stmBootSector: TSDUMemoryStream): TFATType;
 var
-  Result:          TFATType;
   //  fsTypeString: string;
   BPB_BytsPerSec:  DWORD;
   BPB_RootEntCnt:  DWORD;

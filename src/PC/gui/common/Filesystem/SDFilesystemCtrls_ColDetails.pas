@@ -9,7 +9,7 @@ uses
 
 type
   TSDFilesystemListView_ColDetails = class (TSDUForm)
-    clbColumns:  TSDUCheckListBox;
+
     pbMoveUp:    TButton;
     pbMoveDown:  TButton;
     pbShow:      TButton;
@@ -21,6 +21,7 @@ type
     Label3:      TLabel;
     se64Width:   TSpinEdit64;
     pnlSplitter: TPanel;
+    clbColumns: TSDUCheckListBox;
     procedure FormShow(Sender: TObject);
     procedure pbMoveUpClick(Sender: TObject);
     procedure pbMoveDownClick(Sender: TObject);
@@ -86,10 +87,9 @@ end;
 function TSDFilesystemListView_ColDetails.GetLayout(): TFilesystemListView_Layout;
 var
   i:           Integer;
-  retval:      TFilesystemListView_Layout;
   currColType: TFilesystemListViewColumn;
 begin
-  retval := FInternalLayout;
+  Result := FInternalLayout;
 
   // Width would have been set on FInternalLayout - no need to set it in this
   // loop
@@ -97,11 +97,11 @@ begin
   for i := 0 to (clbColumns.items.Count - 1) do begin
     currColType := TFilesystemListViewColumn(clbColumns.Items.Objects[i]);
 
-    retval[currColType].Visible  := clbColumns.Checked[i];
-    retval[currColType].Position := i;
+    Result[currColType].Visible  := clbColumns.Checked[i];
+    Result[currColType].Position := i;
   end;
 
-  Result := retval;
+
 end;
 
 procedure TSDFilesystemListView_ColDetails.SetLayout(newLayout: TFilesystemListView_Layout);

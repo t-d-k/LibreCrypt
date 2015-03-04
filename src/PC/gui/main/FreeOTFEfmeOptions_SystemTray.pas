@@ -136,17 +136,17 @@ function TfmeOptions_SystemTray.GetClickAction(cbox: TComboBox): TSystemTrayClic
 var
   stca:   TSystemTrayClickAction;
 begin
-  retval := stcaDoNothing;
+  Result := stcaDoNothing;
 
   // Decode click action...
   for stca := low(stca) to high(stca) do begin
     if (SystemTrayClickActionTitle(stca) = cbox.Items[cbox.ItemIndex]) then begin
-      retval := stca;
+      Result := stca;
       break;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 end.

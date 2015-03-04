@@ -1,16 +1,16 @@
 object fmeSelectPartition: TfmeSelectPartition
   Left = 0
   Top = 0
-  Width = 565
-  Height = 143
+  Width = 542
+  Height = 145
   TabOrder = 0
   OnResize = FrameResize
   DesignSize = (
-    565
-    143)
+    542
+    145)
   object lblErrorWarning: TLabel
     Left = 24
-    Top = 124
+    Top = 126
     Width = 238
     Height = 13
     Anchors = [akLeft, akBottom]
@@ -21,10 +21,11 @@ object fmeSelectPartition: TfmeSelectPartition
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
+    ExplicitTop = 124
   end
   object imgErrorWarning: TImage
     Left = 3
-    Top = 122
+    Top = 124
     Width = 16
     Height = 16
     Anchors = [akLeft, akBottom]
@@ -40,12 +41,13 @@ object fmeSelectPartition: TfmeSelectPartition
       00000000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000
       FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000FFFF0000
       FFFF0000}
+    ExplicitTop = 122
   end
   object TabControl1: TTabControl
     Left = 0
     Top = 0
-    Width = 565
-    Height = 96
+    Width = 542
+    Height = 98
     Align = alTop
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 0
@@ -53,11 +55,13 @@ object fmeSelectPartition: TfmeSelectPartition
       'TABS SET AUTOMATICALLY')
     TabIndex = 0
     OnChange = TabControl1Change
+    ExplicitWidth = 565
+    ExplicitHeight = 96
     inline SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel
       Left = 4
       Top = 24
       Width = 165
-      Height = 68
+      Height = 70
       Align = alLeft
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -74,41 +78,47 @@ object fmeSelectPartition: TfmeSelectPartition
       ExplicitHeight = 68
     end
     object pnlNoPartitionDisplay: TPanel
-      Left = 376
+      Left = 353
       Top = 24
       Width = 185
-      Height = 68
+      Height = 70
       Align = alRight
       Caption = 'pnlNoPartitionDisplay'
       PopupMenu = PopupMenu1
       TabOrder = 0
+      ExplicitLeft = 376
+      ExplicitHeight = 68
     end
   end
   object ckShowCDROM: TCheckBox
-    Left = 312
-    Top = 104
+    Left = 289
+    Top = 106
     Width = 157
     Height = 17
     Anchors = [akRight, akBottom]
     Caption = '&Show CD/DVD drives'
     TabOrder = 1
     OnClick = ckShowCDROMClick
+    ExplicitLeft = 312
+    ExplicitTop = 104
   end
   object ckEntireDisk: TCheckBox
-    Left = 476
-    Top = 104
+    Left = 453
+    Top = 106
     Width = 85
     Height = 17
     Anchors = [akRight, akBottom]
     Caption = '&Entire disk'
     TabOrder = 2
     OnClick = ckEntireDiskClick
+    ExplicitLeft = 476
+    ExplicitTop = 104
   end
   object ilErrorWarning: TImageList
     Left = 200
     Top = 85
     Bitmap = {
-      494C0101030004002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000400340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

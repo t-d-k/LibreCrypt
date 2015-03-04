@@ -121,29 +121,27 @@ begin
 end;
 
 function TPKCS11Token.GetTokenInfo(var info: CK_TOKEN_INFO): boolean;
-var
-  retval: boolean;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_GetTokenInfo, FN_NAME_C_GetTokenInfo);
 
   if (FCacheTokenInfo and FCachedTokenInfoPresent) then
     begin
     info := FCachedTokenInfo;
-    retval := TRUE;
+    Result := TRUE;
     end
   else
     begin
     LastRV := LibraryFunctionList.CK_C_GetTokenInfo(SlotID, @info);
-    retval := RVSuccess(LastRV);
+    Result := RVSuccess(LastRV);
 
-    if (retval and CacheTokenInfo) then
+    if (Result and CacheTokenInfo) then
       begin
       FCachedTokenInfo := info;
       FCachedTokenInfoPresent := TRUE;
       end;
     end;
 
-  Result := retval;
+
 end;
 
 
@@ -213,257 +211,240 @@ end;
 
 function TPKCS11Token.GetXLabel(): string;
 var
-  retval: string;
   info: CK_TOKEN_INFO;
 begin
-  retval := '';
+  Result := '';
 
   if (GetTokenInfo(info)) then
     begin
-    retval := UTF8CHARArrayToString(TCK_UTF8CHARArray_32(info.Xlabel));
+    Result := UTF8CHARArrayToString(TCK_UTF8CHARArray_32(info.Xlabel));
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetManufacturerID(): string;
 var
-  retval: string;
   info: CK_TOKEN_INFO;
 begin
-  retval := '';
+  Result := '';
 
   if (GetTokenInfo(info)) then
     begin
-    retval := UTF8CHARArrayToString(TCK_UTF8CHARArray_32(info.manufacturerID));
+    Result := UTF8CHARArrayToString(TCK_UTF8CHARArray_32(info.manufacturerID));
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetModel(): string;
 var
-  retval: string;
   info: CK_TOKEN_INFO;
 begin
-  retval := '';
+  Result := '';
 
   if (GetTokenInfo(info)) then
     begin
-    retval := UTF8CHARArrayToString(TCK_UTF8CHARArray_16(info.model));
+    Result := UTF8CHARArrayToString(TCK_UTF8CHARArray_16(info.model));
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetSerialNumber(): string;
 var
-  retval: string;
   info: CK_TOKEN_INFO;
 begin
-  retval := '';
+  Result := '';
 
   if (GetTokenInfo(info)) then
     begin
-    retval := UTF8CHARArrayToString(TCK_UTF8CHARArray_16(info.serialNumber));
+    Result := UTF8CHARArrayToString(TCK_UTF8CHARArray_16(info.serialNumber));
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetFlags(): CK_FLAGS;
 var
-  retval: CK_FLAGS;
   info: CK_TOKEN_INFO;
 begin
-  retval := 0;
+  Result := 0;
 
   if (GetTokenInfo(info)) then
     begin
-    retval := info.Flags;
+    Result := info.Flags;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetMaxSessionCount(): cardinal;
 var
-  retval: cardinal;
   info: CK_TOKEN_INFO;
 begin
-  retval := 0;
+  Result := 0;
 
   if (GetTokenInfo(info)) then
     begin
-    retval := info.ulMaxSessionCount;
+    Result := info.ulMaxSessionCount;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetSessionCount(): cardinal;
 var
-  retval: cardinal;
   info: CK_TOKEN_INFO;
 begin
-  retval := 0;
+  Result := 0;
 
   if (GetTokenInfo(info)) then
     begin
-    retval := info.ulSessionCount;
+    Result := info.ulSessionCount;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetMaxRwSessionCount(): cardinal;
 var
-  retval: cardinal;
   info: CK_TOKEN_INFO;
 begin
-  retval := 0;
+  Result := 0;
 
   if (GetTokenInfo(info)) then
     begin
-    retval := info.ulMaxRwSessionCount;
+    Result := info.ulMaxRwSessionCount;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetRwSessionCount(): cardinal;
 var
-  retval: cardinal;
   info: CK_TOKEN_INFO;
 begin
-  retval := 0;
+  Result := 0;
 
   if (GetTokenInfo(info)) then
     begin
-    retval := info.ulRwSessionCount;
+    Result := info.ulRwSessionCount;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetMaxPinLen(): cardinal;
 var
-  retval: cardinal;
   info: CK_TOKEN_INFO;
 begin
-  retval := 0;
+  Result := 0;
 
   if (GetTokenInfo(info)) then
     begin
-    retval := info.ulMaxPinLen;
+    Result := info.ulMaxPinLen;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetMinPinLen(): cardinal;
 var
-  retval: cardinal;
   info: CK_TOKEN_INFO;
 begin
-  retval := 0;
+  Result := 0;
 
   if (GetTokenInfo(info)) then
     begin
-    retval := info.ulMinPinLen;
+    Result := info.ulMinPinLen;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetTotalPublicMemory(): cardinal;
 var
-  retval: cardinal;
   info: CK_TOKEN_INFO;
 begin
-  retval := 0;
+  Result := 0;
 
   if (GetTokenInfo(info)) then
     begin
-    retval := info.ulTotalPublicMemory;
+    Result := info.ulTotalPublicMemory;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetFreePublicMemory(): cardinal;
 var
-  retval: cardinal;
   info: CK_TOKEN_INFO;
 begin
-  retval := 0;
+  Result := 0;
 
   if (GetTokenInfo(info)) then
     begin
-    retval := info.ulFreePublicMemory;
+    Result := info.ulFreePublicMemory;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetTotalPrivateMemory(): cardinal;
 var
-  retval: cardinal;
   info: CK_TOKEN_INFO;
 begin
-  retval := 0;
+  Result := 0;
 
   if (GetTokenInfo(info)) then
     begin
-    retval := info.ulTotalPrivateMemory;
+    Result := info.ulTotalPrivateMemory;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetFreePrivateMemory(): cardinal;
 var
-  retval: cardinal;
   info: CK_TOKEN_INFO;
 begin
-  retval := 0;
+  Result := 0;
 
   if (GetTokenInfo(info)) then
     begin
-    retval := info.ulFreePrivateMemory;
+    Result := info.ulFreePrivateMemory;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetHardwareVersion(): CK_VERSION;
 var
-  retval: CK_VERSION;
   info: CK_TOKEN_INFO;
 begin
-  retval := NULL_VERSION;
+  Result := NULL_VERSION;
 
   if (GetTokenInfo(info)) then
     begin
-    retval := info.hardwareVersion;
+    Result := info.hardwareVersion;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetFirmwareVersion(): CK_VERSION;
 var
-  retval: CK_VERSION;
   info: CK_TOKEN_INFO;
 begin
-  retval := NULL_VERSION;
+  Result := NULL_VERSION;
 
   if (GetTokenInfo(info)) then
     begin
-    retval := info.firmwareVersion;
+    Result := info.firmwareVersion;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetUTCTime(): TDateTime;
@@ -471,7 +452,6 @@ var
   info: CK_TOKEN_INFO;
   strDate: string;
   tmpChar: char;
-  retval: TDateTime;
   yyyy: integer;
   mo: integer;
   dd: integer;
@@ -480,7 +460,7 @@ var
   ss: integer;
   i: integer;
 begin
-  retval := NULL_TIME;
+  Result := NULL_TIME;
 
   if (GetTokenInfo(info)) then
     begin
@@ -512,11 +492,11 @@ begin
         TryStrToInt(Copy(strDate, 13, 2), ss)
        ) then
       begin
-      retval := EncodeDateTime(yyyy, mo, dd, hh, mi, ss, 00);
+      Result := EncodeDateTime(yyyy, mo, dd, hh, mi, ss, 00);
       end;
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetCountMechanisms(): integer;
@@ -526,16 +506,15 @@ end;
 
 function TPKCS11Token._GetCountMechanisms(): integer;
 var
-  retval: integer;
   mechanismsArray: TPKCS11MechanismArray;
 begin
-  retval := 0;
+  Result := 0;
   if GetMechanismList(mechanismsArray) then
     begin
-    retval := length(mechanismsArray);
+    Result := length(mechanismsArray);
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetMechanismList(var mechsArray: TPKCS11MechanismArray): boolean;
@@ -598,10 +577,9 @@ end;
 
 function TPKCS11Token.GetMechanismByIdx(idx: integer): TPKCS11Mechanism;
 var
-  retval: TPKCS11Mechanism;
   mechanismsArray: TPKCS11MechanismArray;
 begin
-  retval := nil;
+  Result := nil;
   if GetMechanismList(mechanismsArray) then
     begin
     // Sanity check
@@ -610,32 +588,31 @@ begin
       raise EPKCS11ListIndexOutOFBounds.Create(E_EPKCS11_LISTINDEXOUTOFBOUNDS);
       end;
 
-    retval := mechanismsArray[(low(mechanismsArray) + idx)];
+    Result := mechanismsArray[(low(mechanismsArray) + idx)];
     end;
 
-  Result := retval;
+
 end;
 
 function TPKCS11Token.GetMechanismByType(mechType: CK_MECHANISM_TYPE): TPKCS11Mechanism;
 var
-  retval: TPKCS11Mechanism;
   mechanismsArray: TPKCS11MechanismArray;
   i: integer;
 begin
-  retval := nil;
+  Result := nil;
   if GetMechanismList(mechanismsArray) then
     begin
     for i:=low(mechanismsArray) to high(mechanismsArray) do
       begin
       if (mechanismsArray[i].MechanismType = mechType) then
         begin
-        retval := mechanismsArray[i];
+        Result := mechanismsArray[i];
         break;
         end;
       end;
     end;
 
-  Result := retval;
+
 end;
 
 procedure TPKCS11Token.SetCacheTokenInfo(flag: boolean);

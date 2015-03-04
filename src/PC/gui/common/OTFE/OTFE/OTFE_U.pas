@@ -243,10 +243,9 @@ uses
 function prettyPrintDriveLetters(driveLetters: ansistring): string;
 var
   i: integer;
-  retval: string;
   validLetters: string;
 begin
-  retval := '';
+  Result := '';
 
   validLetters := '';
   for i:=1 to length(driveLetters) do
@@ -259,34 +258,33 @@ begin
 
   for i:=1 to length(validLetters) do
     begin
-    if (retval <> '') then
+    if (Result <> '') then
       begin
-      retval := retval + ', ';
+      Result := Result + ', ';
       end;
 
-    retval := retval + validLetters[i] + ':';
+    Result := Result + validLetters[i] + ':';
     end;
 
-  Result := retval;
+
 end;
 
 // -----------------------------------------------------------------------------
 function CountValidDrives(driveLetters: ansistring): integer;
 var
   i: integer;
-  retval: integer;
 begin
-  retval := 0;
+  Result := 0;
 
   for i:=1 to length(driveLetters) do
     begin
     if (driveLetters[i] <> #0) then
       begin
-      inc(retval);
+      inc(Result);
       end;
     end;
     
-  Result := retval;
+
 end;
 
 // -----------------------------------------------------------------------------
@@ -512,10 +510,9 @@ function TOTFE.VolsMountedOnDrive(driveLetter: Ansichar): Ansistring;
 var
   mountedDrives: Ansistring;
   volFilename: string;
-  retval: Ansistring;
   i: integer;
 begin
-  retval := '';
+  Result := '';
 
   driveLetter := upcase(driveLetter);
 
@@ -533,14 +530,14 @@ begin
         begin
         if (volFilename[1]=char(driveLetter)) then
           begin
-          retVal := retVal + mountedDrives[i];
+          Result := Result + mountedDrives[i];
           end;
         end;
 
       end;
     end;
 
-  Result := retval;
+
 
 end;
 

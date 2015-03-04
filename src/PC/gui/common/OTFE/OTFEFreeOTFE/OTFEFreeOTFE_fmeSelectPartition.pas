@@ -170,8 +170,6 @@ procedure TfmeSelectPartition.Initialize();
 begin
   actProperties.Enabled := False;
 
-//  SDUDiskPartitionsPanel1.FreeOTFEObj := FreeOTFEObj;
-
   // -- begin [TAB_FIX] --
   ToggleControl(SDUDiskPartitionsPanel1);
   ToggleControl(pnlNoPartitionDisplay);
@@ -376,11 +374,10 @@ function TfmeSelectPartition.GetSelectedDevice(): String;
 var
   deviceIndicator: DWORD;
   useDevice:       Integer;
-  retval:          String;
   partInfo:        TSDUPartitionInfo;
   partitionNo:     Integer;
 begin
-  retval := '';
+  Result := '';
 
   if (TabControl1.TabIndex >= 0) then begin
     deviceIndicator := DWORD(TabControl1.Tabs.Objects[TabControl1.TabIndex]);
@@ -388,7 +385,7 @@ begin
 
     if ((deviceIndicator and HIWORD_CDROM) = HIWORD_CDROM) then begin
       // Device name can be found in FRemovableDevices
-      retval := FRemovableDevices[useDevice];
+      Result := FRemovableDevices[useDevice];
     end else
     if ((deviceIndicator and HIWORD_DISK) = HIWORD_DISK) then begin
       partitionNo := NO_PARTITION;
@@ -406,12 +403,12 @@ begin
       end;
 
       if (partitionNo > NO_PARTITION) then begin
-        retval := SDUDeviceNameForPartition(useDevice, partitionNo);
+        Result := SDUDeviceNameForPartition(useDevice, partitionNo);
       end;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfmeSelectPartition.UpdateErrorWarning();
@@ -484,18 +481,17 @@ procedure TfmeSelectPartition.SelectionErrorWarning(var msg: String;
   function SystemUsesDrive(clsid: Integer; checkDriveLetters: String): Boolean;
   var
     path:      String;
-    retval:    Boolean;
     pathDrive: Char;
   begin
-    retval := False;
+    Result := False;
 
     path := SDUGetSpecialFolderPath(clsid);
     if (length(path) > 1) then begin
       pathDrive := path[1];
-      retval    := (Pos(pathDrive, checkDriveLetters) > 0);
+      Result    := (Pos(pathDrive, checkDriveLetters) > 0);
     end;
 
-    Result := retval;
+
   end;
 
 var
@@ -586,16 +582,15 @@ end;
 function TfmeSelectPartition.IsCDROMTabSelected(): Boolean;
 var
   deviceIndicator: DWORD;
-  retval:          Boolean;
 begin
-  retval := False;
+  Result := False;
 
   if (TabControl1.TabIndex >= 0) then begin
     deviceIndicator := DWORD(TabControl1.Tabs.Objects[TabControl1.TabIndex]);
-    retval          := ((deviceIndicator and HIWORD_CDROM) = HIWORD_CDROM);
+    Result          := ((deviceIndicator and HIWORD_CDROM) = HIWORD_CDROM);
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfmeSelectPartition.SetAllowCDROM(allow: Boolean);
@@ -611,17 +606,16 @@ end;
 
 function TfmeSelectPartition.SelectedSize(): ULONGLONG;
 var
-  retval:       ULONGLONG;
   partInfo:     TSDUPartitionInfo;
   diskGeometry: TSDUDiskGeometry;
 begin
-  retval := 0;
+  Result := 0;
 
   if (SDUDiskPartitionsPanel1.DiskNumber > NO_DISK) then begin
     if ckEntireDisk.Checked then begin
       // Return entire disk size
       if SDUGetDiskGeometry(SDUDiskPartitionsPanel1.DiskNumber, diskGeometry) then begin
-        retval := diskGeometry.Cylinders.QuadPart * diskGeometry.TracksPerCylinder *
+        Result := diskGeometry.Cylinders.QuadPart * diskGeometry.TracksPerCylinder *
           diskGeometry.SectorsPerTrack * diskGeometry.BytesPerSector;
       end;
 
@@ -629,12 +623,12 @@ begin
       // Return partition size
       if (SDUDiskPartitionsPanel1.Selected >= 0) then begin
         partInfo := SDUDiskPartitionsPanel1.PartitionInfo[SDUDiskPartitionsPanel1.Selected];
-        retval   := partInfo.PartitionLength;
+        Result   := partInfo.PartitionLength;
       end;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 function TfmeSelectPartition.GetSyntheticDriveLayout(): Boolean;

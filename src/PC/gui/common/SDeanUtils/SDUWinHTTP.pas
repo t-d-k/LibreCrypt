@@ -152,22 +152,20 @@ type
 
 
 function SDUWinHTTPSupported(): boolean;
-var
-  retval: boolean;
 begin
 {$IFDEF WINHTTP_DLL_STATIC}
   // Application would crash on startup if it wasn't supported...
-  retval := TRUE;
+  Result := TRUE;
 {$ELSE}
-  retval := FALSE;
+  Result := FALSE;
   try
-    retval := WinHttpCheckPlatform();
+    Result := WinHttpCheckPlatform();
   except
-    // Just swallow exception - retval already set to FALSE
+    // Just swallow exception - Result already set to FALSE
   end;
 {$ENDIF}
 
-  Result := retval;
+
 end;
 
 function SDUWinHTTPRequest(
@@ -189,9 +187,8 @@ function SDUWinHTTPRequest_WithUserAgent(
 ): boolean;
 var
   httpStatusCode: DWORD;
-  retval: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
   if SDUWinHTTPRequest(
                   URL,
 
@@ -208,10 +205,10 @@ begin
                   nil
                  ) then
     begin
-    retval := (httpStatusCode = HTTP_STATUS_OK);
+    Result := (httpStatusCode = HTTP_STATUS_OK);
     end;
 
-  Result := retval;
+
 end;
 
 function SDUWinHTTPRequest(
@@ -268,15 +265,14 @@ function SDUWinHTTPRequest(
   ReturnedHeaders: TStrings  // May be set to nil
 ): boolean;
 var
-  retval: boolean;
-  
+
   splitURL: URL_COMPONENTS;
 
   serverName: WideString;
   serverPort: integer;
   serverPath: WideString;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   ZeroMemory(@splitURL, sizeof(splitURL));
   splitURL.dwStructSize := sizeof(splitURL);
@@ -297,7 +293,7 @@ begin
     serverPort := splitURL.nPort;
     serverPath := Copy(splitURL.lpszUrlPath, 1, splitURL.dwUrlPathLength);
 
-    retval := SDUWinHTTPRequest(
+    Result := SDUWinHTTPRequest(
                           serverName,
                           serverPort,
                           serverPath,
@@ -318,7 +314,7 @@ begin
                          );
     end;
 
-  Result := retval;
+
 end;
 
 function SDUWinHTTPRequest(
@@ -393,7 +389,6 @@ var
 
   byteReceived: DWORD;
   page: Ansistring;
-  retval: boolean;
   strHeaders: WideString;
 begin
   // Bail out early if it's just *not* going to work...
@@ -419,7 +414,7 @@ begin
   //   WinHttpReadData
   //   WinHttpCloseHandle
 
-  retval := FALSE;
+  Result := FALSE;
   ReturnedBody := '';
 
   hSession := WinHttpOpen(
@@ -567,7 +562,7 @@ begin
                                     ) then
                     begin
                     ReturnedBody := ReturnedBody + page;
-                    retval := TRUE;
+                    Result := TRUE;
                     end;
 
                   end;
@@ -586,7 +581,7 @@ begin
     WinHttpCloseHandle(hSession);
     end;
 
-  Result := retval;
+
 end;
 
 
@@ -614,9 +609,8 @@ var
   FProgressDlg: TSDUProgressDialog;
   progResult: word;
   thrHTTPGet: TThreadHTTPGet;
-  retval: TTimeoutGet;
 begin
-  retval := tgFailure;
+  Result := tgFailure;
 
   FProgressDlg:= TSDUProgressDialog.Create(nil);
   FProgressDlg.Title := DialogTitle;
@@ -654,23 +648,23 @@ begin
 
   if (progResult = mrCancel) then
     begin
-    retval := tgCancel;
+    Result := tgCancel;
     end
   else if (progResult = mrAbort) then
     begin
-    retval := tgTimeout;
+    Result := tgTimeout;
     end
   else if (progResult = mrOK) then
     begin
     // In this case, the thread terminated 
     if thrHTTPGet.RetrievedOK then
       begin
-      retval := tgOK;
+      Result := tgOK;
       ReturnedBody := thrHTTPGet.ReturnedBody;
       end
     else
       begin
-      retval := tgFailure;
+      Result := tgFailure;
       end;
     end;
 
@@ -687,7 +681,7 @@ begin
     thrHTTPGet.Terminate();
     end;
 
-  Result := retval;
+
 end;
 
 

@@ -1097,11 +1097,10 @@ end;
 function TfrmFreeOTFEExplorerMain.GetNextDriveLetter(userDriveLetter,
   requiredDriveLetter: DriveLetterChar): DriveLetterChar;
 var
-  retVal:            DriveLetterChar;
   freeDriveLetters:  DriveLetterString;
   searchDriveLetter: DriveLetterChar;
 begin
-  retVal := #0;
+  Result := #0;
 
   searchDriveLetter := userDriveLetter;
   if (searchDriveLetter = #0) then begin
@@ -1125,17 +1124,16 @@ begin
   end;
 
   if (freeDriveLetters <> '') then begin
-    retVal := freeDriveLetters[1];
+    Result := freeDriveLetters[1];
   end;
 
 
-  Result := retVal;
+
 end;
 
 
 function TfrmFreeOTFEExplorerMain.MapNetworkDrive(const displayErrors: Boolean): Boolean;
 var
-  retval:         Boolean;
   networkShare:   String;
   useDriveLetter: DriveLetterChar;
   msg:            String;
@@ -1143,7 +1141,7 @@ var
   lastErrorMsg:   String;
   comment:        String;
 begin
-  retval := False;
+  Result := False;
 
   useDriveLetter := GetNextDriveLetter(#0, gSettings.OptDefaultDriveLetter);
 
@@ -1164,7 +1162,7 @@ begin
   // Cast to prevent compiler error
   if SDUMapNetworkDrive(networkShare, Char(useDriveLetter)) then begin
     FMappedDrive := useDriveLetter;
-    retval       := True;
+    Result       := True;
 
     if gSettings.OptPromptMountSuccessful then begin
       msg := SDUParamSubstitute(_('Your FreeOTFE volume has been mounted as drive: %1'),
@@ -1196,7 +1194,7 @@ begin
     end;
   end;
 
-  Result := retval;
+
 end;
 
  // Returns TRUE if the service was running, or successfully started.
@@ -1227,14 +1225,14 @@ const
 var
   sc: TSDUServiceControl;
   serviceState: cardinal;
-  retval: boolean;
+  Result: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   try
     sc:= TSDUServiceControl.Create();
   except
-    // Problem getting service control manager - ignore the error; retval
+    // Problem getting service control manager - ignore the error; Result
     // already set to FALSE
     sc := nil;
   end;
@@ -1249,7 +1247,7 @@ begin
         begin
         if (serviceState = SERVICE_RUNNING) then
           begin
-          retval := TRUE;
+          Result := TRUE;
           end
         else
           begin
@@ -1276,7 +1274,7 @@ begin
               // succeed if the user subsequently tries to mount again
               SDUPause(SERVICE_START_PAUSE);
               
-              retval := TRUE;
+              Result := TRUE;
               end
             else
               begin
@@ -1299,7 +1297,7 @@ begin
 
   end;
 
-  Result := retval;
+
 
 end;
 
@@ -1890,9 +1888,9 @@ end;
 
 procedure TfrmFreeOTFEExplorerMain.actCreateSubDirExecute(Sender: TObject);
 var
-  retval:     Boolean;
   dlg:        TfrmNewDirDlg;
   prevCursor: TCursor;
+  ok : boolean;
 begin
   inherited;
 
@@ -1902,12 +1900,12 @@ begin
       prevCursor    := Screen.Cursor;
       Screen.Cursor := crHourglass;
       try
-        retval := CreateSubDir(GetSelectedPath(Sender), dlg.DirName);
+        ok := CreateSubDir(GetSelectedPath(Sender), dlg.DirName);
       finally
         Screen.Cursor := prevCursor;
       end;
 
-      if retval then begin
+      if ok then begin
         // Don't bother telling user - they should know what they're doing!
         //SDUMessageDlg(_('Folder created successfully'), mtInformation);
       end else begin
@@ -2601,9 +2599,8 @@ var
   sumAllItems:      Boolean;
   i:                Integer;
   onlyDirsSelected: Boolean;
-  retval:           String;
 begin
-  retval := '';
+  Result := '';
 
   // If the only things which are *selected* are directories, return blank
   // If one or more items are selected, return their sum total size
@@ -2629,11 +2626,11 @@ begin
   if ((SDFilesystemListView1.SelCount > 0) and onlyDirsSelected) then begin
     // Do nothing - already set to ''
   end else begin
-    retval := SDUFormatUnits(totalSize, SDUUnitsStorageToTextArr(),
+    Result := SDUFormatUnits(totalSize, SDUUnitsStorageToTextArr(),
       UNITS_BYTES_MULTIPLIER, 2);
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfrmFreeOTFEExplorerMain.SDFilesystemListView1SelectItem(Sender: TObject;
@@ -3020,14 +3017,13 @@ end;
 
 function TfrmFreeOTFEExplorerMain.IsFilenameValid(filename: WideString): Boolean;
 var
-  retval:                 Boolean;
   invalidCharsForDisplay: String;
   filenameNoDots:         WideString;
   i:                      Integer;
 begin
-  retval := Filesystem.IsValidFilename(filename);
+  Result := Filesystem.IsValidFilename(filename);
 
-  if not (retval) then begin
+  if not (Result) then begin
     filenameNoDots := trim(StringReplace(filename, '.', '', [rfReplaceAll]));
 
     if (trim(filename) = '') then begin
@@ -3049,7 +3045,7 @@ begin
     end;
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfrmFreeOTFEExplorerMain.SDFilesystemListView1Edited(Sender: TObject;
@@ -3656,10 +3652,8 @@ end;
 function TfrmFreeOTFEExplorerMain.PromptToReplace(filename: String;
   existingSize: ULONGLONG; existingDateTime: TDateTime; newSize: ULONGLONG;
   newDateTime: TDateTime): Boolean;
-var
-  retval: Boolean;
 begin
-  retval := SDUConfirmYN(SDUParamSubstitute(
+  Result := SDUConfirmYN(SDUParamSubstitute(
     _('This folder already contains a file named ''%1''.' + SDUCRLF + SDUCRLF +
     'Would you like to replace the existing file' + SDUCRLF + SDUCRLF + '  %2' +
     SDUCRLF + '  modified: %3' + SDUCRLF + SDUCRLF + 'with this one?' + SDUCRLF +
@@ -3667,17 +3661,15 @@ begin
     SDUFormatAsBytesUnits(existingSize), DateTimeToStr(existingDateTime),
     SDUFormatAsBytesUnits(newSize), newDateTime]));
 
-  Result := retval;
+
 end;
 
 // Returns one of: mrYes, mrYesToAll, mrNo, mrCancel
 function TfrmFreeOTFEExplorerMain.PromptToReplaceYYANC(filename: String;
   existingSize: ULONGLONG; existingDateTime: TDateTime; newSize: ULONGLONG;
   newDateTime: TDateTime): Integer;
-var
-  retval: Integer;
 begin
-  retval := SDUMessageDlg(SDUParamSubstitute(
+  Result := SDUMessageDlg(SDUParamSubstitute(
     _('This folder already contains a file named ''%1''.' + SDUCRLF + SDUCRLF +
     'Would you like to replace the existing file' + SDUCRLF + SDUCRLF + '  %2' +
     SDUCRLF + '  modified: %3' + SDUCRLF + SDUCRLF + 'with this one?' + SDUCRLF +
@@ -3686,7 +3678,7 @@ begin
     SDUFormatAsBytesUnits(newSize), newDateTime]), mtConfirmation,
     [mbYes, mbNo, mbCancel, mbYesToAll], 0);
 
-  Result := retval;
+
 end;
 
 // Returns one of: mrYes, mrYesToAll, mrNo, mrCancel
@@ -3726,7 +3718,7 @@ function TfrmFreeOTFEExplorerMain.PromptToReplaceYYANC(srcIsMountedFSNotLocalFS:
   end;
 
 var
-  retval: Integer;
+
 
   destSize:     ULONGLONG;
   destDateTime: TDateTime;
@@ -3746,16 +3738,15 @@ begin
     destDateTime
     );
 
-  retval := PromptToReplaceYYANC(ExtractFilename(srcPathAndFilename), destSize,
+  Result := PromptToReplaceYYANC(ExtractFilename(srcPathAndFilename), destSize,
     destDateTime, srcSize, srcDateTime);
 
-  Result := retval;
+
 end;
 
 function TfrmFreeOTFEExplorerMain._StoreFile(path: WideString; fileToStore: String): Boolean;
 var
   item:       TSDDirItem_FAT;
-  retval:     Boolean;
   fileStream: TFileStream;
 begin
   item       := TSDDirItem_FAT.Create();
@@ -3766,13 +3757,13 @@ begin
     item.FilenameDOS := '';    // Set to '' to autogenerate DOS 8.3 filename
     item.IsFile      := True;  // *VERY* IMPORTANT!!!
 
-    retval := Filesystem.StoreFileOrDir(path, item, fileStream);
+    Result := Filesystem.StoreFileOrDir(path, item, fileStream);
   finally
     fileStream.Free();
     item.Free();
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfrmFreeOTFEExplorerMain.tbbWithDropDownMouseDown(Sender: TObject;
@@ -3810,38 +3801,35 @@ end;
  //end;
 
 function TfrmFreeOTFEExplorerMain.Mounted(): Boolean;
-var
-  retval: Boolean;
 begin
-  retval := False;
+  Result := False;
 
   if (Filesystem <> nil) then begin
-    retval := Filesystem.Mounted;
+    Result := Filesystem.Mounted;
   end;
 
-  Result := retval;
+
 end;
 
 
 function TfrmFreeOTFEExplorerMain.IsSenderTreeviewContextMenu(Sender: TObject): Boolean;
 var
   currMenuItem: TMenuItem;
-  retval:       Boolean;
 begin
-  retval := False;
+  Result := False;
 
   if (Sender is TMenuItem) then begin
     currMenuItem := TMenuItem(Sender);
     while (currMenuItem <> nil) do begin
       if (currMenuItem.Owner = pmTreeView) then begin
-        retval := True;
+        Result := True;
         break;
       end;
       currMenuItem := currMenuItem.Parent;
     end;
   end;
 
-  Result := retval;
+
 end;
 
  // Populate the supplied TStringList with the full path and filenames of the
@@ -3882,7 +3870,6 @@ var
   popupNode:          TTreeNode;
   currMenuItem:       TMenuItem;
   useContextMenuNode: Boolean;
-  retval:             String;
 begin
   useContextMenuNode := False;
   if (Sender is TMenuItem) then begin
@@ -3898,16 +3885,16 @@ begin
 
   if useContextMenuNode then begin
     popupNode := TTreeNode(pmTreeView.Tag);
-    retval    := SDFilesystemTreeView1.PathToNode(popupNode);
+    Result    := SDFilesystemTreeView1.PathToNode(popupNode);
   end else
   if (LastFocussed = lfTreeView) then begin
-    retval := SDFilesystemTreeView1.PathToNode(SDFilesystemTreeView1.Selected);
+    Result := SDFilesystemTreeView1.PathToNode(SDFilesystemTreeView1.Selected);
   end else
   if (LastFocussed = lfListView) then begin
-    retval := SDFilesystemListView1.Path;
+    Result := SDFilesystemListView1.Path;
   end;
 
-  Result := retval;
+
 end;
 
 function TfrmFreeOTFEExplorerMain.HandleCommandLineOpts_Mount(): eCmdLine_Exit;
@@ -4005,9 +3992,8 @@ function TfrmFreeOTFEExplorerMain.CheckDestinationIsntSource(opType: TFExplOpera
 var
   ucSrcPath:  String;
   ucDestPath: String;
-  retval:     Boolean;
 begin
-  retval := True;
+  Result := True;
 
   // Note: We use IncludeTrailingPathDelimiter(...) here and not
   //       ExcludeTrailingPathDelimiter(...) - otherwise "/" will return ""
@@ -4019,7 +4005,7 @@ begin
     SDUMessageDlg(SDUParamSubstitute(_(
       'Cannot %1 %2: The destination folder is the same as the source folder.'),
       [OperationTitle(opType), ExtractFilename(srcPathAndFilename)]), mtError);
-    retval := False;
+    Result := False;
   end // Sanity check; not trying to move to a subdir?
   else
   if Filesystem.DirectoryExists(srcPathAndFilename) then begin
@@ -4027,11 +4013,11 @@ begin
       SDUMessageDlg(SDUParamSubstitute(
         _('Cannot %1 %2: The destination folder is a subfolder of the source folder'),
         [OperationTitle(opType), ExtractFilename(srcPathAndFilename)]), mtError);
-      retval := False;
+      Result := False;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -4077,19 +4063,18 @@ end;
 
 function TfrmFreeOTFEExplorerMain.ClipboardHasFiles(): Boolean;
 var
-  retval:                   Boolean;
   srcIsMountedFSNotLocalFS: Boolean;
   opType:                   TFExplOperation;
   stlItems:                 TStringList;
 begin
   stlItems := TStringList.Create();
   try
-    retval := ClipboardGetItems(srcIsMountedFSNotLocalFS, opType, stlItems);
+    Result := ClipboardGetItems(srcIsMountedFSNotLocalFS, opType, stlItems);
   finally
     stlItems.Free();
   end;
 
-  Result := retval;
+
 end;
 
 function TfrmFreeOTFEExplorerMain.ClipboardHasFExplFiles(): Boolean;
@@ -4289,28 +4274,25 @@ end;
 function TfrmFreeOTFEExplorerMain.ConfirmPerformOperation(opType: TFExplOperation;
   srcIsMountedFSNotLocalFS: Boolean; srcItems: TStrings; destIsMountedFSNotLocalFS: Boolean;
   destDir: String; destFilename: String): Boolean;
-var
-  retval: Boolean;
 begin
-  retval := False;
+  Result := False;
 
   if ConfirmOperation(opType, srcItems, destDir) then begin
-    retval := PerformOperation(opType, srcIsMountedFSNotLocalFS, srcItems,
+    Result := PerformOperation(opType, srcIsMountedFSNotLocalFS, srcItems,
       destIsMountedFSNotLocalFS, destDir, destFilename);
   end;
 
-  Result := retval;
+
 end;
 
 function TfrmFreeOTFEExplorerMain.DetermineTotalSize(isMountedFSNotLocalFS: Boolean;
   items: TStrings): ULONGLONG;
 var
   i:      Integer;
-  retval: ULONGLONG;
 begin
-  retval := 0;
+  Result := 0;
   for i := 0 to (items.Count - 1) do begin
-    retval := retval + _DetermineTotalSize(isMountedFSNotLocalFS, items[i]);
+    Result := Result + _DetermineTotalSize(isMountedFSNotLocalFS, items[i]);
 
     if ProgressDlgHasUserCancelled() then begin
       break;
@@ -4318,41 +4300,40 @@ begin
 
   end;
 
-  Result := retval;
+
 end;
 
 function TfrmFreeOTFEExplorerMain._DetermineTotalSize(isMountedFSNotLocalFS: Boolean;
   item: String): ULONGLONG;
 var
-  retval:      ULONGLONG;
   tmpFileItem: TSDDirItem_FAT;
 begin
-  retval := 0;
+  Result := 0;
 
   if isMountedFSNotLocalFS then begin
     if Filesystem.FileExists(item) then begin
       tmpFileItem := TSDDirItem_FAT.Create();
       try
         Filesystem.GetItem_FAT(item, tmpFileItem);
-        retval := tmpFileItem.Size;
+        Result := tmpFileItem.Size;
       finally
         tmpFileItem.Free();
       end;
 
     end else
     if Filesystem.DirectoryExists(item) then begin
-      retval := _DetermineTotalSize_MountedDir(isMountedFSNotLocalFS, item);
+      Result := _DetermineTotalSize_MountedDir(isMountedFSNotLocalFS, item);
     end;
   end else begin
     if FileExists(item) then begin
-      retval := SDUGetFileSize(item);
+      Result := SDUGetFileSize(item);
     end else
     if SysUtils.DirectoryExists(item) then begin
-      retval := _DetermineTotalSize_MountedDir(isMountedFSNotLocalFS, item);
+      Result := _DetermineTotalSize_MountedDir(isMountedFSNotLocalFS, item);
     end;
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -4363,9 +4344,8 @@ var
   i:                         Integer;
   currSrcSubItem:            TSDDirItem;
   currSrcSubPathAndFilename: String;
-  retval:                    ULONGLONG;
 begin
-  retval := 0;
+  Result := 0;
 
   srcDirContents := TSDDirItemList.Create();
   try
@@ -4378,12 +4358,12 @@ begin
         // Skip volume labels, devices, and "."
         // Also skip "..", unless ShowParentDir is TRUE
         if currSrcSubItem.IsFile then begin
-          retval := retval + currSrcSubItem.Size;
+          Result := Result + currSrcSubItem.Size;
         end else
         if currSrcSubItem.IsDirectory then begin
           if ((currSrcSubItem.Filename <> DIR_CURRENT_DIR) and
             (currSrcSubItem.Filename <> DIR_PARENT_DIR)) then begin
-            retval := retval + _DetermineTotalSize_MountedDir(
+            Result := Result + _DetermineTotalSize_MountedDir(
               isMountedFSNotLocalFS, currSrcSubPathAndFilename);
           end;
         end;
@@ -4399,7 +4379,7 @@ begin
     srcDirContents.Free();
   end;
 
-  Result := retval;
+
 end;
 
 function TfrmFreeOTFEExplorerMain.PerformOperation(opType: TFExplOperation;
@@ -4417,10 +4397,9 @@ var
   userCancelled:         Boolean;
   dlgOverwritePrompt:    TfrmOverwritePrompt;
   useMoveDeletionMethod: TMoveDeletionMethod;
-  retval:                Boolean;
 begin
   abortAllRemaining := False;
-  retval            := False;
+  Result            := False;
 
   // Upfront sanity check ON ALL ITEMS - can't copy/move from/to the same
   if (((opType = cmCopy) or (opType = cmMove)) and srcIsMountedFSNotLocalFS and
@@ -4428,7 +4407,7 @@ begin
     for i := 0 to (srcItems.Count - 1) do begin
       if not (CheckDestinationIsntSource(opType, srcItems[i], destDir)) then begin
         // Error message already shown...
-        retval            := False;
+        Result            := False;
         abortAllRemaining := True;
       end;
     end;
@@ -4436,7 +4415,7 @@ begin
 
   // Bail out, if needed...
   if abortAllRemaining then begin
-    Result := retval;
+
     exit;
   end;
 
@@ -4458,7 +4437,7 @@ begin
 
   // Bail out, if needed...
   if abortAllRemaining then begin
-    Result := retval;
+
     exit;
   end;
 
@@ -4527,9 +4506,9 @@ begin
     actRefreshExecute(nil);
   end;
 
-  retval := not (abortAllRemaining);
+  Result := not (abortAllRemaining);
 
-  Result := retval;
+
 end;
 
 procedure TfrmFreeOTFEExplorerMain.ProgressDlgSetup(opType: TFExplOperation);
@@ -4620,15 +4599,13 @@ begin
 end;
 
 function TfrmFreeOTFEExplorerMain.ProgressDlgHasUserCancelled(): Boolean;
-var
-  retval: Boolean;
 begin
-  retval := False;
+  Result := False;
   if (FOpProgressDlg <> nil) then begin
-    retval := FOpProgressDlg.HasUserCancelled();
+    Result := FOpProgressDlg.HasUserCancelled();
   end;
 
-  Result := retval;
+
 
 end;
 
@@ -4951,23 +4928,20 @@ function TfrmFreeOTFEExplorerMain._PerformOperation_File_Actual(opType: TFExplOp
 
   // Return the last path segment of the path passed in
   function GetLastSegmentFrom(path: String): String;
-  var
-    retval: String;
   begin
-    retval := ExcludeTrailingPathDelimiter(path);
-    retval := ExtractFilename(retval);
-    if (retval = '') then begin
-      retval := PATH_SEPARATOR;
+    Result := ExcludeTrailingPathDelimiter(path);
+    Result := ExtractFilename(Result);
+    if (Result = '') then begin
+      Result := PATH_SEPARATOR;
     end;
 
-    Result := retval;
+
   end;
 
 var
-  retval:     Boolean;
   prevCursor: TCursor;
 begin
-  retval := False;
+  Result := False;
 
   prevCursor    := Screen.Cursor;
   Screen.Cursor := crHourglass;
@@ -5001,51 +4975,51 @@ begin
     if (opType = cmCopy) then begin
       if (srcIsMountedFSNotLocalFS and destIsMountedFSNotLocalFS) then begin
         SetStatusMsg(SDUParamSubstitute(_('Copying: %1'), [srcItem]));
-        retval := Filesystem.CopyFile(srcItem, destItem);
+        Result := Filesystem.CopyFile(srcItem, destItem);
       end else
       if (srcIsMountedFSNotLocalFS and not (destIsMountedFSNotLocalFS)) then begin
         SetStatusMsg(SDUParamSubstitute(_('Extracting: %1'), [srcItem]));
-        retval := Filesystem.ExtractFile(srcItem, destItem);
+        Result := Filesystem.ExtractFile(srcItem, destItem);
       end else
       if (not (srcIsMountedFSNotLocalFS) and destIsMountedFSNotLocalFS) then begin
         SetStatusMsg(SDUParamSubstitute(_('Storing: %1'), [srcItem]));
-        retval := _StoreFile(destDir, srcItem);
+        Result := _StoreFile(destDir, srcItem);
       end else
       if (not (srcIsMountedFSNotLocalFS) and not (destIsMountedFSNotLocalFS)) then begin
-        retval := CopyFile(PChar(destItem), PChar(srcItem), False);
+        Result := CopyFile(PChar(destItem), PChar(srcItem), False);
       end;
     end // MOVE OPERATIONS...
     else
     if (opType = cmMove) then begin
       if (srcIsMountedFSNotLocalFS and destIsMountedFSNotLocalFS) then begin
         SetStatusMsg(SDUParamSubstitute(_('Moving: %1'), [srcItem]));
-        retval := Filesystem.MoveFileOrDir(srcItem, destItem);
+        Result := Filesystem.MoveFileOrDir(srcItem, destItem);
       end else
       if (srcIsMountedFSNotLocalFS and not (destIsMountedFSNotLocalFS)) then begin
         SetStatusMsg(SDUParamSubstitute(_('Extracting: %1'), [srcItem]));
-        retval := Filesystem.ExtractFile(srcItem, destItem);
-        if retval then begin
+        Result := Filesystem.ExtractFile(srcItem, destItem);
+        if Result then begin
           Filesystem.DeleteFileOrDir(srcItem);
         end;
       end else
       if (not (srcIsMountedFSNotLocalFS) and destIsMountedFSNotLocalFS) then begin
         SetStatusMsg(SDUParamSubstitute(_('Storing: %1'), [srcItem]));
-        retval := _StoreFile(destDir, srcItem);
-        if retval then begin
-          retval := DeleteLocalFSItemUsingMethod(moveDeletionMethod, srcItem);
+        Result := _StoreFile(destDir, srcItem);
+        if Result then begin
+          Result := DeleteLocalFSItemUsingMethod(moveDeletionMethod, srcItem);
         end;
       end else
       if (not (srcIsMountedFSNotLocalFS) and not (destIsMountedFSNotLocalFS)) then begin
-        retval := MoveFile(PChar(destItem), PChar(srcItem));
+        Result := MoveFile(PChar(destItem), PChar(srcItem));
       end;
     end // DELETE OPERATIONS...
     else
     if (opType = cmDelete) then begin
       SetStatusMsg(SDUParamSubstitute(_('Deleting: %1'), [srcItem]));
       if srcIsMountedFSNotLocalFS then begin
-        retval := Filesystem.DeleteFileOrDir(srcItem);
+        Result := Filesystem.DeleteFileOrDir(srcItem);
       end else begin
-        retval := DeleteLocalFSItemUsingMethod(mdmDelete, srcItem);
+        Result := DeleteLocalFSItemUsingMethod(mdmDelete, srcItem);
       end;
 
     end;
@@ -5054,17 +5028,16 @@ begin
     Screen.Cursor := prevCursor;
   end;
 
-  Result := retval;
+
 end;
 
 function TfrmFreeOTFEExplorerMain.DeleteLocalFSItemUsingMethod(moveDeletionMethod:
   TMoveDeletionMethod; item: String): Boolean;
 var
-  retval:     Boolean;
   userPrompt: Integer;
   promptMsg:  String;
 begin
-  retval := True;
+  Result := True;
 
   if (moveDeletionMethod = mdmDelete) then begin
     // Simple delete...
@@ -5074,14 +5047,14 @@ begin
     //    SetStatusMsg(SDUParamSubstitute(_('Deleting: %1'), [item]));
 
     if FileExists(item) then begin
-      retval := SysUtils.DeleteFile(item);
+      Result := SysUtils.DeleteFile(item);
     end else
     if SysUtils.DirectoryExists(item) then begin
       try
         RmDir(item);
       except
         // Swallow exception; just set return value
-        retval := False;
+        Result := False;
       end;
     end;
   end else
@@ -5090,11 +5063,11 @@ begin
     ProgressDlgSetLineTwo(_('Overwriting original...'));
     SetStatusMsg(SDUParamSubstitute(_('Overwriting: %1'), [item]));
 
-    retval := (fShredderObj.DestroyFileOrDir(item, False, True) = srSuccess);
+    Result := (fShredderObj.DestroyFileOrDir(item, False, True) = srSuccess);
   end;
 
   // If there was a problem, allow the user to abort/retry/ignore
-  if not (retval) then begin
+  if not (Result) then begin
     if (moveDeletionMethod = mdmDelete) then begin
       promptMsg := _('Deletion of %1 failed');
     end else
@@ -5106,20 +5079,20 @@ begin
       mtWarning, [mbAbort, mbRetry, mbIgnore], 0);
 
     if (userPrompt = mrAbort) then begin
-      // Do nothing - retval already set to FALSE
+      // Do nothing - Result already set to FALSE
     end else
     if (userPrompt = mrRetry) then begin
       // Go again...
-      retval := DeleteLocalFSItemUsingMethod(moveDeletionMethod, item);
+      Result := DeleteLocalFSItemUsingMethod(moveDeletionMethod, item);
     end else
     if (userPrompt = mrIgnore) then begin
       // Assume that it's OK...
-      retval := True;
+      Result := True;
     end;
 
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfrmFreeOTFEExplorerMain.OverwritePassStarted(Sender: TObject;
@@ -5374,13 +5347,12 @@ end;
 function TfrmFreeOTFEExplorerMain.FSLoadContentsFromDisk(fromMountedFSNotLocalFS: Boolean;
   srcItem: String; srcDirContents: TSDDirItemList): Boolean;
 var
-  retval:   Boolean;
   iterator: TSDUFileIterator;
   entry:    String;
   currItem: TSDDirItem_FAT;
 begin
   if fromMountedFSNotLocalFS then begin
-    retval := Filesystem.LoadContentsFromDisk(srcItem, srcDirContents);
+    Result := Filesystem.LoadContentsFromDisk(srcItem, srcDirContents);
   end else begin
     iterator := TSDUFileIterator.Create(nil);
     try
@@ -5405,10 +5377,10 @@ begin
       iterator.Free();
     end;
 
-    retval := True;
+    Result := True;
   end;
 
-  Result := retval;
+
 end;
 
 function TfrmFreeOTFEExplorerMain.GetLocalFileDetails(pathAndFilename: String;
@@ -5463,7 +5435,7 @@ const
     ('a.box', 'b.box', 'c.box', 'd.box', 'e.box',
      'e.box', 'f.box', 'luks.box',  'luks_essiv.box', 'a.box',
       'b.box', 'dmcrypt_dx.box', 'dmcrypt_dx.box');
-  PASSWORDS: array[0..12] of String =
+  PASSWORDS: array[0..12] of AnsiString =
     ('password', 'password', '!"£$%^&*()', 'password', 'password',
      '5ekr1t',    'password', 'password', 'password', 'secret',
       'secret', 'password', '5ekr1t');
@@ -5530,7 +5502,10 @@ begin
   inherited;
 
   Result    := True;
-
+  if not GetFreeOTFEBase().Active then begin
+    ShowMessage('component not active - cnat run tests');
+    exit;
+  end;
 
   mountList := TStringList.Create();
   try

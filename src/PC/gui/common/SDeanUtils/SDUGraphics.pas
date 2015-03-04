@@ -381,9 +381,7 @@ var
  iconHandle: HICON;
  anIcon: TIcon;
  tmpRect: TRect;
-// retval: boolean;
 begin
-//  retval := FALSE;
 
   if SDUOSVistaOrLater() then
     begin
@@ -433,7 +431,6 @@ begin
         anIcon.ReleaseHandle();
         DestroyIcon(iconHandle);
 
-//        retval := TRUE;
       finally
         resizedBitmap.Free();
         iconAsBitmap.Free();
@@ -442,7 +439,7 @@ begin
     end;
   end;
 
-//  Result := retval;
+//
 end;
 
 
@@ -457,9 +454,8 @@ var
   iconHandleUse: HICON;
   iconHandleUnused: HICON;
   iconsExtracted: integer;
-  retval: boolean;
 begin
-  retval:= FALSE;
+  Result:= FALSE;
   iconsExtracted:= ExtractIconEx(
                                  PChar(dllFilename),
                                  iconIdx, // 0 indexed
@@ -488,12 +484,12 @@ begin
       // Unload unused small/large icon
       DestroyIcon(iconHandleUnused);
 
-      retval := TRUE;
+      Result := TRUE;
       end;
 
     end;
 
-  Result := retval;
+
 end;
 
 
@@ -504,9 +500,8 @@ end;
 function SDULoadDLLIconToList(dllFilename: string; getSmallIcon: boolean; iconIdx: integer; imgList: TImageList): integer;
 var
   tmpIcon: TIcon;
-  retval: integer;
 begin
-  retval:= -1;
+  Result:= -1;
 
   tmpIcon:= TIcon.Create();
   try
@@ -522,14 +517,14 @@ begin
         ilToolbarIcons.Height := tmpIcon.Height;
         end;
       }
-      retval := imgList.AddIcon(tmpIcon);
+      Result := imgList.AddIcon(tmpIcon);
       end;
 
   finally
     tmpIcon.Free();
   end;
 
-  Result := retval;
+
 end;
 
 

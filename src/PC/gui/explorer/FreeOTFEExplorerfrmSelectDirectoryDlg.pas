@@ -47,9 +47,8 @@ function SelectFilesystemDirectory(AOwner: TComponent; Filesystem: TSDCustomFile
   selectDirType: TSelectDirType; items: TStrings): String;
 var
   dlg:    TfrmSelectDirectoryDlg;
-  retval: String;
 begin
-  retval := '';
+  Result := '';
 
   dlg := TfrmSelectDirectoryDlg.Create(AOwner);
   try
@@ -58,14 +57,14 @@ begin
     dlg.Filesystem    := Filesystem;
 
     if (dlg.ShowModal = mrOk) then begin
-      retval := dlg.SelectedPath;
+      Result := dlg.SelectedPath;
     end;
 
   finally
     dlg.Free();
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfrmSelectDirectoryDlg.FormShow(Sender: TObject);

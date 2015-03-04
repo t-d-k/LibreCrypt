@@ -3,17 +3,21 @@ unit OTFEFreeOTFE_DiskPartitionsPanel;
 interface
 
 uses
-  Classes, CommonfmeOptions_Base,
-  CommonSettings,
-  Controls, Dialogs, Forms,
-  FreeOTFESettings, Graphics, Messages, OTFEFreeOTFEBase_U, SDUDiskPartitionsPanel,
-  SDUGeneral,
-  SysUtils, Variants, Windows;
+  //delphi and 3rd party libs - layer 0
+  SysUtils, Variants, Classes, Windows , Graphics, Messages,   Controls, Dialogs, Forms,
+  //sdu  - layer 1
+    SDUGeneral,
+  //doxbox utils -also layer 1
+     OTFEFreeOTFEBase_U, SDUDiskPartitionsPanel,  FreeOTFESettings,    CommonfmeOptions_Base,
+  CommonSettings
+   // doxbox forms - layer 2
+    //main form - layer 3
+  ;
 
 type
   TOTFEFreeOTFEDiskPartitionsPanel = class (TSDUDiskPartitionsPanel)
   PRIVATE
-//    FFreeOTFEObj: TOTFEFreeOTFEBase;
+
   PROTECTED
   fSyntheticDriveLayout: Boolean;
     function GetDriveLayout(physicalDiskNo: Integer;
@@ -23,7 +27,6 @@ type
 
 
   PUBLISHED
-//    property FreeOTFEObj: TOTFEFreeOTFEBase Read FFreeOTFEObj Write FFreeOTFEObj;
 
     property SyntheticDriveLayout: Boolean Read fSyntheticDriveLayout;
 

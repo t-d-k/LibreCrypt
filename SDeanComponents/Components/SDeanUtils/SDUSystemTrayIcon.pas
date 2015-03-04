@@ -780,6 +780,7 @@ end;
 // ----------------------------------------------------------------------------
 procedure TSDUSystemTrayIcon.UpdateTrayIcon(dwMessage: cardinal);
 var
+ { TODO 1 -otdk -crefactor : use _NOTIFYICONDATA_v5W for widechar }
   trayIcon: TNotifyIconData_v2;
   tmpIcon: TIcon;
 begin
@@ -832,7 +833,8 @@ begin
       //   terminating NULL.
       //   For Version 5.0 and later, szTip can have a maximum of 128
       //   characters, including the terminating NULL."
-      StrPLCopy(trayIcon.szTip, Tip, (sizeof(trayIcon.szTip)-1));
+
+      StrPLCopy(trayIcon.szTip, fTip, (sizeof(trayIcon.szTip)-1));
 
       Shell_NotifyIcon(dwMessage, @trayIcon);
       end;

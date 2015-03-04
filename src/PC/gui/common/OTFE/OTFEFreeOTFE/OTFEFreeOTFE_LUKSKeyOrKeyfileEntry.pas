@@ -156,22 +156,21 @@ end;
 
 function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.GetKey(var userKey: TSDUBYtes): Boolean;
 var
-  retval:             Boolean;
   keyfileIsASCII:     Boolean;
   keyfileNewlineType: TSDUNewline;
 begin
-  retval := False;
+  Result := False;
 
   if rbKeyFromUser.Checked then begin
     { TODO 1 -otdk -cfix : warn user about losing unicde chars }
     userKey := SDUStringToSDUBytes( preUserkey.Text);
-    retval  := True;
+    Result  := True;
   end else begin
     if (feKeyfile.Filename <> '') then begin
       GetKeyfileIsASCII(keyfileIsASCII);
       GetKeyfileNewlineType(keyfileNewlineType);
 
-      retval := GetFreeOTFEBase().ReadLUKSKeyFromFile(
+      Result := GetFreeOTFEBase().ReadLUKSKeyFromFile(
         feKeyfile.Filename,
         keyfileIsASCII,
         keyfileNewlineType,
@@ -179,7 +178,7 @@ begin
     end;
   end;
 
-  Result := retval;
+
 end;
 
 function TOTFEFreeOTFELUKSKeyOrKeyfileEntry.SetKey(userKey: PasswordString): Boolean;

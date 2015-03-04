@@ -1,12 +1,22 @@
 unit SDUDiskPartitionsPanel;
 
 interface
+ {
+ layers used are:
+ //delphi and 3rd party libs - layer 0
+
+   // doxbox forms - layer 2
+    //main form - layer 3
+  }
+
 
 uses
-  Classes,
+ //delphi and 3rd party libs - layer 0
+  Classes, SysUtils,
+     //sdu & doxbox utils - layer 1
   SDUBlocksPanel,
   SDUGeneral,
-  SDUObjectManager, SysUtils;
+  SDUObjectManager;
 
 type
   // Exceptions...

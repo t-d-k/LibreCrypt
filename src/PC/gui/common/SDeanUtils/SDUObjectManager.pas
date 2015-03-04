@@ -286,23 +286,22 @@ end;
 
 function TSDUObjManager.UnderlyingDeviceForName(startName: String): String;
 var
-  retval: String;
   obj:    PObjMgrEntry;
   idx:    Integer;
 begin
-  retval := '';
+  Result := '';
 
   idx := FAllObjects.IndexOf(startName);
   if (idx >= 0) then begin
     obj := PObjMgrEntry(FAllObjects.Objects[idx]);
     if (obj.ObjType = otSymlink) then begin
-      retval := UnderlyingDeviceForName(obj.SymLinkTo);
+      Result := UnderlyingDeviceForName(obj.SymLinkTo);
     end else begin
-      retval := obj.FullName;
+      Result := obj.FullName;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 function TSDUObjManager.UnderlyingDeviceForDrive(driveLetter: Char): String;

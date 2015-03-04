@@ -364,20 +364,18 @@ function PKCS11KnownLibraryPrettyDesc(knownLib: TPKCS11KnownLibrary): string;
 implementation
 
 function PKCS11KnownLibraryPrettyDesc(knownLib: TPKCS11KnownLibrary): string;
-var
-  retval: string;
 begin
-  retval := knownLib.Manufacturer;
-  if (retval = '') then
+  Result := knownLib.Manufacturer;
+  if (Result = '') then
     begin
-    retval := knownLib.Device;
+    Result := knownLib.Device;
     end
   else if (knownLib.Device <> '') then
     begin
-    retval := retval + ': ' + knownLib.Device;
+    Result := Result + ': ' + knownLib.Device;
     end;
 
-  Result := retval;
+
 end;
 
 END.

@@ -70,19 +70,18 @@ end;
 function TfrmOverwritePrompt.GetSelected(): TMoveDeletionMethod;
 var
   mdm:    TMoveDeletionMethod;
-  retval: TMoveDeletionMethod;
 begin
   // Decode move deletion method
-  retval := mdmPrompt;
+  Result := mdmPrompt;
   for mdm := low(mdm) to high(mdm) do begin
     if (MoveDeletionMethodTitle(mdm) = gbMoveDeletionMethod.Items[gbMoveDeletionMethod.ItemIndex])
     then begin
-      retval := mdm;
+      Result := mdm;
       break;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfrmOverwritePrompt.rbLeaveAloneClick(Sender: TObject);

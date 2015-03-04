@@ -87,8 +87,6 @@ type
 
 
 
-  PUBLISHED
-
   end;
 
 // MouseRNG store
@@ -255,9 +253,9 @@ begin
    { SDUMessageDlg(
       _('Unknown RNG selected?!') + SDUCRLF + SDUCRLF + PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
       mtError
-      );}
+      ); Result := False;}
 
-    Result := False;
+
   end;
 
   end;
@@ -272,9 +270,9 @@ begin
         _('Insufficient random data generated?!') + SDUCRLF + SDUCRLF +
         PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
         mtError
-        );
+        );  Result := False;
       }
-      Result := False;
+
     end;
 
   end;

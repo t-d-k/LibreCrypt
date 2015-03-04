@@ -180,10 +180,8 @@ end;
  // Sanity check a BACKUP operation
  // Returns TRUE if all values entered make sense, otherwise FALSE
 function TfrmCDBBackupRestore.SanityCheckBackup(): Boolean;
-var
-  allOK: Boolean;
 begin
-  allOK := True;
+  Result := True;
 
   // BACKUP SANITY CHECKS
 
@@ -198,13 +196,12 @@ begin
       SDUCRLF + _(
       'Please delete this backup file and try again, or specify a different filename to backup to.'),
       mtError, [mbOK], 0);
-    allOK := False;
+    Result := False;
   end;
 
   // Note: We're not worried if the source doens't exist - the backup operation
   //       will simply fail in this case
 
-  Result := allOK;
 end;
 
 
@@ -212,11 +209,10 @@ end;
  // Returns TRUE if all values entered make sense, otherwise FALSE
 function TfrmCDBBackupRestore.SanityCheckRestore(): Boolean;
 var
-  allOK:   Boolean;
   confirm: DWORD;
   srcSize: ULONGLONG;
 begin
-  allOK := False;
+  Result := False;
 
   // RESTORE SANITY CHECKS
 
@@ -253,7 +249,7 @@ begin
           GetDestFilename, GetDestOffset]), mtConfirmation, [mbYes, mbNo], 0);
 
       if (confirm = mrYes) then begin
-        allOK := True;
+        Result := True;
       end;
 
     end;  // ELSE PART - if (not(CheckDestLarger())) then
@@ -261,7 +257,6 @@ begin
   end;  // ELSE PART - if not(FileExists(GetSrcFilename()) then
 
 
-  Result := allOK;
 end;
 
 

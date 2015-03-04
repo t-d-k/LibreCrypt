@@ -261,18 +261,17 @@ end;
 function TfmeOptions_FreeOTFEExplorerAdvanced.GetOverwriteMethod(): TShredMethod;
 var
   sm:     TShredMethod;
-  retval: TShredMethod;
 begin
-  retval := smPseudorandom;
+  Result := smPseudorandom;
 
   for sm := low(sm) to high(sm) do begin
     if (cbOverwriteMethod.items[cbOverwriteMethod.ItemIndex] = ShredMethodTitle(sm)) then begin
-      retval := sm;
+      Result := sm;
       break;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfmeOptions_FreeOTFEExplorerAdvanced._ReadSettings(config: TFreeOTFEExplorerSettings);

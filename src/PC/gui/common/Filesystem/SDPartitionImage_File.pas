@@ -63,10 +63,10 @@ begin
   if (FFileHandle = INVALID_HANDLE_VALUE) then begin
     raise EPartitionUnableToOpen.Create('Unable to open partition file');
   end else begin
-    retval := True;
+    Result := True;
   end;
 
-  Result := retval;
+
 end;
 
 procedure TSDPartitionImage_File.DoDismount();
@@ -86,7 +86,7 @@ var
 begin
   // Short circuit...
   if (maxSize = 0) then begin
-    retval := True;
+    Result := True;
   end else begin
     FSerializeCS.Acquire();
     try
@@ -102,14 +102,14 @@ begin
         hs.Free();
       end;
 
-      retval := True;
+      Result := True;
     finally
       FSerializeCS.Release();
     end;
 
   end;
 
-  Result := retval;
+
 end;
 
 function TSDPartitionImage_File.WriteConsecutiveSectors(startSectorID: uint64;
@@ -119,11 +119,11 @@ var
   useLength: Integer;
 begin
   if ReadOnly then begin
-    retval := False;
+    Result := False;
   end // Short circuit...
   else
   if (maxSize = 0) then begin
-    retval := True;
+    Result := True;
   end else begin
     FSerializeCS.Acquire();
     try
@@ -139,14 +139,14 @@ begin
         hs.Free();
       end;
 
-      retval := True;
+      Result := True;
     finally
       FSerializeCS.Release();
     end;
 
   end;
 
-  Result := retval;
+
 end;
 
 function TSDPartitionImage_File.GetSize(): ULONGLONG;

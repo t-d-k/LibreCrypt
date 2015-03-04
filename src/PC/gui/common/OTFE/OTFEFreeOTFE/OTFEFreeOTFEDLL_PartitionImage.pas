@@ -59,9 +59,8 @@ end;
 function TOTFEFreeOTFEDLL_PartitionImage.DoMount(): boolean;
 var
   diskGeometry: TSDUDiskGeometry;
-  retval: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   FFOTFEMountedOnPartitionMount := TRUE;
   if (FMountedAs = #0) then
@@ -86,16 +85,16 @@ begin
                 diskGeometry.BytesPerSector
                );
                
-      retval := TRUE;
+      Result := TRUE;
       end
     else
       begin
-      // Dismount, but otherwise do nothing; retval already set to FALSE
+      // Dismount, but otherwise do nothing; Result already set to FALSE
       DoDismount();
       end;
     end;
 
-  Result := retval;
+
 end;
 
 procedure TOTFEFreeOTFEDLL_PartitionImage.DoDismount();
@@ -115,8 +114,6 @@ end;
 
 // maxSize - Size of data to transfer, in *bytes*, not sectors
 function TOTFEFreeOTFEDLL_PartitionImage.ReadConsecutiveSectors(startSectorID: uint64; sectors: TStream; maxSize: integer = -1): boolean;
-var
-  retval: boolean;
 begin
   // Short circuit...
   if (maxSize = 0) then
@@ -130,20 +127,18 @@ begin
     maxSize := FBytesPerSector;
     end;
 
-  retval := FreeOTFEObj.ReadData_Bytes(
+  Result := FreeOTFEObj.ReadData_Bytes(
                                        FMountedAs,
                                        (startSectorID * FBytesPerSector),
                                        maxSize,
                                        sectors
                                       );
 
-  Result := retval;
+
 end;
 
 // maxSize - Size of data to transfer, in *bytes*, not sectors
 function TOTFEFreeOTFEDLL_PartitionImage.WriteConsecutiveSectors(startSectorID: uint64; sectors: TStream; maxSize: integer = -1): boolean;
-var
-  retval: boolean;
 begin
   // Short circuit...
   if (maxSize = 0) then
@@ -157,14 +152,14 @@ begin
     maxSize := FBytesPerSector;
     end;
 
-  retval := FreeOTFEObj.WriteData_Bytes(
+  Result := FreeOTFEObj.WriteData_Bytes(
                                        FMountedAs,
                                        (startSectorID * FBytesPerSector),
                                        maxSize,
                                        sectors
                                       );
 
-  Result := retval;
+
 end;
 
 function TOTFEFreeOTFEDLL_PartitionImage.GetSize(): ULONGLONG;

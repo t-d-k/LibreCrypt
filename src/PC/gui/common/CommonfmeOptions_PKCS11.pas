@@ -161,25 +161,22 @@ begin
 end;
 
 function TfmeOptions_PKCS11.VerifyLibrary(): Boolean;
-var
-  allOK: Boolean;
 begin
-  allOK := True;
+  Result := True;
   if (LibraryDLL = '') then begin
     SDUMessageDlg(_('Please specify the PKCS#11 library to be used'), mtError);
-    allOK := False;
+    Result := False;
   end;
 
-  if allOK then begin
-    allOK := PKCS11VerifyLibrary(LibraryDLL);
+  if Result then begin
+    Result := PKCS11VerifyLibrary(LibraryDLL);
 
-    if not (allOK) then begin
+    if not (Result) then begin
       SDUMessageDlg(_('The library specified does not appear to be a valid/working PKCS#11 library'),
         mtError);
     end;
   end;
 
-  Result := allOK;
 end;
 
 

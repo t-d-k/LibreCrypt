@@ -437,14 +437,14 @@ end;
 
 function TfmeOptions_FreeOTFEGeneral.SelectedLanguage(): TLanguageTranslation;
 begin
-  retval := LanguageControlLanguage(cbLanguage.ItemIndex);
-  Result := retval;
+  Result := LanguageControlLanguage(cbLanguage.ItemIndex);
+
 end;
 
 function TfmeOptions_FreeOTFEGeneral.LanguageControlLanguage(idx: Integer): TLanguageTranslation;
 begin
-  retval := (PLanguageTranslation(cbLanguage.Items.Objects[idx]))^;
-  Result := retval;
+  Result := (PLanguageTranslation(cbLanguage.Items.Objects[idx]))^;
+
 end;
 
 end.

@@ -115,33 +115,32 @@ end;
 
 function TfrmInstallOnUSBDrive.InstallOnUSBDrive(): Boolean;
 var
-  allOK:    Boolean;
   destPath: String;
   srcPath:  String;
   copyOK:   Boolean;
 begin
-  allOK := True;
+  Result := True;
 
   destPath := GetInstallFullPath();
   srcPath  := ExcludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
 
   // Check that if user wants to create an autorun.inf file, they don't have
   // any spaces in teh install path
-  if allOK then begin
+  if Result then begin
     if ckSetupAutoplay.Checked then begin
       if (Pos(' ', GetInstallRelativePath()) > 0) then begin
-        allOK := (SDUMessageDlg(SDUParamSubstitute(
+        Result := (SDUMessageDlg(SDUParamSubstitute(
           _('The path specified has spaces in it.' + SDUCRLF + SDUCRLF +
           'Because of this, Windows will be able to display the %1 icon for the drive, but not launch %1 automatically when the drive is inserted.' + SDUCRLF + SDUCRLF + 'Do you wish to continue?'), [Application.Title]), mtWarning, [mbYes, mbNo], 0) = mrYes);
       end;
     end;
   end;
 
-  if allOK then begin
+  if Result then begin
     // Sanity check - user trying to install into root dir?
     // Note: GetInstallRelativePath() will return '\', at a minimum
     if (length(GetInstallRelativePath()) <= 1) then begin
-      allOK := (SDUMessageDlg(SDUParamSubstitute(
+      Result := (SDUMessageDlg(SDUParamSubstitute(
         _('You have opted to copy %1 to the root directory of your USB drive, and not a subdirectory.'),
         [Application.title]) + SDUCRLF + SDUCRLF + _('Are you sure you wish to do this?'),
         mtWarning, [mbYes, mbNo], 0) = mrYes);
@@ -149,7 +148,7 @@ begin
   end;
 
   // Copy FreeOTFE software to drive
-  if allOK then begin
+  if Result then begin
     // Disable the form, so the user mess with it while files are being copied
     SDUEnableControl(self, False);
 
@@ -164,7 +163,7 @@ begin
         [Application.Title, destPath]),
         mtError
         );
-      allOK := False;
+      Result := False;
     end;
 
     // Reenable the form
@@ -176,7 +175,7 @@ begin
   end;
 
   // Create autorun.inf file, if needed
-  if allOK then begin
+  if Result then begin
     if ckSetupAutoplay.Checked then begin
       if not (CreateAutorunInfFile()) then begin
         SDUMessageDlg(
@@ -186,23 +185,21 @@ begin
           mtWarning
           );
         // We take this as a success - the autorun.inf is pretty minor
-        allOK := True;
+        Result := True;
       end;
     end;
   end;
 
-  Result := allOK;
 end;
 
 function TfrmInstallOnUSBDrive.CreateAutorunInfFile(): Boolean;
 var
   autorunContent:  TStringList;
-  allOK:           Boolean;
   partPath:        String;
   srcExeFilename:  String;
   autorunFilename: String;
 begin
-  allOK := False;
+  Result := False;
 
   autorunContent := TStringList.Create();
   try
@@ -237,7 +234,7 @@ begin
         SetFileAttributes(PChar(autorunFilename), FILE_ATTRIBUTE_HIDDEN);
       end;
 
-      allOK := True;
+      Result := True;
     except
       on E: Exception do begin
         // Nothing - just swallow exception
@@ -248,7 +245,6 @@ begin
     autorunContent.Free();
   end;
 
-  Result := allOK;
 end;
 
 procedure TfrmInstallOnUSBDrive.pbRefreshDrivesClick(Sender: TObject);
@@ -289,14 +285,14 @@ end;
 
 function TfrmInstallOnUSBDrive.GetInstallDrive(): Char;
 begin
-  retval := #0;
+  Result := #0;
 
   if (cbDrive.ItemIndex >= 0) then begin
     // Only the 1st char of the drive...
-    retval := cbDrive.Items[cbDrive.ItemIndex][1];
+    Result := cbDrive.Items[cbDrive.ItemIndex][1];
   end;
 
-  Result := retval;
+
 end;
 
 function TfrmInstallOnUSBDrive.GetInstallFullPath(): String;
@@ -306,12 +302,12 @@ end;
 
 function TfrmInstallOnUSBDrive.GetInstallRelativePath(): String;
 begin
-  retval := trim(edPath.Text);
-  if (Pos('\', retval) <> 1) then begin
-    retval := '\' + retval;
+  Result := trim(edPath.Text);
+  if (Pos('\', Result) <> 1) then begin
+    Result := '\' + Result;
   end;
 
-  Result := retval;
+
 end;
 
 end.

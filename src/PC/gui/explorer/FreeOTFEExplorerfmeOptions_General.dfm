@@ -1,6 +1,8 @@
 inherited fmeOptions_FreeOTFEExplorerGeneral: TfmeOptions_FreeOTFEExplorerGeneral
   Width = 504
   Height = 321
+  ExplicitWidth = 504
+  ExplicitHeight = 321
   object gbGeneral: TGroupBox
     Left = 16
     Top = 16
@@ -66,7 +68,6 @@ inherited fmeOptions_FreeOTFEExplorerGeneral: TfmeOptions_FreeOTFEExplorerGenera
       Width = 145
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 3
       OnChange = cbLanguageChange
     end
@@ -104,7 +105,6 @@ inherited fmeOptions_FreeOTFEExplorerGeneral: TfmeOptions_FreeOTFEExplorerGenera
       Width = 145
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 8
     end
     object ckShowHiddenItems: TSDUCheckBox
@@ -141,7 +141,6 @@ inherited fmeOptions_FreeOTFEExplorerGeneral: TfmeOptions_FreeOTFEExplorerGenera
       Width = 145
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 11
     end
   end

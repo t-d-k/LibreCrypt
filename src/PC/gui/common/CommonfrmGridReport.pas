@@ -300,17 +300,17 @@ function TfrmGridReport.FormatRow_xSV_Header(seperatorChar: Char): String;
 var
   i:      Integer;
 begin
-  retval := '';
+  Result := '';
 
   for i := 0 to (lvReport.columns.Count - 1) do begin
-    if (retval <> '') then begin
-      retval := retval + seperatorChar;
+    if (Result <> '') then begin
+      Result := Result + seperatorChar;
     end;
 
-    retval := retval + lvReport.columns[i].Caption;
+    Result := Result + lvReport.columns[i].Caption;
   end;
 
-  Result := retval;
+
 end;
 
 function TfrmGridReport.FormatRow_xSV_Item(rowIdx: Integer; seperatorChar: Char): String;
@@ -319,11 +319,11 @@ var
   item:     TListItem;
   itemText: String;
 begin
-  retval := '';
+  Result := '';
 
   for i := 0 to (lvReport.columns.Count - 1) do begin
-    if (retval <> '') then begin
-      retval := retval + seperatorChar;
+    if (Result <> '') then begin
+      Result := Result + seperatorChar;
     end;
 
     item := lvReport.Items[rowIdx];
@@ -334,10 +334,10 @@ begin
       itemText := item.SubItems.Strings[i - 1];
     end;
 
-    retval := retval + itemText;
+    Result := Result + itemText;
   end;
 
-  Result := retval;
+
 end;
 
 procedure TfrmGridReport.FormCreate(Sender: TObject);
@@ -368,7 +368,7 @@ var
   i:         Integer;
   maxTitleX: Integer;
 begin
-  retval := '';
+  Result := '';
 
   // Identify longest column title
   maxTitleX := 0;
@@ -377,35 +377,33 @@ begin
   end;
 
   for i := 0 to (lvReport.columns.Count - 1) do begin
-    retval := retval + CellText(i, HEADER_ROW) + StringOfChar(' ',
+    Result := Result + CellText(i, HEADER_ROW) + StringOfChar(' ',
       (maxTitleX - length(CellText(i, HEADER_ROW)))) + ': ' + CellText(i, rowIdx) + SDUCRLF;
   end;
 
-  retval := retval + SDUCRLF;
+  Result := Result + SDUCRLF;
 
-  Result := retval;
+
 end;
 
 function TfrmGridReport.FormatRow(format: TTextFormat; rowIdx: Integer): String;
-var
-  retval: String;
 begin
-  retval := '';
+  Result := '';
 
   case format of
     clfTSV:
     begin
-      retval := FormatRow_TSV(rowIdx);
+      Result := FormatRow_TSV(rowIdx);
     end;
 
     clfCSV:
     begin
-      retval := FormatRow_CSV(rowIdx);
+      Result := FormatRow_CSV(rowIdx);
     end;
 
     clfText:
     begin
-      retval := FormatRow_Text(rowIdx);
+      Result := FormatRow_Text(rowIdx);
     end;
 
   else
@@ -419,7 +417,7 @@ begin
 
   end;
 
-  Result := retval;
+
 end;
 
 function TfrmGridReport.IsColumnAdvanced(colIdx: Integer): Boolean;
@@ -453,19 +451,17 @@ procedure TfrmGridReport.lvReportCompare(Sender: TObject; Item1, Item2: TListIte
   Data: Integer; var Compare: Integer);
 
   function CompareNumbers(ext1, ext2: Extended): Integer;
-  var
-    retval: Integer;
   begin
-    retval := 0;
+    Result := 0;
 
     if (ext1 > ext2) then begin
-      retval := 1;
+      Result := 1;
     end else
     if (ext1 < ext2) then begin
-      retval := -1;
+      Result := -1;
     end;
 
-    Result := retval;
+
   end;
 
 var

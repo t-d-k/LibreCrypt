@@ -1,8 +1,7 @@
 unit SDUDialogs;
 
 // Note: In order to use this, need XP Manifest in your application
-
-// See also: TaskDialogIndirect(...) and TASKDIALOGCONFIG!!! 
+// See also: TaskDialogIndirect(...) and TASKDIALOGCONFIG!!!
 
 interface
 
@@ -54,7 +53,7 @@ const
   SDVISTA_TD_ICON_INFORMATION = 104;
   SDVISTA_TD_ICON_BLANK_AGAIN = 105;
   SDVISTA_TD_ICON_SHIELD      = 106;
-}               
+}
 
 {
   // Consts from: http://www.delphi-forum.de/viewtopic.php?p=404545
@@ -90,6 +89,7 @@ type
 
 procedure Register;
    { TODO -otdk -crefactor : what is the point of these functions - needed in >XP? }
+    { TODO -otdk -crefactor : split file into copmonents and non component utils }
 var
   // If set, then any messages displayed will have any single CRLFs stripped
   // out, while double CRLFs (SDU_CRLF+SDUCRLF) will be preserved under
@@ -258,15 +258,13 @@ end;
 
 // ----------------------------------------------------------------------------
 function _SDUTaskDialog_LoadDLL(): boolean;
-var
-  allOK: boolean;
 begin
-  allOK := FALSE;
+  result := FALSE;
 
   // If the lib is already loaded, just return TRUE
   if (_SDUTaskDialog_hLib <> 0) then
     begin
-    allOK := TRUE;
+    result := TRUE;
     end
   else
     begin
@@ -274,8 +272,8 @@ begin
     if (_SDUTaskDialog_hLib <> 0) then
       begin
       // DLL loaded, get function addresses
-      allOK := _SDUTaskDialog_GetDLLProcAddresses();
-      if not(allOK) then
+      result := _SDUTaskDialog_GetDLLProcAddresses();
+      if not(result) then
         begin
         // Unload DLL; there was a problem
         _SDUTaskDialog_UnloadDLL();
@@ -283,8 +281,6 @@ begin
       end;
 
     end;
-
-  Result := allOK;
 end;
 
 
@@ -302,23 +298,18 @@ end;
 
 // ----------------------------------------------------------------------------
 function _SDUTaskDialog_GetDLLProcAddresses(): boolean;
-var
-  allOK: boolean;
 begin
-  allOK := TRUE;
+  result := TRUE;
 
-  if (_SDUTaskDialog_hLib = 0) then
-    begin
-    allOK := FALSE;
-    end;
+  if (_SDUTaskDialog_hLib = 0) then     begin
+    result := FALSE;
+  end;
 
-  if (allOK) then
-    begin
+  if (result) then    begin
     @_SDUTaskDialog_lib_TaskDialog := GetProcAddress(_SDUTaskDialog_hLib, ''+DLL_FUNCTIONNAME_TaskDialog+'');
-    allOK := (@_SDUTaskDialog_lib_TaskDialog <> nil);
-    end;
+    result := (@_SDUTaskDialog_lib_TaskDialog <> nil);
+  end;
 
-  Result := allOK;
 end;
 
 
@@ -378,13 +369,12 @@ function SDUVistaTaskDialog(
 ): integer; overload;
 var
   allOK: boolean;
-  retval: integer;
   olderMsgDlgType: TMsgDlgType;
   olderMsgDlgButtons: TMsgDlgButtons;
   ansistrContent: string;
   title: WideString;
 begin
-  retval := 0;
+  result := 0;
 
   allOK := _SDUTaskDialog_LoadDLL();
 
@@ -410,7 +400,7 @@ begin
                    PWChar(Content),
                    CommonButtons,
                    Icon,
-                   @retval
+                   @result
                   );
 
     _SDUTaskDialog_UnloadDLL();
@@ -482,70 +472,69 @@ begin
 
     ansistrContent:= Content;
 
-    retval := MessageDlg(ansistrContent, olderMsgDlgType, olderMsgDlgButtons, 0);
+    result := MessageDlg(ansistrContent, olderMsgDlgType, olderMsgDlgButtons, 0);
 
     // Map buttonpress...
-    case retval of
+    case result of
       mrOk:
         begin
-        retval := IDOK;
+        result := IDOK;
         end;
 
       mrCancel:
         begin
-        retval := IDCANCEL;
+        result := IDCANCEL;
         end;
 
       mrYes:
         begin
-        retval := IDYES;
+        result := IDYES;
         end;
 
       mrNo:
         begin
-        retval := IDNO;
+        result := IDNO;
         end;
 
       mrAbort:
         begin
-        retval := IDABORT;
+        result := IDABORT;
         end;
 
       mrRetry:
         begin
-        retval := IDRETRY;
+        result := IDRETRY;
         end;
 
       mrIgnore:
         begin
-        retval := IDIGNORE;
+        result := IDIGNORE;
         end;
 
       mrAll:
         begin
-        retval := IDOK; // No real mapping...
+        result := IDOK; // No real mapping...
         end;
 
       mrNoToAll:
         begin
-        retval := IDNO;
+        result := IDNO;
         end;
 
       mrYesToAll:
         begin
-        retval := IDYES;
+        result := IDYES;
         end;
 
       else
         begin
-        retval := 0;
+        result := 0;
         end;
 
       end;
 
     end;
 
-  Result := retval;
 end;
 
 
@@ -558,7 +547,6 @@ function SDUMessageBox(
 ): integer;
 var
   allOK: boolean;
-  retval: integer;
   buttons: integer;
   icon: PWChar;
   widestrWindowTitle: WideString;
@@ -654,7 +642,7 @@ begin
     widestrWindowTitle     := WindowTitle;
     widestrContent         := Content;
 
-    retval := SDUVistaTaskDialog(
+    result := SDUVistaTaskDialog(
                                 hWnd,
                                 widestrWindowTitle,
                                 '',
@@ -670,10 +658,9 @@ begin
   else
     begin
     // Fallback...
-    retval := MessageBox(hWnd, PChar(Content), PChar(WindowTitle), Flags);
+    result := MessageBox(hWnd, PChar(Content), PChar(WindowTitle), Flags);
     end;
 
-  Result := retval;
 end;
 
 
@@ -690,7 +677,6 @@ const
     @SDU_SMsgDlgInformation, @SDU_SMsgDlgConfirm, nil);
 var
   allOK: boolean;
-  retval: integer;
   widestrWindowTitle: WideString;
   widestrContent: WideString;
   TDButtons: integer;
@@ -700,8 +686,7 @@ begin
 
   allOK := _SDUTaskDialog_LoadDLL();
 
-  if SDUDialogsStripSingleCRLF then
-    begin
+  if SDUDialogsStripSingleCRLF then     begin
     Content := _SDUDialogs_StripSingleNewlines(Content);
     end;
 
@@ -801,7 +786,7 @@ begin
       widestrWindowTitle := Application.Title;
       end;
 
-    retval := SDUVistaTaskDialog(
+    result := SDUVistaTaskDialog(
                                 0,
                                 widestrWindowTitle,
                                 '',
@@ -817,10 +802,9 @@ begin
   else
     begin
     // Fallback...
-    retval := MessageDlg(Content, DlgType, Buttons, HelpCtx);
+    result := MessageDlg(Content, DlgType, Buttons, HelpCtx);
     end;
 
-  Result := retval;
 end;
 
 

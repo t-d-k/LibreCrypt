@@ -9,8 +9,12 @@ program DoxBox;
   }
 
 uses
+  //delphi/library units
   FastMM4,
   Forms,
+  Windows,
+  SysUtils, // for 'exception'
+  Dialogs,  //for messagedlg
   FreeOTFEfrmMain in 'FreeOTFEfrmMain.pas' {frmFreeOTFEMain},
   FreeOTFEConsts in 'FreeOTFEConsts.pas',
   FreeOTFEfrmVolProperties in 'FreeOTFEfrmVolProperties.pas' {frmFreeOTFEVolProperties},
@@ -18,7 +22,6 @@ uses
   CommonfrmCDBBackupRestore in '..\common\CommonfrmCDBBackupRestore.pas' {frmCDBBackupRestore},
   CommonSettings in '..\common\CommonSettings.pas',
   CommonfrmOptions in '..\common\CommonfrmOptions.pas' {frmOptions},
-  Windows,
   CommonfrmGridReport in '..\common\CommonfrmGridReport.pas' {frmGridReport},
   CommonfrmGridReport_Hash in '..\common\CommonfrmGridReport_Hash.pas' {frmGridReport_Hash},
   CommonfrmGridReport_Cypher in '..\common\CommonfrmGridReport_Cypher.pas' {frmGridReport_Cypher},
@@ -103,14 +106,14 @@ uses
 
 var
   otherRunningAppWindow: THandle;
-  CommandLineOnly: boolean;
-  cmdExitCode: eCmdLine_Exit;
-  settingsFilename: string;
+  CommandLineOnly:       Boolean;
+  cmdExitCode:           eCmdLine_Exit;
+  settingsFilename:      String;
 {$IF CompilerVersion >= 18.5}
   // Delphi 7 doesn't need this, but Delphi 2007 (and 2006 as well? Not
   // checked...) need this to honor any "Run minimised" option set in any
   // launching MS Windows shortcut
-  sui: TStartUpInfo;
+  sui:                   TStartUpInfo;
 {$IFEND}
 
 begin
@@ -118,14 +121,14 @@ begin
   GLOBAL_VAR_WM_FREEOTFE_REFRESH := RegisterWindowMessage('FREEOTFE_REFRESH');
 
 {$IFNDEF AlwaysClearFreedMemory}
-// #error - this needs to be set to clear down any freed memory
+  // #error - this needs to be set to clear down any freed memory
  {$ENDIF}
 {$IFDEF DEBUG}
   System.ReportMemoryLeaksOnShutdown := true;
 {$ELSE}
   // this doesnt appear to work (built-in version only?),  so SuppressMessageBoxes set as well
-  System.ReportMemoryLeaksOnShutdown := false;
-  FastMM4.SuppressMessageBoxes := true;
+  System.ReportMemoryLeaksOnShutdown := False;
+  FastMM4.SuppressMessageBoxes       := True;
 {$ENDIF}
 
 { see http://sourceforge.net/p/fastmm/code/HEAD/tree/FastMM4Options.inc:
@@ -138,120 +141,113 @@ begin
 
 {$IF CompilerVersion >= 15.0}
   // Vista fix for Delphi 2007 and later
-  Application.MainFormOnTaskbar := TRUE;
+  Application.MainFormOnTaskbar := True;
 {$IFEND}
-  Application.Title := 'DoxBox';
-
-  FreeOTFESettings.gSettings:= TFreeOTFESettings.Create();
+  Application.Title             := 'DoxBox';
+  CommandLineOnly               := False; // if error reading cmds,loading settings, default to off
   try
-    CommonSettings.CommonSettingsObj := FreeOTFESettings.gSettings;
-    if SDUCommandLineParameter(CMDLINE_SETTINGSFILE, settingsFilename) then
-      begin
-      settingsFilename := SDURelativePathToAbsolute(settingsFilename);
-      FreeOTFESettings.gSettings.CustomLocation := settingsFilename;
+
+
+    FreeOTFESettings.gSettings := TFreeOTFESettings.Create();
+    try
+      CommonSettings.CommonSettingsObj := FreeOTFESettings.gSettings;
+      if SDUCommandLineParameter(CMDLINE_SETTINGSFILE, settingsFilename) then begin
+        settingsFilename := SDURelativePathToAbsolute(settingsFilename);
+        FreeOTFESettings.gSettings.CustomLocation := settingsFilename;
       end;
 
-    FreeOTFESettings.gSettings.Load();
+      FreeOTFESettings.gSettings.Load();
 
-    Application.ShowMainForm := FALSE;
-    // NOTE: The main form's Visible property is set to FALSE anyway - it *HAS*
-    // to be, otherwise it'll be displayed; dispite the following two lines
-    Application.CreateForm(TfrmFreeOTFEMain, frmFreeOTFEMain);
-  frmFreeOTFEMain.Visible := FALSE;
-    Application.ShowMainForm := FALSE;
+      Application.ShowMainForm := False;
+      // NOTE: The main form's Visible property is set to FALSE anyway - it *HAS*
+      // to be, otherwise it'll be displayed; dispite the following two lines
+      Application.CreateForm(TfrmFreeOTFEMain, frmFreeOTFEMain);
+      frmFreeOTFEMain.Visible  := False;
+      Application.ShowMainForm := False;
 
-    CommandLineOnly := frmFreeOTFEMain.HandleCommandLineOpts(cmdExitCode);
+      CommandLineOnly := frmFreeOTFEMain.HandleCommandLineOpts(cmdExitCode);
 
 
-    //   if we were called with no command line arguments then
-    //     if no running app was found then
-    //       we continue to run the main app
-    //     else
-    //       we raise the previous application to the top
-    //   else
-    //     quit (ran with command line arguments)
+      //   if we were called with no command line arguments then
+      //     if no running app was found then
+      //       we continue to run the main app
+      //     else
+      //       we raise the previous application to the top
+      //   else
+      //     quit (ran with command line arguments)
 
-    // if we were called with no command line arguments then
-    if (not(CommandLineOnly)) then
-      begin
-      otherRunningAppWindow := SDUDetectExistingApp();
-      // If no running app was found then
-      if (
-          (otherRunningAppWindow = 0) or
-          gSettings.OptAllowMultipleInstances
-         ) then
-        begin
-        // We continue to run the main app
-        frmFreeOTFEMain.Visible := TRUE;
-        Application.ShowMainForm := TRUE;
-        frmFreeOTFEMain.InitApp();
+      // if we were called with no command line arguments then
+      if (not (CommandLineOnly)) then begin
+        otherRunningAppWindow := SDUDetectExistingApp();
+        // If no running app was found then
+        if ((otherRunningAppWindow = 0) or
+          gSettings.OptAllowMultipleInstances) then begin
+          // We continue to run the main app
+          frmFreeOTFEMain.Visible  := True;
+          Application.ShowMainForm := True;
+          frmFreeOTFEMain.InitApp();
 
 
 {$IF CompilerVersion >= 18.5}
-        // Delphi 7 doesn't need this, but Delphi 2007 (and 2006 as well? Not
-        // checked...) need this to honour any "Run minimised" option set in any
-        // launching MS Windows shortcut
-        GetStartUpInfo(sui);
-        if ((sui.dwFlags and STARTF_USESHOWWINDOW) > 0) then
-          begin
-          if (
-//              (sui.wShowWindow = SW_FORCEMINIMIZE) or
-              (sui.wShowWindow = SW_HIDE) or
-              (sui.wShowWindow = SW_MINIMIZE) or
+          // Delphi 7 doesn't need this, but Delphi 2007 (and 2006 as well? Not
+          // checked...) need this to honour any "Run minimised" option set in any
+          // launching MS Windows shortcut
+          GetStartUpInfo(sui);
+          if ((sui.dwFlags and STARTF_USESHOWWINDOW) > 0) then begin
+            if (
+              //              (sui.wShowWindow = SW_FORCEMINIMIZE) or
+              (sui.wShowWindow = SW_HIDE) or (sui.wShowWindow = SW_MINIMIZE) or
               (sui.wShowWindow = SW_SHOWMINIMIZED) or
-              (sui.wShowWindow = SW_SHOWMINNOACTIVE)
-             ) then
-            begin
-            Application.Minimize();
+              (sui.wShowWindow = SW_SHOWMINNOACTIVE)) then begin
+              Application.Minimize();
             end;
 
-          // *Should* have a corresponding check for SW_MAXIMIZE / SW_SHOWMAXIMIZED
-          // here, but not a priority...
+            // *Should* have a corresponding check for SW_MAXIMIZE / SW_SHOWMAXIMIZED
+            // here, but not a priority...
           end;
 {$IFEND}
-        if SDUCommandLineSwitch(CMDLINE_MINIMIZE) then
-          begin
-          Application.Minimize();
+          if SDUCommandLineSwitch(CMDLINE_MINIMIZE) then begin
+            Application.Minimize();
           end;
 
-        Application.Run;
-        end
-      else
-        begin
-        // Poke already running application
+          Application.Run;
+        end else begin
+          // Poke already running application
 {$IF CompilerVersion >= 18.5}
-        SendMessage(HWND_BROADCAST, GLOBAL_VAR_WM_FREEOTFE_RESTORE, 0, 0);
+          SendMessage(HWND_BROADCAST, GLOBAL_VAR_WM_FREEOTFE_RESTORE, 0, 0);
 {$ELSE}
         SDUPostMessageExistingApp(GLOBAL_VAR_WM_FREEOTFE_RESTORE, 0, 0);
 {$IFEND}
 
-// Alternativly:
-//         SetForegroundWindow(otherRunningAppWindow);
+          // Alternativly:
+          //         SetForegroundWindow(otherRunningAppWindow);
         end;
-      end
-    else
-      begin
-      // Do nothing; ran with command line arguments, already processed
+      end else begin
+        // Do nothing; ran with command line arguments, already processed
       end;
 
-  finally
-    // Note: We *don't* free of the Settings object if the main form was shown;
-    //       the main form is still closing down at this stage, and this causes
-    //       an exception.
-    //       Instead, this is free'd off in the FormDestroy(...) method
-    if not(Application.ShowMainForm) then
-      begin
-      FreeOTFESettings.gSettings.Free();
+    finally
+      // Note: We *don't* free of the Settings object if the main form was shown;
+      //       the main form is still closing down at this stage, and this causes
+      //       an exception.
+      //       Instead, this is free'd off in the FormDestroy(...) method
+      if not (Application.ShowMainForm) then begin
+        FreeOTFESettings.gSettings.Free();
       end;
-  end;
-
-  if (
-      CommandLineOnly and
-      (cmdExitCode <> ceSUCCESS)
-     ) then
-    begin
-    Halt(Integer(cmdExitCode)); // Note: System.ExitCode may be tested in finalization sections
+    end;
+    // only place is, or should be, catch-all exeption
+  except
+    on E: Exception do begin
+      MessageDlg(_(
+        'DoxBox had an internal error (a bug) and has closed. Please report this on the DoxBox GitHub issues page. Details:') +
+        SDUCRLF+E.ClassName + {SDUCRLF+ E.StackTrace+} SDUCRLF+ E.message, mtError, [mbOK], 0);
+        { TODO 1 -otdk -cenhance : show stack trace - think need 3rd party }
     end;
 
-END.
+  end;
 
+  if (CommandLineOnly and (cmdExitCode <> ceSUCCESS)) then begin
+    Halt(Integer(cmdExitCode)); // Note: System.ExitCode may be tested in finalization sections
+  end;
+
+end.

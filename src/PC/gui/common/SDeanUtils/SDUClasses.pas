@@ -79,12 +79,10 @@ begin
 end;
 
 function TSDUMemoryStream.ReadByte(offset: int64 = -1): byte;
-var
-  retval: byte;
 begin
   GotoOffset(offset);
-  self.Read(retval, sizeof(retval));
-  Result := retval;
+  self.Read(Result, sizeof(Result));
+
 end;
 
 procedure TSDUMemoryStream.WriteByte(x: byte; offset: int64 = -1; cnt: integer = -1);
@@ -106,12 +104,10 @@ end;
 
 // Read/write little endian DWORD
 function TSDUMemoryStream.ReadDWORD_LE(offset: int64 = -1): DWORD;
-var
-  retval: DWORD;
 begin
   GotoOffset(offset);
-  self.Read(retval, sizeof(retval));
-  Result := retval;
+  self.Read(Result, sizeof(Result));
+
 end;
 
 procedure TSDUMemoryStream.WriteDWORD_LE(x: DWORD; offset: int64 = -1);
@@ -141,12 +137,10 @@ end;
 
 // Read/write little endian WORD
 function TSDUMemoryStream.ReadWORD_LE(offset: int64 = -1): WORD;
-var
-  retval: WORD;
 begin
   GotoOffset(offset);
-  self.Read(retval, sizeof(retval));
-  Result := retval;
+  self.Read(Result, sizeof(Result));
+
 end;
 
 procedure TSDUMemoryStream.WriteWORD_LE(x: WORD; offset: int64 = -1);
@@ -176,18 +170,17 @@ end;
 
 function TSDUMemoryStream.ReadString(size: integer; offset: integer = -1): ansistring;
 var
-  retval: ansistring;
   i: integer;
 begin
-  retval := '';
+  Result := '';
 
   GotoOffset(offset);
   for i:=0 to (size - 1) do
     begin
-    retval := retval + ansichar(self.ReadByte());
+    Result := Result + ansichar(self.ReadByte());
     end;
 
-  Result := retval;
+
 end;
 
 procedure TSDUMemoryStream.WriteString(data: ansistring; maxChars: integer = -1; offset: integer = -1);
@@ -206,18 +199,17 @@ end;
 // Note: Size here is in *bytes*
 function TSDUMemoryStream.ReadWideString(size: integer; offset: integer = -1): WideString;
 var
-  retval: WideString;
   i: integer;
 begin
-  retval := '';
+  Result := '';
 
   GotoOffset(offset);
   for i:=0 to ((size - 2) div 2) do
     begin
-    retval := retval + WideChar(self.ReadWORD_LE());
+    Result := Result + WideChar(self.ReadWORD_LE());
     end;
 
-  Result := retval;
+
 end;
 
 procedure TSDUMemoryStream.WriteWideString(data: WideString; offset: integer = -1);
@@ -238,12 +230,10 @@ begin
 end;
 
 function TSDUFileStream.ReadByte(offset: int64 = -1): byte;
-var
-  retval: byte;
 begin
   GotoOffset(offset);
-  self.Read(retval, sizeof(retval));
-  Result := retval;
+  self.Read(Result, sizeof(Result));
+
 end;
 
 procedure TSDUFileStream.WriteByte(x: byte; offset: int64 = -1; cnt: integer = -1);
@@ -265,12 +255,10 @@ end;
 
 // Read/write little endian DWORD
 function TSDUFileStream.ReadDWORD_LE(offset: int64 = -1): DWORD;
-var
-  retval: DWORD;
 begin
   GotoOffset(offset);
-  self.Read(retval, sizeof(retval));
-  Result := retval;
+  self.Read(Result, sizeof(Result));
+
 end;
 
 procedure TSDUFileStream.WriteDWORD_LE(x: DWORD; offset: int64 = -1);
@@ -300,12 +288,10 @@ end;
 
 // Read/write little endian WORD
 function TSDUFileStream.ReadWORD_LE(offset: int64 = -1): WORD;
-var
-  retval: WORD;
 begin
   GotoOffset(offset);
-  self.Read(retval, sizeof(retval));
-  Result := retval;
+  self.Read(Result, sizeof(Result));
+
 end;
 
 procedure TSDUFileStream.WriteWORD_LE(x: WORD; offset: int64 = -1);
@@ -335,18 +321,17 @@ end;
 
 function TSDUFileStream.ReadString(size: integer; offset: integer = -1): string;
 var
-  retval: string;
   i: integer;
 begin
-  retval := '';
+  Result := '';
 
   GotoOffset(offset);
   for i:=0 to (size - 1) do
     begin
-    retval := retval + chr(self.ReadByte());
+    Result := Result + chr(self.ReadByte());
     end;
 
-  Result := retval;
+
 end;
 
 procedure TSDUFileStream.WriteString(data: string; maxChars: integer = -1; offset: integer = -1);
@@ -365,18 +350,17 @@ end;
 // Note: Size here is in *bytes*
 function TSDUFileStream.ReadWideString(size: integer; offset: integer = -1): WideString;
 var
-  retval: WideString;
   i: integer;
 begin
-  retval := '';
+  Result := '';
 
   GotoOffset(offset);
   for i:=0 to ((size - 2) div 2) do
     begin
-    retval := retval + WideChar(self.ReadWORD_LE());
+    Result := Result + WideChar(self.ReadWORD_LE());
     end;
 
-  Result := retval;
+
 end;
 
 procedure TSDUFileStream.WriteWideString(data: WideString; offset: integer = -1);
