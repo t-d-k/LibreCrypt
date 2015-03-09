@@ -18,7 +18,7 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 </BUTTON>
 </DIV>
 
-## Please take the survey on a [new name](https://www.surveymonkey.com/s/2PC8C96) for DoxBox
+## Please take the survey on [new features](https://www.surveymonkey.com/s/XFHP5LS) for DoxBox
 
 ##	Features
 
