@@ -24,7 +24,7 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 
 ## Technical Details: Building the Software
 
-DoxBox/DoxBox Explorer come in a number of parts:
+DoxBox/DoxBox Explorer comes in a number of parts:
 
 * DoxBox:
 	1. A front-end GUI, written in Delphi
@@ -42,8 +42,6 @@ DoxBox/DoxBox Explorer come in a number of parts:
 1. [Additional Notes](#level_3_heading_6)
 
 
-
-
 * * *
  
 <A NAME="level_3_heading_1">
@@ -54,16 +52,16 @@ DoxBox/DoxBox Explorer come in a number of parts:
 #### Building the GUI
 </A>
 
-
+	
   This is a description for Delphi newbies of the basic steps involved in compiling the DoxBox GUI.
 
   To build the GUI, the following software is required:
 
-  *   Delphi (Embarcadero Delphi XE2 or later, is recommended. Previous versions may possibly be used, but are untested)
+  *   Delphi (Embarcadero Delphi XE2 or later, is recommended. Earlier/later versions may possibly be used, but are untested)
 
   * The SDeanUtilsXE package, included in the project source.
   * (Optional) GNU gettext for Delphi (dxgettext), available (free) from: [http://dybdahl.dk/dxgettext/](http://dybdahl.dk/dxgettext/) (This package adds support for language translations)
-  *The FastMM memory manager, from (http://sourceforge.net/projects/fastmm/](http://sourceforge.net/projects/fastmm/). This wipes memory after use.
+  *	The FastMM memory manager, from (http://sourceforge.net/projects/fastmm/](http://sourceforge.net/projects/fastmm/). This wipes memory after use.
   The binary release of this software was built with Embarcadero Delphi XE2.
 
   1.  Open the SDeanUtilsXE package
@@ -71,16 +69,15 @@ DoxBox/DoxBox Explorer come in a number of parts:
   2.  Install the package
   3.  for each component, ensure that the correct path to the component is added to your Delphi environment ("Tools | Environment Options...", "Library" tab)
   2.  Add the path to the modified Delphi files included in SDeanComponents to fix various bugs relating to Delphi's Windows Vista support to the top of Delphi's standard library paths. (This step probably won't be needed with later versions of Delphi, and shouldn't be carried out with older versions of Delphi, which will have different source)
-  * Open the DoxBox project ("FreeOTFE.dpr")
+  * Open the DoxBox project, "DoxBox.dproj" under .\src\PC\gui\main
 
   3. If you have the dxgettext software installed (see above), ensure that the compiler directive "\_DXGETTEXT" is set. Otherwise, make sure that this compiler directive is _not_ set.
 
-  * Build the application.
+  * Build the project.
 
-  * You should now find a file called "DoxBox.exe" in the directory
-  above the "src" directory
-
-  You have now successfully built the GUI frontend!
+  * You should now find a file called "DoxBox.exe" in the directory '.\bin\PC' 
+  
+  You have now successfully built the GUI frontend
 
   If required, the compiler definition "FREEOTFE\_TIME_CDB\_DUMP" may be set, in which case the time taken to dump a CDB ("Tools | Critical data block | Dump to human readable file...") will be shown after the dump completes.
   <A NAME="level_4_heading_2">
@@ -98,16 +95,9 @@ The kernel mode drivers implement the actual hash, encryption/decryption and mai
 
 To build these drivers, the following software is required:
 
-<UL>
-  
 * Microsoft Visual Studio 2010 (older versions may well be used, changing "vcvarsall" to "vcvars32", and similar changes)
-<UL>
-  
-* If using an older version of MS Visual Studio, the MS Windows SDK (February 2003 version) is also needed
-</UL>
-  
+* If using an older version of MS Visual Studio, the MS Windows SDK (February 2003 version) is also needed 
 * The MS Windows WDK (WDK for Server 2008 v6001.18001)
-</UL>
 
 The binary release of this software was built with Microsoft Visual Studio 2010 Professional Edition.
 
@@ -136,7 +126,7 @@ versions used:
 
 The following list comprehensively describes the configuration used to build the binary release of DoxBox. Feel free to adjust according to taste - a number of the options listed are not necessary, and are only included for completeness...
 
-1.  Install VC++
+1.  Install Visual Studio 2010
 1. Put a copy of "vcvarsall.bat" into one of the directories in your path
 
 2.  Configure the VS editor:
@@ -202,7 +192,7 @@ The following list comprehensively describes the configuration used to build the
 ###### 3rd Party Source Code
 </A>
 
-Some of the FreeOTFE drivers (the hash/encryptions drivers in particular) are dependant on certain 3rd party software being installed. DoxBox's source code comes complete with 3rd party included in the"src\3rd\_party" directory and should be preconfigured, ready for use.
+Some of the FreeOTFE drivers (the hash/encryptions drivers in particular) are dependant on certain 3rd party software being installed. DoxBox's source code comes complete with 3rd party included in GitHUb under the"src\3rd\_party" directory and should be preconfigured, ready for use.
 
 _Alternatively_, you may wish to download this 3rd party source from the original authors in order to verify the integrity of this software. For this reason, details of where this software was obtained from are included in the above directory.
 
@@ -211,21 +201,41 @@ Please note that should choose the latter option, it is important that you revie
 The LibTomCrypt source in particular had minor configuration changes to tomcrypt\_cfg.h and tomcrypt\_custom.h; please compare the original source (a copy of its release ZIP file is stored under src\3rd\_party\libtomcrypt) with the modified version (uncompressed in a directory under this one)
 
 <A NAME="level_5_heading_2">
-##### Building the DoxBox Drivers
+##### Building the DoxBox Drivers (.sys files)
 </A>
 
 Either:
 
-  1.  Open "FreeOTFE.sln" using Visual C++
+  1.  Open "FreeOTFE.sln" using Visual Studio
   2.  Rightclick on each project in turn, and select "Build"
 or:
 
-	1. Run: ...\src\PC\drivers\build_ALL.bat
+	
   
 or:
-
-  1.  Enter each of the separate driver directories in turn and launch each project's "my\_build\_sys.bat" In either case, a copy of the binary which is built will be copied into the directory above your "src" directory. 
-  After reaching this stage, you should have successfully built your own version of the FreeOTFE drivers!
+	1. Edit the file `.\src\PC\drivers\Common\bin\setup_env_common.bat`, you will need to update these lines:
+	
+		* `set VCVARSALL="C:\PROGRA~2\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"`
+			this should be set to point to 'vcvarsall.bat', in '8.3' filename form
+		*	`set PROJECT_DRIVE=P:`
+			The drive where the source code is, alternatively a 'subst' command can be used to point p: to a parent of the project directory (e.g. the source could be under P:\doxbox\src\)
+		* `set PROJECT_BASE_DIR=%PROJECT_DRIVE%\Projects\Delphi\doxbox\`
+			set this to the project directory
+		* `set MSDDK_DIR=C:\Apps\WinDDK\7600.16385.1`
+			The DDK dir
+	1. and either
+		2. 
+			
+			3. Run: `.\src\PC\drivers\build_all_amd.bat` 
+			3. open a new Dos box and run `.\src\PC\drivers\build_all_x86.bat`
+		or
+		2. 
+			
+			3.  Enter each of the separate driver directories in turn and launch each project's "my\_build\_sys.bat" 
+			
+	
+	In either case, the binaries are built into the `.bin\PC\<platform>\` directory. 
+  After reaching this stage, you should have successfully built your own version of the DoxBox drivers
 
 Notes:
 
@@ -244,7 +254,7 @@ Notes:
 </A>
 
 
-This is a description for Delphi newbies of the basic steps involved in compiling the DoxBox Explorer GUI.
+This is a description for Delphi newbies of how to compile the DoxBox Explorer GUI.
 
 To build the GUI, the following software is required:
 
@@ -261,12 +271,12 @@ The binary release of this software was built with Embarcadero Delphi XE2.
     3.  Ensure that the correct path to each component is added to your Delphi environment ("Tools | Environment Options...", "Library" tab)
     
     Note: Some components in this package are forms containing others in the same package. So, if you open a form in the package before installing it, you may see a message saying 'Field X does not have a corresponding component. Remove the declaration?'. If you do, click 'Cancel', clicking 'yes' will result in the component being deleted from the '.pas' file. 
-  2.  Add the path to the modified Delphi files included in SDeanComponents to fix various bugs relating to Delphi's Windows Vista support to the top of Delphi's standard library paths. (This step probably isn't needed with Delphi XE2, and shouldn't be carried out with versions of Delphi older tha nDelpi 7, which will have different source)
-  3. Open the DoxBox Explorer project ("FreeOTFEExplorer.dpr")
+  3. Open the DoxBox Explorer project ("DoxBoxExplorer.dproj" under .\src\PC\gui\explorer)
   3.  If you have the dxgettext software installed (see above), ensure that the compiler directive "\_DXGETTEXT" is set. Otherwise, make sure that this compiler directive is _not_ set.
   4 Build the application.
-  You should now find a file called "DoxBox.exe" in the directory above the "src" directory
-You have now successfully built the GUI frontend!
+  You should now find a file called "DoxBoxExplorer.exe" in the directory above the "src" directory
+  
+You have now successfully built the GUI frontend
 
 ##### compiler directives
 
@@ -292,11 +302,11 @@ To run the other functions of dxgettext, viz extracting srings from the project 
 
 To build the DLLs used by DoxBox Explorer:
 
-1. Open "DoxBoxDLLs.sln" using Visual Studio
-1. Set the build configuration within Visual Studio to "Release" - "Win32"
+1. Open "DoxBoxDLLs.sln" under `.\src\PDA\` using Visual Studio 2010
+1. Set the build configuration within Visual Studio to "Release" - "Win32" or "Release" - "Win64"
 1. Right-click on each project in turn, and select "Rebuild". Note: Don't bother building the "GUI" project; at present, this can only be built for the Windows Mobile platform.
 
-A copy of the binary which is built will be copied into the directory above your "src" directory.
+The binaries built are put into the directories `.\bin\PC\DLLs\<config>\<platform>\`.
 
 * * *
  
@@ -320,7 +330,8 @@ Please follow the following steps:
 The executable should be built in the same directory.
 
 
-
+All the projects have been built under a directory "P:\Projects\Delphi\doxbox\", but whereever possible relative paths have been used. In case of errors run the command `subst p: <path to parent directory>` and retry
+  
 * * * 
 <A NAME="level_3_heading_5">
 ### Signing the Binaries

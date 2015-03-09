@@ -34,7 +34,7 @@ The latest version of this document can be found at the [DoxBox project site](ht
      * Fixed issue with translations - updated gettext to Delphi 2009 version (see build notes)
      * Prompts to format new volumes after creation.
      * Many minor UI improvements.    
-  * Much refactoring to make it more maintainable.
+  * Much refactoring to ease future work.
   
 * DoxBox v6.0.0 (23 August 2014), based on FreeOTFE v5.21
   
