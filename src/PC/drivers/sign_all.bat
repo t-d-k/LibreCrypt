@@ -8,6 +8,7 @@ set DOXBOX_FORCE_CPU=x86
 
 rem Set the build environment
 call .\Common\bin\setup_env_common.bat
+
 rem call setup_env_driver.bat
 rem FreeOTFECypherTwofish_HifnCS.sys not working yet										
 cd %BIN_OUTPUT_DIR%\

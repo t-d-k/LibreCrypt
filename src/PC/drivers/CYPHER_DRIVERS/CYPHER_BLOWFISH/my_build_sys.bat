@@ -1,40 +1,36 @@
 @echo off
 
-rem Set the build environment
-call ..\..\Common\bin\setup_env_common
-call ..\..\Common\bin\setup_env_driver
+rem Set the build environment - if not set by build_all_x.bat 
+if "%DOXBOX_FORCE_CPU%"=="" (
+	call ..\Common\bin\setup_env_common.bat
+	call ..\Common\bin\setup_env_driver.bat
+)
 
 
 rem Move into the correct src directory...
 %PROJECT_DRIVE%
 cd %PROJECT_DIR%\CYPHER_DRIVERS\CYPHER_BLOWFISH\src
 
-rem The build utility can't handle source files not being in the same dir
-copy ..\..\..\..\..\Common\Common\src\* .
-copy ..\..\..\..\..\Common\CYPHER_DRIVERS\Common\src\* .
-copy ..\..\..\Common\src\* .
-copy ..\..\Common\src\* .
+call %PROJECT_DIR%\Common\bin\copy_common_driver_files.bat
+
 
 rem Implementation...
-copy ..\..\..\..\..\Common\CYPHER_DRIVERS\CYPHER_BLOWFISH\* .
+copy %PROJECT_BASE_DIR%\src\Common\CYPHER_DRIVERS\CYPHER_BLOWFISH\FreeOTFECypherBlowfish.c .
+copy %PROJECT_BASE_DIR%\src\Common\CYPHER_DRIVERS\CYPHER_BLOWFISH\FreeOTFECypherBlowfish.h .
 
 rem libtomcrypt library...
-copy ..\..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\ciphers\blowfish.c .
-
-copy ..\..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_cipher_descriptor.c .
-copy ..\..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_cipher_is_valid.c .
-copy ..\..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_find_cipher.c .
-copy ..\..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_register_cipher.c .
-copy ..\..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\misc\crypt\crypt_unregister_cipher.c .
-
-copy ..\..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_start.c .
-copy ..\..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_encrypt.c .
-copy ..\..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_decrypt.c .
-copy ..\..\..\..\..\3rd_party\libtomcrypt\crypt-1.17\src\modes\cbc\cbc_done.c .
+copy %THIRD_PARTY_DIR%\libtomcrypt\crypt-1.17\src\ciphers\blowfish.c .
 
 echo Building SYS...
-build -cgZ
+build -gZ
 
 rem Copying the binary over...
 copy %FREEOTFE_OUTPUT_DIR%\FreeOTFECypherBLOWFISH.sys %BIN_OUTPUT_DIR%
 
+rem clean up copied files
+del FreeOTFECypherBlowfish.c
+del FreeOTFECypherBlowfish.h
+del blowfish.c
+
+call %PROJECT_DIR%\Common\bin\delete_common_driver_files.bat
+cd ..

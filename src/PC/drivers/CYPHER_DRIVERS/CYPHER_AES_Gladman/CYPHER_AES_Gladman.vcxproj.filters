@@ -21,6 +21,9 @@
     <ClCompile Include="..\..\..\..\3rd_party\AES_candidates_2nd_round_-_Gladman\aes.r2.algs\rijndael.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\3rd_party\ltc_gladman_xts\ltc_gladman_xts_init.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Common\CYPHER_DRIVERS\CYPHER_AES_Gladman\FreeOTFECypherAES_Gladman.h">
