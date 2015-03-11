@@ -17,10 +17,10 @@
 #include "FreeOTFECypherImpl.h"
 #include "FreeOTFECypherAPICommon.h"
 
-#ifdef FOTFE_PC_DRIVER
-#include "FreeOTFECypherDriver.h"  // Required for DRIVER_CYPHER_VERSION
-#else
+#ifndef FOTFE_PC_DRIVER
 #include "FreeOTFE4PDACypherDriver.h"  // Required for DRIVER_CYPHER_VERSION
+#else
+#include "FreeOTFECypherDriver.h"  // Required for DRIVER_CYPHER_VERSION
 #endif
 
 #include "FreeOTFEDebug.h"

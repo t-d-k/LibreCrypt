@@ -14,7 +14,7 @@
 
 #include "FreeOTFEPlatform.h"
 
-#ifndef FOTFE_PC_DLL  
+#if (defined( FOTFE_PC_DRIVER) || defined(FOTFE_PDA))
 #include <ntstatus.h>  // Required for NTSTATUS
 #endif
 #include "FreeOTFECypherAPICommon.h"

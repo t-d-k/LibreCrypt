@@ -9,18 +9,26 @@
 #ifndef _FreeOTFEPlatform_H
 #define _FreeOTFEPlatform_H   1
 
+/* 4 projects, threee of them in use
+WINCE	FOTFE_PDA		C++ gui for pdas
+_WINDLL	FOTFE_PC_DLL	dlls for explorer
+		FOTFE_CMD_LINE	cmd line projects for testing
+		FOTFE_PC_DRIVER kernel drivers
+*/
 #ifdef WINCE
   #define FOTFE_PDA          1
 #else
   #ifdef _WINDLL
     #define FOTFE_PC_DLL     1
   #else
+#ifndef FOTFE_CMD_LINE
     #define FOTFE_PC_DRIVER  1
+#endif
   #endif
 #endif
 
 
-#if (defined(FOTFE_PDA) || defined(FOTFE_PC_DLL))
+#if (defined(FOTFE_PDA) || defined(FOTFE_PC_DLL) || defined(FOTFE_CMD_LINE)) 
 // FreeOTFE4PDA and FreeOTFE DLLs
 #include <stdlib.h>  // Required for malloc, free
 #define FREEOTFE_MEMALLOC(x)              malloc(x)
@@ -42,6 +50,10 @@
 
 #define FREEOTFEBYTE  unsigned char
 #define FREEOTFEBOOL  BOOLEAN
+
+#ifdef FOTFE_CMD_LINE
+#include <ntstatus.h>
+#endif
 
 #ifdef FOTFE_PC_DLL
 #include <windows.h>

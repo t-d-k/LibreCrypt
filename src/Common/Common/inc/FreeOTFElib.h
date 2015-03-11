@@ -19,6 +19,9 @@
 #ifdef FOTFE_PC_DLL
 #include <windows.h>  // Required for WCHAR
 #endif
+#ifdef FOTFE_CMD_LINE
+#include <windows.h>  // Required for WCHAR
+#endif
 #ifdef FOTFE_PC_DRIVER
 #include <ntddk.h>
 #include <ntdddisk.h>  // xxx -junk???
