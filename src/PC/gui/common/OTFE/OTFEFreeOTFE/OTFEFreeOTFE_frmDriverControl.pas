@@ -235,7 +235,7 @@ begin
   service:= lbDrivers.Items[lbDrivers.ItemIndex];
   if not(DriverControlObj.StartStopService(service, TRUE)) then
     begin
-    SDUMessageDlg(SDUParamSubstitute(_('Unable to start driver "%1"'), [service])+SDUCRLF+
+    SDUMessageDlg(Format(_('Unable to start driver "%s"'), [service])+SDUCRLF+
                SDUCRLF+
                TEXT_NEED_ADMIN,
                mtError
@@ -266,7 +266,7 @@ begin
                  SDUCRLF+
                  _('This option is intended for experienced users who REALLY know what they''re doing.')+SDUCRLF+
                  SDUCRLF+
-                 SDUParamSubstitute(_('Are you sure you wish to stop the "%1" driver?'), [lbDrivers.Items[lbDrivers.ItemIndex]]),
+                 Format(_('Are you sure you wish to stop the "%s" driver?'), [lbDrivers.Items[lbDrivers.ItemIndex]]),
                  mtWarning,
                  [mbYes, mbNo],
                  0
@@ -276,7 +276,7 @@ begin
 
     if not(DriverControlObj.StartStopService(service, FALSE)) then
       begin
-      SDUMessageDlg(SDUParamSubstitute(_('Unable to stop driver "%1"'), [service])+SDUCRLF+
+      SDUMessageDlg(Format(_('Unable to stop driver "%s"'), [service])+SDUCRLF+
                  SDUCRLF+
                  TEXT_NEED_ADMIN,
                  mtError
@@ -312,7 +312,7 @@ begin
                SDUCRLF+
                _('This option is intended for experienced users who REALLY know what they''re doing.')+SDUCRLF+
                SDUCRLF+
-               SDUParamSubstitute(_('Are you sure you wish to uninstall the "%1" driver?'), [lbDrivers.Items[lbDrivers.ItemIndex]]),
+               Format(_('Are you sure you wish to uninstall the "%s" driver?'), [lbDrivers.Items[lbDrivers.ItemIndex]]),
                mtWarning,
                [mbYes, mbNo],
                0
@@ -344,7 +344,7 @@ begin
         end;
 
       SDUMessageDlg(
-                 SDUParamSubstitute(_('The "%1" driver has now been uninstalled.'), [driverName])+
+                 Format(_('The "%s" driver has now been uninstalled.'), [driverName])+
                  msgReboot+
                  msgManualRemoveFile,
                  mtInformation
@@ -354,7 +354,7 @@ begin
       begin
       // Uninstallation FAILURE
       SDUMessageDlg(
-                 SDUParamSubstitute(_('Unable to delete driver service "%1".'), [driverName])+SDUCRLF+
+                 Format(_('Unable to delete driver service "%s".'), [driverName])+SDUCRLF+
                  SDUCRLF+
                  _('Please disable this driver from starting up automatically, reboot, and try again.'),
                  mtError
@@ -365,7 +365,6 @@ begin
 
   // Refresh the drivers list
   PopulateDriversList();
-
 end;
 
 
@@ -427,7 +426,7 @@ begin
     if not(DriverControlObj.SetServiceAutoStart(service, autoStart)) then
       begin
       SDUMessageDlg(
-                 SDUParamSubstitute(_('Unable to set startup option for driver "%1".'), [service])+SDUCRLF+
+                 Format(_('Unable to set startup option for driver "%s".'), [service])+SDUCRLF+
                  SDUCRLF+
                  TEXT_NEED_ADMIN,
                  mtError
