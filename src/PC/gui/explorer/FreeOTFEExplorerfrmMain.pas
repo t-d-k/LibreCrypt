@@ -5515,7 +5515,7 @@ begin
     {$IFDEF DEBUG}
       projPath := 'P:\Projects\Delphi\doxbox\';
     {$ELSE}
-    projPath := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\';
+    projPath := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\');
     {$ENDIF}
     vol_path := projPath + 'test_vols\';
     while vl <= high(TEST_VOLS) do begin
