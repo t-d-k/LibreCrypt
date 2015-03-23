@@ -2,7 +2,7 @@ unit SDUWindows64;
 
 interface
 
-function SDUIsWow64Process(const hProcess: THandle; out Wow64Process: Boolean): boolean;
+function SDUIsWow64Process(const hProcess: THandle): boolean;
 function SDUWow64EnableWow64FsRedirection(Enable: boolean): boolean;
 function SDUWow64RevertWow64FsRedirection(const OldValue: Pointer): boolean;
 function SDUWow64DisableWow64FsRedirection(out OldValue: Pointer): boolean;
@@ -49,17 +49,14 @@ function SDULoadLibKernel32(): boolean;
 begin
   hLibKernel32 := LoadLibrary(KERNEL32_DLL);
   Result := (hLibKernel32 <> 0);
-  if not(Result) then
-    begin
+  if not Result then  begin
     SDUFreeLibKernel32();
-    end
-  else
-    begin
+    end   else    begin
     @fnIsWow64Process                 := GetProcAddress(hLibKernel32, 'IsWow64Process');
     @fnWow64EnableWow64FsRedirection  := GetProcAddress(hLibKernel32, 'Wow64EnableWow64FsRedirection');
     @fnWow64RevertWow64FsRedirection  := GetProcAddress(hLibKernel32, 'Wow64RevertWow64FsRedirection');
     @fnWow64DisableWow64FsRedirection := GetProcAddress(hLibKernel32, 'Wow64DisableWow64FsRedirection');
-    end;
+   end;
 
 
 end;
@@ -79,17 +76,17 @@ begin
 
 end;
 
-function SDUIsWow64Process(const hProcess: THandle; out Wow64Process: boolean): boolean;
+function SDUIsWow64Process(const hProcess: THandle): boolean;
 var
   wow64Retval: boolean;
 begin
   Result := FALSE;
 
-  if (@fnIsWow64Process <> nil) then
-    begin
+  if (@fnIsWow64Process <> nil) then  begin
     Result := fnIsWow64Process(hProcess, @wow64Retval);
-    Wow64Process := wow64Retval;
-    end;
+    // if no result assume false
+    if Result then Result :=   wow64Retval;
+   end;
 
 
 end;
