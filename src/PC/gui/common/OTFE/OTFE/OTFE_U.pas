@@ -16,6 +16,8 @@ uses
   classes,
   Windows, // Needed for UINT, ULONG
   sysUtils,
+  //sdu
+  sdugeneral,
   OTFEConsts_U;
 
 // -----------------------------------------------------------------------------
@@ -78,9 +80,9 @@ type
     // addedNotRemoved - Set to TRUE to broadcast that the specified drive
     //                   letter has just been added, or FALSE to broadcast it's
     //                   removal
-    procedure BroadcastDriveChangeMessage(addedNotRemoved: boolean; driveLetter: Ansichar); overload;
+    procedure BroadcastDriveChangeMessage(addedNotRemoved: boolean; driveLetter: char); overload;
     // devChangeEvent - Set to DBT_DEVICEREMOVEPENDING/DBT_DEVICEREMOVECOMPLETE/DBT_DEVICEARRIVAL
-    procedure BroadcastDriveChangeMessage(devChangeEvent: cardinal; driveLetter: Ansichar); overload;
+    procedure BroadcastDriveChangeMessage(devChangeEvent: cardinal; driveLetter: char); overload;
 
   public
     constructor Create; reintroduce;  virtual;
@@ -91,14 +93,14 @@ type
     // Prompt the user for a password (and drive letter if necessary), then
     // mount the specified volume file
     // Returns the drive letter of the mounted volume on success, #0 on failure
-    function  Mount(volumeFilename: ansistring; readonly: boolean = FALSE): Ansichar; overload; virtual; abstract;
+    function  Mount(volumeFilename: ansistring; readonly: boolean = FALSE): char; overload; virtual; abstract;
 
     // As previous Mount, but more than one volumes is specified. Volumes are
     // mounted using the same password
     // Sets mountedAs to the drive letters of the mounted volumes, in order.
     // Volumes that could not be mounted have #0 as their drive letter
     // Returns TRUE if any of the volumes mounted correctly, otherwise FALSE
-    function  Mount(volumeFilenames: TStringList; var mountedAs: AnsiString; readonly: boolean = FALSE): boolean; overload; virtual; abstract;
+    function  Mount(volumeFilenames: TStringList; var mountedAs: DriveLetterString; readonly: boolean = FALSE): boolean; overload; virtual; abstract;
     // Example:
     //   Set:
     //     volumeFilenames[0] = c:\test0.dat
@@ -113,13 +115,13 @@ type
 
     // Given the "mountedAs" parameter set by the above Mount(...) function,
     // this will give a count of the number of volumes mounted successfully, and failed
-    procedure CountMountedResults(mountedAs: AnsiString; out CntMountedOK: integer; out CntMountFailed: integer); virtual;
+    procedure CountMountedResults(mountedAs: DriveLetterString; out CntMountedOK: integer; out CntMountFailed: integer); virtual;
 
 
     // Prompt the user for a device (if appropriate) and password (and drive
     // letter if necessary), then mount the device selected
     // Returns the drive letter of the mounted devices on success, #0 on failure
-    function  MountDevices(): Ansistring; virtual; abstract;
+    function  MountDevices(): DriveLetterString; virtual; abstract;
 
     // Determine if OTFE component can mount devices.
     // Returns TRUE if it can, otherwise FALSE
@@ -129,7 +131,7 @@ type
     // Work out the order in which to dismount drives, taking into account
     // the potential for one drive to be mounted within another
     // Returns "dismountDrives" in the order in which they should be dismounted
-    function  DismountOrder(dismountDrives: Ansistring): ansistring;
+    function  DismountOrder(dismountDrives: DriveLetterString): DriveLetterString;
 
     // Dismount by volume filename
     // Returns TRUE on success, otherwise FALSE
@@ -137,12 +139,12 @@ type
 
     // Dismount by drive letter
     // Returns TRUE on success, otherwise FALSE
-    function  Dismount(driveLetter: Ansichar; emergency: boolean = FALSE): boolean; overload; virtual; abstract;
+    function  Dismount(driveLetter: DriveLetterChar; emergency: boolean = FALSE): boolean; overload; virtual; abstract;
 
     // Dismount all mounted drives
     // Returns a string containing the drive letters for all drives that could
     // not be dismounted
-    function  DismountAll(emergency: boolean = FALSE): ansistring; virtual;
+    function  DismountAll(emergency: boolean = FALSE): DriveLetterString; virtual;
 
     // === Miscellaneous =======================================================
 
@@ -171,26 +173,26 @@ type
 
     // Returns a string containing the drive letters (in uppercase) of all
     // mounted drives (e.g. 'DGH') in alphabetical order
-    function  DrivesMounted(): ansistring; virtual; abstract;
+    function  DrivesMounted(): DriveLetterString; virtual; abstract;
 
     // Returns a count of drives mounted (included for completeness)
     function  CountDrivesMounted(): integer; virtual;
 
     // Returns the volume filename for a given mounted drive
     // (empty string on failure)
-    function  GetVolFileForDrive(driveLetter: Ansichar): string; virtual; abstract;
+    function  GetVolFileForDrive(driveLetter: DriveLetterChar): string; virtual; abstract;
 
     // Returns the drive letter for a mounted volume file
     // (#0 on failure)
-    function  GetDriveForVolFile(volumeFilename: string): Ansichar; virtual; abstract;
+    function  GetDriveForVolFile(volumeFilename: string): DriveLetterChar; virtual; abstract;
 
     // Check to see if there are any volume files mounted on the given drive
     // Returns the drive letters of any mounted volumes
-    function  VolsMountedOnDrive(driveLetter: Ansichar): Ansistring; virtual;
+    function  VolsMountedOnDrive(driveLetter: DriveLetterChar): DriveLetterString; virtual;
 
     // Test to see if the specified drive is readonly
     // Returns TRUE if the drive is readonly, otherwise FALSE
-    function  IsDriveReadonly(driveLetter: Ansichar): boolean; virtual;
+    function  IsDriveReadonly(driveLetter: DriveLetterChar): boolean; virtual;
 
     // Returns a string describing the last error
     function  GetLastErrorMsg(): string; virtual;
@@ -217,10 +219,10 @@ type
 // prettyprinted version
 // e.g. DFGI -> D:, F:, G:, I:
 // Any #0 characters in the string passed in will be ignored
-function prettyPrintDriveLetters(driveLetters: ansistring): string;
+function prettyPrintDriveLetters(driveLetters: DriveLetterString): string;
 
 // Returns the number of characters in "driveLetters" which aren't #0
-function CountValidDrives(driveLetters: ansistring): integer;
+function CountValidDrives(driveLetters: DriveLetterString): integer;
 
 // Change CWD to anywhere other than a mounted drive
 // This must be done before any dismount, in case the user changed the CWD to a
@@ -235,12 +237,12 @@ implementation
 
 uses
   ShlObj,  // Needed for SHChangeNotify(...), etc
-  Messages,  // Needed for WM_DEVICECHANGE
-  SDUGeneral;
+  Messages  // Needed for WM_DEVICECHANGE
+  ;
 
 
 // -----------------------------------------------------------------------------
-function prettyPrintDriveLetters(driveLetters: ansistring): string;
+function prettyPrintDriveLetters(driveLetters: DriveLetterString): string;
 var
   i: integer;
   validLetters: string;
@@ -270,7 +272,7 @@ begin
 end;
 
 // -----------------------------------------------------------------------------
-function CountValidDrives(driveLetters: ansistring): integer;
+function CountValidDrives(driveLetters: DriveLetterString): integer;
 var
   i: integer;
 begin
@@ -398,30 +400,27 @@ begin
 end;
 
 // -----------------------------------------------------------------------------
-// Dismounts all mounted drives
-function TOTFE.DismountAll(emergency: boolean = FALSE): ansistring;
+{ Dismounts all mounted drives
+  result is any drives that failed to unmount
+}
+function TOTFE.DismountAll(emergency: boolean = FALSE): DriveLetterString;
 var
-  drvsMounted: ansistring;
-  badUnmount: ansistring;
+  drvsMounted: DriveLetterString;
   i: integer;
 begin
   FLastErrCode:= OTFE_ERR_SUCCESS;
   drvsMounted := DrivesMounted();
-  badUnmount := '';
+  Result := '';
 
   // Dismount in correct order!
   drvsMounted := DismountOrder(drvsMounted);
 
-  for i:=1 to length(drvsMounted) do
-    begin
-    if not(Dismount(drvsMounted[i], emergency)) then
-      begin
+  for i:=1 to length(drvsMounted) do begin
+    if not(Dismount(drvsMounted[i], emergency)) then      begin
       FLastErrCode:= OTFE_ERR_DISMOUNT_FAILURE;
-      badUnmount := badUnmount + drvsMounted[i];
+      Result := Result + drvsMounted[i];
       end;
     end;
-
-  Result := badUnmount;
 
 end;
 
@@ -506,9 +505,9 @@ end;
 // -----------------------------------------------------------------------------
 // Check to see if there are any volume files mounted on the given drive
 // Returns the drive letters of any mounted volumes
-function TOTFE.VolsMountedOnDrive(driveLetter: Ansichar): Ansistring;
+function TOTFE.VolsMountedOnDrive(driveLetter: DriveLetterChar): DriveLetterString;
 var
-  mountedDrives: Ansistring;
+  mountedDrives: DriveLetterString;
   volFilename: string;
   i: integer;
 begin
@@ -523,13 +522,10 @@ begin
     volFilename := GetVolFileForDrive(mountedDrives[i]);
     volFilename := uppercase(volFilename);
 
-    if (length(volFilename)>=3) then
-      begin
+    if (length(volFilename)>=3) then      begin
       if (volFilename[2]=':') and
-         (volFilename[3]='\') or (volFilename[3]='/') then
-        begin
-        if (volFilename[1]=char(driveLetter)) then
-          begin
+         (volFilename[3]='\') or (volFilename[3]='/') then        begin
+        if (volFilename[1]=driveLetter) then            begin
           Result := Result + mountedDrives[i];
           end;
         end;
@@ -545,17 +541,17 @@ end;
 // Work out the order in which to dismount drives, taking into account
 // the potential for one drive to be mounted within another
 // Returns "dismountDrives" in the order in which they should be dismounted
-function TOTFE.DismountOrder(dismountDrives: Ansistring): ansistring;
+function TOTFE.DismountOrder(dismountDrives: DriveLetterString): DriveLetterString;
 var
-  unorderedDrives: AnsiString;
+  unorderedDrives: String;
   unorderedDrivesHosts: string;
-  sortedDrives: AnsiString;
+  sortedDrives: String;
   sortedDrivesHosts: string;
-  tmpDrives: AnsiString;
+  tmpDrives: String;
   tmpDrivesHosts: string;
   i: integer;
   volFilename: string;
-  hostDrive: ansichar;
+  hostDrive: char;
 begin
   unorderedDrives := dismountDrives;
   // Get all host drive letters for recursivly mounted drives
@@ -571,7 +567,7 @@ begin
       if (volFilename[2]=':') and
          (volFilename[3]='\') or (volFilename[3]='/') then
         begin
-        hostDrive := ansichar(volFilename[1]);
+        hostDrive := char(volFilename[1]);
         end;
 
       end;
@@ -623,7 +619,7 @@ end;
 
 // -----------------------------------------------------------------------------
 // devChangeEvent - Set to DBT_DEVICEREMOVEPENDING/DBT_DEVICEREMOVECOMPLETE/DBT_DEVICEARRIVAL
-procedure TOTFE.BroadcastDriveChangeMessage(devChangeEvent: cardinal; driveLetter: Ansichar);
+procedure TOTFE.BroadcastDriveChangeMessage(devChangeEvent: cardinal; driveLetter: char);
 var
   dbv: DEV_BROADCAST_VOLUME;
   unitMask: ULONG;
@@ -632,15 +628,15 @@ var
   dwRecipients: DWORD;
 begin
   ptrBroadcast := nil;
-  if (devChangeEvent <> DBT_DEVNODES_CHANGED) then
-    begin
+  if (devChangeEvent <> DBT_DEVNODES_CHANGED) then    begin
     driveLetter := upcase(driveLetter);
 
     unitMask := 1;
-    for i:='B' to driveLetter do
-      begin
+    { TODO -otdk -crefactor : conversion to ansi OK?  }
+    { TODO -otdk -cinvestigate :  why a bit mask }
+    for i:='B' to AnsiChar(driveLetter) do begin
       unitMask := unitMask shl 1;
-      end;
+    end;
 
     dbv.dbch_size       := sizeof(dbv);
     dbv.dbch_devicetype := DBT_DEVTYP_VOLUME;
@@ -682,8 +678,7 @@ begin
                            integer(ptrBroadcast)
                           );
   finally
-    if (ptrBroadcast <> nil) then
-      begin
+    if (ptrBroadcast <> nil) then       begin
       SysFreeMem(ptrBroadcast);
       end;
   end;
@@ -696,7 +691,7 @@ end;
 
 
 // -----------------------------------------------------------------------------
-procedure TOTFE.BroadcastDriveChangeMessage(addedNotRemoved: boolean; driveLetter: Ansichar);
+procedure TOTFE.BroadcastDriveChangeMessage(addedNotRemoved: boolean; driveLetter: char);
 var
   wndWParam: cardinal;
   drivePath: string;
@@ -757,7 +752,7 @@ end;
 // -----------------------------------------------------------------------------
 // Test to see if the specified drive is readonly
 // Returns TRUE if the drive is readonly, otherwise FALSE
-function  TOTFE.IsDriveReadonly(driveLetter: Ansichar): boolean;
+function  TOTFE.IsDriveReadonly(driveLetter: DriveLetterChar): boolean;
   function GenerateRandomFilename(): string;
     var
       outputFilename: string;
@@ -813,21 +808,17 @@ end;
 // -----------------------------------------------------------------------------
 // Given the "mountedAs" parameter set by the above Mount(...) function,
 // this will give a count of the number of volumes mounted successfully, and failed
-procedure TOTFE.CountMountedResults(mountedAs: AnsiString; out CntMountedOK: integer; out CntMountFailed: integer);
+procedure TOTFE.CountMountedResults(mountedAs: DriveLetterString; out CntMountedOK: integer; out CntMountFailed: integer);
 var
   i: integer;
 begin
   CntMountedOK := 0;
   CntMountFailed := 0;
 
-  for i:=1 to length(mountedAs) do
-    begin
-    if (mountedAs[i] = #0) then
-      begin
+  for i:=1 to length(mountedAs) do    begin
+    if (mountedAs[i] = #0) then         begin
       inc(CntMountFailed);
-      end
-    else
-      begin
+      end    else      begin
       inc(CntMountedOK);
       end;
     end;
