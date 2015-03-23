@@ -91,7 +91,7 @@ type
 
   protected
     DriverAPI: TMainAPI;
-    MountedHandles: TStringList;
+    fMountedHandles: TStringList;// in unicdoe
     fCachedDiskGeometry: TStringList;
 
     // Cached information: The strings in the list are DLL path and filenames,
@@ -103,16 +103,16 @@ type
     function  Connect(): boolean; override;
     function  Disconnect(): boolean; override;
 
-    procedure AddHandles(driveLetter: Ansichar; handles: TMountedHandle);
-    function  GetHandles(driveLetter: Ansichar; var handles: TMountedHandle): boolean;
-    procedure DeleteHandles(driveLetter: Ansichar);
+    procedure AddHandles(driveLetter: char; handles: TMountedHandle);
+    function  GetHandles(driveLetter: char; var handles: TMountedHandle): boolean;
+    procedure DeleteHandles(driveLetter: char);
 
-    procedure AddDiskGeometry(driveLetter: Ansichar; diskGeometry: TSDUDiskGeometry);
-    procedure DeleteDiskGeometry(driveLetter: Ansichar);
+    procedure AddDiskGeometry(driveLetter: char; diskGeometry: TSDUDiskGeometry);
+    procedure DeleteDiskGeometry(driveLetter: char);
     // Internal use only; callers should normally use GetDiskGeometry(...)
     // (without prefixing "_") instead
     function _GetDiskGeometry(
-                             DriveLetter: Ansichar;
+                             DriveLetter: char;
                              var diskGeometry: TSDUDiskGeometry
                            ): boolean;
 
@@ -169,7 +169,7 @@ type
                               mainCypherDriver: ansistring;
                               mainCypherGUID: TGUID;
                               VolumeFlags: integer;
-                              DriveLetter: Ansichar;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
+                              DriveLetter: char;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
                               offset: int64 = 0;
                               size: int64 = 0;
                               MetaData_LinuxVolume: boolean = FALSE;  // Linux volume
@@ -225,7 +225,7 @@ type
     // ---------
     // Misc functions
 
-    function  GetNextDriveLetter(userDriveLetter, requiredDriveLetter: Ansichar): Ansichar; overload; override;
+    function  GetNextDriveLetter(userDriveLetter, requiredDriveLetter: char): char; overload; override;
 
     function  DriverType(): string; override;
 
@@ -234,15 +234,15 @@ type
     // TOTFE standard API
     constructor Create(); override;
     destructor  Destroy; override;
-    function  Dismount(driveLetter: Ansichar; emergency: boolean = FALSE): boolean; overload; override;
+    function  Dismount(driveLetter: char; emergency: boolean = FALSE): boolean; overload; override;
     function  Version(): cardinal; overload; override;
-    function  DrivesMounted(): ansistring; overload; override;
+    function  DrivesMounted(): string; overload; override;
 
 
     // -----------------------------------------------------------------------
     // TOTFEFreeOTFEBase standard API
 
-    function  GetVolumeInfo(driveLetter: Ansichar; var volumeInfo: TOTFEFreeOTFEVolumeInfo): boolean; override;
+    function  GetVolumeInfo(driveLetter: char; var volumeInfo: TOTFEFreeOTFEVolumeInfo): boolean; override;
 
     function GetHashDrivers(var hashDrivers: TFreeOTFEHashDriverArray): boolean; override;
     function GetHashDriverHashes(hashDriver: ansistring; var hashDriverDetails: TFreeOTFEHashDriver): boolean; override;
@@ -308,33 +308,33 @@ type
     // -----------------------------------------------------------------------
     // Extended FreeOTFE DLL specific functions
 
-    function Seek(driveLetter: Ansichar; offset: DWORD): boolean;
+    function Seek(driveLetter: char; offset: DWORD): boolean;
     function ReadData_Sectors(
-                      DriveLetter: Ansichar;
+                      DriveLetter: char;
                       SectorNoStart: DWORD;
                       CountSectors: DWORD;
                       stm: TStream
                     ): boolean;
     function WriteData_Sectors(
-                      DriveLetter: Ansichar;
+                      DriveLetter: char;
                       SectorNoStart: DWORD;
                       CountSectors: DWORD;
                       stm: TStream
                     ): boolean;
     function ReadData_Bytes(
-                      DriveLetter: Ansichar;
+                      DriveLetter: char;
                       Offset: ULONGLONG;
                       DataLength: ULONGLONG;
                       Data: TStream
                     ): boolean;
     function WriteData_Bytes(
-                      DriveLetter: Ansichar;
+                      DriveLetter: char;
                       Offset: ULONGLONG;
                       DataLength: ULONGLONG;
                       Data: TStream
                     ): boolean;
     function GetDiskGeometry(
-                             DriveLetter: Ansichar;
+                             DriveLetter: char;
                              var diskGeometry: TSDUDiskGeometry
                            ): boolean;
 
@@ -382,7 +382,7 @@ const
 constructor TOTFEFreeOTFEDLL.Create();
 begin
   inherited;
-  MountedHandles := TStringList.Create();
+  fMountedHandles := TStringList.Create();
   fCachedDiskGeometry:= TStringList.Create();
 
   fExeDir := ExtractFilePath(Application.ExeName);
@@ -393,8 +393,8 @@ end;
 destructor TOTFEFreeOTFEDLL.Destroy();
 var
   i: integer;
-  currDrvStr: ansistring;
-  currDrvChar: ansichar;
+  currDrvStr: string;
+  currDrvChar: char;
 begin
   for i:=0 to (fCachedDiskGeometry.Count-1) do
     begin
@@ -406,7 +406,7 @@ begin
       end;
     end;
 
-  MountedHandles.Free();
+  fMountedHandles.Free();
   fCachedDiskGeometry.Free();
   inherited;
 end;
@@ -416,7 +416,7 @@ end;
 // This dismount routine is based on the MS "media eject" routine for NT/2k/XP
 // at:
 // http://support.microsoft.com/default.aspx?scid=http://support.microsoft.com:80/support/kb/articles/Q165/7/21.asp&NoWebContent=1
-function TOTFEFreeOTFEDLL.Dismount(driveLetter: ansichar; emergency: boolean = FALSE): boolean;
+function TOTFEFreeOTFEDLL.Dismount(driveLetter: char; emergency: boolean = FALSE): boolean;
 var
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
 //  unableToOpenDrive: boolean;
@@ -434,8 +434,7 @@ DebugMsg('getVolumeInfo');
 
     // If we couldn't get the drive info, then we can't even do an
     // emergency dismount; we don't know which FreeOTFE device to dismount
-    if (not(Result)) then
-      begin
+    if not Result then       begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('getVolumeInfo NOT Result');
 {$ENDIF}
@@ -444,15 +443,12 @@ DebugMsg('getVolumeInfo NOT Result');
     end;
 
 
-  if (Result or emergency) then
-    begin
+  if (Result or emergency) then    begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('dismountdevice');
 {$ENDIF}
     Result := DismountDiskDevice(driveLetter, emergency);
     end;
-                 
-
 end;
 
 
@@ -497,18 +493,17 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.DrivesMounted(): ansistring;
+function TOTFEFreeOTFEDLL.DrivesMounted(): string;
 var
   i: integer;
 begin
   // DLL version doesn't have concept of drive letters as in system drive
   // letters, but uses them to reference different mounted volumes
   Result := '';
-  for i:=0 to (MountedHandles.count - 1) do
-    begin
-    Result := Result + MountedHandles[i];   // unicode->ansi not a data loss because only ansistring stored
+  for i:=0 to (fMountedHandles.count - 1) do     begin
+    Result := Result + fMountedHandles[i];   // unicode->ansi not a data loss because only ansistring stored
     end;
-    
+
 
 end;
 
@@ -569,7 +564,7 @@ function TOTFEFreeOTFEDLL.ReadWritePlaintextToVolume(
 ): boolean;
 var
   dummyMetadata: TOTFEFreeOTFEVolumeMetaData;
-  tempMountDriveLetter: Ansichar;
+  tempMountDriveLetter: char;
   stm: TSDUMemoryStream;
   // emptyIV : TSDUBytes;
 //    volumeKeyStr: AnsiString;
@@ -1059,7 +1054,7 @@ const
       ;
 begin
   //the dll version required is based on if the *app* is 32 or 64 bit - not the OS
-  result := IncludeTrailingPathDelimiter(fExeDir) + CONFIG+'\'+ Ifthen( SDUApp64bit(), 'x64', 'Win32');
+  result := IncludeTrailingPathDelimiter(fExeDir) +'DLLs\'+ CONFIG+'\'+ Ifthen( SDUApp64bit(), 'x64', 'Win32');
 end;
 
 procedure TOTFEFreeOTFEDLL.GetAllDriversUnderExeDir(driverFilenames: TStringList);
@@ -2178,7 +2173,7 @@ var
   openAccessCode: DWORD;
   openShareMode: DWORD;
   diskGeometry: TSDUDiskGeometry;
-  useDriveLetter: ansichar;
+  useDriveLetter: char;
   volumeKeyStr :Ansistring;
 begin
   Result := FALSE;
@@ -2192,7 +2187,7 @@ begin
 DebugMsg('In MountDiskDevice');
 {$ENDIF}
 
-  useDriveLetter := AnsiChar(deviceName[1]);
+  useDriveLetter := deviceName[1];
 
   VolumeMetadataToString(metaData, strMetaData);
 
@@ -2393,7 +2388,7 @@ function TOTFEFreeOTFEDLL.CreateMountDiskDevice(
                               mainCypherDriver: ansistring;
                               mainCypherGUID: TGUID;
                               VolumeFlags: integer;
-                              DriveLetter: Ansichar;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
+                              DriveLetter: char;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
                               offset: int64 = 0;
                               size: int64 = 0;
                               MetaData_LinuxVolume: boolean = FALSE;  // Linux volume
@@ -2447,7 +2442,7 @@ var
   DIOCBuffer: TDIOC_FORCE_DISMOUNTS;
   bytesReturned: DWORD;
   handles: TMountedHandle;
-  useDriveLetter: Ansichar;
+  useDriveLetter: char;
 begin
   Result := FALSE;
 
@@ -2459,7 +2454,7 @@ begin
          'deviceName set to empty string in call to DismountDiskDevice'
         );
     { TODO 1 -otdk -cclean : pass in just drive letter }
-  useDriveLetter := Ansichar(deviceName[1]);
+  useDriveLetter := deviceName[1];
 
   if GetHandles(useDriveLetter, handles) then
     begin
@@ -2490,27 +2485,27 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-procedure TOTFEFreeOTFEDLL.AddHandles(driveLetter: ansichar; handles: TMountedHandle);
+procedure TOTFEFreeOTFEDLL.AddHandles(driveLetter: char; handles: TMountedHandle);
 var
   ptrMountedHandles: PMountedHandle;
 begin
   new(ptrMountedHandles);
   ptrMountedHandles^ := handles;
-  MountedHandles.AddObject(driveLetter, TObject(ptrMountedHandles));
+  fMountedHandles.AddObject(driveLetter, TObject(ptrMountedHandles));
 end;
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.GetHandles(driveLetter: ansichar; var handles: TMountedHandle): boolean;
+function TOTFEFreeOTFEDLL.GetHandles(driveLetter: char; var handles: TMountedHandle): boolean;
 var
   ptrMountedHandles: PMountedHandle;
   idx: integer;
 begin
   Result := FALSE;
-  
-  idx := MountedHandles.IndexOf(uppercase(driveLetter));
+
+  idx := fMountedHandles.IndexOf(uppercase(driveLetter));
   if (idx >= 0) then
     begin
-    ptrMountedHandles := PMountedHandle(MountedHandles.Objects[idx]);
+    ptrMountedHandles := PMountedHandle(fMountedHandles.Objects[idx]);
     handles := ptrMountedHandles^;
     Result := TRUE;
     end;
@@ -2519,32 +2514,29 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-procedure TOTFEFreeOTFEDLL.DeleteHandles(driveLetter: ansichar);
+procedure TOTFEFreeOTFEDLL.DeleteHandles(driveLetter: char);
 var
   ptrMountedHandles: PMountedHandle;
   idx: integer;
 begin
-  idx := MountedHandles.IndexOf(driveLetter);
-  if (idx >= 0) then
-    begin
-    ptrMountedHandles := PMountedHandle(MountedHandles.Objects[idx]);
+  idx := fMountedHandles.IndexOf(driveLetter);
+  if (idx >= 0) then    begin
+    ptrMountedHandles := PMountedHandle(fMountedHandles.Objects[idx]);
     Dispose(ptrMountedHandles);
-    MountedHandles.Delete(idx);
+    fMountedHandles.Delete(idx);
     end;
     
 end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.GetNextDriveLetter(userDriveLetter, requiredDriveLetter: Ansichar): Ansichar;
+function TOTFEFreeOTFEDLL.GetNextDriveLetter(userDriveLetter, requiredDriveLetter: char): char;
 var
-  c: Ansichar;
+  c: char;
 begin
   Result := #0;
-  for c:='A' to 'Z' do
-    begin
-    if (MountedHandles.IndexOf(c) < 0) then
-      begin
+  for c:='A' to 'Z' do      begin
+    if (fMountedHandles.IndexOf(c) < 0) then      begin
       Result := c;
       break;
       end;
@@ -2569,7 +2561,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.GetVolumeInfo(driveLetter: ansichar; var volumeInfo: TOTFEFreeOTFEVolumeInfo): boolean;
+function TOTFEFreeOTFEDLL.GetVolumeInfo(driveLetter: char; var volumeInfo: TOTFEFreeOTFEVolumeInfo): boolean;
 var
   BytesReturned: DWORD;
   outBuffer: TDIOC_DISK_DEVICE_STATUS_PC_DLL;
@@ -2617,7 +2609,7 @@ begin
             end;
           end;
 
-        volumeInfo.DriveLetter := AnsiChar(driveLetter);
+        volumeInfo.DriveLetter := AnsiChar( driveLetter); // pos can be char - see todo in volinfo struct
 
 // Functionality in DLL/PDA driver to retrieve metadata not currently implemented!
         Result := TRUE;
@@ -2637,7 +2629,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.Seek(driveLetter: Ansichar; offset: DWORD): boolean;
+function TOTFEFreeOTFEDLL.Seek(driveLetter: char; offset: DWORD): boolean;
 var
   handles: TMountedHandle;
 begin
@@ -2661,7 +2653,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.ReadData_Sectors(
-  DriveLetter: Ansichar;
+  DriveLetter: char;
   SectorNoStart: DWORD;
   CountSectors: DWORD;
   stm: TStream
@@ -2717,7 +2709,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.WriteData_Sectors(
-  DriveLetter: Ansichar;
+  DriveLetter: char;
   SectorNoStart: DWORD;
   CountSectors: DWORD;
   stm: TStream
@@ -2775,7 +2767,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.ReadData_Bytes(
-                      DriveLetter: Ansichar;
+                      DriveLetter: char;
                       Offset: ULONGLONG;
                       DataLength: ULONGLONG;
                       Data: TStream
@@ -2850,7 +2842,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.WriteData_Bytes(
-                      DriveLetter: Ansichar;
+                      DriveLetter: char;
                       Offset: ULONGLONG;
                       DataLength: ULONGLONG;
                       Data: TStream
@@ -2936,7 +2928,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL._GetDiskGeometry(
-  DriveLetter: Ansichar;
+  DriveLetter: char;
   var diskGeometry: TSDUDiskGeometry
 ): boolean;
 var
@@ -2967,7 +2959,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-procedure TOTFEFreeOTFEDLL.AddDiskGeometry(driveLetter: Ansichar; diskGeometry: TSDUDiskGeometry);
+procedure TOTFEFreeOTFEDLL.AddDiskGeometry(driveLetter: char; diskGeometry: TSDUDiskGeometry);
 var
   ptrDiskGeometry: PSDUDiskGeometry;
 begin
@@ -2977,7 +2969,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.GetDiskGeometry(driveLetter: Ansichar; var diskGeometry: TSDUDiskGeometry): boolean;
+function TOTFEFreeOTFEDLL.GetDiskGeometry(driveLetter: char; var diskGeometry: TSDUDiskGeometry): boolean;
 var
   ptrDiskGeometry: PSDUDiskGeometry;
   idx: integer;
@@ -2996,14 +2988,13 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-procedure TOTFEFreeOTFEDLL.DeleteDiskGeometry(driveLetter: Ansichar);
+procedure TOTFEFreeOTFEDLL.DeleteDiskGeometry(driveLetter: char);
 var
   ptrDiskGeometry: PSDUDiskGeometry;
   idx: integer;
 begin
   idx := fCachedDiskGeometry.IndexOf(driveLetter);
-  if (idx >= 0) then
-    begin
+  if (idx >= 0) then    begin
     ptrDiskGeometry := PSDUDiskGeometry(fCachedDiskGeometry.Objects[idx]);
     Dispose(ptrDiskGeometry);
     fCachedDiskGeometry.Delete(idx);

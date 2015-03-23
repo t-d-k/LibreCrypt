@@ -86,8 +86,8 @@ type
     function SetSizeLimit(fileOptSizeLimit: Int64): Boolean;
 
     // Mount options...
-    function GetDriveLetter(var mountDriveLetter: ansichar): Boolean;
-    function SetDriveLetter(mountDriveLetter: ansichar): Boolean;
+    function GetDriveLetter(var mountDriveLetter: DriveLetterChar): Boolean;
+    function SetDriveLetter(mountDriveLetter: DriveLetterChar): Boolean;
     function GetReadonly(var mountReadonly: Boolean): Boolean;
     function SetReadonly(mountReadonly: Boolean): Boolean;
     function GetMountAs(var mountAs: TFreeOTFEMountAs): Boolean;
@@ -158,7 +158,7 @@ end;
 procedure TfrmKeyEntryLUKS.DefaultOptions();
 var
   i:               Integer;
-  currDriveLetter: ansichar;
+  currDriveLetter: DriveLetterChar;
 begin
   OTFEFreeOTFELUKSKeyOrKeyfileEntry1.DefaultOptions();
 
@@ -169,7 +169,7 @@ begin
       if (GetFreeOTFE().DefaultDriveLetter <> #0) then begin
         // Start from 1; skip the default
         for i := 1 to (cbDrive.items.Count - 1) do begin
-          currDriveLetter := ansichar(cbDrive.Items[i][1]);
+          currDriveLetter := cbDrive.Items[i][1];
           if (currDriveLetter >= GetFreeOTFE().DefaultDriveLetter) then begin
             cbDrive.ItemIndex := i;
             break;
@@ -232,7 +232,7 @@ end;
 procedure TfrmKeyEntryLUKS.EnableDisableControls();
 var
   junkInt64:  Int64;
-  junkChar:   ansichar;
+  junkChar:   DriveLetterChar;
   mountAsOK:  Boolean;
   tmpMountAs: TFreeOTFEMountAs;
 begin
@@ -375,19 +375,19 @@ begin
 end;
 
 // Note: This may return #0 as mountDriveLetter to indicate "any"
-function TfrmKeyEntryLUKS.GetDriveLetter(var mountDriveLetter: ansichar): Boolean;
+function TfrmKeyEntryLUKS.GetDriveLetter(var mountDriveLetter: DriveLetterChar): Boolean;
 begin
   mountDriveLetter := #0;
   // Note: The item at index zero is "Use default"; #0 is returned for this
   if (cbDrive.ItemIndex > 0) then begin
-    mountDriveLetter := ansichar(cbDrive.Items[cbDrive.ItemIndex][1]);
+    mountDriveLetter := cbDrive.Items[cbDrive.ItemIndex][1];
   end;
 
   Result := True;
 end;
 
 // mountDriveLetter - Set to #0 to indicate "Use default"
-function TfrmKeyEntryLUKS.SetDriveLetter(mountDriveLetter: ansichar): Boolean;
+function TfrmKeyEntryLUKS.SetDriveLetter(mountDriveLetter: DriveLetterChar): Boolean;
 var
   idx:    Integer;
 begin

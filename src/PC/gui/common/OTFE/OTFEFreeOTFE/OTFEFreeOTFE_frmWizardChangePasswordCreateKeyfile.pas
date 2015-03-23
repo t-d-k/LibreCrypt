@@ -137,7 +137,7 @@ type
     function GetDestUserKey(): TSDUBytes;
     function GetDestSaltLength(): Integer;
     function GetDestKeyIterations(): Integer;
-    function GetDestRequestedDriveLetter(): ansiChar;
+    function GetDestRequestedDriveLetter(): DriveLetterChar;
     //    function GetRandomData(): Ansistring;
 
     procedure PopulatePKCS11Tokens();
@@ -286,16 +286,15 @@ begin
   Result := seDestKeyIterations.Value;
 end;
 
-function TfrmWizardChangePasswordCreateKeyfile.GetDestRequestedDriveLetter(): ansichar;
-var
-  driveLetter: ansichar;
+function TfrmWizardChangePasswordCreateKeyfile.GetDestRequestedDriveLetter(): DriveLetterChar;
+
 begin
-  driveLetter := #0;
+  result := #0;
   if (cbDestDriveLetter.ItemIndex > 0) then begin
-    driveLetter := AnsiChar(cbDestDriveLetter.Items[cbDestDriveLetter.ItemIndex][1]);
+    result := cbDestDriveLetter.Items[cbDestDriveLetter.ItemIndex][1];
   end;
 
-  Result := driveLetter;
+
 end;
 
 

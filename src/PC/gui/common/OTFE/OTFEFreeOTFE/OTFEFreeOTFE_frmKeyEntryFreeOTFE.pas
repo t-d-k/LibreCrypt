@@ -113,7 +113,7 @@ type
 
     fsilent:        Boolean;
     fVolumeFiles:   TStringList;
-    fmountedDrives: Ansistring;
+    fmountedDrives: string;
 
     procedure PopulateDrives();
     procedure PopulateMountAs();
@@ -126,7 +126,7 @@ type
     procedure EnableDisableControls_Keyfile();
     procedure EnableDisableControls_SecretKey();
 
-    function GetDriveLetter(): Ansichar;
+    function GetDriveLetter(): char;
     function GetMountAs(): TFreeOTFEMountAs;
     function SetMountAs(mountAs: TFreeOTFEMountAs): Boolean;
 
@@ -154,7 +154,7 @@ type
 
     property Silent :Boolean read fSilent write fSilent ;
     property VolumeFilesText :string write SetVolumeFilesText;
-    property MountedDrives :Ansistring  read fMountedDrives;
+    property MountedDrives :string  read fMountedDrives;
   end;
 
 
@@ -185,17 +185,14 @@ resourcestring
   RS_BUTTON_ADVANCED = '&Advanced';
 
 
-function TfrmKeyEntryFreeOTFE.GetDriveLetter(): Ansichar;
-var
-  driveLetter: Ansichar;
+function TfrmKeyEntryFreeOTFE.GetDriveLetter(): char;
 begin
-  driveLetter := #0;
+  Result := #0;
   // Note: The item at index zero is "Use default"; #0 is returned for this
   if (cbDrive.ItemIndex > 0) then begin
-    driveLetter := AnsiChar(cbDrive.Items[cbDrive.ItemIndex][1]);
+    Result := cbDrive.Items[cbDrive.ItemIndex][1];
   end;
 
-  Result := driveLetter;
 end;
 
 
@@ -742,7 +739,7 @@ end;
 procedure TfrmKeyEntryFreeOTFE.FormShow(Sender: TObject);
 var
   i:               Integer;
-  currDriveLetter: ansichar;
+  currDriveLetter: DriveLetterChar;
 begin
   feKeyfile.Filter             := FILE_FILTER_FLT_KEYFILES;
   feKeyfile.DefaultExt         := FILE_FILTER_DFLT_KEYFILES;
@@ -765,7 +762,7 @@ begin
       if (GetFreeOTFE.DefaultDriveLetter <> #0) then begin
         // Start from 1; skip the default
         for i := 1 to (cbDrive.items.Count - 1) do begin
-          currDriveLetter := ansichar(cbDrive.Items[i][1]);
+          currDriveLetter := cbDrive.Items[i][1];
           if (currDriveLetter >= GetFreeOTFE.DefaultDriveLetter) then begin
             cbDrive.ItemIndex := i;
             break;

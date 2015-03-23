@@ -90,7 +90,7 @@ const
 type
   // Note: If this is changed, the DumpCriticalDataToFile(...) function should
   //       probably also be changed
-  // not stored in binary form - cna change if needed
+  // not stored in binary form - can change if needed
   PVolumeDetailsBlock = ^TVolumeDetailsBlock;
   TVolumeDetailsBlock = packed record
     CDBFormatID: byte;

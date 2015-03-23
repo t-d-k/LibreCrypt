@@ -42,8 +42,9 @@ type
   TOTFEFreeOTFE = class(TOTFEFreeOTFEBase)
   protected
     DriverHandle: THandle;
-    fDefaultDriveLetter: ansichar;
+    fDefaultDriveLetter: DriveLetterChar;
     fDefaultMountAs: TFreeOTFEMountAs;
+
 
     // Connect/disconnect to the main FreeOTFE device driver
     function  Connect(): boolean; override;
@@ -91,7 +92,7 @@ type
                               mainCypherDriver: Ansistring;
                               mainCypherGUID: TGUID;
                               VolumeFlags: integer;
-                              DriveLetter: Ansichar;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
+                              DriveLetter: char;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
                               offset: int64 = 0;
                               size: int64 = 0;
                               MetaData_LinuxVolume: boolean = FALSE;  // Linux volume
@@ -106,12 +107,12 @@ type
                                 ): boolean; override;
 
     function  LDREUDriver(
-                          driveLetter: ansichar;
+                          driveLetter: char;
                           deviceName: Ansistring;
                           emergency: boolean
                          ): boolean;
     function  LDREUUserApp(
-                          driveLetter: ansichar;
+                          driveLetter: char;
                           deviceName: Ansistring;
                           emergency: boolean;
                           var unableToOpenDrive: boolean
@@ -136,7 +137,7 @@ type
 
     // Given the specified drive letter, return the FreeOTFE device for that
     // mounted drive
-    function GetDriveDeviceName(driveLetter: ansichar): string;
+    function GetDriveDeviceName(driveLetter: char): string;
     // Given the specified device name, return the drive mounted on that device
     function GetDriveDeviceLetter(deviceName: string): char;
 
@@ -202,12 +203,12 @@ type
     function DosDeviceSymlink(
                               CreateNotDelete: boolean;
                               DeviceName: ansistring;
-                              DriveLetter: ansichar;
+                              DriveLetter: DriveLetterChar;
                               Global: boolean
                              ): boolean;
 
     // Delete both local and global DosDevices symlinks, as possible
-    function DeleteDosDeviceSymlink(DeviceName: string; DriveLetter: ansichar): boolean;
+    function DeleteDosDeviceSymlink(DeviceName: string; DriveLetter: char): boolean;
 
     // Connect to the specified user mode named device
     function ConnectDevice(devicename: string): THandle;
@@ -220,7 +221,7 @@ type
     function  GetCypherDeviceUserModeDeviceName(cypherKernelModeDeviceName: string): string;
 
 
-    function  GetNextDriveLetter(userDriveLetter, requiredDriveLetter: Ansichar): Ansichar; override;
+    function  GetNextDriveLetter(userDriveLetter, requiredDriveLetter: char): char; override;
 
     function  DriverType(): string; override;
 
@@ -239,7 +240,7 @@ type
     function IsPartition_KernelModeName(kernelModeFilename: string): boolean;
 
     // expectedLength - Set to the amount of metadata to retrieve
-    function GetVolumeMetaData(driveLetter: ansichar; expectedLength: integer; var metaData: Ansistring): boolean;
+    function GetVolumeMetaData(driveLetter: char; expectedLength: integer; var metaData: Ansistring): boolean;
 
     // v1 / v3 Cypher API functions
     // Note: This shouldn't be called directly - only via wrapper functions!
@@ -251,15 +252,15 @@ type
     // TOTFE standard API
     constructor Create(); override;
     destructor  Destroy(); override;
-    function  Dismount(driveLetter: ansichar; emergency: boolean = FALSE): boolean; overload; override;
+    function  Dismount(driveLetter: DriveLetterChar; emergency: boolean = FALSE): boolean; overload; override;
     function  Version(): cardinal; overload; override;
-    function  DrivesMounted(): ansistring; overload; override;
+    function  DrivesMounted(): string; overload; override;
 
 
     // -----------------------------------------------------------------------
     // TOTFEFreeOTFEBase standard API
 
-    function  GetVolumeInfo(driveLetter: ansichar; var volumeInfo: TOTFEFreeOTFEVolumeInfo): boolean; override;
+    function  GetVolumeInfo(driveLetter: char; var volumeInfo: TOTFEFreeOTFEVolumeInfo): boolean; override;
 
     function GetHashDrivers(var hashDrivers: TFreeOTFEHashDriverArray): boolean; override;
     function GetHashDriverHashes(hashDriver: ansistring; var hashDriverDetails: TFreeOTFEHashDriver): boolean; override;
@@ -360,8 +361,8 @@ type
 {$ENDIF}
 
   published
-    property DefaultDriveLetter: ansichar read fDefaultDriveLetter write fDefaultDriveLetter default #0;
-    property DefaultMountAs: TFreeOTFEMountAs read fDefaultMountAs write fDefaultMountAs default fomaFixedDisk;
+    property DefaultDriveLetter: DriveLetterChar read fDefaultDriveLetter write fDefaultDriveLetter default #0;
+    property DefaultMountAs: TFreeOTFEMountAs read fDefaultMountAs write fDefaultMountAs default fomaRemovableDisk;
   end;
 
 
@@ -472,12 +473,9 @@ begin
 
   DriverHandle := ConnectDevice(DEVICE_SYMLINK_MAIN_NAME);
 
-  if (DriverHandle <> 0) then
-    begin
+  if (DriverHandle <> 0) then    begin
     Result := TRUE;
-    end
-  else
-    begin
+    end  else    begin
     LastErrorCode := OTFE_ERR_DRIVER_FAILURE;
     end;
 
@@ -1100,7 +1098,7 @@ function TOTFEFreeOTFE.CreateMountDiskDevice(
                               mainCypherDriver: Ansistring;
                               mainCypherGUID: TGUID;
                               VolumeFlags: integer;
-                              DriveLetter: Ansichar;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
+                              DriveLetter: char;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
                               offset: int64 = 0;
                               size: int64 = 0;
                               MetaData_LinuxVolume: boolean = FALSE;  // Linux volume
@@ -1211,7 +1209,7 @@ end;
 // at:
 // http://support.microsoft.com/default.aspx?scid=http://support.microsoft.com:80/support/kb/articles/Q165/7/21.asp&NoWebContent=1
 function TOTFEFreeOTFE.LDREUUserApp(
-                          driveLetter: ansichar;
+                          driveLetter: char;
                           deviceName: Ansistring;
                           emergency: boolean;
                           var unableToOpenDrive: boolean
@@ -1231,8 +1229,7 @@ begin
 
   Result := TRUE;
 
-  if Result then
-    begin
+  if Result then     begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('getVolumeInfo');
 {$ENDIF}
@@ -1240,8 +1237,7 @@ DebugMsg('getVolumeInfo');
 
     // If we couldn't get the drive info, then we can't even do an
     // emergency dismount; we don't know which FreeOTFE device to dismount
-    if (not Result) then
-      begin
+    if (not Result) then        begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('getVolumeInfo NOT Result');
 {$ENDIF}
@@ -1259,8 +1255,7 @@ DebugMsg('getVolumeInfo NOT Result');
 
   // Initialize to flag that we haven't opened it
   driveDevice := INVALID_HANDLE_VALUE;
-  if Result then
-    begin
+  if Result then    begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('createfile: '+driveFile);
 {$ENDIF}
@@ -1279,11 +1274,10 @@ DebugMsg('createfile: '+driveFile);
 DebugMsg('driveDevice: '+inttostr(driveDevice)+' (INVALID_HANDLE_VALUE = '+inttostr(INVALID_HANDLE_VALUE));
 {$ENDIF}
     end;
-    
+
   unableToOpenDrive := (driveDevice = INVALID_HANDLE_VALUE);
 
-  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
-    begin
+  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then    begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('lockvolume');
 {$ENDIF}
@@ -1300,8 +1294,7 @@ DebugMsg('lockvolume');
     end;
 
 
-  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
-    begin
+  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then    begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('dismountvolume');
 {$ENDIF}
@@ -1318,10 +1311,10 @@ DebugMsg('dismountvolume');
     end;
 
 
-  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
-    begin
+  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then    begin
     pmr.PreventMediaRemoval := FALSE;
 {$IFDEF FREEOTFE_DEBUG}
+
 DebugMsg('mediaremoval');
 {$ENDIF}
     Result := DeviceIoControl(
@@ -1337,8 +1330,7 @@ DebugMsg('mediaremoval');
     end;
 
 
-  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
-    begin
+  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then    begin
     pmr.PreventMediaRemoval := FALSE;
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('ejectmedia');
@@ -1358,8 +1350,7 @@ DebugMsg('ejectmedia');
 
   // An explicit call to IOCTL_FREEOTFE_DISMOUNT should be redundant; the
   // IOCTL_STORAGE_EJECT_MEDIA should have already done this
-  if (Result or emergency) then
-    begin
+  if (Result or emergency) then    begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('dismountdevice');
 {$ENDIF}
@@ -1367,8 +1358,7 @@ DebugMsg('dismountdevice');
     end;
 
 
-  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then
-    begin
+  if ( Result or (emergency and (driveDevice<>INVALID_HANDLE_VALUE)) )then    begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('unlock');
 {$ENDIF}
@@ -1385,8 +1375,7 @@ DebugMsg('unlock');
     end;
 
 
-  if (driveDevice<>INVALID_HANDLE_VALUE) then
-    begin
+  if (driveDevice<>INVALID_HANDLE_VALUE) then    begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('closehandle');
 {$ENDIF}
@@ -1396,8 +1385,7 @@ DebugMsg('closehandle');
     // called if Result is FALSE - and we *want* CloseHandle(...) called
     // regardless, otherwise we end up with FreeOTFE never closing this file
     // handle, and "leaking" this handle
-    if not(CloseHandle(driveDevice)) then
-      begin
+    if not(CloseHandle(driveDevice)) then          begin
       Result := FALSE;
       end;
     end;
@@ -1408,33 +1396,34 @@ DebugMsg('closehandle');
 end;
 
 
-// ----------------------------------------------------------------------------// ----------------------------------------------------------------------------
 // Send LDREU to get the driver to lock, dismount, remove eject and unlock
 // driveFile - Must be of the format "\??\Z:"
 // deviceName - Must be of the formst \Device\FreeOTFE\Disks\Disk1
 function TOTFEFreeOTFE.LDREUDriver(
-                                   driveLetter: ansichar;
+                                   driveLetter: char;
                                    deviceName: Ansistring;
                                    emergency: boolean
                                  ): boolean;
 var
   DIOCBuffer: TDIOC_LDREU;
   bytesReturned: DWORD;
-  kernelDriveFile: string;
+  kernelDriveFile: Ansistring;
 begin
   Result := FALSE;
 
   CheckActive();
 
-  // This functionality only present in v2.00 of the FreeOTFE driver; previous
+  // This functionality only present in v2.00 o f the FreeOTFE driver; previous
   // versions could only carry this out within the userspace app
-  if CheckVersionAtLeast(FREEOTFE_ID_v02_00_0000) then
-    begin
-    kernelDriveFile := '\??\'+uppercase(driveLetter)+':';
+  if CheckVersionAtLeast(FREEOTFE_ID_v02_00_0000) then begin
+    kernelDriveFile := '\??\'+uppercase(AnsiChar(driveLetter))+':';
 
-    StrPCopy(DIOCBuffer.DriveFile, kernelDriveFile);
+    StrPCopy(DIOCBuffer.DriveFile,kernelDriveFile);
     StrPCopy(DIOCBuffer.DiskDeviceName, deviceName);
     DIOCBuffer.Emergency := emergency;
+    {$IFDEF FREEOTFE_DEBUG}
+    DebugMsg('LDREUDriver: "'+ DIOCBuffer.DriveFile+ '" : "'+ DIOCBuffer.DiskDeviceName+'" '+Booltostr(emergency) );
+    {$ENDIF}
 
     if (DeviceIoControl(
                         DriverHandle,
@@ -1445,8 +1434,7 @@ begin
                         0,
                         bytesReturned,
                         nil
-                       )) then
-      begin
+                       )) then begin
       Result := TRUE;
       end;
     end;
@@ -1492,7 +1480,7 @@ end;
 // This dismount routine is based on the MS "media eject" routine for NT/2k/XP
 // at:
 // http://support.microsoft.com/default.aspx?scid=http://support.microsoft.com:80/support/kb/articles/Q165/7/21.asp&NoWebContent=1
-function TOTFEFreeOTFE.Dismount(driveLetter: ansichar; emergency: boolean = FALSE): boolean;
+function TOTFEFreeOTFE.Dismount(driveLetter: DriveLetterChar; emergency: boolean = FALSE): boolean;
 var
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
   unableToOpenDrive: boolean;
@@ -1501,8 +1489,7 @@ begin
 
   Result := TRUE;
 
-  if Result then
-    begin
+  if Result then    begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('getVolumeInfo');
 {$ENDIF}
@@ -1510,8 +1497,7 @@ DebugMsg('getVolumeInfo');
 
     // If we couldn't get the drive info, then we can't even do an
     // emergency dismount; we don't know which FreeOTFE device to dismount
-    if (not Result) then
-      begin
+    if (not Result) then       begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('getVolumeInfo NOT Result');
 {$ENDIF}
@@ -1526,9 +1512,11 @@ DebugMsg('getVolumeInfo NOT Result');
   // If were operating in an emergency, then we don't care if some of these
   // operations fail - it's an EMERGENCY! JUST GET RID OF THE %$!# DRIVE!
 
-  if Result then
-    begin
+  if Result then     begin
     unableToOpenDrive := FALSE;
+     {$IFDEF FREEOTFE_DEBUG}
+    DebugMsg('LDREUUserApp: "'+ driveLetter+ '" : "'+ volumeInfo.deviceName+'" '+Booltostr(emergency)+ Booltostr(unableToOpenDrive));
+      {$ENDIF}
     Result := LDREUUserApp(
                           driveLetter,
                           volumeInfo.deviceName,
@@ -1545,13 +1533,15 @@ DebugMsg('getVolumeInfo NOT Result');
   if (
       not Result and
       unableToOpenDrive
-     ) then
-    begin
+     ) then    begin
+     {$IFDEF FREEOTFE_DEBUG}
+DebugMsg(Format('LDREUDriver "%s" "%s" %s',[driveLetter,volumeInfo.deviceName,Booltostr(emergency)]));
+{$ENDIF}
+
     Result := LDREUDriver(driveLetter, volumeInfo.deviceName, emergency);
     end;
 
-  if (Result or emergency) then
-    begin
+  if (Result or emergency) then      begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('remove definition');
 {$ENDIF}
@@ -1560,19 +1550,13 @@ DebugMsg('remove definition');
 
 
   // And finally... Destroy the device
-  if (Result or emergency) then
-    begin
+  if (Result or emergency) then      begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('destroy device');
 {$ENDIF}
     Result := DestroyDiskDevice(volumeInfo.deviceName);
     end;
-
-
-
-
 end;
-
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFE.Version(): cardinal;
@@ -1737,7 +1721,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFE.DrivesMounted(): ansistring;
+function TOTFEFreeOTFE.DrivesMounted(): string;
 var
   i: integer;
   driveLetters: TStringList;
@@ -1751,12 +1735,9 @@ begin
   try
     deviceNames:= TStringList.Create();
     try
-      if GetMountedDevices(driveLetters, deviceNames) then
-        begin
-        for i:=0 to (driveLetters.count-1) do
-          begin
-          if (driveLetters[i]<>'') then
-            begin
+      if GetMountedDevices(driveLetters, deviceNames) then        begin
+        for i:=0 to (driveLetters.count-1) do          begin
+          if (driveLetters[i]<>'') then             begin
             Result := Result + driveLetters[i];
             end;
 
@@ -1876,7 +1857,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFE.GetVolumeInfo(driveLetter: ansichar; var volumeInfo: TOTFEFreeOTFEVolumeInfo): boolean;
+function TOTFEFreeOTFE.GetVolumeInfo(driveLetter: char; var volumeInfo: TOTFEFreeOTFEVolumeInfo): boolean;
 var
   deviceName: string;
   BytesReturned: DWORD;
@@ -1956,7 +1937,7 @@ end;
 
 // ----------------------------------------------------------------------------
 // expectedLength - Set to the amount of metadata to retrieve
-function TOTFEFreeOTFE.GetVolumeMetaData(driveLetter: ansichar; expectedLength: integer; var metaData: Ansistring): boolean;
+function TOTFEFreeOTFE.GetVolumeMetaData(driveLetter: char; expectedLength: integer; var metaData: Ansistring): boolean;
 var
   deviceName: Ansistring;
   bufferSize: DWORD;
@@ -2031,7 +2012,7 @@ end;
 // be passed back to the driver
 // NOTE: THIS FUNCTION *CANNOT* CALL "GetVolumeInfo(...)"!!
 // Returns '' on failure
-function TOTFEFreeOTFE.GetDriveDeviceName(driveLetter: ansichar): string;
+function TOTFEFreeOTFE.GetDriveDeviceName(driveLetter: char): string;
 var
   mountedDriveLetters: TStringList;
   deviceNames: TStringList;
@@ -2155,7 +2136,7 @@ end;
 function TOTFEFreeOTFE.DosDeviceSymlink(
                                         CreateNotDelete: boolean;
                                         DeviceName: ansistring;
-                                        DriveLetter: ansichar;
+                                        DriveLetter: DriveLetterChar;
                                         Global: boolean
                                        ): boolean;
 var
@@ -2235,7 +2216,7 @@ end;
 
 // ----------------------------------------------------------------------------
 // Delete both local and global DosDevices symlinks, as possible
-function TOTFEFreeOTFE.DeleteDosDeviceSymlink(DeviceName: string; DriveLetter: ansichar): boolean;
+function TOTFEFreeOTFE.DeleteDosDeviceSymlink(DeviceName: string; DriveLetter: char): boolean;
 begin
   Result := FALSE;
 
@@ -3806,22 +3787,20 @@ end;
 // userDriveLetter - The drive letter the user has specifically requested
 // requiredDriveLetter - The drive letter the system would normally use
 // Returns: Drive letter to mount as, or #0 on error
-function TOTFEFreeOTFE.GetNextDriveLetter(userDriveLetter, requiredDriveLetter: Ansichar): Ansichar;
+function TOTFEFreeOTFE.GetNextDriveLetter(userDriveLetter, requiredDriveLetter: char): char;
 var
-  freeDriveLetters: Ansistring;
-  searchDriveLetter: Ansichar;
+  freeDriveLetters: string;
+  searchDriveLetter: char;
 begin
   Result:= #0;
 
   searchDriveLetter := userDriveLetter;
-  if (searchDriveLetter = #0) then
-    begin
+  if (searchDriveLetter = #0) then    begin
     searchDriveLetter := requiredDriveLetter;
     end;
 
   // If still #0, just get the next one after C:
-  if (searchDriveLetter = #0) then
-    begin
+  if (searchDriveLetter = #0) then    begin
     searchDriveLetter := 'C';
     end;
 
@@ -3832,18 +3811,13 @@ begin
   // Delete drive letters from the free drive letters, until we hit one which
   // appears after the one we've been requested - or we run out of free drive
   // letters
-  while (freeDriveLetters <> '') and (freeDriveLetters[1]<searchDriveLetter) do
-    begin
+  while (freeDriveLetters <> '') and (freeDriveLetters[1]<searchDriveLetter) do    begin
     Delete(freeDriveLetters, 1, 1);
     end;
 
-  if (freeDriveLetters <> '') then
-    begin
+  if (freeDriveLetters <> '') then    begin
     Result := freeDriveLetters[1];
     end;
-
-
-
 end;
 
 
@@ -3863,7 +3837,7 @@ procedure TOTFEFreeOTFE.ShowDriverControlDlg();
 var
   dlg: TfrmDriverControl;
 begin
-  // TfrmDriverControl.Create(nil) will raise an exception if the user doens't
+  // TfrmDriverControl.Create(nil) will raise an exception if the user doesn't
   // have the required privs to access driver control
   dlg:= TfrmDriverControl.Create(nil);
   try

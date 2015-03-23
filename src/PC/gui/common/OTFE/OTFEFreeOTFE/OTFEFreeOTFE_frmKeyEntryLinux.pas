@@ -179,8 +179,8 @@ type
     function SetMainIVCypher(mainIVCypherDriver: String; mainIVCypherGUID: TGUID): Boolean;
 
     // Mount options...
-    procedure GetDriveLetter(out mountDriveLetter: ansichar);
-    function SetDriveLetter(mountDriveLetter: ansichar): Boolean;
+    procedure GetDriveLetter(out mountDriveLetter: DriveLetterChar);
+    function SetDriveLetter(mountDriveLetter: DriveLetterChar): Boolean;
     procedure GetReadonly(var mountReadonly: Boolean);
     procedure SetReadonly(mountReadonly: Boolean);
     function GetMountAs(var mountAs: TFreeOTFEMountAs): Boolean;
@@ -386,7 +386,7 @@ procedure TfrmKeyEntryLinux.DefaultOptions();
 var
   idx:             Integer;
   i:               Integer;
-  currDriveLetter: ansichar;
+  currDriveLetter: DriveLetterChar;
 begin
   // Autoselect default, if available
   if (cbKeyProcHash.Items.Count > 0) then begin
@@ -463,7 +463,7 @@ begin
       if (GetFreeOTFE().DefaultDriveLetter <> #0) then begin
         // Start from 1; skip the default
         for i := 1 to (cbDrive.items.Count - 1) do begin
-          currDriveLetter := ansichar(cbDrive.Items[i][1]);
+          currDriveLetter := cbDrive.Items[i][1];
           if (currDriveLetter >= GetFreeOTFE().DefaultDriveLetter) then begin
             cbDrive.ItemIndex := i;
             break;
@@ -537,7 +537,7 @@ var
   filePresentGPGKeyfile: Boolean;
   iterationCypherOK:     Boolean;
   IVStartSectorOK:       Boolean;
-  junkChar:              ansichar;
+  junkChar:              DriveLetterChar;
   IVHashOK:              Boolean;
   IVCypherOK:            Boolean;
   mountAsOK:             Boolean;
@@ -942,18 +942,18 @@ begin
 end;
 
 // Note: This may return #0 as mountDriveLetter to indicate "any"
-procedure TfrmKeyEntryLinux.GetDriveLetter(out mountDriveLetter: ansichar);
+procedure TfrmKeyEntryLinux.GetDriveLetter(out mountDriveLetter: DriveLetterChar);
 begin
   mountDriveLetter := #0;
   // Note: The item at index zero is "Use default"; #0 is returned for this
   if (cbDrive.ItemIndex > 0) then begin
-    mountDriveLetter := AnsiChar(cbDrive.Items[cbDrive.ItemIndex][1]);
+    mountDriveLetter := cbDrive.Items[cbDrive.ItemIndex][1];
   end;
 
 end;
 
 // mountDriveLetter - Set to #0 to indicate "Use default"
-function TfrmKeyEntryLinux.SetDriveLetter(mountDriveLetter: ansichar): Boolean;
+function TfrmKeyEntryLinux.SetDriveLetter(mountDriveLetter: DriveLetterChar): Boolean;
 var
   idx: Integer;
 begin
@@ -1465,7 +1465,7 @@ begin
     if (tmpString = '-') then begin
       tmpString := #0;
     end;
-    if not SetDriveLetter(AnsiChar(tmpString[1])) then
+    if not SetDriveLetter(tmpString[1]) then
       Ok := False;
 
     tmpBoolean := settingsFile.ReadBool(SETTINGS_SECTION_MOUNT_OPTIONS,
@@ -1503,7 +1503,7 @@ var
   tmpGUID:                        TGUID;
   tmpInteger:                     Integer;
   tmpInt64:                       Int64;
-  tmpChar:                        ansichar;
+  tmpChar:                        DriveLetterChar;
   startOfVolFile, startOfEndData: Boolean;
   tmpSectorIVGenMethod:           TFreeOTFESectorIVGenMethod;
   tmpMountAs:                     TFreeOTFEMountAs;
