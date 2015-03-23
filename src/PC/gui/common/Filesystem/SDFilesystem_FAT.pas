@@ -2031,9 +2031,11 @@ begin
   try
     Result := DateTimeToTimeStamp(EncodeDateTime(yyyy, mm, dd, hh, mi, ss, msec));
   except
+  on EConvertError do begin
     // Dud date/timestamp
     Result.Date := 0;
     Result.Time := 0;
+  end;
   end;
 
 
@@ -2071,10 +2073,12 @@ begin
     msec        := tmpMsec
 
   except
+   on EConvertError do begin
     // Dud date/timestamp
     dateBitmask := 0;
     timeBitmask := 0;
     msec        := 0;
+   end;
   end;
 
 end;
@@ -2092,6 +2096,7 @@ begin
   try
     Result := EncodeDate(yyyy, mm, dd);
   except
+  on EConvertError do
     // Dud date/timestamp
     Result := 0;
   end;
@@ -2110,6 +2115,7 @@ begin
     yyyy   := yyyy - 1980;
     Result := dd + (mm shl 5) + (yyyy shl 9);
   except
+   on EConvertError do
     // Dud date/timestamp
     Result := 0;
   end;
