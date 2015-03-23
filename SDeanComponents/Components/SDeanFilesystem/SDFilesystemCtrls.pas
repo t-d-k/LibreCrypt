@@ -1411,8 +1411,7 @@ begin
                    // accesses FContents via DirItem[...] based on self.Count,
                    // it can crash the DirItem[...] caller
     try
-      if LoadContents(path) then
-        begin
+      if LoadContents(path) then         begin
         FPath := path;
         end;
     finally
@@ -1554,10 +1553,8 @@ begin
 
       RecreateAllPosibleColHeaders();
 
-      if (FContents <> nil) then
-        begin
-        for i:=0 to (FContents.Count - 1) do
-          begin
+      if (FContents <> nil) then         begin
+        for i:=0 to (FContents.Count - 1) do           begin
           currItem := FContents[i];
 
           currItemFAT := nil;
@@ -1742,36 +1739,28 @@ end;
 function TSDCustomFilesystemListView.LoadContents(path: string): boolean;
 var
   tmpDirItemList: TSDDirItemList;
-  retval: boolean;
 begin
-  retval := FALSE;
+  Result := FALSE;
 
   tmpDirItemList := TSDDirItemList.Create();
   try
-    retval := FFileSystem.LoadContentsFromDisk(path, tmpDirItemList);
-    if retval then
-      begin
-      if (FContents <> nil) then
-        begin
+    Result := FFileSystem.LoadContentsFromDisk(path, tmpDirItemList);
+    if Result then      begin
+      if (FContents <> nil) then        begin
         FContents.Free();
-        end;
+     end;
 
       FContents := tmpDirItemList;
-      end
-    else
-      begin
+     end    else      begin
       // If there was a problem, free off dir list object created
       tmpDirItemList.Free();
       end;
-        
+
   except
     on E:Exception do
-      begin
       tmpDirItemList.Free();
-      end;
   end;
 
-  Result := retval;
 end;
 
 constructor TSDCustomFilesystemListView.Create(AOwner: TComponent);
@@ -1975,6 +1964,7 @@ begin
 
   FCursorStack.Free();
 
+  Freeandnil(FContents);
   inherited;
 end;
 

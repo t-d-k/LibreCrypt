@@ -40,7 +40,7 @@ begin
     begin
     retVal := retVal + Ansichar(random(256));
 // xxx - debug use only -     retVal := retVal + char(0);
-{ TODO 2 -otdk -csecurity : this is not a secure PRNG - is it used anywhere it should be? }
+{ TODO 2 -otdk -csecurity : this is not a secure PRNG - is it used anywhere it shouldnt be? }
     end;
 
   Result:= retVal;
