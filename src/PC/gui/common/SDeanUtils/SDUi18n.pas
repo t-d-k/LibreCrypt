@@ -120,7 +120,10 @@ end;
 procedure SDURetranslateComponent(Comp: TComponent);
 begin
 {$IFDEF _DXGETTEXT}
-  RetranslateComponent(comp);
+  if Comp.FindComponent('GNUgettextMarker') <> nil then
+    RetranslateComponent(comp)
+  else
+    TranslateComponent(comp);
 {$ENDIF}
 end;
 
