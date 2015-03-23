@@ -281,7 +281,8 @@ type
     LinuxVolume:  Boolean;
     PKCS11SlotID: Integer;
   end;
-
+   { TODO -otdk -crefactor : does this need to be packed - is ever passed to drivers? }
+   { TODO -otdk -crefactor : change to unicode }
   TOTFEFreeOTFEVolumeInfo = packed record
     DriveLetter: Ansichar;
     Filename:    Ansistring;
@@ -413,6 +414,7 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
     fdumpCheckMAC:                String;
     fdumpPlaintextEncryptedBlock: String;
     fdumpVolumeDetailsBlock:      String;
+
   PROTECTED
     fpasswordChar:             Char;
     fallowNewlinesInPasswords: Boolean;
@@ -456,7 +458,7 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
       sectorIVGenMethod: TFreeOTFESectorIVGenMethod; volumeIV: TSDUBytes;
       ReadOnly: Boolean; IVHashDriver: Ansistring; IVHashGUID: TGUID;
       IVCypherDriver: Ansistring; IVCypherGUID: TGUID; mainCypherDriver: Ansistring;
-      mainCypherGUID: TGUID; VolumeFlags: Integer; DriveLetter: Ansichar;
+      mainCypherGUID: TGUID; VolumeFlags: Integer; DriveLetter: char;
     // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
       offset: Int64 = 0; size: Int64 = 0; MetaData_LinuxVolume: Boolean = False;
     // Linux volume
@@ -531,8 +533,8 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
       userKey: Ansistring; seed: Ansistring; hashWithAs: Boolean;
       targetKeylengthBits: Integer; var volumeKey: TSDUBytes): Boolean;
 
-    function GetNextDriveLetter(): Ansichar; OVERLOAD;
-    function GetNextDriveLetter(userDriveLetter, requiredDriveLetter: Ansichar): Ansichar;
+    function GetNextDriveLetter(): char; OVERLOAD;
+    function GetNextDriveLetter(userDriveLetter, requiredDriveLetter: char): char;
       OVERLOAD; VIRTUAL; ABSTRACT;
 
     // Returns the type of driver used; either "DLL driver" or "Kernel driver"
@@ -605,6 +607,11 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
       var cypherDriverDetails: TFreeOTFECypherDriver): Boolean; VIRTUAL; ABSTRACT;
     function _GetCypherDriverCyphers_v3(cypherDriver: Ansistring;
       var cypherDriverDetails: TFreeOTFECypherDriver): Boolean; VIRTUAL; ABSTRACT;
+
+          function LUKSHeaderToLUKSRaw(const LUKSheader: TLUKSHeader;
+      var rawLUKSheader: TLUKSHeaderRaw): Boolean;
+    function WriteLUKSHeader(filename: String;
+      const LUKSheader: TLUKSHeader): Boolean;
 
   PUBLIC
     AdvancedMountDlg:    Boolean;
@@ -715,25 +722,25 @@ procedure DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
     // TOTFE standard API
     constructor Create(); OVERRIDE;
     destructor Destroy(); OVERRIDE;
-    function Mount(volumeFilename: Ansistring; ReadOnly: Boolean = False): Ansichar;
+    function Mount(volumeFilename: Ansistring; ReadOnly: Boolean = False): char;
       OVERLOAD; OVERRIDE;
-    function Mount(volumeFilenames: TStringList; var mountedAs: Ansistring;
+    function Mount(volumeFilenames: TStringList; var mountedAs: DriveLetterString;
       ReadOnly: Boolean = False): Boolean; OVERLOAD; OVERRIDE;
     function CanMountDevice(): Boolean; OVERRIDE;
-    function MountDevices(): Ansistring; OVERRIDE;
+    function MountDevices(): DriveLetterString; OVERRIDE;
     function Dismount(volumeFilename: String; emergency: Boolean = False): Boolean;
       OVERLOAD; OVERRIDE;
     // Although this Dismount(...) is introduced as virtual/abstractin TOTFE,
     // it needs to be shown here as well in order to prevent compiler error
     // ("Ambiguous overloaded call to 'Dismount'") in the above Dismount(...)
     // implementation
-    function Dismount(driveLetter: Ansichar; emergency: Boolean = False): Boolean;
+    function Dismount(driveLetter: DriveLetterChar; emergency: Boolean = False): Boolean;
       OVERLOAD; OVERRIDE; ABSTRACT;
     function Title(): String; OVERLOAD; OVERRIDE;
     function VersionStr(): String; OVERLOAD; OVERRIDE;
     function IsEncryptedVolFile(volumeFilename: String): Boolean; OVERRIDE;
-    function GetVolFileForDrive(driveLetter: Ansichar): String; OVERRIDE;
-    function GetDriveForVolFile(volumeFilename: String): Ansichar; OVERRIDE;
+    function GetVolFileForDrive(driveLetter: char): String; OVERRIDE;
+    function GetDriveForVolFile(volumeFilename: String): DriveLetterChar; OVERRIDE;
     function GetMainExe(): String; OVERRIDE;
 
 
@@ -751,9 +758,9 @@ procedure DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
       lesFile: String = ''; password: TSDUBytes = nil; keyfile: String = '';
       keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
       keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
-      offset: ULONGLONG = 0; silent: Boolean = False; forceHidden: Boolean = False): Ansichar;
+      offset: ULONGLONG = 0; silent: Boolean = False; forceHidden: Boolean = False): DriveLetterChar;
       OVERLOAD;
-    function MountLinux(volumeFilenames: TStringList; var mountedAs: Ansistring;
+    function MountLinux(volumeFilenames: TStringList; var mountedAs: DriveLetterString;
       ReadOnly: Boolean = False; lesFile: String = ''; password: TSDUBytes = nil;
       keyfile: String = ''; keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
       keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
@@ -765,8 +772,8 @@ procedure DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
       password: TSDUBytes = nil; keyfile: String = '';
       keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
       keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
-      silent: Boolean = False): Ansichar; OVERLOAD;
-    function MountLUKS(volumeFilenames: TStringList; var mountedAs: Ansistring;
+      silent: Boolean = False): DriveLetterChar; OVERLOAD;
+    function MountLUKS(volumeFilenames: TStringList; var mountedAs: DriveLetterString;
       ReadOnly: Boolean = False; password: TSDUBytes = nil; keyfile: String = '';
       keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
       keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
@@ -775,8 +782,8 @@ procedure DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
       keyfile: String = ''; password: TSDUBytes = nil; offset: ULONGLONG = 0;
       noCDBAtOffset: Boolean = False; silent: Boolean = False;
       saltLength: Integer = DEFAULT_SALT_LENGTH;
-      keyIterations: Integer = DEFAULT_KEY_ITERATIONS): Ansichar; OVERLOAD;
-    function MountFreeOTFE(volumeFilenames: TStringList; var mountedAs: Ansistring;
+      keyIterations: Integer = DEFAULT_KEY_ITERATIONS): char; OVERLOAD;
+    function MountFreeOTFE(volumeFilenames: TStringList; var mountedAs: DriveLetterString;
       ReadOnly: Boolean = False; keyfile: String = ''; password: TSDUBytes = nil;
       offset: ULONGLONG = 0; noCDBAtOffset: Boolean = False; silent: Boolean = False;
       saltLength: Integer = DEFAULT_SALT_LENGTH;
@@ -788,18 +795,18 @@ procedure DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
                                       // Set to PKCS#11 slot ID if PKCS#11 slot was *actually* used for mounting
       PKCS11Session: TPKCS11Session;  // Set to nil if not needed
       PKCS11SecretKeyRecord: PPKCS11SecretKey;  // Set to nil if not needed
-      KeyIterations: Integer; UserDriveLetter: ansichar;
+      KeyIterations: Integer; UserDriveLetter: char;
     // PC kernel drivers *only* - ignored otherwise
       MountReadonly: Boolean; MountMountAs: TFreeOTFEMountAs;
     // PC kernel drivers *only* - ignored otherwise
       Offset: Int64; OffsetPointsToCDB: Boolean; SaltLength: Integer;  // In *bits*
       MountForAllUsers: Boolean;
     // PC kernel drivers *only* - ignored otherwise
-      var mountedAs: Ansistring): Boolean;
+      var mountedAs: DriveLetterString): Boolean;
       OVERLOAD;
 
     // Get information on a mounted volume
-    function GetVolumeInfo(driveLetter: Ansichar;
+    function GetVolumeInfo(driveLetter: DriveLetterChar;
       var volumeInfo: TOTFEFreeOTFEVolumeInfo): Boolean;
       VIRTUAL; ABSTRACT;
 
@@ -1027,13 +1034,13 @@ procedure DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
     function ChangeVolumePassword(filename: String; offsetWithinFile: Int64;
       oldUserPassword: TSDUBytes; oldSaltLength: Integer;  // In bits
       oldKeyIterations: Integer; newUserPassword: TSDUBytes; newSaltBytes: TSDUBytes;
-      newKeyIterations: Integer; newRequestedDriveLetter: ansichar): Boolean;
+      newKeyIterations: Integer; newRequestedDriveLetter: DriveLetterChar): Boolean;
 
     function CreateKeyfile(srcFilename: String; srcOffsetWithinFile: Int64;
       srcUserPassword: TSDUBytes; srcSaltLength: Integer;  // In bits
       srcKeyIterations: Integer; keyFilename: String; keyfileUserPassword: TSDUBytes;
       keyfileSaltBytes: TSDUBytes; keyfileKeyIterations: Integer;
-      keyfileRequestedDrive: ansichar): Boolean;
+      keyfileRequestedDrive: DriveLetterChar): Boolean;
 
     // ---------
     // Raw volume access functions
@@ -1228,7 +1235,7 @@ var
 begin
   for i := 1 to len do begin
     Result := Result + AnsiChar(random(256));
-    { TODO 3 -otdk -csecurity : only used in AFSKit - checks works OK }
+    { TODO 3 -otdk -csecurity : only used in AFSplit - checks works OK }
     //    Result := Result + char(0);
   end;
 
@@ -1553,7 +1560,7 @@ end;
  // Offset  Field name           Length  Data type  Description
  //     0   active                  4    uint32_t   state of keyslot, enabled/disabled
  //     4   iterations              4    uint32_t   iteration parameter for PBKDF2
- //     8   salt                   32    byte[]     salt paramter for PBKDF2
+ //     8   salt                   32    byte[]     salt parameter for PBKDF2
  //    40   key-material-offset     4    uint32_t   start sector of key material
  //    44   stripes                 4    uint32_t   number of anti-forensic stripes
  //  =====  ==================
@@ -1643,9 +1650,79 @@ begin
 end;
 
 
+function TOTFEFreeOTFEBase.LUKSHeaderToLUKSRaw(
+  const LUKSheader: TLUKSHeader; var rawLUKSheader: TLUKSHeaderRaw): Boolean;
+var
+
+  strGUID:       Ansistring;
+  i:             Integer;
+  keySlotActive: DWORD;
+begin
+  Result := False;
+
+    if (LUKSheader.magic = LUKS_MAGIC) then begin
+        // OK, this loop is crude - but it works
+        for i := low(rawLUKSheader.magic) to high(rawLUKSheader.magic) do
+      rawLUKSheader.magic[i] := Byte(LUKS_MAGIC[i]);
+      // As per the LUKS specifications: If the LUKS version is of a
+      // later version than we support - we make no attempt to interpret
+      // it, and simply return an error
+      if (LUKSheader.version <= LUKS_VER_SUPPORTED) then begin
+        rawLUKSheader.version[0]  :=  LUKSheader.version shr 8;
+        rawLUKSheader.version[1] :=  LUKSheader.version and $FF;
+        StrPCopy(rawLUKSheader.cipher_name,AnsiString(LUKSheader.cipher_name));
+        StrPCopy(rawLUKSheader.cipher_mode,AnsiString(LUKSheader.cipher_mode));
+        StrPCopy(rawLUKSheader.hash_spec,AnsiString(LUKSheader.hash_spec));
+        rawLUKSheader.payload_offset  := SDUDWORDToBigEndian32(LUKSheader.payload_offset);
+        rawLUKSheader.key_bytes  := SDUDWORDToBigEndian32(LUKSheader.key_bytes);
+
+        CopyMemory(@rawLUKSheader.mk_digest, @LUKSheader.mk_digest,
+          sizeof(LUKSheader.mk_digest)           );
+        CopyMemory(@rawLUKSheader.mk_digest_salt, @LUKSheader.mk_digest_salt,
+          sizeof(LUKSheader.mk_digest_salt)
+          );
+        rawLUKSheader.mk_digest_iter  := SDUDWORDToBigEndian32(LUKSheader.mk_digest_iter);
+
+        strGUID                   :=  GUIDToString(LUKSheader.uuid);
+        // strip off '{ .. }' from ends
+        strGUID                   := Copy(strGUID, 2, length(strGUID)-1);
+        //todo: is this index right?
+        StrPCopy(rawLUKSheader.uuid,strGUID);
+
+        for i := 0 to (LUKS_NUMKEYS - 1) do begin
+          if LUKSheader.keySlot[i].active then
+            keySlotActive := LUKS_KEY_ENABLED
+          else
+            keySlotActive := LUKS_KEY_DISABLED ;
+          rawLUKSheader.keySlot[i].active  := SDUDWORDToBigEndian32(keySlotActive);
+
+            { TODO 1 -otdk -csecurity : fill other keyslots with chaff to slow brute force attacks? }
+          if (LUKSheader.keySlot[i].active) then begin
+          rawLUKSheader.keySlot[i].iterations   := SDUDWORDToBigEndian32(LUKSheader.keySlot[i].iterations);
+           CopyMemory(@rawLUKSheader.keySlot[i].salt, @LUKSheader.keySlot[i].salt,
+              sizeof(LUKSheader.keySlot[i].salt)
+              );
+
+            rawLUKSheader.keySlot[i].key_material_offset := SDUDWORDToBigEndian32(             LUKSheader.keySlot[i].key_material_offset );
+            rawLUKSheader.keySlot[i].stripes :=   SDUDWORDToBigEndian32(LUKSheader.keySlot[i].stripes);
+          end;
+
+        end;
+
+        Result := true;
+      end;
+
+    end;
+
+
+
+end;
+
+
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEBase.ReadLUKSHeader(filename: String; var LUKSheader: TLUKSHeader): Boolean;
 var
+{ TODO 1 -otdk -csecurity : use TLUKSHeaderRaw instead of ansistring }
   rawData: Ansistring;
 begin
   Result := False;
@@ -1656,6 +1733,21 @@ begin
     Result := ParseLUKSHeader(rawData, LUKSheader);
   end;
 
+end;
+
+function TOTFEFreeOTFEBase.WriteLUKSHeader(filename: String; const LUKSheader: TLUKSHeader): Boolean;
+var
+rawLUKSheader: TLUKSHeaderRaw;
+rawData: Ansistring;
+begin
+  Result := False;
+  if LUKSHeaderToLUKSRaw(LUKSheader,rawLUKSheader) then begin
+    StrMove(PAnsiChar(rawData),PAnsiChar(@rawLUKSheader), sizeof(TLUKSHeaderRaw));
+
+  result := WriteRawVolumeData(filename, 0,
+    // LUKS volumes always start from the beginning
+     rawData) ;
+  end;
 end;
 
 
@@ -2586,8 +2678,7 @@ begin
   dlg:= TSaveDialog.Create(nil);
   try
     dlg.Options := dlg.Options + [ofDontAddToRecent];
-    if dlg.Execute() then
-      begin
+    if dlg.Execute() then      begin
       DebugLogFile := dlg.Filename;
       end;
   finally
@@ -2627,8 +2718,7 @@ begin
 {$IFDEF FREEOTFE_DEBUG}
 {$IFNDEF _GEXPERTS}
   // If logging debug to a file, clear to logfile
-  if (DebugLogFile <> '') then
-    begin
+  if (DebugLogFile <> '') then    begin
     DebugClear();
     end;
 {$ENDIF}
@@ -2692,10 +2782,10 @@ function TOTFEFreeOTFEBase.MountFreeOTFE(volumeFilename: String;
   ReadOnly: Boolean = False; keyfile: String = ''; password: TSDUBytes = nil;
   offset: ULONGLONG = 0; noCDBAtOffset: Boolean = False; silent: Boolean = False;
   saltLength: Integer = DEFAULT_SALT_LENGTH;
-  keyIterations: Integer = DEFAULT_KEY_ITERATIONS): Ansichar;
+  keyIterations: Integer = DEFAULT_KEY_ITERATIONS): char;
 var
   tmpStringList: TStringList;
-  mountedAs:     Ansistring;
+  mountedAs:     DriveLetterString;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
   Result        := #0;
@@ -2717,7 +2807,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEBase.MountFreeOTFE(volumeFilenames: TStringList;
-  var mountedAs: Ansistring; ReadOnly: Boolean = False; keyfile: String = '';
+  var mountedAs: DriveLetterString; ReadOnly: Boolean = False; keyfile: String = '';
   password: TSDUBytes = nil; offset: ULONGLONG = 0; noCDBAtOffset: Boolean = False;
   silent: Boolean = False; saltLength: Integer = DEFAULT_SALT_LENGTH;
   keyIterations: Integer = DEFAULT_KEY_ITERATIONS): Boolean;
@@ -2734,7 +2824,6 @@ begin
   if (LastErrorCode = OTFE_ERR_SUCCESS) then begin
     keyEntryDlg := TfrmKeyEntryFreeOTFE.Create(nil);
     try
-//      keyEntryDlg.fFreeOTFEObj := self;
       keyEntryDlg.Silent      := silent;
       keyEntryDlg.SetPassword(password);
       keyEntryDlg.SetReadonly(ReadOnly);
@@ -2773,16 +2862,16 @@ function TOTFEFreeOTFEBase.MountFreeOTFE(volumeFilenames: TStringList;
                                   // Set to PKCS#11 slot ID if PKCS#11 slot was *actually* used for mounting
   PKCS11Session: TPKCS11Session;  // Set to nil if not needed
   PKCS11SecretKeyRecord: PPKCS11SecretKey;  // Set to nil if not needed
-  KeyIterations: Integer; UserDriveLetter: Ansichar; MountReadonly: Boolean;
+  KeyIterations: Integer; UserDriveLetter: char; MountReadonly: Boolean;
   MountMountAs: TFreeOTFEMountAs; Offset: Int64; OffsetPointsToCDB: Boolean;
   SaltLength: Integer;  // In *bits*
-  MountForAllUsers: Boolean; var mountedAs: Ansistring): Boolean;
+  MountForAllUsers: Boolean; var mountedAs: DriveLetterString): Boolean;
 
 var
   i:                 Integer;
   currMountFilename: String;
   useFileOffset:     Int64;
-  mountDriveLetter:  ansichar;
+  mountDriveLetter:  char;
 
   volumeDetails: TVolumeDetailsBlock;
   CDBMetaData:   TCDBMetaData;
@@ -2990,10 +3079,10 @@ function TOTFEFreeOTFEBase.MountLinux(volumeFilename: String; ReadOnly: Boolean 
   lesFile: String = ''; password: TSDUBytes = nil; keyfile: String = '';
   keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
   keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE; offset: ULONGLONG = 0;
-  silent: Boolean = False; forceHidden: Boolean = False): Ansichar;
+  silent: Boolean = False; forceHidden: Boolean = False): DriveLetterChar;
 var
   tmpStringList: TStringList;
-  mountedAs:     Ansistring;
+  mountedAs:     DriveLetterString;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
   Result        := #0;
@@ -3015,7 +3104,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEBase.MountLinux(volumeFilenames: TStringList;
-  var mountedAs: Ansistring; ReadOnly: Boolean = False; lesFile: String = '';
+  var mountedAs: DriveLetterString; ReadOnly: Boolean = False; lesFile: String = '';
   password: TSDUBytes = nil; keyfile: String = '';
   keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
   keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE; offset: ULONGLONG = 0;
@@ -3035,7 +3124,7 @@ var
   keyProcIterations:   Integer;
   fileOptOffset:       Int64;
   fileOptSize:         Int64;
-  mountDriveLetter:    ansichar;
+  mountDriveLetter:    DriveLetterChar;
   mountReadonly:       Boolean;
   mainCypherDriver:    Ansistring;
   mainCypherGUID:      TGUID;
@@ -3043,7 +3132,7 @@ var
   mainIVHashGUID:      TGUID;
   mainIVCypherDriver:  Ansistring;
   mainIVCypherGUID:    TGUID;
-  currDriveLetter:     ansichar;
+  currDriveLetter:     DriveLetterChar;
   sectorIVGenMethod:   TFreeOTFESectorIVGenMethod;
   startOfVolFile:      Boolean;
   startOfEndData:      Boolean;
@@ -3078,7 +3167,6 @@ begin
 
   keyEntryDlg := TfrmKeyEntryLinux.Create(nil);
   try
-//    keyEntryDlg.fFreeOTFEObj := self;
     keyEntryDlg.Initialize();
     keyEntryDlg.SetOffset(offset); // do before keyfile as that has offset in
     if (lesFile <> '') then
@@ -3163,7 +3251,7 @@ begin
 
         if Result then begin
           for i := 0 to (volumeFilenames.Count - 1) do begin
-            currDriveLetter := GetNextDriveLetter(mountDriveLetter, AnsiChar(#0));
+            currDriveLetter := GetNextDriveLetter(mountDriveLetter, Char(#0));
             if (currDriveLetter = #0) then begin
               // No more drive letters following the user's specified drive
               // letter - don't mount further drives
@@ -3286,7 +3374,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.GetNextDriveLetter(): Ansichar;
+function TOTFEFreeOTFEBase.GetNextDriveLetter(): char;
 begin
   Result := GetNextDriveLetter(#0, #0);
 end;
@@ -3296,10 +3384,10 @@ function TOTFEFreeOTFEBase.MountLUKS(volumeFilename: String; ReadOnly: Boolean =
   password: TSDUBytes = nil; keyfile: String = '';
   keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
   keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
-  silent: Boolean = False): ansichar;
+  silent: Boolean = False): DriveLetterChar;
 var
   tmpStringList: TStringList;
-  mountedAs:     Ansistring;
+  mountedAs:     DriveLetterString;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
   Result        := #0;
@@ -3320,7 +3408,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEBase.MountLUKS(volumeFilenames: TStringList;
-  var mountedAs: Ansistring; ReadOnly: Boolean = False; password: TSDUBytes = nil;
+  var mountedAs: DriveLetterString; ReadOnly: Boolean = False; password: TSDUBytes = nil;
   keyfile: String = ''; keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
   keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
   silent: Boolean = False): Boolean;
@@ -3331,9 +3419,9 @@ var
 
   userKey:                  TSDUBytes;
   fileOptSize:              Int64;
-  mountDriveLetter:         ansichar;
+  mountDriveLetter:         DriveLetterChar;
   mountReadonly:            Boolean;
-  currDriveLetter:          Ansichar;
+  currDriveLetter:          DriveLetterChar;
   mountMountAs:             TFreeOTFEMountAs;
   mr:                       Integer;
   LUKSHeader:               TLUKSHeader;
@@ -3348,7 +3436,6 @@ begin
 
   keyEntryDlg := TfrmKeyEntryLUKS.Create(nil);
   try
-//    keyEntryDlg.fFreeOTFEObj := self;
     keyEntryDlg.Initialize();
     keyEntryDlg.SetReadonly(ReadOnly);
     keyEntryDlg.SetKey(SDUBytesToString(password));
@@ -3449,10 +3536,10 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.Mount(volumeFilename: Ansistring; ReadOnly: Boolean = False): Ansichar;
+function TOTFEFreeOTFEBase.Mount(volumeFilename: Ansistring; ReadOnly: Boolean = False): char;
 var
   tmpStringList: TStringList;
-  mountedAs:     Ansistring;
+  mountedAs:     DriveLetterString;
 begin
   Result := #0;
 
@@ -3471,7 +3558,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.Mount(volumeFilenames: TStringList; var mountedAs: Ansistring;
+function TOTFEFreeOTFEBase.Mount(volumeFilenames: TStringList; var mountedAs: DriveLetterString;
   ReadOnly: Boolean = False): Boolean;
 var
   frmSelectVolumeType: TfrmSelectVolumeType;
@@ -3561,7 +3648,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.GetVolFileForDrive(driveLetter: Ansichar): String;
+function TOTFEFreeOTFEBase.GetVolFileForDrive(driveLetter: char): String;
 var
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
 begin
@@ -3577,9 +3664,9 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.GetDriveForVolFile(volumeFilename: String): Ansichar;
+function TOTFEFreeOTFEBase.GetDriveForVolFile(volumeFilename: String): DriveLetterChar;
 var
-  mounted:    Ansistring;
+  mounted:    string;
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
   i:          Integer;
 begin
@@ -3591,7 +3678,7 @@ begin
   for i := 1 to length(mounted) do begin
     if GetVolumeInfo(mounted[i], volumeInfo) then begin
       if (uppercase(volumeInfo.Filename) = uppercase(volumeFilename)) then begin
-        Result := volumeInfo.DriveLetter;
+        Result := Char(volumeInfo.DriveLetter);
         break;
       end;
 
@@ -3888,7 +3975,7 @@ begin
 
   // 8 bits: Requested drive letter...
   if Result then begin
-    volumeDetailsBlock.RequestedDriveLetter := stringRep[idx];
+    volumeDetailsBlock.RequestedDriveLetter :=char( stringRep[idx]);
     Inc(idx);
   end;
 
@@ -5634,8 +5721,6 @@ begin
   if WarnIfNoHashOrCypherDrivers() then begin
     frmWizard := TfrmWizardCreateVolume.Create(nil);
     try
-//      frmWizard.fFreeOTFEObj := self;
-
       mr := frmWizard.ShowModal();
       if (mr = mrOk) then begin
         LastErrorCode := OTFE_ERR_SUCCESS;
@@ -5753,8 +5838,7 @@ begin
 {$IFDEF _GEXPERTS}
   SendDebug(msg);
 {$ENDIF}
-  if DebugShowMessage then
-    begin
+  if DebugShowMessage then    begin
     showmessage(msg);
     end;
 end;
@@ -5798,8 +5882,7 @@ begin
 {$ENDIF}
       end;
     DebugStrings.AddStrings(prettyStrings);
-    if DebugShowMessage then
-      begin
+    if DebugShowMessage then      begin
       showmessage(prettyStrings.Text);
       end;
   finally
@@ -5825,8 +5908,7 @@ begin
 {$ENDIF}
       end;
     DebugStrings.AddStrings(prettyStrings);
-    if DebugShowMessage then
-      begin
+    if DebugShowMessage then      begin
       showmessage(prettyStrings.Text);
       end;
   finally
@@ -5851,10 +5933,10 @@ end;
  // Prompt the user for a device (if appropriate) and password (and drive
  // letter if necessary), then mount the device selected
  // Returns the drive letter of the mounted devices on success, #0 on failure
-function TOTFEFreeOTFEBase.MountDevices(): Ansistring;
+function TOTFEFreeOTFEBase.MountDevices(): DriveLetterString;
 var
   selectedPartition:   String;
-  mountedAs:           Ansistring;
+  mountedAs:           DriveLetterString;
   frmSelectVolumeType: TfrmSelectVolumeType;
   mr:                  Integer;
 begin
@@ -5889,7 +5971,6 @@ begin
 
     finally
       frmSelectVolumeType.Free();
-      ;
     end;
 
   end;
@@ -5952,7 +6033,7 @@ function TOTFEFreeOTFEBase.CreateKeyfile(srcFilename: String; srcOffsetWithinFil
   srcUserPassword: TSDUBytes; srcSaltLength: Integer;  // In bits
   srcKeyIterations: Integer; keyFilename: String; keyfileUserPassword: TSDUBytes;
   keyfileSaltBytes: TSDUBytes; keyfileKeyIterations: Integer;
-  keyfileRequestedDrive: ansichar): Boolean;
+  keyfileRequestedDrive: DriveLetterChar): Boolean;
 var
   volumeDetails:        TVolumeDetailsBlock;
   CDBMetaData:          TCDBMetaData;
@@ -5987,7 +6068,7 @@ end;
 function TOTFEFreeOTFEBase.ChangeVolumePassword(filename: String; offsetWithinFile: Int64;
   oldUserPassword: TSDUBytes; oldSaltLength: Integer;  // In bits
   oldKeyIterations: Integer; newUserPassword: TSDUBytes; newSaltBytes: TSDUBytes;
-  newKeyIterations: Integer; newRequestedDriveLetter: ansichar
+  newKeyIterations: Integer; newRequestedDriveLetter: DriveLetterChar
 
   //       The maximum that could possibly be required is CRITICAL_DATA_LENGTH bits.
   ): Boolean;
@@ -6301,7 +6382,6 @@ begin
     dlg := TfrmWizardChangePasswordCreateKeyfile.Create(nil);
     try
       dlg.ChangePasswordCreateKeyfile := opChangePassword;
-//      dlg.fFreeOTFEObj                := self;
       dlg.IsPartition                 := False;
       dlg.SrcFileName                 := SrcFilename;
       dlg.SrcUserKey                  := SDUStringToSDUBytes(OrigKeyPhrase);
@@ -6326,7 +6406,6 @@ begin
     dlg := TfrmWizardChangePasswordCreateKeyfile.Create(nil);
     try
       dlg.ChangePasswordCreateKeyfile := opCreateKeyfile;
-//      dlg.fFreeOTFEObj                := self;
 
       //thinks this not needed:
 {
@@ -6583,9 +6662,9 @@ function TOTFEFreeOTFEBase.DEBUGReadWritePlaintextToVolume(
 begin
   Result := ReadWritePlaintextToVolume(
                     readNotWrite,
-
                     volFilename,
-                   SDUBytesToString( volumeKey),
+
+                    volumeKey,
                     sectorIVGenMethod,
                     IVHashDriver,
                     IVHashGUID,
