@@ -28,7 +28,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
     inherited pcWizard: TPageControl
       Width = 535
       Height = 358
-      ActivePage = tsPartitionSelect
+      ActivePage = tsFileOrPartition
       ExplicitWidth = 535
       ExplicitHeight = 358
       object tsFileOrPartition: TTabSheet
@@ -373,13 +373,13 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             ExplicitHeight = 228
             inherited SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel
               Height = 200
-              ExplicitHeight = 161
+              ExplicitHeight = 200
             end
             inherited pnlNoPartitionDisplay: TPanel
               Left = 338
               Height = 200
               ExplicitLeft = 338
-              ExplicitHeight = 161
+              ExplicitHeight = 200
             end
           end
           inherited ckShowCDROM: TCheckBox
@@ -398,7 +398,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Left = 368
             Top = 65533
             Bitmap = {
-              494C010103000400200110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400340110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
