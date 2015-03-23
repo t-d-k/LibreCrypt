@@ -606,80 +606,72 @@ function SDUGetURLProgress_WithUserAgent(
   UserAgent: WideString
 ): TTimeoutGet;
 var
-  FProgressDlg: TSDUProgressDialog;
+  ProgressDlg: TSDUProgressDialog;
   progResult: word;
   thrHTTPGet: TThreadHTTPGet;
 begin
   Result := tgFailure;
+ProgressDlg:= TSDUProgressDialog.Create(nil);
+  try
 
-  FProgressDlg:= TSDUProgressDialog.Create(nil);
-  FProgressDlg.Title := DialogTitle;
-  FProgressDlg.Min := 0;
-  FProgressDlg.Max := 100;
-  FProgressDlg.Position := 0;
-  FProgressDlg.Indeterminate := TRUE;
-  FProgressDlg.IndeterminateRunning := TRUE;
-  FProgressDlg.CancelSetsModalResult := TRUE;
+
+
+  ProgressDlg.Title := DialogTitle;
+  ProgressDlg.Min := 0;
+  ProgressDlg.Max := 100;
+  ProgressDlg.Position := 0;
+  ProgressDlg.Indeterminate := TRUE;
+  ProgressDlg.IndeterminateRunning := TRUE;
+  ProgressDlg.CancelSetsModalResult := TRUE;
 
   thrHTTPGet := TThreadHTTPGet.Create(TRUE);
-  thrHTTPGet.ModalForm := FProgressDlg;
+  thrHTTPGet.ModalForm := ProgressDlg;
   thrHTTPGet.URL := URL;
   thrHTTPGet.UserAgent := UserAgent;
   thrHTTPGet.Resume;
 
   try
     try
-    progResult := FProgressDlg.ShowModal();
+    progResult := ProgressDlg.ShowModal();
     finally
       thrHTTPGet.ModalForm := nil;
     end;
   except
-    if thrHTTPGet.RetrievedOK then
-      begin
+    if thrHTTPGet.RetrievedOK then      begin
       progResult := mrOK;
-      end
-    else
-      begin
+      end    else      begin
       progResult := mrAbort;
       end;
   end;
 
-  FProgressDlg.IndeterminateRunning := FALSE;
+  ProgressDlg.IndeterminateRunning := FALSE;
+  finally
+    ProgressDlg.Free;
+  end;
 
-  if (progResult = mrCancel) then
-    begin
+  if (progResult = mrCancel) then        begin
     Result := tgCancel;
-    end
-  else if (progResult = mrAbort) then
-    begin
+    end  else if (progResult = mrAbort) then    begin
     Result := tgTimeout;
-    end
-  else if (progResult = mrOK) then
-    begin
-    // In this case, the thread terminated 
-    if thrHTTPGet.RetrievedOK then
-      begin
+    end  else if (progResult = mrOK) then    begin
+    // In this case, the thread terminated
+    if thrHTTPGet.RetrievedOK then       begin
       Result := tgOK;
       ReturnedBody := thrHTTPGet.ReturnedBody;
-      end
-    else
-      begin
+      end    else      begin
       Result := tgFailure;
       end;
     end;
-
-  if thrHTTPGet.Terminated then
-    begin
-    thrHTTPGet.Free();
-    end
-  else
-    begin
-    // We no longer care if it returns or not...
-    thrHTTPGet.FreeOnTerminate := TRUE;
-    // Yes, this is right - don't terminate only sets a flag, it doesn't
-    // terminate the running thread
-    thrHTTPGet.Terminate();
-    end;
+   thrHTTPGet.Free(); // blocks till terminates  - but if no internet?
+ // if thrHTTPGet.Terminated then      begin
+//   thrHTTPGet.Free();
+//    end    else    begin
+//    // We no longer care if it returns or not...
+//    thrHTTPGet.FreeOnTerminate := TRUE;
+//    // Yes, this is right - don't terminate only sets a flag, it doesn't
+//    // terminate the running thread
+//    thrHTTPGet.Terminate();
+//    end;
 
 
 end;
