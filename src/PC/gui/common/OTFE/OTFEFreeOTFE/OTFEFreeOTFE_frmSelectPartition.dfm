@@ -65,6 +65,7 @@ object frmSelectPartition: TfrmSelectPartition
     TabOrder = 0
     ExplicitLeft = 8
     ExplicitTop = 28
+    ExplicitWidth = 565
     ExplicitHeight = 144
     inherited lblErrorWarning: TLabel
       Top = 125
@@ -75,6 +76,7 @@ object frmSelectPartition: TfrmSelectPartition
       ExplicitTop = 123
     end
     inherited TabControl1: TTabControl
+      Width = 565
       Height = 97
       ExplicitHeight = 97
       inherited SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel
@@ -83,6 +85,7 @@ object frmSelectPartition: TfrmSelectPartition
         ExplicitHeight = 69
       end
       inherited pnlNoPartitionDisplay: TPanel
+        Left = 376
         Height = 69
         OnDblClick = fmeSelectPartitionpnlNoPartitionDisplayDblClick
         ExplicitHeight = 69
@@ -98,7 +101,7 @@ object frmSelectPartition: TfrmSelectPartition
     end
     inherited ilErrorWarning: TImageList
       Bitmap = {
-        494C0101030004002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+        494C010103000400300010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
         0000000000003600000028000000400000001000000001002000000000000010
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000

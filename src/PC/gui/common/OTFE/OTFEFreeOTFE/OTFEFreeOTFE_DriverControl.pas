@@ -718,10 +718,8 @@ begin
 
   driverName := GetServiceNameForFilename(filename);
 
-  if IsDriverInstalled(driverName, alreadyInstalled) then
-    begin
-    if (alreadyInstalled) then
-      begin
+  if IsDriverInstalled(driverName, alreadyInstalled) then    begin
+    if (alreadyInstalled) then        begin
       Result := Result AND DRIVER_BIT_ALREADY_INSTALLED;
       allOK := FALSE;
       end;
@@ -806,13 +804,10 @@ begin
  destFilename := SDUGetSpecialFolderPath(CSIDL_SYSTEM)+'\'+ExtractFilename(driverFilename);
 //  destFilename := 'C:\Windows\sysnative\'+ExtractFilename(driverFilename);
 
-  if (driverFilename = destFilename) then
-    begin
+  if (driverFilename = destFilename) then     begin
     // Skip copying if file is already in position...
     Result := TRUE;
-    end
-  else
-    begin
+    end  else    begin
       changeFSRedirect := SDUWow64DisableWow64FsRedirection(fsRedirectOldValue);
       try
         Result := CopyFile(
@@ -821,8 +816,7 @@ begin
                            FALSE                   // flag for operation if file exists
                           );
       finally
-        if changeFSRedirect then
-          begin
+        if changeFSRedirect then          begin
           SDUWow64RevertWow64FsRedirection(fsRedirectOldValue);
           end;
       end;
@@ -1257,12 +1251,9 @@ begin
         alreadyInstalled := FALSE;
         end;
 
-      if alreadyInstalled then
-        begin
+      if alreadyInstalled then         begin
         installedOK := TRUE;
-        end
-      else
-        begin
+        end      else        begin
         status := InstallDriver(
                                 driverFilenames[i],
                                 portableMode,
