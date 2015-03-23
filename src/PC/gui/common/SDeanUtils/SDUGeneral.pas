@@ -200,11 +200,11 @@ type
   TSDUNewline      = TSDUNewline_Enum;
 
   TSDUBytes = array of Byte;
-  DriveLetterString    = Ansistring;
+  DriveLetterString    = string;
   VolumeFilenameString = String;
   KeyFilenameString    = String;
   FilenameString       = String;
-  DriveLetterChar      = AnsiChar;
+  DriveLetterChar      = Char;
   //  PasswordString       = TSDUBytes;
   PasswordString       = Ansistring;
 
@@ -743,9 +743,9 @@ function SDUFileExtnIsRegd(fileExtn: String; menuItem: String): Boolean;
  // Get a string with the drive letters of all drives present/not present, in
  // order
  // Return value is all in uppercase
-function SDUGetUsedDriveLetters(): Ansistring;
-function SDUGetUnusedDriveLetters(): Ansistring;
-function SDUGetNetworkDriveLetters(): Ansistring;
+function SDUGetUsedDriveLetters(): string;
+function SDUGetUnusedDriveLetters(): string;
+function SDUGetNetworkDriveLetters(): string;
 // Populate "output" with a pretty-printed hex display of the contents of "data"
 function SDUPrettyPrintHex(data: Pointer; offset: Longint; bytes: Longint;
   output: TStringList; Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): Boolean; OVERLOAD;
@@ -827,7 +827,8 @@ function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion,
   A_RevisionVersion, A_BuildVersion: Integer; A_BetaVersion: Integer;
   B_MajorVersion, B_MinorVersion, B_RevisionVersion, B_BuildVersion: Integer): Integer; OVERLOAD;
 // Pause for the given number of ms
-procedure SDUPause(delayLen: Integer);
+// dont really want to do busy waits
+//procedure SDUPause(delayLen: Integer);
 // Execute the specified commandline and return when the command line returns
 function SDUWinExecAndWait32(const cmdLine: String; cmdShow: Integer;
   workDir: String = ''; appName: String = ''): Cardinal;
@@ -1603,23 +1604,24 @@ var
   pBlock:    Pointer;
   pVPointer: Pointer;
   tvs:       PVSFixedFileInfo;
+//  iLastError: Cardinal;
 begin
   Result := False;
 
-  if filename = '' then begin
-    filename := Application.ExeName;
-  end;
+  if filename = '' then     filename := Application.ExeName;
 
   vsize := GetFileVersionInfoSize(PChar(filename), dwHandle);
-  if vsize = 0 then begin
-    exit;
-  end;
+
+  if vsize = 0 then     exit;
 
   GetMem(pBlock, vsize);
   try
     if GetFileVersionInfo(PChar(filename), dwHandle, vsize, pBlock) then begin
+
       VerQueryValue(pBlock, '\', pVPointer, puLen);
       if puLen > 0 then begin
+//      iLastError := GetLastError;
+//      showmessage(Format('GetFileVersionInfo failed: (%d) %s',                           [iLastError, SysErrorMessage(iLastError)]));
         tvs             := PVSFixedFileInfo(pVPointer);
         majorVersion    := tvs^.dwFileVersionMS shr 16;
         minorVersion    := tvs^.dwFileVersionMS and $ffff;
@@ -1645,8 +1647,7 @@ var
   buildVersion:    Integer;
 begin
   Result := '';
-  if SDUGetVersionInfo(filename, majorVersion, minorVersion, revisionVersion, buildVersion) then
-  begin
+  if SDUGetVersionInfo(filename, majorVersion, minorVersion, revisionVersion, buildVersion) then  begin
     Result := SDUVersionInfoToString(majorVersion, minorVersion, revisionVersion,
       buildVersion, -1);
   end;
@@ -1658,11 +1659,8 @@ function SDUVersionInfoToString(majorVersion: Integer; minorVersion: Integer;
 begin
   Result := Format('%d.%.2d', [majorVersion, minorVersion]);
 
-  if (betaVersion > 0) then begin
+  if (betaVersion > 0) then
     Result := Result + ' ' + RS_BETA + ' ' + IntToStr(betaVersion);
-  end;
-
-
 end;
 
 function SDUVersionInfoToString(majorVersion: Integer; minorVersion: Integer;
@@ -1671,25 +1669,21 @@ begin
   Result := Format('%d.%.2d.%.2d.%.4d', [majorVersion, minorVersion, revisionVersion,
     buildVersion]);
 
-  if (betaVersion > 0) then begin
+  if (betaVersion > 0) then
     Result := Result + ' ' + RS_BETA + ' ' + IntToStr(betaVersion);
-  end;
-
-
 end;
 
-
-procedure SDUPause(delayLen: Integer);
-var
-  delay: TTimeStamp;
-begin
-  delay      := DateTimeToTimeStamp(now);
-  delay.Time := delay.Time + delayLen;
-  while (delay.time > DateTimeToTimeStamp(now).time) do begin
-    // Nothing - just pause
-  end;
-
-end;
+//procedure SDUPause(delayLen: Integer);
+//var
+//  delay: TTimeStamp;
+//begin
+//  delay      := DateTimeToTimeStamp(now);
+//  delay.Time := delay.Time + delayLen;
+//  while (delay.time > DateTimeToTimeStamp(now).time) do begin
+//    // Nothing - just pause
+//  end;
+//
+//end;
 
 
  // !! WARNING !! cmdLine must contain no whitespaces, otherwise the first
@@ -1739,7 +1733,7 @@ begin
     pWrkDir,               { pointer to current directory name }
     StartupInfo,           { pointer to STARTUPINFO }
     ProcessInfo) then      { pointer to PROCESS_INF } begin
-    WaitforSingleObject(ProcessInfo.hProcess, INFINITE);
+    WaitforSingleObject(ProcessInfo.hProcess, 120000); // wait 2 minutes
     GetExitCodeProcess(ProcessInfo.hProcess, Result);
     CloseHandle(ProcessInfo.hProcess);
     CloseHandle(ProcessInfo.hThread);
@@ -2397,7 +2391,7 @@ end;
  // Get a string with the drive letters of all drives present/not present, in
  // order
  // Return value is all in uppercase
-function SDUGetNetworkDriveLetters(): Ansistring;
+function SDUGetNetworkDriveLetters(): string;
 var
   i:          DWORD;
   dwResult:   DWORD;
@@ -2451,12 +2445,12 @@ end;
  // Get a string with the drive letters of all drives present/not present, in
  // order
  // Return value is all in uppercase
-function SDUGetUsedDriveLetters(): Ansistring;
+function SDUGetUsedDriveLetters(): string;
 var
   DriveNum:   Integer;
   DriveBits:  set of 0..25;
   drivesList: TStringList;
-  netDrives:  Ansistring;
+  netDrives:  string;
   i:          Integer;
 begin
   Result := '';
@@ -2493,10 +2487,10 @@ begin
 end;
 
 
-function SDUGetUnusedDriveLetters(): Ansistring;
+function SDUGetUnusedDriveLetters(): string;
 var
-  x:                ansichar;
-  usedDriveLetters: Ansistring;
+  x:                char;
+  usedDriveLetters: string;
 begin
   Result := '';
 
@@ -2898,9 +2892,9 @@ end;
 function SDUOSCPUSize(): Integer;
 const
   PROC_ARCH_32_BIT = 'x86';
-var
+//var
   //  procArch: string;
-  isWow64: Boolean;
+//  isWow64: Boolean;
 begin
   Result := 32;
 
@@ -2933,10 +2927,8 @@ begin
 }
 
   if (Result = 32) then begin
-    if SDUIsWow64Process(GetCurrentProcess, isWow64) then begin
-      if isWow64 then begin
+    if SDUIsWow64Process(GetCurrentProcess()) then begin
         Result := 64;
-      end;
     end;
   end;
 
@@ -6053,12 +6045,8 @@ var
   xml:    String;
 begin
   Result := '';
-
-  if SDUWinHTTPRequest(url, xml) then begin
+  if SDUWinHTTPRequest(url, xml) then
     Result := SDUGetPADFileVersionInfoString_XML(xml);
-  end;
-
-
 end;
 
 
@@ -6078,13 +6066,9 @@ var
   AHour, AMinute, ASecond, AMilliSecond: Word;
 begin
   DecodeTime(inTime, AHour, AMinute, ASecond, AMilliSecond);
-  if includeSeconds then begin
-    Result := Format('%.2d:%.2d:%.2d', [AHour, AMinute, ASecond]);
-  end else begin
-    Result := Format('%.2d:%.2d', [AHour, AMinute]);
-  end;
-
-
+  Result := Format('%.2d:%.2d', [AHour, AMinute]);
+  if includeSeconds then
+    Result := Result+ Format(':%.2d', [Result, ASecond]);
 end;
 
 // Encode date to YYYY-MM-DDTHH:MM format
@@ -6236,15 +6220,8 @@ end;
 function _SDUVersionNumberCompare(A, B: Integer): Integer;
 begin
   Result := 0;
-
-  if (A > B) then begin
-    Result := -1;
-  end else
-  if (B > A) then begin
-    Result := 1;
-  end;
-
-
+  if (A > B) then  Result := -1;
+  if (B > A) then  Result := 1;
 end;
 
  // Check version IDs
@@ -6255,16 +6232,9 @@ end;
 function SDUVersionCompare(A_MajorVersion, A_MinorVersion: Integer;
   B_MajorVersion, B_MinorVersion: Integer): Integer;
 begin
-  Result := 0;
-
-  if (Result = 0) then begin
-    Result := _SDUVersionNumberCompare(A_MajorVersion, B_MajorVersion);
-  end;
-  if (Result = 0) then begin
+  Result := _SDUVersionNumberCompare(A_MajorVersion, B_MajorVersion);
+  if (Result = 0) then
     Result := _SDUVersionNumberCompare(A_MinorVersion, B_MinorVersion);
-  end;
-
-
 end;
 
 function SDUVersionCompare(A_MajorVersion, A_MinorVersion, A_RevisionVersion,
@@ -6279,8 +6249,6 @@ begin
   if (Result = 0) then begin
     Result := _SDUVersionNumberCompare(A_BuildVersion, B_BuildVersion);
   end;
-
-
 end;
 
 
@@ -6841,7 +6809,9 @@ end;
 procedure SafeSetLength(var A: TSDUBytes; newLen: Integer);
 var
   len, i: Integer;
+  {$IFNDEF AlwaysClearFreedMemory}
   temp:   TSDUBytes;
+     {$ENDIF}
 begin
   len := length(A);
   // if shortening - overwrite data now not in array (FastMM4 doest do this - prob runtime keeps 'capacity' field and doesnt free it)

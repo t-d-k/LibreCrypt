@@ -4,7 +4,10 @@ interface
 
 uses
   Classes,
-  MSntdll;
+  MSntdll,
+
+  //sdu
+  SDUGeneral;
 
 type
   TObjectType = (otDirectory, otDevice, otSymlink, otOther);
@@ -58,7 +61,7 @@ type
     // Return the underlying device for the specified drive
     // e.g.:
     //   C: => \Device\HarddiskVolume1
-    function UnderlyingDeviceForDrive(driveLetter: Char): String;
+    function UnderlyingDeviceForDrive(driveLetter: DriveLetterChar): String;
   end;
 
 implementation
@@ -304,7 +307,7 @@ begin
 
 end;
 
-function TSDUObjManager.UnderlyingDeviceForDrive(driveLetter: Char): String;
+function TSDUObjManager.UnderlyingDeviceForDrive(driveLetter: DriveLetterChar): String;
 var
   driveDevice: String;
 begin
