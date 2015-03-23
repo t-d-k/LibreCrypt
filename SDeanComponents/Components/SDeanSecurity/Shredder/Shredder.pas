@@ -138,7 +138,7 @@ type
     // Call this to shred all free space on the specified drive
     // Note: Does *not* wipe file slack - OverwriteAllFileSlacks(...) should be
     //       called before this function, if needed
-    function  OverwriteDriveFreeSpace(driveLetter: ansichar; silent: boolean = FALSE): TShredResult;
+    function  OverwriteDriveFreeSpace(driveLetter: DriveLetterChar; silent: boolean = FALSE): TShredResult;
 
     // Call this to a specific file's slack space
     function  OverwriteFileSlack(filename: string): boolean;
@@ -1272,11 +1272,11 @@ begin
 end;
 
 // Returns: TShredResult
-function TShredder.OverwriteDriveFreeSpace(driveLetter: ansichar; silent: boolean): TShredResult;
+function TShredder.OverwriteDriveFreeSpace(driveLetter: DriveLetterChar; silent: boolean): TShredResult;
 const
   FIVE_MB = (5 * BYTES_IN_MEGABYTE);
 var
-  drive: ansistring;
+  drive: DriveLetterString;
   tempDriveDir: string;
   freeSpace: int64;
   fileNumber: integer;
@@ -1327,7 +1327,7 @@ begin
           end;
 
         // Create a subdir
-        drive := AnsiString(uppercase(driveLetter));
+        drive := uppercase(driveLetter);
         driveLetter := drive[1];
         tempDriveDir := driveLetter + ':\'+OVERWRITE_FREESPACE_TMP_DIR+inttostr(random(10000))+'.tmp';
         diskNumber := ord(drive[1])-ord('A')+1;
