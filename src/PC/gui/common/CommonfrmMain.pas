@@ -226,7 +226,6 @@ type
 
     fPkcs11Library: TPKCS11Library;
 
-//    fOtfeFreeOtfeBase: TOTFEFreeOTFEBase; call OTFEFreeOTFEBase_U.GetFreeOTFE
     fFuncTestPending:  Boolean;// if functional test was selelcted in cmd line but not run yet
 
     procedure DoAppIdle(Sender: TObject; var Done: Boolean); // TIdleEvent
@@ -301,8 +300,6 @@ type
   PUBLIC
     constructor Create(AOwner: TComponent); OVERRIDE;
 
-    //    function OTFEFreeOTFE(): TOTFEFreeOTFEBase; VIRTUAL;
-
     procedure WMUserPostShow(var msg: TWMEndSession); MESSAGE WM_USER_POST_SHOW;
 
     procedure InitApp(); VIRTUAL;
@@ -331,7 +328,7 @@ resourcestring
   RS_TOOLBAR_HINT_DISMOUNT     = 'Lock an open Box';
 
 const
-  USERGUIDE_LOCAL = '.\docs\index.htm';
+  USERGUIDE_LOCAL = '.\docs\index.html';
 
   // Command line switch indicator
   // Note: Only used when creating command lines; parsing them is more flexable
@@ -846,6 +843,7 @@ begin
 end;
 
 
+
 procedure TfrmMain.EnableDisableControls();
 begin
 
@@ -945,7 +943,8 @@ procedure TfrmMain.DoAppIdle(Sender: TObject; var Done: Boolean);
 begin
   if fFuncTestPending then begin
     fFuncTestPending := False;
-    actTestExecute(self);
+//    actCheckForUpdatesExecute(self);
+//    actTestExecute(self);
 //    Close;
 
   end;
@@ -979,7 +978,6 @@ begin
       dlg.DestFilename := volPath;
     end;
 
-//    dlg.OTFEFreeOTFE := fOtfeFreeOtfeBase;
     dlg.OpType       := dlgType;
     dlg.ShowModal();
 
@@ -1021,7 +1019,6 @@ begin
       dlg := TfrmCDBDump_FreeOTFE.Create(self);
     end;
     try
-//      dlg.OTFEFreeOTFE := fOtfeFreeOtfeBase;
       dlg.ShowModal();
     finally
       dlg.Free();
@@ -1226,7 +1223,6 @@ var
 begin
   dlg := TfrmGridReport_Hash.Create(self);
   try
-//    dlg.OTFEFreeOTFE := fOtfeFreeOtfeBase;
     dlg.ShowModal();
   finally
     dlg.Free();
@@ -1240,7 +1236,6 @@ var
 begin
   dlg := TfrmGridReport_Cypher.Create(self);
   try
-//    dlg.OTFEFreeOTFE := fOtfeFreeOtfeBase;
     dlg.ShowModal();
   finally
     dlg.Free();
@@ -1496,11 +1491,6 @@ begin
   end;
 end;
 
- //function TfrmMain.OTFEFreeOTFE(): TOTFEFreeOTFEBase;
- //begin
- //  Result := fOtfeFreeOtfeBase;
- //end;
-
 procedure TfrmMain.StartupUpdateCheck();
 var
   nextCheck: TDate;
@@ -1566,7 +1556,6 @@ end;
 procedure TfrmMain.actCheckForUpdatesExecute(Sender: TObject);
 begin
   CheckForUpdates_UserCheck(URL_PADFILE);
-
 end;
 
 procedure TfrmMain.WMUserPostShow(var msg: TWMEndSession);
@@ -1669,7 +1658,7 @@ begin
       if (length(useDriveLetter) = 0) then
         fileOK := FALSE
       else
-        GetFreeOTFE().DefaultDriveLetter := AnsiChar((uppercase(useDriveLetter))[1]);
+        GetFreeOTFE().DefaultDriveLetter := (uppercase(useDriveLetter))[1];
 
     end;
 {$ENDIF}
@@ -1751,6 +1740,7 @@ begin
           if (useKeyfile <> '') then begin
             // If a keyfile was specified, we assume it's a FreeOTFE volume
             // (Strictly speaking, it could be a LUKS volume, but...)
+            { TODO -otdk -c1 : bug - allow keyfiles & LUKS }
             mountAs := GetFreeOTFEBase().MountFreeOTFE(volume, ReadOnly,
               useKeyfile, usePassword, useOffset, useNoCDBAtOffset, useSilent,
               useSaltLength, useKeyIterations);

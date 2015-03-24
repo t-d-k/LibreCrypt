@@ -24,10 +24,7 @@ object frmMain: TfrmMain
     Top = 281
     Width = 300
     Height = 39
-    Hint = 
-      'This software is based on FreeOTFE and/or FreeOTFE4PDA, the free' +
-      ' disk encryption system for PCs and PDAs, available at <A HREF="' +
-      'http://www.FreeOTFE.org/">www.FreeOTFE.org</A>'
+    Hint = 'DoxBox is available under the FreeOTFE licence'
     Align = alBottom
     AutoSize = False
     Caption = 
@@ -88,7 +85,6 @@ object frmMain: TfrmMain
         end
         object miLinuxMountFile: TMenuItem
           Action = actLinuxMountFile
-          Caption = '&Open file...'
         end
         object Mountfilehidden1: TMenuItem
           Action = actMountHidden
@@ -231,13 +227,13 @@ object frmMain: TfrmMain
       OnExecute = actLinuxNewExecute
     end
     object actMountHidden: TAction
-      Caption = '&Mount file (hidden) ...'
+      Caption = '&Open file (hidden) ...'
       Hint = 'Mount Linux file - disable LUKS detection for hidden volumes'
       OnExecute = actMountHiddenExecute
     end
     object actLinuxMountFile: TAction
-      Caption = '&Mount file...'
-      Hint = 'Mount Linux file'
+      Caption = '&Open Linux file...'
+      Hint = 'Mount Linux LUKS or dm-crypt file'
       OnExecute = actLinuxMountFileExecute
     end
     object actExit: TAction
@@ -320,7 +316,7 @@ object frmMain: TfrmMain
     Left = 68
     Top = 52
     Bitmap = {
-      494C010113001001B80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010113001001040110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -997,7 +993,7 @@ object frmMain: TfrmMain
     Left = 28
     Top = 96
     Bitmap = {
-      494C010113001001B80018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010113001001040118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000078000000010020000000000000B4
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
