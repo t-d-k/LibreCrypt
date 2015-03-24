@@ -133,10 +133,11 @@ This method is probably the best solution, and allows DoxBox to run correctly. H
 
 Although only a cosmetic issue, the words "Test Mode" may be removed from your background by using one the following methods:
 
-* Remove and Erase Desktop "Evaluation Copy", "Test Mode" or "Safe Mode" Watermark in 64-bit (x64) Vista 
-* Get Rid Of and Remove Evaluation Copy Watermark in Vista After Installating SP1 
-* Remove and Disable Windows Vista Evaluation Watermark from Desktop
-  Alternatively, using Windows DreamScene (which allows videos to be shown as an animated desktop "wallpaper", instead of a static image) will prevent the "Test Mode" watermark being shown. DreamScene is intended for use with "Ultimate" edition of Windows Vista/Windows 7, though other animated desktop solutions are available for users with other editions (e.g. Home or Business). 																	 
+* [My WCP Watermark Editor for Windows 8](http://www.softpedia.com/get/Tweak/System-Tweak/My-WCP-Watermark-Editor.shtml)
+* [How to Remove Watermark (Build Number Info) from Desktop in Windows Vista, 7 and Server 2008?](http://www.askvg.com/how-to-remove-windows-7-rc-watermark-build-info-from-desktop/)
+* Using Windows DreamScene (which allows videos to be shown as an animated desktop "wallpaper", instead of a static image) will prevent the "Test Mode" watermark being shown. DreamScene is available with "Ultimate" edition of Windows Vista/Windows 7, other animated desktops are available for other editions (e.g. Home or Business). 
+* Setting the background to a solid colour with RGB values of (250,250,250) will make the watermark invisible.
+None of these have been tested or are approved by DoxBox.
 
 ### Method 4: &lt;F8&gt; while booting Instructions:  
 *			Reboot the PC 

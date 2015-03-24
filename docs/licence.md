@@ -60,42 +60,41 @@ The primary purposes of this licence are:
 
 <DIV class="licence_list_numbering">
 
-1. Definitions	
-	
-	2. Original Author: The individual, organization or legal entity identified in Exhibit A  
-	2. Original Work: The Source Code, documentation and built executables relating to the software identified in Exhibit B  
-	2. Derivative Works: Any modified version of the Original Work (or product which uses any part of the Original Work) and any subsequent Derivative Works.  
-	2. The Software: The Original Work or any Derivative Works  
-	2. You: Any individual, organization or legal entity wishing to use The Software for any purpose.  
-	2. Source Code: The complete source code including all related build scripts, images and components required to build the source code into an executable version
+1. Definitions  
+  2. Original Author: The individual, organization or legal entity identified in Exhibit A  
+  2. Original Work: The Source Code, documentation and built executables relating to the software identified in Exhibit B  
+  2. Derivative Works: Any modified version of the Original Work (or product which uses any part of the Original Work) and any subsequent Derivative Works.  
+  2. The Software: The Original Work or any Derivative Works  
+  2. You: Any individual, organization or legal entity wishing to use The Software for any purpose.  
+  2. Source Code: The complete source code including all related build scripts, images and components required to build the source code into an executable version
 
 1. Grant of license
 
-	2. Subject to the terms and conditions of this licence You are granted a world wide, royalty free, non exclusive licence to use, copy, distribute, display and modify The Software released under this licence.
+  2. Subject to the terms and conditions of this licence You are granted a world wide, royalty free, non exclusive licence to use, copy, distribute, display and modify The Software released under this licence.
 
 1. Modifications and Derivative Works
 
-	2. The Software may be modified in order to produce Derivative Works subject to the following:
+  2. The Software may be modified in order to produce Derivative Works subject to the following:
 
-	2. Derivative Works in executable form must prominently display the notice detailed at Exhibit C whenever the Derivative Work is started and in any display and documentation where copyright is asserted for the Derivative Works
+  2. Derivative Works in executable form must prominently display the notice detailed at Exhibit C whenever the Derivative Work is started and in any display and documentation where copyright is asserted for the Derivative Works
 
-	2. Derivative Works may not be named or be identified using any of the names specified in Exhibit D nor use any similar sounding or potentially confusing name
+  2. Derivative Works may not be named or be identified using any of the names specified in Exhibit D nor use any similar sounding or potentially confusing name
 
-	2. Derivative Works may not use any of the names specified at Exhibit D or that of the Original Author to promote or endorse the Derivative Works without the prior written permission of the Original Author.
+  2. Derivative Works may not use any of the names specified at Exhibit D or that of the Original Author to promote or endorse the Derivative Works without the prior written permission of the Original Author.
 
-	2. Derivative Works in executable form may only be distributed provided that
-		3. Such distributions include a copy of this licence
-		3. The Source Code used to produce the Derivative Works must be released under this licence
-		3. The Source Code used to produce the Derivative Works must be made freely available to anyone who wishes a copy (including but not limited to the Original Author and any recipient of the  Derivative Works) for a minimum period starting from the time at which the Derivative Works are initially distributed to at least two years after the Derivative Works cease to be distributed.
+  2. Derivative Works in executable form may only be distributed provided that
+     3. Such distributions include a copy of this licence
+     3. The Source Code used to produce the Derivative Works must be released under this licence
+     3. The Source Code used to produce the Derivative Works must be made freely available to anyone who wishes a copy (including but not limited to the Original Author and any recipient of the  Derivative Works) for a minimum period starting from the time at which the Derivative Works are initially distributed to at least two years after the Derivative Works cease to be distributed.
 
 1. Termination
 
-	2. This licence terminates automatically should You:
-		3. Fail to comply with any of the term of this license
-		3. Commence any action including claim, cross-claim or counterclaim against the Original Author
+  2. This licence terminates automatically should You:
+    3. Fail to comply with any of the term of this license
+    3. Commence any action including claim, cross-claim or counterclaim against the Original Author
 1. Disclaimer of Warranty
 
-	2. THE SOFTWARE COMES WITH NO WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED
+  2. THE SOFTWARE COMES WITH NO WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED
 </DIV>
 
 <A NAME="level_4_heading_1">
@@ -124,7 +123,7 @@ The works covered by this licence are:
 
 The notice to be shown is:
 
-	This software is based on FreeOTFE and/or FreeOTFE4PDA, the free disk encryption system for PCs and PDAs, available at <a href="http://www.FreeOTFE.org/">www.FreeOTFE.org</a>
+  This software is based on FreeOTFE and/or FreeOTFE4PDA, the free disk encryption system for PCs and PDAs, available at <a href="http://www.FreeOTFE.org/">www.FreeOTFE.org</a>
 
 <A NAME="level_4_heading_4">
 #### Exhibit D

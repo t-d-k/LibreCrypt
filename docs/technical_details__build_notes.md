@@ -28,17 +28,21 @@ DoxBox/DoxBox Explorer comes in a number of parts:
 
 * DoxBox:
 	1. A front-end GUI, written in Delphi
-	2. A number of kernel drivers, written in C
+	2. [A number of kernel drivers, written in C](#building_kernel_drivers)
 * DoxBox Explorer:
 	1. A front-end GUI, written in Delphi
 	2. A number of DLLs, written in C, built for Win32 and Win64
+* Test Apps
+	1. Some command line apps mostly for testing of drivers
 
 * A number of command line decryption utilities, also written in C.
 
 1. [DoxBox](#level_3_heading_1) 
 1. [DoxBox Explorer](#level_3_heading_3)
-1. [Building the Command Line Decryption Utilities](#level_3_heading_4)
-1. [Signing the Binaries](#level_3_heading_5)
+1. [Building the Command Line Decryption Utilities](#building_command_line_decryption_utilities)
+1. [Building the Command Line Test Apps](#building_command_line_test_apps)
+1. [Building the Kernel Drivers](#building_kernel_drivers)
+1. [Signing the Binaries](#signing_binaries)
 1. [Additional Notes](#level_3_heading_6)
 
 
@@ -87,7 +91,7 @@ It is not necessary to do a full install of dxgettext to build with i18n support
 In order to update any ranslations, however dxgettext must be installed.
 
 
-<A NAME="level_4_heading_2">
+<A NAME="building_kernel_drivers">
 #### Building the Kernel Drivers
 </A>
 
@@ -97,22 +101,22 @@ To build these drivers, the following software is required:
 
 * Microsoft Visual Studio 2010 (older versions may well be used, changing "vcvarsall" to "vcvars32", and similar changes)
 * If using an older version of MS Visual Studio, the MS Windows SDK (February 2003 version) is also needed 
-* The MS Windows WDK (WDK for Server 2008 v6001.18001)
+* The MS Windows DDK (WDK 7600.16385.1)
 
 The binary release of this software was built with Microsoft Visual Studio 2010 Professional Edition.
 
-At time of writing, the MS Windows SDK (also called the 'WDK') can be downloaded from the Microsoft WWW site. The MS Windows DDK (also called the 'WDK') is available as a download cd image, and can be ordered from the Microsoft WWW site as a free CD, for the cost of delivery.
+At time of writing, the MS Windows SDK can be downloaded from the Microsoft WWW site. The MS Windows DDK (also called the 'WDK') is available as a download cd image, and can be ordered from the Microsoft WWW site as a free CD, for the cost of delivery.
 
-It should be noted that if you are unable to source the exact versions listed above, earlier versions may well be substituted, although I cannot guarantee success. Later versions should operate correctly. This list describes the environment used to build the binary release of DoxBox.
-versions used: 
+If you are unable to source the exact versions listed above, earlier versions may well be substituted, although I cannot guarantee success. Later versions should operate correctly. This list describes the environment used to build the release version of DoxBox.
+The versions used are: 
 <TABLE>
 <TBODY>
-<TR><TD>Visual Studio          </TD><TD>2010 Professional</TD>    </TR>
-<TR><TD>Windows Driver Development Kit (WinDDK) </TD><TD>7600.16385.1</TD>    </TR>
-<TR><TD>lib tomcrypt           </TD><TD>1.17</TD>    </TR>
-<TR><TD>Gladman library          </TD><TD>downloaded on 04/12/05</TD>    </TR>
-<TR><TD>Twofish library          </TD><TD>Version  1.00		April 1998</TD>    </TR>
-<TR><TD>dxgettext          </TD><TD>GNU gettext for Delphi, C++ Builder and Kylix 1.2 beta</TD>    </TR>
+<TR><TD>Visual Studio          </TD>									<TD>2010 Professional</TD>    </TR>
+<TR><TD>Windows Driver Development Kit (WinDDK) </TD>	<TD>7600.16385.1</TD>    </TR>
+<TR><TD>lib tomcrypt           </TD>									<TD>1.17</TD>    </TR>
+<TR><TD>Gladman library          </TD>								<TD>downloaded on 04/12/05</TD>    </TR>
+<TR><TD>Twofish library          </TD>								<TD>Version  1.00		April 1998</TD>    </TR>
+<TR><TD>dxgettext          </TD>											<TD>GNU gettext for Delphi, C++ Builder and Kylix 1.2 beta</TD>    </TR>
 </TBODY>
 </TABLE>
 
@@ -172,16 +176,15 @@ The following list comprehensively describes the configuration used to build the
   <TABLE>
     <TBODY>
       <TR> <TH>Variable  </TH> <TH>Description </TH> <TH>Default value </TH> </TR>      
-      <TR> <TD>FREEOTFE_CPU</TD>  <TD>The target platform to build the drivers for. Set to either x86 or amd64</TD>  <TD>amd64</TD> </TR>      
+      <TR> <TD>FREEOTFE_CPU</TD>  <TD>The target platform to build the drivers for. Set to either x86 or amd64, only necesary if build_all_amd and build_all_x86 are not used</TD>  <TD>amd64</TD> </TR>      
       <TR> <TD>FREEOTFE\_DEBUG</TD> 	<TD>Build type flag; set to 1 for debug build, or 0 for release</TD> <TD>0</TD> </TR>
       <TR> <TD>FREEOTFE\_TARGET</TD> 	<TD>Target OS to build for; e.g. WXP/W2K/WNET; note that W2K builds will not operate correctly under Windows XP (e.g. when formatting a volume)</TD> <TD>WXP</TD> </TR>
       <TR> <TD>PROJECT\_DRIVE</TD> 		<TD>The drive on which you have stored the DoxBox source </TD> <TD>&lt;The drive the config batch file is stored on&gt;</TD> </TR>
-      <TR> <TD>PROJECT\_DIR</TD> 			<TD>The full drive and path where the "drivers" directory is located</TD> <TD>_&lt;see file&gt;_</TD> </TR>
-      
+      <TR> <TD>PROJECT\_DIR</TD> 			<TD>The full drive and path where the "drivers" directory is located</TD> <TD>_&lt;see file&gt;_</TD> </TR>      
       <TR> <TD>BIN_OUTPUT_DIR</TD> <TD>The path where the built drivers will be copied to. This directory will automatically be created if it does not already exist.</TD> <TD>/&lt;"bin" directory at the same level as the main "src" directory&gt;/</TD> </TR> 
-      <TR>  <TD>VCVARSALL</TD> <TD>The full path and filename to Visual Studio's VCVARSALL.BAT (or vcvar32.bat, if building with an old version)</TD> <TD>"C:\PROGRA~2\SOFT_DEV\Microsoft Visual Studio 9.0\VC\vcvarsall.bat"</B></TD> </TR> 
+      <TR>  <TD>VCVARSALL</TD> <TD>The full path and filename to Visual Studio's VCVARSALL.BAT (or vcvar32.bat, if building with an old version)</TD> <TD>"C:\PROGRA~2\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"</B></TD> </TR> 
       <TR> <TD>MSSDK\_DIR</TD> 				<TD>The directory in which you installed the Microsoft SDK. Set to 0 if not needed (e.b. Visual Studio 8.0 and later)</TD> <TD>C:\MSSDK</TD> </TR>
-      <TR> <TD>MSDDK\_DIR</TD> 				<TD>The directory in which you installed the MS DDK</TD> <TD>C:\WINDDK\3790</TD> </TR>
+      <TR> <TD>MSDDK\_DIR</TD> 				<TD>The directory in which you installed the MS DDK</TD> <TD>C:\Apps\WinDDK\7600.16385.1</TD> </TR>
     </TBODY>
   </TABLE>
 
@@ -206,13 +209,15 @@ The LibTomCrypt source in particular had minor configuration changes to tomcrypt
 
 Either:
 
-  1.  Open "FreeOTFE.sln" using Visual Studio
+  1.  Open ".\src\PC\drivers\FreeOTFE.sln" using Visual Studio
   2.  Rightclick on each project in turn, and select "Build"
+
 or:
 
-	
-  
+	1.	Run: ...\src\PC\drivers\build_ALL.bat
+
 or:
+
 	1. Edit the file `.\src\PC\drivers\Common\bin\setup_env_common.bat`, you will need to update these lines:
 	
 		* `set VCVARSALL="C:\PROGRA~2\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"`
@@ -227,7 +232,7 @@ or:
 		2. 
 			
 			3. Run: `.\src\PC\drivers\build_all_amd.bat` 
-			3. open a new Dos box and run `.\src\PC\drivers\build_all_x86.bat`
+			3. open a new DOS command box and run `.\src\PC\drivers\build_all_x86.bat`
 		or
 		2. 
 			
@@ -310,11 +315,12 @@ The binaries built are put into the directories `.\bin\PC\DLLs\<config>\<platfor
 
 * * *
  
-<A NAME="level_3_heading_4">
+<A NAME="building_command_line_decryption_utilities">
 ### Building the Command Line Decryption Utilities
 </A>
 
-_Note: The development of the command line decryption utilities has ceased. This functionality has been superceded with the development of DoxBox Explorer_
+_Note: The development of the command line decryption utilities has ceased. This functionality has been superceded with the development of DoxBox Explorer and the test projects_
+
 
 To build the command line decryption utilities, the following software is required:
 
@@ -330,10 +336,35 @@ Please follow the following steps:
 The executable should be built in the same directory.
 
 
+* * *
+ 
+<A NAME="building_command_line_test_apps">
+### Building the Command Line Test Apps
+</A>
+
+_Note: These are not included in the release and are for testing purposes_
+_Note: These are work in progress_
+
+To build the command line Test Apps, the following software is required:
+
+  *   A C compiler (Visual Studio 2010 was used to write and test this software)
+Please follow the following steps:
+
+  1.  Install and configure up the build environment, as described as per building the backend drivers, _you may omit the SDK and DDK_.
+		* Open the test project(s) under .\src\PDA\TEST_PROJS\*
+		* Please see the command line test app documentation
+	or
+  2.  Launch the relevant "my\_build\_exe.bat" file 
+  
+The executable should be built in the same directory.
+These executables are built using the same code as the DLLs but with different preprocessor directives, they are used for testing the drivers and DLLs. 
+
+***
+
 All the projects have been built under a directory "P:\Projects\Delphi\doxbox\", but whereever possible relative paths have been used. In case of errors run the command `subst p: <path to parent directory>` and retry
   
 * * * 
-<A NAME="level_3_heading_5">
+<A NAME="signing_binaries">
 ### Signing the Binaries
 </A>
 
@@ -369,13 +400,11 @@ Where:
 
 	       signtool.exe sign /f tdk.pfx /p <pfx password> /v /t http://timestamp.verisign.com/scripts/timstamp.dll <filename> 
 
-
 Where:
 	_&lt;pfx password&gt;_ is the password used when generating the .pfx file with pvk2pfx
 
 
 The URL specified is a time stamping service (Verisign's in this case).
-
 
 * * * 
 <A NAME="level_3_heading_6">
@@ -386,7 +415,7 @@ When building the C code, FreeOTFEPlatform.h automatically #defines one of the f
 
 * FreeOTFE\_PC\_DRIVER
 * FreeOTFE\_PC\_DLL
-* FreeOTFE\_PDA
+* FreeOTFE\_TEST\_APP
 
 depending on what is being built.
 
