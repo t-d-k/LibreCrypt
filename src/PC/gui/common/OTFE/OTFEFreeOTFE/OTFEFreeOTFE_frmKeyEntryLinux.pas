@@ -476,7 +476,7 @@ begin
   if (GetFreeOTFEBase() is TOTFEFreeOTFE) then begin
     SetMountAs(GetFreeOTFE().DefaultMountAs);
   end else begin
-    SetMountAs(fomaFixedDisk);
+    SetMountAs(fomaRemovableDisk);
   end;
 
   preUserKey.Plaintext   := True;
@@ -1473,7 +1473,7 @@ begin
     SetReadonly(tmpBoolean);
 
     tmpInteger := settingsFile.ReadInteger(SETTINGS_SECTION_MOUNT_OPTIONS,
-      SETTINGS_VALUE_MountAs, Ord(fomaFixedDisk));
+      SETTINGS_VALUE_MountAs, Ord(fomaRemovableDisk));
     if not SetMountAs(TFreeOTFEMountAs(tmpInteger)) then
       Ok := False;
 

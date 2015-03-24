@@ -777,7 +777,7 @@ begin
   if (GetFreeOTFEBase is TOTFEFreeOTFE) then begin
     SetMountAs(GetFreeOTFE.DefaultMountAs);
   end else begin
-    SetMountAs(fomaFixedDisk);
+    SetMountAs(fomaRemovableDisk);
   end;
 
   // Certain controls only visble if used in conjunction with drive mounting

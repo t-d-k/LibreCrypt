@@ -9,7 +9,7 @@ uses
     SDUGeneral,
   //doxbox utils -also layer 1
      OTFEFreeOTFEBase_U, SDUDiskPartitionsPanel,  FreeOTFESettings,    CommonfmeOptions_Base,
-  CommonSettings
+  CommonSettings, Vcl.StdCtrls
    // doxbox forms - layer 2
     //main form - layer 3
   ;
@@ -95,9 +95,6 @@ begin
       end;
 
     end;
-
-
-
 end;
 
 function TOTFEFreeOTFEDiskPartitionsPanel.IgnorePartition(partInfo: TSDUPartitionInfo): Boolean;

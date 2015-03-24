@@ -55,19 +55,22 @@ object fmeSelectPartition: TfmeSelectPartition
       'TABS SET AUTOMATICALLY')
     TabIndex = 0
     OnChange = TabControl1Change
-    ExplicitWidth = 565
-    ExplicitHeight = 96
     inline SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel
       Left = 4
       Top = 24
       Width = 165
       Height = 70
       Align = alLeft
+      DoubleBuffered = True
+      Color = clSilver
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = []
+      ParentBackground = False
+      ParentColor = False
+      ParentDoubleBuffered = False
       ParentFont = False
       PopupMenu = PopupMenu1
       TabOrder = 1
@@ -75,7 +78,7 @@ object fmeSelectPartition: TfmeSelectPartition
       ExplicitLeft = 4
       ExplicitTop = 24
       ExplicitWidth = 165
-      ExplicitHeight = 68
+      ExplicitHeight = 70
     end
     object pnlNoPartitionDisplay: TPanel
       Left = 353
@@ -84,10 +87,10 @@ object fmeSelectPartition: TfmeSelectPartition
       Height = 70
       Align = alRight
       Caption = 'pnlNoPartitionDisplay'
+      Color = clGray
+      ParentBackground = False
       PopupMenu = PopupMenu1
       TabOrder = 0
-      ExplicitLeft = 376
-      ExplicitHeight = 68
     end
   end
   object ckShowCDROM: TCheckBox
@@ -99,8 +102,6 @@ object fmeSelectPartition: TfmeSelectPartition
     Caption = '&Show CD/DVD drives'
     TabOrder = 1
     OnClick = ckShowCDROMClick
-    ExplicitLeft = 312
-    ExplicitTop = 104
   end
   object ckEntireDisk: TCheckBox
     Left = 453
@@ -111,14 +112,12 @@ object fmeSelectPartition: TfmeSelectPartition
     Caption = '&Entire disk'
     TabOrder = 2
     OnClick = ckEntireDiskClick
-    ExplicitLeft = 476
-    ExplicitTop = 104
   end
   object ilErrorWarning: TImageList
     Left = 200
     Top = 85
     Bitmap = {
-      494C010103000400340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000400380010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

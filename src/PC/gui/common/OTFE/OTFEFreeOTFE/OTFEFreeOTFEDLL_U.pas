@@ -174,7 +174,7 @@ type
                               size: int64 = 0;
                               MetaData_LinuxVolume: boolean = FALSE;  // Linux volume
                               MetaData_PKCS11SlotID: integer = PKCS11_NO_SLOT_ID;  // PKCS11 SlotID
-                              MountMountAs: TFreeOTFEMountAs = fomaFixedDisk;  // PC kernel drivers *only* - ignored otherwise
+                              MountMountAs: TFreeOTFEMountAs = fomaRemovableDisk;  // PC kernel drivers *only* - ignored otherwise
                               mountForAllUsers: boolean = TRUE  // PC kernel drivers *only* - ignored otherwise
                              ): boolean; override;
 
@@ -298,7 +298,7 @@ type
                     CypherDriver: Ansistring;
                     CypherGUID: TGUID;
                     Password: TSDUBytes;
-                    Salt: TSDUBytes;
+                    Salt: array of byte;
                     Iterations: integer;
                     dkLenBits: integer;  // In *bits*
                     out DK: TSDUBytes
@@ -1753,7 +1753,7 @@ function TOTFEFreeOTFEDLL.DeriveKey(
                     CypherDriver: Ansistring;
                     CypherGUID: TGUID;
                     Password: TSDUBytes;
-                    Salt: TSDUBytes;
+                    Salt: array of byte;
                     Iterations: integer;
                     dkLenBits: integer;  // In *bits*
                     out DK: TSDUBytes
@@ -1810,7 +1810,7 @@ begin
       // This may seem a little weird, but we do this because the salt is
       // immediatly after the password
       StrMove(@ptrDIOCBufferIn.Password, PAnsiChar(Password), Length(Password));
-      StrMove(((PAnsiChar(@ptrDIOCBufferIn.Password))+length(Password)), PAnsiChar(Salt), Length(Salt));
+      StrMove(((PAnsiChar(@ptrDIOCBufferIn.Password))+length(Password)), PAnsiChar(@Salt[0]), Length(Salt));
 
 
       if (DriverAPI.MainDLLFnDeriveKey(
@@ -2393,7 +2393,7 @@ function TOTFEFreeOTFEDLL.CreateMountDiskDevice(
                               size: int64 = 0;
                               MetaData_LinuxVolume: boolean = FALSE;  // Linux volume
                               MetaData_PKCS11SlotID: integer = PKCS11_NO_SLOT_ID;  // PKCS11 SlotID
-                              MountMountAs: TFreeOTFEMountAs = fomaFixedDisk;  // PC kernel drivers *only* - ignored otherwise
+                              MountMountAs: TFreeOTFEMountAs = fomaRemovableDisk;  // PC kernel drivers *only* - ignored otherwise
                               mountForAllUsers: boolean = TRUE  // PC kernel drivers *only* - ignored otherwise
                              ): boolean;
 var

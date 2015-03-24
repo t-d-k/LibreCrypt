@@ -182,7 +182,7 @@ begin
   if (GetFreeOTFEBase() is TOTFEFreeOTFE) then begin
     SetMountAs(GetFreeOTFE().DefaultMountAs);
   end else begin
-    SetMountAs(fomaFixedDisk);
+    SetMountAs(fomaRemovableDisk);
   end;
 
   ckBaseIVCypherOnHashLength.Checked := True;

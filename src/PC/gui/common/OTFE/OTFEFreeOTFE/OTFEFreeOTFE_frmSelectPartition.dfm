@@ -78,6 +78,7 @@ object frmSelectPartition: TfrmSelectPartition
     inherited TabControl1: TTabControl
       Width = 565
       Height = 97
+      ExplicitTop = -1
       ExplicitHeight = 97
       inherited SDUDiskPartitionsPanel1: TOTFEFreeOTFEDiskPartitionsPanel
         Height = 69
@@ -101,7 +102,7 @@ object frmSelectPartition: TfrmSelectPartition
     end
     inherited ilErrorWarning: TImageList
       Bitmap = {
-        494C010103000400300010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+        494C010103000400340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
         0000000000003600000028000000400000001000000001002000000000000010
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000

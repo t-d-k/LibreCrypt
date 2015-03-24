@@ -97,7 +97,7 @@ type
                               size: int64 = 0;
                               MetaData_LinuxVolume: boolean = FALSE;  // Linux volume
                               MetaData_PKCS11SlotID: integer = PKCS11_NO_SLOT_ID;  // PKCS11 SlotID
-                              MountMountAs: TFreeOTFEMountAs = fomaFixedDisk;  // PC kernel drivers *only* - ignored otherwise
+                              MountMountAs: TFreeOTFEMountAs = fomaRemovableDisk;  // PC kernel drivers *only* - ignored otherwise
                               mountForAllUsers: boolean = TRUE  // PC kernel drivers *only* - ignored otherwise
                              ): boolean; override;
 
@@ -182,7 +182,7 @@ type
 
                     dataOffset: int64;  // Offset from within mounted volume from where to read/write data
                     dataLength: integer;  // Length of data to read/write. In bytes
-                    var data: ansistring;  // Data to read/write
+                    var data: TSDUBytes;  // Data to read/write
 
                     offset: int64 = 0;
                     size: int64 = 0;
@@ -316,7 +316,7 @@ type
                     CypherDriver: Ansistring;
                     CypherGUID: TGUID;
                     Password: TSDUBytes;
-                    Salt: TSDUBytes;
+                    Salt: array of byte;
                     Iterations: integer;
                     dkLenBits: integer;  // In *bits*
                     out DK: TSDUBytes
@@ -1103,7 +1103,7 @@ function TOTFEFreeOTFE.CreateMountDiskDevice(
                               size: int64 = 0;
                               MetaData_LinuxVolume: boolean = FALSE;  // Linux volume
                               MetaData_PKCS11SlotID: integer = PKCS11_NO_SLOT_ID;  // PKCS11 SlotID
-                              MountMountAs: TFreeOTFEMountAs = fomaFixedDisk;  // PC kernel drivers *only* - ignored otherwise
+                              MountMountAs: TFreeOTFEMountAs = fomaRemovableDisk;  // PC kernel drivers *only* - ignored otherwise
                               mountForAllUsers: boolean = TRUE  // PC kernel drivers *only* - ignored otherwise
                              ): boolean;
 var
@@ -3339,7 +3339,7 @@ function TOTFEFreeOTFE.DeriveKey(
                     CypherDriver: Ansistring;
                     CypherGUID: TGUID;
                     Password: TSDUBytes;
-                    Salt: TSDUBytes;
+                    Salt: array of byte;
                     Iterations: integer;
                     dkLenBits: integer;  // In *bits*
                     out DK: TSDUBytes
@@ -3397,7 +3397,7 @@ begin
       // This may seem a little weird, but we do this because the salt is
       // immediatly after the password
       StrMove(@ptrDIOCBufferIn.Password, PAnsiChar(Password), Length(Password));
-      StrMove(((PAnsiChar(@ptrDIOCBufferIn.Password))+length(Password)), PAnsiChar(Salt), Length(Salt));
+      StrMove(((PAnsiChar(@ptrDIOCBufferIn.Password))+length(Password)), PAnsiChar(@Salt[0]), Length(Salt));
 
 
       if (DeviceIoControl(
@@ -4203,7 +4203,7 @@ function TOTFEFreeOTFE.ReadWritePlaintextToVolume(
 
   dataOffset: int64;  // Offset from within mounted volume from where to read/write data
   dataLength: integer;  // Length of data to read/write. In bytes
-  var data: ansistring;  // Data to read/write
+  var data: TSDUBytes;  // Data to read/write
 
   offset: int64 = 0;  // Offset within volume where encrypted data starts
   size: int64 = 0;  // Size of volume
@@ -4213,6 +4213,7 @@ var
   deviceName: string;
   dummyMetadata: TOTFEFreeOTFEVolumeMetaData;
   // emptyIV:TSDUBytes;
+  strData: Ansistring; { TODO 1 -otdk -crefactor : store data in arrays not strings }
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
 
@@ -4260,15 +4261,17 @@ begin
                                       deviceName,
                                       dataOffset,
                                       dataLength,
-                                      data
+                                      strData
                                      );
+                                     data := SDUStringToSDUBytes(strData);
+
             end
           else
             begin
             Result := WriteRawVolumeData(
                                       deviceName,
                                       dataOffset,
-                                      data
+                                      SDUBytesToString(data)
                                      );
             end;
 
