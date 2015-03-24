@@ -15,7 +15,7 @@ const
   // Homepage...
   URL_HOMEPAGE = 'http://DoxBox.eu/';
   // Download URL...
-  URL_DOWNLOAD = 'http://DoxBox.eu/download.html';
+  URL_DOWNLOAD = 'https://github.com/t-d-k/doxbox/releases';
 
   ENGLISH_TRANSLATION_CONTACT = 'tdk <translate.doxbox@squte.com>';
 
