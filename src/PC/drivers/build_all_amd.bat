@@ -6,6 +6,7 @@ set DOXBOX_FORCE_CPU=amd64
  
 echo DOXBOX_FORCE_CPU=%DOXBOX_FORCE_CPU%
 
+
 rem these fail to call setup_env_driver.bat if dir wrong
 rem Set the build environment
 call .\Common\bin\setup_env_common
@@ -14,7 +15,22 @@ rem changes drive
 %PROJECT_DRIVE%
 cd  %PROJECT_DIR%
 
+echo FREEOTFE_CPU=%FREEOTFE_CPU%
+echo FREEOTFE_TARGET=%FREEOTFE_TARGET%
+if %FREEOTFE_CPU% == amd64 (
+  echo amd64
+) else (
+  echo not amd64
+)
+
+
 call DRIVER\my_build_sys.bat 
+echo BIN_OUTPUT_DIR=%BIN_OUTPUT_DIR%
+echo FREEOTFE_CPU=%FREEOTFE_CPU%
+echo FREEOTFE_TARGET=%FREEOTFE_TARGET%
+
+echo FREEOTFE_OUTPUT_DIR=%FREEOTFE_OUTPUT_DIR%
+echo BIN_OUTPUT_DIR=%BIN_OUTPUT_DIR%
 cd ..\CYPHER_DRIVERS 
 call CYPHER_AES_Gladman\my_build_sys.bat       && cd ..
 call CYPHER_AES_ltc\my_build_sys.bat           && cd ..

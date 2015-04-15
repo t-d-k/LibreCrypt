@@ -2,6 +2,7 @@
 
 rem Set the build environment - if not set by build_all_x.bat 
 if "%DOXBOX_FORCE_CPU%"=="" (
+		echo calling setup_env_common.bat
 	call ..\Common\bin\setup_env_common.bat
 	call ..\Common\bin\setup_env_driver.bat
 )
@@ -32,7 +33,7 @@ copy %FREEOTFE_OUTPUT_DIR%\FreeOTFECypherAES_Gladman.sys %BIN_OUTPUT_DIR%\altern
 echo copied FreeOTFECypherAES_Gladman.sys to %BIN_OUTPUT_DIR%
 
 rem clean up copied files
-call %PROJECT_DIR%\Common\bin\delete_common_driver_files.bat
+call %PROJECT_DIR%\Common\bin\delete_common_driver_files.bat	
 
 
 del FreeOTFECypherAES_Gladman.c

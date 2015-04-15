@@ -11,13 +11,9 @@ rem ****************************************************************************
 
 rem Project drive and directory; the base directory where the source code is
 set PROJECT_DRIVE=P:
-
 set PROJECT_BASE_DIR=%PROJECT_DRIVE%\Projects\Delphi\doxbox\
-
 set PROJECT_DIR=%PROJECT_BASE_DIR%src\PC\drivers
-set BIN_OUTPUT_DIR=%PROJECT_BASE_DIR%bin\PC\%FREEOTFE_VC_ENV%\
 
-mkdir %BIN_OUTPUT_DIR%
 
 rem SDK directory
 rem set MSSDK_DIR=C:\MSSDK
@@ -50,12 +46,13 @@ rem         Note: Setting FREEOTFE_CPU overrides the variables shown above
 rem set FREEOTFE_CPU=amd64
 set FREEOTFE_CPU=
 set FREEOTFE_CPU=x86
-echo "FREEOTFE_CPU="%FREEOTFE_CPU%
+echo FREEOTFE_CPU=%FREEOTFE_CPU%
 rem DOXBOX_FORCE_CPU is used by the build_all_x86.bat and build_all_amd.bat scripts to force a particular cpu type 
-echo "DOXBOX_FORCE_CPU="%DOXBOX_FORCE_CPU%
+echo DOXBOX_FORCE_CPU=%DOXBOX_FORCE_CPU%
 if NOT "%DOXBOX_FORCE_CPU%"=="" (
 	set FREEOTFE_CPU=%DOXBOX_FORCE_CPU%	
 )
+echo FREEOTFE_CPU=%FREEOTFE_CPU%
 
 rem Build debug (1) or release (0)
 rem set FREEOTFE_DEBUG=1
@@ -92,13 +89,19 @@ rem   x86_ia64
 rem   x86_amd64
 set FREEOTFE_VC_ENV=x86
 rem set FREEOTFE_VC_ENV=amd64
-if "%FREEOTFE_CPU%" == "x86" (
+if %FREEOTFE_CPU% == x86 (
   set FREEOTFE_VC_ENV=x86
-) else if "%FREEOTFE_CPU%" == "amd64" (
+) else if %FREEOTFE_CPU% == amd64 (
   set FREEOTFE_VC_ENV=amd64
 ) else (
   rem Do nothing...
 )
+echo FREEOTFE_VC_ENV=%FREEOTFE_VC_ENV%
+
+rem must be after FREEOTFE_VC_ENV set
+set BIN_OUTPUT_DIR=%PROJECT_BASE_DIR%bin\PC\%FREEOTFE_VC_ENV%\
+
+mkdir %BIN_OUTPUT_DIR%
 
 rem The VS environment
 rem VC++ environment - set to the 8.3 path if the path has brackets in it
@@ -122,10 +125,10 @@ rem ----------------------------------------------------------------------------
 rem -- 												Items below this line should probably not need changing  																--
 rem --------------------------------------------------------------------------------------------------------------------
 
-if "%FREEOTFE_CPU%" == "x86" (
+if %FREEOTFE_CPU% == x86 (
   set FREEOTFE_OUT_OS=WXP
   set FREEOTFE_VC_OUTDIR_SEG=WXP_x86\i386
-) else if "%FREEOTFE_CPU%" == "amd64" (
+) else if %FREEOTFE_CPU% == amd64 (
   rem VC++ 2005
   rem set FREEOTFE_VC_OUTDIR_SEG=wnet_amd64\amd64
   rem VC++ 2008
@@ -140,9 +143,9 @@ if "%FREEOTFE_CPU%" == "x86" (
 rem IMPORTANT!!! The Windows Driver Kit (WDK) for Server 2008 (v6001.18001) CAN'T BUILD amd64/x64 DRIVERS FOR WINDOWS XP!!
 rem (It comes up with: "Cannot build AMD64 bit binaries for Windows XP.  Defaulting to X86." when the WDK's setenv.bat is run)
 rem set FREEOTFE_TARGET=AMD64
-if "%FREEOTFE_CPU%" == "x86" (
+if %FREEOTFE_CPU% == x86 (
   set FREEOTFE_TARGET=WXP
-) else if "%FREEOTFE_CPU%" == "amd64" (
+) else if %FREEOTFE_CPU% == amd64 (
   rem VC++ 2005 - set FREEOTFE_TARGET=AMD64
   rem VC++ 2008 - set FREEOTFE_TARGET=x64
   set FREEOTFE_TARGET=x64

@@ -1,10 +1,13 @@
 rem @echo off
 
+echo DOXBOX_FORCE_CPU=%DOXBOX_FORCE_CPU%
 rem Set the build environment - if not set by build_all_x.bat 
 if "%DOXBOX_FORCE_CPU%"=="" (
+	echo 1
 	call ..\Common\bin\setup_env_common.bat
 	call ..\Common\bin\setup_env_driver.bat
 )
+echo 0
 
 rem Move into the correct src directory...
 %PROJECT_DRIVE%
