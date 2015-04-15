@@ -47,7 +47,7 @@ uses
 {$WARN UNIT_PLATFORM OFF}
   FileCtrl,
 {$WARN UNIT_PLATFORM ON}
-  SDUDialogs,
+  lcDialogs,
   SDUGeneral, SDUi18n;
 
 {$IFDEF _NEVER_DEFINED}

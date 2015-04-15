@@ -51,7 +51,7 @@ implementation
 
 uses
   ComObj,  // Required for StringToGUID
-  SDUDialogs,
+  lcDialogs,
   SDUGeneral, SDUi18n;
 
 {$IFDEF _NEVER_DEFINED}

@@ -1,6 +1,8 @@
 inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
   ClientHeight = 540
   OnCreate = FormCreate
+  ExplicitWidth = 519
+  ExplicitHeight = 568
   PixelsPerInch = 96
   TextHeight = 13
   inherited lblSettingsLocation: TLabel
@@ -29,7 +31,7 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
   end
   inherited pcOptions: TPageControl
     Height = 396
-    ActivePage = tsAdvanced
+    ActivePage = tcSystemTray
     ExplicitHeight = 396
     inherited tsPKCS11: TTabSheet
       ExplicitHeight = 368
@@ -91,6 +93,11 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
         ExplicitWidth = 320
         ExplicitHeight = 240
         inherited gbSystemTrayIcon: TGroupBox
+          inherited ckMinToIcon: TSDUCheckBox
+            Width = 135
+            Caption = '&Minimise to system tray'
+            ExplicitWidth = 135
+          end
           inherited gbClickActions: TGroupBox
             inherited Label1: TLabel
               Width = 115

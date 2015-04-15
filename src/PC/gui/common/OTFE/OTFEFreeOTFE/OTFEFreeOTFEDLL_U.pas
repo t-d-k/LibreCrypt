@@ -203,7 +203,7 @@ type
 
                     dataOffset: int64;  // Offset from within mounted volume from where to read/write data
                     dataLength: integer;  // Length of data to read/write. In bytes
-                    var data: ansistring;  // Data to read/write
+                    var data: TSDUBytes;  // Data to read/write
 
                     offset: int64 = 0;
                     size: int64 = 0;
@@ -556,7 +556,7 @@ function TOTFEFreeOTFEDLL.ReadWritePlaintextToVolume(
 
   dataOffset: int64;  // Offset from within mounted volume from where to read/write data
   dataLength: integer;  // Length of data to read/write. In bytes
-  var data: ansistring;  // Data to read/write
+  var data: TSDUBytes;  // Data to read/write
 
   offset: int64 = 0;  // Offset within volume where encrypted data starts
   size: int64 = 0;  // Size of volume
@@ -617,12 +617,12 @@ begin
                                  );
         if Result then          begin
           stm.Position := 0;
-          data := stm.ReadString(dataLength, 0);
+          data := SDUStringToSDUBytes(stm.ReadString(dataLength, 0));
           end;
 
         end                 else        begin
         stm.Position := 0;
-        stm.WriteString(data, dataLength, 0);
+        stm.WriteString(SDUBytesToString(data), dataLength, 0);
 
         Result := WriteData_Bytes(
                                   tempMountDriveLetter,

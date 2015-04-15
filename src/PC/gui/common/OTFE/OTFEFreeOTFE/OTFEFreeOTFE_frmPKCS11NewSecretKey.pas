@@ -47,7 +47,7 @@ implementation
 uses
   SDUi18n,
   SDUGeneral,
-  SDUDialogs;
+  lcDialogs;
 
 // Populate list of key types with all those available on the token
 procedure TfrmPKCS11NewSecretKey.PopulateKeyTypes();

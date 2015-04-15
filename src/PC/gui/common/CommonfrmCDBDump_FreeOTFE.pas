@@ -17,7 +17,7 @@ uses
   StdCtrls, SysUtils, Windows, //dosbox
   Buttons, CommonfrmCDBDump_Base,
   OTFE_U, OTFEFreeOTFE_VolumeSelect,
-  OTFEFreeOTFEBase_U, SDUDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
+  OTFEFreeOTFEBase_U, lcDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
   SDUGeneral, SDUSpin64Units;
 
 type

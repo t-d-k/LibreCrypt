@@ -54,7 +54,7 @@ uses
   FreeOTFEExplorerConsts,
   FreeOTFEExplorerSettings,
 {$ENDIF}
-  SDUDialogs, SDUGeneral,
+  lcDialogs, SDUGeneral,
   SDUi18n,
   SDUWinHttp;
 

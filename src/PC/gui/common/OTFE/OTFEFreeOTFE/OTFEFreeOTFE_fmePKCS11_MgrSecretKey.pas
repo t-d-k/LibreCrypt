@@ -7,7 +7,7 @@ uses
   Controls, Dialogs, Forms,
   Graphics, Menus, Messages, OTFEFreeOTFE_fmePKCS11_MgrBase,
   OTFEFreeOTFE_PKCS11,
-  OTFEFreeOTFEBase_U, SDUDialogs, StdCtrls, SysUtils, Variants, Windows;
+  OTFEFreeOTFEBase_U, lcDialogs, StdCtrls, SysUtils, Variants, Windows;
 
 type
   TfmePKCS11_MgrSecretKey = class (TfmePKCS11_MgrBase)

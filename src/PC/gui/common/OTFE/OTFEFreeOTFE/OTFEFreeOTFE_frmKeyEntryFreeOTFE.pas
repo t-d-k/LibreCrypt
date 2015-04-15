@@ -174,7 +174,7 @@ uses
   OTFEConsts_U,
   OTFEFreeOTFE_DriverAPI,
   OTFEFreeOTFE_frmPKCS11Session,
-  pkcs11_object, SDUDialogs,
+  pkcs11_object, lcDialogs,
   SDUi18n,
   Shredder;
 

@@ -106,7 +106,7 @@ uses
   ComObj,                      // Required for StringToGUID
   OTFEFreeOTFE_VolumeFileAPI,  // Required for SCTRIVGEN_USES_SECTOR_ID and SCTRIVGEN_USES_HASH
   INIFiles, OTFEFreeOTFEDLL_U,
-  SDUDialogs,
+  lcDialogs,
   SDUi18n;
 
 procedure TfrmKeyEntryLUKS.FormCreate(Sender: TObject);

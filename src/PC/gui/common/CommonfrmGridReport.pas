@@ -6,8 +6,8 @@ uses
   ActnList, Buttons, Classes, ComCtrls,
   Controls, Dialogs, ExtCtrls, Forms,
   Graphics, Grids,
-  Menus, Messages, OTFEFreeOTFEBase_U, SDUDialogs, SDUForms, SDUStringGrid,
-  StdCtrls, SysUtils, Variants, Windows;
+  Menus, Messages, OTFEFreeOTFEBase_U, lcDialogs, SDUForms, SDUStringGrid,
+  StdCtrls, SysUtils, Variants, Windows, SDUDialogs;
 
 type
   TTextFormat = (clfText, clfTSV, clfCSV);

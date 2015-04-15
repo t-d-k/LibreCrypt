@@ -48,7 +48,7 @@ implementation
 
 uses
   OTFEFreeOTFEDLL_U, pkcs11_library,
-  SDUDialogs,
+  lcDialogs,
   SDUGeneral,
   SDUi18n;
 

@@ -19,12 +19,12 @@ uses
   StdCtrls, SysUtils, Windows, // Required for TFreeOTFEMountAs
   Spin64,
   //SDU
-  SDUDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
+  lcDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
   SDUGeneral,
   //doxbox
   OTFEFreeOTFE_DriverAPI, OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U,
-  SDUSpin64Units, SDUStdCtrls;  // Required for TFreeOTFESectorIVGenMethod and NULL_GUID
+  SDUSpin64Units, SDUStdCtrls, SDUDialogs;  // Required for TFreeOTFESectorIVGenMethod and NULL_GUID
 
 type
   TfrmKeyEntryLinux = class (TSDUForm)
@@ -163,7 +163,7 @@ type
     procedure SetSizeLimit(fileOptSizeLimit: Int64);
 
     // Encryption options...
-    function GetMainCypherKernelDeviceName(var mainCypherDriver: Ansistring): Boolean;
+    function GetMainCypherKernelDeviceName(var mainCypherDriver: string): Boolean;
     function GetMainCypherGUID(var mainCypherGUID: TGUID): Boolean;
     function SetMainCypher(mainCypherDriver: String; mainCypherGUID: TGUID): Boolean;
     procedure GetMainIVSectorZeroPos(out startOfVolFile: Boolean; out startOfEndData: Boolean);
@@ -171,7 +171,7 @@ type
     function SetMainIVSectorZeroPos(startOfVolFile: Boolean; startOfEndData: Boolean): Boolean;
     function GetMainSectorIVGenMethod(var sectorIVGenMethod: TFreeOTFESectorIVGenMethod): Boolean;
     function SetMainSectorIVGenMethod(sectorIVGenMethod: TFreeOTFESectorIVGenMethod): Boolean;
-    function GetMainIVHashKernelDeviceName(var mainIVHashDriver: Ansistring): Boolean;
+    function GetMainIVHashKernelDeviceName(var mainIVHashDriver: string): Boolean;
     function GetMainIVHashGUID(var mainIVHashGUID: TGUID): Boolean;
     function SetMainIVHash(mainIVHashDriver: String; mainIVHashGUID: TGUID): Boolean;
     function GetMainIVCypherKernelDeviceName(var mainIVCypherDriver: Ansistring): Boolean;
@@ -347,7 +347,7 @@ end;
 
 procedure TfrmKeyEntryLinux.PopulateDrives();
 var
-  driveLetters: Ansistring;
+  driveLetters: DriveLetterString;
   i:            Integer;
 begin
   cbDrive.Items.Clear();
@@ -372,13 +372,10 @@ var
   currMountAs: TFreeOTFEMountAs;
 begin
   cbMediaType.Items.Clear();
-  for currMountAs := low(TFreeOTFEMountAs) to high(TFreeOTFEMountAs) do begin
-    if (currMountAs <> fomaUnknown) then begin
+  for currMountAs := low(TFreeOTFEMountAs) to high(TFreeOTFEMountAs) do
+    // do not allow dm-crypt vols as 'fixed discs' - work-around BSoD issue
+    if not (currMountAs in[fomaUnknown,fomaFixedDisk]) then
       cbMediaType.Items.Add(FreeOTFEMountAsTitle(currMountAs));
-    end;
-
-  end;
-
 end;
 
 
@@ -391,9 +388,7 @@ begin
   // Autoselect default, if available
   if (cbKeyProcHash.Items.Count > 0) then begin
     idx := cbKeyProcHash.Items.IndexOf(DEFAULT_KEYPROC_HASH_TITLE);
-    if (idx = -1) then begin
-      idx := 0;
-    end;
+    if (idx = -1) then       idx := 0;
 
     cbKeyProcHash.ItemIndex := idx;
   end;
@@ -402,9 +397,7 @@ begin
   // Autoselect default, if available
   if (cbKeyProcCypher.Items.Count > 0) then begin
     idx := cbKeyProcCypher.Items.IndexOf(DEFAULT_KEYPROC_CYPHER_TITLE);
-    if (idx = -1) then begin
-      idx := 0;
-    end;
+    if (idx = -1) then       idx := 0;
 
     cbKeyProcCypher.ItemIndex := idx;
   end;
@@ -412,17 +405,13 @@ begin
 
   ckHashWithAs.Checked := True;
 
-
   // Autoselect default, if available
   if (cbMainCypher.Items.Count > 0) then begin
     idx := cbMainCypher.Items.IndexOf(DEFAULT_MAIN_CYPHER_TITLE);
-    if (idx = -1) then begin
-      idx := 0;
-    end;
+    if (idx = -1) then       idx := 0;
 
     cbMainCypher.ItemIndex := idx;
   end;
-
 
   // Autoselect default, if available
   if (cbSectorIVCypher.Items.Count > 0) then begin
@@ -653,13 +642,12 @@ end;
 
 procedure TfrmKeyEntryLinux.pbIVHashInfoClick(Sender: TObject);
 var
-  deviceName: Ansistring;
+  deviceName: string;
   GUID:       TGUID;
 begin
   GetMainIVHashKernelDeviceName(deviceName);
   GetMainIVHashGUID(GUID);
   GetFreeOTFEBase().ShowHashDetailsDlg(deviceName, GUID);
-
 end;
 
 
@@ -676,7 +664,7 @@ end;
 
 procedure TfrmKeyEntryLinux.pbMainCypherInfoClick(Sender: TObject);
 var
-  deviceName: Ansistring;
+  deviceName: string;
   GUID:       TGUID;
 begin
   GetMainCypherKernelDeviceName(deviceName);
@@ -1022,7 +1010,7 @@ end;
 
 
 function TfrmKeyEntryLinux.GetMainCypherKernelDeviceName(
-  var mainCypherDriver: Ansistring): Boolean;
+  var mainCypherDriver: string): Boolean;
 begin
   Result := False;
 
@@ -1134,7 +1122,7 @@ end;
  // Note: This function will return '' if none is selected, and still return TRUE
  // It will also return '' if no hash *can* be selected (the control is disabled)
 function TfrmKeyEntryLinux.GetMainIVHashKernelDeviceName(
-  var mainIVHashDriver: Ansistring): Boolean;
+  var mainIVHashDriver: string): Boolean;
 var
   sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
 begin
@@ -1552,9 +1540,9 @@ begin
 
       // -------
       // Encryption options...
-      if (GetMainCypherKernelDeviceName(tmpAnsiString)) then begin
+      if (GetMainCypherKernelDeviceName(tmpString)) then begin
         settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION,
-          SETTINGS_VALUE_MainCypherKernelDeviceName, tmpAnsiString);
+          SETTINGS_VALUE_MainCypherKernelDeviceName, tmpString);
       end;
 
       if (GetMainCypherGUID(tmpGUID)) then begin
@@ -1589,9 +1577,9 @@ begin
       // Only store the IV hash if it's needed
       if (GetMainSectorIVGenMethod(tmpSectorIVGenMethod)) then begin
         if (SCTRIVGEN_USES_HASH[tmpSectorIVGenMethod]) then begin
-          if (GetMainIVHashKernelDeviceName(tmpAnsiString)) then begin
+          if (GetMainIVHashKernelDeviceName(tmpString)) then begin
             settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION,
-              SETTINGS_VALUE_MainIVHashKernelDeviceName, tmpAnsiString);
+              SETTINGS_VALUE_MainIVHashKernelDeviceName, tmpString);
           end;
 
           if (GetMainIVHashGUID(tmpGUID)) then begin

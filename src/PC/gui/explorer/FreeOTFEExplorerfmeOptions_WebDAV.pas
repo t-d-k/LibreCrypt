@@ -51,7 +51,7 @@ uses
   CommonSettings,
   FreeOTFEExplorerConsts, OTFE_U,
   OTFEFreeOTFEBase_U,
-  SDUDialogs,
+  lcDialogs,
   SDUGeneral,
   SDUi18n;
 

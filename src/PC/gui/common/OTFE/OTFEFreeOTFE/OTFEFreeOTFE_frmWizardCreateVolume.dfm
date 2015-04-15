@@ -35,10 +35,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Volume File or Partition'
         ImageIndex = 14
         Constraints.MinHeight = 150
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -132,14 +128,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Volume filename'
         ImageIndex = 1
         Constraints.MinHeight = 139
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object reInstructFilename1: TLabel
           Left = 0
           Top = 0
-          Width = 368
+          Width = 527
           Height = 13
           Align = alTop
           Caption = 
@@ -152,11 +144,12 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 368
         end
         object reInstructFilename2: TLabel
           Left = 0
           Top = 13
-          Width = 425
+          Width = 527
           Height = 13
           Align = alTop
           Caption = 
@@ -169,6 +162,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 425
         end
         object GroupBox1: TGroupBox
           Left = 0
@@ -398,7 +392,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Left = 368
             Top = 65533
             Bitmap = {
-              494C010103000400340110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400380110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -741,10 +735,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Drive Letter'
         ImageIndex = 17
         Constraints.MinHeight = 166
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -993,10 +983,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Hash, cypher and IV'
         ImageIndex = 2
         Constraints.MinHeight = 202
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1113,10 +1099,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Chaff'
         ImageIndex = 20
         Constraints.MinHeight = 200
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1186,10 +1168,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Master Key Length'
         ImageIndex = 11
         Constraints.MinHeight = 77
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1462,10 +1440,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'RNG PKCS token'
         ImageIndex = 17
         Constraints.MinHeight = 133
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1520,15 +1494,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGGPG: TTabSheet
         Caption = 'RNG GPG'
         ImageIndex = 10
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object reInstructRNGGPG: TLabel
           Left = 0
           Top = 0
-          Width = 518
-          Height = 42
+          Width = 527
+          Height = 257
           Align = alClient
           Caption = 
             'In order to use GPG to generate random data, please specify the ' +
@@ -1541,6 +1511,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 518
+          ExplicitHeight = 42
         end
         object GroupBox2: TGroupBox
           Left = 0
@@ -1580,10 +1552,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         ImageIndex = 15
         Constraints.MinHeight = 168
         Constraints.MinWidth = 266
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1670,10 +1638,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Salt'
         ImageIndex = 16
         Constraints.MinHeight = 156
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1763,10 +1727,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'CDB Location'
         ImageIndex = 18
         Constraints.MinHeight = 301
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1853,10 +1813,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Padding'
         ImageIndex = 19
         Constraints.MinHeight = 188
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)

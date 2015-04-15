@@ -65,7 +65,7 @@ uses
   ActiveX,  // Required for IsEqualGUID
   ComObj,   // Required for StringToGUID
             //sdu
-  SDUDialogs,
+  lcDialogs,
   SDUi18n,
                            //doxbox
   OTFEFreeOTFE_DriverAPI;  // Required for NULL_GUID

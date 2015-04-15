@@ -15,7 +15,7 @@ const
   APP_BETA_BUILD = 0;
   { DONE 1 -otdk -cenhancement : update homepage }
   // Online user manual URL...
-  URL_USERGUIDE  = 'http://DoxBox.eu/docs/Main';
+  URL_USERGUIDE  = 'http://doxbox.eu/doxbox/getting_started.html';
 
   // PAD file URL...
   URL_PADFILE =

@@ -5,8 +5,8 @@ interface
 uses
   ActnList, Buttons, Classes, ComCtrls, CommonfrmGridReport, Controls, Dialogs, ExtCtrls,
   Forms,
-  Graphics, Grids, Menus, Messages, SDUDialogs, SDUStringGrid, StdCtrls,
-  SysUtils, Variants, Windows;
+  Graphics, Grids, Menus, Messages, lcDialogs, SDUStringGrid, StdCtrls,
+  SysUtils, Variants, Windows, SDUDialogs;
 
 type
   // IMPORTANT: If this is updated, GetColumnTitle() MUST ALSO BE UPDATED

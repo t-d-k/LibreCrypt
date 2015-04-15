@@ -25,7 +25,8 @@ uses
 
   OTFEFreeOTFE_fmeSelectPartition,
   OTFEFreeOTFE_PasswordRichEdit,
-  OTFEFreeOTFE_frmWizard, OTFEFreeOTFE_InstructionRichEdit, SDUDialogs;
+  OTFEFreeOTFE_frmWizard, OTFEFreeOTFE_InstructionRichEdit, lcDialogs,
+  SDUDialogs;
 
 type
   TfrmWizardCreateVolume = class (TfrmWizard)

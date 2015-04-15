@@ -381,7 +381,7 @@ uses
   ActiveX,
   ComObj, DateUtils,
   math,
-  SDUDialogs,
+  lcDialogs,
   SDUGraphics,
   SDUi18n;
 

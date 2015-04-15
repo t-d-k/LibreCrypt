@@ -371,7 +371,7 @@ begin
   end;
 
   // Decode default mount type
-  config.OptDefaultMountAs := fomaFixedDisk;
+  config.OptDefaultMountAs := fomaRemovableDisk;
   for ma := low(ma) to high(ma) do begin
     if (FreeOTFEMountAsTitle(ma) = cbDefaultMountAs.Items[cbDefaultMountAs.ItemIndex]) then begin
       config.OptDefaultMountAs := ma;

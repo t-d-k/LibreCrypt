@@ -62,7 +62,7 @@ implementation
 uses
   CommonConsts,
   CommonfrmOptions, CommonSettings,
-  SDUDialogs,
+  lcDialogs,
   SDUGeneral,
   SDUi18n;
 

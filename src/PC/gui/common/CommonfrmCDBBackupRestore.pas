@@ -81,7 +81,7 @@ implementation
 
 
 uses
-  OTFEFreeOTFE_DriverAPI, SDUDialogs,
+  OTFEFreeOTFE_DriverAPI, lcDialogs,
   SDUGeneral,
   SDUi18n;  // Required for CRITICAL_DATA_LENGTH
 

@@ -60,7 +60,7 @@ uses
   CommonConsts,
   CommonfrmOptions, CommonSettings,
   OTFE_U,
-  SDUDialogs,
+  lcDialogs,
   SDUGeneral,
   SDUi18n;
 

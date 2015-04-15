@@ -116,7 +116,7 @@ uses
   OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U,
   SDUi18n,
-  SDUDialogs,
+  lcDialogs,
   SDUProgressDlg,
   SDUWindows64;
 

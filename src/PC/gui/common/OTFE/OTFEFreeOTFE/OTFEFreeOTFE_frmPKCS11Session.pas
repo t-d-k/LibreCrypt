@@ -52,7 +52,7 @@ implementation
 
 uses
   SDUGeneral,
-  SDUDialogs,
+  lcDialogs,
   SDUi18n,
   pkcs11_slot,
   pkcs11_token,

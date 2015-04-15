@@ -62,7 +62,7 @@ uses
 {$IFDEF FREEOTFE_EXPLORER}
   FreeOTFEExplorerSettings,
 {$ENDIF}
-  SDUDialogs, SDUGeneral,
+  lcDialogs, SDUGeneral,
   SDUi18n;
 
 {$IFDEF _NEVER_DEFINED}
@@ -156,9 +156,9 @@ begin
     Result := not (vistaProgFilesDirWarn);
 
     if not (Result) then begin
-      prevSDUDialogsStripSingleCRLF := SDUDialogsStripSingleCRLF;
+      prevSDUDialogsStripSingleCRLF := GSDUDialogsStripSingleCRLF;
       // Don't do special processing on this message
-      SDUDialogsStripSingleCRLF     := False;  // Don't do special processing on this message
+      GSDUDialogsStripSingleCRLF     := False;  // Don't do special processing on this message
       SDUMessageDlg(
         SDUParamSubstitute(_(
         'Under Windows Vista, you cannot save your settings file anywhere under:' +
@@ -168,7 +168,7 @@ begin
         'Please either select another location for storing your settings (e.g. your user profile), or move the DoxBox executable such that it is not stored underneath the directory shown above.'),
         mtWarning
         );
-      SDUDialogsStripSingleCRLF := prevSDUDialogsStripSingleCRLF;
+      GSDUDialogsStripSingleCRLF := prevSDUDialogsStripSingleCRLF;
       // Don't do special processing on this message
     end;
 

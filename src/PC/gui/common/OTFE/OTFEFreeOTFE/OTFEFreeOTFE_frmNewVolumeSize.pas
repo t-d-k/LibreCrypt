@@ -50,7 +50,7 @@ implementation
 uses
   SDUi18n,
   SDUGeneral,
-  SDUDialogs,
+  lcDialogs,
   OTFEFreeOTFE_U;
 
 procedure TfrmNewVolumeSize.pbOKClick(Sender: TObject);

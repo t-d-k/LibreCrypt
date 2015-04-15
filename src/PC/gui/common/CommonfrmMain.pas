@@ -20,8 +20,8 @@ uses
   CommonfrmCDBBackupRestore, CommonSettings,
   MouseRNGDialog_U, OTFE_U,
   OTFEFreeOTFE_DriverControl,
-  OTFEFreeOTFE_U, OTFEFreeOTFEBase_U, pkcs11_library, SDUDialogs, SDUForms,
-  SDUGeneral, SDUMRUList, SDUMultimediaKeys;
+  OTFEFreeOTFE_U, OTFEFreeOTFEBase_U, pkcs11_library, lcDialogs, SDUForms,
+  SDUGeneral, SDUMRUList, SDUMultimediaKeys, SDUDialogs;
 
 const
   // Command line parameters...

@@ -68,7 +68,6 @@ object frmPKCS11NewSecretKey: TfrmPKCS11NewSecretKey
     Width = 145
     Height = 21
     Style = csDropDownList
-    ItemHeight = 13
     TabOrder = 1
     OnChange = cbKeyTypeChange
   end

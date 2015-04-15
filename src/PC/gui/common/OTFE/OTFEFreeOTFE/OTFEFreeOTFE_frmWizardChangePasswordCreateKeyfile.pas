@@ -14,9 +14,9 @@ uses
   Classes, ComCtrls, Controls, Dialogs,
   ExtCtrls,
   Forms, Graphics, Messages, MouseRNG,
-  PasswordRichEdit, Spin64, StdCtrls, SysUtils, Windows, //sdu
-  SDUDialogs
-  , sdurandpool, SDUStdCtrls, SDUGeneral,
+  PasswordRichEdit, Spin64, StdCtrls, SysUtils, Windows,
+  //sdu
+  lcDialogs, sdurandpool, SDUStdCtrls, SDUGeneral,
                            //doxbox
   OTFEFreeOTFE_DriverAPI,   // Required for CRITICAL_DATA_LEN
   OTFEFreeOTFE_fmeSelectPartition,
@@ -24,7 +24,7 @@ uses
   OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U,
   SDUBlocksPanel,
-  SDUDiskPartitionsPanel, SDUForms, SDUFrames, SDUSpin64Units;
+  SDUDiskPartitionsPanel, SDUForms, SDUFrames, SDUSpin64Units, SDUDialogs;
 
 type
   TChangePasswordCreateKeyfile = (opChangePassword, opCreateKeyfile);

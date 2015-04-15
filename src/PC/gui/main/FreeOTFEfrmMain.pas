@@ -21,7 +21,8 @@ uses
   OTFE_U,  FreeOTFESettings,  CommonfrmMain, CommonSettings,
   OTFEFreeOTFE_DriverControl,
   OTFEFreeOTFE_U, OTFEFreeOTFEBase_U,
-  pkcs11_library, SDUDialogs, SDUForms, SDUGeneral, SDUMRUList, SDUMultimediaKeys;
+  pkcs11_library, lcDialogs, SDUForms, SDUGeneral, SDUMRUList, SDUMultimediaKeys,
+  SDUDialogs;
 
 type
   TPortableModeAction = (pmaStart, pmaStop, pmaToggle);
@@ -159,12 +160,12 @@ type
     function HandleCommandLineOpts_Create(): eCmdLine_Exit; OVERRIDE;
     function HandleCommandLineOpts_Dismount(): eCmdLine_Exit;
     function HandleCommandLineOpts_SetTestMode(): eCmdLine_Exit;
-    function HandleCommandLineOpts_SetInstalled(): eCmdLine_Exit;
+//    function HandleCommandLineOpts_SetInstalled(): eCmdLine_Exit;
 
     //true = set OK
     function SetTestMode(silent, SetOn: Boolean): Boolean;
     //sets 'installed' flag in ini file - returns false if fails (ini file must exist or be set as custom)
-    function SetInstalled(): Boolean;
+//    function SetInstalled(): Boolean;
     function InstallAllDrivers(driverControlObj: TOTFEFreeOTFEDriverControl;
       silent: Boolean): eCmdLine_Exit;
 
@@ -390,11 +391,11 @@ const
 
   // Online user manual URL...
   { DONE -otdk -cenhancement : set project homepage }
-  URL_USERGUIDE_MAIN = 'http://DoxBox.eu/docs/Main';
+  URL_USERGUIDE_MAIN = 'http://doxbox.eu/doxbox/getting_started.html';
   // PAD file URL...
   URL_PADFILE_MAIN   = 'https://raw.githubusercontent.com/t-d-k/doxbox/master/PAD.xml';
   // Download URL...
-  URL_DOWNLOAD_MAIN  = 'http://DoxBox.eu/download.html';
+//  URL_DOWNLOAD_MAIN  = 'http://DoxBox.eu/download.html';
 
 
  // This procedure is called after OnCreate, and immediately before the
@@ -437,7 +438,7 @@ begin
     goForStartPortable := gSettings.OptAutoStartPortable;
     if not (goForStartPortable) then begin
       // if 'installed' then install drivers and prompt reboot else prompt portable as below
-      if not gSettings.OptInstalled then
+//      if not gSettings.OptInstalled then
         goForStartPortable := SDUConfirmYN(
           _('The main DoxBox driver does not appear to be installed and running on this computer') +
           SDUCRLF + SDUCRLF + _('Would you like to start DoxBox in portable mode?'));
@@ -447,10 +448,12 @@ begin
       if errLastRun then MessageDlg(_('Portable mode will not be started automatically because DoxBox shut down last time it was run.'),mtWarning,[mbOK], 0)
       else PortableModeSet(pmaStart, False);
     end else begin
-      if gSettings.OptInstalled and not errLastRun then begin
+      if not errLastRun then begin
          actInstallExecute(nil);
       end else begin
-       if errLastRun and gSettings.OptInstalled then MessageDlg(_('The drivers will not be installed automatically because DoxBox shut down last time it was run.'),mtWarning,[mbOK],0);
+
+       if errLastRun {and gSettings.OptInstalled} then
+          MessageDlg(_('The drivers will not be installed automatically because DoxBox shut down last time it was run.'),mtWarning,[mbOK],0);
        SDUMessageDlg(
           _(
           'Please see the "installation" section of the accompanying documentation for instructions on how to install the DoxBox drivers.'),
@@ -830,35 +833,37 @@ var
   buf:             Ansistring;
 const
 
-  TEST_VOLS: array[0..12] of String =
+    MAX_TEST_VOL = 12;
+   {this last dmcrypt_dx.box with dmcrypt_hid.les can cause BSoD }
+  TEST_VOLS: array[0..MAX_TEST_VOL] of String =
     ('a.box', 'b.box', 'c.box', 'd.box', 'e.box', 'e.box', 'f.box', 'luks.box',
     'luks_essiv.box', 'a.box', 'b.box', 'dmcrypt_dx.box', 'dmcrypt_dx.box');
-  PASSWORDS: array[0..12] of String =
+  PASSWORDS: array[0..MAX_TEST_VOL] of String =
     ('password', 'password', '!"£$%^&*()', 'password', 'password', '5ekr1t',
     'password', 'password', 'password', 'secret', 'secret', 'password', '5ekr1t');
-  ITERATIONS: array[0..12] of Integer =
+  ITERATIONS: array[0..MAX_TEST_VOL] of Integer =
     (2048, 2048, 2048, 2048, 10240, 2048, 2048, 2048, 2048, 2048, 2048, 2048, 2048);
-  OFFSET: array[0..12] of Integer =
+  OFFSET: array[0..MAX_TEST_VOL] of Integer =
     (0, 0, 0, 0, 0, 2097152, 0, 0, 0, 0, 0, 0, 0);
-  KEY_FILES: array[0..12] of String =
+  KEY_FILES: array[0..MAX_TEST_VOL] of String =
     ('', '', '', '', '', '', '', '', '', 'a.cdb', 'b.cdb', '', '');
-  LES_FILES: array[0..12] of String =
+  LES_FILES: array[0..MAX_TEST_VOL] of String =
     ('', '', '', '', '', '', '', '', '', '', '', 'dmcrypt_dx.les', 'dmcrypt_hid.les');
 
-    {  test changing password wont work with this
-     TEST_VOLS: array[0..0] of String =
-    ( 'dmcrypt_dx.box');
-  PASSWORDS: array[0..0] of String =
-    ( 'password');
-  ITERATIONS: array[0..0] of Integer =
+    {  test
+     MAX_TEST_VOL = 0;
+     TEST_VOLS: array[0..MAX_TEST_VOL] of String =
+    ('dmcrypt_dx.box');
+  PASSWORDS: array[0..MAX_TEST_VOL] of String =
+    ( '5ekr1t');
+  ITERATIONS: array[0..MAX_TEST_VOL] of Integer =
     ( 2048);
-  OFFSET: array[0..0] of Integer =
-    ( 0);
-  KEY_FILES: array[0..0] of String =
-    ( '');
-  LES_FILES: array[0..0] of String =
-    ( 'dmcrypt_dx.les');
-  }
+  OFFSET: array[0..MAX_TEST_VOL] of Integer =
+    (0);
+  KEY_FILES: array[0..MAX_TEST_VOL] of String =
+    ('');
+  LES_FILES: array[0..MAX_TEST_VOL] of String =
+    ( 'dmcrypt_hid.les');    }
   procedure CheckMountedOK;
   begin
     RefreshDrives();
@@ -905,7 +910,7 @@ begin
 
   {$IFDEF FullDebugMode}
     //this overrides AlwaysClearFreedMemory
-       {$IFDEF AlwaysClearFreedMemory}
+   {$IFDEF AlwaysClearFreedMemory}
     SDUMessageDlg('Freed memory wiping test will fail because FullDebugMode set');
     {$ENDIF}
   {$ENDIF}
@@ -1134,7 +1139,11 @@ begin
   try
     //for loop is optimised into reverse order, but want to process forwards
     vl       := 0;
+    {$IFDEF DEBUG}
+        vol_path := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\..\..\test_vols\');
+    {$ELSE}
     vol_path := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\test_vols\');
+    {$ENDIF}
     while vl <= high(TEST_VOLS) do begin
 
       //test one at a time as this is normal use
@@ -1178,6 +1187,7 @@ begin
     open with old password -tested on next test run
     this tests most of code for creating volume as well
   }
+
     //don't fail if doesnt exist
     SysUtils.DeleteFile(vol_path + 'a_test.cdbBackup');
     if Result then
@@ -1203,8 +1213,6 @@ begin
   finally
     mountList.Free();
   end;
-
-
 
   if Result then
     SDUMessageDlg('All functional tests passed')
@@ -1261,7 +1269,6 @@ begin
   // Prevent endless loops of UAC escalation...
   fallowUACEsclation := False;
 
-
   inherited;
 
   fendSessionFlag   := False;
@@ -1287,6 +1294,11 @@ begin
 
   ToolBar1.Indent := 5;
 
+//  MessageDlg(_('All tests PASSED'),mtWarning,[mbOK],0);
+  SDUMessageDlg(         _(          'All tests PASSED'),          mtWarning,          [mbOK],          0          );
+  SDUMessageBox(Self.Handle,'All tests PASSED','tests',0);
+  exit;
+
 end;
 
 procedure TfrmFreeOTFEMain.FormDestroy(Sender: TObject);
@@ -1302,7 +1314,6 @@ begin
   fIconMounted.Free();
   fIconUnmounted.Free();
 
-//  FreeAndNil(fOtfeFreeOtfeBase);
 end;
 
 procedure TfrmFreeOTFEMain.actRefreshExecute(Sender: TObject);
@@ -1936,7 +1947,7 @@ begin
     try
       // This is surrounded by a try...finally as it may throw an exception if
       // the user doesn't have sufficient privs to do this
-      GetFreeOTFE() .ShowDriverControlDlg();
+      GetFreeOTFE().ShowDriverControlDlg();
 
       // Send out a message to any other running instances of FreeOTFE to
       // refresh; the drivers may have changed.
@@ -1960,7 +1971,7 @@ begin
     //       activate the GetFreeOTFE() component activating the if we had to
     //       UAC escalate.
     //       In that situation, the UAC escalated process will sent out a
-    //       refresh message when it's done. 
+    //       refresh message when it's done.
     ActivateFreeOTFEComponent(UACEscalateAttempted);
 
     EnableDisableControls();
@@ -1972,8 +1983,6 @@ procedure TfrmFreeOTFEMain.actDriversExecute(Sender: TObject);
 begin
   DisplayDriverControlDlg();
 end;
-
-
 
 function TfrmFreeOTFEMain.ActivateFreeOTFEComponent(suppressMsgs: Boolean): Boolean;
 begin
@@ -2745,6 +2754,14 @@ begin
   Result := SDUWinExecAndWait32(SDUGetWindowsDirectory() +
     '\sysnative\bcdedit.exe /set TESTSIGNING ' + IfThen(setOn, 'ON', 'OFF'),
     SW_SHOWNORMAL) <> $FFFFFFFF;
+   //is this necesary?
+  if result and setOn then
+    Result := SDUWinExecAndWait32(SDUGetWindowsDirectory() +
+    '\sysnative\bcdedit.exe /set loadoptions DDISABLE_INTEGRITY_CHECKS', SW_SHOWNORMAL) <> $FFFFFFFF;
+  if result and not setOn then
+    Result := SDUWinExecAndWait32(SDUGetWindowsDirectory() +
+    '\sysnative\bcdedit.exe /deletevalue loadoptions', SW_SHOWNORMAL) <> $FFFFFFFF;
+
   if not silent then begin
     if not Result then begin
       SDUMessageDlg(_('Set Test Mode failed: ') + SysErrorMessage(GetLastError),
@@ -2759,16 +2776,16 @@ begin
   end;
 end;
 
-function TfrmFreeOTFEMain.SetInstalled(): Boolean;
-begin
-  inherited;
-  //needs to be place to save to
-  if gSettings.OptSaveSettings = slNone then
-    gSettings.OptSaveSettings := slProfile;//exe not supported in win >NT
-
-  gSettings.OptInstalled := True;
-  Result                := gSettings.Save();//todo:needed?
-end;
+//function TfrmFreeOTFEMain.SetInstalled(): Boolean;
+//begin
+//  inherited;
+//  //needs to be place to save to
+//  if gSettings.OptSaveSettings = slNone then
+//    gSettings.OptSaveSettings := slProfile;//exe not supported in win >NT
+//
+//  gSettings.OptInstalled := True;
+//  Result                := gSettings.Save();//todo:needed?
+//end;
 
 procedure TfrmFreeOTFEMain.actTestModeOffExecute(Sender: TObject);
 var
@@ -3083,6 +3100,8 @@ begin
   end;
 end;
 
+
+
  // install all drivers
  //
  // !! IMPORTANT !!
@@ -3096,8 +3115,9 @@ function TfrmFreeOTFEMain.InstallAllDrivers(driverControlObj: TOTFEFreeOTFEDrive
   silent: Boolean): eCmdLine_Exit;
 var
   driverFilenames: TStringList;
-  //  vista64Bit: boolean;
 begin
+
+  try
 
   Result := ceUNKNOWN_ERROR;
 
@@ -3151,6 +3171,12 @@ begin
       driverFilenames.Free();
     end;
   end;
+
+  except
+      on EFreeOTFENeedAdminPrivs do begin
+         Result := ceADMIN_PRIVS_NEEDED;
+      end;
+    end;
 end;
 
  // Handle "/install" command line
@@ -3376,16 +3402,16 @@ end;
  // Returns: Exit code
 
  }
-function TfrmFreeOTFEMain.HandleCommandLineOpts_SetInstalled(): eCmdLine_Exit;
-begin
-  Result := ceSUCCESS;
-
-  if SDUCommandLineSwitch(CMDLINE_SET_INSTALLED) then begin
-
-    if not SetInstalled() then
-      Result := ceUNABLE_TO_SET_INSTALLED;
-  end;
-end;
+//function TfrmFreeOTFEMain.HandleCommandLineOpts_SetInstalled(): eCmdLine_Exit;
+//begin
+//  Result := ceSUCCESS;
+//
+//  if SDUCommandLineSwitch(CMDLINE_SET_INSTALLED) then begin
+//
+//    if not SetInstalled() then
+//      Result := ceUNABLE_TO_SET_INSTALLED;
+//  end;
+//end;
 
  // Handle "/create" command line
  // Returns: Exit code
@@ -3462,9 +3488,9 @@ begin
 
   if cmdExitCode = ceSUCCESS then
     cmdExitCode := HandleCommandLineOpts_EnableDevMenu();
-
-  if cmdExitCode = ceSUCCESS then
-    cmdExitCode := HandleCommandLineOpts_SetInstalled();
+//
+//  if cmdExitCode = ceSUCCESS then
+//    cmdExitCode := HandleCommandLineOpts_SetInstalled();
 
   // Driver control dialog
   if cmdExitCode = ceSUCCESS then
@@ -3489,7 +3515,8 @@ begin
   if GetFreeOTFE().Active then
     DeactivateFreeOTFEComponent();
 
-
+  if cmdExitCode = ceADMIN_PRIVS_NEEDED then
+    MessageDlg('Administrator privileges are needed. Please run again as adminisrator',mtError,[mbOK],0);
   // Notice: CMDLINE_MINIMIZE handled in the .dpr
 
   // Return TRUE if there were no parameters specified on the command line
@@ -3511,9 +3538,7 @@ begin
 
     Result := (ParamCount > ignoreParams);
   end;
-
 end;
-
 
 procedure TfrmFreeOTFEMain.UACEscalateForDriverInstallation();
 begin
@@ -3708,16 +3733,8 @@ var
 
 begin
   inherited;
-  driverControlObj := TOTFEFreeOTFEDriverControl.Create();
-  try
-    driverControlObj.Silent := SDUCommandLineSwitch(CMDLINE_SILENT);
-
-    InstallAllDrivers(driverControlObj, False);
-
-  finally
-    driverControlObj.Free();
-  end;
-
+  //escalate priv and run all
+  UACEscalate('/'+CMDLINE_DRIVERCONTROL+ ' '+CMDLINE_INSTALL+' /'+CMDLINE_FILENAME+' '+CMDLINE_ALL,SDUCommandLineSwitch(CMDLINE_SILENT));
 end;
 
 procedure TfrmFreeOTFEMain.actLinuxMountPartitionExecute(Sender: TObject);

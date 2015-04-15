@@ -6,8 +6,8 @@ uses
   ActnList, Classes, Controls, Dialogs, Forms,
   Graphics, Menus, Messages, OTFEFreeOTFE_fmePKCS11_MgrBase,
   OTFEFreeOTFE_PKCS11, pkcs11_session,
-  SDUDialogs, StdCtrls,
-  SysUtils, Variants, Windows;
+  lcDialogs, StdCtrls,
+  SysUtils, Variants, Windows, SDUDialogs;
 
 type
   TfmePKCS11_MgrKeyfile = class (TfmePKCS11_MgrBase)

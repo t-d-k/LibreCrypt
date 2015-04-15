@@ -61,17 +61,18 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
 			<DCC_ExeOutput>..\..\..\..\bin\PC\$(Config)\$(Platform)</DCC_ExeOutput>
 			<DCC_DcuOutput>P:\Projects\Delphi\doxbox\src\PC\gui\explorer\dcus\$(Config)\$(Platform)</DCC_DcuOutput>
-			<DCC_Define>FREEOTFE_EXPLORER;$(DCC_Define)</DCC_Define>
+			<DCC_Define>FREEOTFE_EXPLORER;AlwaysClearFreedMemory;$(DCC_Define)</DCC_Define>
 			<Icon_MainIcon>..\..\..\Common\Common\images\DoxBox.ico</Icon_MainIcon>
 			<DCC_UnitSearchPath>..\..\..\..\SDeanComponents\Components\SDeanUtils;..\..\..\..\\SDeanComponents\Components\SDeanSecurity\Shredder\;..\..\..\..\\SDeanComponents\Components\SDeanSecurity\MouseRNG\;..\..\..\..\SDeanComponents\Components\SDeanSecurity\PasswordRichEdit\;..\..\..\..\SDeanComponents\Components\SDeanFilesystem\;..\..\..\..\SDeanComponents\Components\OTFE\OTFEFreeOTFE\;..\..\..\..\\SDeanComponents\Components\OTFE\OTFE\;..\common\SDeanUtils\;..\common;..\..\..\3rd_party\FastMM\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<Manifest_File>None</Manifest_File>
-			<VerInfo_MinorVer>51</VerInfo_MinorVer>
-			<VerInfo_MajorVer>3</VerInfo_MajorVer>
+			<VerInfo_MinorVer>1</VerInfo_MinorVer>
+			<VerInfo_MajorVer>6</VerInfo_MajorVer>
 			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win;VCLTee;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_Locale>2057</VerInfo_Locale>
-			<VerInfo_Keys>CompanyName=Sarah Dean;FileDescription=FreeOTFE Explorer;FileVersion=3.51.0.0;InternalName=FreeOTFE Explorer;LegalCopyright=Copyright (C) 2010 Sarah Dean;LegalTrademarks=;OriginalFilename=FreeOTFEExplorer.exe;ProductName=FreeOTFE Explorer;ProductVersion=3.51;Comments=http://www.FreeOTFE.org/</VerInfo_Keys>
+			<VerInfo_Keys>CompanyName=DoxBox;FileDescription=DoxBox Explorer;FileVersion=6.1.0.0;InternalName=DoxBox Explorer;LegalCopyright=Copyright (C) 2010-2015 Sarah Dean &amp; tdk;LegalTrademarks=DoxBox;OriginalFilename=DoxBoxExplorer.exe;ProductName=DoxBox Explorer;ProductVersion=6.1.0;Comments=http://DoxBox.eu</VerInfo_Keys>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win64)'!=''">
@@ -82,10 +83,9 @@
 			<DCC_UsePackage>vclx;vcl;$(DCC_UsePackage)</DCC_UsePackage>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
-			<DCC_Define>AlwaysClearFreedMemory;$(DCC_Define)</DCC_Define>
 			<DCC_UsePackage>vclx;vcl;bdertl;TeeUI;TeeDB;Tee;$(DCC_UsePackage)</DCC_UsePackage>
 			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=;Comments=</VerInfo_Keys>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
@@ -101,13 +101,15 @@
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
+		<Import Condition="'$(Cfg_1_Win32)'!='' And Exists('..\6p1.optset')" Project="..\6p1.optset"/>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<Debugger_RunParams>/dev_menu /no_exit</Debugger_RunParams>
 			<DCC_ExeOutput>..\..\..\..\bin\PC\</DCC_ExeOutput>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-			<VerInfo_Locale>1033</VerInfo_Locale>
+			<DCC_DcuOutput>P:\Projects\Delphi\doxbox\src\PC\gui\explorer\dcus\$(Config)\$(Platform)</DCC_DcuOutput>
+			<CfgDependentOn>..\6p1.optset</CfgDependentOn>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<VerInfo_Debug>true</VerInfo_Debug>
 			<DCC_RangeChecking>true</DCC_RangeChecking>
 			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
 			<DCC_Optimize>false</DCC_Optimize>
@@ -118,17 +120,12 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-			<DCC_ExeOutput>..\..\..\..\bin\PC\</DCC_ExeOutput>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-			<Debugger_RunParams>/dev_menu /no_exit</Debugger_RunParams>
-			<DCC_MapFile>2</DCC_MapFile>
-			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
-			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-			<VerInfo_Locale>1033</VerInfo_Locale>
+			<DCC_ExeOutput>..\..\..\..\bin\PC\$(Config)\$(Platform)</DCC_ExeOutput>
+			<DCC_DcuOutput>P:\Projects\Delphi\doxbox\src\PC\gui\explorer\dcus\$(Config)\$(Platform)</DCC_DcuOutput>
 		</PropertyGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Delphi.Personality.12</Borland.Personality>

@@ -14,7 +14,9 @@ uses
   Classes, // Required for TShortCut
   CommonSettings,
   IniFiles,
-  OTFEFreeOTFEBase_U;
+  OTFEFreeOTFEBase_U,
+  //sdu
+  sdugeneral;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -118,8 +120,8 @@ type
     OptDisplayStatusbar:       Boolean;
     OptAllowMultipleInstances: Boolean;
     OptAutoStartPortable:      Boolean;
-    OptInstalled:              Boolean;// has installer been run?
-    OptDefaultDriveLetter:     ansichar;
+//    OptInstalled:              Boolean;// has installer been run?
+    OptDefaultDriveLetter:     DriveLetterChar;
     OptDefaultMountAs:         TFreeOTFEMountAs;
     feAppRunning        :         eAppRunning;
     // Prompts and messages
@@ -165,8 +167,8 @@ uses
   SysUtils,  // Required for ChangeFileExt, DeleteFile
   Dialogs,
   Menus, Registry,
+  //sdu
   SDUDialogs,
-  SDUGeneral,
   SDUi18n,
            // Required for ShortCutToText and TextToShortCut
   ShlObj;  // Required for CSIDL_PERSONAL
@@ -192,8 +194,8 @@ const
   DFLT_OPT_AUTOSTARTPORTABLE      = False;
   OPT_DEFAULTMOUNTAS              = 'DefaultMountAs';
   DFLT_OPT_DEFAULTMOUNTAS         = fomaRemovableDisk;
-  OPT_OPTINSTALLED                = 'Installed';
-  DFLT_OPT_OPTINSTALLED           = False;
+//  OPT_OPTINSTALLED                = 'Installed';
+//  DFLT_OPT_OPTINSTALLED           = False;
   OPT_APPRUNNING                 = 'AppRunning';
   DFLT_OPT_APPRUNNING            = arDontKnow;
 

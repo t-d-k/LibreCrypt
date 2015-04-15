@@ -14,7 +14,7 @@ uses
   Buttons, Classes, ComCtrls,
   CommonfrmCDBDump_Base, Controls, Dialogs,
   Forms, Graphics, Messages, OTFEFreeOTFE_LUKSKeyOrKeyfileEntry, OTFEFreeOTFE_VolumeSelect,
-  OTFEFreeOTFEBase_U, PasswordRichEdit, SDUDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
+  OTFEFreeOTFEBase_U, PasswordRichEdit, lcDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
   SDUSpin64Units, Spin64,
   StdCtrls, SysUtils, Windows;
 

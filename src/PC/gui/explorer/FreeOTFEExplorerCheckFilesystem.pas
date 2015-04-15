@@ -11,7 +11,7 @@ implementation
 
 uses
   Dialogs, Forms,
-  SDUDialogs,
+  lcDialogs,
   SDUGeneral,
   SDUi18n;
 

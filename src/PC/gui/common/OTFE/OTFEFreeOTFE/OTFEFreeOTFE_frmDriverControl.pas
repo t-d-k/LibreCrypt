@@ -17,7 +17,7 @@ uses
   OTFEFreeOTFE_DriverControl,
   OTFEFreeOTFEBase_U,
   WinSVC,  // Required for service related definitions and functions
-  OTFEFreeOTFE_U, SDUForms, SDUDialogs;
+  OTFEFreeOTFE_U, SDUForms, lcDialogs, SDUDialogs;
 
 type
   TfrmDriverControl = class(TSDUForm)

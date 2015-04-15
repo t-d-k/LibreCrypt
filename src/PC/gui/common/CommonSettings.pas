@@ -183,7 +183,7 @@ uses
            // Required for ShortCutToText and TextToShortCut
   ShlObj,  // Required for CSIDL_PERSONAL
            //sdu
-  SDUDialogs, SDUi18n;
+  lcDialogs, SDUi18n;
 
 const
   SETTINGS_V1 = 1;

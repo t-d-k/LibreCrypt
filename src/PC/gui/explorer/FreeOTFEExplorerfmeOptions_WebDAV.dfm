@@ -1,6 +1,8 @@
 inherited fmeOptions_FreeOTFEExplorerWebDAV: TfmeOptions_FreeOTFEExplorerWebDAV
   Width = 486
   Height = 344
+  ExplicitWidth = 486
+  ExplicitHeight = 344
   object gbWebDAV: TGroupBox
     Left = 16
     Top = 8
@@ -33,7 +35,6 @@ inherited fmeOptions_FreeOTFEExplorerWebDAV: TfmeOptions_FreeOTFEExplorerWebDAV
       Width = 145
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 3
     end
     object gbWebDAVAdvanced: TGroupBox

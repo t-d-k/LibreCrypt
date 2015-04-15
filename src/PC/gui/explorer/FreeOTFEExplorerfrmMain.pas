@@ -3,34 +3,33 @@ unit FreeOTFEExplorerfrmMain;
 interface
 
 uses
-//delphi
+  //delphi
   ActnList,
   Buttons, Classes, ComCtrls,
-   Controls, Dialogs, ExtCtrls, Forms,   StdCtrls, SysUtils, ToolWin, Variants, Windows, XPMan,
-   Graphics, ImgList, Menus, Messages,
+  Controls, Dialogs, ExtCtrls, Forms, StdCtrls, SysUtils, ToolWin, Variants, Windows, XPMan,
+  Graphics, ImgList, Menus, Messages,
   //sdu libs
 
-    OTFE_U, OTFEConsts_U,
+  OTFE_U, OTFEConsts_U,
   OTFEFreeOTFEBase_U, OTFEFreeOTFEDLL_PartitionImage,
   OTFEFreeOTFEDLL_U, SDFilesystem,
   SDFilesystem_FAT,
   SDFilesystemCtrls,
   SDPartitionImage,
   SDPartitionImage_File,
-  SDUComCtrls, SDUDialogs, SDUDropFiles, SDUFileIterator_U,
+  SDUComCtrls, lcDialogs, SDUDropFiles, SDUFileIterator_U,
   SDUForms,
   SDUGeneral,
   SDUMRUList,
   SDUMultimediaKeys,
   SDUProgressDlg,
-  Shredder,
+  Shredder, SDUDialogs,
 
   //doxbox
   CommonfrmMain,
   CommonSettings,
   FreeOTFEExplorerSettings,
-  FreeOTFEExplorerWebDAV
-  ;
+  FreeOTFEExplorerWebDAV;
 
 const
   WM_FREEOTFE_EXPLORER_REFRESH = WM_USER + 1;
@@ -68,176 +67,176 @@ const
 
 type
   TfrmFreeOTFEExplorerMain = class (TfrmMain)
-    pnlTopSpacing:                     TPanel;
-    pmTreeView:                        TPopupMenu;
-    pmListView:                        TPopupMenu;
-    mnuTreeViewExpand:                 TMenuItem;
-    mnuExploreView:                    TMenuItem;
-    mnuListViewExtract:                TMenuItem;
+    pnlTopSpacing: TPanel;
+    pmTreeView:   TPopupMenu;
+    pmListView:   TPopupMenu;
+    mnuTreeViewExpand: TMenuItem;
+    mnuExploreView: TMenuItem;
+    mnuListViewExtract: TMenuItem;
     SDUOpenDialog_MountPlaintextImage: TSDUOpenDialog;
-    ImageList_StatusBar:               TImageList;
-    mnuListViewStore:                  TMenuItem;
-    mnuListViewStoreFile:              TMenuItem;
-    mnuListViewStoreDir:               TMenuItem;
-    mnuViewDelete:                     TMenuItem;
-    N3:                                TMenuItem;
-    mnuViewProperties:                 TMenuItem;
-    mnuViewCreateSubDir:               TMenuItem;
-    mnuTreeViewCollapse:               TMenuItem;
-    SDUOpenDialog_Store:               TSDUOpenDialog;
-    SDUSaveDialog_Extract:             TSDUSaveDialog;
-    SDUDropFilesTreeView:              TSDUDropFiles;
-    SDUDropFilesListView:              TSDUDropFiles;
-    actPlaintextMountFile:             TAction;
-    Mountplaintextimage1:              TMenuItem;
-    Edit2:                             TMenuItem;
-    actSelectAll:                      TAction;
-    Selectall1:                        TMenuItem;
-    actShowBootSector:                 TAction;
-    actCheckFilesystem:                TAction;
-    actListStyleSmallIcons:            TAction;
-    actListStyleIcons:                 TAction;
-    actListStyleList:                  TAction;
-    actListStyleDetails:               TAction;
-    N1:                                TMenuItem;
-    Icons1:                            TMenuItem;
-    SmallIcons1:                       TMenuItem;
-    List1:                             TMenuItem;
-    Details1:                          TMenuItem;
-    actCheckStatusBar:                 TAction;
-    actCheckAddressBar:                TAction;
-    oolbars1:                          TMenuItem;
-    Statusbar2:                        TMenuItem;
-    Addressbar1:                       TMenuItem;
-    N6:                                TMenuItem;
-    Showbootsectordetails1:            TMenuItem;
-    Checkfilesystem1:                  TMenuItem;
-    pmToolbarBack:                     TPopupMenu;
-    pmToolbarViews:                    TPopupMenu;
-    pmToolbarForward:                  TPopupMenu;
-    pnlExplorer:                       TPanel;
-    SDFilesystemListView1:             TSDFilesystemListView;
-    Splitter1:                         TSplitter;
-    SDFilesystemTreeView1:             TSDFilesystemTreeView;
-    pnlAddressBar:                     TPanel;
-    lblFolder:                         TLabel;
-    edPath:                            TEdit;
-    pbGo:                              TBitBtn;
-    ToolbarExplorer:                   TToolBar;
-    tbbNavigateBack:                   TToolButton;
-    tbbNavigateForward:                TToolButton;
-    tbbUp:                             TToolButton;
-    ToolButton3:                       TToolButton;
-    tbbMoveTo:                         TToolButton;
-    tbbCopyTo:                         TToolButton;
-    ToolButton1:                       TToolButton;
-    tbbDelete:                         TToolButton;
-    ToolButton4:                       TToolButton;
-    tbbViews:                          TToolButton;
-    ToolBarVolume:                     TToolBar;
-    tbbNew:                            TToolButton;
-    ToolButton2:                       TToolButton;
-    tbbMountFile:                      TToolButton;
-    ToolButton5:                       TToolButton;
-    tbbDismount:                       TToolButton;
-    actCheckToolbarVolume:             TAction;
-    actCheckToolbarExplorer:           TAction;
-    StandardButtons1:                  TMenuItem;
-    Volume1:                           TMenuItem;
-    tbbExtract:                        TToolButton;
-    tbbStore:                          TToolButton;
-    ToolButton6:                       TToolButton;
-    Icons2:                            TMenuItem;
-    SmallIcons2:                       TMenuItem;
-    List2:                             TMenuItem;
-    Details2:                          TMenuItem;
-    actDelete:                         TAction;
-    actStoreFile:                      TAction;
-    actExtract:                        TAction;
-    pmToolbarStore:                    TPopupMenu;
-    actStoreDir:                       TAction;
-    mnuToolbarStoreFile:               TMenuItem;
-    mnuToolbarStoreDir:                TMenuItem;
-    N7:                                TMenuItem;
-    N8:                                TMenuItem;
-    actCreateSubDir:                   TAction;
-    tbbItemProperties:                 TToolButton;
-    ToolButton8:                       TToolButton;
-    actItemProperties:                 TAction;
-    N10:                               TMenuItem;
-    mnuTreeViewCreateSubDir:           TMenuItem;
-    mnuTreeViewDelete:                 TMenuItem;
-    N11:                               TMenuItem;
-    mnuTreeViewExtract:                TMenuItem;
-    mnuTreeViewStore:                  TMenuItem;
-    mnuTreeViewStoreFile:              TMenuItem;
-    mnuTreeViewStoreDir:               TMenuItem;
-    N12:                               TMenuItem;
-    mnuTreeViewItemProperties:         TMenuItem;
-    actUpDir:                          TAction;
-    actNavigateBack:                   TAction;
-    actNavigateForward:                TAction;
-    Options1:                          TMenuItem;
-    N17:                               TMenuItem;
-    N18:                               TMenuItem;
-    mnuMainExtract:                    TMenuItem;
-    mnuMainStore:                      TMenuItem;
-    File2:                             TMenuItem;
-    Folder1:                           TMenuItem;
-    Plaintextimage1:                   TMenuItem;
-    miPlaintextDismount:               TMenuItem;
-    actPlaintextNew:                   TAction;
-    New1:                              TMenuItem;
-    actCheckExplorerBarFolders:        TAction;
-    ExplorerBar1:                      TMenuItem;
-    Folders1:                          TMenuItem;
-    tbbExplorerBarFolders:             TToolButton;
-    ToolButton9:                       TToolButton;
-    actRename:                         TAction;
-    mnuTreeViewRename:                 TMenuItem;
-    mnuViewRename:                     TMenuItem;
-    actMoveTo:                         TAction;
-    actCopyTo:                         TAction;
-    N19:                               TMenuItem;
-    CopyToFolder1:                     TMenuItem;
-    MoveToFolder1:                     TMenuItem;
-    actInvertSelection:                TAction;
-    InvertSelection1:                  TMenuItem;
-    actCut:                            TAction;
-    actCopy:                           TAction;
-    actPaste:                          TAction;
-    N20:                               TMenuItem;
-    Cut1:                              TMenuItem;
-    Copy1:                             TMenuItem;
-    Paste1:                            TMenuItem;
-    N21:                               TMenuItem;
-    mnuTreeViewCut:                    TMenuItem;
-    mnuTreeViewCopy:                   TMenuItem;
-    mnuTreeViewPaste:                  TMenuItem;
-    actcut1:                           TMenuItem;
-    Copy3:                             TMenuItem;
-    Paste3:                            TMenuItem;
-    N22:                               TMenuItem;
-    pmToolbarMenu:                     TPopupMenu;
-    FreeOTFEButtons1:                  TMenuItem;
-    StandardButtons2:                  TMenuItem;
-    AddressBar2:                       TMenuItem;
-    actOverwriteFile:                  TAction;
-    actOverwriteDir:                   TAction;
-    N23:                               TMenuItem;
-    Overwrite1:                        TMenuItem;
-    Overwritefile1:                    TMenuItem;
-    Overwritefolder1:                  TMenuItem;
-    SDUOpenDialog_Overwrite:           TSDUOpenDialog;
-    actWebDAVStatus:                   TAction;
-    Networkservicestatus1:             TMenuItem;
-    actChooseDetails:                  TAction;
-    ChooseDetails1:                    TMenuItem;
-    actMapNetworkDrive:                TAction;
-    actDisconnectNetworkDrive:         TAction;
-    tbbMapNetworkDrive:                TToolButton;
-    tbbDisconnectNetworkDrive:         TToolButton;
-    tbbSettings: TToolButton;
+    ImageList_StatusBar: TImageList;
+    mnuListViewStore: TMenuItem;
+    mnuListViewStoreFile: TMenuItem;
+    mnuListViewStoreDir: TMenuItem;
+    mnuViewDelete: TMenuItem;
+    N3:           TMenuItem;
+    mnuViewProperties: TMenuItem;
+    mnuViewCreateSubDir: TMenuItem;
+    mnuTreeViewCollapse: TMenuItem;
+    SDUOpenDialog_Store: TSDUOpenDialog;
+    SDUSaveDialog_Extract: TSDUSaveDialog;
+    SDUDropFilesTreeView: TSDUDropFiles;
+    SDUDropFilesListView: TSDUDropFiles;
+    actPlaintextMountFile: TAction;
+    Mountplaintextimage1: TMenuItem;
+    Edit2:        TMenuItem;
+    actSelectAll: TAction;
+    Selectall1:   TMenuItem;
+    actShowBootSector: TAction;
+    actCheckFilesystem: TAction;
+    actListStyleSmallIcons: TAction;
+    actListStyleIcons: TAction;
+    actListStyleList: TAction;
+    actListStyleDetails: TAction;
+    N1:           TMenuItem;
+    Icons1:       TMenuItem;
+    SmallIcons1:  TMenuItem;
+    List1:        TMenuItem;
+    Details1:     TMenuItem;
+    actCheckStatusBar: TAction;
+    actCheckAddressBar: TAction;
+    oolbars1:     TMenuItem;
+    Statusbar2:   TMenuItem;
+    Addressbar1:  TMenuItem;
+    N6:           TMenuItem;
+    Showbootsectordetails1: TMenuItem;
+    Checkfilesystem1: TMenuItem;
+    pmToolbarBack: TPopupMenu;
+    pmToolbarViews: TPopupMenu;
+    pmToolbarForward: TPopupMenu;
+    pnlExplorer:  TPanel;
+    SDFilesystemListView1: TSDFilesystemListView;
+    Splitter1:    TSplitter;
+    SDFilesystemTreeView1: TSDFilesystemTreeView;
+    pnlAddressBar: TPanel;
+    lblFolder:    TLabel;
+    edPath:       TEdit;
+    pbGo:         TBitBtn;
+    ToolbarExplorer: TToolBar;
+    tbbNavigateBack: TToolButton;
+    tbbNavigateForward: TToolButton;
+    tbbUp:        TToolButton;
+    ToolButton3:  TToolButton;
+    tbbMoveTo:    TToolButton;
+    tbbCopyTo:    TToolButton;
+    ToolButton1:  TToolButton;
+    tbbDelete:    TToolButton;
+    ToolButton4:  TToolButton;
+    tbbViews:     TToolButton;
+    ToolBarVolume: TToolBar;
+    tbbNew:       TToolButton;
+    ToolButton2:  TToolButton;
+    tbbMountFile: TToolButton;
+    ToolButton5:  TToolButton;
+    tbbDismount:  TToolButton;
+    actCheckToolbarVolume: TAction;
+    actCheckToolbarExplorer: TAction;
+    StandardButtons1: TMenuItem;
+    Volume1:      TMenuItem;
+    tbbExtract:   TToolButton;
+    tbbStore:     TToolButton;
+    ToolButton6:  TToolButton;
+    Icons2:       TMenuItem;
+    SmallIcons2:  TMenuItem;
+    List2:        TMenuItem;
+    Details2:     TMenuItem;
+    actDelete:    TAction;
+    actStoreFile: TAction;
+    actExtract:   TAction;
+    pmToolbarStore: TPopupMenu;
+    actStoreDir:  TAction;
+    mnuToolbarStoreFile: TMenuItem;
+    mnuToolbarStoreDir: TMenuItem;
+    N7:           TMenuItem;
+    N8:           TMenuItem;
+    actCreateSubDir: TAction;
+    tbbItemProperties: TToolButton;
+    ToolButton8:  TToolButton;
+    actItemProperties: TAction;
+    N10:          TMenuItem;
+    mnuTreeViewCreateSubDir: TMenuItem;
+    mnuTreeViewDelete: TMenuItem;
+    N11:          TMenuItem;
+    mnuTreeViewExtract: TMenuItem;
+    mnuTreeViewStore: TMenuItem;
+    mnuTreeViewStoreFile: TMenuItem;
+    mnuTreeViewStoreDir: TMenuItem;
+    N12:          TMenuItem;
+    mnuTreeViewItemProperties: TMenuItem;
+    actUpDir:     TAction;
+    actNavigateBack: TAction;
+    actNavigateForward: TAction;
+    Options1:     TMenuItem;
+    N17:          TMenuItem;
+    N18:          TMenuItem;
+    mnuMainExtract: TMenuItem;
+    mnuMainStore: TMenuItem;
+    File2:        TMenuItem;
+    Folder1:      TMenuItem;
+    Plaintextimage1: TMenuItem;
+    miPlaintextDismount: TMenuItem;
+    actPlaintextNew: TAction;
+    New1:         TMenuItem;
+    actCheckExplorerBarFolders: TAction;
+    ExplorerBar1: TMenuItem;
+    Folders1:     TMenuItem;
+    tbbExplorerBarFolders: TToolButton;
+    ToolButton9:  TToolButton;
+    actRename:    TAction;
+    mnuTreeViewRename: TMenuItem;
+    mnuViewRename: TMenuItem;
+    actMoveTo:    TAction;
+    actCopyTo:    TAction;
+    N19:          TMenuItem;
+    CopyToFolder1: TMenuItem;
+    MoveToFolder1: TMenuItem;
+    actInvertSelection: TAction;
+    InvertSelection1: TMenuItem;
+    actCut:       TAction;
+    actCopy:      TAction;
+    actPaste:     TAction;
+    N20:          TMenuItem;
+    Cut1:         TMenuItem;
+    Copy1:        TMenuItem;
+    Paste1:       TMenuItem;
+    N21:          TMenuItem;
+    mnuTreeViewCut: TMenuItem;
+    mnuTreeViewCopy: TMenuItem;
+    mnuTreeViewPaste: TMenuItem;
+    actcut1:      TMenuItem;
+    Copy3:        TMenuItem;
+    Paste3:       TMenuItem;
+    N22:          TMenuItem;
+    pmToolbarMenu: TPopupMenu;
+    FreeOTFEButtons1: TMenuItem;
+    StandardButtons2: TMenuItem;
+    AddressBar2:  TMenuItem;
+    actOverwriteFile: TAction;
+    actOverwriteDir: TAction;
+    N23:          TMenuItem;
+    Overwrite1:   TMenuItem;
+    Overwritefile1: TMenuItem;
+    Overwritefolder1: TMenuItem;
+    SDUOpenDialog_Overwrite: TSDUOpenDialog;
+    actWebDAVStatus: TAction;
+    Networkservicestatus1: TMenuItem;
+    actChooseDetails: TAction;
+    ChooseDetails1: TMenuItem;
+    actMapNetworkDrive: TAction;
+    actDisconnectNetworkDrive: TAction;
+    tbbMapNetworkDrive: TToolButton;
+    tbbDisconnectNetworkDrive: TToolButton;
+    tbbSettings:  TToolButton;
     procedure pbGoClick(Sender: TObject);
     procedure edPathKeyPress(Sender: TObject; var Key: Char);
     procedure mnuTreeViewExpandClick(Sender: TObject);
@@ -317,34 +316,34 @@ type
     procedure actMapNetworkDriveExecute(Sender: TObject);
     procedure actDisconnectNetworkDriveExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-  PRIVATE
+  private
     PartitionImage: TSDPartitionImage;
     Filesystem:     TSDFilesystem_FAT;
 
     FInFormShow:   Boolean;
     FInRefreshing: Boolean;
-  PROTECTED
+  protected
     LastFocussed: TLastFocussed;
 
     FNavigateHistory: TStringList;
     FNavigateIdx:     Integer;
 
-    fShredderObj:    TShredder;
+    fShredderObj:   TShredder;
     FOpProgressDlg: TSDUWindowsProgressDialog;
 
-    fWebDAVObj:    TFreeOTFEExplorerWebDAV;
+    fWebDAVObj:   TFreeOTFEExplorerWebDAV;
     FMappedDrive: DriveLetterChar;
 
-    function HandleCommandLineOpts_Create(): eCmdLine_Exit; OVERRIDE;
-    function HandleCommandLineOpts_Mount(): eCmdLine_Exit; OVERRIDE;
+    function HandleCommandLineOpts_Create(): eCmdLine_Exit; override;
+    function HandleCommandLineOpts_Mount(): eCmdLine_Exit; override;
 
-    procedure ReloadSettings(); OVERRIDE;
+    procedure ReloadSettings(); override;
 
-    procedure RefreshMRUList(); OVERRIDE;
-    procedure MRUListItemClicked(mruList: TSDUMRUList; idx: Integer); OVERRIDE;
+    procedure RefreshMRUList(); override;
+    procedure MRUListItemClicked(mruList: TSDUMRUList; idx: Integer); override;
 
     procedure MountFiles(mountAsSystem: TDragDropFileType; filenames: TStringList;
-      ReadOnly, forceHidden: Boolean); OVERLOAD; OVERRIDE;
+      ReadOnly, forceHidden: Boolean); overload; override;
 
     procedure PostMountGUISetup(driveLetter: DriveLetterChar);
           {
@@ -357,9 +356,9 @@ type
     //    function  CheckNetServiceStatusAndPrompt(): boolean; overload;
     //    function  CheckNetServiceStatusAndPrompt(const serviceName: string): boolean; overload;
 
-    procedure RecaptionToolbarAndMenuIcons(); OVERRIDE;
-    procedure SetIconListsAndIndexes(); OVERRIDE;
-    procedure SetupToolbarFromSettings(); OVERRIDE;
+    procedure RecaptionToolbarAndMenuIcons(); override;
+    procedure SetIconListsAndIndexes(); override;
+    procedure SetupToolbarFromSettings(); override;
 
     procedure MountPlaintextImage(filename: String; mountReadonly: Boolean);
 
@@ -381,16 +380,16 @@ type
 
     procedure SetTitleCaption();
 
-    procedure SetStatusMsg(); OVERLOAD;
-    procedure SetStatusMsg(msg: String); OVERLOAD;
+    procedure SetStatusMsg(); overload;
+    procedure SetStatusMsg(msg: String); overload;
     function DefaultStatusMsg(): String;
     function SelectedItemsStatusMsg(): String;
     procedure SizeStatusBar();
 
     procedure SetDragCursor();
 
-    procedure Dismount(); OVERLOAD;
-    procedure Dismount(driveLetter: DriveLetterChar); OVERLOAD;
+    procedure Dismount(); overload;
+    procedure Dismount(driveLetter: DriveLetterChar); overload;
 
     procedure PromptForAndImportFile(importToPath: WideString);
     procedure PromptForAndImportDir(importToPath: WideString);
@@ -407,7 +406,7 @@ type
 
     procedure PostRefresh();
     procedure OnFreeOTFEExplorerRefreshMsg(var Msg: TMessage);
-      MESSAGE WM_FREEOTFE_EXPLORER_REFRESH;
+      message WM_FREEOTFE_EXPLORER_REFRESH;
 
     function CheckDestinationIsntSource(opType: TFExplOperation;
       srcPathAndFilename: String; destPath: String): Boolean;
@@ -420,23 +419,23 @@ type
     function GetLocalFileDetails(pathAndFilename: String; var item: TSDDirItem_FAT): Boolean;
 
     // Move from mounted volume to mounted volume
-    procedure MoveTo(items: TStringList); OVERLOAD;
-    procedure MoveTo(items: TStringList; destDir: String); OVERLOAD;
+    procedure MoveTo(items: TStringList); overload;
+    procedure MoveTo(items: TStringList; destDir: String); overload;
     // Copy from mounted volume to mounted volume
-    procedure CopyTo(items: TStringList); OVERLOAD;
-    procedure CopyTo(items: TStringList; destDir: String); OVERLOAD;
+    procedure CopyTo(items: TStringList); overload;
+    procedure CopyTo(items: TStringList; destDir: String); overload;
     // Copy from HDD to mounted volume
-    procedure Store(items: TStrings); OVERLOAD;
-    procedure Store(items: TStrings; destDir: String); OVERLOAD;
+    procedure Store(items: TStrings); overload;
+    procedure Store(items: TStrings; destDir: String); overload;
     // Copy from mounted volume to HDD
-    procedure Extract(items: TStrings); OVERLOAD;
-    procedure Extract(items: TStrings; destDir: String; destFilename: String); OVERLOAD;
+    procedure Extract(items: TStrings); overload;
+    procedure Extract(items: TStrings; destDir: String; destFilename: String); overload;
     function PerformOperation(opType: TFExplOperation; srcIsMountedFSNotLocalFS: Boolean;
       srcItems: TStrings; destIsMountedFSNotLocalFS: Boolean; destDir: String;
       destFilename: String
     // When moving/copying a single file, use this as the destination filename
     // Set to '' to use the source filename's filename
-      ): Boolean; OVERLOAD;
+      ): Boolean; overload;
     function ConfirmPerformOperation(opType: TFExplOperation;
       srcIsMountedFSNotLocalFS: Boolean; srcItems: TStrings;
       destIsMountedFSNotLocalFS: Boolean; destDir: String; destFilename: String): Boolean;
@@ -456,7 +455,7 @@ type
     // When moving/copying a single file, use this as the destination filename
     // Set to '' to use the source filename's filename
       moveDeletionMethod: TMoveDeletionMethod; var promptOverwriteFiles: Boolean;
-      var promptOverwriteDirs: Boolean): Boolean; OVERLOAD;
+      var promptOverwriteDirs: Boolean): Boolean; overload;
     function _PerformOperation_File(opType: TFExplOperation;
       srcIsMountedFSNotLocalFS: Boolean; srcItem: String; destIsMountedFSNotLocalFS: Boolean;
       destDir: String; destFilename: String;
@@ -487,10 +486,10 @@ type
     // Returns one of: mrYes, mrYesToAll, mrNo, mrCancel
     function PromptToReplaceYYANC(filename: String; existingSize: ULONGLONG;
       existingDateTime: TDateTime; newSize: ULONGLONG; newDateTime: TDateTime): Integer;
-      OVERLOAD;
+      overload;
     function PromptToReplaceYYANC(srcIsMountedFSNotLocalFS: Boolean;
       srcPathAndFilename: String; destIsMountedFSNotLocalFS: Boolean;
-      destPathAndFilename: String): Integer; OVERLOAD;
+      destPathAndFilename: String): Integer; overload;
 
 
     function IsContolKeyDown(): Boolean;
@@ -498,23 +497,20 @@ type
       destDir: String): Boolean;
 
     //    procedure OverwriteAllWebDAVCachedFiles();
-        function DoTests: Boolean; OVERRIDE;
+    function DoTests: Boolean; override;
 
-  PUBLIC
-    // This next line will generate a compiler warning - this is harmless.
-    // (We want to use OTFEFreeOTFE as the descendant class in this unit)
-    //    function OTFEFreeOTFE(): TOTFEFreeOTFEDLL; REINTRODUCE; OVERLOAD;
+  public
 
-    procedure WMUserPostShow(var msg: TWMEndSession); OVERRIDE;
+    procedure WMUserPostShow(var msg: TWMEndSession); override;
 
-    procedure InitApp(); OVERRIDE;
+    procedure InitApp(); override;
 
     procedure SetupControls();
-    procedure EnableDisableControls(); OVERRIDE;
+    procedure EnableDisableControls(); override;
 
     // Handle any command line options; returns TRUE if command line options
     // were passed through
-    function HandleCommandLineOpts(out cmdExitCode: eCmdLine_Exit): Boolean; OVERRIDE;
+    function HandleCommandLineOpts(out cmdExitCode: eCmdLine_Exit): Boolean; override;
 
   end;
 
@@ -733,8 +729,8 @@ begin
   // Setup for status bar icon...
   StatusBar_Status.Panels[STATUSBAR_PANEL_LOCATION].Style := psOwnerDraw;
   // Needs to be at least 20 pixels high to allow the icon to be shown properly
-  StatusBar_Status.Height                                 := max(StatusBar_Status.Height, 20);
-  StatusBar_Hint.Height                                   := StatusBar_Status.Height;
+  StatusBar_Status.Height := max(StatusBar_Status.Height, 20);
+  StatusBar_Hint.Height   := StatusBar_Status.Height;
 
 end;
 
@@ -873,7 +869,7 @@ begin
   end;
 
   if (PartitionImage <> nil) then begin
-    Filesystem                        := TSDFilesystem_FAT.Create();
+    Filesystem := TSDFilesystem_FAT.Create();
     Filesystem.PreserveTimeDateStamps := gSettings.OptPreserveTimestampsOnStoreExtract;
 
     Filesystem.PartitionImage := PartitionImage;
@@ -1127,8 +1123,6 @@ begin
     Result := freeDriveLetters[1];
   end;
 
-
-
 end;
 
 
@@ -1180,8 +1174,8 @@ begin
       lastErrorNo  := GetLastError();
       lastErrorMsg := SysErrorMessage(lastErrorNo) + ' (0x' + SDUIntToHex(lastErrorNo, 8) + ')';
       comment      := '';
-      if ((lastErrorNo = ERROR_NO_NET_OR_BAD_PATH) or
-        (lastErrorNo = ERROR_WORKSTATION_DRIVER_NOT_INSTALLED)) then begin
+      if ((lastErrorNo = ERROR_NO_NET_OR_BAD_PATH) or (lastErrorNo =
+        ERROR_WORKSTATION_DRIVER_NOT_INSTALLED)) then begin
         comment := _('Please ensure that the WebClient service is running');
       end;
 
@@ -1193,7 +1187,6 @@ begin
         );
     end;
   end;
-
 
 end;
 
@@ -1463,8 +1456,8 @@ begin
   targetIdx := TMenuItem(Sender).Tag;
 
   // Sanity check
-  if ((FNavigateHistory.Count > 0) and (targetIdx >= 0) and
-    (targetIdx <= (FNavigateHistory.Count - 1))) then begin
+  if ((FNavigateHistory.Count > 0) and (targetIdx >= 0) and (targetIdx <=
+    (FNavigateHistory.Count - 1))) then begin
     NavigateToHistoryIdx(targetIdx);
   end;
 
@@ -1692,8 +1685,8 @@ begin
 
   if not (FInFormShow) then begin
     Application.ProcessMessages();  // Required in order to get display to
-                                    // update when called in a loop
-                                    // (e.g. when processing multiple files, etc)
+    // update when called in a loop
+    // (e.g. when processing multiple files, etc)
   end;
 
 end;
@@ -1890,7 +1883,7 @@ procedure TfrmFreeOTFEExplorerMain.actCreateSubDirExecute(Sender: TObject);
 var
   dlg:        TfrmNewDirDlg;
   prevCursor: TCursor;
-  ok : boolean;
+  ok:         Boolean;
 begin
   inherited;
 
@@ -1974,9 +1967,9 @@ procedure TfrmFreeOTFEExplorerMain.MountPlaintextImage(filename: String; mountRe
 begin
   Dismount();
 
-  PartitionImage                                  := TSDPartitionImage_File.Create();
+  PartitionImage         := TSDPartitionImage_File.Create();
   TSDPartitionImage_File(PartitionImage).Filename := filename;
-  PartitionImage.Mounted                          := True;
+  PartitionImage.Mounted := True;
 
   if not (PartitionImage.Mounted) then begin
     PartitionImage.Free();
@@ -1984,7 +1977,7 @@ begin
   end;
 
   if (PartitionImage <> nil) then begin
-    Filesystem                        := TSDFilesystem_FAT.Create();
+    Filesystem := TSDFilesystem_FAT.Create();
     Filesystem.PreserveTimeDateStamps := gSettings.OptPreserveTimestampsOnStoreExtract;
 
     Filesystem.PartitionImage := PartitionImage;
@@ -2630,7 +2623,6 @@ begin
       UNITS_BYTES_MULTIPLIER, 2);
   end;
 
-
 end;
 
 procedure TfrmFreeOTFEExplorerMain.SDFilesystemListView1SelectItem(Sender: TObject;
@@ -2719,7 +2711,7 @@ begin
 
   dlg := TfrmOptions_FreeOTFEExplorer.Create(self);
   try
-//    dlg.OTFEFreeOTFEBase := fOTFEFreeOTFEBase;
+    //    dlg.OTFEFreeOTFEBase := fOTFEFreeOTFEBase;
     if (dlg.ShowModal() = mrOk) then begin
       ReloadSettings();
       actRefreshExecute(nil);
@@ -3018,8 +3010,8 @@ end;
 function TfrmFreeOTFEExplorerMain.IsFilenameValid(filename: WideString): Boolean;
 var
   invalidCharsForDisplay: String;
-  filenameNoDots:         WideString;
-  i:                      Integer;
+  filenameNoDots: WideString;
+  i: Integer;
 begin
   Result := Filesystem.IsValidFilename(filename);
 
@@ -3044,7 +3036,6 @@ begin
         SDUCRLF + SDUCRLF + '%1'), [invalidCharsForDisplay]), mtError);
     end;
   end;
-
 
 end;
 
@@ -3438,7 +3429,7 @@ begin
   gSettings.Save();
 
 
-//  fOTFEFreeOTFEBase.Free();
+  //  fOTFEFreeOTFEBase.Free();
 
 end;
 
@@ -3455,9 +3446,9 @@ var
   //  sysMagGlassIcon: TIcon;
   settingsFilename: String;
 begin
-  gSettings          := TFreeOTFEExplorerSettings.Create();
+  gSettings := TFreeOTFEExplorerSettings.Create();
   SetFreeOTFEType(TOTFEFreeOTFEDLL);
-//  fOTFEFreeOTFEBase := TOTFEFreeOTFEDLL.Create();
+  //  fOTFEFreeOTFEBase := TOTFEFreeOTFEDLL.Create();
 
 
   FInFormShow   := False;
@@ -3465,14 +3456,14 @@ begin
 
 
 
-  fShredderObj  := TShredder.Create(nil);
-  fWebDAVObj    := TFreeOTFEExplorerWebDAV.Create(nil);
+  fShredderObj := TShredder.Create(nil);
+  fWebDAVObj   := TFreeOTFEExplorerWebDAV.Create(nil);
   FMappedDrive := #0;
 
 
   CommonSettingsObj := gSettings;
   if SDUCommandLineParameter(CMDLINE_SETTINGSFILE, settingsFilename) then begin
-    settingsFilename        := SDURelativePathToAbsolute(settingsFilename);
+    settingsFilename         := SDURelativePathToAbsolute(settingsFilename);
     gSettings.CustomLocation := settingsFilename;
   end;
   gSettings.Load();
@@ -3580,20 +3571,19 @@ begin
   // previously selected node appears selected
   SDFilesystemTreeView1.RightClickSelect := True;
 
-
 end;
 
 procedure TfrmFreeOTFEExplorerMain.FormDestroy(Sender: TObject);
 begin
   inherited;
-  FreeAndNil(gSettings );
-//   FreeAndNil(fOtfeFreeOtfeBase);
+  FreeAndNil(gSettings);
+  //   FreeAndNil(fOtfeFreeOtfeBase);
 
 
 
-  FreeAndNil( fShredderObj );
- FreeAndNil( fWebDAVObj );
- //  WebDAVShutdown();
+  FreeAndNil(fShredderObj);
+  FreeAndNil(fWebDAVObj);
+  //  WebDAVShutdown();
 
 
   FNavigateHistory.Free();
@@ -3661,7 +3651,6 @@ begin
     SDUFormatAsBytesUnits(existingSize), DateTimeToStr(existingDateTime),
     SDUFormatAsBytesUnits(newSize), newDateTime]));
 
-
 end;
 
 // Returns one of: mrYes, mrYesToAll, mrNo, mrCancel
@@ -3677,7 +3666,6 @@ begin
     SDUFormatAsBytesUnits(existingSize), DateTimeToStr(existingDateTime),
     SDUFormatAsBytesUnits(newSize), newDateTime]), mtConfirmation,
     [mbYes, mbNo, mbCancel, mbYesToAll], 0);
-
 
 end;
 
@@ -3741,7 +3729,6 @@ begin
   Result := PromptToReplaceYYANC(ExtractFilename(srcPathAndFilename), destSize,
     destDateTime, srcSize, srcDateTime);
 
-
 end;
 
 function TfrmFreeOTFEExplorerMain._StoreFile(path: WideString; fileToStore: String): Boolean;
@@ -3762,7 +3749,6 @@ begin
     fileStream.Free();
     item.Free();
   end;
-
 
 end;
 
@@ -3808,7 +3794,6 @@ begin
     Result := Filesystem.Mounted;
   end;
 
-
 end;
 
 
@@ -3828,7 +3813,6 @@ begin
       currMenuItem := currMenuItem.Parent;
     end;
   end;
-
 
 end;
 
@@ -3894,7 +3878,6 @@ begin
     Result := SDFilesystemListView1.Path;
   end;
 
-
 end;
 
 function TfrmFreeOTFEExplorerMain.HandleCommandLineOpts_Mount(): eCmdLine_Exit;
@@ -3912,7 +3895,7 @@ begin
     postMounted := GetFreeOTFEDLL().DrivesMounted;
 
     if ((Result = ceSUCCESS) and (preMounted <> postMounted) and
-                           // Sanity check
+      // Sanity check
       (postMounted <> '')  // Sanity check
       ) then begin
       PostMountGUISetup(postMounted[1]);
@@ -4017,7 +4000,6 @@ begin
     end;
   end;
 
-
 end;
 
 
@@ -4073,7 +4055,6 @@ begin
   finally
     stlItems.Free();
   end;
-
 
 end;
 
@@ -4188,9 +4169,9 @@ begin
   if (items.Count = 1) then begin
     srcFilename := items[0];
     if Filesystem.FileExists(srcFilename) then begin
-      SDUSaveDialog_Extract.Options  := SDUSaveDialog_Extract.Options + [ofDontAddToRecent];
+      SDUSaveDialog_Extract.Options := SDUSaveDialog_Extract.Options + [ofDontAddToRecent];
       SDUSaveDialog_Extract.Filename := ExtractFilename(srcFilename);
-      allOK                          := SDUSaveDialog_Extract.Execute();
+      allOK := SDUSaveDialog_Extract.Execute();
       if allOK then begin
         newFilename := SDUSaveDialog_Extract.Filename;
 
@@ -4282,13 +4263,12 @@ begin
       destIsMountedFSNotLocalFS, destDir, destFilename);
   end;
 
-
 end;
 
 function TfrmFreeOTFEExplorerMain.DetermineTotalSize(isMountedFSNotLocalFS: Boolean;
   items: TStrings): ULONGLONG;
 var
-  i:      Integer;
+  i: Integer;
 begin
   Result := 0;
   for i := 0 to (items.Count - 1) do begin
@@ -4299,7 +4279,6 @@ begin
     end;
 
   end;
-
 
 end;
 
@@ -4333,16 +4312,15 @@ begin
     end;
   end;
 
-
 end;
 
 
 function TfrmFreeOTFEExplorerMain._DetermineTotalSize_MountedDir(isMountedFSNotLocalFS: Boolean;
   srcItem: String): ULONGLONG;
 var
-  srcDirContents:            TSDDirItemList;
-  i:                         Integer;
-  currSrcSubItem:            TSDDirItem;
+  srcDirContents: TSDDirItemList;
+  i:              Integer;
+  currSrcSubItem: TSDDirItem;
   currSrcSubPathAndFilename: String;
 begin
   Result := 0;
@@ -4378,7 +4356,6 @@ begin
   finally
     srcDirContents.Free();
   end;
-
 
 end;
 
@@ -4508,7 +4485,6 @@ begin
 
   Result := not (abortAllRemaining);
 
-
 end;
 
 procedure TfrmFreeOTFEExplorerMain.ProgressDlgSetup(opType: TFExplOperation);
@@ -4604,8 +4580,6 @@ begin
   if (FOpProgressDlg <> nil) then begin
     Result := FOpProgressDlg.HasUserCancelled();
   end;
-
-
 
 end;
 
@@ -4831,7 +4805,7 @@ begin
               // Do nothing - goodToDoOp already set to TRUE
             end else
             if (confirmResult = mrYesToAll) then begin
-                                             // goodToDoOp already set to TRUE
+              // goodToDoOp already set to TRUE
               promptOverwriteFiles := False; // This is what MS Windows explorer appears to do.
             end else
             if (confirmResult = mrNo) then begin
@@ -4935,7 +4909,6 @@ function TfrmFreeOTFEExplorerMain._PerformOperation_File_Actual(opType: TFExplOp
       Result := PATH_SEPARATOR;
     end;
 
-
   end;
 
 var
@@ -5028,7 +5001,6 @@ begin
     Screen.Cursor := prevCursor;
   end;
 
-
 end;
 
 function TfrmFreeOTFEExplorerMain.DeleteLocalFSItemUsingMethod(moveDeletionMethod:
@@ -5092,7 +5064,6 @@ begin
 
   end;
 
-
 end;
 
 procedure TfrmFreeOTFEExplorerMain.OverwritePassStarted(Sender: TObject;
@@ -5117,19 +5088,19 @@ function TfrmFreeOTFEExplorerMain._PerformOperation_Dir(opType: TFExplOperation;
   moveDeletionMethod: TMoveDeletionMethod; var promptOverwriteFiles: Boolean;
   var promptOverwriteDirs: Boolean): Boolean;
 var
-  abortAllRemaining:         Boolean;
-  goodToDoOp:                Boolean;
-  destItem:                  String;
-  srcDirContents:            TSDDirItemList;
-  junkFALSE:                 Boolean;
-  confirmResult:             Word;
-  i:                         Integer;
-  currSrcSubItem:            TSDDirItem;
+  abortAllRemaining:  Boolean;
+  goodToDoOp:         Boolean;
+  destItem:           String;
+  srcDirContents:     TSDDirItemList;
+  junkFALSE:          Boolean;
+  confirmResult:      Word;
+  i:                  Integer;
+  currSrcSubItem:     TSDDirItem;
   currSrcSubPathAndFilename: String;
-  srcOK:                     Boolean;
-  destOK:                    Boolean;
-  destItemExistsFile:        Boolean;
-  destItemExistsDir:         Boolean;
+  srcOK:              Boolean;
+  destOK:             Boolean;
+  destItemExistsFile: Boolean;
+  destItemExistsDir:  Boolean;
 begin
   goodToDoOp        := True;
   abortAllRemaining := False;
@@ -5284,8 +5255,7 @@ begin
     ) then begin
     srcDirContents := TSDDirItemList.Create();
     try
-      if FSLoadContentsFromDisk(srcIsMountedFSNotLocalFS, srcItem, srcDirContents) then
-      begin
+      if FSLoadContentsFromDisk(srcIsMountedFSNotLocalFS, srcItem, srcDirContents) then begin
         // These pass FALSE through always
         junkFALSE := False;
 
@@ -5380,7 +5350,6 @@ begin
     Result := True;
   end;
 
-
 end;
 
 function TfrmFreeOTFEExplorerMain.GetLocalFileDetails(pathAndFilename: String;
@@ -5428,48 +5397,48 @@ function TfrmFreeOTFEExplorerMain.DoTests: Boolean;
 var
   mountList: TStringList;
   mountedAs: DriveLetterString;
-  vol_path, key_file, les_file,projPath: String;
-  vl: Integer;
+  vol_path, key_file, les_file, projPath: String;
+  vl:        Integer;
 const
   TEST_VOLS: array[0..12] of String =
     ('a.box', 'b.box', 'c.box', 'd.box', 'e.box',
-     'e.box', 'f.box', 'luks.box',  'luks_essiv.box', 'a.box',
-      'b.box', 'dmcrypt_dx.box', 'dmcrypt_dx.box');
-  PASSWORDS: array[0..12] of AnsiString =
+    'e.box', 'f.box', 'luks.box', 'luks_essiv.box', 'a.box',
+    'b.box', 'dmcrypt_dx.box', 'dmcrypt_dx.box');
+  PASSWORDS: array[0..12] of Ansistring =
     ('password', 'password', '!"£$%^&*()', 'password', 'password',
-     '5ekr1t',    'password', 'password', 'password', 'secret',
-      'secret', 'password', '5ekr1t');
+    '5ekr1t', 'password', 'password', 'password', 'secret',
+    'secret', 'password', '5ekr1t');
   ITERATIONS: array[0..12] of Integer =
     (2048, 2048, 2048, 2048, 10240,
-     2048, 2048, 2048, 2048, 2048,
-     2048, 2048, 2048);
+    2048, 2048, 2048, 2048, 2048,
+    2048, 2048, 2048);
   OFFSET: array[0..12] of Integer =
     (0, 0, 0, 0, 0,
-     2097152, 0, 0, 0, 0,
-      0, 0, 0);
+    2097152, 0, 0, 0, 0,
+    0, 0, 0);
   KEY_FILES: array[0..12] of String =
     ('', '', '', '', '',
     '', '', '', '', 'a.cdb',
     'b.cdb', '', '');
   LES_FILES: array[0..12] of String =
     ('', '', '', '', '',
-     '', '', '', '', '',
-      '', 'dmcrypt_dx.les', 'dmcrypt_hid.les');
+    '', '', '', '', '',
+    '', 'dmcrypt_dx.les', 'dmcrypt_hid.les');
 
   procedure CheckMountedOK;
   var
-   s :string;
+    s: String;
   begin
-//    RefreshDrives();
+    //    RefreshDrives();
     // Mount successful
     //        prettyMountedAs := prettyPrintDriveLetters(mountedAs);
-     PostMountGUISetup(mountedAs[1]);
-     s:= SDFilesystemListView1.DirItem[0].Filename;//ToNode(SDFilesystemListView1.Items[0]);
-//    s:= GetSelectedPath(nil);
-    if LowerCase(s) <> 'readme.txt' then  begin
-        SDUMessageDlg('File: readme.txt not found');
-        Result := False;
-      end;
+    PostMountGUISetup(mountedAs[1]);
+    s := SDFilesystemListView1.DirItem[0].Filename;//ToNode(SDFilesystemListView1.Items[0]);
+    //    s:= GetSelectedPath(nil);
+    if LowerCase(s) <> 'readme.txt' then begin
+      SDUMessageDlg('File: readme.txt not found');
+      Result := False;
+    end;
     {
     if (CountValidDrives(mountedAs) <> 1) then begin
       SDUMessageDlg(Format('The Box %s has NOT been opened as drive: %s',
@@ -5490,7 +5459,7 @@ const
     Application.ProcessMessages;
     Dismount();
     Application.ProcessMessages;
-//    RefreshDrives();
+    //    RefreshDrives();
     Application.ProcessMessages;
     if CountValidDrives(GetFreeOTFEDLL().DrivesMounted) > 0 then begin
       SDUMessageDlg(Format('Drive(s) %s not unmounted', [GetFreeOTFEDLL().DrivesMounted]));
@@ -5501,7 +5470,7 @@ const
 begin
   inherited;
 
-  Result    := True;
+  Result := True;
   if not GetFreeOTFEBase().Active then begin
     ShowMessage('component not active - cnat run tests');
     exit;
@@ -5532,20 +5501,21 @@ begin
 
       if GetFreeOTFEDLL().IsLUKSVolume(vol_path + TEST_VOLS[vl]) or (LES_FILES[vl] <> '') then
       begin
-        if not GetFreeOTFEDLL().MountLinux(mountList, mountedAs, True, les_file,SDUStringToSDUBytes(PASSWORDS[vl]),
-          key_file, False, nlLF, 0, True) then
+        if not GetFreeOTFEDLL().MountLinux(mountList, mountedAs, True,
+          les_file, SDUStringToSDUBytes(PASSWORDS[vl]), key_file, False, nlLF, 0, True) then
           Result := False;
       end else begin
         //call silently
         if not GetFreeOTFEDLL().MountFreeOTFE(mountList, mountedAs, True,
-          key_file,SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False, True, 256, ITERATIONS[vl]) then
+          key_file, SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False, True,
+          256, ITERATIONS[vl]) then
           Result := False;
       end;
       if not Result then begin
         SDUMessageDlg(
           _('Unable to open ') + TEST_VOLS[vl] + '.', mtError);
       end else begin
-       CheckMountedOK;
+        CheckMountedOK;
         UnMountAndCheck;
       end;
       Inc(vl);
