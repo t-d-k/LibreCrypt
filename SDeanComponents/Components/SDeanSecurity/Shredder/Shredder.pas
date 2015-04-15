@@ -266,7 +266,7 @@ uses
   Math,
   SDUi18n,
   SDUFileIterator_U, SDUDirIterator_U,
-  SDUDialogs,
+  lcDialogs,
   Registry;
 
 type

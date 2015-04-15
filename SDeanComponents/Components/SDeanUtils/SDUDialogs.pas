@@ -2,13 +2,14 @@ unit SDUDialogs;
 
 // Note: In order to use this, need XP Manifest in your application
 // See also: TaskDialogIndirect(...) and TASKDIALOGCONFIG!!!
+// msg boxes fns moved to lcDialogs
 
 interface
 
 uses
   Dialogs,
   Windows;
-
+ (*
 const
   // Consts for use with Vista TaskDialogs
   // Taken from CommCtrl.h, Vista SDK
@@ -66,8 +67,8 @@ const
   SDVISTA_TD_ICON_SHIELD      = PWChar(32518);
 }
 
-
-type
+                *)
+ type
 {these dialogs just don't change working dir if PreserveCWD is set}
   TSDUOpenDialog = class(TOpenDialog)
   private
@@ -88,20 +89,19 @@ type
   end;
 
 procedure Register;
-   { TODO -otdk -crefactor : what is the point of these functions - needed in >XP? }
-    { TODO -otdk -crefactor : split file into copmonents and non component utils }
-var
-  // If set, then any messages displayed will have any single CRLFs stripped
-  // out, while double CRLFs (SDU_CRLF+SDUCRLF) will be preserved under
-  // Windows Vista and later
-  // This allows messages to have CRLFs included in them for pre-Vista systems,
-  // in order to break up long lines - but on Vista, which does more sensible
-  // word wrapping, such CRLFs will be removed
-  SDUDialogsStripSingleCRLF: boolean = TRUE;
+
+//var
+//  // If set, then any messages displayed will have any single CRLFs stripped
+//  // out, while double CRLFs (SDU_CRLF+SDUCRLF) will be preserved under
+//  // Windows Vista and later
+//  // This allows messages to have CRLFs included in them for pre-Vista systems,
+//  // in order to break up long lines - but on Vista, which does more sensible
+//  // word wrapping, such CRLFs will be removed
+//  SDUDialogsStripSingleCRLF: boolean = TRUE;
 
   // set to true to suppress all dialogs (ege for testing)
 //  G_SuppressDialogs : boolean = False;
-
+ (*
 // Display confirmation dialog with OK/Cancel or Yes/No buttons.
 // Returns TRUE if the user selects OK or Yes.
 function SDUConfirmOK(msg: string): boolean;
@@ -163,7 +163,7 @@ function SDUVistaTaskDialog(
   CommonButtons: integer;
   Icon: PWChar
 ): integer; overload;
-
+              *)
 
 implementation
 
@@ -176,8 +176,9 @@ uses
   SDUGeneral,
   SysUtils;  // Required for StringReplace
 
-
+(*
 resourcestring
+
 // Ugly hack to prevent:
 //   [Pascal Error] E2201 Need imported data reference ($G) to access 'SMsgDlgInformation' from unit 'SDUDialogs'
 // compiler error; copy of consts from "Consts.pas"
@@ -209,8 +210,8 @@ const
   COMCTL32_LIB_DLL = 'COMCTL32.DLL';
 
   DLL_FUNCTIONNAME_TaskDialog = 'TaskDialog';
-
-
+             *)
+  (*
 type
   // Library function definition
   // From CommCtrl.h, Vista SDK
@@ -237,6 +238,7 @@ type
 
 
 var
+
   _SDUTaskDialog_hLib: THandle;
   _SDUTaskDialog_lib_TaskDialog: TFnTaskDialog;
 
@@ -247,7 +249,7 @@ function _SDUTaskDialog_GetDLLProcAddresses(): boolean; forward;
 procedure _SDUTaskDialog_UnloadDLL(); forward;
 
 function _SDUDialogs_StripSingleNewlines(msg: string): string; forward;
-
+       *)
 
 // ----------------------------------------------------------------------------
 procedure Register;
@@ -255,7 +257,7 @@ begin
   RegisterComponents('SDeanUtils', [TSDUOpenDialog]);
   RegisterComponents('SDeanUtils', [TSDUSaveDialog]);
 end;
-
+     (*
 // ----------------------------------------------------------------------------
 function _SDUTaskDialog_LoadDLL(): boolean;
 begin
@@ -904,7 +906,7 @@ function SDUErrorYN(msg: string): boolean;
 begin
   Result := (SDUMessageDlg(msg, mtError, [mbYes, mbNo], 0) = mrYes);
 end;
-
+ *)
 
 // ----------------------------------------------------------------------------
 function TSDUOpenDialog.Execute(): boolean;
