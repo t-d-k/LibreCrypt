@@ -68,13 +68,13 @@ The latest version of this document can be found at the [DoxBox project site](ht
 
   * Added Russian language translation
   * Added translator credit to "About..." dialog
-  * Minor tweaks to portableapps .com launcher
+  * Minor tweaks to portableapps.com launcher
 
 * v5.20 (3rd January 2010)
 
   * Added support for using keyfiles with LUKS volumes (Hint: For ease of use, keyfiles may also be dragged and dropped onto the LUKS password entry dialog)
   * Changed disk/partition selection dialog to treat double-clicking on a disk/partition as selecting it. Selected disk/partition properties can now be accessed via context menu item
-  * When mounting a file based volume which is readonly, the readonly checkbox will automatically be selected
+  * When mounting a file based volume which is read-only, the read-only check-box will automatically be selected
   * Change made such that if FreeOTFE's MRU list is disabled (this is the default), then volumes, keyfiles, etc will not appear on the MS Windows system MRU list either.
   * Added Greek language translation
   * Added Croatian language translation
