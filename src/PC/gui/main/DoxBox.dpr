@@ -9,12 +9,11 @@ program DoxBox;
   }
 
 uses
-  //delphi/library units
   FastMM4,
   Forms,
   Windows,
-  SysUtils, // for 'exception'
-  Dialogs,  //for messagedlg
+  SysUtils,
+  Dialogs,
   FreeOTFEfrmMain in 'FreeOTFEfrmMain.pas' {frmFreeOTFEMain},
   FreeOTFEConsts in 'FreeOTFEConsts.pas',
   FreeOTFEfrmVolProperties in 'FreeOTFEfrmVolProperties.pas' {frmFreeOTFEVolProperties},
@@ -36,7 +35,6 @@ uses
   CommonfrmMain in '..\common\CommonfrmMain.pas' {frmMain},
   FreeOTFEfrmOptions in 'FreeOTFEfrmOptions.pas' {frmOptions_FreeOTFE},
   FreeOTFEfmeOptions_Base in 'FreeOTFEfmeOptions_Base.pas' {fmeFreeOTFEOptions_Base: TFrame},
-  CommonfrmVersionCheck in '..\common\CommonfrmVersionCheck.pas' {frmVersionCheck},
   FreeOTFEfmeOptions_Advanced in 'FreeOTFEfmeOptions_Advanced.pas' {fmeOptions_FreeOTFEAdvanced: TFrame},
   CommonConsts in '..\common\CommonConsts.pas',
   CommonfrmCDBDump_LUKS in '..\common\CommonfrmCDBDump_LUKS.pas' {frmCDBDump_LUKS},
@@ -100,7 +98,10 @@ uses
   pkcs11_attribute in '..\common\SDeanSecurity\PKCS#11\pkcs11_attribute.pas',
   pkcs11_object in '..\common\SDeanSecurity\PKCS#11\pkcs11_object.pas',
   PKCS11KnownLibs in '..\common\SDeanSecurity\PKCS#11\PKCS11KnownLibs.pas',
-  PKCS11LibrarySelectDlg in '..\common\SDeanSecurity\PKCS#11\PKCS11LibrarySelectDlg.pas' {PKCS11LibrarySelectDialog};
+  PKCS11LibrarySelectDlg in '..\common\SDeanSecurity\PKCS#11\PKCS11LibrarySelectDlg.pas' {PKCS11LibrarySelectDialog},
+  OTFEFreeOTFE_U in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_U.pas',
+  OTFEFreeOTFE_DriverAPI in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas',
+  CommonfrmVersionCheck in '..\common\CommonfrmVersionCheck.pas' {frmVersionCheck};
 
 {$R *.RES}
 
@@ -162,7 +163,7 @@ begin
       // NOTE: The main form's Visible property is set to FALSE anyway - it *HAS*
       // to be, otherwise it'll be displayed; dispite the following two lines
       Application.CreateForm(TfrmFreeOTFEMain, frmFreeOTFEMain);
-      frmFreeOTFEMain.Visible  := False;
+  frmFreeOTFEMain.Visible  := False;
       Application.ShowMainForm := False;
 
       CommandLineOnly := frmFreeOTFEMain.HandleCommandLineOpts(cmdExitCode);
@@ -186,7 +187,6 @@ begin
           frmFreeOTFEMain.Visible  := True;
           Application.ShowMainForm := True;
           frmFreeOTFEMain.InitApp();
-
 
 {$IF CompilerVersion >= 18.5}
           // Delphi 7 doesn't need this, but Delphi 2007 (and 2006 as well? Not
