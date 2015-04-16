@@ -64,6 +64,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.2
 
 [Files]
+; exes dlls etc
 Source: "P:\Projects\Delphi\doxbox\bin\PC\DoxBox.exe"; DestDir: "{app}"; Flags: ignoreversion 
 Source: "P:\Projects\Delphi\doxbox\bin\PC\DoxBoxExplorer.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "P:\Projects\Delphi\doxbox\bin\PC\amd64\*"; DestDir: "{app}\amd64"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -73,6 +74,13 @@ Source: "P:\Projects\Delphi\doxbox\bin\PC\xp_86\*"; DestDir: "{app}\xp_86"; Flag
 Source: "P:\Projects\Delphi\doxbox\bin\PC\cryptlib\*.dll"; DestDir: "{app}\cryptlib";
 Source: "P:\Projects\Delphi\doxbox\bin\PC\locale\*"; DestDir: "{app}\locale"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+; docs
+Source: "P:\Projects\Delphi\doxbox\docs\*.html"; DestDir: "{app}\docs"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "P:\Projects\Delphi\doxbox\docs\*.css"; DestDir: "{app}\docs"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "P:\Projects\Delphi\doxbox\docs\FORENSIC METHODS FOR DETECTION OF DENIABLE ENCRYPTION.pdf"; DestDir: "{app}\docs"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "P:\Projects\Delphi\doxbox\docs\images\*"; DestDir: "{app}\docs\images"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "P:\Projects\Delphi\doxbox\docs\images\screenshots\PC\*"; DestDir: "{app}\docs\images\screenshots\PC"; Flags: ignoreversion recursesubdirs createallsubdirs
+
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
