@@ -503,7 +503,7 @@ function SDUCopyFile_Compression(Source: String; destination: String;
  // function SDUXOR(a: TSDUBytes; b: TSDUBytes): TSDUBytes;
 
 //function SDUXOR(a: Ansistring; b: Ansistring): Ansistring;
-function SDUXOR(a: TSDUBytes; b: TSDUBytes): TSDUBytes;
+function SDUXOR(a: TSDUBytes; b: array of byte): TSDUBytes;
 function SDUXORStr(a: Ansistring; b: Ansistring): Ansistring;
  { DONE 1 -otdk -cclean : use bytes instead of chars }
  // Calculate x! (factorial X)
@@ -950,7 +950,7 @@ function SDUBytesToString(const Value: TSDUBytes): Ansistring;
 //sets bytes to all zeros and sets length to 0
 procedure SDUInitAndZeroBuffer(len: Cardinal; var val: TSDUBytes);
 //sets bytes to all zeros
-procedure SDUZeroBuffer(buf: TSDUBytes);
+procedure SDUZeroBuffer(var buf: array of Byte);
 procedure SDUZeroString(var buf: Ansistring);
 
 //adds byte to array
@@ -4107,7 +4107,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function SDUXOR(a: TSDUBytes; b: TSDUBytes): TSDUBytes;
+function SDUXOR(a: TSDUBytes; b: array of byte): TSDUBytes;
   //function SDUXOR(a: Ansistring; b: Ansistring): Ansistring;
   { DONE 1 -otdk -cclean : use bytes instead of chars }
 var
@@ -6068,7 +6068,7 @@ begin
   DecodeTime(inTime, AHour, AMinute, ASecond, AMilliSecond);
   Result := Format('%.2d:%.2d', [AHour, AMinute]);
   if includeSeconds then
-    Result := Result+ Format(':%.2d', [Result, ASecond]);
+    Result := Result+ Format(':%.2d', [ASecond]);
 end;
 
 // Encode date to YYYY-MM-DDTHH:MM format
@@ -6774,7 +6774,7 @@ begin
     aTo[i] := aFrom[i];
 end;
 
-procedure SDUZeroBuffer(buf: TSDUBytes);
+procedure SDUZeroBuffer(var buf: array of byte);
 var
   i: Integer;
 begin
