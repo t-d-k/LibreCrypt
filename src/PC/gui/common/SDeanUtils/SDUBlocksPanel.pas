@@ -14,7 +14,7 @@ uses
   Forms,
   FreeOTFESettings,
   Graphics, Messages, SysUtils, Types
-  , Variants, Windows;
+  , Variants, Windows, Vcl.StdCtrls;
 
 type
   // Note: Both Caption and SubCaption can have CRLFs (e.g. SDUCRLF) in them
@@ -30,6 +30,7 @@ type
 
 
   TSDUBlocksPanel = class (TFrame)
+    Label1: TLabel;
   PROTECTED
     FLastXY:     TPoint;
     FBlocks:     array of TBlock;
@@ -82,10 +83,9 @@ uses
   GraphUtil, Math;
 
 {
-procedure Register;
-begin
-  RegisterComponents('SDeanUtils', [TSDUBlocksPanel]);
-end;
+this frame has  a control on it that isnt used, because that forces PaintWindow to be called, see:
+http://stackoverflow.com/questions/10681027/what-is-the-most-safe-and-correct-way-to-paint-on-a-tframe-surface
+cant set DoubleBuffered := true; bc may be overridden
 }
 constructor TSDUBlocksPanel.Create(AOwner: TComponent);
 begin
@@ -97,7 +97,6 @@ begin
   TabStop := True;
 
   RemoveAllBlocks();
-  DoubleBuffered := true; //else paintwindow not called -see http://stackoverflow.com/questions/10681027/what-is-the-most-safe-and-correct-way-to-paint-on-a-tframe-surface
   FCanvas := TCanvas.Create();
 end;
 

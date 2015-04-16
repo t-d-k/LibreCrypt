@@ -16,7 +16,7 @@ uses
      //sdu & doxbox utils - layer 1
   SDUBlocksPanel,
   SDUGeneral,
-  SDUObjectManager;
+  SDUObjectManager, Vcl.Controls, Vcl.StdCtrls;
 
 type
   // Exceptions...
