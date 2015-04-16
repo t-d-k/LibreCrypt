@@ -70,6 +70,7 @@ type
     class procedure GetRandomData(bytesRequired: Integer;
     // Output
       out randomData: TSDUBytes);
+class procedure FillRandomData(var randomData: array of byte);
 
     class function CanUseCryptLib(): Boolean;
     //obsolete
@@ -110,7 +111,7 @@ uses
   Dialogs, MSCryptoAPI,
   // Required for showmessage
   //sdu
-  SDUDialogs,
+  lcDialogs,
   SDUi18n,
   //dosbox
   OTFEFreeOTFE_cryptlib,
@@ -304,6 +305,20 @@ begin
   _gpgFilename   := gpgFilename;
   _inited        := True;
 end;
+
+
+class procedure TRandPool.FillRandomData(
+  // Output
+  var randomData: array of byte);
+  var
+     currRandom: TSDUBytes;
+     i:integer;
+  begin
+     GetRandomData(length(randomData), currRandom);
+     for i := 0 to high(currRandom)  do
+       randomData[i] :=  currRandom[i];
+     SafeSetLength(currRandom,0);
+  end;
 
 class procedure TRandPool.GetRandomData(bytesRequired: Integer;
   // Output
