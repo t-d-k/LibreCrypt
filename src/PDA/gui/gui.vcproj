@@ -10,17 +10,17 @@
 	>
 	<Platforms>
 		<Platform
-			Name="Pocket PC 2003 (ARMV4)"
+			Name="Win32"
 		/>
 		<Platform
-			Name="Smartphone 2003 (ARMV4)"
+			Name="Win64"
 		/>
 	</Platforms>
 	<ToolFiles>
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Pocket PC 2003 (ARMV4)"
+			Name="Debug|Win32"
 			OutputDirectory="..\..\..\bin\PDA\$(PlatformName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -106,7 +106,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug|Smartphone 2003 (ARMV4)"
+			Name="Debug|Win64"
 			OutputDirectory="..\..\..\bin\PDA\$(PlatformName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -192,7 +192,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Pocket PC 2003 (ARMV4)"
+			Name="Release|Win32"
 			OutputDirectory="..\..\..\bin\PDA\$(PlatformName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -280,7 +280,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Smartphone 2003 (ARMV4)"
+			Name="Release|Win64"
 			OutputDirectory="..\..\..\bin\PDA\$(PlatformName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -373,12 +373,8 @@
 		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FE}"
 			>
-			<File
-				RelativePath="..\..\PDA\gui\src\dlgAbout.c"
-				>
-			</File>
 			<File
 				RelativePath=".\src\dlgBackupRestore.c"
 				>
@@ -539,7 +535,7 @@
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFC}"
 			>
 			<File
 				RelativePath="..\..\PDA\gui\src\dlgAbout.h"
@@ -745,7 +741,7 @@
 		<Filter
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD02}"
 			>
 			<File
 				RelativePath="..\..\Common\Common\images\FreeOTFE.ico"
