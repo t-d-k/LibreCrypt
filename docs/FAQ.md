@@ -57,7 +57,6 @@ The latest version of this FAQ, along with the latest DoxBox user manual, can be
 * [DoxBox may always be free, but will an "enhanced" version (which is charged for) with extra features be released (perhaps under a different name)?](#ai)
 * [What about klonsoft's "LockDisk" and WinCrypto LLC's "CryptoDisk"? Aren't they paid-for packages which are based on DoxBox?](#ct)
 * [Do DoxBox volumes have any kind of identifying "signature"?](#hg)
-* [By examining a DoxBox/encrypted Linux volume file, can anyone tell what it is?](#ao)
 * [What is "plausible deniability?"](#ap)
 * [What do the numbers and letters after a hash name mean?](#aq_1)
 * [What do the numbers and letters after a cypher name mean?](#aq_2)
@@ -203,24 +202,12 @@ This is not a security feature because in order to gain approval you only need t
 
 The main impact is on Open-Source projects such as DoxBox.
 
-There are three possible reasons for this,
-
-1. is that it is a direct source of revenue for Microsoft.
-2. it means they can stop virtual devices from capturing audio and video and bypassing DRM. this is clearly not the only reason, as claimed by Microsoft, because it applies to all devices not just to audio & video drivers.
-3. It gives Microsoft control over what users do with their PCs - turning them partly into Microsoft's PCs instead of under the control of the users who own them.
-you can envisage Microsoft extending this to all software in the future, allowing them to charge a commission on every program sold, similar to the iPhone app store, or preventing apps being used that compete with Microsoft offerings, like LibreOffice.
-
 * * *
 
 <a name="sd"></a>
 *Q: Why don't you just sign the drivers?*
 
-*A:* The cost of the Microsoft certificate is currently $178 payable every year.
-
-Even if I had that in loose change lying around there's also the issue of whether its right to ask permission of Microsoft to use your own PC.
-Diver signing may be a 'trial balloon' by Microsoft - to see how people react before extending it to app-signing. the easier people accept losing control over their drivers the more likely they will lose complete control of their PCs.
-
-There are alternatives to DoxBox available on Linux, that are easy to use, secure, and do not need to be run in 'test mode'. DoxBox is provided mostly because people insist they *have* to use Windows for some reason, and have to have the extra security of an open source project. having to paste a single line into a command box is a small inconvenience compared to all the other problems of windows.
+*A:* The cost of the Microsoft approved certificate is currently $178 payable every year.
 
 * * *
 <a name="fo"></a>
@@ -253,14 +240,14 @@ OS encryption is for higher security to encrypt information leaked to temp files
 
 I have not found any in my brief maintenance of DoxBox. I have found a weakness in [deniability](#hid_bug), however this was certainly known about by the original developer and is a misfeature not a bug.
 
-Every app may contain a security flaw, inadvertent or deliberate. software with the following features has the minimum risk of such flaws:
+Every app may contain a security flaw, inadvertent or deliberate. Software with the following features has the minimum risk of such flaws:
 
-* open source. open source code can be checked by anyone. this means a flaw is more likely to be found out, which is a deterrent against putting one in (or allowing one to creep in). you get the benefits of open source even if you do not yourself check the code, in the same way as you benefit from safety inspections of your car even if you've never held a spanner yourself.
-	DoxBox is open source and uses widely used public domain crypt libraries like libtomcrypt
-* widely used and standard encryption algorithms. widely used ones have been studied more and are less likely to contain unknown flaws than proprietary ones.
+* Open-Source. Open-Source code can be checked by anyone. This means a flaw is more likely to be found out, which is a deterrent against putting one in (or allowing one to creep in). you get the benefits of open source even if you do not yourself check the code, in the same way as you benefit from safety inspections of your car even if you've never held a spanner yourself.
+	DoxBox is open source and uses widely used public domain cryptographic libraries like Gladman.
+* Widely used and standard encryption algorithms. Widely used ones have been studied more, and are less likely to contain unknown flaws than proprietary ones.
 	DoxBox uses standard encryption algorithms like 3DES and AES.
-* widely used encryption schemes and formats. for the same reason ts are less likely to contain flaws than product specific ones.
-	DoxBox supports the LUKs and losetup encryption schemes that are in most Linux distributions including secure ones used by enterprise, govt's and militaries. DoxBox allows you  to use ts on Windows
+* Widely used encryption schemes and formats. For the same reason, these are less likely to contain flaws than product specific ones.
+	DoxBox supports the LUKs and losetup encryption schemes that are in most Linux distributions including secure ones used by enterprise, governments and militaries. DoxBox allows you to use these on Windows.
 	
 
 * * *
@@ -271,12 +258,11 @@ Every app may contain a security flaw, inadvertent or deliberate. software with 
 *A:* 
 The main differences are:
 
-* DoxBox can open native LUKS containers
-* Truecrypt has a Linux version available: tcrypt
-* DoxBox suports multiple hidden containers, TC only one.	
-* DoxBox is maintained.
-* Truecrypt supports 'cascading' cyphers. 
-
+* DoxBox can open native LUKS containers.
+* TrueCrypt supports encryption of the OS disc.
+* DoxBox supports multiple hidden containers, TrueCrypt only one.	
+* DoxBox is currently maintained.
+* TrueCrypt supports 'cascading' cyphers. 
 
 * * *
 
@@ -364,7 +350,7 @@ In WWII agents made up [poems](http://www.worldwar2history.info/war/espionage/co
 <a name="mem_pass"></a>
 *Q: How do I memorise a long enough keyphrase?*
 
-*A:* 	There are 3 techniques that work:
+*A:* 	There are three techniques that work:
 
 * Use [mnemonics](http://www.academictips.org/memory/index.html)
 * Write it down
@@ -461,17 +447,14 @@ _Q: Is DoxBox based on Linux's "losetup"?_
 
  * * *
  <a name="ad"></a>
-*Q: When I mount a FAT/FAT32 formatted Linux volume under DoxBox everything works perfectly. When I do the same with my ext2/ext3/Reisers/etc volume, I can't see my files!*
+*Q: When I mount a FAT/FAT32 formatted Linux volume under DoxBox everything works perfectly. When I do the same with my ext2/ext3/Reisers/etc volume, I can't see my files.*
 
-*A:* DoxBox does one thing: when a volume file is mounted, DoxBox presents a new storage device to the operating system.
- Like all transparent encryption systems, it has no comprehension **at all** of what FAT/FAT32/NTFS, let alone ext2/ext3/etc - understanding lies well *outside the scope of an encryption system*, and is the responsibility of the filesystem drivers installed.
+*A:* DoxBox only creates a virtual disk drive visible to the operating system. The O/S then takes care of decoding the filesystem (like NTFS or ext2).
+Decoding the filesystem lies well outside the scope of an encryption system, and is the responsibility of the filesystem drivers installed.
 
 Although Microsoft Windows does come with filesystem drivers for FAT/FAT32/NTFS, it does not (natively) support other filesystems such as ext2.
 
-As a result, in order to read/write to your encrypted Linux volumes under Microsoft Windows, you will need to either:
-
-1. Format the volume under Linux using one of the filesystems Microsoft Windows understands (e.g. FAT), or
-1. Install 3rd party software on your Microsoft Windows system, which provides the filesystem (e.g. ext2) that you wish to use
+ext2fsd has been succesfully used in conjuction with DoxBox to open ext2 and ext3 volumes in Windows. It should also work with ext4, however there have been no reports of this yet. 
 
 * * *
 
@@ -540,7 +523,7 @@ This is separate from any hash algorithm used to process your password, which in
 > * And for all this, you have to **pay for them?!!**
 >
 >
-> I could list another few dozen reasons for not using these products, but I think you get the picture - DoxBox is simply better!
+> I could list another few dozen reasons for not using these products, but I think you get the picture - FreeOTFE is simply better!
 
 * * *
 
@@ -548,24 +531,32 @@ This is separate from any hash algorithm used to process your password, which in
 *Q: Do DoxBox volumes have any kind of identifying "signature"?*
 
 *A:*
-No!
+Neither DoxBox nor plain dm-crypt Linux volumes have any kind of "signature" that would allow an attacker to identify them for what they are.
+LUKS volumes do have such a signature.
 
-Please see the FAQ: [By examining a DoxBox/encrypted Linux volume file, can anyone tell what it is?](#ao) for further information.
+Note that all encrypted files are easily distinguished from non-encrypted files with the right software, because they have a high 'entropy'.
+To hide the existance of encrypted data use hidden boxes, rather than relying on a lack of a 'signature' or the file extension.
+With LUKS volumes, even without a password, it is possible to tell how many passwords are in use and other details such as the cyphers used.
+With DoxBox and plain dm-crypt volumes, no information is available apart from the size of the volume.
+With hidden volumes, if all security precautions are followed, no information should be available including the existance and size of the volume.
+
 
 * * *
 
-<a name="ao"></a>
-*Q: By examining a DoxBox/encrypted Linux volume file, can anyone tell what it is?*
-
-*A:* Neither DoxBox nor encrypted Linux volumes have any kind of "signature" that would allow an attacker to identify them for what they are.
-
-  In particular, the "critical data block" in every DoxBox volumes is encrypted, and as such it is not possible to identify it for what it is
-
-  * * *
  <a name="ap"></a>
 *Q: What is "plausible deniability?"*
 
-*A:* See the documentation section on ["Plausible Deniability"](plausible_deniability.html) for details.
+*A:* 
+This means being able to plausibly deny that you have more encrypted data than you have revealed.
+It does not mean being able to deny that you have any encrypted data or that you are using encryption.
+Plausible deniability is essential in totalitarian regimes where you may be punished for refusing to hand over keyphrases.
+DoxBox enables plausible deniability by allowing you to create hidden boxes. These are boxes hidden inside other boxes, called 'outer' boxes, in such a way that they cannot be detected without the keyphrase.
+Hidden boxes can only be hidden inside other boxes, it is not possible to hide them elsewhere on a hard disc.
+For this reason it is necessary to create an outer box containing files you may plausibly wish to hide, but that you can reveal to an attacker.
+Once the outer box has been created an inner 'hidden' box can be created to hold the data you actually wish to hide.
+DoxBox supports an arbitrary number of nested hidden boxes.
+
+See the section on ["Plausible Deniability"](plausible_deniability.html) for technical details.
 
  * * *
  <a name="aq_1"></a>
@@ -1049,7 +1040,7 @@ A list of suitable dictionary files can be found in the ["Advanced Topics"](adva
 
 *A:* The most common reason for this is because DoxBox cannot gain an exclusive lock on the associated drive. This is normally caused by one or more files being open on the encrypted volume.
 
-"Normal" (non administrator) users may also have problems dismounting drives (see the TODO list in this documentation)
+"Normal" (non administrator) users may also have problems dismounting drives (see the "TODO" list in this documentation)
 
 If a volume cannot be dismounted "normally", you will be prompted if you want to forcefully dismount it; it is only recommended that volumes are dismounted in this way if all open files and documents are closed.
 
@@ -1137,9 +1128,9 @@ To access an encrypted volume on a PC which **doesn't** have DoxBox installed, a
 <a name="be"></a>
 *Q: Why do I need Administrator rights to install DoxBox?*
 
-*A:* This is probably the most common FAQ with respect to transparant encryption systems.
+*A:* This is probably the most common FAQ with respect to transparent encryption systems.
 
-In order for any transparant encryption system to operate, it requires the use of "kernel mode drivers" to carry out drive emulation.
+In order for any transparent encryption system to operate, it requires the use of "kernel mode drivers" to carry out drive emulation.
 
 A "kernel mode driver" is special piece of software which operates at a very low-level within your computer's operating system. As such, it can do pretty much **anything** to your system - including carrying out privileged actions that normal users are not allowed to do (e.g. formatting your HDD). Because of this, Microsoft Windows only allows users with Administrator rights to install such drivers.
 
@@ -1741,7 +1732,7 @@ Yes - DoxBox Explorer supports dragging files and folders **from** MS Windows Ex
 *Q: What filesystems does DoxBox Explorer support?*
 
 *A:*
-DoxBox Explorer supports volumes using the FAT12, FAT16 and FAT32 filesystems. Support for other filesystems is currently under development.
+DoxBox Explorer supports volumes using the FAT12, FAT16 and FAT32 filesystems. 
 
 * * *
 
@@ -1773,7 +1764,7 @@ This will prevent any form of wear levelling from redirecting overwrite data to 
 *Q: How do I get DoxBox Explorer to display filename extensions for all files?*
 
 *A:*
-Like MS Windows Explorer, DoxBox Explorer default to hiding filename extensions for "known file types".
+Like MS Windows Explorer, DoxBox Explorer defaults to hiding filename extensions for "known file types".
 
 To configure DoxBox Explorer to display filename extensions for **all** files, please set your options as follows:
 
@@ -1790,13 +1781,14 @@ To configure DoxBox Explorer to display filename extensions for **all** files, p
 
  * * *
 
-
+### The answers below apply to a future feature*
 
 * * * 
 <a name="jb"></a>
 *Q: I entered a program in the "Autorun" tab of the Options dialog - why doesn't it run when I mount a volume?*
 
 *A:* 
+*NOTE: This question and answer applies to a future feature*
 "Autorun" functionality is only enabled in DoxBox Explorer when the "Map mounted volume to drive letter" option is selected ("Drive" tab on the "Options" dialog)
 
 * * * 
@@ -1804,6 +1796,7 @@ To configure DoxBox Explorer to display filename extensions for **all** files, p
 *Q: Why is drive mapping disabled within DoxBox Explorer under Windows Vista/Windows 7?*
 
 *A:* 
+*NOTE: This question and answer applies to a future feature*
 Although drive mapping is certainly possible under Windows Vista/Windows 7, this functionality is automatically disabled in DoxBox Explorer when run under one of these operating systems, for security reasons.
 
 Specifically, this is due to the manner in which drive mapping is handled under Windows Vista/Windows 7, which prevents DoxBox Explorer from being able to guarantee encrypted data is overwritten when volumes are dismounted.
@@ -1813,6 +1806,7 @@ Specifically, this is due to the manner in which drive mapping is handled under 
 *Q: Why is the performance of accessing files using drive mapping lower in DoxBox Explorer than with DoxBox?*
 
 *A:* 
+*NOTE: This question and answer applies to a future feature*
 This is due to limitations in way in which Windows handles drive mapping with DoxBox Explorer.
 
 * * * 
@@ -1820,6 +1814,7 @@ This is due to limitations in way in which Windows handles drive mapping with Do
 *Q: Does DoxBox Explorer have a maximum path length?*
 
 *A:* 
+*NOTE: This question and answer applies to a future feature*
 */NO!/* Like DoxBox, DoxBox Explorer has /no limits/ on the maximum path length it can support when extracting or storing files!
 
 However, if a volume mounted using DoxBox Explorer is mapped to a drive letter, MS Windows XP /can/ encounter problems when accessing (e.g. via MS Windows Explorer) deeply nested files that have a path length greater than 260 characters.
@@ -1835,6 +1830,7 @@ MS Windows has no such issue when accessing a mounted volume via a drive letter 
 *Q: Does DoxBox Explorer have any limits to the size of files it can store?*
 
 *A:* 
+*NOTE: This question and answer applies to a future feature*
 */NO!/* DoxBox Explorer doesn't impose any limits on the size of files transferred to or from mounted volumes.
 
 However, if the option to map a mounted volume to a drive letter is selected, then under the following versions of MS Windows:
@@ -1871,6 +1867,7 @@ For further information, see: [KB900900](http://support.microsoft.com/kb/900900/
 *Q: What does the error "The drive could not be mapped because no network was found" mean?*
 
 *A:* 
+*NOTE: This question and answer applies to a future feature*
 To correct this, start the "WebClient" service.
 
 From a command prompt, enter:
@@ -1882,11 +1879,10 @@ From a command prompt, enter:
 *Q: What does the error "The workstation driver is not installed" mean?*
 
 *A:* 
+*NOTE: This question and answer applies to a future feature*
 If you get the error:
 
-"The mapped network drive could not be created because the following error has occurred:
-
-The workstation driver is not installed."
+"The mapped network drive could not be created because the following error has occurred: The workstation driver is not installed."
 
 This can be due to a bug in MS Windows Server 2003 (resolved in MS Windows Server 2008). Please restart the WebClient redirector service, followed by the WebClient service.
 
@@ -1905,6 +1901,7 @@ To do this, go to a command prompt, and enter:
 *Q: Why does MS Windows Explorer incorrectly report the storage capacity of a volume mounted using DoxBox Explorer and mapped to a drive letter?*
 
 *A:* 
+*NOTE: This question and answer applies to a future feature*
 MS Windows Explorer reports the storage capacity and free space on the drive it uses to cache files on; typically your system drive. This is due to a limitation in the protocol used by MS Windows to mount volumes using DoxBox Explorer.
 
 To see the actual capacity, and free space remaining, please use DoxBox Explorer.
@@ -1916,6 +1913,7 @@ Volumes mounted using DoxBox, instead of DoxBox Explorer, do /*not*/ have this l
 *Q: When transferring a file /to/ a DoxBox Explorer mounted volume via the drive letter it is mounted as, why does it report that I have no free space, when my volume is not yet full?*
 
 *A:* 
+*NOTE: This question and answer applies to a future feature*
 This is due to a limitation in the protocol used by MS Windows to mount volumes using DoxBox Explorer.
 
 When transferring files to DoxBox Explorer via an assigned drive letter, MS Windows first copies the file to store to a WebDAV cache, typically located on your system drive. If you do not have enough free space on /this/ drive, you cannot transfer the file to the mounted volume via the mapped drive letter - even if the mounted volume has enough free space to store it.
@@ -1929,6 +1927,7 @@ Volumes mounted using DoxBox, instead of DoxBox Explorer, do /*not*/ have this l
 *Q: If I map mounted volumes to drive letters using DoxBox Explorer, can anyone on my LAN see and access the secure volumes?*
 
 *A:* 
+*NOTE: This question and answer applies to a future feature*
 */NO!/*. DoxBox Explorer's use of WebDAV is restricted to /only/ allow connections coming from the local PC. Other users on your network can /not/ access mounted volumes.
 
 This is accomplished by two means:
@@ -1939,9 +1938,11 @@ This is accomplished by two means:
 
 * * * 
 <a name="jr"></a>
+
 *Q: Why does DoxBox Explorer open up a local TCP/IP server port?*
 
-*A:* 
+*A:*
+*NOTE: This question and answer applies to a future feature*
 DoxBox Explorer does /not/ open any ports, unless the user explicitly turns on the "Map mounted volume to drive letter" option, in which case it opens a single port to allow MS Windows to connect to it for the purposes of mounting the volume under a drive letter.
 
 In this case, the port opened is only accessible to the local system; it cannot be accessed over the internet, or across a LAN.
@@ -1951,6 +1952,7 @@ In this case, the port opened is only accessible to the local system; it cannot 
 *Q: Why does DoxBox Explorer use HTTP and not HTTPS when mapping a volume to a drive letter?*
 
 *A:* 
+*NOTE: This question and answer applies to a future feature*
 There is no significant difference; only local connections can be made to DoxBox Explorer. Support for HTTPS may be added in the future though.
 
 
