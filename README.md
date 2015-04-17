@@ -11,10 +11,10 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 
 <DIV class="download-group">
 <BUTTON class="download">
-<a href="https://github.com/t-d-k/doxbox/releases/download/v6.1-beta/InstallDoxBox_v60Beta.exe">Download</a>
+<a href="https://github.com/t-d-k/doxbox/releases/download/v6.1-beta/InstallDoxBox_v61Beta.exe">Download</a>
 </BUTTON> 
 <BUTTON class="download-alt">
-<a href="https://github.com/t-d-k/doxbox/releases/download/v6.1-beta/DoxBoxPortable.zip">Download DoxBox Portable</a>
+<a href="https://github.com/t-d-k/doxbox/releases/download/v6.1-beta/DoxBoxExplorer_v6.1.zip">Download DoxBox Portable</a>
 </BUTTON>
 </DIV>
 
