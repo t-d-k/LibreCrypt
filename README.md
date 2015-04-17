@@ -11,10 +11,10 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 
 <DIV class="download-group">
 <BUTTON class="download">
-<a href="https://github.com/t-d-k/doxbox/releases/download/v6.0-beta/InstallDoxBox_v60Beta.exe">Download</a>
+<a href="https://github.com/t-d-k/doxbox/releases/download/v6.1-beta/InstallDoxBox_v60Beta.exe">Download</a>
 </BUTTON> 
 <BUTTON class="download-alt">
-<a href="https://github.com/t-d-k/doxbox/releases/download/v6.0-beta/DoxBoxPortable.zip">Download DoxBox Portable</a>
+<a href="https://github.com/t-d-k/doxbox/releases/download/v6.1-beta/DoxBoxPortable.zip">Download DoxBox Portable</a>
 </BUTTON>
 </DIV>
 
@@ -37,11 +37,10 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 
 **Please note this is a Beta version with some known limitations. Particularly on 64 bit Windows the text 'Test Mode' is shown on the desktop.**
 	
-## coming soon
-New features in version 6.1
+## New features in version 6.1
 
 * Fix security flaw in [plausible deniability](http://DoxBox.eu/doxbox/plausible_deniability.html) inherited from FreeOTFE
-* Prompts before connecting to the internet (issue 1)
+* Prompts before connecting to the internet
 * Translations available
 * Ease of use improvements including automatically formatting a new Box
 
@@ -59,17 +58,15 @@ New features in version 6.1
 	+ After rebooting the words "Test Mode" appear in the four corners of the Desktop. Please see the documentation for details on removing this.
 	+ After finishing with DoxBox you can click the Tools->"Disallow Test-signed drivers" menu item to remove the "Test Mode" text.
 *	To run in portable mode, you need to have admin rights.  
-*	There is a security flaw in the use of hidden volumes (fixed in 6.1). If you create hidden volumes they may be visible to an attacker. This does not affect normal DoxBoxes and only affects the deniability, not security, of hidden ones.
-*	Backwards compatibility with PDA and Windows CE versions of FreeOTFE will be removed in the next version.
-*	Backwards compatibility with older versions of FreeOTFE (before 5.21) will be removed in the next version. Please convert any FreeOTFE volumes. This can be done by creating a new 'box' and copying the files across.
-*	Support for the following cyphers will be removed in the next version, please convert to another: xor, plain, single DES. Ditto for the 'plain' hash. 
-*	DoxBox does not support encryption of the operating system partition, for this I recommend Ubuntu Linux.
+*	Backwards compatibility with older versions of FreeOTFE (before 5.21) will be removed in a future version. Please convert any FreeOTFE volumes. This can be done by creating a new 'box' and copying the files across.
+*	Support for the following cyphers will be removed in a future version, please convert to another: xor, plain, single DES. Ditto for the 'plain' hash. 
+*	DoxBox does not support encryption of the operating system partition, for this we recommend Ubuntu Linux.
 * DoxBox needs to be run as administrator the first time it is run. After that it can be run as an ordinary user. 
 
 ####	Passwords
 *These issues relate to passwords (keyphrases) containing non-ASCII characters, e.g. accented letters and non Latin scripts, **not** to ASCII special characters like '$&^'.*
 
-*	The handling of keyphrases containing non-ASCII characters will change in the next version. This change will not be backwards compatible. So in this version it is recommended to use only ASCII characters in keyphrases.
+*	The handling of keyphrases containing non-ASCII characters will change in a future version. This change will not be backwards compatible. So in this version it is recommended to use only ASCII characters in keyphrases.
 *	There are possible bugs in opening volumes created with FreeOTFE with non-ASCII characters. If you experience problems, please use the legacy app to change the password to an ASCII one and retry. Alternatively move the files to a native DoxBox.
 
 For more details, please see the [getting started guide](http://DoxBox.eu/doxbox/getting_started.html) and [FAQ](http://DoxBox.eu/doxbox/FAQ.html).
