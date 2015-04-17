@@ -6,7 +6,7 @@
 	</MASTER_PAD_VERSION_INFO>
 	<Company_Info>
 		<Company_Name>DoxBox</Company_Name>
-		<Address_1>The Internet</Address_1>
+		<Address_1>N\A</Address_1>
 		<Address_2/>
 		<City_Town></City_Town>
 		<Zip_Postal_Code></Zip_Postal_Code>
@@ -33,14 +33,14 @@
 	</Company_Info>
 	<Program_Info>
 		<Program_Name>DoxBox</Program_Name>
-		<Program_Version>6.0.0.0</Program_Version>
+		<Program_Version>6.1.0.0</Program_Version>
 		<Program_Version_Major>6</Program_Version_Major>
-		<Program_Version_Minor>0</Program_Version_Minor>
+		<Program_Version_Minor>1</Program_Version_Minor>
 		<Program_Version_Patch>0</Program_Version_Patch>
 		<Program_Version_Build>0</Program_Version_Build>
-		<Program_Release_Year>2014</Program_Release_Year>
-		<Program_Release_Month>8</Program_Release_Month>
-		<Program_Release_Day>1</Program_Release_Day>
+		<Program_Release_Year>2015</Program_Release_Year>
+		<Program_Release_Month>4</Program_Release_Month>
+		<Program_Release_Day>17</Program_Release_Day>
 		<Program_Type>Open-Source</Program_Type>
 		<Program_Release_Status>New Release</Program_Release_Status>
 		<Program_Cost_Dollars>0.00</Program_Cost_Dollars>
