@@ -25,18 +25,23 @@ The latest version of this document can be found at the [DoxBox project site](ht
             
 ## Appendix A: Version History
 
-* DoxBox v6.1.0 (TBD)
+* LibreCrypt v6.1.1 (TBD)
+	Renamed to 'LibreCrypt', there are no other differences from DoxBox v6.1β.
+	
+	
+* DoxBox v6.1β (17 April 2015)
   * Security improvements  
      * Ensured any new volume is overwritten with Secure PRNG 'chaff' before use by default. This enables plausible deniability of hidden volumes, and also hides the amount of data stored in the volume. DoxBox (FreeOTFE) volumes only.
-     * Fix bug where the app was contacting internet for docs and for updates without prompt
-     * Rework internal handling of secure data (e.g keys and IVs) so all sensitive data is wiped in memory immediately after use, to reduce risk of leaking to swap, hibernation file, or cold-boot attack.    
+     * Fix bug where the app was contacting the internet for documentation and for updates without a prompt
+     * Rework internal handling of secure data (e.g keys and IVs) so all sensitive data is wiped in memory immediately after use. This reduces the risk of leaking to swap, hibernation file, and of cold-boot attacks.   
+     
   * UI Improvements
      * Fixed issue with translations - updated gettext to Delphi 2009 version (see build notes)
      * Prompts to format new volumes after creation.
      * Many minor UI improvements.    
-  * Much refactoring to ease future work.
+     * Much refactoring to ease future work.
   
-* DoxBox v6.0.0 (23 August 2014), based on FreeOTFE v5.21
+* DoxBox v6.0β  (23 August 2014), based on FreeOTFE v5.21
   
   * Ported GUI to Delphi XE2, with change from ANSI->Unicode
   * Converted driver projects to Visual Studio 2010
@@ -48,7 +53,7 @@ The latest version of this document can be found at the [DoxBox project site](ht
   * Rename and re-brand to 'DoxBox'
   * Windows Mobile support dropped
   
-* FreeOTFE v6.00 (unreleased 2011) - some changes have been merged into DoxBox v6.0.0, some have been abandoned
+* FreeOTFE v6.00 (unreleased 2011) - some changes have been merged into DoxBox v6.1, some have been abandoned
 
   * Added password expiry option
   * Added password strength enforcement option
