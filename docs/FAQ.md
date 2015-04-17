@@ -49,12 +49,11 @@ The latest version of this FAQ, along with the latest DoxBox user manual, can be
 * [Is DoxBox based on CrossCrypt?](#aa)
 * [Is DoxBox based on Linux's "losetup"?](#ab)
 * [Right now, DoxBox supports losetup volumes; do you have any plans to include support for DriveCrypt, BestCrypt, etc volumes?](#ac)
-* [When I mount a FAT/FAT32 formatted Linux volume under DoxBox everything works perfectly. When I do the same with myext2/ext3/Riesers/etc volume, I can't see my files!](#ad)
-* [DoxBox comes with a set of command line decryption utilities! Can't anyone can just decrypt my data!](#ca)
+* [When I mount a FAT/FAT32 formatted Linux volume under DoxBox everything works perfectly. When I do the same with myext2/ext3/Riesers/etc volume, I can't see my files](#ad)
+* [DoxBox comes with a set of command line decryption utilities. Can't anyone can just decrypt my data!](#ca)
 * [Why do the Linux examples for LUKS/dm-crypt volumes show "losetup" being used twice?](#ae)
 * [When I mount a volume and then view its properties under DoxBox, it states that the hash algorithm used is "n/a" - but I used a hash algorithm!](#af)
 * [DoxBox is currently available for free - are you intending to "sell out" later, and start charging for it once enough users have been "hooked" on it?](#ah)
-* [DoxBox may always be free, but will an "enhanced" version (which is charged for) with extra features be released (perhaps under a different name)?](#ai)
 * [What about klonsoft's "LockDisk" and WinCrypto LLC's "CryptoDisk"? Aren't they paid-for packages which are based on DoxBox?](#ct)
 * [Do DoxBox volumes have any kind of identifying "signature"?](#hg)
 * [What is "plausible deniability?"](#ap)
@@ -220,7 +219,7 @@ The main impact is on Open-Source projects such as DoxBox.
 <a name="tc"></a>
 *Q: Can I use DoxBox to open my Truecrypt containers?*
 
-*A:* DoxBox cannot open Truecrypt containers. A future version may have this ability. For now you should open your Truecrypt container using Truecrpt and copy your files to a native DoxBox.
+*A:* DoxBox cannot open Truecrypt containers. A future version may have this ability. For now you should open your Truecrypt container using Truecrypt and copy your files to a native DoxBox.
 
 * * *
 
@@ -229,7 +228,8 @@ The main impact is on Open-Source projects such as DoxBox.
 
 *A:* No. DoxBox supports full disc encryption if the OS is on another disc, but does not support encryption of the OS partition.
 
-OS encryption is for higher security to encrypt information leaked to temp files, the registry, swap etc. but Windows and Microsoft software is inherently insecure, it has been known to leak data to [word documents](http://news.bbc.co.uk/1/hi/technology/3154479.stm) , to be pwned simply by [visiting a web] page(http://www.symantec.com/connect/blogs/emerging-threat-microsoft-internet-explorer-zero-day-cve-2014-1776-remote-code-execution-vulne), and an out-of-the box Windows machine is hacked within 4 minutes of [connecting to the internet](http://www.theregister.co.uk/2008/07/15/unpatched_pc_survival_drops/). it makes no sense to use Microsoft Windows if you need high security. I recommend using Ubuntu Linux which has full disc encryption as an install option for people who need this level of trust.  If you use Windows and still are worried about leaking of temp files, registry etc, please see the section on ['best practices'](#best_practices)
+OS encryption is for higher security to encrypt information leaked to temp files, the registry, swap etc. but Windows and Microsoft software is inherently insecure, it has been known to leak data to [word documents](http://news.bbc.co.uk/1/hi/technology/3154479.stm) , to be hacked simply by [visiting a web page] (http://www.symantec.com/connect/blogs/emerging-threat-microsoft-internet-explorer-zero-day-cve-2014-1776-remote-code-execution-vulne), and an out-of-the box Windows machine is hacked within 4 minutes of [connecting to the internet](http://www.theregister.co.uk/2008/07/15/unpatched_pc_survival_drops/). 
+It makes little sense to use Microsoft Windows if you need high security. We recommend using Ubuntu Linux which has full disc encryption as an install option for people who need this level of trust.  If you use Windows and still are worried about leaking of temp files, registry etc, please see the section on ['best practices'](#best_practices)
 
 * * *
 
@@ -264,6 +264,8 @@ The main differences are:
 * DoxBox is currently maintained.
 * TrueCrypt supports 'cascading' cyphers. 
 
+Note there is a maintained fork of TrueCrypt called VeraCrypt. 
+
 * * *
 
 <a name="al"></a>
@@ -281,14 +283,14 @@ However, this is not always practical (many people are not familiar with how to 
 *Q: What's this about a flaw in deniability?*
 
 *A:* 	
-There was a known flaw in the way DoxBox 6.0 and FreeOTFE handled Plausible Deniability (PD). For PD to work the file (or partition or disc) containing the Box must be filled with data indistinguishable from encrypted data.
-However by default when creating a 'DoxBox' file, DoxBox 6.0 only filled it with zeros. 
-While there is a manual option to overwrite a file with crypto data, there are problems with this:
+There was a known flaw in the way DoxBox 6.0 and FreeOTFE handled Plausible Deniability (PD). For PD to work the file (or partition or disc) containing the Box must be filled with data indistinguishable from encrypted data ('chaff').
+However by default when creating a 'DoxBox' file, DoxBox 6.0/FreeOTFE only filled it with zeros. 
+While there is a manual option to overwrite a file with secure data, there are problems with this:
 
 * The fact that a user has done this on a file tells an attacker that this file contains a hidden box. 
 * Even if the user does this with every Box created, the fact that this is done at all tells an attacker that at least one must have a hidden Box.
 
-The solution is for all new boxes to be filled with random data ('chaff') by default. This was introduced in DoxBox version 6.1.
+The solution is for all new boxes to be filled with random data by default. This was introduced in DoxBox version 6.1.
 
 * * *
 
@@ -323,49 +325,51 @@ The solution is for all new boxes to be filled with random data ('chaff') by def
   * * *
 
   <a name="pass_length"></a>
-*Q: The help says I should have a keyphrase with one character per bit of the key. This is impossible to remember, so you must have made a mistake*
+*Q: The help says I should have a keyphrase with one character per bit of the key. This is impossibly long, you must have made a mistake*
 
 *A:* 	There is no mistake.
 
-The normal way to attack encryption like this is to do a 'dictionary' attack that consists of trying many keyphrases automatically. This is because the keyphrase is normally the weakest part of the cypher. in order for the keyphrase to be as strong as the rest of the encryption, it has to have at least as much information content as the 'key' used internally ([*](#pass_note)).
+One way to attack user encryption is to do a 'dictionary' attack that consists of trying many keyphrases automatically. This is because the keyphrase is normally the weakest part of the system. In order for the keyphrase to be as strong as the rest of the encryption, it has to have at least as much information content as the 'key' used internally ([*](#pass_note)).
 The information content of normal English text is about [1.1](http://pit-claudel.fr/clement/blog/an-experimental-estimation-of-the-entropy-of-english-in-50-lines-of-python-code/) bits per character (including spaces), so for 256 bits it needs to be about 224 characters long or about 45 words. For comparison, the previous sentence contains 168 characters.
 
 Using special characters and misspellings increases the information content slightly but not as much as you may think, and reduces the memorability/bit ratio.
 
-<a name="pass_note">Not absolutely true because a brute force attack has to do the key set up (if a salt is used) to attack the keyphrase </a>
+<a name="pass_note">Not absolutely true because a brute force attack has to do the key set-up (if a salt is used) to attack the keyphrase</a>
 
 * * *
 
 <a name="pass_type"></a>
 *Q: What should I use as a keyphrase?*
 
-*A:* 	The keyphrase should be easy to remember and also long enough not to be broken by a brute force attack.
+*A:* 	
+	
+The keyphrase should be easy to remember and also long enough not to be broken by a dictionary attack.
+	
+Using special characters like '%' or '$', or misspelling increases the bit content of the keyphrase, but make it harder to remember accurately, so this is not recommended.
 
-Using special characters like '%' or '$', or misspelling increases the bit content of the keyphrase but make it harder to remember accurately.
-A common mnemonic [technique](http://www.academictips.org/memory/link.html) to remember lists is to make an absurd connection between pairs of images to form a series, each with an obvious word describing the image.
-In WWII agents made up [poems](http://www.worldwar2history.info/war/espionage/code.html) that they memorised as keys to pen and paper cyphers. This would also work. See also [How do I memorise a long enough keyphrase?](#mem_pass)
+Normal English text contains about 1.1 bits of entropy per character. You should aim for 220+ characters (about 45 words) in your keyphrase.
 
-* * *
-
-<a name="mem_pass"></a>
-*Q: How do I memorise a long enough keyphrase?*
-
-*A:* 	There are three techniques that work:
+In order to remember a keyphrase long enough, there are three techniques that work:
 
 * Use [mnemonics](http://www.academictips.org/memory/index.html)
+
+	A common mnemonic [technique](http://www.academictips.org/memory/link.html) to remember lists is to make an absurd connection between pairs of images to form a series, each with an obvious word describing the image. An alternative is to make a story connecting the images.
+	In WWII agents made up [poems](http://www.worldwar2history.info/war/espionage/code.html) that they memorised as keys to pen and paper cyphers. This would also work. 
+
 * Write it down
-	usually you should never write down the keyphrase but the idea here is to never have a written keyphrase and secret data at the same time, as follows.
-	+ create a DoxBox with some files which are not secret but which you need to use frequently. create a secure keyphrase and write it down
-	+ keep the paper with the keyphrase on you at all times. if it goes out of your sight at any time, make a new one and start again
-	+ refer to the paper to unlock your box. as you reuse it you will start to remember it better.
-	+ when you are sure you can remember the keyphrase
+	Usually you should never write down the keyphrase, but the idea here is to never have a written keyphrase and secret data at the same time, as follows.
+	+ create a DoxBox with some files which are not secret but which you need to use frequently. Create a secure keyphrase and write it down.
+	+ Keep the paper with the keyphrase on you at all times. If it goes out of your sight at any time, make a new one and start again.
+	+ Refer to the paper to unlock your box. As you reuse it you will start to remember it better.
+	+ When you are sure you can remember the keyphrase without the paper
 		- destroy the paper
 		- start using your box for secure data
+		
 * Increase it gradually	
-	+ create a DoxBox with some data on you need to use frequently but which is not secret. Use a simple keyphrase, e.g. one word.
-	+ when you have used the keyphrase often enough you are sure you remember it thoroughly, add another word to the keyphrase.
-	+ repeat until the keyphrase is long enough, then
-	+ start using your box for secure data	
+	+ Create a DoxBox with some data on you need to use frequently but which is not secret. Use a simple keyphrase, e.g. one word.
+	+ When you have used the keyphrase often enough you are sure you remember it thoroughly, add another word to the keyphrase.
+	+ Repeat until the keyphrase is long enough, then
+	+ Start using your box for secure data	
 
 * * *
 
@@ -454,7 +458,7 @@ Decoding the filesystem lies well outside the scope of an encryption system, and
 
 Although Microsoft Windows does come with filesystem drivers for FAT/FAT32/NTFS, it does not (natively) support other filesystems such as ext2.
 
-ext2fsd has been succesfully used in conjuction with DoxBox to open ext2 and ext3 volumes in Windows. It should also work with ext4, however there have been no reports of this yet. 
+(Ext2Fsd)[http://www.ext2fsd.com/?page_id=2] has been successfully used in conjunction with DoxBox to open ext2 and ext3 volumes in Windows. It should also work with ext4, however there have been no reports of this yet. 
 
 * * *
 
@@ -1026,7 +1030,8 @@ A list of suitable dictionary files can be found in the ["Advanced Topics"](adva
 <a name="ag"></a>
 *Q: When creating a DoxBox, the wizard shows me which stage of volume creation I am currently on - but it goes haywire, and the number of stages to complete keeps changing!*
 
-*A:* The number of different stages to creating a new DoxBox varies, depending on what options you choose - for example, if you elect to the mouse movement to generate random data, then you will have to complete an extra step to actually generate this random data; if you switch to using the Microsoft CryptoAPI for generating random data, you can skip that step, as it is done for you automatically.
+*A:* The number of different stages to creating a new DoxBox varies, depending on what options you choose.
+Once you have entered the minimum necessary settings, if you click the 'Next' button you can enter more advanced, optional, settings. In this case, the number of steps updates to the number of advanced steps possible.
 
   * * *
  <a name="aj"></a>
@@ -1053,7 +1058,7 @@ If a volume cannot be dismounted "normally", you will be prompted if you want to
 
   * * *
  <a name="an"></a>
-*Q: Why aren't I prompted to enter a password when creating a Linux volume?*
+*Q: Why aren't I prompted to enter a password when creating a dm-crypt Linux volume?*
 
 *A:* This is covered in the documentation; see section relating to creating Linux volumes.
 
