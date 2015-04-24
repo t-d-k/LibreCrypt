@@ -1,12 +1,12 @@
 unit OTFEFreeOTFE_InstructionRichEdit;
-// Description: Password Richedit
-// By Sarah Dean
-// Email: sdean12@sdean12.org
-// WWW:   http://www.SDean12.org/
-//
-// -----------------------------------------------------------------------------
-//
-// This control exposes the "PasswordChar" property of TRichEdit
+ // Description: Password Richedit
+ // By Sarah Dean
+ // Email: sdean12@sdean12.org
+ // WWW:   http://www.SDean12.org/
+ //
+ // -----------------------------------------------------------------------------
+ //
+ // This control exposes the "PasswordChar" property of TRichEdit
 
 
 interface
@@ -15,15 +15,15 @@ uses
   Windows, Messages, Classes,
   StdCtrls,
   ComCtrls,  // Required for definition of TRichEdit
-  Forms, // Required for bsNone
+  Forms,     // Required for bsNone
   Graphics,
   Controls;
 
 type
-  TOTFEFreeOTFE_InstructionRichEdit = class(TRichEdit)
+  TOTFEFreeOTFE_InstructionRichEdit = class (TRichEdit)
   public
     constructor Create(AOwner: TComponent); override;
-    destructor  Destroy(); override;
+    destructor Destroy(); override;
 
     procedure ResetDisplay();
 
@@ -58,10 +58,9 @@ begin
 
   // We don't set these at design-time, as it makes it easier to see where the
   // components are
-  if not(csDesigning in ComponentState) then
-    begin
+  if not (csDesigning in ComponentState) then begin
     ResetDisplay();
-    end;
+  end;
 
 end;
 
@@ -76,12 +75,10 @@ begin
 
   // Restore various properties suitable for instructions display...
   self.BorderStyle := bsNone;
-  self.TabStop     := FALSE;
-  self.PlainText   := TRUE;
-  self.Readonly    := TRUE;
-  self.ParentColor := TRUE;
+  self.TabStop     := False;
+  self.PlainText   := True;
+  self.ReadOnly    := True;
+  self.ParentColor := True;
 end;
 
-END.
-
-
+end.

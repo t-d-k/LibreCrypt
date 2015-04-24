@@ -3,26 +3,26 @@ unit OTFEFreeOTFE_PasswordRichEdit;
 interface
 
 uses
-  Menus, Classes,
-  PasswordRichEdit;
+  Classes,
+  Menus, PasswordRichEdit;
 
 type
-  TOTFEFreeOTFE_PasswordRichEdit = class(TPasswordRichEdit)
+  TOTFEFreeOTFE_PasswordRichEdit = class (TPasswordRichEdit)
   private
     FInternalPopupMenu: TPopupMenu;
 
   protected
     procedure SetPopupMenu(newMenu: TPopupMenu);
-    function GetPopupMenuFilterInternal(): TPopupMenu; 
+    function GetPopupMenuFilterInternal(): TPopupMenu;
 
     procedure PasteClicked(Sender: TObject);
 
   public
     constructor Create(AOwner: TComponent); override;
-    destructor  Destroy(); override;
+    destructor Destroy(); override;
 
   published
-    property PopupMenu: TPopupMenu read GetPopupMenuFilterInternal;// write SetPopupMenu;
+    property PopupMenu: TPopupMenu Read GetPopupMenuFilterInternal;// write SetPopupMenu;
 
   end;
 
@@ -44,12 +44,12 @@ var
   pasteMenuItem: TMenuItem;
 begin
   inherited;
-  
-  FInternalPopupMenu:= TPopupMenu.Create(nil);
 
-  pasteMenuItem := TMenuItem.Create(FInternalPopupMenu);
-  pasteMenuItem.OnClick := PasteClicked;
-  pasteMenuItem.Caption := RS_PASTE;
+  FInternalPopupMenu := TPopupMenu.Create(nil);
+
+  pasteMenuItem          := TMenuItem.Create(FInternalPopupMenu);
+  pasteMenuItem.OnClick  := PasteClicked;
+  pasteMenuItem.Caption  := RS_PASTE;
   pasteMenuItem.ShortCut := TextToShortCut('CTRL+V');
 
   FInternalPopupMenu.Items.Add(pasteMenuItem);
@@ -59,10 +59,9 @@ end;
 
 destructor TOTFEFreeOTFE_PasswordRichEdit.Destroy();
 begin
-  if (GetPopupMenu = FInternalPopupMenu) then
-    begin
+  if (GetPopupMenu = FInternalPopupMenu) then begin
     SetPopupMenu(nil);
-    end;
+  end;
 
   FInternalPopupMenu.Free();
 
@@ -71,34 +70,26 @@ end;
 
 procedure TOTFEFreeOTFE_PasswordRichEdit.SetPopupMenu(newMenu: TPopupMenu);
 begin
-// Don't set to FInternalPopupMenu; Destroy() calls this with nil, then free's
-// off FInternalPopupMenu! 
-//  if (newMenu = nil) then
-//    begin
-//    newMenu := FInternalPopupMenu;
-//    end;
+  // Don't set to FInternalPopupMenu; Destroy() calls this with nil, then free's
+  // off FInternalPopupMenu! 
+  //  if (newMenu = nil) then
+  //    begin
+  //    newMenu := FInternalPopupMenu;
+  //    end;
 
   inherited PopupMenu := newMenu;
 end;
 
 function TOTFEFreeOTFE_PasswordRichEdit.GetPopupMenuFilterInternal(): TPopupMenu;
-var
-  retval: TPopupMenu;
 begin
-  retval := inherited GetPopupMenu;
-  if (retval = FInternalPopupMenu) then
-    begin
-    retval := nil;
-    end;
-
-  Result := retval
+  Result := inherited GetPopupMenu;
+  if (Result = FInternalPopupMenu) then
+    Result := nil;
 end;
 
 procedure TOTFEFreeOTFE_PasswordRichEdit.PasteClicked(Sender: TObject);
 begin
   self.PasteFromClipboard();
-
 end;
 
-END.
-
+end.
