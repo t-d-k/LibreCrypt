@@ -4,7 +4,7 @@ rem Set the build environment
 rem call ..\..\PC\drivers\Common\bin\setup_env_common.bat
 
 rem set PROJECT_DRIVE=P:
-rem set PROJECT_DIR=P:\Projects\Delphi\doxbox\src\cmdline_tools\\
+rem set PROJECT_DIR=P:\src\cmdline_tools\\
 
 call ..\cmdline_common.bat
 set PROJECT_DIR=%PROJECT_BASE_DIR%DECRYPT_TWOFISH__Hifn_Counterpane\
