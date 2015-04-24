@@ -1,7 +1,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -9,16 +9,16 @@
 
 <TITLE>Technical Details: Registry Entries</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
@@ -27,9 +27,9 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 
 ### Technical Details: Registry Entries
 
-DoxBox doesn't create any registry entries for itself unless the user chooses to associate ".box" files with the application, in which case only those registry entries which are required to associate the DoxBox executable with the filename extension are created. All user options and settings are stored in a ".ini" file, unless the user _explicitly_ configures them to be stored in the registry.
+LibreCrypt doesn't create any registry entries for itself unless the user chooses to associate ".vol" files with the application, in which case only those registry entries which are required to associate the LibreCrypt executable with the filename extension are created. All user options and settings are stored in a ".ini" file, unless the user _explicitly_ configures them to be stored in the registry.
 
-In addition to this, MS Windows does create a registry entry for each DoxBox driver used. This is inevitable; **all** transparent encryption systems running under MS Windows are required to do this in order to function correctly.
+In addition to this, MS Windows does create a registry entry for each LibreCrypt driver used. This is inevitable; **all** transparent encryption systems running under MS Windows are required to do this in order to function correctly.
 
 The following detail the registry entries are typically created by MS Windows:
 
@@ -98,9 +98,9 @@ It is not possible to securely delete the relevant registry entries without "goi
 
 _It should be noted that this applies equally to *all* disk encryption systems that support any kind of "portable mode"._
 
-Should it be a concern that an attacker may discover which DoxBox drivers were being used, it is suggested that you either:
+Should it be a concern that an attacker may discover which LibreCrypt drivers were being used, it is suggested that you either:
 
 1. Change the filenames of the FreeOTFE drivers you will be using in portable mode (e.g. rename "FreeOTFECypherAES.sys" to "FreeOTFECypherTwofish.sys"). This will cause the data written to the registry to reflect this new filename, hopefully convincing an attacker that the driver used was a different one.
-1. If you only use one cypher and hash driver in portable mode, store a number (or all) of the other cypher/hash drivers with your "portable" version of DoxBox. Even if an attacker can determine which drivers you were using in portable mode, that attacker will not be able to determine which of the portable drivers you were actually using to encrypt/decrypt your data with.
+1. If you only use one cypher and hash driver in portable mode, store a number (or all) of the other cypher/hash drivers with your "portable" version of LibreCrypt. Even if an attacker can determine which drivers you were using in portable mode, that attacker will not be able to determine which of the portable drivers you were actually using to encrypt/decrypt your data with.
 
 

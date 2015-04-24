@@ -1,38 +1,38 @@
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
-DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
 
 
-<TITLE>Driver signing and DoxBox</TITLE>
+<TITLE>Driver signing and LibreCrypt</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 <SPAN class="tip">
-The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+The latest version of this document can be found at the [LibreCrypt project site](https://github.com/t-d-k/librecrypt)
 </SPAN>   
 
 ## Instructions  
 
-*Important: DoxBox Portable will not work on Windows Vista and later, 64 bit versions without a extra step before use.*
-The following steps are done automatically when installing DoxBox, so are only necessary for running DoxBox without installation (ie DoxBox portable)
+*Important: LibreCrypt Portable will not work on Windows Vista and later, 64 bit versions without a extra step before use.*
+The following steps are done automatically when installing LibreCrypt, so are only necessary for running LibreCrypt without installation (ie LibreCrypt portable)
 
-Please follow these instructions, if you do not do this you will get an error dialog saying "Windows requires a digitally signed driver" when starting DoxBox in portable mode
+Please follow these instructions, if you do not do this you will get an error dialog saying "Windows requires a digitally signed driver" when starting LibreCrypt in portable mode
 * *Either*
-	+ Start DoxBox, click 'No' on the prompt to start t portable drivers, and 'OK' on the warning dialog about not having any loaded drivers.
+	+ Start LibreCrypt, click 'No' on the prompt to start t portable drivers, and 'OK' on the warning dialog about not having any loaded drivers.
 	+ Click the Tools->"Allow Test-signed drivers" menu item.
 *	*Or*
 	+	Click the "Start" button on the Windows taskbar, type "CMD" in the search box, and then press &lt;CTRL+SHIFT+ENTER&gt; (this will open a DOS box as administrator) 
@@ -47,22 +47,22 @@ Then,
 The rest of this document is for information only, and for manual installation.	  
 						
 ##		Additional Information for x64 Windows Vista and later  
-This section applies to DoxBox when run under the 64 bit (x64) version of Windows Vista, Windows 7 or later. This section does not apply to 64 bit PCs running a 32 bit version of Windows. 	   
+This section applies to LibreCrypt when run under the 64 bit (x64) version of Windows Vista, Windows 7 or later. This section does not apply to 64 bit PCs running a 32 bit version of Windows. 	   
 In order to protect its revenue streams generated by DRM protected content, Microsoft saw fit to require all drivers running under the 64 bit (x64) version of Windows Vista and Windows 7 and 8 be digitally signed by Microsoft's root certificate. 
 
 Understandably, this presents a major problem for the overwhelming majority of free software projects which make use of kernel mode drivers which, for obvious reasons, don't such a have a digital certificate (read: haven't paid Microsoft, or one of their resellers, for such a certificate) to sign their drivers with. 
 
 
-For the same reason, DoxBox's drivers are not currently signed with a Microsoft certificate. 
+For the same reason, LibreCrypt's drivers are not currently signed with a Microsoft certificate. 
 
 Fortunately, there are a number of methods of loading unsigned drivers under Windows x64, without having to pay for a digital certificate, and these are summarised below. 
 
-As a consequence, it is possible to use DoxBox under Windows x64 by using the methods shown as be successful below.
+As a consequence, it is possible to use LibreCrypt under Windows x64 by using the methods shown as be successful below.
 
 A more long term solution (Microsoft signing) is being investigated. 
 			
 ## Summary of Different Methods 
-Below is a table summarising the different methods of configuring Windows Vista x64/Windows 7 x64 to allow it to run DoxBox. 			
+Below is a table summarising the different methods of configuring Windows Vista x64/Windows 7 x64 to allow it to run LibreCrypt. 			
 For most users, Method 3: TESTSIGNING ON is recommended 
 <TABLE>	
 <THEAD><TR><TH>Method</TH><TH>																Results</TH> <TH>"Test Mode"on wallpaper</TH> <TH>Junk messages shown on manual start</TH> <TH>	Recommended?</TH> </TR> </THEAD>
@@ -81,7 +81,7 @@ For most users, Method 3: TESTSIGNING ON is recommended
 
 The method with "Yes" marked in this column indicates that the words "Test Mode" will be shown in each of the four corners of the desktop wallpaper. This is largely a cosmetic issue, and can be resolved using the directions indicated in the description of this method. Junk messages shown on manual start Those methods with "Yes" marked in this column indicate that MS Windows will pop up a message stating: "Windows requires a digitally signed driver" for each and every driver loaded - even though the drivers are digitally signed (albeit using self-certification). 
 If the drivers are started automatically on booting, these messages will not appear. 
-However, if the FreeOTFE drivers are started from the GUI (e.g. by starting portable mode). Since DoxBox's flexible architecture employs multiple drivers, this is hardly ideal as the user gets peppered with junk messages telling them what they're doing - as if they didn't already know! 
+However, if the FreeOTFE drivers are started from the GUI (e.g. by starting portable mode). Since LibreCrypt's flexible architecture employs multiple drivers, this is hardly ideal as the user gets peppered with junk messages telling them what they're doing - as if they didn't already know! 
 The number of these messages shown can be minimised by removing all unused hash and cypher drivers. 
 
 ### Method 1: NOINTEGRITYCHECKS ON Instructions
@@ -129,7 +129,7 @@ Note: This list of hotfixes was compiled from information taken from the followi
 	bcdedit.exe /set TESTSIGNING ON	
 *	Reboot the PC
 
-This method is probably the best solution, and allows DoxBox to run correctly. However, it does have a trivial side effect: The words "Test Mode" are shown in the four corners of the Desktop wallpaper after rebooting. 
+This method is probably the best solution, and allows LibreCrypt to run correctly. However, it does have a trivial side effect: The words "Test Mode" are shown in the four corners of the Desktop wallpaper after rebooting. 
 
 Although only a cosmetic issue, the words "Test Mode" may be removed from your background by using one the following methods:
 
@@ -137,7 +137,7 @@ Although only a cosmetic issue, the words "Test Mode" may be removed from your b
 * [How to Remove Watermark (Build Number Info) from Desktop in Windows Vista, 7 and Server 2008?](http://www.askvg.com/how-to-remove-windows-7-rc-watermark-build-info-from-desktop/)
 * Using Windows DreamScene (which allows videos to be shown as an animated desktop "wallpaper", instead of a static image) will prevent the "Test Mode" watermark being shown. DreamScene is available with "Ultimate" edition of Windows Vista/Windows 7, other animated desktops are available for other editions (e.g. Home or Business). 
 * Setting the background to a solid colour with RGB values of (250,250,250) will make the watermark invisible.
-None of these have been tested or are approved by DoxBox.
+None of these have been tested or are approved by LibreCrypt.
 
 ### Method 4: &lt;F8&gt; while booting Instructions:  
 *			Reboot the PC 

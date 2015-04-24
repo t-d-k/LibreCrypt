@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -10,16 +10,16 @@
 
 <TITLE>Security Token/Smartcard Support</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/librecrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
@@ -28,7 +28,7 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 
 ## Security Token/Smartcard Support
 
-DoxBox supports all security tokens/smartcards (referred to as "tokens" in this documentation) which conform to the PKCS#11 (aka Cryptoki) standard, providing two factor authentication of DoxBox volumes.
+LibreCrypt supports all security tokens/smartcards (referred to as "tokens" in this documentation) which conform to the PKCS#11 (aka Cryptoki) standard, providing two factor authentication of LibreCrypt volumes.
 
 There are two ways in which tokens can be used:
 
@@ -49,20 +49,20 @@ These two methods can be used independently, or combined together.
 ### Initial configuration
 </A>
 
-In order to use tokens, DoxBox must first be configured to use the appropriate PKCS#11 library:
+In order to use tokens, LibreCrypt must first be configured to use the appropriate PKCS#11 library:
 
 1. Go to "View | Options..." 
 1. Select the "PKCS#11" tab
 1. Check the "Enable PKCS#11 support" checkbox
 1. The filename of the PKCS#11 library you wish to use (see table below). Note: In most cases you shouldn't need to enter the full path to the DLL, just its filename.
 1. Click "Verify" to run a quick sanity check to ensure that the library looks viable
-1. Set "Save above settings to" be (for example) "DoxBox executable dir"
+1. Set "Save above settings to" be (for example) "LibreCrypt executable dir"
 1. Click "OK"
 
 <TABLE WIDTH="100%" >
   <TR>
     <TD WIDTH="100%" class="screenshot_img" >
-      <img BORDER="0" src="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/screenshots/PC/PKCS11Options.png">
+      <img BORDER="0" src="https://raw.githubusercontent.com/t-d-k/librecrypt/master/docs/images/screenshots/PC/PKCS11Options.png">
     </TD>
   </TR>
   <TR>
@@ -72,7 +72,7 @@ In order to use tokens, DoxBox must first be configured to use the appropriate P
 
 The menu-item under the "Tools" menu should then be enabled, as should
 the options (when appropriate) on the password entry dialog when
-mounting DoxBox volumes
+mounting LibreCrypt volumes
 
 A list of driver library names supplied by common manufacturers may be found at [Appendix E: PKCS#11 Driver Libraries](pkcs11_drivers.html)
 
@@ -102,7 +102,7 @@ To add a keyfile to your token:
 To use a keyfile stored on a token:
 
 
-1. Follow the normal procedure for mounting your DoxBox
+1. Follow the normal procedure for mounting your container
 1. When shown the password prompt, select "PKCS#11" as the keyfile option; you will then be prompted to authenticate yourself to the token
 1. Enter your token's PIN and click "OK"
 1. Select the keyfile stored on your token, and proceed as normal by entering your keyfile's password, etc and clicking "OK" to mount
@@ -137,7 +137,7 @@ To encrypt a volume's CDB/keyfile:
 * Click "New..."
 * Enter a meaningful name of the token, and select the cypher to be used for the encryption
 
-It should be noted that the range of cyphers available for use is determined by the capabilities of your token, and not DoxBox
+It should be noted that the range of cyphers available for use is determined by the capabilities of your token, and not LibreCrypt
 * Click "OK" and the new key will be created
 
 * Select the secret key to be used to encrypt your volume CDB/keyfile.
@@ -157,7 +157,7 @@ Note:
 To use a volume/keyfile which has been double-encrypted by a token:
 
 
-1. Follow the normal procedure for mounting your DoxBox
+1. Follow the normal procedure for mounting your container
 1. When shown the password prompt, click the "Advanced >>" button to display the "Advanced security details" options
 1. Enter your token's PIN and click "OK"
 1. Select the secret key used to secure your volume/keyfile, and proceed as normal by entering your volume/keyfile's password, etc and clicking "OK" to mount
@@ -168,12 +168,12 @@ To use a volume/keyfile which has been double-encrypted by a token:
 ### PIN Entry
 </A>
 
-DoxBox will only prompt you to enter your token's PIN as and when it's needed. DoxBox does _not_ cache your PIN in any way
+LibreCrypt will only prompt you to enter your token's PIN as and when it's needed. LibreCrypt does _not_ cache your PIN in any way
 
 <TABLE WIDTH="100%" >
   <TR>
     <TD WIDTH="100%" class="screenshot_img" >
-      <img BORDER="0" src="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/screenshots/PC/PKCS11PINEntry.png">
+      <img BORDER="0" src="https://raw.githubusercontent.com/t-d-k/librecrypt/master/docs/images/screenshots/PC/PKCS11PINEntry.png">
     </TD>
   </TR>
   <TR>
@@ -189,7 +189,7 @@ If only one token is found, it will be selected automatically, and the token sel
 #### Secure authentication path
 </A>
 
-If your token hardware features a secure authentication path (e.g. a smartcard reader with PIN entry keypad), you can take advantage of it by selecting the "Use secure authentication path" checkbox when DoxBox prompts for the token's PIN.
+If your token hardware features a secure authentication path (e.g. a smartcard reader with PIN entry keypad), you can take advantage of it by selecting the "Use secure authentication path" checkbox when LibreCrypt prompts for the token's PIN.
 
 
 

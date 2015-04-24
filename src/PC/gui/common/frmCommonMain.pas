@@ -1,5 +1,5 @@
 
-unit CommonfrmMain;
+unit frmCommonMain;
  // Description:
  // By Sarah Dean
  // Email: sdean12@sdean12.org
@@ -64,7 +64,7 @@ const
 type
   TAutorunType = (arPostMount, arPreDismount, arPostDismount);
 
-  TfrmMain = class (TSDUForm)
+  TfrmCommonMain = class (TSDUForm)
     mmMain:                   TMainMenu;
     File1:                    TMenuItem;
     miFreeOTFEMountFile:      TMenuItem;
@@ -320,12 +320,12 @@ type
 resourcestring
   // Captions...
   RS_TOOLBAR_CAPTION_NEW       = 'New';
-  RS_TOOLBAR_CAPTION_MOUNTFILE = 'Open DoxBox';
+  RS_TOOLBAR_CAPTION_MOUNTFILE = 'Open container';
   RS_TOOLBAR_CAPTION_DISMOUNT  = 'Lock';
   // Hints...
-  RS_TOOLBAR_HINT_NEW          = 'Create a new DoxBox';
-  RS_TOOLBAR_HINT_MOUNTFILE    = 'Open a file based DoxBox';
-  RS_TOOLBAR_HINT_DISMOUNT     = 'Lock an open Box';
+  RS_TOOLBAR_HINT_NEW          = 'Create a new container';
+  RS_TOOLBAR_HINT_MOUNTFILE    = 'Open a file based container';
+  RS_TOOLBAR_HINT_DISMOUNT     = 'Lock an open container';
 
 const
   USERGUIDE_LOCAL = '.\docs\index.html';
@@ -337,7 +337,7 @@ const
   // Command line parameters...
   // CMDLINE_SETTINGSFILE defined in "interface" section; used in HandleCommandLineOpts fn
   CMDLINE_MOUNT           = 'mount';
-  CMDLINE_FREEOTFE        = 'doxbox';
+  CMDLINE_FREEOTFE        = 'LibreCrypt';
   CMDLINE_LINUX           = 'linux';
   CMDLINE_VOLUME          = 'volume';
   CMDLINE_READONLY        = 'readonly';
@@ -396,12 +396,11 @@ uses
 {$IFDEF UNICODE}
   AnsiStrings,
 {$ENDIF}
+FreeOTFEConsts,
 {$IFDEF FREEOTFE_MAIN}
-  FreeOTFEConsts,
   FreeOTFESettings,
 {$ENDIF}
 {$IFDEF FREEOTFE_EXPLORER}
-  FreeOTFEExplorerConsts,
   FreeOTFEExplorerSettings,
 {$ENDIF}
   // freeotfe
@@ -444,7 +443,7 @@ const
 
   AUTORUN_SUBSTITUTE_DRIVE = '%DRIVE';
 
-constructor TfrmMain.Create(AOwner: TComponent);
+constructor TfrmCommonMain.Create(AOwner: TComponent);
 begin
   finitAppCalled               := False;
   fwmUserPostShowCalledAlready := False;
@@ -453,7 +452,7 @@ begin
   inherited;
 end;
 
-procedure TfrmMain.SetupToolbarAndMenuIcons();
+procedure TfrmCommonMain.SetupToolbarAndMenuIcons();
 begin
   // Default to hardcoded icons...
   (*
@@ -518,7 +517,7 @@ begin
   RecaptionToolbarAndMenuIcons();
 end;
 
-procedure TfrmMain.RecaptionToolbarAndMenuIcons();
+procedure TfrmCommonMain.RecaptionToolbarAndMenuIcons();
 begin
   // Redo captions, etc which otherwise get reverted when translation
   // is carried out
@@ -530,7 +529,7 @@ begin
     SDUParamSubstitute(_('&Copy %1 to USB drive...'), [Application.Title]);
 end;
 
-procedure TfrmMain.SetIconListsAndIndexes();
+procedure TfrmCommonMain.SetIconListsAndIndexes();
 begin
   //  actFreeOTFENew.ImageIndex       := FIconIdx_Small_New;
   //  actFreeOTFEMountFile.ImageIndex := FIconIdx_Small_MountFile;
@@ -539,7 +538,7 @@ end;
 
 
 // Add standard Windows icons
-procedure TfrmMain.AddStdIcons();
+procedure TfrmCommonMain.AddStdIcons();
 
   procedure LoadSystemImagesIntoImageList(imageSet: Integer; imgList: TImageList);
   var
@@ -608,7 +607,7 @@ begin
 end;
 
 // Add an standard Windows Vista UAC shield icon
-procedure TfrmMain.AddUACShieldIcons();
+procedure TfrmCommonMain.AddUACShieldIcons();
 var
   anIcon:     TIcon;
   iconHandle: HICON;
@@ -679,7 +678,7 @@ begin
 end;
 
 
-procedure TfrmMain.FormCreate(Sender: TObject);
+procedure TfrmCommonMain.FormCreate(Sender: TObject);
 begin
 
 {$IFDEF FREEOTFE_DEBUG}
@@ -720,7 +719,7 @@ begin
 end;
 
 
-procedure TfrmMain.FormShow(Sender: TObject);
+procedure TfrmCommonMain.FormShow(Sender: TObject);
 begin
   // Post a message back to *this* form to allow any automatic updates check
   // to be carried out *after* the main form is displayed (i.e. post-show)
@@ -729,7 +728,7 @@ begin
   PostMessage(self.Handle, WM_USER_POST_SHOW, 0, 0);
 end;
 
-procedure TfrmMain.SetupOTFEComponent();
+procedure TfrmCommonMain.SetupOTFEComponent();
 begin
   GetFreeOTFEBase().AdvancedMountDlg    := gSettings.OptAdvancedMountDlg;
   GetFreeOTFEBase().RevertVolTimestamps := gSettings.OptRevertVolTimestamps;
@@ -745,7 +744,7 @@ begin
 end;
 
 // Reload settings, setting up any components as needed
-procedure TfrmMain.ReloadSettings();
+procedure TfrmCommonMain.ReloadSettings();
 begin
   SDUSetLanguage(gSettings.OptLanguageCode);
   try
@@ -765,7 +764,7 @@ begin
 
 end;
 
-procedure TfrmMain.MountFiles(mountAsSystem: TDragDropFileType; filename: String;
+procedure TfrmCommonMain.MountFiles(mountAsSystem: TDragDropFileType; filename: String;
   ReadOnly, forceHidden: Boolean);
 var
   tmpFilenames: TStringList;
@@ -781,7 +780,7 @@ end;
 
 
 // If called with "nil", just refresh the menuitems shown
-procedure TfrmMain.AddToMRUList(filenames: TStringList);
+procedure TfrmCommonMain.AddToMRUList(filenames: TStringList);
 begin
   if (filenames <> nil) then begin
     gSettings.OptMRUList.Add(filenames);
@@ -795,13 +794,13 @@ begin
 
 end;
 
-procedure TfrmMain.RefreshMRUList();
+procedure TfrmCommonMain.RefreshMRUList();
 begin
   gSettings.OptMRUList.OnClick := MRUListItemClicked;
 
 end;
 
-procedure TfrmMain.MountFilesDetectLUKS(fileToMount: String; ReadOnly: Boolean;
+procedure TfrmCommonMain.MountFilesDetectLUKS(fileToMount: String; ReadOnly: Boolean;
   defaultType: TDragDropFileType);
 var
   tmpFilenames: TStringList;
@@ -820,7 +819,7 @@ begin
 end;
 
 
-procedure TfrmMain.MountFilesDetectLUKS(filesToMount: TStringList; ReadOnly: Boolean;
+procedure TfrmCommonMain.MountFilesDetectLUKS(filesToMount: TStringList; ReadOnly: Boolean;
   defaultType: TDragDropFileType);
 var
   i:         Integer;
@@ -844,7 +843,7 @@ end;
 
 
 
-procedure TfrmMain.EnableDisableControls();
+procedure TfrmCommonMain.EnableDisableControls();
 begin
 
   actPKCS11TokenManagement.Enabled := gSettings.OptPKCS11Enable;
@@ -870,13 +869,13 @@ begin
 
 end;
 
-procedure TfrmMain.SetStatusBarText(statusText: String);
+procedure TfrmCommonMain.SetStatusBarText(statusText: String);
 begin
   StatusBar_Status.SimpleText := statusText;
 end;
 
 
-function TfrmMain.ActivateFreeOTFEComponent(suppressMsgs: Boolean): Boolean;
+function TfrmCommonMain.ActivateFreeOTFEComponent(suppressMsgs: Boolean): Boolean;
 var
   obsoleteDriver: Boolean;
 begin
@@ -928,18 +927,18 @@ begin
   Result := GetFreeOTFEBase().Active;
 end;
 
-procedure TfrmMain.ShowOldDriverWarnings();
+procedure TfrmCommonMain.ShowOldDriverWarnings();
 begin
   // No warnings to be shown in base class
 end;
 
-procedure TfrmMain.DeactivateFreeOTFEComponent();
+procedure TfrmCommonMain.DeactivateFreeOTFEComponent();
 begin
   GetFreeOTFEBase().Active := False;
 
 end;
 
-procedure TfrmMain.DoAppIdle(Sender: TObject; var Done: Boolean);
+procedure TfrmCommonMain.DoAppIdle(Sender: TObject; var Done: Boolean);
 begin
   if fFuncTestPending then begin
     fFuncTestPending := False;
@@ -951,17 +950,17 @@ begin
   Done := True;
 end;
 
-procedure TfrmMain.actCDBBackupExecute(Sender: TObject);
+procedure TfrmCommonMain.actCDBBackupExecute(Sender: TObject);
 begin
   BackupRestore(opBackup);
 end;
 
-procedure TfrmMain.actCDBRestoreExecute(Sender: TObject);
+procedure TfrmCommonMain.actCDBRestoreExecute(Sender: TObject);
 begin
   BackupRestore(opRestore);
 end;
 
-procedure TfrmMain.BackupRestore(dlgType: TCDBOperationType;
+procedure TfrmCommonMain.BackupRestore(dlgType: TCDBOperationType;
   volPath: TFilename = ''; hdrPath: TFilename = ''; silent: Boolean = False);
 var
   dlg: TfrmCDBBackupRestore;
@@ -986,29 +985,29 @@ begin
   end;
 end;
 
-procedure TfrmMain.miCreateKeyfileClick(Sender: TObject);
+procedure TfrmCommonMain.miCreateKeyfileClick(Sender: TObject);
 begin
   GetFreeOTFEBase().WizardCreateKeyfile();
 end;
 
-procedure TfrmMain.miChangePasswordClick(Sender: TObject);
+procedure TfrmCommonMain.miChangePasswordClick(Sender: TObject);
 begin
   GetFreeOTFEBase().WizardChangePassword();
 end;
 
-procedure TfrmMain.actCDBPlaintextDumpExecute(Sender: TObject);
+procedure TfrmCommonMain.actCDBPlaintextDumpExecute(Sender: TObject);
 begin
   DumpDetailsToFile(False);
 
 end;
 
-procedure TfrmMain.actLUKSDumpExecute(Sender: TObject);
+procedure TfrmCommonMain.actLUKSDumpExecute(Sender: TObject);
 begin
   DumpDetailsToFile(True);
 
 end;
 
-procedure TfrmMain.DumpDetailsToFile(LUKSDump: Boolean);
+procedure TfrmCommonMain.DumpDetailsToFile(LUKSDump: Boolean);
 var
   dlg: TfrmCDBDump_Base;
 begin
@@ -1029,26 +1028,24 @@ begin
 end;
 
 
-procedure TfrmMain.ExploreDrive(driveLetter: DriveLetterChar);
-var
-  explorerCommandLine: String;
+procedure TfrmCommonMain.ExploreDrive(driveLetter: DriveLetterChar);
 begin
   if (driveLetter <> #0) then begin
-    explorerCommandLine := 'explorer ' + driveLetter + ':\';
+//    explorerCommandLine := 'explorer.exe ' + driveLetter + ':\';
+//    ShellExecute(Application.Handle, 'open', PWideChar('Explorer'),PWideChar(driveLetter + ':\') , nil, cmdShow) ;
 
-    if not (SDUWinExecNoWait32(explorerCommandLine, SW_RESTORE)) then begin
+    if not (SDUWinExecNoWait32('Explorer',driveLetter + ':\', SW_RESTORE)) then
       SDUMessageDlg(_('Error running Explorer'), mtError, [mbOK], 0);
-    end;
   end;
 
 end;
 
 
 // Launch autorun executable on specified drive
-procedure TfrmMain.AutoRunExecute(autorun: TAutorunType; driveLetter: DriveLetterChar;
+procedure TfrmCommonMain.AutoRunExecute(autorun: TAutorunType; driveLetter: DriveLetterChar;
   isEmergency: Boolean);
 var
-  exeFullCmdLine: String;
+  exeParams,exeFullCmdLine: String;
   launchOK:       Boolean;
   splitCmdLine:   TStringList;
   exeOnly:        String;
@@ -1104,18 +1101,19 @@ begin
       end;
 
       exeOnly := splitCmdLine[0];
-
+      splitCmdLine.Delete(0);
       // Recombine to produce new commandline
-      exeFullCmdLine := splitCmdLine.DelimitedText;
+      exeParams := splitCmdLine.DelimitedText;
 
     finally
       splitCmdLine.Free();
     end;
 
     // Perform substitution, if needed
-    exeFullCmdLine := StringReplace(exeFullCmdLine, AUTORUN_SUBSTITUTE_DRIVE,
+    exeParams := StringReplace(exeParams, AUTORUN_SUBSTITUTE_DRIVE,
       // Cast to prevent compiler warning
       Char(driveLetter), [rfReplaceAll]);
+
 
     // NOTE: THIS MUST BE UPDATED IF CMDLINE IS TO SUPPORT COMMAND LINE
     //       PARAMETERS!
@@ -1131,10 +1129,10 @@ begin
       if (autorun = arPreDismount) then begin
         // Launch and block until terminated...
         launchOK := (SDUWinExecAndWait32(exeFullCmdLine, SW_SHOW,
-          ExtractFilePath(exeFullCmdLine)) <> $FFFFFFFF);
+          ExtractFilePath(exeOnly)) <> $FFFFFFFF);
       end else begin
         // Fire and forget...
-        launchOK := SDUWinExecNoWait32(exeFullCmdLine, SW_RESTORE);
+        launchOK := SDUWinExecNoWait32(exeOnly,exeParams, SW_RESTORE);
       end;
 
       if not (launchOK) then begin
@@ -1152,13 +1150,13 @@ begin
 end;
 
 
-procedure TfrmMain.actFreeOTFENewExecute(Sender: TObject);
+procedure TfrmCommonMain.actFreeOTFENewExecute(Sender: TObject);
 begin
   // Do nothing; method still required here in order that the actionItem isn't
   // automatically disabled because it does nothing
 end;
 
-procedure TfrmMain.actInstallOnUSBDriveExecute(Sender: TObject);
+procedure TfrmCommonMain.actInstallOnUSBDriveExecute(Sender: TObject);
 var
   dlg: TfrmInstallOnUSBDrive;
 begin
@@ -1171,7 +1169,7 @@ begin
 
 end;
 
-procedure TfrmMain.actFreeOTFEMountFileExecute(Sender: TObject);
+procedure TfrmCommonMain.actFreeOTFEMountFileExecute(Sender: TObject);
 begin
   if GetFreeOTFEBase().WarnIfNoHashOrCypherDrivers() then begin
     SDUOpenSaveDialogSetup(OpenDialog, '');
@@ -1194,7 +1192,7 @@ begin
 end;
 
 //creates plain dmcrypt vol
-procedure TfrmMain.actLinuxNewExecute(Sender: TObject);
+procedure TfrmCommonMain.actLinuxNewExecute(Sender: TObject);
 var
   aFileName: String;
 begin
@@ -1217,7 +1215,7 @@ begin
 
 end;
 
-procedure TfrmMain.actListHashesExecute(Sender: TObject);
+procedure TfrmCommonMain.actListHashesExecute(Sender: TObject);
 var
   dlg: TfrmGridReport_Hash;
 begin
@@ -1230,7 +1228,7 @@ begin
 
 end;
 
-procedure TfrmMain.actListCyphersExecute(Sender: TObject);
+procedure TfrmCommonMain.actListCyphersExecute(Sender: TObject);
 var
   dlg: TfrmGridReport_Cypher;
 begin
@@ -1244,7 +1242,7 @@ begin
 end;
 
 
-procedure TfrmMain.LinuxMountFile(forceHidden: Boolean);
+procedure TfrmCommonMain.LinuxMountFile(forceHidden: Boolean);
 begin
   if GetFreeOTFEBase().WarnIfNoHashOrCypherDrivers() then begin
     SDUOpenSaveDialogSetup(OpenDialog, '');
@@ -1266,40 +1264,40 @@ begin
 
 end;
 
-procedure TfrmMain.actLinuxMountFileExecute(Sender: TObject);
+procedure TfrmCommonMain.actLinuxMountFileExecute(Sender: TObject);
 begin
   LinuxMountFile(False);
 end;
 
-procedure TfrmMain.actMountHiddenExecute(Sender: TObject);
+procedure TfrmCommonMain.actMountHiddenExecute(Sender: TObject);
 begin
   LinuxMountFile(True);
 end;
 
-procedure TfrmMain.actPKCS11TokenManagementExecute(Sender: TObject);
+procedure TfrmCommonMain.actPKCS11TokenManagementExecute(Sender: TObject);
 begin
   GetFreeOTFEBase().ShowPKCS11ManagementDlg();
 end;
 
-procedure TfrmMain.actRefreshExecute(Sender: TObject);
+procedure TfrmCommonMain.actRefreshExecute(Sender: TObject);
 begin
   // Do nothing in back class - dummy method required to create event for use
   // with multimedia key component to call
 end;
 
-procedure TfrmMain.actTestExecute(Sender: TObject);
+procedure TfrmCommonMain.actTestExecute(Sender: TObject);
 begin
   inherited;
   DoTests();//inherited
 end;
 
-procedure TfrmMain.actExitExecute(Sender: TObject);
+procedure TfrmCommonMain.actExitExecute(Sender: TObject);
 begin
   Close();
 end;
 
 
-procedure TfrmMain.actUserGuideExecute(Sender: TObject);
+procedure TfrmCommonMain.actUserGuideExecute(Sender: TObject);
 var
   cwd:       String;
   userGuide: String;
@@ -1379,7 +1377,7 @@ end;
 {$ENDIF}
 {$ENDIF}
 
-procedure TfrmMain.SetupPKCS11(suppressMsgs: Boolean);
+procedure TfrmCommonMain.SetupPKCS11(suppressMsgs: Boolean);
 var
   tmpPKCS11Lib: TPKCS11Library;
 begin
@@ -1412,7 +1410,7 @@ begin
 
 end;
 
-procedure TfrmMain.ShutdownPKCS11();
+procedure TfrmCommonMain.ShutdownPKCS11();
 begin
   // Sanity; strip from FreeOTFE copmponent
   GetFreeOTFEBase().PKCS11Library := nil;
@@ -1433,7 +1431,7 @@ begin
 end;
 
 
-procedure TfrmMain.PKCS11TokenInserted(SlotID: Integer);
+procedure TfrmCommonMain.PKCS11TokenInserted(SlotID: Integer);
 var
   tmpFilename:   TStringList;
   mountNameOnly: String;
@@ -1465,7 +1463,7 @@ begin
 
 end;
 
-procedure TfrmMain.PKCS11SlotEvent(Sender: TObject; SlotID: Integer);
+procedure TfrmCommonMain.PKCS11SlotEvent(Sender: TObject; SlotID: Integer);
 var
   lib:  TPKCS11Library;
   slot: TPKCS11Slot;
@@ -1491,7 +1489,7 @@ begin
   end;
 end;
 
-procedure TfrmMain.StartupUpdateCheck();
+procedure TfrmCommonMain.StartupUpdateCheck();
 var
   nextCheck: TDate;
   doCheck:Boolean;
@@ -1502,41 +1500,28 @@ nextCheck := 0;//fix warning
     ufNever:  doCheck := false;
       // for ufRandom - check once per 1000 calls
     ufRandom : doCheck := Random(1000)=123;
-
-{
-    ufDaily:
-      begin
-      // Simply add on a day
-      nextCheck := Settings.OptUpdateChkLastChecked + 1;
-      end;
+    ufAlways:      doCheck := true;
 
     ufWeekly:
-      begin
       // Simply add on 7 days
-      nextCheck := Settings.OptUpdateChkLastChecked + 7;
-      end;
-}
+      nextCheck := gSettings.OptUpdateChkLastChecked + 7;
 
     ufMonthly:
-    begin
       // Add on the number of days in the month it was last checked
       nextCheck := gSettings.OptUpdateChkLastChecked +
         DaysInMonth(gSettings.OptUpdateChkLastChecked);
-    end;
 
     ufAnnually:
-    begin
       nextCheck := gSettings.OptUpdateChkLastChecked +
         DaysInYear(gSettings.OptUpdateChkLastChecked);
-    end;
     else begin
-      assert(FALSE,'UPDATE TfrmMain.StartupUpdateCheck');
+      assert(FALSE,'UPDATE TfrmCommonMain.StartupUpdateCheck');
       doCheck := true;
     end;
   end;
 
 
-  if gSettings.OptUpdateChkFrequency in [ufMonthly,ufAnnually] then
+  if gSettings.OptUpdateChkFrequency in [ufMonthly,ufAnnually,ufWeekly] then
      doCheck := nextCheck <= Now();
 
   if doCheck then begin
@@ -1553,12 +1538,12 @@ nextCheck := 0;//fix warning
 
 end;
 
-procedure TfrmMain.actCheckForUpdatesExecute(Sender: TObject);
+procedure TfrmCommonMain.actCheckForUpdatesExecute(Sender: TObject);
 begin
   CheckForUpdates_UserCheck(URL_PADFILE);
 end;
 
-procedure TfrmMain.WMUserPostShow(var msg: TWMEndSession);
+procedure TfrmCommonMain.WMUserPostShow(var msg: TWMEndSession);
 begin
   if not fwmUserPostShowCalledAlready then
     StartupUpdateCheck();
@@ -1566,12 +1551,12 @@ begin
   fwmUserPostShowCalledAlready := True;
 end;
 
-procedure TfrmMain.InitApp();
+procedure TfrmCommonMain.InitApp();
 begin
   finitAppCalled := True;
 end;
 
-function TfrmMain.EnsureOTFEComponentActive(): Boolean;
+function TfrmCommonMain.EnsureOTFEComponentActive(): Boolean;
 begin
   Result := True;
   if not GetFreeOTFEBase().Active then
@@ -1579,7 +1564,7 @@ begin
 end;
 
 
-function TfrmMain.HandleCommandLineOpts_EnableDevMenu(): eCmdLine_Exit;
+function TfrmCommonMain.HandleCommandLineOpts_EnableDevMenu(): eCmdLine_Exit;
 begin
   Result           := ceSUCCESS;
   fFuncTestPending := False;
@@ -1591,7 +1576,7 @@ end;
 
  // Handle "/mount" command line
  // Returns: Exit code
-function TfrmMain.HandleCommandLineOpts_Mount(): eCmdLine_Exit;
+function TfrmCommonMain.HandleCommandLineOpts_Mount(): eCmdLine_Exit;
 var
   volume:                VolumeFilenameString;
   ReadOnly:              Boolean;
@@ -1768,7 +1753,7 @@ begin
 end;
 
 
-procedure TfrmMain.SetStatusBarToHint(Sender: TObject);
+procedure TfrmCommonMain.SetStatusBarToHint(Sender: TObject);
 var
   showHint:       String;
   statusBarShown: Boolean;

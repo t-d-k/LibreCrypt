@@ -3,7 +3,7 @@
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
 <meta name="description" content=
-"DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+"LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -11,25 +11,25 @@
 
 <TITLE>Introduction</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***  
 <SPAN class="tip">
-The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+The latest version of this document can be found at the [LibreCrypt project site](https://github.com/t-d-k/librecrypt)
 </SPAN>  
             
 ## Introduction
 
-DoxBox: An Open-Source "on-the-fly" transparent disk encryption program for MS Windows 2000/Vista/Windows 7 PCs (both 32 and 64 bit)
+LibreCrypt: An Open-Source "on-the-fly" transparent disk encryption program for MS Windows 2000/Vista/Windows 7 PCs (both 32 and 64 bit)
 
 This software can create "virtual disks" on your computer - anything written to these disks is automatically encrypted before being stored on your computer's hard drive.
 
@@ -45,23 +45,23 @@ This software can create "virtual disks" on your computer - anything written to 
 * Available in English, Spanish, German, Italian, French, Czech, Japanese, Croatian, Greek and Russian - with support for other language translations
 * Supports the modern recommended cypher algorithms such as AES, and XTS  
 * Operates under MS Windows 2000/Vista/Windows 7 platforms
-* "Portable mode" included; DoxBox doesn't need to be installed before it can be used - making it ideal for carrying your data securely on USB drives!
-* "Hidden" volumes may be concealed within other DoxBoxes, providing "plausible deniability"
+* "Portable mode" included; LibreCrypt doesn't need to be installed before it can be used - making it ideal for carrying your data securely on USB drives!
+* "Hidden" volumes may be concealed within other containers, providing "plausible deniability"
 
 ### Technical details
 * Hash algorithms include: MD5, SHA-512, RIPEMD-320, Tiger and _many_ more
 * Cyphers include AES (256 bit), Twofish (256 bit), Blowfish (448 bit), Serpent (256 bit) and _many_ more
 * Cypher modes supported include XTS, LRW and CBC (including XTS-AES-128 and XTS-AES-256)
 * Security tokens/smartcards supported for extra (optional) security
-* DoxBoxes have no "signature" to allow them to be identified as such
+* containers have no "signature" to allow them to be identified as such
 * Encrypted volumes can be either file or partition based.
 * Modular design allowing 3rd party drivers to be created, incorporating new hash/cypher algorithms
 * Supports password salting (up to 512 bits), reducing the risks presented by dictionary attacks.
-* 'keyfiles' allow multiple users to share a box without sharing keyphrases and support key backup.
+* 'keyfiles' allow multiple users to share a container without sharing keyphrases and support key backup.
 * Volume file timestamps and attributes are reset after dismounting, increasing "plausible deniability"
-* DoxBoxes up to 8,388,608 TB 
+* containers up to 8,388,608 TB 
 
-Screenshots of DoxBox are [here](http://DoxBox.eu/screenshots_pc_main.html)
+Screenshots of LibreCrypt are [here](http://LibreCrypt.eu/screenshots_pc_main.html)
 
 Cyphers included:
 

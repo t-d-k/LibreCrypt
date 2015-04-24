@@ -1,26 +1,26 @@
 <!-- tdk written (c) GPL documentation licence-->
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <TITLE>Advanced Topics</TITLE>
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/librecrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
-## Translating DoxBox
+## Translating LibreCrypt
 
 * * *
 
-<p>DoxBox currently supports the following languages:</p>
+<p>LibreCrypt currently supports the following languages:</p>
 
 	* Croatian
 	* Czech
@@ -37,10 +37,10 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 
 	1.  Find the two-letter ISO 639-1 Alpha-2 code for the language you want to translate to (e.g. `fr` for French, `de` for German, `ru` for Russian). 
 	Call this &#39;XX&#39;.
-	1.  Install the latest copy of DoxBox.
-	1.  Find the directory DoxBox was installed in (by default <code>c:\Program Files (86)\DoxBox\</code> and copy the `default.po` file stored under 
+	1.  Install the latest copy of LibreCrypt.
+	1.  Find the directory LibreCrypt was installed in (by default <code>c:\Program Files (86)\LibreCrypt\</code> and copy the `default.po` file stored under 
 	<code>locale\en\LC_MESSAGES</code> to a new directory called: <code>locale\XX\LC_MESSAGES</code> where &#39;XX&#39; is the language code.  
-	You can also find this file in the DoxBoxPortable.zip archive.
+	You can also find this file in the LibreCryptPortable.zip archive.
 	1.  Edit your copy of `default.po`, adding the translated versions of each `msgid` string as the corresponding `msgstr` text. 
 	For example, a German translation would be:
 	<br/>	     
@@ -63,11 +63,11 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 			+  In Windows explorer, right-click your `default.po` file
 			+  Select `Compile to mo file` from the context menu displayed. This should then generate you a `default.mo` file
 
-	1.  Run DoxBox.exe
+	1.  Run LibreCrypt.exe
 	1. Select the `View | Options...` menu-item
 	1. On the `General` tab, select the language of your translation from the drop-down shown in the upper right
 	1. Click `OK`	
-	1. DoxBox&#39;s user interface should then switch to be displayed in your selected language.	
+	1. LibreCrypt&#39;s user interface should then switch to be displayed in your selected language.	
 
 <p>If your translation isn&#39;t listed in the `Languages` drop-down, please check:</p>
 
@@ -75,13 +75,13 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 		* You compiled your `default.po` file to a `default.mo` file
 		* Your `default.mo` file is placed in the correct `locale\XX\LC_MESSAGES` directory
 
-### Submit your translation for inclusion in the DoxBox project
-<p>Please email your translated `default.po` file to the email on the [github contact page](https://github.com/t-d-k/doxbox/blob/master/docs/contact_details.md) , or add it in github if you have an account.<br />
+### Submit your translation for inclusion in the LibreCrypt project
+<p>Please email your translated `default.po` file to the email on the [github contact page](https://github.com/t-d-k/librecrypt/blob/master/docs/contact_details.md) , or add it in github if you have an account.<br />
 
 Note: You don&#39;t have to translate all of the messages stored in `default.po`, though it would be very much appreciated.<br />
 <br />
 ### Updating a Translation
-When newer versions of DoxBox are released, a translation (.po) file can have newer text strings merged into it using Poedit:
+When newer versions of LibreCrypt are released, a translation (.po) file can have newer text strings merged into it using Poedit:
 
 	* In Poedit, go to `File | Open`, and open the `default.po` file with the existing translations in it
 	* Go to `Catalog | Update from POT file` and specify the updated English `default.po` file (i.e. ...\locale\en\LC_MESSAGES\default.po) 

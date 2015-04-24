@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -10,16 +10,16 @@
 
 <TITLE>Appendix E: PKCS#11 Driver Libraries</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/librecrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
@@ -28,7 +28,7 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 
 ## Appendix E: PKCS#11 Driver Libraries
 
-If you have a token which supports the PKCS#11 standard, as most do, your token can be used by DoxBox. Below is a list of well known smartcards/tokens which do support this standard, and the suggested library filename to use.
+If you have a token which supports the PKCS#11 standard, as most do, your token can be used by LibreCrypt. Below is a list of well known smartcards/tokens which do support this standard, and the suggested library filename to use.
 
 Please note that:
 
@@ -66,7 +66,7 @@ If you are using a token which isn't mentioned on the list below, please check w
 <TD >eToken PRO</TD>
 <TD >etpkcs11.dll</TD>
 <TD >[(WWW)](http://www.aladdin.com/)</TD>
-<TD >Confirmed working with DoxBox</TD>
+<TD >Confirmed working with LibreCrypt</TD>
 </TR>
 <TR>
 <TD >eToken R2</TD>
@@ -184,7 +184,7 @@ On 1st December2005 Eracom Technologies AG was acquired by SafeNet </TD>
 <TD >ePass 2000_FT11</TD>
 <TD >ngp11v211.dll</TD>
 <TD >[(WWW)](http://www.epass.nl/ and http://www.esoftkey.com/)</TD>
-<TD >Confirmed working with DoxBox</TD>
+<TD >Confirmed working with LibreCrypt</TD>
 </TR>
 <TR>
 <TD >ePass 3000</TD>
@@ -196,7 +196,7 @@ On 1st December2005 Eracom Technologies AG was acquired by SafeNet </TD>
 <TD >ePass 3003</TD>
 <TD >ShuttleCsp11_3003.dll</TD>
 <TD >[(WWW)](http://www.epass.nl/ and http://www.esoftkey.com/)</TD>
-<TD >Confirmed working with DoxBox</TD>
+<TD >Confirmed working with LibreCrypt</TD>
 </TR>
 <TR>
 <TD ROWSPAN="2">Gemplus</TD>
@@ -281,7 +281,7 @@ C:\ Data\ Development\ SmartCardIntegration\ PKCS11wrapper\ JavaToPKCS11\ demo\ 
 <TD >Mozilla or Netscape crypto module</TD>
 <TD >softokn3.dll</TD>
 <TD >	</TD>
-<TD >Cannot be used with DoxBox; requires additional parameters to initailize</TD>
+<TD >Cannot be used with LibreCrypt; requires additional parameters to initailize</TD>
 </TR>
 <TR>
 <TD ROWSPAN="2">nCipher</TD>

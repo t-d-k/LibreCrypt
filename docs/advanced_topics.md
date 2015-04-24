@@ -1,18 +1,18 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <TITLE>Advanced Topics</TITLE>
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/LibreCrypt/raw/master/src/Common/Common/images/LibreCrypt.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/LibreCrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
@@ -25,17 +25,17 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 ### Keyfiles
 </A>
 
-A "keyfile" is a small file (about 512 bytes) which can optionally be created for a DoxBox, and contains the information required to open it. Keyfiles are encrypted with a password, which must be given in order to use the keyfile.
+A "keyfile" is a small file (about 512 bytes) which can optionally be created for a LibreCrypt, and contains the information required to open it. Keyfiles are encrypted with a password, which must be given in order to use the keyfile.
 
-<P class="tip"> More than one keyfile can be created for the same Box. </P>
+<P class="tip"> More than one keyfile can be created for the same container. </P>
 
-Keyfiles are useful as they allow critical information which is required in order to open a Box to be stored separately to the Box which they relate to; on a floppy disk, or USB drive, for example - which would be too small to store the entire DoxBox on. In this way, your DoxBox may be stored on your computer, but the information required to access it can be stored in a physically more secure location (e.g. in a locked safe)
+Keyfiles are useful as they allow critical information which is required in order to open a Container to be stored separately to the container which they relate to; on a floppy disk, or USB drive, for example - which would be too small to store the entire LibreCrypt on. In this way, your container may be stored on your computer, but the information required to access it can be stored in a physically more secure location (e.g. in a locked safe)
 
-Keyfiles may be used for password recovery, or to reset forgotten passwords. When confidential information is held within a DoxBox, a keyfile can be created for it and stored in a safe location. Should the employee which normally uses the DoxBox be unavailable, or cannot remember the DoxBox's password, it can still be opened using a keyfile that has was previously created for it (together with that keyfile's password) - even if the _DoxBox's password_ has been subsequently changed.
+Keyfiles may be used for password recovery, or to reset forgotten passwords. When confidential information is held within a container, a keyfile can be created for it and stored in a safe location. Should the employee which normally uses the container be unavailable, or cannot remember the container's password, it can still be opened using a keyfile that has was previously created for it (together with that keyfile's password) - even if the _container's password_ has been subsequently changed.
 
-Keyfiles may also be used to provide multiple users with access to mount and use the same Box; each using a password of their own choosing.
+Keyfiles may also be used to provide multiple users with access to mount and use the same container; each using a password of their own choosing.
 
-Note: Keyfiles are _specific_ to the Box they are created for! Although a keyfile for one Box may be able to successfully _mount_ another Box, the virtual drive shown will appear to be unformatted - the files within the Box will remain securely encrypted and unreadable.
+Note: Keyfiles are _specific_ to the container they are created for! Although a keyfile for one container may be able to successfully _mount_ another container, the virtual drive shown will appear to be unformatted - the files within the container will remain securely encrypted and unreadable.
 
 <A NAME="level_4_heading_1">
 #### Creating a new keyfile
@@ -47,19 +47,19 @@ To create a new keyfile, select "Tools | Create keyfile..." to display the "keyf
 #### Mounting a volume using a keyfile
 </A>
 
-The process of mounting a DoxBox using a keyfile is identical to the normal mount procedure, with the exceptions that:
+The process of mounting a container using a keyfile is identical to the normal mount procedure, with the exceptions that:
 
-1. The password used should be the _keyfile's_ password, and _not the DoxBox's password_.
+1. The password used should be the _keyfile's_ password, and _not the container's password_.
 1. The full path and filename of the keyfile should be entered as the "keyfile file"
 
 * * *
  
 <A NAME="level_3_heading_2">
 
-### Partition/Entire Disk Based DoxBoxes
+### Partition/Entire Disk Based containers
 </A>
 
-As well as DoxBoxes in files, you can also encrypt partitions, and even entire disks, by selecting "Partition/disk" when prompted during the DoxBox creation process.
+As well as containers in files, you can also encrypt partitions, and even entire disks, by selecting "Partition/disk" when prompted during the container creation process.
 
 It is _not_ recommended that inexperienced users do this - is the kind of operation that should only be carried out by those who are familiar with disk partitioning and  understand what they're doing.
 
@@ -73,39 +73,39 @@ It is **_extremely important_** that you make **_absolutely sure_** you have sel
 ##### Backing up
 </A>
 
-Making a DoxBox will overwrite the first 512 bytes of the selected partition (or start of the disk, if using the entire disk).
+Making a container will overwrite the first 512 bytes of the selected partition (or start of the disk, if using the entire disk).
 In addition if 'overwrite with chaff' is enabled, the entire partition will be overwritten.
 
-If the 'overwrite with chaff' option is enabled, it is not possible to recover any data on the drive after making the Box.
+If the 'overwrite with chaff' option is enabled, it is not possible to recover any data on the drive after making the container.
 
-If this option is disabled, you may be able to revert the changes DoxBox makes to your partition/disk if the first 512 bytes have ben backed up ("Tools | Critical data block | Backup...").
+If this option is disabled, you may be able to revert the changes LibreCrypt makes to your partition/disk if the first 512 bytes have ben backed up ("Tools | Critical data block | Backup...").
 
 Note: Such a backup will be of less use after the volume created has been used, since this will carry out further overwrites to the partition/disk.
 
 Ideally, you should backup your entire system before creating encrypted partitions, just to be on the safe side - though this may not be practical.
 
 <A NAME="level_5_heading_2">
-##### Create New Boxes as an Administrator
+##### Create New Containers as an Administrator
 </A>
 
-The partition display shown by DoxBox will give more information about the partitions on a disk (e.g. drive letters allocated, size of partitions, proportional display) when used by a user with administrative privileges. A user with normal privileges will be shown less information due to their restricted access rights.
+The partition display shown by LibreCrypt will give more information about the partitions on a disk (e.g. drive letters allocated, size of partitions, proportional display) when used by a user with administrative privileges. A user with normal privileges will be shown less information due to their restricted access rights.
 
-![title](https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/screenshots/PC/NewVolumeWizard_PartitionFullInfo.png)
-_New Box wizard showing full partition information_
+![title](https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/images/screenshots/PC/NewVolumeWizard_PartitionFullInfo.png)
+_New container wizard showing full partition information_
 
-Therefore, it is _recommended_ that you create any new partition based volumes while logged in as an administrator. To do this under Windows Vista and above, you will need to run DoxBox with elevated permissions:
-	locate the "DoxBox.exe" executable where you installed it, rightclick on this executable and select "Run as administrator" from the context menu.
+Therefore, it is _recommended_ that you create any new partition based volumes while logged in as an administrator. To do this under Windows Vista and above, you will need to run LibreCrypt with elevated permissions:
+	locate the "LibreCrypt.exe" executable where you installed it, rightclick on this executable and select "Run as administrator" from the context menu.
 
 <A NAME="level_4_heading_4">
 
 #### Special Note for Windows Vista x64 (64 bit) and Windows 7 (64 bit) Users
 </A>
 
-In order to format a new _partition or disk based Box_ under Windows Vista x64 (64 bit), the Box must be opened while DoxBox is running with elevated permissions.
+In order to format a new _partition or disk based Box_ under Windows Vista x64 (64 bit), the container must be opened while LibreCrypt is running with elevated permissions.
 
 To do this:
 
-1. Locate "DoxBox.exe" where you installed it, rightclick on this executable, and select "Run as administrator" from the context menu)
+1. Locate "LibreCrypt.exe" where you installed it, rightclick on this executable, and select "Run as administrator" from the context menu)
 1. Mount the partition/disk as normal
 1. Format the mounted volume
 
@@ -116,41 +116,41 @@ Elevated permissions are _not_ required to format file based volumes.
 * * *
  
 <A NAME="level_3_heading_3">
-### Creating Hidden Boxes
+### Creating Hidden Containers
 </A>
 
-DoxBox offers users the ability to create "hidden Boxes" stored inside other "outer" Boxes.
+LibreCrypt offers users the ability to create "hidden Containers" stored inside other "outer" Containers.
 
-To create a hidden DoxBox:
+To create a hidden container:
 
-1. Open the 'outer' DoxBox. Right click and click 'properties'.
+1. Open the 'outer' container. Right click and click 'properties'.
 1. Copy the value shown as 'default hidden offset'
-1. Lock the 'outer' Box.
-1. Start the new Box wizard as normal (select "File | New..." from the main menu).
+1. Lock the 'outer' container.
+1. Start the new container wizard as normal (select "File | New..." from the main menu).
 1. When prompted to select between creating a file or partition based volume, select "File" or "Partition", depending on whether the _outer Box_ you wish to use is file or partition based.
-1. When prompted for the filename/partition to create your hidden Box on, select the _outer_ file/partition in which you wish to put the hidden Box.
+1. When prompted for the filename/partition to create your hidden container on, select the _outer_ file/partition in which you wish to put the hidden container.
 1. The next step in the wizard will prompt you to enter an offset. Paste in the 'default hidden offset' copied above. 
-		The offset is the number of bytes from the start of the file where the hidden Box begins. If you do not use the default value, make sure that the offset you specify is large enough such that it does not overwrite any of the system areas of that host volume (e.g. the FAT), or files already written to it. 
-1. Continue with the New Box wizard as normal.
+		The offset is the number of bytes from the start of the file where the hidden container begins. If you do not use the default value, make sure that the offset you specify is large enough such that it does not overwrite any of the system areas of that host volume (e.g. the FAT), or files already written to it. 
+1. Continue with the New container wizard as normal.
 
-To open your hidden Box, proceed as if opening the _outer_ Box, but when prompted to enter your password, click the "Advanced" button and enter the offset. (See the section on advanced password entry options).
-The 'default hidden offset' may be retrieved at any time by opening the outer Box and right-clicking -> properties.
+To open your hidden container, proceed as if opening the _outer_ container, but when prompted to enter your password, click the "Advanced" button and enter the offset. (See the section on advanced password entry options).
+The 'default hidden offset' may be retrieved at any time by opening the outer container and right-clicking -> properties.
 
 
 <p class="tip">
-If you enter a custom value for the offset, make sure you remember it! For security reasons, DoxBox doesn't store this information anywhere, and so you will have to enter the same offset into the password entry dialog every time you wish to mount your hidden volume.
+If you enter a custom value for the offset, make sure you remember it! For security reasons, LibreCrypt doesn't store this information anywhere, and so you will have to enter the same offset into the password entry dialog every time you wish to mount your hidden volume.
 </p>
 
 <p class="security_tip">
 More than one hidden volume can be stored within the same host volume, by using different offsets
 </p>
 
-_Warning_:Once a hidden Box has been made, subsequently saving data to the _outer_ Box can corrupt the hidden Box, and destroy its data. It can also change the default hidden offset.
+_Warning_:Once a hidden container has been made, subsequently saving data to the _outer_ container can corrupt the hidden container, and destroy its data. It can also change the default hidden offset.
 <p class="tip">
-Once created in this way you should only open the outer Box as read-only, and never save any files to the outer Box.
+Once created in this way you should only open the outer container as read-only, and never save any files to the outer container.
 </p>
 
-Please see the [Plausible Deniability](plausible_deniability.html) section for further information on the practical uses and considerations of hidden Boxes.
+Please see the [Plausible Deniability](plausible_deniability.html) section for further information on the practical uses and considerations of hidden Containers.
 
 * * *
  <!-- ---------------------------------------------------------------------------- -->
@@ -158,9 +158,9 @@ Please see the [Plausible Deniability](plausible_deniability.html) section for f
 ### Volume Creation: Advanced Options
 </A>
 
-At the end of the New Box process, DoxBox will display a summary of the volume it is about to create. At this stage, more advanced options be configured for the new volume, by selecting the "Advanced..." button.
+At the end of the New container process, LibreCrypt will display a summary of the volume it is about to create. At this stage, more advanced options be configured for the new volume, by selecting the "Advanced..." button.
 
-![VolCreateAdvanced](https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/screenshots/PC/VolCreateAdvanced.png)
+![VolCreateAdvanced](https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/images/screenshots/PC/VolCreateAdvanced.png)
 
       _Advanced volume creation options_
 
@@ -183,7 +183,7 @@ Before the user's password is used to encrypt/decrypt the CDB, it is processed u
 
 Part of this processing involves the use of a random "salt" value, which reduces the risk of dictionary based attacks. This tab allows the length of the salt value (in bits) to be set by the user.
 
-_It should be noted that to open a volume which has a non-default (256 bit), you MUST specify the correct salt length  by using the "Advanced" options available on the DoxBox password entry dialog. If using a keyfile, the keyfiles salt length must be specified._
+_It should be noted that to open a volume which has a non-default (256 bit), you MUST specify the correct salt length  by using the "Advanced" options available on the LibreCrypt password entry dialog. If using a keyfile, the keyfiles salt length must be specified._
 
 The default salt length is 256 bits. Any salt length entered must be a multiple of 8 bits.
 
@@ -191,7 +191,7 @@ The default salt length is 256 bits. Any salt length entered must be a multiple 
 #### Drive Letter
 </A>
 
-By default, DoxBox will use the next available drive letter when mounting a volume.
+By default, LibreCrypt will use the next available drive letter when mounting a volume.
 
 This behaviour can be changed to use a specific drive letter on a volume-by-volume basis by setting it on this option.
 
@@ -205,23 +205,23 @@ Note: If the chosen drive letter is in use at the time of mounting, the next fre
 
 Normally, a volume's CDB will be stored as the first 512 bytes of the volume.
 
-However, this does increase the size of the volume by the size of the CDB, which can DoxBox volumes more distinctive, and making it slightly more obvious that a volume file _is_ volume file.
+However, this does increase the size of the volume by the size of the CDB, which can make LibreCrypt volumes more distinctive, and makes it slightly more obvious that a volume file _is_ a volume file.
 
 This is most clearly shown when creating a file based volume: a 2GB volume, for example, will be 2,147,484,160 bytes in length - made up of a 2,147,483,648 byte (2GB) encrypted disk image, plus a 512 byte embedded CDB.
 
-To reduce this, it is possible to create a volume _without_ an embedded CDB; the CDB being stored in a separate file as a standard DoxBox keyfile.
+To reduce this, it is possible to create a volume _without_ an embedded CDB; the CDB being stored in a separate file as a standard LibreCrypt keyfile.
 
 In this case, a 2GB volume would comprise of a 2,147,483,648 byte (2GB) encrypted disk image, plus a separate 512 byte keyfile which may be stored in a separate location to the volume.
 
-Note that if you store the volume's CDB in a keyfile, you will _always_ need to supply a keyfile when mounting the volume, and ensure that the "Data from offset includes CDB" advanced option shown on the DoxBox password entry dialog shown when mounting must be _unchecked after the keyfile is specified_.
+Note that if you store the volume's CDB in a keyfile, you will _always_ need to supply a keyfile when mounting the volume, and ensure that the "Data from offset includes CDB" advanced option shown on the LibreCrypt password entry dialog shown when mounting must be _unchecked after the keyfile is specified_.
 
-By default, DoxBox includes the CDB will be included as part of the volume.
+By default, LibreCrypt includes the CDB will be included as part of the volume.
 
 <A NAME="level_4_heading_9">
 #### Padding
 </A>
 
-"Padding" is additional random data added to the end of the Box file. Any padding added will not be available for use as part of the mounted volume, and serves to increase the size of the volume.
+"Padding" is additional random data added to the end of the container file. Any padding added will not be available for use as part of the mounted volume, and serves to increase the size of the volume.
 
 Encrypted volumes typically have a file size that is a multiple of 512 bytes, or a "signature size" beyond the last 1MB boundary. To prevent this, you may wish to append random "padding" data to the new volume.
 
@@ -233,7 +233,7 @@ Padding also reduces the amount of information available to an attacker with res
 #### Chaff
 </A>
 
-When creating a new DoxBox the file or partition is first overwritten with psuedo-random data. This prevents any attacker from telling how much data is stored in the Box and whether there is any hidden Box. This data is known as "chaff".
+When creating a new container the file or partition is first overwritten with psuedo-random data. This prevents any attacker from telling how much data is stored in the container and whether there is any hidden container. This data is known as "chaff".
 
 Writing the 'chaff' can take some time - particularly with flash drives.
 Please see [plausible deniability](plausible_deniability.html) for details.
@@ -245,9 +245,9 @@ Please see [plausible deniability](plausible_deniability.html) for details.
 ### Password Entry: Advanced Options
 </A>
 
-_Note: This section only covers the password entry dialog shown when opening DoxBox volumes. For opening Linux volumes, please see the section on [Linux volumes](Linux_volumes.html)._
+_Note: This section only covers the password entry dialog shown when opening LibreCrypt volumes. For opening Linux volumes, please see the section on [Linux volumes](Linux_volumes.html)._
 
-![MountAdvanced](https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/screenshots/PC/MountAdvanced.png)
+![MountAdvanced](https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/images/screenshots/PC/MountAdvanced.png)
  
 
 <A NAME="level_4_heading_10">
@@ -289,7 +289,7 @@ This option is only available if PKCS#11 support is enabled (see the section on 
 ##### Mount as
 </A>
 
-DoxBox volumes may be mounted as any of the following types of virtual drive:
+LibreCrypt volumes may be mounted as any of the following types of virtual drive:
 
 * Fixed disk
 * Removable disk
@@ -300,7 +300,7 @@ Usually, users should select removable disk.
 
 Selecting the "removable disk" option causes the volume to be mounted as though it was a removable drive, e.g. a USB flash drive. For volumes mounted in this way, among other things, deleted files will not be moved to a "recycle bin" on the volume, but will be deleted immediately.
 
-By default, DoxBox mounts volumes as a removable disk.
+By default, LibreCrypt mounts volumes as a removable disk.
 
 <A NAME="level_5_heading_7">
 
@@ -350,7 +350,7 @@ The driver control dialog may be accessed by selecting "File | Drivers...". From
 A summary of all available hash and cypher algorithms can be found by selecting "Help | List hashes..."/"Help | List cyphers...".
 </p>
 
-![title](https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/screenshots/PC/DriverControl.png)
+![title](https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/images/screenshots/PC/DriverControl.png)
       _Driver control dialog_
 
 <A NAME="level_4_heading_13">
@@ -358,9 +358,9 @@ A summary of all available hash and cypher algorithms can be found by selecting 
 #### Installing New Drivers
 </A>
 
-DoxBox drivers may be installed by clicking "Install...", and selecting the driver file to be installed.
+LibreCrypt drivers may be installed by clicking "Install...", and selecting the driver file to be installed.
 
-DoxBox will then install the driver selected (adding it to the list of installed drivers), start it, and sets it to automatically start up whenever the PC boots up.
+LibreCrypt will then install the driver selected (adding it to the list of installed drivers), start it, and sets it to automatically start up whenever the PC boots up.
 
 <p class="tip">
 More than one driver can be installed at the same time by selecting holding down &lt;SHIFT&gt;/&lt;CTRL&gt; when selecting driver files in the "Open" dialog shown when "Install..." is clicked
@@ -384,13 +384,13 @@ The lower half of the Driver Control dialog lists all drivers currently installe
 <TR>
 <TD COLSPAN="1" ROWSPAN="2">Start up</TD>
 
-<TD>![Smiley](https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/driver_START_MANUAL.png)</TD>
+<TD>![Smiley](https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/images/driver_START_MANUAL.png)</TD>
 
 <TD>Driver must be started manually</TD>
 
 </TR>
 <TR>
-<TD>![Up arrow](https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/driver_START_AUTO.png)</TD>
+<TD>![Up arrow](https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/images/driver_START_AUTO.png)</TD>
 
 <TD>Driver will be started automatically when the computer starts up</TD>
 
@@ -398,25 +398,25 @@ The lower half of the Driver Control dialog lists all drivers currently installe
 <TR>
 <td colspan="1" rowspan="2">Installation mode</TD>
 
-<TD>![Blank icon](https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/driver_MODE_NORMAL.png)</TD>
+<TD>![Blank icon](https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/images/driver_MODE_NORMAL.png)</TD>
 <TD>Driver is installed normally _ (no icon) _ 
 </TD>
 </TR>
 <TR>
-<TD>![Car icon](https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/driver_MODE_PORTABLE.png)</TD>
+<TD>![Car icon](https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/images/driver_MODE_PORTABLE.png)</TD>
 <TD>Driver is installed in portable mode _ (world icon)_ </TD>
 
 </TR>
 <TR>
 <td colspan="1" rowspan="2">Status</TD>
 
-<TD>![Green triangle](https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/driver_STATUS_STARTED.png)</TD>
+<TD>![Green triangle](https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/images/driver_STATUS_STARTED.png)</TD>
 
 <TD>Driver started</TD>
 
 </TR>
 <TR>
-<TD>![Red square](https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/images/driver_STATUS_STOPPED.png)</TD>
+<TD>![Red square](https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/images/driver_STATUS_STOPPED.png)</TD>
 
 <TD>Driver stopped</TD>
 
@@ -454,18 +454,20 @@ Uninstalls the selected driver, and removes it from the drivers list.
 
 When the user specifies a password for a new volume, or changes an existing volume's password, they have the option of carrying out analysis on the password entered in order to check it against a range of characteristics that are characteristic of weak passwords.
 
-DoxBox does _not_ yet include a "password strength" meter.
+LibreCrypt includes a "password strength" meter.
 
 
 <A NAME="level_5_heading_11">
 ##### Dictionary (aka Wordlist) Files
 </A>
 
+This question applies to a future version of LibreCrypt.
+
 Dictionary files (aka wordlist files) are straightforward text files which contain numerous words, one per line.
 
-DoxBox and DoxBox Explorer can be configured to check passwords against such files, to filter out weak passwords.
+LibreCrypt and LibreCrypt Explorer can be configured to check passwords against such files, to filter out weak passwords.
 
-DoxBox also supports wordlists in the Diceware (5 digit number, single space/tab, then word) and Mozilla Firefox (word followed by a single "/") formats.
+LibreCrypt also supports wordlists in the Diceware (5 digit number, single space/tab, then word) and Mozilla Firefox (word followed by a single "/") formats.
 
 Suitable dictionary files are widely available on the Internet; for example:
 

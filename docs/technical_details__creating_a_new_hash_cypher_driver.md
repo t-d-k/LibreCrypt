@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -10,16 +10,16 @@
 
 <TITLE>Technical Details: Creating a New Hash/Cypher Driver</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/librecrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
@@ -103,7 +103,7 @@ used as a base, instead of the Blowfish cypher.
       * All instances of "Blowfish" to reflect new cypher name
 * Add/remove any "DRIVER_CIPHER_TITLE_**XXX**" entries as required
 
-      * All of the GUID values (this is **important!** The DoxBox GUI uses these values to differentiate between the different cypher implementations)* Set the definition of
+      * All of the GUID values (this is **important!** The LibreCrypt GUI uses these values to differentiate between the different cypher implementations)* Set the definition of
 "CYPHERS_SUPPORTED" to reflect the number of different cyphers the driver will
 provide (i.e. the number of "DRIVER_CIPHER_TITLE_**XXX**" definitions you have)
 
@@ -159,7 +159,7 @@ of the following:
 <TD style="vertical-align: top; width: 5%;">Valid</TD>
 
 <TD style="vertical-align: top; width: 25%;">Hash values returned are 0 bits long.</TD>
-<TD>Hashes which return zero length hash values cannot be used with DoxBox volumes. (DoxBox volumes use PKCS#5 PBKDF2 (HMAC), which requires that the length of hash values returned is greater than zero.)</TD>
+<TD>Hashes which return zero length hash values cannot be used with LibreCrypt volumes. (LibreCrypt volumes use PKCS#5 PBKDF2 (HMAC), which requires that the length of hash values returned is greater than zero.)</TD>
 
 </TR>
 <TR>
@@ -168,7 +168,7 @@ of the following:
 <TD style="vertical-align: top; width: 5%;">Valid</TD>
 
 <TD style="vertical-align: top; width: 25%;">Hash values returned are of variable length (e.g. the "NULL" hash, which returns its input as the generated hash value.)</TD>
-<TD>Hashes which return variable length hash values cannot be used with DoxBox volumes. (DoxBox volumes use PKCS#5 PBKDF2 (HMAC), which requires that the length of the hash values used is fixed.) </TD>
+<TD>Hashes which return variable length hash values cannot be used with LibreCrypt volumes. (LibreCrypt volumes use PKCS#5 PBKDF2 (HMAC), which requires that the length of the hash values used is fixed.) </TD>
 </TR>
 <TR>
 <TD style="vertical-align: top; width: 10%;">Greater than 0</TD>
@@ -209,7 +209,7 @@ of the following:
 <TD style="vertical-align: top; width: 5%;">Valid</TD>
 
 <TD style="vertical-align: top; width: 25%;">Hash algorithm does not process input data.</TD>
-<TD>Hashes may only have a blocksize of 0 bits if the length of the hash values they output is also 0 bits long, or if they ignore their input.  Hashes which use zero length blocksizes cannot be used for DoxBox volumes. (DoxBox volumes use HMAC, which requires that the blocksize of hashes used is greater than zero.)</TD>
+<TD>Hashes may only have a blocksize of 0 bits if the length of the hash values they output is also 0 bits long, or if they ignore their input.  Hashes which use zero length blocksizes cannot be used for LibreCrypt volumes. (LibreCrypt volumes use HMAC, which requires that the blocksize of hashes used is greater than zero.)</TD>
 
 </TR>
 <TR>
@@ -218,7 +218,7 @@ of the following:
 <TD style="vertical-align: top; width: 5%;">Valid</TD>
 
 <TD style="vertical-align: top; width: 25%;">Hash algorithm processes input data in variable-length blocks.</TD>
-<TD>Hashes which use variable length blocksizes cannot be used for DoxBox volumes. (DoxBox volumes use HMAC, which requires that the blocksize of hashes is a fixed size.) </TD>
+<TD>Hashes which use variable length blocksizes cannot be used for LibreCrypt volumes. (LibreCrypt volumes use HMAC, which requires that the blocksize of hashes is a fixed size.) </TD>
 </TR>
 <TR>
 <TD style="vertical-align: top; width: 10%;">Greater than 0</TD>

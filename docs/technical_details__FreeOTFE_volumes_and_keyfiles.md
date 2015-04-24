@@ -2,33 +2,33 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
 
 
-<TITLE>Technical Details: DoxBox Volumes and Keyfiles</TITLE>
+<TITLE>Technical Details: LibreCrypt Volumes and Keyfiles</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/librecrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
       
             
 
-### Technical Details: DoxBox Volumes and Keyfiles
+### Technical Details: LibreCrypt Volumes and Keyfiles
 
-A DoxBox (regardless of whether its stored in a file or partition) consists of two things:
+A LibreCrypt container (regardless of whether its stored in a file or partition) consists of two things:
 
 <OL>
   * A critical data block (CDB)
@@ -58,7 +58,7 @@ A full definition of the contents of a CDB/keyfile is supplied in this documenta
 
 <UL>
 
-  *  A DoxBox keyfile is nothing more than a CDB, the "volume details block" of which contains the encryption details used for securing the volume it relates to
+  *  A LibreCrypt container keyfile is nothing more than a CDB, the "volume details block" of which contains the encryption details used for securing the volume it relates to
   *  A volume may have one or more keyfiles, in which case they all share the same data stored within their respective "volume details block", but each one is encrypted with a different user password, salt, random padding, etc - making each keyfile unique. 
   *  Keyfiles are encrypted with the same cypher/hash that the encrypted partition image they relate to is encrypted with.
 

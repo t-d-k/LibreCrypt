@@ -1,33 +1,33 @@
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
 
 <TITLE>Command Line Interface</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
 <SPAN class="tip">
-The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+The latest version of this document can be found at the [LibreCrypt project site](https://github.com/t-d-k/librecrypt)
 </SPAN>
 
 ## Command Line Interface
 
-DoxBox supports passing parameters via a command line interface.
+LibreCrypt supports passing parameters via a command line interface.
 
 
 
@@ -39,7 +39,7 @@ DoxBox supports passing parameters via a command line interface.
 </A>
 
 > <pre>
-> DoxBox.exe /mount /volume <span style="font-style: italic;">&lt;volume&gt;</span> [/freeotfe | /linux] [/readonly] [/drive <span style="font-style: italic;">&lt;drive letter&gt;</span>]
+> LibreCrypt.exe /mount /volume <span style="font-style: italic;">&lt;volume&gt;</span> [/freeotfe | /linux] [/readonly] [/drive <span style="font-style: italic;">&lt;drive letter&gt;</span>]
 >              [/offset <span style="font-style: italic;">&lt;offset&gt;</span>] [/nocdbatoffset]
 >              [/keyfile <span style="font-style: italic;">&lt;keyfile&gt;</span>] [/keyfileisascii] [/keyfilenewline {CRLF|LF|CR}]
 >              [/lesfile <span style="font-style: italic;">&lt;LES file&gt;</span>]
@@ -47,18 +47,18 @@ DoxBox supports passing parameters via a command line interface.
 >              [/password <span style="font-style: italic;">&lt;password&gt;</span>] [/silent] [/noexit] [/minimize]
 >              [/settings <span style="font-style: italic;">&lt;settings file&gt;</span>]
 > 
-> DoxBox.exe /dismount {<span style="font-style: italic;">&lt;drive letter&gt;</span>[:] | all} [/force]
+> LibreCrypt.exe /dismount {<span style="font-style: italic;">&lt;drive letter&gt;</span>[:] | all} [/force]
 > 
-> DoxBox.exe /count
+> LibreCrypt.exe /count
 > 
-> DoxBox.exe /create
+> LibreCrypt.exe /create
 > 
-> DoxBox.exe /portable {start | on | 1 | stop | off | 0 | toggle} [/silent]
+> LibreCrypt.exe /portable {start | on | 1 | stop | off | 0 | toggle} [/silent]
 > 
-> DoxBox.exe /drivercontrol gui
-> DoxBox.exe /drivercontrol count [/type {total | portable | installed}]
-> DoxBox.exe /drivercontrol install /filename {<span style="font-style: italic;">&lt;driver filename&gt;</span> | all} [/silent]
-> DoxBox.exe /drivercontrol uninstall /drivername {<span style="font-style: italic;">&lt;driver name&gt;</span> | all} [/silent]
+> LibreCrypt.exe /drivercontrol gui
+> LibreCrypt.exe /drivercontrol count [/type {total | portable | installed}]
+> LibreCrypt.exe /drivercontrol install /filename {<span style="font-style: italic;">&lt;driver filename&gt;</span> | all} [/silent]
+> LibreCrypt.exe /drivercontrol uninstall /drivername {<span style="font-style: italic;">&lt;driver name&gt;</span> | all} [/silent]
 > </pre>
 
 <A NAME="level_4_heading_2">
@@ -66,20 +66,20 @@ DoxBox supports passing parameters via a command line interface.
 #### Description
 </A>
 
-DoxBox has command line parameters so most operations can be run from the command line or MS Windows shortcuts.
+LibreCrypt has command line parameters so most operations can be run from the command line or MS Windows shortcuts.
 #### Note on terminology
-In the DoxBox GUI and documentation aimed at new users, easy to understand words like 'open', 'DoxBox' and 'lock' are used. In documentation aimed at more advanced users (like this page) standard file system terms are used, as follows:
+In the LibreCrypt GUI and documentation aimed at new users, easy to understand words like 'open', 'container' and 'lock' are used. In documentation aimed at more advanced users (like this page) standard file system terms are used, as follows:
 <TABLE>
   <TBODY>    
-		<TR> <TD>DoxBox Volume</TD>				<TD> A DoxBox                    </TD>  </TR>
-		<TR> <TD>Volume</TD>							<TD> A 'Box', perhaps for a legacy app </TD>  </TR>
-		<TR> <TD>Mount a volume</TD>			<TD> Open a Box     </TD>  </TR>
-		<TR> <TD>Dismount a volume</TD>		<TD> Close a Box </TD>  </TR>
-		<TR> <TD>Flush keys for a volume</TD><TD> Lock a Box   </TD>  </TR>    
+		<TR> <TD>container Volume</TD>				<TD> A container                    </TD>  </TR>
+		<TR> <TD>Volume</TD>							<TD> A 'Container', perhaps for a legacy app </TD>  </TR>
+		<TR> <TD>Mount a volume</TD>			<TD> Open a Container     </TD>  </TR>
+		<TR> <TD>Dismount a volume</TD>		<TD> Close a Container </TD>  </TR>
+		<TR> <TD>Flush keys for a volume</TD><TD> Lock a Container   </TD>  </TR>    
   </TBODY>
 </TABLE>
 
-DoxBox was previously known as 'FreeOTFE'. The driver that handles native DoxBox volumes ('DoxBoxes') is still known as the 'FreeOTFE' driver and the name is preserved in some filenames and command line parameters.
+LibreCrypt was previously known as 'FreeOTFE'. The driver that handles native container volumes ('containers') is still known as the 'FreeOTFE' driver and the name is preserved in some filenames and command line parameters.
 <A NAME="level_4_heading_3">
 
 #### Options
@@ -87,7 +87,7 @@ DoxBox was previously known as 'FreeOTFE'. The driver that handles native DoxBox
             
  "-" may be used instead of "/", if required.
 
-Note: Although there is currently no option to specify which drive letter a volume should be mounted as, this may be set on any given DoxBox by selecting "Tools | Change volume/keyfile password/details..."
+Note: Although there is currently no option to specify which drive letter a volume should be mounted as, this may be set on any given container by selecting "Tools | Change volume/keyfile password/details..."
 
 
 <TABLE>
@@ -96,13 +96,13 @@ Note: Although there is currently no option to specify which drive letter a volu
       <TD style="vertical-align: top;">
       	<pre>/count</pre>
       </TD>
-      <TD style="vertical-align: top;">Count the number of open DoxBoxes. Exit code indicates the appropriate number (or error code; see below)</TD>
+      <TD style="vertical-align: top;">Count the number of open containers. Exit code indicates the appropriate number (or error code; see below)</TD>
     </TR>
     <TR>
       <TD style="vertical-align: top;">
       	<pre>/create</pre>
       </TD>
-      <TD style="vertical-align: top;">Create new DoxBox</TD>
+      <TD style="vertical-align: top;">Create new container</TD>
     </TR>
     <TR>
       <TD style="vertical-align: top;">
@@ -150,13 +150,13 @@ Note: Although there is currently no option to specify which drive letter a volu
       <TD style="vertical-align: top;">
       <pre>/freeotfe</pre>
       </TD>
-      <TD style="vertical-align: top;">The specified volume is a DoxBox. If a volume type (DoxBox/Linux) isn't specified, the user will be prompted for this information.</TD>
+      <TD style="vertical-align: top;">The specified volume is a container. If a volume type (LibreCrypt/Linux) isn't specified, the user will be prompted for this information.</TD>
     </TR>
     <TR>
       <TD style="vertical-align: top;">
       <pre>/keyfile <span style="font-style: italic;">&lt;keyfile&gt;</span></pre>
       </TD>
-      <TD style="vertical-align: top;">Keyfile to be used when opening a DoxBox. Only valid when opening DoxBoxes</TD>
+      <TD style="vertical-align: top;">Keyfile to be used when opening a container. Only valid when opening containers</TD>
     </TR>
     <TR>
       <TD style="vertical-align: top;">
@@ -186,7 +186,7 @@ Note: Although there is currently no option to specify which drive letter a volu
       <TD style="vertical-align: top;">
       <pre>/linux</pre>
       </TD>
-      <TD style="vertical-align: top;">The specified volume is a Linux volume. If a volume type (DoxBox/Linux) isn't specified, the user will be prompted for this information.</TD>
+      <TD style="vertical-align: top;">The specified volume is a Linux volume. If a volume type (LibreCrypt/Linux) isn't specified, the user will be prompted for this information.</TD>
     </TR>
     <TR>
       <TD style="vertical-align: top;">
@@ -211,7 +211,7 @@ Note: Although there is currently no option to specify which drive letter a volu
       <TD style="vertical-align: top;">
       <pre>/noexit</pre>
       </TD>
-      <TD style="vertical-align: top;">Normally, when run with command line parameters, DoxBox carries out the requested action and exits. Specifying this parameter will cause DoxBox to continue running</TD>
+      <TD style="vertical-align: top;">Normally, when run with command line parameters, LibreCrypt carries out the requested action and exits. Specifying this parameter will cause LibreCrypt to continue running</TD>
     </TR>
     <TR>
       <TD style="vertical-align: top;">
@@ -275,7 +275,7 @@ Note: Although there is currently no option to specify which drive letter a volu
       <TD style="vertical-align: top;">
       <pre>/SetInstalled</pre>
       </TD>
-      <TD style="vertical-align: top;">Sets a flag in the ini file to indicate the app has been installed. Without this flag, DoxBox will attempt to install the drivers at startup</TD>
+      <TD style="vertical-align: top;">Sets a flag in the ini file to indicate the app has been installed. Without this flag, LibreCrypt will attempt to install the drivers at startup</TD>
     </TR>
     <TR>
       <TD style="vertical-align: top;">
@@ -286,7 +286,7 @@ Note: Although there is currently no option to specify which drive letter a volu
   </TBODY>
 </TABLE>
 
-Note: Under Windows Vista, the "install" and "uninstall" options require DoxBox.exe to be explicitly "runas" an account with administrator privileges, if not being executed from a process which has already been escalated; see examples below. The "/portable" will automatically escalate to administrator privileges, if required
+Note: Under Windows Vista, the "install" and "uninstall" options require LibreCrypt.exe to be explicitly "runas" an account with administrator privileges, if not being executed from a process which has already been escalated; see examples below. The "/portable" will automatically escalate to administrator privileges, if required
 
 
 
@@ -295,7 +295,7 @@ Note: Under Windows Vista, the "install" and "uninstall" options require DoxBox.
 #### Exit Codes
 </A>
 
-When run at the command line, DoxBox will terminate with one of the following exit codes:
+When run at the command line, LibreCrypt will terminate with one of the following exit codes:
 
 
 
@@ -349,64 +349,64 @@ When run at the command line, DoxBox will terminate with one of the following ex
 #### Examples
 </A>
 
-Opening a DoxBox:
+Opening a container:
 
-> <pre>DoxBox.exe /mount /volume "C:\My Private Data\my encrypted volume.box" /freeotfe</pre>
+> <pre>LibreCrypt.exe /mount /volume "C:\My Private Data\my encrypted volume.vol" /freeotfe</pre>
 
 Mounting a Linux volume readonly:
 
-> <pre>DoxBox.exe /mount /volume "C:\My Private Data\my encrypted volume.box" /linux /readonly</pre>
+> <pre>LibreCrypt.exe /mount /volume "C:\My Private Data\my encrypted volume.vol" /linux /readonly</pre>
 
-Mounting a DoxBox partition::
+Mounting a container partition::
 
-> <pre>DoxBox.exe /mount /volume "\Device\Harddisk0\Partition1" /freeotfe /readonly</pre>
+> <pre>LibreCrypt.exe /mount /volume "\Device\Harddisk0\Partition1" /freeotfe /readonly</pre>
 
 Dismount drive "S:":
 
-> <pre>DoxBox.exe /dismount S:</pre>
+> <pre>LibreCrypt.exe /dismount S:</pre>
 
 Dismount all volumes, emergency:
 
-> <pre>DoxBox.exe /dismount all /force</pre>
+> <pre>LibreCrypt.exe /dismount all /force</pre>
 
 Start and stop portable mode:
 
-> <pre>DoxBox.exe /portable start
-> DoxBox.exe /portable stop
+> <pre>LibreCrypt.exe /portable start
+> LibreCrypt.exe /portable stop
 > </pre>
 
 Installing drivers (except Windows Vista):
 
 > <pre>
-> DoxBox.exe /drivercontrol install /filename FreeOTFE.sys
-> DoxBox.exe /drivercontrol install /filename FreeOTFEHashSHA.sys
-> DoxBox.exe /drivercontrol install /filename FreeOTFECypherAES_ltc.sys
-> DoxBox.exe /drivercontrol install /filename all
+> LibreCrypt.exe /drivercontrol install /filename FreeOTFE.sys
+> LibreCrypt.exe /drivercontrol install /filename FreeOTFEHashSHA.sys
+> LibreCrypt.exe /drivercontrol install /filename FreeOTFECypherAES_ltc.sys
+> LibreCrypt.exe /drivercontrol install /filename all
 > </pre>
 
 Installing drivers (Windows Vista):
 
 > <pre>
-> runas /user:<span style="font-style: italic;">myAdminAccount</span> DoxBox.exe /drivercontrol install /filename FreeOTFE.sys
-> runas /user:<span style="font-style: italic;">myAdminAccount</span> DoxBox.exe /drivercontrol install /filename FreeOTFEHashSHA.sys
-> runas /user:<span style="font-style: italic;">myAdminAccount</span> DoxBox.exe /drivercontrol install /filename FreeOTFECypherAES_ltc.sys
+> runas /user:<span style="font-style: italic;">myAdminAccount</span> LibreCrypt.exe /drivercontrol install /filename FreeOTFE.sys
+> runas /user:<span style="font-style: italic;">myAdminAccount</span> LibreCrypt.exe /drivercontrol install /filename FreeOTFEHashSHA.sys
+> runas /user:<span style="font-style: italic;">myAdminAccount</span> LibreCrypt.exe /drivercontrol install /filename FreeOTFECypherAES_ltc.sys
 > </pre>
 
 Uninstalling drivers (except Windows Vista):
 
 > <pre>
-> DoxBox.exe /drivercontrol uninstall /drivername FreeOTFE
-> DoxBox.exe /drivercontrol uninstall /drivername FreeOTFEHashSHA
-> DoxBox.exe /drivercontrol uninstall /drivername FreeOTFECypherAES
-> DoxBox.exe /drivercontrol uninstall /drivername all
+> LibreCrypt.exe /drivercontrol uninstall /drivername FreeOTFE
+> LibreCrypt.exe /drivercontrol uninstall /drivername FreeOTFEHashSHA
+> LibreCrypt.exe /drivercontrol uninstall /drivername FreeOTFECypherAES
+> LibreCrypt.exe /drivercontrol uninstall /drivername all
 </pre>
 
 Uninstalling drivers (except Windows Vista):
 
 > <pre>
-> runas /user:<span style="font-style: italic;">myAdminAccount</span> DoxBox.exe /drivercontrol uninstall /drivername FreeOTFE
-> runas /user:<span style="font-style: italic;">myAdminAccount</span> DoxBox.exe /drivercontrol uninstall /drivername FreeOTFEHashSHA
-> runas /user:<span style="font-style: italic;">myAdminAccount</span> DoxBox.exe /drivercontrol uninstall /drivername FreeOTFECypherAES
+> runas /user:<span style="font-style: italic;">myAdminAccount</span> LibreCrypt.exe /drivercontrol uninstall /drivername FreeOTFE
+> runas /user:<span style="font-style: italic;">myAdminAccount</span> LibreCrypt.exe /drivercontrol uninstall /drivername FreeOTFEHashSHA
+> runas /user:<span style="font-style: italic;">myAdminAccount</span> LibreCrypt.exe /drivercontrol uninstall /drivername FreeOTFECypherAES
 </pre>
 
 

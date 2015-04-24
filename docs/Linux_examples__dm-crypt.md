@@ -1,6 +1,6 @@
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -8,22 +8,22 @@
 
 <TITLE>Linux Examples: dm-crypt</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
 ## Linux Examples: dm-crypt
 
-This section gives a series of examples of how to create Linux dm-crypt volumes, and then mount them using DoxBox.
+This section gives a series of examples of how to create Linux dm-crypt volumes, and then mount them using LibreCrypt.
 
 These examples have been
 tested using Fedora Core 3, with a v2.6.11.7 kernel installed; though
@@ -127,8 +127,8 @@ RIPEMD160, using the 32 bit sector IDs as encryption IVs
 Creating the volume file under Linux:
 
 	
-	dd if=/dev/zero of=./volumes/vol_default.box bs=1K count=100
-	losetup /dev/loop0 ./volumes/vol_default.box
+	dd if=/dev/zero of=./volumes/vol_default.vol bs=1K count=100
+	losetup /dev/loop0 ./volumes/vol_default.vol
 	echo password1234567890ABC | cryptsetup create myMapper /dev/loop0
 	dmsetup ls
 	dmsetup table
@@ -148,7 +148,7 @@ Creating the volume file under Linux:
 	rm -rf ./test_mountpoint
 
 
-Mounting the volume under DoxBox:
+Mounting the volume under LibreCrypt:
 
 <OL>
 
@@ -202,8 +202,8 @@ This example demonstrates use of a dm-crypt AES128 volume.
 
 Creating the volume file under Linux:
 
-	dd if=/dev/zero of=./volumes/vol_aes128.box bs=1K count=100
-	losetup /dev/loop0 ./volumes/vol_aes128.box
+	dd if=/dev/zero of=./volumes/vol_aes128.vol bs=1K count=100
+	losetup /dev/loop0 ./volumes/vol_aes128.vol
 	echo password1234567890ABC | cryptsetup  -c aes -s 128 create myMapper /dev/loop0
 	dmsetup ls
 	dmsetup table
@@ -222,7 +222,7 @@ Creating the volume file under Linux:
 	losetup -d /dev/loop0
 	rm -rf ./test_mountpoint
 
-Mounting the volume under DoxBox:
+Mounting the volume under LibreCrypt:
 
 1. Select "Linux | Mount..."
 1. Select the volume file
@@ -266,8 +266,8 @@ Creating the volume file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_aes_essiv_sha256.box bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_aes_essiv_sha256.box
+dd if=/dev/zero of=./volumes/vol_aes_essiv_sha256.vol bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_aes_essiv_sha256.vol
 echo password1234567890ABC | cryptsetup  -c aes-cbc-essiv:sha256 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -288,7 +288,7 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under DoxBox:
+Mounting the volume under LibreCrypt:
 
 <OL>
 
@@ -339,8 +339,8 @@ Creating the volume file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_blowfish_448.box bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_blowfish_448.box
+dd if=/dev/zero of=./volumes/vol_blowfish_448.vol bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_blowfish_448.vol
 echo password1234567890ABC | cryptsetup -c blowfish -s 448 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -361,7 +361,7 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under DoxBox:
+Mounting the volume under LibreCrypt:
 
 <OL>
 
@@ -419,8 +419,8 @@ Creating the volume file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_twofish_o3.box bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_twofish_o3.box
+dd if=/dev/zero of=./volumes/vol_twofish_o3.vol bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_twofish_o3.vol
 echo password1234567890ABC | cryptsetup -c twofish -o 3 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -441,7 +441,7 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under DoxBox:
+Mounting the volume under LibreCrypt:
 
 <OL>
 
@@ -489,8 +489,8 @@ Creating the volume file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_aes_md5.box bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_aes_md5.box
+dd if=/dev/zero of=./volumes/vol_aes_md5.vol bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_aes_md5.vol
 echo password1234567890ABC | cryptsetup -c aes -h md5 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -511,7 +511,7 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under DoxBox:
+Mounting the volume under LibreCrypt:
 
 <OL>
 
@@ -566,8 +566,8 @@ Creating the volume file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_blowfish_448_essivsha256_md5.box bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_blowfish_448_essivsha256_md5.box
+dd if=/dev/zero of=./volumes/vol_blowfish_448_essivsha256_md5.vol bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_blowfish_448_essivsha256_md5.vol
 echo password1234567890ABC | cryptsetup -c blowfish-cbc-essiv:sha256 -s 448 -h md5 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -588,7 +588,7 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under DoxBox:
+Mounting the volume under LibreCrypt:
 
 <OL>
 
@@ -644,8 +644,8 @@ Creating the volume file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_aes_xts.box bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_aes_xts.box
+dd if=/dev/zero of=./volumes/vol_aes_xts.vol bs=1K count=100
+losetup /dev/loop0 ./volumes/vol_aes_xts.vol
 echo password1234567890ABC | cryptsetup -h sha512 -c aes-xts-plain --key-size 512 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -666,7 +666,7 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under DoxBox:
+Mounting the volume under LibreCrypt:
 
 <OL>
 * Select "Linux | Mount..."

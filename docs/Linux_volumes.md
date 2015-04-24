@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -10,20 +10,20 @@
 
 <TITLE>Linux Volumes</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/librecrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 <SPAN class="tip">
-The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+The latest version of this document can be found at the [LibreCrypt project site](https://github.com/t-d-k/librecrypt)
 </SPAN>   
       
             
@@ -46,11 +46,11 @@ _IMPORTANT_: This is obvious, _but_... If you are using FTP to transfer your Lin
 ### Creating Linux Volumes
 </A>
 
-_*IMPORTANT: *Ifyou select the wrong options when creating a Linux volume usingDoxBox, you will not be able to read it under Linux! (Although this is patently obvious, there are some people who...!)*NOTE:* At time of writing (17th July 2005), although DoxBox can read and write LUKS volumes, it cannot create them itself._
+_*IMPORTANT: *Ifyou select the wrong options when creating a Linux volume using LibreCrypt, you will not be able to read it under Linux! (Although this is patently obvious, there are some people who...!)*NOTE:* At time of writing (17th July 2005), although LibreCrypt can read and write LUKS volumes, it cannot create them itself._
 
 To create a new encrypted Linux-compatible volume:
 
-  1. Launch DoxBox
+  1. Launch LibreCrypt
   1. If you are creating a file-based volume (as opposed to an encrypted partition):
   
     2. Select "File | Linux volume | New..."
@@ -90,9 +90,9 @@ To create a new encrypted Linux-compatible volume:
 		Note: It is important that this step be carried out if you intend using the volume file just created as a "host" file for storing a second, hidden, encrypted volume. 
 			
 		
-	1. Switch back to DoxBox, and select "Tools | Overwrite free space..."
+	1. Switch back to LibreCrypt, and select "Tools | Overwrite free space..."
 	2. Click "Yes" when prompted if you wish to proceed.
-			DoxBox will then write pseudorandom data to the drive, which will then be encrypted before being written to the volume file.
+			LibreCrypt will then write pseudorandom data to the drive, which will then be encrypted before being written to the volume file.
 
 * * * 
 <A NAME="level_3_heading_2">
@@ -101,7 +101,7 @@ To create a new encrypted Linux-compatible volume:
 
 To create a Linux volume within another volume file:
 
-  1. Create a DoxBox/Linux volume as normal, **ensuring that you initialize the volume by mounting it, formatting it, and then overwriting all its free space**.
+  1. Create a container/Linux volume as normal, **ensuring that you initialize the volume by mounting it, formatting it, and then overwriting all its free space**.
   1. Unmount the "outer" volume
   1. Remount the "outer" volume, but specify a reasonable offset on the "File options" tab of the Linux mount dialog.
 
@@ -149,7 +149,7 @@ password is **not** simply hashed with RIPEMD-160 - instead, the following proce
   1. This hash is then appended to the first hash to produce 320 bits of data
   1. The appropriate number of bits is taken from the result, and used as the encryption/decryption key.
 
-For this reason, DoxBox includes a RIPEMD-160 driver specifically modified ("RIPEMD-160 (Linux; Twice, with A)") to carry out this form of hashing.
+For this reason, LibreCrypt includes a RIPEMD-160 driver specifically modified ("RIPEMD-160 (Linux; Twice, with A)") to carry out this form of hashing.
 
 (This does not appear to be documented; the above logic was derived from examining "util-linux-2.12p.diff" - one of the files included with loop-AES)
 
@@ -200,7 +200,7 @@ If an attempt is made to mount a volume using a cypher with a larger keysize tha
 
 i.e. This is the same as Cryptoloop uses for its RIPEMD-160 hashing, but is extended to produce a key of arbitrary length, by adding multiple "A" characters to the password and hashing, until a key of the required length is obtained.
 
-DoxBox supports this form of key processing, which can be invoked by selecting the option "Hash with "A"s, if hash output is too short" on the Linux mount dialog.
+LibreCrypt supports this form of key processing, which can be invoked by selecting the option "Hash with "A"s, if hash output is too short" on the Linux mount dialog.
 
 Note that, under linux, the actual encryption/decryption key can be shown in its hex representation by running "dmsetup table".
 
@@ -254,7 +254,7 @@ This is made up as follows:
 
 dm-crypt's ESSIV functionality is available with v2.6.10 and later Linux kernels.
 
-The manner in which Linux uses ESSIV differs from DoxBox volumes in how the ESSIV encryption key is generated. Both hash the master encryption/decryption key to generate the key used for ESSIV, however dm-crypt uses the full hash output as the ESSIV key. This means that if you have a dm-crypt volume which is encrypted using 256 bit AES, and specify MD5 as the ESSIV hash, the ESSIV process will actually use AES-128 for creating the "salt" for ESSIV IVs (MD5 generates 128 bit hashes).
+The manner in which Linux uses ESSIV differs from LibreCrypt volumes in how the ESSIV encryption key is generated. Both hash the master encryption/decryption key to generate the key used for ESSIV, however dm-crypt uses the full hash output as the ESSIV key. This means that if you have a dm-crypt volume which is encrypted using 256 bit AES, and specify MD5 as the ESSIV hash, the ESSIV process will actually use AES-128 for creating the "salt" for ESSIV IVs (MD5 generates 128 bit hashes).
 
 It is for this reason, you cannot create a dm-crypt volume under Linux using 256 bit Twofish, and specify SHA-512 as the ESSIV hash; Twofish doesn't support 512 bit keys, and so dm-crypt fails.
 
@@ -264,18 +264,18 @@ It is for this reason, you cannot create a dm-crypt volume under Linux using 256
 </A>
 As LUKS is based on dm-crypt, please see also the section above relating to dm-setup.
 
-DoxBox supports LUKS to v1.1 of the LUKS specification. This is the latest version at time of writing (2nd December 2007)
+LibreCrypt supports LUKS to v1.1 of the LUKS specification. This is the latest version at time of writing (2nd December 2007)
 
  
 <SPAN class="tip">
-As well as using the "File | Linux | Mount file/partition..." menu items, LUKS volumes may also be mounted using the main "File | Mount file/partition..." menu items and toolbar buttons. (DoxBox detects LUKS volumes by their signature and offers to mount them appropriately)   
+As well as using the "File | Linux | Mount file/partition..." menu items, LUKS volumes may also be mounted using the main "File | Mount file/partition..." menu items and toolbar buttons. (LibreCrypt detects LUKS volumes by their signature and offers to mount them appropriately)   
 </SPAN>
 
 <A NAME="level_4_heading_6">
 #### ESSIV
 </A>
 
-DoxBox supports LUKS with ESSIV, subject to the condition that the ESSIV hash used generates hashes with the same, or less, bits than the cypher's block size.
+LibreCrypt supports LUKS with ESSIV, subject to the condition that the ESSIV hash used generates hashes with the same, or less, bits than the cypher's block size.
 
 Also at time of writing (25th February 2007), the current LUKS implementation of "cryptsetup" only supports the SHA1 hash algorithm, although other hashes may be used for ESSIV.
 
@@ -286,7 +286,7 @@ As a result of this, another option appears on the LUKS password entry dialog; "
 Most users will want this option **checked**.
 
 <A NAME="level_4_heading_7">
-#### DoxBox Supported LUKS Cyphers
+#### LibreCrypt Supported LUKS Cyphers
 </A>
 The following table lists compatibility with LUKS cyphers:
 
@@ -296,42 +296,42 @@ The following table lists compatibility with LUKS cyphers:
       <TH>Cypher </TH> <TH>Compatibility </TH>
     </TR>
     <TR>
-      <TD>aes</TD> <TD>Supported by DoxBox.</TD>
+      <TD>aes</TD> <TD>Supported by LibreCrypt.</TD>
     </TR>
     <TR>
-      <TD>twofish</TD> <TD>Supported by DoxBox.</TD>
+      <TD>twofish</TD> <TD>Supported by LibreCrypt.</TD>
     </TR>
     <TR>
-      <TD>serpent</TD> <TD>Supported by DoxBox.</TD>
+      <TD>serpent</TD> <TD>Supported by LibreCrypt.</TD>
     </TR>
     <TR>
-      <TD>cast5</TD> <TD>Supported by DoxBox.</TD>
+      <TD>cast5</TD> <TD>Supported by LibreCrypt.</TD>
     </TR>
     <TR>
-      <TD>cast6</TD> <TD>Supported by DoxBox.</TD>
+      <TD>cast6</TD> <TD>Supported by LibreCrypt.</TD>
     </TR>
   </TBODY>
 </TABLE>
 
 <A NAME="level_4_heading_8">
-#### DoxBox Supported LUKS Cypher modes
+#### LibreCrypt Supported LUKS Cypher modes
 </A>
 The following table lists compatibility with LUKS cypher modes:
 
 <TABLE style="text-align: left;">
   <TBODY>
     <TR> <TH>Mode </TH> <TH>Compatibility </TH> </TR>
-    <TR> <TD>ecb</TD> <TD>Not supported by DoxBox.  Note: This is a pretty insecure mode - the use of ECB is **highly discouraged**, and DoxBox is unlikely to ever support this mode.</TD> </TR>
-    <TR> <TD>cbc-plain</TD> <TD>Supported by DoxBox.</TD> </TR>
-    <TR> <TD>cbc-essiv:**&lt;hash&gt;**</TD> <TD>Supported by DoxBox</TD> </TR>
-		<TR> <TD>lrw-benbi </TD> <TD>Supported by DoxBox</TD> </TR>
-		<TR> <TD>xts-plain       </TD> <TD>Supported by DoxBox</TD> </TR> 
-		<TR> <TD>xts-plain64 </TD> <TD>Supported by DoxBox</TD> </TR>
+    <TR> <TD>ecb</TD> <TD>Not supported by LibreCrypt.  Note: This is a pretty insecure mode - the use of ECB is **highly discouraged**, and LibreCrypt is unlikely to ever support this mode.</TD> </TR>
+    <TR> <TD>cbc-plain</TD> <TD>Supported by LibreCrypt.</TD> </TR>
+    <TR> <TD>cbc-essiv:**&lt;hash&gt;**</TD> <TD>Supported by LibreCrypt</TD> </TR>
+		<TR> <TD>lrw-benbi </TD> <TD>Supported by LibreCrypt</TD> </TR>
+		<TR> <TD>xts-plain       </TD> <TD>Supported by LibreCrypt</TD> </TR> 
+		<TR> <TD>xts-plain64 </TD> <TD>Supported by LibreCrypt</TD> </TR>
   </TBODY>
 </TABLE>
 
 <A NAME="level_4_heading_9">
-#### DoxBox Supported LUKS hashes
+#### LibreCrypt Supported LUKS hashes
 </A>
 The following table lists compatibility with LUKS hashes:
 
@@ -341,16 +341,16 @@ The following table lists compatibility with LUKS hashes:
       <TH>Hash </TH> <TH>Compatibility </TH>
     </TR>
     <TR>
-      <TD>sha1</TD> <TD>Supported by DoxBox.</TD>
+      <TD>sha1</TD> <TD>Supported by LibreCrypt.</TD>
     </TR>
     <TR>
-      <TD>sha256</TD> <TD>Supported by DoxBox.</TD>
+      <TD>sha256</TD> <TD>Supported by LibreCrypt.</TD>
     </TR>
     <TR>
-      <TD>sha512</TD> <TD>Supported by DoxBox.</TD>
+      <TD>sha512</TD> <TD>Supported by LibreCrypt.</TD>
     </TR>
     <TR>
-      <TD>ripemd160</TD> <TD>Supported by DoxBox.</TD>
+      <TD>ripemd160</TD> <TD>Supported by LibreCrypt.</TD>
     </TR>
   </TBODY>
 </TABLE>
@@ -399,7 +399,7 @@ Further information on Linux volumes may be obtained from:
   </TBODY>
 </TABLE>
 
-Note that for many of the controls on DoxBox's Linux mount volume dialog, the equivalent Cryptoloop ("losetup") parameter for that control is displayed in brackets.
+Note that for many of the controls on LibreCrypt's Linux mount volume dialog, the equivalent Cryptoloop ("losetup") parameter for that control is displayed in brackets.
 
 
 

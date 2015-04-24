@@ -1,6 +1,6 @@
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -8,26 +8,26 @@
 
 <TITLE>Appendix B: Credits</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/librecrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
 <SPAN class="tip">
-The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+The latest version of this document can be found at the [LibreCrypt project site](https://github.com/t-d-k/librecrypt)
 </SPAN>      
             
 ## Appendix B: Credits
 
-DoxBox is based on FreeOTFE developed by Sarah Dean.
+LibreCrypt is based on FreeOTFE developed by Sarah Dean.
 
 Thanks go to:
 
@@ -35,7 +35,7 @@ Thanks go to:
 * Hi/fn and Counterpane Systems for the optimised reference implementation of Twofish ([http://www.schneier.com/twofish.html](http://www.schneier.com/twofish.html)).
 * Oliver Taylor for the PKCS#11 and partition display implementation, and his work on the drivers
 * OSR Online ([http://www.osronline.com/](http://www.osronline.com/)) - a good resource for those writing device drivers.
-* [Peter Gutmann](mailto:pgut001@cs.auckland.ac.nz)) for the cryptlib library. If installed, DoxBox can take advantage of this as an RNG.
+* [Peter Gutmann](mailto:pgut001@cs.auckland.ac.nz)) for the cryptlib library. If installed, LibreCrypt can take advantage of this as an RNG.
 * [Clemens Fruhwirth](http://clemens.endorphin.org/)), author of the LUKS specification and ESSIV.
 * [David Saunders](mailto:dsaunders@gawab.com)) for setting up the www.FreeOTFE.org domain registration and web site.
 * Gianluca Varenni for his USENET post **way** back in August 2002 relating to the "_alldvrm" driver problem under MS Windows 2000, and the solution he used!

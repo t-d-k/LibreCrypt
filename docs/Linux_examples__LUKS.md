@@ -2,7 +2,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -10,26 +10,26 @@
 
 <TITLE>Linux Examples: LUKS</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 <SPAN class="tip">
-The latest version of this document can be found at the [DoxBox project site](https://github.com/t-d-k/doxbox)
+The latest version of this document can be found at the [LibreCrypt project site](https://github.com/t-d-k/librecrypt)
 </SPAN>         
             
 
 ## Linux Examples: LUKS
 
-This section gives a series of examples of how to create Linux LUKS volumes, and then mount them using DoxBox.
+This section gives a series of examples of how to create Linux LUKS volumes, and then mount them using LibreCrypt.
 
 These examples have been tested using Fedora Core 3, with a v2.6.20.1 kernel installed and using cryptsetup v1.0; though they should work for all compatible Linux distributions.
 
@@ -143,8 +143,8 @@ default encryption system: AES128 with the user's password hashed with SHA1, usi
 
 Creating the volume file under Linux:
 
-	dd if=/dev/zero of=./volumes/vol_default.box bs=1M count=1
-	losetup /dev/loop0 ./volumes/vol_default.box
+	dd if=/dev/zero of=./volumes/vol_default.vol bs=1M count=1
+	losetup /dev/loop0 ./volumes/vol_default.vol
 	echo password1234567890ABC | cryptsetup luksFormat /dev/loop0
 	cryptsetup luksDump /dev/loop0 
 	echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
@@ -166,7 +166,7 @@ Creating the volume file under Linux:
 	losetup -d /dev/loop0
 	rm -rf ./test_mountpoint
 
-Mounting the volume under DoxBox:
+Mounting the volume under LibreCrypt:
 
   1. Select "Linux | Mount..."
   1. Select the volume file
@@ -184,8 +184,8 @@ Creating the volume file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_aes_256.box bs=1M count=1
-losetup /dev/loop0 ./volumes/vol_aes_256.box
+dd if=/dev/zero of=./volumes/vol_aes_256.vol bs=1M count=1
+losetup /dev/loop0 ./volumes/vol_aes_256.vol
 echo password1234567890ABC | cryptsetup -c aes -s 256 luksFormat /dev/loop0
 cryptsetup luksDump /dev/loop0 
 echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
@@ -209,7 +209,7 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under DoxBox:
+Mounting the volume under LibreCrypt:
 
 
 1. Select "Linux | Mount..."
@@ -226,8 +226,8 @@ This example demonstrates use of a LUKS Twofish 128 volume.
 
 Creating the volume file under Linux:
 
-	dd if=/dev/zero of=./volumes/vol_twofish.box bs=1M count=1
-	losetup /dev/loop0 ./volumes/vol_twofish.box
+	dd if=/dev/zero of=./volumes/vol_twofish.vol bs=1M count=1
+	losetup /dev/loop0 ./volumes/vol_twofish.vol
 	echo password1234567890ABC | cryptsetup -c twofish luksFormat /dev/loop0
 	cryptsetup luksDump /dev/loop0 
 	echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
@@ -252,7 +252,7 @@ Creating the volume file under Linux:
 	rm -rf ./test_mountpoint
 
 
-Mounting the volume under DoxBox:
+Mounting the volume under LibreCrypt:
 
 1. Select "Linux | Mount..."
 1. Select the losetup volume file
@@ -271,8 +271,8 @@ This example demonstrates use of a LUKS AES 256 volume in XTS mode.
 Creating the volume file under Linux:
 
 
-	dd if=/dev/zero of=./volumes/vol_aes_xts.box bs=5M count=1
-	losetup /dev/loop0 ./volumes/vol_aes_xts.box
+	dd if=/dev/zero of=./volumes/vol_aes_xts.vol bs=5M count=1
+	losetup /dev/loop0 ./volumes/vol_aes_xts.vol
 	echo password1234567890ABC | cryptsetup -c aes-xts-plain64 -s 512 luksFormat /dev/loop0
 	cryptsetup luksDump /dev/loop0 
 	echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
@@ -297,7 +297,7 @@ Creating the volume file under Linux:
 	rm -rf ./test_mountpoint
 
 
-Mounting the volume under DoxBox:
+Mounting the volume under LibreCrypt:
 
 1. Select "Linux | Mount..."
 1. Select the losetup volume file
@@ -315,8 +315,8 @@ This example demonstrates use of a LUKS Serpent 256 volume in XTS mode.
 Creating the volume file under Linux:
 
 
-		dd if=/dev/zero of=./volumes/vol_serpent_xts.box bs=5M count=1
-		losetup /dev/loop0 ./volumes/vol_serpent_xts.box
+		dd if=/dev/zero of=./volumes/vol_serpent_xts.vol bs=5M count=1
+		losetup /dev/loop0 ./volumes/vol_serpent_xts.vol
 		echo password1234567890ABC | cryptsetup -c serpent-xts-plain64 -s 512 luksFormat /dev/loop0
 		cryptsetup luksDump /dev/loop0 
 		echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
@@ -341,7 +341,7 @@ Creating the volume file under Linux:
 		rm -rf ./test_mountpoint
 
 
-Mounting the volume under DoxBox:
+Mounting the volume under LibreCrypt:
 
 1. Select "Linux | Mount..."
 1. Select the losetup volume file

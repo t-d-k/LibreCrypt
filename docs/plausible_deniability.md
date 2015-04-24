@@ -1,7 +1,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -9,15 +9,15 @@
 
 <TITLE>Plausible Deniability</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
             
@@ -38,11 +38,11 @@ _[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 ### Overview
 </A>
 
-The subject of "plausible deniability" and transparant encryption systems is a lot more involved than "do my DoxBoxes have any kind of identifying signature?"
+The subject of "plausible deniability" and transparant encryption systems is a lot more involved than "do my containers have any kind of identifying signature?"
 
 Some people believe they can get "Plausible deniability" by simply claiming that their volume files are _not_ encrypted data: "I don't know _what_ they are - I can't be expected to know every operation that my OS carries out! Perhaps it's some corrupt data that the system recovered at some stage?"
 
-However, while DoxBox files have no 'signature' that identifies them as such, this approach does not offer any significant form of protection because:
+However, while LibreCrypt container files have no 'signature' that identifies them as such, this approach does not offer any significant form of protection because:
 
   * Encrypted data has high 'entropy' - i.e. it looks like 'random' data - something corrupt files, partial downloads, etc do not have. (Recovered data is likely to have some form of recognisable structure, or signature, _somewhere_ within it)
   * Having several GB of high-entropy data stored on your disk, together with an encryption app, is likely to be viewed as "suspicious".
@@ -64,23 +64,23 @@ Depending largely on how the courts may interpret it, a user (as defendant) may 
 ### Hidden Volumes
 </A>
 
-More advanced transparent systems go one step further: support for 'hidden' volumes (as DoxBox does).
+More advanced transparent systems go one step further: support for 'hidden' volumes (as LibreCrypt does).
 
-Here, you have a "normal" DoxBox filled with data that you are prepared to disclose to an attacker. Opening the Box with a different password causes DoxBox to read a different part of the file containing the DoxBox; giving access to a separate "hidden" DoxBox.
+Here, you have a "normal" container filled with data that you are prepared to disclose to an attacker. Opening the Container with a different password causes LibreCrypt to read a different part of the file containing the container; giving access to a separate "hidden" container.
 
-Here the concept of "plausible deniability" is much stronger; theoretically an attacker is not able to determine (let alone prove) whether or not such a hidden DoxBox is present.
+Here the concept of "plausible deniability" is much stronger; theoretically an attacker is not able to determine (let alone prove) whether or not such a hidden container is present.
 
-However, the implementation of such "hidden DoxBoxes" is not as easy as it may seem at first.
+However, the implementation of such "hidden containers" is not as easy as it may seem at first.
 
-The host file may well have been created by writing zeros to your HDD in order to generate a large enough file. Any hidden volume stored within such a host file will stand out from the 'background'. The hidden Box will appear as a large amount of high-entropy data, stuck in the middle of the file; interrupting the neat pattern of zeros, and an attacker will know a hidden Box exists.
+The host file may well have been created by writing zeros to your HDD in order to generate a large enough file. Any hidden volume stored within such a host file will stand out from the 'background'. The hidden Container will appear as a large amount of high-entropy data, stuck in the middle of the file; interrupting the neat pattern of zeros, and an attacker will know a hidden Container exists.
 
-So in order for this approach to be successful, the DoxBox file must be initialised by writing it with data indistinguishable from encrypted data. This background data is sometimes referred to as 'chaff'. 
+So in order for this approach to be successful, the LibreCrypt container file must be initialised by writing it with data indistinguishable from encrypted data. This background data is sometimes referred to as 'chaff'. 
 
 The 'chaff' cannot be just pseudo-random data; pseudo-random data can potentially be distinguished from encrypted data, and even be predictable. In this case, the hidden volume will appear as high-entropy data against a pattern formed by the pseudo-random data.
 
 Truly random data is difficult to generate in large quantities using a computer. However data produced by a 'cryptographically secure pseudorandom number generator' (CSPRNG) is thought to be indistinguishable from random data and, importantly, from encrypted data without cracking the cypher.<1--TODO:ref-->
 
-So to attain plausible deniability, DoxBox automatically overwrites any host file or partition, when its created, with the output from a CSPRNG.
+So to attain plausible deniability, LibreCrypt automatically overwrites any host file or partition, when its created, with the output from a CSPRNG.
 
 The CSPRNG data is produced by encrypting pseudorandom data using a truly random key.
 
@@ -119,8 +119,8 @@ Note this will miss overwriting parts of the volume which the filesystem reserve
 
 DoxBox v6.0 and FreeOTFE did _not_ use 'chaff' as described above. A manual process was given (similar to that above), however this would have to be done on every volume created - even those without hidden volumes - to achieve plausible deniability.
 
-If you ever intend to use hidden volumes, and you did not follow this process, it's recommended to create new volumes in DoxBox v6.1 and move any data over.
-You should do likewise if you did not follow this process, and you wish to prevent an attacker knowing the amount of data stored in the Box.
+If you ever intend to use hidden volumes, and you did not follow this process, it's recommended to create new volumes in DoxBox v6.1 or LibreCrypt 6.2 or later and move any data over.
+You should do likewise if you did not follow this process, and you wish to prevent an attacker knowing the amount of data stored in the container.
 
 <!--
 <A NAME="practical">

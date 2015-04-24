@@ -1,7 +1,7 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
@@ -9,27 +9,27 @@
 
 <TITLE>Technical Details: Building the Software</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/librecrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 <link rev="made" href="mailto:tdk@doxbox.eu">
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
 ## Technical Details: Building the Software
 
-DoxBox/DoxBox Explorer comes in a number of parts:
+LibreCrypt/LibreCrypt Explorer comes in a number of parts:
 
-* DoxBox:
+* LibreCrypt:
 	1. A front-end GUI, written in Delphi
 	2. [A number of kernel drivers, written in C](#building_kernel_drivers)
-* DoxBox Explorer:
+* LibreCrypt Explorer:
 	1. A front-end GUI, written in Delphi
 	2. A number of DLLs, written in C, built for Win32 and Win64
 * Test Apps
@@ -37,8 +37,8 @@ DoxBox/DoxBox Explorer comes in a number of parts:
 
 * A number of command line decryption utilities, also written in C.
 
-1. [DoxBox](#level_3_heading_1) 
-1. [DoxBox Explorer](#level_3_heading_3)
+1. [LibreCrypt](#level_3_heading_1) 
+1. [LibreCrypt Explorer](#level_3_heading_3)
 1. [Building the Command Line Decryption Utilities](#building_command_line_decryption_utilities)
 1. [Building the Command Line Test Apps](#building_command_line_test_apps)
 1. [Building the Kernel Drivers](#building_kernel_drivers)
@@ -49,7 +49,7 @@ DoxBox/DoxBox Explorer comes in a number of parts:
 * * *
  
 <A NAME="level_3_heading_1">
-### DoxBox
+### LibreCrypt
 </A>
 
 <A NAME="level_4_heading_1">
@@ -57,7 +57,7 @@ DoxBox/DoxBox Explorer comes in a number of parts:
 </A>
 
 	
-  This is a description for Delphi newbies of the basic steps involved in compiling the DoxBox GUI.
+  This is a description for Delphi newbies of the basic steps involved in compiling the LibreCrypt GUI.
 
   To build the GUI, the following software is required:
 
@@ -73,13 +73,13 @@ DoxBox/DoxBox Explorer comes in a number of parts:
   2.  Install the package
   3.  for each component, ensure that the correct path to the component is added to your Delphi environment ("Tools | Environment Options...", "Library" tab)
   2.  Add the path to the modified Delphi files included in SDeanComponents to fix various bugs relating to Delphi's Windows Vista support to the top of Delphi's standard library paths. (This step probably won't be needed with later versions of Delphi, and shouldn't be carried out with older versions of Delphi, which will have different source)
-  * Open the DoxBox project, "DoxBox.dproj" under .\src\PC\gui\main
+  * Open the LibreCrypt project, "LibreCrypt.dproj" under .\src\PC\gui\main
 
   3. If you have the dxgettext software installed (see above), ensure that the compiler directive "\_DXGETTEXT" is set. Otherwise, make sure that this compiler directive is _not_ set.
 
   * Build the project.
 
-  * You should now find a file called "DoxBox.exe" in the directory '.\bin\PC' 
+  * You should now find a file called "LibreCrypt.exe" in the directory '.\bin\PC' 
   
   You have now successfully built the GUI frontend
 
@@ -107,7 +107,7 @@ The binary release of this software was built with Microsoft Visual Studio 2010 
 
 At time of writing, the MS Windows SDK can be downloaded from the Microsoft WWW site. The MS Windows DDK (also called the 'WDK') is available as a download cd image, and can be ordered from the Microsoft WWW site as a free CD, for the cost of delivery.
 
-If you are unable to source the exact versions listed above, earlier versions may well be substituted, although I cannot guarantee success. Later versions should operate correctly. This list describes the environment used to build the release version of DoxBox.
+If you are unable to source the exact versions listed above, earlier versions may well be substituted, although I cannot guarantee success. Later versions should operate correctly. This list describes the environment used to build the release version of LibreCrypt.
 The versions used are: 
 <TABLE>
 <TBODY>
@@ -128,7 +128,7 @@ The versions used are:
 ###### Installation and Configuration of MS Build Environment
 </A>
 
-The following list comprehensively describes the configuration used to build the binary release of DoxBox. Feel free to adjust according to taste - a number of the options listed are not necessary, and are only included for completeness...
+The following list comprehensively describes the configuration used to build the binary release of LibreCrypt. Feel free to adjust according to taste - a number of the options listed are not necessary, and are only included for completeness...
 
 1.  Install Visual Studio 2010
 1. Put a copy of "vcvarsall.bat" into one of the directories in your path
@@ -167,7 +167,7 @@ The following list comprehensively describes the configuration used to build the
 
 <A NAME="level_6_heading_2">
 
-###### DoxBox Build Configuration
+###### LibreCrypt Build Configuration
 </A>
 
 1.  Edit "setup\_env\_common.bat" (located under src\drivers\Common\bin), and ensure that the following variables are set appropriately:
@@ -179,7 +179,7 @@ The following list comprehensively describes the configuration used to build the
       <TR> <TD>FREEOTFE_CPU</TD>  <TD>The target platform to build the drivers for. Set to either x86 or amd64, only necesary if build_all_amd and build_all_x86 are not used</TD>  <TD>amd64</TD> </TR>      
       <TR> <TD>FREEOTFE\_DEBUG</TD> 	<TD>Build type flag; set to 1 for debug build, or 0 for release</TD> <TD>0</TD> </TR>
       <TR> <TD>FREEOTFE\_TARGET</TD> 	<TD>Target OS to build for; e.g. WXP/W2K/WNET; note that W2K builds will not operate correctly under Windows XP (e.g. when formatting a volume)</TD> <TD>WXP</TD> </TR>
-      <TR> <TD>PROJECT\_DRIVE</TD> 		<TD>The drive on which you have stored the DoxBox source </TD> <TD>&lt;The drive the config batch file is stored on&gt;</TD> </TR>
+      <TR> <TD>PROJECT\_DRIVE</TD> 		<TD>The drive on which you have stored the LibreCrypt source </TD> <TD>&lt;The drive the config batch file is stored on&gt;</TD> </TR>
       <TR> <TD>PROJECT\_DIR</TD> 			<TD>The full drive and path where the "drivers" directory is located</TD> <TD>_&lt;see file&gt;_</TD> </TR>      
       <TR> <TD>BIN_OUTPUT_DIR</TD> <TD>The path where the built drivers will be copied to. This directory will automatically be created if it does not already exist.</TD> <TD>/&lt;"bin" directory at the same level as the main "src" directory&gt;/</TD> </TR> 
       <TR>  <TD>VCVARSALL</TD> <TD>The full path and filename to Visual Studio's VCVARSALL.BAT (or vcvar32.bat, if building with an old version)</TD> <TD>"C:\PROGRA~2\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"</B></TD> </TR> 
@@ -195,16 +195,16 @@ The following list comprehensively describes the configuration used to build the
 ###### 3rd Party Source Code
 </A>
 
-Some of the FreeOTFE drivers (the hash/encryptions drivers in particular) are dependant on certain 3rd party software being installed. DoxBox's source code comes complete with 3rd party included in GitHUb under the"src\3rd\_party" directory and should be preconfigured, ready for use.
+Some of the FreeOTFE drivers (the hash/encryptions drivers in particular) are dependant on certain 3rd party software being installed. LibreCrypt's source code comes complete with 3rd party included in GitHUb under the"src\3rd\_party" directory and should be preconfigured, ready for use.
 
 _Alternatively_, you may wish to download this 3rd party source from the original authors in order to verify the integrity of this software. For this reason, details of where this software was obtained from are included in the above directory.
 
-Please note that should choose the latter option, it is important that you review the individual driver notes (see separate driver directories; "\_notes.txt" files) to ensure that this software is configured correctly. Additionally, you may well have to modify the "my\_build\_sys.bat" files, directing them to the location where you installed said 3rd party source code, as the build process requires that certain files are copied over into the DoxBox src directories. (Annoying, but this is a requirement of the MS "build.exe" command)
+Please note that should choose the latter option, it is important that you review the individual driver notes (see separate driver directories; "\_notes.txt" files) to ensure that this software is configured correctly. Additionally, you may well have to modify the "my\_build\_sys.bat" files, directing them to the location where you installed said 3rd party source code, as the build process requires that certain files are copied over into the LibreCrypt src directories. (Annoying, but this is a requirement of the MS "build.exe" command)
 
 The LibTomCrypt source in particular had minor configuration changes to tomcrypt\_cfg.h and tomcrypt\_custom.h; please compare the original source (a copy of its release ZIP file is stored under src\3rd\_party\libtomcrypt) with the modified version (uncompressed in a directory under this one)
 
 <A NAME="level_5_heading_2">
-##### Building the DoxBox Drivers (.sys files)
+##### Building the LibreCrypt Drivers (.sys files)
 </A>
 
 Either:
@@ -223,8 +223,8 @@ or:
 		* `set VCVARSALL="C:\PROGRA~2\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"`
 			this should be set to point to 'vcvarsall.bat', in '8.3' filename form
 		*	`set PROJECT_DRIVE=P:`
-			The drive where the source code is, alternatively a 'subst' command can be used to point p: to a parent of the project directory (e.g. the source could be under P:\doxbox\src\)
-		* `set PROJECT_BASE_DIR=%PROJECT_DRIVE%\Projects\Delphi\doxbox\`
+			The drive where the source code is, alternatively a 'subst' command can be used to point p: the project directory (e.g. the source should be under P:\src\)
+		* `set PROJECT_BASE_DIR=%PROJECT_DRIVE%\`
 			set this to the project directory
 		* `set MSDDK_DIR=C:\Apps\WinDDK\7600.16385.1`
 			The DDK dir
@@ -240,7 +240,7 @@ or:
 			
 	
 	In either case, the binaries are built into the `.bin\PC\<platform>\` directory. 
-  After reaching this stage, you should have successfully built your own version of the DoxBox drivers
+  After reaching this stage, you should have successfully built your own version of the LibreCrypt drivers
 
 Notes:
 
@@ -251,7 +251,7 @@ Notes:
 * * *
  
 <A NAME="level_3_heading_3">
-### DoxBox Explorer
+### LibreCrypt Explorer
 </A>
 
 <A NAME="level_4_heading_3">
@@ -259,7 +259,7 @@ Notes:
 </A>
 
 
-This is a description for Delphi newbies of how to compile the DoxBox Explorer GUI.
+This is a description for Delphi newbies of how to compile the LibreCrypt Explorer GUI.
 
 To build the GUI, the following software is required:
 
@@ -276,10 +276,10 @@ The binary release of this software was built with Embarcadero Delphi XE2.
     3.  Ensure that the correct path to each component is added to your Delphi environment ("Tools | Environment Options...", "Library" tab)
     
     Note: Some components in this package are forms containing others in the same package. So, if you open a form in the package before installing it, you may see a message saying 'Field X does not have a corresponding component. Remove the declaration?'. If you do, click 'Cancel', clicking 'yes' will result in the component being deleted from the '.pas' file. 
-  3. Open the DoxBox Explorer project ("DoxBoxExplorer.dproj" under .\src\PC\gui\explorer)
+  3. Open the LibreCrypt Explorer project ("LibreCryptExplorer.dproj" under .\src\PC\gui\explorer)
   3.  If you have the dxgettext software installed (see above), ensure that the compiler directive "\_DXGETTEXT" is set. Otherwise, make sure that this compiler directive is _not_ set.
   4 Build the application.
-  You should now find a file called "DoxBoxExplorer.exe" in the directory above the "src" directory
+  You should now find a file called "LibreCryptExplorer.exe" in the directory above the "src" directory
   
 You have now successfully built the GUI frontend
 
@@ -305,9 +305,9 @@ To run the other functions of dxgettext, viz extracting srings from the project 
 #### Building the DLL drivers
 </A>
 
-To build the DLLs used by DoxBox Explorer:
+To build the DLLs used by LibreCrypt Explorer:
 
-1. Open "DoxBoxDLLs.sln" under `.\src\PDA\` using Visual Studio 2010
+1. Open "LibreCryptDLLs.sln" under `.\src\PDA\` using Visual Studio 2010
 1. Set the build configuration within Visual Studio to "Release" - "Win32" or "Release" - "Win64"
 1. Right-click on each project in turn, and select "Rebuild". Note: Don't bother building the "GUI" project; at present, this can only be built for the Windows Mobile platform.
 
@@ -319,7 +319,7 @@ The binaries built are put into the directories `.\bin\PC\DLLs\<config>\<platfor
 ### Building the Command Line Decryption Utilities
 </A>
 
-_Note: The development of the command line decryption utilities has ceased. This functionality has been superceded with the development of DoxBox Explorer and the test projects_
+_Note: The development of the command line decryption utilities has ceased. This functionality has been superceded with the development of LibreCrypt Explorer and the test projects_
 
 
 To build the command line decryption utilities, the following software is required:
@@ -361,16 +361,16 @@ These executables are built using the same code as the DLLs but with different p
 
 ***
 
-All the projects have been built under a directory "P:\Projects\Delphi\doxbox\", but whereever possible relative paths have been used. In case of errors run the command `subst p: <path to parent directory>` and retry
+All the projects have been built under a directory "P:\", but whereever possible relative paths have been used. In case of errors run the command `subst p: <path to project directory>` and retry
   
 * * * 
 <A NAME="signing_binaries">
 ### Signing the Binaries
 </A>
 
-To sign the DoxBox binary files (.exe, .dll and .sys files), the procedure is pretty much as described at: [Pantaray Research](http://www.pantaray.com/signcode.html#create_SPC) web site
+To sign the LibreCrypt binary files (.exe, .dll and .sys files), the procedure is pretty much as described at: [Pantaray Research](http://www.pantaray.com/signcode.html#create_SPC) web site
 
-At present, DoxBox is signed using a self-signed certificate; the full procedure used is as follows:
+At present, LibreCrypt is signed using a self-signed certificate; the full procedure used is as follows:
 
 1. Install Visual Studio
 2. From a command prompt, run "vcvarsall" (all commands detailed below should be executed from this command prompt)

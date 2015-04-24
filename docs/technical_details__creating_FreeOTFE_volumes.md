@@ -2,33 +2,33 @@
 
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
-<meta name="description" content="DoxBox: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;DoxBoxes&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
+<meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
 <meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
 
 
-<TITLE>Technical Details: Creating DoxBox Volumes</TITLE>
+<TITLE>Technical Details: Creating LibreCrypt Volumes</TITLE>
 
-<link href="https://raw.githubusercontent.com/t-d-k/doxbox/master/docs/styles_common.css" rel="stylesheet" type="text/css">
+<link href="https://raw.githubusercontent.com/t-d-k/librecrypt/master/docs/styles_common.css" rel="stylesheet" type="text/css">
 
 
-<link rel="shortcut icon" href="https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](https://github.com/t-d-k/doxbox/raw/master/src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[DoxBox](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 
 ***
   
-### Technical Details: Creating DoxBox Volumes
+### Technical Details: Creating LibreCrypt Volumes
 
-To create a DoxBox file, a fairly significant amount of information is required due to freedom that DoxBox gives you in creating volume files. 
+To create a container file, a fairly significant amount of information is required due to freedom that LibreCrypt gives you in creating volume files. 
 
-Broadly speaking, creating a DoxBox consists of three distinct stages:
+Broadly speaking, creating a container consists of three distinct stages:
 
 1. Creating a file large enough on the local filesystem to store the encrypted partition image (and CDB, if included as part of the volume).
 1. Writing a CDB either to the volume file or a separate keyfile, depending on the user's choice.
@@ -45,7 +45,7 @@ Stage 3 is required in set the volume up for use, and increase security. This is
 #### Writing the CDB/keyfile
 </A>
 
-The following procedure is used to build up a DoxBox CDB/keyfile:
+The following procedure is used to build up a container CDB/keyfile:
 
 1. Obtain all the information which will be stored within the volume's "Volume details block"
 1. Derive the "critical data key" by processing the user's password and salt with PKCS #5 PBKDF2 (using HMAC with the user's choice of hash algorithm).
