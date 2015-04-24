@@ -1,0 +1,475 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{3b7b6a11-cb05-46ea-a273-2b8edc31ba9d}</ProjectGuid>
+			<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+			<DCC_DependencyCheckOutputName>..\..\..\..\bin\PC\FreeOTFEExplorer.exe</DCC_DependencyCheckOutputName>
+			<MainSource>LibreCryptExplorer.dpr</MainSource>
+			<FrameworkType>VCL</FrameworkType>
+			<ProjectVersion>13.4</ProjectVersion>
+			<Base>True</Base>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<TargetedPlatforms>3</TargetedPlatforms>
+			<AppType>Application</AppType>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+			<Base_Win64>true</Base_Win64>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+			<Base_Win32>true</Base_Win32>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win64)'!=''">
+			<Cfg_1_Win64>true</Cfg_1_Win64>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+			<Cfg_1_Win32>true</Cfg_1_Win32>
+			<CfgParent>Cfg_1</CfgParent>
+			<Cfg_1>true</Cfg_1>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win64)'!=''">
+			<Cfg_2_Win64>true</Cfg_2_Win64>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+			<Cfg_2_Win32>true</Cfg_2_Win32>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
+			<DCC_ExeOutput>..\..\..\..\bin\PC\$(Config)\$(Platform)</DCC_ExeOutput>
+			<DCC_DcuOutput>P:\src\PC\gui\explorer\dcus\$(Config)\$(Platform)</DCC_DcuOutput>
+			<DCC_Define>FREEOTFE_EXPLORER;AlwaysClearFreedMemory;FORCE_LOCAL_PAD;$(DCC_Define)</DCC_Define>
+			<Icon_MainIcon>..\..\..\Common\Common\images\DoxBox.ico</Icon_MainIcon>
+			<DCC_UnitSearchPath>..\..\..\..\SDeanComponents\Components\SDeanUtils;..\..\..\..\\SDeanComponents\Components\SDeanSecurity\Shredder\;..\..\..\..\\SDeanComponents\Components\SDeanSecurity\MouseRNG\;..\..\..\..\SDeanComponents\Components\SDeanSecurity\PasswordRichEdit\;..\..\..\..\SDeanComponents\Components\SDeanFilesystem\;..\..\..\..\SDeanComponents\Components\OTFE\OTFEFreeOTFE\;..\..\..\..\\SDeanComponents\Components\OTFE\OTFE\;..\common\SDeanUtils\;..\common;..\..\..\3rd_party\FastMM\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<Manifest_File>None</Manifest_File>
+			<VerInfo_MinorVer>2</VerInfo_MinorVer>
+			<VerInfo_MajorVer>6</VerInfo_MajorVer>
+			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win;VCLTee;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Locale>2057</VerInfo_Locale>
+			<VerInfo_Keys>CompanyName=LibreCrypt;FileDescription=LibreCrypt Explorer;FileVersion=6.2.0.0;InternalName=LibreCrypt Explorer;LegalCopyright=Copyright (C) 2010-2015 Sarah Dean &amp; tdk;LegalTrademarks=LibreCrypt;OriginalFilename=LibreCryptExplorer.exe;ProductName=LibreCrypt Explorer;ProductVersion=6.2;Comments=http://LibreCrypt.eu</VerInfo_Keys>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win64)'!=''">
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<DCC_UsePackage>vclx;vcl;$(DCC_UsePackage)</DCC_UsePackage>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<DCC_UsePackage>vclx;vcl;bdertl;TeeUI;TeeDB;Tee;$(DCC_UsePackage)</DCC_UsePackage>
+			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=;Comments=</VerInfo_Keys>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<Version>7.0</Version>
+			<DCC_DebugInformation>False</DCC_DebugInformation>
+			<DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+		</PropertyGroup>
+		<Import Condition="'$(Cfg_1_Win32)'!='' And Exists('..\6p1.optset')" Project="..\6p1.optset"/>
+		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<VerInfo_Keys>CompanyName=LibreCrypt;FileDescription=LibreCrypt Explorer;FileVersion=6.2;InternalName=LibreCrypt Explorer;LegalCopyright=Copyright (C) 2010-2015 Sarah Dean &amp; tdk;LegalTrademarks=LibreCrypt;OriginalFilename=LibreCryptExplorer.exe;ProductName=LibreCrypt Explorer;ProductVersion=6.2;Comments=http://LibreCrypt.eu</VerInfo_Keys>
+			<Debugger_RunParams>/dev_menu /no_exit</Debugger_RunParams>
+			<DCC_ExeOutput>..\..\..\..\bin\PC\</DCC_ExeOutput>
+			<DCC_DcuOutput>P:\src\PC\gui\explorer\dcus\$(Config)\$(Platform)</DCC_DcuOutput>
+			<CfgDependentOn>..\6p1.optset</CfgDependentOn>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<VerInfo_Debug>true</VerInfo_Debug>
+			<DCC_RangeChecking>true</DCC_RangeChecking>
+			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
+			<DCC_Optimize>false</DCC_Optimize>
+			<DCC_DebugDCUs>true</DCC_DebugDCUs>
+			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+			<Version>7.0</Version>
+			<DCC_Define>DEBUG;FullDebugMode;LogMemoryLeakDetailToFile;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<VerInfo_Keys>CompanyName=LibreCrypt;FileDescription=LibreCrypt Explorer;FileVersion=6.2.0.0;InternalName=;LegalCopyright=;LegalTrademarks=LibreCrypt;OriginalFilename=;ProductName=LibreCrypt Explorer;ProductVersion=;Comments=</VerInfo_Keys>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<DCC_ExeOutput>..\..\..\..\bin\PC\$(Config)\$(Platform)</DCC_ExeOutput>
+			<DCC_DcuOutput>P:\src\PC\gui\explorer\dcus\$(Config)\$(Platform)</DCC_DcuOutput>
+		</PropertyGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Parameters>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+					</Parameters>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">3</VersionInfo>
+						<VersionInfo Name="MinorVer">51</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">2057</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName">Sarah Dean</VersionInfoKeys>
+						<VersionInfoKeys Name="FileDescription">FreeOTFE Explorer</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">3.51.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName">FreeOTFE Explorer</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalCopyright">Copyright (C) 2010 Sarah Dean</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename">FreeOTFEExplorer.exe</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductName">FreeOTFE Explorer</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductVersion">3.51</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments">http://www.FreeOTFE.org/</VersionInfoKeys>
+					</VersionInfoKeys>
+					<Source>
+						<Source Name="MainSource">LibreCryptExplorer.dpr</Source>
+					</Source>
+					<Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\Program Files (x86)\FastReports\LibD16\dclfrxDB16.bpl">FastReport 4.0 DB Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+					</Excluded_Packages>
+				</Delphi.Personality>
+				<Platforms>
+					<Platform value="Win64">True</Platform>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
+				<ModelSupport>False</ModelSupport>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+		<ItemGroup>
+			<DelphiCompile Include="$(MainSource)">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="FreeOTFEExplorerfrmMain.pas">
+				<Form>frmFreeOTFEExplorerMain</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerfrmNewDirDlg.pas">
+				<Form>frmNewDirDlg</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerfrmPropertiesDlg_Base.pas">
+				<Form>frmPropertiesDialog_Base</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmAbout.pas">
+				<Form>frmAbout</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonSettings.pas"/>
+			<DCCReference Include="..\common\CommonfrmMain.pas">
+				<Form>frmMain</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerSettings.pas"/>
+			<DCCReference Include="..\common\CommonfrmCDBBackupRestore.pas">
+				<Form>frmCDBBackupRestore</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmInstallOnUSBDrive.pas">
+				<Form>frmInstallOnUSBDrive</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmGridReport_Hash.pas">
+				<Form>frmGridReport_Hash</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmGridReport.pas">
+				<Form>frmGridReport</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmGridReport_Cypher.pas">
+				<Form>frmGridReport_Cypher</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerfrmPropertiesDlg_File.pas">
+				<Form>frmPropertiesDialog_File</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerfrmPropertiesDlg_Directory.pas">
+				<Form>frmPropertiesDialog_Directory</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerfrmPropertiesDlg_Multiple.pas">
+				<Form>frmPropertiesDialog_Multiple</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfmeOptions_Base.pas">
+				<Form>fmeOptions_Base</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmOptions.pas">
+				<Form>frmOptions</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfmeOptions_PKCS11.pas">
+				<Form>fmeOptions_PKCS11</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerfmeOptions_Base.pas">
+				<Form>fmeFreeOTFEExplorerOptions_Base</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerfmeOptions_General.pas">
+				<Form>fmeOptions_FreeOTFEExplorerGeneral</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerfrmOptions.pas">
+				<Form>frmOptions_FreeOTFEExplorer</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmVersionCheck.pas">
+				<Form>frmVersionCheck</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonConsts.pas"/>
+			<DCCReference Include="FreeOTFEExplorerfrmSelectDirectoryDlg.pas">
+				<Form>frmSelectDirectoryDlg</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerfrmPropertiesDlg_Volume.pas">
+				<Form>frmPropertiesDialog_Volume</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerfmeOptions_Advanced.pas">
+				<Form>fmeOptions_FreeOTFEExplorerAdvanced</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerfrmOverwritePrompt.pas">
+				<Form>frmOverwritePrompt</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerfrmSelectCopyOrMove.pas">
+				<Form>frmSelectCopyOrMove</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmCDBDump_LUKS.pas">
+				<Form>frmCDBDump_LUKS</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmCDBDump_Base.pas">
+				<Form>frmCDBDump_Base</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\CommonfrmCDBDump_FreeOTFE.pas">
+				<Form>frmCDBDump_FreeOTFE</Form>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerCheckFilesystem.pas"/>
+			<DCCReference Include="..\common\SDUForms.pas">
+				<Form>SDUForm</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\SDUFrames.pas">
+				<Form>SDUFrame</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizard.pas">
+				<Form>frmWizard</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas">
+				<Form>frmWizardChangePasswordCreateKeyfile</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\SDeanUtils\SDUProgressDlg.pas">
+				<Form>SDUProgressDialog</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\SDeanUtils\SDUDiskPropertiesDlg.pas">
+				<Form>SDUDiskPropertiesDialog</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\SDeanUtils\SDUFilenameEdit_U.pas">
+				<Form>SDUFilenameEdit</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\SDeanUtils\SDUPartitionPropertiesDlg.pas">
+				<Form>SDUPartitionPropertiesDialog</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\Filesystem\SDFATBootSectorPropertiesDlg.pas">
+				<Form>SDFATBootSectorPropertiesDialog</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\Filesystem\SDFilesystemCtrls_ColDetails.pas">
+				<Form>SDFilesystemListView_ColDetails</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\SDeanUtils\SDUAboutDlg.pas">
+				<Form>SDUAboutDialog</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\SDeanUtils\SDUMRUList.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDURegistry.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUGeneral.pas"/>
+			<DCCReference Include="..\common\Filesystem\SDFilesystem_FAT.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUWebDav.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUHTTPServer.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas">
+				<Form>frmKeyEntryFreeOTFE</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLUKS.pas">
+				<Form>frmKeyEntryLUKS</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLinux.pas">
+				<Form>frmKeyEntryLinux</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmNewVolumeSize.pas">
+				<Form>frmNewVolumeSize</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_U.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFEBase_U.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverControl.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DiskPartitionsPanel.pas">
+				<Form>OTFEFreeOTFEDiskPartitionsPanel</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\main\FreeOTFESettings.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUBlocksPanel.pas">
+				<Form>SDUBlocksPanel</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\SDeanUtils\SDUDiskPartitionsPanel.pas">
+				<Form>SDUDiskPartitionsPanel</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PKCS11.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeSelect.pas">
+				<Form>OTFEFreeOTFEVolumeSelect</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\SDURandPool.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUWinHTTP.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUWinHttp_API.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUi18n.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUGraphics.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUWindows64.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUWindows.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUClasses.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUDirIterator_U.pas"/>
+			<DCCReference Include="FreeOTFEExplorerfmeOptions_WebDAV.pas">
+				<Form>fmeOptions_FreeOTFEExplorerWebDAV</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="FreeOTFEExplorerWebDAV.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmHashInfo.pas">
+				<Form>frmHashInfo</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmCypherInfo.pas">
+				<Form>frmCypherInfo</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmDriverControl.pas">
+				<Form>frmDriverControl</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas">
+				<Form>fmeSelectPartition</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectPartition.pas">
+				<Form>frmSelectPartition</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectPartition_Simple.pas">
+				<Form>frmSelectPartition_Simple</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmPKCS11Management.pas">
+				<Form>frmPKCS11Management</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmPKCS11NewSecretKey.pas">
+				<Form>frmPKCS11NewSecretKey</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmPKCS11Session.pas">
+				<Form>frmPKCS11Session</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrBase.pas">
+				<Form>fmePKCS11_MgrBase</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas">
+				<Form>fmePKCS11_MgrKeyfile</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas">
+				<Form>fmePKCS11_MgrSecretKey</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmVolumeType.pas">
+				<Form>frmSelectVolumeType</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectHashCypher.pas">
+				<Form>frmSelectHashCypher</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectVolumeAndOffset.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_PartitionImage.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\MouseRNGDialog\MouseRNGCaptureDlg_U.pas">
+				<Form>MouseRNGCaptureDlg</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFE\OTFE_U.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_U.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas">
+				<Form>frmWizardCreateVolume</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_api.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_attribute.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_library.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_mechanism.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_object.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_session.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_slot.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_slot_event_thread.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11_token.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11f.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\PKCS11KnownLibs.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\PKCS11LibrarySelectDlg.pas">
+				<Form>PKCS11LibrarySelectDialog</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\SDeanSecurity\PKCS#11\pkcs11t.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\MSCryptoAPI\MSCryptoAPI.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\SDUEndianIntegers.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_cryptlib.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas"/>
+			<DCCReference Include="..\common\Filesystem\SDFilesystem.pas"/>
+			<DCCReference Include="..\common\Filesystem\SDPartitionImage.pas"/>
+			<DCCReference Include="..\common\Filesystem\SDPartitionImage_File.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\fmeLUKSKeyOrKeyfileEntry.pas">
+				<Form>frmeLUKSKeyOrKeyfileEntry</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\FreeOTFEConsts.pas"/>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+	</Project>
