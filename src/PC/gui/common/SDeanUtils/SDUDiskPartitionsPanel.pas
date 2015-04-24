@@ -1,19 +1,20 @@
 unit SDUDiskPartitionsPanel;
 
 interface
+
  {
  layers used are:
  //delphi and 3rd party libs - layer 0
 
-   // doxbox forms - layer 2
+   // LibreCrypt forms - layer 2
     //main form - layer 3
   }
 
 
 uses
- //delphi and 3rd party libs - layer 0
+  //delphi and 3rd party libs - layer 0
   Classes, SysUtils,
-     //sdu & doxbox utils - layer 1
+  //sdu & LibreCrypt utils - layer 1
   SDUBlocksPanel,
   SDUGeneral,
   SDUObjectManager, Vcl.Controls, Vcl.StdCtrls;
@@ -32,10 +33,10 @@ resourcestring
 
 type
   TSDUDiskPartitionsPanel = class (TSDUBlocksPanel)
-  PRIVATE
-    FDiskNumber:               Integer;
-    FDriveLayoutInfo:          TSDUDriveLayoutInformation;
-    FDriveLayoutInfoValid:     Boolean;
+  private
+    FDiskNumber:           Integer;
+    FDriveLayoutInfo:      TSDUDriveLayoutInformation;
+    FDriveLayoutInfoValid: Boolean;
     FShowPartitionsWithPNZero: Boolean;
 
     // The index into this TStringList is the block number
@@ -51,33 +52,33 @@ type
     procedure SetDiskNumber(DiskNo: Integer);
     function GetPartitionInfo(idx: Integer): TSDUPartitionInfo;
 
-    function GetDriveLetter(idx: Integer): char;
+    function GetDriveLetter(idx: Integer): Char;
     function GetDriveLetterForPartition(DiskNo: Integer; PartitionNo: Integer): DriveLetterChar;
 
     procedure RefreshPartitions();
-  PROTECTED
+  protected
     function GetDriveLayout(physicalDiskNo: Integer;
-      var driveLayout: TSDUDriveLayoutInformation): Boolean; VIRTUAL;
-    function IgnorePartition(partInfo: TSDUPartitionInfo): Boolean; VIRTUAL;
+      var driveLayout: TSDUDriveLayoutInformation): Boolean; virtual;
+    function IgnorePartition(partInfo: TSDUPartitionInfo): Boolean; virtual;
 
-  PUBLIC
-    constructor Create(AOwner: TComponent); OVERRIDE;
-    destructor Destroy(); OVERRIDE;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy(); override;
 
     property PartitionInfo[idx: Integer]: TSDUPartitionInfo Read GetPartitionInfo;
-    property DriveLetter[idx: Integer]: char Read GetDriveLetter;
+    property DriveLetter[idx: Integer]: Char Read GetDriveLetter;
 
-    procedure Clear(); OVERRIDE;
+    procedure Clear(); override;
 
-  PUBLISHED
+  published
     // Show partitions with partition number zero
     // USE WITH CAUTION! Referencing the partitions with partition number zero
     // mean the entire drive! (Partition number zero) 
     property ShowPartitionsWithPNZero: Boolean Read FShowPartitionsWithPNZero
-      Write FShowPartitionsWithPNZero DEFAULT False;
+      Write FShowPartitionsWithPNZero default False;
 
     // Set to NO_DISK for no disk display
-    property DiskNumber: Integer Read FDiskNumber Write SetDiskNumber DEFAULT NO_DISK;
+    property DiskNumber: Integer Read FDiskNumber Write SetDiskNumber default NO_DISK;
 
     property DriveLayoutInformation: TSDUDriveLayoutInformation Read FDriveLayoutInfo;
     property DriveLayoutInformationValid: Boolean Read FDriveLayoutInfoValid;
@@ -96,10 +97,10 @@ uses
 const
   ULL_ONEMEG: ULONGLONG = 1024 * 1024;
 
-//procedure Register;
-//begin
-//  RegisterComponents('SDeanUtils', [TSDUDiskPartitionsPanel]);
-//end;
+ //procedure Register;
+ //begin
+ //  RegisterComponents('SDeanUtils', [TSDUDiskPartitionsPanel]);
+ //end;
 
 
 constructor TSDUDiskPartitionsPanel.Create(AOwner: TComponent);
@@ -145,7 +146,7 @@ var
   currPartition:       TSDUPartitionInfo;
   minPcnt:             Double;
   totalPcnt:           Double;
-  driveLetter:        DriveLetterChar;
+  driveLetter:         DriveLetterChar;
   drive:               String;
   prettyPartitionType: String;
 begin
@@ -215,8 +216,8 @@ begin
 
         prettyPartitionType := SDUPartitionType(currPartition.PartitionType, False);
 
-        blk.Caption    := SDUFormatAsBytesUnits(currPartition.PartitionLength) + SDUCRLF +
-          drive;
+        blk.Caption    := SDUFormatAsBytesUnits(currPartition.PartitionLength) +
+          SDUCRLF + drive;
         blk.SubCaption := prettyPartitionType;
         //'Idx: '+inttostr(idx)+SDUCRLF+
         //'PN: '+inttostr(currPartition.PartitionNumber)+SDUCRLF+
@@ -274,7 +275,7 @@ var
   idx:                 Integer;
   tmpDeviceName:       String;
 begin
-  result := #0;
+  Result := #0;
 
   if (objMgr = nil) then begin
     objMgr := TSDUObjManager.Create();
@@ -300,24 +301,22 @@ begin
   // disk/partition we're interested in...
   idx := driveDevices.IndexOf(partitionUnderlying);
   if (idx >= 0) then begin
-    result := char(Integer(driveDevices.Objects[idx]));
+    Result := Char(Integer(driveDevices.Objects[idx]));
   end;
-
 
 end;
 
 // Returns #0 if no partition selected/no drive letter assigned to partition
-function TSDUDiskPartitionsPanel.GetDriveLetter(idx: Integer): char;
+function TSDUDiskPartitionsPanel.GetDriveLetter(idx: Integer): Char;
 var
   partInfo: TSDUPartitionInfo;
 begin
-  result := #0;
+  Result := #0;
 
   if (idx >= 0) then begin
     partInfo := PartitionInfo[idx];
-    result   := GetDriveLetterForPartition(DiskNumber, partInfo.PartitionNumber);
+    Result   := GetDriveLetterForPartition(DiskNumber, partInfo.PartitionNumber);
   end;
-
 
 end;
 
@@ -329,17 +328,14 @@ end;
 
 function TSDUDiskPartitionsPanel.IgnorePartition(partInfo: TSDUPartitionInfo): Boolean;
 begin
-  result := (
+  Result := (
     // USE CAUTION! We don't want the user selecting a partition, and
     // ending up using the whole HDD (partition number zero)
-    (not (ShowPartitionsWithPNZero) and
-    (partInfo.PartitionNumber = 0)) or
+    (not (ShowPartitionsWithPNZero) and (partInfo.PartitionNumber = 0)) or
     // Piddly partitions; extended partitions, etc
     (partInfo.PartitionLength < ULL_ONEMEG) or
     // $05/$0F = extended partition definition
-    (partInfo.PartitionType = $05) or (partInfo.PartitionType =
-    $0F));
-
+    (partInfo.PartitionType = $05) or (partInfo.PartitionType = $0F));
 
 end;
 

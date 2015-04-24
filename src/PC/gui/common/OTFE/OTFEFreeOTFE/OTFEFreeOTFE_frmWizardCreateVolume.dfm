@@ -2,7 +2,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
   Left = 388
   Top = 258
   BorderStyle = bsSizeToolWin
-  Caption = 'New DoxBox Wizard'
+  Caption = 'New Container Wizard'
   ClientHeight = 422
   ClientWidth = 537
   Constraints.MinHeight = 456
@@ -28,13 +28,17 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
     inherited pcWizard: TPageControl
       Width = 535
       Height = 358
-      ActivePage = tsFileOrPartition
+      ActivePage = tsPassword
       ExplicitWidth = 535
       ExplicitHeight = 358
       object tsFileOrPartition: TTabSheet
         Caption = 'Volume File or Partition'
         ImageIndex = 14
         Constraints.MinHeight = 150
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -50,14 +54,14 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Margins.Bottom = 10
           Align = alTop
           Alignment = taCenter
-          Caption = 'Welcome to the New DoxBox Wizard.'
+          Caption = 'Welcome to the New Container Wizard.'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -16
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
-          ExplicitWidth = 296
+          ExplicitWidth = 313
         end
         object lblWelcomeClickNext: TLabel
           AlignWithMargins = True
@@ -78,17 +82,17 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Left = 0
           Top = 40
           Width = 527
-          Height = 13
+          Height = 26
           Align = alTop
           Caption = 
             'This wizard will guide you through the process of creating a new' +
-            ' DoxBox, or a hidden box within an existing box.'
+            ' container, or a hidden container within an existing container.'
           WordWrap = True
-          ExplicitWidth = 526
+          ExplicitWidth = 502
         end
         object lblInstructFileOrPartition3: TLabel
           Left = 0
-          Top = 79
+          Top = 92
           Width = 527
           Height = 13
           Align = alTop
@@ -100,15 +104,15 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object lblInstructFileOrPartition2: TLabel
           Left = 0
-          Top = 53
+          Top = 66
           Width = 527
           Height = 26
           Align = alTop
           Caption = 
-            'Firstly, please specify whether the new DoxBox should be created' +
-            ' as a file stored on your disk, or take up a disk partition.'
+            'Firstly, please specify whether the new container should be crea' +
+            'ted as a file stored on your disk, or take up a disk partition.'
           WordWrap = True
-          ExplicitWidth = 525
+          ExplicitWidth = 513
         end
         object rgFileOrPartition: TRadioGroup
           Left = 10
@@ -128,15 +132,19 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Volume filename'
         ImageIndex = 1
         Constraints.MinHeight = 139
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructFilename1: TLabel
           Left = 0
           Top = 0
-          Width = 527
+          Width = 375
           Height = 13
           Align = alTop
           Caption = 
-            'Please specify the filename of the new DoxBox, by clicking the b' +
-            'rowse button.'
+            'Please specify the filename of the new container, by clicking th' +
+            'e browse button.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -144,17 +152,16 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 368
         end
         object reInstructFilename2: TLabel
           Left = 0
           Top = 13
-          Width = 527
+          Width = 439
           Height = 13
           Align = alTop
           Caption = 
-            'If you wish to create a hidden DoxBox, please specify your exist' +
-            'ing DoxBox file to be used.'
+            'If you wish to create a hidden container, please specify your ex' +
+            'isting container file to be used.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -162,7 +169,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 425
         end
         object GroupBox1: TGroupBox
           Left = 0
@@ -314,8 +320,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Height = 26
           Align = alTop
           Caption = 
-            'Please select the partition you wish to create the new DoxBox on' +
-            ', and whether you would like to create a "hidden" DoxBox.'
+            'Please select the partition you wish to create the new container' +
+            ' on, and whether you would like to create a "hidden" container.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -323,7 +329,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 498
+          ExplicitWidth = 505
         end
         object ckPartitionHidden: TCheckBox
           AlignWithMargins = True
@@ -392,7 +398,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Left = 368
             Top = 65533
             Bitmap = {
-              494C010103000400380110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400640110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -578,13 +584,13 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Align = alTop
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 
-            'Please enter the required size of the new DoxBox.'#10#13'This value mu' +
-            'st be more than 1 MB, and must be a multiple of 512 bytes.'#10#13'If y' +
-            'ou are creating a hidden DoxBox, then this is the size of the hi' +
-            'dden Box.'#10#13'Please see the help for minium sizes of hidden boxes'#10 +
-            #13'Note: The size you give here will be the amount available for y' +
-            'our data. The actual file created will be slightly larger than t' +
-            'his.'
+            'Please enter the required size of the new container.'#10#13'This value' +
+            ' must be more than 1 MB, and must be a multiple of 512 bytes.'#10#13'I' +
+            'f you are creating a hidden container, then this is the size of ' +
+            'the hidden container. '#13'Please see the help for minimum sizes of ' +
+            'hidden containers '#10#13'Note: The size you give here will be the amo' +
+            'unt available for your data. The actual file created will be sli' +
+            'ghtly larger than this.'
           Constraints.MinHeight = 108
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -629,28 +635,9 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Password'
         ImageIndex = 6
         Constraints.MinHeight = 330
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
-        object Label17: TLabel
-          Left = 3
-          Top = 163
-          Width = 53
-          Height = 13
-          Caption = '&Keyphrase:'
-        end
-        object Label3: TLabel
-          Left = 3
-          Top = 237
-          Width = 91
-          Height = 13
-          Caption = '&Confirm Keyphrase:'
-          FocusControl = preUserKey2
-        end
         object lblFinished: TLabel
           Left = 3
           Top = 285
@@ -660,81 +647,76 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Anchors = [akLeft, akRight, akBottom]
           AutoSize = False
           Caption = 
-            'Click '#39'Finish'#39' to create your DoxBox, or '#39'Next'#39' for more advance' +
-            'd options'
+            'Click '#39'Finish'#39' to create your container, or '#39'Next'#39' for more adva' +
+            'nced options'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -16
+          Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
           ExplicitTop = 311
           ExplicitWidth = 739
         end
-        object reInstructPassword: TLabel
+        inline frmeNewPassword: TfrmeNewPassword
           Left = 0
           Top = 0
           Width = 527
-          Height = 78
+          Height = 282
           Align = alTop
-          Caption = 
-            'Please enter the keyphrase to be used for securing your DoxBox. ' +
-            #10#13'Try to enter one character for each bit of the cypher keysize.' +
-            ' For example for a 256 bit cypher enter a 256 character keyphras' +
-            'e.'#10#13'Note: If you forget your keyphrase, you can forget your data' +
-            '.'#10#13'Note: Newlines (blank lines) are significant. It is recommend' +
-            'ed that you do not press <ENTER> after typing in your keyphrase,' +
-            ' as this will add an extra newline to the end of your keyphrase.'
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
-          WordWrap = True
-          ExplicitWidth = 514
-        end
-        object preUserKey1: TOTFEFreeOTFE_PasswordRichEdit
-          Left = 112
-          Top = 160
-          Width = 397
-          Height = 68
-          Anchors = [akLeft, akTop, akRight]
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Lines.Strings = (
-            'preUserKey1')
-          ParentFont = False
-          ScrollBars = ssBoth
-          TabOrder = 1
-          OnChange = preUserKeyChange
-        end
-        object preUserKey2: TOTFEFreeOTFE_PasswordRichEdit
-          Left = 112
-          Top = 237
-          Width = 397
-          Height = 42
-          Anchors = [akLeft, akTop, akRight, akBottom]
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Lines.Strings = (
-            'preUserKey2')
-          ParentFont = False
-          ScrollBars = ssBoth
+          Constraints.MinHeight = 223
+          Constraints.MinWidth = 223
           TabOrder = 0
-          OnChange = preUserKeyChange
+          ExplicitWidth = 527
+          ExplicitHeight = 282
+          inherited lblInstructPassword: TLabel
+            Width = 527
+            Caption = 
+              'Please enter the keyphrase to be used for securing your containe' +
+              'r. '#10#13'Try to enter one character for each bit of the cypher keysi' +
+              'ze. For example for a 256 bit cypher enter a 256 character keyph' +
+              'rase.'#10#13'Note: If you forget your keyphrase, you can forget your d' +
+              'ata.'#10#13'Note: Newlines (blank lines) are significant. It is recomm' +
+              'ended that you do not press <ENTER> after typing in your keyphra' +
+              'se, as this will add an extra newline to the end of your keyphra' +
+              'se.'
+            ExplicitLeft = 0
+          end
+          inherited lblStrength: TLabel
+            Top = 266
+            Width = 86
+            Height = 13
+            ParentFont = True
+            ExplicitTop = 266
+            ExplicitWidth = 86
+            ExplicitHeight = 13
+          end
+          inherited ProgressBar1: TProgressBar
+            Top = 262
+            Width = 391
+            ExplicitTop = 262
+            ExplicitWidth = 391
+          end
+          inherited preUserKeyFirst: TOTFEFreeOTFE_PasswordRichEdit
+            Width = 391
+            ExplicitWidth = 391
+          end
+          inherited preUserKeyConfirm: TOTFEFreeOTFE_PasswordRichEdit
+            Width = 391
+            Height = 72
+            ExplicitWidth = 391
+            ExplicitHeight = 72
+          end
         end
       end
       object tsDriveLetter: TTabSheet
         Caption = 'Drive Letter'
         ImageIndex = 17
         Constraints.MinHeight = 166
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -816,11 +798,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Height = 52
           Align = alTop
           Caption = 
-            ' The DoxBox file you specified already exists. To create a hidde' +
-            'n DoxBox within this file, please specify the byte offset within' +
-            ' this file from where the new DoxBox should begin.'#10#13'If you do NO' +
-            'T wish to create a hidden DoxBox within your existing file, plea' +
-            'se click "< Back" and enter a different filename.'
+            ' The container file you specified already exists. To create a hi' +
+            'dden container within this file, please specify the byte offset ' +
+            'within this file from where the new container should begin.'#10#13'If ' +
+            'you do NOT wish to create a hidden container within your existin' +
+            'g file, please click "< Back" and enter a different filename.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -828,7 +810,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitTop = -2
+          ExplicitWidth = 518
         end
         object pnlWarningOffset: TPanel
           Left = 0
@@ -912,7 +894,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Caption = 
               '2) Data within the file/partition specified in the previous stag' +
               'e may be OVERWRITTEN, starting from byte offset specified, and r' +
-              'unning for the full length of the new hidden DoxBox. '
+              'unning for the full length of the new hidden container. '
             Font.Charset = ANSI_CHARSET
             Font.Color = clWindowText
             Font.Height = -11
@@ -931,7 +913,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
             Caption = 
               #10#13'For security reasons, this information is not stored anywhere;' +
               ' you will need to type in this offset whenever  you wish to moun' +
-              't your hidden DoxBox.'
+              't your hidden container.'
             Font.Charset = ANSI_CHARSET
             Font.Color = clWindowText
             Font.Height = -11
@@ -983,6 +965,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Hash, cypher and IV'
         ImageIndex = 2
         Constraints.MinHeight = 202
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1025,7 +1011,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 
             'Please select the advanced security options to use in securing y' +
-            'our new DoxBox.'
+            'our new container.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -1033,7 +1019,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 383
+          ExplicitWidth = 390
         end
         object cbHash: TComboBox
           Left = 153
@@ -1099,6 +1085,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Chaff'
         ImageIndex = 20
         Constraints.MinHeight = 200
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1109,10 +1099,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Height = 13
           Align = alTop
           Caption = 
-            'Choose how to overwrite the file or partition the DoxBox is stor' +
-            'ed on.'
+            'Choose how to overwrite the file or partition the container is s' +
+            'tored on.'
           WordWrap = True
-          ExplicitWidth = 321
+          ExplicitWidth = 328
         end
         object lblInstructChaff4: TLabel
           Left = 0
@@ -1121,11 +1111,11 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Height = 26
           Align = alTop
           Caption = 
-            #39'Zeros'#39' will make it easy for an attacker to tell if a hidden bo' +
-            'x has been added and the amount of data stored in your box, but ' +
-            'allow the box to be created faster.'
+            #39'Zeros'#39' will make it easy for an attacker to tell if a hidden co' +
+            'ntiner has been added and the amount of data stored in your cont' +
+            'ainer, but allow the container to be created faster.'
           WordWrap = True
-          ExplicitWidth = 521
+          ExplicitWidth = 499
         end
         object lblInstructChaff3: TLabel
           Left = 0
@@ -1147,9 +1137,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Align = alTop
           Caption = 
             'Secure data will make it harder - perhaps impossible - for an at' +
-            'tacker to tell if a '#39'hidden'#39' box has been added at a later date.'
+            'tacker to tell if a '#39'hidden'#39' container has been added at a later' +
+            ' date.'
           WordWrap = True
-          ExplicitWidth = 526
+          ExplicitWidth = 502
         end
         object rgOverwriteType: TRadioGroup
           Left = 3
@@ -1168,6 +1159,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Master Key Length'
         ImageIndex = 11
         Constraints.MinHeight = 77
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1233,12 +1228,12 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         object reInstructRNGSelect1: TLabel
           Left = 0
           Top = 0
-          Width = 521
+          Width = 525
           Height = 26
           Align = alTop
           Caption = 
-            'In order to create your new DoxBox, a certain amount of random d' +
-            'ata is required. This data will be used for the following:'
+            'In order to create your new container, a certain amount of rando' +
+            'm data is required. This data will be used for the following:'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -1280,10 +1275,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         object reInstructRNGSelect3: TLabel
           Left = 0
           Top = 39
-          Width = 157
+          Width = 162
           Height = 13
           Align = alTop
-          Caption = '2) The new DoxBox'#39#39's master key'
+          Caption = '2) The new container'#39's master key'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -1440,6 +1435,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'RNG PKCS token'
         ImageIndex = 17
         Constraints.MinHeight = 133
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1494,11 +1493,15 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
       object tsRNGGPG: TTabSheet
         Caption = 'RNG GPG'
         ImageIndex = 10
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructRNGGPG: TLabel
           Left = 0
           Top = 0
-          Width = 527
-          Height = 257
+          Width = 518
+          Height = 42
           Align = alClient
           Caption = 
             'In order to use GPG to generate random data, please specify the ' +
@@ -1511,8 +1514,6 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 518
-          ExplicitHeight = 42
         end
         object GroupBox2: TGroupBox
           Left = 0
@@ -1552,6 +1553,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         ImageIndex = 15
         Constraints.MinHeight = 168
         Constraints.MinWidth = 266
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1612,7 +1617,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Align = alTop
           Caption = 
             'The higher the number, the more secure if a weak password has be' +
-            'en chosen - but the slower it will be to open a DoxBox.'
+            'en chosen - but the slower it will be to open a container.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -1638,6 +1643,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Salt'
         ImageIndex = 16
         Constraints.MinHeight = 156
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1674,30 +1683,29 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         end
         object lblInstructSalt4: TLabel
           Left = 0
-          Top = 52
+          Top = 39
           Width = 527
           Height = 39
           Align = alTop
           Caption = 
             'If this value is changed from its default, you will be required ' +
             'to enter it value every time you mount your volume. For this rea' +
-            'son it is recommended that most users leave it at its default va' +
-            'lue, unless there is a particular need to do otherwise.'
+            'son it is recommended that you leave it at its default value, un' +
+            'less there is a particular need to do otherwise.'
           WordWrap = True
-          ExplicitWidth = 525
+          ExplicitWidth = 521
         end
         object lblInstructSalt3: TLabel
           Left = 0
           Top = 26
           Width = 527
-          Height = 26
+          Height = 13
           Align = alTop
           Caption = 
             'The value entered must be a multiple of both 8 and the cypher'#39#39's' +
-            ' blocksize. If this value is changed from its default, you will ' +
-            'be required to enter it value every time you mount your volume.'
+            ' blocksize.'
           WordWrap = True
-          ExplicitWidth = 503
+          ExplicitWidth = 352
         end
         object lblInstructSalt2: TLabel
           Left = 0
@@ -1727,6 +1735,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'CDB Location'
         ImageIndex = 18
         Constraints.MinHeight = 301
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1737,16 +1749,16 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Height = 142
           Align = alTop
           Caption = 
-            'Please specify if you would like your volume'#39#39's critical data bl' +
-            'ock (CDB) to be written at the start of the new volume, or store' +
-            'd in a separate keyfile.'#10#13'The CDB is where metadata about your v' +
-            'olume is stored, together with the master key used to carry out ' +
-            'the actual encryption/decryption of your data.'#10#13'For most users, ' +
-            'including the CDB as part of the volume file is probably the bes' +
-            't option.'#10#13'If you store this information in a keyfile, you will ' +
-            'need both your volume file AND a keyfile in order to mount your ' +
-            'volume.'#10#13'Note: Storing the CDB as part of the volume file will i' +
-            'ncrease your volume'#39#39's size by 512 bytes.'
+            'Please specify if you would like your volume'#39's critical data blo' +
+            'ck (CDB) to be written at the start of the new volume, or stored' +
+            ' in a separate keyfile.'#10#13'The CDB is where metadata about your vo' +
+            'lume is stored, together with the master key used to carry out t' +
+            'he actual encryption/decryption of your data.'#10#13'For most users, i' +
+            'ncluding the CDB as part of the volume file is probably the best' +
+            ' option.'#10#13'If you store this information in a keyfile, you will n' +
+            'eed both your volume file AND a keyfile in order to mount your v' +
+            'olume.'#10#13'Note: Storing the CDB as part of the volume file will in' +
+            'crease your volume'#39#39's size by 512 bytes.'
           Constraints.MinHeight = 142
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -1813,6 +1825,10 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
         Caption = 'Padding'
         ImageIndex = 19
         Constraints.MinHeight = 188
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1890,9 +1906,9 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Align = alTop
           Caption = 
             'You have now entered all the information required to create a ne' +
-            'w DoxBox.'#10#13'Please check the summary shown below and click "Finis' +
-            'h" to create the new DoxBox, or use the "Back"/"Next" buttons to' +
-            ' modify the details you have entered.'
+            'w container.'#10#13'Please check the summary shown below and click "Fi' +
+            'nish" to create the new container, or use the "Back"/"Next" butt' +
+            'ons to modify the details you have entered.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -1900,7 +1916,7 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 460
+          ExplicitWidth = 467
         end
         object reSummary: TRichEdit
           Left = 4
@@ -1983,8 +1999,8 @@ inherited frmWizardCreateVolume: TfrmWizardCreateVolume
     Filter = 'GPG (gpg.exe)|gpg.exe|Executables (*.exe)|*.exe|All files|*.*'
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     PreserveCWD = False
-    Left = 488
-    Top = 240
+    Left = 464
+    Top = 248
   end
   object keySaveDialog: TSDUSaveDialog
     Options = [ofHideReadOnly, ofPathMustExist, ofEnableSizing]

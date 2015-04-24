@@ -10,40 +10,40 @@ uses
 
 type
   TfrmWizard = class (TSDUForm)
-    pnlRight:             TPanel;
-    pcWizard:             TPageControl;
-    pnlButtons:           TPanel;
-    lblStage:             TLabel;
+    pnlRight:   TPanel;
+    pcWizard:   TPageControl;
+    pnlButtons: TPanel;
+    lblStage:   TLabel;
     lblCompleteIndicator: TLabel;
-    pbNext:               TButton;
-    pbBack:               TButton;
-    pbFinish:             TButton;
-    pbCancel:             TButton;
-    pbStage:              TProgressBar;
-    bvlLine:              TBevel;
+    pbNext:     TButton;
+    pbBack:     TButton;
+    pbFinish:   TButton;
+    pbCancel:   TButton;
+    pbStage:    TProgressBar;
+    bvlLine:    TBevel;
     procedure pbBackClick(Sender: TObject);
     procedure pbNextClick(Sender: TObject);
     procedure pbFinishClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-  PRIVATE
+  private
     fOnWizardStepChanged: TNotifyEvent;
 
-  PROTECTED
-    procedure SetupInstructions(); VIRTUAL;
+  protected
+    procedure SetupInstructions(); virtual;
 
-    procedure EnableDisableControls(); VIRTUAL;
-    procedure UpdateUIAfterChangeOnCurrentTab(); VIRTUAL;
-    function IsTabComplete(checkTab: TTabSheet): Boolean; VIRTUAL; ABSTRACT;
+    procedure EnableDisableControls(); virtual;
+    procedure UpdateUIAfterChangeOnCurrentTab(); virtual;
+    function IsTabComplete(checkTab: TTabSheet): Boolean; virtual; abstract;
 
     procedure UpdateStageDisplay();
     function NextTabInDir(gotoNext: Boolean): TTabSheet;
-    function IsTabSkipped(tabSheet: TTabSheet): Boolean; VIRTUAL;
+    function IsTabSkipped(tabSheet: TTabSheet): Boolean; virtual;
     //is tab required to be completed
-    function IsTabRequired(tabSheet: TTabSheet): Boolean; VIRTUAL;
-  PUBLIC
-//    fFreeOTFEObj: TOTFEFreeOTFEBase;
+    function IsTabRequired(tabSheet: TTabSheet): Boolean; virtual;
+  public
+    //    fFreeOTFEObj: TOTFEFreeOTFEBase;
 
-  PUBLISHED
+  published
     property OnWizardStepChanged: TNotifyEvent Read fOnWizardStepChanged
       Write fOnWizardStepChanged;
   end;
@@ -154,8 +154,8 @@ end;
 procedure TfrmWizard.UpdateStageDisplay();
 var
   totalReqStages, totalStages: Integer;
-  currStage:                   Integer;
-  i:                           Integer;
+  currStage: Integer;
+  i: Integer;
 begin
   // This functions also sets the stage x/y progress display
   totalStages    := pcWizard.PageCount;
@@ -193,7 +193,8 @@ begin
     pbStage.Max      := totalStages;
     pbStage.Position := currStage;
 
-    lblStage.Caption := SDUParamSubstitute(_('Stage %1 of %2 (Optional)'), [currStage, totalStages]);
+    lblStage.Caption := SDUParamSubstitute(_('Stage %1 of %2 (Optional)'),
+      [currStage, totalStages]);
   end;
 
 end;
@@ -271,7 +272,7 @@ begin
 
   pbBack.Enabled := (pcWizard.ActivePageIndex > 0);
 
-  allDone                      := True;
+  allDone := True;
   lblCompleteIndicator.Caption := '';
   for i := 0 to (pcWizard.PageCount - 1) do begin
     allDone := allDone and (pcWizard.Pages[i].Tag = 1);

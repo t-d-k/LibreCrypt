@@ -20,10 +20,10 @@ keeps a random pool - reads as needed from OS random sources ad internal 'mouse 
 interface
 
 uses
-  sysutils,
+  SysUtils,
   Windows,//sdu
   SDUGeneral,
-  //doxbox
+  //LibreCrypt
   pkcs11_library;
 
 type
@@ -35,13 +35,13 @@ type
     rngGPG
     );
 
-  TRNGSet             = set of TRNG;
+  TRNGSet = set of TRNG;
   EInsufficientRandom = class (Exception);
 
   TRandPool = class (TObject)
-  PRIVATE
+  private
     { private declarations }
-  PROTECTED
+  protected
 
     // Generate RNG data using GPG, assuming GPG is located under the specified
     // filename
@@ -50,39 +50,39 @@ type
     // Generate RNG data using the MS CryptoAPI
     class function GenerateRNGDataMSCryptoAPI(bytesRequired: Integer;
       out randomData: TSDUBytes): Boolean;
-      OVERLOAD;
+      overload;
     class function GenerateRNGDataMSCryptoAPI(bytesRequired: Integer;
       szContainer: LPCSTR; szProvider: LPCSTR; dwProvType: DWORD; dwFlags: DWORD;
       out randomData: TSDUBytes): Boolean;
-      OVERLOAD;
+      overload;
     class function GenerateRandomData1Rng(rng: TRNG; bytesRequired: Integer;
     // Output
       out randomData: TSDUBytes): Boolean;
-      OVERLOAD;
-  PUBLIC
-                          { public declarations }
+      overload;
+  public
+    { public declarations }
     constructor Create(); // singleton - dont call directly - use GetRandPool
     destructor Destroy(); override; //normaly only called on app exit
-                          // Generate RNG data using specified RNG
-                          // !! WARNING !!
-                          // If RNG_OPT_CRYPTLIB is specified as the RNG, cryptlibLoad must be called
-                          // beforehand, and cryptlibUnload after use
+    // Generate RNG data using specified RNG
+    // !! WARNING !!
+    // If RNG_OPT_CRYPTLIB is specified as the RNG, cryptlibLoad must be called
+    // beforehand, and cryptlibUnload after use
     class procedure GetRandomData(bytesRequired: Integer;
     // Output
       out randomData: TSDUBytes);
-class procedure FillRandomData(var randomData: array of byte);
+    class procedure FillRandomData(var randomData: array of Byte);
 
     class function CanUseCryptLib(): Boolean;
     //obsolete
     class procedure GenerateRandomData(bytesRequired: Integer;
     // Output
       var randomData: Ansistring);
-      OVERLOAD;
+      overload;
 
     // gpgFilename - Only MANDATORY if RNG_OPT_GPG specified as RNG
     class procedure SetUpRandPool(rngset: TRNGSet;
     // PKCS#11 specific
-      PKCS11Library: TPKCS11Library; SlotID: Integer;
+      SlotID: Integer;
     // GPG specific
       gpgFilename: String);
 
@@ -103,7 +103,8 @@ function GetRandPool(): TRandPool;
 
 resourcestring
   PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR =
-    'Please report seeing this message using the email address specified in the DoxBox documentation, together with a brief description of what you were attempting to do.';
+    'Please report seeing this message using the email address specified in the LibreCrypt documentation, '
+    + 'together with a brief description of what you were attempting to do.';
 
 implementation
 
@@ -113,9 +114,10 @@ uses
   //sdu
   lcDialogs,
   SDUi18n,
-  //dosbox
+  //librecrypt
   OTFEFreeOTFE_cryptlib,
-  OTFEFreeOTFE_PKCS11;
+  OTFEFreeOTFE_PKCS11,
+  OTFEFreeOTFEBase_U;
 
 {
 // Load cryptlib, if possible, and initialise
@@ -247,17 +249,16 @@ begin
       end;
     end;
 
-  else
-  begin
-    raise Exception.Create('Unknown RNG selected' + SDUCRLF + SDUCRLF +
-      PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR);
+    else
+    begin
+      raise Exception.Create('Unknown RNG selected' + SDUCRLF + SDUCRLF +
+        PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR);
    { SDUMessageDlg(
       _('Unknown RNG selected?!') + SDUCRLF + SDUCRLF + PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
       mtError
       ); Result := False;}
 
-
-  end;
+    end;
 
   end;
 
@@ -295,12 +296,12 @@ end;
 // gpgFilename - Only MANDATORY if RNG_OPT_GPG specified as RNG
 class procedure TRandPool.SetUpRandPool(rngset: TRNGSet;
   // PKCS#11 specific
-  PKCS11Library: TPKCS11Library; SlotID: Integer;
+  SlotID: Integer;
   // GPG specific
   gpgFilename: String);
 begin
   _rngset        := rngset;
-  _PKCS11Library := PKCS11Library;
+  _PKCS11Library := GetFreeOTFEBase().PKCS11Library;
   _PKCS11SlotID  := SlotID;
   _gpgFilename   := gpgFilename;
   _inited        := True;
@@ -309,16 +310,16 @@ end;
 
 class procedure TRandPool.FillRandomData(
   // Output
-  var randomData: array of byte);
-  var
-     currRandom: TSDUBytes;
-     i:integer;
-  begin
-     GetRandomData(length(randomData), currRandom);
-     for i := 0 to high(currRandom)  do
-       randomData[i] :=  currRandom[i];
-     SafeSetLength(currRandom,0);
-  end;
+  var randomData: array of Byte);
+var
+  currRandom: TSDUBytes;
+  i:          Integer;
+begin
+  GetRandomData(length(randomData), currRandom);
+  for i := 0 to high(currRandom) do
+    randomData[i] := currRandom[i];
+  SafeSetLength(currRandom, 0);
+end;
 
 class procedure TRandPool.GetRandomData(bytesRequired: Integer;
   // Output
@@ -480,8 +481,8 @@ end;
 
 // Purge the current MouseRNG store
 procedure PurgeMouseRNGData();
-//var
-//  i: Integer;
+ //var
+ //  i: Integer;
 begin
   // Simple overwrite
   //  for i := 1 to length(_MouseRNGStore) do begin

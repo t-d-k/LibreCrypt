@@ -13,7 +13,7 @@ uses
   pkcs11_object   ,
   //sdu
   sdugeneral
-  //doxbox
+  //LibreCrypt
   ;
 
 const
@@ -1096,17 +1096,11 @@ begin
 end;
 
 function PKCS11TokenListSelected(cbToken: TComboBox): integer;
-var
-  retval: integer;
 begin
-  retval := PKCS11_NO_SLOT_ID;
+  Result := PKCS11_NO_SLOT_ID;
 
   if (cbToken.itemindex >= 0) then
-  begin
-    retval := integer(cbToken.Items.Objects[cbToken.itemindex]);
-  end;
-
-  Result := retval;
+    Result := integer(cbToken.Items.Objects[cbToken.itemindex]);
 end;
 
 END.

@@ -153,9 +153,9 @@ begin
       SDUCRLF + SDUCRLF + DumpFilename + SDUCRLF + SDUCRLF +
       _('Do you wish to open this file in Windows Notepad?'), mtInformation,
       [mbYes, mbNo], 0) = mrYes) then begin
-      notepadCommandLine := 'notepad ' + DumpFilename;
 
-      if not (SDUWinExecNoWait32(notepadCommandLine, SW_RESTORE)) then begin
+
+      if not (SDUWinExecNoWait32('notepad',DumpFilename, SW_RESTORE)) then begin
         SDUMessageDlg(_('Error running Notepad'), mtError, [], 0);
       end;
 

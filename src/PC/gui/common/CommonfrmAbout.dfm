@@ -4,7 +4,7 @@ object frmAbout: TfrmAbout
   Anchors = [akLeft, akTop, akRight, akBottom]
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
-  Caption = 'About DoxBox'
+  Caption = 'About LibreCrypt'
   ClientHeight = 315
   ClientWidth = 470
   Color = clBtnFace
@@ -17,6 +17,8 @@ object frmAbout: TfrmAbout
   Position = poScreenCenter
   OnCreate = FormCreate
   OnShow = FormShow
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   DesignSize = (
     470
     315)
@@ -46,7 +48,7 @@ object frmAbout: TfrmAbout
   object lblAppID: TLabel
     Left = 47
     Top = 46
-    Width = 405
+    Width = 98
     Height = 13
     Anchors = [akLeft, akTop, akRight]
     Caption = 'App version no. here'
@@ -60,10 +62,10 @@ object frmAbout: TfrmAbout
   object lblDescription: TLabel
     Left = 47
     Top = 8
-    Width = 405
+    Width = 391
     Height = 20
     Anchors = [akLeft, akTop, akRight]
-    Caption = 'DoxBox: Open-Source Transparent Encryption'
+    Caption = 'LibreCrypt: Open-Source Transparent Encryption'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -73,7 +75,6 @@ object frmAbout: TfrmAbout
     ParentFont = False
     Transparent = True
     WordWrap = True
-    ExplicitWidth = 370
   end
   object lblDriverVersion: TLabel
     Left = 8
@@ -83,13 +84,15 @@ object frmAbout: TfrmAbout
     Alignment = taCenter
     Anchors = [akLeft, akTop, akRight]
     AutoSize = False
-    Caption = 'The main DoxBox driver is either not installed, or not started'
+    Caption = 
+      'The main LibreCrypt driver is either not installed, or not start' +
+      'ed'
     Transparent = True
   end
   object lblAuthor: TLabel
     Left = 47
     Top = 65
-    Width = 415
+    Width = 191
     Height = 13
     Caption = 'Copyright Sarah Dean, additions by TDK'
     Transparent = True
@@ -115,7 +118,7 @@ object frmAbout: TfrmAbout
     Transparent = True
     NormalColor = clBlue
     HoverColor = clRed
-    URL = 'http://doxbox.eu/'
+    URL = 'http://LibreCrypt.eu/'
     ExplicitTop = 201
     ExplicitWidth = 466
   end
@@ -193,7 +196,7 @@ object frmAbout: TfrmAbout
     Alignment = taCenter
     Anchors = [akLeft, akRight, akBottom]
     AutoSize = False
-    Caption = 'DoxBox uses the FastMM4 memory manager'
+    Caption = 'LibreCrypt uses the FastMM4 memory manager'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
     Font.Height = -11
@@ -218,8 +221,8 @@ object frmAbout: TfrmAbout
     Anchors = [akLeft, akRight, akBottom]
     AutoSize = False
     Caption = 
-      'DoxBox uses Peter Gutmann'#39's cryptlib library, click here for com' +
-      'plete source code'
+      'LibreCrypt uses Peter Gutmann'#39's cryptlib library, click here for' +
+      ' complete source code'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
     Font.Height = -11
@@ -243,7 +246,7 @@ object frmAbout: TfrmAbout
     Alignment = taCenter
     Anchors = [akLeft, akRight, akBottom]
     AutoSize = False
-    Caption = 'The source to DoxBox is available from GitHub.'
+    Caption = 'The source to LibreCrypt is available from GitHub.'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
     Font.Height = -11
@@ -253,7 +256,7 @@ object frmAbout: TfrmAbout
     Transparent = True
     NormalColor = clBlue
     HoverColor = clRed
-    URL = 'https://github.com/t-d-k/doxbox'
+    URL = 'https://github.com/t-d-k/LibreCrypt'
     ExplicitTop = 228
     ExplicitWidth = 451
   end

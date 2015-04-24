@@ -28,7 +28,10 @@ const
 {$ENDIF}
 
 const
-  FREEOTFE_REGISTRY_SETTINGS_LOCATION = '\Software\DoxBox';
+  FREEOTFE_REGISTRY_SETTINGS_LOCATION = '\Software\LibreCrypt';
+
+  // Command line parameter handled in the .dpr
+  CMDLINE_MINIMIZE = 'minimize';
 
 resourcestring
   RS_PROMPT_USER = 'Prompt user';
@@ -39,8 +42,8 @@ type
   eOnExitWhenMounted = (oewmDismount, oewmPromptUser, oewmLeaveMounted);
 
 resourcestring
-  ONEXITWHENMOUNTED_DISMOUNT     = 'Lock all boxes';
-  ONEXITWHENMOUNTED_LEAVEMOUNTED = 'Leave boxes open';
+  ONEXITWHENMOUNTED_DISMOUNT     = 'Lock all containers';
+  ONEXITWHENMOUNTED_LEAVEMOUNTED = 'Leave containers open';
 
 const
   OnExitWhenMountedTitlePtr: array [eOnExitWhenMounted] of Pointer =
@@ -91,10 +94,10 @@ resourcestring
   SYSTEMTRAYCLICKACTION_DONOTHING                = 'Do nothing';
   SYSTEMTRAYCLICKACTION_DISPLAYCONSOLE           = 'Display window';
   SYSTEMTRAYCLICKACTION_DISPLAYHIDECONSOLETOGGLE = 'Display/hide window toggle';
-  SYSTEMTRAYCLICKACTION_MOUNTFILE                = 'Open DoxBox...';
-  SYSTEMTRAYCLICKACTION_MOUNTPARTITION           = 'Open DoxBox partition...';
-  SYSTEMTRAYCLICKACTION_MOUNTLINUXFILE           = 'Open DoxBox (Linux)...';
-  SYSTEMTRAYCLICKACTION_MOUNTLINUXPARTITION      = 'Open DoxBox partition (Linux)...';
+  SYSTEMTRAYCLICKACTION_MOUNTFILE                = 'Open LibreCrypt file ...';
+  SYSTEMTRAYCLICKACTION_MOUNTPARTITION           = 'Open LibreCrypt partition...';
+  SYSTEMTRAYCLICKACTION_MOUNTLINUXFILE           = 'Open (Linux) ...';
+  SYSTEMTRAYCLICKACTION_MOUNTLINUXPARTITION      = 'Open partition (Linux) ...';
   SYSTEMTRAYCLICKACTION_DISMOUNTALL              = 'Lock all';
 
 const

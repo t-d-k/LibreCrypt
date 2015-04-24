@@ -30,20 +30,15 @@ implementation
 // Returns -1 on failure
 function TPKCS11Object.GetSize(): integer;
 var
-  retval: integer;
+
   ulSize: CK_ULONG;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_GetObjectSize, FN_NAME_C_GetObjectSize);
 
-  retval := -1;
+  Result := -1;
 
   LastRV := LibraryFunctionList.CK_C_GetObjectSize(FSessionHandle, FHandle, @ulSize);
-  if RVSuccess(LastRV) then
-    begin
-    retval := ulSize;
-    end;
-
-  Result := retval;
+  if RVSuccess(LastRV) then  Result := ulSize;
 end;
 
 // Important: It is the CALLERS responsibility to free off the object returned
@@ -51,13 +46,12 @@ function TPKCS11Object.GetAttribute(attrType: CK_ATTRIBUTE_TYPE): TPKCS11Attribu
 const
   BUFFER_SIZE = 1024;
 var
-  retval: TPKCS11Attribute;
   attrStruct: CK_ATTRIBUTE;
   bufferStr: string;
 begin
   CheckFnAvailable(@LibraryFunctionList.CK_C_GetAttributeValue, FN_NAME_C_GetAttributeValue);
 
-  retval := nil;
+  Result := nil;
 
   // Get attribute size (if attr present)
   attrStruct.attrType := attrType;
@@ -86,13 +80,11 @@ begin
                                                        );
     if RVSuccess(LastRV) then
       begin
-      retval := TPKCS11Attribute.Create();
-      retval.LibraryFunctionList := LibraryFunctionList;
-      retval.AttrStruct := attrStruct;
+      Result := TPKCS11Attribute.Create();
+      Result.LibraryFunctionList := LibraryFunctionList;
+      Result.AttrStruct := attrStruct;
       end;
     end;
-
-  Result := retval;
 end;
 
 

@@ -13,11 +13,11 @@ interface
 const
   { TODO -otdk -cclean : seems a lot of repitition of these consts }
   // Homepage...
-  URL_HOMEPAGE = 'http://DoxBox.eu/';
+  URL_HOMEPAGE = 'http://LibreCrypt.eu/';
   // Download URL...
-  URL_DOWNLOAD = 'https://github.com/t-d-k/doxbox/releases';
+  URL_DOWNLOAD = 'https://github.com/t-d-k/LibreCrypt/releases';
 
-  ENGLISH_TRANSLATION_CONTACT = 'tdk <translate.doxbox@squte.com>';
+  ENGLISH_TRANSLATION_CONTACT = 'tdk <translate.LibreCrypt@squte.com>';
 
 resourcestring
   USE_DEFAULT = 'Use default';

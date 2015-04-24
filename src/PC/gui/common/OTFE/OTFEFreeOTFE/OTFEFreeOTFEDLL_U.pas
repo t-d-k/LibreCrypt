@@ -359,7 +359,7 @@ dialogs,
   SDUi18n,
   SDUClasses,
   SDUFileIterator_U,
-  //doxbox
+  //LibreCrypt
    OTFEConsts_U,
   OTFEFreeOTFE_frmKeyEntryFreeOTFE,
   OTFEFreeOTFE_frmKeyEntryLinux,

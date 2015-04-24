@@ -27,19 +27,33 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
     inherited pcWizard: TPageControl
       Width = 595
       Height = 372
-      ActivePage = tsSrcDetails
+      ActivePage = tsRNGSelect
       ExplicitWidth = 595
       ExplicitHeight = 372
       object tsFileOrPartition: TTabSheet
         Caption = 'Volume File or Partition'
         ImageIndex = 7
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           587
           344)
+        object reInstructFileOrPartition: TLabel
+          Left = 3
+          Top = 3
+          Width = 581
+          Height = 26
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          Caption = 
+            'If you would like to modify a container, please specify whether ' +
+            'it is file or partition based. If you would like to modify a key' +
+            'file, please select "file" below.'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          WordWrap = True
+        end
         object rgFileOrPartition: TRadioGroup
           Left = 3
           Top = 274
@@ -53,22 +67,6 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           TabOrder = 1
           OnClick = rgFileOrPartitionClick
         end
-        object reInstructFileOrPartition: TOTFEFreeOTFE_InstructionRichEdit
-          Left = 3
-          Top = 3
-          Width = 582
-          Height = 169
-          Anchors = [akLeft, akTop, akRight, akBottom]
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Lines.Strings = (
-            'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
-          ParentFont = False
-          TabOrder = 0
-        end
         inline TSDUDiskPartitionsPanel1: TSDUDiskPartitionsPanel
           Left = 3
           Top = 178
@@ -81,7 +79,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Font.Name = 'Tahoma'
           Font.Style = []
           ParentFont = False
-          TabOrder = 2
+          TabOrder = 0
           ExplicitLeft = 3
           ExplicitTop = 178
           ExplicitWidth = 577
@@ -95,20 +93,23 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
         ExplicitTop = 0
         ExplicitWidth = 0
         ExplicitHeight = 0
-        object reInstructSrcFile: TOTFEFreeOTFE_InstructionRichEdit
-          Left = 10
-          Top = 20
-          Width = 473
-          Height = 125
+        object reInstructSrcFile: TLabel
+          Left = 14
+          Top = 12
+          Width = 545
+          Height = 39
+          Caption = 
+            'Please enter the full path and filename of the container/keyfile' +
+            ' you wish to change.If you wish to update a "hidden" container h' +
+            'eld within another container, please specify the filename of the' +
+            ' outer container which stores your hidden container'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
-          Lines.Strings = (
-            'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
-          TabOrder = 0
+          WordWrap = True
         end
         object GroupBox2: TGroupBox
           Left = 22
@@ -116,7 +117,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Width = 445
           Height = 73
           Caption = 'Source volume/keyfile'
-          TabOrder = 1
+          TabOrder = 0
           object lblSrcFilename: TSDUFilenameLabel
             Left = 8
             Top = 20
@@ -140,10 +141,6 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsPartitionSelect: TTabSheet
         Caption = 'Partition Select'
         ImageIndex = 8
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object Label21: TLabel
           Left = 196
           Top = 92
@@ -151,27 +148,26 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Height = 13
           Caption = '&Select disk/partition:'
         end
-        object reInstructPartitionSelect: TOTFEFreeOTFE_InstructionRichEdit
+        object reInstructPartitionSelect: TLabel
           Left = 8
           Top = 12
-          Width = 473
-          Height = 77
+          Width = 256
+          Height = 13
+          Caption = 'Please specify the partition your container is stored on.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
-          Lines.Strings = (
-            'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
-          TabOrder = 0
+          WordWrap = True
         end
         inline fmeSelectPartition: TfmeSelectPartition
           Left = 8
           Top = 120
           Width = 473
           Height = 144
-          TabOrder = 1
+          TabOrder = 0
           ExplicitLeft = 8
           ExplicitTop = 120
           ExplicitWidth = 473
@@ -214,7 +210,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           end
           inherited ilErrorWarning: TImageList
             Bitmap = {
-              494C010103000400740010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400B40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -357,8 +353,8 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       end
       object tsSrcDetails: TTabSheet
         Caption = 'Src Details'
-        ExplicitLeft = 8
-        ExplicitTop = 22
+        ExplicitLeft = 0
+        ExplicitTop = 0
         ExplicitWidth = 0
         ExplicitHeight = 0
         object Label9: TLabel
@@ -399,20 +395,23 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Caption = 'Current &key iterations:'
           FocusControl = seSrcKeyIterations
         end
-        object reInstructSrcDetails: TOTFEFreeOTFE_InstructionRichEdit
+        object reInstructSrcDetails: TLabel
           Left = 8
           Top = 12
-          Width = 473
-          Height = 61
+          Width = 564
+          Height = 26
+          Caption = 
+            'Please enter the full details of the container/keyfile you wish ' +
+            'to change. If you wish to update a "hidden" container held withi' +
+            'n another container, please specify the offset within the outer ' +
+            'container where your hidden container is located'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
-          Lines.Strings = (
-            'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
-          TabOrder = 0
+          WordWrap = True
         end
         object preSrcUserKey: TOTFEFreeOTFE_PasswordRichEdit
           Left = 144
@@ -428,8 +427,8 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
             'preSrcUserKey')
           ParentFont = False
           ScrollBars = ssBoth
-          TabOrder = 1
-          OnChange = preUserKeyChange
+          TabOrder = 0
+          OnChange = preSrcUserKeyChange
         end
         object seSrcSaltLength: TSpinEdit64
           Left = 144
@@ -437,7 +436,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Width = 121
           Height = 22
           Increment = 1
-          TabOrder = 2
+          TabOrder = 1
           OnChange = seSaltLengthChange
         end
         object seSrcKeyIterations: TSpinEdit64
@@ -453,7 +452,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Top = 216
           Width = 226
           Height = 29
-          TabOrder = 4
+          TabOrder = 2
           Units.Strings = (
             'bytes'
             'KB'
@@ -473,20 +472,21 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
         ExplicitTop = 0
         ExplicitWidth = 0
         ExplicitHeight = 0
-        object reInstructDestFile: TOTFEFreeOTFE_InstructionRichEdit
+        object reInstructDestFile: TLabel
           Left = 8
           Top = 12
-          Width = 473
-          Height = 61
+          Width = 370
+          Height = 13
+          Caption = 
+            'Please specify the full path and filename where the keyfile shou' +
+            'ld be written to.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
-          Lines.Strings = (
-            'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
-          TabOrder = 0
+          WordWrap = True
         end
         object GroupBox1: TGroupBox
           Left = 22
@@ -494,7 +494,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Width = 445
           Height = 73
           Caption = 'Keyfile'
-          TabOrder = 1
+          TabOrder = 0
           object lblDestFilename: TSDUFilenameLabel
             Left = 8
             Top = 20
@@ -518,44 +518,24 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsDestDetails: TTabSheet
         Caption = 'Destination file details'
         ImageIndex = 3
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
-        object Label2: TLabel
-          Left = 8
-          Top = 92
-          Width = 73
-          Height = 13
-          Caption = 'New &password:'
-          FocusControl = preDestUserKey1
-        end
-        object Label3: TLabel
-          Left = 8
-          Top = 164
-          Width = 109
-          Height = 13
-          Caption = 'Confirm new p&assword:'
-          FocusControl = preDestUserKey2
-        end
         object Label5: TLabel
           Left = 8
-          Top = 236
+          Top = 271
           Width = 76
           Height = 13
           Caption = 'New &salt length:'
           FocusControl = seDestSaltLength
         end
         object Label7: TLabel
-          Left = 272
-          Top = 236
+          Left = 264
+          Top = 271
           Width = 16
           Height = 13
           Caption = 'bits'
         end
         object Label12: TLabel
           Left = 8
-          Top = 292
+          Top = 324
           Width = 107
           Height = 13
           Caption = '&Requested drive letter:'
@@ -563,109 +543,124 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
         end
         object Label8: TLabel
           Left = 8
-          Top = 264
+          Top = 297
           Width = 66
           Height = 13
           Caption = '&Key iterations:'
           FocusControl = seDestKeyIterations
         end
-        object reInstructDestDetails: TOTFEFreeOTFE_InstructionRichEdit
-          Left = 8
-          Top = 12
-          Width = 473
-          Height = 61
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Lines.Strings = (
-            'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
-          ParentFont = False
-          TabOrder = 0
-        end
-        object preDestUserKey1: TOTFEFreeOTFE_PasswordRichEdit
-          Left = 144
-          Top = 88
-          Width = 337
-          Height = 65
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Lines.Strings = (
-            'preDestUserKey1')
-          ParentFont = False
-          ScrollBars = ssBoth
-          TabOrder = 1
-          OnChange = preUserKeyChange
-        end
-        object preDestUserKey2: TOTFEFreeOTFE_PasswordRichEdit
-          Left = 144
-          Top = 160
-          Width = 337
-          Height = 65
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Lines.Strings = (
-            'preDestUserKey2')
-          ParentFont = False
-          ScrollBars = ssBoth
-          TabOrder = 2
-          OnChange = preUserKeyChange
+        object lblInstructDestDetails: TLabel
+          Left = 3
+          Top = 3
+          Width = 238
+          Height = 13
+          Caption = 'Please enter new details for your container/keyfile.'
         end
         object seDestSaltLength: TSpinEdit64
-          Left = 144
-          Top = 232
+          Left = 128
+          Top = 266
           Width = 121
           Height = 22
           Increment = 1
-          TabOrder = 3
+          TabOrder = 0
           OnChange = seSaltLengthChange
         end
         object cbDestDriveLetter: TComboBox
-          Left = 144
-          Top = 288
+          Left = 128
+          Top = 320
           Width = 89
           Height = 21
           Style = csDropDownList
-          TabOrder = 5
+          TabOrder = 2
         end
         object seDestKeyIterations: TSpinEdit64
-          Left = 144
-          Top = 260
+          Left = 128
+          Top = 292
           Width = 121
           Height = 22
           Increment = 1
           MinValue = 1
-          TabOrder = 4
+          TabOrder = 1
+        end
+        inline frmeNewPassword: TfrmeNewPassword
+          Left = 8
+          Top = 22
+          Width = 567
+          Height = 243
+          Constraints.MinHeight = 178
+          Constraints.MinWidth = 223
+          TabOrder = 3
+          ExplicitLeft = 8
+          ExplicitTop = 22
+          ExplicitWidth = 567
+          ExplicitHeight = 243
+          inherited lblInstructPassword: TLabel
+            Width = 567
+            ExplicitLeft = 0
+            ExplicitWidth = 547
+          end
+          inherited Label17: TLabel
+            Top = 84
+            ExplicitTop = 84
+          end
+          inherited Label3: TLabel
+            Top = 148
+            ExplicitTop = 148
+          end
+          inherited lblStrength: TLabel
+            Top = 212
+            ExplicitTop = 212
+          end
+          inherited ProgressBar1: TProgressBar
+            Top = 211
+            Width = 431
+            ExplicitTop = 211
+            ExplicitWidth = 431
+          end
+          inherited preUserKeyFirst: TOTFEFreeOTFE_PasswordRichEdit
+            Top = 84
+            Width = 431
+            Height = 58
+            ExplicitTop = 84
+            ExplicitWidth = 431
+            ExplicitHeight = 58
+          end
+          inherited preUserKeyConfirm: TOTFEFreeOTFE_PasswordRichEdit
+            Top = 148
+            Width = 431
+            Height = 58
+            Anchors = [akLeft, akTop, akRight]
+            ExplicitTop = 148
+            ExplicitWidth = 431
+            ExplicitHeight = 58
+          end
         end
       end
       object tsRNGSelect: TTabSheet
         Caption = 'RNG Select'
         ImageIndex = 6
-        ExplicitLeft = 0
-        ExplicitTop = 0
+        ExplicitLeft = 28
+        ExplicitTop = 22
         ExplicitWidth = 0
         ExplicitHeight = 0
-        object reInstructRNGSelect: TOTFEFreeOTFE_InstructionRichEdit
+        object reInstructRNGSelect: TLabel
           Left = 8
           Top = 12
-          Width = 473
-          Height = 125
+          Width = 568
+          Height = 39
+          Caption = 
+            'In order to change your container/keyfile'#39's details, a certain a' +
+            'mount of random data is required. This data will be used for the' +
+            ' following: 1) Password salting 2) Random padding data In order ' +
+            'to generate this data, please select which random number generat' +
+            'ors you wish to use from the options below.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
-          Lines.Strings = (
-            'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
-          TabOrder = 0
+          WordWrap = True
         end
         object gbRNG: TGroupBox
           Left = 139
@@ -717,7 +712,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Width = 97
           Height = 17
           Caption = 'GPG - INVISIBLE CHECKBOX'
-          TabOrder = 2
+          TabOrder = 0
           Visible = False
           OnClick = ckRNGClick
         end
@@ -725,10 +720,6 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsRNGMouseMovement: TTabSheet
         Caption = 'RNG Mouse movement'
         ImageIndex = 4
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           587
           344)
@@ -741,20 +732,22 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Caption = 'Random bits generated: 9999/9999'
           ExplicitTop = 299
         end
-        object reInstructRNGMouseMovement: TOTFEFreeOTFE_InstructionRichEdit
+        object reInstructRNGMouseMovement: TLabel
           Left = 8
           Top = 12
-          Width = 473
-          Height = 49
+          Width = 558
+          Height = 26
+          Caption = 
+            'You have selected mouse movement to generate random data. Please' +
+            ' "wiggle" the mouse within the area below, until enough random d' +
+            'ata has been generated.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
-          Lines.Strings = (
-            'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
-          TabOrder = 0
+          WordWrap = True
         end
         object MouseRNG: TMouseRNG
           Left = 8
@@ -774,10 +767,6 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsRNGPKCS11: TTabSheet
         Caption = 'RNG PKCS#11 token'
         ImageIndex = 9
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object lblToken: TLabel
           Left = 123
           Top = 175
@@ -786,27 +775,28 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Caption = '&Token:'
           FocusControl = cbToken
         end
-        object reInstructRNGPKCS11: TOTFEFreeOTFE_InstructionRichEdit
+        object reInstructRNGPKCS11: TLabel
           Left = 8
           Top = 12
-          Width = 473
-          Height = 61
+          Width = 480
+          Height = 13
+          Caption = 
+            'Please select the PKCS#11 token you wish to use to generate rand' +
+            'om data, from the list shown below'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
-          Lines.Strings = (
-            'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
-          TabOrder = 0
+          WordWrap = True
         end
         object cbToken: TComboBox
           Left = 163
           Top = 170
           Width = 145
           Height = 21
-          TabOrder = 2
+          TabOrder = 0
           Text = 'cbToken'
         end
         object pbRefresh: TButton
@@ -826,20 +816,21 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
         ExplicitTop = 0
         ExplicitWidth = 0
         ExplicitHeight = 0
-        object reInstructRNGGPG: TOTFEFreeOTFE_InstructionRichEdit
+        object reInstructRNGGPG: TLabel
           Left = 8
           Top = 12
-          Width = 473
-          Height = 61
+          Width = 551
+          Height = 13
+          Caption = 
+            'In order to use GPG to generate random data, please specify the ' +
+            'location of "gpg.exe" by clicking the browse button.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
-          Lines.Strings = (
-            'THIS TEXT WILL BE AUTOMATICALLY POPULATED.')
           ParentFont = False
-          TabOrder = 0
+          WordWrap = True
         end
         object GroupBox5: TGroupBox
           Left = 22
@@ -847,7 +838,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Width = 445
           Height = 73
           Caption = 'GPG Executable'
-          TabOrder = 1
+          TabOrder = 0
           object lblGPGFilename: TSDUFilenameLabel
             Left = 8
             Top = 20
@@ -898,13 +889,13 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
   end
   object OpenDialog: TSDUOpenDialog
     PreserveCWD = False
-    Left = 388
-    Top = 224
+    Left = 380
+    Top = 304
   end
   object SaveDialog: TSDUSaveDialog
     PreserveCWD = False
     Left = 416
-    Top = 224
+    Top = 288
   end
   object GPGOpenDialog: TSDUOpenDialog
     DefaultExt = 'exe'
@@ -912,7 +903,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
     Filter = 'GPG (gpg.exe)|gpg.exe|Executables (*.exe)|*.exe|All files|*.*'
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     PreserveCWD = False
-    Left = 328
-    Top = 188
+    Left = 320
+    Top = 308
   end
 end

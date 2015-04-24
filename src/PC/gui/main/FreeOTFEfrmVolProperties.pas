@@ -13,47 +13,47 @@ interface
 uses
   Classes, Controls, Dialogs,
   Forms, Graphics, Messages, StdCtrls,
-  SysUtils, Windows, //doxbox
+  SysUtils, Windows, //LibreCrypt
   OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U,
   SDUForms, SDUGeneral;
 
 type
   TfrmFreeOTFEVolProperties = class (TSDUForm)
-    pbOK:                TButton;
-    Label15:             TLabel;
-    Label22:             TLabel;
-    Label5:              TLabel;
-    Label7:              TLabel;
-    Label6:              TLabel;
-    edDrive:             TEdit;
-    edDeviceName:        TEdit;
-    edVolumeFile:        TEdit;
-    edReadOnly:          TEdit;
-    edMainCypher:        TEdit;
-    pbInfoMainCypher:    TButton;
-    pbInfoIVHash:        TButton;
-    lblIVHash:           TLabel;
-    edIVHash:            TEdit;
-    Label2:              TLabel;
+    pbOK:           TButton;
+    Label15:        TLabel;
+    Label22:        TLabel;
+    Label5:         TLabel;
+    Label7:         TLabel;
+    Label6:         TLabel;
+    edDrive:        TEdit;
+    edDeviceName:   TEdit;
+    edVolumeFile:   TEdit;
+    edReadOnly:     TEdit;
+    edMainCypher:   TEdit;
+    pbInfoMainCypher: TButton;
+    pbInfoIVHash:   TButton;
+    lblIVHash:      TLabel;
+    edIVHash:       TEdit;
+    Label2:         TLabel;
     edSectorIVGenMethod: TEdit;
-    pbInfoIVCypher:      TButton;
-    edIVCypher:          TEdit;
-    lblIVCypher:         TLabel;
-    Label1:              TLabel;
-    edHiddenOffset:      TEdit;
+    pbInfoIVCypher: TButton;
+    edIVCypher:     TEdit;
+    lblIVCypher:    TLabel;
+    Label1:         TLabel;
+    edHiddenOffset: TEdit;
     procedure FormShow(Sender: TObject);
     procedure pbInfoIVHashClick(Sender: TObject);
     procedure pbInfoMainCypherClick(Sender: TObject);
     procedure pbInfoIVCypherClick(Sender: TObject);
-  PRIVATE
-    fDriveLetter:  DriveLetterChar;
+  private
+    fDriveLetter: DriveLetterChar;
     function GetHiddenOffset(): Int64;
 
     { Private declarations }
-  PUBLIC
-     property DriveLetter :  DriveLetterChar read fDriveLetter write fDriveLetter;
-//    OTFEFreeOTFE: TOTFEFreeOTFE;
+  public
+    property DriveLetter: DriveLetterChar Read fDriveLetter Write fDriveLetter;
+    //    OTFEFreeOTFE: TOTFEFreeOTFE;
   end;
 
 implementation
@@ -67,7 +67,7 @@ uses
             //sdu
   lcDialogs,
   SDUi18n,
-                           //doxbox
+  //LibreCrypt
   OTFEFreeOTFE_DriverAPI;  // Required for NULL_GUID
 
 

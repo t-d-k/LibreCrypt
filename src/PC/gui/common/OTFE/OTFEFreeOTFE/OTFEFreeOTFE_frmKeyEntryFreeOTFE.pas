@@ -52,40 +52,40 @@ uses
 
 type
   TfrmKeyEntryFreeOTFE = class (TSDUForm)
-    pnlBasic:             TPanel;
-    GroupBox1:            TGroupBox;
-    Label1:               TLabel;
-    Label6:               TLabel;
-    lblDrive:             TLabel;
-    preUserKey:           TOTFEFreeOTFE_PasswordRichEdit;
-    cbDrive:              TComboBox;
-    ckMountReadonly:      TCheckBox;
-    pnlLower:             TPanel;
-    pnlButtons:           TPanel;
-    pbCancel:             TButton;
-    pbOK:                 TButton;
-    pbAdvanced:           TButton;
-    pnlAdvanced:          TPanel;
-    gbVolumeOptions:      TGroupBox;
-    Label8:               TLabel;
-    ckOffsetPointsToCDB:  TCheckBox;
-    gbMountAs:            TGroupBox;
-    Label9:               TLabel;
-    cbMediaType:          TComboBox;
-    ckMountForAllUsers:   TCheckBox;
-    GroupBox3:            TGroupBox;
-    Label2:               TLabel;
-    Label5:               TLabel;
-    Label7:               TLabel;
-    seSaltLength:         TSpinEdit64;
-    seKeyIterations:      TSpinEdit64;
-    cbPKCS11CDB:          TComboBox;
-    rbKeyfileFile:        TRadioButton;
-    rbKeyfilePKCS11:      TRadioButton;
-    cbPKCS11SecretKey:    TComboBox;
-    Label10:              TLabel;
-    se64UnitOffset:       TSDUSpin64Unit_Storage;
-    feKeyfile:            TSDUFilenameEdit;
+    pnlBasic:       TPanel;
+    GroupBox1:      TGroupBox;
+    Label1:         TLabel;
+    Label6:         TLabel;
+    lblDrive:       TLabel;
+    preUserKey:     TOTFEFreeOTFE_PasswordRichEdit;
+    cbDrive:        TComboBox;
+    ckMountReadonly: TCheckBox;
+    pnlLower:       TPanel;
+    pnlButtons:     TPanel;
+    pbCancel:       TButton;
+    pbOK:           TButton;
+    pbAdvanced:     TButton;
+    pnlAdvanced:    TPanel;
+    gbVolumeOptions: TGroupBox;
+    Label8:         TLabel;
+    ckOffsetPointsToCDB: TCheckBox;
+    gbMountAs:      TGroupBox;
+    Label9:         TLabel;
+    cbMediaType:    TComboBox;
+    ckMountForAllUsers: TCheckBox;
+    GroupBox3:      TGroupBox;
+    Label2:         TLabel;
+    Label5:         TLabel;
+    Label7:         TLabel;
+    seSaltLength:   TSpinEdit64;
+    seKeyIterations: TSpinEdit64;
+    cbPKCS11CDB:    TComboBox;
+    rbKeyfileFile:  TRadioButton;
+    rbKeyfilePKCS11: TRadioButton;
+    cbPKCS11SecretKey: TComboBox;
+    Label10:        TLabel;
+    se64UnitOffset: TSDUSpin64Unit_Storage;
+    feKeyfile:      TSDUFilenameEdit;
     SDUDropFiles_Keyfile: TSDUDropFiles;
     procedure pbOKClick(Sender: TObject);
     procedure preUserkeyKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -104,7 +104,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure SDUDropFiles_KeyfileFileDrop(Sender: TObject; DropItem: String;
       DropPoint: TPoint);
-  PROTECTED
+  protected
     fTokenCDB:       TPKCS11CDBPtrArray;
     fTokenSecretKey: TPKCS11SecretKeyPtrArray;
     fPkcs11session:  TPKCS11Session;
@@ -113,7 +113,7 @@ type
 
     fsilent:        Boolean;
     fVolumeFiles:   TStringList;
-    fmountedDrives: string;
+    fmountedDrives: String;
 
     procedure PopulateDrives();
     procedure PopulateMountAs();
@@ -126,7 +126,7 @@ type
     procedure EnableDisableControls_Keyfile();
     procedure EnableDisableControls_SecretKey();
 
-    function GetDriveLetter(): char;
+    function GetDriveLetter(): Char;
     function GetMountAs(): TFreeOTFEMountAs;
     function SetMountAs(mountAs: TFreeOTFEMountAs): Boolean;
 
@@ -139,8 +139,8 @@ type
     function IsVolumeMarkedAsReadonly(): Boolean;
 
     function INSMessageDlg(Content: String; DlgType: TMsgDlgType): Integer;
-    procedure SetVolumeFilesText(Value :string);
-  PUBLIC
+    procedure SetVolumeFilesText(Value: String);
+  public
 
     procedure SetPassword(password: TSDUBytes);
     procedure SetReadOnly(ReadOnly: Boolean);
@@ -152,9 +152,9 @@ type
 
     procedure DisplayAdvanced(displayAdvanced: Boolean);
 
-    property Silent :Boolean read fSilent write fSilent ;
-    property VolumeFilesText :string write SetVolumeFilesText;
-    property MountedDrives :string  read fMountedDrives;
+    property Silent: Boolean Read fSilent Write fSilent;
+    property VolumeFilesText: String Write SetVolumeFilesText;
+    property MountedDrives: String Read fMountedDrives;
   end;
 
 
@@ -185,7 +185,7 @@ resourcestring
   RS_BUTTON_ADVANCED = '&Advanced';
 
 
-function TfrmKeyEntryFreeOTFE.GetDriveLetter(): char;
+function TfrmKeyEntryFreeOTFE.GetDriveLetter(): Char;
 begin
   Result := #0;
   // Note: The item at index zero is "Use default"; #0 is returned for this
@@ -243,15 +243,13 @@ end;
 
 function TfrmKeyEntryFreeOTFE.SetMountAs(mountAs: TFreeOTFEMountAs): Boolean;
 var
-  idx:   Integer;
-  allOK: Boolean;
+  idx: Integer;
 begin
   idx                   := cbMediaType.Items.IndexOf(FreeOTFEMountAsTitle(mountAs));
   cbMediaType.ItemIndex := idx;
 
-  allOK := (idx >= 0);
+  Result := (idx >= 0);
 
-  Result := allOK;
 end;
 
 procedure TfrmKeyEntryFreeOTFE.PopulateDrives();
@@ -325,8 +323,8 @@ begin
 
   if warnBadCDB then begin
     INSMessageDlg(
-      _('One or more of the keyfiles stored on your token are invalid/corrupt and will be ignored') + SDUCRLF + SDUCRLF +
-      _('Please check which keyfiles are stored on this token and correct'),
+      _('One or more of the keyfiles stored on your token are invalid/corrupt and will be ignored') +
+      SDUCRLF + SDUCRLF + _('Please check which keyfiles are stored on this token and correct'),
       mtWarning
       );
   end;
@@ -363,8 +361,8 @@ begin
   cbPKCS11SecretKey.items.Clear();
   if (session <> nil) then begin
     if not (GetAllPKCS11SecretKey(session, FTokenSecretKey, errMsg)) then begin
-      INSMessageDlg(_('Unable to get a list of secret keys from Token') + SDUCRLF +
-        SDUCRLF + errMsg, mtError);
+      INSMessageDlg(_('Unable to get a list of secret keys from Token') +
+        SDUCRLF + SDUCRLF + errMsg, mtError);
     end;
   end;
 
@@ -430,14 +428,10 @@ begin
     fMountedDrives := '';
     { TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
     Result         := GetFreeOTFEBase.MountFreeOTFE(fVolumeFiles,
-      SDUStringToSDUBytes(preUserkey.Text), useKeyfilename,
-      usePKCS11CDB, usedSlotID,
-      FPKCS11Session, usePKCS11SecretKey,
-      seKeyIterations.Value, GetDriveLetter(),
-      ckMountReadonly.Checked, GetMountAs(),
-      se64UnitOffset.Value,
-      ckOffsetPointsToCDB.Checked, seSaltLength.Value,
-      ckMountForAllUsers.Checked,
+      SDUStringToSDUBytes(preUserkey.Text), useKeyfilename, usePKCS11CDB,
+      usedSlotID, FPKCS11Session, usePKCS11SecretKey, seKeyIterations.Value,
+      GetDriveLetter(), ckMountReadonly.Checked, GetMountAs(), se64UnitOffset.Value,
+      ckOffsetPointsToCDB.Checked, seSaltLength.Value, ckMountForAllUsers.Checked,
       fMountedDrives);
     if not (Result) then begin
       GetFreeOTFEBase.CountMountedResults(
@@ -448,16 +442,15 @@ begin
 
       if (cntMountOK = 0) then begin
         // No volumes were mounted...
-        errMsg := _('Unable to open Box.');
+        errMsg := _('Unable to open container.');
 
         // Specific problems when mounting...
         if (GetFreeOTFEBase.LastErrorCode = OTFE_ERR_WRONG_PASSWORD) then begin
           errMsg :=
-            _('Unable to open Box; please ensure that you entered the correct details (keyphrase, etc)');
+            _('Unable to open container; please ensure that you entered the correct details (keyphrase, etc)');
           if (feKeyfile.Filename <> '') then begin
-            errMsg := errMsg + SDUCRLF + SDUCRLF +
-              _(
-              'Please ensure that you check/uncheck the "Data from offset includes CDB" option, as appropriate for your Box');
+            errMsg := errMsg + SDUCRLF + SDUCRLF + _(
+              'Please ensure that you check/uncheck the "Data from offset includes CDB" option, as appropriate for your container');
           end;
         end else
         if (GetFreeOTFEBase.LastErrorCode = OTFE_ERR_VOLUME_FILE_NOT_FOUND) then begin
@@ -473,26 +466,23 @@ begin
           errMsg :=
             _('Unable to assign a new drive letter; please confirm you have drive letters free!');
         end else
-        if (not (ckMountReadonly.Checked) and
-          IsVolumeStoredOnReadonlyMedia()) then begin
+        if (not (ckMountReadonly.Checked) and IsVolumeStoredOnReadonlyMedia()) then begin
           errMsg :=
-            _('Unable to open Box; if a Box to be mounted is stored on readonly media (e.g. CDROM or DVD), please check the "open readonly" option.');
+            _('Unable to open container; if a container to be mounted is stored on readonly media (e.g. CDROM or DVD), please check the "open readonly" option.');
         end else
-        if (not (ckMountReadonly.Checked) and
-          IsVolumeMarkedAsReadonly()) then begin
+        if (not (ckMountReadonly.Checked) and IsVolumeMarkedAsReadonly()) then begin
           errMsg :=
-            _('Unable to open Box; if a Box is readonly, please check the "open readonly" option.');
+            _('Unable to open container; if a container is readonly, please check the "open readonly" option.');
         end;
 
         INSMessageDlg(errMSg, mtError);
       end else
       if (cntMountFailed > 0) then begin
         // At least one volume was mounted, but not all of them
-        errMsg := SDUPluralMsg(cntMountOK,
-          SDUParamSubstitute(
-          _('%1 Box was opened successfully, but %2 could not be opened'), [cntMountOK, cntMountFailed]),
-          SDUParamSubstitute(
-          _('%1 Boxes were opened successfully, but %2 could not be opened'),
+        errMsg := SDUPluralMsg(cntMountOK, SDUParamSubstitute(
+          _('%1 container was opened successfully, but %2 could not be opened'),
+          [cntMountOK, cntMountFailed]), SDUParamSubstitute(
+          _('%1 containers were opened successfully, but %2 could not be opened'),
           [cntMountOK, cntMountFailed]));
 
         INSMessageDlg(errMSg, mtWarning);
@@ -675,8 +665,8 @@ end;
 
 procedure TfrmKeyEntryFreeOTFE.FormCreate(Sender: TObject);
 begin
-fVolumeFiles := TStringList.Create;
-  fsilent := False;
+  fVolumeFiles := TStringList.Create;
+  fsilent      := False;
 
   pnlLower.BevelOuter    := bvNone;
   pnlLower.BevelInner    := bvNone;
@@ -733,7 +723,7 @@ begin
     FPKCS11Session.CloseSession();
     FPKCS11Session.Free();
   end;
-fVolumeFiles.Free;
+  fVolumeFiles.Free;
 end;
 
 procedure TfrmKeyEntryFreeOTFE.FormShow(Sender: TObject);
@@ -839,8 +829,7 @@ begin
   // PKCS#11 secret key controls...
   SDUEnableControl(cbPKCS11SecretKey, (
     // Must have more than the "none" item
-    (cbPKCS11SecretKey.items.Count >
-    1)));
+    (cbPKCS11SecretKey.items.Count > 1)));
 end;
 
 procedure TfrmKeyEntryFreeOTFE.EnableDisableControls_Keyfile();
@@ -870,8 +859,7 @@ begin
   // If no keyfile/PKCS#11 CDB is specified, then the CDB must reside within
   // the volume file
   if ((rbKeyfileFile.Checked and (feKeyfile.Filename = '')) or
-    (rbKeyfilePKCS11.Checked and (cbPKCS11CDB.ItemIndex =
-    0) // None available/none selected
+    (rbKeyfilePKCS11.Checked and (cbPKCS11CDB.ItemIndex = 0) // None available/none selected
     )) then begin
     ckOffsetPointsToCDB.Enabled := False;
     ckOffsetPointsToCDB.Checked := True;
@@ -959,7 +947,7 @@ begin
 
 end;
 
-procedure TfrmKeyEntryFreeOTFE.SetVolumeFilesText(Value :string);
+procedure TfrmKeyEntryFreeOTFE.SetVolumeFilesText(Value: String);
 begin
   fVolumeFiles.Text := Value;
 end;

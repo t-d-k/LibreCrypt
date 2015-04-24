@@ -10,34 +10,34 @@ uses
 
 type
   TfmeOptions_PKCS11 = class (TfmeOptions_Base)
-    gbPKCS11:                  TGroupBox;
-    lblLibrary:                TLabel;
-    ckEnablePKCS11:            TCheckBox;
-    pbVerify:                  TButton;
-    gbPKCS11AutoActions:       TGroupBox;
-    lblAutoMountVolume:        TLabel;
-    ckPKCS11AutoDismount:      TCheckBox;
-    ckPKCS11AutoMount:         TCheckBox;
-    feLibFilename:             TSDUFilenameEdit;
-    pbAutoDetect:              TButton;
+    gbPKCS11:           TGroupBox;
+    lblLibrary:         TLabel;
+    ckEnablePKCS11:     TCheckBox;
+    pbVerify:           TButton;
+    gbPKCS11AutoActions: TGroupBox;
+    lblAutoMountVolume: TLabel;
+    ckPKCS11AutoDismount: TCheckBox;
+    ckPKCS11AutoMount:  TCheckBox;
+    feLibFilename:      TSDUFilenameEdit;
+    pbAutoDetect:       TButton;
     OTFEFreeOTFEVolumeSelect1: TOTFEFreeOTFEVolumeSelect;
     procedure pbVerifyClick(Sender: TObject);
     procedure ControlChanged(Sender: TObject);
     procedure pbAutoDetectClick(Sender: TObject);
 
-  PRIVATE
+  private
     function LibraryDLL(): String;
     function VerifyLibrary(): Boolean;
 
-  PUBLIC
-//    OTFEFreeOTFE: TOTFEFreeOTFEBase;
+  public
+    //    OTFEFreeOTFE: TOTFEFreeOTFEBase;
 
-    procedure EnableDisableControls(); OVERRIDE;
-    procedure Initialize(); OVERRIDE;
-    procedure ReadSettings(config: TSettings); OVERRIDE;
-    procedure WriteSettings(config: TSettings); OVERRIDE;
-    function CheckSettings(): Boolean; OVERRIDE;
-    constructor Create(AOwner: TComponent); OVERRIDE;
+    procedure EnableDisableControls(); override;
+    procedure Initialize(); override;
+    procedure ReadSettings(config: TSettings); override;
+    procedure WriteSettings(config: TSettings); override;
+    function CheckSettings(): Boolean; override;
+    constructor Create(AOwner: TComponent); override;
 
 
   end;
@@ -47,8 +47,8 @@ implementation
 {$R *.dfm}
 
 uses
-  OTFEFreeOTFEDLL_U, pkcs11_library,
   lcDialogs,
+  OTFEFreeOTFEDLL_U, pkcs11_library,
   SDUGeneral,
   SDUi18n;
 
@@ -123,7 +123,7 @@ begin
   feLibFilename.Filter             := FILTER_LIBRARY_FILES;
   feLibFilename.FilterIndex        := 0;
 
-//  OTFEFreeOTFEVolumeSelect1.OTFEFreeOTFE         := OTFEFreeOTFE;
+  //  OTFEFreeOTFEVolumeSelect1.OTFEFreeOTFE         := OTFEFreeOTFE;
   OTFEFreeOTFEVolumeSelect1.FileSelectFilter     := FILE_FILTER_FLT_VOLUMES;
   OTFEFreeOTFEVolumeSelect1.FileSelectDefaultExt := FILE_FILTER_DFLT_VOLUMES;
 
@@ -181,19 +181,17 @@ end;
 
 
 function TfmeOptions_PKCS11.CheckSettings(): Boolean;
-var
-  allOK: Boolean;
 begin
-  allOK := inherited CheckSettings();
+  Result := inherited CheckSettings();
 
-  if allOK then begin
+  if Result then begin
     if ckEnablePKCS11.Checked then begin
-      allOK := VerifyLibrary();
+      Result := VerifyLibrary();
     end;
   end;
 
   if ckEnablePKCS11.Checked then begin
-    if allOK then begin
+    if Result then begin
       if ckPKCS11AutoMount.Checked then begin
         if (OTFEFreeOTFEVolumeSelect1.Filename = '') then begin
           SDUMessageDlg(
@@ -201,14 +199,13 @@ begin
             'If automount on PKCS#11 token insertion is enabled, the volume to be mounted must be specified'),
             mtError
             );
-          allOK := False;
+          Result := False;
         end;
       end;
 
     end;
   end;
 
-  Result := allOK;
 end;
 
 procedure TfmeOptions_PKCS11.EnableDisableControls();

@@ -74,9 +74,9 @@ object frmOptions: TfrmOptions
   object ckAssociateFiles: TSDUCheckBox
     Left = 12
     Top = 424
-    Width = 209
-    Height = 17
-    Caption = 'CAPTION SET AUTOMATICALLY'
+    Width = 158
+    Height = 13
+    Caption = 'Associate %s with ".vol" &files'
     TabOrder = 2
     AutoSize = True
   end

@@ -38,7 +38,7 @@ inherited frmCDBDump_LUKS: TfrmCDBDump_LUKS
       Caption = 'Base IV cypher on hash length'
       TabOrder = 0
     end
-    inline OTFEFreeOTFELUKSKeyOrKeyfileEntry1: TOTFEFreeOTFELUKSKeyOrKeyfileEntry
+    inline OTFEFreeOTFELUKSKeyOrKeyfileEntry1: TfrmeLUKSKeyOrKeyfileEntry
       Left = 116
       Top = 48
       Width = 464

@@ -25,7 +25,7 @@ uses
   SDUProgressDlg,
   Shredder, SDUDialogs,
 
-  //doxbox
+  //LibreCrypt
   CommonfrmMain,
   CommonSettings,
   FreeOTFEExplorerSettings,
@@ -542,7 +542,7 @@ uses
   AnsiStrings,
 {$ENDIF}
   CommonfrmAbout,
-  FreeOTFEExplorerConsts,
+  FreeOTFEConsts,
   SDUAboutDlg,
   SDUClipBrd,
   SDUGraphics,
@@ -624,7 +624,7 @@ resourcestring
   RS_FILESYSTEM_NOT_FAT121632      =
     'The filesystem used by this box could not be recognised as either FAT12, FAT16 or FAT32.' +
     SDUCRLF + SDUCRLF +
-    'Although DoxBox supports all filesystems, DoxBox Explorer only supports those listed above.';
+    'Although LibreCrypt supports all filesystems, LibreCrypt Explorer only supports those listed above.';
 
   RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE =
     'Cannot %1 %2: Cannot find the specified file.' + SDUCRLF + SDUCRLF +
@@ -715,7 +715,7 @@ begin
 
   if not (ActivateFreeOTFEComponent(True)) then begin
     SDUMessageDlg(
-      _('The DoxBox DLL (FreeOTFE.dll) could not be found on this computer' +
+      _('The LibreCrypt DLL (FreeOTFE.dll) could not be found on this computer' +
       SDUCRLF + SDUCRLF + 'Please check your installation'),
       mtError
       );
@@ -2118,7 +2118,7 @@ begin
 
   if not (GetFreeOTFEDLL().CreateFreeOTFEVolumeWizard()) then begin
     if (GetFreeOTFEDLL().LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
-      SDUMessageDlg(_('DoxBox could not be created'), mtError);
+      SDUMessageDlg(_('LibreCrypt could not be created'), mtError);
     end;
   end else begin
     newMounted := GetFreeOTFEDLL().DrivesMounted;
@@ -2139,7 +2139,7 @@ begin
     end;
 
     SDUMessageDlg(
-      _('DoxBox created successfully.'),
+      _('LibreCrypt created successfully.'),
       mtInformation
       );
   end;
@@ -2207,7 +2207,7 @@ begin
         filename := volSizeDlg.Filename;
         if not (SDUCreateLargeFile(filename, volSizeDlg.VolumeSize, True, userCancel)) then begin
           if not (userCancel) then begin
-            SDUMessageDlg(_('An error occured while trying to create your DoxBox file'),
+            SDUMessageDlg(_('An error occured while trying to create your LibreCrypt file'),
               mtError, [mbOK], 0);
           end;
 
@@ -5472,7 +5472,7 @@ begin
 
   Result := True;
   if not GetFreeOTFEBase().Active then begin
-    ShowMessage('component not active - cnat run tests');
+    ShowMessage('component not active - can''t run tests');
     exit;
   end;
 
@@ -5482,7 +5482,7 @@ begin
     vl       := 0;
     // debug ver is in subdir
     {$IFDEF DEBUG}
-      projPath := 'P:\Projects\Delphi\doxbox\';
+      projPath := 'P:\';
     {$ELSE}
     projPath := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\');
     {$ENDIF}

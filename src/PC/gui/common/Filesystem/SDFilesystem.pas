@@ -21,29 +21,29 @@ type
 
 {$M+}// Required to get rid of compiler warning "W1055 PUBLISHED caused RTTI ($M+) to be added to type '%s'"
   TSDDirItem = class
-  PRIVATE
+  private
     FIsFile:      Boolean;
     FIsDirectory: Boolean;
     FIsReadonly:  Boolean;
     FIsHidden:    Boolean;
-  PROTECTED
-    function GetIsFile(): Boolean; VIRTUAL;
-    procedure SetIsFile(Value: Boolean); VIRTUAL;
-    function GetIsDirectory(): Boolean; VIRTUAL;
-    procedure SetIsDirectory(Value: Boolean); VIRTUAL;
-    function GetIsReadonly(): Boolean; VIRTUAL;
-    procedure SetIsReadonly(Value: Boolean); VIRTUAL;
-    function GetIsHidden(): Boolean; VIRTUAL;
-    procedure SetIsHidden(Value: Boolean); VIRTUAL;
-  PUBLIC
+  protected
+    function GetIsFile(): Boolean; virtual;
+    procedure SetIsFile(Value: Boolean); virtual;
+    function GetIsDirectory(): Boolean; virtual;
+    procedure SetIsDirectory(Value: Boolean); virtual;
+    function GetIsReadonly(): Boolean; virtual;
+    procedure SetIsReadonly(Value: Boolean); virtual;
+    function GetIsHidden(): Boolean; virtual;
+    procedure SetIsHidden(Value: Boolean); virtual;
+  public
     // IMPORTANT: IF THESE ARE ADDED TO; ADD THEM TO Assign(...)
     // implementation as well!
-    FFilename:              String;
-    FSize:                  ULONGLONG;
+    FFilename: String;
+    FSize:     ULONGLONG;
     FTimestampLastModified: TTimeStamp;
 
-    procedure Assign(srcItem: TSDDirItem); OVERLOAD; VIRTUAL;
-  PUBLISHED
+    procedure Assign(srcItem: TSDDirItem); overload; virtual;
+  published
     // IMPORTANT: IF THESE ARE ADDED TO; ADD THEM TO Assign(...)
     // implementation as well!
     property Filename: String Read FFilename Write FFilename;
@@ -59,63 +59,63 @@ type
   end;
 
   TSDDirItemList = class (TObjectList)
-  PROTECTED
+  protected
     function GetItem(Index: Integer): TSDDirItem;
     procedure SetItem(Index: Integer; AObject: TSDDirItem);
-  PUBLIC
-    property Items[Index: Integer]: TSDDirItem Read GetItem Write SetItem; DEFAULT;
+  public
+    property Items[Index: Integer]: TSDDirItem Read GetItem Write SetItem; default;
 
     procedure AddAsCopy(src: TSDDirItem);
-    procedure Assign(list: TSDDirItemList); OVERLOAD;
+    procedure Assign(list: TSDDirItemList); overload;
   end;
 
 
   TSDCustomFilesystem = class
-  PROTECTED
+  protected
     FMounted:  Boolean;
     FReadOnly: Boolean;
 
     FSerializeCS: TCriticalSection; // Protect by serializing read/write
-                                    // operations in multithreaded operations
+    // operations in multithreaded operations
 
     procedure AssertMounted();
 
     procedure SetMounted(newMounted: Boolean);
 
-    function DoMount(): Boolean; VIRTUAL; ABSTRACT;
-    procedure DoDismount(); VIRTUAL; ABSTRACT;
+    function DoMount(): Boolean; virtual; abstract;
+    procedure DoDismount(); virtual; abstract;
 
     // Returns TRUE/FALSE, depending on whether we treat filenames as case
     // sensitive or not
     // This is filesytem dependant
-    function GetCaseSensitive(): Boolean; VIRTUAL; ABSTRACT;
+    function GetCaseSensitive(): Boolean; virtual; abstract;
 
-    function GetFreeSpace(): ULONGLONG; VIRTUAL; ABSTRACT;
-    function GetSize(): ULONGLONG; VIRTUAL; ABSTRACT;
+    function GetFreeSpace(): ULONGLONG; virtual; abstract;
+    function GetSize(): ULONGLONG; virtual; abstract;
 
-    procedure LastErrorClear(); VIRTUAL;
-    procedure LastErrorSet(errMsg: String); VIRTUAL;
+    procedure LastErrorClear(); virtual;
+    procedure LastErrorSet(errMsg: String); virtual;
 
     function CheckWritable(): Boolean;
 
-  PUBLIC
+  public
     LastError: String;
 
-    constructor Create(); VIRTUAL;
-    destructor Destroy(); OVERRIDE;
+    constructor Create(); virtual;
+    destructor Destroy(); override;
 
-    function FilesystemTitle(): String; VIRTUAL; ABSTRACT;
+    function FilesystemTitle(): String; virtual; abstract;
 
-    function Format(): Boolean; VIRTUAL; ABSTRACT;
+    function Format(): Boolean; virtual; abstract;
 
-    function CheckFilesystem(): Boolean; VIRTUAL;
+    function CheckFilesystem(): Boolean; virtual;
 
     function LoadContentsFromDisk(path: String; items: TSDDirItemList): Boolean;
-      VIRTUAL; ABSTRACT;
+      virtual; abstract;
     function ExtractFile(srcPath: WideString; extractToFilename: String): Boolean;
-      VIRTUAL; ABSTRACT;
+      virtual; abstract;
 
-    function GetItem(path: WideString; item: TSDDirItem): Boolean; VIRTUAL; ABSTRACT;
+    function GetItem(path: WideString; item: TSDDirItem): Boolean; virtual; abstract;
     function ItemSize(Path: WideString; out TotalSize: ULONGLONG;
       out DirectoryCount: Integer; out FilesCount: Integer): Boolean;
 
@@ -123,8 +123,8 @@ type
     function DirectoryExists(fullPathToItem: WideString): Boolean;
     function DirectoryOrFileExists(fullPathToItem: WideString): Boolean;
 
-  PUBLISHED
-    property Mounted: Boolean Read FMounted Write SetMounted DEFAULT False;
+  published
+    property Mounted: Boolean Read FMounted Write SetMounted default False;
     property CaseSensitive: Boolean Read GetCaseSensitive;
     property ReadOnly: Boolean Read FReadOnly Write FReadOnly;
     property FreeSpace: ULONGLONG Read GetFreeSpace;
@@ -132,19 +132,19 @@ type
   end;
 
   TSDCustomFilesystemPartitionBased = class (TSDCustomFilesystem)
-  PROTECTED
+  protected
     FPartitionImage: TSDPartitionImage;
 
-    function DoMount(): Boolean; OVERRIDE;
-    procedure DoDismount(); OVERRIDE;
+    function DoMount(): Boolean; override;
+    procedure DoDismount(); override;
 
-  PUBLIC
-    constructor Create(); OVERRIDE;
-    destructor Destroy(); OVERRIDE;
+  public
+    constructor Create(); override;
+    destructor Destroy(); override;
 
-  PUBLISHED
+  published
     property PartitionImage: TSDPartitionImage
-      Read FPartitionImage Write FPartitionImage DEFAULT nil;
+      Read FPartitionImage Write FPartitionImage default nil;
   end;
 
 implementation
@@ -271,7 +271,6 @@ function TSDCustomFilesystem.ItemSize(Path: WideString; out TotalSize: ULONGLONG
   out DirectoryCount: Integer; out FilesCount: Integer): Boolean;
 var
   dirItems:       TSDDirItemList;
-  allOK:          Boolean;
   item:           TSDDirItem;
   subdirsSize:    ULONGLONG;
   subdirsDirsCnt: Integer;
@@ -291,8 +290,8 @@ begin
 
   item := TSDDirItem.Create();
   try
-    allOK := GetItem(Path, item);
-    if allOK then begin
+    Result := GetItem(Path, item);
+    if Result then begin
       if item.IsFile then begin
         TotalSize := TotalSize + item.Size;
         Inc(FilesCount);
@@ -302,14 +301,14 @@ begin
 
         dirItems := TSDDirItemList.Create();
         try
-          allOK := LoadContentsFromDisk(Path, dirItems);
-          if allOK then begin
+          Result := LoadContentsFromDisk(Path, dirItems);
+          if Result then begin
             for i := 0 to (dirItems.Count - 1) do begin
               if (dirItems[i].IsDirectory or dirItems[i].IsFile) then begin
-                allOK := ItemSize(IncludeTrailingPathDelimiter(Path) +
+                Result := ItemSize(IncludeTrailingPathDelimiter(Path) +
                   dirItems[i].Filename, subdirsSize, subdirsDirsCnt,
                   subditsFileCnt);
-                if allOK then begin
+                if Result then begin
                   TotalSize      := TotalSize + subdirsSize;
                   DirectoryCount := DirectoryCount + subdirsDirsCnt;
                   FilesCount     := FilesCount + subditsFileCnt;
@@ -332,13 +331,12 @@ begin
     item.Free();
   end;
 
-  Result := allOK;
 end;
 
 
 function TSDCustomFilesystem.FileExists(fullPathToItem: WideString): Boolean;
 var
-  item:   TSDDirItem;
+  item: TSDDirItem;
 begin
   Result := False;
 
@@ -352,12 +350,11 @@ begin
     item.Free();
   end;
 
-
 end;
 
 function TSDCustomFilesystem.DirectoryExists(fullPathToItem: WideString): Boolean;
 var
-  item:   TSDDirItem;
+  item: TSDDirItem;
 begin
   Result := False;
 
@@ -370,7 +367,6 @@ begin
   finally
     item.Free();
   end;
-
 
 end;
 
@@ -396,7 +392,6 @@ begin
     LastErrorSet(_('Filesystem mounted readonly'));
     Result := False;
   end;
-
 
 end;
 

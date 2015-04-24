@@ -43,9 +43,8 @@ procedure TSDUFrame.Loaded();
 begin
   inherited;
 
-  if not (csDesigning in ComponentState) then begin
+  if not (csDesigning in ComponentState) then
     DoLoaded();
-  end;
 end;
 
 procedure TSDUFrame.CMShowingChanged(var Message: TMessage);

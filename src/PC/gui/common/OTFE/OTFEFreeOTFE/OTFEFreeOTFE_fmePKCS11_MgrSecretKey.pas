@@ -5,9 +5,9 @@ interface
 uses
   ActnList, Classes, ComCtrls,
   Controls, Dialogs, Forms,
-  Graphics, Menus, Messages, OTFEFreeOTFE_fmePKCS11_MgrBase,
+  Graphics, lcDialogs, Menus, Messages, OTFEFreeOTFE_fmePKCS11_MgrBase,
   OTFEFreeOTFE_PKCS11,
-  OTFEFreeOTFEBase_U, lcDialogs, StdCtrls, SysUtils, Variants, Windows;
+  OTFEFreeOTFEBase_U, StdCtrls, SysUtils, Variants, Windows;
 
 type
   TfmePKCS11_MgrSecretKey = class (TfmePKCS11_MgrBase)
@@ -34,19 +34,19 @@ type
     procedure actDeleteExecute(Sender: TObject);
     procedure actEncryptExecute(Sender: TObject);
     procedure actDecryptExecute(Sender: TObject);
-  PRIVATE
+  private
     FTokenSecretKeys: TPKCS11SecretKeyPtrArray;
 
     procedure PopulateSecretKeys();
     procedure ResizeColumns();
 
     function EncryptDecryptCDB(encryptNotDecrypt: Boolean): Boolean;
-  PROTECTED
-    procedure Refresh(); OVERRIDE;
-  PUBLIC
-//    FreeOTFEObj: TOTFEFreeOTFEBase;
-    procedure Initialize(); OVERRIDE;
-    procedure EnableDisableControls(); OVERRIDE;
+  protected
+    procedure Refresh(); override;
+  public
+    //    FreeOTFEObj: TOTFEFreeOTFEBase;
+    procedure Initialize(); override;
+    procedure EnableDisableControls(); override;
   end;
 
 implementation
@@ -134,7 +134,8 @@ begin
     DestroyAndFreeRecord_PKCS11SecretKey(FTokenSecretKeys);
 
     if not (GetAllPKCS11SecretKey(PKCS11Session, FTokenSecretKeys, errMsg)) then begin
-      SDUMessageDlg(_('Unable to get list of keys from Token') + SDUCRLF + SDUCRLF + errMsg, mtError);
+      SDUMessageDlg(_('Unable to get list of keys from Token') + SDUCRLF +
+        SDUCRLF + errMsg, mtError);
     end else begin
       for i := low(FTokenSecretKeys) to high(FTokenSecretKeys) do begin
         item         := lvSecretKeys.Items.Insert(lvSecretKeys.Items.Count);
@@ -206,9 +207,8 @@ begin
         for i := 0 to (stlDeletedOK.Count - 1) do begin
           msgList := msgList + '  ' + stlDeletedOK[i] + SDUCRLF;
         end;
-        msg := SDUParamSubstitute(_('The following keys were deleted successfully:' + SDUCRLF +
-          SDUCRLF + '%1'),
-          [msgList]);
+        msg := SDUParamSubstitute(_('The following keys were deleted successfully:' +
+          SDUCRLF + SDUCRLF + '%1'), [msgList]);
       end;
       if (stlDeletedFail.Count > 0) then begin
         msgType := mtWarning;
@@ -217,9 +217,8 @@ begin
           msgList := msgList + '  ' + stlDeletedFail[i] + SDUCRLF;
         end;
         msg := msg + SDUCRLF;
-        msg := msg + SDUParamSubstitute(_('The following keys could not be deleted:' + SDUCRLF +
-          SDUCRLF + '%1'),
-          [msgList]);
+        msg := msg + SDUParamSubstitute(_('The following keys could not be deleted:' +
+          SDUCRLF + SDUCRLF + '%1'), [msgList]);
       end;
 
       SDUMessageDlg(msg, msgType);
@@ -279,7 +278,6 @@ function TfmePKCS11_MgrSecretKey.EncryptDecryptCDB(encryptNotDecrypt: Boolean): 
 var
   cdbBefore:      Ansistring;
   cdbAfter:       Ansistring;
-  allOK:          Boolean;
   errMsg:         String;
   fileToSecure:   String;
   dlg:            TfrmSelectVolumeFileAndOffset;
@@ -288,7 +286,7 @@ var
   i:              Integer;
   secureUnsecure: String;
 begin
-  allOK := False;
+  Result := False;
 
   SecretKey := nil;
 
@@ -308,87 +306,68 @@ begin
   // Get file/partition to secure with secret key and any offset
   dlg := TfrmSelectVolumeFileAndOffset.Create(nil);
   try
-//    dlg.OTFEFreeOTFE := FreeOTFEObj;
+    //    dlg.OTFEFreeOTFE := FreeOTFEObj;
     dlg.SetDlgPurpose(encryptNotDecrypt);
 
     if (dlg.ShowModal = mrOk) then begin
-      allOK := True;
+      Result := True;
 
       fileToSecure := dlg.Volume;
       offset       := dlg.Offset;
 
-      if allOK then begin
+      if Result then begin
         secureUnsecure := _('unsecure');
         if encryptNotDecrypt then begin
           secureUnsecure := _('secure');
         end;
 
         if (offset <> 0) then begin
-          allOK := SDUConfirmYN(SDUParamSubstitute(
+          Result := SDUConfirmYN(SDUParamSubstitute(
             _('Are you sure you wish to use PKCS#11 secret key:' + SDUCRLF +
-            SDUCRLF +
-            '%1' + SDUCRLF +
-            SDUCRLF +
-            'to %2 the CDB starting from offset %3 within volume:' + SDUCRLF
-            + SDUCRLF + '%4'),
-            [SecretKey.XLabel, secureUnsecure,
+            SDUCRLF + '%1' + SDUCRLF + SDUCRLF +
+            'to %2 the CDB starting from offset %3 within volume:' +
+            SDUCRLF + SDUCRLF + '%4'), [SecretKey.XLabel, secureUnsecure,
             offset, fileToSecure]));
         end else begin
-          allOK := SDUConfirmYN(SDUParamSubstitute(
+          Result := SDUConfirmYN(SDUParamSubstitute(
             _('Are you sure you wish to %1 the volume/keyfile:' + SDUCRLF +
-            SDUCRLF +
-            '%2' + SDUCRLF +
-            SDUCRLF +
-            'using the PKCS#11 secret key:' + SDUCRLF +
-            SDUCRLF + '%3'),
-            [secureUnsecure, fileToSecure,
-            SecretKey.XLabel]));
+            SDUCRLF + '%2' + SDUCRLF + SDUCRLF +
+            'using the PKCS#11 secret key:' + SDUCRLF + SDUCRLF + '%3'),
+            [secureUnsecure, fileToSecure, SecretKey.XLabel]));
         end;
       end;
 
       // Read CDB...
-      if allOK then begin
+      if Result then begin
         if not (GetFreeOTFEBase().ReadRawVolumeCriticalData(
-          fileToSecure,
-          offset,
-          cdbBefore)) then begin
+          fileToSecure, offset, cdbBefore)) then begin
           SDUMessageDlg(_('Unable to read keyfile/volume CDB'), mtError);
-          allOK := False;
+          Result := False;
         end;
       end;
 
       // ...Encrypt/decrypt CDB using token and token key...
-      if allOK then begin
+      if Result then begin
         if encryptNotDecrypt then begin
-          allOK := PKCS11EncryptCDBWithSecretKey(
-            PKCS11Session,
-            SecretKey,
-            cdbBefore,
-            cdbAfter,
-            errMsg  );
+          Result := PKCS11EncryptCDBWithSecretKey(PKCS11Session,
+            SecretKey, cdbBefore, cdbAfter, errMsg);
         end else begin
-          allOK := PKCS11DecryptCDBWithSecretKey(
-            PKCS11Session,
-            SecretKey,
-            cdbBefore,
-            cdbAfter,
-            errMsg  );
+          Result := PKCS11DecryptCDBWithSecretKey(PKCS11Session,
+            SecretKey, cdbBefore, cdbAfter, errMsg);
         end;
 
-        if not (allOK) then begin
+        if not (Result) then begin
           SDUMessageDlg(_('Unable to carry out encryption/decryption using Token') +
             SDUCRLF + SDUCRLF + errMsg, mtError);
         end;
       end;
 
       // ...Write CDB.
-      if allOK then begin
+      if Result then begin
         if not (GetFreeOTFEBase().WriteRawVolumeCriticalData(
-          fileToSecure,
-          offset,
-          cdbAfter)) then begin
+          fileToSecure, offset, cdbAfter)) then begin
           SDUMessageDlg(_('Unable to write keyfile/volume CDB'), mtError);
-          allOK := False;
+          Result := False;
         end;
       end;
 
@@ -400,11 +379,10 @@ begin
     dlg.Free();
   end;
 
-  if allOK then begin
+  if Result then begin
     SDUMessageDlg(SDUParamSubstitute(_('Volume/keyfile now %1'), [secureUnsecure]), mtInformation);
   end;
 
-  Result := allOK;
 end;
 
 procedure TfmePKCS11_MgrSecretKey.ResizeColumns();

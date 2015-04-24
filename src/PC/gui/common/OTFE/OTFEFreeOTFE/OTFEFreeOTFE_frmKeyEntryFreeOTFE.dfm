@@ -2,7 +2,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
   Left = 285
   Top = 236
   BorderStyle = bsDialog
-  Caption = 'DoxBox Key Dialog'
+  Caption = 'LibreCrypt Key Dialog'
   ClientHeight = 481
   ClientWidth = 570
   Color = clBtnFace
@@ -71,7 +71,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
           'preUserKey')
         ParentFont = False
         ScrollBars = ssBoth
-        TabOrder = 6
+        TabOrder = 0
         OnKeyDown = preUserKeyKeyDown
       end
       object cbDrive: TComboBox
@@ -90,7 +90,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Width = 293
         Height = 17
         Caption = 'Mount &readonly'
-        TabOrder = 4
+        TabOrder = 6
       end
       object cbPKCS11CDB: TComboBox
         Left = 192
@@ -98,7 +98,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Width = 145
         Height = 21
         Style = csDropDownList
-        TabOrder = 3
+        TabOrder = 4
         OnChange = cbPKCS11CDBChange
       end
       object rbKeyfileFile: TRadioButton
@@ -107,7 +107,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Width = 85
         Height = 17
         Caption = '&File:'
-        TabOrder = 0
+        TabOrder = 1
         OnClick = rbKeyfileFileClick
       end
       object rbKeyfilePKCS11: TRadioButton
@@ -116,7 +116,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Width = 85
         Height = 17
         Caption = 'PKCS#&11:'
-        TabOrder = 2
+        TabOrder = 3
         OnClick = rbKeyfilePKCS11Click
       end
       object feKeyfile: TSDUFilenameEdit
@@ -126,7 +126,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Height = 21
         Constraints.MaxHeight = 21
         Constraints.MinHeight = 21
-        TabOrder = 1
+        TabOrder = 2
         TabStop = False
         FilterIndex = 0
         OnChange = feKeyfileChange

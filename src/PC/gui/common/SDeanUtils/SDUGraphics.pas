@@ -252,7 +252,7 @@ procedure SDUClearUACShieldIcon(button: TButton);
 procedure SDUSetUACShieldIcon(button: TButton); overload;
 // Add a Windows Vista "Shield" icon to a TBitBtn (this is hacky)
 procedure SDUSetUACShieldIcon(button: TBitBtn); overload;
-(* TDK change - compile errors in XE and not used in doxbox project so comment out
+(* TDK change - compile errors in XE and not used in LibreCrypt project so comment out
 // Draw a piechart on the specified canvas within specified bounds
 procedure SDUSimplePieChart(
                             ACanvas: TCanvas;
@@ -283,7 +283,7 @@ uses
   SDUSpin64Units,
   SDUGeneral;
 
-(* TDK change - compile errors in XE and not used in doxbox project so comment out
+(* TDK change - compile errors in XE and not used in LibreCrypt project so comment out
 // ----------------------------------------------------------------------------
 // Draw a piechart on the specified canvas within specified bounds
 procedure SDUSimplePieChart(

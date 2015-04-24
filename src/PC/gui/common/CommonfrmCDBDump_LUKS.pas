@@ -13,7 +13,7 @@ interface
 uses
   Buttons, Classes, ComCtrls,
   CommonfrmCDBDump_Base, Controls, Dialogs,
-  Forms, Graphics, Messages, OTFEFreeOTFE_LUKSKeyOrKeyfileEntry, OTFEFreeOTFE_VolumeSelect,
+  Forms, Graphics, Messages, fmeLUKSKeyOrKeyfileEntry, OTFEFreeOTFE_VolumeSelect,
   OTFEFreeOTFEBase_U, PasswordRichEdit, lcDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
   SDUSpin64Units, Spin64,
   StdCtrls, SysUtils, Windows;
@@ -22,7 +22,7 @@ type
   TfrmCDBDump_LUKS = class (TfrmCDBDump_Base)
     lblOptional:                        TLabel;
     ckBaseIVCypherOnHashLength:         TCheckBox;
-    OTFEFreeOTFELUKSKeyOrKeyfileEntry1: TOTFEFreeOTFELUKSKeyOrKeyfileEntry;
+    OTFEFreeOTFELUKSKeyOrKeyfileEntry1: TfrmeLUKSKeyOrKeyfileEntry;
     procedure FormCreate(Sender: TObject);
     procedure ControlChanged(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
@@ -136,9 +136,8 @@ begin
       SDUCRLF + SDUCRLF + DumpFilename + SDUCRLF + SDUCRLF +
       _('Do you wish to open this file in Windows Notepad?'), mtInformation,
       [mbYes, mbNo], 0) = mrYes) then begin
-      notepadCommandLine := 'notepad ' + DumpFilename;
 
-      if not (SDUWinExecNoWait32(notepadCommandLine, SW_RESTORE)) then begin
+      if not (SDUWinExecNoWait32('notepad',DumpFilename, SW_RESTORE)) then begin
         SDUMessageDlg(_('Error running Notepad'), mtError, [], 0);
       end;
 

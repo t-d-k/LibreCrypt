@@ -19,35 +19,35 @@ uses
 
 type
   TfrmOptions = class (TSDUForm)
-    pbOK:                TButton;
-    pbCancel:            TButton;
-    cbSettingsLocation:  TComboBox;
+    pbOK:      TButton;
+    pbCancel:  TButton;
+    cbSettingsLocation: TComboBox;
     lblSettingsLocation: TLabel;
-    ckAssociateFiles:    TSDUCheckBox;
-    pcOptions:           TPageControl;
-    imgNoSaveWarning:    TImage;
-    tsPKCS11:            TTabSheet;
-    fmeOptions_PKCS11:   TfmeOptions_PKCS11;
+    ckAssociateFiles: TSDUCheckBox;
+    pcOptions: TPageControl;
+    imgNoSaveWarning: TImage;
+    tsPKCS11:  TTabSheet;
+    fmeOptions_PKCS11: TfmeOptions_PKCS11;
 
     procedure pbOKClick(Sender: TObject);
     procedure pbCancelClick(Sender: TObject);
     procedure ControlChanged(Sender: TObject);
     procedure FormShow(Sender: TObject);
-  PROTECTED
+  protected
     FOrigAssociateFiles: Boolean;
 
     function SettingsLocationDisplay(loc: TSettingsSaveLocation): String;
     procedure PopulateSaveLocation();
-    procedure EnableDisableControls(); VIRTUAL;
+    procedure EnableDisableControls(); virtual;
     function GetSettingsLocation(): TSettingsSaveLocation;
 
-    function DoOKClicked(): Boolean; VIRTUAL;
+    function DoOKClicked(): Boolean; virtual;
 
-    procedure AllTabs_InitAndReadSettings(config: TSettings); VIRTUAL;
+    procedure AllTabs_InitAndReadSettings(config: TSettings); virtual;
     procedure AllTabs_WriteSettings(config: TSettings);
-  PUBLIC
+  public
 
-    procedure ChangeLanguage(langCode: String); VIRTUAL; ABSTRACT;
+    procedure ChangeLanguage(langCode: String); virtual; abstract;
   end;
 
 implementation
@@ -82,16 +82,16 @@ const
 
 function TfrmOptions.GetSettingsLocation(): TSettingsSaveLocation;
 var
-  sl:     TSettingsSaveLocation;
+  sl: TSettingsSaveLocation;
 begin
   Result := gSettings.OptSaveSettings;
   for sl := low(sl) to high(sl) do begin
-    if (SettingsLocationDisplay(sl) = cbSettingsLocation.Items[cbSettingsLocation.ItemIndex]) then begin
+    if (SettingsLocationDisplay(sl) = cbSettingsLocation.Items[cbSettingsLocation.ItemIndex]) then
+    begin
       Result := sl;
       break;
     end;
   end;
-
 
 end;
 
@@ -101,15 +101,13 @@ begin
 
   case loc of
     slNone: Result     := SAVELOCATION_DO_NOT_SAVE;
-    slExeDir: Result   := SDUParamSubstitute(SAVELOCATION_EXE_DIR,
-        [Application.Title]);
+    slExeDir: Result   := SDUParamSubstitute(SAVELOCATION_EXE_DIR, [Application.Title]);
     slProfile: Result  := SAVELOCATION_USER_PROFILE;
     slRegistry: Result := SAVELOCATION_REGISTRY;
     slCustom: Result   := SAVELOCATION_CUSTOMISED;
     else
-      assert(false);
+      assert(False);
   end;
-
 
 end;
 
@@ -123,17 +121,17 @@ end;
 
 function TfrmOptions.DoOKClicked(): Boolean;
 var
-  oldSettingsLocation:           TSettingsSaveLocation;
-  newSettingsLocation:           TSettingsSaveLocation;
-  msgSegment:                    String;
-  vistaProgFilesDirWarn:         Boolean;
-  programFilesDir:               String;
-  filename:                      String;
+  oldSettingsLocation:   TSettingsSaveLocation;
+  newSettingsLocation:   TSettingsSaveLocation;
+  msgSegment:            String;
+  vistaProgFilesDirWarn: Boolean;
+  programFilesDir:       String;
+  filename:              String;
   prevSDUDialogsStripSingleCRLF: Boolean;
-  i:                             Integer;
-  j:                             Integer;
-  currTabSheet:                  TTabSheet;
-  deleteOldLocation:             Boolean;
+  i:                     Integer;
+  j:                     Integer;
+  currTabSheet:          TTabSheet;
+  deleteOldLocation:     Boolean;
 begin
   Result := True;
 
@@ -158,14 +156,14 @@ begin
     if not (Result) then begin
       prevSDUDialogsStripSingleCRLF := GSDUDialogsStripSingleCRLF;
       // Don't do special processing on this message
-      GSDUDialogsStripSingleCRLF     := False;  // Don't do special processing on this message
+      GSDUDialogsStripSingleCRLF    := False;  // Don't do special processing on this message
       SDUMessageDlg(
         SDUParamSubstitute(_(
         'Under Windows Vista, you cannot save your settings file anywhere under:' +
         SDUCRLF + SDUCRLF + '%1' + SDUCRLF + SDUCRLF +
         'due to Vista''s security/mapping system.'), [programFilesDir]) +
         SDUCRLF + SDUCRLF + _(
-        'Please either select another location for storing your settings (e.g. your user profile), or move the DoxBox executable such that it is not stored underneath the directory shown above.'),
+        'Please either select another location for storing your settings (e.g. your user profile), or move the LibreCrypt executable such that it is not stored underneath the directory shown above.'),
         mtWarning
         );
       GSDUDialogsStripSingleCRLF := prevSDUDialogsStripSingleCRLF;
@@ -183,7 +181,7 @@ begin
         if (currTabSheet.Controls[j] is TfmeOptions_Base) then begin
           if not (TfmeOptions_Base(currTabSheet.Controls[j]).CheckSettings()) then begin
             pcOptions.ActivePage := pcOptions.Pages[i];
-            Result                := False;
+            Result               := False;
             break;
           end;
         end;
@@ -210,12 +208,11 @@ begin
   if Result then begin
     // If settings aren't going to be saved, and they weren't saved previously,
     // warn user
-    if ((oldSettingsLocation = newSettingsLocation) and (newSettingsLocation = slNone)) then
-    begin
+    if ((oldSettingsLocation = newSettingsLocation) and (newSettingsLocation = slNone)) then begin
       Result := (SDUMessageDlg(_(
-        'You have not specified a location where DoxBox should save its settings to.') +
+        'You have not specified a location where LibreCrypt should save its settings.') +
         SDUCRLF + SDUCRLF + _(
-        'Although the settings entered will take effect, they will revert back to their defaults when DoxBox is exited.')
+        'Although the settings entered will take effect, they will revert back to their defaults when LibreCrypt is exited.')
         + SDUCRLF + SDUCRLF + _(
         'Do you wish to select a location in order to make your settings persistant?'),
         mtWarning, [mbYes, mbNo], 0) = mrNo);
@@ -237,11 +234,10 @@ begin
       deleteOldLocation := True;
       if ((oldSettingsLocation = slExeDir) or (oldSettingsLocation = slProfile) or
         (oldSettingsLocation = slCustom)) then begin
-        deleteOldLocation := (SDUMessageDlg(msgSegment + SDUCRLF +
-          SDUCRLF + _(
-          'Would you like DoxBox to delete your previous settings file?') +
+        deleteOldLocation := (SDUMessageDlg(msgSegment + SDUCRLF + SDUCRLF +
+          _('Would you like LibreCrypt to delete your previous settings file?') +
           SDUCRLF + SDUCRLF + _(
-          'Note: If you select "No" here, DoxBox may pick up your old settings the next time you start DoxBox'),
+          'Note: If you select "No" here, LibreCrypt may pick up your old settings the next time you start LibreCrypt'),
           mtConfirmation, [mbYes, mbNo], 0) = mrYes);
       end;
 
@@ -260,8 +256,8 @@ begin
           if (oldSettingsLocation = slRegistry) then begin
             SDUMessageDlg(
               SDUParamSubstitute(_(
-              'Your previous settings file stored in the Windows registry under:' + SDUCRLF +
-              SDUCRLF + '%1' + SDUCRLF + SDUCRLF +
+              'Your previous settings file stored in the Windows registry under:' +
+              SDUCRLF + SDUCRLF + '%1' + SDUCRLF + SDUCRLF +
               'could not be deleted. Please delete this registry key manually.'),
               [gSettings.RegistryKey()]),
               mtInformation
@@ -369,8 +365,8 @@ begin
   end;
 
   // Center "assocate with .box files" checkbox
-  ckAssociateFiles.Caption := SDUParamSubstitute(
-    _('Associate %1 with ".box" &files'), [Application.Title]);
+  ckAssociateFiles.Caption := Format(
+    _('Associate %s with ".vol" &files'), [Application.Title]);
   SDUCenterControl(ckAssociateFiles, ccHorizontal);
 
   // Reposition the "Settings location" controls, bearing in mind the label
@@ -417,7 +413,7 @@ end;
 procedure TfrmOptions.FormShow(Sender: TObject);
 begin
   // Special handling...
-//  fmeOptions_PKCS11.OTFEFreeOTFE := OTFEFreeOTFEBase;
+  //  fmeOptions_PKCS11.OTFEFreeOTFE := OTFEFreeOTFEBase;
 
   AllTabs_InitAndReadSettings(gSettings);
 

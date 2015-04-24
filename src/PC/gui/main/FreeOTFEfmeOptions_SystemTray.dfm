@@ -22,16 +22,10 @@ inherited fmeOptions_SystemTray: TfmeOptions_SystemTray
     end
     object ckMinToIcon: TSDUCheckBox
       Left = 28
-      Top = 44
+      Top = 43
       Width = 137
       Height = 13
       Caption = '&Mimimise to system tray'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
       TabOrder = 1
       AutoSize = True
     end

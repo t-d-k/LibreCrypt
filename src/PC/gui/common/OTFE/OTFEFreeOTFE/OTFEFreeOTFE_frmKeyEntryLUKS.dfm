@@ -159,15 +159,15 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
       Width = 265
       Height = 17
       Caption = '&Base IV cypher on hash length (where applicable)'
-      TabOrder = 0
+      TabOrder = 1
       AutoSize = True
     end
-    inline OTFEFreeOTFELUKSKeyOrKeyfileEntry1: TOTFEFreeOTFELUKSKeyOrKeyfileEntry
+    inline frmeLUKSKeyOrKeyfileEntry: TfrmeLUKSKeyOrKeyfileEntry
       Left = 56
       Top = 20
       Width = 464
       Height = 138
-      TabOrder = 1
+      TabOrder = 0
       ExplicitLeft = 56
       ExplicitTop = 20
       inherited lblTreatNewlineAsEOF_1: TLabel
@@ -181,10 +181,10 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
       inherited lblTreatNewlineAsEOF_2: TLabel
         Left = 128
         Top = 129
-        Width = 91
+        Width = 35
         ExplicitLeft = 128
         ExplicitTop = 129
-        ExplicitWidth = 91
+        ExplicitWidth = 35
       end
       inherited cbNewlineType: TComboBox
         Left = 181

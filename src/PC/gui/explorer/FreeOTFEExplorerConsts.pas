@@ -7,7 +7,7 @@ unit FreeOTFEExplorerConsts;
  // -----------------------------------------------------------------------------
  //
 
-
+     {$ERROR obsolete}
 interface
 
 const
@@ -15,9 +15,9 @@ const
   APP_BETA_BUILD = 9;
 
   // Online user manual URL...
-  URL_USERGUIDE = 'http://DoxBox.eu/docs/Explorer';
+  URL_USERGUIDE = 'http://LibreCrypt.eu/docs/Explorer';
   // PAD file URL...
-  URL_PADFILE   = 'https://raw.githubusercontent.com/t-d-k/doxbox/master/PAD.xml';
+  URL_PADFILE   = 'https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/PAD.xml';
 
   // WebDAV related Windows services
   SERVICE_WEBCLIENT = 'WebClient';

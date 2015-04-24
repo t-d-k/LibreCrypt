@@ -45,13 +45,13 @@ implementation
 
 uses
   ShellAPI,  // Required for ShellExecute
-  CommonConsts,
+  CommonConsts,   FreeOTFEConsts,
 {$IFDEF FREEOTFE_MAIN}
-  FreeOTFEConsts,
+
   FreeOTFESettings,
 {$ENDIF}
 {$IFDEF FREEOTFE_EXPLORER}
-  FreeOTFEExplorerConsts,
+
   FreeOTFEExplorerSettings,
 {$ENDIF}
   lcDialogs, SDUGeneral,

@@ -1,11 +1,11 @@
 unit OTFEFreeOTFE_frmDriverControl;
-// Description: 
-// By Sarah Dean
-// Email: sdean12@sdean12.org
-// WWW:   http://www.SDean12.org/
-//
-// -----------------------------------------------------------------------------
-//
+ // Description: 
+ // By Sarah Dean
+ // Email: sdean12@sdean12.org
+ // WWW:   http://www.SDean12.org/
+ //
+ // -----------------------------------------------------------------------------
+ //
 
 
 interface
@@ -20,25 +20,25 @@ uses
   OTFEFreeOTFE_U, SDUForms, lcDialogs, SDUDialogs;
 
 type
-  TfrmDriverControl = class(TSDUForm)
-    pbClose: TButton;
-    gbInstallNew: TGroupBox;
-    pbInstall: TButton;
-    lblInstall: TLabel;
+  TfrmDriverControl = class (TSDUForm)
+    pbClose:          TButton;
+    gbInstallNew:     TGroupBox;
+    pbInstall:        TButton;
+    lblInstall:       TLabel;
     gbModifyExisting: TGroupBox;
-    lbDrivers: TListBox;
-    lblStart: TLabel;
-    pbStart: TButton;
-    pbStop: TButton;
-    pbUninstall: TButton;
-    Label1: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Panel1: TPanel;
-    Panel2: TPanel;
-    pbUpdate: TButton;
-    cbStartup: TComboBox;
-    OpenDialog: TSDUOpenDialog;
+    lbDrivers:        TListBox;
+    lblStart:         TLabel;
+    pbStart:          TButton;
+    pbStop:           TButton;
+    pbUninstall:      TButton;
+    Label1:           TLabel;
+    Label3:           TLabel;
+    Label4:           TLabel;
+    Panel1:           TPanel;
+    Panel2:           TPanel;
+    pbUpdate:         TButton;
+    cbStartup:        TComboBox;
+    OpenDialog:       TSDUOpenDialog;
     procedure lbDriversClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure pbStartClick(Sender: TObject);
@@ -55,12 +55,12 @@ type
   private
     DriverControlObj: TOTFEFreeOTFEDriverControl;
 
-    BMPModeNormal: TBitmap;
-    BMPModePortable: TBitmap;
+    BMPModeNormal:    TBitmap;
+    BMPModePortable:  TBitmap;
     BMPStatusStarted: TBitmap;
     BMPStatusStopped: TBitmap;
-    BMPStartAuto: TBitmap;
-    BMPStartManual: TBitmap;
+    BMPStartAuto:     TBitmap;
+    BMPStartManual:   TBitmap;
 
     procedure EnableDisableControls();
 
@@ -69,7 +69,7 @@ type
     procedure LoadBitmapsFromResources();
     procedure FreeBitmapsFromResources();
 
-    function  GetItemWidth(Index: Integer): integer;
+    function GetItemWidth(Index: Integer): Integer;
   public
     constructor Create(AOwner: TComponent); override;
   end;
@@ -78,12 +78,12 @@ type
 implementation
 
 {$R *.DFM}
+
 {$R OTFEFreeOTFE_DriverImages.dcr}
 
 uses
-  SDUi18n,
-  SDUGeneral,
-  Math;  // Required for max(...)
+  Math, SDUGeneral,
+  SDUi18n;  // Required for max(...)
 
 
 resourcestring
@@ -118,52 +118,50 @@ end;
 
 procedure TfrmDriverControl.EnableDisableControls();
 var
-  driverSelected: boolean;
-  serviceRunning: boolean;
-  serviceState: DWORD;
-  autoStart: boolean;
+  driverSelected: Boolean;
+  serviceRunning: Boolean;
+  serviceState:   DWORD;
+  autoStart:      Boolean;
 begin
   // Note: We *don't* repaint/refresh lbDrivers in this procedure as that
   //       would cause a flicking effect.
 
-  driverSelected:= (lbDrivers.ItemIndex>=0);
+  driverSelected := (lbDrivers.ItemIndex >= 0);
 
   SDUEnableControl(lblStart, driverSelected);
   SDUEnableControl(cbStartup, driverSelected);
 
-  SDUEnableControl(pbStart, FALSE);
-  SDUEnableControl(pbStop, FALSE);
+  SDUEnableControl(pbStart, False);
+  SDUEnableControl(pbStop, False);
   cbStartup.ItemIndex := -1;
 
-  if driverSelected then
-    begin
+  if driverSelected then begin
     // If the service is still running, warn the user later...
     if (DriverControlObj.GetServiceState(lbDrivers.Items[lbDrivers.ItemIndex], serviceState)) then
-      begin
+    begin
       serviceRunning := (serviceState = SERVICE_RUNNING);
 
       SDUEnableControl(pbStop, serviceRunning);
-      SDUEnableControl(pbStart, not(serviceRunning));
-      end;
+      SDUEnableControl(pbStart, not (serviceRunning));
+    end;
 
     cbStartup.ItemIndex := cbStartup.Items.IndexOf(TEXT_MANUAL_START);
     if DriverControlObj.GetServiceAutoStart(lbDrivers.Items[lbDrivers.ItemIndex], autoStart) then
-      begin
-      if autoStart then
-        begin
+    begin
+      if autoStart then begin
         cbStartup.ItemIndex := cbStartup.Items.IndexOf(TEXT_AUTO_START);
-        end;
       end;
-
     end;
+
+  end;
 
   SDUEnableControl(pbUninstall, driverSelected);
 
-  SDUEnableControl(pbInstall, TRUE);
+  SDUEnableControl(pbInstall, True);
 
   // pbUpdate is a special case; it should only be enabled if the user
   // changes cbStartup
-  SDUEnableControl(pbUpdate, FALSE);
+  SDUEnableControl(pbUpdate, False);
 
 end;
 
@@ -171,8 +169,8 @@ end;
 procedure TfrmDriverControl.PopulateDriversList();
 var
   driverList: TStringList;
-  maxWidth: integer;
-  i: integer;
+  maxWidth:   Integer;
+  i:          Integer;
 begin
   lbDrivers.Items.Clear();
 
@@ -182,8 +180,8 @@ begin
 
     // Bang the sorted flag up & down to ensure that the list is sorted
     // before it is displayed to the user
-    driverList.Sorted := FALSE;
-    driverList.Sorted := TRUE;
+    driverList.Sorted := False;
+    driverList.Sorted := True;
 
     lbDrivers.Items.AddStrings(driverList);
   finally
@@ -192,10 +190,9 @@ begin
 
 
   maxWidth := 0;
-  for i:=0 to (lbDrivers.Items.count-1) do
-    begin
+  for i := 0 to (lbDrivers.Items.Count - 1) do begin
     maxWidth := max(maxWidth, GetItemWidth(i));
-    end;
+  end;
   lbDrivers.ScrollWidth := maxWidth;
 
 
@@ -230,17 +227,15 @@ end;
 
 procedure TfrmDriverControl.pbStartClick(Sender: TObject);
 var
-  service: string;
+  service: String;
 begin
-  service:= lbDrivers.Items[lbDrivers.ItemIndex];
-  if not(DriverControlObj.StartStopService(service, TRUE)) then
-    begin
-    SDUMessageDlg(Format(_('Unable to start driver "%s"'), [service])+SDUCRLF+
-               SDUCRLF+
-               TEXT_NEED_ADMIN,
-               mtError
-              );
-    end;
+  service := lbDrivers.Items[lbDrivers.ItemIndex];
+  if not (DriverControlObj.StartStopService(service, True)) then begin
+    SDUMessageDlg(Format(_('Unable to start driver "%s"'), [service]) + SDUCRLF +
+      SDUCRLF + TEXT_NEED_ADMIN,
+      mtError
+      );
+  end;
 
   EnableDisableControls();
 
@@ -251,7 +246,7 @@ end;
 
 procedure TfrmDriverControl.pbStopClick(Sender: TObject);
 var
-  service: string;
+  service: String;
 begin
   // Note that we *cannot* do this sensibly, and only warn the user if one or
   // more drives are mounted; the user *could* have more than one copy of
@@ -260,31 +255,25 @@ begin
   // In that scenario, things could get dodgy if the user did something stupid
   // like uninstalling the main driver, while keeping the 2nd app connected to
   // it.
-  if (SDUMessageDlg(_('WARNING!')+SDUCRLF+
-                 SDUCRLF+
-                 _('Stopping a DoxBox driver which is currently in use (e.g. by one or more mounted volumes) can lead to SYSTEM INSTABILITY.')+SDUCRLF+
-                 SDUCRLF+
-                 _('This option is intended for experienced users who REALLY know what they''re doing.')+SDUCRLF+
-                 SDUCRLF+
-                 Format(_('Are you sure you wish to stop the "%s" driver?'), [lbDrivers.Items[lbDrivers.ItemIndex]]),
-                 mtWarning,
-                 [mbYes, mbNo],
-                 0
-                ) = mrYes) then
-    begin
-    service:= lbDrivers.Items[lbDrivers.ItemIndex];
+  if (SDUMessageDlg(_('WARNING!') + SDUCRLF + SDUCRLF +
+    _(
+    'Stopping a LibreCrypt driver which is currently in use (e.g. by one or more mounted container) can lead to SYSTEM INSTABILITY.') +
+    SDUCRLF + SDUCRLF +
+    _('This option is intended for experienced users who REALLY know what they''re doing.') + SDUCRLF + SDUCRLF + Format(
+    _('Are you sure you wish to stop the "%s" driver?'), [lbDrivers.Items[lbDrivers.ItemIndex]]),
+    mtWarning, [mbYes, mbNo], 0) =
+    mrYes) then begin
+    service := lbDrivers.Items[lbDrivers.ItemIndex];
 
-    if not(DriverControlObj.StartStopService(service, FALSE)) then
-      begin
-      SDUMessageDlg(Format(_('Unable to stop driver "%s"'), [service])+SDUCRLF+
-                 SDUCRLF+
-                 TEXT_NEED_ADMIN,
-                 mtError
-                );
-      end;
+    if not (DriverControlObj.StartStopService(service, False)) then begin
+      SDUMessageDlg(Format(_('Unable to stop driver "%s"'), [service]) + SDUCRLF +
+        SDUCRLF + TEXT_NEED_ADMIN,
+        mtError
+        );
+    end;
 
     EnableDisableControls();
-    end;
+  end;
 
   // Ensure that the icons displayed are correct
   lbDrivers.Refresh();
@@ -294,10 +283,10 @@ end;
 
 procedure TfrmDriverControl.pbUninstallClick(Sender: TObject);
 var
-  msgReboot: string;
-  msgManualRemoveFile: string;
-  driverName: string;
-  status: DWORD;
+  msgReboot:           String;
+  msgManualRemoveFile: String;
+  driverName:          String;
+  status:              DWORD;
 begin
   // Note that we *cannot* do this sensibly, and only warn the user if one or
   // more drives are mounted; the user *could* have more than one copy of
@@ -306,62 +295,54 @@ begin
   // In that scenario, things could get dodgy if the user did something stupid
   // like uninstalling the main driver, while keeping the 2nd app connected to
   // it.
-  if (SDUMessageDlg(_('WARNING!')+SDUCRLF+
-               SDUCRLF+
-               _('Uninstalling a DoxBox driver which is currently in use (e.g. by one or more mounted volumes) can lead to SYSTEM INSTABILITY.')+SDUCRLF+
-               SDUCRLF+
-               _('This option is intended for experienced users who REALLY know what they''re doing.')+SDUCRLF+
-               SDUCRLF+
-               Format(_('Are you sure you wish to uninstall the "%s" driver?'), [lbDrivers.Items[lbDrivers.ItemIndex]]),
-               mtWarning,
-               [mbYes, mbNo],
-               0
-              ) = mrYes) then
-    begin
-    driverName:= lbDrivers.Items[lbDrivers.ItemIndex];
+  if (SDUMessageDlg(_('WARNING!') + SDUCRLF + SDUCRLF +
+    _(
+    'Uninstalling a LibreCrypt driver which is currently in use (e.g. by one or more mounted volumes) can lead to SYSTEM INSTABILITY.') +
+    SDUCRLF + SDUCRLF + _(
+    'This option is intended for experienced users who REALLY know what they''re doing.') + SDUCRLF +
+    SDUCRLF + Format(
+    _('Are you sure you wish to uninstall the "%s" driver?'), [lbDrivers.Items[lbDrivers.ItemIndex]]),
+    mtWarning, [mbYes, mbNo], 0) = mrYes) then
+  begin
+    driverName := lbDrivers.Items[lbDrivers.ItemIndex];
 
     status := DriverControlObj.UninstallDriver(driverName);
 
-    if ((status AND DRIVER_BIT_SUCCESS) = DRIVER_BIT_SUCCESS) then
-      begin
+    if ((status and DRIVER_BIT_SUCCESS) = DRIVER_BIT_SUCCESS) then begin
       // Uninstallation SUCCESSFULL
       msgReboot := '';
-      if ((status AND DRIVER_BIT_REBOOT_REQ) = DRIVER_BIT_REBOOT_REQ) then
-        begin
+      if ((status and DRIVER_BIT_REBOOT_REQ) = DRIVER_BIT_REBOOT_REQ) then begin
         msgReboot :=
-                     SDUCRLF+
-                     SDUCRLF+  // 2 x CRLF - one to end the last line, one for spacing
-                     _('Please reboot your computer to allow changes to take effect.');
-        end;
-
-      msgManualRemoveFile := '';
-      if ((status AND DRIVER_BIT_FILE_REMAINS) = DRIVER_BIT_FILE_REMAINS) then
-        begin
-        msgManualRemoveFile :=
-                               SDUCRLF+
-                               SDUCRLF+  // 2 x CRLF - one to end the last line, one for spacing
-                               _('After rebooting, please remove the driver file from your <windows>\system32\drivers directory');
-        end;
-
-      SDUMessageDlg(
-                 Format(_('The "%s" driver has now been uninstalled.'), [driverName])+
-                 msgReboot+
-                 msgManualRemoveFile,
-                 mtInformation
-                );
-      end
-    else
-      begin
-      // Uninstallation FAILURE
-      SDUMessageDlg(
-                 Format(_('Unable to delete driver service "%s".'), [driverName])+SDUCRLF+
-                 SDUCRLF+
-                 _('Please disable this driver from starting up automatically, reboot, and try again.'),
-                 mtError
-                );
+          SDUCRLF + SDUCRLF +
+          // 2 x CRLF - one to end the last line, one for spacing
+          _('Please reboot your computer to allow changes to take effect.');
       end;
 
+      msgManualRemoveFile := '';
+      if ((status and DRIVER_BIT_FILE_REMAINS) = DRIVER_BIT_FILE_REMAINS) then begin
+        msgManualRemoveFile :=
+          SDUCRLF + SDUCRLF +
+          // 2 x CRLF - one to end the last line, one for spacing
+          _(
+          'After rebooting, please remove the driver file from your <windows>\system32\drivers directory');
+      end;
+
+      SDUMessageDlg(
+        Format(_('The "%s" driver has now been uninstalled.'), [driverName]) +
+        msgReboot + msgManualRemoveFile,
+        mtInformation
+        );
+    end else begin
+      // Uninstallation FAILURE
+      SDUMessageDlg(
+        Format(_('Unable to delete driver service "%s".'), [driverName]) + SDUCRLF +
+        SDUCRLF + _(
+        'Please disable this driver from starting up automatically, reboot, and try again.'),
+        mtError
+        );
     end;
+
+  end;
 
   // Refresh the drivers list
   PopulateDriversList();
@@ -371,21 +352,19 @@ end;
 // Install a new FreeOTFE device driver
 procedure TfrmDriverControl.pbInstallClick(Sender: TObject);
 var
-  i: integer;
+  i: Integer;
 begin
-  OpenDialog.Filter := FILE_FILTER_FLT_DRIVERS;
+  OpenDialog.Filter  := FILE_FILTER_FLT_DRIVERS;
   OpenDialog.Options := OpenDialog.Options + [ofAllowMultiSelect];
   OpenDialog.Options := OpenDialog.Options + [ofDontAddToRecent];
-  if (OpenDialog.Execute()) then
-    begin
-    for i:=0 to (OpenDialog.files.count - 1) do
-      begin
+  if (OpenDialog.Execute()) then begin
+    for i := 0 to (OpenDialog.files.Count - 1) do begin
       DriverControlObj.InstallSetAutoStartAndStartDriver(OpenDialog.files[i]);
-      end;
+    end;
 
     // Refresh the drivers list
     PopulateDriversList();
-    end;
+  end;
 
 end;
 
@@ -409,30 +388,27 @@ procedure TfrmDriverControl.cbStartupChange(Sender: TObject);
 begin
   // pbUpdate is a special case; it should only be enabled if the user
   // changes cbStartup
-  pbUpdate.Enabled := TRUE;
+  pbUpdate.Enabled := True;
 
 end;
 
 
 procedure TfrmDriverControl.pbUpdateClick(Sender: TObject);
 var
-  autoStart: boolean;
-  service: string;
+  autoStart: Boolean;
+  service:   String;
 begin
-  if (cbStartup.ItemIndex>=0) then
-    begin
+  if (cbStartup.ItemIndex >= 0) then begin
     autoStart := (cbStartup.ItemIndex = (cbStartup.Items.IndexOf(TEXT_AUTO_START)));
-    service := lbDrivers.Items[lbDrivers.ItemIndex];
-    if not(DriverControlObj.SetServiceAutoStart(service, autoStart)) then
-      begin
+    service   := lbDrivers.Items[lbDrivers.ItemIndex];
+    if not (DriverControlObj.SetServiceAutoStart(service, autoStart)) then begin
       SDUMessageDlg(
-                 Format(_('Unable to set startup option for driver "%s".'), [service])+SDUCRLF+
-                 SDUCRLF+
-                 TEXT_NEED_ADMIN,
-                 mtError
-                );
-      end;
+        Format(_('Unable to set startup option for driver "%s".'), [service]) + SDUCRLF +
+        SDUCRLF + TEXT_NEED_ADMIN,
+        mtError
+        );
     end;
+  end;
 
   EnableDisableControls();
 
@@ -456,33 +432,33 @@ procedure TfrmDriverControl.LoadBitmapsFromResources();
 var
   thehBitmap: hBitmap;
 begin
-  thehBitmap:= LoadBitmap(hInstance, BMP_MODE_NORMAL);
-  BMPModeNormal:= TBitmap.Create();
+  thehBitmap    := LoadBitmap(hInstance, BMP_MODE_NORMAL);
+  BMPModeNormal := TBitmap.Create();
   BMPModeNormal.ReleaseHandle();
   BMPModeNormal.handle := thehBitmap;
 
-  thehBitmap:= LoadBitmap(hInstance, BMP_MODE_PORTABLE);
-  BMPModePortable:= TBitmap.Create();
+  thehBitmap      := LoadBitmap(hInstance, BMP_MODE_PORTABLE);
+  BMPModePortable := TBitmap.Create();
   BMPModePortable.ReleaseHandle();
   BMPModePortable.handle := thehBitmap;
 
-  thehBitmap:= LoadBitmap(hInstance, BMP_STATUS_STARTED);
-  BMPStatusStarted:= TBitmap.Create();
+  thehBitmap       := LoadBitmap(hInstance, BMP_STATUS_STARTED);
+  BMPStatusStarted := TBitmap.Create();
   BMPStatusStarted.ReleaseHandle();
   BMPStatusStarted.handle := thehBitmap;
 
-  thehBitmap:= LoadBitmap(hInstance, BMP_STATUS_STOPPED);
-  BMPStatusStopped:= TBitmap.Create();
+  thehBitmap       := LoadBitmap(hInstance, BMP_STATUS_STOPPED);
+  BMPStatusStopped := TBitmap.Create();
   BMPStatusStopped.ReleaseHandle();
   BMPStatusStopped.handle := thehBitmap;
 
-  thehBitmap:= LoadBitmap(hInstance, BMP_START_AUTO);
-  BMPStartAuto:= TBitmap.Create();
+  thehBitmap   := LoadBitmap(hInstance, BMP_START_AUTO);
+  BMPStartAuto := TBitmap.Create();
   BMPStartAuto.ReleaseHandle();
   BMPStartAuto.handle := thehBitmap;
 
-  thehBitmap:= LoadBitmap(hInstance, BMP_START_MANUAL);
-  BMPStartManual:= TBitmap.Create();
+  thehBitmap     := LoadBitmap(hInstance, BMP_START_MANUAL);
+  BMPStartManual := TBitmap.Create();
   BMPStartManual.ReleaseHandle();
   BMPStartManual.handle := thehBitmap;
 
@@ -526,26 +502,26 @@ begin
 end;
 
 
-// Note: The "Style" property of the TListBox must be set to lbOwnerDrawFixed
-// !! IMPORTANT !!
-// !! IMPORTANT !!
-// lbDriversDrawItem and GetItemWidth *MUST* be kept in sync!
-// !! IMPORTANT !!
-// !! IMPORTANT !!
+ // Note: The "Style" property of the TListBox must be set to lbOwnerDrawFixed
+ // !! IMPORTANT !!
+ // !! IMPORTANT !!
+ // lbDriversDrawItem and GetItemWidth *MUST* be kept in sync!
+ // !! IMPORTANT !!
+ // !! IMPORTANT !!
 procedure TfrmDriverControl.lbDriversDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
 var
-  lbObj: TListBox;
-  canvas: TCanvas;
-  offset: Integer;
-  portableMode: boolean;
-  serviceState: DWORD;
-  autoStart: boolean;
+  lbObj:         TListBox;
+  canvas:        TCanvas;
+  offset:        Integer;
+  portableMode:  Boolean;
+  serviceState:  DWORD;
+  autoStart:     Boolean;
   drawStatusBmp: TBitmap;
-  drawModeBmp: TBitmap;
-  drawStartBmp: TBitmap;
+  drawModeBmp:   TBitmap;
+  drawStartBmp:  TBitmap;
 begin
-  lbObj := TListBox(Control);
+  lbObj  := TListBox(Control);
   canvas := lbObj.Canvas;
 
   offset := INTER_IMAGE_GAP;  // Default offset
@@ -566,83 +542,76 @@ begin
 }
 
   // Determine which icons are to be displayed...
-  
+
   // Auto or manual start...
   drawStartBmp := BMPStartManual;
-  if (DriverControlObj.GetServiceAutoStart(lbObj.Items[Index], autoStart)) then
-    begin
-    if (autoStart) then
-      begin
+  if (DriverControlObj.GetServiceAutoStart(lbObj.Items[Index], autoStart)) then begin
+    if (autoStart) then begin
       drawStartBmp := BMPStartAuto;
-      end
     end;
+  end;
 
   // Started or stopped...
   drawStatusBmp := BMPStatusStopped;
-  if (DriverControlObj.GetServiceState(lbObj.Items[Index], serviceState)) then
-    begin
-    if (serviceState = SERVICE_RUNNING) then
-      begin
+  if (DriverControlObj.GetServiceState(lbObj.Items[Index], serviceState)) then begin
+    if (serviceState = SERVICE_RUNNING) then begin
       drawStatusBmp := BMPStatusStarted;
-      end
     end;
+  end;
 
   // Normal or portable...
   // If running normally, don't display an icon
-//  drawModeBmp := BMPModeNormal;
+  //  drawModeBmp := BMPModeNormal;
   drawModeBmp := nil;
-  if DriverControlObj.IsDriverInstalledPortable(lbObj.Items[Index], portableMode) then
-    begin
-    if (portableMode) then
-      begin
+  if DriverControlObj.IsDriverInstalledPortable(lbObj.Items[Index], portableMode) then begin
+    if (portableMode) then begin
       drawModeBmp := BMPModePortable;
-      end;
     end;
+  end;
 
 
   // Draw the icons...
 
   // Auto or manual start...
   lbObj.Canvas.Draw(
-                    (Rect.Left+offset),
-                    (Rect.Top + (((Rect.Bottom - Rect.Top) - drawStartBmp.Height) div 2)),
-                    drawStartBmp
-                   );
+    (Rect.Left + offset),
+    (Rect.Top + (((Rect.Bottom - Rect.Top) - drawStartBmp.Height) div 2)),
+    drawStartBmp
+    );
   offset := offset + INTER_IMAGE_GAP + max(BMPStartAuto.Width, BMPStartManual.Width);
 
   // Started or stopped...
-  if (drawModeBmp <> nil) then
-    begin
+  if (drawModeBmp <> nil) then begin
     lbObj.Canvas.Draw(
-                      (Rect.Left+offset),
-                      (Rect.Top + (((Rect.Bottom - Rect.Top) - drawModeBmp.Height) div 2)),
-                      drawModeBmp
-                     );
-    end;
+      (Rect.Left + offset),
+      (Rect.Top + (((Rect.Bottom - Rect.Top) - drawModeBmp.Height) div 2)),
+      drawModeBmp
+      );
+  end;
   offset := offset + INTER_IMAGE_GAP + max(BMPModePortable.Width, BMPModeNormal.Width);
 
   // Normal or portable...
   lbObj.Canvas.Draw(
-                    (Rect.Left+offset),
-                    (Rect.Top + (((Rect.Bottom - Rect.Top) - drawStatusBmp.Height) div 2)),
-                    drawStatusBmp
-                   );
+    (Rect.Left + offset),
+    (Rect.Top + (((Rect.Bottom - Rect.Top) - drawStatusBmp.Height) div 2)),
+    drawStatusBmp
+    );
   offset := offset + INTER_IMAGE_GAP + max(BMPStatusStarted.Width, BMPStatusStopped.Width);
 
 
   // The name...
-  canvas.TextOut((Rect.Left+offset), Rect.Top, lbObj.Items[Index]);
-           
+  canvas.TextOut((Rect.Left + offset), Rect.Top, lbObj.Items[Index]);
+
 end;
 
 
-function TfrmDriverControl.GetItemWidth(Index: Integer): integer;
+function TfrmDriverControl.GetItemWidth(Index: Integer): Integer;
 var
-  lbObj: TListBox;
+  lbObj:  TListBox;
   canvas: TCanvas;
   offset: Integer;
 begin
-  lbObj := lbDrivers;
+  lbObj  := lbDrivers;
   canvas := lbObj.Canvas;
 
   offset := INTER_IMAGE_GAP;  // Default offset
@@ -664,6 +633,4 @@ begin
 end;
 
 
-END.
-
-
+end.

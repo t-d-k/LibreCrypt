@@ -18,27 +18,27 @@ uses
   OTFEFreeOTFE_DriverAPI, OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFEBase_U,
   SDUFrames,
   SDUSpin64Units, SDUStdCtrls,  // Required for TFreeOTFESectorIVGenMethod and NULL_GUID
-  OTFEFreeOTFE_LUKSKeyOrKeyfileEntry, SDUDropFiles, SDUFilenameEdit_U, SDUGeneral;
+  fmeLUKSKeyOrKeyfileEntry, SDUDropFiles, SDUFilenameEdit_U, SDUGeneral;
 
 type
   TfrmKeyEntryLUKS = class (TSDUForm)
-    pbCancel:                           TButton;
-    pbOK:                               TButton;
-    GroupBox2:                          TGroupBox;
-    lblDrive:                           TLabel;
-    lblMountAs:                         TLabel;
-    cbDrive:                            TComboBox;
-    ckMountReadonly:                    TSDUCheckBox;
-    cbMediaType:                        TComboBox;
-    GroupBox4:                          TGroupBox;
-    Label10:                            TLabel;
-    Label22:                            TLabel;
-    GroupBox1:                          TGroupBox;
-    Label1:                             TLabel;
-    ckBaseIVCypherOnHashLength:         TSDUCheckBox;
-    ckMountForAllUsers:                 TSDUCheckBox;
-    se64UnitSizeLimit:                  TSDUSpin64Unit_Storage;
-    OTFEFreeOTFELUKSKeyOrKeyfileEntry1: TOTFEFreeOTFELUKSKeyOrKeyfileEntry;
+    pbCancel:    TButton;
+    pbOK:        TButton;
+    GroupBox2:   TGroupBox;
+    lblDrive:    TLabel;
+    lblMountAs:  TLabel;
+    cbDrive:     TComboBox;
+    ckMountReadonly: TSDUCheckBox;
+    cbMediaType: TComboBox;
+    GroupBox4:   TGroupBox;
+    Label10:     TLabel;
+    Label22:     TLabel;
+    GroupBox1:   TGroupBox;
+    Label1:      TLabel;
+    ckBaseIVCypherOnHashLength: TSDUCheckBox;
+    ckMountForAllUsers: TSDUCheckBox;
+    se64UnitSizeLimit: TSDUSpin64Unit_Storage;
+    frmeLUKSKeyOrKeyfileEntry: TfrmeLUKSKeyOrKeyfileEntry;
     procedure FormCreate(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
     procedure SelectionChange(Sender: TObject);
@@ -47,13 +47,13 @@ type
     procedure preUserkeyKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure pbCancelClick(Sender: TObject);
     procedure ckSelected(Sender: TObject);
-  PRIVATE
-  PROTECTED
+  private
+  protected
     // These are ordered lists corresponding to the items shown in the combobox
-    fHashKernelModeDriverNames:   TStringList;
-    fHashGUIDs:                   TStringList;
+    fHashKernelModeDriverNames: TStringList;
+    fHashGUIDs:   TStringList;
     fCypherKernelModeDriverNames: TStringList;
-    fCypherGUIDs:                 TStringList;
+    fCypherGUIDs: TStringList;
 
     procedure PopulateDrives();
     procedure PopulateMountAs();
@@ -64,8 +64,8 @@ type
 
     procedure DoCancel();
 
-  PUBLIC
-//    fFreeOTFEObj: TOTFEFreeOTFEBase;
+  public
+    //    fFreeOTFEObj: TOTFEFreeOTFEBase;
 
     procedure Initialize();
 
@@ -160,7 +160,7 @@ var
   i:               Integer;
   currDriveLetter: DriveLetterChar;
 begin
-  OTFEFreeOTFELUKSKeyOrKeyfileEntry1.DefaultOptions();
+  frmeLUKSKeyOrKeyfileEntry.DefaultOptions();
 
   if (GetFreeOTFEBase() is TOTFEFreeOTFE) then begin
     if (cbDrive.Items.Count > 0) then begin
@@ -202,15 +202,15 @@ var
 begin
   if GetKey(tmpKey) then begin
     if (Length(tmpKey) = 0) then begin
-      if OTFEFreeOTFELUKSKeyOrKeyfileEntry1.KeyIsUserEntered() then begin
+      if frmeLUKSKeyOrKeyfileEntry.KeyIsUserEntered() then begin
         msgZeroLenKey := _('You have not entered a password.');
       end else begin
         msgZeroLenKey := _('Keyfile contained a zero-length key.');
       end;
 
       if (SDUMessageDlg(msgZeroLenKey + SDUCRLF + SDUCRLF +
-        _('Are you sure you wish to proceed?'), mtConfirmation,
-        [mbYes, mbNo], 0) = mrYes) then begin
+        _('Are you sure you wish to proceed?'), mtConfirmation, [mbYes, mbNo], 0) = mrYes)
+      then begin
         ModalResult := mrOk;
       end;
     end else begin
@@ -220,7 +220,7 @@ begin
 
   end  // if GetKey(tmpKey) then
   else begin
-    if not (OTFEFreeOTFELUKSKeyOrKeyfileEntry1.KeyIsUserEntered()) then begin
+    if not (frmeLUKSKeyOrKeyfileEntry.KeyIsUserEntered()) then begin
       SDUMessageDlg(_('Unable to read keyfile.'), mtError);
     end;
 
@@ -247,9 +247,7 @@ begin
   end;
   mountAsOK := mountAsOK and (tmpMountAs <> fomaUnknown);
 
-  pbOK.Enabled := ((GetSizeLimit(junkInt64)) and
-    (GetDriveLetter(junkChar)) and
-    mountAsOK);
+  pbOK.Enabled := ((GetSizeLimit(junkInt64)) and (GetDriveLetter(junkChar)) and mountAsOK);
 
 end;
 
@@ -262,7 +260,7 @@ end;
 procedure TfrmKeyEntryLUKS.FormShow(Sender: TObject);
 begin
   // Position cursor to the *end* of any password
-  OTFEFreeOTFELUKSKeyOrKeyfileEntry1.CursorToEndOfPassword();
+  frmeLUKSKeyOrKeyfileEntry.CursorToEndOfPassword();
 
   // Certain controls only visble if used in conjunction with drive mounting
   lblDrive.Visible           := GetFreeOTFEBase() is TOTFEFreeOTFE;
@@ -278,6 +276,8 @@ begin
   end;
 
   EnableDisableControls();
+
+
 
 end;
 
@@ -322,43 +322,43 @@ end;
 function TfrmKeyEntryLUKS.SetIVCypherBase(baseIVCypherOnHashLength: Boolean): Boolean;
 begin
   ckBaseIVCypherOnHashLength.Checked := baseIVCypherOnHashLength;
-  Result                             := True;
+  Result := True;
 end;
 
 
 function TfrmKeyEntryLUKS.GetKey(var userKey: TSDUBYtes): Boolean;
 begin
-  Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKey(userKey);
+  Result := frmeLUKSKeyOrKeyfileEntry.GetKey(userKey);
 end;
 
 function TfrmKeyEntryLUKS.SetKey(userKey: PasswordString): Boolean;
 begin
-  Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.SetKey(userKey);
+  Result := frmeLUKSKeyOrKeyfileEntry.SetKey(userKey);
 end;
 
 function TfrmKeyEntryLUKS.SetKeyfile(filename: String): Boolean;
 begin
-  Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.SetKeyfile(filename);
+  Result := frmeLUKSKeyOrKeyfileEntry.SetKeyfile(filename);
 end;
 
 function TfrmKeyEntryLUKS.GetKeyfileIsASCII(var isASCII: Boolean): Boolean;
 begin
-  Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKeyfileIsASCII(isASCII);
+  Result := frmeLUKSKeyOrKeyfileEntry.GetKeyfileIsASCII(isASCII);
 end;
 
 function TfrmKeyEntryLUKS.SetKeyfileIsASCII(isASCII: Boolean): Boolean;
 begin
-  Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.SetKeyfileIsASCII(isASCII);
+  Result := frmeLUKSKeyOrKeyfileEntry.SetKeyfileIsASCII(isASCII);
 end;
 
 function TfrmKeyEntryLUKS.GetKeyfileNewlineType(var nlType: TSDUNewline): Boolean;
 begin
-  Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.GetKeyfileNewlineType(nlType);
+  Result := frmeLUKSKeyOrKeyfileEntry.GetKeyfileNewlineType(nlType);
 end;
 
 function TfrmKeyEntryLUKS.SetKeyfileNewlineType(nlType: TSDUNewline): Boolean;
 begin
-  Result := OTFEFreeOTFELUKSKeyOrKeyfileEntry1.SetKeyfileNewlineType(nlType);
+  Result := frmeLUKSKeyOrKeyfileEntry.SetKeyfileNewlineType(nlType);
 end;
 
 
@@ -389,7 +389,7 @@ end;
 // mountDriveLetter - Set to #0 to indicate "Use default"
 function TfrmKeyEntryLUKS.SetDriveLetter(mountDriveLetter: DriveLetterChar): Boolean;
 var
-  idx:    Integer;
+  idx: Integer;
 begin
   Result := True;
 
@@ -405,7 +405,6 @@ begin
     Result := False;
   end;
   cbDrive.ItemIndex := idx;
-
 
 end;
 
@@ -424,33 +423,29 @@ end;
 function TfrmKeyEntryLUKS.GetMountAs(var mountAs: TFreeOTFEMountAs): Boolean;
 var
   currMountAs: TFreeOTFEMountAs;
-  allOK:       Boolean;
 begin
-  allOK := False;
+  Result := False;
 
   for currMountAs := low(TFreeOTFEMountAs) to high(TFreeOTFEMountAs) do begin
     if (cbMediaType.Items[cbMediaType.ItemIndex] = FreeOTFEMountAsTitle(currMountAs)) then begin
       mountAs := currMountAs;
-      allOK   := True;
+      Result  := True;
       break;
     end;
   end;
 
-  Result := allOK;
 end;
 
 
 function TfrmKeyEntryLUKS.SetMountAs(mountAs: TFreeOTFEMountAs): Boolean;
 var
-  idx:   Integer;
-  allOK: Boolean;
+  idx: Integer;
 begin
   idx                   := cbMediaType.Items.IndexOf(FreeOTFEMountAsTitle(mountAs));
   cbMediaType.ItemIndex := idx;
 
-  allOK := (idx >= 0);
+  Result := (idx >= 0);
 
-  Result := allOK;
 end;
 
 
@@ -464,18 +459,16 @@ begin
   Result := ckMountForAllUsers.Checked;
 end;
 
-
 procedure TfrmKeyEntryLUKS.ckSelected(Sender: TObject);
 begin
   EnableDisableControls();
-
 end;
 
 
 procedure TfrmKeyEntryLUKS.Initialize();
 begin
-//  OTFEFreeOTFELUKSKeyOrKeyfileEntry1.FreeOTFEObj := fFreeOTFEObj;
-  OTFEFreeOTFELUKSKeyOrKeyfileEntry1.Initialize();
+  //  frmeLUKSKeyOrKeyfileEntry.FreeOTFEObj := fFreeOTFEObj;
+  frmeLUKSKeyOrKeyfileEntry.Initialize();
 
   PopulateDrives();
   PopulateMountAs();

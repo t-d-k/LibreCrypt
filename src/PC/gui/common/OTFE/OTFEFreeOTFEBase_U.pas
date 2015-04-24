@@ -64,7 +64,7 @@ const
   // This const is used in rounding up DIOC buffers to the nearest DWORD
   DIOC_BOUNDRY = 4;
 
-  FREEOTFE_URL = 'http://DoxBox.eu/';
+  FREEOTFE_URL = 'http://LibreCrypt.eu/';
 
   LINUX_KEYFILE_DEFAULT_IS_ASCII = False;
   LINUX_KEYFILE_DEFAULT_NEWLINE  = nlLF;
@@ -73,14 +73,14 @@ const
 
 resourcestring
   // Open/Save file filters...
-  FILE_FILTER_FLT_VOLUMES  = 'Box files (*.box)|*.box|All files|*.*';
-  FILE_FILTER_DFLT_VOLUMES = 'box';
+  FILE_FILTER_FLT_VOLUMES  = 'Container files (*.vol;*.box)|*.vol;*.box|All files|*.*';
+  FILE_FILTER_DFLT_VOLUMES = 'vol';
 
   FILE_FILTER_FLT_KEYFILES  = 'Keyfiles (*.cdb)|*.cdb|All files|*.*';
   FILE_FILTER_DFLT_KEYFILES = 'cdb';
 
   FILE_FILTER_FLT_VOLUMESANDKEYFILES  =
-    'Box files and keyfiles (*.box;*.cdb)|*.box;*.cdb|Box files (*.box)|*.box|Keyfiles (*.cdb)|*.cdb|All files|*.*';
+    'Container files and keyfiles (*.vol;*.cdb;*.box)|*.vol;*.box;*.cdb|Container files (*.vol;*.box)|*.vol;*.box|Keyfiles (*.cdb)|*.cdb|All files|*.*';
   FILE_FILTER_DFLT_VOLUMESANDKEYFILES = '';
 
   FILE_FILTER_FLT_TEXTFILES  = 'Text files (*.txt)|*.txt|All files|*.*';
@@ -777,8 +777,8 @@ procedure DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
       keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
       silent: Boolean = False): Boolean; overload;
 
-    function CreateLUKS(volumeFilename: string;
-      password: TSDUBytes ): Boolean;
+    function CreateLUKS(volumeFilename: String;
+      password: TSDUBytes): Boolean;
 
     function MountFreeOTFE(volumeFilename: String; ReadOnly: Boolean = False;
       keyfile: String = ''; password: TSDUBytes = nil; offset: ULONGLONG = 0;
@@ -1165,7 +1165,7 @@ uses
   SDUEndianIntegers,
   SDUProgressDlg,
   SDURandPool,
-  //DoxBox
+  //LibreCrypt
   Math, OTFEFreeOTFE_DriverControl,
   OTFEFreeOTFE_frmCypherInfo,
   OTFEFreeOTFE_frmDriverControl,
@@ -2237,22 +2237,22 @@ function TOTFEFreeOTFEBase.EncryptAndWriteMasterKey(const filename: String;
   baseIVCypherOnHashLength: Boolean; var LUKSHeader: TLUKSHeader; keySlot: Integer;
   const masterkey: TSDUBytes): Boolean;
 var
-  i,j: Integer;
+  i, j:                    Integer;
   pwd_PBKDF2ed, splitData: TSDUBytes;
-  splitDataLength: Integer;
-  generatedCheck:  TSDUBytes;
+  splitDataLength:         Integer;
+  generatedCheck:          TSDUBytes;
 begin
   // todo: populate LUKSHeader with cyphers etc.
-  LUKSHeader.version := LUKS_VER_SUPPORTED;
-LUKSHeader.hash_spec := 'todo';
+  LUKSHeader.version   := LUKS_VER_SUPPORTED;
+  LUKSHeader.hash_spec := 'MD5';
 
 
-LUKSHeader.cipher_name:= 'todo';
-LUKSHeader.key_bytes := 256;
-      LUKSHeader.cipher_mode :='xts';
-      baseIVCypherOnHashLength := true;
+  LUKSHeader.cipher_name   := 'AES';
+  LUKSHeader.key_bytes     := 64;
+  LUKSHeader.cipher_mode   := 'xts';
+  baseIVCypherOnHashLength := True;
 
-  // populate doxbox cyphers in struct from read strings
+  // populate LibreCrypt cyphers in struct from read strings
   Result := MapToFreeOTFE(baseIVCypherOnHashLength, LUKSHeader);
 
   GetRandPool().FillRandomData(LUKSHeader.mk_digest_salt);
@@ -2269,8 +2269,8 @@ LUKSHeader.key_bytes := 256;
     LUKSHeader.keySlot[i].Active := True;
     GetRandPool.FillRandomData(LUKSHeader.keySlot[i].salt);
 
-    LUKSHeader.keySlot[i].iterations := 1000;
-    LUKSHeader.keySlot[i].stripes    := 2;
+    LUKSHeader.keySlot[i].iterations          := 1000;
+    LUKSHeader.keySlot[i].stripes             := 2;
     LUKSheader.KeySlot[i].key_material_offset := 1000;//todo:???
 
     // PBKDF2 the user's password with the salt
@@ -2294,50 +2294,49 @@ LUKSHeader.key_bytes := 256;
       end;
 
 
-       splitDataLength := (LUKSheader.key_bytes * LUKSheader.keyslot[i].stripes);
+      splitDataLength := (LUKSheader.key_bytes * LUKSheader.keyslot[i].stripes);
 
 
-        //encrypt and write
-        if not (ReadWritePlaintextToVolume(false,//write
+      //encrypt and write
+      if not (ReadWritePlaintextToVolume(False,//write
 
 
-          filename, pwd_PBKDF2ed, LUKSheader.sectorIVGenMethod,
-          LUKSheader.IVHashKernelModeDeviceName, LUKSheader.IVHashGUID,
-          LUKSheader.IVCypherKernelModeDeviceName, LUKSheader.IVCypherGUID,
-          LUKSheader.cypherKernelModeDeviceName, LUKSheader.cypherGUID,
-          {tmpVolumeFlags}0, fomaRemovableDisk, 0,
-                            // Offset from within mounted volume from where to read/write data
-          splitDataLength,  // Length of data to read/write. In bytes
-          splitData,        // Data to read/write
+        filename, pwd_PBKDF2ed, LUKSheader.sectorIVGenMethod,
+        LUKSheader.IVHashKernelModeDeviceName, LUKSheader.IVHashGUID,
+        LUKSheader.IVCypherKernelModeDeviceName, LUKSheader.IVCypherGUID,
+        LUKSheader.cypherKernelModeDeviceName, LUKSheader.cypherGUID,
+        {tmpVolumeFlags}0, fomaRemovableDisk, 0,
+                          // Offset from within mounted volume from where to read/write data
+        splitDataLength,  // Length of data to read/write. In bytes
+        splitData,        // Data to read/write
 
-          (LUKS_SECTOR_SIZE * LUKSheader.KeySlot[i].key_material_offset)
-          // Offset within volume where encrypted data starts
-          )) then begin
-          Result := False;
-          exit;
-        end;
+        (LUKS_SECTOR_SIZE * LUKSheader.KeySlot[i].key_material_offset)
+        // Offset within volume where encrypted data starts
+        )) then begin
+        Result := False;
+        exit;
+      end;
 
-          // Generate PBKDF2 of the master key (for msg digest)
-        if not (DeriveKey(fokdfPBKDF2, LUKSheader.hashKernelModeDeviceName,
-          LUKSheader.hashGUID, LUKSheader.cypherKernelModeDeviceName,
-          LUKSheader.cypherGUID, masterKey, LUKSHeader.mk_digest_salt, LUKSHeader.mk_digest_iter,
-          (sizeof(LUKSHeader.mk_digest) * 8), generatedCheck)) then begin
-          Result := False;
+      // Generate PBKDF2 of the master key (for msg digest)
+      if not (DeriveKey(fokdfPBKDF2, LUKSheader.hashKernelModeDeviceName,
+        LUKSheader.hashGUID, LUKSheader.cypherKernelModeDeviceName,
+        LUKSheader.cypherGUID, masterKey, LUKSHeader.mk_digest_salt,
+        LUKSHeader.mk_digest_iter, (sizeof(LUKSHeader.mk_digest) * 8), generatedCheck)) then begin
+        Result := False;
 
-        end;
+      end;
 
 {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('LUKS generated pbkdf2 checksum of master key follows:');
   DebugMsgBinary(SDUBytesToString(generatedCheck));
 {$ENDIF}
 
-         for j := 0 to length(generatedCheck)-1 do
-           LUKSHeader.mk_digest[j ] := generatedCheck[j ] ;
+      for j := 0 to length(generatedCheck) - 1 do
+        LUKSHeader.mk_digest[j] := generatedCheck[j];
 
-       Result := WriteLUKSHeader(filename, LUKSHeader);
+      Result := WriteLUKSHeader(filename, LUKSHeader);
     end;
   end;
-
 
 end;
 
@@ -2863,8 +2862,7 @@ begin
   CachesFlush();
 
 {$IFDEF FREEOTFE_DEBUG}
-if (status) then
-  begin
+if (status) then   begin
   DebugMsg(
            '-------------------------------------------------------'+SDUCRLF+
            '-------------------------------------------------------'+SDUCRLF+
@@ -3261,9 +3259,9 @@ var
   fileOptSize:         Int64;
   mountDriveLetter:    DriveLetterChar;
   mountReadonly:       Boolean;
-  mainCypherDriver:    string;
+  mainCypherDriver:    String;
   mainCypherGUID:      TGUID;
-  mainIVHashDriver:    string;
+  mainIVHashDriver:    String;
   mainIVHashGUID:      TGUID;
   mainIVCypherDriver:  Ansistring;
   mainIVCypherGUID:    TGUID;
@@ -3664,19 +3662,19 @@ begin
   for i := (length(mountedAs) + 1) to (volumeFilenames.Count) do begin
     mountedAs := mountedAs + #0;
     // This should not be needed; included to ensure sanity...
-    Result := False;
+    Result    := False;
   end;
 end;
 
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.CreateLUKS(volumeFilename: string;
-  password: TSDUBytes ): Boolean;
+function TOTFEFreeOTFEBase.CreateLUKS(volumeFilename: String;
+  password: TSDUBytes): Boolean;
 var
 
-  i:           Integer;
-  volumeKey:   TSDUBytes;
+  i:         Integer;
+  volumeKey: TSDUBytes;
 
   userKey:          TSDUBytes;
   fileOptSize:      Int64;
@@ -3685,20 +3683,20 @@ var
   currDriveLetter:  DriveLetterChar;
   mountMountAs:     TFreeOTFEMountAs;
 
-  LUKSHeader:       TLUKSHeader;
-  keySlot:          Integer;
+  LUKSHeader:               TLUKSHeader;
+  keySlot:                  Integer;
   baseIVCypherOnHashLength: Boolean;
-  mountForAllUsers: Boolean;
+  mountForAllUsers:         Boolean;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
   Result        := True;
-
+  GetRandPool.SetUpRandPool([rngcryptlib], PKCS11_NO_SLOT_ID, '');
   CheckActive();
-  GetRandPool.GetRandomData(256,volumeKey);
-//   LUKSHeader.cipher_name := 'aes';
-          if not (EncryptAndWriteMasterKey(volumeFilename, password,
-            true{baseIVCypherOnHashLength}, LUKSHeader,0{ keySlot}, volumeKey)) then
-            Result := False;
+  GetRandPool.GetRandomData(256, volumeKey);
+  //   LUKSHeader.cipher_name := 'aes';
+  if not (EncryptAndWriteMasterKey(volumeFilename, password, True{baseIVCypherOnHashLength},
+    LUKSHeader, 0{ keySlot}, volumeKey)) then
+    Result := False;
 
 {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('Created key OK');
@@ -3708,7 +3706,6 @@ begin
                                     length(volumeKey)
                                    ));
 {$ENDIF}
-
 
 end;
 
@@ -4394,11 +4391,11 @@ DebugMsg('v2 format CDB decode failed - attempting v1...');
     // supports
     if (volumeDetails.CDBFormatID > CDB_FORMAT_ID) then begin
       SDUMessageDlg(
-        _('WARNING: This Box appears to have been created with a later version of DoxBox than this software supports.'
+        _('WARNING: This container appears to have been created with a later version of LibreCrypt than this software supports.'
         + SDUCRLF + SDUCRLF + 'You may continue, however:' + SDUCRLF +
         '1) Your data may be read incorrectly due to changes in the decryption process, and'
         +
-        SDUCRLF + '2) It is not recommended that you write to this box using this software.'),
+        SDUCRLF + '2) It is not recommended that you write to this container using this software.'),
         mtWarning);
     end;
 
@@ -5934,10 +5931,9 @@ begin
     end else
     if (mr = mrOk) then begin
       aFileName := volSizeDlg.Filename;
-      if not (SDUCreateLargeFile(aFileName, volSizeDlg.VolumeSize, True, userCancel))
-      then begin
+      if not (SDUCreateLargeFile(aFileName, volSizeDlg.VolumeSize, True, userCancel)) then begin
         if not (userCancel) then begin
-          SDUMessageDlg(_('An error occured while trying to create your dm-crypt Box'),
+          SDUMessageDlg(_('An error occured while trying to create your dm-crypt container'),
             mtError, [mbOK], 0);
         end;
 
@@ -6559,7 +6555,7 @@ begin
   if WarnIfNoHashOrCypherDrivers() then begin
     dlg := TfrmWizardChangePasswordCreateKeyfile.Create(nil);
     try
-      dlg.ChangePasswordCreateKeyfile := opChangePassword;
+      dlg.fChangePasswordCreateKeyfile := opChangePassword;
       dlg.IsPartition := False;
       dlg.SrcFileName := SrcFilename;
       dlg.SrcUserKey := SDUStringToSDUBytes(OrigKeyPhrase);
@@ -6583,7 +6579,7 @@ begin
   if WarnIfNoHashOrCypherDrivers() then begin
     dlg := TfrmWizardChangePasswordCreateKeyfile.Create(nil);
     try
-      dlg.ChangePasswordCreateKeyfile := opCreateKeyfile;
+      dlg.fChangePasswordCreateKeyfile := opCreateKeyfile;
 
       //thinks this not needed:
 {
@@ -7306,7 +7302,8 @@ end;
 { factory fn creates an instance that is returned by GetFreeOTFEBase}
 procedure SetFreeOTFEType(typ: TOTFEFreeOTFEBaseClass);
 begin
-  assert(_FreeOTFEObj = nil, 'call SetFreeOTFEType only once, and do not call TOTFEFreeOTFEBase.create');
+  assert(_FreeOTFEObj = nil,
+    'call SetFreeOTFEType only once, and do not call TOTFEFreeOTFEBase.create');
   _FreeOTFEObj := typ.Create;
 end;
 

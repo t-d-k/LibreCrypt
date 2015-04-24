@@ -1,4 +1,5 @@
 unit FreeOTFEfmeOptions_SystemTray;
+{ TODO : why is this a separate frame? only used once }
 
 interface
 

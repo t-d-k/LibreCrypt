@@ -2,7 +2,7 @@ object frmDriverControl: TfrmDriverControl
   Left = 341
   Top = 282
   BorderStyle = bsDialog
-  Caption = 'DoxBox Driver Control'
+  Caption = 'LibreCrypt Driver Control'
   ClientHeight = 369
   ClientWidth = 498
   Color = clBtnFace

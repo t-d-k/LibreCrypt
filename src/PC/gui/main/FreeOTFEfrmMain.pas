@@ -13,12 +13,13 @@ interface
 uses
   ActnList,
   Buttons, Classes, ComCtrls, Controls, Dialogs,
-  ExtCtrls, Forms,  Graphics, Grids, ImgList, Menus, Messages,  Spin64, StdCtrls, SysUtils, ToolWin, Windows, XPMan,
+  ExtCtrls, Forms, Graphics, Grids, ImgList, Menus, Messages, Spin64, StdCtrls,
+  SysUtils, ToolWin, Windows, XPMan,
   //sdu
   SDUSystemTrayIcon, Shredder,
 
-  //doxbox/freeotfe
-  OTFE_U,  FreeOTFESettings,  CommonfrmMain, CommonSettings,
+  //LibreCrypt/freeotfe
+  OTFE_U, FreeOTFESettings, frmCommonMain, CommonSettings,
   OTFEFreeOTFE_DriverControl,
   OTFEFreeOTFE_U, OTFEFreeOTFEBase_U,
   pkcs11_library, lcDialogs, SDUForms, SDUGeneral, SDUMRUList, SDUMultimediaKeys,
@@ -27,72 +28,72 @@ uses
 type
   TPortableModeAction = (pmaStart, pmaStop, pmaToggle);
 
-  TfrmFreeOTFEMain = class (TfrmMain)
-    ToolBar1:                  TToolBar;
-    pnlTopSpacing:             TPanel;
-    ilDriveIcons:              TImageList;
-    lvDrives:                  TListView;
-    pmDrives:                  TPopupMenu;
-    miPopupDismount:           TMenuItem;
-    N2:                        TMenuItem;
-    miPopupProperties:         TMenuItem;
-    N3:                        TMenuItem;
-    miProperties:              TMenuItem;
-    N1:                        TMenuItem;
-    miDismountAllMain:         TMenuItem;
-    miPopupDismountAll:        TMenuItem;
-    miFreeOTFEDrivers:         TMenuItem;
-    miOverwriteFreeSpace:      TMenuItem;
-    miFormat:                  TMenuItem;
-    N6:                        TMenuItem;
-    miPopupFormat:             TMenuItem;
+  TfrmFreeOTFEMain = class (TfrmCommonMain)
+    ToolBar1:     TToolBar;
+    pnlTopSpacing: TPanel;
+    ilDriveIcons: TImageList;
+    lvDrives:     TListView;
+    pmDrives:     TPopupMenu;
+    miPopupDismount: TMenuItem;
+    N2:           TMenuItem;
+    miPopupProperties: TMenuItem;
+    N3:           TMenuItem;
+    miProperties: TMenuItem;
+    N1:           TMenuItem;
+    miDismountAllMain: TMenuItem;
+    miPopupDismountAll: TMenuItem;
+    miFreeOTFEDrivers: TMenuItem;
+    miOverwriteFreeSpace: TMenuItem;
+    miFormat:     TMenuItem;
+    N6:           TMenuItem;
+    miPopupFormat: TMenuItem;
     miPopupOverwriteFreeSpace: TMenuItem;
 
-    N7:                         TMenuItem;
-    miPortableModeDrivers:      TMenuItem;
-    N8:                         TMenuItem;
-    actDismountAll:             TAction;
-    actProperties:              TAction;
-    pmSystemTray:               TPopupMenu;
-    open1:                      TMenuItem;
-    open2:                      TMenuItem;
-    mountfile1:                 TMenuItem;
-    mountpartition1:            TMenuItem;
-    dismountall1:               TMenuItem;
-    N10:                        TMenuItem;
-    miOptions:                  TMenuItem;
-    actConsoleDisplay:          TAction;
-    N11:                        TMenuItem;
-    N12:                        TMenuItem;
-    SDUSystemTrayIcon1:         TSDUSystemTrayIcon;
-    tbbNew:                     TToolButton;
-    tbbMountFile:               TToolButton;
-    tbbMountPartition:          TToolButton;
-    tbbDismount:                TToolButton;
-    tbbDismountAll:             TToolButton;
-    actTogglePortableMode:      TAction;
-    actFormat:                  TAction;
-    actOverwriteFreeSpace:      TAction;
-    tbbTogglePortableMode:      TToolButton;
-    actDrivers:                 TAction;
-    ilDriveIconOverlay:         TImageList;
-    actOverwriteEntireDrive:    TAction;
-    Overwriteentiredrive1:      TMenuItem;
-    Overwriteentiredrive2:      TMenuItem;
-    N17:                        TMenuItem;
-    mmRecentlyMounted:          TMenuItem;
-    actFreeOTFEMountPartition:  TAction;
-    actLinuxMountPartition:     TAction;
-    miFreeOTFEMountPartition:   TMenuItem;
-    miLinuxMountPartition:      TMenuItem;
-    actConsoleHide:             TAction;
-    actInstall:                 TAction;
-    InstallDoxBox1:             TMenuItem;
-    actTestModeOn:              TAction;
-    SetTestMode1:               TMenuItem;
-    actTestModeOff:             TAction;
+    N7:           TMenuItem;
+    miPortableModeDrivers: TMenuItem;
+    N8:           TMenuItem;
+    actDismountAll: TAction;
+    actProperties: TAction;
+    pmSystemTray: TPopupMenu;
+    open1:        TMenuItem;
+    open2:        TMenuItem;
+    mountfile1:   TMenuItem;
+    mountpartition1: TMenuItem;
+    dismountall1: TMenuItem;
+    N10:          TMenuItem;
+    miOptions:    TMenuItem;
+    actConsoleDisplay: TAction;
+    N11:          TMenuItem;
+    N12:          TMenuItem;
+    SDUSystemTrayIcon1: TSDUSystemTrayIcon;
+    tbbNew:       TToolButton;
+    tbbMountFile: TToolButton;
+    tbbMountPartition: TToolButton;
+    tbbDismount:  TToolButton;
+    tbbDismountAll: TToolButton;
+    actTogglePortableMode: TAction;
+    actFormat:    TAction;
+    actOverwriteFreeSpace: TAction;
+    tbbTogglePortableMode: TToolButton;
+    actDrivers:   TAction;
+    ilDriveIconOverlay: TImageList;
+    actOverwriteEntireDrive: TAction;
+    Overwriteentiredrive1: TMenuItem;
+    Overwriteentiredrive2: TMenuItem;
+    N17:          TMenuItem;
+    mmRecentlyMounted: TMenuItem;
+    actFreeOTFEMountPartition: TAction;
+    actLinuxMountPartition: TAction;
+    miFreeOTFEMountPartition: TMenuItem;
+    miLinuxMountPartition: TMenuItem;
+    actConsoleHide: TAction;
+    actInstall:   TAction;
+    InstallDoxBox1: TMenuItem;
+    actTestModeOn: TAction;
+    SetTestMode1: TMenuItem;
+    actTestModeOff: TAction;
     DisallowTestsigneddrivers1: TMenuItem;
-    tbbSettings:                TToolButton;
+    tbbSettings:  TToolButton;
 
     procedure actDriversExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -128,10 +129,10 @@ type
     procedure actTestModeOnExecute(Sender: TObject);
     procedure actTestModeOffExecute(Sender: TObject);
     procedure miToolsClick(Sender: TObject);
-  PRIVATE
+  private
     function IsTestModeOn: Boolean;
 
-  PROTECTED
+  protected
     ftempCypherDriver:     Ansistring;
     ftempCypherGUID:       TGUID;
     ftempCypherDetails:    TFreeOTFECypher_v3;
@@ -157,29 +158,29 @@ type
     function HandleCommandLineOpts_DriverControl_Count(driverControlObj:
       TOTFEFreeOTFEDriverControl): Integer;
     function HandleCommandLineOpts_Count(): eCmdLine_Exit;
-    function HandleCommandLineOpts_Create(): eCmdLine_Exit; OVERRIDE;
+    function HandleCommandLineOpts_Create(): eCmdLine_Exit; override;
     function HandleCommandLineOpts_Dismount(): eCmdLine_Exit;
     function HandleCommandLineOpts_SetTestMode(): eCmdLine_Exit;
-//    function HandleCommandLineOpts_SetInstalled(): eCmdLine_Exit;
+    //    function HandleCommandLineOpts_SetInstalled(): eCmdLine_Exit;
 
     //true = set OK
     function SetTestMode(silent, SetOn: Boolean): Boolean;
     //sets 'installed' flag in ini file - returns false if fails (ini file must exist or be set as custom)
-//    function SetInstalled(): Boolean;
+    //    function SetInstalled(): Boolean;
     function InstallAllDrivers(driverControlObj: TOTFEFreeOTFEDriverControl;
       silent: Boolean): eCmdLine_Exit;
 
-    procedure ReloadSettings(); OVERRIDE;
+    procedure ReloadSettings(); override;
 
-    procedure SetupOTFEComponent(); OVERRIDE;
-    function ActivateFreeOTFEComponent(suppressMsgs: Boolean): Boolean; OVERRIDE;
-    procedure DeactivateFreeOTFEComponent(); OVERRIDE;
-    procedure ShowOldDriverWarnings(); OVERRIDE;
+    procedure SetupOTFEComponent(); override;
+    function ActivateFreeOTFEComponent(suppressMsgs: Boolean): Boolean; override;
+    procedure DeactivateFreeOTFEComponent(); override;
+    procedure ShowOldDriverWarnings(); override;
 
-    procedure PKCS11TokenRemoved(SlotID: Integer); OVERRIDE;
+    procedure PKCS11TokenRemoved(SlotID: Integer); override;
 
-    procedure RefreshMRUList(); OVERRIDE;
-    procedure MRUListItemClicked(mruList: TSDUMRUList; idx: Integer); OVERRIDE;
+    procedure RefreshMRUList(); override;
+    procedure MRUListItemClicked(mruList: TSDUMRUList; idx: Integer); override;
 
     procedure InitializeDrivesDisplay();
     procedure RefreshDrives();
@@ -187,7 +188,7 @@ type
     function AddIconForDrive(driveLetter: DriveLetterChar; overlayIdx: Integer): Integer;
 
     procedure SetStatusBarTextNormal();
-    procedure EnableDisableControls(); OVERRIDE;
+    procedure EnableDisableControls(); override;
     function GetDriveLetterFromLVItem(listItem: TListItem): DriveLetterChar;
 
     procedure ResizeWindow();
@@ -196,7 +197,7 @@ type
     procedure OverwriteDrives(drives: DriveLetterString; overwriteEntireDrive: Boolean);
 
     procedure MountFiles(mountAsSystem: TDragDropFileType; filenames: TStringList;
-      ReadOnly, forceHidden: Boolean); OVERLOAD; OVERRIDE;
+      ReadOnly, forceHidden: Boolean); overload; override;
 
     procedure DriveProperties();
 
@@ -221,9 +222,9 @@ type
     procedure EnableHotkey(hotKey: TShortCut; hotKeyIdent: Integer);
     procedure DisableHotkey(hotKeyIdent: Integer);
 
-    procedure RecaptionToolbarAndMenuIcons(); OVERRIDE;
-    procedure SetIconListsAndIndexes(); OVERRIDE;
-    procedure SetupToolbarFromSettings(); OVERRIDE;
+    procedure RecaptionToolbarAndMenuIcons(); override;
+    procedure SetIconListsAndIndexes(); override;
+    procedure SetupToolbarFromSettings(); override;
 
     procedure DoSystemTrayAction(Sender: TObject; doAction: TSystemTrayClickAction);
 
@@ -232,19 +233,19 @@ type
       suppressMsgs: Boolean);
     procedure UACEscalate(cmdLineParams: String; suppressMsgs: Boolean);
 
-    function DoTests: Boolean; OVERRIDE;
+    function DoTests: Boolean; override;
 
-  PUBLIC
+  public
 
-    procedure WMDropFiles(var Msg: TWMDropFiles); MESSAGE WM_DROPFILES;
-    procedure WMDeviceChange(var Msg: TMessage); MESSAGE WM_DEVICECHANGE;
-    procedure WMQueryEndSession(var msg: TWMQueryEndSession); MESSAGE WM_QUERYENDSESSION;
-    procedure WMEndSession(var msg: TWMEndSession); MESSAGE WM_ENDSESSION;
+    procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
+    procedure WMDeviceChange(var Msg: TMessage); message WM_DEVICECHANGE;
+    procedure WMQueryEndSession(var msg: TWMQueryEndSession); message WM_QUERYENDSESSION;
+    procedure WMEndSession(var msg: TWMEndSession); message WM_ENDSESSION;
 
     procedure GenerateOverwriteData(Sender: TObject; passNumber: Integer;
       bytesRequired: Cardinal; var generatedOK: Boolean; var outputBlock: TShredBlock);
 
-    procedure InitApp(); OVERRIDE;
+    procedure InitApp(); override;
 
     function MessageHook(var msg: TMessage): Boolean;
 
@@ -252,18 +253,14 @@ type
 
     // Handle any command line options; returns TRUE if command line options
     // were passed through
-    function HandleCommandLineOpts(out cmdExitCode: eCmdLine_Exit): Boolean; OVERRIDE;
+    function HandleCommandLineOpts(out cmdExitCode: eCmdLine_Exit): Boolean; override;
 
   end;
 
 
 
-const
-  // Command line parameter handled in the .dpr
-  CMDLINE_MINIMIZE = 'minimize';
-
 var
-  frmFreeOTFEMain:                TfrmFreeOTFEMain;
+  frmFreeOTFEMain: TfrmFreeOTFEMain;
   GLOBAL_VAR_WM_FREEOTFE_RESTORE: Cardinal;
   GLOBAL_VAR_WM_FREEOTFE_REFRESH: Cardinal;
 
@@ -287,7 +284,7 @@ uses
   SDUi18n,//for format drive
   SDUGraphics,
 
-  //DoxBox units
+  //LibreCrypt units
   MouseRNGDialog_U,
 
   //  SDUWinSvc,
@@ -327,12 +324,12 @@ resourcestring
   TEXT_NEED_ADMIN = 'You need administrator privileges in order to carry out this operation.';
 
   // Toolbar captions...
-  RS_TOOLBAR_CAPTION_MOUNTPARTITION = 'Open partition Box';
+  RS_TOOLBAR_CAPTION_MOUNTPARTITION = 'Open partition container';
   RS_TOOLBAR_CAPTION_DISMOUNTALL    = 'Lock all';
   RS_TOOLBAR_CAPTION_PORTABLEMODE   = 'Portable mode';
   // Toolbar hints...
-  RS_TOOLBAR_HINT_MOUNTPARTITION    = 'Open a partition based Box';
-  RS_TOOLBAR_HINT_DISMOUNTALL       = 'Lock all open Boxes';
+  RS_TOOLBAR_HINT_MOUNTPARTITION    = 'Open a partition based container';
+  RS_TOOLBAR_HINT_DISMOUNTALL       = 'Lock all open containers';
   RS_TOOLBAR_HINT_PORTABLEMODE      = 'Toggle portable mode on/off';
 
   POPUP_DISMOUNT = 'Dismount %1: %2';
@@ -391,11 +388,11 @@ const
 
   // Online user manual URL...
   { DONE -otdk -cenhancement : set project homepage }
-  URL_USERGUIDE_MAIN = 'http://doxbox.eu/doxbox/getting_started.html';
+  URL_USERGUIDE_MAIN = 'http://LibreCrypt.eu/LibreCrypt/getting_started.html';
   // PAD file URL...
-  URL_PADFILE_MAIN   = 'https://raw.githubusercontent.com/t-d-k/doxbox/master/PAD.xml';
-  // Download URL...
-//  URL_DOWNLOAD_MAIN  = 'http://DoxBox.eu/download.html';
+  URL_PADFILE_MAIN   = 'https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/PAD.xml';
+ // Download URL...
+ //  URL_DOWNLOAD_MAIN  = 'http://LibreCrypt.eu/download.html';
 
 
  // This procedure is called after OnCreate, and immediately before the
@@ -407,7 +404,7 @@ begin
   inherited;
 
   // if appRunning set when app started, that means it didnt shut down properly last time
-  errLastRun := gSettings.feAppRunning = arRunning;
+  errLastRun             := gSettings.feAppRunning = arRunning;
   gSettings.feAppRunning := arRunning;
   // save immediately in case any errors starting drivers etc.
   gSettings.Save;
@@ -438,25 +435,31 @@ begin
     goForStartPortable := gSettings.OptAutoStartPortable;
     if not (goForStartPortable) then begin
       // if 'installed' then install drivers and prompt reboot else prompt portable as below
-//      if not gSettings.OptInstalled then
-        goForStartPortable := SDUConfirmYN(
-          _('The main DoxBox driver does not appear to be installed and running on this computer') +
-          SDUCRLF + SDUCRLF + _('Would you like to start DoxBox in portable mode?'));
+      //      if not gSettings.OptInstalled then
+      goForStartPortable := SDUConfirmYN(
+        _('The main LibreCrypt driver does not appear to be installed and running on this computer') +
+        SDUCRLF + SDUCRLF + _('Would you like to start LibreCrypt in portable mode?'));
     end;
 
     if goForStartPortable then begin
-      if errLastRun then MessageDlg(_('Portable mode will not be started automatically because DoxBox shut down last time it was run.'),mtWarning,[mbOK], 0)
-      else PortableModeSet(pmaStart, False);
+      if errLastRun then
+        MessageDlg(_(
+          'Portable mode will not be started automatically because LibreCrypt shut down last time it was run.'),
+          mtWarning, [mbOK], 0)
+      else
+        PortableModeSet(pmaStart, False);
     end else begin
       if not errLastRun then begin
-         actInstallExecute(nil);
+        actInstallExecute(nil);
       end else begin
 
-       if errLastRun {and gSettings.OptInstalled} then
-          MessageDlg(_('The drivers will not be installed automatically because DoxBox shut down last time it was run.'),mtWarning,[mbOK],0);
-       SDUMessageDlg(
+        if errLastRun {and gSettings.OptInstalled} then
+          MessageDlg(_(
+            'The drivers will not be installed automatically because LibreCrypt shut down last time it was run.'),
+            mtWarning, [mbOK], 0);
+        SDUMessageDlg(
           _(
-          'Please see the "installation" section of the accompanying documentation for instructions on how to install the DoxBox drivers.'),
+          'Please see the "installation" section of the accompanying documentation for instructions on how to install the LibreCrypt drivers.'),
           mtInformation,
           [mbOK],
           0
@@ -540,9 +543,9 @@ begin
       // remove later
       miTmp.OnClick     := SystemTrayIconDismount;
       miTmp.AutoHotkeys := maManual;  // Otherwise the hotkeys added
-                                      // automatically can interfere with
-                                      // examing the caption to get the drive
-                                      // letter when clicked on
+      // automatically can interfere with
+      // examing the caption to get the drive
+      // letter when clicked on
       miTmp.Caption     := SDUParamSubstitute(POPUP_DISMOUNT, [mounted[i], strVolID]);
       pmSystemTray.Items.Insert((i - 1), miTmp);
     end;
@@ -705,7 +708,7 @@ begin
 
   //    tmpColumn.minwidth := lvDrives.width;
   tmpColumn         := lvDrives.Columns.Add;
-  tmpColumn.Caption := _('Box');
+  tmpColumn.Caption := _('Container');
   tmpColumn.Width   := lvDrives.clientwidth - lvDrives.columns[0].Width - ilDriveIcons.Width;
 
 
@@ -833,12 +836,12 @@ var
   buf:             Ansistring;
 const
 
-    MAX_TEST_VOL = 12;
-   {this last dmcrypt_dx.box with dmcrypt_hid.les can cause BSoD }
+  MAX_TEST_VOL = 12;
+  {this last dmcrypt_dx.box with dmcrypt_hid.les can cause BSoD }
   TEST_VOLS: array[0..MAX_TEST_VOL] of String =
     ('a.box', 'b.box', 'c.box', 'd.box', 'e.box', 'e.box', 'f.box', 'luks.box',
     'luks_essiv.box', 'a.box', 'b.box', 'dmcrypt_dx.box', 'dmcrypt_dx.box');
-  PASSWORDS: array[0..MAX_TEST_VOL] of String =
+  PASSWORDS: array[0..MAX_TEST_VOL] of Ansistring =
     ('password', 'password', '!"£$%^&*()', 'password', 'password', '5ekr1t',
     'password', 'password', 'password', 'secret', 'secret', 'password', '5ekr1t');
   ITERATIONS: array[0..MAX_TEST_VOL] of Integer =
@@ -870,7 +873,7 @@ const
     // Mount successful
     //        prettyMountedAs := prettyPrintDriveLetters(mountedAs);
     if (CountValidDrives(mountedAs) <> 1) then begin
-      SDUMessageDlg(Format('The Box %s has NOT been opened as drive: %s',
+      SDUMessageDlg(Format('The container %s has NOT been opened as drive: %s',
         [TEST_VOLS[vl], mountedAs]));
       Result := False;
     end else begin
@@ -898,6 +901,12 @@ const
 begin
   inherited;
 
+   {$IFDEF DEBUG}
+      vol_path := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\..\..\test_vols\');
+          GetFreeOTFE().CreateLUKS(vol_path+'luks.new.vol',SDUStringToSDUBytes('password'));
+   {$ENDIF}
+
+
   Result := True;
 
   (**********************************
@@ -916,37 +925,38 @@ begin
   {$ENDIF}
 
 
-    SafeSetLength(arr, 100);
-    for i := low(arr) to High(arr) do
-      arr[i] := i;
-    parr := @arr[0];
+  SafeSetLength(arr, 100);
+  for i := low(arr) to High(arr) do
+    arr[i] := i;
+  parr := @arr[0];
  { setlength(arr,10);
     AlwaysClearFreedMemory doesnt clear this mem - make sure cleared in sduutils for TSDUBytes using SafeSetLength
   for i := 10 to 99 do if parr[i] <> 0 then result := false;
   -
   }
-    SafeSetLength(arr, 0);
-    for i := 0 to 99 do
-      if parr[i] <> 0 then
-        Result := False;
-    SafeSetLength(arr, 100);
-    for i := low(arr) to High(arr) do
-      arr[i] := i;
-    parr := @arr[0];
-    // increasing size can reallocate
-    // resize more till get new address
-    // call SafeSetLength in case AlwaysClearFreedMemory not defed
-    while parr = @arr[0] do
-      SafeSetLength(arr, length(arr) * 2);
+  SafeSetLength(arr, 0);
+  for i := 0 to 99 do
+    if parr[i] <> 0 then
+      Result := False;
+  SafeSetLength(arr, 100);
+  for i := low(arr) to High(arr) do
+    arr[i] := i;
+  parr := @arr[0];
+  // increasing size can reallocate
+  // resize more till get new address
+  // call SafeSetLength in case AlwaysClearFreedMemory not defed
+  while parr = @arr[0] do
+    SafeSetLength(arr, length(arr) * 2);
 
-    for i := 0 to 99 do
-      if parr[i] <> 0 then
-        Result := False;
+  for i := 0 to 99 do
+    if parr[i] <> 0 then
+      Result := False;
 
-    //this will fail if AlwaysClearFreedMemory not set
-    if not Result then
-      SDUMessageDlg('Freed memory wiping failed');
-  if not Result then exit;
+  //this will fail if AlwaysClearFreedMemory not set
+  if not Result then
+    SDUMessageDlg('Freed memory wiping failed');
+  if not Result then
+    exit;
 
   // now test TSDUBytes fns for copying resizing etc. ...
   SafeSetLength(arr, 0);
@@ -1005,7 +1015,7 @@ begin
   // resize more till get new address
   while parr = @arr[0] do begin
     SDUAddByte(arr, i);
-    inc(i);
+    Inc(i);
   end;
   //check old data zero
   for i := 0 to 99 do
@@ -1110,30 +1120,31 @@ begin
 
   if not Result then
     SDUMessageDlg('Freed memory wiping with TSDUBytes failed');
-   if not Result then exit;
+  if not Result then
+    exit;
 
   // test SDUXOR using diverse implementation SDUXORStr
   Randomize;
   setlength(arr, 100);
   setlength(arrB, 100);
   for i := low(arr) to High(arr) do begin
-    arr[i] := Random(High(Byte) + 1);
-        arrB[i] := Random(High(Byte) + 1);
-    end;
+    arr[i]  := Random(High(Byte) + 1);
+    arrB[i] := Random(High(Byte) + 1);
+  end;
 
   arrC := SDUXOR(arr, arrB);
   buf  := SDUXOrStr(SDUBytesToString(arr), SDUBytesToString(arrB));
   if SDUBytesToString(arrC) <> buf then
     Result := False;
 
-   if not Result then
+  if not Result then
     SDUMessageDlg('SDUXOR test failed');
   //timing - uses freeotfe vol with 100K iterations
-    Result := true;
+  Result := True;
   //test byte array fns
   assert('1234' = SDUBytesToString(SDUStringToSDUBytes('1234')));
 
-//  exit;
+  //  exit;
 
   mountList := TStringList.Create();
   try
@@ -1156,16 +1167,15 @@ begin
       if LES_FILES[vl] <> '' then
         les_file := vol_path + LES_FILES[vl];
 
-      if GetFreeOTFE().IsLUKSVolume(vol_path + TEST_VOLS[vl]) or (LES_FILES[vl] <> '') then
-      begin
-        if not GetFreeOTFE().MountLinux(mountList, mountedAs, True,
-          les_file, SDUStringToSDUBytes(PASSWORDS[vl]), key_file, False, nlLF, 0, True) then
+      if GetFreeOTFE().IsLUKSVolume(vol_path + TEST_VOLS[vl]) or (LES_FILES[vl] <> '') then begin
+        if not GetFreeOTFE().MountLinux(mountList, mountedAs, True, les_file,
+          SDUStringToSDUBytes(PASSWORDS[vl]), key_file, False, nlLF, 0, True) then
           Result := False;
       end else begin
         //call silently
         if not GetFreeOTFE().MountFreeOTFE(mountList, mountedAs, True,
-          key_file, SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False, True,
-          256, ITERATIONS[vl]) then
+          key_file, SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False,
+          True, 256, ITERATIONS[vl]) then
           Result := False;
       end;
       if not Result then begin
@@ -1265,13 +1275,13 @@ end;
 
 procedure TfrmFreeOTFEMain.FormCreate(Sender: TObject);
 begin
-   OTFEFreeOTFEBase_U.SetFreeOTFEType(TOTFEFreeOTFE);
+  OTFEFreeOTFEBase_U.SetFreeOTFEType(TOTFEFreeOTFE);
   // Prevent endless loops of UAC escalation...
   fallowUACEsclation := False;
 
   inherited;
 
-  fendSessionFlag   := False;
+  fendSessionFlag    := False;
   fIsAppShuttingDown := False;
 
   fIconMounted          := TIcon.Create();
@@ -1293,11 +1303,6 @@ begin
   ToolBar1.ShowHint := True;
 
   ToolBar1.Indent := 5;
-
-//  MessageDlg(_('All tests PASSED'),mtWarning,[mbOK],0);
-  SDUMessageDlg(         _(          'All tests PASSED'),          mtWarning,          [mbOK],          0          );
-  SDUMessageBox(Self.Handle,'All tests PASSED','tests',0);
-  exit;
 
 end;
 
@@ -1357,7 +1362,7 @@ procedure TfrmFreeOTFEMain.SetupOTFEComponent();
 begin
   inherited;
 
-  GetFreeOTFE() .DefaultDriveLetter := gSettings.OptDefaultDriveLetter;
+  GetFreeOTFE().DefaultDriveLetter := gSettings.OptDefaultDriveLetter;
   GetFreeOTFE().DefaultMountAs     := gSettings.OptDefaultMountAs;
 
 end;
@@ -1407,7 +1412,7 @@ begin
   if not (mountedOK) then begin
     if (GetFreeOTFE().LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
       SDUMessageDlg(
-        _('Unable to open Box.') + SDUCRLF + SDUCRLF +
+        _('Unable to open container.') + SDUCRLF + SDUCRLF +
         _('Please check your keyphrase and settings, and try again.'),
         mtError
         );
@@ -1416,9 +1421,10 @@ begin
     // Mount successful
     prettyMountedAs := PrettyPrintDriveLetters(mountedAs);
     if (CountValidDrives(mountedAs) = 1) then begin
-      msg := SDUParamSubstitute(_('Your DoxBox has been opened as drive: %1'), [prettyMountedAs]);
+      msg := SDUParamSubstitute(_('Your container has been opened as drive: %1'),
+        [prettyMountedAs]);
     end else begin
-      msg := SDUParamSubstitute(_('Your DoxBoxes have been opened as drives: %1'),
+      msg := SDUParamSubstitute(_('Your containers have been opened as drives: %1'),
         [prettyMountedAs]);
     end;
 
@@ -1539,8 +1545,8 @@ begin
   for i := 1 to length(selDrives) do begin
     propertiesDlg := TfrmFreeOTFEVolProperties.Create(self);
     try
-      propertiesDlg.DriveLetter  := selDrives[i];
-//      propertiesDlg.OTFEFreeOTFE := GetFreeOTFE() reeOTFE);
+      propertiesDlg.DriveLetter := selDrives[i];
+      //      propertiesDlg.OTFEFreeOTFE := GetFreeOTFE() reeOTFE);
       propertiesDlg.ShowModal();
     finally
       propertiesDlg.Free();
@@ -1646,7 +1652,7 @@ begin
           // the drives to be dismounted - and we're not dismounting that drive
           SDUMessageDlg(
             SDUParamSubstitute(_(
-            'The Box currently opened as %1: must be locked before %2: can be locked'),
+            'The container currently opened as %1: must be locked before %2: can be locked'),
             [subVols[j], tmpDrv]),
             mtError
             );
@@ -1782,7 +1788,7 @@ begin
   // Driver handling...
   actTogglePortableMode.Checked := (fcountPortableDrivers > 0);
   actTogglePortableMode.Enabled :=
-    (GetFreeOTFE() .CanUserManageDrivers() or
+    (GetFreeOTFE().CanUserManageDrivers() or
     // If we're on Vista, always allow the
     // toggle portable mode option; the
     // user can escalate UAC if needed
@@ -2001,18 +2007,18 @@ begin
   if (GetFreeOTFE().Version() < FREEOTFE_ID_v03_00_0000) then begin
     SDUMessageDlg(
       SDUParamSubstitute(_(
-      'The main DoxBox driver installed on this computer dates back to FreeOTFE %1'),
+      'The main LibreCrypt driver installed on this computer dates back to FreeOTFE %1'),
       [GetFreeOTFE().VersionStr()]) + SDUCRLF + SDUCRLF + _(
-      'It is highly recommended that you upgrade your DoxBox drivers to v3.00 or later as soon as possible, in order to allow the use of LRW and XTS based volumes.') + SDUCRLF + SDUCRLF + _('See documentation (installation section) for instructions on how to do this.'),
+      'It is highly recommended that you upgrade your LibreCrypt drivers to v3.00 or later as soon as possible, in order to allow the use of LRW and XTS based volumes.') + SDUCRLF + SDUCRLF + _('See documentation (installation section) for instructions on how to do this.'),
       mtWarning
       );
   end else
   if (GetFreeOTFE().Version() < FREEOTFE_ID_v04_30_0000) then begin
     SDUMessageDlg(
       SDUParamSubstitute(_(
-      'The main DoxBox driver installed on this computer dates back to FreeOTFE %1'),
+      'The main LibreCrypt driver installed on this computer dates back to FreeOTFE %1'),
       [GetFreeOTFE().VersionStr()]) + SDUCRLF + SDUCRLF + _(
-      'It is highly recommended that you upgrade your DoxBox drivers to those included in v4.30 or later as soon as possible, due to improvements in the main driver.') + SDUCRLF + SDUCRLF + _('See documentation (installation section) for instructions on how to do this.'),
+      'It is highly recommended that you upgrade your LibreCrypt drivers to those included in v4.30 or later as soon as possible, due to improvements in the main driver.') + SDUCRLF + SDUCRLF + _('See documentation (installation section) for instructions on how to do this.'),
       mtWarning
       );
   end else begin
@@ -2114,7 +2120,7 @@ function TfrmFreeOTFEMain.PortableModeSet(setTo: TPortableModeAction;
 begin
   Result := False;
 
-  if not (GetFreeOTFE() .CanUserManageDrivers()) then begin
+  if not (GetFreeOTFE().CanUserManageDrivers()) then begin
     // On Vista, escalate UAC
     if SDUOSVistaOrLater() then begin
       UACEscalateForPortableMode(setTo, suppressMsgs);
@@ -2167,7 +2173,7 @@ const
   // Subdirs which should be searched for drivers
   DRIVERS_SUBDIR_32_BIT = '\x86';
   DRIVERS_SUBDIR_64_BIT = '\amd64';
-  DRIVERS_SUBDIR_XP = '\xp_86';
+  DRIVERS_SUBDIR_XP     = '\xp_86';
 var
   fileIterator: TSDUFileIterator;
   filename:     String;
@@ -2178,12 +2184,12 @@ begin
   try
     driversDir := ExtractFilePath(Application.ExeName);
     if SDUOS64bit() then begin
-    driversDir := driversDir + DRIVERS_SUBDIR_64_BIT
+      driversDir := driversDir + DRIVERS_SUBDIR_64_BIT;
     end else begin
       if (SDUInstalledOS <= osWindowsXP) then begin
-      driversDir := driversDir + DRIVERS_SUBDIR_XP
-      end   else  begin
-      driversDir := driversDir + DRIVERS_SUBDIR_32_BIT;
+        driversDir := driversDir + DRIVERS_SUBDIR_XP;
+      end else begin
+        driversDir := driversDir + DRIVERS_SUBDIR_32_BIT;
       end;
     end;
 
@@ -2218,16 +2224,15 @@ begin
     if (driverFilenames.Count < 1) then begin
       if not (suppressMsgs) then begin
         SDUMessageDlg(
-          _('Unable to locate any portable DoxBox drivers.') + SDUCRLF +
+          _('Unable to locate any portable LibreCrypt drivers.') + SDUCRLF +
           SDUCRLF + _(
-          'Please ensure that the a copy of the DoxBox drivers (".sys" files) you wish to use are located in the correct directory.'),
+          'Please ensure that the a copy of the LibreCrypt drivers (".sys" files) you wish to use are located in the correct directory.'),
           mtWarning
           );
       end;
     end else begin
       DeactivateFreeOTFEComponent();
-      if GetFreeOTFE() .PortableStart(driverFilenames, not (suppressMsgs))
-      then begin
+      if GetFreeOTFE().PortableStart(driverFilenames, not (suppressMsgs)) then begin
         // Message commented out - it's pointless as user will know anyway because
         // either:
         //   a) They started it, or
@@ -2241,7 +2246,7 @@ begin
       end else begin
         if not (suppressMsgs) then begin
           SDUMessageDlg(
-            _('One or more of your portable DoxBox drivers could not be installed/started.') +
+            _('One or more of your portable LibreCrypt drivers could not be installed/started.') +
             SDUCRLF + SDUCRLF + TEXT_NEED_ADMIN + SDUCRLF + SDUCRLF + _(
             'Please select "File | Drivers..." to check which drivers are currently operating.'),
             mtWarning
@@ -2275,7 +2280,7 @@ begin
       end else begin
         stopOK := (SDUMessageDlg(_('You have one or more volumes mounted.') +
           SDUCRLF + SDUCRLF + _(
-          'If any of the currently mounted volumes makes use of any of the DoxBox drivers which are currently in portable mode, stopping portable mode is not advisable.') + SDUCRLF + SDUCRLF + _('It is recommended that you dismount all volumes before stopping portable mode.') + SDUCRLF + SDUCRLF + _('Do you wish to continue stopping portable mode?'), mtWarning, [mbYes, mbNo], 0) = mrYes);
+          'If any of the currently mounted volumes makes use of any of the LibreCrypt drivers which are currently in portable mode, stopping portable mode is not advisable.') + SDUCRLF + SDUCRLF + _('It is recommended that you dismount all volumes before stopping portable mode.') + SDUCRLF + SDUCRLF + _('Do you wish to continue stopping portable mode?'), mtWarning, [mbYes, mbNo], 0) = mrYes);
       end;
     end;
   end;
@@ -2283,7 +2288,7 @@ begin
 
   if stopOK then begin
     DeactivateFreeOTFEComponent();
-    if GetFreeOTFE() .PortableStop() then begin
+    if GetFreeOTFE().PortableStop() then begin
       // No point in informing user; they would have been prompted if they
       // wanted to do this, and they can tell they've stopped as the
       // application will just exit; only popping up a messagebox if there's a
@@ -2299,7 +2304,7 @@ begin
     end else begin
       if not (suppressMsgs) then begin
         SDUMessageDlg(
-          _('One or more of your portable DoxBox drivers could not be stopped/uninstalled.') +
+          _('One or more of your portable LibreCrypt drivers could not be stopped/uninstalled.') +
           SDUCRLF + SDUCRLF + TEXT_NEED_ADMIN + SDUCRLF + SDUCRLF + _(
           'Please select "File | Drivers..." to check which drivers are currently operating.'),
           mtWarning
@@ -2317,7 +2322,7 @@ var
 begin
   Result := False;
 
-  cntPortable := GetFreeOTFE() .DriversInPortableMode();
+  cntPortable := GetFreeOTFE().DriversInPortableMode();
 
   if (cntPortable < 0) then begin
     // We *should* be authorised to do this by the time we get here...
@@ -2471,12 +2476,11 @@ begin
   if (CanClose) then begin
     // If there's no drives mounted, and running in portable mode, prompt for
     // portable mode shutdown
-    if ((closingDrivesMounted <= 0) and
-      (GetFreeOTFE() .DriversInPortableMode() > 0)) then begin
+    if ((closingDrivesMounted <= 0) and (GetFreeOTFE().DriversInPortableMode() > 0)) then begin
       userConfirm := mrNo;
       if (gSettings.OptOnExitWhenPortableMode = oewpPromptUser) then begin
         userConfirm := SDUMessageDlg(
-          _('One or more of the DoxBox drivers are running in portable mode.') +
+          _('One or more of the LibreCrypt drivers are running in portable mode.') +
           SDUCRLF + SDUCRLF + _('Do you wish to shutdown portable mode before exiting?'),
           mtConfirmation, [mbYes, mbNo, mbCancel], 0);
       end else
@@ -2492,7 +2496,7 @@ begin
       end else
       if (userConfirm = mrYes) then begin
         fIsAppShuttingDown := True;
-        CanClose          := PortableModeSet(pmaStop, False);
+        CanClose           := PortableModeSet(pmaStop, False);
         fIsAppShuttingDown := CanClose;
       end else begin
         CanClose := True;
@@ -2544,10 +2548,10 @@ begin
     Action := caMinimize;
   end;
   // log closed OK
-if Action in [caHide, caFree]  then begin
-gSettings.feAppRunning := arClosed;
-gSettings.Save;
-end;
+  if Action in [caHide, caFree] then begin
+    gSettings.feAppRunning := arClosed;
+    gSettings.Save;
+  end;
 end;
 
 
@@ -2637,12 +2641,12 @@ end;
  // given identifier
 procedure TfrmFreeOTFEMain.EnableHotkey(hotKey: TShortCut; hotKeyIdent: Integer);
 var
-  modifiers:                    Integer;
-  vk:                           Word;
-  shiftState:                   TShiftState;
+  modifiers:  Integer;
+  vk:         Word;
+  shiftState: TShiftState;
   toEarlyToDetectOtherInstance: Boolean;
-  msg:                          String;
-  msgType:                      TMsgDlgType;
+  msg:        String;
+  msgType:    TMsgDlgType;
 begin
   if (hotkey = TextToShortCut(HOTKEY_TEXT_NONE)) then begin
     DisableHotkey(hotkeyIdent);
@@ -2701,7 +2705,7 @@ begin
         // was running
         if (SDUDetectExistingApp() > 0) then begin
           msg     := msg + SDUCRLF + SDUCRLF +
-            _('Another instance of DoxBox is running - the hotkey may already be assigned to that instance.');
+            _('Another instance of LibreCrypt is running - the hotkey may already be assigned to that instance.');
           msgType := mtWarning;
         end;
 
@@ -2754,13 +2758,14 @@ begin
   Result := SDUWinExecAndWait32(SDUGetWindowsDirectory() +
     '\sysnative\bcdedit.exe /set TESTSIGNING ' + IfThen(setOn, 'ON', 'OFF'),
     SW_SHOWNORMAL) <> $FFFFFFFF;
-   //is this necesary?
-  if result and setOn then
+  //is this necesary?
+  if Result and setOn then
     Result := SDUWinExecAndWait32(SDUGetWindowsDirectory() +
-    '\sysnative\bcdedit.exe /set loadoptions DDISABLE_INTEGRITY_CHECKS', SW_SHOWNORMAL) <> $FFFFFFFF;
-  if result and not setOn then
+      '\sysnative\bcdedit.exe /set loadoptions DDISABLE_INTEGRITY_CHECKS', SW_SHOWNORMAL) <>
+      $FFFFFFFF;
+  if Result and not setOn then
     Result := SDUWinExecAndWait32(SDUGetWindowsDirectory() +
-    '\sysnative\bcdedit.exe /deletevalue loadoptions', SW_SHOWNORMAL) <> $FFFFFFFF;
+      '\sysnative\bcdedit.exe /deletevalue loadoptions', SW_SHOWNORMAL) <> $FFFFFFFF;
 
   if not silent then begin
     if not Result then begin
@@ -2768,7 +2773,7 @@ begin
         mtError, [mbOK], 0);
     end else begin
       if setOn then
-        SDUMessageDlg(_('Please reboot. After rebooting the DoxBox drivers may be loaded'),
+        SDUMessageDlg(_('Please reboot. After rebooting the LibreCrypt drivers may be loaded'),
           mtInformation, [mbOK], 0)
       else
         SDUMessageDlg(_('After rebooting Test Mode will be off'), mtInformation, [mbOK], 0);
@@ -2776,16 +2781,16 @@ begin
   end;
 end;
 
-//function TfrmFreeOTFEMain.SetInstalled(): Boolean;
-//begin
-//  inherited;
-//  //needs to be place to save to
-//  if gSettings.OptSaveSettings = slNone then
-//    gSettings.OptSaveSettings := slProfile;//exe not supported in win >NT
-//
-//  gSettings.OptInstalled := True;
-//  Result                := gSettings.Save();//todo:needed?
-//end;
+ //function TfrmFreeOTFEMain.SetInstalled(): Boolean;
+ //begin
+ //  inherited;
+ //  //needs to be place to save to
+ //  if gSettings.OptSaveSettings = slNone then
+ //    gSettings.OptSaveSettings := slProfile;//exe not supported in win >NT
+ //
+ //  gSettings.OptInstalled := True;
+ //  Result                := gSettings.Save();//todo:needed?
+ //end;
 
 procedure TfrmFreeOTFEMain.actTestModeOffExecute(Sender: TObject);
 var
@@ -2823,7 +2828,7 @@ begin
     PortableModeSet(pmaStart, False);
   end;
 
-  fcountPortableDrivers := GetFreeOTFE() .DriversInPortableMode();
+  fcountPortableDrivers := GetFreeOTFE().DriversInPortableMode();
   EnableDisableControls();
 
 end;
@@ -2909,26 +2914,26 @@ end;
 procedure TfrmFreeOTFEMain.OverwriteDrives(drives: DriveLetterString;
   overwriteEntireDrive: Boolean);
 var
-  shredder:                   TShredder;
-  i:                          Integer;
-  currDrive:                  DriveLetterChar;
-  frmOverWriteMethod:         TfrmFreeOTFESelectOverwriteMethod;
+  shredder:           TShredder;
+  i:                  Integer;
+  currDrive:          DriveLetterChar;
+  frmOverWriteMethod: TfrmFreeOTFESelectOverwriteMethod;
   overwriteWithEncryptedData: Boolean;
-  allOK:                      Boolean;
-  getRandomBits:              Integer;
-  randomBuffer:               array of Byte;
-  overwriteOK:                TShredResult;
-  currDriveDevice:            String;
-  failMsg:                    String;
-  MouseRNGDialog1:            TMouseRNGDialog;
+  allOK:              Boolean;
+  getRandomBits:      Integer;
+  randomBuffer:       array of Byte;
+  overwriteOK:        TShredResult;
+  currDriveDevice:    String;
+  failMsg:            String;
+  MouseRNGDialog1:    TMouseRNGDialog;
 begin
-  overwriteOK                := srSuccess;
-  allOK                      := False;
+  overwriteOK := srSuccess;
+  allOK       := False;
   overwriteWithEncryptedData := False;
 
   frmOverWriteMethod := TfrmFreeOTFESelectOverwriteMethod.Create(self);
   try
-    frmOverWriteMethod.OTFEFreeOTFEObj := GetFreeOTFE() ;
+    frmOverWriteMethod.OTFEFreeOTFEObj := GetFreeOTFE();
     if (frmOverWriteMethod.ShowModal() = mrOk) then begin
       allOK := True;
 
@@ -2961,7 +2966,7 @@ begin
           { TODO 1 -otdk -cenhance : use cryptoapi etc if avail }
           if (getRandomBits > 0) then begin
             MouseRNGDialog1.RequiredBits := getRandomBits;
-            allOK                        := MouseRNGDialog1.Execute();
+            allOK := MouseRNGDialog1.Execute();
           end;
 
           if (allOK) then begin
@@ -3106,7 +3111,7 @@ end;
  //
  // !! IMPORTANT !!
  // NOTICE: THIS DOES NOT CARRY OUT ANY UAC ESCALATION!
- //         User should use "runas DoxBox.exe ..." if UAC escalation
+ //         User should use "runas LibreCrypt.exe ..." if UAC escalation
  //         required
  // !! IMPORTANT !!
  //
@@ -3119,23 +3124,23 @@ begin
 
   try
 
-  Result := ceUNKNOWN_ERROR;
+    Result := ceUNKNOWN_ERROR;
 
-  if not IsTestModeOn then begin
-    SDUMessageDlg(
-      _('The DoxBox drivers canot be installed as ''Test Mode'' is not enabled, please see the documentation on manually enabling Windows Test Mode.'),
-      mtError
-      );
-  end else begin
+    if not IsTestModeOn then begin
+      SDUMessageDlg(
+        _('The LibreCrypt drivers canot be installed as ''Test Mode'' is not enabled, please see the documentation on manually enabling Windows Test Mode.'),
+        mtError
+        );
+    end else begin
 
-    driverFilenames := TStringList.Create();
-    try
-      GetAllDriversUnderCWD(driverFilenames);
+      driverFilenames := TStringList.Create();
+      try
+        GetAllDriversUnderCWD(driverFilenames);
 
-      if (driverFilenames.Count <= 0) then begin
-        Result := ceFILE_NOT_FOUND;
-      end else begin
-        Result := ceSUCCESS;
+        if (driverFilenames.Count <= 0) then begin
+          Result := ceFILE_NOT_FOUND;
+        end else begin
+          Result := ceSUCCESS;
        {
           from delphi 7 project:"If under Vista x64, don't autostart the drivers after
           installing - this could cause a bunch of *bloody* *stupid*
@@ -3147,43 +3152,43 @@ begin
 
       //          vista64Bit := (SDUOSVistaOrLater() and SDUOS64bit());
        }
-        if driverControlObj.InstallMultipleDrivers(driverFilenames, False,
-          not silent, True// not(vista64Bit)
-          ) then begin
+          if driverControlObj.InstallMultipleDrivers(driverFilenames, False,
+            not silent, True// not(vista64Bit)
+            ) then begin
             { from delphi 7 project:"If Vista x64, we tell the user to reboot. That way, the drivers
              will be started up on boot - and the user won't actually see
              any stupid warning messages about "unsigned drivers" "
             }
-          if (
-            // vista64Bit and
-            not (silent)) then begin
-            SDUMessageDlg(
-              _('DoxBox drivers have been installed successfully.'),
-              mtInformation
-              );
+            if (
+              // vista64Bit and
+              not (silent)) then begin
+              SDUMessageDlg(
+                _('LibreCrypt drivers have been installed successfully.'),
+                mtInformation
+                );
+            end;
+          end else begin
+            Result := ceUNKNOWN_ERROR;
           end;
-        end else begin
-          Result := ceUNKNOWN_ERROR;
         end;
-      end;
 
-    finally
-      driverFilenames.Free();
+      finally
+        driverFilenames.Free();
+      end;
     end;
-  end;
 
   except
-      on EFreeOTFENeedAdminPrivs do begin
-         Result := ceADMIN_PRIVS_NEEDED;
-      end;
+    on EFreeOTFENeedAdminPrivs do begin
+      Result := ceADMIN_PRIVS_NEEDED;
     end;
+  end;
 end;
 
  // Handle "/install" command line
  //
  // !! IMPORTANT !!
  // NOTICE: THIS DOES NOT CARRY OUT ANY UAC ESCALATION!
- //         User should use "runas DoxBox.exe ..." if UAC escalation
+ //         User should use "runas LibreCrypt.exe ..." if UAC escalation
  //         required
  // !! IMPORTANT !!
  //
@@ -3226,7 +3231,7 @@ end;
  //
  // !! IMPORTANT !!
  // NOTICE: THIS DOES NOT CARRY OUT ANY UAC ESCALATION!
- //         User should use "runas DoxBox.exe ..." if UAC escalation
+ //         User should use "runas LibreCrypt.exe ..." if UAC escalation
  //         required
  // !! IMPORTANT !!
  //
@@ -3402,16 +3407,16 @@ end;
  // Returns: Exit code
 
  }
-//function TfrmFreeOTFEMain.HandleCommandLineOpts_SetInstalled(): eCmdLine_Exit;
-//begin
-//  Result := ceSUCCESS;
-//
-//  if SDUCommandLineSwitch(CMDLINE_SET_INSTALLED) then begin
-//
-//    if not SetInstalled() then
-//      Result := ceUNABLE_TO_SET_INSTALLED;
-//  end;
-//end;
+ //function TfrmFreeOTFEMain.HandleCommandLineOpts_SetInstalled(): eCmdLine_Exit;
+ //begin
+ //  Result := ceSUCCESS;
+ //
+ //  if SDUCommandLineSwitch(CMDLINE_SET_INSTALLED) then begin
+ //
+ //    if not SetInstalled() then
+ //      Result := ceUNABLE_TO_SET_INSTALLED;
+ //  end;
+ //end;
 
  // Handle "/create" command line
  // Returns: Exit code
@@ -3488,9 +3493,9 @@ begin
 
   if cmdExitCode = ceSUCCESS then
     cmdExitCode := HandleCommandLineOpts_EnableDevMenu();
-//
-//  if cmdExitCode = ceSUCCESS then
-//    cmdExitCode := HandleCommandLineOpts_SetInstalled();
+  //
+  //  if cmdExitCode = ceSUCCESS then
+  //    cmdExitCode := HandleCommandLineOpts_SetInstalled();
 
   // Driver control dialog
   if cmdExitCode = ceSUCCESS then
@@ -3516,7 +3521,8 @@ begin
     DeactivateFreeOTFEComponent();
 
   if cmdExitCode = ceADMIN_PRIVS_NEEDED then
-    MessageDlg('Administrator privileges are needed. Please run again as adminisrator',mtError,[mbOK],0);
+    MessageDlg('Administrator privileges are needed. Please run again as adminisrator',
+      mtError, [mbOK], 0);
   // Notice: CMDLINE_MINIMIZE handled in the .dpr
 
   // Return TRUE if there were no parameters specified on the command line
@@ -3691,7 +3697,7 @@ begin
   prevMounted := GetFreeOTFE().DrivesMounted;
   if not (GetFreeOTFE().CreateFreeOTFEVolumeWizard()) then begin
     if (GetFreeOTFE().LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
-      SDUMessageDlg(_('DoxBox could not be created'), mtError);
+      SDUMessageDlg(_('LibreCrypt container could not be created'), mtError);
     end;
   end else begin
     newMounted := GetFreeOTFE().DrivesMounted;
@@ -3699,8 +3705,8 @@ begin
     // If the "drive letters" mounted have changed, the new volume was
     // automatically mounted; setup for this
     if (newMounted = prevMounted) then begin
-      msg := _('DoxBox created successfully.') + SDUCRLF + SDUCRLF +
-        _('Please mount, and format this volume''s free space before use.');
+      msg := _('LibreCrypt container created successfully.') + SDUCRLF +
+        SDUCRLF + _('Please mount, and format this container''s free space before use.');
     end else begin
       // Get new drive on display...
       RefreshDrives();
@@ -3718,7 +3724,7 @@ begin
         end;
       end;
 
-      msg := SDUParamSubstitute(_('DoxBox created successfully and opened as: %1.'),
+      msg := SDUParamSubstitute(_('LibreCrypt container created successfully and opened as: %1.'),
         [createdMountedAs]);
     end;
 
@@ -3728,13 +3734,11 @@ begin
 end;
 
 procedure TfrmFreeOTFEMain.actInstallExecute(Sender: TObject);
-var
-  driverControlObj: TOTFEFreeOTFEDriverControl;
-
 begin
   inherited;
   //escalate priv and run all
-  UACEscalate('/'+CMDLINE_DRIVERCONTROL+ ' '+CMDLINE_INSTALL+' /'+CMDLINE_FILENAME+' '+CMDLINE_ALL,SDUCommandLineSwitch(CMDLINE_SILENT));
+  UACEscalate('/' + CMDLINE_DRIVERCONTROL + ' ' + CMDLINE_INSTALL + ' /' +
+    CMDLINE_FILENAME + ' ' + CMDLINE_ALL, SDUCommandLineSwitch(CMDLINE_SILENT));
 end;
 
 procedure TfrmFreeOTFEMain.actLinuxMountPartitionExecute(Sender: TObject);

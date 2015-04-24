@@ -26,7 +26,7 @@ uses
   OTFEFreeOTFE_fmeSelectPartition,
   OTFEFreeOTFE_PasswordRichEdit,
   OTFEFreeOTFE_frmWizard, OTFEFreeOTFE_InstructionRichEdit, lcDialogs,
-  SDUDialogs;
+  SDUDialogs, fmeNewPassword;
 
 type
   TfrmWizardCreateVolume = class (TfrmWizard)
@@ -48,11 +48,9 @@ type
     reInstructSize:  TLabel;
     reInstructHashCypherIV: TLabel;
     reInstructRNGSelect1: TLabel;
-    reInstructPassword: TLabel;
     Label13:         TLabel;
     GroupBox1:       TGroupBox;
     pbBrowseFilename: TButton;
-    Label17:         TLabel;
     Label7:          TLabel;
     SaveDialog:      TSDUSaveDialog;
     tsRNGMouseMovement: TTabSheet;
@@ -74,9 +72,6 @@ type
     lblMouseRNGBits: TLabel;
     pbHashInfo:      TButton;
     pbCypherInfo:    TButton;
-    preUserKey1:     TOTFEFreeOTFE_PasswordRichEdit;
-    preUserKey2:     TOTFEFreeOTFE_PasswordRichEdit;
-    Label3:          TLabel;
     tsFileOrPartition: TTabSheet;
     tsPartitionSelect: TTabSheet;
     reInstructPartitionSelect: TLabel;
@@ -165,9 +160,10 @@ type
     lblInstructFileOrPartition3: TLabel;
     lblInstructFileOrPartition2: TLabel;
     reInstructFilename2: TLabel;
+    frmeNewPassword: TfrmeNewPassword;
     procedure pbBrowseFilenameClick(Sender: TObject);
     procedure ckRNGClick(Sender: TObject);
-    procedure preUserKeyChange(Sender: TObject);
+    procedure fmePasswordChange(Sender: TObject);
     procedure edByteOffsetChange(Sender: TObject);
     procedure SizeChanged(Sender: TObject);
     procedure pbBrowseGPGClick(Sender: TObject);
@@ -192,6 +188,7 @@ type
     procedure rbCDBLocationClick2(Sender: TObject);
     procedure pbBrowseKeyfileClick(Sender: TObject);
     procedure cbDriveLetterChange(Sender: TObject);
+
   private
     // Advanced options...
     //    fkeyIterations:        Integer;
@@ -265,7 +262,6 @@ type
     function GetMasterKeyLength(): Integer;  // Returns length in *bits*
     // function GetRandomData_CDB(): Ansistring;
     function GetRandomData_PaddingKey(): TSDUBytes;
-    function GetPassword(): TSDUBytes;
 
     function GetIsHidden(): Boolean;
     function GetCDBInVolFile(): Boolean;
@@ -365,7 +361,7 @@ uses
   SDPartitionImage_File,
   SDFilesystem,
   SDFilesystem_FAT,
-                //freeotfe/doxbox
+                //freeotfe/LibreCrypt
   OTFEConsts_U, // Required for OTFE_ERR_USER_CANCEL
   OTFEFreeOTFEDLL_U,
   OTFEFreeOTFE_PKCS11,
@@ -467,7 +463,7 @@ begin
   SDUTranslateComp(reInstructRNGMouseMovement2);
   SDUTranslateComp(reInstructRNGPKCS11);
   SDUTranslateComp(reInstructRNGGPG);
-  SDUTranslateComp(reInstructPassword);
+
   SDUTranslateComp(reInstructSummary);
 
   // Center label (done dynamically due to language translation size
@@ -569,24 +565,6 @@ begin
   // tsRNGGPG
   lblGPGFilename.Caption := '';
 
-  // tsPassword
-  preUserKey1.Plaintext   := True;
-  // FreeOTFE volumes CAN have newlines in the user's password
-  preUserKey1.WantReturns := True;
-  preUserKey1.WordWrap    := True;
-  preUserKey1.Lines.Clear();
-  preUserKey1.PasswordChar := GetFreeOTFEBase().PasswordChar;
-  preUserKey1.WantReturns  := GetFreeOTFEBase().AllowNewlinesInPasswords;
-  preUserKey1.WantTabs     := GetFreeOTFEBase().AllowTabsInPasswords;
-
-  preUserKey2.Plaintext   := True;
-  // FreeOTFE volumes CAN have newlines in the user's password
-  preUserKey2.WantReturns := True;
-  preUserKey2.WordWrap    := True;
-  preUserKey2.Lines.Clear();
-  preUserKey2.PasswordChar := GetFreeOTFEBase().PasswordChar;
-  preUserKey2.WantReturns  := GetFreeOTFEBase().AllowNewlinesInPasswords;
-  preUserKey2.WantTabs     := GetFreeOTFEBase().AllowTabsInPasswords;
 
 
   // BECAUSE WE DEFAULTED TO USING A VOLUME *FILE*, WE MUST SET THE PARTITION
@@ -616,13 +594,11 @@ end;
 //all non-skipped tabs that are not required to be completed are listed here
 function TfrmWizardCreateVolume.IsTabRequired(tabSheet: TTabSheet): Boolean;
 begin
-  Result := not ((tabSheet = tsDriveLetter) or
-    (tabSheet = tsHashCypherIV) or (tabSheet = tsChaff) or
-    (tabSheet = tsMasterKeyLength) or (tabSheet = tsRNGSelect) or
+  Result := not ((tabSheet = tsDriveLetter) or (tabSheet = tsHashCypherIV) or
+    (tabSheet = tsChaff) or (tabSheet = tsMasterKeyLength) or (tabSheet = tsRNGSelect) or
     (tabSheet = tsRNGMouseMovement) or (tabSheet = tsRNGGPG) or
-    (tabSheet = tsRNGPKCS11) or (tabSheet = tsKeyIterations) or
-    (tabSheet = tsSalt) or (tabSheet = tsCDBLocation) or
-    (tabSheet = tsPadding) or (tabSheet = tsSummary));
+    (tabSheet = tsRNGPKCS11) or (tabSheet = tsKeyIterations) or (tabSheet = tsSalt) or
+    (tabSheet = tsCDBLocation) or (tabSheet = tsPadding) or (tabSheet = tsSummary));
 end;
 
 // Returns TRUE if the specified tab should be skipped, otherwise FALSE
@@ -920,8 +896,8 @@ begin
       // This is a good place to update the display of the number of random bits
       // generated...
       randomBitsGenerated     := CountMouseRNGData();
-      lblMouseRNGBits.Caption := SDUParamSubstitute(
-        _('Random bits generated: %1/%2'), [randomBitsGenerated, RNG_requiredBits()]);
+      lblMouseRNGBits.Caption := Format(_('Random bits generated: %d/%d'),
+        [randomBitsGenerated, RNG_requiredBits()]);
 
       Result           := (randomBitsGenerated >= RNG_requiredBits());
       MouseRNG.Enabled := not (Result);
@@ -944,7 +920,7 @@ begin
   if (checkTab = tsPassword) then begin
     // Ensure the password is confirmed, and something has been entered as a
     // password
-    Result              := (preUserKey1.Text = preUserKey2.Text) and (preUserKey1.Text <> '');
+    Result              := frmeNewPassword.IsPasswordValid;
     //enable 'finished' text iff done
     lblFinished.Visible := Result;
   end else
@@ -973,10 +949,9 @@ begin
     // Ensure salt length is a multiple of the cypher's blocksize
     aSelectedCypherBlockSize := SelectedCypherBlockSize();
     if ((aSelectedCypherBlockSize > 0) and
-      ((seSaltLength.Value mod aSelectedCypherBlockSize) <> 0))
-    then begin
-      SDUMessageDlg(SDUParamSubstitute(
-        _('The salt length must be a multiple of the cypher''s blocksize (%1)'),
+      ((seSaltLength.Value mod aSelectedCypherBlockSize) <> 0)) then begin
+      SDUMessageDlg(Format(_(
+        'The salt length must be a multiple of the cypher''s blocksize (%d)'),
         [aSelectedCypherBlockSize]),
         mtError);
       //      pcAdvancedOpts.ActivePage := tsSalt;
@@ -1068,7 +1043,7 @@ begin
   UpdateUIAfterChangeOnCurrentTab();
 end;
 
-procedure TfrmWizardCreateVolume.preUserKeyChange(Sender: TObject);
+procedure TfrmWizardCreateVolume.fmePasswordChange(Sender: TObject);
 begin
   UpdateUIAfterChangeOnCurrentTab();
 end;
@@ -1230,18 +1205,13 @@ begin
 
 end;
 
-function TfrmWizardCreateVolume.GetPassword(): TSDUBytes;
-begin
-  { TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
-  Result := SDUStringToSDUBytes(preUserKey1.Text);
-end;
+
 
 function TfrmWizardCreateVolume.GetMasterKeyLength(): Integer;
 begin
   Result := SelectedCypherKeySize();
-  if (Result < 0) then begin
+  if (Result < 0) then
     Result := seMasterKeyLength.Value;
-  end;
 end;
 
 
@@ -1303,7 +1273,7 @@ begin
         if not (GetFreeOTFEBase().GetSpecificHashDetails(fHashKernelModeDriverNames[i],
           StringToGUID(fHashGUIDs[i]), hashDetails)) then begin
           // Just warn user, and ignore...
-          SDUMessageDlg(SDUParamSubstitute(_('Unable to obtain hash details for %1'),
+          SDUMessageDlg(Format(_('Unable to obtain hash details for %s'),
             [tmpDisplayTitles[i]]), mtWarning);
           hashAcceptable := False;
         end else begin
@@ -1328,9 +1298,9 @@ begin
       if (cbHash.Items.Count = 0) then begin
         SDUMessageDlg(
           _(
-          'You do not appear to have any FreeOTFE hash drivers that can be used to create new DoxBox volumes installed and started.') +
+          'You do not appear to have any FreeOTFE hash drivers that can be used to create new LibreCrypt volumes installed and started.') +
           SDUCRLF + SDUCRLF + _(
-          'If you have only just installed DoxBox, you may need to restart your computer.'),
+          'If you have only just installed LibreCrypt, you may need to restart your computer.'),
           mtError
           );
       end;
@@ -1340,7 +1310,7 @@ begin
         _('Unable to obtain list of hashes.') + SDUCRLF + SDUCRLF + _(
         'Please ensure that you have one or more FreeOTFE hash drivers installed and started.') +
         SDUCRLF + SDUCRLF + _(
-        'If you have only just installed DoxBox, you may need to restart your computer.'),
+        'If you have only just installed LibreCrypt, you may need to restart your computer.'),
         mtError
         );
     end;
@@ -1357,8 +1327,7 @@ begin
   tmpDisplayTitles := TStringList.Create();
   try
     if (GetFreeOTFEBase().GetCypherList(tmpDisplayTitles, fCypherKernelModeDriverNames,
-      fCypherGUIDs))
-    then begin
+      fCypherGUIDs)) then begin
       cbCypher.Items.Clear();
       cbCypher.Items.AddStrings(tmpDisplayTitles);
     end else begin
@@ -1366,7 +1335,7 @@ begin
         _('Unable to obtain list of cyphers.') + SDUCRLF + SDUCRLF +
         _('Please ensure that you have one or more FreeOTFE cypher drivers installed and started.') +
         SDUCRLF + SDUCRLF + _(
-        'If you have only just installed DoxBox, you may need to restart your computer.'),
+        'If you have only just installed LibreCrypt, you may need to restart your computer.'),
         mtError
         );
     end;
@@ -1407,7 +1376,10 @@ begin
       fmeSelectPartition.Tag := 0;
     end;
   end;
-
+  if (pcWizard.ActivePage = tsPassword) then begin
+    frmeNewPassword.SetFocus;
+    frmeNewPassword.preUserKeyFirst.SetFocus;
+  end;
 end;
 
 procedure TfrmWizardCreateVolume.FormCreate(Sender: TObject);
@@ -1452,10 +1424,10 @@ begin
   cbDriveLetter.ItemIndex := 0;
 
   // tsCDBLocation
-  rbCDBInKeyfile.Checked := False;
-  rbCDBInVolFile.Checked := True;
-  lblKeyFilename.Caption := '';
-
+  rbCDBInKeyfile.Checked   := False;
+  rbCDBInVolFile.Checked   := True;
+  lblKeyFilename.Caption   := '';
+  frmeNewPassword.OnChange := fmePasswordChange;
 end;
 
 procedure TfrmWizardCreateVolume.FormDestroy(Sender: TObject);
@@ -1522,14 +1494,13 @@ begin
   reSummary.Lines.Clear();
   volSize := GetSize();
   if GetIsPartition() then
-    reSummary.Lines.Add(SDUParamSubstitute(_('Partition: %1'), [VolFilename]))
+    reSummary.Lines.Add(Format(_('Partition: %s'), [VolFilename]))
   else
-    reSummary.Lines.Add(SDUParamSubstitute(_('Filename: %1'), [VolFilename]));
+    reSummary.Lines.Add(Format(_('Filename: %s'), [VolFilename]));
 
 
   if GetIsHidden() then
-    reSummary.Lines.Add(SDUParamSubstitute(_('Hidden volume starting at offset: %1'),
-      [GetOffset()]));
+    reSummary.Lines.Add(Format(_('Hidden volume starting at offset: %d'), [GetOffset()]));
 
   if GetCDBInVolFile() then begin
     if (PaddingLength > ULLZero) then begin
@@ -1562,11 +1533,10 @@ begin
 
   reSummary.Lines.Add(SDUParamSubstitute(_('Hash algorithm: %1'),
     [cbHash.Items[cbHash.ItemIndex]]));
-  reSummary.Lines.Add('  ' + SDUParamSubstitute(_('[Hash driver: %1]'), [GetHashDriver()]));
-  reSummary.Lines.Add('  ' + SDUParamSubstitute(_('[Hash GUID: %1]'),
-    [GUIDToString(GetHashGUID())]));
+  reSummary.Lines.Add('  ' + Format(_('[Hash driver: %s]'), [GetHashDriver()]));
+  reSummary.Lines.Add('  ' + Format(_('[Hash GUID: %s]'), [GUIDToString(GetHashGUID())]));
 
-  reSummary.Lines.Add(SDUParamSubstitute(_('Key iterations: %1'), [seKeyIterations.Value]));
+  reSummary.Lines.Add(Format(_('Key iterations: %d'), [seKeyIterations.Value]));
 
 
   if (SelectedCypherBlockSize() <= 0) then begin
@@ -1584,11 +1554,11 @@ begin
 
   reSummary.Lines.Add(SDUParamSubstitute(_('Cypher algorithm: %1'),
     [cbCypher.Items[cbCypher.ItemIndex]]));
-  reSummary.Lines.Add('  ' + SDUParamSubstitute(_('[Cypher driver: %1]'), [GetCypherDriver()]));
+  reSummary.Lines.Add('  ' + Format(_('[Cypher driver: %s]'), [GetCypherDriver()]));
   reSummary.Lines.Add('  ' + SDUParamSubstitute(_('[Cypher GUID: %1]'),
     [GUIDToString(GetCypherGUID())]));
 
-  reSummary.Lines.Add(SDUParamSubstitute(_('Master key length: %1 bits'), [GetMasterKeyLength()]));
+  reSummary.Lines.Add(Format(_('Master key length: %s bits'), [GetMasterKeyLength()]));
 
   RNGs := '';
   if ckRNGCryptoAPI.Checked then begin
@@ -1619,7 +1589,7 @@ begin
       RNGS := RNGs + ', ' + ckRNGGPG.Caption;
     end;
   end;
-  reSummary.Lines.Add(SDUParamSubstitute(_('RNG: %1'), [RNGs]));
+  reSummary.Lines.Add(Format(_('RNG: %s'), [RNGs]));
 
 
   reSummary.Lines.Add(_('Password: <entered>'));
@@ -1660,7 +1630,7 @@ begin
   inherited;
 
   if GetIsPartition() then begin
-    if (SDUMessageDlg(_('You are about to create a new DoxBox on a disk/partition.' +
+    if (SDUMessageDlg(_('You are about to create a new container on a disk/partition.' +
       SDUCRLF + SDUCRLF + 'This process will OVERWRITE that disk/partition.' +
       SDUCRLF + SDUCRLF + 'Are you SURE you wish to continue?'), mtWarning,
       [mbYes, mbNo], 0) = mrNo) then begin
@@ -1671,7 +1641,7 @@ begin
   //ensure chaff data is included
   Update_tempCypherUseKeyLength;
   GetRandPool.SetUpRandPool(GetRNGSet(),
-    GetFreeOTFEBase().PKCS11Library, PKCS11TokenListSelected(cbToken),
+    PKCS11TokenListSelected(cbToken),
     lblGPGFilename.Caption);
 
   //  Result := GetRandPool.GetRandomData( (RNG_requiredBits() div 8), fCombinedRandomData);
@@ -1688,8 +1658,8 @@ begin
   except
     on E: EInsufficientRandom do
       SDUMessageDlg(
-        _('Insufficient random data generated: ' + E.message) + SDUCRLF + SDUCRLF +
-        PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
+        _('Insufficient random data generated: ' + E.message) + SDUCRLF +
+        SDUCRLF + PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
         mtError
         );
   end;
@@ -1737,11 +1707,11 @@ begin
       if not Result then
         // If there was a problem, and not a user cancel, warn user
         if userCancel then begin
-          SDUMessageDlg(_('Box creation canceled'), mtInformation);
+          SDUMessageDlg(_('Container creation canceled'), mtInformation);
         end else begin
           fileCreateProbMsg :=
-            SDUParamSubstitute(_(
-            'Unable to create Box; please ensure you have %1 free on the relevant drive'),
+            Format(_(
+            'Unable to create Container; please ensure you have %s free on the relevant drive'),
             [SDUFormatAsBytesUnits(volumeFileSize)]);
           if (volumeFileSize >= MAX_FAT_FILESIZE) then begin
             fileCreateProbMsg :=
@@ -1876,7 +1846,8 @@ GetFreeOTFEBase().DebugMsg('-- end salt --');
 
     // Write the header to the file, starting from the specified offset
     if not (GetFreeOTFEBase().WriteVolumeCriticalData(cdbFile, cdbOffset,
-      GetPassword(), saltBytes, seKeyIterations.Value, volumeDetails, CDBMetaData)) then begin
+      frmeNewPassword.GetKeyPhrase(), saltBytes, seKeyIterations.Value,
+      volumeDetails, CDBMetaData)) then begin
       SDUMessageDlg(
         _('Unable to write critical data block.'),
         mtError
@@ -1936,8 +1907,8 @@ begin
       end;
 
       MountedDrives := '';
-      if GetFreeOTFEBase().MountFreeOTFE(tmpVolumeFiles, GetPassword(), cdbFile,
-        '',  // Empty string - read the CDB
+      if GetFreeOTFEBase().MountFreeOTFE(tmpVolumeFiles, frmeNewPassword.GetKeyPhrase(),
+        cdbFile, '',  // Empty string - read the CDB
         PKCS11_NO_SLOT_ID, nil,
               // PKCS#11 session not used
         nil,  // PKCS#11 secret key not used
@@ -1972,7 +1943,7 @@ begin
 
     if not (mountedOK) then begin
       // Volumes couldn't be mounted for some reason...
-      errMsg := _('Unable to open box.');
+      errMsg := _('Unable to open container.');
     end;
   end;
 
@@ -2002,7 +1973,7 @@ begin
     if not (PartitionImage.Mounted) then begin
       PartitionImage.Free();
       PartitionImage := nil;
-      SDUMessageDlg('Box could be opened, but not mounted as a partition image?!', mtError);
+      SDUMessageDlg('Container could be opened, but not mounted as a partition image?!', mtError);
     end;
 
     if (PartitionImage <> nil) then begin
@@ -2183,7 +2154,7 @@ begin
   // Warn user if volume size smaller than PDA version/ hidden min
   if (GetSize() < minSize) then begin
     SDUMessageDlg(
-      Format(_('Please note: If you would like to be able to add a hidden box to your DoxBox later, please use a size greater than %d MB'), [MIN_REC_VOLUME_SIZE]),
+      Format(_('Please note: If you would like to be able to add a hidden container to your container later, please use a size greater than %d MB'), [MIN_REC_VOLUME_SIZE]),
       mtWarning
       );
   end;
@@ -2207,8 +2178,7 @@ begin
   se64UnitByteOffset.Value := 0;
 
   lblPartitionDiskSize.Caption :=
-    SDUParamSubstitute(_('(Approx: %1)'),
-    [SDUFormatAsBytesUnits(fmeSelectPartition.SelectedSize())]);
+    Format(_('(Approx: %s)'), [SDUFormatAsBytesUnits(fmeSelectPartition.SelectedSize())]);
 
   // Size tab must be marked as incomplete
   tsSize.Tag := 0;
@@ -2389,16 +2359,15 @@ begin
     sectorID, FREEOTFE_v1_DUMMY_SECTOR_SIZE, ftempCypherKey, IV, plaintext, cyphertext)) then begin
     SDUMessageDlg(
       _('Error: unable to encrypt pseudorandom data before using for overwrite buffer') +
-      SDUCRLF + SDUCRLF + SDUParamSubstitute(_('Error #: %1'), [GetFreeOTFEBase().LastErrorCode]),
+      SDUCRLF + SDUCRLF + Format(_('Error #: %d'), [GetFreeOTFEBase().LastErrorCode]),
       mtError
       );
 
     generatedOK := False;
   end else begin
     // Copy the encrypted data into the outputBlock
-    for i := 0 to (bytesRequired - 1) do begin
+    for i := 0 to (bytesRequired - 1) do
       outputBlock[i] := Byte(cyphertext[i + 1]);
-    end;
 
     generatedOK := True;
   end;
@@ -2484,12 +2453,31 @@ var
   i:         Integer;
   currDrive: DriveLetterChar;
   driveNum:  Word;
+  formatRet: DWORD;
+  ok:        Boolean;
+  //  hndle:HWND;
 begin
-
+  ok := True;
   for i := 1 to length(drivesToFormat) do begin
     currDrive := drivesToFormat[i];
     driveNum  := Ord(currDrive) - Ord('A');
-    SHFormatDrive(frm.Handle, driveNum, SHFMT_ID_DEFAULT, SHFMT_OPT_FULL);
+    {TODO: use cmd line - se below}
+    //http://stackoverflow.com/questions/2648305/format-drive-by-c
+    formatRet := SHFormatDrive(frm.Handle, driveNum, SHFMT_ID_DEFAULT, SHFMT_OPT_FULL);
+
+    if formatRet <> 0 then begin
+      ok := False;
+      break;
+    end else begin
+    {  dialog only returns when done - use cmd line as above
+      // close format dlg
+      // see also http://stackoverflow.com/questions/15469657/why-is-findwindow-not-100-reliable
+      hndle := FindWindow('IEFrame', NIL);
+      if hndle>0 then begin
+      PostMessage(hndle, WM_CLOSE, 0, 0);
+      end;
+      }
+    end;
   end;
 
   // This is *BIZARRE*.
@@ -2501,12 +2489,11 @@ begin
   // FREAKY!
   // OTOH, it does means we can detect and inform the user that the format
   // just failed...
-  if (Pos(uppercase(FORMAT_CAPTION), uppercase(frm.Caption)) > 0) then begin
+  if (Pos(uppercase(FORMAT_CAPTION), uppercase(frm.Caption)) > 0) or not ok then begin
     frm.Caption := Application.Title;
     SDUMessageDlg(
-      _('Your encrypted drive could not be formatted at this time.') + SDUCRLF +
-      SDUCRLF + _(
-      'Please lock this Box and re-open it with the "Mount for all users" option checked, before trying again.'),
+      _('Your encrypted drive could not be formatted.') + SDUCRLF + SDUCRLF +
+      _('Please lock this container and re-open it with the "Mount for all users" option checked, before trying again.'),
       mtError
       );
   end;

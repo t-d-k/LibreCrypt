@@ -13,7 +13,7 @@ interface
 uses
 
   Windows,// Required for DWORD
-  //doxbox
+  //LibreCrypt
    OTFEFreeOTFE_DriverAPI, SDUGeneral
   ;
 

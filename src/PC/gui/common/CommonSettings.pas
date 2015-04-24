@@ -32,12 +32,13 @@ const
   SECTION_GENERAL = 'General';
 
 type
-  //ufRandom = once per thousdand startups
-  TUpdateFrequency = (ufNever, ufDaily, ufWeekly, ufMonthly, ufAnnually, ufRandom);
+  // ufRandom = once per thousand startups, randomly - default
+  // ufAlways = each time starts up
+  TUpdateFrequency = (ufNever, ufAlways, ufWeekly, ufMonthly, ufAnnually, ufRandom);
 { TODO -otdk -crefactor : why resource strings? - array easier }
 resourcestring
   UPDATEFREQ_NEVER    = 'Never';
-  UPDATEFREQ_DAILY    = 'Daily';
+  UPDATEFREQ_ALWAYS   = 'Every Start Up';
   UPDATEFREQ_WEEKLY   = 'Weekly';
   UPDATEFREQ_MONTHLY  = 'Monthly';
   UPDATEFREQ_ANNUALLY = 'Annually';
@@ -45,7 +46,7 @@ resourcestring
 
 const
   UpdateFrequencyTitlePtr: array [TUpdateFrequency] of Pointer =
-    (@UPDATEFREQ_NEVER, @UPDATEFREQ_DAILY, @UPDATEFREQ_WEEKLY, @UPDATEFREQ_MONTHLY,
+    (@UPDATEFREQ_NEVER, @UPDATEFREQ_ALWAYS, @UPDATEFREQ_WEEKLY, @UPDATEFREQ_MONTHLY,
     @UPDATEFREQ_ANNUALLY, @UPDATEFREQ_RANDOM
     );
 

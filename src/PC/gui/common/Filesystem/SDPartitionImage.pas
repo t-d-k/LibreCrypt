@@ -14,38 +14,38 @@ type
 
 {$M+}// Required to get rid of compiler warning "W1055 PUBLISHED caused RTTI ($M+) to be added to type '%s'"
   TSDPartitionImage = class
-  PROTECTED
+  protected
     FMounted:    Boolean;
     FSectorSize: Integer;
     FReadOnly:   Boolean;
 
     FSerializeCS: TCriticalSection; // Protect by serializing read/write
-                                    // operations in multithreaded operations
+    // operations in multithreaded operations
 
     procedure SetMounted(newMounted: Boolean);
     procedure AssertMounted();
 
-    function DoMount(): Boolean; VIRTUAL;
-    procedure DoDismount(); VIRTUAL;
+    function DoMount(): Boolean; virtual;
+    procedure DoDismount(); virtual;
 
-    function GetSize(): ULONGLONG; VIRTUAL; ABSTRACT;
+    function GetSize(): ULONGLONG; virtual; abstract;
 
-  PUBLIC
-    constructor Create(); VIRTUAL;
-    destructor Destroy(); OVERRIDE;
+  public
+    constructor Create(); virtual;
+    destructor Destroy(); override;
 
     function ReadSector(sectorID: uint64; sector: TStream; maxSize: Integer = -1): Boolean;
-      VIRTUAL;
+      virtual;
     function WriteSector(sectorID: uint64; sector: TStream; maxSize: Integer = -1): Boolean;
-      VIRTUAL;
+      virtual;
     function ReadConsecutiveSectors(startSectorID: uint64; sectors: TStream;
-      maxSize: Integer = -1): Boolean; VIRTUAL; ABSTRACT;
+      maxSize: Integer = -1): Boolean; virtual; abstract;
     function WriteConsecutiveSectors(startSectorID: uint64; sectors: TStream;
-      maxSize: Integer = -1): Boolean; VIRTUAL; ABSTRACT;
+      maxSize: Integer = -1): Boolean; virtual; abstract;
 
     function CopySector(srcSectorID: uint64; destSectorID: uint64): Boolean;
 
-  PUBLISHED
+  published
     property Mounted: Boolean Read FMounted Write SetMounted;
     property ReadOnly: Boolean Read FReadOnly Write FReadOnly;
     property Size: ULONGLONG Read GetSize;
@@ -122,23 +122,21 @@ end;
 
 function TSDPartitionImage.CopySector(srcSectorID: uint64; destSectorID: uint64): Boolean;
 var
-  allOK:     Boolean;
   tmpSector: TSDUMemoryStream;
 begin
-  allOK := False;
+  Result := False;
 
   tmpSector := TSDUMemoryStream.Create();
   try
     tmpSector.Position := 0;
     if ReadSector(srcSectorID, tmpSector) then begin
       tmpSector.Position := 0;
-      allOK              := WriteSector(srcSectorID, tmpSector);
+      Result             := WriteSector(srcSectorID, tmpSector);
     end;
   finally
     tmpSector.Free();
   end;
 
-  Result := allOK;
 end;
 
 end.

@@ -31,21 +31,21 @@ resourcestring
 
 type
   TSDDirItem_FAT = class (TSDDirItem)
-  PRIVATE
+  private
     FAttributes: Byte;
-  PROTECTED
+  protected
     function CheckAttr(attr: Byte): Boolean;
     procedure SetAttr(attr: Byte; Value: Boolean);
 
-    function GetIsFile(): Boolean; OVERRIDE;
-    procedure SetIsFile(Value: Boolean); OVERRIDE;
-    function GetIsDirectory(): Boolean; OVERRIDE;
-    procedure SetIsDirectory(Value: Boolean); OVERRIDE;
+    function GetIsFile(): Boolean; override;
+    procedure SetIsFile(Value: Boolean); override;
+    function GetIsDirectory(): Boolean; override;
+    procedure SetIsDirectory(Value: Boolean); override;
 
-    function GetIsReadonly(): Boolean; OVERRIDE;
-    procedure SetIsReadonly(Value: Boolean); OVERRIDE;
-    function GetIsHidden(): Boolean; OVERRIDE;
-    procedure SetIsHidden(Value: Boolean); OVERRIDE;
+    function GetIsReadonly(): Boolean; override;
+    procedure SetIsReadonly(Value: Boolean); override;
+    function GetIsHidden(): Boolean; override;
+    procedure SetIsHidden(Value: Boolean); override;
 
     function GetIsArchive(): Boolean;
     procedure SetIsArchive(Value: Boolean);
@@ -57,16 +57,16 @@ type
 
     function GetIsVolumeLabel(): Boolean;
     procedure SetIsVolumeLabel(Value: Boolean);
-  PUBLIC
+  public
     FilenameDOS: Ansistring;
 
     TimestampCreation:   TTimeStamp;
     DatestampLastAccess: TDate;
     FirstCluster:        DWORD;
 
-    procedure Assign(srcItem: TSDDirItem_FAT); OVERLOAD;
+    procedure Assign(srcItem: TSDDirItem_FAT); overload;
 
-  PUBLISHED
+  published
     property IsVolumeLabel: Boolean Read GetIsVolumeLabel Write SetIsVolumeLabel;
     property IsArchive: Boolean Read GetIsArchive Write SetIsArchive;
     property IsSystem: Boolean Read GetIsSystem Write SetIsSystem;
@@ -89,19 +89,19 @@ type
   TSDBootSector_FAT = record
     FATType: TFATType;
 
-    JMP:                 array [1..3] of Byte;
-    OEMName:             Ansistring;
-    BytesPerSector:      Word;
-    SectorsPerCluster:   Byte;
+    JMP:           array [1..3] of Byte;
+    OEMName:       Ansistring;
+    BytesPerSector: Word;
+    SectorsPerCluster: Byte;
     ReservedSectorCount: Word;
-    FATCount:            Byte;
-    MaxRootEntries:      Word;
-    TotalSectors:        DWORD;
-    MediaDescriptor:     Byte;
-    SectorsPerFAT:       DWORD;
-    SectorsPerTrack:     Word;
-    NumberOfHeads:       Word;
-    HiddenSectors:       DWORD;
+    FATCount:      Byte;
+    MaxRootEntries: Word;
+    TotalSectors:  DWORD;
+    MediaDescriptor: Byte;
+    SectorsPerFAT: DWORD;
+    SectorsPerTrack: Word;
+    NumberOfHeads: Word;
+    HiddenSectors: DWORD;
 
     PhysicalDriveNo:   Byte;
     ExtendedBootSig:   Byte;
@@ -111,16 +111,16 @@ type
     BootSectorSig:     Word;
 
     // FAT32 only
-    FATFlags:               Word;
-    Version:                Word;
-    SectorNoFSInfoSector:   Word;
+    FATFlags: Word;
+    Version:  Word;
+    SectorNoFSInfoSector: Word;
     SectorNoBootSectorCopy: Word;
 
     RootDirFirstCluster: DWORD;
   end;
 
   TSDFilesystem_FAT = class (TSDCustomFilesystemPartitionBased)
-  PRIVATE
+  private
     FPreserveTimeDateStamps: Boolean;
 
     function GetFATEntry_FAT12(clusterID: DWORD): DWORD;
@@ -134,19 +134,19 @@ type
     function _ReadWriteClusterChainData(readNotWrite: Boolean; chain: TSDFATClusterChain;
       data: TStream; maxSize: Int64 = -1): Boolean;
 
-  PROTECTED
+  protected
     FBootSectorSummary: TSDBootSector_FAT;
 
-    FFAT:               TSDUMemoryStream;
-                                      // IMPORTANT: Access to this must be protected by FSerializeCS
-    FFATEntrySize:      DWORD;        // Size of each FAT entry
-    FFATEntryMask:      DWORD;
-    FFATEntryFree:      DWORD;        // Free (unused) FAT entry
+    FFAT:          TSDUMemoryStream;
+    // IMPORTANT: Access to this must be protected by FSerializeCS
+    FFATEntrySize: DWORD;        // Size of each FAT entry
+    FFATEntryMask: DWORD;
+    FFATEntryFree: DWORD;             // Free (unused) FAT entry
     FFATEntryUsedStart: DWORD;        // Very first valid cluster number
-    FFATEntryUsedEnd:   DWORD;        // Very lsat valid cluster number
+    FFATEntryUsedEnd: DWORD;          // Very lsat valid cluster number
     FFATEntryBadSector: DWORD;        // Cluster contains bad sector
-    FFATEntryEOCStart:  DWORD;        // End of cluster chain
-    FFATEntryEOCEnd:    DWORD;        // End of cluster chain
+    FFATEntryEOCStart: DWORD;         // End of cluster chain
+    FFATEntryEOCEnd: DWORD;           // End of cluster chain
     procedure SetupFFATEntryValues(SetupAsFATType: TFATType);
 
     function ExtractFAT1216RootDir(data: TStream): Boolean;
@@ -166,10 +166,10 @@ type
 
     procedure AssertSufficientData(data: TStream; maxSize: Int64 = -1);
 
-    function GetCaseSensitive(): Boolean; OVERRIDE;
+    function GetCaseSensitive(): Boolean; override;
 
-    function DoMount(): Boolean; OVERRIDE;
-    procedure DoDismount(); OVERRIDE;
+    function DoMount(): Boolean; override;
+    procedure DoDismount(); override;
 
     procedure FreeCachedFAT();
 
@@ -251,11 +251,11 @@ type
     // maxSize - Extract up to this number of bytes; specify -1 to extract all
     //           data for the cluster chain
     function ExtractClusterChainData(clusterID: DWORD; data: TStream;
-      maxSize: Int64 = -1): Boolean; OVERLOAD;
+      maxSize: Int64 = -1): Boolean; overload;
     function ExtractClusterChainData(clusterID: DWORD; filename: String;
-      maxSize: Int64 = -1): Boolean; OVERLOAD;
+      maxSize: Int64 = -1): Boolean; overload;
     function ExtractClusterChainData(chain: TSDFATClusterChain; data: TStream;
-      maxSize: Int64 = -1): Boolean; OVERLOAD;
+      maxSize: Int64 = -1): Boolean; overload;
 
 
     // -- FREE CLUSTER RELATED --
@@ -271,11 +271,11 @@ type
     // Free up a cluster chain, starting from the specified cluster ID
     // !! WARNING !!
     // If this function returns FALSE, the FAT may be in an inconsistent state!
-    function FreeClusterChain(clusterID: DWORD): Boolean; OVERLOAD;
+    function FreeClusterChain(clusterID: DWORD): Boolean; overload;
     // Free up all clusters in the specifid cluster chain
     // !! WARNING !!
     // If this function returns FALSE, the FAT may be in an inconsistent state!
-    function FreeClusterChain(clusterChain: TSDFATClusterChain): Boolean; OVERLOAD;
+    function FreeClusterChain(clusterChain: TSDFATClusterChain): Boolean; overload;
 
 
     // -- STORE CLUSTER RELATED --
@@ -313,14 +313,14 @@ type
     function SectorIDForCluster(clusterID: DWORD): DWORD;
 
     // FAT numbers must be >= 1
-    function ReadFAT(fatNo: DWORD): Boolean; OVERLOAD;
-    function ReadFAT(fatNo: DWORD; stmFAT: TSDUMemoryStream): Boolean; OVERLOAD;
-    function WriteFAT(fatNo: DWORD): Boolean; OVERLOAD;
-    function WriteFAT(fatNo: DWORD; stmFAT: TSDUMemoryStream): Boolean; OVERLOAD;
+    function ReadFAT(fatNo: DWORD): Boolean; overload;
+    function ReadFAT(fatNo: DWORD; stmFAT: TSDUMemoryStream): Boolean; overload;
+    function WriteFAT(fatNo: DWORD): Boolean; overload;
+    function WriteFAT(fatNo: DWORD; stmFAT: TSDUMemoryStream): Boolean; overload;
     function WriteFATToAllCopies(): Boolean;
 
-    function GetFreeSpace(): ULONGLONG; OVERRIDE;
-    function GetSize(): ULONGLONG; OVERRIDE;
+    function GetFreeSpace(): ULONGLONG; override;
+    function GetSize(): ULONGLONG; override;
 
     function PathParent(path: WideString): WideString;
 
@@ -338,7 +338,7 @@ type
     function CheckFilesystem_ConsistentFATs(): Boolean;
     function CheckFilesystem_Crosslinks(): Boolean;
 
-  PUBLIC
+  public
     // If set, preserve time/datestamps when storing/extracting files
     property PreserveTimeDateStamps: Boolean Read FPreserveTimeDateStamps
       Write FPreserveTimeDateStamps;
@@ -360,19 +360,19 @@ type
     property FATType: TFATType Read FBootSectorSummary.FATType;
     property RootDirFirstCluster: DWORD Read FBootSectorSummary.RootDirFirstCluster;
 
-    constructor Create(); OVERRIDE;
-    destructor Destroy(); OVERRIDE;
+    constructor Create(); override;
+    destructor Destroy(); override;
 
-    function FilesystemTitle(): String; OVERRIDE;
+    function FilesystemTitle(): String; override;
 
-    function Format(): Boolean; OVERRIDE;
+    function Format(): Boolean; override;
     function _Format(fmtType: TFATType): Boolean;
 
-    function CheckFilesystem(): Boolean; OVERRIDE;
+    function CheckFilesystem(): Boolean; override;
 
     function LoadContentsFromDisk(path: String; items: TSDDirItemList): Boolean;
-      OVERLOAD; OVERRIDE;
-    function ExtractFile(srcPath: WideString; extractToFilename: String): Boolean; OVERRIDE;
+      overload; override;
+    function ExtractFile(srcPath: WideString; extractToFilename: String): Boolean; override;
 
     // If parentDir is not nil, it will have the dirToStoreIn's details
     // *assigned* to it
@@ -381,12 +381,12 @@ type
       item: TSDDirItem_FAT; data: TStream; parentDir: TSDDirItem_FAT = nil): Boolean;
 
     function MoveFileOrDir(srcItemPath: WideString;
-                                // The path and filename of the file/dir to be moved
+    // The path and filename of the file/dir to be moved
       destItemPath: WideString  // The new path and filename
       ): Boolean;
 
     function CopyFile(srcItemPath: WideString;
-                                // The path and filename of the file to be copied
+    // The path and filename of the file to be copied
       destItemPath: WideString  // The path and filename of the copy
       ): Boolean;
 
@@ -398,7 +398,7 @@ type
     function DeleteDir(fullPathToItem: WideString): Boolean;
     function DeleteFileOrDir(fullPathToItem: WideString): Boolean;
 
-    function GetItem(path: WideString; item: TSDDirItem): Boolean; OVERRIDE;
+    function GetItem(path: WideString; item: TSDDirItem): Boolean; override;
     function GetItem_FAT(path: WideString; item: TSDDirItem_FAT): Boolean;
 
     function IsValidFilename(filename: String): Boolean;
@@ -487,7 +487,7 @@ const
   // Zero here in order to be consistent with FAT entries relating to root dir
   FAT1216_ROOT_DIR_FIRST_CLUSTER = 0;
 
-                                // FAT12 FAT entries...
+  // FAT12 FAT entries...
   FAT12_ENTRY_SIZE       = 1.5; // Bytes per FAT entry
   FAT12_ENTRY_MASK       = $FFF;
   FAT12_ENTRY_FREE       = $000;
@@ -496,7 +496,7 @@ const
   FAT12_ENTRY_BAD_SECTOR = $FF7;
   FAT12_ENTRY_EOC_START  = $FF8;
   FAT12_ENTRY_EOC_END    = $FFF;
-                              // FAT16 FAT entries...
+  // FAT16 FAT entries...
   FAT16_ENTRY_SIZE       = 2; // Bytes per FAT entry
   FAT16_ENTRY_MASK       = $FFFF;
   FAT16_ENTRY_FREE       = $0000;
@@ -505,7 +505,7 @@ const
   FAT16_ENTRY_BAD_SECTOR = $FFF7;
   FAT16_ENTRY_EOC_START  = $FFF8;
   FAT16_ENTRY_EOC_END    = $FFFF;
-                              // Note: Only use the 7 byte LSB for FAT32; the highest *nibble* is RESERVED.
+  // Note: Only use the 7 byte LSB for FAT32; the highest *nibble* is RESERVED.
   FAT32_ENTRY_SIZE       = 4; // Bytes per FAT entry
   FAT32_ENTRY_MASK       = $0FFFFFFF;
   FAT32_ENTRY_FREE       = $0000000;
@@ -849,7 +849,6 @@ begin
     FMounted := False;
   end;
 
-
 end;
 
 procedure TSDFilesystem_FAT.DoDismount();
@@ -1013,7 +1012,6 @@ begin
     end;
   end;
 
-
 end;
 
 function TSDFilesystem_FAT.WriteBootSector(newBootSector: TSDBootSector_FAT): Boolean;
@@ -1167,7 +1165,6 @@ begin
     FSerializeCS.Release();
   end;
 
-
 end;
 
 
@@ -1182,7 +1179,6 @@ begin
     FreeCachedFAT();
   end;
 
-
 end;
 
 function TSDFilesystem_FAT.WriteFAT(fatNo: DWORD): Boolean;
@@ -1194,12 +1190,11 @@ begin
     Result        := WriteFAT(fatNo, FFAT);
   end;
 
-
 end;
 
 function TSDFilesystem_FAT.WriteFATToAllCopies(): Boolean;
 var
-  i:      Integer;
+  i: Integer;
 begin
   Result := True;
 
@@ -1209,14 +1204,12 @@ begin
     end;
   end;
 
-
 end;
 
 function TSDFilesystem_FAT.ReadFAT(fatNo: DWORD; stmFAT: TSDUMemoryStream): Boolean;
 var
   FATStartSectorID: DWORD;
   i:                DWORD;
-  allOK:            Boolean;
 begin
   // Sanity checking
   Assert(
@@ -1228,24 +1221,22 @@ begin
     'FAT number must be 1 <= x <= ' + IntToStr(FATCount) + ' when reading FAT'
     );
 
-  allOK := True;
+  Result := True;
 
   FATStartSectorID := ReservedSectorCount + ((fatNo - 1) * SectorsPerFAT);
   for i := 0 to (SectorsPerFAT - 1) do begin
-    allOK := PartitionImage.ReadSector((FATStartSectorID + i), stmFAT);
+    Result := PartitionImage.ReadSector((FATStartSectorID + i), stmFAT);
 
-    if not (allOK) then begin
+    if not (Result) then begin
       break;
     end;
   end;
 
-  Result := allOK;
 end;
 
 function TSDFilesystem_FAT.WriteFAT(fatNo: DWORD; stmFAT: TSDUMemoryStream): Boolean;
 var
   FATStartSectorID: DWORD;
-  allOK:            Boolean;
 begin
   // Sanity checking
   Assert(
@@ -1258,10 +1249,9 @@ begin
     );
 
   FATStartSectorID := ReservedSectorCount + ((fatNo - 1) * SectorsPerFAT);
-  allOK            := PartitionImage.WriteConsecutiveSectors(FATStartSectorID,
+  Result           := PartitionImage.WriteConsecutiveSectors(FATStartSectorID,
     stmFAT, (SectorsPerFAT * BytesPerSector));
 
-  Result := allOK;
 end;
 
 function TSDFilesystem_FAT.ExtractClusterChain(clusterID: DWORD): TSDFATClusterChain;
@@ -1278,17 +1268,15 @@ begin
     _TraverseClusterChain(clusterID, Result);
   end;
 
-
 end;
 
 
 function TSDFilesystem_FAT.StoreClusterChain(chain: TSDFATClusterChain): Boolean;
 var
-  allOK:       Boolean;
   i:           Integer;
   nextCluster: DWORD;
 begin
-  allOK := True;
+  Result := True;
 
   // Special case - cluster zero on a FAT12/FAT16 is the root dir.
   // In this case, just return a single "cluster" with that cluster ID
@@ -1312,15 +1300,14 @@ begin
         nextCluster := FFATEntryEOCEnd;
       end;
 
-      allOK := SetFATEntry(chain[i], nextCluster);
-      if not (allOK) then begin
+      Result := SetFATEntry(chain[i], nextCluster);
+      if not (Result) then begin
         break;
       end;
 
     end;
   end;
 
-  Result := allOK;
 end;
 
 
@@ -1329,32 +1316,31 @@ function TSDFilesystem_FAT.CopyClusterChainData(srcChain: TSDFATClusterChain;
   destChain: TSDFATClusterChain): Boolean;
 var
   i:       Integer;
-  allOK:   Boolean;
   tmpData: TSDUMemoryStream;
 begin
-  allOK := True;
+  Result := True;
 
   // Sanity check both cluster chains are the same length
-  if allOK then begin
-    allOK := (length(srcChain) = length(destChain));
+  if Result then begin
+    Result := (length(srcChain) = length(destChain));
   end;
 
-  if allOK then begin
+  if Result then begin
     tmpData := TSDUMemoryStream.Create();
     try
       // For each cluster in the chain...
       for i := low(srcChain) to high(srcChain) do begin
         // Read in the src cluster...
         tmpData.Position := 0;
-        allOK            := ExtractClusterData(srcChain[i], tmpData);
+        Result           := ExtractClusterData(srcChain[i], tmpData);
 
-        if allOK then begin
+        if Result then begin
           // ...and write it out to the dest cluster
           tmpData.Position := 0;
-          allOK            := StoreClusterData(destChain[i], tmpData);
+          Result           := StoreClusterData(destChain[i], tmpData);
         end;
 
-        if not (allOK) then begin
+        if not (Result) then begin
           break;
         end;
       end;
@@ -1365,7 +1351,6 @@ begin
 
   end;
 
-  Result := allOK;
 end;
 
 
@@ -1397,7 +1382,6 @@ begin
     Result := (Result and FFATEntryMask);
   end;
 
-
 end;
 
 function TSDFilesystem_FAT.GetFATEntry_FAT1632(clusterID: DWORD): DWORD;
@@ -1417,7 +1401,6 @@ begin
     Result     := Result + (tmpByte * multiplier);
     multiplier := multiplier * $100;
   end;
-
 
 end;
 
@@ -1511,7 +1494,6 @@ begin
     end;
   end;
 
-
 end;
 
  // Mark the next empty FAT entry as reservced/mark it as empty
@@ -1546,7 +1528,6 @@ begin
       Inc(Result);
     end;
   end;
-
 
 end;
 
@@ -1587,12 +1568,11 @@ begin
   FFAT.Position := trunc(tmpDouble);
   FFAT.WriteWORD_LE(newWord);
 
-
 end;
 
 function TSDFilesystem_FAT.SetFATEntry_FAT1632(clusterID: DWORD; Value: DWORD): Boolean;
 var
-  i:      DWORD;
+  i: DWORD;
 begin
   Result := True;
 
@@ -1603,7 +1583,6 @@ begin
     FFAT.WriteByte(Value and $FF);
     Value := Value shr 8;
   end;
-
 
 end;
 
@@ -1677,7 +1656,6 @@ begin
     end;
   end;
 
-
 end;
 
 // Extract the data for a single, specified, cluster
@@ -1720,14 +1698,12 @@ begin
     Result := _ReadWriteClusterData(readNotWrite, clusterID, data, maxSize);
   end;
 
-
 end;
 
 function TSDFilesystem_FAT._ReadWriteClusterData(readNotWrite: Boolean;
   clusterID: DWORD; data: TStream; maxSize: Integer): Boolean;
 var
   startSectorID:  DWORD;
-  allOK:          Boolean;
   bytesRemaining: Integer;
   sectorMax:      Integer;
   tmpInt64:       Int64;
@@ -1753,18 +1729,17 @@ begin
   sectorMax     := min(bytesRemaining, (BytesPerSector * SectorsPerCluster));
 
   if readNotWrite then begin
-    allOK := PartitionImage.ReadConsecutiveSectors(startSectorID, data, sectorMax);
+    Result := PartitionImage.ReadConsecutiveSectors(startSectorID, data, sectorMax);
   end else begin
-    allOK := PartitionImage.WriteConsecutiveSectors(startSectorID, data, sectorMax);
+    Result := PartitionImage.WriteConsecutiveSectors(startSectorID, data, sectorMax);
   end;
 
   bytesRemaining := bytesRemaining - sectorMax;
 
-  if allOK then begin
-    allOK := (bytesRemaining = 0);
+  if Result then begin
+    Result := (bytesRemaining = 0);
   end;
 
-  Result := allOK;
 end;
 
 function TSDFilesystem_FAT.ExtractClusterChainData(clusterID: DWORD; data: TStream;
@@ -1863,7 +1838,6 @@ begin
     Inc(Result);
   end;
 
-
 end;
 
  // Truncate/extend chain as appropriate such that it can store the data
@@ -1922,7 +1896,6 @@ begin
     chain := newChain;
   end;
 
-
 end;
 
 function TSDFilesystem_FAT.ReadWriteClusterChainData(readNotWrite: Boolean;
@@ -1935,7 +1908,6 @@ begin
   end else begin
     Result := _ReadWriteClusterChainData(readNotWrite, chain, data, maxSize);
   end;
-
 
 end;
 
@@ -1990,23 +1962,20 @@ begin
     Result := (bytesRemaining = 0);
   end;
 
-
 end;
 
 function TSDFilesystem_FAT.ExtractClusterChainData(clusterID: DWORD; filename: String;
   maxSize: Int64 = -1): Boolean;
 var
-  allOK:      Boolean;
   fileStream: TFileStream;
 begin
   fileStream := TFileStream.Create(filename, fmCreate);
   try
-    allOK := ExtractClusterChainData(clusterID, fileStream, maxSize);
+    Result := ExtractClusterChainData(clusterID, fileStream, maxSize);
   finally
     fileStream.Free();
   end;
 
-  Result := allOK;
 end;
 
 
@@ -2014,12 +1983,12 @@ end;
 function TSDFilesystem_FAT.WORDToTTimeStamp(dateBitmask: Word; timeBitmask: Word;
   msec: Byte): TTimeStamp;
 var
-  dd:     Integer;
-  mm:     Integer;
-  yyyy:   Integer;
-  hh:     Integer;
-  mi:     Integer;
-  ss:     Integer;
+  dd:   Integer;
+  mm:   Integer;
+  yyyy: Integer;
+  hh:   Integer;
+  mi:   Integer;
+  ss:   Integer;
 begin
   dd   := (dateBitmask and $1F);
   mm   := ((dateBitmask and $1E0) shr 5);
@@ -2031,13 +2000,12 @@ begin
   try
     Result := DateTimeToTimeStamp(EncodeDateTime(yyyy, mm, dd, hh, mi, ss, msec));
   except
-  on EConvertError do begin
-    // Dud date/timestamp
-    Result.Date := 0;
-    Result.Time := 0;
+    on EConvertError do begin
+      // Dud date/timestamp
+      Result.Date := 0;
+      Result.Time := 0;
+    end;
   end;
-  end;
-
 
 end;
 
@@ -2070,24 +2038,24 @@ begin
 
     timeBitmask := (ss div 2) + (mi shl 5) + (hh shl 11);
 
-    msec        := tmpMsec
+    msec := tmpMsec
 
   except
-   on EConvertError do begin
-    // Dud date/timestamp
-    dateBitmask := 0;
-    timeBitmask := 0;
-    msec        := 0;
-   end;
+    on EConvertError do begin
+      // Dud date/timestamp
+      dateBitmask := 0;
+      timeBitmask := 0;
+      msec        := 0;
+    end;
   end;
 
 end;
 
 function TSDFilesystem_FAT.WORDToTDate(dateBitmask: Word): TDate;
 var
-  dd:     Integer;
-  mm:     Integer;
-  yyyy:   Integer;
+  dd:   Integer;
+  mm:   Integer;
+  yyyy: Integer;
 begin
   dd   := (dateBitmask and $1F);
   mm   := ((dateBitmask and $1E0) shr 5);
@@ -2096,30 +2064,28 @@ begin
   try
     Result := EncodeDate(yyyy, mm, dd);
   except
-  on EConvertError do
-    // Dud date/timestamp
-    Result := 0;
+    on EConvertError do
+      // Dud date/timestamp
+      Result := 0;
   end;
-
 
 end;
 
 function TSDFilesystem_FAT.TDateToWORD(date: TDate): Word;
 var
-  dd:     Word;
-  mm:     Word;
-  yyyy:   Word;
+  dd:   Word;
+  mm:   Word;
+  yyyy: Word;
 begin
   try
     DecodeDate(date, yyyy, mm, dd);
     yyyy   := yyyy - 1980;
     Result := dd + (mm shl 5) + (yyyy shl 9);
   except
-   on EConvertError do
-    // Dud date/timestamp
-    Result := 0;
+    on EConvertError do
+      // Dud date/timestamp
+      Result := 0;
   end;
-
 
 end;
 
@@ -2181,10 +2147,10 @@ begin
         //lplp - handle - REJECT
       end;
 
-      lfnPart := data.ReadWideString(10,
-        (recordOffset + DIR_ENTRY_OFFSET_VFAT_NAME_PART_1));
-      lfnPart := lfnPart + data.ReadWideString(12,
-        (recordOffset + DIR_ENTRY_OFFSET_VFAT_NAME_PART_2));
+      lfnPart := data.ReadWideString(10, (recordOffset +
+        DIR_ENTRY_OFFSET_VFAT_NAME_PART_1));
+      lfnPart := lfnPart + data.ReadWideString(12, (recordOffset +
+        DIR_ENTRY_OFFSET_VFAT_NAME_PART_2));
       lfnPart := lfnPart + data.ReadWideString(
         4, (recordOffset + DIR_ENTRY_OFFSET_VFAT_NAME_PART_3));
 
@@ -2257,7 +2223,6 @@ begin
     recordOffset := recordOffset + DIR_ENTRY_SIZE;
   end;
 
-
 end;
 
 function TSDFilesystem_FAT.SectorIDForCluster(clusterID: DWORD): DWORD;
@@ -2295,7 +2260,6 @@ begin
       (SectorsPerCluster * (clusterID - CLUSTER_FIRST_DATA_CLUSTER));  // Cluster required
   end;
 
-
 end;
 
 function TSDFilesystem_FAT.LoadContentsFromDisk(path: String; items: TSDDirItemList): Boolean;
@@ -2313,13 +2277,12 @@ begin
     end;
   end;
 
-
 end;
 
 function TSDFilesystem_FAT._LoadContentsFromDisk(dirStartCluster: DWORD;
   items: TSDDirItemList): Boolean;
 var
-  ms:     TSDUMemoryStream;
+  ms: TSDUMemoryStream;
 begin
   AssertMounted();
 
@@ -2336,14 +2299,13 @@ begin
     ms.Free();
   end;
 
-
 end;
 
 
 // Returns ERROR_DWORD on failure
 function TSDFilesystem_FAT.GetStartingClusterForItem(path: WideString): DWORD;
 var
-  item:   TSDDirItem_FAT;
+  item: TSDDirItem_FAT;
 begin
   Result := ERROR_DWORD;
 
@@ -2355,7 +2317,6 @@ begin
   finally
     item.Free();
   end;
-
 
 end;
 
@@ -2381,12 +2342,11 @@ end;
 function TSDFilesystem_FAT.GetItem(path: WideString; item: TSDDirItem): Boolean;
 var
   tmpItem: TSDDirItem_FAT;
-  allOK:   Boolean;
 begin
   tmpItem := TSDDirItem_FAT.Create();
   try
-    allOK := GetItem_FAT(path, tmpItem);
-    if allOK then begin
+    Result := GetItem_FAT(path, tmpItem);
+    if Result then begin
       item.Assign(tmpItem);
     end;
 
@@ -2394,7 +2354,6 @@ begin
     tmpItem.Free();
   end;
 
-  Result := allOK;
 end;
 
 // Returns ERROR_DWORD on failure
@@ -2501,7 +2460,7 @@ end;
 
 function TSDFilesystem_FAT.GetItemContent(path: WideString; content: TStream): Boolean;
 var
-  item:   TSDDirItem_FAT;
+  item: TSDDirItem_FAT;
 begin
   Result := False;
   item   := TSDDirItem_FAT.Create();
@@ -2514,13 +2473,12 @@ begin
     item.Free();
   end;
 
-
 end;
 
 
 function TSDFilesystem_FAT.GetFileContent(path: WideString; fileContent: TStream): Boolean;
 var
-  item:   TSDDirItem_FAT;
+  item: TSDDirItem_FAT;
 begin
   Result := False;
   item   := TSDDirItem_FAT.Create();
@@ -2535,7 +2493,6 @@ begin
   finally
     item.Free();
   end;
-
 
 end;
 
@@ -2611,7 +2568,6 @@ begin
     item.Free();
   end;
 
-
 end;
 
 function TSDFilesystem_FAT.FreeCluster(clusterID: DWORD): Boolean;
@@ -2629,7 +2585,7 @@ end;
 
 function TSDFilesystem_FAT.FreeClusterChain(clusterChain: TSDFATClusterChain): Boolean;
 var
-  i:      Integer;
+  i: Integer;
 begin
   Result := True;
 
@@ -2639,25 +2595,21 @@ begin
     end;
   end;
 
-
 end;
 
 // atm, this only does a rudimentary check that all of the FATs are identical
 function TSDFilesystem_FAT.CheckFilesystem(): Boolean;
-var
-  allOK: Boolean;
 begin
-  allOK := True;
+  Result := True;
 
-  if allOK then begin
-    allOK := CheckFilesystem_ConsistentFATs();
+  if Result then begin
+    Result := CheckFilesystem_ConsistentFATs();
   end;
 
-  if allOK then begin
-    allOK := CheckFilesystem_Crosslinks();
+  if Result then begin
+    Result := CheckFilesystem_Crosslinks();
   end;
 
-  Result := allOK;
 end;
 
 function TSDFilesystem_FAT.CheckFilesystem_ConsistentFATs(): Boolean;
@@ -2714,7 +2666,6 @@ begin
     firstFAT.Free();
   end;
 
-
 end;
 
 function TSDFilesystem_FAT.CheckFilesystem_Crosslinks(): Boolean;
@@ -2722,7 +2673,6 @@ begin
   Result := True;
 
   //lplp - to implement
-
 
 end;
 
@@ -2779,7 +2729,7 @@ end;
  //   \               will return \
 function TSDFilesystem_FAT.PathParent(path: WideString): WideString;
 var
-  i:      Integer;
+  i: Integer;
 begin
   Result := '';
   if path = PATH_SEPARATOR then begin
@@ -2797,15 +2747,14 @@ begin
     end;
   end;
 
-
 end;
 
 
 // Convert filename from 8.3 format to "NNNNNNNNEEE" format
 function TSDFilesystem_FAT.DOSFilenameTo11Chars(DOSFilename: Ansistring): Ansistring;
 var
-  i:      Integer;
-  j:      Integer;
+  i: Integer;
+  j: Integer;
 begin
   // Special handling for "." and ".." so the other half of this process
   // doens't get confused by the "." and return a string containing just
@@ -2828,7 +2777,6 @@ begin
 
   Result := Result + StringOfChar(AnsiChar(' '), (11 - length(Result)));
 
-
 end;
 
 // This takes a notmal 8.3 filename (e.g. fred.txt)
@@ -2843,7 +2791,6 @@ begin
   for i := 1 to 11 do begin
     Result := (((Result and $0000001) shl 7) + (Result shr 1) + Ord(useFilename[i])) mod 256;
   end;
-
 
 end;
 
@@ -2913,7 +2860,6 @@ begin
   end;
 
   WriteDirEntry_83(item, stream);
-
 
 end;
 
@@ -2993,7 +2939,6 @@ begin
     currEntryOffset := currEntryOffset + DIR_ENTRY_SIZE;
   end;
 
-
 end;
 
 
@@ -3033,7 +2978,6 @@ begin
     recordOffset := recordOffset + DIR_ENTRY_SIZE;
   end;
 
-
 end;
 
 // Extend the specified stream by a cluster filled with zeros
@@ -3055,7 +2999,7 @@ end;
 // Returns TRUE/FALSE, depending on whether clusterID appers in chain or not
 function TSDFilesystem_FAT.IsClusterInChain(clusterID: DWORD; chain: TSDFATClusterChain): Boolean;
 var
-  i:      Integer;
+  i: Integer;
 begin
   Result := False;
 
@@ -3065,7 +3009,6 @@ begin
       break;
     end;
   end;
-
 
 end;
 
@@ -3086,7 +3029,6 @@ function TSDFilesystem_FAT.StoreFileOrDir(dirToStoreIn: WideString;
   // The dir in which item/data is to be stored
   item: TSDDirItem_FAT; data: TStream; parentDir: TSDDirItem_FAT = nil): Boolean;
 var
-  allOK:             Boolean;
   dirToStoreInItem:  TSDDirItem_FAT;
   dirToStoreInChain: TSDFATClusterChain;
   dirToStoreInData:  TSDUMemoryStream;
@@ -3098,7 +3040,7 @@ var
   useDOSFilename:    String;
   datetimetamp:      TDateTime;
 begin
-  allOK := True;
+  Result := True;
 
   if not (CheckWritable()) then begin
     Result := False;
@@ -3111,7 +3053,7 @@ begin
   useFirstCluster  := 0;
   clusterReserved  := ERROR_DWORD;
   try
-    if allOK then begin
+    if Result then begin
       existingItem := TSDDirItem_FAT.Create();
       if not (GetItem_FAT(IncludeTrailingPathDelimiter(dirToStoreIn) +
         item.Filename, existingItem)) then begin
@@ -3120,7 +3062,7 @@ begin
       end;
     end;
 
-    if allOK then begin
+    if Result then begin
       useDOSFilename := item.FilenameDOS;
       if (existingItem <> nil) then begin
         useDOSFilename := existingItem.FilenameDOS;
@@ -3128,14 +3070,14 @@ begin
       if (useDOSFilename = '') then begin
         useDOSFilename := GenerateNew83Filename(IncludeTrailingPathDelimiter(
           dirToStoreIn) + item.Filename);
-        allOK          := (useDOSFilename <> '');
+        Result         := (useDOSFilename <> '');
       end;
     end;
 
     // Sanity check - Can't overwrite file with dir and vice versa
-    if allOK then begin
+    if Result then begin
       if (existingItem <> nil) then begin
-        allOK := ((item.IsFile = existingItem.IsFile) and
+        Result := ((item.IsFile = existingItem.IsFile) and
           (item.IsDirectory = existingItem.IsDirectory));
       end;
     end;
@@ -3143,22 +3085,22 @@ begin
     // -------------------------
     // Retrieve details of directory item is to be stored in
 
-    if allOK then begin
+    if Result then begin
       dirToStoreInItem := TSDDirItem_FAT.Create();
-      allOK            := GetItem_FAT(dirToStoreIn, dirToStoreInItem);
-      if (allOK and (parentDir <> nil)) then begin
+      Result           := GetItem_FAT(dirToStoreIn, dirToStoreInItem);
+      if (Result and (parentDir <> nil)) then begin
         parentDir.Assign(dirToStoreInItem);
       end;
     end;
 
-    if allOK then begin
+    if Result then begin
       dirToStoreInChain := ExtractClusterChain(dirToStoreInItem.FirstCluster);
-      allOK             := (length(dirToStoreInChain) > 0);
+      Result            := (length(dirToStoreInChain) > 0);
     end;
 
-    if allOK then begin
+    if Result then begin
       dirToStoreInData := TSDUMemoryStream.Create();
-      allOK            := ReadWriteClusterChainData(True, dirToStoreInChain, dirToStoreInData);
+      Result           := ReadWriteClusterChainData(True, dirToStoreInChain, dirToStoreInData);
     end;
 
 
@@ -3172,16 +3114,16 @@ begin
     //                 doesn't reserve the clusters it allocates. This has the
     //                 effect that this will fragment the filesystem slightly
     //                 when the next file is written - fix in later release
-    if allOK then begin
+    if Result then begin
       clusterReserved := ReserveFATEntry();
-      allOK           := (clusterReserved <> ERROR_DWORD);
+      Result          := (clusterReserved <> ERROR_DWORD);
     end;
 
 
     // -------------------------
     // Retrieve chain for any item, if item already exists on filesystem
 
-    if allOK then begin
+    if Result then begin
       SetLength(itemChain, 0);
       if (existingItem <> nil) then begin
         if (existingItem.FirstCluster <> 0) then begin
@@ -3194,9 +3136,9 @@ begin
     // Note: This, in conjunction with the ReserveFATEntry(...) call a bit
     //       earlier, ensures that there is enough storage space left to store
     //       the item
-    if allOK then begin
+    if Result then begin
       data.Position   := 0;
-      allOK           := AllocateChainForData(itemChain, itemChainUnused, data, item.Size);
+      Result          := AllocateChainForData(itemChain, itemChainUnused, data, item.Size);
       useFirstCluster := 0;
       if (length(itemChain) > 0) then begin
         useFirstCluster := itemChain[0];
@@ -3207,7 +3149,7 @@ begin
     // -------------------------
     // Setup new item...
 
-    if allOK then begin
+    if Result then begin
       item.FilenameDOS  := useDOSFilename;
       item.FirstCluster := useFirstCluster;
     end;
@@ -3216,13 +3158,13 @@ begin
     // -------------------------
     // Delete any existing dir entry, and store our new one
 
-    if allOK then begin
+    if Result then begin
       if (existingItem <> nil) then begin
-        allOK := DeleteEntryFromDir(existingItem.FilenameDOS, dirToStoreInData);
+        Result := DeleteEntryFromDir(existingItem.FilenameDOS, dirToStoreInData);
       end;
     end;
 
-    if allOK then begin
+    if Result then begin
       if not (PreserveTimeDateStamps) then begin
         // Assign to local variable so there's no risk of separate calls
         // returning slightly different timestamps
@@ -3235,7 +3177,7 @@ begin
 
       // Notice: This will set clusterReserved to ERROR_DWORD if it's needed
       //         (i.e. used)
-      allOK := AddEntryToDir(item, dirToStoreInChain, dirToStoreInData,
+      Result := AddEntryToDir(item, dirToStoreInChain, dirToStoreInData,
         clusterReserved, (dirToStoreIn = PATH_SEPARATOR));
     end;
 
@@ -3252,40 +3194,40 @@ begin
 
     // Update FAT entries for item's and dir's data
     // Destination items's cluster chain...
-    if allOK then begin
-      allOK := StoreClusterChain(itemChain);
+    if Result then begin
+      Result := StoreClusterChain(itemChain);
     end;
     // Any previously used part of the cluster chain which is no longer 
     // used (e.g. when truncating a file)
-    if allOK then begin
-      allOK := FreeClusterChain(itemChainUnused);
+    if Result then begin
+      Result := FreeClusterChain(itemChainUnused);
     end;
     // Cluster chain for the directory the item is stored to...
-    if allOK then begin
-      allOK := StoreClusterChain(dirToStoreInChain);
+    if Result then begin
+      Result := StoreClusterChain(dirToStoreInChain);
     end;
     // If reserved cluster not used, mark back as free
-    // Note: This one is *intentionally* not protected by "if allOK then"
+    // Note: This one is *intentionally* not protected by "if result then"
     // Note: This is intentionally here, as well as the same calls in the
     //       "try...finally...end" part
     if (clusterReserved <> ERROR_DWORD) then begin
       UnreserveFATEntry(clusterReserved);
       clusterReserved := ERROR_DWORD;
     end;
-    if allOK then begin
-      allOK := WriteFATToAllCopies();
+    if Result then begin
+      Result := WriteFATToAllCopies();
     end;
 
     // Write updated dir contents
-    if allOK then begin
+    if Result then begin
       dirToStoreInData.Position := 0;
-      allOK                     := StoreClusterChainData(dirToStoreInChain, dirToStoreInData);
+      Result                    := StoreClusterChainData(dirToStoreInChain, dirToStoreInData);
     end;
 
     // Write file contents
-    if allOK then begin
+    if Result then begin
       data.Position := 0;
-      allOK         := StoreClusterChainData(itemChain, data, item.Size);
+      Result        := StoreClusterChainData(itemChain, data, item.Size);
     end;
 
   finally
@@ -3308,7 +3250,6 @@ begin
 
   end;
 
-  Result := allOK;
 end;
 
  // This function moves a file/directory from one location to another.
@@ -3319,11 +3260,10 @@ end;
  // Note: "destItemPath" must be the full path and filename of the file/dir to
  //       be moved
 function TSDFilesystem_FAT.MoveFileOrDir(srcItemPath: WideString;
-                            // The path and filename of the file/dir to be moved
+  // The path and filename of the file/dir to be moved
   destItemPath: WideString  // The new path and filename
   ): Boolean;
 var
-  allOK:                    Boolean;
   srcDirItemStoredInItem:   TSDDirItem_FAT;
   destDirItemStoredInItem:  TSDDirItem_FAT;
   srcDirItemStoredInChain:  TSDFATClusterChain;
@@ -3336,7 +3276,7 @@ var
   destDOSFilename:          String;
   sameDirFlag:              Boolean;
 begin
-  allOK := True;
+  Result := True;
 
   if not (CheckWritable()) then begin
     Result := False;
@@ -3353,11 +3293,11 @@ begin
   clusterReserved         := ERROR_DWORD;
   try
     // Sanity check; destination doesn't already exist
-    if allOK then begin
+    if Result then begin
       testItem := TSDDirItem_FAT.Create();
       try
         if GetItem_FAT(destItemPath, testItem) then begin
-          allOK := False;
+          Result := False;
         end;
       finally
         testItem.Free();
@@ -3365,38 +3305,38 @@ begin
     end;
 
     // Get details of source file/directory
-    if allOK then begin
+    if Result then begin
       srcItem := TSDDirItem_FAT.Create();
       if not (GetItem_FAT(srcItemPath, srcItem)) then begin
-        allOK := False;
+        Result := False;
       end;
     end;
 
     // Generate a dest 8.3 DOS filename, so it doesn't overwrite anything in the
     // destination dir
-    if allOK then begin
+    if Result then begin
       destDOSFilename := GenerateNew83Filename(destItemPath);
-      allOK           := (destDOSFilename <> '');
+      Result          := (destDOSFilename <> '');
     end;
 
 
     // -------------------------
     // Retrieve details of directory item is to be stored in (src location)
 
-    if allOK then begin
+    if Result then begin
       srcDirItemStoredInItem := TSDDirItem_FAT.Create();
-      allOK                  := GetItem_FAT(ExtractFilePath(srcItemPath), srcDirItemStoredInItem);
+      Result                 := GetItem_FAT(ExtractFilePath(srcItemPath), srcDirItemStoredInItem);
     end;
 
-    if allOK then begin
+    if Result then begin
       srcDirItemStoredInChain := ExtractClusterChain(srcDirItemStoredInItem.FirstCluster);
-      allOK                   := (length(srcDirItemStoredInChain) > 0);
+      Result                  := (length(srcDirItemStoredInChain) > 0);
     end;
 
-    if allOK then begin
+    if Result then begin
       srcDirItemStoredInData := TSDUMemoryStream.Create();
-      allOK                  := ReadWriteClusterChainData(True, srcDirItemStoredInChain,
-        srcDirItemStoredInData);
+      Result                 := ReadWriteClusterChainData(True,
+        srcDirItemStoredInChain, srcDirItemStoredInData);
     end;
 
 
@@ -3404,20 +3344,20 @@ begin
     // Retrieve details of directory item is to be stored in (dest location)
 
     if not (sameDirFlag) then begin
-      if allOK then begin
+      if Result then begin
         destDirItemStoredInItem := TSDDirItem_FAT.Create();
-        allOK                   :=
+        Result                  :=
           GetItem_FAT(ExtractFilePath(destItemPath), destDirItemStoredInItem);
       end;
 
-      if allOK then begin
+      if Result then begin
         destDirItemStoredInChain := ExtractClusterChain(destDirItemStoredInItem.FirstCluster);
-        allOK                    := (length(destDirItemStoredInChain) > 0);
+        Result                   := (length(destDirItemStoredInChain) > 0);
       end;
 
-      if allOK then begin
+      if Result then begin
         destDirItemStoredInData := TSDUMemoryStream.Create();
-        allOK                   :=
+        Result                  :=
           ReadWriteClusterChainData(True, destDirItemStoredInChain, destDirItemStoredInData);
       end;
     end;
@@ -3433,9 +3373,9 @@ begin
     //                 doesn't reserve the clusters it allocates. This has the
     //                 effect that this will fragment the filesystem slightly
     //                 when the next file is written - fix in later release
-    if allOK then begin
+    if Result then begin
       clusterReserved := ReserveFATEntry();
-      allOK           := (clusterReserved <> ERROR_DWORD);
+      Result          := (clusterReserved <> ERROR_DWORD);
     end;
 
 
@@ -3449,29 +3389,29 @@ begin
     // in the root dir of a FAT12/FAT16 volume - which has limited root dir
     // entries available
 
-    if allOK then begin
-      allOK := DeleteEntryFromDir(srcItem.FilenameDOS, srcDirItemStoredInData);
+    if Result then begin
+      Result := DeleteEntryFromDir(srcItem.FilenameDOS, srcDirItemStoredInData);
     end;
 
     // Change filename, so we can reuse the same structure
-    if allOK then begin
+    if Result then begin
       // Note that srcItem.FirstCluster is left alone here
       srcItem.Filename    := ExtractFilename(destItemPath);
       srcItem.FilenameDOS := destDOSFilename;
     end;
 
-    if allOK then begin
+    if Result then begin
       // If in the same dir, we only work with srcDir
       if sameDirFlag then begin
         // Notice: This will set clusterReserved to ERROR_DWORD if it's needed
         //         (i.e. used)
-        allOK := AddEntryToDir(srcItem, srcDirItemStoredInChain,
+        Result := AddEntryToDir(srcItem, srcDirItemStoredInChain,
           srcDirItemStoredInData, clusterReserved,
           (ExtractFilePath(destItemPath) = PATH_SEPARATOR));
       end else begin
         // Notice: This will set clusterReserved to ERROR_DWORD if it's needed
         //         (i.e. used)
-        allOK := AddEntryToDir(srcItem, destDirItemStoredInChain,
+        Result := AddEntryToDir(srcItem, destDirItemStoredInChain,
           destDirItemStoredInData, clusterReserved,
           (ExtractFilePath(destItemPath) = PATH_SEPARATOR));
       end;
@@ -3490,40 +3430,40 @@ begin
 
     // Update FAT entries for item's and dir's data
     // Cluster chain for the directory the item is moved to...
-    if allOK then begin
+    if Result then begin
       // If in the same dir, we only work with srcDir
       if not (sameDirFlag) then begin
-        allOK := StoreClusterChain(destDirItemStoredInChain);
+        Result := StoreClusterChain(destDirItemStoredInChain);
       end;
     end;
     // Cluster chain for the directory the item is moved from...
-    if allOK then begin
-      allOK := StoreClusterChain(srcDirItemStoredInChain);
+    if Result then begin
+      Result := StoreClusterChain(srcDirItemStoredInChain);
     end;
     // If reserved cluster not used, mark back as free
-    // Note: This one is *intentionally* not protected by "if allOK then"
+    // Note: This one is *intentionally* not protected by "if result then"
     // Note: This is intentionally here, as well as the same calls in the
     //       "try...finally...end" part
     if (clusterReserved <> ERROR_DWORD) then begin
       UnreserveFATEntry(clusterReserved);
       clusterReserved := ERROR_DWORD;
     end;
-    if allOK then begin
-      allOK := WriteFATToAllCopies();
+    if Result then begin
+      Result := WriteFATToAllCopies();
     end;
 
     // Write updated dir contents
-    if allOK then begin
+    if Result then begin
       // If in the same dir, we only work with srcDir
       if not (sameDirFlag) then begin
         destDirItemStoredInData.Position := 0;
-        allOK                            :=
+        Result :=
           StoreClusterChainData(destDirItemStoredInChain, destDirItemStoredInData);
       end;
     end;
-    if allOK then begin
+    if Result then begin
       srcDirItemStoredInData.Position := 0;
-      allOK                           :=
+      Result :=
         StoreClusterChainData(srcDirItemStoredInChain, srcDirItemStoredInData);
     end;
 
@@ -3551,7 +3491,6 @@ begin
 
   end;
 
-  Result := allOK;
 end;
 
 
@@ -3559,11 +3498,10 @@ end;
  // Note: "destItemPath" must be the full path and filename of the file to be
  //       created
 function TSDFilesystem_FAT.CopyFile(srcItemPath: WideString;
-                            // The path and filename of the file to be copied
+  // The path and filename of the file to be copied
   destItemPath: WideString  // The path and filename of the copy
   ): Boolean;
 var
-  allOK:                    Boolean;
   destDirItemStoredInItem:  TSDDirItem_FAT;
   destDirItemStoredInChain: TSDFATClusterChain;
   destDirItemStoredInData:  TSDUMemoryStream;
@@ -3576,7 +3514,7 @@ var
   clusterReserved:          DWORD;
   destDOSFilename:          String;
 begin
-  allOK := True;
+  Result := True;
 
   if not (CheckWritable()) then begin
     Result := False;
@@ -3590,11 +3528,11 @@ begin
   clusterReserved         := ERROR_DWORD;
   try
     // Sanity check; destination doesn't already exist
-    if allOK then begin
+    if Result then begin
       testItem := TSDDirItem_FAT.Create();
       try
         if GetItem_FAT(destItemPath, testItem) then begin
-          allOK := False;
+          Result := False;
         end;
       finally
         testItem.Free();
@@ -3602,45 +3540,45 @@ begin
     end;
 
     // Get details of source file/directory
-    if allOK then begin
+    if Result then begin
       srcItem := TSDDirItem_FAT.Create();
       if not (GetItem_FAT(srcItemPath, srcItem)) then begin
-        allOK := False;
+        Result := False;
       end;
     end;
 
     // Sanity check; source isn't a directory (this function only handles
     // copying files)
-    if allOK then begin
-      allOK := not (srcItem.IsDirectory);
+    if Result then begin
+      Result := not (srcItem.IsDirectory);
     end;
 
     // Generate a new 8.3 DOS filename, so it doesn't overwrite anything in the
     // destination dir
-    if allOK then begin
+    if Result then begin
       destDOSFilename := GenerateNew83Filename(destItemPath);
-      allOK           := (destDOSFilename <> '');
+      Result          := (destDOSFilename <> '');
     end;
 
 
     // -------------------------
     // Retrieve details of directory item is to be stored in (new location)
 
-    if allOK then begin
+    if Result then begin
       destDirItemStoredInItem := TSDDirItem_FAT.Create();
-      allOK                   := GetItem_FAT(ExtractFilePath(destItemPath),
+      Result                  := GetItem_FAT(ExtractFilePath(destItemPath),
         destDirItemStoredInItem);
     end;
 
-    if allOK then begin
+    if Result then begin
       destDirItemStoredInChain := ExtractClusterChain(destDirItemStoredInItem.FirstCluster);
-      allOK                    := (length(destDirItemStoredInChain) > 0);
+      Result                   := (length(destDirItemStoredInChain) > 0);
     end;
 
-    if allOK then begin
+    if Result then begin
       destDirItemStoredInData := TSDUMemoryStream.Create();
-      allOK                   := ReadWriteClusterChainData(True, destDirItemStoredInChain,
-        destDirItemStoredInData);
+      Result                  :=
+        ReadWriteClusterChainData(True, destDirItemStoredInChain, destDirItemStoredInData);
     end;
 
 
@@ -3655,16 +3593,16 @@ begin
     //                 doesn't reserve the clusters it allocates. This has the
     //                 effect that this will fragment the filesystem slightly
     //                 when the next file is written - fix in later release
-    if allOK then begin
+    if Result then begin
       clusterReserved := ReserveFATEntry();
-      allOK           := (clusterReserved <> ERROR_DWORD);
+      Result          := (clusterReserved <> ERROR_DWORD);
     end;
 
 
     // -------------------------
     // Retrieve chain for the item to be copied
 
-    if allOK then begin
+    if Result then begin
       SetLength(srcChain, 0);
       if (srcItem.FirstCluster <> 0) then begin
         srcChain := ExtractClusterChain(srcItem.FirstCluster);
@@ -3675,9 +3613,9 @@ begin
     // Note: This, in conjunction with the ReserveFATEntry(...) call a bit
     //       earlier, ensures that there is enough storage space left to store
     //       the item
-    if allOK then begin
+    if Result then begin
       SetLength(destChain, 0);
-      allOK           := AllocateChainForData(destChain, destChainUnused, nil, srcItem.Size);
+      Result          := AllocateChainForData(destChain, destChainUnused, nil, srcItem.Size);
       useFirstCluster := 0;
       if (length(destChain) > 0) then begin
         useFirstCluster := destChain[0];
@@ -3688,7 +3626,7 @@ begin
     // -------------------------
     // Setup dest item...
 
-    if allOK then begin
+    if Result then begin
       // Note: Only the new filename, DOS filename (to ensure it's unique in
       //       the destination dir) and first cluster (to the copy) get changed
       srcItem.Filename     := ExtractFilename(destItemPath);
@@ -3700,10 +3638,10 @@ begin
     // -------------------------
     // Store our dest dir entry
 
-    if allOK then begin
+    if Result then begin
       // Notice: This will set clusterReserved to ERROR_DWORD if it's needed
       //         (i.e. used)
-      allOK := AddEntryToDir(srcItem, destDirItemStoredInChain,
+      Result := AddEntryToDir(srcItem, destDirItemStoredInChain,
         destDirItemStoredInData, clusterReserved,
         (ExtractFilePath(destItemPath) = PATH_SEPARATOR));
     end;
@@ -3721,35 +3659,35 @@ begin
 
     // Update FAT entries for item's and dir's data
     // Destination items's cluster chain...
-    if allOK then begin
-      allOK := StoreClusterChain(destChain);
+    if Result then begin
+      Result := StoreClusterChain(destChain);
     end;
     // Cluster chain for the directory the item is copied to...
-    if allOK then begin
-      allOK := StoreClusterChain(destDirItemStoredInChain);
+    if Result then begin
+      Result := StoreClusterChain(destDirItemStoredInChain);
     end;
     // If reserved cluster not used, mark back as free
-    // Note: This one is *intentionally* not protected by "if allOK then"
+    // Note: This one is *intentionally* not protected by "if result then"
     // Note: This is intentionally here, as well as the same calls in the
     //       "try...finally...end" part
     if (clusterReserved <> ERROR_DWORD) then begin
       UnreserveFATEntry(clusterReserved);
       clusterReserved := ERROR_DWORD;
     end;
-    if allOK then begin
-      allOK := WriteFATToAllCopies();
+    if Result then begin
+      Result := WriteFATToAllCopies();
     end;
 
     // Write updated dir contents
-    if allOK then begin
+    if Result then begin
       destDirItemStoredInData.Position := 0;
-      allOK                            :=
+      Result :=
         StoreClusterChainData(destDirItemStoredInChain, destDirItemStoredInData);
     end;
 
     // Write file contents
-    if allOK then begin
-      allOK := CopyClusterChainData(srcChain, destChain);
+    if Result then begin
+      Result := CopyClusterChainData(srcChain, destChain);
     end;
 
   finally
@@ -3772,7 +3710,6 @@ begin
 
   end;
 
-  Result := allOK;
 end;
 
 
@@ -3785,9 +3722,8 @@ var
   newDirItem:      TSDDirItem_FAT;
   tmpDirItem:      TSDDirItem_FAT;
   existingDirItem: TSDDirItem_FAT;
-  allOK:           Boolean;
 begin
-  allOK := True;
+  Result := True;
 
   if not (CheckWritable()) then begin
     Result := False;
@@ -3800,17 +3736,17 @@ begin
   tmpDirItem      := TSDDirItem_FAT.Create();
   existingDirItem := TSDDirItem_FAT.Create();
   try
-    if allOK then begin
+    if Result then begin
       ExtendByEmptyCluster(newDirContent);
     end;
 
     // Sanity check; ensure dir doesn't already exist
-    if allOK then begin
-      allOK := not (GetItem_FAT((IncludeTrailingPathDelimiter(dirToStoreIn) + newDirname),
+    if Result then begin
+      Result := not (GetItem_FAT((IncludeTrailingPathDelimiter(dirToStoreIn) + newDirname),
         existingDirItem));
     end;
 
-    if allOK then begin
+    if Result then begin
       if (templateDirAttrs <> nil) then begin
         newDirItem.Assign(templateDirAttrs);
       end else begin
@@ -3829,14 +3765,14 @@ begin
       newDirItem.IsDirectory := True;
     end;
 
-    if allOK then begin
+    if Result then begin
       // Store the (completely blank) directory placeholder content
       // Note: This will update newDirItem.FirstCluster as appropriate
       newDirContent.Position := 0;
       StoreFileOrDir(dirToStoreIn, newDirItem, newDirContent, parentDirItem);
     end;
 
-    if allOK then begin
+    if Result then begin
       // Update the directory contents, adding "." and ".." entries
       tmpDirItem.Assign(newDirItem);
       tmpDirItem.Filename    := DIR_CURRENT_DIR;
@@ -3853,9 +3789,9 @@ begin
       WriteDirEntry_83(tmpDirItem, newdirContent);
     end;
 
-    if allOK then begin
+    if Result then begin
       newDirContent.Position := 0;
-      allOK                  := StoreClusterData(newDirItem.FirstCluster, newDirContent);
+      Result                 := StoreClusterData(newDirItem.FirstCluster, newDirContent);
     end;
 
   finally
@@ -3865,7 +3801,6 @@ begin
     parentDirItem.Free();
   end;
 
-  Result := allOK;
 end;
 
 
@@ -3875,14 +3810,13 @@ end;
  // *assigned* to it
 function TSDFilesystem_FAT.DeleteItem(fullPathToItem: WideString): Boolean;
 var
-  allOK:            Boolean;
   dirStoredInPath:  WideString;
   dirStoredInItem:  TSDDirItem_FAT;
   dirStoredInChain: TSDFATClusterChain;
   dirStoredInData:  TSDUMemoryStream;
   itemToDelete:     TSDDirItem_FAT;
 begin
-  allOK := True;
+  Result := True;
 
   dirStoredInPath := PathParent(fullPathToItem);
 
@@ -3890,40 +3824,40 @@ begin
   dirStoredInItem := TSDDirItem_FAT.Create();
   dirStoredInData := TSDUMemoryStream.Create();
   try
-    if allOK then begin
-      allOK := GetItem_FAT(dirStoredInPath, dirStoredInItem);
+    if Result then begin
+      Result := GetItem_FAT(dirStoredInPath, dirStoredInItem);
     end;
 
-    if allOK then begin
-      allOK := GetItem_FAT(fullPathToItem, itemToDelete);
+    if Result then begin
+      Result := GetItem_FAT(fullPathToItem, itemToDelete);
     end;
 
-    if allOK then begin
+    if Result then begin
       dirStoredInChain := ExtractClusterChain(dirStoredInItem.FirstCluster);
-      allOK            := (length(dirStoredInChain) > 0);
+      Result           := (length(dirStoredInChain) > 0);
     end;
 
-    if allOK then begin
-      allOK := ExtractClusterChainData(dirStoredInChain, dirStoredInData);
+    if Result then begin
+      Result := ExtractClusterChainData(dirStoredInChain, dirStoredInData);
     end;
 
-    if allOK then begin
-      allOK := DeleteEntryFromDir(itemToDelete.FilenameDOS, dirStoredInData);
+    if Result then begin
+      Result := DeleteEntryFromDir(itemToDelete.FilenameDOS, dirStoredInData);
     end;
 
-    if allOK then begin
+    if Result then begin
       dirStoredInData.Position := 0;
-      allOK                    := StoreClusterChainData(dirStoredInChain, dirStoredInData);
+      Result                   := StoreClusterChainData(dirStoredInChain, dirStoredInData);
     end;
 
-    if allOK then begin
+    if Result then begin
       // Mark clusters as free in FAT
-      allOK := FreeClusterChain(itemToDelete.FirstCluster);
+      Result := FreeClusterChain(itemToDelete.FirstCluster);
     end;
 
-    if allOK then begin
+    if Result then begin
       // Write out updated FAT
-      allOK := WriteFATToAllCopies();
+      Result := WriteFATToAllCopies();
     end;
 
   finally
@@ -3932,15 +3866,13 @@ begin
     itemToDelete.Free();
   end;
 
-  Result := allOK;
 end;
 
 function TSDFilesystem_FAT.DeleteFile(fullPathToItem: WideString): Boolean;
 var
   itemToDelete: TSDDirItem_FAT;
-  allOK:        Boolean;
 begin
-  allOK := True;
+  Result := True;
 
   if not (CheckWritable()) then begin
     Result := False;
@@ -3949,34 +3881,32 @@ begin
 
   itemToDelete := TSDDirItem_FAT.Create();
   try
-    if allOK then begin
-      allOK := GetItem_FAT(fullPathToItem, itemToDelete);
+    if Result then begin
+      Result := GetItem_FAT(fullPathToItem, itemToDelete);
     end;
 
     // Sanity check; it *is* a file, right?
-    if allOK then begin
-      allOK := itemToDelete.IsFile;
+    if Result then begin
+      Result := itemToDelete.IsFile;
     end;
 
-    if allOK then begin
-      allOK := DeleteItem(fullPathToItem);
+    if Result then begin
+      Result := DeleteItem(fullPathToItem);
     end;
 
   finally
     itemToDelete.Free();
   end;
 
-  Result := allOK;
 end;
 
 function TSDFilesystem_FAT.DeleteDir(fullPathToItem: WideString): Boolean;
 var
   subItems:     TSDDirItemList;
   itemToDelete: TSDDirItem_FAT;
-  allOK:        Boolean;
   i:            Integer;
 begin
-  allOK := True;
+  Result := True;
 
   if not (CheckWritable()) then begin
     Result := False;
@@ -3986,40 +3916,40 @@ begin
   itemToDelete := TSDDirItem_FAT.Create();
   subItems     := TSDDirItemList.Create();
   try
-    if allOK then begin
-      allOK := GetItem_FAT(fullPathToItem, itemToDelete);
+    if Result then begin
+      Result := GetItem_FAT(fullPathToItem, itemToDelete);
     end;
 
     // Sanity check; it *is* a dir, right?
-    if allOK then begin
-      allOK := itemToDelete.IsDirectory;
+    if Result then begin
+      Result := itemToDelete.IsDirectory;
     end;
 
     // Sanity check - skip stupid
-    if allOK then begin
-      allOK := ((itemToDelete.Filename <> DIR_CURRENT_DIR) and
+    if Result then begin
+      Result := ((itemToDelete.Filename <> DIR_CURRENT_DIR) and
         (itemToDelete.Filename <> DIR_PARENT_DIR));
     end;
 
     // Get dir contents
-    if allOK then begin
-      allOK := LoadContentsFromDisk(fullPathToItem, subItems);
+    if Result then begin
+      Result := LoadContentsFromDisk(fullPathToItem, subItems);
     end;
 
     // Delete everything beneath the dir to be deleted
-    if allOK then begin
+    if Result then begin
       for i := 0 to (subItems.Count - 1) do begin
         if not (DeleteFileOrDir(IncludeTrailingPathDelimiter(fullPathToItem) +
           subItems[i].Filename)) then begin
-          allOK := False;
+          Result := False;
           break;
         end;
       end;
     end;
 
     // Delete dir
-    if allOK then begin
-      allOK := DeleteItem(fullPathToItem);
+    if Result then begin
+      Result := DeleteItem(fullPathToItem);
     end;
 
   finally
@@ -4027,16 +3957,14 @@ begin
     itemToDelete.Free();
   end;
 
-  Result := allOK;
 end;
 
 function TSDFilesystem_FAT.DeleteFileOrDir(fullPathToItem: WideString): Boolean;
 var
   itemToDelete: TSDDirItem_FAT;
   subItems:     TSDDirItemList;
-  allOK:        Boolean;
 begin
-  allOK := True;
+  Result := True;
 
   if not (CheckWritable()) then begin
     Result := False;
@@ -4046,18 +3974,18 @@ begin
   itemToDelete := TSDDirItem_FAT.Create();
   subItems     := TSDDirItemList.Create();
   try
-    if allOK then begin
-      allOK := GetItem_FAT(fullPathToItem, itemToDelete);
+    if Result then begin
+      Result := GetItem_FAT(fullPathToItem, itemToDelete);
     end;
 
     // Sanity check; it *is* a file, right?
-    if allOK then begin
+    if Result then begin
       if itemToDelete.IsFile then begin
-        allOK := DeleteFile(fullPathToItem);
+        Result := DeleteFile(fullPathToItem);
       end else
       if (itemToDelete.IsDirectory and (itemToDelete.Filename <> DIR_CURRENT_DIR) and
         (itemToDelete.Filename <> DIR_PARENT_DIR)) then begin
-        allOK := DeleteDir(fullPathToItem);
+        Result := DeleteDir(fullPathToItem);
       end;
     end;
 
@@ -4066,7 +3994,6 @@ begin
     itemToDelete.Free();
   end;
 
-  Result := allOK;
 end;
 
  // Returns a new, unique, 8.3 DOS filename (without the path) that can be used
@@ -4075,10 +4002,10 @@ function TSDFilesystem_FAT.GenerateNew83Filename(lfnFilename: WideString): Strin
 var
   dirToStoreIn:     WideString;
   dirToStoreInItem: TSDDirItem_FAT;
-  allOK:            Boolean;
   dirToStoreInData: TSDUMemoryStream;
   x:                Integer;
   uniqueFound:      Boolean;
+  allOK:            Boolean;
 begin
   allOK := True;
 
@@ -4129,7 +4056,6 @@ begin
     Result := '';
   end;
 
-
 end;
 
 function TSDFilesystem_FAT.Format(): Boolean;
@@ -4177,15 +4103,15 @@ const
   DEFAULT_TRACKS_PER_CYLINDER = 64;
   DEFAULT_SECTORS_PER_TRACK   = 32;
 
-  DEFAULT_FAT_FLAGS                        = 0;
-  DEFAULT_VERSION                          = 0;
+  DEFAULT_FAT_FLAGS         = 0;
+  DEFAULT_VERSION           = 0;
   DEFAULT_SECTOR_NO_FS_INFO_SECTOR_FAT1216 = 0;
-  DEFAULT_SECTOR_NO_FS_INFO_SECTOR_FAT32   = 1;
-  DEFAULT_SECTOR_BOOT_SECTOR_COPY_FAT1216  = 0;
-  DEFAULT_SECTOR_BOOT_SECTOR_COPY_FAT32    = 6;
-  DEFAULT_PHYSICAL_DRIVE_NO                = 0;
-  DEFAULT_EXTENDED_BOOT_SIG                = $29;
-  DEFAULT_VOLUME_LABEL                     = '           ';
+  DEFAULT_SECTOR_NO_FS_INFO_SECTOR_FAT32 = 1;
+  DEFAULT_SECTOR_BOOT_SECTOR_COPY_FAT1216 = 0;
+  DEFAULT_SECTOR_BOOT_SECTOR_COPY_FAT32 = 6;
+  DEFAULT_PHYSICAL_DRIVE_NO = 0;
+  DEFAULT_EXTENDED_BOOT_SIG = $29;
+  DEFAULT_VOLUME_LABEL      = '           ';
 
   FSINFO_SIG_LEAD          = $41615252;
   FSINFO_SIG_STRUCT        = $61417272;
@@ -4209,7 +4135,6 @@ const
   FSINFO_LENGTH_TRAILSIG  = 4;
 
 var
-  allOK:            Boolean;
   newBootSector:    TSDBootSector_FAT;
   i:                DWORD;
   //  j: DWORD;
@@ -4262,7 +4187,7 @@ begin
         break;
       end;
     end;
-    allOK := (useClusterSize <> 0);
+    Result := (useClusterSize <> 0);
 
     newBootSector.SectorsPerCluster := (useClusterSize div newBootSector.BytesPerSector);
 
@@ -4349,10 +4274,10 @@ begin
         newBootSector.FATFilesystemType := SIGNATURE_FAT32;
       end;
 
-    else
-    begin
-      allOK := False;
-    end;
+      else
+      begin
+        Result := False;
+      end;
     end;
 
     if ((newBootSector.FATType = ftFAT12) or (newBootSector.FATType = ftFAT16)) then begin
@@ -4389,16 +4314,16 @@ begin
 
     newBootSector.BootSectorSig := FAT_BOOTSECTORSIG;
 
-    if allOK then begin
-      allOK := WriteBootSector(newBootSector);
+    if Result then begin
+      Result := WriteBootSector(newBootSector);
     end;
 
     // Read the boot sector just written out
-    if allOK then begin
+    if Result then begin
       prevMounted := Mounted;
       FMounted    := True;
       try
-        allOK := ReadBootSector();
+        Result := ReadBootSector();
       finally
         FMounted := prevMounted;
       end;
@@ -4408,7 +4333,7 @@ begin
 
     // =======================================================================
     // Part XXX: Write FSInfo sector (FAT32 only)
-    if allOK then begin
+    if Result then begin
       if (newBootSector.FATType = ftFAT32) then begin
         newFSInfo := TSDUMemoryStream.Create();
         try
@@ -4422,7 +4347,7 @@ begin
           newFSInfo.WriteDWORD_LE(FSINFO_SIG_TRAIL, FSINFO_OFFSET_TRAILSIG);
 
           newFSInfo.Position := 0;
-          allOK              := PartitionImage.WriteSector(newBootSector.SectorNoFSInfoSector,
+          Result             := PartitionImage.WriteSector(newBootSector.SectorNoFSInfoSector,
             newFSInfo);
 
         finally
@@ -4435,12 +4360,12 @@ begin
 
     // =======================================================================
     // Part XXX: Write backup sectors (FAT32 only)
-    if allOK then begin
+    if Result then begin
       if (newBootSector.FATType = ftFAT32) then begin
         // Backup boot sector...
-        allOK := PartitionImage.CopySector(0, newBootSector.SectorNoBootSectorCopy);
+        Result := PartitionImage.CopySector(0, newBootSector.SectorNoBootSectorCopy);
         // Backup FSInfo sector...
-        allOK := PartitionImage.CopySector(newBootSector.SectorNoFSInfoSector,
+        Result := PartitionImage.CopySector(newBootSector.SectorNoFSInfoSector,
           (newBootSector.SectorNoBootSectorCopy + 1));
       end;
     end;
@@ -4449,7 +4374,7 @@ begin
     // =======================================================================
     // Part 2: Write FAT
 
-    if allOK then begin
+    if Result then begin
       stmFAT := TSDUMemoryStream.Create();
       try
         // Fill FAT with zeros
@@ -4463,7 +4388,7 @@ begin
           stmFAT.Position  := 0;
           FATStartSectorID := newBootSector.ReservedSectorCount +
             ((i - 1) * newBootSector.SectorsPerFAT);
-          allOK            := PartitionImage.WriteConsecutiveSectors(FATStartSectorID,
+          Result           := PartitionImage.WriteConsecutiveSectors(FATStartSectorID,
             stmFAT, (newBootSector.SectorsPerFAT * newBootSector.BytesPerSector));
         end;
 
@@ -4475,17 +4400,17 @@ begin
     // Read the FAT just written back in
     // This is done so we can use SetFATEntry(...) to set FAT entries for
     // cluster 0 and 1
-    if allOK then begin
+    if Result then begin
       prevMounted := Mounted;
       FMounted    := True;
       try
-        allOK := ReadFAT(DEFAULT_FAT);
+        Result := ReadFAT(DEFAULT_FAT);
       finally
         FMounted := prevMounted;
       end;
     end;
 
-    if allOK then begin
+    if Result then begin
       // Before any SetFATEntry(...) if called
       SetupFFATEntryValues(newBootSector.FATType);
 
@@ -4522,7 +4447,7 @@ begin
     // =======================================================================
     // Part 3: Write root directory
 
-    if allOK then begin
+    if Result then begin
       newDirContent := TSDUMemoryStream.Create();
       tmpDirItem    := TSDDirItem_FAT.Create();
       try
@@ -4534,14 +4459,14 @@ begin
         newDirContent.WriteByte(0, 0, newDirContent.Size);
 
         newDirContent.Position := 0;
-        allOK                  :=
+        Result                 :=
           StoreClusterData(newBootSector.RootDirFirstCluster, newDirContent);
 
         if (newBootSector.FATType = ftFAT32) then begin
           SetLength(itemChain, 1);
           itemChain[0]           := newBootSector.RootDirFirstCluster;
           newDirContent.Position := 0;
-          allOK                  :=
+          Result                 :=
             AllocateChainForData(itemChain, itemChainUnused, newDirContent, newDirContent.Size);
           StoreClusterChain(itemChain);
         end;
@@ -4559,7 +4484,6 @@ begin
     FSerializeCS.Release();
   end;
 
-  Result := allOK;
 end;
 
 
@@ -4680,7 +4604,6 @@ begin
     Result := ftFAT32;
   end;
 
-
 end;
 
 // Extract FAT12/FAT16 root directory contents
@@ -4699,7 +4622,6 @@ end;
 function TSDFilesystem_FAT.ReadWriteFAT1216RootDir(readNotWrite: Boolean; data: TStream): Boolean;
 var
   startSectorID:        DWORD;
-  allOK:                Boolean;
   bytesRemaining:       Integer;
   sectorMax:            Integer;
   rootDirSizeInBytes:   Integer;
@@ -4719,18 +4641,17 @@ begin
   sectorMax     := min(bytesRemaining, (BytesPerSector * rootDirSizeInSectors));
 
   if readNotWrite then begin
-    allOK := PartitionImage.ReadConsecutiveSectors(startSectorID, data, sectorMax);
+    Result := PartitionImage.ReadConsecutiveSectors(startSectorID, data, sectorMax);
   end else begin
-    allOK := PartitionImage.WriteConsecutiveSectors(startSectorID, data, sectorMax);
+    Result := PartitionImage.WriteConsecutiveSectors(startSectorID, data, sectorMax);
   end;
 
   bytesRemaining := bytesRemaining - sectorMax;
 
-  if allOK then begin
-    allOK := (bytesRemaining = 0);
+  if Result then begin
+    Result := (bytesRemaining = 0);
   end;
 
-  Result := allOK;
 end;
 
 
@@ -4739,18 +4660,17 @@ end;
 function TSDFilesystem_FAT.DeleteEntryFromDir(DOSFilename: String;
   dirData: TSDUMemoryStream): Boolean;
 var
-  allOK:          Boolean;
   currAttributes: Byte;
   recordOffset:   Int64;
 begin
-  allOK := True;
+  Result := True;
 
-  if allOK then begin
+  if Result then begin
     dirData.Position := 0;
-    allOK            := Seek83FileDirNameInDirData(DOSFilename, dirData);
+    Result           := Seek83FileDirNameInDirData(DOSFilename, dirData);
   end;
 
-  if allOK then begin
+  if Result then begin
     // Update the parent directories contents, marking 8.3 and LFN entries
     // associated with the deleted item as deleted
 
@@ -4776,7 +4696,6 @@ begin
 
   end;
 
-  Result := allOK;
 end;
 
 
@@ -4785,19 +4704,18 @@ function TSDFilesystem_FAT.AddEntryToDir(itemToAdd: TSDDirItem_FAT;
   var dirChain: TSDFATClusterChain; dirData: TSDUMemoryStream; var clusterReserved: DWORD;
   flagDirDataIsRootDirData: Boolean): Boolean;
 var
-  allOK:            Boolean;
   tmpPos:           Int64;
   cntDirEntriesReq: Integer;
 begin
   cntDirEntriesReq := WriteDirEntry(itemToAdd, nil);
-  allOK            := (cntDirEntriesReq >= 0);
-  if allOK then begin
+  Result           := (cntDirEntriesReq >= 0);
+  if Result then begin
     if not (SeekBlockUnusedDirEntries(cntDirEntriesReq, dirData)) then begin
       // The root directory under FAT12/FAT16 can't be extended
       if (flagDirDataIsRootDirData and ((FATType = ftFAT12) or (FATType = ftFAT16)))
       then begin
         // That's it - full root dir; can't store it!
-        allOK := False;
+        Result := False;
       end else begin
         tmpPos := dirData.Size;
         ExtendByEmptyCluster(dirData);
@@ -4809,11 +4727,10 @@ begin
     end;
   end;
 
-  if allOK then begin
+  if Result then begin
     WriteDirEntry(itemToAdd, dirData);
   end;
 
-  Result := allOK;
 end;
 
 function TSDFilesystem_FAT.IsValidFilename(filename: String): Boolean;
@@ -4844,7 +4761,6 @@ begin
       end;
     end;
   end;
-
 
 end;
 

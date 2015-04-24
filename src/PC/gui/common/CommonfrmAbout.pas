@@ -18,9 +18,9 @@ uses
   SysUtils, Windows,
   //sdu  - layer 1
   SDUForms, SDUStdCtrls,
-  //doxbox utils -also layer 1
+  //LibreCrypt utils -also layer 1
   OTFEFreeOTFEBase_U
-   // doxbox forms - layer 2
+   // LibreCrypt forms - layer 2
     //main form - layer 3
   ;
 
@@ -51,10 +51,10 @@ type
 
 const
    {$IFDEF FREEOTFE_MAIN}
-  APP_DESCRIPTION = 'DoxBox: Open-Source Transparent Encryption';
+  APP_DESCRIPTION = 'LibreCrypt: Open-Source Transparent Encryption';
   {$ELSE}
   APP_DESCRIPTION =
-    'DoxBox Explorer: Access DoxBoxes without administrator rights';
+    'LibreCrypt Explorer: Access containers without administrator rights';
   {$ENDIF}
 implementation
 
@@ -64,15 +64,12 @@ uses
              //delphi and 3rd party libs - layer 0
   ShellApi,  // Needed for ShellExecute
   CommonConsts,
-  //sdu & doxbox utils  - layer 1
+  //sdu & LibreCrypt utils  - layer 1
   SDUGeneral,
   SDUi18n,
-  {$IFDEF FREEOTFE_MAIN}
+
   FreeOTFEConsts    // for APP_BETA_BUILD
-{$ELSE}
-  FreeOTFEExplorerConsts
-{$ENDIF}
-  // doxbox forms - layer 2
+  // LibreCrypt forms - layer 2
   //main form - layer 3
   ;
 
@@ -123,7 +120,7 @@ begin
       OTFEVersion := Format(_('FreeOTFE driver: %s'), [OTFEVersion]);
     end;
   end else begin
-    OTFEVersion := _('The main DoxBox driver is either not installed, or not started');
+    OTFEVersion := _('The main LibreCrypt driver is either not installed, or not started');
   end;
 
 

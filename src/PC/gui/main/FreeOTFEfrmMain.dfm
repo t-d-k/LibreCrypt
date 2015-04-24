@@ -189,11 +189,11 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
         Caption = '-'
       end
       inherited miCDB: TMenuItem
-        Caption = 'FreeOTFE Box Header'
+        Caption = 'FreeOTFE Container Header'
       end
       object InstallDoxBox1: TMenuItem
         Action = actInstall
-        Caption = 'Install DoxBox Drivers'
+        Caption = 'Install LibreCrypt Drivers'
       end
       object SetTestMode1: TMenuItem
         Action = actTestModeOn
@@ -215,7 +215,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
       OnExecute = actDismountExecute
     end
     inherited actLinuxNew: TAction
-      Caption = '&New dm-crypt box...'
+      Caption = '&New dm-crypt container...'
       Hint = 'New Linux dm-crypt volume'
       ImageIndex = 0
     end
@@ -309,13 +309,13 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
       OnExecute = actTestModeOnExecute
     end
     object actInstall: TAction
-      Caption = 'Install DoxBox'
+      Caption = 'Install LibreCrypt'
       OnExecute = actInstallExecute
     end
   end
   inherited ilToolbarIcons_Small: TImageList
     Bitmap = {
-      494C010109007401D00210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109007401F00210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       00000000000000000000000000000000000000000000255F92003FA5CE003A9F
       C8003A9EC8003A9EC8003B9EC8003B9EC7003B9EC7003B9EC7003B9EC7003B9E
@@ -728,7 +728,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     Width = 32
     Left = 92
     Bitmap = {
-      494C01010900C401600320002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010900C401800320002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000008000000060000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2406,7 +2406,7 @@ inherited frmFreeOTFEMain: TfrmFreeOTFEMain
     Left = 12
     Top = 164
     Bitmap = {
-      494C010102000400080220002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400280220002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000002000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

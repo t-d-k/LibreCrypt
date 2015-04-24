@@ -21,81 +21,82 @@ uses
   //SDU
   lcDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
   SDUGeneral,
-  //doxbox
+  //LibreCrypt
   OTFEFreeOTFE_DriverAPI, OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U,
-  SDUSpin64Units, SDUStdCtrls, SDUDialogs;  // Required for TFreeOTFESectorIVGenMethod and NULL_GUID
+  SDUSpin64Units, SDUStdCtrls, SDUDialogs;
+// Required for TFreeOTFESectorIVGenMethod and NULL_GUID
 
 type
   TfrmKeyEntryLinux = class (TSDUForm)
-    pbCancel:                  TButton;
-    pbOK:                      TButton;
-    pcEntry:                   TPageControl;
-    tsKey:                     TTabSheet;
-    tsEncryption:              TTabSheet;
-    tsFileOptions:             TTabSheet;
-    tsMountOptions:            TTabSheet;
-    GroupBox1:                 TGroupBox;
-    Label1:                    TLabel;
-    Label16:                   TLabel;
-    Label15:                   TLabel;
-    Label14:                   TLabel;
-    Label21:                   TLabel;
-    GroupBox5:                 TGroupBox;
-    Label2:                    TLabel;
-    Label6:                    TLabel;
-    Label13:                   TLabel;
-    Label20:                   TLabel;
-    Label3:                    TLabel;
-    Label7:                    TLabel;
-    Label18:                   TLabel;
-    Label19:                   TLabel;
-    cbKeyProcHash:             TComboBox;
+    pbCancel:       TButton;
+    pbOK:           TButton;
+    pcEntry:        TPageControl;
+    tsKey:          TTabSheet;
+    tsEncryption:   TTabSheet;
+    tsFileOptions:  TTabSheet;
+    tsMountOptions: TTabSheet;
+    GroupBox1:      TGroupBox;
+    Label1:         TLabel;
+    Label16:        TLabel;
+    Label15:        TLabel;
+    Label14:        TLabel;
+    Label21:        TLabel;
+    GroupBox5:      TGroupBox;
+    Label2:         TLabel;
+    Label6:         TLabel;
+    Label13:        TLabel;
+    Label20:        TLabel;
+    Label3:         TLabel;
+    Label7:         TLabel;
+    Label18:        TLabel;
+    Label19:        TLabel;
+    cbKeyProcHash:  TComboBox;
     seKeyProcCypherIterations: TSpinEdit64;
-    pbKeyProcHashInfo:         TButton;
-    pbKeyProcCypherInfo:       TButton;
-    cbKeyProcCypher:           TComboBox;
-    edKeySeed:                 TEdit;
-    GroupBox3:                 TGroupBox;
-    Label23:                   TLabel;
-    Label24:                   TLabel;
-    cbMainCypher:              TComboBox;
-    pbMainCypherInfo:          TButton;
-    GroupBox4:                 TGroupBox;
-    Label8:                    TLabel;
-    Label9:                    TLabel;
-    Label10:                   TLabel;
-    Label11:                   TLabel;
-    GroupBox2:                 TGroupBox;
-    lblDrive:                  TLabel;
-    lblReadOnlySwitch:         TLabel;
-    cbDrive:                   TComboBox;
-    ckMountReadonly:           TSDUCheckBox;
-    preUserkey:                TOTFEFreeOTFE_PasswordRichEdit;
-    pbLoad:                    TButton;
-    pbSave:                    TButton;
-    OpenSettingsFileDlg:       TSDUOpenDialog;
-    SaveSettingsFileDlg:       TSDUSaveDialog;
-    Label22:                   TLabel;
-    GroupBox6:                 TGroupBox;
-    Label5:                    TLabel;
-    cbSectorIVGenMethod:       TComboBox;
-    lblIVHash:                 TLabel;
-    Label12:                   TLabel;
-    cbSectorIVHash:            TComboBox;
-    pbIVHashInfo:              TButton;
-    rgSectorIVSectorZeroPos:   TRadioGroup;
-    ckHashWithAs:              TSDUCheckBox;
-    lblIVCypher:               TLabel;
-    cbSectorIVCypher:          TComboBox;
-    pbIVCypherInfo:            TButton;
-    lblMountAs:                TLabel;
-    cbMediaType:               TComboBox;
-    ckMountForAllUsers:        TSDUCheckBox;
-    se64UnitOffset:            TSDUSpin64Unit_Storage;
-    se64UnitSizeLimit:         TSDUSpin64Unit_Storage;
-    feGPGExecutable:           TSDUFilenameEdit;
-    feGPGKeyfile:              TSDUFilenameEdit;
+    pbKeyProcHashInfo: TButton;
+    pbKeyProcCypherInfo: TButton;
+    cbKeyProcCypher: TComboBox;
+    edKeySeed:      TEdit;
+    GroupBox3:      TGroupBox;
+    Label23:        TLabel;
+    Label24:        TLabel;
+    cbMainCypher:   TComboBox;
+    pbMainCypherInfo: TButton;
+    GroupBox4:      TGroupBox;
+    Label8:         TLabel;
+    Label9:         TLabel;
+    Label10:        TLabel;
+    Label11:        TLabel;
+    GroupBox2:      TGroupBox;
+    lblDrive:       TLabel;
+    lblReadOnlySwitch: TLabel;
+    cbDrive:        TComboBox;
+    ckMountReadonly: TSDUCheckBox;
+    preUserkey:     TOTFEFreeOTFE_PasswordRichEdit;
+    pbLoad:         TButton;
+    pbSave:         TButton;
+    OpenSettingsFileDlg: TSDUOpenDialog;
+    SaveSettingsFileDlg: TSDUSaveDialog;
+    Label22:        TLabel;
+    GroupBox6:      TGroupBox;
+    Label5:         TLabel;
+    cbSectorIVGenMethod: TComboBox;
+    lblIVHash:      TLabel;
+    Label12:        TLabel;
+    cbSectorIVHash: TComboBox;
+    pbIVHashInfo:   TButton;
+    rgSectorIVSectorZeroPos: TRadioGroup;
+    ckHashWithAs:   TSDUCheckBox;
+    lblIVCypher:    TLabel;
+    cbSectorIVCypher: TComboBox;
+    pbIVCypherInfo: TButton;
+    lblMountAs:     TLabel;
+    cbMediaType:    TComboBox;
+    ckMountForAllUsers: TSDUCheckBox;
+    se64UnitOffset: TSDUSpin64Unit_Storage;
+    se64UnitSizeLimit: TSDUSpin64Unit_Storage;
+    feGPGExecutable: TSDUFilenameEdit;
+    feGPGKeyfile:   TSDUFilenameEdit;
     procedure FormCreate(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
     procedure SelectionChange(Sender: TObject);
@@ -111,14 +112,14 @@ type
     procedure pbLoadClick(Sender: TObject);
     procedure pbSaveClick(Sender: TObject);
     procedure pbIVCypherInfoClick(Sender: TObject);
-  PRIVATE
+  private
 
-  PROTECTED
+  protected
     // These are ordered lists corresponding to the items shown in the combobox
-    hashKernelModeDriverNames:   TStringList;
-    hashGUIDs:                   TStringList;
+    hashKernelModeDriverNames: TStringList;
+    hashGUIDs:   TStringList;
     cypherKernelModeDriverNames: TStringList;
-    cypherGUIDs:                 TStringList;
+    cypherGUIDs: TStringList;
 
     procedure PopulateHashes();
     procedure PopulateCyphers();
@@ -132,8 +133,8 @@ type
 
     procedure DoCancel();
 
-  PUBLIC
-//    fFreeOTFEObj: TOTFEFreeOTFEBase;
+  public
+    //    fFreeOTFEObj: TOTFEFreeOTFEBase;
 
     // Key...
     procedure GetKey(var userKey: Ansistring);
@@ -163,7 +164,7 @@ type
     procedure SetSizeLimit(fileOptSizeLimit: Int64);
 
     // Encryption options...
-    function GetMainCypherKernelDeviceName(var mainCypherDriver: string): Boolean;
+    function GetMainCypherKernelDeviceName(var mainCypherDriver: String): Boolean;
     function GetMainCypherGUID(var mainCypherGUID: TGUID): Boolean;
     function SetMainCypher(mainCypherDriver: String; mainCypherGUID: TGUID): Boolean;
     procedure GetMainIVSectorZeroPos(out startOfVolFile: Boolean; out startOfEndData: Boolean);
@@ -171,7 +172,7 @@ type
     function SetMainIVSectorZeroPos(startOfVolFile: Boolean; startOfEndData: Boolean): Boolean;
     function GetMainSectorIVGenMethod(var sectorIVGenMethod: TFreeOTFESectorIVGenMethod): Boolean;
     function SetMainSectorIVGenMethod(sectorIVGenMethod: TFreeOTFESectorIVGenMethod): Boolean;
-    function GetMainIVHashKernelDeviceName(var mainIVHashDriver: string): Boolean;
+    function GetMainIVHashKernelDeviceName(var mainIVHashDriver: String): Boolean;
     function GetMainIVHashGUID(var mainIVHashGUID: TGUID): Boolean;
     function SetMainIVHash(mainIVHashDriver: String; mainIVHashGUID: TGUID): Boolean;
     function GetMainIVCypherKernelDeviceName(var mainIVCypherDriver: Ansistring): Boolean;
@@ -220,30 +221,30 @@ const
   DEFAULT_MAIN_IV_GEN_METHOD   = 'ESSIV';       //tdk change - make consistent with linux scripts
 
   // Settings file sections and values
-  SETTINGS_SECTION_KEY                         = 'Key';
-  SETTINGS_VALUE_KeyProcSeed                   = 'KeyProcSeed';
-  SETTINGS_VALUE_KeyProcHashKernelDeviceName   = 'KeyProcHashKernelDeviceName';
-  SETTINGS_VALUE_KeyProcHashGUID               = 'KeyProcHashGUID';
-  SETTINGS_VALUE_HashWithAs                    = 'KeyProcHashWithAs';
+  SETTINGS_SECTION_KEY               = 'Key';
+  SETTINGS_VALUE_KeyProcSeed         = 'KeyProcSeed';
+  SETTINGS_VALUE_KeyProcHashKernelDeviceName = 'KeyProcHashKernelDeviceName';
+  SETTINGS_VALUE_KeyProcHashGUID     = 'KeyProcHashGUID';
+  SETTINGS_VALUE_HashWithAs          = 'KeyProcHashWithAs';
   SETTINGS_VALUE_KeyProcCypherKernelDeviceName = 'KeyProcCypherKernelDeviceName';
-  SETTINGS_VALUE_KeyProcCypherGUID             = 'KeyProcCypherGUID';
-  SETTINGS_VALUE_KeyProcCypherIterationCount   = 'KeyProcCypherIterationCount';
-  SETTINGS_SECTION_ENCRYPTION                  = 'Encryption';
-  SETTINGS_VALUE_MainCypherKernelDeviceName    = 'MainCypherKernelDeviceName';
-  SETTINGS_VALUE_MainCypherGUID                = 'MainCypherGUID';
-  SETTINGS_VALUE_MainIVGenMethod               = 'MainIVGenMethod';
-  SETTINGS_VALUE_MainIVSectorZeroPos           = 'MainIVSectorZeroPos';
-  SETTINGS_VALUE_MainIVHashKernelDeviceName    = 'MainIVHashKernelDeviceName';
-  SETTINGS_VALUE_MainIVHashGUID                = 'MainIVHashGUID';
-  SETTINGS_VALUE_MainIVCypherKernelDeviceName  = 'MainIVCypherKernelDeviceName';
-  SETTINGS_VALUE_MainIVCypherGUID              = 'MainIVCypherGUID';
-  SETTINGS_SECTION_FILE_OPTIONS                = 'FileOptions';
-  SETTINGS_VALUE_Offset                        = 'Offset';
-  SETTINGS_VALUE_Size                          = 'Size';
-  SETTINGS_SECTION_MOUNT_OPTIONS               = 'MountOptions';
-  SETTINGS_VALUE_DriveLetter                   = 'DriveLetter';
-  SETTINGS_VALUE_Readonly                      = 'Readonly';
-  SETTINGS_VALUE_MountAs                       = 'MountAsEnum';
+  SETTINGS_VALUE_KeyProcCypherGUID   = 'KeyProcCypherGUID';
+  SETTINGS_VALUE_KeyProcCypherIterationCount = 'KeyProcCypherIterationCount';
+  SETTINGS_SECTION_ENCRYPTION        = 'Encryption';
+  SETTINGS_VALUE_MainCypherKernelDeviceName = 'MainCypherKernelDeviceName';
+  SETTINGS_VALUE_MainCypherGUID      = 'MainCypherGUID';
+  SETTINGS_VALUE_MainIVGenMethod     = 'MainIVGenMethod';
+  SETTINGS_VALUE_MainIVSectorZeroPos = 'MainIVSectorZeroPos';
+  SETTINGS_VALUE_MainIVHashKernelDeviceName = 'MainIVHashKernelDeviceName';
+  SETTINGS_VALUE_MainIVHashGUID      = 'MainIVHashGUID';
+  SETTINGS_VALUE_MainIVCypherKernelDeviceName = 'MainIVCypherKernelDeviceName';
+  SETTINGS_VALUE_MainIVCypherGUID    = 'MainIVCypherGUID';
+  SETTINGS_SECTION_FILE_OPTIONS      = 'FileOptions';
+  SETTINGS_VALUE_Offset              = 'Offset';
+  SETTINGS_VALUE_Size                = 'Size';
+  SETTINGS_SECTION_MOUNT_OPTIONS     = 'MountOptions';
+  SETTINGS_VALUE_DriveLetter         = 'DriveLetter';
+  SETTINGS_VALUE_Readonly            = 'Readonly';
+  SETTINGS_VALUE_MountAs             = 'MountAsEnum';
   // Previously "MountAs" - a string
 
 
@@ -304,7 +305,8 @@ var
 begin
   tmpDisplayTitles := TStringList.Create();
   try
-    if (GetFreeOTFEBase().GetCypherList(tmpDisplayTitles, cypherKernelModeDriverNames, cypherGUIDs))
+    if (GetFreeOTFEBase().GetCypherList(tmpDisplayTitles, cypherKernelModeDriverNames,
+      cypherGUIDs))
     then begin
       cbKeyProcCypher.Items.Clear();
       cbKeyProcCypher.Items.AddStrings(tmpDisplayTitles);
@@ -374,7 +376,7 @@ begin
   cbMediaType.Items.Clear();
   for currMountAs := low(TFreeOTFEMountAs) to high(TFreeOTFEMountAs) do
     // do not allow dm-crypt vols as 'fixed discs' - work-around BSoD issue
-    if not (currMountAs in[fomaUnknown,fomaFixedDisk]) then
+    if not (currMountAs in [fomaUnknown, fomaFixedDisk]) then
       cbMediaType.Items.Add(FreeOTFEMountAsTitle(currMountAs));
 end;
 
@@ -388,7 +390,8 @@ begin
   // Autoselect default, if available
   if (cbKeyProcHash.Items.Count > 0) then begin
     idx := cbKeyProcHash.Items.IndexOf(DEFAULT_KEYPROC_HASH_TITLE);
-    if (idx = -1) then       idx := 0;
+    if (idx = -1) then
+      idx := 0;
 
     cbKeyProcHash.ItemIndex := idx;
   end;
@@ -397,7 +400,8 @@ begin
   // Autoselect default, if available
   if (cbKeyProcCypher.Items.Count > 0) then begin
     idx := cbKeyProcCypher.Items.IndexOf(DEFAULT_KEYPROC_CYPHER_TITLE);
-    if (idx = -1) then       idx := 0;
+    if (idx = -1) then
+      idx := 0;
 
     cbKeyProcCypher.ItemIndex := idx;
   end;
@@ -408,7 +412,8 @@ begin
   // Autoselect default, if available
   if (cbMainCypher.Items.Count > 0) then begin
     idx := cbMainCypher.Items.IndexOf(DEFAULT_MAIN_CYPHER_TITLE);
-    if (idx = -1) then       idx := 0;
+    if (idx = -1) then
+      idx := 0;
 
     cbMainCypher.ItemIndex := idx;
   end;
@@ -499,16 +504,16 @@ begin
   GetKey(tmpKey);
   if (Length(tmpKey) = 0) then begin
     if (SDUMessageDlg(_('You have not entered a Keyphrase.') + SDUCRLF +
-      SDUCRLF + _('Are you sure you wish to proceed?'), mtConfirmation,
-      [mbYes, mbNo], 0) = mrYes) then begin
+      SDUCRLF + _('Are you sure you wish to proceed?'), mtConfirmation, [mbYes, mbNo], 0) =
+      mrYes) then begin
       ModalResult := mrOk;
     end;
   end else
   if (Length(tmpKey) < 20) then begin
     if (SDUMessageDlg(_(
-      'The Keyphrase you entered has less than 20 characters, and may not be compatible with some Linux volumes.') +
-      SDUCRLF + SDUCRLF + _('Do you wish to proceed?'), mtWarning,
-      [mbYes, mbNo], 0) = mrYes) then begin
+      'The Keyphrase you entered has less than 20 characters, and may not be compatible with some Linux volumes.')
+      + SDUCRLF + SDUCRLF + _('Do you wish to proceed?'), mtWarning, [mbYes, mbNo], 0) =
+      mrYes) then begin
       ModalResult := mrOk;
     end;
   end else begin
@@ -642,7 +647,7 @@ end;
 
 procedure TfrmKeyEntryLinux.pbIVHashInfoClick(Sender: TObject);
 var
-  deviceName: string;
+  deviceName: String;
   GUID:       TGUID;
 begin
   GetMainIVHashKernelDeviceName(deviceName);
@@ -664,7 +669,7 @@ end;
 
 procedure TfrmKeyEntryLinux.pbMainCypherInfoClick(Sender: TObject);
 var
-  deviceName: string;
+  deviceName: String;
   GUID:       TGUID;
 begin
   GetMainCypherKernelDeviceName(deviceName);
@@ -720,6 +725,7 @@ begin
   end;
 
   EnableDisableControls();
+    preUserkey.SetFocus;
 
 end;
 
@@ -745,14 +751,12 @@ end;
 procedure TfrmKeyEntryLinux.pbCancelClick(Sender: TObject);
 begin
   ModalResult := mrCancel;
-
 end;
 
 
 procedure TfrmKeyEntryLinux.DoCancel();
 begin
   ModalResult := mrCancel;
-
 end;
 
 
@@ -803,7 +807,7 @@ end;
 function TfrmKeyEntryLinux.SetKeyProcHash(keyProcHashDriver: String;
   keyProcHashGUID: TGUID): Boolean;
 var
-  i:   Integer;
+  i: Integer;
 begin
   cbKeyProcHash.ItemIndex := -1;
 
@@ -1010,7 +1014,7 @@ end;
 
 
 function TfrmKeyEntryLinux.GetMainCypherKernelDeviceName(
-  var mainCypherDriver: string): Boolean;
+  var mainCypherDriver: String): Boolean;
 begin
   Result := False;
 
@@ -1070,7 +1074,7 @@ end;
 function TfrmKeyEntryLinux.SetMainSectorIVGenMethod(sectorIVGenMethod:
   TFreeOTFESectorIVGenMethod): Boolean;
 var
-  i:   Integer;
+  i: Integer;
 begin
   cbSectorIVGenMethod.ItemIndex := -1;
 
@@ -1122,7 +1126,7 @@ end;
  // Note: This function will return '' if none is selected, and still return TRUE
  // It will also return '' if no hash *can* be selected (the control is disabled)
 function TfrmKeyEntryLinux.GetMainIVHashKernelDeviceName(
-  var mainIVHashDriver: string): Boolean;
+  var mainIVHashDriver: String): Boolean;
 var
   sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
 begin
@@ -1297,16 +1301,16 @@ end;
 
 procedure TfrmKeyEntryLinux.LoadSettings(filename: String);
 var
-  settingsFile:                   TINIFile;
-  tmpString:                      String;
-  tmpStringName, tmpStringGUID:   String;
-  tmpBoolean:                     Boolean;
-  tmpInteger:                     Integer;
+  settingsFile:    TINIFile;
+  tmpString:       String;
+  tmpStringName, tmpStringGUID: String;
+  tmpBoolean:      Boolean;
+  tmpInteger:      Integer;
   startOfVolFile, startOfEndData: Boolean;
-  tmpSectorIVGenMethod:           TFreeOTFESectorIVGenMethod;
-  found:                          Boolean;
-  ignoreIfCantSet:                Boolean;  // Set to TRUE for parameters which we don't
-  Ok:                             Boolean;
+  tmpSectorIVGenMethod: TFreeOTFESectorIVGenMethod;
+  found:           Boolean;
+  ignoreIfCantSet: Boolean;  // Set to TRUE for parameters which we don't
+  Ok:              Boolean;
   // really care about
   // e.g. If not hash algorithm is required for the
   //      IV, we can ignore it if we can't show the
@@ -1484,17 +1488,17 @@ end;
 
 procedure TfrmKeyEntryLinux.pbSaveClick(Sender: TObject);
 var
-  settingsFile:                   TINIFile;
-  tmpString:                      String;
-  tmpAnsiString:                  Ansistring;
-  tmpBoolean:                     Boolean;
-  tmpGUID:                        TGUID;
-  tmpInteger:                     Integer;
-  tmpInt64:                       Int64;
-  tmpChar:                        DriveLetterChar;
+  settingsFile:         TINIFile;
+  tmpString:            String;
+  tmpAnsiString:        Ansistring;
+  tmpBoolean:           Boolean;
+  tmpGUID:              TGUID;
+  tmpInteger:           Integer;
+  tmpInt64:             Int64;
+  tmpChar:              DriveLetterChar;
   startOfVolFile, startOfEndData: Boolean;
-  tmpSectorIVGenMethod:           TFreeOTFESectorIVGenMethod;
-  tmpMountAs:                     TFreeOTFEMountAs;
+  tmpSectorIVGenMethod: TFreeOTFESectorIVGenMethod;
+  tmpMountAs:           TFreeOTFEMountAs;
 begin
   if (SaveSettingsFileDlg.Execute) then begin
     settingsFile := TINIFile.Create(SaveSettingsFileDlg.Filename);

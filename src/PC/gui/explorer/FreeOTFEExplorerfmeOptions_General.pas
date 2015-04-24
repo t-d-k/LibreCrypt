@@ -342,9 +342,6 @@ begin
   for uf := low(uf) to high(uf) do begin
     // Daily and weekly disabled for now; not sure what the load on the 
     // server would be like
-    if ((uf = ufDaily) or (uf = ufWeekly)) then begin
-      continue;
-    end;
 
     Inc(idx);
     cbChkUpdatesFreq.Items.Add(UpdateFrequencyTitle(uf));

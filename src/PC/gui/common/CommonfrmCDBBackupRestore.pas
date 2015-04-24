@@ -16,37 +16,37 @@ uses
   Spin64, StdCtrls, SysUtils, Windows,
   //sdu
   SDUForms, SDUFrames, SDUSpin64Units,
-  // doxbox
+  // LibreCrypt
   OTFEFreeOTFE_VolumeSelect, OTFEFreeOTFEBase_U;
 
 type
   TCDBOperationType = (opBackup, opRestore);
 
   TfrmCDBBackupRestore = class (TSDUForm)
-    pbCancel:           TButton;
-    pbOK:               TButton;
-    gbDest:             TGroupBox;
-    lblFileDescDest:    TLabel;
-    lblOffsetDest:      TLabel;
-    gbSrc:              TGroupBox;
-    lblFileDescSrc:     TLabel;
-    lblOffsetSrc:       TLabel;
-    se64UnitOffsetSrc:  TSDUSpin64Unit_Storage;
+    pbCancel:       TButton;
+    pbOK:           TButton;
+    gbDest:         TGroupBox;
+    lblFileDescDest: TLabel;
+    lblOffsetDest:  TLabel;
+    gbSrc:          TGroupBox;
+    lblFileDescSrc: TLabel;
+    lblOffsetSrc:   TLabel;
+    se64UnitOffsetSrc: TSDUSpin64Unit_Storage;
     se64UnitOffsetDest: TSDUSpin64Unit_Storage;
-    SelectSrcFile:      TOTFEFreeOTFEVolumeSelect;
-    SelectDestFile:     TOTFEFreeOTFEVolumeSelect;
+    SelectSrcFile:  TOTFEFreeOTFEVolumeSelect;
+    SelectDestFile: TOTFEFreeOTFEVolumeSelect;
     procedure FormCreate(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ControlChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
 
-  PRIVATE
+  private
     procedure SetSrcFilename(const Value: String);
     procedure SetDestFilename(const Value: String);
-  PROTECTED
+  protected
     FOpType:       TCDBOperationType;
-//    FOTFEFreeOTFE: TOTFEFreeOTFEBase;
+    //    FOTFEFreeOTFE: TOTFEFreeOTFEBase;
     fsilent:       Boolean;
     fsilentResult: TModalResult;
 
@@ -62,8 +62,8 @@ type
 
     procedure EnableDisableControls();
 
-  PUBLIC
-//    OTFEFreeOTFE: TOTFEFreeOTFEBase;
+  public
+    //    OTFEFreeOTFE: TOTFEFreeOTFEBase;
 
     property OpType: TCDBOperationType Read FOpType Write SetOpType;
     property silent: Boolean Read fsilent Write fsilent;
@@ -81,8 +81,8 @@ implementation
 
 
 uses
-  OTFEFreeOTFE_DriverAPI, lcDialogs,
-  SDUGeneral,
+  lcDialogs,
+  OTFEFreeOTFE_DriverAPI, SDUGeneral,
   SDUi18n;  // Required for CRITICAL_DATA_LENGTH
 
 {$IFDEF _NEVER_DEFINED}
@@ -95,7 +95,7 @@ const
 {$ENDIF}
 
 resourcestring
-  USE_NOT_IN_USE = 'Please ensure that the Box is not open, or otherwise in use';
+  USE_NOT_IN_USE = 'Please ensure that the container is not open, or otherwise in use';
 
 procedure TfrmCDBBackupRestore.FormShow(Sender: TObject);
 begin
@@ -104,9 +104,9 @@ begin
     SelectDestFile.Filename := '';
   end;
 
-//  SelectSrcFile.OTFEFreeOTFE := OTFEFreeOTFE;
+  //  SelectSrcFile.OTFEFreeOTFE := OTFEFreeOTFE;
 
-//  SelectDestFile.OTFEFreeOTFE := OTFEFreeOTFE;
+  //  SelectDestFile.OTFEFreeOTFE := OTFEFreeOTFE;
 
   se64UnitOffsetSrc.Value  := 0;
   se64UnitOffsetDest.Value := 0;
@@ -255,7 +255,6 @@ begin
     end;  // ELSE PART - if (not(CheckDestLarger())) then
 
   end;  // ELSE PART - if not(FileExists(GetSrcFilename()) then
-
 
 end;
 

@@ -93,7 +93,7 @@ begin
   reInstructOverwriteType.Text :=
     _('Please select the type of data that should be used to overwrite the free space:' +
     SDUCRLF + SDUCRLF +
-    'Pseudorandom data - This is faster, but less secure if you wish to create a hidden Box within this Box later.'
+    'Pseudorandom data - This is faster, but less secure if you wish to create a hidden container within this container later.'
     + SDUCRLF + SDUCRLF +
     'Encrypted data - This is more secure, but slower. Pseudorandom data will be encrypted with your choice of cypher before being written to the drive.');
 
@@ -106,9 +106,9 @@ begin
     end else begin
       SDUMessageDlg(
         _('Unable to obtain list of cyphers.') + SDUCRLF + SDUCRLF +
-        _('Please ensure that you have one or more DoxBox cypher drivers installed and started.') +
+        _('Please ensure that you have one or more LibreCrypt cypher drivers installed and started.') +
         SDUCRLF + SDUCRLF + _(
-        'If you have only just installed DoxBox, you may need to restart your computer.'),
+        'If you have only just installed LibreCrypt, you may need to restart your computer.'),
         mtError
         );
     end;

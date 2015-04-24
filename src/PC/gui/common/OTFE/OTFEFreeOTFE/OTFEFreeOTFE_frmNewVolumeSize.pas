@@ -1,45 +1,45 @@
 unit OTFEFreeOTFE_frmNewVolumeSize;
-// Description: 
-// By Sarah Dean
-// Email: sdean12@sdean12.org
-// WWW:   http://www.SDean12.org/
-//
-// -----------------------------------------------------------------------------
-//
+ // Description: 
+ // By Sarah Dean
+ // Email: sdean12@sdean12.org
+ // WWW:   http://www.SDean12.org/
+ //
+ // -----------------------------------------------------------------------------
+ //
 
 
-interface                                                     
+interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, Spin64, SDUForms, SDUFrames, SDUSpin64Units, SDUFilenameEdit_U,
-  OTFEFreeOTFEBase_U;
+  Classes, Controls, Dialogs,
+  Forms, Graphics, Messages, OTFEFreeOTFEBase_U, SDUFilenameEdit_U,
+  SDUForms, SDUFrames, SDUSpin64Units, Spin64, StdCtrls, SysUtils, Windows;
 
 type
-  TfrmNewVolumeSize = class(TSDUForm)
-    pbCancel: TButton;
-    pbOK: TButton;
-    Label2: TLabel;
-    Label3: TLabel;
+  TfrmNewVolumeSize = class (TSDUForm)
+    pbCancel:     TButton;
+    pbOK:         TButton;
+    Label2:       TLabel;
+    Label3:       TLabel;
     se64UnitSize: TSDUSpin64Unit_Storage;
-    feFilename: TSDUFilenameEdit;
+    feFilename:   TSDUFilenameEdit;
     procedure pbOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
-    FFilename: string;
-    FVolumeSize: int64;
+    FFilename:   String;
+    FVolumeSize: Int64;
   protected
-    function  GetFilter(): string;
-    procedure SetFilter(new: string);
-    function  GetDefaultExt(): string;
-    procedure SetDefaultExt(new: string);
+    function GetFilter(): String;
+    procedure SetFilter(new: String);
+    function GetDefaultExt(): String;
+    procedure SetDefaultExt(new: String);
 
   public
-    property Filename: string read FFilename write FFilename;
-    property VolumeSize: int64 read FVolumeSize write FVolumeSize;
+    property Filename: String Read FFilename Write FFilename;
+    property VolumeSize: Int64 Read FVolumeSize Write FVolumeSize;
 
-    property Filter: string read GetFilter write SetFilter;
-    property DefaultExt: string read GetDefaultExt write SetDefaultExt;
+    property Filter: String Read GetFilter Write SetFilter;
+    property DefaultExt: String Read GetDefaultExt Write SetDefaultExt;
   end;
 
 
@@ -48,21 +48,19 @@ implementation
 {$R *.DFM}
 
 uses
-  SDUi18n,
-  SDUGeneral,
   lcDialogs,
-  OTFEFreeOTFE_U;
+  OTFEFreeOTFE_U, SDUGeneral,
+  SDUi18n;
 
 procedure TfrmNewVolumeSize.pbOKClick(Sender: TObject);
 begin
-  if (feFilename.Filename = '') then
-    begin
+  if (feFilename.Filename = '') then begin
     SDUMessageDlg(
-               _('Please specify a filename for the new DoxBox by clicking the "..." button.'),
-               mtWarning
-              );
+      _('Please specify a filename for the new container by clicking the "..." button.'),
+      mtWarning
+      );
     exit;
-    end;
+  end;
 
   // Calculate the number of bytes...
   // Note: The in64(...) cast is REQUIRED, otherwise Delphi will calculate the
@@ -70,41 +68,38 @@ begin
   VolumeSize := se64UnitSize.Value;
 
   Filename := feFilename.Filename;
-   
-  ModalResult := mrOK;
+
+  ModalResult := mrOk;
 
 end;
 
 procedure TfrmNewVolumeSize.FormShow(Sender: TObject);
 begin
-  se64UnitSize.Value := DEFAULT_VOLUME_SIZE;
-  feFilename.Filename := '';
+  se64UnitSize.Value            := DEFAULT_VOLUME_SIZE;
+  feFilename.Filename           := '';
   feFilename.OpenDialog.Options := feFilename.OpenDialog.Options + [ofDontAddToRecent];
   feFilename.SaveDialog.Options := feFilename.SaveDialog.Options + [ofDontAddToRecent];
 
 end;
 
-function TfrmNewVolumeSize.GetFilter(): string;
+function TfrmNewVolumeSize.GetFilter(): String;
 begin
   Result := feFilename.Filter;
 end;
 
-procedure TfrmNewVolumeSize.SetFilter(new: string);
+procedure TfrmNewVolumeSize.SetFilter(new: String);
 begin
   feFilename.Filter := new;
 end;
 
-function TfrmNewVolumeSize.GetDefaultExt(): string;
+function TfrmNewVolumeSize.GetDefaultExt(): String;
 begin
   Result := feFilename.DefaultExt;
 end;
 
-procedure TfrmNewVolumeSize.SetDefaultExt(new: string);
+procedure TfrmNewVolumeSize.SetDefaultExt(new: String);
 begin
   feFilename.DefaultExt := new;
 end;
 
-END.
-
-
-
+end.

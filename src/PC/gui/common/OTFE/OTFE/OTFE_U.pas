@@ -363,13 +363,13 @@ begin
     OTFE_ERR_DRIVER_FAILURE            : Result := 'Driver failure';
     OTFE_ERR_USER_CANCEL               : Result := 'User cancelled operation';
     OTFE_ERR_WRONG_PASSWORD            : Result := 'Wrong Keyphrase entered';
-    OTFE_ERR_VOLUME_FILE_NOT_FOUND     : Result := 'Box file not found';
+    OTFE_ERR_VOLUME_FILE_NOT_FOUND     : Result := 'Container file not found';
     OTFE_ERR_INVALID_DRIVE             : Result := 'Invalid drive';
     OTFE_ERR_MOUNT_FAILURE             : Result := 'Mount failure';
     OTFE_ERR_DISMOUNT_FAILURE          : Result := 'Dismount failure';
-    OTFE_ERR_FILES_OPEN                : Result := 'Files open on box';
+    OTFE_ERR_FILES_OPEN                : Result := 'Files open in container';
     OTFE_ERR_STREAMING_DATA            : Result := 'Can''t dismount while still streaming data, or was doing so in the last few seconds';
-    OTFE_ERR_FILE_NOT_ENCRYPTED_VOLUME : Result := 'File is not an encrypted box';
+    OTFE_ERR_FILE_NOT_ENCRYPTED_VOLUME : Result := 'File is not an encrypted container';
     OTFE_ERR_UNABLE_TO_LOCATE_FILE     : Result := 'Unable to locate file';
     OTFE_ERR_DISMOUNT_RECURSIVE        : Result := 'Dismounting recursively mounted drive';
     OTFE_ERR_INSUFFICENT_RIGHTS        : Result := 'Insufficient rights';

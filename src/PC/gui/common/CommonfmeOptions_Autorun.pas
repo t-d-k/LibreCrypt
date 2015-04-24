@@ -126,7 +126,7 @@ begin
 
   // Setup instructions text
   reInstructions.Text :=
-    _('DoxBox can be configured here to automatically run programs after mounting, before dismounting, and after dismounting.'
+    _('LibreCrypt can be configured here to automatically run programs after mounting, before dismounting, and after dismounting.'
     + SDUCRLF + SDUCRLF +
     'Any post-mount and pre-dismount executables specified must use a relative path to the executable within the mounted volume (i.e. absolute and UNC paths are not allowed for security reasons)' + SDUCRLF + SDUCRLF + 'Executables with spaces in their paths/names must be surrounded with double quotes.' + SDUCRLF + SDUCRLF + '"%DRIVE" will be substituted with the drive letter of the mounted drive letter');
 

@@ -52,16 +52,16 @@ type
   TSDUArrayString  = array of String;
 
 {$IF CompilerVersion >= 18.5}// Delphi 2007 defined
-                             // If you have Delphi 2007, use the definition in Windows.pas (i.e. uses Windows)
-                             // Delphi 7 doesn't have ULONGLONG
+  // If you have Delphi 2007, use the definition in Windows.pas (i.e. uses Windows)
+  // Delphi 7 doesn't have ULONGLONG
   ULONGLONG = Uint64;        //TDK CHANGE
-                             // ULONGLONG = int64;  // Changed from Uint64 to prevent Delphi internal error
-                             // c1118 in SDUFormatUnits with Uint64 under Delphi7
-                             // (from feedback from OracleX <oraclex@mail.ru>)
-                             // Note: Because it's using int64 here, overloaded
-                             //       functions which provide ULONGLONG and int64
-                             //       versions have their ULONGLONG version ifdef'd
-                             //       out.
+  // ULONGLONG = int64;  // Changed from Uint64 to prevent Delphi internal error
+  // c1118 in SDUFormatUnits with Uint64 under Delphi7
+  // (from feedback from OracleX <oraclex@mail.ru>)
+  // Note: Because it's using int64 here, overloaded
+  //       functions which provide ULONGLONG and int64
+  //       versions have their ULONGLONG version ifdef'd
+  //       out.
 {$IFEND}
 
   // Note: DON'T USE A PACKED RECORD HERE!
@@ -152,13 +152,13 @@ resourcestring
 
 type
   TSDUDiskGeometry = packed record
-    Cylinders:         LARGE_INTEGER;
-    MediaType:         DWORD;  // A TSDUMediaType, but must be a DWORD to pad out
-                               // correctly
+    Cylinders: LARGE_INTEGER;
+    MediaType: DWORD;  // A TSDUMediaType, but must be a DWORD to pad out
+    // correctly
     TracksPerCylinder: DWORD;
-    SectorsPerTrack:   DWORD;
-    BytesPerSector:    DWORD;
-    junk:              array[0..255] of Byte;  // Not needed - just padding; should be removed
+    SectorsPerTrack: DWORD;
+    BytesPerSector: DWORD;
+    junk: array[0..255] of Byte;  // Not needed - just padding; should be removed
   end;
   PSDUDiskGeometry = ^TSDUDiskGeometry;
 
@@ -199,14 +199,14 @@ type
   TSDUNewline_Enum = (nlCRLF, nlCR, nlLF);
   TSDUNewline      = TSDUNewline_Enum;
 
-  TSDUBytes = array of Byte;
-  DriveLetterString    = string;
+  TSDUBytes         = array of Byte;
+  DriveLetterString = String;
   VolumeFilenameString = String;
-  KeyFilenameString    = String;
-  FilenameString       = String;
-  DriveLetterChar      = Char;
+  KeyFilenameString = String;
+  FilenameString    = String;
+  DriveLetterChar   = Char;
   //  PasswordString       = TSDUBytes;
-  PasswordString       = Ansistring;
+  PasswordString    = Ansistring;
 
 resourcestring
   UNITS_STORAGE_BYTES = 'bytes';
@@ -283,118 +283,118 @@ const
   // 6.0   Shlwapi.dll   Windows XP and Windows Vista
   // 5.0   Shell32.dll   Windows 2000 and Windows Millennium Edition (Windows Me).
   // 6.0   Shell32.dll   Windows XP and Windows Vista
-  SDU_CSIDL_DESKTOP                 = $0000;           // <desktop>
-  SDU_CSIDL_INTERNET                = $0001;           // Internet Explorer (icon on desktop)
-  SDU_CSIDL_PROGRAMS                = $0002;           // Start Menu\Programs
-  SDU_CSIDL_CONTROLS                = $0003;           // My Computer\Control Panel
-  SDU_CSIDL_PRINTERS                = $0004;           // My Computer\Printers
-  SDU_CSIDL_PERSONAL                = $0005;  // v6.0  // My Documents
-  SDU_CSIDL_FAVORITES               = $0006;           // <user name>\Favorites
-  SDU_CSIDL_STARTUP                 = $0007;           // Start Menu\Programs\Startup
-  SDU_CSIDL_RECENT                  = $0008;           // <user name>\Recent
-  SDU_CSIDL_SENDTO                  = $0009;           // <user name>\SendTo
-  SDU_CSIDL_BITBUCKET               = $000a;           // <desktop>\Recycle Bin
-  SDU_CSIDL_STARTMENU               = $000b;           // <user name>\Start Menu
-  SDU_CSIDL_MYDOCUMENTS             = $000c;  // v6.0  // logical "My Documents" desktop icon
-  SDU_CSIDL_MYMUSIC                 = $000d;           // "My Music" folder
-  SDU_CSIDL_MYVIDEO                 = $000e;  // v6.0  // "My Videos" folder
-  SDU_CSIDL_DESKTOPDIRECTORY        = $0010;           // <user name>\Desktop
-  SDU_CSIDL_DRIVES                  = $0011;           // My Computer
-  SDU_CSIDL_NETWORK                 = $0012;
+  SDU_CSIDL_DESKTOP         = $0000;           // <desktop>
+  SDU_CSIDL_INTERNET        = $0001;           // Internet Explorer (icon on desktop)
+  SDU_CSIDL_PROGRAMS        = $0002;           // Start Menu\Programs
+  SDU_CSIDL_CONTROLS        = $0003;           // My Computer\Control Panel
+  SDU_CSIDL_PRINTERS        = $0004;           // My Computer\Printers
+  SDU_CSIDL_PERSONAL        = $0005;  // v6.0  // My Documents
+  SDU_CSIDL_FAVORITES       = $0006;           // <user name>\Favorites
+  SDU_CSIDL_STARTUP         = $0007;           // Start Menu\Programs\Startup
+  SDU_CSIDL_RECENT          = $0008;           // <user name>\Recent
+  SDU_CSIDL_SENDTO          = $0009;           // <user name>\SendTo
+  SDU_CSIDL_BITBUCKET       = $000a;           // <desktop>\Recycle Bin
+  SDU_CSIDL_STARTMENU       = $000b;           // <user name>\Start Menu
+  SDU_CSIDL_MYDOCUMENTS     = $000c;  // v6.0  // logical "My Documents" desktop icon
+  SDU_CSIDL_MYMUSIC         = $000d;           // "My Music" folder
+  SDU_CSIDL_MYVIDEO         = $000e;  // v6.0  // "My Videos" folder
+  SDU_CSIDL_DESKTOPDIRECTORY = $0010;           // <user name>\Desktop
+  SDU_CSIDL_DRIVES          = $0011;           // My Computer
+  SDU_CSIDL_NETWORK         = $0012;
   // Network Neighborhood (My Network Places)
-  SDU_CSIDL_NETHOOD                 = $0013;           // <user name>\nethood
-  SDU_CSIDL_FONTS                   = $0014;           // windows\fonts
-  SDU_CSIDL_TEMPLATES               = $0015;
-  SDU_CSIDL_COMMON_STARTMENU        = $0016;           // All Users\Start Menu
-  SDU_CSIDL_COMMON_PROGRAMS         = $0017;           // All Users\Start Menu\Programs
-  SDU_CSIDL_COMMON_STARTUP          = $0018;           // All Users\Startup
+  SDU_CSIDL_NETHOOD         = $0013;           // <user name>\nethood
+  SDU_CSIDL_FONTS           = $0014;           // windows\fonts
+  SDU_CSIDL_TEMPLATES       = $0015;
+  SDU_CSIDL_COMMON_STARTMENU = $0016;                  // All Users\Start Menu
+  SDU_CSIDL_COMMON_PROGRAMS = $0017;                   // All Users\Start Menu\Programs
+  SDU_CSIDL_COMMON_STARTUP  = $0018;                   // All Users\Startup
   SDU_CSIDL_COMMON_DESKTOPDIRECTORY = $0019;           // All Users\Desktop
-  SDU_CSIDL_APPDATA                 = $001a;           // v4.71 // <user name>\Application Data
-  SDU_CSIDL_PRINTHOOD               = $001b;           // <user name>\PrintHood
-  SDU_CSIDL_LOCAL_APPDATA           = $001c;
+  SDU_CSIDL_APPDATA         = $001a;                   // v4.71 // <user name>\Application Data
+  SDU_CSIDL_PRINTHOOD       = $001b;                   // <user name>\PrintHood
+  SDU_CSIDL_LOCAL_APPDATA   = $001c;
   // v5.0  // <user name>\Local Settings\Applicaiton Data (non roaming)
-  SDU_CSIDL_ALTSTARTUP              = $001d;           // non localized startup
-  SDU_CSIDL_COMMON_ALTSTARTUP       = $001e;           // non localized common startup
-  SDU_CSIDL_COMMON_FAVORITES        = $001f;
-  SDU_CSIDL_INTERNET_CACHE          = $0020;  // v4.72
-  SDU_CSIDL_COOKIES                 = $0021;
-  SDU_CSIDL_HISTORY                 = $0022;
-  SDU_CSIDL_COMMON_APPDATA          = $0023;           // v5.0  // All Users\Application Data
-  SDU_CSIDL_WINDOWS                 = $0024;           // v5.0  // GetWindowsDirectory()
-  SDU_CSIDL_SYSTEM                  = $0025;           // v5.0  // GetSystemDirectory()
-  SDU_CSIDL_PROGRAM_FILES           = $0026;           // v5.0  // C:\Program Files
-  SDU_CSIDL_MYPICTURES              = $0027;           // v5.0  // C:\Program Files\My Pictures
-  SDU_CSIDL_PROFILE                 = $0028;           // v5.0  // USERPROFILE
-  SDU_CSIDL_SYSTEMX86               = $0029;           // x86 system directory on RISC
-  SDU_CSIDL_PROGRAM_FILESX86        = $002a;           // x86 C:\Program Files on RISC
-  SDU_CSIDL_PROGRAM_FILES_COMMON    = $002b;           // v5.0  // C:\Program Files\Common
+  SDU_CSIDL_ALTSTARTUP      = $001d;           // non localized startup
+  SDU_CSIDL_COMMON_ALTSTARTUP = $001e;           // non localized common startup
+  SDU_CSIDL_COMMON_FAVORITES = $001f;
+  SDU_CSIDL_INTERNET_CACHE  = $0020;  // v4.72
+  SDU_CSIDL_COOKIES         = $0021;
+  SDU_CSIDL_HISTORY         = $0022;
+  SDU_CSIDL_COMMON_APPDATA  = $0023;                   // v5.0  // All Users\Application Data
+  SDU_CSIDL_WINDOWS         = $0024;                   // v5.0  // GetWindowsDirectory()
+  SDU_CSIDL_SYSTEM          = $0025;                   // v5.0  // GetSystemDirectory()
+  SDU_CSIDL_PROGRAM_FILES   = $0026;                   // v5.0  // C:\Program Files
+  SDU_CSIDL_MYPICTURES      = $0027;                   // v5.0  // C:\Program Files\My Pictures
+  SDU_CSIDL_PROFILE         = $0028;                   // v5.0  // USERPROFILE
+  SDU_CSIDL_SYSTEMX86       = $0029;                   // x86 system directory on RISC
+  SDU_CSIDL_PROGRAM_FILESX86 = $002a;                  // x86 C:\Program Files on RISC
+  SDU_CSIDL_PROGRAM_FILES_COMMON = $002b;              // v5.0  // C:\Program Files\Common
   SDU_CSIDL_PROGRAM_FILES_COMMONX86 = $002c;           // x86 Program Files\Common on RISC
-  SDU_CSIDL_COMMON_TEMPLATES        = $002d;           // All Users\Templates
-  SDU_CSIDL_COMMON_DOCUMENTS        = $002e;           // All Users\Documents
-  SDU_CSIDL_COMMON_ADMINTOOLS       = $002f;
+  SDU_CSIDL_COMMON_TEMPLATES = $002d;                  // All Users\Templates
+  SDU_CSIDL_COMMON_DOCUMENTS = $002e;                  // All Users\Documents
+  SDU_CSIDL_COMMON_ADMINTOOLS = $002f;
   // v5.0  // All Users\Start Menu\Programs\Administrative Tools
-  SDU_CSIDL_ADMINTOOLS              = $0030;
+  SDU_CSIDL_ADMINTOOLS      = $0030;
   // v5.0  // <user name>\Start Menu\Programs\Administrative Tools
-  SDU_CSIDL_CONNECTIONS             = $0031;           // Network and Dial-up Connections
-  SDU_CSIDL_COMMON_MUSIC            = $0035;  // v6.0  // All Users\My Music
-  SDU_CSIDL_COMMON_PICTURES         = $0036;  // v6.0  // All Users\My Pictures
-  SDU_CSIDL_COMMON_VIDEO            = $0037;  // v6.0  // All Users\My Video
-  SDU_CSIDL_RESOURCES               = $0038;  // Windows Vista // Resource Direcotry
-  SDU_CSIDL_RESOURCES_LOCALIZED     = $0039;           // Localized Resource Direcotry
-  SDU_CSIDL_COMMON_OEM_LINKS        = $003a;           // Links to All Users OEM specific apps
-  SDU_CSIDL_CDBURN_AREA             = $003b;
+  SDU_CSIDL_CONNECTIONS     = $0031;           // Network and Dial-up Connections
+  SDU_CSIDL_COMMON_MUSIC    = $0035;  // v6.0  // All Users\My Music
+  SDU_CSIDL_COMMON_PICTURES = $0036;  // v6.0  // All Users\My Pictures
+  SDU_CSIDL_COMMON_VIDEO    = $0037;  // v6.0  // All Users\My Video
+  SDU_CSIDL_RESOURCES       = $0038;  // Windows Vista // Resource Direcotry
+  SDU_CSIDL_RESOURCES_LOCALIZED = $0039;           // Localized Resource Direcotry
+  SDU_CSIDL_COMMON_OEM_LINKS = $003a;           // Links to All Users OEM specific apps
+  SDU_CSIDL_CDBURN_AREA     = $003b;
   // v6.0  // USERPROFILE\Local Settings\Application Data\Microsoft\CD Burning
   // unused                             $003c
-  SDU_CSIDL_COMPUTERSNEARME         = $003d;
+  SDU_CSIDL_COMPUTERSNEARME = $003d;
   // Computers Near Me (computered from Workgroup membership)
-  SDU_CSIDL_FLAG_CREATE             = $8000;
+  SDU_CSIDL_FLAG_CREATE     = $8000;
   // combine with CSIDL_ value to force folder creation in SHGetFolderPath()
-  SDU_CSIDL_FLAG_DONT_VERIFY        = $4000;
+  SDU_CSIDL_FLAG_DONT_VERIFY = $4000;
   // combine with CSIDL_ value to return an unverified folder path
-  SDU_CSIDL_FLAG_NO_ALIAS           = $1000;
+  SDU_CSIDL_FLAG_NO_ALIAS   = $1000;
   // combine with CSIDL_ value to insure non-alias versions of the pidl
-  SDU_CSIDL_FLAG_PER_USER_INIT      = $0800;
+  SDU_CSIDL_FLAG_PER_USER_INIT = $0800;
   // combine with CSIDL_ value to indicate per-user init (eg. upgrade)
-  SDU_CSIDL_FLAG_MASK               = $FF00;           // mask for all possible flag values
+  SDU_CSIDL_FLAG_MASK       = $FF00;           // mask for all possible flag values
 
 
   // Constants used for SDUSelectDirectory(...)
   // Only return file system directories. If the user selects folders that are not part of the file system, the OK button is grayed.
   // Note  The OK button remains enabled for "\\server" items, as well as "\\server\share" and directory items. However, if the user selects a "\\server" item, passing the PIDL returned by SHBrowseForFolder to SHGetPathFromIDList fails.
-  BIF_RETURNONLYFSDIRS    = $00000001;
+  BIF_RETURNONLYFSDIRS = $00000001;
   // Do not include network folders below the domain level in the dialog box's tree view control.
-  BIF_DONTGOBELOWDOMAIN   = $00000002;
+  BIF_DONTGOBELOWDOMAIN = $00000002;
   // Include a status area in the dialog box. The callback function can set the status text by sending messages to the dialog box. This flag is not supported when BIF_NEWDIALOGSTYLE is specified.
-  BIF_STATUSTEXT          = $00000004;
+  BIF_STATUSTEXT       = $00000004;
   // Only return file system ancestors. An ancestor is a subfolder that is beneath the root folder in the namespace hierarchy. If the user selects an ancestor of the root folder that is not part of the file system, the OK button is grayed.
-  BIF_RETURNFSANCESTORS   = $00000008;
+  BIF_RETURNFSANCESTORS = $00000008;
   // Version 4.71. Include an edit control in the browse dialog box that allows the user to type the name of an item.
-  BIF_EDITBOX             = $00000010;
+  BIF_EDITBOX          = $00000010;
   // Version 4.71. If the user types an invalid name into the edit box, the browse dialog box calls the application's BrowseCallbackProc with the BFFM_VALIDATEFAILED message. This flag is ignored if BIF_EDITBOX is not specified.
-  BIF_VALIDATE            = $00000020;
+  BIF_VALIDATE         = $00000020;
   // Version 5.0. Use the new user interface. Setting this flag provides the user with a larger dialog box that can be resized. The dialog box has several new capabilities, including: drag-and-drop capability within the dialog box, reordering, shortcut menus, new folders, delete, and other shortcut menu commands.
   // Note  If Component Object Model (COM) is initialized through CoInitializeEx with the COINIT_MULTITHREADED flag set, SHBrowseForFolder fails if BIF_NEWDIALOGSTYLE is passed.
-  BIF_NEWDIALOGSTYLE      = $00000040;
+  BIF_NEWDIALOGSTYLE   = $00000040;
   // Version 5.0. The browse dialog box can display URLs. The BIF_USENEWUI and BIF_BROWSEINCLUDEFILES flags must also be set. If any of these three flags are not set, the browser dialog box rejects URLs. Even when these flags are set, the browse dialog box displays URLs only if the folder that contains the selected item supports URLs. When the folder's IShellFolder::GetAttributesOf method is called to request the selected item's attributes, the folder must set the SFGAO_FOLDER attribute flag. Otherwise, the browse dialog box will not display the URL.
-  BIF_BROWSEINCLUDEURLS   = $00000080;
+  BIF_BROWSEINCLUDEURLS = $00000080;
   // 5.0. Use the new user interface, including an edit box. This flag is equivalent to BIF_EDITBOX | BIF_NEWDIALOGSTYLE.
   // Note  If COM is initialized through CoInitializeEx with the COINIT_MULTITHREADED flag set, SHBrowseForFolder fails if BIF_USENEWUI is passed.
-  BIF_USENEWUI            = (BIF_EDITBOX or BIF_NEWDIALOGSTYLE);
+  BIF_USENEWUI         = (BIF_EDITBOX or BIF_NEWDIALOGSTYLE);
   // Version 6.0. When combined with BIF_NEWDIALOGSTYLE, adds a usage hint to the dialog box, in place of the edit box. BIF_EDITBOX overrides this flag.
-  BIF_UAHINT              = $00000100;
+  BIF_UAHINT           = $00000100;
   // Version 6.0. Do not include the New Folder button in the browse dialog box.
-  BIF_NONEWFOLDERBUTTON   = $00000200;
+  BIF_NONEWFOLDERBUTTON = $00000200;
   // Version 6.0. When the selected item is a shortcut, return the PIDL of the shortcut itself rather than its target.
-  BIF_NOTRANSLATETARGETS  = $00000400;
+  BIF_NOTRANSLATETARGETS = $00000400;
   // Only return computers. If the user selects anything other than a computer, the OK button is grayed.
-  BIF_BROWSEFORCOMPUTER   = $00001000;
+  BIF_BROWSEFORCOMPUTER = $00001000;
   // Only allow the selection of printers. If the user selects anything other than a printer, the OK button is grayed.
   //    In Microsoft Windows XP and later systems, the best practice is to use a Windows XP-style dialog, setting the root of the dialog to the Printers and Faxes folder (CSIDL_PRINTERS).
-  BIF_BROWSEFORPRINTER    = $00002000;
+  BIF_BROWSEFORPRINTER = $00002000;
   // Version 4.71. The browse dialog box displays files as well as folders.
-  BIF_BROWSEINCLUDEFILES  = $00004000;
+  BIF_BROWSEINCLUDEFILES = $00004000;
   // Version 5.0. The browse dialog box can display shareable resources on remote systems. This is intended for applications that want to expose remote shares on a local system. The BIF_NEWDIALOGSTYLE flag must also be set.
-  BIF_SHAREABLE           = $00008000;
+  BIF_SHAREABLE        = $00008000;
   // Windows 7 and later. Allow folder junctions such as a library or a compressed file with a .zip file name extension to be browsed.
   BIF_BROWSEFILEJUNCTIONS = $00010000;
 
@@ -419,8 +419,8 @@ function SDUWMToString(msgID: Cardinal): String;
 // Convert ShowWindow(...) show state to string
 function SDUShowStateToString(nCmdShow: Word): String;
 // Convert from big-endian to little-endian, and vice versa
-function SDUConvertEndian(const x: Word): Word; OVERLOAD;
-function SDUConvertEndian(const x: DWORD): DWORD; OVERLOAD;
+function SDUConvertEndian(const x: Word): Word; overload;
+function SDUConvertEndian(const x: DWORD): DWORD; overload;
 // Improved SelectDirectory(...), with "New Folder" button
 function SDUSelectDirectory(hOwn: HWND; Caption: String; Root: String;
   var Path: String; uFlag: DWORD = $25): Boolean;
@@ -431,7 +431,7 @@ function SDUUnitsStorageToText(units: TUnits_Storage): String;
 // Return an array containing the (translated) units
 function SDUUnitsStorageToTextArr(): TSDUArrayString;
 // Previously this was a const, now just returns the same as SDUUnitsStorageToTextArr(...)
-function UNITS_BYTES_DENOMINATINON(): TSDUArrayString; DEPRECATED;
+function UNITS_BYTES_DENOMINATINON(): TSDUArrayString; deprecated;
 // Return TRUE/FALSE, depending on whether the value passed in is odd or even
 function SDUIsOddNumber(Value: Integer): Boolean;
 function SDUIsEvenNumber(Value: Integer): Boolean;
@@ -454,9 +454,9 @@ function SDUGetFileType_Icon(filename: String; out iconFilename: String;
  // Get a description of the type of file passed in
  // Set "filename" to FILE_TYPE_DIRECTORY to get the type of a directory
  // Returns '' if none found
-function SDUGetFileType_Description(const filename: String): String; OVERLOAD;
+function SDUGetFileType_Description(const filename: String): String; overload;
 function SDUGetFileType_Description(const filename: String; out knownFiletype: Boolean): String;
-  OVERLOAD;
+  overload;
 // CopyFile(...), but using Windows API to display "flying files" dialog while copying
 function SDUFileCopy(srcFilename: String; destFilename: String): Boolean;
  // Populate the specified TComboBox with a list of removable drives
@@ -480,12 +480,12 @@ function SDUBitWiseTest(Value: Cardinal; testBit: Cardinal): Boolean;
  // Given a relative path, convert it to an absolute path
  // Note: May be given an absolute path
  // Note: Absolute path returned assumed relative to CWD
-function SDURelativePathToAbsolute(relativePath: String): String; OVERLOAD;
+function SDURelativePathToAbsolute(relativePath: String): String; overload;
  // Given a relative path, convert it to an absolute path
  // Note: May be given an absolute path
  // Note: Absolute path returned assumes relativePath is relative to
  //       "relativeTo"
-function SDURelativePathToAbsolute(relativePath: String; relativeTo: String): String; OVERLOAD;
+function SDURelativePathToAbsolute(relativePath: String; relativeTo: String): String; overload;
  // Copy file/device
  // Note: This is *not* the standard Windows copy functionality; this can copy
  //       from/to devices, etc
@@ -503,7 +503,7 @@ function SDUCopyFile_Compression(Source: String; destination: String;
  // function SDUXOR(a: TSDUBytes; b: TSDUBytes): TSDUBytes;
 
 //function SDUXOR(a: Ansistring; b: Ansistring): Ansistring;
-function SDUXOR(a: TSDUBytes; b: array of byte): TSDUBytes;
+function SDUXOR(a: TSDUBytes; b: array of Byte): TSDUBytes;
 function SDUXORStr(a: Ansistring; b: Ansistring): Ansistring;
  { DONE 1 -otdk -cclean : use bytes instead of chars }
  // Calculate x! (factorial X)
@@ -511,12 +511,12 @@ function SDUFactorial(x: Integer): LARGE_INTEGER;
 // Generate all permutations of the characters in "pool"
 procedure SDUPermutate(pool: String; lst: TStringList);
 // Center a control on it's parent
-procedure SDUCenterControl(control: TControl; align: TCenterControl); OVERLOAD;
-procedure SDUCenterControl(Controls: TControlArray; align: TCenterControl); OVERLOAD;
+procedure SDUCenterControl(control: TControl; align: TCenterControl); overload;
+procedure SDUCenterControl(Controls: TControlArray; align: TCenterControl); overload;
 // Position a control relative to it's parent, percentage based (central is 50%)
-procedure SDUCenterControl(control: TControl; align: TCenterControl; pcnt: Integer); OVERLOAD;
+procedure SDUCenterControl(control: TControl; align: TCenterControl; pcnt: Integer); overload;
 procedure SDUCenterControl(Controls: TControlArray; align: TCenterControl;
-  pcnt: Integer); OVERLOAD;
+  pcnt: Integer); overload;
  // double is to int as FloatTrunc(...) is to Trunc(...), but allows control as
  // to the number of decimal places that truncation begins from
 function SDUFloatTrunc(X: Double; decimalPlaces: Integer): Double;
@@ -528,15 +528,15 @@ function SDUFormatWithThousandsSeparator(const Value: ULONGLONG): String;
  // e.g. 2621440, [bytes, KB, MB, GB], and 1024 will give "2.5 MB"
  // May be used with constant units declared in this Delphi unit
 function SDUFormatUnits(Value: Int64; denominations: array of String;
-  multiplier: Integer = 1000; accuracy: Integer = 2): String; OVERLOAD;
+  multiplier: Integer = 1000; accuracy: Integer = 2): String; overload;
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUFormatUnits(Value: ULONGLONG; denominations: array of String;
-  multiplier: Integer = 1000; accuracy: Integer = 2): String; OVERLOAD;
+  multiplier: Integer = 1000; accuracy: Integer = 2): String; overload;
 {$IFEND}
 // As SDUFormatUnits, but assume units are bytes, KB, MB, GB, etc
-function SDUFormatAsBytesUnits(Value: Int64; accuracy: Integer = 2): String; OVERLOAD;
+function SDUFormatAsBytesUnits(Value: Int64; accuracy: Integer = 2): String; overload;
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
-function SDUFormatAsBytesUnits(Value: ULONGLONG; accuracy: Integer = 2): String; OVERLOAD;
+function SDUFormatAsBytesUnits(Value: ULONGLONG; accuracy: Integer = 2): String; overload;
 {$IFEND}
  // As SDUFormatAsBytesUnits, but return as:
  //   <bytes value> bytes (<units value> <units>)
@@ -551,7 +551,7 @@ function SDUFormatAsBytesAndBytesUnits(Value: ULONGLONG; accuracy: Integer = 2):
  //      "10"                    -> 10
  // Note: This function can't handle values with a decimal point atm
 function SDUParseUnits(prettyValue: String; denominations: array of String;
-  out Value: Uint64; multiplier: Integer = 1000): Boolean; OVERLOAD;
+  out Value: Uint64; multiplier: Integer = 1000): Boolean; overload;
 {$IFDEF VER185}  // See comment on ULONGLONG definition
 // As SDUParseUnits, but assume units are bytes, KB, MB, GB, etc
 function SDUParseUnits(
@@ -562,7 +562,7 @@ function SDUParseUnits(
                      ): boolean; overload;
 {$ENDIF}
 // As SDUParseUnits, but assume units are bytes, KB, MB, GB, etc
-function SDUParseUnitsAsBytesUnits(prettyValue: String; out Value: uint64): Boolean; OVERLOAD;
+function SDUParseUnitsAsBytesUnits(prettyValue: String; out Value: uint64): Boolean; overload;
 {$IFDEF VER185}   // See comment on ULONGLONG definition
 function SDUParseUnitsAsBytesUnits(
                        prettyValue: string;
@@ -608,13 +608,13 @@ function SDUGetSpecialFolderPath(const CSIDL: Integer): String;
  // Check if shortcut exists
  // Returns TRUE if it exists, otherwise FALSE
  // See CSIDL_DESKTOP, etc consts in ShlObj
-function SDUDoesShortcutExist(ShortcutCSIDL: Integer; ShortcutName: String): Boolean; OVERLOAD;
-function SDUDoesShortcutExist(ShortcutLocation: String; ShortcutName: String): Boolean; OVERLOAD;
+function SDUDoesShortcutExist(ShortcutCSIDL: Integer; ShortcutName: String): Boolean; overload;
+function SDUDoesShortcutExist(ShortcutLocation: String; ShortcutName: String): Boolean; overload;
  // Delete specified shortcut
  // Returns TRUE on success, otherwise FALSE
  // See CSIDL_DESKTOP, etc consts in ShlObj
-function SDUDeleteShortcut(ShortcutCSIDL: Integer; ShortcutName: String): Boolean; OVERLOAD;
-function SDUDeleteShortcut(ShortcutLocation: String; ShortcutName: String): Boolean; OVERLOAD;
+function SDUDeleteShortcut(ShortcutCSIDL: Integer; ShortcutName: String): Boolean; overload;
+function SDUDeleteShortcut(ShortcutLocation: String; ShortcutName: String): Boolean; overload;
  // Create a Windows shortcut file (e.g. a desktop shortcut to an executable)
  // Note: This is only suitable for creating shortcuts to files/executables
  //       (.lnk shortcuts) - NOT URLs (WWW sites; .url files)
@@ -646,19 +646,20 @@ function SDUDeleteShortcut(ShortcutLocation: String; ShortcutName: String): Bool
 function SDUCreateShortcut(ShortcutCSIDL: Integer; ShortcutName: String;
   Target: String; Parameters: String = ''; StartIn: String = '';
   // ShortcutKey: TShortCut;  - not yet implemented
-  RunWindowState: TWindowState = wsNormal; Comment: String = ''): Boolean; OVERLOAD;
+  RunWindowState: TWindowState = wsNormal; Comment: String = ''): Boolean; overload;
 function SDUCreateShortcut(ShortcutLocation: String; ShortcutName: String;
   Target: String; Parameters: String = ''; StartIn: String = '';
   // ShortcutKey: TShortCut;  - not yet implemented
-  RunWindowState: TWindowState = wsNormal; Comment: String = ''): Boolean; OVERLOAD;
+  RunWindowState: TWindowState = wsNormal; Comment: String = ''): Boolean; overload;
  // Get the "Run" windowstate specified in the identified shortcut
  // Note: This is only suitable for checking shortcuts to files/executables
  //       (.lnk shortcuts) - NOT URLs (WWW sites; .url files)
  // See CSIDL_DESKTOP, etc consts in ShlObj
 function SDUGetShortCutRunWindowState(ShortcutCSIDL: Integer;
-  ShortcutName: String): TWindowState; OVERLOAD;
+  ShortcutName: String): TWindowState; overload;
 function SDUGetShortCutRunWindowState(ShortcutLocation: String;
-  ShortcutName: String): TWindowState; OVERLOAD;
+  ShortcutName: String): TWindowState; overload;
+function SDUGetShortCutArguments(ShortcutCSIDL: Integer; ShortcutName: String): String;
  // Create a file of the specified size, filled with zeros
  // Note: This will *fail* if the file already exists
  // Returns TRUE on success, FALSE on failure
@@ -705,17 +706,17 @@ function SDUGetPartitionSize_Device(driveDevice: String): ULONGLONG;
  // Get partition information
  // Returns TRUE/FALSE on success/failure
 function SDUGetPartitionInfo(driveletter: ansichar; var partInfo: TSDUPartitionInfo): Boolean;
-  OVERLOAD;
+  overload;
 function SDUGetPartitionInfo(driveDevice: String; var partInfo: TSDUPartitionInfo): Boolean;
-  OVERLOAD;
+  overload;
  // Get disk geometry
  // Returns TRUE/FALSE on success/failure
 function SDUGetDiskGeometry(driveletter: ansichar; var diskGeometry: TSDUDiskGeometry): Boolean;
-  OVERLOAD;
+  overload;
 function SDUGetDiskGeometry(DiskNumber: Integer; var diskGeometry: TSDUDiskGeometry): Boolean;
-  OVERLOAD;
+  overload;
 function SDUGetDiskGeometry(driveDevice: String; var diskGeometry: TSDUDiskGeometry): Boolean;
-  OVERLOAD;
+  overload;
 // Returns installed OS
 function SDUInstalledOS(): TInstalledOS;
 // Returns TRUE if installed OS is Windows Vista or later
@@ -743,24 +744,24 @@ function SDUFileExtnIsRegd(fileExtn: String; menuItem: String): Boolean;
  // Get a string with the drive letters of all drives present/not present, in
  // order
  // Return value is all in uppercase
-function SDUGetUsedDriveLetters(): string;
-function SDUGetUnusedDriveLetters(): string;
-function SDUGetNetworkDriveLetters(): string;
+function SDUGetUsedDriveLetters(): String;
+function SDUGetUnusedDriveLetters(): String;
+function SDUGetNetworkDriveLetters(): String;
 // Populate "output" with a pretty-printed hex display of the contents of "data"
 function SDUPrettyPrintHex(data: Pointer; offset: Longint; bytes: Longint;
-  output: TStringList; Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): Boolean; OVERLOAD;
+  output: TStringList; Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): Boolean; overload;
 function SDUPrettyPrintHex(data: String; offset: Longint; bytes: Longint;
-  output: TStringList; Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): Boolean; OVERLOAD;
+  output: TStringList; Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): Boolean; overload;
 function SDUPrettyPrintHex(data: TStream; offset: Longint; bytes: Longint;
-  output: TStringList; Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): Boolean; OVERLOAD;
+  output: TStringList; Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): Boolean; overload;
 // As "SDUPrettyPrintHex(...)", but returns output as a string, instead of as a TStringList and TURE/FALSE flag
 // Returns '' on error/if no data was supplied
 function SDUPrettyPrintHexStr(data: Pointer; offset: Longint; bytes: Longint;
-  Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; OVERLOAD;
+  Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; overload;
 function SDUPrettyPrintHexStr(data: String; offset: Longint; bytes: Longint;
-  Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; OVERLOAD;
+  Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; overload;
 function SDUPrettyPrintHexStr(data: TStream; offset: Longint; bytes: Longint;
-  Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; OVERLOAD;
+  Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; overload;
 // Simple version
 function SDUPrettyPrintHexStrSimple(data: String): String;
  // Setup a Open/Save dialog with supplied default filename & path
@@ -773,39 +774,39 @@ function SDUConvertSFNToLFN(sfn: String): String;
 function SDUConvertLFNToSFN(lfn: String): String;
 // Enable/disable the specified control, with correct colors
 procedure SDUEnableControl(control: TControl; enable: Boolean;
-  affectAssociatedControls: Boolean = True); OVERLOAD;
+  affectAssociatedControls: Boolean = True); overload;
  //procedure SDUEnableControl(control: TAction; enable: Boolean); OVERLOAD;
  //procedure SDUEnableControl(control: TMenuItem; enable: Boolean); OVERLOAD;
  // Readonly/read-write the specified control, with correct colors
 procedure SDUReadonlyControl(control: TControl; ReadOnly: Boolean;
   affectAssociatedControls: Boolean = True);
 // Set "value" to the value of the command line parameter "-<parameter> value". Returns TRUE/FALSE on success/failure
-function SDUCommandLineParameter(parameter: String; var Value: String): Boolean; OVERLOAD;
-function SDUCommandLineParameter(parameter: String; var Value: Integer): Boolean; OVERLOAD;
+function SDUCommandLineParameter(parameter: String; var Value: String): Boolean; overload;
+function SDUCommandLineParameter(parameter: String; var Value: Integer): Boolean; overload;
 // Returns TRUE if the specified command line switch could be found, otherwise FALSE
 function SDUCommandLineSwitch(parameter: String): Boolean;
 // Returns the parameter number in the command line of the specified parameter. Returns -1 on failure
 function SDUCommandLineSwitchNumber(parameter: String): Integer;
 // Returns the executables version numbers as set in Project|Options|Version Info
 function SDUGetVersionInfo(filename: String; var majorVersion, minorVersion: Integer): Boolean;
-  OVERLOAD;
+  overload;
 function SDUGetVersionInfo(filename: String;
-  var majorVersion, minorVersion, revisionVersion, buildVersion: Integer): Boolean; OVERLOAD;
+  var majorVersion, minorVersion, revisionVersion, buildVersion: Integer): Boolean; overload;
 // As SDUGetVersionInfo, but returns a nicely formatted string
 function SDUGetVersionInfoString(filename: String): String;
 function SDUVersionInfoToString(majorVersion: Integer; minorVersion: Integer;
-  betaVersion: Integer = -1): String; OVERLOAD;
+  betaVersion: Integer = -1): String; overload;
 function SDUVersionInfoToString(majorVersion: Integer; minorVersion: Integer;
-  revisionVersion: Integer; buildVersion: Integer; betaVersion: Integer = -1): String; OVERLOAD;
+  revisionVersion: Integer; buildVersion: Integer; betaVersion: Integer = -1): String; overload;
  // As SDUGetVersionInfo, but gets information from the PAD file at the
  // specified URL, or the XML passed in directly
 function SDUGetPADFileVersionInfo(url: String; var majorVersion, minorVersion: Integer;
   userAgent: WideString = DEFAULT_HTTP_USERAGENT; ShowProgressDlg: Boolean = True): TTimeoutGet;
-  OVERLOAD;
+  overload;
 function SDUGetPADFileVersionInfo(url: String;
   var majorVersion, minorVersion, revisionVersion, buildVersion: Integer;
   userAgent: WideString = DEFAULT_HTTP_USERAGENT; ShowProgressDlg: Boolean = True): TTimeoutGet;
-  OVERLOAD;
+  overload;
 function SDUGetPADFileVersionInfo_XML(XML: String;
   var majorVersion, minorVersion, revisionVersion, buildVersion: Integer): Boolean;
  // As SDUGetVersionInfoString, but gets information from the PAD file at the
@@ -817,22 +818,22 @@ function SDUGetPADFileVersionInfoString_XML(XML: String): String;
  // If A = B, return  0
  // If A < B, return  1
 function SDUVersionCompare(A_MajorVersion, A_MinorVersion: Integer;
-  B_MajorVersion, B_MinorVersion: Integer): Integer; OVERLOAD;
+  B_MajorVersion, B_MinorVersion: Integer): Integer; overload;
 function SDUVersionCompare(A_MajorVersion, A_MinorVersion, A_RevisionVersion,
   A_BuildVersion: Integer; B_MajorVersion, B_MinorVersion, B_RevisionVersion,
-  B_BuildVersion: Integer): Integer; OVERLOAD;
+  B_BuildVersion: Integer): Integer; overload;
 function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion: Integer;
-  A_BetaVersion: Integer; B_MajorVersion, B_MinorVersion: Integer): Integer; OVERLOAD;
+  A_BetaVersion: Integer; B_MajorVersion, B_MinorVersion: Integer): Integer; overload;
 function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion,
   A_RevisionVersion, A_BuildVersion: Integer; A_BetaVersion: Integer;
-  B_MajorVersion, B_MinorVersion, B_RevisionVersion, B_BuildVersion: Integer): Integer; OVERLOAD;
-// Pause for the given number of ms
-// dont really want to do busy waits
-//procedure SDUPause(delayLen: Integer);
-// Execute the specified commandline and return when the command line returns
+  B_MajorVersion, B_MinorVersion, B_RevisionVersion, B_BuildVersion: Integer): Integer; overload;
+ // Pause for the given number of ms
+ // dont really want to do busy waits
+ //procedure SDUPause(delayLen: Integer);
+ // Execute the specified commandline and return when the command line returns
 function SDUWinExecAndWait32(const cmdLine: String; cmdShow: Integer;
   workDir: String = ''; appName: String = ''): Cardinal;
-function SDUWinExecNoWait32(cmdLine: String; cmdShow: Integer): Boolean;
+function SDUWinExecNoWait32(cmdLine, params: String; cmdShow: Integer): Boolean;
 
 function SDUWinExecAndWaitOutput(const cmdLine: String; res: TStrings;
   const workDir: String = ''): Cardinal;
@@ -889,12 +890,12 @@ function SDUDetectExistingApp(): THandle;
 // Send a message to all existing apps
 {$IF CompilerVersion < 18.5}
 procedure SDUSendMessageExistingApp(msg: Cardinal; wParam: Integer; lParam: Integer);
-  DEPRECATED; // deprecated until it works properly with Delphi 2007; see Assert(...) in implementation
+  deprecated; // deprecated until it works properly with Delphi 2007; see Assert(...) in implementation
 {$IFEND}
 // Post a message to all existing apps
 {$IF CompilerVersion < 18.5}
 procedure SDUPostMessageExistingApp(msg: Cardinal; wParam: Integer; lParam: Integer);
-  DEPRECATED; // deprecated until it works properly with Delphi 2007; see Assert(...) in implementation
+  deprecated; // deprecated until it works properly with Delphi 2007; see Assert(...) in implementation
 {$IFEND}
 // Split the string supplied into two parts, before and after the split char
 function SDUSplitString(wholeString: String; var firstItem: String;
@@ -902,9 +903,9 @@ function SDUSplitString(wholeString: String; var firstItem: String;
 // Split the string supplied into two parts, before and after the split char
 function SDUSplitWideString(wholeString: WideString; var firstItem: WideString;
   var theRest: WideString; splitOn: Widechar = ' '): Boolean;
-// As TryStrToInt, but can handle 64 bit values
-//function SDUTryStrToInt(const S: String; out Value: Integer): Boolean; OVERLOAD;
-function SDUTryStrToInt(const S: String; out Value: Uint64): Boolean; OVERLOAD;
+ // As TryStrToInt, but can handle 64 bit values
+ //function SDUTryStrToInt(const S: String; out Value: Integer): Boolean; OVERLOAD;
+function SDUTryStrToInt(const S: String; out Value: Uint64): Boolean; overload;
 {$IFDEF VER185}  // See comment on ULONGLONG definition
 function SDUTryStrToInt(const S: string; out Value: ULONGLONG): boolean; overload;
 {$ENDIF}
@@ -924,14 +925,14 @@ function SDUIntToHex(val: ULONGLONG; digits: Integer): String;
  // Convert from int to string representation
  // Implemented as Delphi 2007 truncates int64 values to 32 bits when
  // using inttostr(...)!
-function SDUIntToStr(val: Int64): String; OVERLOAD;
+function SDUIntToStr(val: Int64): String; overload;
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
-function SDUIntToStr(val: ULONGLONG): String; OVERLOAD;
+function SDUIntToStr(val: ULONGLONG): String; overload;
 {$IFEND}
 // As SDUIntToStr, but with thousands seperators inserted
-function SDUIntToStrThousands(val: Int64): String; OVERLOAD;
+function SDUIntToStrThousands(val: Int64): String; overload;
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
-function SDUIntToStrThousands(val: ULONGLONG): String; OVERLOAD;
+function SDUIntToStrThousands(val: ULONGLONG): String; overload;
 {$IFEND}
 // Save the given font's details to the registry
 function SDUSaveFontToReg(rootKey: HKEY; fontKey: String; Name: String; font: TFont): Boolean;
@@ -959,7 +960,7 @@ procedure SDUAddArrays(var A: TSDUBytes; const rhs: TSDUBytes);
 // adds rhs to end up lhs up to 'limit' bytes from rhs
 procedure SDUAddLimit(var lhs: TSDUBytes; const rhs: TSDUBytes; limit: Integer);
 procedure SDUDeleteFromStart(var A: TSDUBytes; Count: Integer); //del count from start of array
-//same as setLength , but seroing any freed bytes. even if AlwaysClearFreedMemory not set
+ //same as setLength , but seroing any freed bytes. even if AlwaysClearFreedMemory not set
 procedure SafeSetLength(var A: TSDUBytes; newLen: Integer);
 procedure SDUCopy(var aTo: TSDUBytes; const aFrom: TSDUBytes);
 
@@ -978,7 +979,7 @@ uses
   ShellAPI, // Required for SDUShowFileProperties
 {$IFDEF MSWINDOWS}
 {$WARN UNIT_PLATFORM OFF}// Useless warning about platform - we're already
-                         // protecting against that!
+  // protecting against that!
   FileCtrl,              // Required for TDriveType
 {$WARN UNIT_PLATFORM ON}
 {$ENDIF}
@@ -1062,8 +1063,8 @@ var
 
 
 
-procedure _SDUDetectExistWindowDetails(); FORWARD;
-function _SDUDetectExistWindowDetails_ThisClassHandle(): THandle; FORWARD;
+procedure _SDUDetectExistWindowDetails(); forward;
+function _SDUDetectExistWindowDetails_ThisClassHandle(): THandle; forward;
 
  // Starting from offset "offset" (zero indexed) in "data", read "bytes" bytes
  // and populate "output" with a pretty printed representation of the data
@@ -1083,12 +1084,11 @@ var
   currLine:    String;
   posInLine:   Cardinal;
   x:           Byte;
-  allOK:       Boolean;
   lineOffset:  Integer;
   bytesRead:   Integer;
   finished:    Boolean;
 begin
-  allOK := True;
+  Result := True;
 
   data.Position := offset;
 
@@ -1109,7 +1109,7 @@ begin
       // If the read fails, then this is an error, unless we're supposed to be
       // processing until we run out of data.
       if (bytes <> -1) then begin
-        allOK := False;
+        Result := False;
       end;
 
       finished := True;
@@ -1147,8 +1147,6 @@ begin
     output.add(currLine);
   end;
 
-  Result := allOK;
-
 end;
 
 
@@ -1159,24 +1157,22 @@ end;
  // Each line in "output" will relate to "width" bytes from "data"
  // Returns: TRUE/FALSE on success/failure
 function SDUPrettyPrintHex(data: String; offset: Longint; bytes: Longint;
-  output: TStringList; Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): Boolean; OVERLOAD;
+  output: TStringList; Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): Boolean; overload;
 var
   dataStream: TStringStream;
-  allOK:      Boolean;
 begin
   dataStream := TStringStream.Create(data);
   try
-    allOK := SDUPrettyPrintHex(dataStream, offset, bytes, output, Width, dispOffsetWidth);
+    Result := SDUPrettyPrintHex(dataStream, offset, bytes, output, Width, dispOffsetWidth);
   finally
     dataStream.Free();
   end;
 
-  Result := allOK;
 end;
 
 
 function SDUPrettyPrintHex(data: Pointer; offset: Longint; bytes: Longint;
-  output: TStringList; Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): Boolean; OVERLOAD;
+  output: TStringList; Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): Boolean; overload;
 var
   str: String;
   i:   Integer;
@@ -1192,9 +1188,9 @@ end;
 
 
 function SDUPrettyPrintHexStr(data: Pointer; offset: Longint; bytes: Longint;
-  Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; OVERLOAD;
+  Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; overload;
 var
-  sl:     TStringList;
+  sl: TStringList;
 begin
   Result := '';
 
@@ -1207,14 +1203,13 @@ begin
   finally
     sl.Free();
   end;
-
 
 end;
 
 function SDUPrettyPrintHexStr(data: String; offset: Longint; bytes: Longint;
-  Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; OVERLOAD;
+  Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; overload;
 var
-  sl:     TStringList;
+  sl: TStringList;
 begin
   Result := '';
 
@@ -1227,14 +1222,13 @@ begin
   finally
     sl.Free();
   end;
-
 
 end;
 
 function SDUPrettyPrintHexStr(data: TStream; offset: Longint; bytes: Longint;
-  Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; OVERLOAD;
+  Width: Cardinal = 8; dispOffsetWidth: Cardinal = 8): String; overload;
 var
-  sl:     TStringList;
+  sl: TStringList;
 begin
   Result := '';
 
@@ -1247,13 +1241,12 @@ begin
   finally
     sl.Free();
   end;
-
 
 end;
 
 function SDUPrettyPrintHexStrSimple(data: String): String;
 var
-  i:      Integer;
+  i: Integer;
 begin
   Result := '';
 
@@ -1264,7 +1257,6 @@ begin
 
     Result := Result + '0x' + inttohex(Ord(data[i]), 2);
   end;
-
 
 end;
 
@@ -1604,15 +1596,17 @@ var
   pBlock:    Pointer;
   pVPointer: Pointer;
   tvs:       PVSFixedFileInfo;
-//  iLastError: Cardinal;
+  //  iLastError: Cardinal;
 begin
   Result := False;
 
-  if filename = '' then     filename := Application.ExeName;
+  if filename = '' then
+    filename := Application.ExeName;
 
   vsize := GetFileVersionInfoSize(PChar(filename), dwHandle);
 
-  if vsize = 0 then     exit;
+  if vsize = 0 then
+    exit;
 
   GetMem(pBlock, vsize);
   try
@@ -1620,8 +1614,8 @@ begin
 
       VerQueryValue(pBlock, '\', pVPointer, puLen);
       if puLen > 0 then begin
-//      iLastError := GetLastError;
-//      showmessage(Format('GetFileVersionInfo failed: (%d) %s',                           [iLastError, SysErrorMessage(iLastError)]));
+        //      iLastError := GetLastError;
+        //      showmessage(Format('GetFileVersionInfo failed: (%d) %s',                           [iLastError, SysErrorMessage(iLastError)]));
         tvs             := PVSFixedFileInfo(pVPointer);
         majorVersion    := tvs^.dwFileVersionMS shr 16;
         minorVersion    := tvs^.dwFileVersionMS and $ffff;
@@ -1647,7 +1641,8 @@ var
   buildVersion:    Integer;
 begin
   Result := '';
-  if SDUGetVersionInfo(filename, majorVersion, minorVersion, revisionVersion, buildVersion) then  begin
+  if SDUGetVersionInfo(filename, majorVersion, minorVersion, revisionVersion, buildVersion) then
+  begin
     Result := SDUVersionInfoToString(majorVersion, minorVersion, revisionVersion,
       buildVersion, -1);
   end;
@@ -1657,7 +1652,7 @@ end;
 function SDUVersionInfoToString(majorVersion: Integer; minorVersion: Integer;
   betaVersion: Integer = -1): String;
 begin
-  Result := Format('%d.%.2d', [majorVersion, minorVersion]);
+  Result := Format('%d.%d', [majorVersion, minorVersion]);
 
   if (betaVersion > 0) then
     Result := Result + ' ' + RS_BETA + ' ' + IntToStr(betaVersion);
@@ -1666,24 +1661,25 @@ end;
 function SDUVersionInfoToString(majorVersion: Integer; minorVersion: Integer;
   revisionVersion: Integer; buildVersion: Integer; betaVersion: Integer = -1): String;
 begin
-  Result := Format('%d.%.2d.%.2d.%.4d', [majorVersion, minorVersion, revisionVersion,
+  // versions are normally shown as eg 6.1 so format similarly or can confuse ie not 6.01
+  Result := Format('%d.%d.%.2d.%.4d', [majorVersion, minorVersion, revisionVersion,
     buildVersion]);
 
   if (betaVersion > 0) then
     Result := Result + ' ' + RS_BETA + ' ' + IntToStr(betaVersion);
 end;
 
-//procedure SDUPause(delayLen: Integer);
-//var
-//  delay: TTimeStamp;
-//begin
-//  delay      := DateTimeToTimeStamp(now);
-//  delay.Time := delay.Time + delayLen;
-//  while (delay.time > DateTimeToTimeStamp(now).time) do begin
-//    // Nothing - just pause
-//  end;
-//
-//end;
+ //procedure SDUPause(delayLen: Integer);
+ //var
+ //  delay: TTimeStamp;
+ //begin
+ //  delay      := DateTimeToTimeStamp(now);
+ //  delay.Time := delay.Time + delayLen;
+ //  while (delay.time > DateTimeToTimeStamp(now).time) do begin
+ //    // Nothing - just pause
+ //  end;
+ //
+ //end;
 
 
  // !! WARNING !! cmdLine must contain no whitespaces, otherwise the first
@@ -1723,13 +1719,13 @@ begin
     pAppName := PWidechar(appName);
 
   if CreateProcess(pAppName, zAppName,
-                           { pointer to command line string }
+    { pointer to command line string }
     nil,                   { pointer to process security attributes }
     nil,                   { pointer to thread security attributes }
     False,                 { handle inheritance flag }
     CREATE_NEW_CONSOLE or  { creation flags }
     NORMAL_PRIORITY_CLASS, nil,
-                           { pointer to new environment block }
+    { pointer to new environment block }
     pWrkDir,               { pointer to current directory name }
     StartupInfo,           { pointer to STARTUPINFO }
     ProcessInfo) then      { pointer to PROCESS_INF } begin
@@ -1777,9 +1773,9 @@ var
   zAppName:             array[0..512] of Char;
   pWrkDir:              PWideChar;
 begin
-  Result                        := $FFFFFFFF;
-  Security.nLength              := SizeOf(TSecurityAttributes);
-  Security.bInheritHandle       := True;
+  Result                  := $FFFFFFFF;
+  Security.nLength        := SizeOf(TSecurityAttributes);
+  Security.bInheritHandle := True;
   Security.lpSecurityDescriptor := nil;
   if CreatePipe(ReadPipe, WritePipe, @Security, 0) then begin
     Buffer := AllocMem(BUF_SIZE + 1);
@@ -1829,9 +1825,10 @@ begin
   end;
 end; // SDUWinExecAndWaitOutput
 
-function SDUWinExecNoWait32(cmdLine: String; cmdShow: Integer): Boolean;
+function SDUWinExecNoWait32(cmdLine, params: String; cmdShow: Integer): Boolean;
 begin
-  Result := ShellExecute(Application.Handle, 'open', PWideChar(cmdLine), nil, nil, cmdShow) > 32;
+  Result := ShellExecute(Application.Handle, 'open', PWideChar(cmdLine),
+    PWideChar(params), nil, cmdShow) > 32;
 end;
 
 
@@ -2051,7 +2048,6 @@ begin
     Result.dwLowDateTime  := 0;
   end;
 
-
 end;
 
 function SDUFileTimeToDateTime(fileTime: TFileTime): TDateTime;
@@ -2066,16 +2062,14 @@ begin
     Result := 0;
   end;
 
-
 end;
 
 function SDUFileTimeToTimeStamp(fileTime: TFileTime): TTimeStamp;
 var
-  dt:     TDateTime;
+  dt: TDateTime;
 begin
   dt     := SDUFileTimeToDateTime(fileTime);
   Result := DateTimeToTimeStamp(dt);
-
 
 end;
 
@@ -2100,7 +2094,7 @@ end;
 
  // This is used by SDUDetectExistingApp and carries out a check on the window
  // supplied to see if it matches the current one
-function _SDUDetectExistingAppCheckWindow(Handle: HWND; Temp: Longint): BOOL; STDCALL;
+function _SDUDetectExistingAppCheckWindow(Handle: HWND; Temp: Longint): BOOL; stdcall;
 var
   WindowName: array[0..255] of Char;
   ClassName:  array[0..255] of Char;
@@ -2147,7 +2141,7 @@ end;
 
  // This is used by SDUSendMessageExistingApp and carries out a check on the
  // window supplied to see if it matches the current one
-function _SDUSendMessageExistingAppCheckWindow(Handle: HWND; Temp: Longint): BOOL; STDCALL;
+function _SDUSendMessageExistingAppCheckWindow(Handle: HWND; Temp: Longint): BOOL; stdcall;
 var
   WindowName: array[0..255] of Char;
   ClassName:  array[0..255] of Char;
@@ -2201,7 +2195,7 @@ end;
 
  // This is used by SDUPostMessageExistingApp and carries out a check on the
  // window supplied to see if it matches the current one
-function _SDUPostMessageExistingAppCheckWindow(Handle: HWND; Temp: Longint): BOOL; STDCALL;
+function _SDUPostMessageExistingAppCheckWindow(Handle: HWND; Temp: Longint): BOOL; stdcall;
 var
   WindowName: array[0..255] of Char;
   ClassName:  array[0..255] of Char;
@@ -2284,7 +2278,6 @@ begin
   end;
 {$IFEND}
 
-
 end;
 
 
@@ -2303,7 +2296,6 @@ begin
     Result  := (firstItem <> '');
   end;
 
-
 end;
 
 function SDUSplitWideString(wholeString: WideString; var firstItem: WideString;
@@ -2319,7 +2311,6 @@ begin
     theRest := '';
     Result  := (firstItem <> '');
   end;
-
 
 end;
 
@@ -2391,7 +2382,7 @@ end;
  // Get a string with the drive letters of all drives present/not present, in
  // order
  // Return value is all in uppercase
-function SDUGetNetworkDriveLetters(): string;
+function SDUGetNetworkDriveLetters(): String;
 var
   i:          DWORD;
   dwResult:   DWORD;
@@ -2437,20 +2428,20 @@ begin
 
     WNetCloseEnum(hEnum);
   end;
-  result :=Result;
-   { TODO 1 -otdk -cclean : warning wide->ansi }
+
+  { TODO 1 -otdk -cclean : warning wide->ansi }
 end;
 
 
  // Get a string with the drive letters of all drives present/not present, in
  // order
  // Return value is all in uppercase
-function SDUGetUsedDriveLetters(): string;
+function SDUGetUsedDriveLetters(): String;
 var
   DriveNum:   Integer;
   DriveBits:  set of 0..25;
   drivesList: TStringList;
-  netDrives:  string;
+  netDrives:  String;
   i:          Integer;
 begin
   Result := '';
@@ -2483,14 +2474,13 @@ begin
     drivesList.Free();
   end;
 
-
 end;
 
 
-function SDUGetUnusedDriveLetters(): string;
+function SDUGetUnusedDriveLetters(): String;
 var
-  x:                char;
-  usedDriveLetters: string;
+  x:                Char;
+  usedDriveLetters: String;
 begin
   Result := '';
 
@@ -2501,7 +2491,6 @@ begin
     end;
   end;
 
-
 end;
 
 
@@ -2510,9 +2499,8 @@ end;
 function SDUFileExtnRegCmd(fileExtn: String; menuItem: String; command: String): Boolean;
 var
   registry: TRegistry;
-  allOK:    Boolean;
 begin
-  allOK := True;
+  Result := True;
 
   if (Pos('.', fileExtn) <> 1) then begin
     fileExtn := '.' + fileExtn;
@@ -2526,14 +2514,14 @@ begin
     if registry.OpenKey('\' + fileExtn + '\shell\' + menuItem + '\command', True) then begin
       registry.WriteString('', command);
       registry.CloseKey();
-      allOK := True;
+      Result := True;
     end;
 
     // Nuke any filetype
     if registry.OpenKey('\' + fileExtn, True) then begin
       registry.DeleteValue('');
       registry.CloseKey();
-      allOK := True;
+      Result := True;
     end;
 
   finally
@@ -2543,14 +2531,12 @@ begin
   // Inform Windows that an association has changed...
   SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nil, nil);
 
-  Result := allOK;
 end;
 
 
 function SDUFileExtnUnregCmd(fileExtn: String; menuItem: String): Boolean;
 var
   registry:   TRegistry;
-  allOK:      Boolean;
   okToDelete: Boolean;
   info:       TRegKeyInfo;
 begin
@@ -2566,43 +2552,43 @@ begin
     registry.RootKey := HKEY_CLASSES_ROOT;
     registry.Access  := KEY_WRITE;
 
-    allOK := registry.DeleteKey('\' + fileExtn + '\shell\' + menuItem + '\command');
-    if allOK then begin
-      allOK := registry.DeleteKey('\' + fileExtn + '\shell\' + menuItem);
-      if allOK then begin
+    Result := registry.DeleteKey('\' + fileExtn + '\shell\' + menuItem + '\command');
+    if Result then begin
+      Result := registry.DeleteKey('\' + fileExtn + '\shell\' + menuItem);
+      if Result then begin
         // Check to see if subkeys for other applications exist under the
         // "shell" key...
-        allOK := registry.OpenKey('\' + fileExtn + '\shell', False);
-        if allOK then begin
+        Result := registry.OpenKey('\' + fileExtn + '\shell', False);
+        if Result then begin
           okToDelete      := False;
           registry.Access := KEY_READ;
-          allOK           := registry.GetKeyInfo(info);
+          Result          := registry.GetKeyInfo(info);
           registry.Access := KEY_WRITE;
-          if allOK then begin
+          if Result then begin
             okToDelete := (info.NumSubKeys = 0) and (info.NumValues = 0);
           end;
           registry.CloseKey();
 
           // If not, delete the "shell" subkey
           if okToDelete then begin
-            allOK := registry.DeleteKey('\' + fileExtn + '\shell');
-            if allOK then begin
+            Result := registry.DeleteKey('\' + fileExtn + '\shell');
+            if Result then begin
               // Check to see if subkeys for other applications exist under the
               // menuitem key...
-              allOK := registry.OpenKey('\' + fileExtn, False);
-              if allOK then begin
+              Result := registry.OpenKey('\' + fileExtn, False);
+              if Result then begin
                 okToDelete      := False;
                 registry.Access := KEY_READ;
-                allOK           := registry.GetKeyInfo(info);
+                Result          := registry.GetKeyInfo(info);
                 registry.Access := KEY_WRITE;
-                if allOK then begin
+                if Result then begin
                   okToDelete := (info.NumSubKeys = 0) and (info.NumValues = 0);
                 end;
                 registry.CloseKey();
 
                 // If not, delete the extension subkey
                 if okToDelete then begin
-                  allOK := registry.DeleteKey('\' + fileExtn);
+                  Result := registry.DeleteKey('\' + fileExtn);
                 end;
               end;
             end;
@@ -2619,7 +2605,6 @@ begin
   // Inform Windows that an association has changed...
   SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nil, nil);
 
-  Result := allOK;
 end;
 
 
@@ -2647,7 +2632,6 @@ begin
     registry.Free();
   end;
 
-
 end;
 
 function SDUFileExtnIsRegCmd(fileExtn: String; menuItem: String; executable: String): Boolean;
@@ -2657,7 +2641,6 @@ begin
   command := SDUFileExtnGetRegCmd(fileExtn, menuItem);
   Result  := (Pos(uppercase(executable), uppercase(command)) > 0);
 
-
 end;
 
 
@@ -2665,9 +2648,8 @@ end;
 function SDUFileExtnRegIcon(fileExtn: String; filename: String; iconNum: Integer): Boolean;
 var
   registry: TRegistry;
-  allOK:    Boolean;
 begin
-  allOK := True;
+  Result := True;
 
   if (Pos('.', fileExtn) <> 1) then begin
     fileExtn := '.' + fileExtn;
@@ -2681,7 +2663,7 @@ begin
     if registry.OpenKey('\' + fileExtn + '\DefaultIcon', True) then begin
       registry.WriteString('', '"' + filename + '",' + IntToStr(iconNum));
       registry.CloseKey();
-      allOK := True;
+      Result := True;
     end;
 
   finally
@@ -2691,14 +2673,12 @@ begin
   // Inform Windows that an association has changed...
   SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nil, nil);
 
-  Result := allOK;
 end;
 
 
 function SDUFileExtnUnregIcon(fileExtn: String): Boolean;
 var
   registry:   TRegistry;
-  allOK:      Boolean;
   okToDelete: Boolean;
   info:       TRegKeyInfo;
 begin
@@ -2714,13 +2694,13 @@ begin
     registry.RootKey := HKEY_CLASSES_ROOT;
     registry.Access  := KEY_WRITE;
 
-    allOK := registry.OpenKey('\' + fileExtn + '\DefaultIcon', False);
-    if allOK then begin
+    Result := registry.OpenKey('\' + fileExtn + '\DefaultIcon', False);
+    if Result then begin
       okToDelete := False;
-      allOK      := registry.DeleteValue('');
-      if (allOK) then begin
-        allOK := registry.GetKeyInfo(info);
-        if allOK then begin
+      Result     := registry.DeleteValue('');
+      if (Result) then begin
+        Result := registry.GetKeyInfo(info);
+        if Result then begin
           okToDelete := (info.NumSubKeys = 0) and (info.NumValues = 0);
         end;
       end;
@@ -2729,22 +2709,22 @@ begin
 
       // If no further items under "DefaultIcon" subkey, delete it
       if okToDelete then begin
-        allOK := registry.DeleteKey('\' + fileExtn + '\DefaultIcon');
-        if allOK then begin
+        Result := registry.DeleteKey('\' + fileExtn + '\DefaultIcon');
+        if Result then begin
           // Check to see if subkeys for other applications exist under the
           // extension key...
-          allOK := registry.OpenKey('\' + fileExtn, False);
-          if allOK then begin
+          Result := registry.OpenKey('\' + fileExtn, False);
+          if Result then begin
             okToDelete := False;
-            allOK      := registry.GetKeyInfo(info);
-            if allOK then begin
+            Result     := registry.GetKeyInfo(info);
+            if Result then begin
               okToDelete := (info.NumSubKeys = 0) and (info.NumValues = 0);
             end;
             registry.CloseKey();
 
             // If not, delete the extension subkey
             if okToDelete then begin
-              allOK := registry.DeleteKey('\' + fileExtn);
+              Result := registry.DeleteKey('\' + fileExtn);
             end;
           end;
         end;
@@ -2759,7 +2739,6 @@ begin
   // Inform Windows that an association has changed...
   SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nil, nil);
 
-  Result := allOK;
 end;
 
 
@@ -2782,7 +2761,6 @@ begin
   finally
     registry.Free();
   end;
-
 
 end;
 
@@ -2877,7 +2855,6 @@ begin
 
   end;
 
-
 end;
 
 
@@ -2892,9 +2869,9 @@ end;
 function SDUOSCPUSize(): Integer;
 const
   PROC_ARCH_32_BIT = 'x86';
-//var
+  //var
   //  procArch: string;
-//  isWow64: Boolean;
+  //  isWow64: Boolean;
 begin
   Result := 32;
 
@@ -2928,10 +2905,9 @@ begin
 
   if (Result = 32) then begin
     if SDUIsWow64Process(GetCurrentProcess()) then begin
-        Result := 64;
+      Result := 64;
     end;
   end;
-
 
 end;
 
@@ -2947,7 +2923,7 @@ begin
    {$ifdef WIN32}
     result := false;
     {$ELSE}
-    result := true;
+  Result := True;
     {$ENDIF}
 end;
 
@@ -2963,10 +2939,10 @@ begin
 
   // Open file and get it's size
   fileHandle := CreateFile(PChar(filename),
-                              // pointer to name of the file
+    // pointer to name of the file
     GENERIC_READ,             // access (read-write) mode
     (FILE_SHARE_READ or FILE_SHARE_WRITE or FILE_SHARE_DELETE),
-                              // share mode
+    // share mode
     nil,                      // pointer to security attributes
     OPEN_EXISTING,            // how to create
     FILE_FLAG_RANDOM_ACCESS,  // file attributes
@@ -3073,7 +3049,6 @@ begin
     Result := True;
   end;
 
-
 end;
 
 
@@ -3091,12 +3066,11 @@ function SDUCreateLargeFile(filename: String; size: ULONGLONG; showProgress: Boo
   var userCancelled: Boolean): Boolean;
 const
   BUFFER_SIZE: DWORD = (2 * 1024 * 1024); // 2MB buffer; size not *particularly*
-                                          // important, but it will allocate this
-                                          // amount of memory
-                                          // Files are created by repeatedly
-                                          // writing a buffer this size out to disk
+  // important, but it will allocate this
+  // amount of memory
+  // Files are created by repeatedly
+  // writing a buffer this size out to disk
 var
-  allOK:             Boolean;
   fileHandle:        THandle;
   buffer:            PChar;
   x:                 Int64;
@@ -3108,7 +3082,7 @@ var
   diskNumber:        Integer;
   freeSpace:         Int64;
 begin
-  allOK         := False;
+  Result        := False;
   userCancelled := False;
   progressDlg   := nil;
 
@@ -3136,7 +3110,7 @@ begin
   buffer := AllocMem(BUFFER_SIZE);
   try
     fileHandle := CreateFile(PChar(filename),
-                             // pointer to name of the file
+      // pointer to name of the file
       GENERIC_WRITE,         // access (read-write) mode
       FILE_SHARE_READ,       // share mode
       nil,                   // pointer to security attributes
@@ -3145,7 +3119,7 @@ begin
       0                      // handle to file with attributes to copy
       );
     if (fileHandle <> INVALID_HANDLE_VALUE) then begin
-      allOK := True;
+      Result := True;
       try
         prevCursor    := Screen.Cursor;
         Screen.Cursor := crAppStart;
@@ -3189,7 +3163,7 @@ begin
                 );
 
               if (bytesWritten <> BUFFER_SIZE) then begin
-                allOK := False;
+                Result := False;
                 break;
               end;
 
@@ -3205,7 +3179,7 @@ begin
                 // Check for user cancel...
                 if (progressDlg.Cancel) then begin
                   userCancelled := True;
-                  allOK         := False;
+                  Result        := False;
                   // Get out of loop...
                   break;
                 end;
@@ -3216,7 +3190,7 @@ begin
 
 
 
-            if (allOK) then begin
+            if (Result) then begin
               // If the size of the file requested is not a mulitple of the buffer size,
               // write the remaining bytes
               WriteFile(
@@ -3227,7 +3201,7 @@ begin
                 nil
                 );
               if (bytesWritten <> (size mod BUFFER_SIZE)) then begin
-                allOK := False;
+                Result := False;
               end;
 
             end;
@@ -3246,7 +3220,7 @@ begin
         CloseHandle(fileHandle);
 
         // In case of error, delete any file created
-        if not (allOK) then begin
+        if not (Result) then begin
           DeleteFile(filename);
         end;
       end;
@@ -3257,7 +3231,6 @@ begin
     FreeMem(buffer);
   end;
 
-  Result := allOK;
 end;
 
 
@@ -3267,10 +3240,9 @@ end;
 function SDUGetSpecialFolderPath(const CSIDL: Integer): String;
 var
   pidl:     PItemIDList;
-  retVal:   array [0..MAX_PATH] of WideChar;
+  retVal:   array [0..MAX_PATH] of Widechar;
   ifMalloc: IMalloc;
 begin
-  retVal := '';
   //todo: use SHGetKnownFolderPath instead
   if Succeeded((SHGetSpecialFolderLocation(0, CSIDL, pidl))) then begin
     if (SHGetPathFromIDList(pidl, retVal)) then begin
@@ -3280,7 +3252,7 @@ begin
       end;
     end;
   end;
-  result := retVal;
+  Result := retVal;
 
 end;
 
@@ -3496,7 +3468,6 @@ begin
   shortcutFilename := _SDUGenerateShortcutFilename(ShortcutLocation, ShortcutName);
   Result           := (IPFile.Save(PWChar(shortcutFilename), False) = S_OK);
 
-
 end;
 
 
@@ -3538,6 +3509,30 @@ begin
     end;
   end;
 
+end;
+
+
+function SDUGetShortCutArguments(ShortcutCSIDL: Integer; ShortcutName: String): String;
+var
+  IObject:          IUnknown;
+  ISLink:           IShellLink;
+  IPFile:           IPersistFile;
+  shortcutFilename: WideString;
+  szArgs:           array [0..255] of wchar;
+  ShortcutLocation: String;
+begin
+  Result           := '';
+  ShortcutLocation := SDUGetSpecialFolderPath(ShortcutCSIDL);
+  IObject          := CreateComObject(CLSID_ShellLink);
+  ISLink           := IObject as IShellLink;
+  IPFile           := IObject as IPersistFile;
+
+  shortcutFilename := _SDUGenerateShortcutFilename(ShortcutLocation, ShortcutName);
+  if (IPFile.Load(PWChar(shortcutFilename), STGM_READ) = S_OK) then begin
+    ISLink.GetArguments(@szArgs[0], 255);
+
+    Result := szArgs;
+  end;
 
 end;
 
@@ -3550,13 +3545,13 @@ begin
 end;
 
 function SDUBoolToString(Value: Boolean; strTrue: String = 'True';
-  strFalse: String = 'False'): String; OVERLOAD;
+  strFalse: String = 'False'): String; overload;
 begin
   Result := SDUBooleanToStr(Value, strTrue, strFalse);
 end;
 
 function SDUBooleanToString(Value: Boolean; strTrue: String = 'True';
-  strFalse: String = 'False'): String; OVERLOAD;
+  strFalse: String = 'False'): String; overload;
 begin
   Result := SDUBooleanToStr(Value, strTrue, strFalse);
 end;
@@ -3568,7 +3563,6 @@ begin
   if Value then begin
     Result := strTrue;
   end;
-
 
 end;
 
@@ -3588,7 +3582,6 @@ begin
   if Value then begin
     Result := chars[1];
   end;
-
 
 end;
 
@@ -3677,8 +3670,6 @@ begin
     end;
   end;
 
-
-
 end;
 
 // ----------------------------------------------------------------------------
@@ -3718,10 +3709,9 @@ begin
 
   Result := Format('%.' + IntToStr(accuracy) + 'f', [z]) + ' ' + useUnits;
 
-
 end;
 
-                             // ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUFormatUnits(Value: ULONGLONG; denominations: array of String;
   multiplier: Integer = 1000; accuracy: Integer = 2): String;
@@ -3759,7 +3749,6 @@ begin
 
   Result := Format('%.' + IntToStr(accuracy) + 'f', [z]) + ' ' + useUnits;
 
-
 end;
 
 {$IFEND}
@@ -3770,7 +3759,7 @@ begin
   Result := SDUFormatUnits(Value, SDUUnitsStorageToTextArr(), UNITS_BYTES_MULTIPLIER, accuracy);
 end;
 
-                             // ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUFormatAsBytesUnits(Value: ULONGLONG; accuracy: Integer = 2): String;
 begin
@@ -3789,7 +3778,6 @@ begin
   if (Pos(SDUUnitsStorageToText(usBytes), sizeAsUnits) <= 0) then begin
     Result := Result + ' (' + sizeAsUnits + ')';
   end;
-
 
 end;
 
@@ -3853,7 +3841,6 @@ begin
   if Result then begin
     Value := Value * unitsMultiplier;
   end;
-
 
 end;
 
@@ -4083,7 +4070,7 @@ end;
  // Calculate x! (factorial X)
 function SDUFactorial(x: Integer): LARGE_INTEGER;
 var
-  i:      Integer;
+  i: Integer;
 begin
   Result.QuadPart := 1;
 
@@ -4102,12 +4089,11 @@ begin
 {$ENDIF}
   end;
 
-
 end;
 
 
 // ----------------------------------------------------------------------------
-function SDUXOR(a: TSDUBytes; b: array of byte): TSDUBytes;
+function SDUXOR(a: TSDUBytes; b: array of Byte): TSDUBytes;
   //function SDUXOR(a: Ansistring; b: Ansistring): Ansistring;
   { DONE 1 -otdk -cclean : use bytes instead of chars }
 var
@@ -4166,18 +4152,17 @@ end;
 function SDUCopyFile(Source: String; destination: String; startOffset: Int64 = 0;
   length: Int64 = -1; blocksize: Int64 = 4096; callback: TCopyProgressCallback = nil): Boolean;
 var
-  srcHandle:                               THandle;
-  destHandle:                              THandle;
-  allOK:                                   Boolean;
-  buffer:                                  PChar;
+  srcHandle:        THandle;
+  destHandle:       THandle;
+  buffer:           PChar;
   numberOfBytesRead, numberOfBytesWritten: DWORD;
-  move:                                    DWORD;
-  finished:                                Boolean;
-  opResult:                                Boolean;
-  copyCancelFlag:                          Boolean;
-  totalBytesCopied:                        Int64;
+  move:             DWORD;
+  finished:         Boolean;
+  opResult:         Boolean;
+  copyCancelFlag:   Boolean;
+  totalBytesCopied: Int64;
 begin
-  allOK          := True;
+  Result         := True;
   copyCancelFlag := False;
 
   srcHandle := CreateFile(PChar(Source), GENERIC_READ, (FILE_SHARE_READ or FILE_SHARE_WRITE),
@@ -4263,8 +4248,6 @@ begin
     CloseHandle(srcHandle);
   end;
 
-
-  Result := allOK;
 end;
 
  // ----------------------------------------------------------------------------
@@ -4293,20 +4276,19 @@ const
   SDU_COMPRESS_VERSION           = '1.00';
   SDU_COMPRESS_SEPERATOR: String = ':';
 var
-  allOK:                                   Boolean;
   numberOfBytesRead, numberOfBytesWritten: DWORD;
-  finished:                                Boolean;
-  copyCancelFlag:                          Boolean;
-  totalBytesCopied:                        Int64;
-  stmFileInput:                            TFileStream;
-  stmFileOutput:                           TFileStream;
-  stmInput:                                TStream;
-  stmOutput:                               TStream;
-  stmCompress:                             TCompressionStream;
-  stmDecompress:                           TDecompressionStream;
-  junkBuffer:                              array [0..1023] of Char;
+  finished:         Boolean;
+  copyCancelFlag:   Boolean;
+  totalBytesCopied: Int64;
+  stmFileInput:     TFileStream;
+  stmFileOutput:    TFileStream;
+  stmInput:         TStream;
+  stmOutput:        TStream;
+  stmCompress:      TCompressionStream;
+  stmDecompress:    TDecompressionStream;
+  junkBuffer:       array [0..1023] of Char;
 begin
-  allOK          := True;
+  Result         := True;
   copyCancelFlag := False;
 
   stmCompress   := nil;
@@ -4433,8 +4415,6 @@ begin
     stmFileInput.Free();
   end;
 
-
-  Result := allOK;
 end;
 
 
@@ -4452,10 +4432,10 @@ begin
 
   // Open file and get it's size
   fileHandle := CreateFile(PChar(filename),
-                              // pointer to name of the file
+    // pointer to name of the file
     GENERIC_READ,             // access (read-write) mode
     (FILE_SHARE_READ or FILE_SHARE_WRITE or FILE_SHARE_DELETE),
-                              // share mode
+    // share mode
     nil,                      // pointer to security attributes
     OPEN_EXISTING,            // how to create
     FILE_FLAG_RANDOM_ACCESS,  // file attributes
@@ -4472,7 +4452,6 @@ begin
 
     CloseHandle(fileHandle);
   end;
-
 
 end;
 
@@ -4497,7 +4476,6 @@ begin
     Result := partInfo.PartitionLength;
   end;
 
-
 end;
 
 // ----------------------------------------------------------------------------
@@ -4508,7 +4486,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function SDUGetDiskGeometry(DiskNumber: Integer; var diskGeometry: TSDUDiskGeometry): Boolean;
-  OVERLOAD;
+  overload;
 begin
   Result := SDUGetDiskGeometry(SDUDeviceNameForDisk(DiskNumber), diskGeometry);
 end;
@@ -4527,10 +4505,10 @@ begin
 
   // Open file and get it's size
   fileHandle := CreateFile(PChar(driveDevice),
-                              // pointer to name of the file
+    // pointer to name of the file
     GENERIC_READ,             // access (read-write) mode
     (FILE_SHARE_READ or FILE_SHARE_WRITE or FILE_SHARE_DELETE),
-                              // share mode
+    // share mode
     nil,                      // pointer to security attributes
     OPEN_EXISTING,            // how to create
     FILE_FLAG_RANDOM_ACCESS,  // file attributes
@@ -4546,7 +4524,6 @@ begin
 
     CloseHandle(fileHandle);
   end;
-
 
 end;
 
@@ -4568,10 +4545,10 @@ begin
 
   // Open file and get it's size
   fileHandle := CreateFile(PChar(driveDevice),
-                              // pointer to name of the file
+    // pointer to name of the file
     GENERIC_READ,             // access (read-write) mode
     (FILE_SHARE_READ or FILE_SHARE_WRITE or FILE_SHARE_DELETE),
-                              // share mode
+    // share mode
     nil,                      // pointer to security attributes
     OPEN_EXISTING,            // how to create
     FILE_FLAG_RANDOM_ACCESS,  // file attributes
@@ -4587,7 +4564,6 @@ begin
 
     CloseHandle(fileHandle);
   end;
-
 
 end;
 
@@ -4614,10 +4590,10 @@ begin
 
   // Open file and get it's size
   fileHandle := CreateFile(PChar(driveDevice),
-                              // pointer to name of the file
+    // pointer to name of the file
     GENERIC_READ,             // access (read-write) mode
     (FILE_SHARE_READ or FILE_SHARE_WRITE or FILE_SHARE_DELETE),
-                              // share mode
+    // share mode
     nil,                      // pointer to security attributes
     OPEN_EXISTING,            // how to create
     FILE_FLAG_RANDOM_ACCESS,  // file attributes
@@ -4633,7 +4609,6 @@ begin
 
     CloseHandle(fileHandle);
   end;
-
 
 end;
 
@@ -4707,7 +4682,6 @@ begin
     Result := StrPas(PChar(tmpStr));
   end;
 
-
 end;
 
 
@@ -4731,19 +4705,18 @@ end;
 function SDUGetFileContent(filename: String; out content: Ansistring): Boolean;
 var
   fileHandle: THandle;
-  allOK:      Boolean;
   bytesRead:  DWORD;
   fileSize:   ULONGLONG;
   toRead:     DWORD;
 begin
-  allOK := False;
+  Result := False;
 
   fileSize   := SDUGetFileSize(filename);
   fileHandle := CreateFile(PChar(filename),
-                            // pointer to name of the file
+    // pointer to name of the file
     GENERIC_READ,           // access (read-write) mode
     (FILE_SHARE_READ or FILE_SHARE_WRITE),
-                            // share mode
+    // share mode
     nil,                    // pointer to security attributes
     OPEN_EXISTING,          // how to create
     FILE_ATTRIBUTE_NORMAL,  // file attributes
@@ -4762,18 +4735,17 @@ begin
       nil
       );
 
-    allOK := (bytesRead = toRead);
+    Result := (bytesRead = toRead);
 
     CloseHandle(fileHandle);
 
     // In case of error, blow any buffer allocated
-    if not (allOK) then begin
+    if not (Result) then begin
       content := '';
     end;
 
   end;  // if (fileHandle<>INVALID_HANDLE_VALUE) then
 
-  Result := allOK;
 end;
 
 
@@ -4783,13 +4755,12 @@ end;
 function SDUSetFileContent(filename: String; content: String): Boolean;
 var
   fileHandle:   THandle;
-  allOK:        Boolean;
   bytesWritten: DWORD;
 begin
-  allOK := False;
+  Result := False;
 
   fileHandle := CreateFile(PChar(filename),
-                            // pointer to name of the file
+    // pointer to name of the file
     GENERIC_WRITE,          // access (read-write) mode
     FILE_SHARE_READ,        // share mode
     nil,                    // pointer to security attributes
@@ -4806,18 +4777,17 @@ begin
       nil
       );
 
-    allOK := (bytesWritten = DWORD(length(content)));
+    Result := (bytesWritten = DWORD(length(content)));
 
     CloseHandle(fileHandle);
 
     // In case of error, delete any file created
-    if not (allOK) then begin
+    if not (Result) then begin
       DeleteFile(filename);
     end;
 
   end;  // if (fileHandle<>INVALID_HANDLE_VALUE) then
 
-  Result := allOK;
 end;
 
 
@@ -5358,7 +5328,6 @@ begin
     end;
   end;
 
-
 end;
 
 // ----------------------------------------------------------------------------
@@ -5379,7 +5348,6 @@ begin
   if (length(Result) < digits) then begin
     Result := StringOfChar('0', (digits - length(Result))) + Result;
   end;
-
 
 end;
 
@@ -5405,7 +5373,6 @@ begin
     end;
   end;
 
-
 end;
 
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
@@ -5429,7 +5396,6 @@ begin
     end;
   end;
 
-
 end;
 
 {$IFEND}
@@ -5439,9 +5405,9 @@ end;
  // As SDUIntToStr, but with thousands seperators inserted
 function SDUIntToStrThousands(val: Int64): String;
 var
-  sVal:   String;
-  i:      Integer;
-  ctr:    Integer;
+  sVal: String;
+  i:    Integer;
+  ctr:  Integer;
 begin
   sVal := SDUIntToStr(val);
 
@@ -5456,16 +5422,15 @@ begin
 
     Result := sVal[i] + Result;
   end;
-
 
 end;
 
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUIntToStrThousands(val: ULONGLONG): String;
 var
-  sVal:   String;
-  i:      Integer;
-  ctr:    Integer;
+  sVal: String;
+  i:    Integer;
+  ctr:  Integer;
 begin
   sVal := SDUIntToStr(val);
 
@@ -5480,7 +5445,6 @@ begin
 
     Result := sVal[i] + Result;
   end;
-
 
 end;
 
@@ -5524,24 +5488,23 @@ function SDUFileCopy(srcFilename: String; destFilename: String): Boolean;
 var
   fileOpStruct: TSHFileOpStruct;
 begin
-  Result                             := False;
+  Result                     := False;
   // srcFilename and destFilename *MUST* end in a double NULL for
   // SHFileOperation to operate correctly
-  srcFilename                        := srcFilename + #0 + #0;
-  destFilename                       := destFilename + #0 + #0;
-  fileOpStruct.Wnd                   := 0;
-  fileOpStruct.wFunc                 := FO_COPY;
-  fileOpStruct.pFrom                 := PChar(srcFilename);
-  fileOpStruct.pTo                   := PChar(destFilename);
-  fileOpStruct.fFlags                := (FOF_NOCONFIRMATION or FOF_NOCONFIRMMKDIR);
+  srcFilename                := srcFilename + #0 + #0;
+  destFilename               := destFilename + #0 + #0;
+  fileOpStruct.Wnd           := 0;
+  fileOpStruct.wFunc         := FO_COPY;
+  fileOpStruct.pFrom         := PChar(srcFilename);
+  fileOpStruct.pTo           := PChar(destFilename);
+  fileOpStruct.fFlags        := (FOF_NOCONFIRMATION or FOF_NOCONFIRMMKDIR);
   fileOpStruct.fAnyOperationsAborted := False;
-  fileOpStruct.hNameMappings         := nil;
-  fileOpStruct.lpszProgressTitle     := nil;
+  fileOpStruct.hNameMappings := nil;
+  fileOpStruct.lpszProgressTitle := nil;
 
   if (SHFileOperation(fileOpStruct) = 0) then begin
     Result := not (fileOpStruct.fAnyOperationsAborted);
   end;
-
 
 end;
 
@@ -5605,8 +5568,6 @@ begin
     // Note: May also be set in recursive call to SDUGetFileType_Description(...)
     knownFiletype := True;
   end;
-
-
 
 end;
 
@@ -5705,11 +5666,11 @@ begin
 end;
 
 
-// ----------------------------------------------------------------------------
-//function SDUTryStrToInt(const S: String; out Value: Integer): Boolean;
-//begin
-//  Result := TryStrToInt(S, Value);
-//end;
+ // ----------------------------------------------------------------------------
+ //function SDUTryStrToInt(const S: String; out Value: Integer): Boolean;
+ //begin
+ //  Result := TryStrToInt(S, Value);
+ //end;
 
 function SDUTryStrToInt(const S: String; out Value: Uint64): Boolean;
 var
@@ -5738,7 +5699,6 @@ begin
     Result := deflt;
   end;
 
-
 end;
 
 // ----------------------------------------------------------------------------
@@ -5764,7 +5724,6 @@ begin
     Value := (Value shr 1);
   end;
 
-
 end;
 
 function SDUUnitsStorageToText(units: TUnits_Storage): String;
@@ -5779,19 +5738,17 @@ begin
     usTB: Result    := UNITS_STORAGE_TB;
   end;
 
-
 end;
 
 function SDUUnitsStorageToTextArr(): TSDUArrayString;
 var
-  i:      TUnits_Storage;
+  i: TUnits_Storage;
 begin
   SetLength(Result, 0);
   for i := low(i) to high(i) do begin
     SetLength(Result, length(Result) + 1);
     Result[length(Result) - 1] := SDUUnitsStorageToText(i);
   end;
-
 
 end;
 
@@ -5803,13 +5760,12 @@ end;
 // ----------------------------------------------------------------------------
 function SDUWideStringOfWideChar(Ch: Widechar; Count: Integer): WideString;
 var
-  i:      Integer;
+  i: Integer;
 begin
   Result := '';
   for i := 1 to Count do begin
     Result := Result + Ch;
   end;
-
 
 end;
 
@@ -5821,15 +5777,15 @@ function SDUSelectDirectory(hOwn: HWND; Caption: String; Root: String;
 const
   BIF_NEWDIALOGSTYLE = $0040;
 var
-  BrowseInfo:                 TBrowseInfo;
-  Buffer:                     PChar;
+  BrowseInfo: TBrowseInfo;
+  Buffer: PChar;
   RootItemIDList, ItemIDList: PItemIDList;
-  ShellMalloc:                IMalloc;
-  IDesktopFolder:             IShellFolder;
-  Dummy:                      Longword;
+  ShellMalloc: IMalloc;
+  IDesktopFolder: IShellFolder;
+  Dummy: Longword;
 
   function BrowseCallbackProc(hwnd: HWND; uMsg: UINT; lParam: Cardinal;
-    lpData: Cardinal): Integer; STDCALL;
+    lpData: Cardinal): Integer; stdcall;
   var
     PathName: array[0..MAX_PATH] of Char;
   begin
@@ -5881,7 +5837,6 @@ begin
   if Result then begin
     Result := (Path <> '');
   end;
-
 
 end;
 
@@ -5973,7 +5928,6 @@ begin
     doc.Free();
   end;
 
-
 end;
 
 
@@ -6009,13 +5963,14 @@ function SDUGetPADFileVersionInfo(url: String;
   var majorVersion, minorVersion, revisionVersion, buildVersion: Integer;
   userAgent: WideString = DEFAULT_HTTP_USERAGENT; ShowProgressDlg: Boolean = True): TTimeoutGet;
 var
-  xml:    String;
+  xml: String;
 begin
-  Result := tgFailure;
+
 {$IFDEF FORCE_LOCAL_PAD}
      xml     := TFile.ReadAllText(url);
       Result := tgOK;
    {$ELSE}
+  Result := tgFailure;
   if ShowProgressDlg then begin
     Result := SDUGetURLProgress_WithUserAgent(_('Checking for latest version...'),
       url, xml, userAgent);
@@ -6024,7 +5979,6 @@ begin
       Result := tgOK;
     end;
   end;
-
 
    {$ENDIF}
   if (Result = tgOK) then begin
@@ -6035,14 +5989,13 @@ begin
 
   end;
 
-
 end;
 
 
 // ----------------------------------------------------------------------------
 function SDUGetPADFileVersionInfoString(url: String): String;
 var
-  xml:    String;
+  xml: String;
 begin
   Result := '';
   if SDUWinHTTPRequest(url, xml) then
@@ -6068,7 +6021,7 @@ begin
   DecodeTime(inTime, AHour, AMinute, ASecond, AMilliSecond);
   Result := Format('%.2d:%.2d', [AHour, AMinute]);
   if includeSeconds then
-    Result := Result+ Format(':%.2d', [ASecond]);
+    Result := Result + Format(':%.2d', [ASecond]);
 end;
 
 // Encode date to YYYY-MM-DDTHH:MM format
@@ -6110,7 +6063,7 @@ end;
 function SDUISO8601ToTTime(inTime: String): TTime;
 var
   AHour, AMinute, ASecond, AMilliSecond: Integer;
-  junkInt:                               Integer;
+  junkInt: Integer;
 begin
   AHour        := 0;
   AMinute      := 0;
@@ -6220,8 +6173,10 @@ end;
 function _SDUVersionNumberCompare(A, B: Integer): Integer;
 begin
   Result := 0;
-  if (A > B) then  Result := -1;
-  if (B > A) then  Result := 1;
+  if (A > B) then
+    Result := -1;
+  if (B > A) then
+    Result := 1;
 end;
 
  // Check version IDs
@@ -6262,7 +6217,6 @@ begin
     end;
   end;
 
-
 end;
 
 function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion,
@@ -6277,7 +6231,6 @@ begin
     end;
   end;
 
-
 end;
 
 // ----------------------------------------------------------------------------
@@ -6286,236 +6239,235 @@ begin
   Result := inttohex(msgID, 8);
 
   case msgID of
-    WM_NULL: Result                        := 'WM_NULL';
-    WM_CREATE: Result                      := 'WM_CREATE';
-    WM_DESTROY: Result                     := 'WM_DESTROY';
-    WM_MOVE: Result                        := 'WM_MOVE';
-    WM_SIZE: Result                        := 'WM_SIZE';
-    WM_ACTIVATE: Result                    := 'WM_ACTIVATE';
-    WM_SETFOCUS: Result                    := 'WM_SETFOCUS';
-    WM_KILLFOCUS: Result                   := 'WM_KILLFOCUS';
-    WM_ENABLE: Result                      := 'WM_ENABLE';
-    WM_SETREDRAW: Result                   := 'WM_SETREDRAW';
-    WM_SETTEXT: Result                     := 'WM_SETTEXT';
-    WM_GETTEXT: Result                     := 'WM_GETTEXT';
-    WM_GETTEXTLENGTH: Result               := 'WM_GETTEXTLENGTH';
-    WM_PAINT: Result                       := 'WM_PAINT';
-    WM_CLOSE: Result                       := 'WM_CLOSE';
-    WM_QUERYENDSESSION: Result             := 'WM_QUERYENDSESSION';
-    WM_QUIT: Result                        := 'WM_QUIT';
-    WM_QUERYOPEN: Result                   := 'WM_QUERYOPEN';
-    WM_ERASEBKGND: Result                  := 'WM_ERASEBKGND';
-    WM_SYSCOLORCHANGE: Result              := 'WM_SYSCOLORCHANGE';
-    WM_ENDSESSION: Result                  := 'WM_ENDSESSION';
-    WM_SYSTEMERROR: Result                 := 'WM_SYSTEMERROR';
-    WM_SHOWWINDOW: Result                  := 'WM_SHOWWINDOW';
-    WM_CTLCOLOR: Result                    := 'WM_CTLCOLOR';
-    WM_WININICHANGE: Result                := 'WM_WININICHANGE/WM_WININICHANGE';
-    WM_DEVMODECHANGE: Result               := 'WM_DEVMODECHANGE';
-    WM_ACTIVATEAPP: Result                 := 'WM_ACTIVATEAPP';
-    WM_FONTCHANGE: Result                  := 'WM_FONTCHANGE';
-    WM_TIMECHANGE: Result                  := 'WM_TIMECHANGE';
-    WM_CANCELMODE: Result                  := 'WM_CANCELMODE';
-    WM_SETCURSOR: Result                   := 'WM_SETCURSOR';
-    WM_MOUSEACTIVATE: Result               := 'WM_MOUSEACTIVATE';
-    WM_CHILDACTIVATE: Result               := 'WM_CHILDACTIVATE';
-    WM_QUEUESYNC: Result                   := 'WM_QUEUESYNC';
-    WM_GETMINMAXINFO: Result               := 'WM_GETMINMAXINFO';
-    WM_PAINTICON: Result                   := 'WM_PAINTICON';
-    WM_ICONERASEBKGND: Result              := 'WM_ICONERASEBKGND';
-    WM_NEXTDLGCTL: Result                  := 'WM_NEXTDLGCTL';
-    WM_SPOOLERSTATUS: Result               := 'WM_SPOOLERSTATUS';
-    WM_DRAWITEM: Result                    := 'WM_DRAWITEM';
-    WM_MEASUREITEM: Result                 := 'WM_MEASUREITEM';
-    WM_DELETEITEM: Result                  := 'WM_DELETEITEM';
-    WM_VKEYTOITEM: Result                  := 'WM_VKEYTOITEM';
-    WM_CHARTOITEM: Result                  := 'WM_CHARTOITEM';
-    WM_SETFONT: Result                     := 'WM_SETFONT';
-    WM_GETFONT: Result                     := 'WM_GETFONT';
-    WM_SETHOTKEY: Result                   := 'WM_SETHOTKEY';
-    WM_GETHOTKEY: Result                   := 'WM_GETHOTKEY';
-    WM_QUERYDRAGICON: Result               := 'WM_QUERYDRAGICON';
-    WM_COMPAREITEM: Result                 := 'WM_COMPAREITEM';
-    WM_GETOBJECT: Result                   := 'WM_GETOBJECT';
-    WM_COMPACTING: Result                  := 'WM_COMPACTING';
-    WM_COMMNOTIFY: Result                  := 'WM_COMMNOTIFY';
-    WM_WINDOWPOSCHANGING: Result           := 'WM_WINDOWPOSCHANGING';
-    WM_WINDOWPOSCHANGED: Result            := 'WM_WINDOWPOSCHANGED';
-    WM_POWER: Result                       := 'WM_POWER';
-    WM_COPYDATA: Result                    := 'WM_COPYDATA';
-    WM_CANCELJOURNAL: Result               := 'WM_CANCELJOURNAL';
-    WM_NOTIFY: Result                      := 'WM_NOTIFY';
-    WM_INPUTLANGCHANGEREQUEST: Result      := 'WM_INPUTLANGCHANGEREQUEST';
-    WM_INPUTLANGCHANGE: Result             := 'WM_INPUTLANGCHANGE';
-    WM_TCARD: Result                       := 'WM_TCARD';
-    WM_HELP: Result                        := 'WM_HELP';
-    WM_USERCHANGED: Result                 := 'WM_USERCHANGED';
-    WM_NOTIFYFORMAT: Result                := 'WM_NOTIFYFORMAT';
-    WM_CONTEXTMENU: Result                 := 'WM_CONTEXTMENU';
-    WM_STYLECHANGING: Result               := 'WM_STYLECHANGING';
-    WM_STYLECHANGED: Result                := 'WM_STYLECHANGED';
-    WM_DISPLAYCHANGE: Result               := 'WM_DISPLAYCHANGE';
-    WM_GETICON: Result                     := 'WM_GETICON';
-    WM_SETICON: Result                     := 'WM_SETICON';
-    WM_NCCREATE: Result                    := 'WM_NCCREATE';
-    WM_NCDESTROY: Result                   := 'WM_NCDESTROY';
-    WM_NCCALCSIZE: Result                  := 'WM_NCCALCSIZE';
-    WM_NCHITTEST: Result                   := 'WM_NCHITTEST';
-    WM_NCPAINT: Result                     := 'WM_NCPAINT';
-    WM_NCACTIVATE: Result                  := 'WM_NCACTIVATE';
-    WM_GETDLGCODE: Result                  := 'WM_GETDLGCODE';
-    WM_NCMOUSEMOVE: Result                 := 'WM_NCMOUSEMOVE';
-    WM_NCLBUTTONDOWN: Result               := 'WM_NCLBUTTONDOWN';
-    WM_NCLBUTTONUP: Result                 := 'WM_NCLBUTTONUP';
-    WM_NCLBUTTONDBLCLK: Result             := 'WM_NCLBUTTONDBLCLK';
-    WM_NCRBUTTONDOWN: Result               := 'WM_NCRBUTTONDOWN';
-    WM_NCRBUTTONUP: Result                 := 'WM_NCRBUTTONUP';
-    WM_NCRBUTTONDBLCLK: Result             := 'WM_NCRBUTTONDBLCLK';
-    WM_NCMBUTTONDOWN: Result               := 'WM_NCMBUTTONDOWN';
-    WM_NCMBUTTONUP: Result                 := 'WM_NCMBUTTONUP';
-    WM_NCMBUTTONDBLCLK: Result             := 'WM_NCMBUTTONDBLCLK';
-    WM_NCXBUTTONDOWN: Result               := 'WM_NCXBUTTONDOWN';
-    WM_NCXBUTTONUP: Result                 := 'WM_NCXBUTTONUP';
-    WM_NCXBUTTONDBLCLK: Result             := 'WM_NCXBUTTONDBLCLK';
-    WM_INPUT: Result                       := 'WM_INPUT';
-    WM_KEYFIRST: Result                    := 'WM_KEYDOWN';
-    WM_KEYUP: Result                       := 'WM_KEYUP';
-    WM_CHAR: Result                        := 'WM_CHAR';
-    WM_DEADCHAR: Result                    := 'WM_DEADCHAR';
-    WM_SYSKEYDOWN: Result                  := 'WM_SYSKEYDOWN';
-    WM_SYSKEYUP: Result                    := 'WM_SYSKEYUP';
-    WM_SYSCHAR: Result                     := 'WM_SYSCHAR';
-    WM_SYSDEADCHAR: Result                 := 'WM_SYSDEADCHAR';
+    WM_NULL: Result                   := 'WM_NULL';
+    WM_CREATE: Result                 := 'WM_CREATE';
+    WM_DESTROY: Result                := 'WM_DESTROY';
+    WM_MOVE: Result                   := 'WM_MOVE';
+    WM_SIZE: Result                   := 'WM_SIZE';
+    WM_ACTIVATE: Result               := 'WM_ACTIVATE';
+    WM_SETFOCUS: Result               := 'WM_SETFOCUS';
+    WM_KILLFOCUS: Result              := 'WM_KILLFOCUS';
+    WM_ENABLE: Result                 := 'WM_ENABLE';
+    WM_SETREDRAW: Result              := 'WM_SETREDRAW';
+    WM_SETTEXT: Result                := 'WM_SETTEXT';
+    WM_GETTEXT: Result                := 'WM_GETTEXT';
+    WM_GETTEXTLENGTH: Result          := 'WM_GETTEXTLENGTH';
+    WM_PAINT: Result                  := 'WM_PAINT';
+    WM_CLOSE: Result                  := 'WM_CLOSE';
+    WM_QUERYENDSESSION: Result        := 'WM_QUERYENDSESSION';
+    WM_QUIT: Result                   := 'WM_QUIT';
+    WM_QUERYOPEN: Result              := 'WM_QUERYOPEN';
+    WM_ERASEBKGND: Result             := 'WM_ERASEBKGND';
+    WM_SYSCOLORCHANGE: Result         := 'WM_SYSCOLORCHANGE';
+    WM_ENDSESSION: Result             := 'WM_ENDSESSION';
+    WM_SYSTEMERROR: Result            := 'WM_SYSTEMERROR';
+    WM_SHOWWINDOW: Result             := 'WM_SHOWWINDOW';
+    WM_CTLCOLOR: Result               := 'WM_CTLCOLOR';
+    WM_WININICHANGE: Result           := 'WM_WININICHANGE/WM_WININICHANGE';
+    WM_DEVMODECHANGE: Result          := 'WM_DEVMODECHANGE';
+    WM_ACTIVATEAPP: Result            := 'WM_ACTIVATEAPP';
+    WM_FONTCHANGE: Result             := 'WM_FONTCHANGE';
+    WM_TIMECHANGE: Result             := 'WM_TIMECHANGE';
+    WM_CANCELMODE: Result             := 'WM_CANCELMODE';
+    WM_SETCURSOR: Result              := 'WM_SETCURSOR';
+    WM_MOUSEACTIVATE: Result          := 'WM_MOUSEACTIVATE';
+    WM_CHILDACTIVATE: Result          := 'WM_CHILDACTIVATE';
+    WM_QUEUESYNC: Result              := 'WM_QUEUESYNC';
+    WM_GETMINMAXINFO: Result          := 'WM_GETMINMAXINFO';
+    WM_PAINTICON: Result              := 'WM_PAINTICON';
+    WM_ICONERASEBKGND: Result         := 'WM_ICONERASEBKGND';
+    WM_NEXTDLGCTL: Result             := 'WM_NEXTDLGCTL';
+    WM_SPOOLERSTATUS: Result          := 'WM_SPOOLERSTATUS';
+    WM_DRAWITEM: Result               := 'WM_DRAWITEM';
+    WM_MEASUREITEM: Result            := 'WM_MEASUREITEM';
+    WM_DELETEITEM: Result             := 'WM_DELETEITEM';
+    WM_VKEYTOITEM: Result             := 'WM_VKEYTOITEM';
+    WM_CHARTOITEM: Result             := 'WM_CHARTOITEM';
+    WM_SETFONT: Result                := 'WM_SETFONT';
+    WM_GETFONT: Result                := 'WM_GETFONT';
+    WM_SETHOTKEY: Result              := 'WM_SETHOTKEY';
+    WM_GETHOTKEY: Result              := 'WM_GETHOTKEY';
+    WM_QUERYDRAGICON: Result          := 'WM_QUERYDRAGICON';
+    WM_COMPAREITEM: Result            := 'WM_COMPAREITEM';
+    WM_GETOBJECT: Result              := 'WM_GETOBJECT';
+    WM_COMPACTING: Result             := 'WM_COMPACTING';
+    WM_COMMNOTIFY: Result             := 'WM_COMMNOTIFY';
+    WM_WINDOWPOSCHANGING: Result      := 'WM_WINDOWPOSCHANGING';
+    WM_WINDOWPOSCHANGED: Result       := 'WM_WINDOWPOSCHANGED';
+    WM_POWER: Result                  := 'WM_POWER';
+    WM_COPYDATA: Result               := 'WM_COPYDATA';
+    WM_CANCELJOURNAL: Result          := 'WM_CANCELJOURNAL';
+    WM_NOTIFY: Result                 := 'WM_NOTIFY';
+    WM_INPUTLANGCHANGEREQUEST: Result := 'WM_INPUTLANGCHANGEREQUEST';
+    WM_INPUTLANGCHANGE: Result        := 'WM_INPUTLANGCHANGE';
+    WM_TCARD: Result                  := 'WM_TCARD';
+    WM_HELP: Result                   := 'WM_HELP';
+    WM_USERCHANGED: Result            := 'WM_USERCHANGED';
+    WM_NOTIFYFORMAT: Result           := 'WM_NOTIFYFORMAT';
+    WM_CONTEXTMENU: Result            := 'WM_CONTEXTMENU';
+    WM_STYLECHANGING: Result          := 'WM_STYLECHANGING';
+    WM_STYLECHANGED: Result           := 'WM_STYLECHANGED';
+    WM_DISPLAYCHANGE: Result          := 'WM_DISPLAYCHANGE';
+    WM_GETICON: Result                := 'WM_GETICON';
+    WM_SETICON: Result                := 'WM_SETICON';
+    WM_NCCREATE: Result               := 'WM_NCCREATE';
+    WM_NCDESTROY: Result              := 'WM_NCDESTROY';
+    WM_NCCALCSIZE: Result             := 'WM_NCCALCSIZE';
+    WM_NCHITTEST: Result              := 'WM_NCHITTEST';
+    WM_NCPAINT: Result                := 'WM_NCPAINT';
+    WM_NCACTIVATE: Result             := 'WM_NCACTIVATE';
+    WM_GETDLGCODE: Result             := 'WM_GETDLGCODE';
+    WM_NCMOUSEMOVE: Result            := 'WM_NCMOUSEMOVE';
+    WM_NCLBUTTONDOWN: Result          := 'WM_NCLBUTTONDOWN';
+    WM_NCLBUTTONUP: Result            := 'WM_NCLBUTTONUP';
+    WM_NCLBUTTONDBLCLK: Result        := 'WM_NCLBUTTONDBLCLK';
+    WM_NCRBUTTONDOWN: Result          := 'WM_NCRBUTTONDOWN';
+    WM_NCRBUTTONUP: Result            := 'WM_NCRBUTTONUP';
+    WM_NCRBUTTONDBLCLK: Result        := 'WM_NCRBUTTONDBLCLK';
+    WM_NCMBUTTONDOWN: Result          := 'WM_NCMBUTTONDOWN';
+    WM_NCMBUTTONUP: Result            := 'WM_NCMBUTTONUP';
+    WM_NCMBUTTONDBLCLK: Result        := 'WM_NCMBUTTONDBLCLK';
+    WM_NCXBUTTONDOWN: Result          := 'WM_NCXBUTTONDOWN';
+    WM_NCXBUTTONUP: Result            := 'WM_NCXBUTTONUP';
+    WM_NCXBUTTONDBLCLK: Result        := 'WM_NCXBUTTONDBLCLK';
+    WM_INPUT: Result                  := 'WM_INPUT';
+    WM_KEYFIRST: Result               := 'WM_KEYDOWN';
+    WM_KEYUP: Result                  := 'WM_KEYUP';
+    WM_CHAR: Result                   := 'WM_CHAR';
+    WM_DEADCHAR: Result               := 'WM_DEADCHAR';
+    WM_SYSKEYDOWN: Result             := 'WM_SYSKEYDOWN';
+    WM_SYSKEYUP: Result               := 'WM_SYSKEYUP';
+    WM_SYSCHAR: Result                := 'WM_SYSCHAR';
+    WM_SYSDEADCHAR: Result            := 'WM_SYSDEADCHAR';
 {$IF CompilerVersion >= 18.5}// Delphi 2007 and later
-    WM_UNICHAR: Result                     := 'WM_UNICHAR';
+    WM_UNICHAR: Result                := 'WM_UNICHAR';
 {$IFEND}
-    WM_INITDIALOG: Result                  := 'WM_INITDIALOG';
-    WM_COMMAND: Result                     := 'WM_COMMAND';
-    WM_SYSCOMMAND: Result                  := 'WM_SYSCOMMAND';
-    WM_TIMER: Result                       := 'WM_TIMER';
-    WM_HSCROLL: Result                     := 'WM_HSCROLL';
-    WM_VSCROLL: Result                     := 'WM_VSCROLL';
-    WM_INITMENU: Result                    := 'WM_INITMENU';
-    WM_INITMENUPOPUP: Result               := 'WM_INITMENUPOPUP';
-    WM_MENUSELECT: Result                  := 'WM_MENUSELECT';
-    WM_MENUCHAR: Result                    := 'WM_MENUCHAR';
-    WM_ENTERIDLE: Result                   := 'WM_ENTERIDLE';
-    WM_MENURBUTTONUP: Result               := 'WM_MENURBUTTONUP';
-    WM_MENUDRAG: Result                    := 'WM_MENUDRAG';
-    WM_MENUGETOBJECT: Result               := 'WM_MENUGETOBJECT';
-    WM_UNINITMENUPOPUP: Result             := 'WM_UNINITMENUPOPUP';
-    WM_MENUCOMMAND: Result                 := 'WM_MENUCOMMAND';
-    WM_CHANGEUISTATE: Result               := 'WM_CHANGEUISTATE';
-    WM_UPDATEUISTATE: Result               := 'WM_UPDATEUISTATE';
-    WM_QUERYUISTATE: Result                := 'WM_QUERYUISTATE';
-    WM_CTLCOLORMSGBOX: Result              := 'WM_CTLCOLORMSGBOX';
-    WM_CTLCOLOREDIT: Result                := 'WM_CTLCOLOREDIT';
-    WM_CTLCOLORLISTBOX: Result             := 'WM_CTLCOLORLISTBOX';
-    WM_CTLCOLORBTN: Result                 := 'WM_CTLCOLORBTN';
-    WM_CTLCOLORDLG: Result                 := 'WM_CTLCOLORDLG';
-    WM_CTLCOLORSCROLLBAR: Result           := 'WM_CTLCOLORSCROLLBAR';
-    WM_CTLCOLORSTATIC: Result              := 'WM_CTLCOLORSTATIC';
-    WM_MOUSEFIRST: Result                  := 'WM_MOUSEMOVE';
-    WM_LBUTTONDOWN: Result                 := 'WM_LBUTTONDOWN';
-    WM_LBUTTONUP: Result                   := 'WM_LBUTTONUP';
-    WM_LBUTTONDBLCLK: Result               := 'WM_LBUTTONDBLCLK';
-    WM_RBUTTONDOWN: Result                 := 'WM_RBUTTONDOWN';
-    WM_RBUTTONUP: Result                   := 'WM_RBUTTONUP';
-    WM_RBUTTONDBLCLK: Result               := 'WM_RBUTTONDBLCLK';
-    WM_MBUTTONDOWN: Result                 := 'WM_MBUTTONDOWN';
-    WM_MBUTTONUP: Result                   := 'WM_MBUTTONUP';
-    WM_MBUTTONDBLCLK: Result               := 'WM_MBUTTONDBLCLK';
-    WM_MOUSEWHEEL: Result                  := 'WM_MOUSEWHEEL';
-    WM_PARENTNOTIFY: Result                := 'WM_PARENTNOTIFY';
-    WM_ENTERMENULOOP: Result               := 'WM_ENTERMENULOOP';
-    WM_EXITMENULOOP: Result                := 'WM_EXITMENULOOP';
-    WM_NEXTMENU: Result                    := 'WM_NEXTMENU';
-    WM_SIZING: Result                      := 'WM_SIZING';
-    WM_CAPTURECHANGED: Result              := 'WM_CAPTURECHANGED';
-    WM_MOVING: Result                      := 'WM_MOVING';
-    WM_POWERBROADCAST: Result              := 'WM_POWERBROADCAST';
-    WM_DEVICECHANGE: Result                := 'WM_DEVICECHANGE';
-    WM_IME_STARTCOMPOSITION: Result        := 'WM_IME_STARTCOMPOSITION';
-    WM_IME_ENDCOMPOSITION: Result          := 'WM_IME_ENDCOMPOSITION';
-    WM_IME_COMPOSITION: Result             := 'WM_IME_COMPOSITION';
-    WM_IME_SETCONTEXT: Result              := 'WM_IME_SETCONTEXT';
-    WM_IME_NOTIFY: Result                  := 'WM_IME_NOTIFY';
-    WM_IME_CONTROL: Result                 := 'WM_IME_CONTROL';
-    WM_IME_COMPOSITIONFULL: Result         := 'WM_IME_COMPOSITIONFULL';
-    WM_IME_SELECT: Result                  := 'WM_IME_SELECT';
-    WM_IME_CHAR: Result                    := 'WM_IME_CHAR';
-    WM_IME_REQUEST: Result                 := 'WM_IME_REQUEST';
-    WM_IME_KEYDOWN: Result                 := 'WM_IME_KEYDOWN';
-    WM_IME_KEYUP: Result                   := 'WM_IME_KEYUP';
-    WM_MDICREATE: Result                   := 'WM_MDICREATE';
-    WM_MDIDESTROY: Result                  := 'WM_MDIDESTROY';
-    WM_MDIACTIVATE: Result                 := 'WM_MDIACTIVATE';
-    WM_MDIRESTORE: Result                  := 'WM_MDIRESTORE';
-    WM_MDINEXT: Result                     := 'WM_MDINEXT';
-    WM_MDIMAXIMIZE: Result                 := 'WM_MDIMAXIMIZE';
-    WM_MDITILE: Result                     := 'WM_MDITILE';
-    WM_MDICASCADE: Result                  := 'WM_MDICASCADE';
-    WM_MDIICONARRANGE: Result              := 'WM_MDIICONARRANGE';
-    WM_MDIGETACTIVE: Result                := 'WM_MDIGETACTIVE';
-    WM_MDISETMENU: Result                  := 'WM_MDISETMENU';
-    WM_ENTERSIZEMOVE: Result               := 'WM_ENTERSIZEMOVE';
-    WM_EXITSIZEMOVE: Result                := 'WM_EXITSIZEMOVE';
-    WM_DROPFILES: Result                   := 'WM_DROPFILES';
-    WM_MDIREFRESHMENU: Result              := 'WM_MDIREFRESHMENU';
-    WM_MOUSEHOVER: Result                  := 'WM_MOUSEHOVER';
-    WM_MOUSELEAVE: Result                  := 'WM_MOUSELEAVE';
-    WM_NCMOUSEHOVER: Result                := 'WM_NCMOUSEHOVER';
-    WM_NCMOUSELEAVE: Result                := 'WM_NCMOUSELEAVE';
-    WM_WTSSESSION_CHANGE: Result           := 'WM_WTSSESSION_CHANGE';
-    WM_TABLET_FIRST: Result                := 'WM_TABLET_FIRST';
-    WM_TABLET_LAST: Result                 := 'WM_TABLET_LAST';
-    WM_CUT: Result                         := 'WM_CUT';
-    WM_COPY: Result                        := 'WM_COPY';
-    WM_PASTE: Result                       := 'WM_PASTE';
-    WM_CLEAR: Result                       := 'WM_CLEAR';
-    WM_UNDO: Result                        := 'WM_UNDO';
-    WM_RENDERFORMAT: Result                := 'WM_RENDERFORMAT';
-    WM_RENDERALLFORMATS: Result            := 'WM_RENDERALLFORMATS';
-    WM_DESTROYCLIPBOARD: Result            := 'WM_DESTROYCLIPBOARD';
-    WM_DRAWCLIPBOARD: Result               := 'WM_DRAWCLIPBOARD';
-    WM_PAINTCLIPBOARD: Result              := 'WM_PAINTCLIPBOARD';
-    WM_VSCROLLCLIPBOARD: Result            := 'WM_VSCROLLCLIPBOARD';
-    WM_SIZECLIPBOARD: Result               := 'WM_SIZECLIPBOARD';
-    WM_ASKCBFORMATNAME: Result             := 'WM_ASKCBFORMATNAME';
-    WM_CHANGECBCHAIN: Result               := 'WM_CHANGECBCHAIN';
-    WM_HSCROLLCLIPBOARD: Result            := 'WM_HSCROLLCLIPBOARD';
-    WM_QUERYNEWPALETTE: Result             := 'WM_QUERYNEWPALETTE';
-    WM_PALETTEISCHANGING: Result           := 'WM_PALETTEISCHANGING';
-    WM_PALETTECHANGED: Result              := 'WM_PALETTECHANGED';
-    WM_HOTKEY: Result                      := 'WM_HOTKEY';
-    WM_PRINT: Result                       := 'WM_PRINT';
-    WM_PRINTCLIENT: Result                 := 'WM_PRINTCLIENT';
-    WM_APPCOMMAND: Result                  := 'WM_APPCOMMAND';
-    WM_THEMECHANGED: Result                := 'WM_THEMECHANGED';
-    WM_HANDHELDFIRST: Result               := 'WM_HANDHELDFIRST';
-    WM_HANDHELDLAST: Result                := 'WM_HANDHELDLAST';
-    WM_PENWINFIRST: Result                 := 'WM_PENWINFIRST';
-    WM_PENWINLAST: Result                  := 'WM_PENWINLAST';
-    WM_COALESCE_FIRST: Result              := 'WM_COALESCE_FIRST';
-    WM_COALESCE_LAST: Result               := 'WM_COALESCE_LAST';
-    WM_DDE_FIRST: Result                   := 'WM_DDE_INITIATE';
-    WM_DDE_TERMINATE: Result               := 'WM_DDE_TERMINATE';
-    WM_DDE_ADVISE: Result                  := 'WM_DDE_ADVISE';
-    WM_DDE_UNADVISE: Result                := 'WM_DDE_UNADVISE';
-    WM_DDE_ACK: Result                     := 'WM_DDE_ACK';
-    WM_DDE_DATA: Result                    := 'WM_DDE_DATA';
-    WM_DDE_REQUEST: Result                 := 'WM_DDE_REQUEST';
-    WM_DDE_POKE: Result                    := 'WM_DDE_POKE';
-    WM_DDE_EXECUTE: Result                 := 'WM_DDE_EXECUTE';
+    WM_INITDIALOG: Result             := 'WM_INITDIALOG';
+    WM_COMMAND: Result                := 'WM_COMMAND';
+    WM_SYSCOMMAND: Result             := 'WM_SYSCOMMAND';
+    WM_TIMER: Result                  := 'WM_TIMER';
+    WM_HSCROLL: Result                := 'WM_HSCROLL';
+    WM_VSCROLL: Result                := 'WM_VSCROLL';
+    WM_INITMENU: Result               := 'WM_INITMENU';
+    WM_INITMENUPOPUP: Result          := 'WM_INITMENUPOPUP';
+    WM_MENUSELECT: Result             := 'WM_MENUSELECT';
+    WM_MENUCHAR: Result               := 'WM_MENUCHAR';
+    WM_ENTERIDLE: Result              := 'WM_ENTERIDLE';
+    WM_MENURBUTTONUP: Result          := 'WM_MENURBUTTONUP';
+    WM_MENUDRAG: Result               := 'WM_MENUDRAG';
+    WM_MENUGETOBJECT: Result          := 'WM_MENUGETOBJECT';
+    WM_UNINITMENUPOPUP: Result        := 'WM_UNINITMENUPOPUP';
+    WM_MENUCOMMAND: Result            := 'WM_MENUCOMMAND';
+    WM_CHANGEUISTATE: Result          := 'WM_CHANGEUISTATE';
+    WM_UPDATEUISTATE: Result          := 'WM_UPDATEUISTATE';
+    WM_QUERYUISTATE: Result           := 'WM_QUERYUISTATE';
+    WM_CTLCOLORMSGBOX: Result         := 'WM_CTLCOLORMSGBOX';
+    WM_CTLCOLOREDIT: Result           := 'WM_CTLCOLOREDIT';
+    WM_CTLCOLORLISTBOX: Result        := 'WM_CTLCOLORLISTBOX';
+    WM_CTLCOLORBTN: Result            := 'WM_CTLCOLORBTN';
+    WM_CTLCOLORDLG: Result            := 'WM_CTLCOLORDLG';
+    WM_CTLCOLORSCROLLBAR: Result      := 'WM_CTLCOLORSCROLLBAR';
+    WM_CTLCOLORSTATIC: Result         := 'WM_CTLCOLORSTATIC';
+    WM_MOUSEFIRST: Result             := 'WM_MOUSEMOVE';
+    WM_LBUTTONDOWN: Result            := 'WM_LBUTTONDOWN';
+    WM_LBUTTONUP: Result              := 'WM_LBUTTONUP';
+    WM_LBUTTONDBLCLK: Result          := 'WM_LBUTTONDBLCLK';
+    WM_RBUTTONDOWN: Result            := 'WM_RBUTTONDOWN';
+    WM_RBUTTONUP: Result              := 'WM_RBUTTONUP';
+    WM_RBUTTONDBLCLK: Result          := 'WM_RBUTTONDBLCLK';
+    WM_MBUTTONDOWN: Result            := 'WM_MBUTTONDOWN';
+    WM_MBUTTONUP: Result              := 'WM_MBUTTONUP';
+    WM_MBUTTONDBLCLK: Result          := 'WM_MBUTTONDBLCLK';
+    WM_MOUSEWHEEL: Result             := 'WM_MOUSEWHEEL';
+    WM_PARENTNOTIFY: Result           := 'WM_PARENTNOTIFY';
+    WM_ENTERMENULOOP: Result          := 'WM_ENTERMENULOOP';
+    WM_EXITMENULOOP: Result           := 'WM_EXITMENULOOP';
+    WM_NEXTMENU: Result               := 'WM_NEXTMENU';
+    WM_SIZING: Result                 := 'WM_SIZING';
+    WM_CAPTURECHANGED: Result         := 'WM_CAPTURECHANGED';
+    WM_MOVING: Result                 := 'WM_MOVING';
+    WM_POWERBROADCAST: Result         := 'WM_POWERBROADCAST';
+    WM_DEVICECHANGE: Result           := 'WM_DEVICECHANGE';
+    WM_IME_STARTCOMPOSITION: Result   := 'WM_IME_STARTCOMPOSITION';
+    WM_IME_ENDCOMPOSITION: Result     := 'WM_IME_ENDCOMPOSITION';
+    WM_IME_COMPOSITION: Result        := 'WM_IME_COMPOSITION';
+    WM_IME_SETCONTEXT: Result         := 'WM_IME_SETCONTEXT';
+    WM_IME_NOTIFY: Result             := 'WM_IME_NOTIFY';
+    WM_IME_CONTROL: Result            := 'WM_IME_CONTROL';
+    WM_IME_COMPOSITIONFULL: Result    := 'WM_IME_COMPOSITIONFULL';
+    WM_IME_SELECT: Result             := 'WM_IME_SELECT';
+    WM_IME_CHAR: Result               := 'WM_IME_CHAR';
+    WM_IME_REQUEST: Result            := 'WM_IME_REQUEST';
+    WM_IME_KEYDOWN: Result            := 'WM_IME_KEYDOWN';
+    WM_IME_KEYUP: Result              := 'WM_IME_KEYUP';
+    WM_MDICREATE: Result              := 'WM_MDICREATE';
+    WM_MDIDESTROY: Result             := 'WM_MDIDESTROY';
+    WM_MDIACTIVATE: Result            := 'WM_MDIACTIVATE';
+    WM_MDIRESTORE: Result             := 'WM_MDIRESTORE';
+    WM_MDINEXT: Result                := 'WM_MDINEXT';
+    WM_MDIMAXIMIZE: Result            := 'WM_MDIMAXIMIZE';
+    WM_MDITILE: Result                := 'WM_MDITILE';
+    WM_MDICASCADE: Result             := 'WM_MDICASCADE';
+    WM_MDIICONARRANGE: Result         := 'WM_MDIICONARRANGE';
+    WM_MDIGETACTIVE: Result           := 'WM_MDIGETACTIVE';
+    WM_MDISETMENU: Result             := 'WM_MDISETMENU';
+    WM_ENTERSIZEMOVE: Result          := 'WM_ENTERSIZEMOVE';
+    WM_EXITSIZEMOVE: Result           := 'WM_EXITSIZEMOVE';
+    WM_DROPFILES: Result              := 'WM_DROPFILES';
+    WM_MDIREFRESHMENU: Result         := 'WM_MDIREFRESHMENU';
+    WM_MOUSEHOVER: Result             := 'WM_MOUSEHOVER';
+    WM_MOUSELEAVE: Result             := 'WM_MOUSELEAVE';
+    WM_NCMOUSEHOVER: Result           := 'WM_NCMOUSEHOVER';
+    WM_NCMOUSELEAVE: Result           := 'WM_NCMOUSELEAVE';
+    WM_WTSSESSION_CHANGE: Result      := 'WM_WTSSESSION_CHANGE';
+    WM_TABLET_FIRST: Result           := 'WM_TABLET_FIRST';
+    WM_TABLET_LAST: Result            := 'WM_TABLET_LAST';
+    WM_CUT: Result                    := 'WM_CUT';
+    WM_COPY: Result                   := 'WM_COPY';
+    WM_PASTE: Result                  := 'WM_PASTE';
+    WM_CLEAR: Result                  := 'WM_CLEAR';
+    WM_UNDO: Result                   := 'WM_UNDO';
+    WM_RENDERFORMAT: Result           := 'WM_RENDERFORMAT';
+    WM_RENDERALLFORMATS: Result       := 'WM_RENDERALLFORMATS';
+    WM_DESTROYCLIPBOARD: Result       := 'WM_DESTROYCLIPBOARD';
+    WM_DRAWCLIPBOARD: Result          := 'WM_DRAWCLIPBOARD';
+    WM_PAINTCLIPBOARD: Result         := 'WM_PAINTCLIPBOARD';
+    WM_VSCROLLCLIPBOARD: Result       := 'WM_VSCROLLCLIPBOARD';
+    WM_SIZECLIPBOARD: Result          := 'WM_SIZECLIPBOARD';
+    WM_ASKCBFORMATNAME: Result        := 'WM_ASKCBFORMATNAME';
+    WM_CHANGECBCHAIN: Result          := 'WM_CHANGECBCHAIN';
+    WM_HSCROLLCLIPBOARD: Result       := 'WM_HSCROLLCLIPBOARD';
+    WM_QUERYNEWPALETTE: Result        := 'WM_QUERYNEWPALETTE';
+    WM_PALETTEISCHANGING: Result      := 'WM_PALETTEISCHANGING';
+    WM_PALETTECHANGED: Result         := 'WM_PALETTECHANGED';
+    WM_HOTKEY: Result                 := 'WM_HOTKEY';
+    WM_PRINT: Result                  := 'WM_PRINT';
+    WM_PRINTCLIENT: Result            := 'WM_PRINTCLIENT';
+    WM_APPCOMMAND: Result             := 'WM_APPCOMMAND';
+    WM_THEMECHANGED: Result           := 'WM_THEMECHANGED';
+    WM_HANDHELDFIRST: Result          := 'WM_HANDHELDFIRST';
+    WM_HANDHELDLAST: Result           := 'WM_HANDHELDLAST';
+    WM_PENWINFIRST: Result            := 'WM_PENWINFIRST';
+    WM_PENWINLAST: Result             := 'WM_PENWINLAST';
+    WM_COALESCE_FIRST: Result         := 'WM_COALESCE_FIRST';
+    WM_COALESCE_LAST: Result          := 'WM_COALESCE_LAST';
+    WM_DDE_FIRST: Result              := 'WM_DDE_INITIATE';
+    WM_DDE_TERMINATE: Result          := 'WM_DDE_TERMINATE';
+    WM_DDE_ADVISE: Result             := 'WM_DDE_ADVISE';
+    WM_DDE_UNADVISE: Result           := 'WM_DDE_UNADVISE';
+    WM_DDE_ACK: Result                := 'WM_DDE_ACK';
+    WM_DDE_DATA: Result               := 'WM_DDE_DATA';
+    WM_DDE_REQUEST: Result            := 'WM_DDE_REQUEST';
+    WM_DDE_POKE: Result               := 'WM_DDE_POKE';
+    WM_DDE_EXECUTE: Result            := 'WM_DDE_EXECUTE';
 {$IF CompilerVersion >= 18.5}// Delphi 2007 and later
-    WM_DWMCOMPOSITIONCHANGED: Result       := 'WM_DWMCOMPOSITIONCHANGED';
-    WM_DWMNCRENDERINGCHANGED: Result       := 'WM_DWMNCRENDERINGCHANGED';
+    WM_DWMCOMPOSITIONCHANGED: Result  := 'WM_DWMCOMPOSITIONCHANGED';
+    WM_DWMNCRENDERINGCHANGED: Result  := 'WM_DWMNCRENDERINGCHANGED';
     WM_DWMCOLORIZATIONCOLORCHANGED: Result := 'WM_DWMCOLORIZATIONCOLORCHANGED';
-    WM_DWMWINDOWMAXIMIZEDCHANGE: Result    := 'WM_DWMWINDOWMAXIMIZEDCHANGE';
+    WM_DWMWINDOWMAXIMIZEDCHANGE: Result := 'WM_DWMWINDOWMAXIMIZEDCHANGE';
 {$IFEND}
-    WM_APP: Result                         := 'WM_APP';
+    WM_APP: Result                    := 'WM_APP';
   end;
-
 
 end;
 
@@ -6540,7 +6492,6 @@ begin
     SW_SHOWNOACTIVATE: Result  := 'SW_SHOWNOACTIVATE';
     SW_SHOWNORMAL: Result      := 'SW_SHOWNORMAL';
   end;
-
 
 end;
 
@@ -6578,7 +6529,6 @@ begin
   finally
     stlLayout.Free();
   end;
-
 
 end;
 
@@ -6774,7 +6724,7 @@ begin
     aTo[i] := aFrom[i];
 end;
 
-procedure SDUZeroBuffer(var buf: array of byte);
+procedure SDUZeroBuffer(var buf: array of Byte);
 var
   i: Integer;
 begin
@@ -6833,11 +6783,11 @@ begin
     for i := 0 to len - 1 do
       temp[i] := A[i];  // newLen >= len
 
-    for i := 0 to len-1 do
+    for i := 0 to len - 1 do
       A[i] := 0; //wipe old data
 
-    A := temp;   //assigns var, is ref counted
-    temp := nil; // deletes old ref
+    A    := temp;   //assigns var, is ref counted
+    temp := nil;    // deletes old ref
   end;
    {$ENDIF}
 

@@ -49,7 +49,7 @@ implementation
 uses
   CommonfrmOptions,
   CommonSettings,
-  FreeOTFEExplorerConsts, OTFE_U,
+  FreeOTFEConsts, OTFE_U,
   OTFEFreeOTFEBase_U,
   lcDialogs,
   SDUGeneral,
