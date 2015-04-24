@@ -1,7 +1,6 @@
 inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
   ClientHeight = 540
   OnCreate = FormCreate
-  ExplicitWidth = 519
   ExplicitHeight = 568
   PixelsPerInch = 96
   TextHeight = 13
@@ -31,7 +30,7 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
   end
   inherited pcOptions: TPageControl
     Height = 396
-    ActivePage = tcSystemTray
+    ActivePage = tsAdvanced
     ExplicitHeight = 396
     inherited tsPKCS11: TTabSheet
       ExplicitHeight = 368
@@ -94,9 +93,9 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
         ExplicitHeight = 240
         inherited gbSystemTrayIcon: TGroupBox
           inherited ckMinToIcon: TSDUCheckBox
-            Width = 135
+            Width = 130
             Caption = '&Minimise to system tray'
-            ExplicitWidth = 135
+            ExplicitWidth = 130
           end
           inherited gbClickActions: TGroupBox
             inherited Label1: TLabel
@@ -149,8 +148,8 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
         ExplicitTop = -14
         inherited gbAdvanced: TGroupBox
           inherited lblDragDrop: TLabel
-            Width = 136
-            ExplicitWidth = 136
+            Width = 127
+            ExplicitWidth = 127
           end
           inherited lblMRUMaxItemCountInst: TLabel
             Width = 134
@@ -183,9 +182,9 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
   object ckLaunchAtStartup: TSDUCheckBox
     Left = 12
     Top = 464
-    Width = 186
+    Width = 143
     Height = 13
-    Caption = 'CAPTION SET AUTOMATICALLY'
+    Caption = 'Start %s at system startup'
     TabOrder = 5
     OnClick = ckLaunchAtStartupClick
     AutoSize = True

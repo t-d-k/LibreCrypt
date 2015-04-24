@@ -11,48 +11,51 @@ unit FreeOTFEfrmOptions;
 interface
 
 uses
-  Classes, ComCtrls,
+// delphi
+  Classes, ComCtrls, StdCtrls, SysUtils, Windows,Graphics, Messages,Controls, Dialogs,
   CommonfmeOptions_AutoRun,
   CommonfmeOptions_Base,
   CommonfmeOptions_PKCS11,
-  CommonfrmOptions, CommonSettings, Controls, Dialogs,
+  CommonfrmOptions, CommonSettings,
   ExtCtrls, Forms, FreeOTFEfmeOptions_Advanced, FreeOTFEfmeOptions_Base,
   FreeOTFEfmeOptions_General,
   FreeOTFEfmeOptions_Hotkeys,
-  FreeOTFEfmeOptions_SystemTray, Graphics, Messages, OTFEFreeOTFE_U, SDUForms,
-  SDUStdCtrls, StdCtrls, SysUtils, Windows;
+  FreeOTFEfmeOptions_SystemTray,  OTFEFreeOTFE_U, SDUForms,
+  SDUStdCtrls
+  // librecrypt
+  ;
 
 type
   TfrmOptions_FreeOTFE = class (TfrmOptions)
-    tsGeneral:                    TTabSheet;
-    tsHotkeys:                    TTabSheet;
-    tcSystemTray:                 TTabSheet;
-    tsAutorun:                    TTabSheet;
-    tsAdvanced:                   TTabSheet;
-    fmeOptions_FreeOTFEGeneral1:  TfmeOptions_FreeOTFEGeneral;
-    fmeOptions_Hotkeys1:          TfmeOptions_Hotkeys;
-    fmeOptions_SystemTray1:       TfmeOptions_SystemTray;
+    tsGeneral:           TTabSheet;
+    tsHotkeys:           TTabSheet;
+    tcSystemTray:        TTabSheet;
+    tsAutorun:           TTabSheet;
+    tsAdvanced:          TTabSheet;
+    fmeOptions_FreeOTFEGeneral1: TfmeOptions_FreeOTFEGeneral;
+    fmeOptions_Hotkeys1: TfmeOptions_Hotkeys;
+    fmeOptions_SystemTray1: TfmeOptions_SystemTray;
     fmeOptions_FreeOTFEAdvanced1: TfmeOptions_FreeOTFEAdvanced;
-    fmeOptions_Autorun1:          TfmeOptions_Autorun;
-    ckLaunchAtStartup:            TSDUCheckBox;
-    ckLaunchMinimisedAtStartup:   TSDUCheckBox;
+    fmeOptions_Autorun1: TfmeOptions_Autorun;
+    ckLaunchAtStartup:   TSDUCheckBox;
+    ckLaunchMinimisedAtStartup: TSDUCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ckLaunchAtStartupClick(Sender: TObject);
-  PROTECTED
+  protected
     FOrigLaunchAtStartup:          Boolean;
     FOrigLaunchMinimisedAtStartup: Boolean;
 
-    procedure EnableDisableControls(); OVERRIDE;
+    procedure EnableDisableControls(); override;
 
-    procedure AllTabs_InitAndReadSettings(config: TSettings); OVERRIDE;
+    procedure AllTabs_InitAndReadSettings(config: TSettings); override;
 
-    function DoOKClicked(): Boolean; OVERRIDE;
+    function DoOKClicked(): Boolean; override;
 
-  PUBLIC
-//    function OTFEFreeOTFE(): TOTFEFreeOTFE;
+  public
+    //    function OTFEFreeOTFE(): TOTFEFreeOTFE;
 
-    procedure ChangeLanguage(langCode: String); OVERRIDE;
+    procedure ChangeLanguage(langCode: String); override;
   end;
 
 implementation
@@ -60,8 +63,12 @@ implementation
 {$R *.DFM}
 
 uses
+  // delphi
+
   Math,
   ShlObj,  // Required for CSIDL_PROGRAMS
+  StrUtils,
+  // sdu /librecrypt
   FreeOTFESettings,
   OTFEFreeOTFEBase_U,
   SDUDialogs, SDUGeneral,
@@ -115,10 +122,8 @@ end;
 procedure TfrmOptions_FreeOTFE.FormCreate(Sender: TObject);
 begin
   inherited;
-
   // Set active page to the first one
   pcOptions.ActivePage := tsGeneral;
-
 end;
 
 procedure TfrmOptions_FreeOTFE.FormShow(Sender: TObject);
@@ -129,64 +134,57 @@ begin
   ckLaunchAtStartup.Checked := FOrigLaunchAtStartup;
 
   FOrigLaunchMinimisedAtStartup := False;
-  if FOrigLaunchAtStartup then begin
-    FOrigLaunchMinimisedAtStartup :=
-      (SDUGetShortCutRunWindowState(SDU_CSIDL_STARTUP, Application.Title) =
-      wsMinimized);
+  if FOrigLaunchAtStartup then
+    FOrigLaunchMinimisedAtStartup := AnsiContainsStr(SDUGetShortCutArguments(SDU_CSIDL_STARTUP, Application.Title),CMDLINE_MINIMIZE);
 
-  end;
   ckLaunchMinimisedAtStartup.Checked := FOrigLaunchMinimisedAtStartup;
 
   // Push the "Advanced" tab to the far end; even after the "PKCS#11" tab
   tsAdvanced.PageIndex := (pcOptions.PageCount - 1);
-
 end;
 
-//function TfrmOptions_FreeOTFE.OTFEFreeOTFE(): TOTFEFreeOTFE;
-//begin
-//  Result := TOTFEFreeOTFE(OTFEFreeOTFEBase);
-//end;
+ //function TfrmOptions_FreeOTFE.OTFEFreeOTFE(): TOTFEFreeOTFE;
+ //begin
+ //  Result := TOTFEFreeOTFE(OTFEFreeOTFEBase);
+ //end;
 
 procedure TfrmOptions_FreeOTFE.EnableDisableControls();
 begin
   inherited;
 
   SDUEnableControl(ckLaunchMinimisedAtStartup, ckLaunchAtStartup.Checked);
-  if not (ckLaunchMinimisedAtStartup.Enabled) then begin
+  if not (ckLaunchMinimisedAtStartup.Enabled) then
     ckLaunchMinimisedAtStartup.Checked := False;
-  end;
-
 end;
 
 
 procedure TfrmOptions_FreeOTFE.AllTabs_InitAndReadSettings(config: TSettings);
-var
-  ckboxIndent:  Integer;
-  maxCBoxWidth: Integer;
+//var
+//  ckboxIndent:  Integer;
+//  maxCBoxWidth: Integer;
 begin
   inherited;
 
-  ckLaunchAtStartup.Caption := SDUParamSubstitute(_('Start %1 at system startup'),
+  ckLaunchAtStartup.Caption := Format(_('Start %s at system startup'),
     [Application.Title]);
 
-  ckboxIndent  := ckLaunchMinimisedAtStartup.left - ckLaunchAtStartup.left;
-  maxCBoxWidth := max(ckAssociateFiles.Width, ckLaunchAtStartup.Width);
-
-  ckAssociateFiles.Left           := ((self.Width - maxCBoxWidth) div 2);
-  ckLaunchAtStartup.Left          := ckAssociateFiles.Left;
-  ckLaunchMinimisedAtStartup.left := ckLaunchAtStartup.left + ckboxIndent;
+//  ckboxIndent  := ckLaunchMinimisedAtStartup.left - ckLaunchAtStartup.left;
+//  maxCBoxWidth := max(ckAssociateFiles.Width, ckLaunchAtStartup.Width);
+//
+//  ckAssociateFiles.Left           := ((self.Width - maxCBoxWidth) div 2);
+//  ckLaunchAtStartup.Left          := ckAssociateFiles.Left;
+//  ckLaunchMinimisedAtStartup.left := ckLaunchAtStartup.left + ckboxIndent;
 
   EnableDisableControls();
 end;
 
 function TfrmOptions_FreeOTFE.DoOKClicked(): Boolean;
 var
-  allOK:             Boolean;
-  useRunWindowState: TWindowState;
+  minimisedParam: string;
 begin
-  allOK := inherited DoOKClicked();
+  Result := inherited DoOKClicked();
 
-  if allOK then begin
+  if Result then begin
     if ((ckLaunchAtStartup.Checked <> FOrigLaunchAtStartup) or
       (ckLaunchMinimisedAtStartup.Checked <> FOrigLaunchMinimisedAtStartup)) then begin
       // Purge any existing shortcut...
@@ -197,21 +195,16 @@ begin
 
       // ...and recreate if necessary
       if ckLaunchAtStartup.Checked then begin
-        useRunWindowState := wsNormal;
-        if ckLaunchMinimisedAtStartup.Checked then begin
-          useRunWindowState := wsMinimized;
-        end;
+        minimisedParam := Ifthen(ckLaunchMinimisedAtStartup.Checked,'/'+CMDLINE_MINIMIZE,'');
 
         SDUCreateShortcut(
           SDU_CSIDL_STARTUP,
           Application.Title,
-
-          ParamStr(0),
-
-          '',
+          ParamStr(0) ,
+          minimisedParam,
           '',
           // ShortcutKey: TShortCut;  - not yet implemented
-          useRunWindowState,
+          wsNormal,  // for some reason wsMinimized  doesnt work here - makes app hang. so use 'minimise' flag instead
           ''
           );
       end;
@@ -221,7 +214,6 @@ begin
 
   end;
 
-  Result := allOK;
 end;
 
 
