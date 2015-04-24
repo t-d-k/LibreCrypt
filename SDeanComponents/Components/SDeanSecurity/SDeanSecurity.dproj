@@ -43,7 +43,7 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
-			<DCC_UnitSearchPath>P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanUtils\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_UnitSearchPath>P:\SDeanComponents\Components\SDeanUtils\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<VerInfo_MinorVer>5</VerInfo_MinorVer>
 			<VerInfo_Build>301</VerInfo_Build>

@@ -47,7 +47,7 @@
 			<DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
 			<DCC_BplOutput>.\$(Platform)\$(Config)</DCC_BplOutput>
 			<DCC_DcpOutput>.\$(Platform)\$(Config)</DCC_DcpOutput>
-			<DCC_UnitSearchPath>P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanUtils;P:\Projects\Delphi\doxbox\SDeanComponents\Components\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_UnitSearchPath>P:\SDeanComponents\Components\SDeanUtils;P:\SDeanComponents\Components\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
 			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;$(DCC_Namespace)</DCC_Namespace>

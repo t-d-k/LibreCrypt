@@ -43,7 +43,7 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
-			<DCC_UnitSearchPath>P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanUtils;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_UnitSearchPath>P:\SDeanComponents\Components\SDeanUtils;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<DCC_Description>Sarah Dean Filesystem components</DCC_Description>
@@ -126,7 +126,7 @@
 						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmdrtl160.bpl">LMD 2014 - Common Designtime Enhancements</Excluded_Packages>
 						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\9.0\Bpl\SDeanUtilsXE.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="C:\Apps\TMS Component Pack\DelphiXE2\TMSDXE2.bpl">TMS Component Pack</Excluded_Packages>
-						<Excluded_Packages Name="P:\Projects\Delphi\doxbox\SDeanComponents\Components\OTFE\OTFE\Win32\Debug\OTFE.bpl">OTFE: Base class for On-The-Fly Encryption components</Excluded_Packages>
+						<Excluded_Packages Name="P:\SDeanComponents\Components\OTFE\OTFE\Win32\Debug\OTFE.bpl">OTFE: Base class for On-The-Fly Encryption components</Excluded_Packages>
 						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\9.0\Bpl\dcllmdrtlx160.bpl">LMD 2014 - Common Shared Components</Excluded_Packages>
 						<Excluded_Packages Name="C:\USERS\PUBLIC\DOCUMENTS\RAD STUDIO\9.0\bpl\dcllmddlgcmps160.bpl">LMD 2014 - LMD-Tools DialogPack Components</Excluded_Packages>
 						<Excluded_Packages Name="C:\Apps\TMS Component Pack\DelphiXE2\TMSExDXE2.bpl">TMS Component Pack Extra</Excluded_Packages>

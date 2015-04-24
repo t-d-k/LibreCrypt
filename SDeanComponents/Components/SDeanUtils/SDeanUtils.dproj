@@ -44,7 +44,7 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<DCC_UnitSearchPath>P:\Projects\Delphi\doxbox\SDeanComponents\Components\SDeanUtils;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_UnitSearchPath>P:\SDeanComponents\Components\SDeanUtils;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
 			<VerInfo_MajorVer>2</VerInfo_MajorVer>
 			<DCC_WriteableConstants>true</DCC_WriteableConstants>
