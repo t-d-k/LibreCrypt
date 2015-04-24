@@ -48,7 +48,7 @@ type
     FMinimizeToIcon: boolean;
 
     FPopupMenuMenu: TPopupMenu;
-    FTip: Ansistring;
+    FTip: string;
 
     FIcon: TIcon;
 
@@ -82,7 +82,7 @@ type
   protected
     procedure SetActive(status: boolean);
     procedure SetAnimateIcon(animate: boolean);
-    procedure SetTip(tip: Ansistring);
+    procedure SetTip(tip: string);
     procedure SetIcon(icon: TIcon);
     procedure SetAnimationIcons(Value: TImageList);
     function  GetAnimationDelay(): integer;
@@ -135,7 +135,7 @@ type
 
     property PopupMenu: TPopupMenu read FPopupMenuMenu write FPopupMenuMenu;
 
-    property Tip: Ansistring read FTip write SetTip;
+    property Tip: string read FTip write SetTip;
     property Icon: TIcon read FIcon write SetIcon;
 
     property AnimationIcons: TImageList read FAnimationIcons write SetAnimationIcons;
@@ -627,7 +627,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-procedure TSDUSystemTrayIcon.SetTip(tip: Ansistring);
+procedure TSDUSystemTrayIcon.SetTip(tip: string);
 begin
   FTip := tip;
   if (
@@ -780,8 +780,8 @@ end;
 // ----------------------------------------------------------------------------
 procedure TSDUSystemTrayIcon.UpdateTrayIcon(dwMessage: cardinal);
 var
- { TODO 1 -otdk -crefactor : use _NOTIFYICONDATA_v5W for widechar }
-  trayIcon: TNotifyIconData_v2;
+ { done 1 -otdk -crefactor : use _NOTIFYICONDATA_v5W for widechar }
+  trayIcon: TNotifyIconData_v5w;
   tmpIcon: TIcon;
 begin
   tmpIcon:= TIcon.Create();
