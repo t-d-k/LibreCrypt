@@ -11,7 +11,7 @@ rem ****************************************************************************
 
 rem Project drive and directory; the base directory where the source code is
 set PROJECT_DRIVE=P:
-set PROJECT_BASE_DIR=%PROJECT_DRIVE%\Projects\Delphi\doxbox\
+set PROJECT_BASE_DIR=%PROJECT_DRIVE%\
 set PROJECT_DIR=%PROJECT_BASE_DIR%src\PC\drivers
 
 
