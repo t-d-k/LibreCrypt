@@ -223,7 +223,9 @@ ImpCypherEncryptSectorData(
     OUT     FREEOTFEBYTE* CyphertextData
 )
 {
+
     NTSTATUS status = STATUS_SUCCESS;
+
     // Null IV in case we're not given an IV
     char zeroIV[FREEOTFE_MAX_CYPHER_BLOCKSIZE];
     char tmpBuffer[(AES_BLOCK_SIZE / 8)];
@@ -249,7 +251,7 @@ ImpCypherEncryptSectorData(
                                             SectorID,
                                             blockID128
                                            );
-
+			
         if ((errnum = xts_encrypt(
                                   &context,
                                   &(RIJNDAEL(set_key)),
@@ -267,7 +269,7 @@ ImpCypherEncryptSectorData(
             DEBUGOUTCYPHERIMPL(DEBUGLEV_ERROR, (TEXT("Unable to encrypt block (errnum: %d)\n"), errnum));
             status = STATUS_UNSUCCESSFUL;
             } 
-
+		
         }
     else if (
           (IsEqualGUID(&CIPHER_GUID_AES_256_CBC, CypherGUID)) ||

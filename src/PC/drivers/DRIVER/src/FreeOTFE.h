@@ -27,6 +27,37 @@
 
 
 // =========================================================================
+// Annotations
+
+// As per:
+// http://msdn.microsoft.com/en-us/library/ff544652.aspx
+#include <wdm.h>
+DRIVER_INITIALIZE DriverEntry;
+__drv_dispatchType(IRP_MJ_CREATE)
+DRIVER_DISPATCH FreeOTFE_MF_DispatchCreate;
+__drv_dispatchType(IRP_MJ_CLOSE)
+DRIVER_DISPATCH FreeOTFE_MF_DispatchClose;
+__drv_dispatchType(IRP_MJ_DEVICE_CONTROL)
+DRIVER_DISPATCH FreeOTFE_MF_DispatchDeviceControl;
+__drv_dispatchType(IRP_MJ_READ)
+DRIVER_DISPATCH FreeOTFE_MF_DispatchRead;
+__drv_dispatchType(IRP_MJ_WRITE)
+DRIVER_DISPATCH FreeOTFE_MF_DispatchWrite;
+__drv_dispatchType(IRP_MJ_FLUSH_BUFFERS) 
+DRIVER_DISPATCH FreeOTFE_MF_DispatchFlushBuffers;
+//__drv_dispatchType(IRP_MJ_POWER)
+//DRIVER_DISPATCH FreeOTFE_MF_DispatchPower;
+__drv_dispatchType(IRP_MJ_SYSTEM_CONTROL)
+DRIVER_DISPATCH FreeOTFE_MF_DispatchSystemControl;
+DRIVER_UNLOAD DriverUnload; 
+IO_COMPLETION_ROUTINE SynchCompletionRoutine;
+// !!!!! IMPORTANT !!!!!
+// If you are using a version of the WDK prior to v7.1.0, comment out the
+// following line to prevent a compiler error:
+KSTART_ROUTINE FreeOTFEThread;
+
+
+// =========================================================================
 // Const definitions
 
 // These values are in DECIMAL
@@ -562,7 +593,7 @@ NTSTATUS
 SynchCompletionRoutine(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp,
-    IN PKEVENT Event
+    IN PVOID Context  // IN PKEVENT Event
 );
 
 

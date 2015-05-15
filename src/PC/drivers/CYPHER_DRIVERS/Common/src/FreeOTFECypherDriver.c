@@ -44,7 +44,6 @@ DriverEntry(
     OBJECT_ATTRIBUTES dirObjAttribs;
     PDEVICE_OBJECT mainDevObj;
     PDEVICE_EXTENSION mainDevExt;
-    int i;
     
     // The following debug handling was ripped from the MS DDK "floppy.c"
     // example
@@ -72,8 +71,8 @@ DriverEntry(
 
     if (path = FREEOTFE_MEMALLOC(pathLength)) {
 
-        RtlZeroMemory( &paramTable[0], sizeof(paramTable) );
-        RtlZeroMemory( path, pathLength);
+        SecZeroMemory(&paramTable[0], sizeof(paramTable));
+        SecZeroMemory(path, pathLength);
         RtlMoveMemory( path, RegistryPath->Buffer, RegistryPath->Length );
 
         paramTable[0].Flags         = RTL_QUERY_REGISTRY_DIRECT;
@@ -90,12 +89,12 @@ DriverEntry(
         paramTable[1].DefaultData   = &default_DebugLevel;
         paramTable[1].DefaultLength = sizeof(ULONG);
 
-        if (!NT_SUCCESS(RtlQueryRegistryValues(
+        if (!(NT_SUCCESS(RtlQueryRegistryValues(
                             RTL_REGISTRY_ABSOLUTE | RTL_REGISTRY_OPTIONAL,
                             path,
                             &paramTable[0],
                             NULL,
-                            NULL))) {
+                            NULL)))) {
 
             shouldBreak = default_ShouldBreak;
             debugLevel = default_DebugLevel;
@@ -104,10 +103,8 @@ DriverEntry(
         FREEOTFE_FREE(path);
     }
 
-#if DBG
     FreeOTFEDebugLevel = debugLevel;
     DEBUGOUTCYPHERDRV(DEBUGLEV_INFO, ("Debug level: %d\n", FreeOTFEDebugLevel));
-#endif
     
     if (shouldBreak == 1)
         {
@@ -271,7 +268,7 @@ DestroyDevice(
         DEBUGOUTCYPHERDRV(DEBUGLEV_INFO, ("Freeing off symlink unicode buffer...\n")); 
         SecZeroMemory(
                         devExt->zzSymbolicLinkName.Buffer,
-                        sizeof(devExt->zzSymbolicLinkName.MaximumLength)
+                        devExt->zzSymbolicLinkName.MaximumLength
                         );
         FREEOTFE_FREE(devExt->zzSymbolicLinkName.Buffer);
         devExt->zzSymbolicLinkName.Buffer = NULL;
@@ -285,7 +282,7 @@ DestroyDevice(
         DEBUGOUTCYPHERDRV(DEBUGLEV_INFO, ("Freeing off devname unicode buffer...\n"));
         SecZeroMemory(
                       devExt->zzDeviceName.Buffer,
-                      sizeof(devExt->zzDeviceName.MaximumLength)
+                      devExt->zzDeviceName.MaximumLength
                      );
         FREEOTFE_FREE(devExt->zzDeviceName.Buffer);
         devExt->zzDeviceName.Buffer = NULL;
@@ -431,8 +428,9 @@ FreeOTFE_MF_DispatchDeviceControl(
         }
         
         
-    // If we want to queue the IRP, this should have been flagged,
-    // otherwise we complete the reqest
+    // If we want to queue the IRP, this should have been flagged by setting
+    // "queueDeviceObject" to be the object which receives the queued IRP.
+    // Otherwise we complete the request.
     if (queueDeviceObject != NULL)
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_INFO, ("Queuing IRP...\n"));
@@ -496,10 +494,10 @@ IOCTL_FreeOTFECypherIOCTL_IntlDetails_v1(
 
     // Check size of OUTPUT buffer
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_CYPHER_INTL_DETAILS_v1))
+            sizeof(*DIOCBuffer))
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_CYPHER_INTL_DETAILS_v1),
+            sizeof(*DIOCBuffer),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -515,7 +513,7 @@ IOCTL_FreeOTFECypherIOCTL_IntlDetails_v1(
     DIOCBuffer->FnDecrypt          = ImpCypherDecryptData;
     
 
-    Irp->IoStatus.Information = sizeof(DIOC_CYPHER_INTL_DETAILS_v1);
+    Irp->IoStatus.Information = sizeof(*DIOCBuffer);
     status = STATUS_SUCCESS;
 
 
@@ -547,10 +545,10 @@ IOCTL_FreeOTFECypherIOCTL_IntlDetails_v3(
 
     // Check size of OUTPUT buffer
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_CYPHER_INTL_DETAILS_v3))
+            sizeof(*DIOCBuffer))
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_CYPHER_INTL_DETAILS_v3),
+            sizeof(*DIOCBuffer),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -569,7 +567,7 @@ IOCTL_FreeOTFECypherIOCTL_IntlDetails_v3(
     DIOCBuffer->FnDecryptSector    = ImpCypherDecryptSectorData;
     
 
-    Irp->IoStatus.Information = sizeof(DIOC_CYPHER_INTL_DETAILS_v3);
+    Irp->IoStatus.Information = sizeof(*DIOCBuffer);
     status = STATUS_SUCCESS;
 
 
@@ -598,10 +596,10 @@ IOCTL_FreeOTFECypherIOCTL_IdentifyDriver(
 
     // Check size of OUTPUT buffer
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_CYPHER_IDENTIFYDRIVER))
+            sizeof(*DIOCBuffer))
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_CYPHER_IDENTIFYDRIVER),
+            sizeof(*DIOCBuffer),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -625,7 +623,7 @@ IOCTL_FreeOTFECypherIOCTL_IdentifyDriver(
     DIOCBuffer->CountCyphers = devExt->DriverInfo_v3.CypherCount;
 
 
-    Irp->IoStatus.Information = sizeof(DIOC_CYPHER_IDENTIFYDRIVER);
+    Irp->IoStatus.Information = sizeof(*DIOCBuffer);
 
 
     DEBUGOUTCYPHERDRV(DEBUGLEV_EXIT, ("IOCTL_FreeOTFECypherIOCTL_IdentifyDriver\n"));
@@ -655,10 +653,10 @@ IOCTL_FreeOTFECypherIOCTL_IdentifySupported_v1(
 
     // Check size of OUTPUT buffer
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_CYPHER_IDENTIFYSUPPORTED_v1)-sizeof(DIOCBuffer->Cyphers))
+            sizeof(*DIOCBuffer)-sizeof(DIOCBuffer->Cyphers))
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect min: %d; got: %d)\n",
-            sizeof(DIOC_CYPHER_IDENTIFYSUPPORTED_v1)-sizeof(DIOCBuffer->Cyphers),
+            sizeof(*DIOCBuffer)-sizeof(DIOCBuffer->Cyphers),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -674,7 +672,7 @@ IOCTL_FreeOTFECypherIOCTL_IdentifySupported_v1(
        (
          // The size of the buffer, less the array of cypher details
          irpSp->Parameters.DeviceIoControl.OutputBufferLength - 
-           (sizeof(DIOC_CYPHER_IDENTIFYSUPPORTED_v1)-sizeof(DIOCBuffer->Cyphers))
+           (sizeof(*DIOCBuffer)-sizeof(DIOCBuffer->Cyphers))
        ) /
        // Divide by the size of each cypher details struct to give the array length
        sizeof(DIOCBuffer->Cyphers);
@@ -706,7 +704,7 @@ IOCTL_FreeOTFECypherIOCTL_IdentifySupported_v1(
                                 );
         }
 
-    Irp->IoStatus.Information = sizeof(DIOC_CYPHER_IDENTIFYSUPPORTED_v1)+(DIOCBuffer->BufCount * sizeof(DIOCBuffer->Cyphers))-sizeof(DIOCBuffer->Cyphers);
+    Irp->IoStatus.Information = sizeof(*DIOCBuffer)+(DIOCBuffer->BufCount * sizeof(DIOCBuffer->Cyphers))-sizeof(DIOCBuffer->Cyphers);
 
 
     DEBUGOUTCYPHERDRV(DEBUGLEV_EXIT, ("IOCTL_FreeOTFECypherIOCTL_IdentifySupported\n"));
@@ -734,10 +732,10 @@ IOCTL_FreeOTFECypherIOCTL_IdentifySupported_v3(
 
     // Check size of OUTPUT buffer
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_CYPHER_IDENTIFYSUPPORTED_v3)-sizeof(DIOCBuffer->Cyphers))
+            sizeof(*DIOCBuffer)-sizeof(DIOCBuffer->Cyphers))
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect min: %d; got: %d)\n",
-            sizeof(DIOC_CYPHER_IDENTIFYSUPPORTED_v3)-sizeof(DIOCBuffer->Cyphers),
+            sizeof(*DIOCBuffer)-sizeof(DIOCBuffer->Cyphers),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -745,15 +743,13 @@ IOCTL_FreeOTFECypherIOCTL_IdentifySupported_v3(
         }
 
         
-    // Request valid, process...
-
     // Setup the input parameter passed to ImpCypherIdentifySupported, so that it's aware
     // of how large the array of cypher details is
     DIOCBuffer->BufCount =
        (
          // The size of the buffer, less the array of cypher details
          irpSp->Parameters.DeviceIoControl.OutputBufferLength - 
-           (sizeof(DIOC_CYPHER_IDENTIFYSUPPORTED_v3)-sizeof(DIOCBuffer->Cyphers))
+           (sizeof(*DIOCBuffer)-sizeof(DIOCBuffer->Cyphers))
        ) /
        // Divide by the size of each cypher details struct to give the array length
        sizeof(DIOCBuffer->Cyphers);
@@ -783,7 +779,7 @@ IOCTL_FreeOTFECypherIOCTL_IdentifySupported_v3(
                  );
     
 
-    Irp->IoStatus.Information = sizeof(DIOC_CYPHER_IDENTIFYSUPPORTED_v3)+(DIOCBuffer->BufCount * sizeof(DIOCBuffer->Cyphers))-sizeof(DIOCBuffer->Cyphers);
+    Irp->IoStatus.Information = sizeof(*DIOCBuffer)+(DIOCBuffer->BufCount * sizeof(DIOCBuffer->Cyphers))-sizeof(DIOCBuffer->Cyphers);
 
 
     DEBUGOUTCYPHERDRV(DEBUGLEV_EXIT, ("IOCTL_FreeOTFECypherIOCTL_IdentifySupported_v3\n"));
@@ -827,7 +823,7 @@ IOCTL_FreeOTFECypherIOCTL_Encrypt(
     if (
         irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_CYPHER_DATA_IN)
+             sizeof(*DIOCBufferIn)
               - sizeof(DIOCBufferIn->Key)
               - sizeof(DIOCBufferIn->IV)
               - sizeof(DIOCBufferIn->Data)
@@ -836,7 +832,7 @@ IOCTL_FreeOTFECypherIOCTL_Encrypt(
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect min: %d; got: %d)\n",
             (
-             sizeof(DIOC_CYPHER_DATA_IN)
+             sizeof(*DIOCBufferIn)
               - sizeof(DIOCBufferIn->Key)
               - sizeof(DIOCBufferIn->IV)
               - sizeof(DIOCBufferIn->Data)
@@ -849,7 +845,7 @@ IOCTL_FreeOTFECypherIOCTL_Encrypt(
     // Actual check...
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_CYPHER_DATA_IN)
+             sizeof(*DIOCBufferIn)
               - sizeof(DIOCBufferIn->Key)
               - sizeof(DIOCBufferIn->IV)
               - sizeof(DIOCBufferIn->Data)
@@ -861,7 +857,7 @@ IOCTL_FreeOTFECypherIOCTL_Encrypt(
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect actual: %d; got: %d)\n",
             (
-             sizeof(DIOC_CYPHER_DATA_IN)
+             sizeof(*DIOCBufferIn)
               - sizeof(DIOCBufferIn->Key)
               - sizeof(DIOCBufferIn->IV)
               - sizeof(DIOCBufferIn->Data)
@@ -881,10 +877,10 @@ IOCTL_FreeOTFECypherIOCTL_Encrypt(
     // NOTE THAT THIS USES THE DataLength MEMBER OF THE INPUT BUFFER - THE
     // OUTPUT IS THE SAME SIZE AS THE INPUT
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_CYPHER_DATA_OUT)+(DIOCBufferIn->DataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data))
+            sizeof(*DIOCBufferOut)+(DIOCBufferIn->DataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data))
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_CYPHER_DATA_OUT)+DIOCBufferIn->DataLength-sizeof(DIOCBufferOut->Data),
+            sizeof(*DIOCBufferOut)+DIOCBufferIn->DataLength-sizeof(DIOCBufferOut->Data),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -1016,7 +1012,7 @@ IOCTL_FreeOTFECypherIOCTL_Encrypt(
     SecZeroMemory(keyASCII, keyASCIIBufferLen);
     FREEOTFE_FREE(keyASCII);
 
-    Irp->IoStatus.Information = sizeof(DIOC_CYPHER_DATA_OUT)+(dataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data); 
+    Irp->IoStatus.Information = sizeof(*DIOCBufferOut)+(dataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data); 
 
     DEBUGOUTCYPHERDRV(DEBUGLEV_EXIT, ("IOCTL_FreeOTFECypherIOCTL_Encrypt\n"));
     return status;
@@ -1059,7 +1055,7 @@ IOCTL_FreeOTFECypherIOCTL_Decrypt(
     if (
         irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_CYPHER_DATA_IN)
+             sizeof(*DIOCBufferIn)
              - sizeof(DIOCBufferIn->Key)
              - sizeof(DIOCBufferIn->IV)
              - sizeof(DIOCBufferIn->Data)
@@ -1068,7 +1064,7 @@ IOCTL_FreeOTFECypherIOCTL_Decrypt(
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect min: %d; got: %d)\n",
             (
-             sizeof(DIOC_CYPHER_DATA_IN)
+             sizeof(*DIOCBufferIn)
              - sizeof(DIOCBufferIn->Key)
              - sizeof(DIOCBufferIn->IV)
              - sizeof(DIOCBufferIn->Data)
@@ -1081,7 +1077,7 @@ IOCTL_FreeOTFECypherIOCTL_Decrypt(
     // Actual check...
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_CYPHER_DATA_IN)
+             sizeof(*DIOCBufferIn)
              - sizeof(DIOCBufferIn->Key)
              - sizeof(DIOCBufferIn->IV)
              - sizeof(DIOCBufferIn->Data)
@@ -1093,7 +1089,7 @@ IOCTL_FreeOTFECypherIOCTL_Decrypt(
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect actual: %d; got: %d)\n",
             (
-             sizeof(DIOC_CYPHER_DATA_IN)
+             sizeof(*DIOCBufferIn)
              - sizeof(DIOCBufferIn->Key)
              - sizeof(DIOCBufferIn->IV)
              - sizeof(DIOCBufferIn->Data)
@@ -1113,10 +1109,10 @@ IOCTL_FreeOTFECypherIOCTL_Decrypt(
     // NOTE THAT THIS USES THE DataLength MEMBER OF THE INPUT BUFFER - THE
     // OUTPUT IS THE SAME SIZE AS THE INPUT
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_CYPHER_DATA_OUT)+(DIOCBufferIn->DataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data))
+            sizeof(*DIOCBufferOut)+(DIOCBufferIn->DataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data))
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_CYPHER_DATA_OUT)+DIOCBufferIn->DataLength-sizeof(DIOCBufferOut->Data),
+            sizeof(*DIOCBufferOut)+DIOCBufferIn->DataLength-sizeof(DIOCBufferOut->Data),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -1248,7 +1244,7 @@ IOCTL_FreeOTFECypherIOCTL_Decrypt(
     SecZeroMemory(keyASCII, keyASCIIBufferLen);
     FREEOTFE_FREE(keyASCII);
 
-    Irp->IoStatus.Information = sizeof(DIOC_CYPHER_DATA_OUT)+(dataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data); 
+    Irp->IoStatus.Information = sizeof(*DIOCBufferOut)+(dataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data); 
 
     DEBUGOUTCYPHERDRV(DEBUGLEV_EXIT, ("IOCTL_FreeOTFECypherIOCTL_Decrypt\n"));
     return status;
@@ -1291,7 +1287,7 @@ IOCTL_FreeOTFECypherIOCTL_EncryptSector(
     if (
         irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_CYPHER_SECTOR_DATA_IN)
+             sizeof(*DIOCBufferIn)
               - sizeof(DIOCBufferIn->Key)
               - sizeof(DIOCBufferIn->IV)
               - sizeof(DIOCBufferIn->Data)
@@ -1300,7 +1296,7 @@ IOCTL_FreeOTFECypherIOCTL_EncryptSector(
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect min: %d; got: %d)\n",
             (
-             sizeof(DIOC_CYPHER_SECTOR_DATA_IN)
+             sizeof(*DIOCBufferIn)
               - sizeof(DIOCBufferIn->Key)
               - sizeof(DIOCBufferIn->IV)
               - sizeof(DIOCBufferIn->Data)
@@ -1313,7 +1309,7 @@ IOCTL_FreeOTFECypherIOCTL_EncryptSector(
     // Actual check...
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_CYPHER_SECTOR_DATA_IN)
+             sizeof(*DIOCBufferIn)
               - sizeof(DIOCBufferIn->Key)
               - sizeof(DIOCBufferIn->IV)
               - sizeof(DIOCBufferIn->Data)
@@ -1325,7 +1321,7 @@ IOCTL_FreeOTFECypherIOCTL_EncryptSector(
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect actual: %d; got: %d)\n",
             (
-             sizeof(DIOC_CYPHER_SECTOR_DATA_IN)
+             sizeof(*DIOCBufferIn)
               - sizeof(DIOCBufferIn->Key)
               - sizeof(DIOCBufferIn->IV)
               - sizeof(DIOCBufferIn->Data)
@@ -1345,10 +1341,10 @@ IOCTL_FreeOTFECypherIOCTL_EncryptSector(
     // NOTE THAT THIS USES THE DataLength MEMBER OF THE INPUT BUFFER - THE
     // OUTPUT IS THE SAME SIZE AS THE INPUT
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_CYPHER_DATA_OUT)+(DIOCBufferIn->DataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data))
+            sizeof(*DIOCBufferOut)+(DIOCBufferIn->DataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data))
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_CYPHER_DATA_OUT)+DIOCBufferIn->DataLength-sizeof(DIOCBufferOut->Data),
+            sizeof(*DIOCBufferOut)+DIOCBufferIn->DataLength-sizeof(DIOCBufferOut->Data),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -1482,7 +1478,7 @@ IOCTL_FreeOTFECypherIOCTL_EncryptSector(
     SecZeroMemory(keyASCII, keyASCIIBufferLen);
     FREEOTFE_FREE(keyASCII);
 
-    Irp->IoStatus.Information = sizeof(DIOC_CYPHER_DATA_OUT)+(dataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data); 
+    Irp->IoStatus.Information = sizeof(*DIOCBufferOut)+(dataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data); 
 
     DEBUGOUTCYPHERDRV(DEBUGLEV_EXIT, ("IOCTL_FreeOTFECypherIOCTL_EncryptSector\n"));
     return status;
@@ -1525,7 +1521,7 @@ IOCTL_FreeOTFECypherIOCTL_DecryptSector(
     if (
         irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_CYPHER_SECTOR_DATA_IN)
+             sizeof(*DIOCBufferIn)
              - sizeof(DIOCBufferIn->Key)
              - sizeof(DIOCBufferIn->IV)
              - sizeof(DIOCBufferIn->Data)
@@ -1534,7 +1530,7 @@ IOCTL_FreeOTFECypherIOCTL_DecryptSector(
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect min: %d; got: %d)\n",
             (
-             sizeof(DIOC_CYPHER_SECTOR_DATA_IN)
+             sizeof(*DIOCBufferIn)
              - sizeof(DIOCBufferIn->Key)
              - sizeof(DIOCBufferIn->IV)
              - sizeof(DIOCBufferIn->Data)
@@ -1547,7 +1543,7 @@ IOCTL_FreeOTFECypherIOCTL_DecryptSector(
     // Actual check...
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_CYPHER_SECTOR_DATA_IN)
+             sizeof(*DIOCBufferIn)
              - sizeof(DIOCBufferIn->Key)
              - sizeof(DIOCBufferIn->IV)
              - sizeof(DIOCBufferIn->Data)
@@ -1559,7 +1555,7 @@ IOCTL_FreeOTFECypherIOCTL_DecryptSector(
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect actual: %d; got: %d)\n",
             (
-             sizeof(DIOC_CYPHER_SECTOR_DATA_IN)
+             sizeof(*DIOCBufferIn)
              - sizeof(DIOCBufferIn->Key)
              - sizeof(DIOCBufferIn->IV)
              - sizeof(DIOCBufferIn->Data)
@@ -1579,10 +1575,10 @@ IOCTL_FreeOTFECypherIOCTL_DecryptSector(
     // NOTE THAT THIS USES THE DataLength MEMBER OF THE INPUT BUFFER - THE
     // OUTPUT IS THE SAME SIZE AS THE INPUT
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_CYPHER_DATA_OUT)+(DIOCBufferIn->DataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data))
+            sizeof(*DIOCBufferOut)+(DIOCBufferIn->DataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data))
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_CYPHER_DATA_OUT)+DIOCBufferIn->DataLength-sizeof(DIOCBufferOut->Data),
+            sizeof(*DIOCBufferOut)+DIOCBufferIn->DataLength-sizeof(DIOCBufferOut->Data),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -1716,7 +1712,7 @@ IOCTL_FreeOTFECypherIOCTL_DecryptSector(
     SecZeroMemory(keyASCII, keyASCIIBufferLen);
     FREEOTFE_FREE(keyASCII);
 
-    Irp->IoStatus.Information = sizeof(DIOC_CYPHER_DATA_OUT)+(dataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data); 
+    Irp->IoStatus.Information = sizeof(*DIOCBufferOut)+(dataLength * sizeof(DIOCBufferOut->Data))-sizeof(DIOCBufferOut->Data); 
 
     DEBUGOUTCYPHERDRV(DEBUGLEV_EXIT, ("IOCTL_FreeOTFECypherIOCTL_DecryptSector\n"));
     return status;
@@ -1728,6 +1724,13 @@ IOCTL_FreeOTFECypherIOCTL_DecryptSector(
 // talk to when creating new devices, carrying out general driver
 // queries, etc
 // DeviceObject will be set to the newly created device object
+//
+// Note: The "__drv_when" incantation is to prevent warnings by PFD; see:
+// http://msdn.microsoft.com/en-us/library/ff546191%28v=vs.85%29.aspx
+//__drv_when(!isFunctionClass$("DRIVER_INITIALIZE") && return == 0, __deref(__drv_allocatesMem(mem)))
+// Above causes PFD to fail. Below should just sort it:
+__drv_allocatesMem(mem)
+// but this still gives a PFD warning?!
 NTSTATUS
 CreateDevice (
     IN PDRIVER_OBJECT DriverObject,
@@ -1771,7 +1774,12 @@ CreateDevice (
     RtlZeroMemory(devName.Buffer, devName.MaximumLength);
     
     // Note the "/" in the format string
-    devName.Length = (USHORT)swprintf(devName.Buffer, L"%s\\", DEVICE_CYPHER_DIR_NAME);
+    devName.Length = (USHORT)FREEOTFE_SWPRINTF(
+		                        devName.Buffer,
+		                        (devName.MaximumLength / sizeof(*(devName.Buffer))),
+		                        L"%s\\",
+		                        DEVICE_CYPHER_DIR_NAME
+		                       );
     // swprintf returns the number of WCHARs, not the length in bytes
     devName.Length = devName.Length * sizeof(WCHAR);
     
@@ -1779,6 +1787,10 @@ CreateDevice (
     if (!NT_SUCCESS(status))
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("AppendGUIDToUnicodeString NOT OK\n"));
+        SecZeroAndFreeMemory(
+                      devName.Buffer,
+                      devName.MaximumLength
+                     );
         return status;
         }
 
@@ -1805,6 +1817,10 @@ CreateDevice (
     if (!NT_SUCCESS(status))
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("Status NOT OK\n"));
+        SecZeroAndFreeMemory(
+                      devName.Buffer,
+                      devName.MaximumLength
+                     );
         return status;
         }
 
@@ -1839,8 +1855,9 @@ CreateDevice (
 
     devExtension->zzSymbolicLinkName.Buffer = FREEOTFE_MEMALLOC(devExtension->zzSymbolicLinkName.MaximumLength);
     RtlZeroMemory(devExtension->zzSymbolicLinkName.Buffer, devExtension->zzSymbolicLinkName.MaximumLength);
-    devExtension->zzSymbolicLinkName.Length = (USHORT)swprintf(
+    devExtension->zzSymbolicLinkName.Length = (USHORT)FREEOTFE_SWPRINTF(
 	                            devExtension->zzSymbolicLinkName.Buffer,
+	                            (devExtension->zzSymbolicLinkName.MaximumLength / sizeof(*(devExtension->zzSymbolicLinkName.Buffer))),
 	                            L"%s",
 	                            DEVICE_CYPHER_SYMLINK_PREFIX
                                    );
@@ -1882,7 +1899,7 @@ CreateDevice (
     // (Some of the bits following are taken from the DDK src/general/cancel example)
     
 
-    // This is used to serailize access to the queue.
+    // This is used to serialize access to the queue.
     KeInitializeSpinLock(&devExtension->IRPQueueLock);
     KeInitializeSemaphore(&devExtension->IRPQueueSemaphore, 0, MAXLONG );
 
@@ -1912,7 +1929,7 @@ CreateDevice (
                                   devObj
                                  );
 
-    if (!NT_SUCCESS(status))
+    if (!(NT_SUCCESS(status)))
         {
         DEBUGOUTCYPHERDRV(DEBUGLEV_ERROR, ("Create thread FAILED.\n"));        
         DestroyDevice(devObj);
@@ -2078,6 +2095,10 @@ PIRP CSQPeekNextIrp(
 
 
 // =========================================================================
+// Annotation to prevent PFD warning included as per:
+// http://msdn.microsoft.com/en-us/library/ff546191%28v=vs.85%29.aspx
+// taken from wdk.h, for KfAcquireSpinLock/KeAcquireSpinLockRaiseToDpc
+__drv_setsIRQL(DISPATCH_LEVEL)
 VOID CSQAcquireLock(
     IN  PIO_CSQ Csq,
     OUT PKIRQL  Irql
@@ -2093,9 +2114,14 @@ VOID CSQAcquireLock(
 
 
 // =========================================================================
+// Annotation to prevent PFD warning included as per:
+// http://msdn.microsoft.com/en-us/library/ff546191%28v=vs.85%29.aspx
+// taken from wdk.h, for KfReleaseSpinLock
+__drv_requiresIRQL(DISPATCH_LEVEL)
 VOID CSQReleaseLock(
     IN PIO_CSQ Csq,
-    IN KIRQL   Irql
+    // __drv_restoresIRQL is annotation; see just above
+    IN __drv_restoresIRQL KIRQL   Irql
     )
 {
     PDEVICE_EXTENSION   devExtension;

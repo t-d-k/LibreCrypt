@@ -37,7 +37,7 @@
 
 // Block size (128 bit) block index. Hardcoded to 15 here, as that's all LTC
 // supports
-typedef unsigned char INTEGER_128[15];
+typedef unsigned char INTEGER_128[16];
 
 
 // Cypher driver init function

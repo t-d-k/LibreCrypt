@@ -7,13 +7,6 @@
 //
 
 
-// #defines for debug purposes:
-//
-// #define DBG_CREATEINITDISKS 4
-//   - If defined, then when the driver starts, it will automatically create the specified
-//     number of disk devices
-//   - Should all be COMMENTED OUT for release
-
 #include <ntddk.h>
 #include <stdio.h>
 
@@ -55,6 +48,39 @@ HANDLE DirFreeOTFERoot  = NULL;
 HANDLE DirFreeOTFEDisks = NULL;
 
 
+// Forward declarations
+// Write/Read raw data from volume - DOESN'T cater for sector boundries
+NTSTATUS
+_SetGetRawUnicode_Direct(
+    IN     const BOOLEAN DoWrite,
+    IN     const PUNICODE_STRING Filename,
+    IN     const LARGE_INTEGER Offset,
+    IN     const ULONG DataLength,
+    IN OUT FREEOTFEBYTE* Data
+);
+// Write/Read raw data from volume - cater for sector boundries if needed
+NTSTATUS
+_SetGetRawUnicode_UsingSectorBoundry(
+    IN     const BOOLEAN DoWrite,
+    IN     const PUNICODE_STRING Filename,
+    IN     const LARGE_INTEGER Offset,
+    IN     const ULONG DataLength,
+    IN     const ULONG ReadWriteBoundries,
+    IN OUT FREEOTFEBYTE* Data
+);
+NTSTATUS
+_GetMaxSizePartition_IDGPI(
+    IN  PUNICODE_STRING DeviceName,
+    OUT PLARGE_INTEGER MaxSize
+);
+NTSTATUS
+_GetMaxSizePartition_IDGPIEx(
+    IN  PUNICODE_STRING DeviceName,
+    OUT PLARGE_INTEGER MaxSize
+);
+
+
+
 // =========================================================================
 // This routine is the driver's entry point, called by the I/O system
 // to load the driver.  The driver's entry points are initialized.
@@ -71,10 +97,6 @@ DriverEntry(
     OBJECT_ATTRIBUTES dirObjAttribs;
     PDEVICE_OBJECT mainDevObj;
     PDEVICE_EXTENSION mainDevExt;
-#ifdef DBG_CREATEINITDISKS
-    int i;   
-    PDEVICE_OBJECT dbgTmpDevObj;
-#endif
     
     // The following debug handling was ripped from the MS DDK "floppy.c"
     // example
@@ -134,10 +156,8 @@ DriverEntry(
         FREEOTFE_FREE(path);
     }
 
-#if DBG
     FreeOTFEDebugLevel = debugLevel;
     DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Debug level   : %d\n", FreeOTFEDebugLevel));
-#endif
     DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Driver version: 0x%08x (v%02d.%02d.%04d)\n",
                                      DRIVER_VERSION, 
                                      (DRIVER_VERSION & 0xFF000000) / 0x00FF0000,
@@ -189,20 +209,6 @@ DriverEntry(
 
     // Store the device dir handle for closure on unload
     mainDevExt = (PDEVICE_EXTENSION)mainDevObj->DeviceExtension;
-
-#ifdef DBG_CREATEINITDISKS
-    // Create initial disk devices
-    for (i=1; i<=DBG_CREATEINITDISKS; i++)
-        {
-        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Creating disk #%d device...\n", i));
-        status = CreateDiskDevice(DriverObject, &dbgTmpDevObj);
-        if (!(NT_SUCCESS(status)))
-            {
-            DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("Call to CreateDiskDevice FAILED.\n"));
-            return status;
-            }
-        }
-#endif    
 
     // Initialize the driver object with this driver's entry points.
     DriverObject->MajorFunction[IRP_MJ_CREATE] = 
@@ -536,7 +542,7 @@ DestroyDevice(
             DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Freeing off symlink unicode buffer...\n")); 
             SecZeroMemory(
                           devExt->zzSymbolicLinkName.Buffer,
-                          sizeof(devExt->zzSymbolicLinkName.MaximumLength)
+                          devExt->zzSymbolicLinkName.MaximumLength
                          );
             FREEOTFE_FREE(devExt->zzSymbolicLinkName.Buffer);
             devExt->zzSymbolicLinkName.Buffer = NULL;
@@ -551,7 +557,7 @@ DestroyDevice(
         DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Freeing off devname unicode buffer...\n"));
         SecZeroMemory(
                       devExt->zzDeviceName.Buffer,
-                      sizeof(devExt->zzDeviceName.MaximumLength)
+                      devExt->zzDeviceName.MaximumLength
                      );
         FREEOTFE_FREE(devExt->zzDeviceName.Buffer);
         devExt->zzDeviceName.Buffer = NULL;
@@ -975,10 +981,10 @@ IOCTL_FreeOTFEIOCTL_Version(
 
     // Check size of OUTPUT buffer
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_VERSION))
+            sizeof(*DIOCBuffer))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_VERSION),
+            sizeof(*DIOCBuffer),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -996,7 +1002,7 @@ IOCTL_FreeOTFEIOCTL_Version(
                                     ));
     DIOCBuffer->VersionID = DRIVER_VERSION;
 
-    Irp->IoStatus.Information = sizeof(DIOC_VERSION);
+    Irp->IoStatus.Information = sizeof(*DIOCBuffer);
     status = STATUS_SUCCESS;
 
     // Uncomment to execute test code
@@ -1031,10 +1037,10 @@ IOCTL_FreeOTFEIOCTL_Create(
 
     // Check size of INPUT buffer
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
-            sizeof(DIOC_DISK_DEVICE_CREATE))
+            sizeof(*DIOCBufferIn))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_DISK_DEVICE_CREATE),
+            sizeof(*DIOCBufferIn),
             irpSp->Parameters.DeviceIoControl.InputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -1043,10 +1049,10 @@ IOCTL_FreeOTFEIOCTL_Create(
 
     // Check size of OUTPUT buffer
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_DEVICE_NAME))
+            sizeof(*DIOCBufferOut))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_DEVICE_NAME),
+            sizeof(*DIOCBufferOut),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -1097,7 +1103,7 @@ IOCTL_FreeOTFEIOCTL_Create(
                     );
     RtlFreeAnsiString(&tmpANSIDeviceName);
 
-    Irp->IoStatus.Information = sizeof(DIOC_DEVICE_NAME);
+    Irp->IoStatus.Information = sizeof(*DIOCBufferOut);
     status = STATUS_SUCCESS;
 
 
@@ -1128,10 +1134,10 @@ IOCTL_FreeOTFEIOCTL_Destroy(
 
     // Check size of INPUT buffer
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
-            sizeof(DIOC_DEVICE_NAME))
+            sizeof(*DIOCBuffer))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_DEVICE_NAME),
+            sizeof(*DIOCBuffer),
             irpSp->Parameters.DeviceIoControl.InputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -1199,7 +1205,7 @@ IOCTL_FreeOTFEIOCTL_Mount(
     // members for actual check)
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_MOUNT) -
+             sizeof(*DIOCBuffer) -
              sizeof(DIOCBuffer->MasterKey) - 
              sizeof(DIOCBuffer->VolumeIV) -
              sizeof(DIOCBuffer->MetaData) 
@@ -1208,7 +1214,7 @@ IOCTL_FreeOTFEIOCTL_Mount(
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect min: %d; got: %d)\n",
             (
-             sizeof(DIOC_MOUNT) -
+             sizeof(*DIOCBuffer) -
              sizeof(DIOCBuffer->MasterKey) - 
              sizeof(DIOCBuffer->VolumeIV) -
              sizeof(DIOCBuffer->MetaData) 
@@ -1224,7 +1230,7 @@ IOCTL_FreeOTFEIOCTL_Mount(
     // Note: "/ 8" to convert bits to bytes
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_MOUNT) + 
+             sizeof(*DIOCBuffer) + 
              (DIOCBuffer->MasterKeyLength / 8) - 
              sizeof(DIOCBuffer->MasterKey) +
              (DIOCBuffer->VolumeIVLength / 8) - 
@@ -1236,7 +1242,7 @@ IOCTL_FreeOTFEIOCTL_Mount(
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect actual: %d; got: %d)\n",
             (
-             sizeof(DIOC_MOUNT) + 
+             sizeof(*DIOCBuffer) + 
              (DIOCBuffer->MasterKeyLength / 8) - 
              sizeof(DIOCBuffer->MasterKey) +
              (DIOCBuffer->VolumeIVLength / 8) - 
@@ -1309,14 +1315,14 @@ IOCTL_FreeOTFEIOCTL_SetRaw(
     // Minimum check...
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_SET_RAW_DATA) 
+             sizeof(*DIOCBuffer) 
               - sizeof(DIOCBuffer->Data)
             )
         )
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect min: %d; got: %d)\n",
             (
-             sizeof(DIOC_SET_RAW_DATA) 
+             sizeof(*DIOCBuffer) 
               - sizeof(DIOCBuffer->Data)
             ),
             irpSp->Parameters.DeviceIoControl.InputBufferLength
@@ -1330,7 +1336,7 @@ IOCTL_FreeOTFEIOCTL_SetRaw(
     // Actual check...
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_SET_RAW_DATA)
+             sizeof(*DIOCBuffer)
               - sizeof(DIOCBuffer->Data)
               + DIOCBuffer->DataLength
             )
@@ -1338,7 +1344,7 @@ IOCTL_FreeOTFEIOCTL_SetRaw(
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect actual: %d; got: %d)\n",
             (
-             sizeof(DIOC_SET_RAW_DATA)
+             sizeof(*DIOCBuffer)
               - sizeof(DIOCBuffer->Data)
               + DIOCBuffer->DataLength
             ),
@@ -1388,10 +1394,10 @@ IOCTL_FreeOTFEIOCTL_GetRaw(
 
     // Check size of INPUT buffer
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
-            sizeof(DIOC_GET_RAW_DATA_IN))
+            sizeof(*inDIOCBuffer))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_GET_RAW_DATA_IN),
+            sizeof(*inDIOCBuffer),
             irpSp->Parameters.DeviceIoControl.InputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -1405,7 +1411,7 @@ IOCTL_FreeOTFEIOCTL_GetRaw(
     // Actual check...
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
             (
-             sizeof(DIOC_GET_RAW_DATA_OUT)
+             sizeof(*outDIOCBuffer)
               - sizeof(outDIOCBuffer->Data)
               + inDIOCBuffer->DataLength  // Yes, this is correct
             )
@@ -1413,7 +1419,7 @@ IOCTL_FreeOTFEIOCTL_GetRaw(
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect actual: %d; got: %d)\n",
             (
-             sizeof(DIOC_GET_RAW_DATA_OUT)
+             sizeof(*outDIOCBuffer)
               - sizeof(outDIOCBuffer->Data)
               + inDIOCBuffer->DataLength  // Yes, this is correct
             ),
@@ -1517,13 +1523,300 @@ SetGetRawChar(
 
 
 // =========================================================================
-// Write/Read raw data from volume
+// Write/Read raw data from volume - cater for sector boundries if needed
 NTSTATUS
 SetGetRawUnicode(
     IN     BOOLEAN DoWrite,
     IN     PUNICODE_STRING Filename,
     IN     LARGE_INTEGER Offset,
     IN     ULONG DataLength,
+    IN OUT FREEOTFEBYTE* Data
+)
+{
+    NTSTATUS status;
+    HANDLE fileHandle;
+    IO_STATUS_BLOCK ioStatusBlock;
+    BOOLEAN fileAttributesStored;
+    FILE_BASIC_INFORMATION fileAttributes;
+    PSECURITY_CLIENT_CONTEXT ClientContext;
+    int readWriteBoundries;
+    PFILE_OBJECT fileObject;
+    PDEVICE_OBJECT fileHostDevice;
+
+    DEBUGOUTMAINDRV(DEBUGLEV_ENTER, ("SetGetRawUnicode\n"));
+
+    
+    if (DoWrite)
+        {
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Write raw requested\n"));
+        }
+    else
+        {
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Read raw requested\n"));
+        }
+
+    status = _SetGetRawUnicode_UsingSectorBoundry(
+                DoWrite,
+                Filename,
+                Offset,
+                DataLength,
+                1,
+                Data
+                );
+
+    // If unable to get data, attempt using sector boundries...
+    if (!(NT_SUCCESS(status)))
+        {
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Unable to read/write using no sector boundry.\n"));
+
+        readWriteBoundries = 1;  // Fallback; any byte boundry
+
+        status = ClientSecurityCreate(&ClientContext);
+        if (!(NT_SUCCESS(status)))
+            {
+            DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("Unable to create security client\n"));
+            return status;
+            }
+
+        // Note: We allow intermediate buffering as "FILE_NO_INTERMEDIATE_BUFFERING"
+        //       would require all offsets and read/writes to be a multiple of the
+        //       sector size - reducing flexability
+        status = FileOpen(
+                          Filename,
+                          ClientContext,
+                          (!(DoWrite)),
+                          TRUE,
+                          &fileHandle,
+                          &ioStatusBlock,
+                          &fileAttributesStored,
+                          &fileAttributes
+                         );
+
+        if (NT_SUCCESS(status))
+            {
+            // Get file object pointer...
+            DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Getting file object pointer...\n"));
+            fileObject = NULL;
+            status = ObReferenceObjectByHandle(
+                                    fileHandle,
+                                    FILE_ALL_ACCESS,//  read/write?
+                                    *IoFileObjectType,
+                                    KernelMode,
+                                    &fileObject,
+                                    NULL
+                                   );
+            if (NT_SUCCESS(status))
+                {
+                DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Got file object pointer\n"));
+        
+                // readWriteBoundries = devExt->FileObject->DeviceObject;  // This gives 0 for CDROM
+                fileHostDevice = IoGetRelatedDeviceObject(fileObject);  // This gives 2048 for CDROM
+                if (fileHostDevice != NULL)
+                    {
+                    DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Sector size: %d\n", fileHostDevice->SectorSize));
+                    if (fileHostDevice->SectorSize > 0)
+                        {
+                        readWriteBoundries = fileHostDevice->SectorSize;
+                        }
+                    }
+                DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Using sector size: %d\n", readWriteBoundries));
+        
+        
+                // File object pointer
+                if (fileObject != NULL)
+                    {
+                    DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Dereferencing file object...\n")); 
+                    ObDereferenceObject(fileObject);
+                    fileObject = NULL;
+                    DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("OK.\n"));      
+                    }
+                }
+
+
+            // Return value ignored
+            FileClose(
+                      &fileHandle,
+                      fileAttributesStored,
+                      &fileAttributes,
+                      &ioStatusBlock
+                     );
+
+            }
+
+        ClientSecurityDestroy(&ClientContext);
+
+
+        if (readWriteBoundries == 1)
+            {
+            DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Not attempting to read/write using sector boundry.\n"));
+            }
+        else
+            {
+            DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Attempting to read/write using sector boundries of: %d\n", readWriteBoundries));
+            status = _SetGetRawUnicode_UsingSectorBoundry(
+                        DoWrite,
+                        Filename,
+                        Offset,
+                        DataLength,
+                        readWriteBoundries,
+                        Data
+                        );
+            }
+        }
+
+    DEBUGOUTMAINDRV(DEBUGLEV_EXIT, ("SetGetRawUnicode\n"));
+
+    return status;
+}
+
+
+// =========================================================================
+// Write/Read raw data from volume - cater for sector boundries if needed
+NTSTATUS
+_SetGetRawUnicode_UsingSectorBoundry(
+    IN     const BOOLEAN DoWrite,
+    IN     const PUNICODE_STRING Filename,
+    IN     const LARGE_INTEGER Offset,
+    IN     const ULONG DataLength,
+    IN     const ULONG ReadWriteBoundries,
+    IN OUT FREEOTFEBYTE* Data
+)
+{
+    NTSTATUS status;
+    LARGE_INTEGER useOffset;
+    ULONG useDataLength;
+    FREEOTFEBYTE* useData;
+    BOOLEAN useDataAllocated;
+    ULONG preData;
+    ULONG postData;
+    LARGE_INTEGER tmpLargeInt;
+
+    DEBUGOUTMAINDRV(DEBUGLEV_ENTER, ("_SetGetRawUnicode_UsingSectorBoundry\n"));
+
+
+    if (DoWrite)
+        {
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Write raw requested\n"));
+        }
+    else
+        {
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Read raw requested\n"));
+        }
+
+    useOffset = Offset;
+    useDataLength = DataLength;
+    useData = Data;
+    useDataAllocated = FALSE;
+    preData = 0;
+    postData = 0;
+    if (ReadWriteBoundries != 1)
+        {
+        // Round the offset *down* to the volume file/partition's sector size
+        tmpLargeInt.QuadPart = (Offset.QuadPart % ReadWriteBoundries);
+        preData = tmpLargeInt.LowPart;
+
+        // Round the offset *up* to the volume file/partition's sector size
+        postData = 0;
+        tmpLargeInt.QuadPart = ((Offset.QuadPart + DataLength) % ReadWriteBoundries);
+        if (tmpLargeInt.LowPart != 0)
+            {
+            postData = ReadWriteBoundries - tmpLargeInt.LowPart;
+            }
+
+        // Calculate useOffset
+        useOffset.QuadPart = Offset.QuadPart - preData;
+
+        // Calculate useDataLength
+        useDataLength = preData + DataLength + postData;
+
+        // Allocate temp buffer to be used to read/write bounded data
+        useData = FREEOTFE_MEMALLOC(useDataLength); 
+
+        // Flag the buffer was allocated
+        useDataAllocated = TRUE;
+        }
+
+    DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("preData: %d\n", preData));
+    DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("postData: %d\n", postData));
+    DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("useOffset: %d\n", useOffset));
+    DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("useDataLength: %d\n", useDataLength));
+    DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("ReadWriteBoundries: %d\n", ReadWriteBoundries));    
+
+    // If writing, read in bounded data, overwrite with data to be written,
+    // then write out...
+    if (
+        (DoWrite) &&
+        (useDataAllocated)
+       )
+        {
+        // Perform read
+        status = _SetGetRawUnicode_Direct(
+            FALSE,
+            Filename,
+            useOffset,
+            useDataLength,
+            useData
+        );
+
+        if (NT_SUCCESS(status))
+            {
+            // Copy data to be written to useData buffer
+            RtlCopyMemory((useData + preData), Data, DataLength);
+            }
+        else
+            {
+            // Revert the "use" ones to those passed in
+            SecZeroMemory(useData, useDataLength);
+            FREEOTFE_FREE(useData);
+
+            useOffset = Offset;
+            useDataLength = DataLength;
+            useData = Data;
+            useDataAllocated = FALSE;
+            preData = 0;
+            postData = 0;
+            }
+        }
+
+    status = _SetGetRawUnicode_Direct(
+        DoWrite,
+        Filename,
+        useOffset,
+        useDataLength,
+        useData
+    );
+
+    // If reading, read in bounded data, extract data to be read...
+    if (
+        (!(DoWrite)) &&
+        (useDataAllocated)
+       )
+        {
+        // Strip out the read bit only, copying to output buffer
+        RtlCopyMemory(Data, (useData + preData), DataLength);
+        }
+
+    if (useDataAllocated)
+        {
+        // Free off useData buffer previously allocated
+        SecZeroMemory(useData, useDataLength);
+        FREEOTFE_FREE(useData);
+        }
+
+    DEBUGOUTMAINDRV(DEBUGLEV_EXIT, ("_SetGetRawUnicode_UsingSectorBoundry\n"));
+
+    return status;
+}
+
+
+// =========================================================================
+// Write/Read raw data from volume - DOESN'T cater for sector boundries
+NTSTATUS
+_SetGetRawUnicode_Direct(
+    IN     const BOOLEAN DoWrite,
+    IN     const PUNICODE_STRING Filename,
+    IN     const LARGE_INTEGER Offset,
+    IN     const ULONG DataLength,
     IN OUT FREEOTFEBYTE* Data
 )
 {
@@ -1538,8 +1831,9 @@ SetGetRawUnicode(
     NTSTATUS tmpStatus;
     FILE_STANDARD_INFORMATION fileStdInfo;  
     PSECURITY_CLIENT_CONTEXT ClientContext;
+    LARGE_INTEGER useOffset;
 
-    DEBUGOUTMAINDRV(DEBUGLEV_ENTER, ("SetGetRawUnicode\n"));
+    DEBUGOUTMAINDRV(DEBUGLEV_ENTER, ("_SetGetRawUnicode_Direct\n"));
 
     
     if (DoWrite)
@@ -1574,6 +1868,9 @@ SetGetRawUnicode(
 
     if (NT_SUCCESS(status))
         {
+        // Use temp var to prevent compiler error with const declaration
+        useOffset.QuadPart = Offset.QuadPart;
+
         DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Offset    : %lld.\n", Offset.QuadPart));
         DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("DataLength: %d.\n", DataLength));
         if (DoWrite)
@@ -1586,7 +1883,7 @@ SetGetRawUnicode(
                                 &ioStatusBlock,
                                 Data,
                                 DataLength,
-                                &Offset,
+                                &useOffset,
                                 NULL
                             );
             }
@@ -1600,7 +1897,7 @@ SetGetRawUnicode(
                                 &ioStatusBlock,
                                 Data,
                                 DataLength, 
-                                &Offset,
+                                &useOffset,
                                 NULL
                             );
             }
@@ -1631,7 +1928,7 @@ SetGetRawUnicode(
     // Return value ignored
     ClientSecurityDestroy(&ClientContext);
 
-    DEBUGOUTMAINDRV(DEBUGLEV_EXIT, ("SetGetRawUnicode\n"));
+    DEBUGOUTMAINDRV(DEBUGLEV_EXIT, ("_SetGetRawUnicode_Direct\n"));
 
     return status;
 }
@@ -1671,7 +1968,7 @@ IOCTL_FreeOTFEIOCTL_DeriveKey(
     // members for actual check)
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_DERIVE_KEY_IN) 
+             sizeof(*DIOCBufferIn) 
               - sizeof(DIOCBufferIn->Password)
               - sizeof(DIOCBufferIn->Salt)
             )
@@ -1679,7 +1976,7 @@ IOCTL_FreeOTFEIOCTL_DeriveKey(
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect min: %d; got: %d)\n",
             (
-             sizeof(DIOC_DERIVE_KEY_IN)
+             sizeof(*DIOCBufferIn)
               - sizeof(DIOCBufferIn->Password)
               - sizeof(DIOCBufferIn->Salt)
             ),
@@ -1691,7 +1988,7 @@ IOCTL_FreeOTFEIOCTL_DeriveKey(
     // Actual check...
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_DERIVE_KEY_IN)
+             sizeof(*DIOCBufferIn)
               - sizeof(DIOCBufferIn->Password)
               - sizeof(DIOCBufferIn->Salt)
               + (DIOCBufferIn->PasswordLength / 8)
@@ -1701,7 +1998,7 @@ IOCTL_FreeOTFEIOCTL_DeriveKey(
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect actual: %d; got: %d)\n",
             (
-             sizeof(DIOC_DERIVE_KEY_IN)
+             sizeof(*DIOCBufferIn)
               - sizeof(DIOCBufferIn->Password)
               - sizeof(DIOCBufferIn->Salt)
               + (DIOCBufferIn->PasswordLength / 8)
@@ -1719,10 +2016,10 @@ IOCTL_FreeOTFEIOCTL_DeriveKey(
     // (Done first in order to ensure that we can later access length related
     // members for actual check)
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_DERIVE_KEY_OUT)-sizeof(DIOCBufferOut->DerivedKey))
+            sizeof(*DIOCBufferOut)-sizeof(DIOCBufferOut->DerivedKey))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect min: %d; got: %d)\n",
-            sizeof(DIOC_DERIVE_KEY_OUT)-sizeof(DIOCBufferOut->DerivedKey),
+            sizeof(*DIOCBufferOut)-sizeof(DIOCBufferOut->DerivedKey),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -1745,7 +2042,7 @@ IOCTL_FreeOTFEIOCTL_DeriveKey(
     // less the size of the struct - but then plus the size of
     // the variable parts reserved within the buffer
     userBufferSizeBytes = (irpSp->Parameters.DeviceIoControl.OutputBufferLength) - 
-                          sizeof(DIOCBufferOut) +
+                          sizeof(*DIOCBufferOut) +
                           sizeof(DIOCBufferOut->DerivedKey);
     tmpOutput = FREEOTFE_MEMALLOC(userBufferSizeBytes); 
 
@@ -1811,10 +2108,10 @@ IOCTL_FreeOTFEIOCTL_DeriveKey(
         if (lengthWanted >= 0) 
             {
             if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-                    sizeof(DIOC_DERIVE_KEY_OUT)+(lengthWanted/8)-sizeof(DIOCBufferOut->DerivedKey))
+                    sizeof(*DIOCBufferOut)+(lengthWanted/8)-sizeof(DIOCBufferOut->DerivedKey))
                 {
                 DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect actual: %d; got: %d)\n",
-                    sizeof(DIOC_DERIVE_KEY_OUT)+(lengthWanted/8)-sizeof(DIOCBufferOut->DerivedKey),
+                    sizeof(*DIOCBufferOut)+(lengthWanted/8)-sizeof(DIOCBufferOut->DerivedKey),
                     irpSp->Parameters.DeviceIoControl.OutputBufferLength
                     ));
                 status = STATUS_INVALID_BUFFER_SIZE;
@@ -1846,10 +2143,10 @@ IOCTL_FreeOTFEIOCTL_DeriveKey(
             // algorithm's output
             {
             if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-                    sizeof(DIOC_DERIVE_KEY_OUT)+(tmpLengthBits/8)-sizeof(DIOCBufferOut->DerivedKey))
+                    sizeof(*DIOCBufferOut)+(tmpLengthBits/8)-sizeof(DIOCBufferOut->DerivedKey))
                 {
                 DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect actual: %d; got: %d)\n",
-                    sizeof(DIOC_DERIVE_KEY_OUT)+(tmpLengthBits/8)-sizeof(DIOCBufferOut->DerivedKey),
+                    sizeof(*DIOCBufferOut)+(tmpLengthBits/8)-sizeof(DIOCBufferOut->DerivedKey),
                     irpSp->Parameters.DeviceIoControl.OutputBufferLength
                     ));
                 status = STATUS_INVALID_BUFFER_SIZE;
@@ -1861,7 +2158,7 @@ IOCTL_FreeOTFEIOCTL_DeriveKey(
                 }
             }
 
-        Irp->IoStatus.Information = sizeof(DIOC_DERIVE_KEY_OUT)+(DIOCBufferOut->DerivedKeyLength/8)-sizeof(DIOCBufferOut->DerivedKey);
+        Irp->IoStatus.Information = sizeof(*DIOCBufferOut)+(DIOCBufferOut->DerivedKeyLength/8)-sizeof(DIOCBufferOut->DerivedKey);
         }
     else
         {
@@ -1927,7 +2224,7 @@ IOCTL_FreeOTFEIOCTL_GenerateMAC(
     // members for actual check)
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_GENERATE_MAC_IN) 
+             sizeof(*DIOCBufferIn) 
               - sizeof(DIOCBufferIn->Key)
               - sizeof(DIOCBufferIn->Data)
             )
@@ -1935,7 +2232,7 @@ IOCTL_FreeOTFEIOCTL_GenerateMAC(
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect min: %d; got: %d)\n",
             (
-             sizeof(DIOC_GENERATE_MAC_IN) 
+             sizeof(*DIOCBufferIn) 
               - sizeof(DIOCBufferIn->Key)
               - sizeof(DIOCBufferIn->Data)
             ),
@@ -1947,7 +2244,7 @@ IOCTL_FreeOTFEIOCTL_GenerateMAC(
     // Actual check...
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
             (
-             sizeof(DIOC_GENERATE_MAC_IN) 
+             sizeof(*DIOCBufferIn) 
               - sizeof(DIOCBufferIn->Key)
               - sizeof(DIOCBufferIn->Data)
               + (DIOCBufferIn->KeyLength / 8)
@@ -1957,7 +2254,7 @@ IOCTL_FreeOTFEIOCTL_GenerateMAC(
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect actual: %d; got: %d)\n",
             (
-             sizeof(DIOC_GENERATE_MAC_IN)
+             sizeof(*DIOCBufferIn)
               - sizeof(DIOCBufferIn->Key)
               - sizeof(DIOCBufferIn->Data)
               + (DIOCBufferIn->KeyLength / 8)
@@ -1975,10 +2272,10 @@ IOCTL_FreeOTFEIOCTL_GenerateMAC(
     // (Done first in order to ensure that we can later access length related
     // members for actual check)
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_GENERATE_MAC_OUT)-sizeof(DIOCBufferOut->MAC))
+            sizeof(*DIOCBufferOut)-sizeof(DIOCBufferOut->MAC))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect min: %d; got: %d)\n",
-            sizeof(DIOC_GENERATE_MAC_OUT)-sizeof(DIOCBufferOut->MAC),
+            sizeof(*DIOCBufferOut)-sizeof(DIOCBufferOut->MAC),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -2001,7 +2298,7 @@ IOCTL_FreeOTFEIOCTL_GenerateMAC(
     // less the size of the struct - but then plus the size of
     // the variable parts reserved within the buffer
     userBufferSizeBytes = (irpSp->Parameters.DeviceIoControl.OutputBufferLength) - 
-                          sizeof(DIOCBufferOut) +
+                          sizeof(*DIOCBufferOut) +
                           sizeof(DIOCBufferOut->MAC);
     tmpOutput = FREEOTFE_MEMALLOC(userBufferSizeBytes); 
 
@@ -2066,10 +2363,10 @@ IOCTL_FreeOTFEIOCTL_GenerateMAC(
         if (lengthWanted >= 0) 
             {
             if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-                    sizeof(DIOC_GENERATE_MAC_OUT)+(lengthWanted/8)-sizeof(DIOCBufferOut->MAC))
+                    sizeof(*DIOCBufferOut)+(lengthWanted/8)-sizeof(DIOCBufferOut->MAC))
                 {
                 DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect actual: %d; got: %d)\n",
-                    sizeof(DIOC_GENERATE_MAC_OUT)+(lengthWanted/8)-sizeof(DIOCBufferOut->MAC),
+                    sizeof(*DIOCBufferOut)+(lengthWanted/8)-sizeof(DIOCBufferOut->MAC),
                     irpSp->Parameters.DeviceIoControl.OutputBufferLength
                     ));
                 status = STATUS_INVALID_BUFFER_SIZE;
@@ -2101,10 +2398,10 @@ IOCTL_FreeOTFEIOCTL_GenerateMAC(
             // algorithm's output
             {
             if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-                    sizeof(DIOC_GENERATE_MAC_OUT)+(tmpLengthBits/8)-sizeof(DIOCBufferOut->MAC))
+                    sizeof(*DIOCBufferOut)+(tmpLengthBits/8)-sizeof(DIOCBufferOut->MAC))
                 {
                 DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect actual: %d; got: %d)\n",
-                    sizeof(DIOC_GENERATE_MAC_OUT)+(tmpLengthBits/8)-sizeof(DIOCBufferOut->MAC),
+                    sizeof(*DIOCBufferOut)+(tmpLengthBits/8)-sizeof(DIOCBufferOut->MAC),
                     irpSp->Parameters.DeviceIoControl.OutputBufferLength
                     ));
                 status = STATUS_INVALID_BUFFER_SIZE;
@@ -2116,7 +2413,7 @@ IOCTL_FreeOTFEIOCTL_GenerateMAC(
                 }
             }
 
-        Irp->IoStatus.Information = sizeof(DIOC_GENERATE_MAC_OUT)+(DIOCBufferOut->MACLength/8)-sizeof(DIOCBufferOut->MAC);
+        Irp->IoStatus.Information = sizeof(*DIOCBufferOut)+(DIOCBufferOut->MACLength/8)-sizeof(DIOCBufferOut->MAC);
         }
     else
         {
@@ -2551,16 +2848,18 @@ AllocateDOSDeviceSymlinkTargetName_WCHARDriveLetter(
         DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Drive letter: %c\n", DriveLetter));
         if (Global)
             {
-            ptrTmpLinkName->Length = (USHORT)swprintf(
+            ptrTmpLinkName->Length = (USHORT)FREEOTFE_SWPRINTF(
                                             ptrTmpLinkName->Buffer,
+                                            (ptrTmpLinkName->MaximumLength / sizeof(*(ptrTmpLinkName->Buffer))),
                                             DEVICE_DOSDEVICES_GLOBAL DEVICE_SLASH L"%c:",
                                             DriveLetter
                                             );
             }
         else
             {
-            ptrTmpLinkName->Length = (USHORT)swprintf(
+            ptrTmpLinkName->Length = (USHORT)FREEOTFE_SWPRINTF(
                                             ptrTmpLinkName->Buffer,
+                                            (ptrTmpLinkName->MaximumLength / sizeof(*(ptrTmpLinkName->Buffer))),
                                             DEVICE_DOSDEVICES DEVICE_SLASH L"%c:",
                                             DriveLetter
                                             );
@@ -3705,10 +4004,10 @@ IOCTL_FreeOTFEIOCTL_Dismount(
 
     // Check size of INPUT buffer
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
-            sizeof(DIOC_DISMOUNT))
+            sizeof(*DIOCBuffer))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_DISMOUNT),
+            sizeof(*DIOCBuffer),
             irpSp->Parameters.DeviceIoControl.InputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -3789,10 +4088,10 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceCount(
 
     // Check size of OUTPUT buffer
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_DISK_DEVICE_COUNT))
+            sizeof(*DIOCBuffer))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_DISK_DEVICE_COUNT),
+            sizeof(*DIOCBuffer),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -3820,7 +4119,7 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceCount(
     DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Disk devices count is: %d\n", count));
     DIOCBuffer->Count = count;
 
-    Irp->IoStatus.Information = sizeof(DIOC_DISK_DEVICE_COUNT);
+    Irp->IoStatus.Information = sizeof(*DIOCBuffer);
     status = STATUS_SUCCESS;
 
 
@@ -3860,10 +4159,10 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceList(
     // (Done first in order to ensure that we can later access outDIOCBuffer->Data
     // for actual check)
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_DEVICE_NAME_LIST)-sizeof(outDIOCBuffer->DeviceName))
+            sizeof(*outDIOCBuffer)-sizeof(outDIOCBuffer->DeviceName))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect min: %d; got: %d)\n",
-            sizeof(DIOC_DEVICE_NAME_LIST)-sizeof(outDIOCBuffer->DeviceName),
+            sizeof(*outDIOCBuffer)-sizeof(outDIOCBuffer->DeviceName),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -3876,7 +4175,7 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceList(
        (
          // The size of the buffer, less the array of cypher details
          irpSp->Parameters.DeviceIoControl.OutputBufferLength - 
-           (sizeof(DIOC_DEVICE_NAME_LIST)-sizeof(outDIOCBuffer->DeviceName))
+           (sizeof(*outDIOCBuffer)-sizeof(outDIOCBuffer->DeviceName))
        ) /
        // Divide by the size of each cypher details struct to give the array length
        sizeof(outDIOCBuffer->DeviceName);
@@ -3948,7 +4247,7 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceList(
 
     if NT_SUCCESS(status)
         {
-        Irp->IoStatus.Information = sizeof(DIOC_DEVICE_NAME_LIST)+(outDIOCBuffer->DeviceCount * sizeof(outDIOCBuffer->DeviceName))-sizeof(outDIOCBuffer->DeviceName);
+        Irp->IoStatus.Information = sizeof(*outDIOCBuffer)+(outDIOCBuffer->DeviceCount * sizeof(outDIOCBuffer->DeviceName))-sizeof(outDIOCBuffer->DeviceName);
         }
     else
         {
@@ -3986,10 +4285,10 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceStatus(
 
     // Check size of INPUT buffer
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
-            sizeof(DIOC_DEVICE_NAME))
+            sizeof(*inDIOCBuffer))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_DEVICE_NAME),
+            sizeof(*inDIOCBuffer),
             irpSp->Parameters.DeviceIoControl.InputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -3998,10 +4297,10 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceStatus(
 
     // Check size of OUTPUT buffer
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_DISK_DEVICE_STATUS))
+            sizeof(*outDIOCBuffer))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_DISK_DEVICE_STATUS),
+            sizeof(*outDIOCBuffer),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -4221,7 +4520,7 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceStatus(
         
     if (NT_SUCCESS(status))
         {
-        Irp->IoStatus.Information = sizeof(DIOC_DISK_DEVICE_STATUS);
+        Irp->IoStatus.Information = sizeof(*outDIOCBuffer);
         }
     else
         {
@@ -4259,10 +4558,10 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceMetaData(
 
     // Check size of INPUT buffer
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
-            sizeof(DIOC_DEVICE_NAME))
+            sizeof(*inDIOCBuffer))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_DEVICE_NAME),
+            sizeof(*inDIOCBuffer),
             irpSp->Parameters.DeviceIoControl.InputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -4271,10 +4570,10 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceMetaData(
 
     // Check size of OUTPUT buffer
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_DISK_DEVICE_METADATA))
+            sizeof(*outDIOCBuffer))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_DISK_DEVICE_METADATA),
+            sizeof(*outDIOCBuffer),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -4308,7 +4607,7 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceMetaData(
     // Actual check...
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
             (
-             sizeof(DIOC_DISK_DEVICE_METADATA) + 
+             sizeof(*outDIOCBuffer) + 
              tgtDevExt->MetaDataLength - 
              sizeof(outDIOCBuffer->MetaData)
             )
@@ -4316,7 +4615,7 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceMetaData(
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect actual: %d; got: %d)\n",
             (
-             sizeof(DIOC_DISK_DEVICE_METADATA) + 
+             sizeof(*outDIOCBuffer) + 
              tgtDevExt->MetaDataLength - 
              sizeof(outDIOCBuffer->MetaData)
             ),
@@ -4339,7 +4638,7 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceMetaData(
     if (NT_SUCCESS(status))
         {
         Irp->IoStatus.Information = (
-                                    sizeof(DIOC_DISK_DEVICE_METADATA) + 
+                                    sizeof(*outDIOCBuffer) + 
                                     tgtDevExt->MetaDataLength - 
                                     sizeof(outDIOCBuffer->MetaData)
                                     );
@@ -5431,6 +5730,7 @@ IOCTL_Std_CDROMReadTOC(
     // Convert to MSF (Minutes/Seconds/Frames) format required by the structure
     // One frame == one sector
 
+    // 64 BIT NUMBERS MODULUS ISSUE
     // Note: The "modulus problem" or "divide problem" with MS Windows 2000:
     //       With 64 bit numbers the following:
     //
@@ -5891,6 +6191,13 @@ FreeOTFE_MF_DispatchSystemControl(
 // talk to when creating new devices, carrying out general driver
 // queries, etc
 // DeviceObject will be set to the newly created device object
+//
+// Note: The "__drv_when" incantation is to prevent warnings by PFD; see:
+// http://msdn.microsoft.com/en-us/library/ff546191%28v=vs.85%29.aspx
+//__drv_when(!isFunctionClass$("DRIVER_INITIALIZE") && return == 0, __deref(__drv_allocatesMem(mem)))
+// Above causes PFD to fail. Below should just sort it:
+__drv_allocatesMem(mem)
+// but this still gives a PFD warning?!
 NTSTATUS
 CreateMainDevice (
     IN PDRIVER_OBJECT DriverObject,
@@ -5916,7 +6223,11 @@ CreateMainDevice (
     devName.Buffer = FREEOTFE_MEMALLOC(devName.MaximumLength);    
     RtlZeroMemory(devName.Buffer, devName.MaximumLength);
     
-    devName.Length = (USHORT)swprintf(devName.Buffer, DEVICE_MAIN_NAME);
+    devName.Length = (USHORT)FREEOTFE_SWPRINTF(
+		                        devName.Buffer,
+		                        (devName.MaximumLength / sizeof(*(devName.Buffer))),
+		                        DEVICE_MAIN_NAME
+		                       );
     // swprintf returns the number of WCHARs, not the length in bytes
     devName.Length = devName.Length * sizeof(WCHAR);
     DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("xdevNameLength: %d\n",
@@ -5942,6 +6253,10 @@ CreateMainDevice (
     if (!(NT_SUCCESS(status)))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("Status NOT OK\n"));
+        SecZeroAndFreeMemory(
+                      devName.Buffer,
+                      devName.MaximumLength
+                     );
         return status;
         }
 
@@ -5971,8 +6286,9 @@ CreateMainDevice (
     devExtension->zzSymbolicLinkName.MaximumLength = sizeof(DEVICE_SYMLINK_MAIN_NAME) + sizeof(WCHAR);
     devExtension->zzSymbolicLinkName.Buffer = FREEOTFE_MEMALLOC(devExtension->zzSymbolicLinkName.MaximumLength);
     RtlZeroMemory(devExtension->zzSymbolicLinkName.Buffer, devExtension->zzSymbolicLinkName.MaximumLength);
-    devExtension->zzSymbolicLinkName.Length = (USHORT)swprintf(
+    devExtension->zzSymbolicLinkName.Length = (USHORT)FREEOTFE_SWPRINTF(
 	                            devExtension->zzSymbolicLinkName.Buffer,
+	                            (devExtension->zzSymbolicLinkName.MaximumLength / sizeof(*(devExtension->zzSymbolicLinkName.Buffer))),
 	                            DEVICE_SYMLINK_MAIN_NAME
                                 );
     // swprintf returns the number of WCHARs, not the length in bytes
@@ -6080,39 +6396,6 @@ CreateMainDevice (
 
 
 // =========================================================================
-// Cancel all IRPs currently on the queue
-void
-CancelAllQueuedIRPs(
-    IN PDEVICE_OBJECT DeviceObject
-)
-{
-    PIRP pendingIrp;
-    PDEVICE_EXTENSION devExt;
-
-    DEBUGOUTMAINDRV(DEBUGLEV_ENTER, ("CancelAllQueuedIRPs\n"));
-
-    devExt = (PDEVICE_EXTENSION)DeviceObject->DeviceExtension;
-
-    // We only check one member of the struct; this will tell us if the CancelSafeQueue has
-    // been initialised or not
-    if (devExt->CancelSafeQueue.CsqRemoveIrp != NULL)
-        {
-        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Cancelling all queued IRPs.\n"));
-        while(pendingIrp = IoCsqRemoveNextIrp(&devExt->CancelSafeQueue, NULL))
-            {
-            // Cancel the IRP
-            DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Cancelling an IRP...\n"));
-            pendingIrp->IoStatus.Information = 0;
-            pendingIrp->IoStatus.Status = STATUS_CANCELLED;
-            IoCompleteRequest(pendingIrp, IO_NO_INCREMENT);
-            }
-        }
-
-    DEBUGOUTMAINDRV(DEBUGLEV_EXIT, ("CancelAllQueuedIRPs\n"));
-}
-
-
-// =========================================================================
 // Create a disk device object
 // DeviceObject will be set to the newly created device object
 NTSTATUS
@@ -6149,7 +6432,12 @@ CreateDiskDevice (
         DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Building device name...\n"));
 
         RtlZeroMemory(devName.Buffer, devName.MaximumLength);        
-        devName.Length = (USHORT)swprintf(devName.Buffer, DEVICE_DISK_PREFIX L"%d", i);
+        devName.Length = (USHORT)FREEOTFE_SWPRINTF(
+	                                    devName.Buffer,
+	                                    (devName.MaximumLength / sizeof(*(devName.Buffer))),
+	                                    DEVICE_DISK_PREFIX L"%d",
+	                                    i
+	                                   );
         // swprintf returns the number of WCHARs, not the length in bytes
         devName.Length = devName.Length * sizeof(WCHAR);
         DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Name length: %d %d\n", devName.Length, devName.MaximumLength));
@@ -6191,6 +6479,10 @@ CreateDiskDevice (
     if (!(NT_SUCCESS(status)))
         {
         DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("Status NOT OK\n"));
+        SecZeroAndFreeMemory(
+                      devName.Buffer,
+                      devName.MaximumLength
+                     );
         return status;
         }
 
@@ -6302,6 +6594,37 @@ CreateDiskDevice (
 
 
 // =========================================================================
+// Cancel all IRPs currently on the queue
+void
+CancelAllQueuedIRPs(
+    IN PDEVICE_OBJECT DeviceObject
+)
+{
+    PIRP pendingIrp;
+    PDEVICE_EXTENSION devExt;
+
+    DEBUGOUTMAINDRV(DEBUGLEV_ENTER, ("CancelAllQueuedIRPs\n"));
+
+    devExt = (PDEVICE_EXTENSION)DeviceObject->DeviceExtension;
+
+    // We only check one member of the struct; this will tell us if the CancelSafeQueue has
+    // been initialised or not
+    if (devExt->CancelSafeQueue.CsqRemoveIrp != NULL)
+        {
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Cancelling all queued IRPs.\n"));
+        while(pendingIrp = IoCsqRemoveNextIrp(&devExt->CancelSafeQueue, NULL))
+            {
+            // Cancel the IRP
+            DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Cancelling an IRP...\n"));
+            pendingIrp->IoStatus.Information = 0;
+            pendingIrp->IoStatus.Status = STATUS_CANCELLED;
+            IoCompleteRequest(pendingIrp, IO_NO_INCREMENT);
+            }
+        }
+
+    DEBUGOUTMAINDRV(DEBUGLEV_EXIT, ("CancelAllQueuedIRPs\n"));
+}
+// =========================================================================
 VOID CSQInsertIrp (
     IN PIO_CSQ   Csq,
     IN PIRP              Irp
@@ -6390,6 +6713,10 @@ PIRP CSQPeekNextIrp(
 
 
 // =========================================================================
+// Annotation to prevent PFD warning included as per:
+// http://msdn.microsoft.com/en-us/library/ff546191%28v=vs.85%29.aspx
+// taken from wdk.h, for KfAcquireSpinLock/KeAcquireSpinLockRaiseToDpc
+__drv_setsIRQL(DISPATCH_LEVEL)
 VOID CSQAcquireLock(
     IN  PIO_CSQ Csq,
     OUT PKIRQL  Irql
@@ -6405,9 +6732,14 @@ VOID CSQAcquireLock(
 
 
 // =========================================================================
+// Annotation to prevent PFD warning included as per:
+// http://msdn.microsoft.com/en-us/library/ff546191%28v=vs.85%29.aspx
+// taken from wdk.h, for KfReleaseSpinLock
+__drv_requiresIRQL(DISPATCH_LEVEL)
 VOID CSQReleaseLock(
     IN PIO_CSQ Csq,
-    IN KIRQL   Irql
+    // __drv_restoresIRQL is annotation; see just above
+    IN __drv_restoresIRQL KIRQL   Irql
     )
 {
     PDEVICE_EXTENSION   devExtension;
@@ -8889,11 +9221,14 @@ NTSTATUS
 SynchCompletionRoutine(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp,
-    IN PKEVENT Event
+    IN PVOID Context  // IN PKEVENT Event
     )
 {
+    PKEVENT Event;
     UNREFERENCED_PARAMETER(DeviceObject);
     UNREFERENCED_PARAMETER(Irp);
+
+    Event = (PKEVENT)Context;
 
     KeSetEvent(Event, 0, FALSE);
     return STATUS_MORE_PROCESSING_REQUIRED;
@@ -8941,11 +9276,74 @@ GetMaxSizeFile(
 
 
 // =========================================================================
+NTSTATUS
+GetMaxSizePartition(
+    IN  PUNICODE_STRING DeviceName,
+    OUT PLARGE_INTEGER MaxSize
+)
+{
+    NTSTATUS status;
+
+    DEBUGOUTMAINDRV(DEBUGLEV_ENTER, ("GetMaxSizePartition\n"));
+
+    // From:
+    //   http://msdn.microsoft.com/en-us/library/aa365179.aspx
+    //   http://msdn.microsoft.com/en-us/library/aa365180.aspx
+  
+    //
+    // The IOCTL_DISK_GET_PARTITION_INFO control code is only supported on 
+    // MBR-formatted disks.
+    //
+    // The IOCTL_DISK_GET_PARTITION_INFO_EX control code is supported on basic
+    // disks. It is only supported on dynamic disks that are boot or system 
+    // disks, or have retained entries in the partition table. The DiskPart.exe
+    // command RETAIN can be used to do this for other dynamic simple partitions.
+    //
+    // The disk support can be summarized as follows.
+    //  
+    // Disk type                        | IOCTL_DISK_GET_PARTITION_INFO | IOCTL_DISK_GET_PARTITION_INFO_EX
+    // ---------------------------------+-------------------------------+---------------------------------
+    // Basic master boot record (MBR)   |             Yes               |             Yes
+    // Basic GUID partition table (GPT) |             No                |             Yes
+    // Dynamic MBR boot/system          |             Yes               |             Yes
+    // Dynamic MBR data                 |             Yes               |             No
+    // Dynamic GPT boot/system          |             No                |             Yes
+    // Dynamic GPT data                 |             No                |             No
+    //
+
+    status = _GetMaxSizePartition_IDGPIEx(DeviceName, MaxSize);
+    if (!(NT_SUCCESS(status)))
+        {
+        // Fallback; the disk partition may be a Dynamic MBR data partition.
+        status = _GetMaxSizePartition_IDGPI(DeviceName, MaxSize);
+        }
+
+    DEBUGOUTMAINDRV(DEBUGLEV_EXIT, ("GetMaxSizePartition\n"));
+
+    return status;
+}
+
+
+// =========================================================================
 // Determine the max size of a partition
+//
+// !!!!!!!!!!!!!!!!!
+// !!! IMPORTANT !!!
+// !!!!!!!!!!!!!!!!!
+//
+// If this function is changed, the following should probably be kept in sync:
+//
+//   _GetMaxSizePartition_IDGPI(...)
+//   _GetMaxSizePartition_IDGPIEx(...)
+//
+// !!!!!!!!!!!!!!!!!
+// !!! IMPORTANT !!!
+// !!!!!!!!!!!!!!!!!
+//
 // DeviceName - The device name of the partition
 //              e.g. \Device\Harddisk1\Partition1
 NTSTATUS
-GetMaxSizePartition(
+_GetMaxSizePartition_IDGPI(
     IN  PUNICODE_STRING DeviceName,
     OUT PLARGE_INTEGER MaxSize
 )
@@ -8958,7 +9356,8 @@ GetMaxSizePartition(
 	PFILE_OBJECT fileObject;
 	PDEVICE_OBJECT deviceObject;
     UNICODE_STRING devName;
-    DEBUGOUTMAINDRV(DEBUGLEV_ENTER, ("GetMaxSizePartition\n"));
+
+  DEBUGOUTMAINDRV(DEBUGLEV_ENTER, ("_GetMaxSizePartition_IDGPI\n"));
     
     tmpIrp = NULL;
 
@@ -9047,7 +9446,11 @@ GetMaxSizePartition(
         // Irp is complete, grab the status and free the irp
         status = tmpIrp->IoStatus.Status;
 
-        if (status == STATUS_SUCCESS)
+        if (status != STATUS_SUCCESS)
+            {    
+            DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("tmpIrp->IoStatus.Status was NOT STATUS_SUCCESS\n"));
+            }
+        else    
             {    
             DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Status OK - setting up to return partition size.\n"));
             *MaxSize = partitionInfo.PartitionLength;
@@ -9063,7 +9466,7 @@ GetMaxSizePartition(
         DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("IoFreeIrp done.\n"));
         }
 
-    // ...dereference the hash device
+    // ...dereference the device
     // http://www.osr.com/ddk/kmarch/devobjts_8zdz.htm - says use ObDereferenceObject
     if (fileObject != NULL)
         {
@@ -9071,7 +9474,163 @@ GetMaxSizePartition(
         }
 
 
-    DEBUGOUTMAINDRV(DEBUGLEV_EXIT, ("GetMaxSizePartition\n"));
+    DEBUGOUTMAINDRV(DEBUGLEV_EXIT, ("_GetMaxSizePartition_IDGPI\n"));
+
+    return status;
+}
+
+
+// =========================================================================
+// Determine the max size of a partition
+//
+// !!!!!!!!!!!!!!!!!
+// !!! IMPORTANT !!!
+// !!!!!!!!!!!!!!!!!
+//
+// If this function is changed, the following should probably be kept in sync:
+//
+//   _GetMaxSizePartition_IDGPI(...)
+//   _GetMaxSizePartition_IDGPIEx(...)
+//
+// !!!!!!!!!!!!!!!!!
+// !!! IMPORTANT !!!
+// !!!!!!!!!!!!!!!!!
+//
+// DeviceName - The device name of the partition
+//              e.g. \Device\Harddisk1\Partition1
+NTSTATUS
+_GetMaxSizePartition_IDGPIEx(
+    IN  PUNICODE_STRING DeviceName,
+    OUT PLARGE_INTEGER MaxSize
+)
+{
+    NTSTATUS status;
+    PARTITION_INFORMATION_EX partitionInfo;
+    PIRP tmpIrp;
+    PIO_STACK_LOCATION irpSp;
+    KEVENT event;
+	PFILE_OBJECT fileObject;
+	PDEVICE_OBJECT deviceObject;
+    UNICODE_STRING devName;
+
+    DEBUGOUTMAINDRV(DEBUGLEV_ENTER, ("_GetMaxSizePartition_IDGPIEx\n"));
+    
+    tmpIrp = NULL;
+
+    fileObject = NULL;
+    deviceObject = NULL;
+
+    status = STATUS_SUCCESS;
+
+
+    if (NT_SUCCESS(status))
+        { 
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("About to IoGetDeviceObjectPointer...\n"));
+        status = IoGetDeviceObjectPointer(
+                                          DeviceName,
+                                          FILE_READ_ATTRIBUTES,
+                                          &fileObject,
+                                          &deviceObject
+                                         ); 
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Got ptr to device: status: %d (want status: %d)\n", status, STATUS_SUCCESS));
+        if (!(NT_SUCCESS(status)))
+            {
+            DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("Unable to get device object for devicename: %ls\n", DeviceName->Buffer));
+            fileObject = NULL;
+            deviceObject = NULL;
+            }
+        }
+
+
+    if (NT_SUCCESS(status))
+        {
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("About to IoAllocateIrp...\n"));
+        tmpIrp = IoAllocateIrp(
+                               deviceObject->StackSize,
+                               FALSE
+                              );
+                          
+        if (tmpIrp == NULL)
+            {
+            DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("IoAllocateIrp failure.\n"));
+            status = STATUS_INTERNAL_ERROR;
+            }
+        }
+    
+
+    if (NT_SUCCESS(status))
+        {                         
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Setting up IRP...\n"));
+        tmpIrp->Flags = (IRP_BUFFERED_IO | IRP_INPUT_OPERATION);
+        tmpIrp->IoStatus.Status = STATUS_NOT_SUPPORTED;
+    
+        irpSp = IoGetNextIrpStackLocation(tmpIrp);
+
+        irpSp->MajorFunction = IRP_MJ_DEVICE_CONTROL;
+
+        // It uses METHOD_BUFFERED, so we use "AssociatedIrp.SystemBuffer"
+        tmpIrp->AssociatedIrp.SystemBuffer = &partitionInfo;
+
+        irpSp->Parameters.DeviceIoControl.OutputBufferLength = sizeof(partitionInfo);
+        irpSp->Parameters.DeviceIoControl.InputBufferLength  = 0;
+        irpSp->Parameters.DeviceIoControl.IoControlCode      = IOCTL_DISK_GET_PARTITION_INFO_EX;
+    
+
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Setting up event and completion routine...\n"));
+        KeInitializeEvent(&event, NotificationEvent, FALSE);        
+        IoSetCompletionRoutine(tmpIrp, SynchCompletionRoutine, &event, TRUE, TRUE, TRUE);
+
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("About to IoCallDriver...\n"));
+        status = IoCallDriver(deviceObject, tmpIrp);
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("IoCallDriver done.\n"));
+
+        if (!(NT_SUCCESS(status)))
+            {
+            DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("IoCallDriver failed.\n"));
+            }
+        else
+            {
+            DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("About to wait for event...\n"));
+            KeWaitForSingleObject(&event, Executive, KernelMode, FALSE, NULL);
+            DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Event got.\n"));
+            }            
+        }
+    
+
+    if (NT_SUCCESS(status))
+        {
+        // Irp is complete, grab the status and free the irp
+        status = tmpIrp->IoStatus.Status;
+
+        if (status != STATUS_SUCCESS)
+            {    
+            DEBUGOUTMAINDRV(DEBUGLEV_ERROR, ("tmpIrp->IoStatus.Status was NOT STATUS_SUCCESS\n"));
+            }
+        else    
+            {    
+            DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("Status OK - setting up to return partition size.\n"));
+            *MaxSize = partitionInfo.PartitionLength;
+            }
+        }
+
+
+    // Cleanup...
+    if (tmpIrp != NULL)
+        {
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("About to IoFreeIrp...\n"));
+        IoFreeIrp(tmpIrp);
+        DEBUGOUTMAINDRV(DEBUGLEV_INFO, ("IoFreeIrp done.\n"));
+        }
+
+    // ...dereference the device
+    // http://www.osr.com/ddk/kmarch/devobjts_8zdz.htm - says use ObDereferenceObject
+    if (fileObject != NULL)
+        {
+        ObDereferenceObject(fileObject);
+        }
+
+
+    DEBUGOUTMAINDRV(DEBUGLEV_EXIT, ("_GetMaxSizePartition_IDGPIEx\n"));
 
     return status;
 }

@@ -93,7 +93,9 @@ AppendGUIDToUnicodeString(
     unicodeRep.Buffer = FREEOTFE_MEMALLOC(unicodeRep.MaximumLength);    
     RtlZeroMemory(unicodeRep.Buffer, unicodeRep.MaximumLength);
     
-    unicodeRep.Length = (USHORT)swprintf(unicodeRep.Buffer,
+    unicodeRep.Length = (USHORT)FREEOTFE_SWPRINTF(
+                                         unicodeRep.Buffer,
+                                         (unicodeRep.MaximumLength / sizeof(*(unicodeRep.Buffer))),
                                          L"{%.8X-%.4X-%.4X-%.2X%.2X-%.2X%.2X%.2X%.2X%.2X%.2X}",
                                          useGUID.Data1,
                                          useGUID.Data2,

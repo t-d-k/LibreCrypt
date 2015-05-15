@@ -44,7 +44,6 @@ DriverEntry(
     OBJECT_ATTRIBUTES dirObjAttribs;
     PDEVICE_OBJECT mainDevObj;
     PDEVICE_EXTENSION mainDevExt;
-    int i;
     
     // The following debug handling was ripped from the MS DDK "floppy.c"
     // example
@@ -72,8 +71,8 @@ DriverEntry(
 
     if (path = FREEOTFE_MEMALLOC(pathLength)) {
 
-        RtlZeroMemory( &paramTable[0], sizeof(paramTable) );
-        RtlZeroMemory( path, pathLength);
+        SecZeroMemory(&paramTable[0], sizeof(paramTable));
+        SecZeroMemory(path, pathLength);
         RtlMoveMemory( path, RegistryPath->Buffer, RegistryPath->Length );
 
         paramTable[0].Flags         = RTL_QUERY_REGISTRY_DIRECT;
@@ -90,12 +89,12 @@ DriverEntry(
         paramTable[1].DefaultData   = &default_DebugLevel;
         paramTable[1].DefaultLength = sizeof(ULONG);
 
-        if (!NT_SUCCESS(RtlQueryRegistryValues(
+        if (!(NT_SUCCESS(RtlQueryRegistryValues(
                             RTL_REGISTRY_ABSOLUTE | RTL_REGISTRY_OPTIONAL,
                             path,
                             &paramTable[0],
                             NULL,
-                            NULL))) {
+                            NULL)))) {
 
             shouldBreak = default_ShouldBreak;
             debugLevel = default_DebugLevel;
@@ -104,10 +103,8 @@ DriverEntry(
         FREEOTFE_FREE(path);
     }
 
-#if DBG
     FreeOTFEDebugLevel = debugLevel;
     DEBUGOUTHASHDRV(DEBUGLEV_INFO, ("Debug level: %d\n", FreeOTFEDebugLevel));
-#endif
     
     if (shouldBreak == 1)
         {
@@ -270,7 +267,7 @@ DestroyDevice(
         DEBUGOUTHASHDRV(DEBUGLEV_INFO, ("Freeing off symlink unicode buffer...\n")); 
         SecZeroMemory(
                         devExt->zzSymbolicLinkName.Buffer,
-                        sizeof(devExt->zzSymbolicLinkName.MaximumLength)
+                        devExt->zzSymbolicLinkName.MaximumLength
                         );
         FREEOTFE_FREE(devExt->zzSymbolicLinkName.Buffer);
         devExt->zzSymbolicLinkName.Buffer = NULL;
@@ -284,7 +281,7 @@ DestroyDevice(
         DEBUGOUTHASHDRV(DEBUGLEV_INFO, ("Freeing off devname unicode buffer...\n"));
         SecZeroMemory(
                       devExt->zzDeviceName.Buffer,
-                      sizeof(devExt->zzDeviceName.MaximumLength)
+                      devExt->zzDeviceName.MaximumLength
                      );
         FREEOTFE_FREE(devExt->zzDeviceName.Buffer);
         devExt->zzDeviceName.Buffer = NULL;
@@ -416,8 +413,9 @@ FreeOTFE_MF_DispatchDeviceControl(
         }
         
         
-    // If we want to queue the IRP, this should have been flagged,
-    // otherwise we complete the reqest
+    // If we want to queue the IRP, this should have been flagged by setting
+    // "queueDeviceObject" to be the object which receives the queued IRP.
+    // Otherwise we complete the request.
     if (queueDeviceObject != NULL)
         {
         DEBUGOUTHASHDRV(DEBUGLEV_INFO, ("Queuing IRP...\n"));
@@ -481,10 +479,10 @@ IOCTL_FreeOTFEHashIOCTL_IntlDetails(
 
     // Check size of OUTPUT buffer
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_HASH_INTLDETAILS))
+            sizeof(*DIOCBuffer))
         {
         DEBUGOUTHASHDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_HASH_INTLDETAILS),
+            sizeof(*DIOCBuffer),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -498,7 +496,7 @@ IOCTL_FreeOTFEHashIOCTL_IntlDetails(
     DIOCBuffer->FnHash        = ImpHashHashData;
     DIOCBuffer->FnHashDetails = GetHashDetails;    
 
-    Irp->IoStatus.Information = sizeof(DIOC_HASH_INTLDETAILS);
+    Irp->IoStatus.Information = sizeof(*DIOCBuffer);
     status = STATUS_SUCCESS;
 
 
@@ -527,10 +525,10 @@ IOCTL_FreeOTFEHashIOCTL_IdentifyDriver(
 
     // Check size of OUTPUT buffer
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_HASH_IDENTIFYDRIVER))
+            sizeof(*DIOCBuffer))
         {
         DEBUGOUTHASHDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect: %d; got: %d)\n",
-            sizeof(DIOC_HASH_IDENTIFYDRIVER),
+            sizeof(*DIOCBuffer),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -554,7 +552,7 @@ IOCTL_FreeOTFEHashIOCTL_IdentifyDriver(
     DIOCBuffer->CountHashes = devExt->DriverInfo.HashCount;
 
 
-    Irp->IoStatus.Information = sizeof(DIOC_HASH_IDENTIFYDRIVER);
+    Irp->IoStatus.Information = sizeof(*DIOCBuffer);
 
 
     DEBUGOUTHASHDRV(DEBUGLEV_EXIT, ("IOCTL_FreeOTFEHashIOCTL_IdentifyDriver\n"));
@@ -584,10 +582,10 @@ IOCTL_FreeOTFEHashIOCTL_IdentifySupported(
 
     // Check size of OUTPUT buffer
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_HASH_IDENTIFYSUPPORTED)-sizeof(DIOCBuffer->Hashes))
+            sizeof(*DIOCBuffer)-sizeof(DIOCBuffer->Hashes))
         {
         DEBUGOUTHASHDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect min: %d; got: %d)\n",
-            sizeof(DIOC_HASH_IDENTIFYSUPPORTED)-sizeof(DIOCBuffer->Hashes),
+            sizeof(*DIOCBuffer)-sizeof(DIOCBuffer->Hashes),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -601,7 +599,7 @@ IOCTL_FreeOTFEHashIOCTL_IdentifySupported(
        (
          // The size of the buffer, less the array of hash details
          irpSp->Parameters.DeviceIoControl.OutputBufferLength - 
-           (sizeof(DIOC_HASH_IDENTIFYSUPPORTED)-sizeof(DIOCBuffer->Hashes))
+           (sizeof(*DIOCBuffer)-sizeof(DIOCBuffer->Hashes))
        ) /
        // Divide by the size of each hash details struct to give the array length
        sizeof(DIOCBuffer->Hashes);
@@ -631,7 +629,7 @@ IOCTL_FreeOTFEHashIOCTL_IdentifySupported(
                  );
     
 
-    Irp->IoStatus.Information = sizeof(DIOC_HASH_IDENTIFYSUPPORTED)+(DIOCBuffer->BufCount * sizeof(DIOCBuffer->Hashes))-sizeof(DIOCBuffer->Hashes);
+    Irp->IoStatus.Information = sizeof(*DIOCBuffer)+(DIOCBuffer->BufCount * sizeof(DIOCBuffer->Hashes))-sizeof(DIOCBuffer->Hashes);
 
 
     DEBUGOUTHASHDRV(DEBUGLEV_EXIT, ("IOCTL_FreeOTFEHashIOCTL_IdentifySupported\n"));
@@ -668,10 +666,10 @@ IOCTL_FreeOTFEHashIOCTL_Hash(
     // (Done first in order to ensure that we can later access "length" parts
     // for actual check)
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
-            sizeof(DIOC_HASH_DATA_IN)-sizeof(DIOCBufferIn->Data))            
+            sizeof(*DIOCBufferIn)-sizeof(DIOCBufferIn->Data))            
         {
         DEBUGOUTHASHDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect min: %d; got: %d)\n",
-            sizeof(DIOC_HASH_DATA_IN)-sizeof(DIOCBufferIn->Data),
+            sizeof(*DIOCBufferIn)-sizeof(DIOCBufferIn->Data),
             irpSp->Parameters.DeviceIoControl.InputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -679,10 +677,10 @@ IOCTL_FreeOTFEHashIOCTL_Hash(
         }
     // Actual check...
     if (irpSp->Parameters.DeviceIoControl.InputBufferLength <
-            sizeof(DIOC_HASH_DATA_IN)+(DIOCBufferIn->DataLength/8)-sizeof(DIOCBufferIn->Data))            
+            sizeof(*DIOCBufferIn)+(DIOCBufferIn->DataLength/8)-sizeof(DIOCBufferIn->Data))            
         {
         DEBUGOUTHASHDRV(DEBUGLEV_ERROR, ("inBuffer size wrong size (expect actual: %d; got: %d)\n",
-            sizeof(DIOC_HASH_DATA_IN)+(DIOCBufferIn->DataLength/8)-sizeof(DIOCBufferIn->Data),
+            sizeof(*DIOCBufferIn)+(DIOCBufferIn->DataLength/8)-sizeof(DIOCBufferIn->Data),
             irpSp->Parameters.DeviceIoControl.InputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -695,10 +693,10 @@ IOCTL_FreeOTFEHashIOCTL_Hash(
     // (Done first in order to ensure that we can later access "length" parts
     // for actual check)
     if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-            sizeof(DIOC_HASH_DATA_OUT)-sizeof(DIOCBufferOut->Hash))
+            sizeof(*DIOCBufferOut)-sizeof(DIOCBufferOut->Hash))
         {
         DEBUGOUTHASHDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect min: %d; got: %d)\n",
-            sizeof(DIOC_HASH_DATA_OUT)-sizeof(DIOCBufferOut->Hash),
+            sizeof(*DIOCBufferOut)-sizeof(DIOCBufferOut->Hash),
             irpSp->Parameters.DeviceIoControl.OutputBufferLength
             ));
         status = STATUS_INVALID_BUFFER_SIZE;
@@ -721,7 +719,7 @@ IOCTL_FreeOTFEHashIOCTL_Hash(
     // less the size of the struct - but then plus the size of
     // the variable parts reserved within the buffer
     userBufferSizeBytes = (irpSp->Parameters.DeviceIoControl.OutputBufferLength) - 
-                          sizeof(DIOCBufferOut) +
+                          sizeof(*DIOCBufferOut) +
                           sizeof(DIOCBufferOut->Hash);
     tmpOutput = FREEOTFE_MEMALLOC(userBufferSizeBytes); 
 
@@ -753,10 +751,10 @@ IOCTL_FreeOTFEHashIOCTL_Hash(
         // output value, in case the algorithm used produces variable length
         // output
         if (irpSp->Parameters.DeviceIoControl.OutputBufferLength <
-                sizeof(DIOC_HASH_DATA_OUT)+(tmpLengthBits/8)-sizeof(DIOCBufferOut->Hash))
+                sizeof(*DIOCBufferOut)+(tmpLengthBits/8)-sizeof(DIOCBufferOut->Hash))
             {
             DEBUGOUTHASHDRV(DEBUGLEV_ERROR, ("outBuffer size wrong size (expect actual: %d; got: %d)\n",
-                sizeof(DIOC_HASH_DATA_OUT)+(tmpLengthBits/8)-sizeof(DIOCBufferOut->Hash),
+                sizeof(*DIOCBufferOut)+(tmpLengthBits/8)-sizeof(DIOCBufferOut->Hash),
                 irpSp->Parameters.DeviceIoControl.OutputBufferLength
                 ));
             status = STATUS_INVALID_BUFFER_SIZE;
@@ -765,7 +763,7 @@ IOCTL_FreeOTFEHashIOCTL_Hash(
             {
             RtlCopyMemory(&DIOCBufferOut->Hash, tmpOutput, (tmpLengthBits / 8));
             DIOCBufferOut->HashLength = tmpLengthBits;
-            Irp->IoStatus.Information = sizeof(DIOC_HASH_DATA_OUT)+(tmpLengthBits/8)-sizeof(DIOCBufferOut->Hash); 
+            Irp->IoStatus.Information = sizeof(*DIOCBufferOut)+(tmpLengthBits/8)-sizeof(DIOCBufferOut->Hash); 
             }
 
         }
@@ -789,6 +787,13 @@ IOCTL_FreeOTFEHashIOCTL_Hash(
 // talk to when creating new devices, carrying out general driver
 // queries, etc
 // DeviceObject will be set to the newly created device object
+//
+// Note: The "__drv_when" incantation is to prevent warnings by PFD; see:
+// http://msdn.microsoft.com/en-us/library/ff546191%28v=vs.85%29.aspx
+//__drv_when(!isFunctionClass$("DRIVER_INITIALIZE") && return == 0, __deref(__drv_allocatesMem(mem)))
+// Above causes PFD to fail. Below should just sort it:
+__drv_allocatesMem(mem)
+// but this still gives a PFD warning?!
 NTSTATUS
 CreateDevice (
     IN PDRIVER_OBJECT DriverObject,
@@ -832,7 +837,12 @@ CreateDevice (
     RtlZeroMemory(devName.Buffer, devName.MaximumLength);
     
     // Note the "/" in the format string
-    devName.Length = (USHORT)swprintf(devName.Buffer, L"%s\\", DEVICE_HASH_DIR_NAME);
+    devName.Length = (USHORT)FREEOTFE_SWPRINTF(
+		                        devName.Buffer,
+		                        (devName.MaximumLength / sizeof(*(devName.Buffer))),
+		                        L"%s\\",
+		                        DEVICE_HASH_DIR_NAME
+		                       );
     // swprintf returns the number of WCHARs, not the length in bytes
     devName.Length = devName.Length * sizeof(WCHAR);
     
@@ -840,6 +850,10 @@ CreateDevice (
     if (!NT_SUCCESS(status))
         {
         DEBUGOUTHASHDRV(DEBUGLEV_ERROR, ("AppendGUIDToUnicodeString NOT OK\n"));
+        SecZeroAndFreeMemory(
+                      devName.Buffer,
+                      devName.MaximumLength
+                     );
         return status;
         }
 
@@ -866,6 +880,10 @@ CreateDevice (
     if (!NT_SUCCESS(status))
         {
         DEBUGOUTHASHDRV(DEBUGLEV_ERROR, ("Status NOT OK\n"));
+        SecZeroAndFreeMemory(
+                      devName.Buffer,
+                      devName.MaximumLength
+                     );
         return status;
         }
 
@@ -900,8 +918,9 @@ CreateDevice (
 
     devExtension->zzSymbolicLinkName.Buffer = FREEOTFE_MEMALLOC(devExtension->zzSymbolicLinkName.MaximumLength);
     RtlZeroMemory(devExtension->zzSymbolicLinkName.Buffer, devExtension->zzSymbolicLinkName.MaximumLength);
-    devExtension->zzSymbolicLinkName.Length = (USHORT)swprintf(
+    devExtension->zzSymbolicLinkName.Length = (USHORT)FREEOTFE_SWPRINTF(
 	                            devExtension->zzSymbolicLinkName.Buffer,
+	                            (devExtension->zzSymbolicLinkName.MaximumLength / sizeof(*(devExtension->zzSymbolicLinkName.Buffer))),
 	                            L"%s",
 	                            DEVICE_HASH_SYMLINK_PREFIX
                                    );
@@ -943,7 +962,7 @@ CreateDevice (
     // (Some of the bits following are taken from the DDK src/general/cancel example)
     
 
-    // This is used to serailize access to the queue.
+    // This is used to serialize access to the queue.
     KeInitializeSpinLock(&devExtension->IRPQueueLock);
     KeInitializeSemaphore(&devExtension->IRPQueueSemaphore, 0, MAXLONG );
 
@@ -973,7 +992,7 @@ CreateDevice (
                                   devObj
                                  );
 
-    if (!NT_SUCCESS(status))
+    if (!(NT_SUCCESS(status)))
         {
         DEBUGOUTHASHDRV(DEBUGLEV_ERROR, ("Create thread FAILED.\n"));        
         DestroyDevice(devObj);
@@ -1139,6 +1158,10 @@ PIRP CSQPeekNextIrp(
 
 
 // =========================================================================
+// Annotation to prevent PFD warning included as per:
+// http://msdn.microsoft.com/en-us/library/ff546191%28v=vs.85%29.aspx
+// taken from wdk.h, for KfAcquireSpinLock/KeAcquireSpinLockRaiseToDpc
+__drv_setsIRQL(DISPATCH_LEVEL)
 VOID CSQAcquireLock(
     IN  PIO_CSQ Csq,
     OUT PKIRQL  Irql
@@ -1154,9 +1177,14 @@ VOID CSQAcquireLock(
 
 
 // =========================================================================
+// Annotation to prevent PFD warning included as per:
+// http://msdn.microsoft.com/en-us/library/ff546191%28v=vs.85%29.aspx
+// taken from wdk.h, for KfReleaseSpinLock
+__drv_requiresIRQL(DISPATCH_LEVEL)
 VOID CSQReleaseLock(
     IN PIO_CSQ Csq,
-    IN KIRQL   Irql
+    // __drv_restoresIRQL is annotation; see just above
+    IN __drv_restoresIRQL KIRQL   Irql
     )
 {
     PDEVICE_EXTENSION   devExtension;

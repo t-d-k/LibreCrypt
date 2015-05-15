@@ -22,6 +22,26 @@
 
 
 // =========================================================================
+// Annotations
+
+// As per:
+// http://msdn.microsoft.com/en-us/library/ff544652.aspx
+#include <wdm.h>
+DRIVER_INITIALIZE DriverEntry;
+__drv_dispatchType(IRP_MJ_CREATE)
+DRIVER_DISPATCH FreeOTFE_MF_DispatchCreate;
+__drv_dispatchType(IRP_MJ_CLOSE)
+DRIVER_DISPATCH FreeOTFE_MF_DispatchClose;
+__drv_dispatchType(IRP_MJ_DEVICE_CONTROL)
+DRIVER_DISPATCH FreeOTFE_MF_DispatchDeviceControl;
+DRIVER_UNLOAD DriverUnload; 
+// !!!!! IMPORTANT !!!!!
+// If you are using a version of the WDK prior to v7.1.0, comment out the
+// following line to prevent a compiler error:
+KSTART_ROUTINE FreeOTFEThread;
+
+
+// =========================================================================
 // Const definitions
 
 // =========================================================================
