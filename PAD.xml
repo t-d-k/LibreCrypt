@@ -5,18 +5,18 @@
 		<MASTER_PAD_INFO>Portable Application Description, or PAD for short, is a data set that is used by shareware authors to dissemminate information to anyone interested in their software products.  To find out more go to http://www.asp-shareware.org/pad</MASTER_PAD_INFO>
 	</MASTER_PAD_VERSION_INFO>
 	<Company_Info>
-		<Company_Name>DoxBox</Company_Name>
+		<Company_Name>LibreCrypt</Company_Name>
 		<Address_1>N\A</Address_1>
 		<Address_2/>
 		<City_Town></City_Town>
 		<Zip_Postal_Code></Zip_Postal_Code>
 		<State_Province/>
 		<Country></Country>
-		<Company_WebSite_URL>http://doxbox.squte.com/</Company_WebSite_URL>
+		<Company_WebSite_URL>http://LibreCrypt.squte.com/</Company_WebSite_URL>
 		<Contact_Info>
 			<Author_First_Name>tdk</Author_First_Name>
 			<Author_Last_Name></Author_Last_Name>
-			<Author_Email>feedback.doxbox@squte.com</Author_Email>
+			<Author_Email>feedback.LibreCrypt@squte.com</Author_Email>
 			<Contact_First_Name/>
 			<Contact_Last_Name/>
 			<Contact_Email/>
@@ -32,10 +32,10 @@
 		</Support_Info>
 	</Company_Info>
 	<Program_Info>
-		<Program_Name>DoxBox</Program_Name>
-		<Program_Version>6.1.0.0</Program_Version>
+		<Program_Name>LibreCrypt</Program_Name>
+		<Program_Version>6.2.0.0</Program_Version>
 		<Program_Version_Major>6</Program_Version_Major>
-		<Program_Version_Minor>1</Program_Version_Minor>
+		<Program_Version_Minor>2</Program_Version_Minor>
 		<Program_Version_Patch>0</Program_Version_Patch>
 		<Program_Version_Build>0</Program_Version_Build>
 		<Program_Release_Year>2015</Program_Release_Year>
@@ -57,8 +57,8 @@
 		<Includes_JAVA_VM/>
 		<Includes_DirectX/>
 		<File_Info>
-			<Filename_Long>DoxBox.exe</Filename_Long>
-			<Filename_Generic>DoxBox.exe</Filename_Generic>
+			<Filename_Long>LibreCrypt.exe</Filename_Long>
+			<Filename_Generic>LibreCrypt.exe</Filename_Generic>
 			<Filename_Versioned/>
 			<File_Size_Bytes/>
 			<File_Size_K/>
@@ -80,7 +80,7 @@
 			
 			<Char_Desc_45></Char_Desc_45>
 			<Char_Desc_80></Char_Desc_80>
-			<Char_Desc_250>DoxBox: An Open-Source transparent disk encryption program for PCs. Using this software, you can create &quot;virtual disks&quot; - anything written to these disks is automatically encrypted before being stored on your computers hard drive.</Char_Desc_250>
+			<Char_Desc_250>LibreCrypt: An Open-Source transparent disk encryption program for PCs. Using this software, you can create &quot;virtual disks&quot; - anything written to these disks is automatically encrypted before being stored on your computers hard drive.</Char_Desc_250>
 			<Char_Desc_450></Char_Desc_450>
 			<Char_Desc_2000></Char_Desc_2000>
 		</English>
