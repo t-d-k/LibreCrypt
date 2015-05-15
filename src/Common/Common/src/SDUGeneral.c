@@ -7,13 +7,15 @@
 //
 
 
-#include "SDUGeneral.h"
+
 #include <Wingdi.h>
 #include <commctrl.h>  // Only used for LVS_TYPEMASK
 #include <stdio.h>
 #include <wchar.h>
 #include <tchar.h>  // Required for _T macro
 #include <ctype.h>  // Required for toupper(...)
+
+#include "SDUGeneral.h"
 #ifndef WINCE
 #include "FreeOTFEPlatform.h"  // Required to define FOTFE_PC_DRIVER if needed
 #ifndef FOTFE_PC_DRIVER

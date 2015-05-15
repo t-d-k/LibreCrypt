@@ -1,15 +1,16 @@
+#include <windows.h>
 
 #include "SDUi18n_GUI.h"
 
-#include <windows.h>
+
 #include "SDULinkedList.h"
 #include "SDUi18n.h"
 #include "FreeOTFE4PDAGUIlib.h"  // Required for ID_SEPARATOR
 #include "FreeOTFEGUIlib.h"
-
+/* PDA specific
 #include <aygshell.h>  // Required for SH... functions/definitions/etc
 #pragma comment(lib, "aygshell") // Link in aygshell.lib
-
+*/
 // =========================================================================
 
 typedef struct _SDUTRANSLATION_ORIGINAL {
@@ -168,7 +169,7 @@ void SDUi18n_FreeOriginalStrings(HWND hwnd)
 }
 
 
-// =========================================================================
+/* PDA specific
 void SDUi18n_TranslateOriginalWindowText(PSDUTRANSLATION_ORIGINAL translation)
 {
    const TCHAR* tmpBuffer;
@@ -195,9 +196,9 @@ void SDUi18n_TranslateOriginalWindowText(PSDUTRANSLATION_ORIGINAL translation)
        }
 
 }
+*/
 
 
-// =========================================================================
 BOOL CALLBACK _SDUBiuldWindowListEnumWindowsProc(
     HWND hwnd,
     LPARAM lParam
@@ -232,7 +233,7 @@ BOOL CALLBACK _SDUBiuldWindowListEnumWindowsProc(
   return TRUE;
 }
 
-
+/* PDA specific
 // =========================================================================
 void SDUi18n_TranslateWindow(HWND hwnd)
 {
@@ -263,7 +264,7 @@ void _SDUi18n_BuildWindowListWindow(HWND hwnd, HWND parenthWnd)
 
 }
 #else
-lplp - this version hasn't been tested yet, but should work
+// lplp - this version hasn't been tested yet, but should work
 void _SDUi18n_TranslateWindow(HWND hwnd, HWND parenthWnd)
 {
   // Translate the window passed in...
@@ -364,7 +365,7 @@ void SDUi18n_TranslateMenu(HMENU hMenu)
         MF_CHECKED
         MF_MENUBARBREAK 
         MF_SEPARATOR 
-        */
+        * /
 
         // Translate any submenus
         if (menuItemInfo.hSubMenu)
@@ -376,6 +377,7 @@ void SDUi18n_TranslateMenu(HMENU hMenu)
         }
 
 } 
+/* PDA specific
 
 void _SDUi18n_TranslateMenuForWindow(HWND hWndMenu)
 {
@@ -391,8 +393,8 @@ void _SDUi18n_TranslateMenuForWindow(HWND hWndMenu)
     SDUi18n_TranslateMenu(hMenu);
 
     DrawMenuBar(hWndMenu);
-}
-
+}*/
+/* PDA specific
 void SDUi18n_TranslateCommandBar(HWND hCmdBar)
 {
     _SDUi18n_TranslateMenuForWindow(hCmdBar);
@@ -461,6 +463,6 @@ void SDUi18n_TranslateToolbar(HWND hCmdBar)
         i++;
         }
 }
-
+*/
 // =========================================================================
 // =========================================================================

@@ -10,7 +10,7 @@
 #ifndef _FreeOTFElib_H
 #define _FreeOTFElib_H   1
 
-#include "FreeOTFEPlatform.h"
+
 
 #include <stdio.h>
 #ifdef FOTFE_PDA
@@ -20,14 +20,14 @@
 #include <windows.h>  // Required for WCHAR
 #endif
 #ifdef FOTFE_CMD_LINE
-#include <windows.h>  // Required for WCHAR
+ #include <windows.h>  // Required for WCHAR
 #endif
 #ifdef FOTFE_PC_DRIVER
 #include <ntddk.h>
 #include <ntdddisk.h>  // xxx -junk???
 #endif
 
-
+#include "FreeOTFEPlatform.h"
 // =========================================================================
 // Const definitions
 
@@ -102,6 +102,14 @@ BOOLEAN GUIDToWCHAR(
 );
 
 LARGE_INTEGER ZeroLargeInteger();
+
+
+int Platform_swprintf(
+   wchar_t *buffer,
+   size_t sizeOfBuffer,  // In characters, NOT bytes
+   const wchar_t *format,
+   ...
+);
 
 
 // =========================================================================

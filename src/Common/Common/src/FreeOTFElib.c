@@ -6,13 +6,20 @@
 // -----------------------------------------------------------------------------
 //
 
-#include "FreeOTFEPlatform.h"
+
+
+#ifdef FOTFE_PC_DRIVER
+#include <ntddk.h>
+#include <ntstrsafe.h>
+#endif
 
 #include <stdio.h>
+#include <stdarg.h>
 #ifdef FOTFE_PC_DLL
 #include <stdlib.h> // Required for swprintf
 #endif
 
+#include "FreeOTFEPlatform.h"
 #include "FreeOTFElib.h"
 #include "FreeOTFEDebug.h"
 
@@ -193,7 +200,7 @@ BOOLEAN GUIDToWCHAR(
     *StringGUID = FREEOTFE_MEMALLOC(stringSize);
     if (*StringGUID != NULL)
         {
-        _snwprintf(
+        FREEOTFE_SWPRINTF(
                  *StringGUID, 
                  GUID_STR_LENGTH,
                  (WCHAR*)(GUID_FMT), 
@@ -223,6 +230,65 @@ LARGE_INTEGER ZeroLargeInteger()
     retval.QuadPart = 0;
     return retval;
 }
+
+
+// =========================================================================
+// THIS FUNCTION *SHOULD* BE MOVED TO A NEW FILE: FreeOTFEPlatform.c
+// THIS FUNCTION *SHOULD* BE MOVED TO A NEW FILE: FreeOTFEPlatform.c
+// THIS FUNCTION *SHOULD* BE MOVED TO A NEW FILE: FreeOTFEPlatform.c
+//
+// This function is included as _snwprintf(...)/swprintf(...) are "banned"
+// APIs, according to the WDK v7.1.0 OACR
+// However, the replacements _snwprintf_s(...)/vswprintf_s(...) don't exist in
+// earlier versions of the WDK.
+// For this reason, we use RtlStringCchVPrintfW(...) (which uses a different
+// API) for the PC kernel mode drivers, and _vsnwprintf(...) for the PC and
+// PDA DLLs
+// Returns the number of characters, NOT bytes in the buffer
+// Count of characters returned EXCLUDES the terminating NULL
+int Platform_swprintf(
+   wchar_t *buffer,
+   size_t sizeOfBuffer,  // In characters, NOT bytes
+   const wchar_t *format,
+   ...
+)
+{
+    int retval;
+    va_list argptr;
+
+    va_start(argptr, format);
+
+#ifdef FOTFE_PC_DRIVER
+    retval = 0;
+    if (NT_SUCCESS(RtlStringCchVPrintfW(buffer, sizeOfBuffer, format, argptr)))
+        {
+        retval = wcslen(buffer);
+        }
+#else
+    // !!!!!!!!!!!!!!!!!!!!!
+    // !!!!! IMPORTANT !!!!!
+    // !!!!!!!!!!!!!!!!!!!!!
+    //
+    // IF THE COMPILER THROWS UP AN ERROR IN THIS FUNCTION:
+    //    
+    // Comment out the "retval = " line below this comment, and uncomment out
+    // the alternate version following it.
+    
+    // This is a better API to call, but not available with earlier versions 
+    // of the WDK (e.g. pre v7.1.0)
+    // IF YOU HAVE "WXP" OR "WLH" set when setting up the DDK environment THIS WILL FAIL
+    //retval = vswprintf_s(buffer, sizeOfBuffer, format, argptr);
+
+    // This is a "banned" API, according to the WDK v7.1.0 OACR - but will
+    // build if you have an earlier version of the WDK    
+    retval = _vsnwprintf(buffer, sizeOfBuffer, format, argptr);
+#endif
+
+    va_end(argptr);
+
+    return retval;
+}
+
 
 
 // =========================================================================
