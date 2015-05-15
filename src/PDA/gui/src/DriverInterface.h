@@ -9,13 +9,14 @@
 
 #ifndef _DriverInterface_H
 #define _DriverInterface_H   1
+#include <windows.h>  // Required for UINT, BOOL
 
 #include "FreeOTFE4PDAAPI.h"
 #include "FreeOTFE4PDARegistry.h"
 
 #include "FreeOTFE4PDADriverList.h" // Used for disabling drivers
 
-#include <windows.h>  // Required for UINT, BOOL
+
 
 // =========================================================================
 // Enums...

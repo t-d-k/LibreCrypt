@@ -1,39 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Template|Win32">
       <Configuration>Template</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-
   <PropertyGroup Label="Globals">
   </PropertyGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
-
-  <ItemDefinitionGroup></ItemDefinitionGroup>
-  <ItemGroup></ItemGroup>
-
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>P:\src\Common\Common\inc\;P:\src\PDA\Common\inc\;P:\src\Common\DRIVER\inc\;P:\src\Common\HASH_DRIVERS\Common\inc\;P:\src\Common\CYPHER_DRIVERS\Common\inc\;P:\src\PDA\drivers\HASH_DRIVERS\Common\inc\;P:\src\PDA\drivers\CYPHER_DRIVERS\Common\inc\;P:\src\PDA\gui\src\;P:\src\PDA\drivers\DRIVER\inc\</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>FOTFE_PDA;UNICODE</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Common\Common\src\FreeOTFElib.c" />
+    <ClCompile Include="..\..\Common\Common\src\SDUGeneral.c" />
+    <ClCompile Include="..\..\Common\Common\src\SDUi18n.c" />
+    <ClCompile Include="..\..\Common\Common\src\SDUi18n_GUI.c" />
+    <ClCompile Include="..\..\Common\Common\src\SDULinkedList.c" />
+    <ClCompile Include="src\dlgCypherInfo.c" />
+    <ClCompile Include="src\dlgMount.c" />
+    <ClCompile Include="src\dlgProperties.c" />
+    <ClCompile Include="src\DriverInterface.c" />
+    <ClCompile Include="src\FreeOTFEGUIlib.c" />
+    <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\wndMain.c" />
+    <ClCompile Include="src\wndUserRNG.c" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>

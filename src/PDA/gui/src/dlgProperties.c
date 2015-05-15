@@ -6,6 +6,9 @@
 // -----------------------------------------------------------------------------
 //
 
+#include <stdio.h> // Required for _snwprintf_s 
+#include <winuser.h>  // Required for IDOK, etc
+
 #include "FreeOTFENULLGUID.h"
 #include "main.h"
 #include "dlgProperties.h"
@@ -27,18 +30,17 @@
 
 #include "SDUGeneral.h"
 
-#include <stdio.h> // Required for _snwprintf_s 
-#include <winuser.h>  // Required for IDOK, etc
+/* PDA specific
 #include <aygshell.h>  // Required for SH... functions/definitions/etc
 #pragma comment(lib, "aygshell") // Link in aygshell.lib
-
+*/
 
 // Local to this file...
 HWND G_dlgProperties_MenuBar = NULL;
 WCHAR* G_dlgProperties_Mountpoint = NULL;
 DIOC_DISK_DEVICE_STATUS G_dlgProperties_volumeDetails;
 int G_dlgProperties_ScrollFullHeight = 0;
-
+/* PDA specific
 // =========================================================================
 // Forward declarations...
 BOOL CALLBACK dlgProperties_Proc(
@@ -487,6 +489,8 @@ BOOL CALLBACK dlgProperties_Proc(
     return retval;
 }
 
+
+*/
 
 // =========================================================================
 // =========================================================================

@@ -1656,6 +1656,17 @@ BOOL DSK_IOControl(
                     break;
                     }
 
+                case IOCTL_FREEOTFE_GET_DISK_DEVICE_METADATA:
+                    {
+                    retval = IOCTL_FreeOTFEIOCTL_GetDiskDeviceMetaData(
+                                                     devContext, 
+                                                     pBufOut, 
+                                                     dwLenOut, 
+                                                     &outputBufferUsed
+                                                    );
+                    break;
+                    }
+
 #ifdef FOTFE_PDA
                 case IOCTL_FREEOTFE_USER_DEV_HANDLE_SET:
                     {
@@ -3060,6 +3071,65 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceStatus(
         }
 
     DEBUGOUTMAINDRV(DEBUGLEV_EXIT, (TEXT("IOCTL_FreeOTFEIOCTL_GetDiskDeviceStatus\n")));
+    return retval;
+}
+
+
+// =========================================================================
+BOOL
+IOCTL_FreeOTFEIOCTL_GetDiskDeviceMetaData(
+    DEVICE_CONTEXT* devContext,
+    PBYTE pBufOut,
+    DWORD dwLenOut,
+    PDWORD pdwActualOut 
+)
+{
+    BOOL retval = FALSE;
+    DIOC_DISK_DEVICE_METADATA* DIOCBuffer;
+    DWORD sizeRequired;
+
+    DEBUGOUTMAINDRV(DEBUGLEV_ENTER, (TEXT("IOCTL_FreeOTFEIOCTL_GetDiskDeviceMetaData\n")));
+
+    DEBUGOUTMAINDRV(DEBUGLEV_INFO, (TEXT("Want DIOC size: %d bytes\n"), sizeof(*DIOCBuffer)));
+    DEBUGOUTMAINDRV(DEBUGLEV_INFO, (TEXT("Got DIOC size : %d bytes\n"), dwLenOut));
+    if (
+        (pBufOut != NULL) &&
+        (dwLenOut >= sizeof(*DIOCBuffer))
+       )
+        {
+        DIOCBuffer = (DIOC_DISK_DEVICE_METADATA*)pBufOut;
+
+        // If the buffer's not big enough for both the struct and our data, fail
+        // but set dwSize in the struct
+        sizeRequired = sizeof(*DIOCBuffer) +
+                       devContext->MetaDataLength - 
+                       sizeof(DIOCBuffer->MetaData);
+        DEBUGOUTMAINDRV(DEBUGLEV_ENTER, (TEXT("Correct buffer size: %d\n"), sizeRequired));
+        if (dwLenOut < sizeRequired)
+            {
+            DIOCBuffer->MetaDataLength = devContext->MetaDataLength;
+            *pdwActualOut = sizeof(*DIOCBuffer);
+            SetLastError(ERROR_INSUFFICIENT_BUFFER);
+            }
+        else
+            {
+            DEBUGOUTMAINDRV(DEBUGLEV_INFO, (TEXT("Populating structure...\n")));
+
+            DIOCBuffer->MetaDataLength = devContext->MetaDataLength;
+
+            memcpy(
+                   DIOCBuffer->MetaData, 
+                   devContext->MetaData, 
+                   devContext->MetaDataLength
+                  );
+
+            *pdwActualOut = sizeRequired;
+            retval = TRUE;
+            }
+
+        }
+
+    DEBUGOUTMAINDRV(DEBUGLEV_EXIT, (TEXT("IOCTL_FreeOTFEIOCTL_GetDiskDeviceMetaData\n")));
     return retval;
 }
 

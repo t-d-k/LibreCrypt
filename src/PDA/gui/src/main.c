@@ -5,6 +5,8 @@
 //
 // -----------------------------------------------------------------------------
 //
+#include <windows.h>
+#include <commctrl.h>
 
 #include "main.h"
 #include "FreeOTFEDebug.h"
@@ -21,11 +23,11 @@
 #include "DriverInterface.h"
 #include "SDUi18n.h"
 
-#include <windows.h>
-#include <commctrl.h>
+
+/* PDA specific
 #include <aygshell.h>  // Required for SH... functions/definitions/etc
 #pragma comment(lib, "aygshell") // Link in aygshell.lib
-
+*/
 #define IDC_MAIN_LISTBOX 100
 
 // Portable mode related command line parameters...
@@ -87,14 +89,14 @@ BOOL InitApp(HINSTANCE hInstance)
     return retval;
 }
 
-
+/* PDA specific 
 // =========================================================================
 BOOL InitInstance(HINSTANCE hInstance, int iCmdShow)
 {
     G_hWndMain = WndMainCreate();
     return (G_hWndMain != NULL);
 }
-
+*/
 
 // =========================================================================
 void main_BadCommandLine()
@@ -259,6 +261,8 @@ int main_ProcessCmdLine()
             if (linux)
                 {
                 sizelimit.QuadPart = DEFAULT_SIZELIMIT;
+				/* PDA specific 
+					todo get from cmdline
                 DisplayDlgMountLUKS_Params(
                                        NULL,
                                        useMountpoint,
@@ -268,10 +272,12 @@ int main_ProcessCmdLine()
                                        DEFAULT_LUKS_BASEICCYPHERONHASHLENGTH,
                                        sizelimit,
                                        silent
-                                      );
+                                      );*/
                 }
             else
                 {
+					/* PDA specific 
+					todo get from cmdline
                 DisplayDlgMount_Params(
                                        NULL,
                                        useMountpoint,
@@ -285,6 +291,7 @@ int main_ProcessCmdLine()
                                        readOnly,
                                        silent
                                       );
+									  */
                 }
 
             // The user will either have cancelled, or it'll have mounted

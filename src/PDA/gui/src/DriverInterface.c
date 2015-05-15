@@ -5,6 +5,7 @@
 //
 // -----------------------------------------------------------------------------
 //
+#include <stdio.h>  // Needed for wcsncpy(...)
 
 #include "DriverInterface.h"
 #include "DriverInterfaceCommon.h"
@@ -17,9 +18,10 @@
 #include "SDUGeneral.h"
 #include "SDUi18n.h"
 
-#include <stdio.h>  // Needed for wcsncpy(...)
-#include <StoreMgr.h>  // Needed for BLOCK_DRIVER_GUID_STRING
 
+/* PDA specific
+#include <StoreMgr.h>  // Needed for BLOCK_DRIVER_GUID_STRING
+*/
 
 // =========================================================================
 // Define externals declared in .h file

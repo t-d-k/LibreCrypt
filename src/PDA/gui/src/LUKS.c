@@ -31,6 +31,8 @@
 
 #define PLAIN_IV  "plain"
 // Not defined in the LUKS spec, but supported by LUKS anyway
+#define PLAIN64_IV  "plain64"
+// Not defined in the LUKS spec, but supported by LUKS anyway
 #define ESSIV_IV  "essiv"
 // Not defined in the LUKS spec, but supported by LUKS anyway
 #define BENBI_IV  "benbi"  
@@ -1111,12 +1113,22 @@ BOOL LUKS_IdentifyCypher(
             // tick on a char to point to IV generation method
             IVGenMethod = &(tmpPtr[1]);
 
+            // Search for "-plain64" and strip off cypher mode
+            SDUstrtoupper(tmpUCtestMode, PLAIN64_IV);
+            tmpPtr = strstr(IVGenMethod, tmpUCtestMode);
+            if (tmpPtr != NULL)
+                {
+                *sectorIVGenMethod = SCTRIVGEN_64BIT_SECTOR_ID;
+                }
+            else
+                {
             // Search for "-plain" and strip off cypher mode
             SDUstrtoupper(tmpUCtestMode, PLAIN_IV);
             tmpPtr = strstr(IVGenMethod, tmpUCtestMode);
             if (tmpPtr != NULL)
                 {
                 *sectorIVGenMethod = SCTRIVGEN_32BIT_SECTOR_ID;
+                }
                 }
 
             // Search for "-essiv" and strip off cypher mode

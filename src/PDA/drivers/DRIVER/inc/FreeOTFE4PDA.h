@@ -165,6 +165,14 @@ IOCTL_FreeOTFEIOCTL_GetDiskDeviceStatus(
     PDWORD pdwActualOut 
 );
 
+BOOL
+IOCTL_FreeOTFEIOCTL_GetDiskDeviceMetaData(
+    DEVICE_CONTEXT* devContext,
+    PBYTE pBufOut,
+    DWORD dwLenOut,
+    PDWORD pdwActualOut 
+);
+
 #ifdef FOTFE_PDA
 BOOL
 IOCTL_FOTFE_SetUserDevHandle(

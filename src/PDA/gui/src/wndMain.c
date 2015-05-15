@@ -14,8 +14,10 @@
 #include <Shellapi.h>  // Needed for SHGetFileInfo(...)
 #include <commctrl.h>
 #include <stdlib.h> // Needed for itow(...)
+/* PDA specific 
 #include <aygshell.h>  // Required for SH... functions/definitions/etc
 #pragma comment(lib, "aygshell") // Link in aygshell.lib
+*/
 
 #include "SDUGeneral.h"  // Required for SDUParsePath
 
@@ -44,7 +46,7 @@
 
 #include "resource.h"
 
-#define WM_DEVICECHANGE 0x219
+// #define WM_DEVICECHANGE 0x219
 
 // Control ID of the main list view
 #define IDC_MAIN_LISTVIEW 100
@@ -131,7 +133,7 @@ void wndMain_SetupListDisplay(HWND hWnd)
 
 }
 
-
+/* PDA specific 
 // =========================================================================
 // Create new listview
 // Returns: The handle to the listview created
@@ -252,7 +254,7 @@ HWND wndMain_CreateListDisplay(HWND hWnd)
     return retval;
 }
 
-
+*/
 // =========================================================================
 void wndMain_SetupMenuBar(HWND hWnd)
 {
@@ -558,7 +560,7 @@ void _wndMain_DismountSelected(HWND hWnd)
     DEBUGOUTGUI(DEBUGLEV_EXIT, (TEXT("_wndMain_DismountSelected\n")));
 }
 
-
+/* PDA specific
 // =========================================================================
 void _wndMain_PropertiesSelected(HWND hWnd)
 {
@@ -595,7 +597,7 @@ void _wndMain_PropertiesSelected(HWND hWnd)
 
     DEBUGOUTGUI(DEBUGLEV_EXIT, (TEXT("_wndMain_PropertiesSelected\n")));
 }
-
+*/
 
 // =========================================================================
 void _wndMain_DisplayDocumentation(HWND hDlg)
@@ -1477,7 +1479,7 @@ LRESULT wndMain_HandleMsg_WM_DRAWITEM(
     return allOK;
 }
 
-
+/* PDA specific 
 // =========================================================================
 LRESULT CALLBACK wndMain_Proc(
                              HWND hWnd,
@@ -1578,7 +1580,7 @@ LRESULT CALLBACK wndMain_Proc(
 
     return retval;
 }
-
+*/
 
 // =========================================================================
 BOOL WndMainRegister()
@@ -1605,6 +1607,8 @@ BOOL WndMainRegister()
     return (RegisterClass(&wc) != 0);
 }
 
+
+/* PDA specific 
 
 // =========================================================================
 HWND WndMainCreate()
@@ -1659,7 +1663,7 @@ HWND WndMainCreate()
     return retval;
 }
 
-
+*/
 // =========================================================================
 void EnableDisableControls()
 {
@@ -1935,6 +1939,7 @@ void wndMain_RefreshList(HWND hWnd)
     DEBUGOUTGUI(DEBUGLEV_EXIT, (TEXT("wndMain_RefreshList\n")));
 }
 
+int  main(int argc, char* argv[]){
+	//todo: preoces cmd line args
+}
 
-// =========================================================================
-// =========================================================================

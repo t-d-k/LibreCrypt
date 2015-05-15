@@ -9,6 +9,7 @@
 
 #ifndef _DriverInterfaceTwo_H
 #define _DriverInterfaceTwo_H   1
+#include <WinNT.h>  // Required for WCHAR
 
 #include "FreeOTFE4PDAAPI.h"  // Required for main DLL function definitions
 #include "FreeOTFEHashAPICommon.h"
@@ -16,7 +17,7 @@
 #include "DriverInterfaceCommon.h"
 #include "DriverInterface.h"
 
-#include <WinNT.h>  // Required for WCHAR
+
 
 
 // =========================================================================

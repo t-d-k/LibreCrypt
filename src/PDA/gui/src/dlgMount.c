@@ -5,6 +5,9 @@
 //
 // -----------------------------------------------------------------------------
 //
+#include <Commdlg.h>  // Required from OPENFILENAME
+#include <winuser.h>  // Required for IDOK, etc
+
 
 #include "main.h"
 #include "dlgMount.h"
@@ -20,13 +23,14 @@
 #include "SDUGeneral.h"
 #include "SDUi18n.h"
 #include "SDUi18n_GUI.h"
-
+/* PDA specific
 #include <storemgr.h>  // Required for STORAGE_DEVICE_TYPE_PCCARD, etc
-#include <Commdlg.h>  // Required from OPENFILENAME
-#include <winuser.h>  // Required for IDOK, etc
+*/
+
+/* PDA specific
 #include <aygshell.h>  // Required for SH... functions/definitions/etc
 #pragma comment(lib, "aygshell")  // Link in aygshell.lib
-
+*/
 // =========================================================================
 // Constants...
 
@@ -64,7 +68,7 @@ BOOL G_dlgMount_Silent = FALSE;
 
 // =========================================================================
 // Forward declarations...
-
+/* PDA specific
 BOOL CALLBACK dlgMount_Mount(HWND hDlg);
 BOOL CALLBACK dlgMount_PropSheetProc(
                            HWND hDlg, 
@@ -759,7 +763,7 @@ MOUNT_RESULT CALLBACK dlgMount_Mount(HWND hDlg)
     return retval;
 }
 
-
+/* PDA specific
 // =========================================================================
 BOOL CALLBACK dlgMount_HandleMsg_WM_COMMAND(HWND hDlg, WPARAM wParam)
 {
@@ -1040,7 +1044,7 @@ BOOL CALLBACK dlgMount_PropSheetPageProc(
 
     return retval;
 }
-
+*/
 
 // =========================================================================
 // =========================================================================

@@ -5,6 +5,8 @@
 //
 // -----------------------------------------------------------------------------
 //
+#include <Commdlg.h>  // Required from OPENFILENAME
+#include <winuser.h>  // Required for IDOK, etc
 
 #include "main.h"
 #include "dlgCypherInfo.h"
@@ -19,11 +21,13 @@
 #include "SDUi18n.h"
 #include "SDUi18n_GUI.h"
 
+
+
+/* PDA specific
 #include <storemgr.h>  // Required for STORAGE_DEVICE_TYPE_PCCARD, etc
-#include <Commdlg.h>  // Required from OPENFILENAME
-#include <winuser.h>  // Required for IDOK, etc
 #include <aygshell.h>  // Required for SH... functions/definitions/etc
 #pragma comment(lib, "aygshell")  // Link in aygshell.lib
+*/
 
 // =========================================================================
 // Constants...
@@ -72,6 +76,7 @@ void DisplayDlgCypherInfo(
     GUID CypherGUID
 )
 {
+	/* PDA specific
     PROPSHEETHEADER propHeader;
     PROPSHEETPAGE propPage[CYPHERINFO_TABS];
 
@@ -125,6 +130,7 @@ void DisplayDlgCypherInfo(
     PropertySheet(&propHeader);
 
     DEBUGOUTGUI(DEBUGLEV_EXIT, (TEXT("DisplayDlgCypherInfo\n")));
+	*/
 }                
 
 
@@ -308,7 +314,7 @@ BOOL CALLBACK dlgCypherInfo_HandleMsg_WM_VSCROLL(HWND hDlg, WPARAM wParam)
     return retval;
 }
 
-
+/* PDA specific
 // =========================================================================
 // This function is required in order to get the WinCE look & feel to the
 // tabbed dialog.
@@ -331,8 +337,9 @@ int CALLBACK dlgCypherInfo_PropSheetProc(
 
     return retval;
 }
+*/
 
-
+/* PDA specific
 // =========================================================================
 BOOL CALLBACK dlgCypherInfo_HandleMsg_WM_INITDIALOG(HWND hDlg, LPARAM lParam)
 {
@@ -505,7 +512,7 @@ BOOL CALLBACK dlgCypherInfo_HandleMsg_WM_INITDIALOG(HWND hDlg, LPARAM lParam)
     DEBUGOUTGUI(DEBUGLEV_EXIT, (TEXT("dlgCypherInfo_HandleMsg_WM_INITDIALOG\n")));
     return TRUE;
 }
-
+*/
 
 // =========================================================================
 BOOL CALLBACK dlgCypherInfo_HandleMsg_WM_DESTROY(HWND hWnd)
@@ -554,6 +561,7 @@ BOOL CALLBACK dlgCypherInfo_HandleMsg_WM_COMMAND(HWND hDlg, WPARAM wParam)
 }
 
 
+/* PDA specific
 // =========================================================================
 BOOL CALLBACK dlgCypherInfo_PropSheetPageProc(
                       HWND hDlg, 
@@ -628,7 +636,7 @@ BOOL CALLBACK dlgCypherInfo_PropSheetPageProc(
 
     return retval;
 }
-
+*/
 
 // =========================================================================
 // =========================================================================

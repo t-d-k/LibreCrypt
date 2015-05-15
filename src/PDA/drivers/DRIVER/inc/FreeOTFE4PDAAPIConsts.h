@@ -12,8 +12,10 @@
 
 #include "FreeOTFEPlatform.h"
 
-#ifdef FOTFE_PDA        
+#ifdef FOTFE_PDA   
+/* PDA specific
 #include <Windev.h>  // Required for CTL_CODE, etc
+*/
 #endif
 
 

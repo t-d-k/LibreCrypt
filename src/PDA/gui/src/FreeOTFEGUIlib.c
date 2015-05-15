@@ -6,7 +6,10 @@
 // -----------------------------------------------------------------------------
 //
 
-
+#include <Winbase.h>
+#include <Windows.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "FreeOTFEGUIlib.h"
 #include "main.h"
@@ -15,15 +18,12 @@
 #include "FreeOTFElib.h"
 
 //#include <commctrl.h>
-#include <Winbase.h>
-#include <Windows.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "SDUi18n.h"
 
+#include "SDUi18n.h"
+/* PDA specific
 #include <aygshell.h>  // Required for SH... functions/definitions/etc
 #pragma comment(lib, "aygshell") // Link in aygshell.lib
-
+*/
 #define CONTROL_CLASS_STATIC "static"
 #define CONTROL_CLASS_STATICW TEXT(CONTROL_CLASS_STATIC)
 #define CONTROL_CLASS_BUTTON "button"
@@ -567,7 +567,7 @@ void AppendText(HWND hWnd, int ctrlID, LPCTSTR lpText, BOOL resizeCtrl)
     SecZeroAndFreeMemory(pwWS, pwWSSize);
 }
 
-
+/* PDA specific
 // =========================================================================
 // Add button to menu
 // Returns: TRUE/FALSE on success/failure
@@ -737,7 +737,7 @@ void AdjustSpinControl(
     SetDlgItemInt(hDlg, nIDDlgItem, iValue, TRUE);
 
 }
-
+*/
 
 // =========================================================================
 // Returns NULL on failure. Mallocs and returns pointer to char* password
@@ -810,7 +810,7 @@ char* GetPassword(
     return userPassword;
 }
 
-
+/* PDA specific
 // =========================================================================
 void
 SetDlgItemString(
@@ -849,7 +849,7 @@ SetDlgItemString_WithResize(
         }
 
 }
-
+*/
 // =========================================================================
 // Obtain string resource
 // Note: It is the *callers* responsibility to free off the string returned
@@ -914,7 +914,7 @@ WCHAR* _GetString(HINSTANCE hInstance, int stringID)
 
     return retval;
 }
-
+/* PDA specific
 // As SetDlgItemText, but resize the control to match the text size
 WINUSERAPI
 BOOL
@@ -1563,7 +1563,7 @@ void CommandBar_ItemEnable(
         }
 
 }
-
+*/
 
 // =========================================================================
 void DisplayURL(WCHAR* url)
