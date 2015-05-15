@@ -3,14 +3,14 @@ unit FreeOTFEExplorerfmeOptions_Advanced;
 interface
 
 uses
-  Classes, CommonfmeOptions_Base,
+  Classes, fmeBaseOptions,
   Controls, Dialogs, ExtCtrls, Forms,
   FreeOTFEExplorerfmeOptions_Base,
-  FreeOTFEExplorerSettings, Graphics, Messages, SDUStdCtrls, Shredder, Spin64,
+  ExplorerSettings, Graphics, Messages, SDUStdCtrls, Shredder, Spin64,
   StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfmeOptions_FreeOTFEExplorerAdvanced = class (TfmeFreeOTFEExplorerOptions_Base)
+  TfmeOptions_FreeOTFEExplorerAdvanced = class (TfmeCommonExplorerOptions)
     gbAdvanced:                         TGroupBox;
     ckAdvancedMountDlg:                 TSDUCheckBox;
     ckRevertVolTimestamps:              TSDUCheckBox;
@@ -31,8 +31,8 @@ type
   PRIVATE
 
   PROTECTED
-    procedure _ReadSettings(config: TFreeOTFEExplorerSettings); OVERRIDE;
-    procedure _WriteSettings(config: TFreeOTFEExplorerSettings); OVERRIDE;
+    procedure _ReadSettings(config: TExplorerSettings); OVERRIDE;
+    procedure _WriteSettings(config: TExplorerSettings); OVERRIDE;
 
     procedure PopulateOverwriteMethods();
     procedure SetOverwriteMethod(useMethod: TShredMethod);
@@ -47,7 +47,7 @@ implementation
 {$R *.dfm}
 
 uses
-  CommonfrmOptions,
+  frmCommonOptions,
   CommonSettings,
   OTFEFreeOTFEBase_U, SDUDialogs,
   SDUGeneral,
@@ -274,7 +274,7 @@ begin
 
 end;
 
-procedure TfmeOptions_FreeOTFEExplorerAdvanced._ReadSettings(config: TFreeOTFEExplorerSettings);
+procedure TfmeOptions_FreeOTFEExplorerAdvanced._ReadSettings(config: TExplorerSettings);
 var
   mdm:    TMoveDeletionMethod;
   idx:    Integer;
@@ -308,7 +308,7 @@ begin
 end;
 
 
-procedure TfmeOptions_FreeOTFEExplorerAdvanced._WriteSettings(config: TFreeOTFEExplorerSettings);
+procedure TfmeOptions_FreeOTFEExplorerAdvanced._WriteSettings(config: TExplorerSettings);
 var
   mdm: TMoveDeletionMethod;
 begin

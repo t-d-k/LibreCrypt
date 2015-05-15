@@ -15,7 +15,7 @@ type
     pbOK:                  TButton;
     pbCancel:              TButton;
     Label2:                TLabel;
-    reInstructions:        TOTFEFreeOTFE_InstructionRichEdit;
+    reInstructions:        TRichEdit;
     procedure FormShow(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
     procedure SDFilesystemTreeView1Change(Sender: TObject; Node: TTreeNode);

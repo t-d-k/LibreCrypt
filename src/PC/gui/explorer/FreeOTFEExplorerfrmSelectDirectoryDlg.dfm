@@ -61,7 +61,7 @@ object frmSelectDirectoryDlg: TfrmSelectDirectoryDlg
     ModalResult = 2
     TabOrder = 3
   end
-  object reInstructions: TOTFEFreeOTFE_InstructionRichEdit
+  object reInstructions: TRichEdit
     Left = 16
     Top = 12
     Width = 309

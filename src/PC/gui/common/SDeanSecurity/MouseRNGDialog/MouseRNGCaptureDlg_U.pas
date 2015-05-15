@@ -149,7 +149,7 @@ procedure TMouseRNGCaptureDlg.pbOKClick(Sender: TObject);
 begin
   MouseRNG.Enabled := FALSE;
   ModalResult := mrOK;
-  
+
 end;
 
 
@@ -160,10 +160,9 @@ var
 begin
   copyCountBytes := min((countBits div 8), (FBitsCollected div 8));
 
-  for i:=0 to (copyCountBytes-1) do
-    begin
+  for i:=0 to (copyCountBytes-1) do     begin
     data[i] := FData[(FBitsCollected div 8) - i];
-    end;
+  end;
 
   Result := (copyCountBytes * 8);
 end;

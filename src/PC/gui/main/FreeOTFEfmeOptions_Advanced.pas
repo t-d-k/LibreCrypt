@@ -3,13 +3,13 @@ unit FreeOTFEfmeOptions_Advanced;
 interface
 
 uses
-  Classes, CommonfmeOptions_Base,
+  Classes, fmeBaseOptions,
   Controls, Dialogs, ExtCtrls, Forms,
-  FreeOTFEfmeOptions_Base, FreeOTFESettings, Graphics, Messages, SDUStdCtrls, Spin64,
+  fmeLcOptions, MainSettings, Graphics, Messages, SDUStdCtrls, Spin64,
   StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfmeOptions_FreeOTFEAdvanced = class (TfmeFreeOTFEOptions_Base)
+  TfmeOptions_FreeOTFEAdvanced = class (TfmeLcOptions)
     gbAdvanced:                 TGroupBox;
     lblDragDrop:                TLabel;
     ckAllowMultipleInstances:   TSDUCheckBox;
@@ -36,8 +36,8 @@ type
   PRIVATE
 
   PROTECTED
-    procedure _ReadSettings(config: TFreeOTFESettings); OVERRIDE;
-    procedure _WriteSettings(config: TFreeOTFESettings); OVERRIDE;
+    procedure _ReadSettings(config: TMainSettings); OVERRIDE;
+    procedure _WriteSettings(config: TMainSettings); OVERRIDE;
   PUBLIC
     procedure Initialize(); OVERRIDE;
     procedure EnableDisableControls(); OVERRIDE;
@@ -48,7 +48,7 @@ implementation
 {$R *.dfm}
 
 uses
-  CommonfrmOptions,
+  frmCommonOptions,
   CommonSettings,
   OTFEFreeOTFEBase_U, SDUDialogs,
   SDUGeneral,
@@ -230,7 +230,7 @@ begin
 
 end;
 
-procedure TfmeOptions_FreeOTFEAdvanced._ReadSettings(config: TFreeOTFESettings);
+procedure TfmeOptions_FreeOTFEAdvanced._ReadSettings(config: TMainSettings);
 var
   owem:   eOnExitWhenMounted;
   owrp:   eOnExitWhenPortableMode;
@@ -323,7 +323,7 @@ begin
 end;
 
 
-procedure TfmeOptions_FreeOTFEAdvanced._WriteSettings(config: TFreeOTFESettings);
+procedure TfmeOptions_FreeOTFEAdvanced._WriteSettings(config: TMainSettings);
 var
   owem: eOnExitWhenMounted;
   owrp: eOnExitWhenPortableMode;

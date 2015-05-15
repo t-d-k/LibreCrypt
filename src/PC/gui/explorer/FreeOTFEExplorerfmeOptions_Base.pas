@@ -3,19 +3,19 @@ unit FreeOTFEExplorerfmeOptions_Base;
 interface
 
 uses
-  Classes, CommonfmeOptions_Base,
+  Classes, fmeBaseOptions,
   CommonSettings,
   Controls, Dialogs, Forms,
-  FreeOTFEExplorerSettings, Graphics, Messages, SysUtils, Variants, Windows;
+  ExplorerSettings, Graphics, Messages, SysUtils, Variants, Windows;
 
 type
-  TfmeFreeOTFEExplorerOptions_Base = class (TfmeOptions_Base)
+  TfmeCommonExplorerOptions = class (TfmeBaseOptions)
   PROTECTED
-    procedure _ReadSettings(config: TFreeOTFEExplorerSettings); VIRTUAL; ABSTRACT;
-    procedure _WriteSettings(config: TFreeOTFEExplorerSettings); VIRTUAL; ABSTRACT;
+    procedure _ReadSettings(config: TExplorerSettings); VIRTUAL; ABSTRACT;
+    procedure _WriteSettings(config: TExplorerSettings); VIRTUAL; ABSTRACT;
   PUBLIC
-    procedure ReadSettings(config: TSettings); OVERRIDE;
-    procedure WriteSettings(config: TSettings); OVERRIDE;
+    procedure ReadSettings(config: TCommonSettings); OVERRIDE;
+    procedure WriteSettings(config: TCommonSettings); OVERRIDE;
   end;
 
 
@@ -23,14 +23,14 @@ implementation
 
 {$R *.dfm}
 
-procedure TfmeFreeOTFEExplorerOptions_Base.ReadSettings(config: TSettings);
+procedure TfmeCommonExplorerOptions.ReadSettings(config: TCommonSettings);
 begin
-  _ReadSettings(TFreeOTFEExplorerSettings(config));
+  _ReadSettings(TExplorerSettings(config));
 end;
 
-procedure TfmeFreeOTFEExplorerOptions_Base.WriteSettings(config: TSettings);
+procedure TfmeCommonExplorerOptions.WriteSettings(config: TCommonSettings);
 begin
-  _WriteSettings(TFreeOTFEExplorerSettings(config));
+  _WriteSettings(TExplorerSettings(config));
 end;
 
 end.

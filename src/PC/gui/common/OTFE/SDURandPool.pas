@@ -115,8 +115,8 @@ uses
   lcDialogs,
   SDUi18n,
   //librecrypt
-  OTFEFreeOTFE_cryptlib,
-  OTFEFreeOTFE_PKCS11,
+  cryptlib,
+  PKCS11Lib,
   OTFEFreeOTFEBase_U;
 
 {

@@ -7,7 +7,7 @@ uses
   FreeOTFEExplorerfrmPropertiesDlg_Base, Graphics, Messages, StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfrmPropertiesDialog_File = class (TfrmPropertiesDialog_Base)
+  TfrmFilePropertiesDialog = class (TfrmPropertiesDialog)
     edOpensWith:         TLabel;
     Image1:              TImage;
     Label9:              TLabel;
@@ -36,7 +36,7 @@ uses
   SDUGraphics,
   SDUi18n;
 
-procedure TfrmPropertiesDialog_File.FormShow(Sender: TObject);
+procedure TfrmFilePropertiesDialog.FormShow(Sender: TObject);
 var
   item:        TSDDirItem_FAT;
   DLLFilename: String;
@@ -45,7 +45,7 @@ var
 begin
   inherited;
 
-  self.Caption := SDUParamSubstitute(_('%1 Properties'), [ExtractFilename(
+  self.Caption := Format(_('%s Properties'), [ExtractFilename(
     PathAndFilename)]);
 
   SetupCtlSeparatorPanel(Panel1);
@@ -99,7 +99,7 @@ begin
 
 end;
 
-procedure TfrmPropertiesDialog_File.pbOKClick(Sender: TObject);
+procedure TfrmFilePropertiesDialog.pbOKClick(Sender: TObject);
 begin
   inherited;
 

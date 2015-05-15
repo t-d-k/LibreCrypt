@@ -1,4 +1,4 @@
-object frmCDBDump_Base: TfrmCDBDump_Base
+object frmCDBDump_Base: TfrmHdrDump
   Left = 493
   Top = 263
   BorderStyle = bsDialog
@@ -42,14 +42,14 @@ object frmCDBDump_Base: TfrmCDBDump_Base
     Top = 8
     Width = 465
     Height = 213
-    Caption = 'Volume/keyfile details'
+    Caption = 'Container/keyfile details'
     TabOrder = 0
     object Label1: TLabel
       Left = 8
       Top = 24
       Width = 73
       Height = 13
-      Caption = '&Volume/keyfile:'
+      Caption = '&Container/keyfile:'
     end
     object Label2: TLabel
       Left = 8
@@ -58,7 +58,7 @@ object frmCDBDump_Base: TfrmCDBDump_Base
       Height = 13
       Caption = '&Password:'
     end
-    inline OTFEFreeOTFEVolumeSelect1: TOTFEFreeOTFEVolumeSelect
+    inline OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect
       Left = 116
       Top = 20
       Width = 342

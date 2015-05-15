@@ -153,4 +153,15 @@ object SDUPartitionPropertiesDialog: TSDUPartitionPropertiesDialog
     TabOrder = 6
     Text = 'edPartitionLengthUnits'
   end
+  object cbPartitionFlags: TSDUCheckListBox
+    Left = 180
+    Top = 187
+    Width = 225
+    Height = 62
+    Color = clBtnFace
+    Enabled = False
+    ItemHeight = 13
+    TabOrder = 8
+    ReadOnly = True
+  end
 end

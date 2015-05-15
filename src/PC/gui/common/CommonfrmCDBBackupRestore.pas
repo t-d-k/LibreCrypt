@@ -17,7 +17,7 @@ uses
   //sdu
   SDUForms, SDUFrames, SDUSpin64Units,
   // LibreCrypt
-  OTFEFreeOTFE_VolumeSelect, OTFEFreeOTFEBase_U;
+  fmeVolumeSelect, OTFEFreeOTFEBase_U;
 
 type
   TCDBOperationType = (opBackup, opRestore);
@@ -33,8 +33,8 @@ type
     lblOffsetSrc:   TLabel;
     se64UnitOffsetSrc: TSDUSpin64Unit_Storage;
     se64UnitOffsetDest: TSDUSpin64Unit_Storage;
-    SelectSrcFile:  TOTFEFreeOTFEVolumeSelect;
-    SelectDestFile: TOTFEFreeOTFEVolumeSelect;
+    SelectSrcFile:  TfmeVolumeSelect;
+    SelectDestFile: TfmeVolumeSelect;
     procedure FormCreate(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -82,7 +82,7 @@ implementation
 
 uses
   lcDialogs,
-  OTFEFreeOTFE_DriverAPI, SDUGeneral,
+  DriverAPI, SDUGeneral,
   SDUi18n;  // Required for CRITICAL_DATA_LENGTH
 
 {$IFDEF _NEVER_DEFINED}
@@ -113,10 +113,10 @@ begin
 
   { TODO -otdk -crefactor : have permanant  header and volume sections and get rid of swapping round }
   if (FOpType = opBackup) then begin
-    self.Caption := _('Backup FreeOTFE Volume Header');
+    self.Caption := _('Backup FreeOTFE Container Header');
 
-    gbSrc.Caption          := _('Volume details');
-    lblFileDescSrc.Caption := _('&Volume:');
+    gbSrc.Caption          := _('Container details');
+    lblFileDescSrc.Caption := _('&Container:');
 
     gbDest.Caption          := _('Backup details');
     lblFileDescDest.Caption := _('&Backup filename:');
@@ -126,13 +126,13 @@ begin
     lblOffsetDest.Visible      := False;
 
   end else begin
-    self.Caption := _('Restore FreeOTFE Volume Header');
+    self.Caption := _('Restore FreeOTFE Container Header');
 
     gbSrc.Caption          := _('Backup details');
     lblFileDescSrc.Caption := _('&Backup filename:');
 
-    gbDest.Caption          := _('Volume details');
-    lblFileDescDest.Caption := _('&Volume:');
+    gbDest.Caption          := _('Container details');
+    lblFileDescDest.Caption := _('&Container:');
 
     // Backup file starts from 0 - don't allow the user to change offset
     se64UnitOffsetSrc.Visible := False;
@@ -243,9 +243,9 @@ begin
       else
         confirm := SDUMessageDlg(SDUParamSubstitute(_(
           'Please confirm: Do you wish to restore the critial data block from backup file:' +
-          SDUCRLF + SDUCRLF + '%1' + SDUCRLF + SDUCRLF + 'Into the volume:' +
+          SDUCRLF + SDUCRLF + '%1' + SDUCRLF + SDUCRLF + 'Into the container:' +
           SDUCRLF + SDUCRLF + '%2' + SDUCRLF + SDUCRLF +
-          'Starting from offset %3 in the volume?'), [GetSrcFilename,
+          'Starting from offset %3 in the container?'), [GetSrcFilename,
           GetDestFilename, GetDestOffset]), mtConfirmation, [mbYes, mbNo], 0);
 
       if (confirm = mrYes) then begin

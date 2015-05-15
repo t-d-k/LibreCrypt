@@ -47,7 +47,7 @@ inherited fmeOptions_FreeOTFEExplorerAdvanced: TfmeOptions_FreeOTFEExplorerAdvan
       Top = 28
       Width = 149
       Height = 26
-      Caption = 'When &moving files/folders to a mounted volume:'
+      Caption = 'When &moving files/folders to a mounted container:'
       FocusControl = cbMoveDeletionMethod
       WordWrap = True
     end
@@ -66,7 +66,7 @@ inherited fmeOptions_FreeOTFEExplorerAdvanced: TfmeOptions_FreeOTFEExplorerAdvan
       Top = 52
       Width = 221
       Height = 17
-      Caption = '&Revert volume timestamps on dismount'
+      Caption = '&Revert container timestamps on dismount'
       TabOrder = 3
       WordWrap = True
       AutoSize = True

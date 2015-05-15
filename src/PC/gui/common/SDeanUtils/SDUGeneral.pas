@@ -47,6 +47,37 @@ const
 
   FILE_TYPE_DIRECTORY = 'DIRECTORY_TYPE_HERE';
 
+  PARTITION_STYLE_MBR = 0;
+  PARTITION_STYLE_GPT = 1;
+  PARTITION_STYLE_RAW = 2;
+  {If this attribute is set, the partition is required by a computer to function properly.}
+  GPT_ATTRIBUTE_PLATFORM_REQUIRED  = $0001;
+  // gpt attribute flags
+  {   ...
+GPT_BASIC_DATA_ATTRIBUTE_NO_DRIVE_LETTER
+0x8000000000000000
+If this attribute is set, the partition does not receive a drive letter by default when the disk is moved to another computer or when the disk is seen for the first time by a computer.
+This attribute is useful in storage area network (SAN) environments.
+Despite its name, this attribute can be set for basic and dynamic disks.
+GPT_BASIC_DATA_ATTRIBUTE_HIDDEN
+0x4000000000000000
+If this attribute is set, the partition is not detected by the Mount Manager.
+As a result, the partition does not receive a drive letter, does not receive a volume GUID path, does not host mounted folders (also called volume mount points), and is not enumerated by calls to FindFirstVolume and FindNextVolume. This ensures that applications such as Disk Defragmenter do not access the partition. The Volume Shadow Copy Service (VSS) uses this attribute.
+Despite its name, this attribute can be set for basic and dynamic disks.
+GPT_BASIC_DATA_ATTRIBUTE_SHADOW_COPY
+0x2000000000000000
+If this attribute is set, the partition is a shadow copy of another partition.
+VSS uses this attribute. This attribute is an indication for file system filter driver-based software (such as antivirus programs) to avoid attaching to the volume.
+An application can use the attribute to differentiate a shadow copy volume from a production volume. An application that does a fast recovery, for example, will break a shadow copy LUN and clear the read-only and hidden attributes and this attribute. This attribute is set when the shadow copy is created and cleared when the shadow copy is broken.
+Despite its name, this attribute can be set for basic and dynamic disks.
+Windows Server 2003:  This attribute is not supported before Windows Server 2003 with SP1.
+GPT_BASIC_DATA_ATTRIBUTE_READ_ONLY
+0x1000000000000000
+If this attribute is set, the partition is read-only.
+Writes to the partition will fail. IOCTL_DISK_IS_WRITABLE will fail with the ERROR_WRITE_PROTECT Win32 error code, which causes the file system to mount as read only, if a file system is present.
+VSS uses this attribute.
+Do not set this attribute for dynamic disks. Setting it can cause I/O errors and prevent the file system from mounting properly.
+   }
 type
   TSDUArrayInteger = array of Integer;
   TSDUArrayString  = array of String;
@@ -85,6 +116,54 @@ type
     PartitionEntry: array [0..(SDU_MAX_PARTITIONS - 1)] of TSDUPartitionInfo;
   end;
   PSDUDriveLayoutInformation = ^TSDUDriveLayoutInformation;
+
+  TDriveLayoutInformationMbr = record
+    Signature: DWORD;
+  end;
+
+  TDriveLayoutInformationGpt = record
+    DiskId:       TGuid;
+    StartingUsableOffset: Int64;
+    UsableLength: Int64;
+    MaxPartitionCount: DWORD;
+  end;
+
+  TPartitionInformationMbr = record
+    PartitionType:       Byte;
+    BootIndicator:       Boolean;
+    RecognizedPartition: Boolean;
+    HiddenSectors:       DWORD;
+  end;
+
+  TPartitionInformationGpt = record
+    PartitionType: TGuid;
+    PartitionId:   TGuid;
+    Attributes:    Int64;
+    Name:          array [0..35] of Widechar;
+  end;
+
+  TPartitionInformationEx = record
+    PartitionStyle:   Integer;
+    StartingOffset:   Int64;
+    PartitionLength:  Int64;
+    PartitionNumber:  DWORD;
+    RewritePartition: Boolean;
+    case Integer of
+      0: (Mbr: TPartitionInformationMbr);
+      1: (Gpt: TPartitionInformationGpt);
+  end;
+
+  TSDUDriveLayoutInformationEx = record
+    PartitionStyle: DWORD;
+    PartitionCount: DWORD;
+    DriveLayoutInformation: record
+           case Integer of
+        0: (Mbr: TDriveLayoutInformationMbr);
+        1: (Gpt: TDriveLayoutInformationGpt);
+    end;
+    PartitionEntry: array [0..(SDU_MAX_PARTITIONS - 1)] of TPartitionInformationEx;
+  end;
+
 
   TSDUMediaType = (
     Unknown,
@@ -463,7 +542,9 @@ function SDUFileCopy(srcFilename: String; destFilename: String): Boolean;
  // Note: This will clear any existing items in the TComboBox
 procedure SDUPopulateRemovableDrives(cbDrive: TComboBox);
 // Return text representation of partition type
-function SDUPartitionType(PartitionTypeID: Byte; LongDesc: Boolean): String;
+function SDUMbrPartitionType(PartitionTypeID: Byte; LongDesc: Boolean): String;
+// Return text representation of partition type
+function SDUGptPartitionType(PartitionType: TGuid; LongDesc: Boolean): String;
 // Return last error as string
 function SDUGetLastError(): String;
  // Read in the contents of the specified file
@@ -696,9 +777,9 @@ function SDUDeviceNameForDrive(driveLetter: ansichar): String;
 function SDUDeviceNameForPartition(DiskNo: Integer; PartitionNo: Integer): String;
 // Get layout of disk
 function SDUGetDriveLayout(physicalDiskNo: Integer;
-  var driveLayout: TSDUDriveLayoutInformation): Boolean;
+  var driveLayout: TSDUDriveLayoutInformationEx): Boolean;
 function SDUGetDriveLayout_Device(driveDevice: String;
-  var driveLayout: TSDUDriveLayoutInformation): Boolean;
+  var driveLayout: TSDUDriveLayoutInformationEx): Boolean;
  // Get size of partition
  // Returns file size, or -1 on error
 function SDUGetPartitionSize(driveletter: ansichar): ULONGLONG;
@@ -1027,9 +1108,15 @@ const
     (((SDU_IOCTL_DISK_BASE) * $10000) or ((SDU_FILE_READ_ACCESS) * $4000) or
     (($0001) * $4) or (SDU_METHOD_BUFFERED));
 
-  SDU_IOCTL_DISK_GET_DRIVE_LAYOUT =
+  SDU_IOCTL_DISK_GET_DRIVE_LAYOUT    =
     (((SDU_IOCTL_DISK_BASE) * $10000) or ((SDU_FILE_READ_ACCESS) * $4000) or
     (($0003) * $4) or (SDU_METHOD_BUFFERED));
+  // #define IOCTL_DISK_GET_DRIVE_LAYOUT     CTL_CODE(IOCTL_DISK_BASE, 0x0003, METHOD_BUFFERED, FILE_READ_ACCESS)
+  SDU_IOCTL_DISK_GET_DRIVE_LAYOUT_EX =
+    (((SDU_IOCTL_DISK_BASE) * $10000) or ((SDU_FILE_READ_ACCESS) * $4000) or
+    (($0014) * $4) or (SDU_METHOD_BUFFERED));
+  //  CTL_CODE(IOCTL_DISK_BASE, 0x0014, METHOD_BUFFERED, FILE_ANY_ACCESS)
+
 
   DIRECTORY_TYPE = 'Directory';
 
@@ -4570,7 +4657,7 @@ end;
 
 // ----------------------------------------------------------------------------
 function SDUGetDriveLayout(physicalDiskNo: Integer;
-  var driveLayout: TSDUDriveLayoutInformation): Boolean;
+  var driveLayout: TSDUDriveLayoutInformationEx): Boolean;
 var
   deviceName: String;
 begin
@@ -4578,32 +4665,50 @@ begin
   Result     := SDUGetDriveLayout_Device(deviceName, driveLayout);
 end;
 
+
+
+
 // ----------------------------------------------------------------------------
 function SDUGetDriveLayout_Device(driveDevice: String;
-  var driveLayout: TSDUDriveLayoutInformation): Boolean;
+  var driveLayout: TSDUDriveLayoutInformationEx): Boolean;
 var
-  fileHandle:    THandle;
-  DIOCBufferOut: TSDUDriveLayoutInformation;
-  bytesReturned: DWORD;
+  fileHandle:      THandle;
+  //  DIOCBufferOut: TSDUDriveLayoutInformation;
+  bytesReturned:   DWORD;
+  DriveLayoutInfo: TSDUDriveLayoutInformationEx;
+  //    str :string;
 begin
-  Result := False;
-
+  Result     := False;
+  // http://stackoverflow.com/questions/17110543/how-to-retrieve-the-disk-signature-of-all-the-disks-in-windows-using-delphi-7 says better way
   // Open file and get it's size
   fileHandle := CreateFile(PChar(driveDevice),
-    // pointer to name of the file
-    GENERIC_READ,             // access (read-write) mode
-    (FILE_SHARE_READ or FILE_SHARE_WRITE or FILE_SHARE_DELETE),
-    // share mode
+                   // pointer to name of the file
+    0,             // access (read-write) mode
+    (FILE_SHARE_READ or FILE_SHARE_WRITE),
+        // share mode
     nil,                      // pointer to security attributes
     OPEN_EXISTING,            // how to create
-    FILE_FLAG_RANDOM_ACCESS,  // file attributes
+    0,  // file attributes
     0                         // handle to file with attributes to copy
     );
 
   if (fileHandle <> INVALID_HANDLE_VALUE) then begin
-    if (DeviceIoControl(fileHandle, SDU_IOCTL_DISK_GET_DRIVE_LAYOUT, nil, 0,
-      @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
-      driveLayout := DIOCBufferOut;
+    if DeviceIoControl(fileHandle, IOCTL_DISK_GET_DRIVE_LAYOUT_EX, nil,
+      0, @DriveLayoutInfo, SizeOf(DriveLayoutInfo), BytesReturned, nil) then begin
+      driveLayout := DriveLayoutInfo;
+  {
+        case DriveLayoutInfo.PartitionStyle of
+        PARTITION_STYLE_MBR:
+          str :=  driveDevice + ', MBR, ' +
+            IntToHex(DriveLayoutInfo.DriveLayoutInformation.Mbr.Signature, 8);
+        PARTITION_STYLE_GPT:
+         str := driveDevice + ', GPT, ' +
+            GUIDToString(DriveLayoutInfo.DriveLayoutInformation.Gpt.DiskId);
+        PARTITION_STYLE_RAW:
+          str := driveDevice + ', RAW';
+        end;
+         ShowMessage(str);
+         }
       Result      := True;
     end;
 
@@ -4822,7 +4927,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-function SDUPartitionType(PartitionTypeID: Byte; LongDesc: Boolean): String;
+function SDUMbrPartitionType(PartitionTypeID: Byte; LongDesc: Boolean): String;
 begin
   Result := RS_UNKNOWN;
 
@@ -5329,6 +5434,42 @@ begin
   end;
 
 end;
+
+function SDUGptPartitionType(PartitionType: TGuid; LongDesc: Boolean): String;
+const
+  // must be uppercase for comparison
+  GPT_GUIDS : array [0..6] of string = (
+   '{EBD0A0A2-B9E5-4433-87C0-68B6B72699C7}'
+  ,'{00000000-0000-0000-0000-000000000000}'
+  ,'{C12A7328-F81F-11D2-BA4B-00A0C93EC93B}'
+  ,'{E3C9E316-0B5C-4DB8-817D-F92DF00215AE}'
+  ,'{5808C8AA-7E8F-42E0-85D2-E1E90434CFB3}'
+  ,'{AF9B60A0-1431-4F62-BC68-3311714A69AD}'
+  ,'{DE94BBA4-06D1-4D40-A16A-BFD50179D6AC}'
+  );
+  GPT_GUID_DESCS : array [0..6] of string = (
+   'Windows data partition'
+  ,'No partition'
+  ,'EFI system'
+  ,'Microsoft reserved'
+  ,'Logical Disk Manager (LDM) metadata'
+  ,'LDM data partition'
+  ,'Microsoft recovery'
+  );
+var
+  i :integer;
+begin
+  { done -otdk -cenhance : gpt desc }
+  // see  https://msdn.microsoft.com/en-us/library/windows/desktop/aa365449%28v=vs.85%29.aspx - or use guid
+  Result := GUIDToString(PartitionType);
+  assert(length(GPT_GUIDS)=length(GPT_GUID_DESCS));
+  for i := low(GPT_GUIDS) to High(GPT_GUIDS) do
+    if GPT_GUIDS[i] = Result then begin
+      result := GPT_GUID_DESCS[i];
+      break;
+    end;
+end;
+
 
 // ----------------------------------------------------------------------------
 function SDUIntToHex(val: ULONGLONG; digits: Integer): String;

@@ -3,15 +3,15 @@ unit FreeOTFEExplorerfmeOptions_WebDAV;
 interface
 
 uses
-  Classes, CommonfmeOptions_Base,
+  Classes, fmeBaseOptions,
   Controls, Dialogs, ExtCtrls, Forms,
   FreeOTFEExplorerfmeOptions_Base,
-  FreeOTFEExplorerSettings, Graphics, Messages, SDUFilenameEdit_U, SDUFrames,
+  ExplorerSettings, Graphics, Messages, SDUFilenameEdit_U, SDUFrames,
   SDUStdCtrls, Shredder, Spin64,
   StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfmeOptions_FreeOTFEExplorerWebDAV = class (TfmeFreeOTFEExplorerOptions_Base)
+  TfmeOptions_FreeOTFEExplorerWebDAV = class (TfmeCommonExplorerOptions)
     gbWebDAV:                   TGroupBox;
     ckWebDAV:                   TSDUCheckBox;
     cbDrive:                    TComboBox;
@@ -34,8 +34,8 @@ type
     FWarnUserChangesRequireRemount: Boolean;
 
   PROTECTED
-    procedure _ReadSettings(config: TFreeOTFEExplorerSettings); OVERRIDE;
-    procedure _WriteSettings(config: TFreeOTFEExplorerSettings); OVERRIDE;
+    procedure _ReadSettings(config: TExplorerSettings); OVERRIDE;
+    procedure _WriteSettings(config: TExplorerSettings); OVERRIDE;
 
   PUBLIC
     procedure Initialize(); OVERRIDE;
@@ -47,9 +47,9 @@ implementation
 {$R *.dfm}
 
 uses
-  CommonfrmOptions,
+  frmCommonOptions,
   CommonSettings,
-  FreeOTFEConsts, OTFE_U,
+  lcConsts, OTFE_U,
   OTFEFreeOTFEBase_U,
   lcDialogs,
   SDUGeneral,
@@ -93,7 +93,7 @@ begin
   end else
   if FWarnUserChangesRequireRemount then begin
     SDUMessageDlg(
-      _('The changes you make here will only take effect when you next mount a volume'),
+      _('The changes you make here will only take effect when you next mount a container'),
       mtInformation
       );
 
@@ -162,7 +162,7 @@ begin
 
 end;
 
-procedure TfmeOptions_FreeOTFEExplorerWebDAV._ReadSettings(config: TFreeOTFEExplorerSettings);
+procedure TfmeOptions_FreeOTFEExplorerWebDAV._ReadSettings(config: TExplorerSettings);
 var
   prevWarnUserChangesRequireRemount: Boolean;
 begin
@@ -194,7 +194,7 @@ begin
 end;
 
 
-procedure TfmeOptions_FreeOTFEExplorerWebDAV._WriteSettings(config: TFreeOTFEExplorerSettings);
+procedure TfmeOptions_FreeOTFEExplorerWebDAV._WriteSettings(config: TExplorerSettings);
 begin
   config.OptWebDAVEnableServer := ckWebDAV.Checked;
 

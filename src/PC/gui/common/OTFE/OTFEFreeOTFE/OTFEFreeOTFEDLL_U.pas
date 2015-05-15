@@ -17,11 +17,11 @@ uses
   OTFE_U,
   OTFEFreeOTFEBase_U,
   pkcs11_session,
-  OTFEFreeOTFE_PKCS11,
+  PKCS11Lib,
   FreeOTFEDLLMainAPI,
   FreeOTFEDLLHashAPI,
   FreeOTFEDLLCypherAPI,
-  OTFEFreeOTFE_DriverAPI,
+  DriverAPI,
   OTFEFreeOTFE_DriverHashAPI,
   OTFEFreeOTFE_DriverCypherAPI;
 
@@ -361,11 +361,11 @@ dialogs,
   SDUFileIterator_U,
   //LibreCrypt
    OTFEConsts_U,
-  OTFEFreeOTFE_frmKeyEntryFreeOTFE,
-  OTFEFreeOTFE_frmKeyEntryLinux,
-  OTFEFreeOTFE_frmKeyEntryLUKS,
+  frmKeyEntryFreeOTFE,
+  frmKeyEntryLinux,
+  frmKeyEntryLUKS,
   OTFEFreeOTFE_LUKSAPI,
-  OTFEFreeOTFE_VolumeFileAPI;
+  VolumeFileAPI;
 
 const
   DLL_HASH_FILE_PREFIX   = 'FreeOTFEHash';
@@ -2196,7 +2196,7 @@ DebugMsg('MountDiskDevice called with: ');
 DebugMsg('  deviceName: '+deviceName);
 DebugMsg('  filename: '+volFilename);
 DebugMsg('  volumeKey: ');
-DebugMsgBinary(volumeKey);
+DebugMsg(volumeKey);
 DebugMsg('  IVHashDriver: '+IVHashDriver);
 DebugMsg('  IVHashGUID: '+GUIDToString(IVHashGUID));
 DebugMsg('  IVCypherDriver: '+IVCypherDriver);
@@ -2290,13 +2290,10 @@ DebugMsg('  size: '+inttostr(size));
     useVolumeFlags := VolumeFlags;
     // Yes, this timestamp reverting is the right way around; if the bit
     // *isn't* set, the timestamps get reverted
-    if RevertVolTimestamps then
-      begin
+    if frevertVolTimestamps then       begin
       // Strip off bit VOL_FLAGS_NORMAL_TIMESTAMPS
       useVolumeFlags := useVolumeFlags and not(VOL_FLAGS_NORMAL_TIMESTAMPS);
-      end
-    else
-      begin
+      end     else      begin
       // Set bit VOL_FLAGS_NORMAL_TIMESTAMPS
       useVolumeFlags := useVolumeFlags or VOL_FLAGS_NORMAL_TIMESTAMPS
       end;

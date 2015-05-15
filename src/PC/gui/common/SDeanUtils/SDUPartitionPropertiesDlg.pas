@@ -21,17 +21,17 @@ type
     edHiddenSectors:        TEdit;
     edPartitionNumber:      TEdit;
     edPartitionType:        TEdit;
-    cbPartitionFlags:       TSDUCheckListBox;
     Label11:                TLabel;
     edMountedAs:            TEdit;
     Label8:                 TLabel;
     edPartitionLengthUnits: TEdit;
+    cbPartitionFlags: TSDUCheckListBox;
     procedure FormShow(Sender: TObject);
   PRIVATE
     { Private declarations }
   PUBLIC
-    PartitionInfo:  TSDUPartitionInfo;
-    MountedAsDrive: DriveLetterChar;
+    fPartitionInfo:  TPartitionInformationEx;
+    fMountedAsDrive: DriveLetterChar;
   end;
 
 implementation
@@ -55,36 +55,45 @@ var
   idx:   Integer;
   volID: String;
 begin
-  edPartitionLengthBytes.Text := SDUIntToStrThousands(PartitionInfo.PartitionLength);
-  edPartitionLengthUnits.Text := SDUFormatAsBytesUnits(PartitionInfo.PartitionLength);
-  edStartingOffset.Text       := SDUIntToStrThousands(PartitionInfo.StartingOffset);
-  edHiddenSectors.Text        := IntToStr(PartitionInfo.HiddenSectors);
-  edPartitionNumber.Text      := IntToStr(PartitionInfo.PartitionNumber);
-  edPartitionType.Text        := '0x' + inttohex(Ord(PartitionInfo.PartitionType), 2) +
-    ': ' + SDUPartitionType(PartitionInfo.PartitionType, True);
+  edPartitionLengthBytes.Text := SDUIntToStrThousands(fPartitionInfo.PartitionLength);
+  edPartitionLengthUnits.Text := SDUFormatAsBytesUnits(fPartitionInfo.PartitionLength);
+  edStartingOffset.Text       := SDUIntToStrThousands(fPartitionInfo.StartingOffset);
+  { TODO -otdk -cenhance : gpt desc }
+   edPartitionNumber.Text      := IntToStr(fPartitionInfo.PartitionNumber);
+  if fPartitionInfo.PartitionStyle = PARTITION_STYLE_MBR then begin
+
+  edHiddenSectors.Text        := IntToStr(fPartitionInfo.Mbr.HiddenSectors);
+
+  edPartitionType.Text        := '0x' + inttohex(Ord(fPartitionInfo.mbr.PartitionType), 2) +
+    ': ' + SDUMbrPartitionType(fPartitionInfo.mbr.PartitionType, True);
+   end else begin
+
+  edPartitionType.Text        :=
+    ': ' + SDUGptPartitionType(fPartitionInfo.gpt.PartitionType, True);
+   end;
 
   edMountedAs.Text := RS_UNKNOWN;
-  if (MountedAsDrive = DRIVE_LETTER_UNKNOWN) then begin
+  if (fMountedAsDrive = DRIVE_LETTER_UNKNOWN) then begin
     // Do nothing - already set to "Unknown"
   end else
-  if (MountedAsDrive = DRIVE_LETTER_NONE) then begin
+  if (fMountedAsDrive = DRIVE_LETTER_NONE) then begin
     edMountedAs.Text := RS_NO_DRIVE_LETTER;
   end else
-  if (MountedAsDrive <> DRIVE_LETTER_NONE) then begin
-    volID := trim(SDUVolumeID(MountedAsDrive));
+  if (fMountedAsDrive <> DRIVE_LETTER_NONE) then begin
+    volID := trim(SDUVolumeID(fMountedAsDrive));
     if (volID <> '') then begin
       volID := ' [' + volID + ']';
     end;
 
-    edMountedAs.Text := upcase(MountedAsDrive) + ':' + volID;
+    edMountedAs.Text := upcase(fMountedAsDrive) + ':' + volID;
   end;
 
   idx                           := cbPartitionFlags.Items.Add(RS_BOOTABLE);
-  cbPartitionFlags.Checked[idx] := PartitionInfo.BootIndicator;
+  cbPartitionFlags.Checked[idx] := fPartitionInfo.Mbr. BootIndicator;
   idx                           := cbPartitionFlags.Items.Add(RS_REWRITE);
-  cbPartitionFlags.Checked[idx] := PartitionInfo.RewritePartition;
+  cbPartitionFlags.Checked[idx] := fPartitionInfo.RewritePartition;
   idx                           := cbPartitionFlags.Items.Add(RS_RECOGNISED);
-  cbPartitionFlags.Checked[idx] := PartitionInfo.RecognizedPartition;
+  cbPartitionFlags.Checked[idx] := fPartitionInfo.Mbr.RecognizedPartition;
 
 end;
 

@@ -7,7 +7,7 @@ uses
   FreeOTFEExplorerfrmPropertiesDlg_Base, Graphics, Messages, StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfrmPropertiesDialog_Multiple = class (TfrmPropertiesDialog_Base)
+  TfrmPropertiesDialog_Multiple = class (TfrmPropertiesDialog)
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);

@@ -9,7 +9,7 @@ uses
   StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfrmPropertiesDialog_Base = class (TSDUForm)
+  TfrmPropertiesDialog = class (TSDUForm)
     pbOK:          TButton;
     pbApply:       TButton;
     pbCancel:      TButton;
@@ -50,7 +50,7 @@ uses
   SDUGraphics,
   SDUi18n;
 
-procedure TfrmPropertiesDialog_Base.FormShow(Sender: TObject);
+procedure TfrmPropertiesDialog.FormShow(Sender: TObject);
 begin
   PageControl1.ActivePage := tsGeneral;
 
@@ -75,23 +75,23 @@ begin
 
 end;
 
-procedure TfrmPropertiesDialog_Base.pbApplyClick(Sender: TObject);
+procedure TfrmPropertiesDialog.pbApplyClick(Sender: TObject);
 begin
   // Do nothing...
 end;
 
-procedure TfrmPropertiesDialog_Base.pbOKClick(Sender: TObject);
+procedure TfrmPropertiesDialog.pbOKClick(Sender: TObject);
 begin
   ModalResult := mrOk;
 end;
 
-procedure TfrmPropertiesDialog_Base.SetupCtlCheckbox(chkBox: TCheckbox);
+procedure TfrmPropertiesDialog.SetupCtlCheckbox(chkBox: TCheckbox);
 begin
   // Nothing - should really set to readonly, since we don't support letting
   // the user change these
 end;
 
-procedure TfrmPropertiesDialog_Base.SetupCtlSeparatorPanel(pnl: TPanel);
+procedure TfrmPropertiesDialog.SetupCtlSeparatorPanel(pnl: TPanel);
 begin
   pnl.Caption    := '';
   pnl.Height     := 3;

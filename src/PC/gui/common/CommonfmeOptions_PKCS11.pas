@@ -3,13 +3,13 @@ unit CommonfmeOptions_PKCS11;
 interface
 
 uses
-  Classes, CommonfmeOptions_Base, CommonSettings, Controls, Dialogs, Forms,
-  Graphics, Messages, OTFEFreeOTFE_VolumeSelect, OTFEFreeOTFEBase_U, SDUFilenameEdit_U,
+  Classes, fmeBaseOptions, CommonSettings, Controls, Dialogs, Forms,
+  Graphics, Messages, fmeVolumeSelect, OTFEFreeOTFEBase_U, SDUFilenameEdit_U,
   SDUFrames, StdCtrls,
   SysUtils, Variants, Windows;
 
 type
-  TfmeOptions_PKCS11 = class (TfmeOptions_Base)
+  TfmeOptions_PKCS11 = class (TfmeBaseOptions)
     gbPKCS11:           TGroupBox;
     lblLibrary:         TLabel;
     ckEnablePKCS11:     TCheckBox;
@@ -20,7 +20,7 @@ type
     ckPKCS11AutoMount:  TCheckBox;
     feLibFilename:      TSDUFilenameEdit;
     pbAutoDetect:       TButton;
-    OTFEFreeOTFEVolumeSelect1: TOTFEFreeOTFEVolumeSelect;
+    OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect;
     procedure pbVerifyClick(Sender: TObject);
     procedure ControlChanged(Sender: TObject);
     procedure pbAutoDetectClick(Sender: TObject);
@@ -34,8 +34,8 @@ type
 
     procedure EnableDisableControls(); override;
     procedure Initialize(); override;
-    procedure ReadSettings(config: TSettings); override;
-    procedure WriteSettings(config: TSettings); override;
+    procedure ReadSettings(config: TCommonSettings); override;
+    procedure WriteSettings(config: TCommonSettings); override;
     function CheckSettings(): Boolean; override;
     constructor Create(AOwner: TComponent); override;
 
@@ -132,7 +132,7 @@ begin
 
 end;
 
-procedure TfmeOptions_PKCS11.ReadSettings(config: TSettings);
+procedure TfmeOptions_PKCS11.ReadSettings(config: TCommonSettings);
 begin
   // General...
   ckEnablePKCS11.Checked := config.OptPKCS11Enable;
@@ -144,7 +144,7 @@ begin
 
 end;
 
-procedure TfmeOptions_PKCS11.WriteSettings(config: TSettings);
+procedure TfmeOptions_PKCS11.WriteSettings(config: TCommonSettings);
 begin
   // General...
   config.OptPKCS11Enable          := ckEnablePKCS11.Checked;
@@ -196,7 +196,7 @@ begin
         if (OTFEFreeOTFEVolumeSelect1.Filename = '') then begin
           SDUMessageDlg(
             _(
-            'If automount on PKCS#11 token insertion is enabled, the volume to be mounted must be specified'),
+            'If automount on PKCS#11 token insertion is enabled, the container to be mounted must be specified'),
             mtError
             );
           Result := False;

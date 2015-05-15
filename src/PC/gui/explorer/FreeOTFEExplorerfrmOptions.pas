@@ -3,23 +3,23 @@ unit FreeOTFEExplorerfrmOptions;
 interface
 
 uses
-  Classes, ComCtrls, CommonfmeOptions_Autorun, CommonfmeOptions_Base, CommonfmeOptions_PKCS11,
-  CommonfrmOptions, Controls, Dialogs, ExtCtrls,
+  Classes, ComCtrls, fmeAutorunOptions, fmeBaseOptions, CommonfmeOptions_PKCS11,
+  frmCommonOptions, Controls, Dialogs, ExtCtrls,
   Forms,
   FreeOTFEExplorerfmeOptions_Advanced, FreeOTFEExplorerfmeOptions_Base,
-  FreeOTFEExplorerfmeOptions_General, FreeOTFEExplorerfmeOptions_WebDAV,
+  fmeExplorerOptions, FreeOTFEExplorerfmeOptions_WebDAV,
   Graphics, Messages, OTFEFreeOTFEDLL_U, SDUStdCtrls, StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfrmOptions_FreeOTFEExplorer = class (TfrmOptions)
+  TfrmOptions_FreeOTFEExplorer = class (TfrmCommonOptions)
     tsGeneral:                            TTabSheet;
-    fmeOptions_FreeOTFEExplorerGeneral1:  TfmeOptions_FreeOTFEExplorerGeneral;
+    fmeOptions_FreeOTFEExplorerGeneral1:  TfmeExplorerOptions;
     tsAdvanced:                           TTabSheet;
     fmeOptions_FreeOTFEExplorerAdvanced1: TfmeOptions_FreeOTFEExplorerAdvanced;
     tsWebDAV:                             TTabSheet;
     fmeOptions_FreeOTFEExplorerWebDAV1:   TfmeOptions_FreeOTFEExplorerWebDAV;
     tsAutorun:                            TTabSheet;
-    fmeOptions_Autorun1:                  TfmeOptions_Autorun;
+    fmeOptions_Autorun1:                  TfmeAutorunOptions;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   PUBLIC
@@ -35,7 +35,7 @@ implementation
 
 uses
   ShlObj,  // Required for CSIDL_PROGRAMS
-  FreeOTFEExplorerSettings,
+  ExplorerSettings,
   OTFEFreeOTFEBase_U,
   SDUDialogs, SDUGeneral,
   SDUi18n;
@@ -51,9 +51,9 @@ const
 
 procedure TfrmOptions_FreeOTFEExplorer.ChangeLanguage(langCode: String);
 var
-  tmpConfig: TFreeOTFEExplorerSettings;
+  tmpConfig: TExplorerSettings;
 begin
-  tmpConfig := TFreeOTFEExplorerSettings.Create();
+  tmpConfig := TExplorerSettings.Create();
   try
     tmpConfig.Assign(gSettings);
     AllTabs_WriteSettings(tmpConfig);

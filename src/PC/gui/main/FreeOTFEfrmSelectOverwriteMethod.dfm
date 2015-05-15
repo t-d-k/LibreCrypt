@@ -1,4 +1,4 @@
-object frmFreeOTFESelectOverwriteMethod: TfrmFreeOTFESelectOverwriteMethod
+object frmFreeOTFESelectOverwriteMethod: TfrmSelectOverwriteMethod
   Left = 454
   Top = 330
   BorderStyle = bsDialog
@@ -82,7 +82,7 @@ object frmFreeOTFESelectOverwriteMethod: TfrmFreeOTFESelectOverwriteMethod
       OnClick = pbCypherDetailsClick
     end
   end
-  object reInstructOverwriteType: TOTFEFreeOTFE_InstructionRichEdit
+  object reInstructOverwriteType: TRichEdit
     Left = 12
     Top = 12
     Width = 245

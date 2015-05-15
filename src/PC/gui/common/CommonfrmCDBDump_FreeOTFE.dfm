@@ -1,4 +1,4 @@
-inherited frmCDBDump_FreeOTFE: TfrmCDBDump_FreeOTFE
+inherited frmCDBDump_FreeOTFE: TfrmFreeOTFEHdrDump
   PixelsPerInch = 96
   TextHeight = 13
   inherited GroupBox1: TGroupBox

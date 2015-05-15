@@ -9,7 +9,7 @@ uses
   StdCtrls, SysUtils, TeEngine, TeeProcs, Variants, Windows;
 
 type
-  TfrmPropertiesDialog_Volume = class (TfrmPropertiesDialog_Base)
+  TfrmPropertiesDialog_Volume = class (TfrmPropertiesDialog)
     lblFileSystem:           TLabel;
     edFileSystem:            TLabel;
     Panel1:                  TPanel;
@@ -45,8 +45,8 @@ implementation
 
 uses
   FreeOTFEExplorerCheckFilesystem,
-  FreeOTFEExplorerfrmMain,
-  OTFEFreeOTFEDLL_PartitionImage,
+  frmExplorerMain,
+  PartitionImageDLL,
   SDPartitionImage_File, SDUGeneral,
   SDUGraphics,
   SDUi18n;
@@ -68,8 +68,8 @@ begin
   SetupCtlSeparatorPanel(Panel4);
 
   volFilename := '';
-  if (Filesystem.PartitionImage is TOTFEFreeOTFEDLL_PartitionImage) then begin
-    volFilename := TOTFEFreeOTFEDLL_PartitionImage(Filesystem.PartitionImage).Filename;
+  if (Filesystem.PartitionImage is TPartitionImageDLL) then begin
+    volFilename := TPartitionImageDLL(Filesystem.PartitionImage).Filename;
   end else
   if (Filesystem.PartitionImage is TSDPartitionImage_File) then begin
     volFilename := TSDPartitionImage_File(Filesystem.PartitionImage).Filename;

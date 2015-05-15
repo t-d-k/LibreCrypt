@@ -7,7 +7,7 @@ uses
   FreeOTFEExplorerfrmPropertiesDlg_Base, Graphics, Messages, StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfrmPropertiesDialog_Directory = class (TfrmPropertiesDialog_Base)
+  TfrmPropertiesDialog_Directory = class (TfrmPropertiesDialog)
     edContains:         TLabel;
     Label1:             TLabel;
     edTimestampCreated: TLabel;

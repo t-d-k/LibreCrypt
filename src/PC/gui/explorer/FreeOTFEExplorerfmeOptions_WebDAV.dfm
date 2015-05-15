@@ -23,7 +23,7 @@ inherited fmeOptions_FreeOTFEExplorerWebDAV: TfmeOptions_FreeOTFEExplorerWebDAV
       Top = 20
       Width = 194
       Height = 13
-      Caption = '&Map mounted volume to drive letter'
+      Caption = '&Map mounted container to drive letter'
       TabOrder = 0
       WordWrap = True
       OnClick = ckWebDAVClick

@@ -1,4 +1,4 @@
-inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
+inherited frmOptions_FreeOTFE: TfrmOptions
   ClientHeight = 540
   OnCreate = FormCreate
   ExplicitHeight = 568
@@ -59,7 +59,7 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
     end
     object tsHotkeys: TTabSheet
       Caption = 'Hotkeys'
-      inline fmeOptions_Hotkeys1: TfmeOptions_Hotkeys
+      inline fmeOptions_Hotkeys1: TfmeHotKeysOptions
         Left = 64
         Top = 28
         Width = 337
@@ -81,7 +81,7 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
     end
     object tcSystemTray: TTabSheet
       Caption = 'System Tray'
-      inline fmeOptions_SystemTray1: TfmeOptions_SystemTray
+      inline fmeOptions_SystemTray1: TfmeSystemTrayOptions
         Left = 64
         Top = 36
         Width = 320
@@ -112,7 +112,7 @@ inherited frmOptions_FreeOTFE: TfrmOptions_FreeOTFE
     end
     object tsAutorun: TTabSheet
       Caption = 'Autorun'
-      inline fmeOptions_Autorun1: TfmeOptions_Autorun
+      inline fmeOptions_Autorun1: TfmeAutorunOptions
         Left = 21
         Top = 10
         Width = 471

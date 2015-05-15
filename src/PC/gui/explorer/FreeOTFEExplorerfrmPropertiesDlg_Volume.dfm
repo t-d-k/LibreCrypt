@@ -172,7 +172,7 @@ inherited frmPropertiesDialog_Volume: TfrmPropertiesDialog_Volume
           Top = 24
           Width = 175
           Height = 26
-          Caption = 'This option will check the volume for errors.'
+          Caption = 'This option will check the container for errors.'
           WordWrap = True
         end
         object imgScandisk: TImage

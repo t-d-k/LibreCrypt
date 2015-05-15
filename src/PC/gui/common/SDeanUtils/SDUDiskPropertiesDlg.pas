@@ -34,7 +34,7 @@ type
   PRIVATE
     { Private declarations }
   PUBLIC
-    DiskNumber: Integer;
+    fDiskNumber: Integer;
   end;
 
 implementation
@@ -46,17 +46,21 @@ resourcestring
 
 procedure TSDUDiskPropertiesDialog.FormShow(Sender: TObject);
 var
-  layout:       TSDUDriveLayoutInformation;
+  layout:       TSDUDriveLayoutInformationEx;
   diskGeometry: TSDUDiskGeometry;
   size:         ULONGLONG;
 begin
-  edDiskNumber.Text := IntToStr(DiskNumber);
+  edDiskNumber.Text := IntToStr(fDiskNumber);
 
   edDiskPartitionCount.Text := RS_UNABLE_TO_OBTAIN_DATA;
   edDiskSignature.Text      := RS_UNABLE_TO_OBTAIN_DATA;
-  if SDUGetDriveLayout(DiskNumber, layout) then begin
+  if SDUGetDriveLayout(fDiskNumber, layout) then begin
     edDiskPartitionCount.Text := IntToStr(layout.PartitionCount);
-    edDiskSignature.Text      := '0x' + inttohex(layout.Signature, 8);
+    { done -otdk -cenhance : gpt desc }
+    if  layout.PartitionStyle = PARTITION_STYLE_MBR then
+      edDiskSignature.Text      := '0x' + inttohex(layout.DriveLayoutInformation.Mbr.Signature, 8)
+    else  if  layout.PartitionStyle = PARTITION_STYLE_GPT then
+      edDiskSignature.Text      :=GUIDToString(layout.DriveLayoutInformation.gpt.DiskId);
   end;
 
   edCylinders.Text         := RS_UNABLE_TO_OBTAIN_DATA;
@@ -66,7 +70,7 @@ begin
   edSizeBytes.Text         := RS_UNABLE_TO_OBTAIN_DATA;
   edSizeUnits.Text         := RS_UNABLE_TO_OBTAIN_DATA;
   edMediaType.Text         := RS_UNABLE_TO_OBTAIN_DATA;
-  if SDUGetDiskGeometry(DiskNumber, diskGeometry) then begin
+  if SDUGetDiskGeometry(fDiskNumber, diskGeometry) then begin
     edCylinders.Text         := IntToStr(diskGeometry.Cylinders.QuadPart);
     edTracksPerCylinder.Text := IntToStr(diskGeometry.TracksPerCylinder);
     edSectorsPerTrack.Text   := IntToStr(diskGeometry.SectorsPerTrack);

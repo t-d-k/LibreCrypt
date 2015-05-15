@@ -1,4 +1,4 @@
-inherited frmCDBDump_LUKS: TfrmCDBDump_LUKS
+inherited frmCDBDump_LUKS: TfrmLUKSHdrDump
   Left = 100
   Top = 400
   ClientWidth = 605
@@ -27,7 +27,7 @@ inherited frmCDBDump_LUKS: TfrmCDBDump_LUKS
       Height = 13
       Caption = '(optional)'
     end
-    inherited OTFEFreeOTFEVolumeSelect1: TOTFEFreeOTFEVolumeSelect
+    inherited OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect
       TabOrder = 2
     end
     object ckBaseIVCypherOnHashLength: TCheckBox

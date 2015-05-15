@@ -13,30 +13,30 @@ interface
 uses
 // delphi
   Classes, ComCtrls, StdCtrls, SysUtils, Windows,Graphics, Messages,Controls, Dialogs,
-  CommonfmeOptions_AutoRun,
-  CommonfmeOptions_Base,
+  fmeAutorunOptions,
+  fmeBaseOptions,
   CommonfmeOptions_PKCS11,
-  CommonfrmOptions, CommonSettings,
-  ExtCtrls, Forms, FreeOTFEfmeOptions_Advanced, FreeOTFEfmeOptions_Base,
+  frmCommonOptions, CommonSettings,              
+  ExtCtrls, Forms, FreeOTFEfmeOptions_Advanced, fmeLcOptions,
   FreeOTFEfmeOptions_General,
   FreeOTFEfmeOptions_Hotkeys,
-  FreeOTFEfmeOptions_SystemTray,  OTFEFreeOTFE_U, SDUForms,
+  fmeSystemTrayOptions,  OTFEFreeOTFE_U, SDUForms,
   SDUStdCtrls
   // librecrypt
   ;
 
 type
-  TfrmOptions_FreeOTFE = class (TfrmOptions)
+  TfrmOptions = class (TfrmCommonOptions)
     tsGeneral:           TTabSheet;
     tsHotkeys:           TTabSheet;
     tcSystemTray:        TTabSheet;
     tsAutorun:           TTabSheet;
     tsAdvanced:          TTabSheet;
     fmeOptions_FreeOTFEGeneral1: TfmeOptions_FreeOTFEGeneral;
-    fmeOptions_Hotkeys1: TfmeOptions_Hotkeys;
-    fmeOptions_SystemTray1: TfmeOptions_SystemTray;
+    fmeOptions_Hotkeys1: TfmeHotKeysOptions;
+    fmeOptions_SystemTray1: TfmeSystemTrayOptions;
     fmeOptions_FreeOTFEAdvanced1: TfmeOptions_FreeOTFEAdvanced;
-    fmeOptions_Autorun1: TfmeOptions_Autorun;
+    fmeOptions_Autorun1: TfmeAutorunOptions;
     ckLaunchAtStartup:   TSDUCheckBox;
     ckLaunchMinimisedAtStartup: TSDUCheckBox;
     procedure FormCreate(Sender: TObject);
@@ -48,7 +48,7 @@ type
 
     procedure EnableDisableControls(); override;
 
-    procedure AllTabs_InitAndReadSettings(config: TSettings); override;
+    procedure AllTabs_InitAndReadSettings(config: TCommonSettings); override;
 
     function DoOKClicked(): Boolean; override;
 
@@ -69,7 +69,7 @@ uses
   ShlObj,  // Required for CSIDL_PROGRAMS
   StrUtils,
   // sdu /librecrypt
-  FreeOTFESettings,
+  MainSettings,
   OTFEFreeOTFEBase_U,
   SDUDialogs, SDUGeneral,
   SDUi18n;
@@ -83,11 +83,11 @@ const
   SDUCRLF = ''#13#10;
 {$ENDIF}
 
-procedure TfrmOptions_FreeOTFE.ChangeLanguage(langCode: String);
+procedure TfrmOptions.ChangeLanguage(langCode: String);
 var
-  tmpConfig: TFreeOTFESettings;
+  tmpConfig: TMainSettings;
 begin
-  tmpConfig := TFreeOTFESettings.Create();
+  tmpConfig := TMainSettings.Create();
   try
     tmpConfig.Assign(gSettings);
     AllTabs_WriteSettings(tmpConfig);
@@ -113,20 +113,20 @@ begin
 end;
 
 
-procedure TfrmOptions_FreeOTFE.ckLaunchAtStartupClick(Sender: TObject);
+procedure TfrmOptions.ckLaunchAtStartupClick(Sender: TObject);
 begin
   inherited;
   EnableDisableControls();
 end;
 
-procedure TfrmOptions_FreeOTFE.FormCreate(Sender: TObject);
+procedure TfrmOptions.FormCreate(Sender: TObject);
 begin
   inherited;
   // Set active page to the first one
   pcOptions.ActivePage := tsGeneral;
 end;
 
-procedure TfrmOptions_FreeOTFE.FormShow(Sender: TObject);
+procedure TfrmOptions.FormShow(Sender: TObject);
 begin
   inherited;
 
@@ -143,12 +143,12 @@ begin
   tsAdvanced.PageIndex := (pcOptions.PageCount - 1);
 end;
 
- //function TfrmOptions_FreeOTFE.OTFEFreeOTFE(): TOTFEFreeOTFE;
+ //function TfrmOptions.OTFEFreeOTFE(): TOTFEFreeOTFE;
  //begin
  //  Result := TOTFEFreeOTFE(OTFEFreeOTFEBase);
  //end;
 
-procedure TfrmOptions_FreeOTFE.EnableDisableControls();
+procedure TfrmOptions.EnableDisableControls();
 begin
   inherited;
 
@@ -158,7 +158,7 @@ begin
 end;
 
 
-procedure TfrmOptions_FreeOTFE.AllTabs_InitAndReadSettings(config: TSettings);
+procedure TfrmOptions.AllTabs_InitAndReadSettings(config: TCommonSettings);
 //var
 //  ckboxIndent:  Integer;
 //  maxCBoxWidth: Integer;
@@ -178,7 +178,7 @@ begin
   EnableDisableControls();
 end;
 
-function TfrmOptions_FreeOTFE.DoOKClicked(): Boolean;
+function TfrmOptions.DoOKClicked(): Boolean;
 var
   minimisedParam: string;
 begin

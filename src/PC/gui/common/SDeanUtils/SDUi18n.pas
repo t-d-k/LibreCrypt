@@ -19,7 +19,7 @@ unit SDUi18n;
 interface
 
 uses
-  Classes, ComCtrls, StdCtrls;
+  Classes, ComCtrls, StdCtrls,Forms;
 
 const
   ISO639_ALPHA2_ENGLISH = 'en';
@@ -30,6 +30,7 @@ function _(msg: unicodestring): unicodestring;
 function SDUTranslate(msg: unicodestring): unicodestring;
 procedure SDUTranslateComp(var c: TRichEdit); OVERLOAD;
 procedure SDUTranslateComp(var c: TLabel); OVERLOAD;
+
 function SDUPluralMsg(n: Integer; singleMsg: WideString; pluralMsg: WideString): WideString;
   OVERLOAD;
 function SDUPluralMsg(n: Integer; msgs: array of WideString): WideString; OVERLOAD;
@@ -86,6 +87,7 @@ begin
     c.Caption := SDUTranslate(c.Caption);
   c.tag := 1;
 end;
+
 
 function SDUPluralMsg(n: Integer; singleMsg: WideString; pluralMsg: WideString): WideString;
 begin

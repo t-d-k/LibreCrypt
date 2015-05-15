@@ -31,13 +31,13 @@ uses
   //doxbos
   OTFE_U,
   OTFEConsts_U,
-  OTFEFreeOTFE_DriverAPI,
-  OTFEFreeOTFE_DriverCommon,
+  DriverAPI,
+  FreeOTFEDriverConsts,
   OTFEFreeOTFE_DriverCypherAPI,
   OTFEFreeOTFE_DriverHashAPI,
   OTFEFreeOTFE_LUKSAPI,
-  OTFEFreeOTFE_PKCS11,
-  OTFEFreeOTFE_VolumeFileAPI;
+  PKCS11Lib,
+  VolumeFileAPI;
 
 const
   MIN_REC_VOLUME_SIZE = 4;
@@ -59,7 +59,7 @@ const
   MAX_HDDS       = 16;
   MAX_PARTITIONS = 16;
 
-  VOL_FILE_EXTN = 'box';
+  VOL_FILE_EXTN = 'vol';
 
   // This const is used in rounding up DIOC buffers to the nearest DWORD
   DIOC_BOUNDRY = 4;
@@ -614,22 +614,27 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
       const LUKSheader: TLUKSHeader): Boolean;
 
   public
-    AdvancedMountDlg:    Boolean;
-    RevertVolTimestamps: Boolean;
+    fadvancedMountDlg:    Boolean;
+    frevertVolTimestamps: Boolean;
 
 {$IFDEF FREEOTFE_DEBUG}
-DebugStrings: TStrings;
-DebugShowMessage: boolean;
+fDebugStrings: TStrings;
+fdebugShowMessage: boolean;
 {$IFNDEF _GEXPERTS}
-DebugLogfile: string;
-DebugLogfileCount: integer;
+fdebugLogfile: string;
+fdebugLogfileCount: integer;
+{$ENDIF}
 {$ENDIF}
 procedure DebugClear();
-procedure DebugMsg(msg: string);
-procedure DebugMsgBinary(msg: TSDUBytes); overload;
+procedure DebugMsg(msg: string);overload;
+procedure DebugMsg(value: Boolean);overload;
+procedure DebugMsg(uid: TGUID);overload;
+procedure DebugMsg(msg: TSDUBytes); overload;
+procedure DebugMsg(msg: array of byte); overload;
+procedure DebugMsg(value: integer); overload;
 procedure DebugMsgBinary(msg: AnsiString); overload;
 procedure DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
-{$ENDIF}
+
 
     //////////////////////////////////////////////
     // was in OTFEFreeOTFE_mntLUKS_AFS_Intf.pas
@@ -969,12 +974,10 @@ procedure DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
       Salt: array of Byte; Iterations: Integer; dkLenBits: Integer;  // In *bits*
       out DK: TSDUBytes): Boolean; virtual; abstract;
 
-
-
     // ---------
     // Volume creation
     function CreateFreeOTFEVolumeWizard(): Boolean;
-    function CreateLinuxVolumeWizard(out aFileName: String): Boolean;
+    function CreatePlainLinuxVolumeWizard(out aFileName: String): Boolean;
     function CreateLinuxGPGKeyfile(): Boolean;
 
     function WizardChangePassword(SrcFilename: String = ''; OrigKeyPhrase: Ansistring = '';
@@ -1109,7 +1112,7 @@ procedure DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
 
                     dataOffset: int64;  // Offset from within mounted volume from where to read/write data
                     dataLength: integer;  // Length of data to read/write. In bytes
-                    var data: ansistring;  // Data to read/write
+                    var data: TSDUBytes;  // Data to read/write
 
                     offset: int64 = 0;
                     size: int64 = 0;
@@ -1160,27 +1163,30 @@ uses
   DbugIntf,  // GExperts
 {$ENDIF}
 {$ENDIF}
+  Math,
   //SDU
   lcDialogs,
   SDUEndianIntegers,
   SDUProgressDlg,
   SDURandPool,
   //LibreCrypt
-  Math, OTFEFreeOTFE_DriverControl,
-  OTFEFreeOTFE_frmCypherInfo,
-  OTFEFreeOTFE_frmDriverControl,
-  OTFEFreeOTFE_frmHashInfo,
-  OTFEFreeOTFE_frmKeyEntryFreeOTFE,
-  OTFEFreeOTFE_frmKeyEntryLinux,
-  OTFEFreeOTFE_frmKeyEntryLUKS,
-  OTFEFreeOTFE_frmNewVolumeSize,
-  OTFEFreeOTFE_frmPKCS11Management,
-  OTFEFreeOTFE_frmPKCS11Session,
-  OTFEFreeOTFE_frmSelectHashCypher,
-  OTFEFreeOTFE_frmSelectPartition,
-  OTFEFreeOTFE_frmVolumeType,
-  OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile,
-  OTFEFreeOTFE_frmWizardCreateVolume,
+
+  DriverControl,
+  frmCypherInfo,
+  frmDriverControl,
+  frmHashInfo,
+  frmKeyEntryFreeOTFE,
+  frmKeyEntryLinux,
+  frmKeyEntryLUKS,
+  frmNewVolumeSize,
+  frmPKCS11Management,
+  frmPKCS11Session,
+  frmSelectHashCypher,
+  fmeSelectPartition,
+  frmSelectVolumeType,
+  frmWizardChangePasswordCreateKeyfile,
+  frmWizardCreateVolume,
+  frmSelectPartition,
             // Required for min
   ActiveX,  // Required for IsEqualGUID
   ComObj,   // Required for GUIDToString
@@ -1331,7 +1337,7 @@ var
 begin
   Result := True;
 
-  blockLength := length(input);
+  blockLength := length(input) div n;
 
   randomStripeData := '';
   for i := 1 to (n - 1) do
@@ -1349,7 +1355,7 @@ begin
 
   // XOR last hash output with input
   SDUZeroBuffer(calcStripe);
-  for j := 1 to blockLength do
+  for j := 0 to blockLength - 1 do
     SDUAddByte(calcStripe, Ord(processedStripes[j]) xor input[j]);
   //    calcStripe := calcStripe + Ansichar();
 
@@ -1377,6 +1383,12 @@ var
 begin
   Result := True;
   SDUInitAndZeroBuffer(blockLength, prev);
+
+  {$IFDEF FREEOTFE_DEBUG}
+DebugMsg('Process');
+  DebugMsg(blockLength);
+  DebugMsg(totalBlockCount);
+{$ENDIF}
 
   //  prev := StringOfChar(#0, blockLength);
   // -1 because we don't process the last block
@@ -1584,9 +1596,9 @@ begin
 
     // OK, this loop is crude - but it works
     LUKSheader.magic := '';
-    for i := low(rawLUKSheader.magic) to high(rawLUKSheader.magic) do begin
+    for i := low(rawLUKSheader.magic) to high(rawLUKSheader.magic) do
       LUKSheader.magic := LUKSheader.magic + Ansichar(rawLUKSheader.magic[i]);
-    end;
+
 
     if (LUKSheader.magic = LUKS_MAGIC) then begin
       LUKSheader.version := rawLUKSheader.version[1] + (rawLUKSheader.version[0] shl 8);
@@ -1610,6 +1622,7 @@ begin
           );
         LUKSheader.mk_digest_iter := SDUBigEndian32ToDWORD(rawLUKSheader.mk_digest_iter);
         strGUID                   := Copy(rawLUKSheader.uuid, 1, StrLen(rawLUKSheader.uuid));
+        { TODO 1 -otdk -csecurity : where does this uuid come from ? garbage? }
         //todo: is this index right?
         strGUID                   := '{' + strGUID + '}';
         LUKSheader.uuid           := StringToGUID(strGUID);
@@ -1664,14 +1677,16 @@ begin
 
   if (LUKSheader.magic = LUKS_MAGIC) then begin
     // OK, this loop is crude - but it works
+    assert(length(rawLUKSheader.magic) = length(LUKS_MAGIC));
     for i := low(rawLUKSheader.magic) to high(rawLUKSheader.magic) do
-      rawLUKSheader.magic[i] := Byte(LUKS_MAGIC[i]);
+      rawLUKSheader.magic[i] := Byte(LUKS_MAGIC[i + 1]);
     // As per the LUKS specifications: If the LUKS version is of a
     // later version than we support - we make no attempt to interpret
     // it, and simply return an error
     if (LUKSheader.version <= LUKS_VER_SUPPORTED) then begin
       rawLUKSheader.version[0] := LUKSheader.version shr 8;
       rawLUKSheader.version[1] := LUKSheader.version and $FF;
+      { TODO 1 -otdk -csecurity : wipe cipher names etc of garbage }
       StrPCopy(rawLUKSheader.cipher_name, Ansistring(LUKSheader.cipher_name));
       StrPCopy(rawLUKSheader.cipher_mode, Ansistring(LUKSheader.cipher_mode));
       StrPCopy(rawLUKSheader.hash_spec, Ansistring(LUKSheader.hash_spec));
@@ -1687,7 +1702,7 @@ begin
 
       strGUID := GUIDToString(LUKSheader.uuid);
       // strip off '{ .. }' from ends
-      strGUID := Copy(strGUID, 2, length(strGUID) - 1);
+      strGUID := Copy(strGUID, 2, length(strGUID) - 2);
       //todo: is this index right?
       StrPCopy(rawLUKSheader.uuid, strGUID);
 
@@ -1746,6 +1761,7 @@ var
 begin
   Result := False;
   if LUKSHeaderToLUKSRaw(LUKSheader, rawLUKSheader) then begin
+    setlength(rawData, sizeof(TLUKSHeaderRaw));
     StrMove(PAnsiChar(rawData), PAnsiChar(@rawLUKSheader), sizeof(TLUKSHeaderRaw));
 
     Result := WriteRawVolumeData(filename, 0,
@@ -1823,7 +1839,7 @@ begin
       if IsLUKSVolume(filename) then begin
         dumpReport.Add('ERROR: Unable to read LUKS header?!');
       end else begin
-        dumpReport.Add('Unable to read LUKS header; this does not appear to be a LUKS volume.');
+        dumpReport.Add('Unable to read LUKS header; this does not appear to be a LUKS container.');
       end;
 
     end else begin
@@ -2128,6 +2144,8 @@ begin
 {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('LUKS derived key follows:');
   DebugMsgBinary(SDUBytesToString( pwd_PBKDF2ed));
+  DebugMsg(LUKSheader.key_bytes);
+  DebugMsg(LUKSheader.keyslot[i].stripes);
 {$ENDIF}
 
         splitDataLength := (LUKSheader.key_bytes * LUKSheader.keyslot[i].stripes);
@@ -2155,7 +2173,7 @@ begin
 
 {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('LUKS decrypted split data follows:');
-  DebugMsgBinary(SDUBoolToString(splitData));
+  DebugMsg(splitData);
 {$ENDIF}
 
         // Merge the split data
@@ -2241,11 +2259,17 @@ var
   pwd_PBKDF2ed, splitData: TSDUBytes;
   splitDataLength:         Integer;
   generatedCheck:          TSDUBytes;
+  ZER: _LARGE_INTEGER;
+  cyphertext: AnsiString;
+  Empty :ansistring;
+  splitDataStr  : ansistring;
 begin
+ZER.QuadPart := 0;
+Empty :='';
   // todo: populate LUKSHeader with cyphers etc.
   LUKSHeader.version   := LUKS_VER_SUPPORTED;
   LUKSHeader.hash_spec := 'MD5';
-
+  LUKSHeader.magic     := LUKS_MAGIC;
 
   LUKSHeader.cipher_name   := 'AES';
   LUKSHeader.key_bytes     := 64;
@@ -2285,19 +2309,28 @@ begin
 {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('LUKS derived key follows:');
   DebugMsgBinary(SDUBytesToString( pwd_PBKDF2ed));
+  DebugMsg(LUKSheader.key_bytes);
+  DebugMsg(LUKSheader.keyslot[i].stripes);
 {$ENDIF}
 
       // split the master key data
       if not (AFSPlit(masterKey, LUKSheader.keySlot[i].stripes,
         LUKSheader.hashKernelModeDeviceName, LUKSheader.hashGUID, splitData)) then begin
         Result := False;
+        exit;
       end;
 
 
       splitDataLength := (LUKSheader.key_bytes * LUKSheader.keyslot[i].stripes);
 
-
+         //   Result := WriteLUKSHeader(filename, LUKSHeader);
       //encrypt and write
+     splitDataStr :=   SDUBytesToString(splitData);
+   (*  if not (GetFreeOTFEBase().EncryptSectorData(LUKSheader.cypherKernelModeDeviceName,LUKSheader.cypherGUID,
+    ZER, splitDataLength, pwd_PBKDF2ed, Empty,splitDataStr, cyphertext)) then begin
+     (*
+    end; *)
+
       if not (ReadWritePlaintextToVolume(False,//write
 
 
@@ -2305,7 +2338,7 @@ begin
         LUKSheader.IVHashKernelModeDeviceName, LUKSheader.IVHashGUID,
         LUKSheader.IVCypherKernelModeDeviceName, LUKSheader.IVCypherGUID,
         LUKSheader.cypherKernelModeDeviceName, LUKSheader.cypherGUID,
-        {tmpVolumeFlags}0, fomaRemovableDisk, 0,
+        {tmpVolumeFlags}0, fomaRemovableDisk, (LUKS_SECTOR_SIZE * LUKSheader.KeySlot[i].key_material_offset),
                           // Offset from within mounted volume from where to read/write data
         splitDataLength,  // Length of data to read/write. In bytes
         splitData,        // Data to read/write
@@ -2313,9 +2346,14 @@ begin
         (LUKS_SECTOR_SIZE * LUKSheader.KeySlot[i].key_material_offset)
         // Offset within volume where encrypted data starts
         )) then begin
+
         Result := False;
         exit;
       end;
+
+     // strmove( LUKS_SECTOR_SIZE * LUKSheader.KeySlot[i].key_material_offset
+       WriteRawVolumeData(filename,LUKS_SECTOR_SIZE * LUKSheader.KeySlot[i].key_material_offset,cyphertext);
+
 
       // Generate PBKDF2 of the master key (for msg digest)
       if not (DeriveKey(fokdfPBKDF2, LUKSheader.hashKernelModeDeviceName,
@@ -2330,15 +2368,17 @@ begin
   DebugMsg('LUKS generated pbkdf2 checksum of master key follows:');
   DebugMsgBinary(SDUBytesToString(generatedCheck));
 {$ENDIF}
+      if result then  begin
 
       for j := 0 to length(generatedCheck) - 1 do
         LUKSHeader.mk_digest[j] := generatedCheck[j];
 
       Result := WriteLUKSHeader(filename, LUKSHeader);
+      end;
     end;
   end;
-
 end;
+
 
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEBase.IdentifyHash(hashSpec: String; var hashKernelModeDeviceName: String;
@@ -2804,17 +2844,17 @@ begin
   fAllowTabsInPasswords     := False;
 
 {$IFDEF FREEOTFE_DEBUG}
-  DebugStrings := TStringList.Create();
-  DebugShowMessage := FALSE;
+  fDebugStrings := TStringList.Create();
+  fDebugShowMessage := FALSE;
 
 {$IFNDEF _GEXPERTS}
-  DebugLogFile := '';
+  fdebugLogfile := '';
   dlg:= TSaveDialog.Create(nil);
   try
     dlg.Options := dlg.Options + [ofDontAddToRecent];
-    if dlg.Execute() then      begin
-      DebugLogFile := dlg.Filename;
-      end;
+    if dlg.Execute() then
+      fdebugLogfile := dlg.Filename;
+
   finally
     dlg.Free();
   end;
@@ -2835,7 +2875,7 @@ begin
   CachesDestroy();
 
 {$IFDEF FREEOTFE_DEBUG}
-  DebugStrings.Free();
+  fDebugStrings.Free();
 {$ENDIF}
 
   inherited;
@@ -2852,9 +2892,8 @@ begin
 {$IFDEF FREEOTFE_DEBUG}
 {$IFNDEF _GEXPERTS}
   // If logging debug to a file, clear to logfile
-  if (DebugLogFile <> '') then    begin
+  if (fdebugLogfile <> '') then
     DebugClear();
-    end;
 {$ENDIF}
 {$ENDIF}
 
@@ -2966,7 +3005,7 @@ begin
       keyEntryDlg.SetKeyIterations(keyIterations);
       keyEntryDlg.SetKeyfile(keyfile);
 
-      keyEntryDlg.DisplayAdvanced(AdvancedMountDlg);
+      keyEntryDlg.DisplayAdvanced(fadvancedMountDlg);
       keyEntryDlg.VolumeFilesText := volumeFilenames.Text;
 
       mr := keyEntryDlg.ShowModal();
@@ -3243,7 +3282,7 @@ function TOTFEFreeOTFEBase.MountLinux(volumeFilenames: TStringList;
   keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE; offset: ULONGLONG = 0;
   silent: Boolean = False; forceHidden: Boolean = False): Boolean;
 var
-  keyEntryDlg: TfrmKeyEntryLinux;
+  keyEntryDlg: TfrmKeyEntryPlainLinux;
   i:           Integer;
   volumeKey:   TSDUBytes;
 
@@ -3298,7 +3337,7 @@ begin
   end;
 
 
-  keyEntryDlg := TfrmKeyEntryLinux.Create(nil);
+  keyEntryDlg := TfrmKeyEntryPlainLinux.Create(nil);
   try
     keyEntryDlg.Initialize();
     keyEntryDlg.SetOffset(offset); // do before keyfile as that has offset in
@@ -3673,26 +3712,26 @@ function TOTFEFreeOTFEBase.CreateLUKS(volumeFilename: String;
   password: TSDUBytes): Boolean;
 var
 
-  i:         Integer;
+//  i:         Integer;
   volumeKey: TSDUBytes;
 
-  userKey:          TSDUBytes;
-  fileOptSize:      Int64;
-  mountDriveLetter: DriveLetterChar;
-  mountReadonly:    Boolean;
+//  userKey:          TSDUBytes;
+//  fileOptSize:      Int64;
+//  mountDriveLetter: DriveLetterChar;
+//  mountReadonly:    Boolean;
   currDriveLetter:  DriveLetterChar;
   mountMountAs:     TFreeOTFEMountAs;
 
   LUKSHeader:               TLUKSHeader;
   keySlot:                  Integer;
-  baseIVCypherOnHashLength: Boolean;
-  mountForAllUsers:         Boolean;
+//  baseIVCypherOnHashLength: Boolean;
+//  mountForAllUsers:         Boolean;
 begin
   LastErrorCode := OTFE_ERR_SUCCESS;
   Result        := True;
   GetRandPool.SetUpRandPool([rngcryptlib], PKCS11_NO_SLOT_ID, '');
   CheckActive();
-  GetRandPool.GetRandomData(256, volumeKey);
+  GetRandPool.GetRandomData(128, volumeKey);
   //   LUKSHeader.cipher_name := 'aes';
   if not (EncryptAndWriteMasterKey(volumeFilename, password, True{baseIVCypherOnHashLength},
     LUKSHeader, 0{ keySlot}, volumeKey)) then
@@ -3721,14 +3760,11 @@ begin
   tmpStringList := TStringList.Create();
   try
     tmpStringList.Add(volumeFilename);
-    if Mount(tmpStringList, mountedAs, ReadOnly) then begin
+    if Mount(tmpStringList, mountedAs, ReadOnly) then
       Result := mountedAs[1];
-    end;
-
   finally
     tmpStringList.Free();
   end;
-
 end;
 
 
@@ -4477,7 +4513,7 @@ begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('User''s salted key:');
   DebugMsg('-- begin --');
-  DebugMsgBinary(saltedUserPassword);
+  DebugMsg(saltedUserPassword);
   DebugMsg('-- end --');
   {$ENDIF}
     end;
@@ -4544,7 +4580,7 @@ begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('Hashed data OK.');
   DebugMsg('Processed user''s password and salt to give:');
-  DebugMsgBinary( derivedKey);
+  DebugMsg( derivedKey);
   {$ENDIF}
             // FOR ALL CYPHER DRIVERS...
             for ci := low(cypherDrivers) to high(cypherDrivers) do begin
@@ -4606,21 +4642,21 @@ begin
                 // Zero the IV for decryption
                 IV := StringOfChar(AnsiChar(#0), (bs div 8));
 
-  {$IFDEF FREEOTFE_DEBUG}
+
   DebugMsg('About to decrypt data...');
-  {$ENDIF}
+
                 if not (DecryptSectorData(currCypherDriver.LibFNOrDevKnlMdeName,
                   currCypherImpl.CypherGUID, FREEOTFE_v1_DUMMY_SECTOR_ID,
                   FREEOTFE_v1_DUMMY_SECTOR_SIZE, criticalDataKey, IV,
                   encryptedBlock, decryptedBlock)) then begin
-  {$IFDEF FREEOTFE_DEBUG}
+
   DebugMsg('ERROR: Decryption FAILED.');
-  {$ENDIF}
+
                   Result := False;
                 end else begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('Key:');
-  DebugMsgBinary(criticalDataKey);
+  DebugMsg(criticalDataKey);
   DebugMsg('Decoded to:');
   DebugMsgBinary(decryptedBlock);
   {$ENDIF}
@@ -4630,18 +4666,18 @@ begin
                   tgtVolDetailsBlockLen := (((4096 - saltLength) div bs) * bs) - hk;
                   strVolumeDetailsBlock :=
                     Copy(decryptedBlock, ((hk div 8) + 1), (tgtVolDetailsBlockLen div 8));
-  {$IFDEF FREEOTFE_DEBUG}
+
   DebugMsg('About to generate hash/HMAC using decoded data...');
-  {$ENDIF}
+
 
 
                   // HASH THE USER DECODED DATA...
                   if not (HashData(currHashDriver.LibFNOrDevKnlMdeName,
                     currHashImpl.HashGUID, SDUStringToSDUBytes(strVolumeDetailsBlock),
                     checkDataGenerated)) then begin
-  {$IFDEF FREEOTFE_DEBUG}
+
   DebugMsg('ERROR: Hash of decrypted data FAILED.');
-  {$ENDIF}
+
                     Result := False;
                   end;
 
@@ -4902,7 +4938,7 @@ DebugMsg('Extracting salt...');
         (Length(CDB) - (saltLength div 8)));
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('Salt follows:');
-DebugMsgBinary(salt);
+DebugMsg(salt);
 {$ENDIF}
     end;
 
@@ -5438,7 +5474,7 @@ DebugMsg('Hash impl: '+hashDetails.Title+' ('+GUIDToString(CDBMetaData.HashGUID)
   if ((cypherDetails.BlockSize <= 0) and ((volumeDetails.VolumeIVLength > 0) or
     (Length(volumeDetails.VolumeIV) > 0))) then begin
     raise EFreeOTFEInternalError.Create(
-      'Invalid: Volume IV cannot be used if cypher blocksize <= 0');
+      'Invalid: Container IV cannot be used if cypher blocksize <= 0');
   end;
   if ((cypherDetails.BlockSize > 0) and ((sl_bits mod cypherDetails.BlockSize) <> 0)) then begin
     raise EFreeOTFEInternalError.Create(
@@ -5469,7 +5505,7 @@ DebugMsg('Hash impl: '+hashDetails.Title+' ('+GUIDToString(CDBMetaData.HashGUID)
       'Invalid: Master key length must be the same as the cypher''s required keysize for cyphers with a fixed keysize');
   end;
   if ((volumeDetails.VolumeIVLength mod 8) <> 0) then begin
-    raise EFreeOTFEInternalError.Create('Invalid: Volume IV length must be multiple of 8');
+    raise EFreeOTFEInternalError.Create('Invalid: Container IV length must be multiple of 8');
   end;
 
 
@@ -5897,14 +5933,12 @@ begin
     frmWizard := TfrmWizardCreateVolume.Create(nil);
     try
       mr := frmWizard.ShowModal();
-      if (mr = mrOk) then begin
-        LastErrorCode := OTFE_ERR_SUCCESS;
-        Result        := True;
-      end else
-      if (mr = mrCancel) then begin
-        LastErrorCode := OTFE_ERR_USER_CANCEL;
-      end;
-
+      Result        := mr = mrOk;
+      if Result then
+        LastErrorCode := OTFE_ERR_SUCCESS
+      else
+        if (mr = mrCancel) then
+          LastErrorCode := OTFE_ERR_USER_CANCEL;
     finally
       frmWizard.Free();
     end;
@@ -5915,7 +5949,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.CreateLinuxVolumeWizard(out aFileName: String): Boolean;
+function TOTFEFreeOTFEBase.CreatePlainLinuxVolumeWizard(out aFileName: String): Boolean;
 var
   volSizeDlg: TfrmNewVolumeSize;
   mr:         Integer;
@@ -6005,47 +6039,88 @@ end;
 
 
 // ----------------------------------------------------------------------------
-{$IFDEF FREEOTFE_DEBUG}
+
 procedure TOTFEFreeOTFEBase.DebugMsg(msg: string);
 begin
-  DebugStrings.Add(msg);
+{$IFDEF FREEOTFE_DEBUG}
+  fDebugStrings.Add(msg);
 {$IFDEF _GEXPERTS}
   SendDebug(msg);
 {$ENDIF}
-  if DebugShowMessage then    begin
+  if fdebugShowMessage then
     showmessage(msg);
-    end;
-end;
 {$ENDIF}
+end;
 
+procedure TOTFEFreeOTFEBase.DebugMsg(uid: TGUID);
+begin
 {$IFDEF FREEOTFE_DEBUG}
+   DebugMsg(GUIDToString(uid));
+{$ENDIF}
+end;
+
+procedure TOTFEFreeOTFEBase.DebugMsg(msg: array of byte);
+{$IFDEF FREEOTFE_DEBUG}
+var
+msgstr: ansistring;
+ {$ENDIF}
+begin
+{$IFDEF FREEOTFE_DEBUG}
+msgstr := PAnsiChar(@msg[0]);
+setlength(msgstr,length(msg));
+   DebugMsgBinary(msgstr);
+{$ENDIF}
+end;
+
+procedure TOTFEFreeOTFEBase.DebugMsg(value: integer);
+begin
+{$IFDEF FREEOTFE_DEBUG}
+   DebugMsg(IntToStr(value));
+{$ENDIF}
+end;
+
+
+
+procedure TOTFEFreeOTFEBase.DebugMsg(value: Boolean);
+begin
+  {$IFDEF FREEOTFE_DEBUG}
+   DebugMsg(BoolToStr(value,true));
+{$ENDIF}
+end;
+
 procedure TOTFEFreeOTFEBase.DebugClear();
 begin
-{$IFNDEF _GEXPERTS}
-  if (DebugLogfile <> '') then
-    begin
-    if DebugStrings.Count> 0 then begin
-       inc(DebugLogfileCount);
-       DebugStrings.SaveToFile(DebugLogfile+'.'+inttostr(DebugLogfileCount)+'.log');
-    end;
-    end;
-{$ENDIF}
-
-  DebugStrings.Clear();
-end;
-{$ENDIF}
-
 {$IFDEF FREEOTFE_DEBUG}
-procedure TOTFEFreeOTFEBase.DebugMsgBinary(msg: TSDUBytes);
+{$IFNDEF _GEXPERTS}
+  if (fdebugLogfile <> '') then      begin
+    if fDebugStrings.Count> 0 then begin
+       inc(fDebugLogfileCount);
+       fDebugStrings.SaveToFile(fdebugLogfile+'.'+inttostr(fDebugLogfileCount)+'.log');
+    end;
+    end;
+{$ENDIF}
+
+  fDebugStrings.Clear();
+  {$ENDIF}
+end;
+
+
+
+procedure TOTFEFreeOTFEBase.DebugMsg(msg: TSDUBytes);
 begin
+{$IFDEF FREEOTFE_DEBUG}
 DebugMsgBinary(SDUBytesToString(msg));
+ {$ENDIF}
 end;
 
 procedure TOTFEFreeOTFEBase.DebugMsgBinary(msg: ansistring);
+{$IFDEF FREEOTFE_DEBUG}
 var
   prettyStrings: TStringList;
   i: integer;
+ {$ENDIF}
 begin
+{$IFDEF FREEOTFE_DEBUG}
   prettyStrings := TStringList.Create();
   try
     SDUPrettyPrintHex(msg, 0, Length(msg), TStringList(prettyStrings), 16);
@@ -6055,42 +6130,44 @@ begin
       SendDebug(prettyStrings[i]);
 {$ENDIF}
       end;
-    DebugStrings.AddStrings(prettyStrings);
-    if DebugShowMessage then      begin
+    fDebugStrings.AddStrings(prettyStrings);
+    if fdebugShowMessage then      begin
       showmessage(prettyStrings.Text);
       end;
   finally
     prettyStrings.Free();
   end;
-
+ {$ENDIF}
 end;
-{$ENDIF}
 
-{$IFDEF FREEOTFE_DEBUG}
+
+
 procedure TOTFEFreeOTFEBase.DebugMsgBinaryPtr(msg: PAnsiChar; len:integer);
+{$IFDEF FREEOTFE_DEBUG}
 var
   prettyStrings: TStringList;
   i: integer;
+ {$ENDIF}
 begin
+{$IFDEF FREEOTFE_DEBUG}
   prettyStrings := TStringList.Create();
   try
     SDUPrettyPrintHex(Pointer(msg), 0, len, TStringList(prettyStrings), 16);
-    for i := 0 to (prettyStrings.Count - 1) do
-      begin
+    for i := 0 to (prettyStrings.Count - 1) do      begin
 {$IFDEF _GEXPERTS}
       SendDebug(prettyStrings[i]);
 {$ENDIF}
       end;
-    DebugStrings.AddStrings(prettyStrings);
-    if DebugShowMessage then      begin
+    fDebugStrings.AddStrings(prettyStrings);
+    if fdebugShowMessage then
       showmessage(prettyStrings.Text);
-      end;
+
   finally
     prettyStrings.Free();
   end;
-
+ {$ENDIF}
 end;
-{$ENDIF}
+
 
 
  // -----------------------------------------------------------------------------
@@ -6414,7 +6491,7 @@ begin
           prettyPrintData
           );
         dumpReport.AddStrings(prettyPrintData);
-        dumpReport.Add(_('Volume details block  : '));
+        dumpReport.Add(_('Container details block  : '));
         dumpReport.Add('  ' + SDUParamSubstitute(_('Length       : %1 bits'),
           [(Length(fdumpVolumeDetailsBlock) * 8)]));
         dumpReport.Add('  ' + _('Data         : '));
@@ -6428,12 +6505,12 @@ begin
         dumpReport.AddStrings(prettyPrintData);
 
 
-        AddStdDumpSection(dumpReport, _('Volume Details Block'));
+        AddStdDumpSection(dumpReport, _('Container Details Block'));
         dumpReport.Add(SDUParamSubstitute(_('CDB format ID         : %1'),
           [volumeDetails.CDBFormatID]));
 
         // Decode the VolumeFlags to human-readable format
-        dumpReport.Add(SDUParamSubstitute(_('Volume flags          : %1'),
+        dumpReport.Add(SDUParamSubstitute(_('Container flags          : %1'),
           [volumeDetails.VolumeFlags]));
         dumpReport.Add(_('                        ') + DumpCriticalDataToFileBitmap(
           volumeDetails.VolumeFlags, VOL_FLAGS_SECTOR_ID_ZERO_VOLSTART,
@@ -6457,7 +6534,7 @@ begin
         dumpReport.AddStrings(prettyPrintData);
         dumpReport.Add(SDUParamSubstitute(_('Sector IV generation  : %1'),
           [FreeOTFESectorIVGenMethodTitle[volumeDetails.SectorIVGenMethod]]));
-        dumpReport.Add(_('Volume IV             : '));
+        dumpReport.Add(_('Container IV             : '));
         dumpReport.Add('  ' + SDUParamSubstitute(_('Length : %1 bits'),
           [volumeDetails.VolumeIVLength]));
         dumpReport.Add('  ' + _('IV data:'));
@@ -6827,7 +6904,7 @@ function TOTFEFreeOTFEBase.DEBUGReadWritePlaintextToVolume(
 
                     dataOffset: int64;  // Offset from within mounted volume from where to read/write data
                     dataLength: integer;  // Length of data to read/write. In bytes
-                    var data: ansistring;  // Data to read/write
+                    var data: TSDUBytes;  // Data to read/write
 
                     offset: int64 = 0;
                     size: int64 = 0;

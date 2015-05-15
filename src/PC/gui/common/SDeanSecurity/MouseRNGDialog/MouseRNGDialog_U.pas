@@ -100,16 +100,13 @@ begin
       SetLength(FData, (FRequiredBits div 8));
 
       bitsGot := captureDlg.RandomData(FRequiredBits, FData);
-      if (bitsGot <> FRequiredBits) then
-        begin
+      if (bitsGot <> FRequiredBits) then        begin
         // Cleardown and raise error...
         Wipe();
         raise EInternalError.Create('Could not retieve all random data');
-        end
-      else
-        begin
+       end      else        begin
         Result := TRUE;
-        end;
+      end;
 
       end;
 
@@ -155,12 +152,8 @@ end;
 procedure TMouseRNGDialog.SetRequiredBits(bits: integer);
 begin
   if ((bits mod 8) <> 0) then
-    begin
     raise ERequiredNot8Multiple.Create('Required bits must be a multiple of 8');
-    end;
-
   FRequiredBits := bits
-
 end;
 
 

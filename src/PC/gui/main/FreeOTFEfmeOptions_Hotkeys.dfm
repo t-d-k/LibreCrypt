@@ -1,4 +1,4 @@
-inherited fmeOptions_Hotkeys: TfmeOptions_Hotkeys
+inherited fmeOptions_Hotkeys: TfmeHotKeysOptions
   Width = 337
   Height = 174
   ExplicitWidth = 337

@@ -16,10 +16,11 @@ uses
   ActnList, Buttons, Classes, ComCtrls, Controls, Dialogs,
   ExtCtrls, Forms, Graphics, Grids, ImgList, Menus, Messages,
   SDUSystemTrayIcon, Shredder, Spin64, StdCtrls, SysUtils, ToolWin,
-  Windows, XPMan, //freeotfe
+  Windows, XPMan, 
+  //librecrypt
   CommonfrmCDBBackupRestore, CommonSettings,
   MouseRNGDialog_U, OTFE_U,
-  OTFEFreeOTFE_DriverControl,
+  DriverControl,
   OTFEFreeOTFE_U, OTFEFreeOTFEBase_U, pkcs11_library, lcDialogs, SDUForms,
   SDUGeneral, SDUMRUList, SDUMultimediaKeys, SDUDialogs;
 
@@ -142,7 +143,7 @@ type
     procedure actCDBPlaintextDumpExecute(Sender: TObject);
     procedure actFreeOTFENewExecute(Sender: TObject);
     procedure actFreeOTFEMountFileExecute(Sender: TObject);
-    procedure actLinuxNewExecute(Sender: TObject);
+    procedure actNewPlainLinuxExecute(Sender: TObject);
     procedure actLinuxMountFileExecute(Sender: TObject);
     procedure actExitExecute(Sender: TObject);
     procedure actListCyphersExecute(Sender: TObject);
@@ -396,25 +397,25 @@ uses
 {$IFDEF UNICODE}
   AnsiStrings,
 {$ENDIF}
-FreeOTFEConsts,
+lcConsts,
 {$IFDEF FREEOTFE_MAIN}
-  FreeOTFESettings,
+  MainSettings,
 {$ENDIF}
 {$IFDEF FREEOTFE_EXPLORER}
-  FreeOTFEExplorerSettings,
+  ExplorerSettings,
 {$ENDIF}
   // freeotfe
-  CommonfrmAbout,
+  frmAbout,
   CommonfrmCDBDump_Base,
   CommonfrmCDBDump_FreeOTFE,
   CommonfrmCDBDump_LUKS,
   CommonfrmGridReport_Cypher,
   CommonfrmGridReport_Hash,
   CommonfrmInstallOnUSBDrive,
-  CommonfrmVersionCheck,
+  frmVersionCheck,
   OTFEConsts_U,
-  OTFEFreeOTFE_DriverAPI,
-  OTFEFreeOTFE_PKCS11, OTFEFreeOTFE_VolumeFileAPI,
+  DriverAPI,
+  PKCS11Lib, VolumeFileAPI,
   pkcs11_slot,
   SDUFileIterator_U,
   SDUGraphics,
@@ -682,7 +683,7 @@ procedure TfrmCommonMain.FormCreate(Sender: TObject);
 begin
 
 {$IFDEF FREEOTFE_DEBUG}
-  GetFreeOTFEBase().DebugShowMessage := FALSE;  // xxx - disable showmessages(...) of debug if built with debug on
+  GetFreeOTFEBase().fDebugShowMessage := FALSE;  // xxx - disable showmessages(...) of debug if built with debug on
 {$ENDIF}
 
 {$IFDEF VER180}
@@ -730,8 +731,8 @@ end;
 
 procedure TfrmCommonMain.SetupOTFEComponent();
 begin
-  GetFreeOTFEBase().AdvancedMountDlg    := gSettings.OptAdvancedMountDlg;
-  GetFreeOTFEBase().RevertVolTimestamps := gSettings.OptRevertVolTimestamps;
+  GetFreeOTFEBase().fAdvancedMountDlg    := gSettings.OptAdvancedMountDlg;
+  GetFreeOTFEBase().fRevertVolTimestamps := gSettings.OptRevertVolTimestamps;
   GetFreeOTFEBase().PasswordChar        := '*';
   if gSettings.OptShowPasswords then begin
     GetFreeOTFEBase().PasswordChar := #0;
@@ -838,7 +839,6 @@ begin
   end;
 
   MountFiles(mountType, filesToMount, ReadOnly, False);
-
 end;
 
 
@@ -1009,13 +1009,13 @@ end;
 
 procedure TfrmCommonMain.DumpDetailsToFile(LUKSDump: Boolean);
 var
-  dlg: TfrmCDBDump_Base;
+  dlg: TfrmHdrDump;
 begin
   if GetFreeOTFEBase().WarnIfNoHashOrCypherDrivers() then begin
     if LUKSDump then begin
-      dlg := TfrmCDBDump_LUKS.Create(self);
+      dlg := TfrmLUKSHdrDump.Create(self);
     end else begin
-      dlg := TfrmCDBDump_FreeOTFE.Create(self);
+      dlg := TfrmFreeOTFEHdrDump.Create(self);
     end;
     try
       dlg.ShowModal();
@@ -1192,26 +1192,27 @@ begin
 end;
 
 //creates plain dmcrypt vol
-procedure TfrmCommonMain.actLinuxNewExecute(Sender: TObject);
+procedure TfrmCommonMain.actNewPlainLinuxExecute(Sender: TObject);
 var
   aFileName: String;
 begin
   //create empty file
-  if GetFreeOTFEBase().CreateLinuxVolumeWizard(aFileName) then begin
+  if GetFreeOTFEBase().CreatePlainLinuxVolumeWizard(aFileName) then begin
     SDUMessageDlg(
-      _('Linux volume created successfully.') + SDUCRLF + SDUCRLF +
-      _('Don''t forget to mount and format this volume before use.'),
+      _('Linux container created successfully.') + SDUCRLF + SDUCRLF +
+      _('Now mount and format this container before use.'),
       mtInformation);
-  end else begin
-    if (GetFreeOTFEBase().LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
-      SDUMessageDlg(_('Linux volume could not be created'), mtError);
-    end;
-  end;
-  { TODO 1 -otdk -cenhance : wipe volume first}
+        { TODO 1 -otdk -cenhance : wipe volume first}
   //create enc vol
   MountFiles(
     ftLinux, aFileName,
     False, True);
+  end else begin
+    if (GetFreeOTFEBase().LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
+      SDUMessageDlg(_('Linux container could not be created'), mtError);
+    end;
+  end;
+
 
 end;
 
@@ -1332,7 +1333,7 @@ end;
 {$IFDEF VER180}
 {$IFNDEF VER185}
 // Vista fix for Delphi 2006 only
-procedure TfrmFreeOTFEMain.CreateParams(var Params: TCreateParams);
+procedure TfrmCommonMain.CreateParams(var Params: TCreateParams);
 begin
   inherited CreateParams(Params);
   if SDUOSVistaOrLater() then
@@ -1347,7 +1348,7 @@ end;
 {$IFDEF VER180}
 {$IFNDEF VER185}
 // Vista fix for Delphi 2006 only
-procedure TfrmFreeOTFEMain.WMSyscommand(var Message: TWmSysCommand);
+procedure TfrmCommonMain.WMSyscommand(var Message: TWmSysCommand);
 begin
   if not(SDUOSVistaOrLater()) then  begin
     inherited;

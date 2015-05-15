@@ -9,8 +9,8 @@ unit FreeOTFEDLLMainAPI;
 interface
 
 uses
-  OTFEFreeOTFE_DriverAPI,
-  OTFEFreeOTFE_DriverCommon, Windows;
+  DriverAPI,
+  FreeOTFEDriverConsts, Windows;
 
 const
   // Taken from diskio.h:

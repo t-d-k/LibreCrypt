@@ -6,7 +6,7 @@ unit OTFE_U;
 //
 // -----------------------------------------------------------------------------
 //
-
+{$M+} //enable rtti
 
 // -----------------------------------------------------------------------------
 interface
@@ -382,7 +382,7 @@ begin
     OTFE_ERR_UNKNOWN_KEYGEN            : Result := 'Unknown key generator';
 
     // ScramDisk
-    OTFE_ERR_UNABLE_MOUNT_COMPRESSED   : Result := 'Can''t mount compressed volume';
+    OTFE_ERR_UNABLE_MOUNT_COMPRESSED   : Result := 'Can''t mount compressed container';
 
     // PANIC!
     OTFE_ERR_UNKNOWN_ERROR             : Result := 'Unknown error';

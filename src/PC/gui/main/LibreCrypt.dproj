@@ -8,7 +8,7 @@
 			<FrameworkType>VCL</FrameworkType>
 			<ProjectVersion>13.4</ProjectVersion>
 			<Base>True</Base>
-			<Config Condition="'$(Config)'==''">Debug</Config>
+			<Config Condition="'$(Config)'==''">Release</Config>
 			<Platform Condition="'$(Platform)'==''">Win32</Platform>
 			<TargetedPlatforms>3</TargetedPlatforms>
 			<AppType>Application</AppType>
@@ -66,7 +66,7 @@
 			<DCC_UsePackage>rtl;xmlrtl;$(DCC_UsePackage)</DCC_UsePackage>
 			<DCC_ExeOutput>..\..\..\..\bin\PC\$(Config)\$(Platform)</DCC_ExeOutput>
 			<DCC_DcuOutput>P:\src\PC\gui\main\dcus\$(Config)\$(Platform)</DCC_DcuOutput>
-			<DCC_Define>FREEOTFE_MAIN;_DXGETTEXT;AlwaysClearFreedMemory;FORCE_LOCAL_PAD;$(DCC_Define)</DCC_Define>
+			<DCC_Define>FREEOTFE_MAIN;_DXGETTEXT;AlwaysClearFreedMemory;$(DCC_Define)</DCC_Define>
 			<VerInfo_PreRelease>true</VerInfo_PreRelease>
 			<DCC_UnitSearchPath>P:\SDeanComponents\Components\SDeanUtils;P:\SDeanComponents\Components\SDeanSecurity\PKCS#11;P:\SDeanComponents\Components\SDeanSecurity\Shredder;P:\SDeanComponents\Components\OTFE\OTFEFreeOTFE;P:\SDeanComponents\Components\OTFE\OTFE\;P:\SDeanComponents\Components\SDeanSecurity\PasswordRichEdit;P:\SDeanComponents\Components\SDeanSecurity\MouseRNG\;P:\src\PC\gui\common\OTFE\OTFEFreeOTFE;P:\src\PC\gui\common\SDeanUtils;P:\src\3rd_party\FastMM\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<Icon_MainIcon>..\..\..\Common\Common\images\DoxBox.ico</Icon_MainIcon>
@@ -75,7 +75,7 @@
 			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<VerInfo_Locale>2057</VerInfo_Locale>
-			<VerInfo_Keys>CompanyName=DoxBox;FileDescription=DoxBox: Open-Source transparent disk encryption;FileVersion=6.1.0.0;InternalName=DoxBox;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=DoxBox;OriginalFilename=DoxBox.exe;ProductName=DoxBox;ProductVersion=6.1;Comments=http://doxbox.eu</VerInfo_Keys>
+			<VerInfo_Keys>CompanyName=LibreCrypt;FileDescription=LibreCrypt: Open-Source transparent disk encryption;FileVersion=6.2.0.0;InternalName=LibreCrypt;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=LibreCrypt;OriginalFilename=LibreCrypt.exe;ProductName=LibreCrypt;ProductVersion=6.2;Comments=http://LibreCrypt.eu</VerInfo_Keys>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win64)'!=''">
 			<Debugger_RunParams>/dev_menu /noexit</Debugger_RunParams>
@@ -101,13 +101,13 @@
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-			<VerInfo_Keys>CompanyName=DoxBox;FileDescription=DoxBox: Open-Source transparent disk encryption;FileVersion=6.1.0.0;InternalName=DoxBox;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=DoxBox;OriginalFilename=DoxBox;ProductName=DoxBox;ProductVersion=6.1;Comments=http://doxbox.eu</VerInfo_Keys>
+			<VerInfo_Keys>CompanyName=LibreCrypt;FileDescription=LibreCrypt: Open-Source transparent disk encryption;FileVersion=6.2.0.0;InternalName=LibreCrypt;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=LibreCrypt;OriginalFilename=LibreCrypt;ProductName=LibreCrypt;ProductVersion=6.2;Comments=http://LibreCrypt.eu</VerInfo_Keys>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
 			<DCC_ExeOutput>..\..\..\..\bin\PC\</DCC_ExeOutput>
-			<VerInfo_Keys>CompanyName=DoxBox;FileDescription=DoxBox: Open-Source transparent disk encryption;FileVersion=6.1.0.0;InternalName=DoxBox;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=DoxBox;OriginalFilename=DoxBox;ProductName=DoxBox;ProductVersion=6.1;Comments=http://doxbox.eu</VerInfo_Keys>
+			<VerInfo_Keys>CompanyName=LibreCrypt;FileDescription=LibreCrypt: Open-Source transparent disk encryption;FileVersion=6.2.0.0;InternalName=LibreCrypt;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=LibreCrypt;OriginalFilename=LibreCrypt;ProductName=LibreCrypt;ProductVersion=6.2;Comments=http://LibreCrypt.eu</VerInfo_Keys>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
@@ -115,17 +115,17 @@
 			<DCC_Optimize>false</DCC_Optimize>
 			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
 			<DCC_RangeChecking>true</DCC_RangeChecking>
-			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+			<DCC_Define>DEBUG;FREEOTFE_DEBUG_NO;$(DCC_Define)</DCC_Define>
 			<DCC_DebugDCUs>true</DCC_DebugDCUs>
 			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
 			<BRCC_Defines>FullDebugMode;LogErrorsToFile;$(BRCC_Defines)</BRCC_Defines>
-			<VerInfo_Keys>CompanyName=DoxBox;FileDescription=DoxBox: Open-Source transparent disk encryption;FileVersion=6.1.0.0;InternalName=DoxBox;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=DoxBox;OriginalFilename=DoxBox;ProductName=DoxBox;ProductVersion=6.0;Comments=http://doxbox.eu</VerInfo_Keys>
+			<VerInfo_Keys>CompanyName=LibreCrypt;FileDescription=LibreCrypt: Open-Source transparent disk encryption;FileVersion=6.2.0.0;InternalName=LibreCrypt;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=LibreCrypt;OriginalFilename=LibreCrypt;ProductName=LibreCrypt;ProductVersion=6.0;Comments=http://LibreCrypt.eu</VerInfo_Keys>
 			<VerInfo_Debug>true</VerInfo_Debug>
 			<Version>7.0</Version>
 			<DCC_WriteableConstants>True</DCC_WriteableConstants>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
-			<VerInfo_Keys>CompanyName=DoxBox;FileDescription=DoxBox: Open-Source transparent disk encryption;FileVersion=6.1.0.0;InternalName=DoxBox;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=DoxBox;OriginalFilename=DoxBox;ProductName=DoxBox;ProductVersion=6.1;Comments=http://doxbox.eu</VerInfo_Keys>
+			<VerInfo_Keys>CompanyName=LibreCrypt;FileDescription=LibreCrypt: Open-Source transparent disk encryption;FileVersion=6.2.0.0;InternalName=LibreCrypt;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=LibreCrypt;OriginalFilename=LibreCrypt;ProductName=LibreCrypt;ProductVersion=6.2;Comments=http://LibreCrypt.eu</VerInfo_Keys>
 			<Debugger_RunParams>/mount /linux /volume </Debugger_RunParams>
 			<DCC_Optimize>false</DCC_Optimize>
 			<DCC_ExeOutput>..\..\..\..\bin\PC\</DCC_ExeOutput>
@@ -134,7 +134,7 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
 			<Debugger_RunParams>/dev_menu /noexit</Debugger_RunParams>
-			<VerInfo_Keys>CompanyName=DoxBox;FileDescription=DoxBox: Open-Source transparent disk encryption;FileVersion=6.1.0.0;InternalName=DoxBox;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=DoxBox;OriginalFilename=DoxBox;ProductName=DoxBox;ProductVersion=6.1;Comments=http://doxbox.eu</VerInfo_Keys>
+			<VerInfo_Keys>CompanyName=LibreCrypt;FileDescription=LibreCrypt: Open-Source transparent disk encryption;FileVersion=6.2.0.0;InternalName=LibreCrypt;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=LibreCrypt;OriginalFilename=LibreCrypt;ProductName=LibreCrypt;ProductVersion=6.2;Comments=http://LibreCrypt.eu</VerInfo_Keys>
 			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
 			<DCC_RangeChecking>true</DCC_RangeChecking>
 			<DCC_DebugDCUs>true</DCC_DebugDCUs>
@@ -203,10 +203,10 @@
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
-			<DCCReference Include="FreeOTFEfrmMain.pas">
-				<Form>frmFreeOTFEMain</Form>
+			<DCCReference Include="frmMain.pas">
+				<Form>frmMain</Form>
 			</DCCReference>
-			<DCCReference Include="FreeOTFEfrmVolProperties.pas">
+			<DCCReference Include="frmVolProperties.pas">
 				<Form>frmFreeOTFEVolProperties</Form>
 			</DCCReference>
 			<DCCReference Include="FreeOTFEfrmSelectOverwriteMethod.pas">
@@ -216,7 +216,7 @@
 				<Form>frmCDBBackupRestore</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\CommonSettings.pas"/>
-			<DCCReference Include="..\common\CommonfrmOptions.pas">
+			<DCCReference Include="..\common\frmCommonOptions.pas">
 				<Form>frmOptions</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\CommonfrmGridReport.pas">
@@ -228,11 +228,11 @@
 			<DCCReference Include="..\common\CommonfrmGridReport_Cypher.pas">
 				<Form>frmGridReport_Cypher</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\CommonfmeOptions_Base.pas">
+			<DCCReference Include="..\common\fmeBaseOptions.pas">
 				<Form>fmeOptions_Base</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="FreeOTFEfmeOptions_SystemTray.pas">
+			<DCCReference Include="fmeSystemTrayOptions.pas">
 				<Form>fmeOptions_SystemTray</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
@@ -251,14 +251,14 @@
 			<DCCReference Include="..\common\CommonfrmInstallOnUSBDrive.pas">
 				<Form>frmInstallOnUSBDrive</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\CommonfrmAbout.pas">
+			<DCCReference Include="..\common\frmAbout.pas">
 				<Form>frmAbout</Form>
 			</DCCReference>
-			<DCCReference Include="FreeOTFESettings.pas"/>
+			<DCCReference Include="MainSettings.pas"/>
 			<DCCReference Include="FreeOTFEfrmOptions.pas">
 				<Form>frmOptions_FreeOTFE</Form>
 			</DCCReference>
-			<DCCReference Include="FreeOTFEfmeOptions_Base.pas">
+			<DCCReference Include="fmeLcOptions.pas">
 				<Form>fmeFreeOTFEOptions_Base</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
@@ -305,56 +305,49 @@
 			<DCCReference Include="..\common\SDeanUtils\SDUGeneral.pas"/>
 			<DCCReference Include="..\common\Filesystem\SDFilesystem.pas"/>
 			<DCCReference Include="..\common\Filesystem\SDFilesystem_FAT.pas"/>
-			<DCCReference Include="..\common\CommonfmeOptions_Autorun.pas">
+			<DCCReference Include="..\common\fmeAutorunOptions.pas">
 				<Form>fmeOptions_Autorun</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas"/>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas">
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmKeyEntryFreeOTFE.pas">
 				<Form>frmKeyEntryFreeOTFE</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLinux.pas">
-				<Form>frmKeyEntryLinux</Form>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmKeyEntryLinux.pas">
+				<Form>frmKeyEntryPlainLinux</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLUKS.pas">
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmKeyEntryLUKS.pas">
 				<Form>frmKeyEntryLUKS</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizard.pas">
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmWizard.pas">
 				<Form>frmWizard</Form>
-			</DCCReference>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas">
-				<Form>frmWizardChangePasswordCreateKeyfile</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\OTFE\SDURandPool.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFEBase_U.pas"/>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DiskPartitionsPanel.pas"/>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas"/>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeSelect.pas"/>
-			<DCCReference Include="..\common\SDeanUtils\SDUDiskPartitionsPanel.pas"/>
-			<DCCReference Include="..\common\SDeanUtils\SDUBlocksPanel.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\fmeVolumeSelect.pas"/>
 			<DCCReference Include="..\common\SDeanUtils\SDUObjectManager.pas"/>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrBase.pas">
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\fmePKCS11_MgrBase.pas">
 				<Form>fmePKCS11_MgrBase</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas">
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\fmePKCS11_MgrKeyfile.pas">
 				<Form>fmePKCS11_MgrKeyfile</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas">
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\fmePKCS11_MgrSecretKey.pas">
 				<Form>fmePKCS11_MgrSecretKey</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmHashInfo.pas">
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmHashInfo.pas">
 				<Form>frmHashInfo</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\SDeanSecurity\MouseRNGDialog\MouseRNGCaptureDlg_U.pas">
 				<Form>MouseRNGCaptureDlg</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas"/>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectVolumeAndOffset.pas">
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmSelectVolumeAndOffset.pas">
 				<Form>frmSelectVolumeFileAndOffset</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\SDeanUtils\SDUEndianIntegers.pas"/>
@@ -379,8 +372,8 @@
 				<Form>PKCS11LibrarySelectDialog</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_U.pas"/>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas"/>
-			<DCCReference Include="..\common\CommonfrmVersionCheck.pas">
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\DriverAPI.pas"/>
+			<DCCReference Include="..\common\frmVersionCheck.pas">
 				<Form>frmVersionCheck</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\fmeNewPassword.pas">
@@ -392,13 +385,21 @@
 				<Form>frmeLUKSKeyOrKeyfileEntry</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="..\common\FreeOTFEConsts.pas"/>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas">
+			<DCCReference Include="..\common\lcConsts.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmWizardCreateVolume.pas">
 				<Form>frmWizardCreateVolume</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\frmCommonMain.pas">
 				<Form>frmCommonMain</Form>
 			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmWizardChangePasswordCreateKeyfile.pas">
+				<Form>frmWizardChangePasswordCreateKeyfile</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\fmeSelectPartition.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\fmeDiskPartitionsPanel.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\fmeSDUDiskPartitions.pas"/>
+			<DCCReference Include="..\common\SDeanUtils\fmeSDUBlocks.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\cryptlib.pas"/>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

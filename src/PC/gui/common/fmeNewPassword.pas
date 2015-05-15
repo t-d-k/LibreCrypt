@@ -173,10 +173,10 @@ begin
   //very crude estimate of ntropy - helps shoulder surfers so add option to disable
   for i := 1 to length(preUserKeyFirst.Text) - 1 do begin
     ch := preUserKeyFirst.Text[i];
-    if (ch in G_ALPHA) or (ch in G_WHITESPACE) then
+    if charinset(ch, G_ALPHA) or charinset(ch , G_WHITESPACE) then
       aBits := aBits + 1.1
     else
-    if ch in G_NUMCHARS then
+    if charinset(ch , G_NUMCHARS) then
       aBits := aBits + 1.5
     else
       aBits := aBits + 2;

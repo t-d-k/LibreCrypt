@@ -1,2 +1,2 @@
-inherited fmeFreeOTFEExplorerOptions_Base: TfmeFreeOTFEExplorerOptions_Base
+inherited fmeFreeOTFEExplorerOptions_Base: TfmeCommonExplorerOptions
 end

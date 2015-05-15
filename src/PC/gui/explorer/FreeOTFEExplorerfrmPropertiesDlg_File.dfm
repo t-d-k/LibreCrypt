@@ -1,4 +1,4 @@
-inherited frmPropertiesDialog_File: TfrmPropertiesDialog_File
+inherited frmPropertiesDialog_File: TfrmFilePropertiesDialog
   Caption = 'frmPropertiesDialog_File'
   PixelsPerInch = 96
   TextHeight = 13

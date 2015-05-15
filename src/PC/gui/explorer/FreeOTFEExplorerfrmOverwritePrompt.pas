@@ -4,10 +4,10 @@ interface
 
 uses
   Classes, Controls, Dialogs, Forms,
-  FreeOTFEExplorerSettings, Graphics, Messages, SDUForms,
+  ExplorerSettings, Graphics, Messages, SDUForms,
   StdCtrls,
   SysUtils, Variants, Windows,       // Required for TMoveDeletionMethod
-  ExtCtrls, FreeOTFEExplorerfrmMain; // Required for TFExplOperation
+  ExtCtrls, frmExplorerMain; // Required for TFExplOperation
 
 type
   TfrmOverwritePrompt = class (TSDUForm)

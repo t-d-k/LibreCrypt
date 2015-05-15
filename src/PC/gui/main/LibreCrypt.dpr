@@ -14,25 +14,25 @@ uses
   Windows,
   SysUtils,
   Dialogs,
-  FreeOTFEfrmMain in 'FreeOTFEfrmMain.pas' {frmFreeOTFEMain},
-  FreeOTFEfrmVolProperties in 'FreeOTFEfrmVolProperties.pas' {frmFreeOTFEVolProperties},
+  frmMain in 'frmMain.pas' {frmMain},
+  frmVolProperties in 'frmVolProperties.pas' {frmFreeOTFEVolProperties},
   FreeOTFEfrmSelectOverwriteMethod in 'FreeOTFEfrmSelectOverwriteMethod.pas' {frmFreeOTFESelectOverwriteMethod},
   CommonfrmCDBBackupRestore in '..\common\CommonfrmCDBBackupRestore.pas' {frmCDBBackupRestore},
   CommonSettings in '..\common\CommonSettings.pas',
-  CommonfrmOptions in '..\common\CommonfrmOptions.pas' {frmOptions},
+  frmCommonOptions in '..\common\frmCommonOptions.pas' {frmOptions},
   CommonfrmGridReport in '..\common\CommonfrmGridReport.pas' {frmGridReport},
   CommonfrmGridReport_Hash in '..\common\CommonfrmGridReport_Hash.pas' {frmGridReport_Hash},
   CommonfrmGridReport_Cypher in '..\common\CommonfrmGridReport_Cypher.pas' {frmGridReport_Cypher},
-  CommonfmeOptions_Base in '..\common\CommonfmeOptions_Base.pas' {fmeOptions_Base: TFrame},
-  FreeOTFEfmeOptions_SystemTray in 'FreeOTFEfmeOptions_SystemTray.pas' {fmeOptions_SystemTray: TFrame},
+  fmeBaseOptions in '..\common\fmeBaseOptions.pas' {fmeOptions_Base: TFrame},
+  fmeSystemTrayOptions in 'fmeSystemTrayOptions.pas' {fmeOptions_SystemTray: TFrame},
   FreeOTFEfmeOptions_Hotkeys in 'FreeOTFEfmeOptions_Hotkeys.pas' {fmeOptions_Hotkeys: TFrame},
   CommonfmeOptions_PKCS11 in '..\common\CommonfmeOptions_PKCS11.pas' {fmeOptions_PKCS11: TFrame},
   FreeOTFEfmeOptions_General in 'FreeOTFEfmeOptions_General.pas' {fmeOptions_FreeOTFEGeneral: TFrame},
   CommonfrmInstallOnUSBDrive in '..\common\CommonfrmInstallOnUSBDrive.pas' {frmInstallOnUSBDrive},
-  CommonfrmAbout in '..\common\CommonfrmAbout.pas' {frmAbout},
-  FreeOTFESettings in 'FreeOTFESettings.pas',
+  frmAbout in '..\common\frmAbout.pas' {frmAbout},
+  MainSettings in 'MainSettings.pas',
   FreeOTFEfrmOptions in 'FreeOTFEfrmOptions.pas' {frmOptions_FreeOTFE},
-  FreeOTFEfmeOptions_Base in 'FreeOTFEfmeOptions_Base.pas' {fmeFreeOTFEOptions_Base: TFrame},
+  fmeLcOptions in 'fmeLcOptions.pas' {fmeFreeOTFEOptions_Base: TFrame},
   FreeOTFEfmeOptions_Advanced in 'FreeOTFEfmeOptions_Advanced.pas' {fmeOptions_FreeOTFEAdvanced: TFrame},
   CommonConsts in '..\common\CommonConsts.pas',
   CommonfrmCDBDump_LUKS in '..\common\CommonfrmCDBDump_LUKS.pas' {frmCDBDump_LUKS},
@@ -53,30 +53,25 @@ uses
   SDUGeneral in '..\common\SDeanUtils\SDUGeneral.pas',
   SDFilesystem in '..\common\Filesystem\SDFilesystem.pas',
   SDFilesystem_FAT in '..\common\Filesystem\SDFilesystem_FAT.pas',
-  CommonfmeOptions_Autorun in '..\common\CommonfmeOptions_Autorun.pas' {fmeOptions_Autorun: TFrame},
+  fmeAutorunOptions in '..\common\fmeAutorunOptions.pas' {fmeOptions_Autorun: TFrame},
   FreeOTFEDLLCypherAPI in '..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas',
   FreeOTFEDLLHashAPI in '..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas',
   FreeOTFEDLLMainAPI in '..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas',
-  OTFEFreeOTFE_frmKeyEntryFreeOTFE in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas' {frmKeyEntryFreeOTFE},
-  OTFEFreeOTFE_frmKeyEntryLinux in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLinux.pas' {frmKeyEntryLinux},
-  OTFEFreeOTFE_frmKeyEntryLUKS in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmKeyEntryLUKS.pas' {frmKeyEntryLUKS},
-  OTFEFreeOTFE_frmWizard in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizard.pas' {frmWizard},
-  OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardChangePasswordCreateKeyfile.pas' {frmWizardChangePasswordCreateKeyfile},
+  frmKeyEntryFreeOTFE in '..\common\OTFE\OTFEFreeOTFE\frmKeyEntryFreeOTFE.pas' {frmKeyEntryFreeOTFE},
+  frmKeyEntryLinux in '..\common\OTFE\OTFEFreeOTFE\frmKeyEntryLinux.pas' {frmKeyEntryPlainLinux},
+  frmKeyEntryLUKS in '..\common\OTFE\OTFEFreeOTFE\frmKeyEntryLUKS.pas' {frmKeyEntryLUKS},
+  frmWizard in '..\common\OTFE\OTFEFreeOTFE\frmWizard.pas' {frmWizard},
   SDURandPool in '..\common\OTFE\SDURandPool.pas',
   OTFEFreeOTFEBase_U in '..\common\OTFE\OTFEFreeOTFEBase_U.pas',
-  OTFEFreeOTFE_DiskPartitionsPanel in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DiskPartitionsPanel.pas',
-  OTFEFreeOTFE_fmeSelectPartition in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmeSelectPartition.pas',
-  OTFEFreeOTFE_VolumeSelect in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeSelect.pas',
-  SDUDiskPartitionsPanel in '..\common\SDeanUtils\SDUDiskPartitionsPanel.pas',
-  SDUBlocksPanel in '..\common\SDeanUtils\SDUBlocksPanel.pas',
+  fmeVolumeSelect in '..\common\OTFE\OTFEFreeOTFE\fmeVolumeSelect.pas',
   SDUObjectManager in '..\common\SDeanUtils\SDUObjectManager.pas',
-  OTFEFreeOTFE_fmePKCS11_MgrBase in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrBase.pas' {fmePKCS11_MgrBase: TFrame},
-  OTFEFreeOTFE_fmePKCS11_MgrKeyfile in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrKeyfile.pas' {fmePKCS11_MgrKeyfile: TFrame},
-  OTFEFreeOTFE_fmePKCS11_MgrSecretKey in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_fmePKCS11_MgrSecretKey.pas' {fmePKCS11_MgrSecretKey: TFrame},
-  OTFEFreeOTFE_frmHashInfo in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmHashInfo.pas' {frmHashInfo},
+  fmePKCS11_MgrBase in '..\common\OTFE\OTFEFreeOTFE\fmePKCS11_MgrBase.pas' {fmePKCS11_MgrBase: TFrame},
+  fmePKCS11_MgrKeyfile in '..\common\OTFE\OTFEFreeOTFE\fmePKCS11_MgrKeyfile.pas' {fmePKCS11_MgrKeyfile: TFrame},
+  fmePKCS11_MgrSecretKey in '..\common\OTFE\OTFEFreeOTFE\fmePKCS11_MgrSecretKey.pas' {fmePKCS11_MgrSecretKey: TFrame},
+  frmHashInfo in '..\common\OTFE\OTFEFreeOTFE\frmHashInfo.pas' {frmHashInfo},
   MouseRNGCaptureDlg_U in '..\common\SDeanSecurity\MouseRNGDialog\MouseRNGCaptureDlg_U.pas' {MouseRNGCaptureDlg},
   MouseRNGDialog_U in '..\common\SDeanSecurity\MouseRNGDialog\MouseRNGDialog_U.pas',
-  OTFEFreeOTFE_frmSelectVolumeAndOffset in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmSelectVolumeAndOffset.pas' {frmSelectVolumeFileAndOffset},
+  frmSelectVolumeAndOffset in '..\common\OTFE\OTFEFreeOTFE\frmSelectVolumeAndOffset.pas' {frmSelectVolumeFileAndOffset},
   SDUEndianIntegers in '..\common\SDeanUtils\SDUEndianIntegers.pas',
   DbugIntf in 'C:\Program Files (x86)\GExperts for RAD Studio XE2\DbugIntf.pas',
   OTFE_U in '..\common\OTFE\OTFE\OTFE_U.pas',
@@ -97,13 +92,19 @@ uses
   PKCS11KnownLibs in '..\common\SDeanSecurity\PKCS#11\PKCS11KnownLibs.pas',
   PKCS11LibrarySelectDlg in '..\common\SDeanSecurity\PKCS#11\PKCS11LibrarySelectDlg.pas' {PKCS11LibrarySelectDialog},
   OTFEFreeOTFE_U in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_U.pas',
-  OTFEFreeOTFE_DriverAPI in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas',
-  CommonfrmVersionCheck in '..\common\CommonfrmVersionCheck.pas' {frmVersionCheck},
+  DriverAPI in '..\common\OTFE\OTFEFreeOTFE\DriverAPI.pas',
+  frmVersionCheck in '..\common\frmVersionCheck.pas' {frmVersionCheck},
   fmeNewPassword in '..\common\fmeNewPassword.pas' {frmeNewPassword: TFrame},
   fmeLUKSKeyOrKeyfileEntry in '..\common\OTFE\OTFEFreeOTFE\fmeLUKSKeyOrKeyfileEntry.pas' {frmeLUKSKeyOrKeyfileEntry: TFrame},
-  FreeOTFEConsts in '..\common\FreeOTFEConsts.pas',
-  OTFEFreeOTFE_frmWizardCreateVolume in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_frmWizardCreateVolume.pas' {frmWizardCreateVolume},
-  frmCommonMain in '..\common\frmCommonMain.pas' {frmCommonMain};
+  lcConsts in '..\common\lcConsts.pas',
+  frmWizardCreateVolume in '..\common\OTFE\OTFEFreeOTFE\frmWizardCreateVolume.pas' {frmWizardCreateVolume},
+  frmCommonMain in '..\common\frmCommonMain.pas' {frmCommonMain},
+  frmWizardChangePasswordCreateKeyfile in '..\common\OTFE\OTFEFreeOTFE\frmWizardChangePasswordCreateKeyfile.pas' {frmWizardChangePasswordCreateKeyfile},
+  fmeSelectPartition in '..\common\OTFE\OTFEFreeOTFE\fmeSelectPartition.pas',
+  fmeDiskPartitionsPanel in '..\common\OTFE\OTFEFreeOTFE\fmeDiskPartitionsPanel.pas',
+  fmeSDUDiskPartitions in '..\common\SDeanUtils\fmeSDUDiskPartitions.pas',
+  fmeSDUBlocks in '..\common\SDeanUtils\fmeSDUBlocks.pas',
+  cryptlib in '..\common\OTFE\OTFEFreeOTFE\cryptlib.pas';
 
 {$R *.RES}
 
@@ -151,25 +152,24 @@ begin
   try
 
 
-    FreeOTFESettings.gSettings := TFreeOTFESettings.Create();
+    MainSettings.gSettings := TMainSettings.Create();
     try
-      CommonSettings.CommonSettingsObj := FreeOTFESettings.gSettings;
+      CommonSettings.CommonSettingsObj := MainSettings.gSettings;
       if SDUCommandLineParameter(CMDLINE_SETTINGSFILE, settingsFilename) then begin
         settingsFilename := SDURelativePathToAbsolute(settingsFilename);
-        FreeOTFESettings.gSettings.CustomLocation := settingsFilename;
+        MainSettings.gSettings.CustomLocation := settingsFilename;
       end;
 
-      FreeOTFESettings.gSettings.Load();
+      MainSettings.gSettings.Load();
 
       Application.ShowMainForm := False;
       // NOTE: The main form's Visible property is set to FALSE anyway - it *HAS*
       // to be, otherwise it'll be displayed; dispite the following two lines
-      Application.CreateForm(TfrmFreeOTFEMain, frmFreeOTFEMain);
-  frmFreeOTFEMain.Visible  := False;
+      Application.CreateForm(TfrmMain, GfrmMain);
+      GfrmMain.Visible         := False;
       Application.ShowMainForm := False;
 
-      CommandLineOnly := frmFreeOTFEMain.HandleCommandLineOpts(cmdExitCode);
-
+      CommandLineOnly := GfrmMain.HandleCommandLineOpts(cmdExitCode);
 
       //   if we were called with no command line arguments then
       //     if no running app was found then
@@ -185,9 +185,9 @@ begin
         // If no running app was found then
         if ((otherRunningAppWindow = 0) or gSettings.OptAllowMultipleInstances) then begin
           // We continue to run the main app
-          frmFreeOTFEMain.Visible  := True;
+          GfrmMain.Visible         := True;
           Application.ShowMainForm := True;
-          frmFreeOTFEMain.InitApp();
+          GfrmMain.InitApp();
 
 {$IF CompilerVersion >= 18.5}
           // Delphi 7 doesn't need this, but Delphi 2007 (and 2006 as well? Not
@@ -207,9 +207,8 @@ begin
             // here, but not a priority...
           end;
 {$IFEND}
-          if SDUCommandLineSwitch(CMDLINE_MINIMIZE) then begin
+          if SDUCommandLineSwitch(CMDLINE_MINIMIZE) then
             Application.Minimize();
-          end;
 
           Application.Run;
         end else begin
@@ -232,9 +231,7 @@ begin
       //       the main form is still closing down at this stage, and this causes
       //       an exception.
       //       Instead, this is free'd off in the FormDestroy(...) method
-      if not (Application.ShowMainForm) then begin
-        FreeOTFESettings.gSettings.Free();
-      end;
+      if not (Application.ShowMainForm) then         MainSettings.gSettings.Free();
     end;
     // only place is, or should be, catch-all exeption
   except
@@ -247,8 +244,6 @@ begin
 
   end;
 
-  if (CommandLineOnly and (cmdExitCode <> ceSUCCESS)) then begin
+  if (CommandLineOnly and (cmdExitCode <> ceSUCCESS)) then
     Halt(Integer(cmdExitCode)); // Note: System.ExitCode may be tested in finalization sections
-  end;
-
 end.

@@ -17,12 +17,12 @@ uses
   StdCtrls, SysUtils, Windows,
   //librecrypt
   Buttons, CommonfrmCDBDump_Base,
-  OTFE_U, OTFEFreeOTFE_VolumeSelect,
+  OTFE_U, fmeVolumeSelect,
   OTFEFreeOTFEBase_U, lcDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
   SDUGeneral, SDUSpin64Units;
 
 type
-  TfrmCDBDump_FreeOTFE = class (TfrmCDBDump_Base)
+  TfrmFreeOTFEHdrDump = class (TfrmHdrDump)
     lblOffset:         TLabel;
     seSaltLength:      TSpinEdit64;
     lblSaltLengthBits: TLabel;
@@ -73,27 +73,27 @@ const
 {$ENDIF}
 
 
-function TfrmCDBDump_FreeOTFE.GetUserKey(): TSDUBytes;
+function TfrmFreeOTFEHdrDump.GetUserKey(): TSDUBytes;
 begin
   Result := SDUStringToSDUBytes(preUserKey.Text);
 end;
 
-function TfrmCDBDump_FreeOTFE.GetOffset(): Int64;
+function TfrmFreeOTFEHdrDump.GetOffset(): Int64;
 begin
   Result := se64UnitOffset.Value;
 end;
 
-function TfrmCDBDump_FreeOTFE.GetSaltLength(): Integer;
+function TfrmFreeOTFEHdrDump.GetSaltLength(): Integer;
 begin
   Result := seSaltLength.Value;
 end;
 
-function TfrmCDBDump_FreeOTFE.GetKeyIterations(): Integer;
+function TfrmFreeOTFEHdrDump.GetKeyIterations(): Integer;
 begin
   Result := seKeyIterations.Value;
 end;
 
-procedure TfrmCDBDump_FreeOTFE.FormCreate(Sender: TObject);
+procedure TfrmFreeOTFEHdrDump.FormCreate(Sender: TObject);
 begin
   inherited;
 
@@ -119,7 +119,7 @@ begin
 
 end;
 
-procedure TfrmCDBDump_FreeOTFE.EnableDisableControls();
+procedure TfrmFreeOTFEHdrDump.EnableDisableControls();
 begin
   pbOK.Enabled := ((VolumeFilename <> '') and (feDumpFilename.Filename <> '') and
     (feDumpFilename.Filename <> VolumeFilename) and
@@ -127,7 +127,7 @@ begin
     (KeyIterations > 0));
 end;
 
-procedure TfrmCDBDump_FreeOTFE.FormShow(Sender: TObject);
+procedure TfrmFreeOTFEHdrDump.FormShow(Sender: TObject);
 begin
   inherited;
 
@@ -137,19 +137,19 @@ begin
 
 end;
 
-procedure TfrmCDBDump_FreeOTFE.ControlChanged(Sender: TObject);
+procedure TfrmFreeOTFEHdrDump.ControlChanged(Sender: TObject);
 begin
   EnableDisableControls();
 end;
 
-function TfrmCDBDump_FreeOTFE.DumpLUKSDataToFile(): Boolean;
+function TfrmFreeOTFEHdrDump.DumpLUKSDataToFile(): Boolean;
 begin
   Result := GetFreeOTFEBase().DumpCriticalDataToFile(VolumeFilename, Offset,
     GetUserKey, SaltLength,  // In bits
     KeyIterations, DumpFilename);
 end;
 
-procedure TfrmCDBDump_FreeOTFE.pbOKClick(Sender: TObject);
+procedure TfrmFreeOTFEHdrDump.pbOKClick(Sender: TObject);
 var
 {$IFDEF FREEOTFE_TIME_CDB_DUMP}
   startTime: TDateTime;
@@ -158,7 +158,6 @@ var
   Hour, Min, Sec, MSec: Word;
 {$ENDIF}
   dumpOK:             Boolean;
-  notepadCommandLine: String;
 begin
 {$IFDEF FREEOTFE_TIME_CDB_DUMP}
   startTime := Now();

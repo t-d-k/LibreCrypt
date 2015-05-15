@@ -93,7 +93,7 @@ type
 {$M+}// Required to get rid of compiler warning "W1055 PUBLISHED caused RTTI ($M+) to be added to type '%s'"
 
   { TODO -otdk -crefactor : use rtti to read and write -much easier, just define properties + defaults }
-  TSettings = class
+  TCommonSettings = class
   private
     FCustomLocation: String;
   protected
@@ -147,9 +147,9 @@ type
     destructor Destroy(); override;
 
     procedure Load(); virtual;
-    function Save(): Boolean; virtual;
+    function Save(ShowWarningIfRO: Boolean = true): Boolean; virtual;
 
-    procedure Assign(copyFrom: TSettings);
+    procedure Assign(copyFrom: TCommonSettings);
 
     function DestroySettingsFile(loc: TSettingsSaveLocation): Boolean;
     function GetSettingsFilename(loc: TSettingsSaveLocation): String;
@@ -164,12 +164,12 @@ type
 
 var
   // Global variable
-  CommonSettingsObj: TSettings;
+  CommonSettingsObj: TCommonSettings;
 
 function UpdateFrequencyTitle(updateFrequency: TUpdateFrequency): String;
 function DragDropFileTypeTitle(dragDropfileType: TDragDropFileType): String;
 
-// These functions are duplicated in FreeOTFESettings.pas and FreeOTFEExplorerSettings.pas - can't move to CommonSettings.pas as they both use "Settings" object which is different for each of them
+// These functions are duplicated in MainSettings.pas and ExplorerSettings.pas - can't move to CommonSettings.pas as they both use "Settings" object which is different for each of them
  // Turn on/off option on open/save dialogs to add file selected under Start
  // menu's "Documents", depending on whether MRU list is enabled or not
 procedure FreeOTFEGUISetupOpenSaveDialog(dlg: TCommonDialog); overload;
@@ -306,7 +306,7 @@ begin
   FreeOTFEGUISetupOpenSaveDialog(fe.SaveDialog);
 end;
 
-constructor TSettings.Create();
+constructor TCommonSettings.Create();
 begin
   inherited;
 
@@ -315,14 +315,14 @@ begin
 
 end;
 
-destructor TSettings.Destroy();
+destructor TCommonSettings.Destroy();
 begin
   OptMRUList.Free();
 
   inherited;
 end;
 
-procedure TSettings.Load();
+procedure TCommonSettings.Load();
 var
   iniFile: TCustomINIFile;
 begin
@@ -336,7 +336,7 @@ begin
 
 end;
 
-procedure TSettings._Load(iniFile: TCustomINIFile);
+procedure TCommonSettings._Load(iniFile: TCustomINIFile);
 var
   useDefaultDriveLetter: DriveLetterString;
 begin
@@ -408,7 +408,7 @@ begin
 
 end;
 
-function TSettings.Save(): Boolean;
+function TCommonSettings.Save(ShowWarningIfRO: Boolean ): Boolean;
 var
   iniFile: TCustomINIFile;
 begin
@@ -428,19 +428,19 @@ begin
     end;
   end;
 
-  if not Result then begin
+  if (not Result) and ShowWarningIfRO then begin
 
     SDUMessageDlg(
-      _('Your settings could not be saved.') + SDUCRLF + SDUCRLF + SDUParamSubstitute(
+      _('Your settings could not be saved.') + SDUCRLF + SDUCRLF + Format(
       _('Please ensure that you have suitable access rights in order to write to:' +
-      SDUCRLF + SDUCRLF + '%1'), [PrettyPrintSettingsFile(OptSaveSettings)]),
+      SDUCRLF + SDUCRLF + '%s'), [PrettyPrintSettingsFile(OptSaveSettings)]),
       mtError
       );
   end;
 
 end;
 
-function TSettings._Save(iniFile: TCustomINIFile): Boolean;
+function TCommonSettings._Save(iniFile: TCustomINIFile): Boolean;
 var
   useDefaultDriveLetter: DriveLetterChar;
 begin
@@ -504,7 +504,7 @@ begin
 
 end;
 
-function TSettings.PrettyPrintSettingsFile(loc: TSettingsSaveLocation): String;
+function TCommonSettings.PrettyPrintSettingsFile(loc: TSettingsSaveLocation): String;
 begin
   Result := '';
 
@@ -536,7 +536,7 @@ begin
 end;
 
 
-function TSettings.DestroySettingsFile(loc: TSettingsSaveLocation): Boolean;
+function TCommonSettings.DestroySettingsFile(loc: TSettingsSaveLocation): Boolean;
 var
   filename: String;
   registry: TRegistry;
@@ -579,7 +579,7 @@ begin
 
 end;
 
-function TSettings.GetSettingsFilename(loc: TSettingsSaveLocation): String;
+function TCommonSettings.GetSettingsFilename(loc: TSettingsSaveLocation): String;
 var
   iniFilenameOnly: String;
   filenameAndPath: String;
@@ -613,7 +613,7 @@ begin
 end;
 
 // Identify where user settings are stored
-function TSettings.IdentifyWhereSettingsStored(): TSettingsSaveLocation;
+function TCommonSettings.IdentifyWhereSettingsStored(): TSettingsSaveLocation;
 var
   sl:            TSettingsSaveLocation;
   filename:      String;
@@ -659,7 +659,7 @@ begin
 
 end;
 
-procedure TSettings.Assign(copyFrom: TSettings);
+procedure TCommonSettings.Assign(copyFrom: TCommonSettings);
 var
   iniFile: TINIFile;
 begin
@@ -681,7 +681,7 @@ end;
  // Retuns: A TCustomIniFile that can be used for saving/loading settings.
  // This will return NIL if there's a problem (e.g. the .INI file can't be
  // created)
-function TSettings.GetSettingsObj(): TCustomIniFile;
+function TCommonSettings.GetSettingsObj(): TCustomIniFile;
 var
   filename: String;
 begin

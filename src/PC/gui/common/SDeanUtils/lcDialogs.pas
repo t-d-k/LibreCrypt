@@ -60,7 +60,8 @@ uses
              //  RTLConsts,
   Forms,     // Required for Application
   SDUGeneral,
-  SysUtils;  // Required for StringReplace
+  SysUtils,   // Required for StringReplace
+  UITypes;
 
 
 resourcestring

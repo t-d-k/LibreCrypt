@@ -13,13 +13,13 @@ interface
 uses
   Buttons, Classes, ComCtrls,
   Controls, Dialogs,
-  Forms, Graphics, Messages, OTFEFreeOTFE_VolumeSelect, OTFEFreeOTFEBase_U,
+  Forms, Graphics, Messages, fmeVolumeSelect, OTFEFreeOTFEBase_U,
   PasswordRichEdit, lcDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
   SDUSpin64Units, Spin64,
   StdCtrls, SysUtils, Windows;
 
 type
-  TfrmCDBDump_Base = class (TSDUForm)
+  TfrmHdrDump = class (TSDUForm)
     pbOK:                      TButton;
     pbCancel:                  TButton;
     GroupBox1:                 TGroupBox;
@@ -28,7 +28,7 @@ type
     GroupBox2:                 TGroupBox;
     Label3:                    TLabel;
     feDumpFilename:            TSDUFilenameEdit;
-    OTFEFreeOTFEVolumeSelect1: TOTFEFreeOTFEVolumeSelect;
+    OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ControlChanged(Sender: TObject);
@@ -69,12 +69,12 @@ const
 {$ENDIF}
 
 
-function TfrmCDBDump_Base.GetVolumeFilename(): String;
+function TfrmHdrDump.GetVolumeFilename(): String;
 begin
   Result := OTFEFreeOTFEVolumeSelect1.Filename;
 end;
 
-procedure TfrmCDBDump_Base.OTFEFreeOTFEVolumeSelect1Change(Sender: TObject);
+procedure TfrmHdrDump.OTFEFreeOTFEVolumeSelect1Change(Sender: TObject);
 begin
 {
   if not(fmeVolumeSelect.IsPartitionSelected) then
@@ -86,13 +86,13 @@ begin
   ControlChanged(Sender);
 end;
 
-function TfrmCDBDump_Base.GetDumpFilename(): String;
+function TfrmHdrDump.GetDumpFilename(): String;
 begin
   Result := feDumpFilename.Filename;
 end;
 
 
-procedure TfrmCDBDump_Base.FormCreate(Sender: TObject);
+procedure TfrmHdrDump.FormCreate(Sender: TObject);
 begin
   // se64UnitOffset set in OnShow event (otherwise units not shown correctly)
 
@@ -106,7 +106,7 @@ begin
   feDumpFilename.Filename := '';
 end;
 
-procedure TfrmCDBDump_Base.FormShow(Sender: TObject);
+procedure TfrmHdrDump.FormShow(Sender: TObject);
 begin
 //  OTFEFreeOTFEVolumeSelect1.OTFEFreeOTFE := OTFEFreeOTFE;
 
@@ -118,12 +118,12 @@ begin
 
 end;
 
-procedure TfrmCDBDump_Base.ControlChanged(Sender: TObject);
+procedure TfrmHdrDump.ControlChanged(Sender: TObject);
 begin
   EnableDisableControls();
 end;
 
-procedure TfrmCDBDump_Base.pbOKClick(Sender: TObject);
+procedure TfrmHdrDump.pbOKClick(Sender: TObject);
 var
 {$IFDEF FREEOTFE_TIME_CDB_DUMP}
   startTime: TDateTime;
@@ -132,7 +132,6 @@ var
   Hour, Min, Sec, MSec: Word;
 {$ENDIF}
   dumpOK:             Boolean;
-  notepadCommandLine: String;
 begin
 {$IFDEF FREEOTFE_TIME_CDB_DUMP}
   startTime := Now();

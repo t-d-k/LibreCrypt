@@ -19,7 +19,7 @@ type
     pbBrowse:                 TButton;
     pbRefreshDrives:          TButton;
     ckHideAutorunInf:         TCheckBox;
-    reInstructCopyToUSBDrive: TOTFEFreeOTFE_InstructionRichEdit;
+    reInstructCopyToUSBDrive: TLabel;
     procedure FormShow(Sender: TObject);
     procedure pbBrowseClick(Sender: TObject);
     procedure edPathChange(Sender: TObject);
@@ -61,17 +61,13 @@ const
 
 procedure TfrmInstallOnUSBDrive.FormShow(Sender: TObject);
 begin
-  self.Caption := SDUParamSubstitute(_('Copy %1 to USB Drive'), [Application.title]);
+  self.Caption := Format(_(self.Caption), [Application.title]);
 
-  reInstructCopyToUSBDrive.Text :=
-    SDUParamSubstitute(_(
-    'This function provides an easy means of copying %1 to a USB drive, and configuring it to launch automatically when the USB drive is plugged in.' +
-    SDUCRLF + SDUCRLF +
-    'Please select the USB drive, and location on it, where you would like %1 to be copied to:'),
-    [Application.Title]);
+  reInstructCopyToUSBDrive.Caption :=
+    Format(_(reInstructCopyToUSBDrive.Caption),  [Application.Title,Application.Title]);
 
-  ckSetupAutoplay.Caption := SDUParamSubstitute(
-    _('&Setup autorun.inf to launch %1 when drive inserted'), [Application.Title]);
+  ckSetupAutoplay.Caption := Format(
+    _('&Setup autorun.inf to launch %s when drive inserted'), [Application.Title]);
 
   // Replace any " " with "_", otherwise autorun.inf won't be able to launch
   // the executable
@@ -90,7 +86,7 @@ var
   rootPath: String;
 begin
   rootPath := GetInstallDrive() + ':\';
-  if SelectDirectory(SDUParamSubstitute(_('Select location to copy %1 to'),
+  if SelectDirectory(Format(_('Select location to copy %s to'),
     [Application.Title]), rootPath, newPath
 {$IF CompilerVersion >= 18.5}
     , // Comma from previous line
@@ -106,7 +102,7 @@ end;
 procedure TfrmInstallOnUSBDrive.pbOKClick(Sender: TObject);
 begin
   if InstallOnUSBDrive() then begin
-    SDUMessageDlg(SDUParamSubstitute(_('%1 copy complete.'), [Application.Title]),
+    SDUMessageDlg(Format(_('%s copy complete.'), [Application.Title]),
       mtInformation);
     ModalResult := mrOk;
   end;
@@ -129,9 +125,9 @@ begin
   if Result then begin
     if ckSetupAutoplay.Checked then begin
       if (Pos(' ', GetInstallRelativePath()) > 0) then begin
-        Result := (SDUMessageDlg(SDUParamSubstitute(
+        Result := (SDUMessageDlg(Format(
           _('The path specified has spaces in it.' + SDUCRLF + SDUCRLF +
-          'Because of this, Windows will be able to display the %1 icon for the drive, but not launch %1 automatically when the drive is inserted.' + SDUCRLF + SDUCRLF + 'Do you wish to continue?'), [Application.Title]), mtWarning, [mbYes, mbNo], 0) = mrYes);
+          'Because of this, Windows will be able to display the %s icon for the drive, but not launch %1 automatically when the drive is inserted.' + SDUCRLF + SDUCRLF + 'Do you wish to continue?'), [Application.Title]), mtWarning, [mbYes, mbNo], 0) = mrYes);
       end;
     end;
   end;
@@ -140,8 +136,8 @@ begin
     // Sanity check - user trying to install into root dir?
     // Note: GetInstallRelativePath() will return '\', at a minimum
     if (length(GetInstallRelativePath()) <= 1) then begin
-      Result := (SDUMessageDlg(SDUParamSubstitute(
-        _('You have opted to copy %1 to the root directory of your USB drive, and not a subdirectory.'),
+      Result := (SDUMessageDlg(Format(
+        _('You have opted to copy %s to the root directory of your USB drive, and not a subdirectory.'),
         [Application.title]) + SDUCRLF + SDUCRLF + _('Are you sure you wish to do this?'),
         mtWarning, [mbYes, mbNo], 0) = mrYes);
     end;
@@ -159,7 +155,7 @@ begin
 
     if not (copyOK) then begin
       SDUMessageDlg(
-        SDUParamSubstitute(_('Unable to copy %1 to:' + SDUCRLF + SDUCRLF + '%2'),
+        Format(_('Unable to copy %s to:' + SDUCRLF + SDUCRLF + '%s'),
         [Application.Title, destPath]),
         mtError
         );
@@ -170,7 +166,7 @@ begin
     SDUEnableControl(self, True);
     // SDUEnableControl(...) resets various display properties on the
     // instructions control; reset them here
-    reInstructCopyToUSBDrive.ResetDisplay();
+//    reInstructCopyToUSBDrive.ResetDisplay();
     EnableDisableControls();
   end;
 
@@ -179,8 +175,8 @@ begin
     if ckSetupAutoplay.Checked then begin
       if not (CreateAutorunInfFile()) then begin
         SDUMessageDlg(
-          SDUParamSubstitute(_(
-          '%1 was successfully copied over, but an autoplay (autorun.inf) file could not be created.'),
+          Format(_(
+          '%s was successfully copied over, but an autoplay (autorun.inf) file could not be created.'),
           [Application.title]),
           mtWarning
           );

@@ -40,7 +40,7 @@ inherited fmeOptions_FreeOTFEAdvanced: TfmeOptions_FreeOTFEAdvanced
       Top = 288
       Width = 195
       Height = 13
-      Caption = 'If u&nable to dismount a volume normally:'
+      Caption = 'If u&nable to dismount a container normally:'
       FocusControl = cbOnNormalDismountFail
       WordWrap = True
     end
@@ -116,7 +116,7 @@ inherited fmeOptions_FreeOTFEAdvanced: TfmeOptions_FreeOTFEAdvanced
       Top = 68
       Width = 221
       Height = 17
-      Caption = '&Revert volume timestamps on dismount'
+      Caption = '&Revert container timestamps on dismount'
       TabOrder = 4
       WordWrap = True
       AutoSize = True

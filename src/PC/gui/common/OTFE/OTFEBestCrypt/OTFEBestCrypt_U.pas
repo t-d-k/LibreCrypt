@@ -1597,10 +1597,9 @@ begin
     begin
     Result := TRUE;
 
-    if not(RegistryVolumeSetDefaultDrive(volumeFilename, driveLetter)) then
-      begin
+    if not(RegistryVolumeSetDefaultDrive(volumeFilename, driveLetter)) then      begin
       MessageDlg(
-                 'Unable to set default drive for box "'+volumeFilename+'"',
+                 'Unable to set default drive for container "'+volumeFilename+'"',
                  mtError,
                  [mbOK],
                  0
@@ -1608,10 +1607,9 @@ begin
       Result := FALSE;
       end;
 
-    if not(RegistryVolumeSetAutomounted(volumeFilename, automount)) then
-      begin
+    if not(RegistryVolumeSetAutomounted(volumeFilename, automount)) then      begin
       MessageDlg(
-                 'Unable to set box to be auto-opened for box "'+volumeFilename+'"',
+                 'Unable to set container to be auto-opened for container "'+volumeFilename+'"',
                  mtError,
                  [mbOK],
                  0

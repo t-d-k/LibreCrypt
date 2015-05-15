@@ -77,7 +77,7 @@ object frmCDBBackupRestore: TfrmCDBBackupRestore
       ReadOnly = False
       OnChange = ControlChange
     end
-    inline SelectDestFile: TOTFEFreeOTFEVolumeSelect
+    inline SelectDestFile: TfmeVolumeSelect
       Left = 116
       Top = 16
       Width = 342
@@ -137,7 +137,7 @@ object frmCDBBackupRestore: TfrmCDBBackupRestore
       ReadOnly = False
       OnChange = ControlChange
     end
-    inline SelectSrcFile: TOTFEFreeOTFEVolumeSelect
+    inline SelectSrcFile: TfmeVolumeSelect
       Left = 116
       Top = 20
       Width = 342

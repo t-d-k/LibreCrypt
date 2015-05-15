@@ -64,11 +64,11 @@ inherited fmeOptions_PKCS11: TfmeOptions_PKCS11
         Top = 20
         Width = 397
         Height = 17
-        Caption = 'Auto &mount specified volume on token insertion'
+        Caption = 'Auto &mount specified container on token insertion'
         TabOrder = 0
         OnClick = ControlChanged
       end
-      inline OTFEFreeOTFEVolumeSelect1: TOTFEFreeOTFEVolumeSelect
+      inline OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect
         Left = 104
         Top = 44
         Width = 310

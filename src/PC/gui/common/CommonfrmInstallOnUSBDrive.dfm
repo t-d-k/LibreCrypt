@@ -2,7 +2,7 @@ object frmInstallOnUSBDrive: TfrmInstallOnUSBDrive
   Left = 340
   Top = 283
   BorderStyle = bsDialog
-  Caption = 'CAPTION SET AUTOMATICALLY'
+  Caption = 'Copy %s to USB Drive'
   ClientHeight = 242
   ClientWidth = 443
   Color = clBtnFace
@@ -31,6 +31,26 @@ object frmInstallOnUSBDrive: TfrmInstallOnUSBDrive
     Height = 13
     Caption = '&Path to copy to:'
     FocusControl = edPath
+  end
+  object reInstructCopyToUSBDrive: TLabel
+    Left = 0
+    Top = 0
+    Width = 443
+    Height = 39
+    Align = alTop
+    Caption = 
+      'This function provides an easy means of copying %s to a USB driv' +
+      'e, and configuring it to launch automatically when the USB drive' +
+      ' is plugged in. Please select the USB drive, and location on it,' +
+      ' where you would like %S to be copied to:'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    WordWrap = True
+    ExplicitWidth = 429
   end
   object pbOK: TButton
     Left = 138
@@ -102,24 +122,5 @@ object frmInstallOnUSBDrive: TfrmInstallOnUSBDrive
     Height = 17
     Caption = '&Mark autorun.inf file as hidden'
     TabOrder = 5
-  end
-  object reInstructCopyToUSBDrive: TOTFEFreeOTFE_InstructionRichEdit
-    Left = 12
-    Top = 12
-    Width = 417
-    Height = 69
-    TabStop = False
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    Lines.Strings = (
-      'reInstructCopyToUSBDrive')
-    ParentColor = True
-    ParentFont = False
-    PlainText = True
-    ReadOnly = True
-    TabOrder = 8
   end
 end

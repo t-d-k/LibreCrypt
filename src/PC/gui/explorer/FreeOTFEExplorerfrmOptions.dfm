@@ -7,7 +7,7 @@ inherited frmOptions_FreeOTFEExplorer: TfrmOptions_FreeOTFEExplorer
     object tsGeneral: TTabSheet
       Caption = 'General'
       ImageIndex = 1
-      inline fmeOptions_FreeOTFEExplorerGeneral1: TfmeOptions_FreeOTFEExplorerGeneral
+      inline fmeOptions_FreeOTFEExplorerGeneral1: TfmeExplorerOptions
         Left = -12
         Top = 24
         Width = 504
@@ -91,7 +91,7 @@ inherited frmOptions_FreeOTFEExplorer: TfrmOptions_FreeOTFEExplorer
     object tsAutorun: TTabSheet
       Caption = 'Autorun'
       ImageIndex = 4
-      inline fmeOptions_Autorun1: TfmeOptions_Autorun
+      inline fmeOptions_Autorun1: TfmeAutorunOptions
         Left = 21
         Top = -10
         Width = 471

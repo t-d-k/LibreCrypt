@@ -1,4 +1,4 @@
-object frmPropertiesDialog_Base: TfrmPropertiesDialog_Base
+object frmPropertiesDialog_Base: TfrmPropertiesDialog
   Left = 290
   Top = 243
   BorderStyle = bsDialog

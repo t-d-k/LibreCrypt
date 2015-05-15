@@ -3,13 +3,13 @@ unit FreeOTFEfmeOptions_Hotkeys;
 interface
 
 uses
-  Classes, ComCtrls, CommonfmeOptions_Base,
+  Classes, ComCtrls, fmeBaseOptions,
   Controls, Dialogs, Forms,
-  FreeOTFEfmeOptions_Base, FreeOTFESettings,
+  fmeLcOptions, MainSettings,
   Graphics, Messages, SDUStdCtrls, StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfmeOptions_Hotkeys = class (TfmeFreeOTFEOptions_Base)
+  TfmeHotKeysOptions = class (TfmeLcOptions)
     gbHotkeys:             TGroupBox;
     Label1:                TLabel;
     Label2:                TLabel;
@@ -19,8 +19,8 @@ type
     hkDismountEmerg:       THotKey;
     procedure ckCheckBoxClick(Sender: TObject);
   PROTECTED
-    procedure _ReadSettings(config: TFreeOTFESettings); OVERRIDE;
-    procedure _WriteSettings(config: TFreeOTFESettings); OVERRIDE;
+    procedure _ReadSettings(config: TMainSettings); OVERRIDE;
+    procedure _WriteSettings(config: TMainSettings); OVERRIDE;
   PUBLIC
     procedure Initialize(); OVERRIDE;
     procedure EnableDisableControls(); OVERRIDE;
@@ -34,13 +34,13 @@ uses
   Math,
   SDUGeneral;
 
-procedure TfmeOptions_Hotkeys.ckCheckBoxClick(Sender: TObject);
+procedure TfmeHotKeysOptions.ckCheckBoxClick(Sender: TObject);
 begin
   inherited;
   EnableDisableControls();
 end;
 
-procedure TfmeOptions_Hotkeys.Initialize();
+procedure TfmeHotKeysOptions.Initialize();
 var
   maxCkBoxWidth: Integer;
 begin
@@ -55,7 +55,7 @@ begin
   SDUCenterControl(gbHotkeys, ccVertical, 25);
 end;
 
-procedure TfmeOptions_Hotkeys.EnableDisableControls();
+procedure TfmeHotKeysOptions.EnableDisableControls();
 begin
   inherited;
 
@@ -63,7 +63,7 @@ begin
   SDUEnableControl(hkDismountEmerg, ckHotkeyDismountEmerg.Checked);
 end;
 
-procedure TfmeOptions_Hotkeys._ReadSettings(config: TFreeOTFESettings);
+procedure TfmeHotKeysOptions._ReadSettings(config: TMainSettings);
 begin
   // Hotkeys...
   ckHotkeyDismount.Checked      := config.OptHKeyEnableDismount;
@@ -73,7 +73,7 @@ begin
 
 end;
 
-procedure TfmeOptions_Hotkeys._WriteSettings(config: TFreeOTFESettings);
+procedure TfmeHotKeysOptions._WriteSettings(config: TMainSettings);
 begin
   // Hotkeys...
   config.OptHKeyEnableDismount      := ckHotkeyDismount.Checked;

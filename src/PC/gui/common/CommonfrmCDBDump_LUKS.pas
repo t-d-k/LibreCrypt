@@ -13,13 +13,13 @@ interface
 uses
   Buttons, Classes, ComCtrls,
   CommonfrmCDBDump_Base, Controls, Dialogs,
-  Forms, Graphics, Messages, fmeLUKSKeyOrKeyfileEntry, OTFEFreeOTFE_VolumeSelect,
+  Forms, Graphics, Messages, fmeLUKSKeyOrKeyfileEntry, fmeVolumeSelect,
   OTFEFreeOTFEBase_U, PasswordRichEdit, lcDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
   SDUSpin64Units, Spin64,
   StdCtrls, SysUtils, Windows;
 
 type
-  TfrmCDBDump_LUKS = class (TfrmCDBDump_Base)
+  TfrmLUKSHdrDump = class (TfrmHdrDump)
     lblOptional:                        TLabel;
     ckBaseIVCypherOnHashLength:         TCheckBox;
     OTFEFreeOTFELUKSKeyOrKeyfileEntry1: TfrmeLUKSKeyOrKeyfileEntry;
@@ -32,9 +32,7 @@ type
 
   PROTECTED
     procedure EnableDisableControls(); OVERRIDE;
-
     function DumpLUKSDataToFile(): Boolean; OVERRIDE;
-
   PUBLIC
     property LUKSBaseIVCypherOnHashLength: Boolean Read GetLUKSBaseIVCypherOnHashLength;
   end;
@@ -57,7 +55,7 @@ const
 {$ENDIF}
 
 
-procedure TfrmCDBDump_LUKS.FormCreate(Sender: TObject);
+procedure TfrmLUKSHdrDump.FormCreate(Sender: TObject);
 begin
   inherited;
 
@@ -65,7 +63,7 @@ begin
 
 end;
 
-procedure TfrmCDBDump_LUKS.FormShow(Sender: TObject);
+procedure TfrmLUKSHdrDump.FormShow(Sender: TObject);
 begin
   inherited;
 
@@ -77,19 +75,19 @@ begin
 
 end;
 
-procedure TfrmCDBDump_LUKS.EnableDisableControls();
+procedure TfrmLUKSHdrDump.EnableDisableControls();
 begin
   pbOK.Enabled := ((VolumeFilename <> '') and (feDumpFilename.Filename <> '') and
     (feDumpFilename.Filename <> VolumeFilename) // Don't overwrite the volume with the dump!!!
     );
 end;
 
-procedure TfrmCDBDump_LUKS.ControlChanged(Sender: TObject);
+procedure TfrmLUKSHdrDump.ControlChanged(Sender: TObject);
 begin
   EnableDisableControls();
 end;
 
-function TfrmCDBDump_LUKS.DumpLUKSDataToFile(): Boolean;
+function TfrmLUKSHdrDump.DumpLUKSDataToFile(): Boolean;
 var
   userKey:            TSDUBytes;
   keyfile:            String;
@@ -106,7 +104,7 @@ begin
     DumpFilename);
 end;
 
-procedure TfrmCDBDump_LUKS.pbOKClick(Sender: TObject);
+procedure TfrmLUKSHdrDump.pbOKClick(Sender: TObject);
 var
 {$IFDEF FREEOTFE_TIME_CDB_DUMP}
   startTime: TDateTime;
@@ -115,7 +113,7 @@ var
   Hour, Min, Sec, MSec: Word;
 {$ENDIF}
   dumpOK:             Boolean;
-  notepadCommandLine: String;
+//  notepadCommandLine: String;
 begin
 {$IFDEF FREEOTFE_TIME_CDB_DUMP}
   startTime := Now();
@@ -160,7 +158,7 @@ begin
 
 end;
 
-function TfrmCDBDump_LUKS.GetLUKSBaseIVCypherOnHashLength(): Boolean;
+function TfrmLUKSHdrDump.GetLUKSBaseIVCypherOnHashLength(): Boolean;
 begin
   Result := ckBaseIVCypherOnHashLength.Checked;
 end;

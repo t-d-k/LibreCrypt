@@ -78,7 +78,7 @@ object frmCommonMain: TfrmCommonMain
         Caption = '-'
       end
       object miLinuxVolume: TMenuItem
-        Caption = '&Linux volume'
+        Caption = '&Linux container'
         Hint = 'Contains commands for working with Linux volumes.'
         object miLinuxNew: TMenuItem
           Action = actLinuxNew
@@ -127,12 +127,12 @@ object frmCommonMain: TfrmCommonMain
       end
       object miCreateKeyfile: TMenuItem
         Caption = '&Create keyfile...'
-        Hint = 'Create a keyfile for an encrypted volume.'
+        Hint = 'Create a keyfile for an encrypted container.'
         OnClick = miCreateKeyfileClick
       end
       object miChangePassword: TMenuItem
-        Caption = 'Change volume/keyfile &password/details...'
-        Hint = 'Change a volume or keyfile'#39's password or other details.'
+        Caption = 'Change container/keyfile &password/details...'
+        Hint = 'Change a container or keyfile'#39's password or other details.'
         OnClick = miChangePasswordClick
       end
       object PKCS11management1: TMenuItem
@@ -204,13 +204,13 @@ object frmCommonMain: TfrmCommonMain
     Top = 36
     object actFreeOTFENew: TAction
       Caption = '&New...'
-      Hint = 'New encrypted volume'
+      Hint = 'New encrypted container'
       ImageIndex = 18
       OnExecute = actFreeOTFENewExecute
     end
     object actFreeOTFEMountFile: TAction
       Caption = '&Mount file...'
-      Hint = 'Mount a file based encrypted volume'
+      Hint = 'Mount a file based encrypted container'
       ImageIndex = 4
       ShortCut = 16461
       OnExecute = actFreeOTFEMountFileExecute
@@ -222,9 +222,9 @@ object frmCommonMain: TfrmCommonMain
       ShortCut = 16452
     end
     object actLinuxNew: TAction
-      Caption = '&New file...'
-      Hint = 'New Linux volume'
-      OnExecute = actLinuxNewExecute
+      Caption = '&New plain linux file...'
+      Hint = 'New Plain Linux container'
+      OnExecute = actNewPlainLinuxExecute
     end
     object actMountHidden: TAction
       Caption = '&Open file (hidden) ...'
@@ -288,12 +288,12 @@ object frmCommonMain: TfrmCommonMain
     end
     object actCDBBackup: TAction
       Caption = '&Backup...'
-      Hint = 'Backup a volume'#39's CDB'
+      Hint = 'Backup a container'#39's CDB'
       OnExecute = actCDBBackupExecute
     end
     object actCDBRestore: TAction
       Caption = '&Restore...'
-      Hint = 'Restore a volume'#39's CDB from a backup copy'
+      Hint = 'Restore a container'#39's CDB from a backup copy'
       OnExecute = actCDBRestoreExecute
     end
     object actCDBPlaintextDump: TAction
@@ -316,7 +316,7 @@ object frmCommonMain: TfrmCommonMain
     Left = 68
     Top = 52
     Bitmap = {
-      494C010113001001280110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010113001001340110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -993,7 +993,7 @@ object frmCommonMain: TfrmCommonMain
     Left = 28
     Top = 96
     Bitmap = {
-      494C010113001001280118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010113001001340118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000078000000010020000000000000B4
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

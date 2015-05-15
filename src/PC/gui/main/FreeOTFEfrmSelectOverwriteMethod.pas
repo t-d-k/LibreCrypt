@@ -16,7 +16,7 @@ uses
   SysUtils, Windows;
 
 type
-  TfrmFreeOTFESelectOverwriteMethod = class (TSDUForm)
+  TfrmSelectOverwriteMethod = class (TSDUForm)
     pbOK:                    TButton;
     pbCancel:                TButton;
     GroupBox1:               TGroupBox;
@@ -24,7 +24,7 @@ type
     rbDataPseudorandom:      TRadioButton;
     cbCypher:                TComboBox;
     pbCypherDetails:         TButton;
-    reInstructOverwriteType: TOTFEFreeOTFE_InstructionRichEdit;
+    reInstructOverwriteType: TRichEdit;
     procedure pbOKClick(Sender: TObject);
     procedure pbCypherDetailsClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -63,7 +63,7 @@ const
   SDUCRLF = ''#13#10;
 {$ENDIF}
 
-procedure TfrmFreeOTFESelectOverwriteMethod.pbOKClick(Sender: TObject);
+procedure TfrmSelectOverwriteMethod.pbOKClick(Sender: TObject);
 begin
   OverwriteWithEncryptedData := rbDataEncrypted.Checked;
   if OverwriteWithEncryptedData then begin
@@ -76,7 +76,7 @@ begin
 end;
 
 
-procedure TfrmFreeOTFESelectOverwriteMethod.pbCypherDetailsClick(Sender: TObject);
+procedure TfrmSelectOverwriteMethod.pbCypherDetailsClick(Sender: TObject);
 begin
   OTFEFreeOTFEObj.ShowCypherDetailsDlg(
     cypherKernelModeDriverNames[cbCypher.ItemIndex],
@@ -85,7 +85,7 @@ begin
 
 end;
 
-procedure TfrmFreeOTFESelectOverwriteMethod.FormShow(Sender: TObject);
+procedure TfrmSelectOverwriteMethod.FormShow(Sender: TObject);
 var
   tmpDisplayTitles: TStringList;
 begin
@@ -120,14 +120,14 @@ begin
 
 end;
 
-procedure TfrmFreeOTFESelectOverwriteMethod.FormCreate(Sender: TObject);
+procedure TfrmSelectOverwriteMethod.FormCreate(Sender: TObject);
 begin
   cypherKernelModeDriverNames := TStringList.Create();
   cypherGUIDs                 := TStringList.Create();
 
 end;
 
-procedure TfrmFreeOTFESelectOverwriteMethod.FormCloseQuery(Sender: TObject;
+procedure TfrmSelectOverwriteMethod.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
   cypherKernelModeDriverNames.Free();
@@ -135,14 +135,14 @@ begin
 
 end;
 
-procedure TfrmFreeOTFESelectOverwriteMethod.ControlChanged(Sender: TObject);
+procedure TfrmSelectOverwriteMethod.ControlChanged(Sender: TObject);
 begin
   EnableDisableControls();
 
 end;
 
 
-procedure TfrmFreeOTFESelectOverwriteMethod.EnableDisableControls();
+procedure TfrmSelectOverwriteMethod.EnableDisableControls();
 begin
   cbCypher.Enabled        := rbDataEncrypted.Checked;
   pbCypherDetails.Enabled := (cbCypher.ItemIndex >= 0) and cbCypher.Enabled;

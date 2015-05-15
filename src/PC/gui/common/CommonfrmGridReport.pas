@@ -90,7 +90,7 @@ uses
   {$IFDEF FREEOTFE_MAIN}
   // When run under main FreeOTFE GUI, user can access driver control dialog
   // via main FreeOTFE app
-  FreeOTFEfrmMain,
+  frmMain,
 {$ENDIF}
   CommonSettings,
   SDUGraphics;
@@ -205,9 +205,9 @@ begin
 {$IFDEF FREEOTFE_MAIN}
   // When run under main FreeOTFE GUI, user can access driver control dialog
   // via main FreeOTFE app
-  if (Owner is TfrmFreeOTFEMain) then
+  if (Owner is TfrmMain) then
     begin
-    TfrmFreeOTFEMain(Owner).DisplayDriverControlDlg();
+    TfrmMain(Owner).DisplayDriverControlDlg();
     end;
 {$ENDIF}
 

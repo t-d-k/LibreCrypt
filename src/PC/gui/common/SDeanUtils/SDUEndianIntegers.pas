@@ -40,7 +40,7 @@ end;
 
 function SDUDWORDToBigEndian32(number: DWORD): TSDUBigEndian32;
 begin
-  Result[0] := (number and $FF000000) shr 32;
+  Result[0] := (number and $FF000000) shr 24;
   Result[1] := (number and $00FF0000) shr 16;
   Result[2] := (number and $0000FF00) shr 8;
   Result[3] := (number and $000000FF);

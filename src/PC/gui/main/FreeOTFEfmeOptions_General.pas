@@ -3,9 +3,9 @@ unit FreeOTFEfmeOptions_General;
 interface
 
 uses
-  Classes, CommonfmeOptions_Base,
+  Classes, fmeBaseOptions,
   Controls, Dialogs, ExtCtrls, Forms,
-  FreeOTFEfmeOptions_Base, FreeOTFESettings, Graphics, Messages, SDUStdCtrls, Spin64,
+  fmeLcOptions, MainSettings, Graphics, Messages, SDUStdCtrls, Spin64,
   StdCtrls, SysUtils, Variants, Windows;
 
 type
@@ -16,7 +16,7 @@ type
   end;
   PLanguageTranslation = ^TLanguageTranslation;
 
-  TfmeOptions_FreeOTFEGeneral = class (TfmeFreeOTFEOptions_Base)
+  TfmeOptions_FreeOTFEGeneral = class (TfmeLcOptions)
     gbGeneral:                TGroupBox;
     ckDisplayToolbar:         TSDUCheckBox;
     ckDisplayStatusbar:       TSDUCheckBox;
@@ -45,8 +45,8 @@ type
     function SelectedLanguage(): TLanguageTranslation;
     function LanguageControlLanguage(idx: Integer): TLanguageTranslation;
   PROTECTED
-    procedure _ReadSettings(config: TFreeOTFESettings); OVERRIDE;
-    procedure _WriteSettings(config: TFreeOTFESettings); OVERRIDE;
+    procedure _ReadSettings(config: TMainSettings); OVERRIDE;
+    procedure _WriteSettings(config: TMainSettings); OVERRIDE;
   PUBLIC
     procedure Initialize(); OVERRIDE;
     procedure EnableDisableControls(); OVERRIDE;
@@ -58,7 +58,7 @@ implementation
 
 uses
   CommonConsts,
-  CommonfrmOptions, CommonSettings,
+  frmCommonOptions, CommonSettings,
   OTFE_U,
   lcDialogs,
   SDUGeneral,
@@ -88,7 +88,7 @@ begin
   langIdx := cbLanguage.ItemIndex;
 
   useLang := SelectedLanguage();
-  TfrmOptions(Owner).ChangeLanguage(useLang.Code);
+  TfrmCommonOptions(Owner).ChangeLanguage(useLang.Code);
   // Repopulate the languages list; translation would have translated them all
   PopulateLanguages();
 
@@ -268,7 +268,7 @@ begin
 
 end;
 
-procedure TfmeOptions_FreeOTFEGeneral._ReadSettings(config: TFreeOTFESettings);
+procedure TfmeOptions_FreeOTFEGeneral._ReadSettings(config: TMainSettings);
 var
   uf:     TUpdateFrequency;
   idx:    Integer;
@@ -311,7 +311,7 @@ begin
 end;
 
 
-procedure TfmeOptions_FreeOTFEGeneral._WriteSettings(config: TFreeOTFESettings);
+procedure TfmeOptions_FreeOTFEGeneral._WriteSettings(config: TMainSettings);
 var
   uf:      TUpdateFrequency;
   useLang: TLanguageTranslation;
