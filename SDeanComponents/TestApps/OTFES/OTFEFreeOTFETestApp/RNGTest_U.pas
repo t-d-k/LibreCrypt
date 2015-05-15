@@ -50,7 +50,7 @@ implementation
 {$R *.DFM}
 
 uses
-  OTFEFreeOTFE_DriverAPI,  // Required for CRITICAL_DATA_LENGTH
+  DriverAPI,  // Required for CRITICAL_DATA_LENGTH
   SDUGeneral;
 
 procedure TRNGTest.pbCloseClick(Sender: TObject);

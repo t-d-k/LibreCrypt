@@ -6,7 +6,7 @@ unit OTFEFreeOTFE_InstructionRichEdit;
  //
  // -----------------------------------------------------------------------------
  //
- // This control exposes the "PasswordChar" property of TRichEdit
+ // This control jsut sets some default values and sets them differently at design time - DO NOT USE. use TRichEdit instead 
 
 
 interface

@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls,
-  OTFEFreeOTFE_cryptlib, Spin64;
+  cryptlib, Spin64;
 
 
 type

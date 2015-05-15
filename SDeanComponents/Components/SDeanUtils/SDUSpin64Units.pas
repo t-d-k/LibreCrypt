@@ -133,29 +133,23 @@ end;
 procedure TSDUSpin64Unit.DoChange();
 begin
   if Assigned(FOnChange) then
-    begin
     FOnChange(self);
-    end;
 end;
 
 function TSDUSpin64Unit.GetValue(): int64;
 var
   i: integer;
-  retval: int64;
   i64Multiplier: int64;
 begin
-  retval := se64Value.Value;
+  Result := se64Value.Value;
 
   // Use int64 to store multiplier, so Delphi doesn't cast int64s as integer
   i64Multiplier:= FMultiplier;
 
   // Start from 1 - we don't divide by 1000 on the single units
   for i:=1 to cbUnits.ItemIndex do
-    begin
-    retval := retval * i64Multiplier;
-    end;
+    Result := Result * i64Multiplier;
 
-  Result := retval;
 end;
 
 procedure TSDUSpin64Unit.SetValue(val: int64);
@@ -174,20 +168,16 @@ begin
   unitsIdx := 0;
   useValue := val;
 
-  if (val <> i64Zero) then
-    begin
+  if (val <> i64Zero) then    begin
     // Start from 1 - we don't divide by 1000 on the last one
-    for i:=1 to (cbUnits.Items.Count - 1) do
-      begin
-      if ((useValue mod i64Multiplier) <> i64Zero) then
-        begin
+    for i:=1 to (cbUnits.Items.Count - 1) do       begin
+      if ((useValue mod i64Multiplier) <> i64Zero) then        begin
         break
-        end;
-
+      end;
       unitsIdx := i;
       useValue := (useValue div i64Multiplier);
-      end;
     end;
+  end;
 
   se64Value.Value := useValue;
   cbUnits.ItemIndex := unitsIdx;

@@ -25,7 +25,7 @@ uses
   SDUClasses,
   OTFEFreeOTFE_U,
   OTFEFreeOTFEDLL_U,
-  OTFEFreeOTFE_DriverAPI, Grids, FileCtrl, Spin64, OTFEFreeOTFEBase_U;
+  DriverAPI, Grids, FileCtrl, Spin64, OTFEFreeOTFEBase_U;
 
 type
   TOTFEFreeOTFETestApp_F = class(TForm)

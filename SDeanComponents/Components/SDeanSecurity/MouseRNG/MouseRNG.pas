@@ -1,18 +1,18 @@
 unit MouseRNG;
-// Description: MouseRNG Component
-// By Sarah Dean
-// Email: sdean12@sdean12.org
-// WWW:   http://www.SDean12.org/
-//
-// -----------------------------------------------------------------------------
-//
+ // Description: MouseRNG Component
+ // By Sarah Dean
+ // Email: sdean12@sdean12.org
+ // WWW:   http://www.SDean12.org/
+ //
+ // -----------------------------------------------------------------------------
+ //
 
 
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  extctrls;
+  Classes, Controls, Dialogs,
+  extctrls, Forms, Graphics, Messages, SysUtils, Windows;
 
 const
   // The distance the cursor has to be moved in either the X or Y direction
@@ -39,8 +39,6 @@ const
   // mouse's position
   TIMER_INTERVAL = 100;
 
-
-
   // The different border styles available
   BorderStyles: array [TBorderStyle] of DWORD = (0, WS_BORDER);
 
@@ -48,69 +46,70 @@ const
 type
 
   // Callback for random data generated
-  TDEBUGSampleTakenEvent = procedure(Sender: TObject; X, Y: integer) of object;
+  TDEBUGSampleTakenEvent = procedure(Sender: TObject; X, Y: Integer) of object;
 
-  TBitGeneratedEvent = procedure(Sender: TObject; random: byte) of object;
-  TByteGeneratedEvent = procedure(Sender: TObject; random: byte) of object;
+  TBitGeneratedEvent = procedure(Sender: TObject; random: Byte) of object;
+  TByteGeneratedEvent = procedure(Sender: TObject; random: Byte) of object;
 
 
   // This is used to form the linked list of points for displayed lines
   PPointList = ^TPointList;
+
   TPointList = packed record
     Point: TPoint;
-    Prev: PPointList;
-    Next: PPointList;
+    Prev:  PPointList;
+    Next:  PPointList;
   end;
 
 
-  TMouseRNG = class(TCustomControl)
+  TMouseRNG = class (TCustomControl)
   private
     // This stores the random data as it is generated
-    RandomByte: byte;
+    RandomByte:     Byte;
     // This stores the number of random bits in RandomByte
-    RandomByteBits: integer;
+    RandomByteBits: Integer;
 
     // Storage for when the mouse move event is triggered
-    LastMouseX: integer;
-    LastMouseY: integer;
+    LastMouseX: Integer;
+    LastMouseY: Integer;
 
 
     // The linked list of points on the canvas
-    PointCount: cardinal;
+    PointCount:    Cardinal;
     LinesListHead: PPointList;
     LinesListTail: PPointList;
 
 
     // Style information
     FBorderStyle: TBorderStyle;
-    FTrailLines: cardinal;
-    FLineWidth: cardinal;
-    FLineColor: TColor;
+    FTrailLines:  Cardinal;
+    FLineWidth:   Cardinal;
+    FLineColor:   TColor;
 
 
     // Callbacks
     FOnDEBUGSampleTaken: TDEBUGSampleTakenEvent;
 
-    FOnBitGenerated: TBitGeneratedEvent;
+    FOnBitGenerated:  TBitGeneratedEvent;
     FOnByteGenerated: TByteGeneratedEvent;
 
   protected
-    procedure CreateParams(var Params: TCreateParams); Override;
+    procedure CreateParams(var Params: TCreateParams); override;
 
     procedure TimerFired(Sender: TObject);
 
     procedure SetEnabled(Value: Boolean); override;
     procedure SetBorderStyle(Style: TBorderStyle);
 
-    procedure SetLineWidth(width: cardinal);
+    procedure SetLineWidth(Width: Cardinal);
     procedure SetLineColor(color: TColor);
 
     // Linked list of points on the canvas handling
-    procedure StoreNewPoint(X, Y: integer);
+    procedure StoreNewPoint(X, Y: Integer);
     procedure RemoveLastPoint();
 
     // When new mouse cursor co-ordinates are taken 
-    procedure ProcessSample(X, Y: integer);
+    procedure ProcessSample(X, Y: Integer);
 
   public
     Timer: TTimer;
@@ -121,7 +120,7 @@ type
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
     procedure Repaint(); override;
     procedure Paint(); override;
-    function  CanResize(var NewWidth, NewHeight: Integer): Boolean; override;
+    function CanResize(var NewWidth, NewHeight: Integer): Boolean; override;
 
 
     // Clear display and internal RNG state
@@ -133,19 +132,18 @@ type
   published
     // The number of lines shown
     // Set to 0 to prevent lines from being displayed
-    property TrailLines: cardinal read FTrailLines write FTrailLines;
-    property LineWidth: cardinal read FLineWidth write SetLineWidth;
-    property LineColor: TColor read FLineColor write SetLineColor;
-
+    property TrailLines: Cardinal Read FTrailLines Write FTrailLines;
+    property LineWidth: Cardinal Read FLineWidth Write SetLineWidth;
+    property LineColor: TColor Read FLineColor Write SetLineColor;
 
 
 
     property Align;
     property Anchors;
 
-    property BorderStyle: TBorderStyle read FBorderStyle write SetBorderStyle default bsSingle;
+    property BorderStyle: TBorderStyle Read FBorderStyle Write SetBorderStyle default bsSingle;
 
-// N/A    property Caption;
+    // N/A    property Caption;
     property Color;
     property Constraints;
     property Ctl3D;
@@ -184,13 +182,14 @@ type
     property OnUnDock;
 
 
-    property OnDEBUGSampleTakenEvent: TDEBUGSampleTakenEvent read FOnDEBUGSampleTaken write FOnDEBUGSampleTaken;
+    property OnDEBUGSampleTakenEvent: TDEBUGSampleTakenEvent
+      Read FOnDEBUGSampleTaken Write FOnDEBUGSampleTaken;
     // Note: You can receive callbacks when each bit is generated, or when
     //       every 8 bits. Note that the random data supplied by
     //       FOnByteGenerated is the same as the supplied by FOnBitGenerated,
     //       it's only buffered and delivered in blocks of 8 bits
-    property OnBitGenerated: TBitGeneratedEvent read FOnBitGenerated write FOnBitGenerated;
-    property OnByteGenerated: TByteGeneratedEvent read FOnByteGenerated write FOnByteGenerated;
+    property OnBitGenerated: TBitGeneratedEvent Read FOnBitGenerated Write FOnBitGenerated;
+    property OnByteGenerated: TByteGeneratedEvent Read FOnByteGenerated Write FOnByteGenerated;
 
   end;
 
@@ -211,24 +210,24 @@ constructor TMouseRNG.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
 
-  Color := clWindow;
-  TabStop := FALSE;
+  Color       := clWindow;
+  TabStop     := False;
   ParentColor := False;
   BorderStyle := bsSingle;
-  TrailLines := 5;
+  TrailLines  := 5;
 
   LineWidth := 5;
   LineColor := clNavy;
 
 
-  Timer:= TTimer.Create(self);
-  Timer.Enabled:= FALSE;
+  Timer          := TTimer.Create(self);
+  Timer.Enabled  := False;
   Timer.Interval := TIMER_INTERVAL;
-  Timer.OnTimer := TimerFired;
+  Timer.OnTimer  := TimerFired;
 
-  LinesListHead:= nil;
-  LinesListTail:= nil;
-  PointCount := 0;
+  LinesListHead := nil;
+  LinesListTail := nil;
+  PointCount    := 0;
 
 
   // Initially, there are no mouse co-ordinates taken
@@ -236,8 +235,8 @@ begin
   LastMouseY := -1;
 
   // Cleardown the random bytes store
-  RandomByte:= 0;
-  RandomByteBits:= 0;
+  RandomByte     := 0;
+  RandomByteBits := 0;
 
 
   // Setup the inital size of the component
@@ -245,22 +244,21 @@ begin
   // will suit it, even for large values of BITS_PER_SAMPLE (like 4 or 5)
   SetBounds(Left, Top, 128, 128);
 
-  Enabled := FALSE;
+  Enabled := False;
 
 end;
 
 
 destructor TMouseRNG.Destroy();
 begin
-  Timer.Enabled := FALSE;
+  Timer.Enabled := False;
   Timer.Free();
 
-  Enabled := FALSE;
+  Enabled := False;
   // Cleardown any points, overwriting them as we do so
-  while (PointCount>0) do
-    begin
+  while (PointCount > 0) do begin
     RemoveLastPoint();
-    end;
+  end;
 
   inherited Destroy();
 
@@ -270,20 +268,16 @@ end;
 
 procedure TMouseRNG.TimerFired(Sender: TObject);
 var
-  changed: boolean;
+  changed: Boolean;
 begin
-  changed := FALSE;
+  changed := False;
 
   // Handle the situation in which no mouse co-ordinates have yet been taken
-  if (LastMouseX > -1) and (LastMouseY > -1) then
-    begin
+  if (LastMouseX > -1) and (LastMouseY > -1) then begin
     // If there are no points, we have a new one
-    if (PointCount = 0) then
-      begin
-      changed := TRUE;
-      end
-    else
-      begin
+    if (PointCount = 0) then begin
+      changed := True;
+    end else begin
       // If the mouse cursor has moved a significant difference, use the new
       // co-ordinates
       // Both the X *and* Y mouse co-ordinates must have changed, to prevent
@@ -295,34 +289,29 @@ begin
       // the mouse back and forth horizontally; instead of seeing a new dark
       // line appearing (indicating that the sample has been taken), the
       // inverse coloured line appears, indicating the mouse pointer
-      if (
-           (LastMouseX > (LinesListHead.Point.X+MIN_DIFF)) or (LastMouseX < (LinesListHead.Point.X-MIN_DIFF)) and
-           (LastMouseY > (LinesListHead.Point.Y+MIN_DIFF)) or (LastMouseY < (LinesListHead.Point.Y-MIN_DIFF))
-          ) then
-        begin
-        changed := TRUE;
-        end;
-        
+      if ((LastMouseX > (LinesListHead.Point.X + MIN_DIFF)) or
+        (LastMouseX < (LinesListHead.Point.X - MIN_DIFF)) and (LastMouseY >
+        (LinesListHead.Point.Y + MIN_DIFF)) or (LastMouseY < (LinesListHead.Point.Y - MIN_DIFF)))
+      then begin
+        changed := True;
       end;
 
     end;
 
+  end;
 
-  if (not(changed)) then
-    begin
+
+  if (not (changed)) then begin
     // User hasn't moved cursor - delete oldest line until we catch up with
     // the cursor
-    if ( (LinesListTail <> LinesListHead) and (LinesListTail <> nil) ) then
-      begin
+    if ((LinesListTail <> LinesListHead) and (LinesListTail <> nil)) then begin
       Canvas.Pen.Mode := pmMergeNotPen;
       Canvas.MoveTo(LinesListTail.Point.X, LinesListTail.Point.Y);
       Canvas.LineTo(LinesListTail.Next.Point.X, LinesListTail.Next.Point.Y);
       RemoveLastPoint();
-      end;
+    end;
 
-    end
-  else
-    begin
+  end else begin
     // AT THIS POINT, WE USE LastMouseX AND LastMouseY AS THE CO-ORDS TO USE
 
 
@@ -331,26 +320,24 @@ begin
 
     // User moved cursor - don't delete any more lines unless the max number
     // of lines which may be displayed is exceeded
-    if ( (PointCount+1 > TrailLines) and (PointCount>1) ) then
-      begin
+    if ((PointCount + 1 > TrailLines) and (PointCount > 1)) then begin
       Canvas.Pen.Mode := pmMergeNotPen;
       Canvas.MoveTo(LinesListTail.Point.X, LinesListTail.Point.Y);
       Canvas.LineTo(LinesListTail.Next.Point.X, LinesListTail.Next.Point.Y);
       RemoveLastPoint();
-      end;
+    end;
 
 
     // Draw newest line
-    if (TrailLines > 0) and (PointCount>1) then
-      begin
+    if (TrailLines > 0) and (PointCount > 1) then begin
       Canvas.Pen.Mode := pmCopy;
       Canvas.MoveTo(LinesListHead.Prev.Point.X, LinesListHead.Prev.Point.Y);
       Canvas.LineTo(LinesListHead.Point.X, LinesListHead.Point.Y);
-      end;
+    end;
 
 
     ProcessSample(LastMouseX, LastMouseY);
-    end;
+  end;
 
 end;
 
@@ -359,28 +346,26 @@ procedure TMouseRNG.MouseMove(Shift: TShiftState; X, Y: Integer);
 begin
   inherited MouseMove(Shift, X, Y);
 
-  if (TrailLines>0) and (PointCount>=1) then
-    begin
+  if (TrailLines > 0) and (PointCount >= 1) then begin
     Canvas.Pen.Mode := pmXor;
     Canvas.MoveTo(LinesListHead.Point.X, LinesListHead.Point.Y);
     Canvas.LineTo(LastMouseX, LastMouseY);
-    end;
+  end;
 
   LastMouseX := X;
   LastMouseY := Y;
 
-  if (TrailLines>0) and (PointCount>=1) then
-    begin
+  if (TrailLines > 0) and (PointCount >= 1) then begin
     Canvas.Pen.Mode := pmXor;
     Canvas.MoveTo(LinesListHead.Point.X, LinesListHead.Point.Y);
     Canvas.LineTo(LastMouseX, LastMouseY);
-    end;
+  end;
 
 end;
 
 procedure TMouseRNG.SetEnabled(Value: Boolean);
 var
-  oldEnabled: boolean;
+  oldEnabled: Boolean;
 begin
   oldEnabled := Enabled;
 
@@ -393,37 +378,32 @@ begin
   // (i.e. If this is called with TRUE, when it's already enabled, do not
   // clear the display)
 
-  if (oldEnabled<>Value) then
-    begin
+  if (oldEnabled <> Value) then begin
     ClearDisplay();
-    end;
+  end;
 
 end;
 
 
 
-procedure TMouseRNG.CreateParams(var Params: TCreateParams) ;
+procedure TMouseRNG.CreateParams(var Params: TCreateParams);
 begin
-  inherited CreateParams(Params) ;
-  if (FBorderStyle = bsSingle) then
-    begin
+  inherited CreateParams(Params);
+  if (FBorderStyle = bsSingle) then begin
     Params.Style := Params.Style or WS_BORDER;
-    end
-  else
-    begin
-    Params.Style := Params.Style and not(WS_BORDER);
-    end;
+  end else begin
+    Params.Style := Params.Style and not (WS_BORDER);
+  end;
 
 end;
 
-procedure TMouseRNG.SetBorderStyle (Style : TBorderStyle);
+procedure TMouseRNG.SetBorderStyle(Style: TBorderStyle);
 begin
-  if (Style <> FBorderStyle) then
-    begin
+  if (Style <> FBorderStyle) then begin
     FBorderStyle := Style;
     { Create new window handle for the control. }
     RecreateWnd;
-    end;
+  end;
 
 end;
 
@@ -432,8 +412,8 @@ begin
   ClearDisplay();
 
   // Clear internal RNG state
-  RandomByte:= 0;
-  RandomByteBits:= 0;
+  RandomByte     := 0;
+  RandomByteBits := 0;
 
 end;
 
@@ -443,30 +423,26 @@ begin
   // We surround the Canvas blanking with "parent<>nil" to avoid getting
   // "Control '' has no parent window" errors when the component is dropped
   // onto a form
-  if (parent<>nil) then
-    begin
+  if (parent <> nil) then begin
     Canvas.Brush.Color := Color;
-    Canvas.FillRect(Rect(0, 0, width, height));
-    end;
-  
+    Canvas.FillRect(Rect(0, 0, Width, Height));
+  end;
+
 
   // Because the display's been cleared, the chase position can be set to the
   // current position
   // Delete all lines
-  if (LinesListHead <> nil) then
-    begin
-    while (LinesListTail <> LinesListHead) do
-      begin
+  if (LinesListHead <> nil) then begin
+    while (LinesListTail <> LinesListHead) do begin
       RemoveLastPoint();
-      end;
     end;
-
+  end;
 
 end;
 
-// Repaint? No, we just clear the display
-// This is done so that if the user switches task, then switches back again
-// all trails are gone
+ // Repaint? No, we just clear the display
+ // This is done so that if the user switches task, then switches back again
+ // all trails are gone
 procedure TMouseRNG.Repaint();
 begin
   inherited Repaint();
@@ -488,114 +464,98 @@ procedure TMouseRNG.RemoveLastPoint();
 var
   tmpPoint: PPointList;
 begin
-  if (LinesListTail<>nil) then
-    begin
-    tmpPoint := LinesListTail;
+  if (LinesListTail <> nil) then begin
+    tmpPoint      := LinesListTail;
     LinesListTail := LinesListTail.Next;
-    if (LinesListTail<>nil) then
-      begin
+    if (LinesListTail <> nil) then begin
       LinesListTail.Prev := nil;
-      end;
+    end;
     // Overwrite position before discarding record
     tmpPoint.Point.X := 0;
     tmpPoint.Point.Y := 0;
     Dispose(tmpPoint);
-    dec(PointCount);
-    end;
+    Dec(PointCount);
+  end;
 
-  if (LinesListTail = nil) then
-    begin
+  if (LinesListTail = nil) then begin
     LinesListHead := nil;
-    end;
-
+  end;
 
 end;
 
 
 // Add a new last point onto the head of the linked list of points
-procedure TMouseRNG.StoreNewPoint(X, Y: integer);
+procedure TMouseRNG.StoreNewPoint(X, Y: Integer);
 var
   tmpPoint: PPointList;
 begin
-  tmpPoint := new(PPointList);
+  tmpPoint         := new(PPointList);
   tmpPoint.Point.X := X;
   tmpPoint.Point.Y := Y;
-  tmpPoint.Next := nil;
-  tmpPoint.Prev := LinesListHead;
-  if (LinesListHead<>nil) then
-    begin
+  tmpPoint.Next    := nil;
+  tmpPoint.Prev    := LinesListHead;
+  if (LinesListHead <> nil) then begin
     LinesListHead.Next := tmpPoint;
-    end;
+  end;
   LinesListHead := tmpPoint;
-  inc(PointCount);
+  Inc(PointCount);
 
-  if (LinesListTail = nil) then
-    begin
+  if (LinesListTail = nil) then begin
     LinesListTail := LinesListHead;
-    end;
+  end;
 
 end;
 
-procedure TMouseRNG.ProcessSample(X, Y: integer);
+procedure TMouseRNG.ProcessSample(X, Y: Integer);
 var
-  i: integer;
+  i: Integer;
 begin
-  if ( (Enabled) and (Assigned(FOnDEBUGSampleTaken)) )  then
-    begin
+  if ((Enabled) and (Assigned(FOnDEBUGSampleTaken))) then
     FOnDEBUGSampleTaken(self, X, Y);
-    end;
 
   // This stores the random data as it is generated
-  for i:=1 to BITS_PER_SAMPLE do
-    begin
+  for i := 1 to BITS_PER_SAMPLE do begin
     RandomByte := RandomByte shl 1;
     RandomByte := RandomByte + (X and 1);
-    inc(RandomByteBits);
+    Inc(RandomByteBits);
 
-    if ( (Enabled) and (Assigned(FOnBitGenerated)) ) then
-      begin
+    if ((Enabled) and (Assigned(FOnBitGenerated))) then begin
       FOnBitGenerated(self, X and $01);
-      end;
+    end;
 
 
     RandomByte := RandomByte shl 1;
     RandomByte := RandomByte + (Y and 1);
-    inc(RandomByteBits);
+    Inc(RandomByteBits);
 
-    if ( (Enabled) and (Assigned(FOnBitGenerated)) ) then
-      begin
+    if ((Enabled) and (Assigned(FOnBitGenerated))) then
       FOnBitGenerated(self, Y and $01);
-      end;
 
     X := X shr 1;
     Y := Y shr 1;
-    end;
+  end;
 
 
-  if (RandomByteBits >= 8) then
-    begin
-    if ( (Enabled) and (Assigned(FOnByteGenerated)) ) then
-      begin
+  if (RandomByteBits >= 8) then begin
+    if ((Enabled) and (Assigned(FOnByteGenerated))) then
       FOnByteGenerated(self, RandomByte);
-      end;
 
     RandomByteBits := 0;
-    RandomByte := 0;
-    end;
-
+    RandomByte     := 0;
+  end;
 end;
 
 
-procedure TMouseRNG.SetLineWidth(width: cardinal);
+procedure TMouseRNG.SetLineWidth(Width: Cardinal);
 begin
-  FLineWidth := width;
-  Canvas.Pen.width := FLineWidth;
+  FLineWidth       := Width;
+  Canvas.Pen.Width := FLineWidth;
 
 end;
 
 procedure TMouseRNG.SetLineColor(color: TColor);
 begin
-  FLineColor := color;
+  FLineColor       := color;
   Canvas.Pen.Color := FLineColor;
 
 end;
@@ -603,52 +563,46 @@ end;
 
 function TMouseRNG.CanResize(var NewWidth, NewHeight: Integer): Boolean;
 var
-  retVal: boolean;
-  multiple: integer;
-  i: integer;
+  retVal:   Boolean;
+  multiple: Integer;
+  i:        Integer;
 begin
   retVal := inherited CanResize(NewWidth, NewHeight);
 
-  if (retVal) then
-    begin
+  if (retVal) then begin
     // If a border is selected, decrement the size of the window by 2 pixels in
     // either direction, for the purposes of these calculations
-    if (BorderStyle = bsSingle) then
-      begin
-      NewWidth := NewWidth - 2;
+    if (BorderStyle = bsSingle) then begin
+      NewWidth  := NewWidth - 2;
       NewHeight := NewHeight - 2;
-      end;
+    end;
 
     multiple := 1;
-    for i:=1 to BITS_PER_SAMPLE do
-      begin
+    for i := 1 to BITS_PER_SAMPLE do begin
       multiple := multiple * 2;
-      end;
+    end;
 
-    NewWidth := (NewWidth div multiple) * multiple;
+    NewWidth  := (NewWidth div multiple) * multiple;
     NewHeight := (NewHeight div multiple) * multiple;
 
     // We have a minimum size that we will allow; twice the multiple
-    if (NewWidth < (multiple * 2)) then
-      begin
+    if (NewWidth < (multiple * 2)) then begin
       NewWidth := multiple * 2;
-      end;
+    end;
 
     // We have a minimum size that we will allow; twice the multiple
-    if (NewHeight < (multiple * 2)) then
-      begin
+    if (NewHeight < (multiple * 2)) then begin
       NewHeight := multiple * 2;
-      end;
+    end;
 
     // If a border is selected, increment the size of the window by 2 pixels in
     // either direction
-    if (BorderStyle = bsSingle) then
-      begin
-      NewWidth := NewWidth + 2;
+    if (BorderStyle = bsSingle) then begin
+      NewWidth  := NewWidth + 2;
       NewHeight := NewHeight + 2;
-      end;
-
     end;
+
+  end;
 
   Result := retVal;
 
@@ -656,6 +610,4 @@ end;
 
 
 
-END.
-
-
+end.

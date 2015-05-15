@@ -1,3 +1,4 @@
+{ just adds a pop up menu with a 'paste' item to TPasswordRichEdit}
 unit OTFEFreeOTFE_PasswordRichEdit;
 
 interface

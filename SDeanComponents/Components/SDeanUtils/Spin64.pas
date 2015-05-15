@@ -111,7 +111,6 @@ type
     procedure WMPaste(var Message: TWMPaste);   message WM_PASTE;
     procedure WMCut(var Message: TWMCut);   message WM_CUT;
   protected
-    procedure GetChildren(Proc: TGetChildProc; Root: TComponent); override;
     function IsValidChar(Key: Char): Boolean; virtual;
     procedure UpClick (Sender: TObject); virtual;
     procedure DownClick (Sender: TObject); virtual;
@@ -120,6 +119,7 @@ type
     procedure CreateParams(var Params: TCreateParams); override;
     procedure CreateWnd; override;
   public
+      procedure GetChildren(Proc: TGetChildProc; Root: TComponent); override;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     property Button: TSpinButton64 read FButton;

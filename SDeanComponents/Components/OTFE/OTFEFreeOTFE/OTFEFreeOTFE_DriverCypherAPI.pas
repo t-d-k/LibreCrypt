@@ -12,8 +12,8 @@ interface
 
 uses
   Windows,  // Required for DWORD
-  OTFEFreeOTFE_DriverCommon,
-  OTFEFreeOTFE_DriverAPI,  // Required for DEVICE_FREEOTFE_ROOT
+  FreeOTFEDriverConsts,
+  DriverAPI,  // Required for DEVICE_FREEOTFE_ROOT
   OTFEFreeOTFE_DriverHashAPI;  // Required for MAX_HASH_LENGTH
 
 

@@ -13,7 +13,7 @@ interface
 uses
   windows,  // Required for DWORD
   SDUEndianIntegers,
-  OTFEFreeOTFE_DriverAPI;
+  DriverAPI;
 
 const
   // The LUKS version we support.

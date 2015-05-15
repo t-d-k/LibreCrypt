@@ -93,7 +93,7 @@ uses
   ComObj,  // Required for StringToGUID
   SDUGeneral,
   OTFEFreeOTFE_VolumeFileAPI,
-  OTFEFreeOTFE_DriverAPI;
+  DriverAPI;
 
 
 procedure TCriticalBlockTest_F.pbReadCriticalDataClick(Sender: TObject);
