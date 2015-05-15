@@ -1,0 +1,2 @@
+inherited fmeDiskPartitionsPanel: TfmeDiskPartitionsPanel
+end
