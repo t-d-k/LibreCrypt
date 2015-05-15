@@ -16,3 +16,5 @@ set LTC_AES=%LTC_DIR%ciphers\aes\
 set LTC_CBC=%LTC_DIR%modes\cbc\
 set LTC_CRYPT=%LTC_DIR%misc\crypt\
 set LTC_HDR_DIR=%LTC_DIR%headers
+
+
