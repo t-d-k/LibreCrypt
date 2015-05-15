@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Doxbox: Open-Source disk encryption for Windows</title>
+    <title>LibreCrypt: Open-Source disk encryption for Windows</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -21,22 +21,22 @@
 <img  src="https://raw.githubusercontent.com/t-d-k/doxbox/master/src/Common/Common/images/DoxBox128.png" alt="DoxBox">
 <span class="header-title">
 
-<a href="http://DoxBox.eu/" >DoxBox</a>: Open-Source disk encryption for Windows
+<a href="http://DoxBox.eu/" >LibreCrypt</a>: Open-Source disk encryption for Windows (formerly DoxBox)
 </span>
 </h1>
-   <p>Transparent on-the-fly disk encryption for Windows.</p>
+   <p>Transparent on-the-fly disk encryption for Windows.</p>   
 <div>
 
 <DIV class="download-group">
          
-<a href="https://github.com/t-d-k/doxbox/releases/download/v6.1-beta/InstallDoxBox_v61Beta.exe">
+<a href="https://github.com/t-d-k/doxbox/releases/download/v6.2-beta/InstallLibreCrypt_v62Beta.exe">
 <BUTTON class="download">
 Download
 </BUTTON> 
 </a>
-<a href="https://github.com/t-d-k/doxbox/releases/download/v6.1-beta/DoxBoxExplorer_v6.1.zip">
-<BUTTON class="download-alt" HREF="https://github.com/t-d-k/doxbox/releases/download/v6.1-beta/DoxBoxExplorer_v6.1.zip">
-Download DoxBox Explorer
+<a href="https://github.com/t-d-k/doxbox/releases/download/v6.2-beta/LibreCryptExplorer_v6.2.zip">
+<BUTTON class="download-alt" HREF="https://github.com/t-d-k/doxbox/releases/download/v6.2-beta/LibreCryptExplorer_v6.2.zip">
+Download LibreCrypt Explorer
 </BUTTON>
 </a>
 <a href="https://github.com/t-d-k/doxbox" class="github-btn" HREF="https://github.com/t-d-k/doxbox">
@@ -48,18 +48,18 @@ Download DoxBox Explorer
       </header>
       <section>
 
-<h2>Please take the survey on <a href="https://www.surveymonkey.com/s/XFHP5LS">new features</a> for DoxBox</h2>   
+<h2>Please take the survey on <a href="https://www.surveymonkey.com/s/XFHP5LS">new features</a> for LibreCrypt</h2>   
 
 <h2>
 <a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
 
 <ul>
-<li>Easy to use, with a 'wizard' for creating new 'DoxBoxes'.</li>
-<li>Full transparent encryption, DoxBoxes appear as removable disks in Windows Explorer.</li>
-<li>Explorer mode lets you access DoxBoxes when you don't have admin permissions.</li>
+<li>Easy to use, with a 'wizard' for creating new 'containers'.</li>
+<li>Full transparent encryption, containers appear as removable disks in Windows Explorer.</li>
+<li>Explorer mode lets you access containers when you don't have admin permissions.</li>
 <li>Compatible with Linux encryption, Cryptoloop "losetup", dm-crypt, and LUKS. Linux shell scripts support deniable encryption on Linux.</li>
 <li>Supports smartcards and security tokens.</li>
-<li>Encrypted DoxBoxes can be a file, a partition, or a whole disk.</li>
+<li>Encrypted containers can be a file, a partition, or a whole disk.</li>
 <li>Opens legacy volumes created with FreeOTFE</li>
 <li>Runs on Windows Vista onwards (see note below for 64 bit versions).</li>
 <li>Supports numerous hash (including SHA-512, RIPEMD-320, Tiger) and encryption algorithms (Including AES, Twofish, and Serpent) in several modes (CBC, LRW, and XTS), giving more options than any other disk encryption software.</li>
@@ -71,26 +71,26 @@ Download DoxBox Explorer
 <h2>
 <a name="release-notes" class="anchor" href="#release-notes"><span class="octicon octicon-link"></span></a>Release notes</h2>
 
-<p><em>Important: DoxBox Portable mode will not work on Windows Vista and later 64 bit versions without a extra step before use.</em></p>
+<p><em>Important: LibreCrypt Portable mode will not work on Windows Vista and later 64 bit versions without a extra step before use.</em></p>
 
-<p><em>DoxBox installed on Windows Vista and later 64 bit versions adds the text "Test Mode" to the Windows desktop. Please see the documentation for details on removing this.</em></p>
+<p><em>LibreCrypt installed on Windows Vista and later 64 bit versions adds the text "Test Mode" to the Windows desktop. Please see the documentation for details on removing this.</em></p>
 
 <ul>
-<li>Please follow these instructions to run DoxBox in portable mode on 64 bit Windows; if you do not do this you will get the error "Windows requires a digitally signed driver" when starting the drivers. There is no need to do this if DoxBox is installed.
+<li>Please follow these instructions to run LibreCrypt in portable mode on 64 bit Windows; if you do not do this you will get the error "Windows requires a digitally signed driver" when starting the drivers. There is no need to do this if LibreCrypt is installed.
 <ul>
-<li>Start DoxBox, click 'No' on the prompt to start the portable drivers, and 'OK' on the warning dialog about not having any loaded drivers.</li>
+<li>Start LibreCrypt, click 'No' on the prompt to start the portable drivers, and 'OK' on the warning dialog about not having any loaded drivers.</li>
 <li>Click the Tools-&gt;"Allow Test-signed drivers" menu item.</li>
 <li>Reboot    </li>
 <li>After rebooting the words "Test Mode" appear in the four corners of the Desktop. Please see the documentation for details on removing this.</li>
-<li>After finishing with DoxBox you can click the Tools-&gt;"Disallow Test-signed drivers" menu item to remove the "Test Mode" text.</li>
+<li>After finishing with LibreCrypt you can click the Tools-&gt;"Disallow Test-signed drivers" menu item to remove the "Test Mode" text.</li>
 </ul>
 </li>
 <li>To run in portable mode, you need to have admin rights.  </li>
 <li>Backwards compatibility with PDA and Windows CE versions of FreeOTFE will be removed in the next version.</li>
 <li>Backwards compatibility with older versions of FreeOTFE (before 5.21) will be removed in the next version. Please convert any FreeOTFE volumes. This can be done by creating a new 'box' and copying the files across.</li>
 <li>Support for the following cyphers will be removed in the next version, please convert to another: xor, plain, single DES. Ditto for the 'plain' hash. </li>
-<li>DoxBox does not support encryption of the operating system partition, for this I recommend Ubuntu Linux.</li>
-<li>DoxBox needs to be run as administrator the first time it is run. After that it can be run as an ordinary user. </li>
+<li>LibreCrypt does not support encryption of the operating system partition, for this I recommend Ubuntu Linux.</li>
+<li>LibreCrypt needs to be run as administrator the first time it is run. After that it can be run as an ordinary user. </li>
 </ul><h4>
 <a name="passwords" class="anchor" href="#passwords"><span class="octicon octicon-link"></span></a>Passwords</h4>
 
@@ -98,7 +98,7 @@ Download DoxBox Explorer
 
 <ul>
 <li>The handling of keyphrases containing non-ASCII characters will change in a future version. This change will not be backwards compatible. So in this version it is recommended to use only ASCII characters in keyphrases.</li>
-<li>There are possible bugs in opening volumes created with FreeOTFE with non-ASCII characters. If you experience problems, please use the legacy app to change the password to an ASCII one and retry. Alternatively move the files to a native DoxBox.</li>
+<li>There are possible bugs in opening volumes created with FreeOTFE with non-ASCII characters. If you experience problems, please use the legacy app to change the password to an ASCII one and retry. Alternatively move the files to a native LibreCrypt.</li>
 </ul><p>For more details, please see the <a href="http://DoxBox.eu/doxbox/getting_started.html">getting started guide</a> and <a href="http://DoxBox.eu/doxbox/FAQ.html">FAQ</a>.</p>
       </section>
       <footer>
