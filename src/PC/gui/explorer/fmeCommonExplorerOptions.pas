@@ -1,4 +1,4 @@
-unit FreeOTFEExplorerfmeOptions_Base;
+unit fmeCommonExplorerOptions;
 
 interface
 

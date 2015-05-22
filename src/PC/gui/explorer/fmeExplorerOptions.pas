@@ -5,7 +5,7 @@ interface
 uses
   Classes, fmeBaseOptions,
   Controls, Dialogs, ExtCtrls, Forms,
-  FreeOTFEExplorerfmeOptions_Base, ExplorerSettings, Graphics, Messages,
+  fmeCommonExplorerOptions, ExplorerSettings, Graphics, Messages,
   SDUStdCtrls, Spin64,
   StdCtrls, SysUtils, Variants, Windows;
 
@@ -105,10 +105,10 @@ begin
   inherited;
 
   if not (ckStoreLayout.Checked) then begin
-    FFlagClearLayoutOnSave := SDUConfirmYN(SDUParamSubstitute(
+    FFlagClearLayoutOnSave := SDUConfirmYN(Format(
       _('You have turned off the option to automatically save the window layout on exiting.'
       + SDUCRLF + SDUCRLF +
-      'Would you like to reset %1 to its default window layout the next time it is started?'),
+      'Would you like to reset %s to its default window layout the next time it is started?'),
       [Application.Title]));
   end;
 

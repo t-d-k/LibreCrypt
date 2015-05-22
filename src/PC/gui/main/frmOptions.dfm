@@ -37,7 +37,7 @@ inherited frmOptions_FreeOTFE: TfrmOptions
     end
     object tsGeneral: TTabSheet
       Caption = 'General'
-      inline fmeOptions_FreeOTFEGeneral1: TfmeOptions_FreeOTFEGeneral
+      inline fmeOptions_FreeOTFEGeneral1: TfmeGeneralOptions
         Left = -12
         Top = -14
         Width = 504
@@ -138,7 +138,7 @@ inherited frmOptions_FreeOTFE: TfrmOptions
     end
     object tsAdvanced: TTabSheet
       Caption = 'Advanced'
-      inline fmeOptions_FreeOTFEAdvanced1: TfmeOptions_FreeOTFEAdvanced
+      inline fmeOptions_FreeOTFEAdvanced1: TfmeAdvancedOptions
         Left = -12
         Top = -14
         Width = 504

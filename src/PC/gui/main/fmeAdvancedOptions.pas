@@ -1,4 +1,5 @@
-unit FreeOTFEfmeOptions_Advanced;
+unit fmeAdvancedOptions;
+{todo:this frame is only used in one place so should be inserted there instead}
 
 interface
 
@@ -9,7 +10,7 @@ uses
   StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfmeOptions_FreeOTFEAdvanced = class (TfmeLcOptions)
+  TfmeAdvancedOptions = class (TfmeLcOptions)
     gbAdvanced:                 TGroupBox;
     lblDragDrop:                TLabel;
     ckAllowMultipleInstances:   TSDUCheckBox;
@@ -60,20 +61,20 @@ const
 resourcestring
   USE_DEFAULT = 'Use default';
 
-procedure TfmeOptions_FreeOTFEAdvanced.ControlChanged(Sender: TObject);
+procedure TfmeAdvancedOptions.ControlChanged(Sender: TObject);
 begin
   inherited;
   EnableDisableControls();
 end;
 
-procedure TfmeOptions_FreeOTFEAdvanced.EnableDisableControls();
+procedure TfmeAdvancedOptions.EnableDisableControls();
 begin
   inherited;
 
   // Do nothing
 end;
 
-procedure TfmeOptions_FreeOTFEAdvanced.Initialize();
+procedure TfmeAdvancedOptions.Initialize();
 const
   // Vertical spacing between checkboxes, and min horizontal spacing between
   // checkbox label and the vertical separator line  
@@ -230,7 +231,7 @@ begin
 
 end;
 
-procedure TfmeOptions_FreeOTFEAdvanced._ReadSettings(config: TMainSettings);
+procedure TfmeAdvancedOptions._ReadSettings(config: TMainSettings);
 var
   owem:   eOnExitWhenMounted;
   owrp:   eOnExitWhenPortableMode;
@@ -323,7 +324,7 @@ begin
 end;
 
 
-procedure TfmeOptions_FreeOTFEAdvanced._WriteSettings(config: TMainSettings);
+procedure TfmeAdvancedOptions._WriteSettings(config: TMainSettings);
 var
   owem: eOnExitWhenMounted;
   owrp: eOnExitWhenPortableMode;

@@ -3,18 +3,18 @@ inherited frmExplorerMain: TfrmExplorerMain
   Top = 282
   Caption = 'CAPTION SET AUTOMATICALLY'
   ClientHeight = 514
-  ClientWidth = 792
+  ClientWidth = 995
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnDestroy = FormDestroy
   OnResize = FormResize
-  ExplicitWidth = 808
+  ExplicitWidth = 1011
   ExplicitHeight = 572
   PixelsPerInch = 96
   TextHeight = 13
   inherited Label1: TLabel
     Top = 437
-    Width = 792
+    Width = 995
     Font.Color = clHotLight
     ParentFont = False
     ExplicitTop = 437
@@ -23,7 +23,7 @@ inherited frmExplorerMain: TfrmExplorerMain
   object pnlExplorer: TPanel [1]
     Left = 0
     Top = 51
-    Width = 792
+    Width = 995
     Height = 386
     Align = alClient
     Caption = 'pnlExplorer'
@@ -37,7 +37,7 @@ inherited frmExplorerMain: TfrmExplorerMain
     object SDFilesystemListView1: TSDFilesystemListView
       Left = 220
       Top = 42
-      Width = 571
+      Width = 774
       Height = 343
       Align = alClient
       Columns = <>
@@ -61,6 +61,7 @@ inherited frmExplorerMain: TfrmExplorerMain
       HideKnownFileExtns = False
       ExplicitLeft = 223
       ExplicitTop = 40
+      ExplicitWidth = 571
     end
     object SDFilesystemTreeView1: TSDFilesystemTreeView
       Left = 1
@@ -87,13 +88,13 @@ inherited frmExplorerMain: TfrmExplorerMain
     object pnlAddressBar: TPanel
       Left = 1
       Top = 1
-      Width = 790
+      Width = 993
       Height = 41
       Align = alTop
       Caption = 'pnlAddressBar'
       TabOrder = 2
       DesignSize = (
-        790
+        993
         41)
       object lblFolder: TLabel
         Left = 3
@@ -106,7 +107,7 @@ inherited frmExplorerMain: TfrmExplorerMain
       object edPath: TEdit
         Left = 44
         Top = 7
-        Width = 671
+        Width = 874
         Height = 21
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 0
@@ -114,7 +115,7 @@ inherited frmExplorerMain: TfrmExplorerMain
         OnKeyPress = edPathKeyPress
       end
       object pbGo: TBitBtn
-        Left = 726
+        Left = 929
         Top = 8
         Width = 56
         Height = 25
@@ -128,7 +129,7 @@ inherited frmExplorerMain: TfrmExplorerMain
   object ToolbarExplorer: TToolBar [2]
     Left = 0
     Top = 22
-    Width = 792
+    Width = 995
     Height = 22
     AutoSize = True
     Caption = 'ToolbarExplorer'
@@ -275,7 +276,7 @@ inherited frmExplorerMain: TfrmExplorerMain
   object ToolBarVolume: TToolBar [3]
     Left = 0
     Top = 0
-    Width = 792
+    Width = 995
     Height = 22
     AutoSize = True
     Caption = 'ToolBarVolume'
@@ -316,7 +317,7 @@ inherited frmExplorerMain: TfrmExplorerMain
   object pnlTopSpacing: TPanel [4]
     Left = 0
     Top = 44
-    Width = 792
+    Width = 995
     Height = 7
     Align = alTop
     Caption = 'pnlTopSpacing'
@@ -324,7 +325,7 @@ inherited frmExplorerMain: TfrmExplorerMain
   end
   inherited StatusBar_Status: TStatusBar
     Top = 495
-    Width = 792
+    Width = 995
     Panels = <
       item
         Width = 50
@@ -337,13 +338,13 @@ inherited frmExplorerMain: TfrmExplorerMain
       end>
     OnDrawPanel = StatusBarDrawPanel
     ExplicitTop = 495
-    ExplicitWidth = 792
+    ExplicitWidth = 995
   end
   inherited StatusBar_Hint: TStatusBar
     Top = 476
-    Width = 792
+    Width = 995
     ExplicitTop = 476
-    ExplicitWidth = 792
+    ExplicitWidth = 995
   end
   inherited mmMain: TMainMenu
     inherited File1: TMenuItem
@@ -711,7 +712,7 @@ inherited frmExplorerMain: TfrmExplorerMain
     Left = 108
     Top = 132
     Bitmap = {
-      494C010112002001000110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010112002001080110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1384,7 +1385,7 @@ inherited frmExplorerMain: TfrmExplorerMain
   end
   inherited ilToolbarIcons_Large: TImageList
     Bitmap = {
-      494C010112000801E80018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010112000801F00018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000078000000010020000000000000B4
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3028,7 +3029,7 @@ inherited frmExplorerMain: TfrmExplorerMain
     Left = 26
     Top = 146
     Bitmap = {
-      494C010101000400B80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000400C00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000262626003E3E3E002626260000000000000000000000

@@ -1,4 +1,4 @@
-inherited fmeOptions_FreeOTFEGeneral: TfmeOptions_FreeOTFEGeneral
+inherited fmeOptions_FreeOTFEGeneral: TfmeGeneralOptions
   Width = 504
   Height = 382
   ExplicitWidth = 504

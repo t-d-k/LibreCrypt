@@ -1,5 +1,5 @@
-unit FreeOTFEfmeOptions_Hotkeys;
-
+unit fmeHotKeysOptions;
+{todo:this frame is only used in one place so should be inserted there instead}
 interface
 
 uses

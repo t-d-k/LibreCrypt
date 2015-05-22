@@ -1,16 +1,16 @@
-unit FreeOTFEExplorerfmeOptions_Advanced;
-
+unit fmeAdvancedExplorerOptions;
+{todo:this frame is only used in one place so should be inserted there instead}
 interface
 
 uses
   Classes, fmeBaseOptions,
   Controls, Dialogs, ExtCtrls, Forms,
-  FreeOTFEExplorerfmeOptions_Base,
+  fmeCommonExplorerOptions,
   ExplorerSettings, Graphics, Messages, SDUStdCtrls, Shredder, Spin64,
   StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfmeOptions_FreeOTFEExplorerAdvanced = class (TfmeCommonExplorerOptions)
+  TfmeAdvancedExplorerOptions = class (TfmeCommonExplorerOptions)
     gbAdvanced:                         TGroupBox;
     ckAdvancedMountDlg:                 TSDUCheckBox;
     ckRevertVolTimestamps:              TSDUCheckBox;
@@ -59,13 +59,13 @@ const
 resourcestring
   USE_DEFAULT = 'Use default';
 
-procedure TfmeOptions_FreeOTFEExplorerAdvanced.ControlChanged(Sender: TObject);
+procedure TfmeAdvancedExplorerOptions.ControlChanged(Sender: TObject);
 begin
   inherited;
   EnableDisableControls();
 end;
 
-procedure TfmeOptions_FreeOTFEExplorerAdvanced.EnableDisableControls();
+procedure TfmeAdvancedExplorerOptions.EnableDisableControls();
 var
   userEnterPasses: Boolean;
 begin
@@ -80,7 +80,7 @@ begin
 
 end;
 
-procedure TfmeOptions_FreeOTFEExplorerAdvanced.Initialize();
+procedure TfmeAdvancedExplorerOptions.Initialize();
 const
   // Vertical spacing between checkboxes, and min horizontal spacing between
   // checkbox label and the vertical separator line  
@@ -235,7 +235,7 @@ begin
 
 end;
 
-procedure TfmeOptions_FreeOTFEExplorerAdvanced.PopulateOverwriteMethods();
+procedure TfmeAdvancedExplorerOptions.PopulateOverwriteMethods();
 var
   sm: TShredMethod;
 begin
@@ -245,7 +245,7 @@ begin
   end;
 end;
 
-procedure TfmeOptions_FreeOTFEExplorerAdvanced.SetOverwriteMethod(useMethod: TShredMethod);
+procedure TfmeAdvancedExplorerOptions.SetOverwriteMethod(useMethod: TShredMethod);
 var
   i: Integer;
 begin
@@ -258,7 +258,7 @@ begin
 
 end;
 
-function TfmeOptions_FreeOTFEExplorerAdvanced.GetOverwriteMethod(): TShredMethod;
+function TfmeAdvancedExplorerOptions.GetOverwriteMethod(): TShredMethod;
 var
   sm:     TShredMethod;
 begin
@@ -274,7 +274,7 @@ begin
 
 end;
 
-procedure TfmeOptions_FreeOTFEExplorerAdvanced._ReadSettings(config: TExplorerSettings);
+procedure TfmeAdvancedExplorerOptions._ReadSettings(config: TExplorerSettings);
 var
   mdm:    TMoveDeletionMethod;
   idx:    Integer;
@@ -308,7 +308,7 @@ begin
 end;
 
 
-procedure TfmeOptions_FreeOTFEExplorerAdvanced._WriteSettings(config: TExplorerSettings);
+procedure TfmeAdvancedExplorerOptions._WriteSettings(config: TExplorerSettings);
 var
   mdm: TMoveDeletionMethod;
 begin

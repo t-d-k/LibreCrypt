@@ -21,20 +21,20 @@ uses
   fmeBaseOptions in '..\common\fmeBaseOptions.pas' {fmeOptions_Base: TFrame},
   frmCommonOptions in '..\common\frmCommonOptions.pas' {frmOptions},
   CommonfmeOptions_PKCS11 in '..\common\CommonfmeOptions_PKCS11.pas' {fmeOptions_PKCS11: TFrame},
-  FreeOTFEExplorerfmeOptions_Base in 'FreeOTFEExplorerfmeOptions_Base.pas' {fmeFreeOTFEExplorerOptions_Base: TFrame},
+  fmeCommonExplorerOptions in 'fmeCommonExplorerOptions.pas' {fmeFreeOTFEExplorerOptions_Base: TFrame},
   fmeExplorerOptions in 'fmeExplorerOptions.pas' {fmeOptions_FreeOTFEExplorerGeneral: TFrame},
   FreeOTFEExplorerfrmOptions in 'FreeOTFEExplorerfrmOptions.pas' {frmOptions_FreeOTFEExplorer},
   frmVersionCheck in '..\common\frmVersionCheck.pas' {frmVersionCheck},
   CommonConsts in '..\common\CommonConsts.pas',
   FreeOTFEExplorerfrmSelectDirectoryDlg in 'FreeOTFEExplorerfrmSelectDirectoryDlg.pas' {frmSelectDirectoryDlg},
   FreeOTFEExplorerfrmPropertiesDlg_Volume in 'FreeOTFEExplorerfrmPropertiesDlg_Volume.pas' {frmPropertiesDialog_Volume},
-  FreeOTFEExplorerfmeOptions_Advanced in 'FreeOTFEExplorerfmeOptions_Advanced.pas' {fmeOptions_FreeOTFEExplorerAdvanced: TFrame},
-  FreeOTFEExplorerfrmOverwritePrompt in 'FreeOTFEExplorerfrmOverwritePrompt.pas' {frmOverwritePrompt},
+  fmeAdvancedExplorerOptions in 'fmeAdvancedExplorerOptions.pas' {fmeOptions_FreeOTFEExplorerAdvanced: TFrame},
+  frmOverwritePrompt in 'frmOverwritePrompt.pas' {frmOverwritePrompt},
   frmSelectCopyOrMove in 'frmSelectCopyOrMove.pas' {frmSelectCopyOrMove},
   CommonfrmCDBDump_LUKS in '..\common\CommonfrmCDBDump_LUKS.pas' {frmCDBDump_LUKS},
   CommonfrmCDBDump_Base in '..\common\CommonfrmCDBDump_Base.pas' {frmCDBDump_Base},
   CommonfrmCDBDump_FreeOTFE in '..\common\CommonfrmCDBDump_FreeOTFE.pas' {frmCDBDump_FreeOTFE},
-  FreeOTFEExplorerCheckFilesystem in 'FreeOTFEExplorerCheckFilesystem.pas',
+  CheckFilesystem in 'CheckFilesystem.pas',
   SDUForms in '..\common\SDUForms.pas' {SDUForm},
   SDUFrames in '..\common\SDUFrames.pas' {SDUFrame: TFrame},
   frmWizard in '..\common\OTFE\OTFEFreeOTFE\frmWizard.pas' {frmWizard},
@@ -122,7 +122,8 @@ uses
   fmeLUKSKeyOrKeyfileEntry in '..\common\OTFE\OTFEFreeOTFE\fmeLUKSKeyOrKeyfileEntry.pas' {frmeLUKSKeyOrKeyfileEntry: TFrame},
   lcConsts in '..\common\lcConsts.pas',
   fmeDiskPartitionsPanel in '..\common\OTFE\OTFEFreeOTFE\fmeDiskPartitionsPanel.pas',
-  PartitionImageDLL in '..\common\OTFE\OTFEFreeOTFE\PartitionImageDLL.pas';
+  PartitionImageDLL in '..\common\OTFE\OTFEFreeOTFE\PartitionImageDLL.pas',
+  fmeAutorunOptions in '..\common\fmeAutorunOptions.pas' {fmeAutorunOptions: TFrame};
 
 {$R *.res}
 {$R FreeOTFEExplorerCursors.res}

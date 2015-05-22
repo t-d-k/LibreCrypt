@@ -60,6 +60,7 @@ uses
              //  RTLConsts,
   Forms,     // Required for Application
   SDUGeneral,
+  CommonSettings,
   SysUtils,   // Required for StringReplace
   UITypes;
 
@@ -119,7 +120,8 @@ begin
     Content := _SDUDialogs_StripSingleNewlines(Content);
 
   // do enhancements here
-  Result := MessageDlg(Content, DlgType, Buttons, HelpCtx);
+  if not CommonSettingsObj.IsRememberedDlgAnswer(Content,Result) then
+      Result := MessageDlg(Content, DlgType, Buttons, HelpCtx);
 end;
 
 

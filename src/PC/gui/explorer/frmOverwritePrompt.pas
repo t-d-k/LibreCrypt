@@ -1,4 +1,4 @@
-unit FreeOTFEExplorerfrmOverwritePrompt;
+unit frmOverwritePrompt;
 
 interface
 

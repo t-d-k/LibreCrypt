@@ -44,7 +44,7 @@ implementation
 {$R *.dfm}
 
 uses
-  FreeOTFEExplorerCheckFilesystem,
+  CheckFilesystem,
   frmExplorerMain,
   PartitionImageDLL,
   SDPartitionImage_File, SDUGeneral,
@@ -167,7 +167,7 @@ end;
 procedure TfrmPropertiesDialog_Volume.pbErrorCheckNowClick(Sender: TObject);
 begin
   inherited;
-  CheckFilesystem(Filesystem);
+  CheckFATFilesystem(Filesystem);
 
 end;
 

@@ -1,4 +1,4 @@
-unit FreeOTFEfrmOptions;
+unit frmOptions;
  // Description:
  // By Sarah Dean
  // Email: sdean12@sdean12.org
@@ -17,9 +17,9 @@ uses
   fmeBaseOptions,
   CommonfmeOptions_PKCS11,
   frmCommonOptions, CommonSettings,              
-  ExtCtrls, Forms, FreeOTFEfmeOptions_Advanced, fmeLcOptions,
-  FreeOTFEfmeOptions_General,
-  FreeOTFEfmeOptions_Hotkeys,
+  ExtCtrls, Forms, fmeAdvancedOptions, fmeLcOptions,
+  fmeGeneralOptions,
+  fmeHotKeysOptions,
   fmeSystemTrayOptions,  OTFEFreeOTFE_U, SDUForms,
   SDUStdCtrls
   // librecrypt
@@ -32,10 +32,10 @@ type
     tcSystemTray:        TTabSheet;
     tsAutorun:           TTabSheet;
     tsAdvanced:          TTabSheet;
-    fmeOptions_FreeOTFEGeneral1: TfmeOptions_FreeOTFEGeneral;
+    fmeOptions_FreeOTFEGeneral1: TfmeGeneralOptions;
     fmeOptions_Hotkeys1: TfmeHotKeysOptions;
     fmeOptions_SystemTray1: TfmeSystemTrayOptions;
-    fmeOptions_FreeOTFEAdvanced1: TfmeOptions_FreeOTFEAdvanced;
+    fmeOptions_FreeOTFEAdvanced1: TfmeAdvancedOptions;
     fmeOptions_Autorun1: TfmeAutorunOptions;
     ckLaunchAtStartup:   TSDUCheckBox;
     ckLaunchMinimisedAtStartup: TSDUCheckBox;

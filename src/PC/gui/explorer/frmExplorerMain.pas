@@ -550,10 +550,10 @@ uses
   // Just required for DEFAULT_HTTP_PORT
   WinSvc,
   //   SDUWinSvc,
-  FreeOTFEExplorerCheckFilesystem,
+  CheckFilesystem,
   FreeOTFEExplorerfrmNewDirDlg,
   FreeOTFEExplorerfrmOptions,
-  FreeOTFEExplorerfrmOverwritePrompt,
+  frmOverwritePrompt,
   FreeOTFEExplorerfrmPropertiesDlg_Directory,
   FreeOTFEExplorerfrmPropertiesDlg_File,
   FreeOTFEExplorerfrmPropertiesDlg_Multiple,
@@ -2004,7 +2004,7 @@ end;
 
 procedure TfrmExplorerMain.actCheckFilesystemExecute(Sender: TObject);
 begin
-  CheckFilesystem(fFilesystem);
+  CheckFATFilesystem(fFilesystem);
 end;
 
 procedure TfrmExplorerMain.actDeleteExecute(Sender: TObject);
@@ -2698,7 +2698,7 @@ end;
 
 procedure TfrmExplorerMain.actOptionsExecute(Sender: TObject);
 var
-  dlg: TfrmOptions_FreeOTFEExplorer;
+  dlg: TfrmExplorerOptions;
 begin
   inherited;
 
@@ -2706,7 +2706,7 @@ begin
   gSettings.OptShowToolbarVolume   := ToolBarVolume.Visible;
   gSettings.OptShowToolbarExplorer := ToolBarExplorer.Visible;
 
-  dlg := TfrmOptions_FreeOTFEExplorer.Create(self);
+  dlg := TfrmExplorerOptions.Create(self);
   try
     //    dlg.OTFEFreeOTFEBase := fOTFEFreeOTFEBase;
     if (dlg.ShowModal() = mrOk) then begin

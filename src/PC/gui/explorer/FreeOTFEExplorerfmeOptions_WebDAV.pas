@@ -1,17 +1,17 @@
 unit FreeOTFEExplorerfmeOptions_WebDAV;
-
+{todo:this frame is only used in one place so should be inserted there instead}
 interface
 
 uses
   Classes, fmeBaseOptions,
   Controls, Dialogs, ExtCtrls, Forms,
-  FreeOTFEExplorerfmeOptions_Base,
+  fmeCommonExplorerOptions,
   ExplorerSettings, Graphics, Messages, SDUFilenameEdit_U, SDUFrames,
   SDUStdCtrls, Shredder, Spin64,
   StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfmeOptions_FreeOTFEExplorerWebDAV = class (TfmeCommonExplorerOptions)
+  TfmeExplorerWebDAVOptions = class (TfmeCommonExplorerOptions)
     gbWebDAV:                   TGroupBox;
     ckWebDAV:                   TSDUCheckBox;
     cbDrive:                    TComboBox;
@@ -71,13 +71,13 @@ const
 resourcestring
   USE_DEFAULT = 'Use default';
 
-procedure TfmeOptions_FreeOTFEExplorerWebDAV.ckWebDAVLogAccessClick(Sender: TObject);
+procedure TfmeExplorerWebDAVOptions.ckWebDAVLogAccessClick(Sender: TObject);
 begin
   inherited;
   EnableDisableControls();
 end;
 
-procedure TfmeOptions_FreeOTFEExplorerWebDAV.ckWebDAVClick(Sender: TObject);
+procedure TfmeExplorerWebDAVOptions.ckWebDAVClick(Sender: TObject);
 begin
   inherited;
 
@@ -103,19 +103,19 @@ begin
   EnableDisableControls();
 end;
 
-procedure TfmeOptions_FreeOTFEExplorerWebDAV.ckWebDAVLogDebugClick(Sender: TObject);
+procedure TfmeExplorerWebDAVOptions.ckWebDAVLogDebugClick(Sender: TObject);
 begin
   inherited;
   EnableDisableControls();
 end;
 
-procedure TfmeOptions_FreeOTFEExplorerWebDAV.ControlChanged(Sender: TObject);
+procedure TfmeExplorerWebDAVOptions.ControlChanged(Sender: TObject);
 begin
   inherited;
   EnableDisableControls();
 end;
 
-procedure TfmeOptions_FreeOTFEExplorerWebDAV.EnableDisableControls();
+procedure TfmeExplorerWebDAVOptions.EnableDisableControls();
 begin
   inherited;
 
@@ -142,7 +142,7 @@ begin
 
 end;
 
-procedure TfmeOptions_FreeOTFEExplorerWebDAV.Initialize();
+procedure TfmeExplorerWebDAVOptions.Initialize();
 var
   driveLetter: Char;
 begin
@@ -162,7 +162,7 @@ begin
 
 end;
 
-procedure TfmeOptions_FreeOTFEExplorerWebDAV._ReadSettings(config: TExplorerSettings);
+procedure TfmeExplorerWebDAVOptions._ReadSettings(config: TExplorerSettings);
 var
   prevWarnUserChangesRequireRemount: Boolean;
 begin
@@ -194,7 +194,7 @@ begin
 end;
 
 
-procedure TfmeOptions_FreeOTFEExplorerWebDAV._WriteSettings(config: TExplorerSettings);
+procedure TfmeExplorerWebDAVOptions._WriteSettings(config: TExplorerSettings);
 begin
   config.OptWebDAVEnableServer := ckWebDAV.Checked;
 

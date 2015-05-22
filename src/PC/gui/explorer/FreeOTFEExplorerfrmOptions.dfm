@@ -1,9 +1,11 @@
-inherited frmOptions_FreeOTFEExplorer: TfrmOptions_FreeOTFEExplorer
+inherited frmOptions_FreeOTFEExplorer: TfrmExplorerOptions
   OnCreate = FormCreate
+  ExplicitWidth = 519
+  ExplicitHeight = 516
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcOptions: TPageControl
-    ActivePage = tsAdvanced
+    ActivePage = tsGeneral
     object tsGeneral: TTabSheet
       Caption = 'General'
       ImageIndex = 1
@@ -30,7 +32,7 @@ inherited frmOptions_FreeOTFEExplorer: TfrmOptions_FreeOTFEExplorer
     object tsAdvanced: TTabSheet
       Caption = 'Advanced'
       ImageIndex = 2
-      inline fmeOptions_FreeOTFEExplorerAdvanced1: TfmeOptions_FreeOTFEExplorerAdvanced
+      inline fmeOptions_FreeOTFEExplorerAdvanced1: TfmeAdvancedExplorerOptions
         Left = -12
         Top = -34
         Width = 504
@@ -65,7 +67,7 @@ inherited frmOptions_FreeOTFEExplorer: TfrmOptions_FreeOTFEExplorer
     object tsWebDAV: TTabSheet
       Caption = 'Drive'
       ImageIndex = 3
-      inline fmeOptions_FreeOTFEExplorerWebDAV1: TfmeOptions_FreeOTFEExplorerWebDAV
+      inline fmeOptions_FreeOTFEExplorerWebDAV1: TfmeExplorerWebDAVOptions
         Left = 6
         Top = 13
         Width = 486

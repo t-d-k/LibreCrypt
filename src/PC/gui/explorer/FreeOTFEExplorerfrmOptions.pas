@@ -1,23 +1,23 @@
 unit FreeOTFEExplorerfrmOptions;
 
 interface
-
+                                                     
 uses
   Classes, ComCtrls, fmeAutorunOptions, fmeBaseOptions, CommonfmeOptions_PKCS11,
   frmCommonOptions, Controls, Dialogs, ExtCtrls,
   Forms,
-  FreeOTFEExplorerfmeOptions_Advanced, FreeOTFEExplorerfmeOptions_Base,
+  fmeAdvancedExplorerOptions, fmeCommonExplorerOptions,
   fmeExplorerOptions, FreeOTFEExplorerfmeOptions_WebDAV,
   Graphics, Messages, OTFEFreeOTFEDLL_U, SDUStdCtrls, StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfrmOptions_FreeOTFEExplorer = class (TfrmCommonOptions)
+  TfrmExplorerOptions = class (TfrmCommonOptions)
     tsGeneral:                            TTabSheet;
     fmeOptions_FreeOTFEExplorerGeneral1:  TfmeExplorerOptions;
     tsAdvanced:                           TTabSheet;
-    fmeOptions_FreeOTFEExplorerAdvanced1: TfmeOptions_FreeOTFEExplorerAdvanced;
+    fmeOptions_FreeOTFEExplorerAdvanced1: TfmeAdvancedExplorerOptions;
     tsWebDAV:                             TTabSheet;
-    fmeOptions_FreeOTFEExplorerWebDAV1:   TfmeOptions_FreeOTFEExplorerWebDAV;
+    fmeOptions_FreeOTFEExplorerWebDAV1:   TfmeExplorerWebDAVOptions;
     tsAutorun:                            TTabSheet;
     fmeOptions_Autorun1:                  TfmeAutorunOptions;
     procedure FormCreate(Sender: TObject);
@@ -49,7 +49,7 @@ const
   SDUCRLF = ''#13#10;
 {$ENDIF}
 
-procedure TfrmOptions_FreeOTFEExplorer.ChangeLanguage(langCode: String);
+procedure TfrmExplorerOptions.ChangeLanguage(langCode: String);
 var
   tmpConfig: TExplorerSettings;
 begin
@@ -79,7 +79,7 @@ begin
 end;
 
 
-procedure TfrmOptions_FreeOTFEExplorer.FormCreate(Sender: TObject);
+procedure TfrmExplorerOptions.FormCreate(Sender: TObject);
 begin
   inherited;
 
@@ -88,7 +88,7 @@ begin
 
 end;
 
-procedure TfrmOptions_FreeOTFEExplorer.FormShow(Sender: TObject);
+procedure TfrmExplorerOptions.FormShow(Sender: TObject);
 begin
   inherited;
 
@@ -97,7 +97,7 @@ begin
 
 end;
 
-//function TfrmOptions_FreeOTFEExplorer.OTFEFreeOTFE(): TOTFEFreeOTFEDLL;
+//function TfrmExplorerOptions.OTFEFreeOTFE(): TOTFEFreeOTFEDLL;
 //begin
 //  Result := TOTFEFreeOTFEDLL(OTFEFreeOTFEBase);
 //end;

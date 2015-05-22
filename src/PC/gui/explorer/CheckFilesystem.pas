@@ -1,11 +1,11 @@
-unit FreeOTFEExplorerCheckFilesystem;
+unit CheckFilesystem;
 
 interface
 
 uses
   SDFilesystem_FAT;
 
-procedure CheckFilesystem(Filesystem: TSDFilesystem_FAT);
+procedure CheckFATFilesystem(Filesystem: TSDFilesystem_FAT);
 
 implementation
 
@@ -25,7 +25,7 @@ const
 {$ENDIF}
 
 
-procedure CheckFilesystem(Filesystem: TSDFilesystem_FAT);
+procedure CheckFATFilesystem(Filesystem: TSDFilesystem_FAT);
 var
   allOK: Boolean;
 begin

@@ -1,17 +1,17 @@
 inherited frmMain: TfrmMain
   ClientHeight = 347
-  ClientWidth = 524
+  ClientWidth = 714
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnDestroy = FormDestroy
   OnResize = FormResize
-  ExplicitWidth = 540
+  ExplicitWidth = 730
   ExplicitHeight = 405
   PixelsPerInch = 96
   TextHeight = 13
   inherited Label1: TLabel
     Top = 308
-    Width = 524
+    Width = 714
     Alignment = taCenter
     Font.Color = clHotLight
     ParentFont = False
@@ -20,14 +20,14 @@ inherited frmMain: TfrmMain
   end
   inherited StatusBar_Status: TStatusBar
     Top = 289
-    Width = 524
+    Width = 714
     ExplicitTop = 289
     ExplicitWidth = 524
   end
   object ToolBar1: TToolBar [2]
     Left = 0
     Top = 0
-    Width = 524
+    Width = 714
     Height = 38
     AutoSize = True
     ButtonHeight = 38
@@ -35,6 +35,7 @@ inherited frmMain: TfrmMain
     Caption = 'ToolBar1'
     Images = ilToolbarIcons_Large
     TabOrder = 3
+    ExplicitWidth = 524
     object tbbNew: TToolButton
       Left = 0
       Top = 0
@@ -93,6 +94,7 @@ inherited frmMain: TfrmMain
       Left = 324
       Top = 0
       Action = actTogglePortableMode
+      Caption = 'Portable mode'
       Style = tbsCheck
       OnMouseUp = tbbTogglePortableModeMouseUp
     end
@@ -105,16 +107,17 @@ inherited frmMain: TfrmMain
   object pnlTopSpacing: TPanel [3]
     Left = 0
     Top = 38
-    Width = 524
+    Width = 714
     Height = 7
     Align = alTop
     Caption = 'pnlTopSpacing'
     TabOrder = 2
+    ExplicitWidth = 524
   end
   object lvDrives: TListView [4]
     Left = 0
     Top = 45
-    Width = 524
+    Width = 714
     Height = 225
     Align = alClient
     Columns = <>
@@ -125,10 +128,11 @@ inherited frmMain: TfrmMain
     OnDblClick = lvDrivesDblClick
     OnResize = lvDrivesResize
     OnSelectItem = lvDrivesSelectItem
+    ExplicitWidth = 524
   end
   inherited StatusBar_Hint: TStatusBar
     Top = 270
-    Width = 524
+    Width = 714
     ExplicitTop = 270
     ExplicitWidth = 524
   end
@@ -330,7 +334,7 @@ inherited frmMain: TfrmMain
   end
   inherited ilToolbarIcons_Small: TImageList
     Bitmap = {
-      494C010109007401440310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109007401500310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       00000000000000000000000000000000000000000000255F92003FA5CE003A9F
       C8003A9EC8003A9EC8003B9EC8003B9EC7003B9EC7003B9EC7003B9EC7003B9E
@@ -743,7 +747,7 @@ inherited frmMain: TfrmMain
     Width = 32
     Left = 92
     Bitmap = {
-      494C01010900C401D40320002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010900C401E00320002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000008000000060000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2421,7 +2425,7 @@ inherited frmMain: TfrmMain
     Left = 372
     Top = 124
     Bitmap = {
-      494C0101020004007C0220002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400880220002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000002000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

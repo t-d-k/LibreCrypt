@@ -1,4 +1,3 @@
-
 unit frmCommonMain;
  // Description:
  // By Sarah Dean
@@ -448,8 +447,6 @@ constructor TfrmCommonMain.Create(AOwner: TComponent);
 begin
   finitAppCalled               := False;
   fwmUserPostShowCalledAlready := False;
-
-
   inherited;
 end;
 
@@ -529,14 +526,6 @@ begin
   actInstallOnUSBDrive.Caption :=
     SDUParamSubstitute(_('&Copy %1 to USB drive...'), [Application.Title]);
 end;
-
-procedure TfrmCommonMain.SetIconListsAndIndexes();
-begin
-  //  actFreeOTFENew.ImageIndex       := FIconIdx_Small_New;
-  //  actFreeOTFEMountFile.ImageIndex := FIconIdx_Small_MountFile;
-  //  actDismount.ImageIndex          := FIconIdx_Small_Dismount;
-end;
-
 
 // Add standard Windows icons
 procedure TfrmCommonMain.AddStdIcons();
@@ -681,7 +670,6 @@ end;
 
 procedure TfrmCommonMain.FormCreate(Sender: TObject);
 begin
-
 {$IFDEF FREEOTFE_DEBUG}
   GetFreeOTFEBase().fDebugShowMessage := FALSE;  // xxx - disable showmessages(...) of debug if built with debug on
 {$ENDIF}
@@ -869,6 +857,11 @@ begin
 
 end;
 
+procedure TfrmCommonMain.SetIconListsAndIndexes;
+begin
+
+end;
+
 procedure TfrmCommonMain.SetStatusBarText(statusText: String);
 begin
   StatusBar_Status.SimpleText := statusText;
@@ -929,13 +922,12 @@ end;
 
 procedure TfrmCommonMain.ShowOldDriverWarnings();
 begin
-  // No warnings to be shown in base class
+ // No warnings to be shown in base class
 end;
 
 procedure TfrmCommonMain.DeactivateFreeOTFEComponent();
 begin
   GetFreeOTFEBase().Active := False;
-
 end;
 
 procedure TfrmCommonMain.DoAppIdle(Sender: TObject; var Done: Boolean);
@@ -1306,6 +1298,11 @@ begin
   // Determine full path to local userguide
   cwd       := ParamStr(0);
   cwd       := ExtractFilePath(cwd);
+
+  {$IFDEF DEBUG}
+    // browse in dev directory, from bin\PC\Debug\Win32\ to root
+    cwd :=  cwd  + '..\..\..\..';
+  {$ENDIF}
   userGuide := cwd + '\' + USERGUIDE_LOCAL;
 
   // If local userguide doens't exist, fallback to online version...
@@ -1421,10 +1418,9 @@ begin
       fPkcs11Library.Finalize();
       fPkcs11Library.Free();
     except
-      on E: Exception do begin
+      on E: Exception do
         // Just swallow it - if there's a problem, there's nothing we can do
         // about it
-      end;
     end;
   end;
 
@@ -1536,7 +1532,6 @@ nextCheck := 0;//fix warning
     // Save any changes to the auto check for updates settings (eg check date)...
     gSettings.Save();
   end;
-
 end;
 
 procedure TfrmCommonMain.actCheckForUpdatesExecute(Sender: TObject);

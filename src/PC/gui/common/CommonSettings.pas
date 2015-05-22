@@ -158,6 +158,8 @@ type
 
     function RegistryKey(): String; virtual; abstract;
 
+    function IsRememberedDlgAnswer(msg:String;out answer:Integer) : Boolean;
+
   published
     property CustomLocation: String Read FCustomLocation Write FCustomLocation;
   end;
@@ -659,6 +661,14 @@ begin
 
 end;
 
+function TCommonSettings.IsRememberedDlgAnswer(msg: String;
+  out answer: Integer): Boolean;
+begin
+  //todo: return remembered answer
+  result:= false;
+  answer := 0;
+end;
+
 procedure TCommonSettings.Assign(copyFrom: TCommonSettings);
 var
   iniFile: TINIFile;
@@ -694,20 +704,19 @@ begin
   end else
   if ((OptSaveSettings = slExeDir) or (OptSaveSettings = slProfile) or
     (OptSaveSettings = slCustom)) then begin
-    filename := GetSettingsFilename(OptSaveSettings);
-    try
-      Result := TINIFile.Create(filename);
-    except
-      on E: Exception do begin
-        // Problem - e.g. can't create .INI file
-        Result := nil;
+      filename := GetSettingsFilename(OptSaveSettings);
+      try
+        Result := TINIFile.Create(filename);
+      except
+        on E: Exception do
+          // Problem - e.g. can't create .INI file
+          Result := nil;
       end;
-    end;
 
   end else
-  if (OptSaveSettings = slRegistry) then begin
-    Result := TRegistryINIFile.Create(RegistryKey());
-  end;
+    if (OptSaveSettings = slRegistry) then
+        Result := TRegistryINIFile.Create(RegistryKey());
+
 
 end;
 

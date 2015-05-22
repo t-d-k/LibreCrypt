@@ -247,6 +247,7 @@ type
     procedure UACEscalate(cmdLineParams: String; suppressMsgs: Boolean);
 
     function DoTests: Boolean; override;
+    function TestMountLUKS: Boolean;
 
   public
 
@@ -303,8 +304,8 @@ uses
   //  SDUWinSvc,
   frmAbout,
   CommonfrmCDBBackupRestore, lcConsts,
-  FreeOTFEfrmOptions,
-  FreeOTFEfrmSelectOverwriteMethod,
+  frmOptions,
+  frmSelectOverwriteMethod,
   frmVolProperties,
   OTFEConsts_U,
   DriverAPI,
@@ -337,13 +338,13 @@ resourcestring
   TEXT_NEED_ADMIN = 'You need administrator privileges in order to carry out this operation.';
 
   // Toolbar captions...
-  RS_TOOLBAR_CAPTION_MOUNTPARTITION = 'Open partition container';
-  RS_TOOLBAR_CAPTION_DISMOUNTALL    = 'Lock all';
-  RS_TOOLBAR_CAPTION_PORTABLEMODE   = 'Portable mode';
+//  RS_TOOLBAR_CAPTION_MOUNTPARTITION = 'Open partition container';
+//  RS_TOOLBAR_CAPTION_DISMOUNTALL    = 'Lock all';
+//  RS_TOOLBAR_CAPTION_PORTABLEMODE   = 'Portable mode';
   // Toolbar hints...
-  RS_TOOLBAR_HINT_MOUNTPARTITION    = 'Open a partition based container';
-  RS_TOOLBAR_HINT_DISMOUNTALL       = 'Lock all open containers';
-  RS_TOOLBAR_HINT_PORTABLEMODE      = 'Toggle portable mode on/off';
+//  RS_TOOLBAR_HINT_MOUNTPARTITION    = 'Open a partition based container';
+//  RS_TOOLBAR_HINT_DISMOUNTALL       = 'Lock all open containers';
+//  RS_TOOLBAR_HINT_PORTABLEMODE      = 'Toggle portable mode on/off';
 
   POPUP_DISMOUNT = 'Dismount %1: %2';
 
@@ -413,7 +414,6 @@ const
 procedure TfrmMain.InitApp();
 var
   goForStartPortable, errLastRun: Boolean;
-
 begin
   inherited;
 
@@ -448,8 +448,8 @@ begin
   // the system tray icon code as it's monitoring the window's messages
   //  self.Position := poScreenCenter;
   // Instead, position window manually...
-  self.Top  := ((Screen.Height - self.Height) div 2);
-  self.Left := ((Screen.Width - self.Width) div 2);
+//  self.Top  := ((Screen.Height - self.Height) div 2);
+//  self.Left := ((Screen.Width - self.Width) div 2);
 
   if not (ActivateFreeOTFEComponent(True)) then begin
     goForStartPortable := gSettings.OptAutoStartPortable;
@@ -496,6 +496,7 @@ begin
   SetupPKCS11(False);
 //  actLUKSNewExecute(nil);
 //actTestExecute(nil);
+// TestMountLUKS;
 end;
 
 
@@ -745,23 +746,6 @@ end;
 procedure TfrmMain.RecaptionToolbarAndMenuIcons();
 begin
   inherited;
-
-//  // Change toolbar captions to shorter captions
-//  tbbNew.Caption                := RS_TOOLBAR_CAPTION_NEW;
-////  tbbMountFile.Caption          := RS_TOOLBAR_CAPTION_MOUNTFILE;
-//  tbbMountPartition.Caption     := RS_TOOLBAR_CAPTION_MOUNTPARTITION;
-//  tbbDismount.Caption           := RS_TOOLBAR_CAPTION_DISMOUNT;
-//  tbbDismountAll.Caption        := RS_TOOLBAR_CAPTION_DISMOUNTALL;
-//  tbbTogglePortableMode.Caption := RS_TOOLBAR_CAPTION_PORTABLEMODE;
-//
-//  // Setup toolbar hints
-//  tbbNew.Hint                := RS_TOOLBAR_HINT_NEW;
-////  tbbMountFile.Hint          := RS_TOOLBAR_HINT_MOUNTFILE;
-//  tbbMountPartition.Hint     := RS_TOOLBAR_HINT_MOUNTPARTITION;
-//  tbbDismount.Hint           := RS_TOOLBAR_HINT_DISMOUNT;
-//  tbbDismountAll.Hint        := RS_TOOLBAR_HINT_DISMOUNTALL;
-//  tbbTogglePortableMode.Hint := RS_TOOLBAR_HINT_PORTABLEMODE;
-
 end;
 
 procedure TfrmMain.SDUSystemTrayIcon1Click(Sender: TObject);
@@ -1248,6 +1232,136 @@ begin
   else
     SDUMessageDlg('At least one functional test failed');
 end;
+
+
+{ tests
+  system tests
+  opens volumes created with old versions and checks contents as expected
+  regression testing only
+  see testing.jot for more details of volumes
+
+  to test
+  LUKS keyfile
+  LUKS at offset (ever used?)
+  creating vol
+  creating keyfile
+  creating .les file
+  partition operations
+  overwrite ops
+  pkcs11 ops
+  cdb at offset
+  salt <> default value
+}
+function TfrmMain.TestMountLUKS: Boolean;
+var
+  mountList:       TStringList;
+  mountedAs:       DriveLetterString;
+  vol_path, key_file: String;
+
+const
+
+
+  {this last dmcrypt_dx.box with dmcrypt_hid.les can cause BSoD }
+  TEST_VOLS:String = 'luks.box';
+  PASSWORDS:  Ansistring = 'password';
+  ITERATIONS:  Integer = 2048;
+
+
+  procedure CheckMountedOK;
+  begin
+    RefreshDrives();
+    // Mount successful
+    //        prettyMountedAs := prettyPrintDriveLetters(mountedAs);
+    if (CountValidDrives(mountedAs) <> 1) then begin
+      SDUMessageDlg(Format('The container %s has NOT been opened as drive: %s',
+        [TEST_VOLS, mountedAs]));
+      Result := False;
+    end else begin
+      //done: test opened OK & file exists
+      if not FileExists(mountedAs + ':\README.txt') then begin
+        SDUMessageDlg(Format('File: %s:\README.txt not found', [mountedAs]));
+        Result := False;
+      end;
+    end;
+  end;
+
+  procedure UnMountAndCheck;
+  begin
+    Application.ProcessMessages;
+    DismountAll(True);
+    Application.ProcessMessages;
+    RefreshDrives();
+    Application.ProcessMessages;
+    if CountValidDrives(GetFreeOTFE().DrivesMounted) > 0 then begin
+      SDUMessageDlg(Format('Drive(s) %s not unmounted', [GetFreeOTFE().DrivesMounted]));
+      Result := False;
+    end;
+  end;
+
+begin
+  inherited;
+  Result := True;
+  mountList := TStringList.Create();
+  try
+    //for loop is optimised into reverse order, but want to process forwards
+
+    {$IFDEF DEBUG}
+        vol_path := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\..\..\test_vols\');
+    {$ELSE}
+    vol_path := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\test_vols\');
+    {$ENDIF}
+
+
+      //test one at a time as this is normal use
+      mountList.Clear;
+      mountList.Add(vol_path + TEST_VOLS);
+      mountedAs := '';
+      key_file  := '';
+
+      if GetFreeOTFE().IsLUKSVolume(vol_path + TEST_VOLS)  then begin
+        if not GetFreeOTFE().MountLinux(mountList, mountedAs, True, '',
+          SDUStringToSDUBytes(PASSWORDS), key_file, False, nlLF, 0, True) then
+          Result := False;
+      end else begin
+        //call silently
+        if not GetFreeOTFE().MountFreeOTFE(mountList, mountedAs, True,
+          key_file, SDUStringToSDUBytes(PASSWORDS), 0, False,
+          True, 256, ITERATIONS) then
+          Result := False;
+      end;
+
+      if not Result then begin
+        SDUMessageDlg(
+          _('Unable to open ') + TEST_VOLS + '.', mtError);
+
+      end else begin
+        CheckMountedOK;
+        UnMountAndCheck;
+      end;
+
+
+
+  {test changing password
+    backup freeotfe header ('cdb')
+    change password
+    open with new password
+    restore header
+    open with old password -tested on next test run
+    this tests most of code for creating volume as well
+  }
+
+
+  finally
+    mountList.Free();
+  end;
+
+  if Result then
+    SDUMessageDlg('All functional tests passed')
+  else
+    SDUMessageDlg('At least one functional test failed');
+end;
+
+
 
 procedure TfrmMain.SetIconListsAndIndexes();
 begin
@@ -1830,11 +1944,11 @@ begin
 
 
   // Misc display related...
-  if drivesMounted then begin
-    SDUSystemTrayIcon1.Icon := fIconMounted;
-  end else begin
+  if drivesMounted then
+    SDUSystemTrayIcon1.Icon := fIconMounted
+else
     SDUSystemTrayIcon1.Icon := fIconUnmounted;
-  end;
+
 
   StatusBar_Status.Visible := gSettings.OptDisplayStatusbar;
   StatusBar_Hint.Visible   := False;
@@ -2409,7 +2523,6 @@ end;
 procedure TfrmMain.actConsoleDisplayExecute(Sender: TObject);
 begin
   SDUSystemTrayIcon1.DoRestore();
-
 end;
 
 

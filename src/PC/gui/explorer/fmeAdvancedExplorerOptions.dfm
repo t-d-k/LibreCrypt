@@ -1,4 +1,4 @@
-inherited fmeOptions_FreeOTFEExplorerAdvanced: TfmeOptions_FreeOTFEExplorerAdvanced
+inherited fmeOptions_FreeOTFEExplorerAdvanced: TfmeAdvancedExplorerOptions
   Width = 504
   Height = 382
   ExplicitWidth = 504

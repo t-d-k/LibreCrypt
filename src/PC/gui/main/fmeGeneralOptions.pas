@@ -1,5 +1,5 @@
-unit FreeOTFEfmeOptions_General;
-
+unit fmeGeneralOptions;
+{TODO: this is only used in TfrmOptions, so should be part of that, not a seperate frame}
 interface
 
 uses
@@ -16,7 +16,7 @@ type
   end;
   PLanguageTranslation = ^TLanguageTranslation;
 
-  TfmeOptions_FreeOTFEGeneral = class (TfmeLcOptions)
+  TfmeGeneralOptions = class (TfmeLcOptions)
     gbGeneral:                TGroupBox;
     ckDisplayToolbar:         TSDUCheckBox;
     ckDisplayStatusbar:       TSDUCheckBox;
@@ -76,7 +76,7 @@ const
 const
   CONTROL_MARGIN_LBL_TO_CONTROL = 5;
 
-procedure TfmeOptions_FreeOTFEGeneral.cbLanguageChange(Sender: TObject);
+procedure TfmeGeneralOptions.cbLanguageChange(Sender: TObject);
 var
   useLang: TLanguageTranslation;
   langIdx: Integer;
@@ -98,13 +98,13 @@ begin
   EnableDisableControls();
 end;
 
-procedure TfmeOptions_FreeOTFEGeneral.ControlChanged(Sender: TObject);
+procedure TfmeGeneralOptions.ControlChanged(Sender: TObject);
 begin
   inherited;
   EnableDisableControls();
 end;
 
-procedure TfmeOptions_FreeOTFEGeneral.EnableDisableControls();
+procedure TfmeGeneralOptions.EnableDisableControls();
 begin
   inherited;
   // Language at index 0 is "(Default)"
@@ -120,7 +120,7 @@ begin
   end;
 end;
 
-procedure TfmeOptions_FreeOTFEGeneral.Initialize();
+procedure TfmeGeneralOptions.Initialize();
 const
   // Vertical spacing between checkboxes, and min horizontal spacing between
   // checkbox label and the vertical separator line  
@@ -253,7 +253,7 @@ begin
 
 end;
 
-procedure TfmeOptions_FreeOTFEGeneral.pbLangDetailsClick(Sender: TObject);
+procedure TfmeGeneralOptions.pbLangDetailsClick(Sender: TObject);
 var
   rcdLanguage: TLanguageTranslation;
 begin
@@ -268,7 +268,7 @@ begin
 
 end;
 
-procedure TfmeOptions_FreeOTFEGeneral._ReadSettings(config: TMainSettings);
+procedure TfmeGeneralOptions._ReadSettings(config: TMainSettings);
 var
   uf:     TUpdateFrequency;
   idx:    Integer;
@@ -311,7 +311,7 @@ begin
 end;
 
 
-procedure TfmeOptions_FreeOTFEGeneral._WriteSettings(config: TMainSettings);
+procedure TfmeGeneralOptions._WriteSettings(config: TMainSettings);
 var
   uf:      TUpdateFrequency;
   useLang: TLanguageTranslation;
@@ -347,7 +347,7 @@ begin
 
 end;
 
-procedure TfmeOptions_FreeOTFEGeneral.PopulateLanguages();
+procedure TfmeGeneralOptions.PopulateLanguages();
 var
   i:            Integer;
   origLangCode: String;
@@ -413,7 +413,7 @@ begin
 
 end;
 
-procedure TfmeOptions_FreeOTFEGeneral.SetLanguageSelection(langCode: String);
+procedure TfmeGeneralOptions.SetLanguageSelection(langCode: String);
 var
   useIdx:   Integer;
   currLang: TLanguageTranslation;
@@ -430,13 +430,13 @@ begin
   cbLanguage.ItemIndex := useIdx;
 end;
 
-function TfmeOptions_FreeOTFEGeneral.SelectedLanguage(): TLanguageTranslation;
+function TfmeGeneralOptions.SelectedLanguage(): TLanguageTranslation;
 begin
   Result := LanguageControlLanguage(cbLanguage.ItemIndex);
 
 end;
 
-function TfmeOptions_FreeOTFEGeneral.LanguageControlLanguage(idx: Integer): TLanguageTranslation;
+function TfmeGeneralOptions.LanguageControlLanguage(idx: Integer): TLanguageTranslation;
 begin
   Result := (PLanguageTranslation(cbLanguage.Items.Objects[idx]))^;
 
