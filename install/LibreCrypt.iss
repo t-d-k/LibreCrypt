@@ -4,7 +4,7 @@
 ; licence: GPL
 
 #define MyAppName "LibreCrypt"
-#define MyAppVersion "6.2 Beta"
+#define MyAppVersion "6.3 Beta"
 #define MyAppPublisher "LibreCrypt"
 #define MyAppURL "http:\\LibreCrypt.eu"
 #define MyAppExeName "LibreCrypt.exe"
@@ -24,7 +24,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-OutputBaseFilename=InstallLibreCrypt_v62Beta
+OutputBaseFilename=InstallLibreCrypt_v63Beta
 Compression=lzma
 SolidCompression=yes
 SetupIconFile=P:\src\Common\Common\images\DoxBox.ico
@@ -61,7 +61,7 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.2
+Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.3
 
 [Files]
 ; exes dlls etc
