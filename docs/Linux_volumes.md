@@ -61,9 +61,12 @@ To create a new encrypted Linux-compatible volume:
 				dd if=/dev/zero of=./vol_none bs=1M count=**x**
 
 		Where "_x_" is the size of the volume in MB.	
+	
+	        Option 2:
+	                         
+	                        mkfs.${fs}  -n {vol_name} -L {size --in MGTP) 
 		
-		
-		This step is unnecessary in case of using an existing partition on your HDD, and is only required in order to create the file which is to store the encrypted data.
+		This step is unnecessary in case of using an existing partition on your HDD --unless not previously crypted and or you need guaranteed verification the previous signatures are gone --  and is only required in order to create the file which is to store the encrypted data, and is best practice.
 
   1.  Select "File | Linux volume | Mount..."
   1.  Enter the appropriate parameters into the mount dialog.
@@ -83,6 +86,7 @@ To create a new encrypted Linux-compatible volume:
 		
 		
 			mkdosfs /dev/loop0
+                        mkfs.dos  /dev/loop0  // if  dosprogs or  dos4unix are installed. 
 		
 		Your volume file is now fully ready for use, although for security reasons it is highly recommended that you now initialize the volume by writing data to all its sectors before making any further use of it.	
 		
