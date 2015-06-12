@@ -104,7 +104,9 @@ uses
   fmeDiskPartitionsPanel in '..\common\OTFE\OTFEFreeOTFE\fmeDiskPartitionsPanel.pas',
   fmeSDUDiskPartitions in '..\common\SDeanUtils\fmeSDUDiskPartitions.pas',
   fmeSDUBlocks in '..\common\SDeanUtils\fmeSDUBlocks.pas',
-  cryptlib in '..\common\OTFE\OTFEFreeOTFE\cryptlib.pas';
+  cryptlib in '..\common\OTFE\OTFEFreeOTFE\cryptlib.pas',
+  SDUSysUtils in '..\common\SDeanUtils\SDUSysUtils.pas',
+  OTFEConsts_U in '..\common\OTFE\OTFE\OTFEConsts_U.pas';
 
 {$R *.RES}
 
@@ -166,7 +168,7 @@ begin
       // NOTE: The main form's Visible property is set to FALSE anyway - it *HAS*
       // to be, otherwise it'll be displayed; dispite the following two lines
       Application.CreateForm(TfrmMain, GfrmMain);
-      GfrmMain.Visible         := False;
+  GfrmMain.Visible         := False;
       Application.ShowMainForm := False;
 
       CommandLineOnly := GfrmMain.HandleCommandLineOpts(cmdExitCode);
@@ -231,7 +233,8 @@ begin
       //       the main form is still closing down at this stage, and this causes
       //       an exception.
       //       Instead, this is free'd off in the FormDestroy(...) method
-      if not (Application.ShowMainForm) then         MainSettings.gSettings.Free();
+      if not (Application.ShowMainForm) then
+        MainSettings.gSettings.Free();
     end;
     // only place is, or should be, catch-all exeption
   except

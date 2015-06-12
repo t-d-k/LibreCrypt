@@ -75,6 +75,8 @@ resourcestring
 
   UNKNOWN_SETTINGS_LOCATION = 'Unknown settings location?! Please report seeing this message!';
 
+
+
 const
   SettingsSaveLocationSearchOrder: array [TSettingsSaveLocation] of TSettingsSaveLocation = (
     slCustom,  // Custom first; if the user's

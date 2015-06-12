@@ -329,11 +329,23 @@ var
   currRandom: TSDUBytes;
   rngsUsed:   Integer;
   ok:         Boolean;
+   {$IFDEF FORCE_NO_RAND}
+   i:   Integer;
+   {$ENDIF}
 begin
   assert(_inited);
-
   rngsUsed := 0;
+ {$IFDEF FORCE_NO_RAND}
+ // use all zero salt etc to make debugging easier
+   {$IFNDEF DEBUG}
+ // warning - THIS MUST NEVER BE ENABLED IN RELEASE BUILD as it will make all 'random' values zero and vols trivially crackable
+   {$ERROR no randomness used}
+  {$ENDIF}
+   SafeSetLength(randomData, bytesRequired);
+     for i := low(randomData) to high(randomData) do
+    randomData[i] := i;
 
+ {$ELSE}
   for currRNG := low(TRNG) to high(TRNG) do begin
     if (currRNG in _rngset) then begin
       SDUInitAndZeroBuffer(0, currRandom);
@@ -353,6 +365,7 @@ begin
 
   if (rngsUsed <= 0) then
     raise Exception.Create('No RNG selected');
+  {$ENDIF}
 end;
 
 

@@ -9,7 +9,7 @@ uses
   Controls, Dialogs, ExtCtrls, Forms, StdCtrls, SysUtils, ToolWin, Variants, Windows, XPMan,
   Graphics, ImgList, Menus, Messages,
   //sdu libs
-
+  SDUWinHttp_API,
   OTFE_U, OTFEConsts_U,
   OTFEFreeOTFEBase_U, PartitionImageDLL,
   OTFEFreeOTFEDLL_U, SDFilesystem,
@@ -29,13 +29,13 @@ uses
   frmCommonMain,
   CommonSettings,
   ExplorerSettings,
-  FreeOTFEExplorerWebDAV;
+  ExplorerWebDAV;
 
 const
   WM_FREEOTFE_EXPLORER_REFRESH = WM_USER + 1;
 
 type
-  TLastFocussed = (lfTreeView, lfListView, lfTreePopup);
+  TLastFocussed   = (lfTreeView, lfListView, lfTreePopup);
   TFExplOperation = (cmCopy, cmMove, cmDelete);
 
 resourcestring
@@ -329,7 +329,7 @@ type
     fShredderObj:   TShredder;
     fOpProgressDlg: TSDUWindowsProgressDialog;
 
-    fWebDAVObj:   TFreeOTFEExplorerWebDAV;
+    fWebDAVObj:   TExplorerWebDAV;
     fMappedDrive: DriveLetterChar;
 
     function HandleCommandLineOpts_Create(): eCmdLine_Exit; override;
@@ -344,15 +344,15 @@ type
       ReadOnly, forceHidden: Boolean); overload; override;
 
     procedure PostMountGUISetup(driveLetter: DriveLetterChar);
-          {
+
     procedure WebDAVStartup();
-    procedure WebDAVShutdown();   }
+    procedure WebDAVShutdown();
     function GetNextDriveLetter(userDriveLetter, requiredDriveLetter: DriveLetterChar):
       DriveLetterChar;
     function MapNetworkDrive(const displayErrors: Boolean): Boolean;
-    //    procedure DisconnectNetworkDrive();
-    //    function  CheckNetServiceStatusAndPrompt(): boolean; overload;
-    //    function  CheckNetServiceStatusAndPrompt(const serviceName: string): boolean; overload;
+    procedure DisconnectNetworkDrive();
+    function CheckNetServiceStatusAndPrompt(): Boolean; overload;
+    function CheckNetServiceStatusAndPrompt(const serviceName: String): Boolean; overload;
 
     procedure RecaptionToolbarAndMenuIcons(); override;
     procedure SetIconListsAndIndexes(); override;
@@ -494,8 +494,8 @@ type
     function ConfirmOperation(opType: TFExplOperation; srcItems: TStrings;
       destDir: String): Boolean;
 
-    //    procedure OverwriteAllWebDAVCachedFiles();
-    function DoTests: Boolean; override;
+    procedure OverwriteAllWebDAVCachedFiles();
+    function DoFullTests: Boolean; override;
 
   public
 
@@ -547,22 +547,24 @@ uses
   SDUGraphics,
   SDUHTTPServer, SDUi18n,
   SDUSysUtils,
+  SDUWebDav,
+  DriverControl,
   // Just required for DEFAULT_HTTP_PORT
   WinSvc,
   //   SDUWinSvc,
   CheckFilesystem,
-  FreeOTFEExplorerfrmNewDirDlg,
-  FreeOTFEExplorerfrmOptions,
+  frmNewDirDlg,
+  frmExplorerOptions,
   frmOverwritePrompt,
-  FreeOTFEExplorerfrmPropertiesDlg_Directory,
-  FreeOTFEExplorerfrmPropertiesDlg_File,
-  FreeOTFEExplorerfrmPropertiesDlg_Multiple,
-  FreeOTFEExplorerfrmPropertiesDlg_Volume,
+  frmDirProperties,
+  frmFileProperties,
+  frmMultipleProperties,
+  frmVolumeProperties,
   frmSelectCopyOrMove,
-  FreeOTFEExplorerfrmSelectDirectoryDlg,
+  frmSelectDirectory,
   frmNewVolumeSize,
   SDFATBootSectorPropertiesDlg
-  //  FreeOTFEExplorerfrmWebDAVStatus { TODO 1 -otdk -cenhance : implement webdav }
+  //  frmWebDAVStatus { TODO 1 -otdk -cenhance : implement webdav }
   ;
 
 {$IFDEF _NEVER_DEFINED}
@@ -580,8 +582,6 @@ const
 // Just overwrite local WebDAV cache files with zeros, then truncate to 0 bytes
 
 resourcestring
-
-
   // Toolbar captions
   RS_TOOLBAR_CAPTION_BACK           = 'Back';
   RS_TOOLBAR_CAPTION_FORWARD        = 'Forward';
@@ -608,8 +608,8 @@ resourcestring
   RS_TOOLBAR_HINT_COPYTO             = 'Copy To';
   RS_TOOLBAR_HINT_DELETE             = 'Delete';
   RS_TOOLBAR_HINT_VIEWS              = 'Views';
-  RS_TOOLBAR_HINT_EXTRACT            = 'Extract selected files/folders from the open box';
-  RS_TOOLBAR_HINT_STORE              = 'Store a file/folder in the open box';
+  RS_TOOLBAR_HINT_EXTRACT            = 'Extract selected files/folders from the open container';
+  RS_TOOLBAR_HINT_STORE              = 'Store a file/folder in the open container';
   RS_TOOLBAR_HINT_ITEMPROPERTIES     = 'Properties';
   RS_TOOLBAR_HINT_EXPLORERBARFOLDERS = 'Shows the Folders bar.';
   RS_TOOLBAR_HINT_MAP_DRIVE          = 'Map Drive';
@@ -626,15 +626,15 @@ resourcestring
     'Although LibreCrypt supports all filesystems, LibreCrypt Explorer only supports those listed above.';
 
   RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE =
-    'Cannot %1 %2: Cannot find the specified file.' + SDUCRLF + SDUCRLF +
+    'Cannot %s %s: Cannot find the specified file.' + SDUCRLF + SDUCRLF +
     'Make sure you specify the correct path and file name.';
 
   RS_CANNOT_X_CANNOT_FIND_SPECIFIED_DESTINATION =
-    'Cannot %1 %2: Cannot find the specified destination.' + SDUCRLF + SDUCRLF +
+    'Cannot %s %s: Cannot find the specified destination.' + SDUCRLF + SDUCRLF +
     'Make sure you specify the correct path and file name.';
 
-  RS_UNABLE_TO_CREATE_FOLDER        = 'Unable to create folder ''%1''';
-  RS_UNABLE_TO_DELETE_EXISTING_FILE = 'Unable to delete file ''%1''';
+  RS_UNABLE_TO_CREATE_FOLDER        = 'Unable to create folder ''%s''';
+  RS_UNABLE_TO_DELETE_EXISTING_FILE = 'Unable to delete file ''%s''';
 
   RS_PLEASE_ENSURE_ENOUGH_FREE_SPACE = 'Please ensure that there is enough free space available';
 
@@ -762,11 +762,9 @@ begin
   fShredderObj.IntMethod                   := gSettings.OptOverwriteMethod;
   fShredderObj.IntPasses                   := gSettings.OptOverwritePasses;
 
-  if (fFilesystem <> nil) then begin
-    if (fFilesystem is TSDFilesystem_FAT) then begin
+  if (fFilesystem <> nil) then
+    if (fFilesystem is TSDFilesystem_FAT) then
       fFilesystem.PreserveTimeDateStamps := gSettings.OptPreserveTimestampsOnStoreExtract;
-    end;
-  end;
 
   // We DO NOT restart WebDAV functionality here
   //
@@ -779,14 +777,12 @@ begin
   // Because this is all pretty ugly - for the time being, we'll just inform
   // the user that their changes require their volume to be remounted (done by
   // the options dialog)
-{
+
   // Restart WebDAV functionality
   // WARNING! If a transfer was in mid-progress, this may well probably
   // nobble it, though the volume contents should be consistent.
   WebDAVShutdown();
   WebDAVStartup();
-}
-
 end;
 
 procedure TfrmExplorerMain.MountFiles(mountAsSystem: TDragDropFileType;
@@ -797,7 +793,7 @@ var
 begin
   // Sanity check
   if (filenames.Count <> 1) then begin
-    SDUMessageDlg(_('Please specify a single box to be opened'), mtError);
+    SDUMessageDlg(_('Please specify a single container to be opened'), mtError);
     exit;
   end;
 
@@ -805,14 +801,14 @@ begin
 
   AddToMRUList(filenames);
 
-  if (mountAsSystem = ftFreeOTFE) then begin
-    mountedOK := GetFreeOTFEDLL().MountFreeOTFE(filenames, mountedAs, ReadOnly);
-  end else
-  if (mountAsSystem = ftLinux) then begin
-    mountedOK := GetFreeOTFEDLL().MountLinux(filenames, mountedAs, ReadOnly);
-  end else begin
+  if (mountAsSystem = ftFreeOTFE) then
+    mountedOK := GetFreeOTFEDLL().MountFreeOTFE(filenames, mountedAs, ReadOnly)
+  else
+  if (mountAsSystem = ftLinux) then
+    mountedOK := GetFreeOTFEDLL().MountLinux(filenames, mountedAs, ReadOnly)
+  else
     mountedOK := GetFreeOTFEDLL().Mount(filenames, mountedAs, ReadOnly);
-  end;
+
 
   if not (mountedOK) then begin
     if (GetFreeOTFEDLL().LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
@@ -824,7 +820,7 @@ begin
     end;
   end else begin
     PostMountGUISetup(mountedAs[1]);
-    //    WebDAVStartup();
+    WebDAVStartup();
   end;
 
 end;
@@ -836,7 +832,6 @@ begin
   // Refresh menuitems...
   gSettings.OptMRUList.RemoveMenuItems(mmMain);
   gSettings.OptMRUList.InsertAfter(miLinuxVolume);
-
 end;
 
 procedure TfrmExplorerMain.MRUListItemClicked(mruList: TSDUMRUList; idx: Integer);
@@ -855,8 +850,6 @@ begin
   volFilename := GetFreeOTFEDLL().GetVolFileForDrive(driveLetter);
 
   fPartitionImage         := TPartitionImageDLL.Create();
-  TPartitionImageDLL(fPartitionImage).FreeOTFEObj :=
-    GetFreeOTFEDLL() as TOTFEFreeOTFEDLL;
   TPartitionImageDLL(fPartitionImage).Filename := volFilename;
   TPartitionImageDLL(fPartitionImage).MountedAs := driveLetter;
   fPartitionImage.Mounted := True;
@@ -894,7 +887,7 @@ begin
 end;
 
 { TODO 1 -otdk -cenhance : implement webdav }
-{
+
 procedure TfrmExplorerMain.WebDAVStartup();
 const
   // Local range is 127.0.0.1/8 (i.e. 127.[0-255].[0-255].[0-255]) - but we
@@ -902,160 +895,128 @@ const
   // checking more than that.
   LOCALHOST_RANGE_FIRST_255 = '127.0.0.%d';
 var
-  serverPrettyID: string;
+  serverPrettyID: String;
   boundSktHandle: TIdSocketHandle;
-  ipAddrStr: string;
-  i: integer;
-  portMsg: string;
+  ipAddrStr:      String;
+  i:              Integer;
+  portMsg:        String;
 begin
   // Shutdown any running...
   WebDAVShutdown();
 
-  if SDUOSVistaOrLater() then
-    begin
-    SDUMessageDlg(
-                  RS_DRIVEMAPPING_NOT_SUPPORTED_UNDER_VISTA_AND_7,
-                  mtInformation
-                 );
-    end
-  else if (
-           Settings.OptWebDAVEnableServer and
-           (fFilesystem <> nil)
-          ) then
-    begin
-    WebDAVObj.LogAccess.Filename := Settings.OptWebDAVLogAccess;
-    if (WebDAVObj.LogAccess.Filename <> '') then
-      begin
+  if (gSettings.OptWebDAVEnableServer and (fFilesystem <> nil)) then begin
+
+    if {SDUOSVistaOrLater()} False then begin
       SDUMessageDlg(
-                    SDUParamSubstitute(
-                                       _('Volume access logging is ENABLED.'+SDUCRLF+
-                                       SDUCRLF+
-                                       'All accesses to the network server will be written to:'+SDUCRLF+
-                                       SDUCRLF+
-                                       '%1'),
-                                       [WebDAVObj.LogAccess.Filename]
-                                      ),
-                    mtWarning
-                   );
+        RS_DRIVEMAPPING_NOT_SUPPORTED_UNDER_VISTA_AND_7,
+        mtInformation
+        );
+    end else begin
+      fWebDAVObj.fLogAccess.Filename := gSettings.OptWebDAVLogAccess;
+      if (fWebDAVObj.fLogAccess.Filename <> '') then begin
+        SDUMessageDlg(
+          Format(_('Volume access logging is ENABLED.' + SDUCRLF +
+          SDUCRLF + 'All accesses to the network server will be written to:' +
+          SDUCRLF + SDUCRLF + '%s'), [fWebDAVObj.fLogAccess.Filename]),
+          mtWarning
+          );
       end;
 
-    WebDAVObj.LogDebug.Filename := Settings.OptWebDAVLogDebug;
-    if (WebDAVObj.LogDebug.Filename <> '') then
-      begin
-      SDUMessageDlg(
-                    SDUParamSubstitute(
-                                       _('Volume access DEBUG logging is ENABLED.'+SDUCRLF+
-                                       SDUCRLF+
-                                       'All accesses to the network server will be written to:'+SDUCRLF+
-                                       SDUCRLF+
-                                       '%1'),
-                                       [WebDAVObj.LogDebug.Filename]
-                                      ),
-                    mtWarning
-                   );
+      fWebDAVObj.fLogDebug.Filename := gSettings.OptWebDAVLogDebug;
+      if (fWebDAVObj.fLogDebug.Filename <> '') then begin
+        SDUMessageDlg(
+          Format(_('Volume access DEBUG logging is ENABLED.' +
+          SDUCRLF + SDUCRLF + 'All accesses to the network server will be written to:' +
+          SDUCRLF + SDUCRLF + '%s'), [fWebDAVObj.fLogDebug.Filename]),
+          mtWarning
+          );
       end;
 
-    // Pretty server ID for inclusion in any HTTP headers returned...
-    serverPrettyID := Application.Title+'/'+SDUGetVersionInfoString(ParamStr(0));
-    if (APP_BETA_BUILD > 0) then
-      begin
-      serverPrettyID := serverPrettyID + '_BETA_'+inttostr(APP_BETA_BUILD);
+      // Pretty server ID for inclusion in any HTTP headers returned...
+      serverPrettyID := Application.Title + '/' + SDUGetVersionInfoString(ParamStr(0));
+      if (APP_BETA_BUILD > 0) then
+        serverPrettyID := serverPrettyID + '_BETA_' + IntToStr(APP_BETA_BUILD);
+
+      fWebDAVObj.fServerSoftware := serverPrettyID;
+      // Port our server runs on...
+      fWebDAVObj.fDefaultPort    := gSettings.OptWebDAVPort;
+
+      // We generate a random share name in order to prevent caching from "trying
+      // it on"
+      fWebDAVObj.ShareName := SDURandomHexString(4);
+      if (gSettings.OptWebDAVShareName <> '') then begin
+        fWebDAVObj.ShareName := gSettings.OptWebDAVShareName + '_';
       end;
-    WebDAVObj.ServerSoftware := serverPrettyID;
-    // Port our server runs on...
-    WebDAVObj.DefaultPort := Settings.OptWebDAVPort;
+      fWebDAVObj.ShareName := fWebDAVObj.ShareName + SDURandomHexString(4);
 
-    // We generate a random share name in order to prevent caching from "trying
-    // it on"
-    WebDAVObj.ShareName := SDURandomHexString(4);
-    if (Settings.OptWebDAVShareName <> '') then
-      begin
-      WebDAVObj.ShareName := Settings.OptWebDAVShareName+'_';
-      end;
-    WebDAVObj.ShareName := WebDAVObj.ShareName + SDURandomHexString(4);
-    
-    WebDAVObj.fFilesystem := fFilesystem;
+      fWebDAVObj.fFilesystem := fFilesystem;
 
-    // In case previously used...
-    WebDAVObj.ReturnGarbage := FALSE;
-    WebDAVObj.ClearDownRequestedItemsList();
+      // In case previously used...
+      fWebDAVObj.ReturnGarbage := False;
+      fWebDAVObj.ClearDownRequestedItemsList();
 
 
-    // Loop through to try and get a IP address we can listen on...
-    // Note: Start from 1, not 0 and run through to 255 and *not* 256 here!
-    for i:=1 to 255 do
-      begin
-      try
-        ipAddrStr := Format(LOCALHOST_RANGE_FIRST_255, [i]);
+      // Loop through to try and get a IP address we can listen on...
+      // Note: Start from 1, not 0 and run through to 255 and *not* 256 here!
+      for i := 1 to 255 do begin
+        try
+          ipAddrStr := Format(LOCALHOST_RANGE_FIRST_255, [i]);
 
-        // Ditch any previous bindings...
-        WebDAVObj.Bindings.Clear();
-        // Only bind to the localhost IP; don't allow connections from other PCs...
-        boundSktHandle:= WebDAVObj.Bindings.Add();
-        //boundSktHandle.IP := IP_ADDR_ALL_IP_ADDRESSES;
-        boundSktHandle.IP := ipAddrStr;
-        boundSktHandle.Port := WebDAVObj.DefaultPort;
+          // Ditch any previous bindings...
+          fWebDAVObj.Bindings.Clear();
+          // Only bind to the localhost IP; don't allow connections from other PCs...
+          boundSktHandle      := fWebDAVObj.Bindings.Add();
+          //boundSktHandle.IP := IP_ADDR_ALL_IP_ADDRESSES;
+          boundSktHandle.IP   := ipAddrStr;
+          boundSktHandle.Port := fWebDAVObj.fDefaultPort;
 
-        // Don't allow connections from remote...
-        WebDAVObj.OnlyPermitLocal := TRUE;  // For security, only allow connections from localhost
+          // Don't allow connections from remote...
+          fWebDAVObj.fOnlyPermitLocal := True;
+          // For security, only allow connections from localhost
 
-        WebDAVObj.Active := TRUE;
+          fWebDAVObj.Activate;
 
-        // Found one! Ditch the loop...
-        break;
+          // Found one! Ditch the loop...
+          break;
 
-      except
-        // Swallow error
-        on EIdCouldNotBindSocket do
-          begin
+        except
+          // Swallow error
+          on EIdCouldNotBindSocket do begin
           end;
-      end;
-
-      end;
-
-    if not(WebDAVObj.Active) then
-      begin
-      if (WebDAVObj.DefaultPort = DEFAULT_HTTP_PORT) then
-        begin
-        portMsg := SDUParamSubstitute(
-                                      _('This is most likely caused by a WWW server (on port %1) running on this computer.'),
-                                      [WebDAVObj.DefaultPort]
-                                     );
-        end
-      else
-        begin
-        portMsg := SDUParamSubstitute(
-                                      _('You probably have some other service running on the required port (port %1).'),
-                                      [WebDAVObj.DefaultPort]
-                                     );
         end;
 
-      SDUMessageDlg(
-                    _('Unable to start drive mapping server.')+SDUCRLF+
-                    SDUCRLF+
-                    portMsg,
-                    mtWarning
-                   );
-      end
-    else
-      begin
-      // Success starting WebDAV server - try to map to local drive...
-      if not(MapNetworkDrive(FALSE)) then
-        begin
-        // Check and start services, if needed
-        CheckNetServiceStatusAndPrompt();
+      end;
 
-        // Try again...
-        if not(MapNetworkDrive(TRUE)) then
-          begin
-          // Um... Oh well! Shut it all down.
-          WebDAVShutdown();
-          end;
+      if not (fWebDAVObj.IsActive) then begin
+        if (fWebDAVObj.fDefaultPort = DEFAULT_HTTP_PORT) then begin
+          portMsg := Format(_(
+            'This is most likely caused by a WWW server (on port %d) running on this computer.'),
+            [fWebDAVObj.fDefaultPort]);
+        end else begin
+          portMsg := Format(_(
+            'You probably have some other service running on the required port (port %d).'),
+            [fWebDAVObj.fDefaultPort]);
+        end;
+
+        SDUMessageDlg(
+          _('Unable to start drive mapping server.') + SDUCRLF + SDUCRLF + portMsg,
+          mtWarning
+          );
+      end else begin
+        // Success starting WebDAV server - try to map to local drive...
+        if not (MapNetworkDrive(False)) then begin
+          // Check and start services, if needed
+          CheckNetServiceStatusAndPrompt();
+
+          // Try again...
+          if not (MapNetworkDrive(True)) then
+            // Um... Oh well! Shut it all down.
+            WebDAVShutdown();
         end;
       end;
 
     end;
-
+  end;
   EnableDisableControls();
 
 end;
@@ -1064,13 +1025,12 @@ procedure TfrmExplorerMain.WebDAVShutdown();
 begin
   DisconnectNetworkDrive();
 
-  WebDAVObj.Active := FALSE;
+  fWebDAVObj.DeActivate;
   // Sanity - this shouldn't be needed
-  WebDAVObj.fFilesystem := nil;
+  fWebDAVObj.fFilesystem := nil;
 
   EnableDisableControls();
 end;
-}
 
  // ----------------------------------------------------------------------------
  // !! IMPORTANT !!
@@ -1149,7 +1109,7 @@ begin
   end;
 
 
-  //  networkShare := '\\'+WebDAVObj.Bindings[0].IP+'\'+WebDAVObj.ShareName;
+  //  networkShare := '\\'+fWebDAVObj.Bindings[0].IP+'\'+fWebDAVObj.ShareName;
   networkShare := 'http://' + fWebDAVObj.Bindings[0].IP + '/' + fWebDAVObj.ShareName + '/';
 
   // Cast to prevent compiler error
@@ -1158,7 +1118,7 @@ begin
     Result       := True;
 
     if gSettings.OptPromptMountSuccessful then begin
-      msg := SDUParamSubstitute(_('Your FreeOTFE container has been mounted as drive: %1'),
+      msg := Format(_('Your FreeOTFE container has been mounted as drive: %s'),
         [useDriveLetter + ':']);
       SDUMessageDlg(msg, mtInformation);
     end;
@@ -1179,9 +1139,8 @@ begin
       end;
 
       SDUMessageDlg(
-        SDUParamSubstitute(_('Unable to map container to %1:' + SDUCRLF +
-        SDUCRLF + '%2' + SDUCRLF + SDUCRLF + '%3'), [useDriveLetter,
-        lastErrorMsg, comment]),
+        Format(_('Unable to map container to %s:' + SDUCRLF + SDUCRLF +
+        '%s' + SDUCRLF + SDUCRLF + '%s'), [useDriveLetter, lastErrorMsg, comment]),
         mtWarning
         );
     end;
@@ -1192,128 +1151,105 @@ end;
  // Returns TRUE if the service was running, or successfully started.
  // Returns FALSE if the service wasn't running, or it's status couldn't be
  // determined
-{
-function TfrmExplorerMain.CheckNetServiceStatusAndPrompt(): boolean;
+
+function TfrmExplorerMain.CheckNetServiceStatusAndPrompt(): Boolean;
 var
-  servicesOK: boolean;
+  servicesOK: Boolean;
 begin
   servicesOK := CheckNetServiceStatusAndPrompt(SERVICE_MRXDAV);
 
-  if servicesOK then
-    begin
+  if servicesOK then begin
     servicesOK := CheckNetServiceStatusAndPrompt(SERVICE_WEBCLIENT);
-    end;
+  end;
 
   Result := servicesOK;
 end;
 
 
-// Returns TRUE if the service was running, or successfully started.
-// Returns FALSE if the service wasn't running, or it's status couldn't be
-// determined
-function TfrmExplorerMain.CheckNetServiceStatusAndPrompt(const serviceName: string): boolean;
+ // Returns TRUE if the service was running, or successfully started.
+ // Returns FALSE if the service wasn't running, or it's status couldn't be
+ // determined
+function TfrmExplorerMain.CheckNetServiceStatusAndPrompt(const serviceName: String): Boolean;
 const
   SERVICE_START_PAUSE = 3000;  // 3 seconds
 var
-  sc: TSDUServiceControl;
-  serviceState: cardinal;
-  Result: boolean;
+  sc:           TSDUServiceControl;
+  serviceState: Cardinal;
 begin
-  Result := FALSE;
+  Result := False;
 
   try
-    sc:= TSDUServiceControl.Create();
+    sc := TSDUServiceControl.Create();
   except
     // Problem getting service control manager - ignore the error; Result
     // already set to FALSE
     sc := nil;
   end;
 
-  if (sc <> nil) then
-  begin
+  if (sc <> nil) then begin
     try
       // We'll process all errors...
-      sc.Silent := TRUE;
+      sc.Silent := True;
 
-      if sc.GetServiceState(serviceName, serviceState) then
-        begin
-        if (serviceState = SERVICE_RUNNING) then
+      if sc.GetServiceState(serviceName, serviceState) then begin
+        if (serviceState = SERVICE_RUNNING) then begin
+          Result := True;
+        end else begin
+          if (SDUMessageDlg(Format(
+            _('The "%s" service does not appear to be running.' + SDUCRLF +
+            SDUCRLF +
+            'This service is required in order to map the mounted container to a drive letter.' +
+            SDUCRLF + SDUCRLF + 'Do you wish to start this service now?'),
+            [serviceName]), mtConfirmation, [mbYes, mbNo], 0) = mrYes) then
           begin
-          Result := TRUE;
-          end
-        else
-          begin
-          if (SDUMessageDlg(
-                            SDUParamSubstitute(
-                                _('The "%1" service does not appear to be running.'+SDUCRLF+
-                                SDUCRLF+
-                                'This service is required in order to map the mounted container to a drive letter.'+SDUCRLF+
-                                SDUCRLF+
-                                'Do you wish to start this service now?'),
-                                [serviceName]
-                                ),
-                            mtConfirmation,
-                            [mbYes, mbNo],
-                            0
-                           ) = mrYes) then
-            begin
-            if sc.StartStopService(serviceName, TRUE) then
-              begin
+            if sc.StartStopService(serviceName, True) then begin
               // Delay to allow service to start up.
               // Not sure if strictly needed, but if a drive is mapped
               // immediatly afterwards, the drive mapping can fail (e.g. with
               // "No network provider accepted the given path"), although it'll
               // succeed if the user subsequently tries to mount again
               SDUPause(SERVICE_START_PAUSE);
-              
-              Result := TRUE;
-              end
-            else
-              begin
-              SDUMessageDlg(
-                            SDUParamSubstitute(
-                                              _('Unable to start the "%1" service.'),
-                                              [serviceName]
-                                              ),
-                            mtError
-                           );
-              end;
 
+              Result := True;
+            end else begin
+              SDUMessageDlg(
+                Format(_('Unable to start the "%s" service.'),
+                [serviceName]),
+                mtError
+                );
             end;
+
           end;
         end;
+      end;
 
     finally
-      sc.free;
+      sc.Free;
     end;
 
   end;
-
-
 
 end;
 
 
 procedure TfrmExplorerMain.DisconnectNetworkDrive();
 begin
-  if (FMappedDrive <> #0) then
-    begin
-    AutoRunExecute(arPreDismount, FMappedDrive, FALSE);
+  if (FMappedDrive <> #0) then begin
+    AutoRunExecute(arPreDismount, FMappedDrive, False);
 
-    if Settings.OptOverwriteWebDAVCacheOnDismount then
-      begin
+    if gSettings.OptOverwriteWebDAVCacheOnDismount then begin
       OverwriteAllWebDAVCachedFiles();
-      end;
-
-//    SDUDisconnectNetworkDrive(Char(FMappedDrive), Force);
-    SDUDisconnectNetworkDrive(Char(FMappedDrive), TRUE);
-
-    AutoRunExecute(arPostDismount, FMappedDrive, FALSE);
-
-    FMappedDrive := #0;
     end;
 
-end;   }
+    //    SDUDisconnectNetworkDrive(Char(FMappedDrive), Force);
+    //    SDUDisconnectNetworkDrive(Char(FMappedDrive), TRUE);
+
+    AutoRunExecute(arPostDismount, FMappedDrive, False);
+
+    FMappedDrive := #0;
+  end;
+
+end;
 
 procedure TfrmExplorerMain.SetupControls();
 var
@@ -1337,9 +1273,8 @@ begin
   SDFilesystemTreeView1.RefreshNodes();
 
   // Expand out the root node
-  if (SDFilesystemTreeView1.GoToPath(PATH_SEPARATOR, False) <> nil) then begin
+  if (SDFilesystemTreeView1.GoToPath(PATH_SEPARATOR, False) <> nil) then
     SDFilesystemTreeView1.Selected.Expand(False);
-  end;
 
   SDFilesystemTreeView1.SetFocus();
 
@@ -1352,7 +1287,7 @@ procedure TfrmExplorerMain.pbGoClick(Sender: TObject);
 begin
   edPath.Text := trim(edPath.Text);
   if (SDFilesystemTreeView1.GoToPath(edPath.Text, False) = nil) then begin
-    SDUMessageDlg(SDUParamSubstitute(_('Path not found:' + SDUCRLF + SDUCRLF + '%1'),
+    SDUMessageDlg(Format(_('Path not found:' + SDUCRLF + SDUCRLF + '%s'),
       [edPath.Text]), mtError);
   end;
 
@@ -1362,7 +1297,7 @@ end;
 procedure TfrmExplorerMain.edPathChange(Sender: TObject);
 begin
   inherited;
-  pbGo.Hint     := SDUParamSubstitute(_('Go to ''%1'''), [trim(edPath.Text)]);
+  pbGo.Hint     := Format(_('Go to ''%s'''), [trim(edPath.Text)]);
   pbGo.ShowHint := True;
 end;
 
@@ -1901,7 +1836,7 @@ begin
         //SDUMessageDlg(_('Folder created successfully'), mtInformation);
       end else begin
         SDUMessageDlg(
-          SDUParamSubstitute(RS_UNABLE_TO_CREATE_FOLDER + SDUCRLF + SDUCRLF +
+          Format(RS_UNABLE_TO_CREATE_FOLDER + SDUCRLF + SDUCRLF +
           RS_PLEASE_ENSURE_ENOUGH_FREE_SPACE, [dlg.DirName]),
           mtError
           );
@@ -1924,7 +1859,7 @@ end;
 // Specify #0 as driveLetter to dismount all
 procedure TfrmExplorerMain.Dismount(driveLetter: DriveLetterChar);
 begin
-  //  WebDAVShutdown();
+  WebDAVShutdown();
 
   SDFilesystemListView1.Filesystem := nil;
   SDFilesystemTreeView1.Filesystem := nil;
@@ -1996,7 +1931,7 @@ begin
       SetupControls();
       SetTitleCaption();
 
-      //      WebDAVStartup();
+      WebDAVStartup();
     end;
   end;
 
@@ -2042,11 +1977,11 @@ begin
           fFilesystem.GetItem(selItems[0], item);
 
           if item.IsFile then begin
-            promptMsg := SDUParamSubstitute(
-              _('Are you sure you want to delete ''%1''?'), [item.Filename]);
+            promptMsg := Format(_('Are you sure you want to delete ''%s''?'),
+              [item.Filename]);
           end else begin
-            promptMsg := SDUParamSubstitute(_(
-              'Are you sure you want to remove the folder ''%1'' and all its contents?'),
+            promptMsg := Format(_(
+              'Are you sure you want to remove the folder ''%s'' and all its contents?'),
               [item.Filename]);
           end;
         finally
@@ -2054,8 +1989,8 @@ begin
         end;
 
       end else begin
-        promptMsg := SDUParamSubstitute(
-          _('Are you sure you want to delete these %1 items?'), [selItems.Count]);
+        promptMsg := Format(_('Are you sure you want to delete these %d items?'),
+          [selItems.Count]);
       end;
 
       userConfirmed := SDUConfirmYN(promptMsg);
@@ -2130,7 +2065,7 @@ begin
 
       if (newMounted <> '') then begin
         PostMountGUISetup(newMounted[1]);
-        //        WebDAVStartup();
+        WebDAVStartup();
       end;
 
       EnableDisableControls();
@@ -2261,13 +2196,12 @@ var
   confirmMsg: WideString;
 begin
   if (srcItems.Count = 1) then begin
-    confirmMsg := SDUParamSubstitute(_('Are you sure you wish to %1 ''%2'' to:' +
-      SDUCRLF + SDUCRLF + '  %3'), [OperationTitle(opType),
+    confirmMsg := Format(_('Are you sure you wish to %s ''%s'' to:' +
+      SDUCRLF + SDUCRLF + '  %s'), [OperationTitle(opType),
       ExtractFilename(srcItems[0]), destDir]);
   end else begin
-    confirmMsg := SDUParamSubstitute(_(
-      'Are you sure you wish to %1 the %2 items dropped to:' + SDUCRLF + SDUCRLF + '%3'),
-      [OperationTitle(opType), srcItems.Count, destDir]);
+    confirmMsg := Format(_('Are you sure you wish to %s the %n items dropped to:' +
+      SDUCRLF + SDUCRLF + '%s'), [OperationTitle(opType), srcItems.Count, destDir]);
   end;
 
   Result := SDUConfirmYN(confirmMsg);
@@ -2326,13 +2260,13 @@ end;
 procedure TfrmExplorerMain.actMapNetworkDriveExecute(Sender: TObject);
 begin
   inherited;
-  //  WebDAVStartup();
+  WebDAVStartup();
 end;
 
 procedure TfrmExplorerMain.actDisconnectNetworkDriveExecute(Sender: TObject);
 begin
   inherited;
-  //  WebDAVShutdown();
+  WebDAVShutdown();
 end;
 
 procedure TfrmExplorerMain.actMoveToExecute(Sender: TObject);
@@ -2353,10 +2287,10 @@ end;
 
 procedure TfrmExplorerMain.actItemPropertiesExecute(Sender: TObject);
 var
-  dlgVolume:    TfrmPropertiesDialog_Volume;
-  dlgFile:      TfrmFilePropertiesDialog;
-  dlgDirectory: TfrmPropertiesDialog_Directory;
-  dlgMultiple:  TfrmPropertiesDialog_Multiple;
+  dlgVolume:    TfrmVolumeProperties;
+  dlgFile:      TfrmFileProperties;
+  dlgDirectory: TfrmDirProperties;
+  dlgMultiple:  TfrmMultipleProperties;
   selItems:     TStringList;
 begin
   inherited;
@@ -2370,11 +2304,11 @@ begin
     end else
     if (selItems.Count > 1) then begin
       // Show properties as single directory...
-      dlgMultiple := TfrmPropertiesDialog_Multiple.Create(self);
+      dlgMultiple := TfrmMultipleProperties.Create(self);
       try
-        dlgMultiple.Filesystem := fFilesystem;
-        dlgMultiple.MultipleItems.Assign(selItems);
-        dlgMultiple.ParentDir := GetSelectedPath(Sender);
+        dlgMultiple.fFilesystem := fFilesystem;
+        dlgMultiple.fMultipleItems.Assign(selItems);
+        dlgMultiple.fParentDir := GetSelectedPath(Sender);
         dlgMultiple.ShowModal();
       finally
         dlgMultiple.Free();
@@ -2384,9 +2318,9 @@ begin
     if (selItems.Count = 1) then begin
       if (selItems[0] = PATH_SEPARATOR) then begin
         // Show properties as single file...
-        dlgVolume := TfrmPropertiesDialog_Volume.Create(self);
+        dlgVolume := TfrmVolumeProperties.Create(self);
         try
-          dlgVolume.Filesystem := fFilesystem;
+          dlgVolume.fFilesystem := fFilesystem;
           dlgVolume.ShowModal();
         finally
           dlgVolume.Free();
@@ -2395,10 +2329,10 @@ begin
       end else
       if fFilesystem.FileExists(selItems[0]) then begin
         // Show properties as single file...
-        dlgFile := TfrmFilePropertiesDialog.Create(self);
+        dlgFile := TfrmFileProperties.Create(self);
         try
-          dlgFile.Filesystem      := fFilesystem;
-          dlgFile.PathAndFilename := selItems[0];
+          dlgFile.fFilesystem      := fFilesystem;
+          dlgFile.fPathAndFilename := selItems[0];
           dlgFile.ShowModal();
         finally
           dlgFile.Free();
@@ -2406,10 +2340,10 @@ begin
 
       end else begin
         // Show properties as single directory...
-        dlgDirectory := TfrmPropertiesDialog_Directory.Create(self);
+        dlgDirectory := TfrmDirProperties.Create(self);
         try
-          dlgDirectory.Filesystem      := fFilesystem;
-          dlgDirectory.PathAndFilename := selItems[0];
+          dlgDirectory.fFilesystem      := fFilesystem;
+          dlgDirectory.fPathAndFilename := selItems[0];
           dlgDirectory.ShowModal();
         finally
           dlgDirectory.Free();
@@ -2439,7 +2373,7 @@ begin
 {
   dlg:= TfrmWebDAVStatus.Create(self);
   try
-    dlg.WebDAVObj := WebDAVObj;
+    dlg.fWebDAVObj := fWebDAVObj;
     dlg.MappedDrive := FMappedDrive;
 
     dlg.ShowModal();
@@ -2519,7 +2453,7 @@ begin
         Dec(itemsInSelected);
       end;
 
-      dispMsg := SDUParamSubstitute(_('%1 objects (Disk free space: %2)'), [itemsInSelected,
+      dispMsg := Format(_('%d objects (Disk free space: %s)'), [itemsInSelected,
         //                                   SDUFormatAsBytesUnits(fsFreeSpace),
         // MS Explorer only displays to 1 decimal place
         SDUFormatUnits(fsFreeSpace, SDUUnitsStorageToTextArr(),
@@ -2527,7 +2461,7 @@ begin
 
 
   {
-      dispMsg := SDUParamSubstitute(
+      dispMsg := Format(
                                    _('Free Space: %1; Total size: %2'),
                                    [
   //                                  SDUFormatAsBytesUnits(fsFreeSpace),
@@ -2565,17 +2499,16 @@ begin
         fileType := SDUGetFileType_Description(selectedItem.Filename);
         date     := DateTimeToStr(TimeStampToDateTime(selectedItem.TimestampLastModified));
 
-        dispMsg := SDUParamSubstitute(_('Type: %1 Date Modified: %2 Size: %3'),
+        dispMsg := Format(_('Type: %s Date Modified: %s Size: %s'),
           [fileType, date, size]);
       end else begin
-        dispMsg := SDUParamSubstitute(_('%1 object selected'),
-          [SDFilesystemListView1.SelCount]);
+        dispMsg := Format(_('%d object selected'), [SDFilesystemListView1.SelCount]);
       end;
 
     end else begin
       dispMsg := SDUPluralMsg(SDFilesystemListView1.SelCount,
-        [SDUParamSubstitute(_('%1 object selected'), [SDFilesystemListView1.SelCount]),
-        SDUParamSubstitute(_('%1 objects selected'), [SDFilesystemListView1.SelCount])]);
+        [Format(_('%d object selected'), [SDFilesystemListView1.SelCount]),
+        Format(_('%d objects selected'), [SDFilesystemListView1.SelCount])]);
     end;
   end;
 
@@ -2738,9 +2671,8 @@ begin
   if SDUOpenDialog_Overwrite.Execute then begin
     overwriteItem := SDUOpenDialog_Overwrite.Filename;
 
-    if SDUWarnYN(SDUParamSubstitute(_('This will overwrite:' + SDUCRLF +
-      SDUCRLF + '%1' + SDUCRLF + SDUCRLF + 'Are you sure you want to do this?'),
-      [overwriteItem])) then begin
+    if SDUWarnYN(Format(_('This will overwrite:' + SDUCRLF + SDUCRLF + '%s' +
+      SDUCRLF + SDUCRLF + 'Are you sure you want to do this?'), [overwriteItem])) then begin
       if (fShredderObj.DestroyFileOrDir(overwriteItem, False, False, False) = srError) then begin
         SDUMessageDlg(_('Overwrite failed'), mtError);
       end;
@@ -2756,9 +2688,9 @@ begin
   inherited;
 
   if SDUSelectDirectory(self.Handle, _('Folder to overwrite:'), '', overwriteItem) then begin
-    if SDUWarnYN(SDUParamSubstitute(_('This will overwrite:' + SDUCRLF +
-      SDUCRLF + '%1' + SDUCRLF + SDUCRLF + 'and everything contained within it.' +
-      SDUCRLF + SDUCRLF + 'Are you sure you want to do this?'), [overwriteItem])) then begin
+    if SDUWarnYN(Format(_('This will overwrite:' + SDUCRLF + SDUCRLF + '%s' +
+      SDUCRLF + SDUCRLF + 'and everything contained within it.' + SDUCRLF +
+      SDUCRLF + 'Are you sure you want to do this?'), [overwriteItem])) then begin
       if (fShredderObj.DestroyFileOrDir(overwriteItem, False, False, False) = srError) then begin
         SDUMessageDlg(_('Overwrite failed'), mtError);
       end;
@@ -3028,9 +2960,8 @@ begin
           Char(FAT_INVALID_FILENAME_CHARS[i]);
       end;
 
-      SDUMessageDlg(SDUParamSubstitute(
-        _('A file name cannot contain any of the following characters:' +
-        SDUCRLF + SDUCRLF + '%1'), [invalidCharsForDisplay]), mtError);
+      SDUMessageDlg(Format(_('A file name cannot contain any of the following characters:' +
+        SDUCRLF + SDUCRLF + '%s'), [invalidCharsForDisplay]), mtError);
     end;
   end;
 
@@ -3342,27 +3273,27 @@ procedure TfrmExplorerMain.SetupToolbarFromSettings();
     processToolbar.ButtonHeight := processToolbar.Images.Height;
     processToolbar.ButtonWidth  := processToolbar.Images.Width;
 
-//    if displayToolbar then begin
-//      // Turning captions on can cause the buttons to wrap if the window isn't big
-//      // enough.
-//      // This looks pretty poor, so resize the window if it's too small
-//      toolbarWidth := 0;
-//      for i := 0 to (processToolbar.ButtonCount - 1) do begin
-//        toolbarWidth := toolbarWidth + processToolbar.Buttons[i].Width;
-//      end;
-//      if (toolbarWidth > self.Width) then begin
-//        self.Width           := toolbarWidth;
-//        processToolbar.Width := self.Width;
-//      end;
-//      // Adjusting the width to the sum of the toolbar buttons doens't make it wide
-//      // enough to prevent wrapping (presumably due to window borders); nudge the
-//      // size until it does
-//      // (Crude, but effective)
-//      while (processToolbar.RowCount > 1) do begin
-//        self.Width           := self.Width + 10;
-//        processToolbar.Width := self.Width;
-//      end;
-//    end;
+    //    if displayToolbar then begin
+    //      // Turning captions on can cause the buttons to wrap if the window isn't big
+    //      // enough.
+    //      // This looks pretty poor, so resize the window if it's too small
+    //      toolbarWidth := 0;
+    //      for i := 0 to (processToolbar.ButtonCount - 1) do begin
+    //        toolbarWidth := toolbarWidth + processToolbar.Buttons[i].Width;
+    //      end;
+    //      if (toolbarWidth > self.Width) then begin
+    //        self.Width           := toolbarWidth;
+    //        processToolbar.Width := self.Width;
+    //      end;
+    //      // Adjusting the width to the sum of the toolbar buttons doens't make it wide
+    //      // enough to prevent wrapping (presumably due to window borders); nudge the
+    //      // size until it does
+    //      // (Crude, but effective)
+    //      while (processToolbar.RowCount > 1) do begin
+    //        self.Width           := self.Width + 10;
+    //        processToolbar.Width := self.Width;
+    //      end;
+    //    end;
 
   end;
 
@@ -3454,7 +3385,7 @@ begin
 
 
   fShredderObj := TShredder.Create(nil);
-  fWebDAVObj   := TFreeOTFEExplorerWebDAV.Create(nil);
+  fWebDAVObj   := TExplorerWebDAV.Create(nil);
   FMappedDrive := #0;
 
 
@@ -3573,18 +3504,11 @@ end;
 procedure TfrmExplorerMain.FormDestroy(Sender: TObject);
 begin
   inherited;
-  FreeAndNil(gSettings);
-  //   FreeAndNil(fOtfeFreeOtfeBase);
-
-
-
   FreeAndNil(fShredderObj);
+  WebDAVShutdown();
   FreeAndNil(fWebDAVObj);
-  //  WebDAVShutdown();
-
-
   FNavigateHistory.Free();
-
+  FreeAndNil(gSettings);
 end;
 
 procedure TfrmExplorerMain.FormResize(Sender: TObject);
@@ -3640,13 +3564,12 @@ function TfrmExplorerMain.PromptToReplace(filename: String;
   existingSize: ULONGLONG; existingDateTime: TDateTime; newSize: ULONGLONG;
   newDateTime: TDateTime): Boolean;
 begin
-  Result := SDUConfirmYN(SDUParamSubstitute(
-    _('This folder already contains a file named ''%1''.' + SDUCRLF + SDUCRLF +
-    'Would you like to replace the existing file' + SDUCRLF + SDUCRLF + '  %2' +
-    SDUCRLF + '  modified: %3' + SDUCRLF + SDUCRLF + 'with this one?' + SDUCRLF +
-    SDUCRLF + '  %4' + SDUCRLF + '  modified: %5'), [ExtractFilename(filename),
-    SDUFormatAsBytesUnits(existingSize), DateTimeToStr(existingDateTime),
-    SDUFormatAsBytesUnits(newSize), newDateTime]));
+  Result := SDUConfirmYN(Format(_('This folder already contains a file named ''%s''.' +
+    SDUCRLF + SDUCRLF + 'Would you like to replace the existing file' + SDUCRLF +
+    SDUCRLF + '  %s' + SDUCRLF + '  modified: %s' + SDUCRLF + SDUCRLF +
+    'with this one?' + SDUCRLF + SDUCRLF + '  %s' + SDUCRLF + '  modified: %s'),
+    [ExtractFilename(filename), SDUFormatAsBytesUnits(existingSize),
+    DateTimeToStr(existingDateTime), SDUFormatAsBytesUnits(newSize), DateTimeToStr(newDateTime)]));
 
 end;
 
@@ -3655,14 +3578,13 @@ function TfrmExplorerMain.PromptToReplaceYYANC(filename: String;
   existingSize: ULONGLONG; existingDateTime: TDateTime; newSize: ULONGLONG;
   newDateTime: TDateTime): Integer;
 begin
-  Result := SDUMessageDlg(SDUParamSubstitute(
-    _('This folder already contains a file named ''%1''.' + SDUCRLF + SDUCRLF +
-    'Would you like to replace the existing file' + SDUCRLF + SDUCRLF + '  %2' +
-    SDUCRLF + '  modified: %3' + SDUCRLF + SDUCRLF + 'with this one?' + SDUCRLF +
-    SDUCRLF + '  %4' + SDUCRLF + '  modified: %5'), [ExtractFilename(filename),
-    SDUFormatAsBytesUnits(existingSize), DateTimeToStr(existingDateTime),
-    SDUFormatAsBytesUnits(newSize), newDateTime]), mtConfirmation,
-    [mbYes, mbNo, mbCancel, mbYesToAll], 0);
+  Result := SDUMessageDlg(Format(_('This folder already contains a file named ''%s''.' +
+    SDUCRLF + SDUCRLF + 'Would you like to replace the existing file' + SDUCRLF +
+    SDUCRLF + '  %s' + SDUCRLF + '  modified: %s' + SDUCRLF + SDUCRLF +
+    'with this one?' + SDUCRLF + SDUCRLF + '  %s' + SDUCRLF + '  modified: %s'),
+    [ExtractFilename(filename), SDUFormatAsBytesUnits(existingSize),
+    DateTimeToStr(existingDateTime), SDUFormatAsBytesUnits(newSize), DateTimeToStr(newDateTime)]),
+    mtConfirmation, [mbYes, mbNo, mbCancel, mbYesToAll], 0);
 
 end;
 
@@ -3896,7 +3818,7 @@ begin
       (postMounted <> '')  // Sanity check
       ) then begin
       PostMountGUISetup(postMounted[1]);
-      //    WebDAVStartup();
+      WebDAVStartup();
       EnableDisableControls();
     end;
   end;
@@ -3982,16 +3904,16 @@ begin
 
   // Sanity check; not trying to move to itself?
   if (ucSrcPath = ucDestPath) then begin
-    SDUMessageDlg(SDUParamSubstitute(_(
-      'Cannot %1 %2: The destination folder is the same as the source folder.'),
+    SDUMessageDlg(Format(_(
+      'Cannot %s %s: The destination folder is the same as the source folder.'),
       [OperationTitle(opType), ExtractFilename(srcPathAndFilename)]), mtError);
     Result := False;
   end // Sanity check; not trying to move to a subdir?
   else
   if fFilesystem.DirectoryExists(srcPathAndFilename) then begin
     if (Pos(uppercase(srcPathAndFilename), ucDestPath) = 1) then begin
-      SDUMessageDlg(SDUParamSubstitute(
-        _('Cannot %1 %2: The destination folder is a subfolder of the source folder'),
+      SDUMessageDlg(Format(_(
+        'Cannot %s %s: The destination folder is a subfolder of the source folder'),
         [OperationTitle(opType), ExtractFilename(srcPathAndFilename)]), mtError);
       Result := False;
     end;
@@ -4460,7 +4382,7 @@ begin
   if abortAllRemaining then begin
     if not (userCancelled) then begin
       SDUMessageDlg(
-        SDUParamSubstitute(_('%1 failed.'), [SDUInitialCapital(OperationTitle(opType))]),
+        Format(_('%s failed.'), [SDUInitialCapital(OperationTitle(opType))]),
         mtError
         );
     end;
@@ -4632,7 +4554,7 @@ begin
     end;
     if not (destOK) then begin
       SDUMessageDlg(
-        SDUParamSubstitute(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_DESTINATION,
+        Format(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_DESTINATION,
         [OperationTitle(opType), ExtractFilename(destDir)]),
         mtError
         );
@@ -4672,7 +4594,7 @@ begin
       end else begin
         // Source is neither a file nor dir - abort.
         SDUMessageDlg(
-          SDUParamSubstitute(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE,
+          Format(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE,
           [OperationTitle(opType), ExtractFilename(srcItem)]),
           mtError
           );
@@ -4724,8 +4646,8 @@ begin
   end;
   if not (srcOK) then begin
     SDUMessageDlg(
-      SDUParamSubstitute(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE,
-      [OperationTitle(opType), ExtractFilename(srcItem)]),
+      Format(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE, [OperationTitle(opType),
+      ExtractFilename(srcItem)]),
       mtError
       );
 
@@ -4746,7 +4668,7 @@ begin
   end;
   if not (destOK) then begin
     SDUMessageDlg(
-      SDUParamSubstitute(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_DESTINATION,
+      Format(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_DESTINATION,
       [OperationTitle(opType), ExtractFilename(destDir)]),
       mtError
       );
@@ -4777,9 +4699,8 @@ begin
         destItemIsDir := SysUtils.DirectoryExists(destItem);
       end;
       if destItemIsDir then begin
-        SDUMessageDlg(SDUParamSubstitute(
-          _(
-          'Cannot create or replace %1: There is already a file with the same name as the folder name you specified. Specify a different name.'),
+        SDUMessageDlg(Format(_(
+          'Cannot create or replace %s: There is already a file with the same name as the folder name you specified. Specify a different name.'),
           [ExtractFilename(srcItem)]),
           mtError
           );
@@ -4840,8 +4761,7 @@ begin
 
       if not (goodToDoOp) then begin
         SDUMessageDlg(
-          SDUParamSubstitute(RS_UNABLE_TO_DELETE_EXISTING_FILE,
-          [ExtractFilename(destItem)]),
+          Format(RS_UNABLE_TO_DELETE_EXISTING_FILE, [ExtractFilename(destItem)]),
           mtError
           );
         abortAllRemaining := True;
@@ -4873,13 +4793,12 @@ begin
     if abortAllRemaining then begin
       if (opType = cmDelete) then begin
         SDUMessageDlg(
-          SDUParamSubstitute(_('Unable to delete ''%1''.'), [ExtractFilename(srcItem)]),
+          Format(_('Unable to delete ''%s''.'), [ExtractFilename(srcItem)]),
           mtError
           );
       end else begin
         SDUMessageDlg(
-          SDUParamSubstitute(_('Unable to create or replace %1.'),
-          [ExtractFilename(srcItem)]),
+          Format(_('Unable to create or replace %s.'), [ExtractFilename(srcItem)]),
           mtError
           );
       end;
@@ -4919,13 +4838,12 @@ begin
     ProgressDlgSetLineOne(ExtractFilename(srcItem));
     if (opType = cmDelete) then begin
       ProgressDlgSetLineTwo(
-        SDUParamSubstitute(_('From ''%1'''), [GetLastSegmentFrom(
-        ExtractFilePath(srcItem))])
+        Format(_('From ''%s'''), [GetLastSegmentFrom(ExtractFilePath(srcItem))])
         );
     end else begin
       ProgressDlgSetLineTwo(
-        SDUParamSubstitute(_('From ''%1'' to ''%2'''),
-        [GetLastSegmentFrom(ExtractFilePath(srcItem)), GetLastSegmentFrom(destDir)])
+        Format(_('From ''%s'' to ''%s'''), [GetLastSegmentFrom(ExtractFilePath(srcItem)),
+        GetLastSegmentFrom(destDir)])
         );
     end;
 
@@ -5119,8 +5037,8 @@ begin
   end;
   if not (srcOK) then begin
     SDUMessageDlg(
-      SDUParamSubstitute(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE,
-      [OperationTitle(opType), ExtractFilename(srcItem)]),
+      Format(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_FILE, [OperationTitle(opType),
+      ExtractFilename(srcItem)]),
       mtError
       );
 
@@ -5140,7 +5058,7 @@ begin
   end;
   if not (destOK) then begin
     SDUMessageDlg(
-      SDUParamSubstitute(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_DESTINATION,
+      Format(RS_CANNOT_X_CANNOT_FIND_SPECIFIED_DESTINATION,
       [OperationTitle(opType), ExtractFilename(destDir)]),
       mtError
       );
@@ -5237,8 +5155,8 @@ begin
 
         if not (goodToDoOp) then begin
           SDUMessageDlg(
-            SDUParamSubstitute(RS_UNABLE_TO_CREATE_FOLDER + SDUCRLF +
-            SDUCRLF + RS_PLEASE_ENSURE_ENOUGH_FREE_SPACE, [ExtractFilename(destItem)]),
+            Format(RS_UNABLE_TO_CREATE_FOLDER + SDUCRLF + SDUCRLF +
+            RS_PLEASE_ENSURE_ENOUGH_FREE_SPACE, [ExtractFilename(destItem)]),
             mtError
             );
           abortAllRemaining := True;
@@ -5390,7 +5308,7 @@ begin
   Result := True;
 end;
 
-function TfrmExplorerMain.DoTests: Boolean;
+function TfrmExplorerMain.DoFullTests: Boolean;
 var
   mountList: TStringList;
   mountedAs: DriveLetterString;
@@ -5504,8 +5422,8 @@ begin
       end else begin
         //call silently
         if not GetFreeOTFEDLL().MountFreeOTFE(mountList, mountedAs, True,
-          key_file, SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False, True,
-          256, ITERATIONS[vl]) then
+          key_file, SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False,
+          True, 256, ITERATIONS[vl]) then
           Result := False;
       end;
       if not Result then begin
@@ -5529,22 +5447,22 @@ begin
     SDUMessageDlg('At least one functional test failed');
 end;
 
-  (*
+
 procedure TfrmExplorerMain.OverwriteAllWebDAVCachedFiles();
 {$IFNDEF WEBDAV_OVERWRITE_TSHREDDER}
 {$IFNDEF WEBDAV_OVERWRITE_SIMPLE}
-
+  {$Error
   If the Delphi compiler throws an error at this point, then neither
   "WEBDAV_OVERWRITE_TSHREDDER" nor "WEBDAV_OVERWRITE_SIMPLE" were defined.
 
-  See notes above for what this should be set to.
+  See notes above for what this should be set to. }
 
 {$ENDIF}
 {$ENDIF}
 var
-  i: integer;
-  filename: string;
-  pItem: PRequestedItem;
+  i:          Integer;
+  filename:   String;
+  pItem:      PRequestedItem;
   prevCursor: TCursor;
 {$IFDEF WEBDAV_OVERWRITE_TSHREDDER}
   shredder: TShredder;
@@ -5558,9 +5476,9 @@ begin
   ProgressDlgSetup(cmDelete);
   FOpProgressDlg.Title := _('Overwriting cached files...');
   ProgressDlgStart();
-  ProgressDlgSetTotal(WebDAVObj.RequestedItems.count);
+  ProgressDlgSetTotal(fWebDAVObj.RequestedItems.Count);
   ProgressDlgTimerReset();
-  prevCursor := Screen.Cursor;
+  prevCursor    := Screen.Cursor;
   Screen.Cursor := crAppStart;  // Hourglass with mouse pointer
 {$IFDEF WEBDAV_OVERWRITE_TSHREDDER}
   shreddercomponentversion:  shredder:= TShredder.Create(nil);
@@ -5574,27 +5492,25 @@ begin
 
     // Setup WebDAV server to ignore writes, and return garbage if files are
     // requested...
-    WebDAVObj.ReturnGarbage := TRUE;
-    
+    fWebDAVObj.ReturnGarbage := True;
+
     // Overwrite all files which have been requested during the mounted
     // session...
     // We *WRITE* to the file, as this is the only way of *immediatly* forcing
     // the local copy to be overwritten. Just reading the file again only causes
     // it to be loaded from the cache, until the cached copy times out (typically
     // after 60 seconds)
-    for i:=0 to (WebDAVObj.RequestedItems.count-1) do
-      begin
-      ProgressDlgSetLineOne(WebDAVObj.RequestedItems[i]);
-      filename := FMappedDrive+':'+WebDAVObj.RequestedItems[i];
+    for i := 0 to (fWebDAVObj.RequestedItems.Count - 1) do begin
+      ProgressDlgSetLineOne(fWebDAVObj.RequestedItems[i]);
+      filename := FMappedDrive + ':' + fWebDAVObj.RequestedItems[i];
 
-      pItem := PRequestedItem(WebDAVObj.RequestedItems.Objects[i]);
+      pItem := PRequestedItem(fWebDAVObj.RequestedItems.Objects[i]);
 
       // Skip directories...
-      if not(pItem.IsFile) then
-        begin
+      if not (pItem.IsFile) then begin
         ProgressDlgIncrement(1);
         continue;
-        end;
+      end;
 
 {$IFDEF WEBDAV_OVERWRITE_TSHREDDER}
       shredder.DestroyFileOrDir(filename, FALSE, TRUE, FALSE);
@@ -5610,12 +5526,11 @@ begin
 {$ENDIF}
 
       ProgressDlgIncrement(1);
-      if ProgressDlgHasUserCancelled() then
-        begin
+      if ProgressDlgHasUserCancelled() then begin
         break;
-        end;
-
       end;
+
+    end;
 
   finally
 {$IFDEF WEBDAV_OVERWRITE_TSHREDDER}
@@ -5625,11 +5540,11 @@ begin
     Screen.Cursor := prevCursor;
   end;
 
-  WebDAVObj.ClearDownRequestedItemsList();
+  fWebDAVObj.ClearDownRequestedItemsList();
   DefaultStatusMsg();
 
 end;
-      *)
+
 initialization
   // A "session ID" is used when registering the FreeOTFE Explorer clipboard
   // format to prevent confusion when running multiple instances; atm it isn't
@@ -5638,8 +5553,7 @@ initialization
   // implemented, this restriction can be removed.
   // The current date/time should be unique enough (unless the user mounts
   // multiple volumes in the same second!)
-  CFSTR_FEXPL_SESSION_DATA := Format(CFSTR_FEXPL_SESSION_BASE,
-    [SDUTDateTimeToISO8601(Now)]);
+  CFSTR_FEXPL_SESSION_DATA := Format(CFSTR_FEXPL_SESSION_BASE, [SDUTDateTimeToISO8601(Now)]);
 
   CF_FEXPL_SESSION_DATA := RegisterClipboardFormat(PChar(CFSTR_FEXPL_SESSION_DATA));
 

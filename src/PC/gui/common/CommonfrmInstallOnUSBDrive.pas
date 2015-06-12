@@ -212,8 +212,8 @@ begin
     autorunContent.Add('[autorun]');
     autorunContent.Add('icon=' + partPath + '\' + srcExeFilename);
     autorunContent.Add('open=' + partPath + '\' + srcExeFilename);
-    autorunContent.Add('action=' + SDUParamSubstitute(_('Launch %1'), [Application.Title]));
-    autorunContent.Add('shell\launch\=' + SDUParamSubstitute(_('Launch %1'), [Application.Title]));
+    autorunContent.Add('action=' + format(_('Launch %s'), [Application.Title]));
+    autorunContent.Add('shell\launch\=' + format(_('Launch %s'), [Application.Title]));
     autorunContent.Add('shell\launch\command=' + partPath + '\' + srcExeFilename);
 
     autorunFilename := GetInstallDrive() + ':\autorun.inf';

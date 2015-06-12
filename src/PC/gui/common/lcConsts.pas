@@ -26,7 +26,6 @@ const
     'https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/'
   {$ENDIF} + 'PAD.xml';
 
-
 //below for explorer only
 
   // WebDAV related Windows services

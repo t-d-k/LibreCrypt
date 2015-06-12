@@ -286,8 +286,8 @@ type
       );
 
     function CreateNewVolume(): Boolean;
-    procedure PostCreate();
-    procedure PostMount_Format_using_dll();
+    function PostCreate(out errMsg: String): Boolean;
+
     procedure Update_tempCypherUseKeyLength;
     function GetDriveLetter: Char;
     procedure SetDriveLetter(driveLetter: Char);
@@ -297,6 +297,7 @@ type
     procedure SetPaddingLength(len: Int64);
     function GetOverwriteWithChaff: Boolean;
     procedure SetOverwriteWithChaff(secChaff: Boolean);
+
 
   protected
 
@@ -344,9 +345,10 @@ type
 
     procedure fmeSelectPartitionChanged(Sender: TObject);
 
+
+
   end;
 
-procedure Format_drive(drivesToFormat: DriveLetterString; frm: TForm);
 
 implementation
 
@@ -361,11 +363,12 @@ uses
   SDPartitionImage_File,
   SDFilesystem,
   SDFilesystem_FAT,
+  sdusysutils,  // format_drive
                 //freeotfe/LibreCrypt
   OTFEConsts_U, // Required for OTFE_ERR_USER_CANCEL
   OTFEFreeOTFEDLL_U,
   PKCS11Lib,
-    PartitionImageDLL;
+  PartitionImageDLL;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -393,26 +396,11 @@ const
   // (4GB - 1 byte) is the max file a FAT32 system can support
   MAX_FAT_FILESIZE: ULONGLONG = ((ULONGLONG(4) * ULONGLONG(BYTES_IN_GIGABYTE)) - ULONGLONG(1));
 
-  // for shformat
-  // Format disk related functions ripped from the Unofficial Delphi FAQ (UDF)
-  SHFMT_ID_DEFAULT      = $FFFF;
-  // Formating options
-  SHFMT_OPT_QUICKFORMAT = $0000;
-  SHFMT_OPT_FULL        = $0001;
-  SHFMT_OPT_SYSONLY     = $0002;
-  // Error codes
-  SHFMT_ERROR           = $FFFFFFFF;
-  SHFMT_CANCEL          = $FFFFFFFE;
-  SHFMT_NOFORMAT        = $FFFFFFFD;
-
-
 resourcestring
   FILEORPART_OPT_VOLUME_FILE = 'Container file';
   FILEORPART_OPT_PARTITION   = 'Partition/entire disk';
 
-// External function in shell32.dll
-function SHFormatDrive(Handle: HWND; Drive, ID, Options: Word): Longint;
-  stdcall; external 'shell32.dll' Name 'SHFormatDrive';
+
 
 procedure TfrmWizardCreateVolume.FormShow(Sender: TObject);
 var
@@ -513,7 +501,7 @@ begin
 
   // tsSize
   // Default to 25 MB
-//  se64UnitSize.Value := DEFAULT_VOLUME_SIZE;
+  //  se64UnitSize.Value := DEFAULT_VOLUME_SIZE;
 
   // tsHashCypherIV
   PopulateHashes();
@@ -571,7 +559,7 @@ begin
   // if the user doesn't switch)
   tsPartitionWarning.Tag := 1;
   tsPartitionSelect.Tag  := 1;
-  tsOffset.Tag  := 1;   // only reset if new file chosen (hidden)
+  tsOffset.Tag           := 1;   // only reset if new file chosen (hidden)
 
   // BECAUSE WE DEFAULTED TO USING THE MOUSERNG, WE MUST SET THE GPG PAGE TO
   // "DONE" HERE (otherwise, it'll never be flagged as complete if the user
@@ -964,7 +952,8 @@ begin
     Result := rbCDBInVolFile.Checked or (rbCDBInKeyfile.Checked and (GetCDBFilename() <> ''));
     if not Result then begin
       SDUMessageDlg(_(
-        'If you wish to store the container''s CDB in a keyfile, you must specify the file to use'), mtError);
+        'If you wish to store the container''s CDB in a keyfile, you must specify the file to use'),
+        mtError);
       ActiveControl := tsCDBLocation;
       Result        := False;
     end;
@@ -1505,12 +1494,10 @@ begin
       totalSize := volSize + ULONGLONG(CRITICAL_DATA_LENGTH div 8) + PaddingLength;
       reSummary.Lines.Add(Format(
         _('Container size: %d + %d (for CDB) + %d (padding) = %d bytes'),
-        [volSize, (CRITICAL_DATA_LENGTH div 8), PaddingLength,
-        totalSize]));
+        [volSize, (CRITICAL_DATA_LENGTH div 8), PaddingLength, totalSize]));
     end else begin
       totalSize := volSize + ULONGLONG(CRITICAL_DATA_LENGTH div 8);
-      reSummary.Lines.Add(Format(
-        _('Container size: %d + %d (for CDB) = %d bytes'),
+      reSummary.Lines.Add(Format(_('Container size: %d + %d (for CDB) = %d bytes'),
         [volSize, (CRITICAL_DATA_LENGTH div 8), totalSize]));
     end;
 
@@ -1518,8 +1505,7 @@ begin
   end else begin
     if (PaddingLength > ULLZero) then begin
       totalSize := volSize + PaddingLength;
-      reSummary.Lines.Add(Format(
-        _('Container size: %d + %d (padding) = %d bytes'),
+      reSummary.Lines.Add(Format(_('Container size: %d + %d (padding) = %d bytes'),
         [volSize, PaddingLength, totalSize]));
     end else begin
       reSummary.Lines.Add(Format(_('Container size: %d bytes'), [volSize]));
@@ -1529,8 +1515,7 @@ begin
     reSummary.Lines.Add(Format(_('CDB keyfile: %s'), [GetCDBFilename()]));
   end;
 
-  reSummary.Lines.Add(Format(_('Hash algorithm: %s'),
-    [cbHash.Items[cbHash.ItemIndex]]));
+  reSummary.Lines.Add(Format(_('Hash algorithm: %s'), [cbHash.Items[cbHash.ItemIndex]]));
   reSummary.Lines.Add('  ' + Format(_('[Hash driver: %s]'), [GetHashDriver()]));
   reSummary.Lines.Add('  ' + Format(_('[Hash GUID: %s]'), [GUIDToString(GetHashGUID())]));
 
@@ -1550,11 +1535,9 @@ begin
       reSummary.Lines.Add(_('A per-container IV will not be used'));
   end;
 
-  reSummary.Lines.Add(Format(_('Cypher algorithm: %s'),
-    [cbCypher.Items[cbCypher.ItemIndex]]));
+  reSummary.Lines.Add(Format(_('Cypher algorithm: %s'), [cbCypher.Items[cbCypher.ItemIndex]]));
   reSummary.Lines.Add('  ' + Format(_('[Cypher driver: %s]'), [GetCypherDriver()]));
-  reSummary.Lines.Add('  ' + Format(_('[Cypher GUID: %s]'),
-    [GUIDToString(GetCypherGUID())]));
+  reSummary.Lines.Add('  ' + Format(_('[Cypher GUID: %s]'), [GUIDToString(GetCypherGUID())]));
 
   reSummary.Lines.Add(Format(_('Master key length: %d bits'), [GetMasterKeyLength()]));
 
@@ -1624,6 +1607,8 @@ begin
 end;
 
 procedure TfrmWizardCreateVolume.pbFinishClick(Sender: TObject);
+var
+  errMsg: String;
 begin
   inherited;
 
@@ -1650,8 +1635,12 @@ begin
   try
 
     if CreateNewVolume() then begin
-      PostCreate();
-      ModalResult := mrOk;
+      if PostCreate(errMsg) then
+        ModalResult := mrOk
+      else
+        SDUMessageDlg(errMsg + SDUCRLF + SDUCRLF + PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
+          mtError
+          );
     end;
   except
     on E: EInsufficientRandom do
@@ -1661,9 +1650,6 @@ begin
         mtError
         );
   end;
-
-  //  end;
-
 end;
 
 
@@ -1748,9 +1734,9 @@ begin
 
 
   if Result then begin
-{$IFDEF FREEOTFE_DEBUG}
-GetFreeOTFEBase().DebugMsg('Populating critical data structure...');
-{$ENDIF}
+
+    GetFreeOTFEBase().DebugMsg('Populating critical data structure...');
+
     // Create the volume file header
     // Note: No need to populate CDBMetaData.MACAlgorithm or
     //       CDBMetaData.KDFAlgorithm as the function which writes the CDB out
@@ -1774,9 +1760,8 @@ GetFreeOTFEBase().DebugMsg('Using cypher: '+GUIDToString(CDBMetaData.CypherGUID)
     volumeDetails.PartitionLen := GetSize();
 
     volumeDetails.VolumeFlags := 0;
-{$IFDEF FREEOTFE_DEBUG}
-GetFreeOTFEBase().DebugMsg('Container flags: '+inttostr(volumeDetails.VolumeFlags)+' bits');
-{$ENDIF}
+    GetFreeOTFEBase().DebugMsg('Container flags: ' +
+      IntToStr(volumeDetails.VolumeFlags) + ' bits');
 
     volumeDetails.SectorIVGenMethod := GetSectorIVGenMethod();
 
@@ -1871,41 +1856,40 @@ begin
     // CDB stored in separate keyfile
     cdbFile   := GetCDBFilename();
     cdbOffset := 0;
-{$IFDEF FREEOTFE_DEBUG}
-GetFreeOTFEBase().DebugMsg('CDB stored in separate keyfile: '+cdbFile);
-{$ENDIF}
+
+    GetFreeOTFEBase().DebugMsg('CDB stored in separate keyfile: ' + cdbFile);
   end;
 
 end;
 
 // Post-creation functionality
-procedure TfrmWizardCreateVolume.PostCreate();
+function TfrmWizardCreateVolume.PostCreate(out errMsg: String): Boolean;
 var
-  MountedDrives:  String;
-  errMsg:         WideString;
+  MountedDrives: String;
+
   cntMountOK:     Integer;
   cntMountFailed: Integer;
-  mountedOK:      Boolean;
-  tmpVolumeFiles: TStringList;
+//  tmpVolumeFiles: TStringList;
   cdbFile:        String;
   cdbOffset:      ULONGLONG;
   VolFilename:    tfilename;
 begin
+  Result := True;
   if GetAutoMountAfterCreate() then begin
     VolFilename    := GetVolFilename();
-    tmpVolumeFiles := TStringList.Create();
+//    tmpVolumeFiles := TStringList.Create();
     try
-      mountedOK := False;
+      Result := False;
 
-      tmpVolumeFiles.Add(VolFilename);
+//      tmpVolumeFiles.Add(VolFilename);
       GetCDBFileAndOffset(cdbFile, cdbOffset);
 
-      if (VolFilename = cdbFile) then begin
+      if (VolFilename = cdbFile) then
         cdbFile := '';
-      end;
+
 
       MountedDrives := '';
-      if GetFreeOTFEBase().MountFreeOTFE(tmpVolumeFiles, frmeNewPassword.GetKeyPhrase(),
+      if GetFreeOTFEBase().MountFreeOTFE(VolFilename, frmeNewPassword.GetKeyPhrase(),
         cdbFile, '',  // Empty string - read the CDB
         PKCS11_NO_SLOT_ID, nil,
               // PKCS#11 session not used
@@ -1920,75 +1904,38 @@ begin
           cntMountFailed
           );
 
-        if (cntMountOK = 1) then begin
+        if cntMountOK = 1 then begin
           fnewVolumeMountedAs := MountedDrives[1];
-          mountedOK           := True;
+          Result              := True;
         end;
       end;
     finally
-      tmpVolumeFiles.Free();
+//      tmpVolumeFiles.Free();
     end;
-
-    if mountedOK then begin
+    if not Result then
+      // Volumes couldn't be mounted for some reason...
+      errMsg := 'Can''t open container';
+    if Result then begin
       { TODO 2 -otdk -cinvestigate : why only DLL - should always format after creation, even if use windows dlg }
       if (GetFreeOTFEBase() is TOTFEFreeOTFEDLL) then begin
-        PostMount_Format_using_dll();
+        Result := PostMount_Format_using_dll(fnewVolumeMountedAs);
       end else begin
-        Format_Drive(FNewVolumeMountedAs, self);
+        Result := Format_Drive(FNewVolumeMountedAs);
+        if not Result then
+          // Volumes couldn't be mounted for some reason...
+          errMsg := FORMAT_ERR;
       end;
-
     end;
 
-    if not (mountedOK) then begin
-      // Volumes couldn't be mounted for some reason...
-      errMsg := _('Unable to open container.');
-    end;
   end;
 
 end;
 
-// Format the volume specified
-procedure TfrmWizardCreateVolume.PostMount_Format_using_dll();
-var
-  PartitionImage: TPartitionImageDLL;
-  Filesystem:     TSDFilesystem_FAT;
-begin
-  if (GetFreeOTFEBase() is TOTFEFreeOTFEDLL) then begin
-    PartitionImage             := TPartitionImageDLL.Create();
-    PartitionImage.FreeOTFEObj := TOTFEFreeOTFEDLL(GetFreeOTFEBase());
-    PartitionImage.MountedAs   := fnewVolumeMountedAs;
-    // end else begin
-    //   //  TODO test this   - could reformat wrong drive! -for now use format_drive for non dll volumes
-    //
-    //    PartitionImage := TSDPartitionImage_File.Create();
-    ////    PartitionImage.GetFreeOTFEBase() := fFreeOTFEObj;
-    //      (PartitionImage as TSDPartitionImage_File).Filename := VolFilename;
-    //
-    //    end;
-
-    PartitionImage.Mounted := True;
-
-    if not (PartitionImage.Mounted) then begin
-      PartitionImage.Free();
-      PartitionImage := nil;
-      SDUMessageDlg('Container could be opened, but not mounted as a partition image?!', mtError);
-    end;
-
-    if (PartitionImage <> nil) then begin
-      Filesystem                := TSDFilesystem_FAT.Create();
-      Filesystem.PartitionImage := PartitionImage;
-      Filesystem.Format();
-      PartitionImage.Mounted := False;
-    end;
-
-  end;
-end;
 
 
 procedure TfrmWizardCreateVolume.seMasterKeyLengthChange(Sender: TObject);
 begin
   UpdateUIAfterChangeOnCurrentTab();
-
 end;
 
 procedure TfrmWizardCreateVolume.seMasterKeyLengthExit(Sender: TObject);
@@ -2444,59 +2391,9 @@ begin
   rgOverwriteType.ItemIndex := Ifthen(secChaff, 0, 1);
 end;
 
-procedure Format_drive(drivesToFormat: DriveLetterString; frm: TForm);
-resourcestring
-  FORMAT_CAPTION = 'Format';
-var
-  i:         Integer;
-  currDrive: DriveLetterChar;
-  driveNum:  Word;
-  formatRet: DWORD;
-  ok:        Boolean;
-  //  hndle:HWND;
-begin
-  ok := True;
-  for i := 1 to length(drivesToFormat) do begin
-    currDrive := drivesToFormat[i];
-    driveNum  := Ord(currDrive) - Ord('A');
-    {TODO: use cmd line - se below}
-    //http://stackoverflow.com/questions/2648305/format-drive-by-c
-    formatRet := SHFormatDrive(frm.Handle, driveNum, SHFMT_ID_DEFAULT, SHFMT_OPT_FULL);
 
-    if formatRet <> 0 then begin
-      ok := False;
-      break;
-    end else begin
-    {  dialog only returns when done - use cmd line as above
-      // close format dlg
-      // see also http://stackoverflow.com/questions/15469657/why-is-findwindow-not-100-reliable
-      hndle := FindWindow('IEFrame', NIL);
-      if hndle>0 then begin
-      PostMessage(hndle, WM_CLOSE, 0, 0);
-      end;
-      }
-    end;
-  end;
 
-  // This is *BIZARRE*.
-  // If you are running under Windows Vista, and you mount a volume for
-  // yourself only, and then try to format it, the format will fail - even if
-  // you UAC escalate to admin
-  // That's one thing - HOWEVER! After it fails, for form's title is set to:
-  //   Format <current volume label> <drive letter>:
-  // FREAKY!
-  // OTOH, it does means we can detect and inform the user that the format
-  // just failed...
-  if (Pos(uppercase(FORMAT_CAPTION), uppercase(frm.Caption)) > 0) or not ok then begin
-    frm.Caption := Application.Title;
-    SDUMessageDlg(
-      _('Your encrypted drive could not be formatted.') + SDUCRLF + SDUCRLF +
-      _('Please lock this container and re-open it with the "Mount for all users" option checked, before trying again.'),
-      mtError
-      );
-  end;
 
-end;
 
 
 end.

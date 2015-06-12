@@ -11,13 +11,18 @@ uses
   IdWebDav,
   IdSocketHandle,
   //sdu
-  SDFilesystem;
+  SDFilesystem,SDFilesystem_FAT;
 
 type
 
+     LogRec = record
+    FileName:string;
+  end;
 
 
-  TSDUWebDAV = class (TIdWebDav)
+
+
+  TSDUWebDAV = class (TOBject)
   PROTECTED
     FileSystem: TSDCustomFilesystem;
 
@@ -43,30 +48,76 @@ type
   PUBLIC
     Bindings:  TIdSocketHandles;
     ShareName: String;
-    constructor Create(AOwner: TComponent); VIRTUAL; ABSTRACT;
-    destructor Destroy();override;  ABSTRACT;
-    function Active: Boolean;
+    fServerSoftware : String;
+      fLogAccess:LogRec;
+  fLogDebug:LogRec;
+  fDefaultPort :integer;
+      fFilesystem:     TSDFilesystem_FAT;
+      fOnlyPermitLocal :boolean;
+    function IsActive: Boolean;
+    procedure Activate;
+     procedure DeActivate;
+    constructor Create(AOwner: TComponent); VIRTUAL;
+    destructor Destroy();override;
+
 
 
 
   end;
 
+function   SDURandomHexString(digits:integer):string;
+
+procedure SDUPause(pause : integer);
+
+const DEFAULT_HTTP_PORT      = 80;
 
 implementation
 
-{ TSDUWebDAV }
-
-function TSDUWebDAV.Active: Boolean;
+function   SDURandomHexString(digits:integer):string;
+begin
+  result := '1234'; { TODO -otdk -ccomplete : webdav }
+end;
+procedure SDUPause(pause : integer);
 begin
 
 end;
+
+{ TSDUWebDAV }
+
+
+
+procedure TSDUWebDAV.Activate;
+begin
+
+end;
+
+
 
 procedure TSDUWebDAV.AddDebugLog(cmnt: String);
 begin
 
 end;
 
-function TSDUWebDAV.GetPropFindXMLSingle(host, fileOrDir: String; item: TSDDirItem): String;
+constructor TSDUWebDAV.Create(AOwner: TComponent);
+begin
+Bindings:=  TIdSocketHandles.Create(nil);
+end;
+
+procedure TSDUWebDAV.DeActivate;
+begin
+
+end;
+
+destructor TSDUWebDAV.Destroy;
+begin
+  Bindings.Free;
+  inherited;
+end;
+
+
+
+function TSDUWebDAV.GetPropFindXMLSingle(host, fileOrDir: String;
+  item: TSDDirItem): String;
 begin
 
 end;
@@ -76,6 +127,9 @@ begin
 
 end;
 
-
+function TSDUWebDAV.IsActive: Boolean;
+begin
+  result:= false;
+end;
 
 end.

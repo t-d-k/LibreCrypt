@@ -427,7 +427,7 @@ begin
     // This is a good place to update the display of the number of random bits
     // generated...
     randomBitsGenerated     := CountMouseRNGData();
-    lblMouseRNGBits.Caption := SDUParamSubstitute(_('Random bits generated: %1/%2'),
+    lblMouseRNGBits.Caption := Format(_('Random bits generated: %d/%d'),
       [randomBitsGenerated, CRITICAL_DATA_LENGTH]);
 
     Result           := (randomBitsGenerated >= CRITICAL_DATA_LENGTH);

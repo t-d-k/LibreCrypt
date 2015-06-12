@@ -9,15 +9,16 @@ uses
   SDURegistry;
 
 type
-{$TYPEINFO ON}// Needed to allow "published"
+  {$TYPEINFO ON}// Needed to allow "published"
 
   // Forward declaration
-  TSDUMRUList = class ;
+  TSDUMRUList           = class;
 
-  TSDUMRUItemClickEvent = procedure(mruList: TSDUMRUList; idx: Integer) of object;
+  TSDUMRUItemClickEvent = procedure(mruList: TSDUMRUList; idx: Integer)
+    of object;
 
   TSDUMRUList = class
-  PROTECTED
+  protected
     FMaxItems: Cardinal;
     FItems:    TStringList;
     FOnClick:  TSDUMRUItemClickEvent;
@@ -26,29 +27,33 @@ type
     procedure ClearItemsBeyondMax();
     procedure MRUItemClick(Sender: TObject);
 
-  PUBLIC
+  public
     constructor Create();
-    destructor Destroy(); OVERRIDE;
+    destructor Destroy(); override;
 
     procedure InsertAfter(mnuItem: TMenuItem);
     procedure InsertUnder(mnuItem: TMenuItem);
-    procedure RemoveMenuItems(mnu: TMenu); OVERLOAD;
-    procedure RemoveMenuItems(mnu: TMenuItem); OVERLOAD;
+    procedure RemoveMenuItems(mnu: TMenu); overload;
+    procedure RemoveMenuItems(mnu: TMenuItem); overload;
 
-    procedure Add(item: String); OVERLOAD;
-    procedure Add(items: TStringList); OVERLOAD;
+    procedure Add(item: string); overload;
+    procedure Add(items: TStringList); overload;
 
-    function Load(iniFile: TCustomIniFile; MRUSection: String = 'MRU'): Boolean; OVERLOAD;
-    function Load(reg: TSDURegistry; MRUSubKey: String = 'MRU'): Boolean; OVERLOAD;
+    function Load(iniFile: TCustomIniFile; MRUSection: string = 'MRU')
+      : Boolean; overload;
+    function Load(reg: TSDURegistry; MRUSubKey: string = 'MRU')
+      : Boolean; overload;
     // Warning: The SaveMRU(...) functions will *delete* the section/subkey
-    //          specified, and recreate it.
-    function Save(iniFile: TCustomIniFile; MRUSection: String = 'MRU'): Boolean; OVERLOAD;
-    function Save(reg: TSDURegistry; MRUSubKey: String = 'MRU'): Boolean; OVERLOAD;
+    // specified, and recreate it.
+    function Save(iniFile: TCustomIniFile; MRUSection: string = 'MRU')
+      : Boolean; overload;
+    function Save(reg: TSDURegistry; MRUSubKey: string = 'MRU')
+      : Boolean; overload;
 
-  PUBLISHED
-    property MaxItems: Cardinal Read FMaxItems Write SetMaxItems;
-    property Items: TStringList Read FItems Write FItems;
-    property OnClick: TSDUMRUItemClickEvent Read FOnClick Write FOnClick;
+  published
+    property MaxItems: Cardinal read FMaxItems write SetMaxItems;
+    property items:    TStringList read FItems write FItems;
+    property OnClick:  TSDUMRUItemClickEvent read FOnClick write FOnClick;
   end;
 
 implementation
@@ -59,7 +64,7 @@ uses
 const
   // Tag to identify MRU menuitems.
   // Low WORD is holds index into "Items"
-  MRUL_TAG = $12340000;
+  MRUL_TAG           = $12340000;
 
   DEFAULT_MRU_LENGTH = 5;
 
@@ -82,8 +87,8 @@ var
   mnuIdx:         Integer;
 begin
   if (items.Count > 0) then begin
-    parentMenuItem := mnuItem.Parent;
-    mnuIdx         := mnuItem.MenuIndex;
+    parentMenuItem  := mnuItem.Parent;
+    mnuIdx          := mnuItem.MenuIndex;
 
     tmpItem         := TMenuItem.Create(nil);
     tmpItem.Caption := '-';
@@ -91,9 +96,9 @@ begin
     Inc(mnuIdx);
     parentMenuItem.Insert(mnuIdx, tmpItem);
 
-    for i := 0 to (items.Count - 1) do begin
+    for i             := 0 to (items.Count - 1) do begin
       tmpItem         := TMenuItem.Create(nil);
-      tmpItem.Caption := '&' + IntToStr(i + 1) + ' ' + Items[i];
+      tmpItem.Caption := '&' + IntToStr(i + 1) + ' ' + items[i];
       tmpItem.Tag     := MRUL_TAG + i;
       tmpItem.OnClick := MRUItemClick;
       Inc(mnuIdx);
@@ -108,9 +113,9 @@ var
   i:       Integer;
   tmpItem: TMenuItem;
 begin
-  for i := 0 to (items.Count - 1) do begin
+  for i             := 0 to (items.Count - 1) do begin
     tmpItem         := TMenuItem.Create(mnuItem);
-    tmpItem.Caption := '&' + IntToStr(i + 1) + ' ' + Items[i];
+    tmpItem.Caption := '&' + IntToStr(i + 1) + ' ' + items[i];
     tmpItem.Tag     := MRUL_TAG + i;
     tmpItem.OnClick := MRUItemClick;
     mnuItem.Add(tmpItem);
@@ -122,8 +127,8 @@ procedure TSDUMRUList.RemoveMenuItems(mnu: TMenu);
 var
   i: Integer;
 begin
-  for i := (mnu.Items.Count - 1) downto 0 do begin
-    RemoveMenuItems(mnu.Items[i]);
+  for i := (mnu.items.Count - 1) downto 0 do begin
+    RemoveMenuItems(mnu.items[i]);
   end;
 end;
 
@@ -133,9 +138,9 @@ var
   i: Integer;
 begin
   for i := (mnu.Count - 1) downto 0 do begin
-    RemoveMenuItems(mnu.Items[i]);
+    RemoveMenuItems(mnu.items[i]);
 
-    if ((mnu.Items[i].tag and MRUL_TAG) = MRUL_TAG) then begin
+    if ((mnu.items[i].Tag and MRUL_TAG) = MRUL_TAG) then begin
       mnu.Delete(i);
     end;
   end;
@@ -157,18 +162,18 @@ begin
   end;
 end;
 
-procedure TSDUMRUList.Add(item: String);
+procedure TSDUMRUList.Add(item: string);
 var
   idx: Integer;
 begin
   // Delete any existing instance of the item
-  idx := Items.IndexOf(item);
+  idx := items.IndexOf(item);
   if (idx >= 0) then begin
-    Items.Delete(idx);
+    items.Delete(idx);
   end;
 
   // Add the item to the head of the list
-  Items.Insert(0, item);
+  items.Insert(0, item);
   ClearItemsBeyondMax();
 
 end;
@@ -178,8 +183,8 @@ procedure TSDUMRUList.ClearItemsBeyondMax();
 var
   i: Integer;
 begin
-  for i := (Items.Count - 1) downto MaxItems do begin
-    Items.Delete(i);
+  for i := (items.Count - 1) downto MaxItems do begin
+    items.Delete(i);
   end;
 
 end;
@@ -197,19 +202,20 @@ begin
 
 end;
 
-function TSDUMRUList.Load(iniFile: TCustomIniFile; MRUSection: String = 'MRU'): Boolean;
+function TSDUMRUList.Load(iniFile: TCustomIniFile;
+  MRUSection: string = 'MRU'): Boolean;
 var
   i:        Integer;
   cnt:      Integer;
-  readItem: String;
+  readItem: string;
 begin
-  Result := False;
+  Result       := False;
   try
-    MaxItems := iniFile.ReadInteger(MRUSection, 'MaxItems', MaxItems);
-    cnt      := iniFile.ReadInteger(MRUSection, 'Items', 0);
+    MaxItems   := iniFile.ReadInteger(MRUSection, 'MaxItems', MaxItems);
+    cnt        := iniFile.ReadInteger(MRUSection, 'Items', 0);
 
     FItems.Clear();
-    for i := 0 to (cnt - 1) do begin
+    for i      := 0 to (cnt - 1) do begin
       readItem := iniFile.ReadString(MRUSection, IntToStr(i), '');
       FItems.Add(readItem);
     end;
@@ -221,24 +227,24 @@ begin
     end;
   end;
 
-
 end;
 
 
-function TSDUMRUList.Load(reg: TSDURegistry; MRUSubKey: String = 'MRU'): Boolean;
+function TSDUMRUList.Load(reg: TSDURegistry; MRUSubKey: string = 'MRU')
+  : Boolean;
 var
   i:        Integer;
   cnt:      Integer;
-  readItem: String;
+  readItem: string;
 begin
-  Result := False;
+  Result         := False;
   try
     if reg.OpenKey(MRUSubKey, False) then begin
-      MaxItems := reg.ReadInteger('MaxItems', MaxItems);
-      cnt      := reg.ReadInteger('Items', 0);
+      MaxItems   := reg.ReadInteger('MaxItems', MaxItems);
+      cnt        := reg.ReadInteger('Items', 0);
 
       FItems.Clear();
-      for i := 0 to (cnt - 1) do begin
+      for i      := 0 to (cnt - 1) do begin
         readItem := reg.ReadString(IntToStr(i), '');
         FItems.Add(readItem);
       end;
@@ -251,18 +257,18 @@ begin
     end;
   end;
 
-
 end;
 
 
-function TSDUMRUList.Save(iniFile: TCustomIniFile; MRUSection: String = 'MRU'): Boolean;
+function TSDUMRUList.Save(iniFile: TCustomIniFile;
+  MRUSection: string = 'MRU'): Boolean;
 var
-  i:      Integer;
+  i: Integer;
 begin
   Result := False;
   try
     try
-      iniFile.EraseSection(MRUSection);
+        iniFile.EraseSection(MRUSection);
     except
       on E: Exception do begin
         // Do nothing; section may not have existed
@@ -270,10 +276,10 @@ begin
     end;
 
     iniFile.WriteInteger(MRUSection, 'MaxItems', MaxItems);
-    iniFile.WriteInteger(MRUSection, 'Items', Items.Count);
+    iniFile.WriteInteger(MRUSection, 'Items', items.Count);
 
     for i := 0 to (FItems.Count - 1) do begin
-      iniFile.WriteString(MRUSection, IntToStr(i), Items[i]);
+      iniFile.WriteString(MRUSection, IntToStr(i), items[i]);
     end;
 
     Result := True;
@@ -283,23 +289,23 @@ begin
     end;
   end;
 
-
 end;
 
 
-function TSDUMRUList.Save(reg: TSDURegistry; MRUSubKey: String = 'MRU'): Boolean;
+function TSDUMRUList.Save(reg: TSDURegistry; MRUSubKey: string = 'MRU')
+  : Boolean;
 var
-  i:      Integer;
+  i: Integer;
 begin
   Result := False;
   try
     reg.DeleteKey(MRUSubKey);
     if reg.OpenKey(MRUSubKey, True) then begin
       reg.WriteInteger('MaxItems', MaxItems);
-      reg.WriteInteger('Items', Items.Count);
+      reg.WriteInteger('Items', items.Count);
 
       for i := 0 to (FItems.Count - 1) do begin
-        reg.WriteString(IntToStr(i), Items[i]);
+        reg.WriteString(IntToStr(i), items[i]);
       end;
 
       Result := True;
@@ -309,7 +315,6 @@ begin
       // Do nothing; just swallow the error - Result already set to FALSE
     end;
   end;
-
 
 end;
 

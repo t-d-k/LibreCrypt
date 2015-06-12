@@ -53,14 +53,14 @@ type
     procedure lbDriversDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
   private
-    DriverControlObj: TDriverControl;
+    fDriverControlObj: TDriverControl;
 
-    BMPModeNormal:    TBitmap;
-    BMPModePortable:  TBitmap;
-    BMPStatusStarted: TBitmap;
-    BMPStatusStopped: TBitmap;
-    BMPStartAuto:     TBitmap;
-    BMPStartManual:   TBitmap;
+    fBMPModeNormal:    TBitmap;
+    fBMPModePortable:  TBitmap;
+    fBMPStatusStarted: TBitmap;
+    fBMPStatusStopped: TBitmap;
+    fBMPStartAuto:     TBitmap;
+    fBMPStartManual:   TBitmap;
 
     procedure EnableDisableControls();
 
@@ -111,7 +111,7 @@ begin
   // a result of it's creation (e.g. user doesn't have admin privs) would just
   // get "swallowed up" and ignored, instead of being propogated back to the
   // caller.
-  DriverControlObj := TDriverControl.Create();
+  fDriverControlObj := TDriverControl.Create();
 
 end;
 
@@ -137,7 +137,7 @@ begin
 
   if driverSelected then begin
     // If the service is still running, warn the user later...
-    if (DriverControlObj.GetServiceState(lbDrivers.Items[lbDrivers.ItemIndex], serviceState)) then
+    if (fDriverControlObj.GetServiceState(lbDrivers.Items[lbDrivers.ItemIndex], serviceState)) then
     begin
       serviceRunning := (serviceState = SERVICE_RUNNING);
 
@@ -146,7 +146,7 @@ begin
     end;
 
     cbStartup.ItemIndex := cbStartup.Items.IndexOf(TEXT_MANUAL_START);
-    if DriverControlObj.GetServiceAutoStart(lbDrivers.Items[lbDrivers.ItemIndex], autoStart) then
+    if fDriverControlObj.GetServiceAutoStart(lbDrivers.Items[lbDrivers.ItemIndex], autoStart) then
     begin
       if autoStart then begin
         cbStartup.ItemIndex := cbStartup.Items.IndexOf(TEXT_AUTO_START);
@@ -176,7 +176,7 @@ begin
 
   driverList := TStringList.Create();
   try
-    DriverControlObj.GetFreeOTFEDrivers(driverList);
+    fDriverControlObj.GetFreeOTFEDrivers(driverList);
 
     // Bang the sorted flag up & down to ensure that the list is sorted
     // before it is displayed to the user
@@ -190,9 +190,9 @@ begin
 
 
   maxWidth := 0;
-  for i := 0 to (lbDrivers.Items.Count - 1) do begin
+  for i := 0 to (lbDrivers.Items.Count - 1) do
     maxWidth := max(maxWidth, GetItemWidth(i));
-  end;
+
   lbDrivers.ScrollWidth := maxWidth;
 
 
@@ -200,7 +200,6 @@ begin
   lbDrivers.ItemIndex := -1;
   // Ensure that the fact none is selected takes effect...
   lbDriversClick(nil);
-
 end;
 
 
@@ -230,7 +229,7 @@ var
   service: String;
 begin
   service := lbDrivers.Items[lbDrivers.ItemIndex];
-  if not (DriverControlObj.StartStopService(service, True)) then begin
+  if not (fDriverControlObj.StartStopService(service, True)) then begin
     SDUMessageDlg(Format(_('Unable to start driver "%s"'), [service]) + SDUCRLF +
       SDUCRLF + TEXT_NEED_ADMIN,
       mtError
@@ -255,19 +254,17 @@ begin
   // In that scenario, things could get dodgy if the user did something stupid
   // like uninstalling the main driver, while keeping the 2nd app connected to
   // it.
-  if (SDUMessageDlg(_('WARNING!') + SDUCRLF + SDUCRLF +
-    _(
-    'Stopping a LibreCrypt driver which is currently in use (e.g. by one or more mounted container) can lead to SYSTEM INSTABILITY.') +
-    SDUCRLF + SDUCRLF +
-    _('This option is intended for experienced users who REALLY know what they''re doing.') + SDUCRLF + SDUCRLF + Format(
-    _('Are you sure you wish to stop the "%s" driver?'), [lbDrivers.Items[lbDrivers.ItemIndex]]),
-    mtWarning, [mbYes, mbNo], 0) =
-    mrYes) then begin
+  if (SDUMessageDlg(_('WARNING!') + SDUCRLF + SDUCRLF + _(
+    'Stopping a LibreCrypt driver which is currently in use (e.g. by one or more mounted container) can lead to SYSTEM INSTABILITY.')
+    + SDUCRLF + SDUCRLF + _(
+    'This option is intended for experienced users who REALLY know what they''re doing.') +
+    SDUCRLF + SDUCRLF + Format(_('Are you sure you wish to stop the "%s" driver?'),
+    [lbDrivers.Items[lbDrivers.ItemIndex]]), mtWarning, [mbYes, mbNo], 0) = mrYes) then begin
     service := lbDrivers.Items[lbDrivers.ItemIndex];
 
-    if not (DriverControlObj.StartStopService(service, False)) then begin
-      SDUMessageDlg(Format(_('Unable to stop driver "%s"'), [service]) + SDUCRLF +
-        SDUCRLF + TEXT_NEED_ADMIN,
+    if not (fDriverControlObj.StartStopService(service, False)) then begin
+      SDUMessageDlg(Format(_('Unable to stop driver "%s"'), [service]) +
+        SDUCRLF + SDUCRLF + TEXT_NEED_ADMIN,
         mtError
         );
     end;
@@ -295,18 +292,15 @@ begin
   // In that scenario, things could get dodgy if the user did something stupid
   // like uninstalling the main driver, while keeping the 2nd app connected to
   // it.
-  if (SDUMessageDlg(_('WARNING!') + SDUCRLF + SDUCRLF +
-    _(
-    'Uninstalling a LibreCrypt driver which is currently in use (e.g. by one or more mounted volumes) can lead to SYSTEM INSTABILITY.') +
-    SDUCRLF + SDUCRLF + _(
-    'This option is intended for experienced users who REALLY know what they''re doing.') + SDUCRLF +
-    SDUCRLF + Format(
-    _('Are you sure you wish to uninstall the "%s" driver?'), [lbDrivers.Items[lbDrivers.ItemIndex]]),
-    mtWarning, [mbYes, mbNo], 0) = mrYes) then
-  begin
+  if (SDUMessageDlg(_('WARNING!') + SDUCRLF + SDUCRLF + _(
+    'Uninstalling a LibreCrypt driver which is currently in use (e.g. by one or more mounted volumes) can lead to SYSTEM INSTABILITY.')
+    + SDUCRLF + SDUCRLF + _(
+    'This option is intended for experienced users who REALLY know what they''re doing.') +
+    SDUCRLF + SDUCRLF + Format(_('Are you sure you wish to uninstall the "%s" driver?'),
+    [lbDrivers.Items[lbDrivers.ItemIndex]]), mtWarning, [mbYes, mbNo], 0) = mrYes) then begin
     driverName := lbDrivers.Items[lbDrivers.ItemIndex];
 
-    status := DriverControlObj.UninstallDriver(driverName);
+    status := fDriverControlObj.UninstallDriver(driverName);
 
     if ((status and DRIVER_BIT_SUCCESS) = DRIVER_BIT_SUCCESS) then begin
       // Uninstallation SUCCESSFULL
@@ -335,8 +329,8 @@ begin
     end else begin
       // Uninstallation FAILURE
       SDUMessageDlg(
-        Format(_('Unable to delete driver service "%s".'), [driverName]) + SDUCRLF +
-        SDUCRLF + _(
+        Format(_('Unable to delete driver service "%s".'), [driverName]) +
+        SDUCRLF + SDUCRLF + _(
         'Please disable this driver from starting up automatically, reboot, and try again.'),
         mtError
         );
@@ -359,7 +353,7 @@ begin
   OpenDialog.Options := OpenDialog.Options + [ofDontAddToRecent];
   if (OpenDialog.Execute()) then begin
     for i := 0 to (OpenDialog.files.Count - 1) do begin
-      DriverControlObj.InstallSetAutoStartAndStartDriver(OpenDialog.files[i]);
+      fDriverControlObj.InstallSetAutoStartAndStartDriver(OpenDialog.files[i]);
     end;
 
     // Refresh the drivers list
@@ -401,10 +395,10 @@ begin
   if (cbStartup.ItemIndex >= 0) then begin
     autoStart := (cbStartup.ItemIndex = (cbStartup.Items.IndexOf(TEXT_AUTO_START)));
     service   := lbDrivers.Items[lbDrivers.ItemIndex];
-    if not (DriverControlObj.SetServiceAutoStart(service, autoStart)) then begin
+    if not (fDriverControlObj.SetServiceAutoStart(service, autoStart)) then begin
       SDUMessageDlg(
-        Format(_('Unable to set startup option for driver "%s".'), [service]) + SDUCRLF +
-        SDUCRLF + TEXT_NEED_ADMIN,
+        Format(_('Unable to set startup option for driver "%s".'), [service]) +
+        SDUCRLF + SDUCRLF + TEXT_NEED_ADMIN,
         mtError
         );
     end;
@@ -422,7 +416,7 @@ procedure TfrmDriverControl.FormCloseQuery(Sender: TObject;
 begin
   FreeBitmapsFromResources();
 
-  DriverControlObj.Free();
+  fDriverControlObj.Free();
 
 end;
 
@@ -432,35 +426,35 @@ procedure TfrmDriverControl.LoadBitmapsFromResources();
 var
   thehBitmap: hBitmap;
 begin
-  thehBitmap    := LoadBitmap(hInstance, BMP_MODE_NORMAL);
-  BMPModeNormal := TBitmap.Create();
-  BMPModeNormal.ReleaseHandle();
-  BMPModeNormal.handle := thehBitmap;
+  thehBitmap     := LoadBitmap(hInstance, BMP_MODE_NORMAL);
+  fBMPModeNormal := TBitmap.Create();
+  fBMPModeNormal.ReleaseHandle();
+  fBMPModeNormal.handle := thehBitmap;
 
-  thehBitmap      := LoadBitmap(hInstance, BMP_MODE_PORTABLE);
-  BMPModePortable := TBitmap.Create();
-  BMPModePortable.ReleaseHandle();
-  BMPModePortable.handle := thehBitmap;
+  thehBitmap       := LoadBitmap(hInstance, BMP_MODE_PORTABLE);
+  fBMPModePortable := TBitmap.Create();
+  fBMPModePortable.ReleaseHandle();
+  fBMPModePortable.handle := thehBitmap;
 
-  thehBitmap       := LoadBitmap(hInstance, BMP_STATUS_STARTED);
-  BMPStatusStarted := TBitmap.Create();
-  BMPStatusStarted.ReleaseHandle();
-  BMPStatusStarted.handle := thehBitmap;
+  thehBitmap        := LoadBitmap(hInstance, BMP_STATUS_STARTED);
+  fBMPStatusStarted := TBitmap.Create();
+  fBMPStatusStarted.ReleaseHandle();
+  fBMPStatusStarted.handle := thehBitmap;
 
-  thehBitmap       := LoadBitmap(hInstance, BMP_STATUS_STOPPED);
-  BMPStatusStopped := TBitmap.Create();
-  BMPStatusStopped.ReleaseHandle();
-  BMPStatusStopped.handle := thehBitmap;
+  thehBitmap        := LoadBitmap(hInstance, BMP_STATUS_STOPPED);
+  fBMPStatusStopped := TBitmap.Create();
+  fBMPStatusStopped.ReleaseHandle();
+  fBMPStatusStopped.handle := thehBitmap;
 
-  thehBitmap   := LoadBitmap(hInstance, BMP_START_AUTO);
-  BMPStartAuto := TBitmap.Create();
-  BMPStartAuto.ReleaseHandle();
-  BMPStartAuto.handle := thehBitmap;
+  thehBitmap    := LoadBitmap(hInstance, BMP_START_AUTO);
+  fBMPStartAuto := TBitmap.Create();
+  fBMPStartAuto.ReleaseHandle();
+  fBMPStartAuto.handle := thehBitmap;
 
-  thehBitmap     := LoadBitmap(hInstance, BMP_START_MANUAL);
-  BMPStartManual := TBitmap.Create();
-  BMPStartManual.ReleaseHandle();
-  BMPStartManual.handle := thehBitmap;
+  thehBitmap      := LoadBitmap(hInstance, BMP_START_MANUAL);
+  FBMPStartManual := TBitmap.Create();
+  FBMPStartManual.ReleaseHandle();
+  fBMPStartManual.handle := thehBitmap;
 
 end;
 
@@ -469,34 +463,34 @@ procedure TfrmDriverControl.FreeBitmapsFromResources();
 var
   thehBitmap: hBitmap;
 begin
-  thehBitmap := BMPModeNormal.Handle;
-  BMPModeNormal.ReleaseHandle();
-  BMPModeNormal.Free();
+  thehBitmap := fBMPModeNormal.Handle;
+  fBMPModeNormal.ReleaseHandle();
+  fBMPModeNormal.Free();
   DeleteObject(thehBitmap);
 
-  thehBitmap := BMPModePortable.Handle;
-  BMPModePortable.ReleaseHandle();
-  BMPModePortable.Free();
+  thehBitmap := fBMPModePortable.Handle;
+  fBMPModePortable.ReleaseHandle();
+  fBMPModePortable.Free();
   DeleteObject(thehBitmap);
 
-  thehBitmap := BMPStatusStarted.Handle;
-  BMPStatusStarted.ReleaseHandle();
-  BMPStatusStarted.Free();
+  thehBitmap := fBMPStatusStarted.Handle;
+  fBMPStatusStarted.ReleaseHandle();
+  fBMPStatusStarted.Free();
   DeleteObject(thehBitmap);
 
-  thehBitmap := BMPStatusStopped.Handle;
-  BMPStatusStopped.ReleaseHandle();
-  BMPStatusStopped.Free();
+  thehBitmap := fBMPStatusStopped.Handle;
+  fBMPStatusStopped.ReleaseHandle();
+  fBMPStatusStopped.Free();
   DeleteObject(thehBitmap);
 
-  thehBitmap := BMPStartAuto.Handle;
-  BMPStartAuto.ReleaseHandle();
-  BMPStartAuto.Free();
+  thehBitmap := fBMPStartAuto.Handle;
+  fBMPStartAuto.ReleaseHandle();
+  fBMPStartAuto.Free();
   DeleteObject(thehBitmap);
 
-  thehBitmap := BMPStartManual.Handle;
-  BMPStartManual.ReleaseHandle();
-  BMPStartManual.Free();
+  thehBitmap := fBMPStartManual.Handle;
+  fBMPStartManual.ReleaseHandle();
+  fBMPStartManual.Free();
   DeleteObject(thehBitmap);
 
 end;
@@ -531,7 +525,7 @@ begin
 {
   // Portable Drivers in italics
   canvas.Font.Style := [];
-  if DriverControlObj.IsDriverInstalledPortable(lbObj.Items[Index], portableMode) then
+  if fDriverControlObj.IsDriverInstalledPortable(lbObj.Items[Index], portableMode) then
     begin
     if portableMode then
       begin
@@ -544,18 +538,18 @@ begin
   // Determine which icons are to be displayed...
 
   // Auto or manual start...
-  drawStartBmp := BMPStartManual;
-  if (DriverControlObj.GetServiceAutoStart(lbObj.Items[Index], autoStart)) then begin
+  drawStartBmp := fBMPStartManual;
+  if (fDriverControlObj.GetServiceAutoStart(lbObj.Items[Index], autoStart)) then begin
     if (autoStart) then begin
-      drawStartBmp := BMPStartAuto;
+      drawStartBmp := FBMPStartAuto;
     end;
   end;
 
   // Started or stopped...
-  drawStatusBmp := BMPStatusStopped;
-  if (DriverControlObj.GetServiceState(lbObj.Items[Index], serviceState)) then begin
+  drawStatusBmp := fBMPStatusStopped;
+  if (fDriverControlObj.GetServiceState(lbObj.Items[Index], serviceState)) then begin
     if (serviceState = SERVICE_RUNNING) then begin
-      drawStatusBmp := BMPStatusStarted;
+      drawStatusBmp := fBMPStatusStarted;
     end;
   end;
 
@@ -563,9 +557,9 @@ begin
   // If running normally, don't display an icon
   //  drawModeBmp := BMPModeNormal;
   drawModeBmp := nil;
-  if DriverControlObj.IsDriverInstalledPortable(lbObj.Items[Index], portableMode) then begin
+  if fDriverControlObj.IsDriverInstalledPortable(lbObj.Items[Index], portableMode) then begin
     if (portableMode) then begin
-      drawModeBmp := BMPModePortable;
+      drawModeBmp := fBMPModePortable;
     end;
   end;
 
@@ -578,7 +572,7 @@ begin
     (Rect.Top + (((Rect.Bottom - Rect.Top) - drawStartBmp.Height) div 2)),
     drawStartBmp
     );
-  offset := offset + INTER_IMAGE_GAP + max(BMPStartAuto.Width, BMPStartManual.Width);
+  offset := offset + INTER_IMAGE_GAP + max(fBMPStartAuto.Width, fBMPStartManual.Width);
 
   // Started or stopped...
   if (drawModeBmp <> nil) then begin
@@ -588,7 +582,7 @@ begin
       drawModeBmp
       );
   end;
-  offset := offset + INTER_IMAGE_GAP + max(BMPModePortable.Width, BMPModeNormal.Width);
+  offset := offset + INTER_IMAGE_GAP + max(FBMPModePortable.Width, FBMPModeNormal.Width);
 
   // Normal or portable...
   lbObj.Canvas.Draw(
@@ -596,7 +590,7 @@ begin
     (Rect.Top + (((Rect.Bottom - Rect.Top) - drawStatusBmp.Height) div 2)),
     drawStatusBmp
     );
-  offset := offset + INTER_IMAGE_GAP + max(BMPStatusStarted.Width, BMPStatusStopped.Width);
+  offset := offset + INTER_IMAGE_GAP + max(FBMPStatusStarted.Width, FBMPStatusStopped.Width);
 
 
   // The name...
@@ -616,9 +610,9 @@ begin
 
   offset := INTER_IMAGE_GAP;  // Default offset
 
-  offset := offset + INTER_IMAGE_GAP + max(BMPStartAuto.Width, BMPStartManual.Width);
-  offset := offset + INTER_IMAGE_GAP + max(BMPModePortable.Width, BMPModeNormal.Width);
-  offset := offset + INTER_IMAGE_GAP + max(BMPStatusStarted.Width, BMPStatusStopped.Width);
+  offset := offset + INTER_IMAGE_GAP + max(fBMPStartAuto.Width, fBMPStartManual.Width);
+  offset := offset + INTER_IMAGE_GAP + max(FBMPModePortable.Width, fBMPModeNormal.Width);
+  offset := offset + INTER_IMAGE_GAP + max(fBMPStatusStarted.Width, fBMPStatusStopped.Width);
 
   // The name...
   offset := offset + canvas.TextWidth(lbObj.Items[Index]);

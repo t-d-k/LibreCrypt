@@ -1,5 +1,5 @@
 unit SDUWindows;
-
+{ extra windows functions}
 interface
 
 uses

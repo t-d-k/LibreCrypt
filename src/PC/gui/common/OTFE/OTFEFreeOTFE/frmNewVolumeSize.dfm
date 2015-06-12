@@ -27,7 +27,7 @@ object frmNewVolumeSize: TfrmNewVolumeSize
   object Label3: TLabel
     Left = 8
     Top = 52
-    Width = 59
+    Width = 69
     Height = 13
     Caption = 'Container &size:'
   end

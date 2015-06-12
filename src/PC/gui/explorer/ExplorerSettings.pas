@@ -190,9 +190,9 @@ const
   OPT_OVERWRITECACHEONDISMOUNT      = 'OverwriteCacheOnDismount';
   DFLT_OPT_OVERWRITECACHEONDISMOUNT = True;
   OPT_PORT                          = 'Port';
-  DFLT_OPT_PORT                     = 80;
+  DFLT_OPT_PORT                     = 8081;
   OPT_SHARENAME                     = 'ShareName';
-  DFLT_OPT_SHARENAME                = 'FEXPL';
+  DFLT_OPT_SHARENAME                = 'LEXPL';
   OPT_LOGDEBUG                      = 'LogDebug';
   DFLT_OPT_LOGDEBUG                 = '';
   OPT_LOGACCESS                     = 'LogAccess';

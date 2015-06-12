@@ -152,7 +152,7 @@ begin
   if SaveDialog.Execute then begin
     CDBRecord := PPKCS11CDB(lbCDB.items.Objects[lbCDB.ItemIndex]);
 
-    if SDUSetFileContent(SaveDialog.Filename, CDBRecord.CDB) then begin
+    if SDUSetFileContent(SaveDialog.Filename,SDUStringToSDUBytes(CDBRecord.CDB)) then begin
       SDUMessageDlg(_('Keyfile exported successfully'));
     end else begin
       SDUMessageDlg(

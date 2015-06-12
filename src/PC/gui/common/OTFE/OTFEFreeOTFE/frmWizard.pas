@@ -187,14 +187,13 @@ begin
     pbStage.Max      := totalReqStages;
     pbStage.Position := currStage;
 
-    lblStage.Caption := SDUParamSubstitute(_('Stage %1 of %2'), [currStage, totalReqStages]);
+    lblStage.Caption := Format(_('Stage %u of %u'), [currStage, totalReqStages]);
 
   end else begin
     pbStage.Max      := totalStages;
     pbStage.Position := currStage;
 
-    lblStage.Caption := SDUParamSubstitute(_('Stage %1 of %2 (Optional)'),
-      [currStage, totalStages]);
+    lblStage.Caption := Format(_('Stage %u of %u (Optional)'), [currStage, totalStages]);
   end;
 
 end;

@@ -110,9 +110,8 @@ type
     fPkcs11session:  TPKCS11Session;
 
     fsilentResult: TModalResult;
-
     fsilent:        Boolean;
-    fVolumeFiles:   TStringList;
+    fVolumeFile:   string;
     fmountedDrives: String;
 
     procedure PopulateDrives();
@@ -138,8 +137,9 @@ type
     function IsVolumeStoredOnReadonlyMedia(): Boolean;
     function IsVolumeMarkedAsReadonly(): Boolean;
 
-    function INSMessageDlg(Content: String; DlgType: TMsgDlgType): Integer;
-    procedure SetVolumeFilesText(Value: String);
+    // only show if not silent
+    function SilencableMessageDlg(Content: String; DlgType: TMsgDlgType): Integer;
+procedure SetVolumeFile(Value: String);
   public
 
     procedure SetPassword(password: TSDUBytes);
@@ -153,7 +153,7 @@ type
     procedure DisplayAdvanced(displayAdvanced: Boolean);
 
     property Silent: Boolean Read fSilent Write fSilent;
-    property VolumeFilesText: String Write SetVolumeFilesText;
+    property VolumeFile: String Write SetVolumeFile;
     property MountedDrives: String Read fMountedDrives;
   end;
 
@@ -303,7 +303,7 @@ begin
   cbPKCS11CDB.items.Clear();
   if (session <> nil) then begin
     if not (GetAllPKCS11CDB(session, FTokenCDB, errMsg)) then begin
-      INSMessageDlg(_('Unable to get list of CDB entries from Token') + SDUCRLF +
+      SilencableMessageDlg(_('Unable to get list of CDB entries from Token') + SDUCRLF +
         SDUCRLF + errMsg, mtError);
     end;
   end;
@@ -322,7 +322,7 @@ begin
   end;
 
   if warnBadCDB then begin
-    INSMessageDlg(
+    SilencableMessageDlg(
       _('One or more of the keyfiles stored on your token are invalid/corrupt and will be ignored') +
       SDUCRLF + SDUCRLF + _('Please check which keyfiles are stored on this token and correct'),
       mtWarning
@@ -361,7 +361,7 @@ begin
   cbPKCS11SecretKey.items.Clear();
   if (session <> nil) then begin
     if not (GetAllPKCS11SecretKey(session, FTokenSecretKey, errMsg)) then begin
-      INSMessageDlg(_('Unable to get a list of secret keys from Token') +
+      SilencableMessageDlg(_('Unable to get a list of secret keys from Token') +
         SDUCRLF + SDUCRLF + errMsg, mtError);
     end;
   end;
@@ -427,7 +427,7 @@ begin
 
     fMountedDrives := '';
     { TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
-    Result         := GetFreeOTFEBase.MountFreeOTFE(fVolumeFiles,
+    Result         := GetFreeOTFEBase.MountFreeOTFE(fVolumeFile,
       SDUStringToSDUBytes(preUserkey.Text), useKeyfilename, usePKCS11CDB,
       usedSlotID, FPKCS11Session, usePKCS11SecretKey, seKeyIterations.Value,
       GetDriveLetter(), ckMountReadonly.Checked, GetMountAs(), se64UnitOffset.Value,
@@ -475,7 +475,7 @@ begin
             _('Unable to open container; if a container is readonly, please check the "open readonly" option.');
         end;
 
-        INSMessageDlg(errMSg, mtError);
+        SilencableMessageDlg(errMSg, mtError);
       end else
       if (cntMountFailed > 0) then begin
         // At least one volume was mounted, but not all of them
@@ -485,7 +485,7 @@ begin
           _('%1 containers were opened successfully, but %2 could not be opened'),
           [cntMountOK, cntMountFailed]));
 
-        INSMessageDlg(errMSg, mtWarning);
+        SilencableMessageDlg(errMSg, mtWarning);
         Result := True;
       end;
 
@@ -502,8 +502,8 @@ var
 begin
   Result := False;
 
-  for i := 0 to (fVolumeFiles.Count - 1) do begin
-    currVol := fVolumeFiles[i];
+//  for i := 0 to (fVolumeFiles.Count - 1) do begin
+    currVol := fVolumeFile;
 
     if not (GetFreeOTFEBase.IsPartition_UserModeName(currVol)) then begin
       if (length(currVol) > 2) then begin
@@ -514,14 +514,14 @@ begin
           if (TDriveType(GetDriveType(PChar(testDriveColonSlash))) = dtCDROM) then begin
             // At least one of the volumes is stored on a CDROM (readonly media)
             Result := True;
-            break;
+//            break;
           end;
 
         end;
       end;
     end;
 
-  end;
+//  end;
 end;
 
 function TfrmKeyEntryFreeOTFE.IsVolumeMarkedAsReadonly(): Boolean;
@@ -531,8 +531,8 @@ var
 begin
   Result := False;
 
-  for i := 0 to (fVolumeFiles.Count - 1) do begin
-    currVol := fVolumeFiles[i];
+//  for i := 0 to (fVolumeFiles.Count - 1) do begin
+    currVol := fVolumeFile;
 
     if not (GetFreeOTFEBase.IsPartition_UserModeName(currVol)) then begin
       if (length(currVol) > 2) then begin
@@ -542,14 +542,14 @@ begin
           if FileIsReadOnly(currVol) then begin
             // At least one of the volumes is readonly
             Result := True;
-            break;
+//            break;
           end;
 
         end;
       end;
     end;
 
-  end;
+//  end;
 end;
 
 
@@ -558,10 +558,7 @@ begin
   Result := True;
 
   if (seSaltLength.Value mod 8 <> 0) then begin
-    INSMessageDlg(
-      _('Salt length (in bits) must be a multiple of 8'),
-      mtError
-      );
+    SilencableMessageDlg(      _('Salt length (in bits) must be a multiple of 8'),      mtError      );
     Result := False;
   end;
 end;
@@ -592,7 +589,7 @@ begin
     // If we have a session, the user's logged into the token. However, no
     // keyfiles are on the token, warn the user
     if (FPKCS11Session <> nil) then begin
-      INSMessageDlg(
+      SilencableMessageDlg(
         _('No keyfiles could be found on the token inserted.'),
         mtInformation
         );
@@ -665,7 +662,8 @@ end;
 
 procedure TfrmKeyEntryFreeOTFE.FormCreate(Sender: TObject);
 begin
-  fVolumeFiles := TStringList.Create;
+//  fVolumeFiles := TStringList.Create;
+  fVolumeFile := '';
   fsilent      := False;
 
   pnlLower.BevelOuter    := bvNone;
@@ -723,7 +721,7 @@ begin
     FPKCS11Session.CloseSession();
     FPKCS11Session.Free();
   end;
-  fVolumeFiles.Free;
+//  fVolumeFiles.Free;
 end;
 
 procedure TfrmKeyEntryFreeOTFE.FormShow(Sender: TObject);
@@ -936,20 +934,17 @@ begin
   preUserKey.Text := SDUBytesToString(password);
 end;
 
- // "INS" - "If Not Silent"
- // Display message, if "Silent" not set to TRUE
-function TfrmKeyEntryFreeOTFE.INSMessageDlg(Content: String; DlgType: TMsgDlgType): Integer;
+ // Display message only if not Silent
+function TfrmKeyEntryFreeOTFE.SilencableMessageDlg(Content: String; DlgType: TMsgDlgType): Integer;
 begin
   Result := mrOk;
-  if not (fsilent) then begin
+  if not fsilent then
     Result := SDUMessageDlg(Content, DlgType);
-  end;
-
 end;
 
-procedure TfrmKeyEntryFreeOTFE.SetVolumeFilesText(Value: String);
+procedure TfrmKeyEntryFreeOTFE.SetVolumeFile(Value: String);
 begin
-  fVolumeFiles.Text := Value;
+  fVolumeFile := Value;
 end;
 
 end.

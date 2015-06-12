@@ -62,7 +62,7 @@ type
 
     procedure NotifyChanged(Sender: TObject);
     procedure UpdateErrorWarning();
-    procedure CenterErrorWarning();
+//    procedure CenterErrorWarning();
 
     procedure EnableDisableControls();
 
@@ -416,7 +416,7 @@ var
   showIconError:   Boolean;
   useIconidx:      Integer;
   tmpImg:          TIcon;
-  imgLabelDiff:    Integer;
+//  imgLabelDiff:    Integer;
 begin
 //  imgLabelDiff         := lblErrorWarning.left - (imgErrorWarning.left + imgErrorWarning.Width);
 //  imgErrorWarning.left := 0;
@@ -446,17 +446,17 @@ begin
 //  CenterErrorWarning();
 
 end;
-
-procedure TfmeSelectPartition.CenterErrorWarning();
-var
-  ctrlArr: TControlArray;
-begin
-  // Center the icon and message
-  SetLength(ctrlArr, 2);
-  ctrlArr[0] := imgErrorWarning;
-  ctrlArr[1] := lblErrorWarning;
-  SDUCenterControl(ctrlArr, ccHorizontal);
-end;
+//
+//procedure TfmeSelectPartition.CenterErrorWarning();
+//var
+//  ctrlArr: TControlArray;
+//begin
+//  // Center the icon and message
+//  SetLength(ctrlArr, 2);
+//  ctrlArr[0] := imgErrorWarning;
+//  ctrlArr[1] := lblErrorWarning;
+//  SDUCenterControl(ctrlArr, ccHorizontal);
+//end;
 
 procedure TfmeSelectPartition.NotifyChanged(Sender: TObject);
 begin
@@ -527,8 +527,7 @@ begin
 
   if (SDUDiskPartitionsPanel1.DiskNumber >= 0) then begin
     if not (SDUDiskPartitionsPanel1.DriveLayoutInformationValid) then begin
-      msg     := SDUParamSubstitute(UNABLE_TO_GET_DISK_LAYOUT,
-        [SDUDiskPartitionsPanel1.DiskNumber]);
+      msg     := Format(UNABLE_TO_GET_DISK_LAYOUT,     [SDUDiskPartitionsPanel1.DiskNumber]);
       isError := True;
     end else begin
       selectedDriveLetters := '';

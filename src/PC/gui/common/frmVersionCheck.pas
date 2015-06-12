@@ -10,22 +10,22 @@ uses
 
 type
   TfrmVersionCheck = class (TSDUForm)
-    Label2:                         TLabel;
-    Label3:                         TLabel;
-    lblVersionCurrent:              TLabel;
-    pbClose:                        TButton;
-    SDUURLLabel1:                   TSDUURLLabel;
+    Label2:           TLabel;
+    Label3:           TLabel;
+    lblVersionCurrent: TLabel;
+    pbClose:          TButton;
+    SDUURLLabel1:     TSDUURLLabel;
     ckSuppressNotifyingThisVersion: TCheckBox;
-    lblVersionLatest:               TLabel;
+    lblVersionLatest: TLabel;
     procedure pbCloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-  PRIVATE
+  private
     FLatestMajorVersion, FLatestMinorVersion: Integer;
-  PROTECTED
+  protected
     procedure SetAllowSuppress(allow: Boolean);
     function GetSuppressNotifyingThisVersion(): Boolean;
-  PUBLIC
+  public
     property AllowSuppress: Boolean Write SetAllowSuppress;
     property LatestMajorVersion: Integer Read FLatestMajorVersion Write FLatestMajorVersion;
     property LatestMinorVersion: Integer Read FLatestMinorVersion Write FLatestMinorVersion;
@@ -45,7 +45,7 @@ implementation
 
 uses
   ShellAPI,  // Required for ShellExecute
-  CommonConsts,   lcConsts,
+  CommonConsts, lcConsts,
 {$IFDEF FREEOTFE_MAIN}
 
   MainSettings,
@@ -68,8 +68,8 @@ const
 {$ENDIF}
 
 resourcestring
-  RS_CHECKING                         = '<checking...>';
-  RS_CONFIRM_AUTOCHECK                =
+  RS_CHECKING          = '<checking...>';
+  RS_CONFIRM_AUTOCHECK =
     'Do you want to automatically check for updates in the future?';
   RS_UNABLE_TO_DETERMINE_THIS_VERSION = 'Unable to determine which version this software is.';
 
@@ -109,8 +109,7 @@ begin
   end else
   if (wwwResult <> tgOK) then begin
     SDUMessageDlg(
-      SDUParamSubstitute(_('Unable to determine latest release of %1.'),
-      [Application.Title]),
+      Format(_('Unable to determine latest release of %s.'), [Application.Title]),
       mtError
       );
   end else begin
@@ -163,28 +162,26 @@ begin
   //prompt to connect to net
   { DONE 1 -otdk -cenhance : remember result }
   if not (SDUConfirmYN(_(
-    'A check for an update is due, which requires a connection to the internet. Continue?')))
-  then
+    'A check for an update is due, which requires a connection to the internet. Continue?'))) then
     wwwResult := tgCancel
-
   else
-
     wwwResult := SDUGetPADFileVersionInfo(PADURL, latestMajorVersion,
       latestMinorVersion, Application.Title + '/' + SDUGetVersionInfoString(''), True);
+
   if (wwwResult = tgCancel) then begin
     // if can't save settings then no point in asking whether to check again (will automatically)
     if gSettings.OptSaveSettings = slNone then begin
-        SDUMessageDlg(_('Canceled checking for updated version'),mtInformation);
-     end else begin
-     if not (SDUConfirmYN(_('Canceled checking for updated version') +
-      SDUCRLF + SDUCRLF + RS_CONFIRM_AUTOCHECK)) then
-      Frequency := ufNever;
+      SDUMessageDlg(_('Canceled checking for updated version'), mtInformation);
+    end else begin
+      if not (SDUConfirmYN(_('Canceled checking for updated version') +
+        SDUCRLF + SDUCRLF + RS_CONFIRM_AUTOCHECK)) then
+        Frequency := ufNever;
 
     end;
-    
+
   end else
   if (wwwResult <> tgOK) then begin
-    if not (SDUErrorYN(SDUParamSubstitute(_('Unable to determine latest release of %1.'),
+    if not (SDUErrorYN(Format(_('Unable to determine latest release of %s.'),
       [Application.Title]) + SDUCRLF + SDUCRLF + RS_CONFIRM_AUTOCHECK)) then begin
       Frequency := ufNever;
     end;

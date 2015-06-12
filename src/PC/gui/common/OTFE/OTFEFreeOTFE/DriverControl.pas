@@ -37,18 +37,36 @@ resourcestring
   TEXT_NEED_ADMIN = 'Administrator privileges are required in order to carry out this operation.';
 
 type
-  TDriverControl = class
+
+  //see driverocntrol for implementation
+  TSDUServiceControl = class (Tobject)
   private
-    FSilent: Boolean;
+
+  protected
+  FSilent: Boolean;
+    function FreeOTFEOpenService(service: String;
+      var serviceHandle: SC_HANDLE): Boolean;
+          procedure FreeOTFECloseService(serviceHandle: SC_HANDLE);
+    function _MsgDlg(Content: String; DlgType: TMsgDlgType): Integer;
+  public
+  property Silent: Boolean Read FSilent Write FSilent;
+      function GetServiceState(service: String; var state: DWORD): Boolean; virtual;
+          function StartStopService(service: String; start: Boolean): Boolean; virtual;
+
+  end;
+
+  TDriverControl = class(TSDUServiceControl)
+  private
+//    FSilent: Boolean;
     //    SCManager: SC_HANDLE;
 
-    function _MsgDlg(Content: String; DlgType: TMsgDlgType): Integer;
-
-    function FreeOTFEOpenService(
-      service: String;
-      var serviceHandle: SC_HANDLE
-      ): Boolean;
-    procedure FreeOTFECloseService(serviceHandle: SC_HANDLE);
+//    function _MsgDlg(Content: String; DlgType: TMsgDlgType): Integer;
+//
+//    function FreeOTFEOpenService(
+//      service: String;
+//      var serviceHandle: SC_HANDLE
+//      ): Boolean;
+//    procedure FreeOTFECloseService(serviceHandle: SC_HANDLE);
 
     // Open the Service Control Manager
     function SCManagerOpen(): Boolean;
@@ -78,7 +96,7 @@ Commented out; not used atm
     destructor Destroy(); override;
 
 
-    property Silent: Boolean Read FSilent Write FSilent;
+//    property Silent: Boolean Read FSilent Write FSilent;
 
     function InstallSetAutoStartAndStartDriver(pathAndFilename: String): Boolean; overload;
     function InstallMultipleDrivers(
@@ -96,9 +114,9 @@ Commented out; not used atm
     function UninstallDriver(service: String): DWORD;
     function UninstallAllDrivers(portableModeOnly: Boolean): Boolean;
 
-    function GetServiceState(service: String; var state: DWORD): Boolean;
+//    function GetServiceState(service: String; var state: DWORD): Boolean;
     function GetFreeOTFEDrivers(var driverNames: TStringList): Boolean;
-    function StartStopService(service: String; start: Boolean): Boolean;
+//    function StartStopService(service: String; start: Boolean): Boolean;
     function GetServiceAutoStart(service: String; var autoStart: Boolean): Boolean;
     function SetServiceAutoStart(service: String; autoStart: Boolean): Boolean;
 
@@ -165,34 +183,7 @@ begin
 end;
 
 
- // ----------------------------------------------------------------------------
- // This returns a service state as per calls to SERVICE_STATUS struct;
- // dwCurrentState member
- // state - This will be set to the state of the service
- // Returns: TRUE/FALSE on success/failure
-function TDriverControl.GetServiceState(service: String; var state: DWORD): Boolean;
-var
-  serviceHandle: SC_HANDLE;
-  serviceStatus: SERVICE_STATUS;
-begin
-  Result := False;
-
-  if (uSCManager <> 0) then begin
-    serviceHandle := 0;
-    if (FreeOTFEOpenService(service, serviceHandle)) then begin
-      if QueryServiceStatus(serviceHandle,  // handle of service
-        serviceStatus                       // address of service status structure
-        ) then begin
-        state  := serviceStatus.dwCurrentState;
-        Result := True;
-      end;
-
-      FreeOTFECloseService(serviceHandle);
-    end;
-
-  end;
-
-end;
+ 
 
 
 
@@ -280,39 +271,6 @@ begin
 
     finally
       FreeMem(serviceList);
-    end;
-
-  end;
-
-end;
-
-
-// start - Set to TRUE to start the service, set to FALSE to stop it
-function TDriverControl.StartStopService(service: String; start: Boolean): Boolean;
-var
-  serviceHandle: SC_HANDLE;
-  serviceStatus: SERVICE_STATUS;
-  X:             PChar;  // No idea why this is needed though...
-begin
-  Result := False;
-  X      := nil;
-
-  if (uSCManager <> 0) then begin
-    serviceHandle := 0;
-    if (FreeOTFEOpenService(service, serviceHandle)) then begin
-      if start then begin
-        Result := StartService(serviceHandle, // handle of service
-          0,  // number of arguments
-          X   // address of array of argument string pointers
-          );
-      end else begin
-        Result := ControlService(serviceHandle,  // handle to service
-          SERVICE_CONTROL_STOP,  // control code
-          serviceStatus  // pointer to service status structure
-          );
-      end;
-
-      FreeOTFECloseService(serviceHandle);
     end;
 
   end;
@@ -791,47 +749,8 @@ begin
 end;
 
 
- // Obtain a service handle to the named service
- // Returns: TRUE/FALSE on success/failure. If TRUE, then serviceHandle will be
- //          set to a handle for the named service
-function TDriverControl.FreeOTFEOpenService(
-  service: String;
-  var serviceHandle: SC_HANDLE): Boolean;
-begin
-  Result := False;
-
-  if (uSCManager <> 0) then begin
-    serviceHandle := OpenService(uSCManager,
-                          // handle to service control manager database
-      PChar(service),       // pointer to name of service to start
-      SERVICE_ALL_ACCESS  // type of access to service
-      );
-    if (serviceHandle <> 0) then begin
-      Result := True;
-    end else begin
-      _MsgDlg(SDUParamSubstitute(_('Unable to open service for driver "%1"'), [service]) + SDUCRLF +
-        SDUCRLF + TEXT_NEED_ADMIN,
-        mtError
-        );
-    end;
-  end;
-
-{$IFDEF FREEOTFE_DEBUG}
-showmessage('FreeOTFEOpenService: '+inttohex(serviceHandle, 8)+' ['+service+']');
-{$ENDIF}
-
-end;
 
 
-// Closes serviceHandle previously returned from FreeOTFEOpenService(...)
-procedure TDriverControl.FreeOTFECloseService(serviceHandle: SC_HANDLE);
-begin
-{$IFDEF FREEOTFE_DEBUG}
-showmessage('FreeOTFECloseService: '+inttohex(serviceHandle, 8));
-{$ENDIF}
-  CloseServiceHandle(serviceHandle);
-
-end;
 
 
  // !! WARNING !!
@@ -1030,15 +949,9 @@ begin
   Result := driverName;
 end;
 
-function TDriverControl._MsgDlg(Content: String; DlgType: TMsgDlgType): Integer;
-begin
-  Result := 0;
 
-  if not (Silent) then begin
-    Result := SDUMessageDlg(Content, DlgType, [mbOK], 0);
-  end;
 
-end;
+
 
 
  // Return total count of drivers installed
@@ -1268,5 +1181,121 @@ begin
 
 end;
 
+
+
+{ TSDUServiceControl }
+
+function TSDUServiceControl._MsgDlg(Content: String; DlgType: TMsgDlgType): Integer;
+begin
+  Result := 0;
+
+  if not (Silent) then begin
+    Result := SDUMessageDlg(Content, DlgType, [mbOK], 0);
+  end;
+
+end;
+
+ // Obtain a service handle to the named service
+ // Returns: TRUE/FALSE on success/failure. If TRUE, then serviceHandle will be
+ //          set to a handle for the named service
+function TSDUServiceControl.FreeOTFEOpenService(
+  service: String;
+  var serviceHandle: SC_HANDLE): Boolean;
+begin
+  Result := False;
+
+  if (uSCManager <> 0) then begin
+    serviceHandle := OpenService(uSCManager,
+                          // handle to service control manager database
+      PChar(service),       // pointer to name of service to start
+      SERVICE_ALL_ACCESS  // type of access to service
+      );
+    if (serviceHandle <> 0) then begin
+      Result := True;
+    end else begin
+      _MsgDlg(SDUParamSubstitute(_('Unable to open service for driver "%1"'), [service]) + SDUCRLF +
+        SDUCRLF + TEXT_NEED_ADMIN,
+        mtError
+        );
+    end;
+  end;
+
+{$IFDEF FREEOTFE_DEBUG}
+showmessage('FreeOTFEOpenService: '+inttohex(serviceHandle, 8)+' ['+service+']');
+{$ENDIF}
+
+end;
+
+
+// Closes serviceHandle previously returned from FreeOTFEOpenService(...)
+procedure TSDUServiceControl.FreeOTFECloseService(serviceHandle: SC_HANDLE);
+begin
+{$IFDEF FREEOTFE_DEBUG}
+showmessage('FreeOTFECloseService: '+inttohex(serviceHandle, 8));
+{$ENDIF}
+  CloseServiceHandle(serviceHandle);
+
+end;
+// ----------------------------------------------------------------------------
+ // This returns a service state as per calls to SERVICE_STATUS struct;
+ // dwCurrentState member
+ // state - This will be set to the state of the service
+ // Returns: TRUE/FALSE on success/failure
+function TSDUServiceControl.GetServiceState(service: String; var state: DWORD): Boolean;
+var
+  serviceHandle: SC_HANDLE;
+  serviceStatus: SERVICE_STATUS;
+begin
+  Result := False;
+
+  if (uSCManager <> 0) then begin
+    serviceHandle := 0;
+    if (FreeOTFEOpenService(service, serviceHandle)) then begin
+      if QueryServiceStatus(serviceHandle,  // handle of service
+        serviceStatus                       // address of service status structure
+        ) then begin
+        state  := serviceStatus.dwCurrentState;
+        Result := True;
+      end;
+
+      FreeOTFECloseService(serviceHandle);
+    end;
+
+  end;
+
+end;
+
+// start - Set to TRUE to start the service, set to FALSE to stop it
+function TSDUServiceControl.StartStopService(service: String;
+  start: Boolean): Boolean;
+var
+  serviceHandle: SC_HANDLE;
+  serviceStatus: SERVICE_STATUS;
+  X:             PChar;  // No idea why this is needed though...
+begin
+  Result := False;
+  X      := nil;
+
+  if (uSCManager <> 0) then begin
+    serviceHandle := 0;
+    if (FreeOTFEOpenService(service, serviceHandle)) then begin
+      if start then begin
+        Result := StartService(serviceHandle, // handle of service
+          0,  // number of arguments
+          X   // address of array of argument string pointers
+          );
+      end else begin
+        Result := ControlService(serviceHandle,  // handle to service
+          SERVICE_CONTROL_STOP,  // control code
+          serviceStatus  // pointer to service status structure
+          );
+      end;
+
+      FreeOTFECloseService(serviceHandle);
+    end;
+
+  end;
+
+end;
 
 end.

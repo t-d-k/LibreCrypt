@@ -65,12 +65,11 @@ begin
   // Calculate the number of bytes...
   // Note: The in64(...) cast is REQUIRED, otherwise Delphi will calculate the
   //       value in 32 bits, and assign it to the 64 bit VolumeSize
-  VolumeSize := se64UnitSize.Value;
+  fVolumeSize := se64UnitSize.Value;
 
-  Filename := feFilename.Filename;
+  fFilename := feFilename.Filename;
 
   ModalResult := mrOk;
-
 end;
 
 procedure TfrmNewVolumeSize.FormShow(Sender: TObject);

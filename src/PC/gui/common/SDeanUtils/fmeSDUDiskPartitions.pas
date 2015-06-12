@@ -29,7 +29,7 @@ const
   NO_PARTITION = -1;
 
 resourcestring
-  UNABLE_TO_GET_DISK_LAYOUT = 'Unable to get disk layout for disk: %1';
+  UNABLE_TO_GET_DISK_LAYOUT = 'Unable to get disk layout for disk: %u';
 
 type
   TfmeSDUDiskPartitions = class (TfmeSDUBlocks)
@@ -158,7 +158,7 @@ begin
     if not (GetDriveLayout(DiskNumber, FDriveLayoutInfo)) then begin
       // Call invalidate to ensure the display is refreshed
       Invalidate();
-      raise ESDUUnableToGetDriveLayout.Create(SDUParamSubstitute(UNABLE_TO_GET_DISK_LAYOUT,
+      raise ESDUUnableToGetDriveLayout.Create(Format(UNABLE_TO_GET_DISK_LAYOUT,
         [DiskNumber]));
     end else begin
       FDriveLayoutInfoValid := True;

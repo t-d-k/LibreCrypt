@@ -51,8 +51,8 @@ const
   PARTITION_STYLE_GPT = 1;
   PARTITION_STYLE_RAW = 2;
   {If this attribute is set, the partition is required by a computer to function properly.}
-  GPT_ATTRIBUTE_PLATFORM_REQUIRED  = $0001;
-  // gpt attribute flags
+  GPT_ATTRIBUTE_PLATFORM_REQUIRED = $0001;
+// gpt attribute flags
   {   ...
 GPT_BASIC_DATA_ATTRIBUTE_NO_DRIVE_LETTER
 0x8000000000000000
@@ -552,7 +552,7 @@ function SDUGetLastError(): String;
 function SDUGetFileContent(filename: String; out content: Ansistring): Boolean;
  // Write the contents of the specified file
  // Note: This will overwrite any existing file
-function SDUSetFileContent(filename: String; content: String): Boolean;
+function SDUSetFileContent(filename: String; content: TSDUBytes): Boolean;
 // Clear panel's caption, set bevels to bvNone
 procedure SDUClearPanel(panel: TPanel);
  // Test to see if the specified bit (testBit) is set in value
@@ -912,12 +912,14 @@ function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion,
  // dont really want to do busy waits
  //procedure SDUPause(delayLen: Integer);
  // Execute the specified commandline and return when the command line returns
-function SDUWinExecAndWait32(const cmdLine: String; cmdShow: Integer;
+function SDUWinExecAndWait32(const cmdLine: String; cmdShow: Integer = SW_SHOWNORMAL;
   workDir: String = ''; appName: String = ''): Cardinal;
 function SDUWinExecNoWait32(cmdLine, params: String; cmdShow: Integer): Boolean;
 
 function SDUWinExecAndWaitOutput(const cmdLine: String; res: TStrings;
   const workDir: String = ''): Cardinal;
+{ (c) tdk - create process and feed commands to it - needed for format which asks for confirmation}
+function SDUWinExecAndWriteInput(const cmdLine: WideString; const input: Ansistring): Cardinal;
 
 // Returns the control within parentControl which has the specified tag value
 function SDUGetControlWithTag(tag: Integer; parentControl: TControl): TControl;
@@ -1050,6 +1052,8 @@ procedure SDUCopyLimit(var aTo: TSDUBytes; const aFrom: TSDUBytes; limit: Intege
 
 function SDUMapNetworkDrive(networkShare: String; useDriveLetter: Char): Boolean;
 
+const
+EXEC_FAIL_CODE = $FFFFFFFF;
 implementation
 
 uses
@@ -1266,7 +1270,7 @@ var
 begin
   str := '';
   for i := 0 to ((offset + bytes) - 1) do begin
-    str := str + (PChar(data))[i];
+    str := str + (PAnsiChar(data))[i];
   end;
 
   Result := SDUPrettyPrintHex(str, offset, bytes, output, Width, dispOffsetWidth);
@@ -1777,19 +1781,19 @@ end;
  // [IN] cmsShow - see the description of the nCmdShow parameter of the
  //                ShowWindow function
  // [IN] workDir - the working dir of the cmdLine (default is ""; no working dir)
- // Returns: The return value of the command, or $FFFFFFFF on failure
-function SDUWinExecAndWait32(const cmdLine: String; cmdShow: Integer;
+ // Returns: The return value of the command, or EXEC_FAIL_CODE on failure
+function SDUWinExecAndWait32(const cmdLine: String; cmdShow: Integer = SW_SHOWNORMAL;
   workDir: String = ''; appName: String = ''): Cardinal;
 var
   zAppName:    array[0..512] of Char;
   //  zCurDir:array[0..255] of char;
   //  WorkDir:String;
   StartupInfo: TStartupInfo;
-  ProcessInfo: TProcessInformation;
+  prInfo: TProcessInformation;
   pWrkDir:     PWideChar;
   pAppName:    PWideChar;
 begin
-  Result := $FFFFFFFF;
+  Result := EXEC_FAIL_CODE;
 
   StrPCopy(zAppName, cmdLine);
   FillChar(StartupInfo, Sizeof(StartupInfo), #0);
@@ -1815,11 +1819,11 @@ begin
     { pointer to new environment block }
     pWrkDir,               { pointer to current directory name }
     StartupInfo,           { pointer to STARTUPINFO }
-    ProcessInfo) then      { pointer to PROCESS_INF } begin
-    WaitforSingleObject(ProcessInfo.hProcess, 120000); // wait 2 minutes
-    GetExitCodeProcess(ProcessInfo.hProcess, Result);
-    CloseHandle(ProcessInfo.hProcess);
-    CloseHandle(ProcessInfo.hThread);
+    prInfo) then      { pointer to PROCESS_INF } begin
+    WaitforSingleObject(prInfo.hProcess, 120000); // wait 2 minutes
+    GetExitCodeProcess(prInfo.hProcess, Result);
+    CloseHandle(prInfo.hProcess);
+    CloseHandle(prInfo.hThread);
   end;
 end;
 
@@ -1833,11 +1837,11 @@ Executes console process in a hidden window and captures its output in a TString
     @author  aoven, Lee_Nover, gabr, matej
     @since   2003-05-24
 
-    changes made t oconform to codign stds and to be consistent with  SDUWinExecAndWait32
+    changes made to conform to codign stds and to be consistent with  SDUWinExecAndWait32
 
   [IN] cmdLine - the command line to execute
   [IN] workDir - the working dir of the cmdLine (default is ""; no working dir)
-  Returns: The return value of the command, or $FFFFFFFF on failure,
+  Returns: The return value of the command, or EXEC_FAIL_CODE on failure,
  output 'res' contains cmd output
  }
 function SDUWinExecAndWaitOutput(const cmdLine: String; res: TStrings;
@@ -1849,7 +1853,7 @@ var
   ReadPipe:             THandle;
   WritePipe:            THandle;
   StartupInfo:          TStartUpInfo;
-  ProcessInfo:          TProcessInformation;
+  prInfo:          TProcessInformation;
   Buffer:               PAnsiChar;
   TotalBytesRead:       DWORD;
   BytesRead:            DWORD;
@@ -1860,7 +1864,7 @@ var
   zAppName:             array[0..512] of Char;
   pWrkDir:              PWideChar;
 begin
-  Result                  := $FFFFFFFF;
+  Result                  := EXEC_FAIL_CODE;
   Security.nLength        := SizeOf(TSecurityAttributes);
   Security.bInheritHandle := True;
   Security.lpSecurityDescriptor := nil;
@@ -1879,14 +1883,14 @@ begin
     StrPCopy(zAppName, cmdLine);
 
     if CreateProcess(nil, zAppName, @Security, @Security, True, CREATE_NO_WINDOW or
-      NORMAL_PRIORITY_CLASS, nil, pWrkDir, StartupInfo, ProcessInfo) then begin
+      NORMAL_PRIORITY_CLASS, nil, pWrkDir, StartupInfo, prInfo) then begin
       n              := 0;
       TotalBytesRead := 0;
       res.Clear;
       repeat
         // Increase counter to prevent an endless loop if the process is dead
         Inc(n, 1);
-        AppRunning := WaitForSingleObject(ProcessInfo.hProcess, 100);
+        AppRunning := WaitForSingleObject(prInfo.hProcess, 100);
         if not PeekNamedPipe(ReadPipe, @Buffer[TotalBytesRead], BUF_SIZE,
           @BytesRead, @TotalBytesAvail, @BytesLeftThisMessage) then
           break //repeat
@@ -1904,13 +1908,56 @@ begin
       {$ENDIF Unicode}
     end;
     FreeMem(Buffer);
-    GetExitCodeProcess(ProcessInfo.hProcess, Result);
-    CloseHandle(ProcessInfo.hProcess);
-    CloseHandle(ProcessInfo.hThread);
+    GetExitCodeProcess(prInfo.hProcess, Result);
+    CloseHandle(prInfo.hProcess);
+    CloseHandle(prInfo.hThread);
     CloseHandle(ReadPipe);
     CloseHandle(WritePipe);
   end;
 end; // SDUWinExecAndWaitOutput
+
+{ (c) tdk - create process and feed commands to it - needed for format which asks for confirmation
+UNTESTED}
+function SDUWinExecAndWriteInput(const cmdLine: WideString; const input: Ansistring): Cardinal;
+var
+  Security:           TSecurityAttributes;
+  si:                 TStartupInfo;
+  prInfo:                 TProcessInformation;
+  BytesWritten:       Longword;
+  ReadPipe, hInWrite: THandle;
+  zAppName:           array[0..512] of Char;
+begin
+  Result := EXEC_FAIL_CODE;
+
+  Security.nLength              := SizeOf(TSecurityAttributes);
+  Security.bInheritHandle       := True;
+  Security.lpSecurityDescriptor := nil;
+  if CreatePipe(ReadPipe, hInWrite, @Security, 0) then begin
+
+    ZeroMemory(@si, SizeOf(si));
+    si.cb          := SizeOf(si);
+    si.dwFlags     := STARTF_USESHOWWINDOW or STARTF_USESTDHANDLES;
+    si.wShowWindow := SW_HIDE;
+    si.hStdInput   := ReadPipe;
+    si.hStdOutput  := GetStdHandle(STD_OUTPUT_HANDLE);
+    si.hStdError   := GetStdHandle(STD_ERROR_HANDLE);
+
+    ZeroMemory(@prInfo, SizeOf(prInfo));
+    StrPCopy(zAppName, cmdLine);
+    if CreateProcess(nil, zAppName, nil, nil, True,
+      CREATE_NEW_CONSOLE or NORMAL_PRIORITY_CLASS, nil, nil, si, prInfo) then begin
+    CloseHandle(prInfo.hThread);
+    CloseHandle(ReadPipe);
+    // Write input to program
+    WriteFile(hInWrite, input, length(input), BytesWritten, nil);
+    CloseHandle(hInWrite);
+    WaitForSingleObject(prInfo.hProcess, 120000); // 2 minutes
+    GetExitCodeProcess(prInfo.hProcess, Result);
+    CloseHandle(prInfo.hProcess);
+      end;
+  end;
+end;
+
 
 function SDUWinExecNoWait32(cmdLine, params: String; cmdShow: Integer): Boolean;
 begin
@@ -3159,7 +3206,7 @@ const
   // writing a buffer this size out to disk
 var
   fileHandle:        THandle;
-  buffer:            PChar;
+  buffer:            PAnsiChar;
   x:                 Int64;
   bytesWritten:      DWORD;
   progressDlg:       TSDUProgressDialog;
@@ -3193,7 +3240,8 @@ begin
 
   end;
 
-
+  //done: no need to explicitly overwrite with zeros/random  as FastMM initialises,
+  // todo: better random - if not set this will include random memory - pos inc. keys etc.
   buffer := AllocMem(BUFFER_SIZE);
   try
     fileHandle := CreateFile(PChar(filename),
@@ -3257,7 +3305,6 @@ begin
               // Cast 1 to int64 to prevent silly conversion to & from integer
               x := x + Int64(1);
 
-
               Application.ProcessMessages();
               if (showProgress) then begin
                 // Display progress...
@@ -3270,12 +3317,8 @@ begin
                   // Get out of loop...
                   break;
                 end;
-
               end;
-
             end;
-
-
 
             if (Result) then begin
               // If the size of the file requested is not a mulitple of the buffer size,
@@ -4667,7 +4710,6 @@ end;
 
 
 
-
 // ----------------------------------------------------------------------------
 function SDUGetDriveLayout_Device(driveDevice: String;
   var driveLayout: TSDUDriveLayoutInformationEx): Boolean;
@@ -4693,8 +4735,8 @@ begin
     );
 
   if (fileHandle <> INVALID_HANDLE_VALUE) then begin
-    if DeviceIoControl(fileHandle, IOCTL_DISK_GET_DRIVE_LAYOUT_EX, nil,
-      0, @DriveLayoutInfo, SizeOf(DriveLayoutInfo), BytesReturned, nil) then begin
+    if DeviceIoControl(fileHandle, IOCTL_DISK_GET_DRIVE_LAYOUT_EX, nil, 0,
+      @DriveLayoutInfo, SizeOf(DriveLayoutInfo), BytesReturned, nil) then begin
       driveLayout := DriveLayoutInfo;
   {
         case DriveLayoutInfo.PartitionStyle of
@@ -4857,7 +4899,7 @@ end;
  // ----------------------------------------------------------------------------
  // Write the contents of the specified file
  // Note: This will overwrite any existing file
-function SDUSetFileContent(filename: String; content: String): Boolean;
+function SDUSetFileContent(filename: String; content: TSDUBytes): Boolean;
 var
   fileHandle:   THandle;
   bytesWritten: DWORD;
@@ -4876,7 +4918,7 @@ begin
   if (fileHandle <> INVALID_HANDLE_VALUE) then begin
     WriteFile(
       fileHandle,
-      Content[1],
+      Content[0],
       length(content),
       bytesWritten,
       nil
@@ -5438,34 +5480,34 @@ end;
 function SDUGptPartitionType(PartitionType: TGuid; LongDesc: Boolean): String;
 const
   // must be uppercase for comparison
-  GPT_GUIDS : array [0..6] of string = (
-   '{EBD0A0A2-B9E5-4433-87C0-68B6B72699C7}'
-  ,'{00000000-0000-0000-0000-000000000000}'
-  ,'{C12A7328-F81F-11D2-BA4B-00A0C93EC93B}'
-  ,'{E3C9E316-0B5C-4DB8-817D-F92DF00215AE}'
-  ,'{5808C8AA-7E8F-42E0-85D2-E1E90434CFB3}'
-  ,'{AF9B60A0-1431-4F62-BC68-3311714A69AD}'
-  ,'{DE94BBA4-06D1-4D40-A16A-BFD50179D6AC}'
-  );
-  GPT_GUID_DESCS : array [0..6] of string = (
-   'Windows data partition'
-  ,'No partition'
-  ,'EFI system'
-  ,'Microsoft reserved'
-  ,'Logical Disk Manager (LDM) metadata'
-  ,'LDM data partition'
-  ,'Microsoft recovery'
-  );
+  GPT_GUIDS: array [0..6] of String = (
+    '{EBD0A0A2-B9E5-4433-87C0-68B6B72699C7}'
+    , '{00000000-0000-0000-0000-000000000000}'
+    , '{C12A7328-F81F-11D2-BA4B-00A0C93EC93B}'
+    , '{E3C9E316-0B5C-4DB8-817D-F92DF00215AE}'
+    , '{5808C8AA-7E8F-42E0-85D2-E1E90434CFB3}'
+    , '{AF9B60A0-1431-4F62-BC68-3311714A69AD}'
+    , '{DE94BBA4-06D1-4D40-A16A-BFD50179D6AC}'
+    );
+  GPT_GUID_DESCS: array [0..6] of String = (
+    'Windows data partition'
+    , 'No partition'
+    , 'EFI system'
+    , 'Microsoft reserved'
+    , 'Logical Disk Manager (LDM) metadata'
+    , 'LDM data partition'
+    , 'Microsoft recovery'
+    );
 var
-  i :integer;
+  i: Integer;
 begin
   { done -otdk -cenhance : gpt desc }
   // see  https://msdn.microsoft.com/en-us/library/windows/desktop/aa365449%28v=vs.85%29.aspx - or use guid
   Result := GUIDToString(PartitionType);
-  assert(length(GPT_GUIDS)=length(GPT_GUID_DESCS));
+  assert(length(GPT_GUIDS) = length(GPT_GUID_DESCS));
   for i := low(GPT_GUIDS) to High(GPT_GUIDS) do
     if GPT_GUIDS[i] = Result then begin
-      result := GPT_GUID_DESCS[i];
+      Result := GPT_GUID_DESCS[i];
       break;
     end;
 end;
@@ -6937,7 +6979,8 @@ end;
 
 function SDUMapNetworkDrive(networkShare: String; useDriveLetter: Char): Boolean;
 begin
-  { TODO 3 -otdk -cfix : implement }
+  { DONE 3 -otdk -cfix : implement net use }
+  SDUWinExecNoWait32('net', Format('use %s: "%s"', [useDriveLetter, networkShare]), SW_RESTORE);
 end;
 
  // ----------------------------------------------------------------------------
