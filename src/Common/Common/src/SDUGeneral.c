@@ -8,8 +8,8 @@
 
 
 
-#include <Wingdi.h>
-#include <commctrl.h>  // Only used for LVS_TYPEMASK
+// #include <Wingdi.h>
+// #include <commctrl.h>  // Only used for LVS_TYPEMASK
 #include <stdio.h>
 #include <wchar.h>
 #include <tchar.h>  // Required for _T macro
@@ -530,7 +530,7 @@ BOOL SDUGetVersionInfo(
 
             if (GetFileVersionInfo(filename, dwHandle, vsize, pBlock))
                 {
-                if (VerQueryValue(pBlock, _T("\\"), &pVPointer, &puLen))
+                if (VerQueryValue(pBlock, _T((LPCWSTR)"\\"), &pVPointer, &puLen))
                     {
                     if (puLen > 0)
                         {
@@ -760,7 +760,7 @@ int SDUDrawTextEllipses(
     return retval;
 }
 
-
+/* PDA SPECIFIC
 // =========================================================================
 // Set listview style; one of:
 //   LVS_ICON      - Large icons with text underneath them. Bit like Windows
@@ -854,7 +854,7 @@ int SDUListView_GetItemTextLength(HWND hWnd, int item, int subItem)
 
     return v; // listItem.cchTextMax;
 }
-
+*/
 
 // =========================================================================
 // Tokenize a command line and it's parameters

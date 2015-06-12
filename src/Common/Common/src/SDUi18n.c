@@ -1,8 +1,5 @@
-
-
-
+// #include <winnls.h> // Required for MultiByteToWideChar(...) (WinCE)
 #include <stdio.h>
-#include <winnls.h> // Required for MultiByteToWideChar(...) (WinCE)
 
 #include "SDUi18n.h"
 #include "SDUGeneral.h"
