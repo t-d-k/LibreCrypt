@@ -5,8 +5,8 @@
 //
 // -----------------------------------------------------------------------------
 //
-#include <Commdlg.h>  // Required from OPENFILENAME
-#include <winuser.h>  // Required for IDOK, etc
+// #include <Commdlg.h>  // Required from OPENFILENAME
+// #include <winuser.h>  // Required for IDOK, etc
 
 
 #include "main.h"

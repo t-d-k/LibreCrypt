@@ -7,7 +7,7 @@
 //
 
 #include <stdio.h> // Required for _snwprintf_s 
-#include <winuser.h>  // Required for IDOK, etc
+// #include <winuser.h>  // Required for IDOK, etc
 
 #include "FreeOTFENULLGUID.h"
 #include "main.h"

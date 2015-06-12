@@ -32,10 +32,12 @@
     <ClCompile Include="..\..\Common\Common\src\SDUi18n.c" />
     <ClCompile Include="..\..\Common\Common\src\SDUi18n_GUI.c" />
     <ClCompile Include="..\..\Common\Common\src\SDULinkedList.c" />
+    <ClCompile Include="..\Common\src\FreeOTFE4PDARegistry.c" />
     <ClCompile Include="src\dlgCypherInfo.c" />
     <ClCompile Include="src\dlgMount.c" />
     <ClCompile Include="src\dlgProperties.c" />
     <ClCompile Include="src\DriverInterface.c" />
+    <ClCompile Include="src\DriverInterfaceCommon.c" />
     <ClCompile Include="src\FreeOTFEGUIlib.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\wndMain.c" />
