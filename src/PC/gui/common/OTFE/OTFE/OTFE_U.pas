@@ -100,7 +100,8 @@ type
     // Sets mountedAs to the drive letters of the mounted volumes, in order.
     // Volumes that could not be mounted have #0 as their drive letter
     // Returns TRUE if any of the volumes mounted correctly, otherwise FALSE
-    function  Mount(volumeFilenames: TStringList; var mountedAs: DriveLetterString; readonly: boolean = FALSE): boolean; overload; virtual; abstract;
+    function  Mount(volumeFilename: string; var mountedAs: DriveLetterString; readonly: boolean = FALSE): boolean; overload; virtual; abstract;
+
     // Example:
     //   Set:
     //     volumeFilenames[0] = c:\test0.dat
@@ -169,7 +170,7 @@ type
     function  CheckVersionAtLeast(minVersion: cardinal): boolean; virtual;
 
     // Returns TRUE if the file specified appears to be an encrypted volume file
-    function  IsEncryptedVolFile(volumeFilename: string): boolean; virtual; abstract;
+//    function  IsEncryptedVolFile(volumeFilename: string): boolean; virtual; abstract;
 
     // Returns a string containing the drive letters (in uppercase) of all
     // mounted drives (e.g. 'DGH') in alphabetical order

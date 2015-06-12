@@ -156,28 +156,6 @@ type
                               storageMediaType: TFreeOTFEStorageMediaType = mtFixedMedia  // PC kernel drivers *only* - ignored otherwise
                              ): boolean; override;
 
-    function  CreateMountDiskDevice(
-                              volFilename: string;
-                              volumeKey: TSDUBytes;
-                              sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-                              volumeIV: TSDUBytes;
-                              readonly: boolean;
-                              IVHashDriver: ansistring;
-                              IVHashGUID: TGUID;
-                              IVCypherDriver: ansistring;
-                              IVCypherGUID: TGUID;
-                              mainCypherDriver: ansistring;
-                              mainCypherGUID: TGUID;
-                              VolumeFlags: integer;
-                              DriveLetter: char;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
-                              offset: int64 = 0;
-                              size: int64 = 0;
-                              MetaData_LinuxVolume: boolean = FALSE;  // Linux volume
-                              MetaData_PKCS11SlotID: integer = PKCS11_NO_SLOT_ID;  // PKCS11 SlotID
-                              MountMountAs: TFreeOTFEMountAs = fomaRemovableDisk;  // PC kernel drivers *only* - ignored otherwise
-                              mountForAllUsers: boolean = TRUE  // PC kernel drivers *only* - ignored otherwise
-                             ): boolean; override;
-
     function  DismountDiskDevice(
                                  deviceName: string;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
                                  emergency: boolean
@@ -222,15 +200,11 @@ type
     function  CachesGetCypherAPI(const libFilename: string; var api: TCypherAPI): boolean;
 
 
-    // ---------
     // Misc functions
-
-    function  GetNextDriveLetter(userDriveLetter, requiredDriveLetter: char): char; overload; override;
-
     function  DriverType(): string; override;
 
   public
-    // -----------------------------------------------------------------------
+
     // TOTFE standard API
     constructor Create(); override;
     destructor  Destroy; override;
@@ -338,6 +312,29 @@ type
                              var diskGeometry: TSDUDiskGeometry
                            ): boolean;
 
+    function  CreateMountDiskDevice(
+                              volFilename: string;
+                              volumeKey: TSDUBytes;
+                              sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
+                              volumeIV: TSDUBytes;
+                              readonly: boolean;
+                              IVHashDriver: ansistring;
+                              IVHashGUID: TGUID;
+                              IVCypherDriver: ansistring;
+                              IVCypherGUID: TGUID;
+                              mainCypherDriver: ansistring;
+                              mainCypherGUID: TGUID;
+                              VolumeFlags: integer;
+                              DriveLetter: char;  // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
+                              offset: int64 = 0;
+                              size: int64 = 0;
+                              MetaData_LinuxVolume: boolean = FALSE;  // Linux volume
+                              MetaData_PKCS11SlotID: integer = PKCS11_NO_SLOT_ID;  // PKCS11 SlotID
+                              MountMountAs: TFreeOTFEMountAs = fomaRemovableDisk;  // PC kernel drivers *only* - ignored otherwise
+                              mountForAllUsers: boolean = TRUE  // PC kernel drivers *only* - ignored otherwise
+                             ): boolean; override;
+
+     function  GetNextDriveLetter(userDriveLetter, requiredDriveLetter: char): char; overload; override;
   published
     // The directory under which the "DLL" dir resides
 //    property ExeDir: string read FExeDir ;

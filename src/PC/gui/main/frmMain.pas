@@ -94,16 +94,16 @@ type
     actTestModeOff: TAction;
     DisallowTestsigneddrivers1: TMenuItem;
     tbbSettings:  TToolButton;
-    pmOpen: TPopupMenu;
-    miMountfile: TMenuItem;
+    pmOpen:       TPopupMenu;
+    miMountfile:  TMenuItem;
     miOpenpartition: TMenuItem;
     miOpenLUKSBox: TMenuItem;
     miOpenBoxforcedmcrypt: TMenuItem;
-    pmNew: TPopupMenu;
-    miNew: TMenuItem;
+    pmNew:        TPopupMenu;
+    miNew:        TMenuItem;
     Newdmcryptcontainer1: TMenuItem;
-    actLUKSNew: TAction;
-    NewLUKS1: TMenuItem;
+    actLUKSNew:   TAction;
+    NewLUKS1:     TMenuItem;
 
     procedure actDriversExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -143,6 +143,12 @@ type
     procedure actLUKSNewExecute(Sender: TObject);
   private
     function IsTestModeOn: Boolean;
+    function CreateNewLUKS(fileName: String;
+    password:AnsiString;
+     contSizeBytes :Uint64;
+    out msg: String;
+      out drive: DriveLetterChar): Boolean;
+
 
   protected
     ftempCypherDriver:     Ansistring;
@@ -154,12 +160,12 @@ type
     fIconMounted:   TIcon;
     fIconUnmounted: TIcon;
 
-    // We cache this information as it take a *relativly* long time to get it
+    // We cache this information as it take a *relatively* long time to get it
     // from the OTFE component.
     fcountPortableDrivers: Integer;
 
-    fallowUACEsclation: Boolean;
-//    fCanSaveSettings : Boolean;
+    fallowUACEscalation: Boolean;
+    //    fCanSaveSettings : Boolean;
 
     function HandleCommandLineOpts_Portable(): eCmdLine_Exit;
     function HandleCommandLineOpts_DriverControl(): eCmdLine_Exit;
@@ -209,7 +215,7 @@ type
     function GetSelectedDrives(): DriveLetterString;
     procedure OverwriteDrives(drives: DriveLetterString; overwriteEntireDrive: Boolean);
 
-    procedure MountFiles(mountAsSystem: TDragDropFileType; filenames: TStringList;
+    procedure MountFiles(mountAsSystem: TDragDropFileType; filename: String;
       ReadOnly, forceHidden: Boolean); overload; override;
 
     procedure DriveProperties();
@@ -245,9 +251,8 @@ type
     procedure UACEscalateForPortableMode(portableAction: TPortableModeAction;
       suppressMsgs: Boolean);
     procedure UACEscalate(cmdLineParams: String; suppressMsgs: Boolean);
-
-    function DoTests: Boolean; override;
-    function TestMountLUKS: Boolean;
+    function DoFullTests: Boolean; override;
+    function DoLuksTests: Boolean; override;
 
   public
 
@@ -295,7 +300,8 @@ uses
   //sdu units
   pkcs11_slot,
   SDUFileIterator_U,
-  SDUi18n,//for format drive
+  SDUi18n,
+  sdusysutils,//for format drive
   SDUGraphics,
 
   //LibreCrypt units
@@ -334,19 +340,16 @@ const
 
 resourcestring
 
-
-  TEXT_NEED_ADMIN = 'You need administrator privileges in order to carry out this operation.';
-
   // Toolbar captions...
-//  RS_TOOLBAR_CAPTION_MOUNTPARTITION = 'Open partition container';
-//  RS_TOOLBAR_CAPTION_DISMOUNTALL    = 'Lock all';
-//  RS_TOOLBAR_CAPTION_PORTABLEMODE   = 'Portable mode';
+  //  RS_TOOLBAR_CAPTION_MOUNTPARTITION = 'Open partition container';
+  //  RS_TOOLBAR_CAPTION_DISMOUNTALL    = 'Lock all';
+  //  RS_TOOLBAR_CAPTION_PORTABLEMODE   = 'Portable mode';
   // Toolbar hints...
-//  RS_TOOLBAR_HINT_MOUNTPARTITION    = 'Open a partition based container';
-//  RS_TOOLBAR_HINT_DISMOUNTALL       = 'Lock all open containers';
-//  RS_TOOLBAR_HINT_PORTABLEMODE      = 'Toggle portable mode on/off';
+  //  RS_TOOLBAR_HINT_MOUNTPARTITION    = 'Open a partition based container';
+  //  RS_TOOLBAR_HINT_DISMOUNTALL       = 'Lock all open containers';
+  //  RS_TOOLBAR_HINT_PORTABLEMODE      = 'Toggle portable mode on/off';
 
-  POPUP_DISMOUNT = 'Dismount %1: %2';
+  POPUP_DISMOUNT = 'Dismount %s: %s';
 
 const
 
@@ -416,14 +419,18 @@ var
   goForStartPortable, errLastRun: Boolean;
 begin
   inherited;
+  {$IFDEF DEBUG}
+    actLUKSNew.Enabled := true;
+    actLUKSNew.visible := true;
+  {$ENDIF}
 
   // if appRunning set when app started, that means it didnt shut down properly last time
 
   errLastRun             := gSettings.feAppRunning = arRunning;
   gSettings.feAppRunning := arRunning;
   // save immediately in case any errors starting drivers etc.
-//  fCanSaveSettings :=
-  gSettings.Save(false); // don't show warnings as user hasn't changed settings
+  //  fCanSaveSettings :=
+  gSettings.Save(False); // don't show warnings as user hasn't changed settings
 
 
   // Hook Windows messages first; if we're running under Vista and the user UAC
@@ -448,8 +455,8 @@ begin
   // the system tray icon code as it's monitoring the window's messages
   //  self.Position := poScreenCenter;
   // Instead, position window manually...
-//  self.Top  := ((Screen.Height - self.Height) div 2);
-//  self.Left := ((Screen.Width - self.Width) div 2);
+  //  self.Top  := ((Screen.Height - self.Height) div 2);
+  //  self.Left := ((Screen.Width - self.Width) div 2);
 
   if not (ActivateFreeOTFEComponent(True)) then begin
     goForStartPortable := gSettings.OptAutoStartPortable;
@@ -478,13 +485,7 @@ begin
           MessageDlg(_(
             'The drivers will not be installed automatically because LibreCrypt shut down last time it was run.'),
             mtWarning, [mbOK], 0);
-        SDUMessageDlg(
-          _(
-          'Please see the "installation" section of the accompanying documentation for instructions on how to install the LibreCrypt drivers.'),
-          mtInformation,
-          [mbOK],
-          0
-          );
+        SDUMessageDlg(             _(          'Please see the "installation" section of the accompanying documentation for instructions on how to install the LibreCrypt drivers.'),          mtInformation,          [mbOK],          0          );
       end;
     end;
 
@@ -494,9 +495,11 @@ begin
   EnableDisableControls();
   SetupHotKeys();
   SetupPKCS11(False);
-//  actLUKSNewExecute(nil);
-//actTestExecute(nil);
-// TestMountLUKS;
+  //    actLUKSNewExecute(nil);
+  //actTestExecute(nil);
+//  DoLuksTests;
+DoFullTests;
+  // Format_Drive('G', self);
 end;
 
 
@@ -569,7 +572,7 @@ begin
       // automatically can interfere with
       // examing the caption to get the drive
       // letter when clicked on
-      miTmp.Caption     := SDUParamSubstitute(POPUP_DISMOUNT, [mounted[i], strVolID]);
+      miTmp.Caption     := Format(POPUP_DISMOUNT, [mounted[i], strVolID]);
       pmSystemTray.Items.Insert((i - 1), miTmp);
     end;
 
@@ -830,9 +833,9 @@ end;
   cdb at offset
   salt <> default value
 }
-function TfrmMain.DoTests: Boolean;
+function TfrmMain.DoFullTests: Boolean;
 var
-  mountList:       TStringList;
+//  mountList:       TStringList;
   mountedAs:       DriveLetterString;
   vol_path, key_file, les_file: String;
   vl:              Integer;
@@ -840,6 +843,7 @@ var
   parr:            PByteArray;
   i:               Integer;
   buf:             Ansistring;
+  mountFile      :string;
 const
 
   MAX_TEST_VOL = 12;
@@ -858,21 +862,16 @@ const
     ('', '', '', '', '', '', '', '', '', 'a.cdb', 'b.cdb', '', '');
   LES_FILES: array[0..MAX_TEST_VOL] of String =
     ('', '', '', '', '', '', '', '', '', '', '', 'dmcrypt_dx.les', 'dmcrypt_hid.les');
+  (* test
 
-    {  test
-     MAX_TEST_VOL = 0;
-     TEST_VOLS: array[0..MAX_TEST_VOL] of String =
-    ('dmcrypt_dx.box');
-  PASSWORDS: array[0..MAX_TEST_VOL] of String =
-    ( '5ekr1t');
-  ITERATIONS: array[0..MAX_TEST_VOL] of Integer =
-    ( 2048);
-  OFFSET: array[0..MAX_TEST_VOL] of Integer =
-    (0);
-  KEY_FILES: array[0..MAX_TEST_VOL] of String =
-    ('');
-  LES_FILES: array[0..MAX_TEST_VOL] of String =
-    ( 'dmcrypt_hid.les');    }
+  MAX_TEST_VOL = 0;
+  TEST_VOLS: array[0..MAX_TEST_VOL] of String =   ('dmcrypt_dx.box');
+  PASSWORDS: array[0..MAX_TEST_VOL] of String =   ( 'password');
+  ITERATIONS: array[0..MAX_TEST_VOL] of Integer = ( 2048);
+  OFFSET: array[0..MAX_TEST_VOL] of Integer =     (0);
+  KEY_FILES: array[0..MAX_TEST_VOL] of String =   ('');
+  LES_FILES: array[0..MAX_TEST_VOL] of String =   ('dmcrypt_dx.les');
+    *)
   procedure CheckMountedOK;
   begin
     RefreshDrives();
@@ -906,9 +905,6 @@ const
 
 begin
   inherited;
-
-
-
 
   Result := True;
 
@@ -1123,6 +1119,7 @@ begin
 
   if not Result then
     SDUMessageDlg('Freed memory wiping with TSDUBytes failed');
+
   if not Result then
     exit;
 
@@ -1149,8 +1146,8 @@ begin
 
   //  exit;
 
-  mountList := TStringList.Create();
-  try
+//  mountList := TStringList.Create();
+//  try
     //for loop is optimised into reverse order, but want to process forwards
     vl       := 0;
     {$IFDEF DEBUG}
@@ -1161,8 +1158,8 @@ begin
     while vl <= high(TEST_VOLS) do begin
 
       //test one at a time as this is normal use
-      mountList.Clear;
-      mountList.Add(vol_path + TEST_VOLS[vl]);
+//      mountList.Clear;
+      mountFile := vol_path + TEST_VOLS[vl];
       mountedAs := '';
       key_file  := '';
       if KEY_FILES[vl] <> '' then
@@ -1170,20 +1167,19 @@ begin
       if LES_FILES[vl] <> '' then
         les_file := vol_path + LES_FILES[vl];
 
-      if GetFreeOTFE().IsLUKSVolume(vol_path + TEST_VOLS[vl]) or (LES_FILES[vl] <> '') then begin
-        if not GetFreeOTFE().MountLinux(mountList, mountedAs, True, les_file,
+      if GetFreeOTFE().IsLUKSVolume(mountFile) or (LES_FILES[vl] <> '') then begin
+        if not GetFreeOTFE().MountLinux(mountFile, mountedAs, True, les_file,
           SDUStringToSDUBytes(PASSWORDS[vl]), key_file, False, nlLF, 0, True) then
           Result := False;
       end else begin
         //call silently
-        if not GetFreeOTFE().MountFreeOTFE(mountList, mountedAs, True,
+        if not GetFreeOTFE().MountFreeOTFE(mountFile, mountedAs, True,
           key_file, SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False,
           True, 256, ITERATIONS[vl]) then
           Result := False;
       end;
       if not Result then begin
-        SDUMessageDlg(
-          _('Unable to open ') + TEST_VOLS[vl] + '.', mtError);
+        SDUMessageDlg(_('Unable to open ') + TEST_VOLS[vl] + '.', mtError);
         break;
       end else begin
         CheckMountedOK;
@@ -1209,9 +1205,8 @@ begin
       TEST_VOLS[0], PASSWORDS[0], 'secret4', True);
 
     if Result then begin
-      mountList.Clear;
-      mountList.Add(vol_path + TEST_VOLS[0]);
-      if not GetFreeOTFE().MountFreeOTFE(mountList, mountedAs, True, '',
+      mountFile := vol_path + TEST_VOLS[0];
+      if not GetFreeOTFE().MountFreeOTFE(mountFile, mountedAs, True, '',
         SDUStringToSDUBytes('secret4'), 0, False, True, 256, 2048) then
         Result := False;
     end;
@@ -1223,9 +1218,9 @@ begin
     { TODO -otdk -cenhance : use copied file to check is same as orig file }
     // no need to check mount again as will be checked with next test run
     Result := Result and SysUtils.DeleteFile(vol_path + 'a_test.cdbBackup');
-  finally
-    mountList.Free();
-  end;
+//  finally
+//    mountList.Free();
+//  end;
 
   if Result then
     SDUMessageDlg('All functional tests passed')
@@ -1252,29 +1247,24 @@ end;
   cdb at offset
   salt <> default value
 }
-function TfrmMain.TestMountLUKS: Boolean;
+function TfrmMain.DoLuksTests: Boolean;
 var
-  mountList:       TStringList;
-  mountedAs:       DriveLetterString;
-  vol_path, key_file: String;
+//  mountList: TStringList;
+  mountedAs: DriveLetterString;
+  vol_dir, vol_file, key_file, err_msg: String;
+  drive:    DriveLetterChar;
 
 const
-
-
-  {this last dmcrypt_dx.box with dmcrypt_hid.les can cause BSoD }
-  TEST_VOLS:String = 'luks.box';
-  PASSWORDS:  Ansistring = 'password';
-  ITERATIONS:  Integer = 2048;
-
+  TEST_VOL: String      = 'luks.new.vol';
+  PASSWORD: Ansistring = 'password';
 
   procedure CheckMountedOK;
   begin
     RefreshDrives();
     // Mount successful
-    //        prettyMountedAs := prettyPrintDriveLetters(mountedAs);
     if (CountValidDrives(mountedAs) <> 1) then begin
       SDUMessageDlg(Format('The container %s has NOT been opened as drive: %s',
-        [TEST_VOLS, mountedAs]));
+        [TEST_VOL, mountedAs]));
       Result := False;
     end else begin
       //done: test opened OK & file exists
@@ -1300,64 +1290,65 @@ const
 
 begin
   inherited;
-  Result := True;
-  mountList := TStringList.Create();
-  try
-    //for loop is optimised into reverse order, but want to process forwards
-
+  Result    := True;
+//  mountList := TStringList.Create();
+//  try
+    vol_dir  := ExtractFileDir(Application.ExeName) + '\..\..\';
     {$IFDEF DEBUG}
-        vol_path := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\..\..\test_vols\');
-    {$ELSE}
-    vol_path := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\test_vols\');
+        vol_dir := vol_dir + '..\..\';
     {$ENDIF}
+    vol_dir  := ExpandFileName(vol_dir + 'test_vols\');
+    vol_file := vol_dir + TEST_VOL;
+    SysUtils.DeleteFile(vol_file);
 
+    Result := CreateNewLUKS(vol_file,PASSWORD, 4*1024*1024,err_Msg, drive);
 
-      //test one at a time as this is normal use
-      mountList.Clear;
-      mountList.Add(vol_path + TEST_VOLS);
-      mountedAs := '';
-      key_file  := '';
-
-      if GetFreeOTFE().IsLUKSVolume(vol_path + TEST_VOLS)  then begin
-        if not GetFreeOTFE().MountLinux(mountList, mountedAs, True, '',
-          SDUStringToSDUBytes(PASSWORDS), key_file, False, nlLF, 0, True) then
-          Result := False;
-      end else begin
-        //call silently
-        if not GetFreeOTFE().MountFreeOTFE(mountList, mountedAs, True,
-          key_file, SDUStringToSDUBytes(PASSWORDS), 0, False,
-          True, 256, ITERATIONS) then
-          Result := False;
-      end;
-
-      if not Result then begin
-        SDUMessageDlg(
-          _('Unable to open ') + TEST_VOLS + '.', mtError);
-
-      end else begin
-        CheckMountedOK;
-        UnMountAndCheck;
+    if not Result then begin
+      SDUMessageDlg(        _('Unable to create ') + vol_file + '. :' + err_msg, mtError);
+      exit;
+    end;
+    Application.ProcessMessages;
+    // copy readme to disc
+    SDUFileCopy(vol_dir + 'readme.txt', drive + ':\');
+     Application.ProcessMessages;
+    if not FileExists(drive + ':\README.txt') then begin
+        SDUMessageDlg(Format('File: %s:\README.txt not found', [drive]));
+        Result := False;
       end;
 
 
+    Application.ProcessMessages;
+    DismountAll(True);
+    Application.ProcessMessages;
+    RefreshDrives();
 
-  {test changing password
-    backup freeotfe header ('cdb')
-    change password
-    open with new password
-    restore header
-    open with old password -tested on next test run
-    this tests most of code for creating volume as well
-  }
+    //test one at a time as this is normal use
+//    mountList.Clear;
+//    mountList.Add(vol_file);
+    mountedAs := '';
+    key_file  := '';
 
+    if GetFreeOTFE().IsLUKSVolume(vol_file) then begin
+      if not GetFreeOTFE().MountLinux(vol_file, mountedAs, True, '',
+        SDUStringToSDUBytes(PASSWORD), key_file, False, nlLF, 0, True) then
+        Result := False;
+    end else begin
+      Result := False;
+    end;
 
-  finally
-    mountList.Free();
-  end;
+    if not Result then begin
+      SDUMessageDlg(        _('Unable to open ') + vol_file + '.', mtError);
 
-  if Result then
-    SDUMessageDlg('All functional tests passed')
-  else
+    end else begin
+      CheckMountedOK;
+      UnMountAndCheck;
+    end;
+
+//  finally
+//    mountList.Free();
+//  end;
+
+  if not Result then
     SDUMessageDlg('At least one functional test failed');
 end;
 
@@ -1412,7 +1403,7 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   OTFEFreeOTFEBase_U.SetFreeOTFEType(TOTFEFreeOTFE);
   // Prevent endless loops of UAC escalation...
-  fallowUACEsclation := False;
+  fallowUACEscalation := False;
 
   inherited;
 
@@ -1520,7 +1511,7 @@ begin
 end;
 
 procedure TfrmMain.MountFiles(mountAsSystem: TDragDropFileType;
-  filenames: TStringList; ReadOnly, forceHidden: Boolean);
+  filename: String; ReadOnly, forceHidden: Boolean);
 var
   i:               Integer;
   mountedAs:       DriveLetterString;
@@ -1531,16 +1522,16 @@ begin
   // Why was this in here?!
   //  ReloadSettings();
 
-  AddToMRUList(filenames);
+  AddToMRUList(filename);
 
   if (mountAsSystem = ftFreeOTFE) then begin
-    mountedOK := GetFreeOTFE().MountFreeOTFE(filenames, mountedAs, ReadOnly);
+    mountedOK := GetFreeOTFE().MountFreeOTFE(filename, mountedAs, ReadOnly);
   end else
   if (mountAsSystem = ftLinux) then begin
-    mountedOK := GetFreeOTFE().MountLinux(filenames, mountedAs, ReadOnly,
+    mountedOK := GetFreeOTFE().MountLinux(filename, mountedAs, ReadOnly,
       '', nil, '', False, LINUX_KEYFILE_DEFAULT_NEWLINE, 0, False, forceHidden);
   end else begin
-    mountedOK := GetFreeOTFE().Mount(filenames, mountedAs, ReadOnly);
+    mountedOK := GetFreeOTFE().Mount(filename, mountedAs, ReadOnly);
   end;
 
   if not (mountedOK) then begin
@@ -1555,10 +1546,10 @@ begin
     // Mount successful
     prettyMountedAs := PrettyPrintDriveLetters(mountedAs);
     if (CountValidDrives(mountedAs) = 1) then begin
-      msg := SDUParamSubstitute(_('Your container has been opened as drive: %1'),
+      msg := Format(_('Your container has been opened as drive: %s'),
         [prettyMountedAs]);
     end else begin
-      msg := SDUParamSubstitute(_('Your containers have been opened as drives: %1'),
+      msg := Format(_('Your containers have been opened as drives: %s'),
         [prettyMountedAs]);
     end;
 
@@ -1612,7 +1603,7 @@ var
   buffer:       array[0..MAX_PATH] of Char;
   numFiles:     Longint;
   i:            Integer;
-  filesToMount: TStringList;
+//  filesToMount: TStringList;
 begin
   try
     // Bring our window to the foreground
@@ -1620,21 +1611,22 @@ begin
 
     // Handle the dropped files
     numFiles     := DragQueryFile(Msg.Drop, $FFFFFFFF, nil, 0);
-    filesToMount := TStringList.Create();
-    try
+//    filesToMount := TStringList.Create();
+//    try
       for i := 0 to (numFiles - 1) do begin
         DragQueryFile(msg.Drop,
           i, @buffer,
           sizeof(buffer));
-        filesToMount.Add(buffer);
+//        filesToMount.Add(buffer);
+MountFilesDetectLUKS(buffer, False, gSettings.OptDragDropFileType);
       end;
 
-      MountFilesDetectLUKS(filesToMount, False, gSettings.OptDragDropFileType);
+//      MountFilesDetectLUKS(filesToMount, False, gSettings.OptDragDropFileType);
 
       Msg.Result := 0;
-    finally
-      filesToMount.Free();
-    end;
+//    finally
+//      filesToMount.Free();
+//    end;
   finally
     DragFinish(Msg.Drop);
   end;
@@ -1785,11 +1777,7 @@ begin
           // At least one of the currently mounted drives is stored on one of
           // the drives to be dismounted - and we're not dismounting that drive
           SDUMessageDlg(
-            SDUParamSubstitute(_(
-            'The container currently opened as %1: must be locked before %2: can be locked'),
-            [subVols[j], tmpDrv]),
-            mtError
-            );
+            Format(_(            'The container currently opened as %s: must be locked before %s: can be locked'),            [subVols[j], tmpDrv]),            mtError            );
           Result := False;
         end;
       end;
@@ -1837,10 +1825,9 @@ var
   warningOK: Boolean;
   forceOK:   Boolean;
 begin
-  msg := SDUPluralMsg(length(drivesRemaining), SDUParamSubstitute(
-    _('Unable to dismount drive: %1'), [PrettyPrintDriveLetters(drivesRemaining)]),
-    SDUParamSubstitute(_('Unable to dismount drives: %1'),
-    [PrettyPrintDriveLetters(drivesRemaining)]));
+  msg := SDUPluralMsg(length(drivesRemaining),
+    Format(    _('Unable to dismount drive: %s'), [PrettyPrintDriveLetters(drivesRemaining)]),
+    Format(_('Unable to dismount drives: %s'),    [PrettyPrintDriveLetters(drivesRemaining)]));
 
   // If the dismount attempted was a non-emergency dismount; prompt user if
   // they want to attempt an emergency dismount
@@ -1946,7 +1933,7 @@ begin
   // Misc display related...
   if drivesMounted then
     SDUSystemTrayIcon1.Icon := fIconMounted
-else
+  else
     SDUSystemTrayIcon1.Icon := fIconUnmounted;
 
 
@@ -1979,8 +1966,8 @@ begin
     end else
     if (length(selDrives) = 0) then begin
       statusText := SDUPluralMsg(lvDrives.Items.Count,
-        SDUParamSubstitute(_('%1 drive mounted.'), [lvDrives.Items.Count]),
-        SDUParamSubstitute(_('%1 drives mounted.'), [lvDrives.Items.Count]));
+        Format(_('%u drive mounted.'), [lvDrives.Items.Count]),
+        Format(_('%u drives mounted.'), [lvDrives.Items.Count]));
     end else
     if (length(selDrives) > 0) then begin
       if (length(selDrives) = 1) then begin
@@ -1989,17 +1976,17 @@ begin
         totalSpace := DiskSize(Ord(drvLetter) - 64);
 
         if ((freeSpace > -1) and (totalSpace > -1)) then begin
-          statusText := SDUParamSubstitute(_('%1: Free Space: %2; Total size: %3'),
-            [drvLetter, SDUFormatUnits(freeSpace, SDUUnitsStorageToTextArr(),
-            UNITS_BYTES_MULTIPLIER, 1), SDUFormatUnits(totalSpace,
-            SDUUnitsStorageToTextArr(), UNITS_BYTES_MULTIPLIER, 1)]);
+          statusText := Format(_('%s: Free Space: %s; Total size: %s'),
+            [drvLetter,
+            SDUFormatUnits(freeSpace, SDUUnitsStorageToTextArr(),            UNITS_BYTES_MULTIPLIER, 1),
+            SDUFormatUnits(totalSpace, SDUUnitsStorageToTextArr(), UNITS_BYTES_MULTIPLIER, 1)]);
         end;
       end;
 
       if (statusText = '') then begin
         statusText := SDUPluralMsg(lvDrives.SelCount,
-          SDUParamSubstitute(_('%1 drive selected.'), [length(selDrives)]),
-          SDUParamSubstitute(_('%1 drives selected.'), [length(selDrives)]));
+          Format(_('%d drive selected.'), [length(selDrives)]),
+          Format(_('%d drives selected.'), [length(selDrives)]));
       end;
 
     end;
@@ -2011,9 +1998,9 @@ end;
 
 // Set the toolbar size
 procedure TfrmMain.SetupToolbarFromSettings();
-//var
-////  toolbarWidth: Integer;
-//  i:            Integer;
+ //var
+ ////  toolbarWidth: Integer;
+ //  i:            Integer;
 begin
 
   SetIconListsAndIndexes();
@@ -2031,30 +2018,30 @@ begin
   ToolBar1.ButtonHeight := ToolBar1.Images.Height;
   ToolBar1.ButtonWidth  := ToolBar1.Images.Width;
 
-//  if gSettings.OptDisplayToolbar then begin
+  //  if gSettings.OptDisplayToolbar then begin
 
-//    // Turning captions on can cause the buttons to wrap if the window isn't big
-//    // enough.
-//    // This looks pretty poor, so resize the window if it's too small
-//    toolbarWidth := 0;
-//    for i := 0 to (Toolbar1.ButtonCount - 1) do begin
-//      toolbarWidth := toolbarWidth + Toolbar1.Buttons[i].Width;
-//    end;
+  //    // Turning captions on can cause the buttons to wrap if the window isn't big
+  //    // enough.
+  //    // This looks pretty poor, so resize the window if it's too small
+  //    toolbarWidth := 0;
+  //    for i := 0 to (Toolbar1.ButtonCount - 1) do begin
+  //      toolbarWidth := toolbarWidth + Toolbar1.Buttons[i].Width;
+  //    end;
 
-//    if (toolbarWidth > self.Width) then begin
+  //    if (toolbarWidth > self.Width) then begin
 
-//      self.Width := toolbarWidth;
-//    end;
-//    // Adjusting the width to the sum of the toolbar buttons doens't make it wide
-//    // enough to prevent wrapping (presumably due to window borders); nudge the
-//    // size until it does
-//    // (Crude, but effective)
+  //      self.Width := toolbarWidth;
+  //    end;
+  //    // Adjusting the width to the sum of the toolbar buttons doens't make it wide
+  //    // enough to prevent wrapping (presumably due to window borders); nudge the
+  //    // size until it does
+  //    // (Crude, but effective)
 
-//    while (Toolbar1.RowCount > 1) do begin
-//      self.Width := self.Width + 10;
-//    end;
+  //    while (Toolbar1.RowCount > 1) do begin
+  //      self.Width := self.Width + 10;
+  //    end;
 
-//  end;
+  //  end;
 end;
 
 function TfrmMain.GetDriveLetterFromLVItem(listItem: TListItem): DriveLetterChar;
@@ -2146,19 +2133,22 @@ begin
   // No warnings to be shown in base class
   if (GetFreeOTFE().Version() < FREEOTFE_ID_v03_00_0000) then begin
     SDUMessageDlg(
-      SDUParamSubstitute(_(
-      'The main LibreCrypt driver installed on this computer dates back to FreeOTFE %1'),
-      [GetFreeOTFE().VersionStr()]) + SDUCRLF + SDUCRLF + _(
-      'It is highly recommended that you upgrade your LibreCrypt drivers to v3.00 or later as soon as possible, in order to allow the use of LRW and XTS based volumes.') + SDUCRLF + SDUCRLF + _('See documentation (installation section) for instructions on how to do this.'),
+      Format(_(
+      'The main LibreCrypt driver installed on this computer dates back to FreeOTFE %s'),
+      [GetFreeOTFE().VersionStr()]) + SDUCRLF + SDUCRLF +
+      _(     'It is highly recommended that you upgrade your LibreCrypt drivers to v3.00 or later as soon as possible,'+
+      ' in order to allow the use of LRW and XTS based volumes.') + SDUCRLF + SDUCRLF +
+       _('See documentation (installation section) for instructions on how to do this.'),
       mtWarning
       );
   end else
   if (GetFreeOTFE().Version() < FREEOTFE_ID_v04_30_0000) then begin
     SDUMessageDlg(
-      SDUParamSubstitute(_(
-      'The main LibreCrypt driver installed on this computer dates back to FreeOTFE %1'),
-      [GetFreeOTFE().VersionStr()]) + SDUCRLF + SDUCRLF + _(
-      'It is highly recommended that you upgrade your LibreCrypt drivers to those included in v4.30 or later as soon as possible, due to improvements in the main driver.') + SDUCRLF + SDUCRLF + _('See documentation (installation section) for instructions on how to do this.'),
+      Format(_(
+      'The main LibreCrypt driver installed on this computer dates back to FreeOTFE %s'),
+      [GetFreeOTFE().VersionStr()]) + SDUCRLF + SDUCRLF +
+      _(      'It is highly recommended that you upgrade your LibreCrypt drivers to those included in v4.30 or later as soon as possible,'+
+      ' due to improvements in the main driver.') + SDUCRLF + SDUCRLF + _('See documentation (installation section) for instructions on how to do this.'),
       mtWarning
       );
   end else begin
@@ -2238,7 +2228,7 @@ begin
   then begin
     SDUMessageDlg(
       _('Unable to encrypt pseudorandom data before using for overwrite buffer?!') +
-      SDUCRLF + SDUCRLF + SDUParamSubstitute(_('Error #: %1'), [GetFreeOTFE().LastErrorCode]),
+      SDUCRLF + SDUCRLF + Format(_('Error #: %d'), [GetFreeOTFE().LastErrorCode]),
       mtError
       );
 
@@ -2690,7 +2680,7 @@ begin
   // log closed OK
   if Action in [caHide, caFree] then begin
     gSettings.feAppRunning := arClosed;
-    gSettings.Save(false);
+    gSettings.Save(False);
   end;
 end;
 
@@ -2986,7 +2976,8 @@ var
   selDrives: DriveLetterString;
 begin
   selDrives := GetSelectedDrives();
-  Format_drive(selDrives, self);
+  if not Format_drive(selDrives) then
+    SDUMessageDlg(FORMAT_ERR, mtError);
 
   RefreshDrives();
 
@@ -3026,12 +3017,11 @@ begin
   end else begin
     selectedDrive := selDrives[1];
 
-    if SDUWarnYN(_('WARNING!') + SDUCRLF + SDUCRLF + SDUParamSubstitute(
-      _('You are attempting to overwrite drive: %1:'), [selectedDrive]) +
-      SDUCRLF + SDUCRLF + SDUParamSubstitute(
-      _('THIS WILL DESTROY ALL INFORMATION STORED ON DRIVE %1:, and require it to be reformatted'),
-      [selectedDrive]) + SDUCRLF + SDUCRLF + _(
-      'Are you ABSOLUTELY SURE you want to do this?'))
+    if SDUWarnYN(_('WARNING!') + SDUCRLF + SDUCRLF +
+    Format(      _('You are attempting to overwrite drive: %s:'), [selectedDrive]) +
+      SDUCRLF + SDUCRLF +
+      Format(      _('THIS WILL DESTROY ALL INFORMATION STORED ON DRIVE %s:, and require it to be reformatted'),      [selectedDrive]) + SDUCRLF + SDUCRLF +
+      _('Are you ABSOLUTELY SURE you want to do this?'))
     then begin
       OverwriteDrives(selectedDrive, True);
     end;
@@ -3623,7 +3613,7 @@ var
 begin
   cmdExitCode := ceSUCCESS;
 
-  fallowUACEsclation := not (SDUCommandLineSwitch(CMDLINE_NOUACESCALATE));
+  fallowUACEscalation := not (SDUCommandLineSwitch(CMDLINE_NOUACESCALATE));
   // todo: a lot of repetition here bc HandleCommandLineOpts_ fns also call  SDUCommandLineParameter
   //todo -otdk: 'else' statements mean one cmd per call - allow compatible ones at same time
 
@@ -3661,8 +3651,7 @@ begin
     DeactivateFreeOTFEComponent();
 
   if cmdExitCode = ceADMIN_PRIVS_NEEDED then
-    MessageDlg('Administrator privileges are needed. Please run again as adminisrator',
-      mtError, [mbOK], 0);
+    MessageDlg(_('Administrator privileges are needed. Please run again as administrator'),      mtError, [mbOK], 0);
   // Notice: CMDLINE_MINIMIZE handled in the .dpr
 
   // Return TRUE if there were no parameters specified on the command line
@@ -3714,11 +3703,7 @@ begin
 
   end;
 
-  UACEscalate(
-    CMDLINE_SWITCH_IND + CMDLINE_PORTABLE + ' ' + cmdLinePortableSwitch,
-    suppressMsgs
-    );
-
+  UACEscalate(    CMDLINE_SWITCH_IND + CMDLINE_PORTABLE + ' ' + cmdLinePortableSwitch, suppressMsgs );
 end;
 
 procedure TfrmMain.UACEscalate(cmdLineParams: String; suppressMsgs: Boolean);
@@ -3726,14 +3711,13 @@ const
   VERB_RUNAS = 'runas';
 var
   filenameAndPath: String;
-  cwd:             String;
+  errMsg:          String;
 begin
   // Only applicable in Windows Vista; simply warn user they can't continue on
   // earlier OSs
-  if (not (SDUOSVistaOrLater()) or not (fallowUACEsclation)) then begin
-    if not (suppressMsgs) then begin
+  if (not (SDUOSVistaOrLater()) or not (fallowUACEscalation)) then begin
+    if not suppressMsgs then
       SDUMessageDlg(TEXT_NEED_ADMIN, mtError, [mbOK], 0);
-    end;
   end else begin
     // Prevent endless loops of UAC escalation...
     cmdLineParams := CMDLINE_SWITCH_IND + CMDLINE_NOUACESCALATE + ' ' + cmdLineParams;
@@ -3744,23 +3728,14 @@ begin
     end;
 
     filenameAndPath := ParamStr(0);
-    cwd             := ExtractFilePath(filenameAndPath);
-    ShellExecute(
-      self.Handle,
-      VERB_RUNAS,
-      PChar(filenameAndPath),
-      PChar(cmdLineParams),
-      PChar(cwd),
-      SW_SHOW
-      );
+    if not UACRun(filenameAndPath, cmdLineParams, suppressMsgs, fallowUACEscalation, errMsg) then
+      SDUMessageDlg(errMsg, TMsgDlgType.mtError);
 
     // The UAC escalation/reexecution of FreeOTFE as UAC may have changed the
     // drivers installed/running; flush any caches in the FreeOTFE object
     GetFreeOTFE().CachesFlush();
   end;
-
 end;
-
 
 procedure TfrmMain.PKCS11TokenRemoved(SlotID: Integer);
 var
@@ -3769,7 +3744,7 @@ var
   drivesToDismount: DriveLetterString;
   mounted:          DriveLetterString;
 begin
-  SetStatusBarText(SDUParamSubstitute(_('Detected removal of token from slot ID: %1'), [SlotID]));
+  SetStatusBarText(Format(_('Detected removal of token from slot ID: %u'), [SlotID]));
   if gSettings.OptPKCS11AutoDismount then begin
     drivesToDismount := '';
     mounted          := GetFreeOTFE().DrivesMounted();
@@ -3784,7 +3759,7 @@ begin
       end;
     end;
 
-    SetStatusBarText(SDUParamSubstitute(_('Autodismounting drives: %1'),
+    SetStatusBarText(Format(_('Autodismounting drives: %s'),
       [PrettyPrintDriveLetters(drivesToDismount)]));
     DismountDrives(drivesToDismount, False);
   end;
@@ -3873,38 +3848,49 @@ begin
 
 end;
 
-procedure TfrmMain.actLUKSNewExecute(Sender: TObject);
+{
+creates luks volume with given parameters
+this will be in new luks wizard}
+function TfrmMain.CreateNewLUKS(fileName: String;
+password:AnsiString;
+ contSizeBytes :Uint64;
+out msg: String;
+  out drive: DriveLetterChar): Boolean;
 var
-  prevMounted:      DriveLetterString;
-  newMounted:       DriveLetterString;
-  createdMountedAs: DriveLetterString;
-  msg:              WideString;
-  i:                Integer;
-  res :boolean;
-  vol_path: String;
+  prevMounted: DriveLetterString;
+
 begin
   inherited;
 
   prevMounted := GetFreeOTFE().DrivesMounted;
+  Result      := GetFreeOTFE().CreateLUKS(fileName, SDUStringToSDUBytes(password),contSizeBytes, msg, drive);
 
-  vol_path := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\..\..\test_vols\');
-  res:=     GetFreeOTFE().CreateLUKS(vol_path+'luks.new.vol',SDUStringToSDUBytes('password'));
+  if Result then begin
+    Result := Format_Drive(drive, True);
+    if not Result then
+      // Volumes couldn't be mounted for some reason...
+      msg := FORMAT_ERR;
+  end;
 
-  if not res then begin
-    if (GetFreeOTFE().LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
-      SDUMessageDlg(_('LUKS container could not be created'), mtError);
-    end;
+  if not Result then begin
+    if (GetFreeOTFE().LastErrorCode <> OTFE_ERR_USER_CANCEL) then
+      msg := _('LUKS container could not be created');
   end else begin
-    newMounted := GetFreeOTFE().DrivesMounted;
-
-    // If the "drive letters" mounted have changed, the new volume was
-    // automatically mounted; setup for this
-    if (newMounted = prevMounted) then begin
-      msg := _('LUKS container created successfully.') + SDUCRLF +
-        SDUCRLF + _('Please mount, and format this container''s free space before use.');
+    // may be created but not mounted or formatted
+    //    newMounted := GetFreeOTFE().DrivesMounted;
+    if drive = #0 then begin
+      msg := _('LUKS container created successfully.') + SDUCRLF + SDUCRLF +
+        _('Please mount, and format this container''s free space before use.');
     end else begin
       // Get new drive on display...
       RefreshDrives();
+      msg := format(_('LUKS container created successfully and opened as: %s.'), [drive]);
+      // If the "drive letters" mounted have changed, the new volume was
+      // automatically mounted; setup for this
+  {  if (newMounted = prevMounted) then begin
+
+    end else begin
+
 
       createdMountedAs := '';
       for i := 1 to length(newMounted) do begin
@@ -3921,10 +3907,39 @@ begin
 
       msg := format(_('LUKS container created successfully and opened as: %s.'),
         [createdMountedAs]);
+      }
     end;
-
-    SDUMessageDlg(msg, mtInformation);
   end;
+
+end;
+
+procedure TfrmMain.actLUKSNewExecute(Sender: TObject);
+var
+  prevMounted: DriveLetterString;
+  //  newMounted:       DriveLetterString;
+  //  createdMountedAs: DriveLetterString;
+  msg:         String;
+  //  i:                Integer;
+  allOK:       Boolean;
+  fileName:    String;
+  drive:       DriveLetterChar;
+  //   errMsg :string
+
+begin
+  inherited;
+
+  prevMounted := GetFreeOTFE().DrivesMounted;
+
+  fileName := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\..\..\test_vols\') +
+    'luks.new.vol';
+  SysUtils.DeleteFile(fileName);
+  allOK := CreateNewLUKS(fileName,'password',4 * 1024*1024, msg, drive);
+
+
+  if allOK then
+    SDUMessageDlg(msg, mtInformation)
+  else
+    SDUMessageDlg(msg, mtError);
 
 end;
 
@@ -3939,19 +3954,19 @@ end;
 procedure TfrmMain.actLinuxMountPartitionExecute(Sender: TObject);
 var
   selectedPartition: String;
-  mountList:         TStringList;
+//  mountList:         TStringList;
 begin
   if GetFreeOTFE().WarnIfNoHashOrCypherDrivers() then begin
     selectedPartition := GetFreeOTFE().SelectPartition();
 
     if (selectedPartition <> '') then begin
-      mountList := TStringList.Create();
-      try
-        mountList.Add(selectedPartition);
-        MountFiles(ftLinux, mountList, False, False);
-      finally
-        mountList.Free();
-      end;
+//      mountList := TStringList.Create();
+//      try
+//        mountList.Add(selectedPartition);
+        MountFiles(ftLinux, selectedPartition, False, False);
+//      finally
+//        mountList.Free();
+//      end;
 
     end;
   end;

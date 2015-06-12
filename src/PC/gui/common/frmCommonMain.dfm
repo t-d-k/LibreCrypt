@@ -187,7 +187,7 @@ object frmCommonMain: TfrmCommonMain
       Caption = 'Dev Tools'
       Visible = False
       object DoTests1: TMenuItem
-        Action = actTest
+        Action = actFullTest
       end
     end
   end
@@ -301,22 +301,26 @@ object frmCommonMain: TfrmCommonMain
       Hint = 'Dump a CDB to a human readable text file.'
       OnExecute = actCDBPlaintextDumpExecute
     end
-    object actTest: TAction
-      Caption = 'Do Tests'
-      Hint = 'Do tests'
-      OnExecute = actTestExecute
+    object actFullTest: TAction
+      Caption = 'Full Tests'
+      Hint = 'Do Full Tests (not create LUKS)'
+      OnExecute = actFullTestExecute
     end
     object actLUKSDump: TAction
       Caption = '&Dump LUKS details to human readable file...'
       Hint = 'Dump a LUKS volumes header to a human readable text file.'
       OnExecute = actLUKSDumpExecute
     end
+    object aLuksTest: TAction
+      Caption = 'Test Luks'
+      OnExecute = aLuksTestExecute
+    end
   end
   object ilToolbarIcons_Small: TImageList
     Left = 68
     Top = 52
     Bitmap = {
-      494C010113001001400110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010113001001640110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -993,7 +997,7 @@ object frmCommonMain: TfrmCommonMain
     Left = 28
     Top = 96
     Bitmap = {
-      494C010113001001400118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010113001001640118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000078000000010020000000000000B4
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

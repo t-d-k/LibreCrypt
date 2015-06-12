@@ -21,21 +21,21 @@ interface
 
 uses
   Classes, Controls, dialogs,
+  DriverAPI,
   Forms,
+  FreeOTFEDriverConsts,
   Graphics, Messages, OTFE_U,
   OTFEConsts_U,
-  DriverAPI,
-  FreeOTFEDriverConsts,
   OTFEFreeOTFE_DriverCypherAPI,
   OTFEFreeOTFE_DriverHashAPI,
   OTFEFreeOTFE_LUKSAPI,
-  PKCS11Lib,
-  VolumeFileAPI,
   OTFEFreeOTFEBase_U,
   pkcs11_library,
   pkcs11_object,
   pkcs11_session,
-  SDUGeneral, SysUtils, Windows;
+  PKCS11Lib,
+  SDUGeneral, SysUtils, VolumeFileAPI,
+  Windows;
 
 type
   TOTFEFreeOTFE = class (TOTFEFreeOTFEBase)
@@ -80,30 +80,7 @@ type
       mtFixedMedia  // PC kernel drivers *only* - ignored otherwise
       ): Boolean; override;
 
-    function CreateMountDiskDevice(
-      volFilename: String;
-      volumeKey: TSDUBytes;
-      sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-      volumeIV: TSDUBytes;
-      ReadOnly: Boolean;
-      IVHashDriver: Ansistring;
-      IVHashGUID: TGUID;
-      IVCypherDriver: Ansistring;
-      IVCypherGUID: TGUID;
-      mainCypherDriver: Ansistring;
-      mainCypherGUID: TGUID;
-      VolumeFlags: Integer;
-      DriveLetter: Char;
-    // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
-      offset: Int64 = 0;
-      size: Int64 = 0;
-      MetaData_LinuxVolume: Boolean = False;  // Linux volume
-      MetaData_PKCS11SlotID: Integer = PKCS11_NO_SLOT_ID;  // PKCS11 SlotID
-      MountMountAs: TFreeOTFEMountAs = fomaRemovableDisk;
-    // PC kernel drivers *only* - ignored otherwise
-      mountForAllUsers: Boolean =
-      True  // PC kernel drivers *only* - ignored otherwise
-      ): Boolean; override;
+
 
     function DismountDiskDevice(
       deviceName: String;
@@ -334,6 +311,31 @@ type
       out DK: TSDUBytes
       ): Boolean; override;
 
+ function CreateMountDiskDevice(
+      volFilename: String;
+      volumeKey: TSDUBytes;
+      sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
+      volumeIV: TSDUBytes;
+      ReadOnly: Boolean;
+      IVHashDriver: Ansistring;
+      IVHashGUID: TGUID;
+      IVCypherDriver: Ansistring;
+      IVCypherGUID: TGUID;
+      mainCypherDriver: Ansistring;
+      mainCypherGUID: TGUID;
+      VolumeFlags: Integer;
+      DriveLetter: Char;
+    // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
+      offset: Int64 = 0;
+      size: Int64 = 0;
+      MetaData_LinuxVolume: Boolean = False;  // Linux volume
+      MetaData_PKCS11SlotID: Integer = PKCS11_NO_SLOT_ID;  // PKCS11 SlotID
+      MountMountAs: TFreeOTFEMountAs = fomaRemovableDisk;
+    // PC kernel drivers *only* - ignored otherwise
+      mountForAllUsers: Boolean =
+      True  // PC kernel drivers *only* - ignored otherwise
+      ): Boolean; override;
+
 
     // -----------------------------------------------------------------------
     // Extended FreeOTFE specific functions
@@ -406,7 +408,7 @@ uses
   //  frmWizardCreateVolume,
   frmSelectHashCypher,
   DriverControl,
-  frmDriverControl,  
+  frmDriverControl,
   frmSelectPartition,
   frmPKCS11Session,
   frmPKCS11Management,
@@ -868,14 +870,11 @@ begin
 
   DIOCBufferIn.DeviceType := deviceType;
 
-  if (DeviceIoControl(DriverHandle,
-    IOCTL_FREEOTFE_CREATE, @DIOCBufferIn,
-    sizeof(DIOCBufferIn), @DIOCBufferOut,
-    sizeof(DIOCBufferOut), bytesReturned,
-    nil)) then begin
+  if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_CREATE, @DIOCBufferIn,
+    sizeof(DIOCBufferIn), @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
     Result := copy(DIOCBufferOut.DeviceName, 1, StrLen(DIOCBufferOut.DeviceName));
 
-DebugMsg('Disk device created: '+Result);
+    DebugMsg('Disk device created: ' + Result);
 
   end;
 
@@ -915,7 +914,7 @@ var
 begin
   Result := False;
 
-DebugMsg('In MountDiskDevice');
+  DebugMsg('In MountDiskDevice');
 
   VolumeMetadataToString(metaData, strMetaData);
 
@@ -1050,18 +1049,15 @@ DebugMsg('+++ ---begin struct---');
 DebugMsgBinaryPtr(PAnsiChar(ptrDIOCBuffer), bufferSize);
 DebugMsg('+++ ---end struct---');
 {$ENDIF}
-    if (DeviceIoControl(DriverHandle,
-      IOCTL_FREEOTFE_MOUNT, ptrDIOCBuffer,
-      bufferSize, nil, 0,
-      bytesReturned, nil)) then
-    begin
+    if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_MOUNT, ptrDIOCBuffer,
+      bufferSize, nil, 0, bytesReturned, nil)) then begin
 
-DebugMsg('Mounted OK!');
+      DebugMsg('Mounted OK!');
 
       Result := True;
     end;
 
-DebugMsg('+++ DIOC STRUCT COMPLETE');
+    DebugMsg('+++ DIOC STRUCT COMPLETE');
 
 
   finally
@@ -1069,8 +1065,7 @@ DebugMsg('+++ DIOC STRUCT COMPLETE');
   end;
 
 
-DebugMsg('Exiting MountDiskDevice');
-
+  DebugMsg('Exiting MountDiskDevice');
 
 end;
 
@@ -1116,19 +1111,11 @@ begin
       );
 
     // Attempt to mount the device
-    if MountDiskDevice(deviceName, volFilename,
-      volumeKey, sectorIVGenMethod,
-      volumeIV, ReadOnly,
-      IVHashDriver, IVHashGUID,
-      IVCypherDriver, IVCypherGUID,
-      mainCypherDriver, mainCypherGUID,
-      VolumeFlags, mountMetadata,
-      offset, size,
-      FreeOTFEMountAsStorageMediaType[MountMountAs]) then
-    begin
-      if DosDeviceSymlink(True, deviceName,
-        DriveLetter, mountForAllUsers
-        ) then begin
+    if MountDiskDevice(deviceName, volFilename, volumeKey, sectorIVGenMethod,
+      volumeIV, ReadOnly, IVHashDriver, IVHashGUID, IVCypherDriver, IVCypherGUID,
+      mainCypherDriver, mainCypherGUID, VolumeFlags, mountMetadata, offset,
+      size, FreeOTFEMountAsStorageMediaType[MountMountAs]) then begin
+      if DosDeviceSymlink(True, deviceName, DriveLetter, mountForAllUsers) then begin
         Result := True;
       end else begin
         // Cleardown
@@ -1161,11 +1148,8 @@ begin
   StrPCopy(DIOCBuffer.DiskDeviceName, deviceName);
   DIOCBuffer.Emergency := emergency;
 
-  if (DeviceIoControl(DriverHandle,
-    IOCTL_FREEOTFE_DISMOUNT, @DIOCBuffer,
-    sizeof(DIOCBuffer), nil,
-    0, bytesReturned,
-    nil)) then begin
+  if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_DISMOUNT, @DIOCBuffer,
+    sizeof(DIOCBuffer), nil, 0, bytesReturned, nil)) then begin
     Result := True;
   end;
 
@@ -1199,7 +1183,7 @@ begin
 
   if Result then begin
 
-DebugMsg('getVolumeInfo');
+    DebugMsg('getVolumeInfo');
 
     Result := GetVolumeInfo(driveLetter, volumeInfo);
 
@@ -1207,7 +1191,7 @@ DebugMsg('getVolumeInfo');
     // emergency dismount; we don't know which FreeOTFE device to dismount
     if (not Result) then begin
 
-DebugMsg('getVolumeInfo NOT Result');
+      DebugMsg('getVolumeInfo NOT Result');
 
       emergency := False;
     end;
@@ -1225,17 +1209,16 @@ DebugMsg('getVolumeInfo NOT Result');
   driveDevice := INVALID_HANDLE_VALUE;
   if Result then begin
 
-DebugMsg('createfile: '+driveFile);
+    DebugMsg('createfile: ' + driveFile);
 
     driveDevice := CreateFile(PChar(driveFile),
       //GENERIC_READ or GENERIC_WRITE,
-      GENERIC_READ, FILE_SHARE_READ or
-      FILE_SHARE_WRITE, nil, OPEN_EXISTING,
-      FILE_FLAG_NO_BUFFERING,
-      0);
+      GENERIC_READ, FILE_SHARE_READ or FILE_SHARE_WRITE, nil, OPEN_EXISTING,
+      FILE_FLAG_NO_BUFFERING, 0);
     Result      := (driveDevice <> INVALID_HANDLE_VALUE);
 
-DebugMsg('driveDevice: '+inttostr(driveDevice)+' (INVALID_HANDLE_VALUE = '+inttostr(INVALID_HANDLE_VALUE));
+    DebugMsg('driveDevice: ' + IntToStr(driveDevice) + ' (INVALID_HANDLE_VALUE = ' +
+      IntToStr(INVALID_HANDLE_VALUE));
 
   end;
 
@@ -1243,51 +1226,39 @@ DebugMsg('driveDevice: '+inttostr(driveDevice)+' (INVALID_HANDLE_VALUE = '+intto
 
   if (Result or (emergency and (driveDevice <> INVALID_HANDLE_VALUE))) then begin
 
-DebugMsg('lockvolume');
+    DebugMsg('lockvolume');
 
-    Result := DeviceIoControl(driveDevice,
-      FSCTL_LOCK_VOLUME, nil,
-      0, nil,
-      0, bytesReturned,
-      nil);
+    Result := DeviceIoControl(driveDevice, FSCTL_LOCK_VOLUME, nil, 0, nil,
+      0, bytesReturned, nil);
   end;
 
 
   if (Result or (emergency and (driveDevice <> INVALID_HANDLE_VALUE))) then begin
 
-DebugMsg('dismountvolume');
+    DebugMsg('dismountvolume');
 
-    Result := DeviceIoControl(driveDevice,
-      FSCTL_DISMOUNT_VOLUME, nil,
-      0, nil,
-      0, bytesReturned,
-      nil);
+    Result := DeviceIoControl(driveDevice, FSCTL_DISMOUNT_VOLUME, nil, 0,
+      nil, 0, bytesReturned, nil);
   end;
 
 
   if (Result or (emergency and (driveDevice <> INVALID_HANDLE_VALUE))) then begin
     pmr.PreventMediaRemoval := False;
 
-DebugMsg('mediaremoval');
+    DebugMsg('mediaremoval');
 
-    Result                  := DeviceIoControl(driveDevice,
-      IOCTL_STORAGE_MEDIA_REMOVAL, @pmr,
-      sizeof(pmr), nil,
-      0, bytesReturned,
-      nil);
+    Result := DeviceIoControl(driveDevice, IOCTL_STORAGE_MEDIA_REMOVAL, @pmr,
+      sizeof(pmr), nil, 0, bytesReturned, nil);
   end;
 
 
   if (Result or (emergency and (driveDevice <> INVALID_HANDLE_VALUE))) then begin
     pmr.PreventMediaRemoval := False;
 
-DebugMsg('ejectmedia');
+    DebugMsg('ejectmedia');
 
-    Result                  := DeviceIoControl(driveDevice,
-      IOCTL_STORAGE_EJECT_MEDIA, nil,
-      0, nil,
-      0, bytesReturned,
-      nil);
+    Result := DeviceIoControl(driveDevice, IOCTL_STORAGE_EJECT_MEDIA, nil,
+      0, nil, 0, bytesReturned, nil);
   end;
 
 
@@ -1295,7 +1266,7 @@ DebugMsg('ejectmedia');
   // IOCTL_STORAGE_EJECT_MEDIA should have already done this
   if (Result or emergency) then begin
 
-DebugMsg('dismountdevice');
+    DebugMsg('dismountdevice');
 
     Result := DismountDiskDevice(volumeInfo.deviceName, emergency);
   end;
@@ -1303,19 +1274,16 @@ DebugMsg('dismountdevice');
 
   if (Result or (emergency and (driveDevice <> INVALID_HANDLE_VALUE))) then begin
 
-DebugMsg('unlock');
+    DebugMsg('unlock');
 
-    Result := DeviceIoControl(driveDevice,
-      FSCTL_UNLOCK_VOLUME, nil,
-      0, nil,
-      0, bytesReturned,
-      nil);
+    Result := DeviceIoControl(driveDevice, FSCTL_UNLOCK_VOLUME, nil, 0, nil,
+      0, bytesReturned, nil);
   end;
 
 
   if (driveDevice <> INVALID_HANDLE_VALUE) then begin
 
-DebugMsg('closehandle');
+    DebugMsg('closehandle');
 
     // Note that we can't do:
     //   Result := Result and CloseHandle(driveDevice);"
@@ -1356,13 +1324,11 @@ begin
     StrPCopy(DIOCBuffer.DriveFile, kernelDriveFile);
     StrPCopy(DIOCBuffer.DiskDeviceName, deviceName);
     DIOCBuffer.Emergency := emergency;
-    DebugMsg('LDREUDriver: "'+ DIOCBuffer.DriveFile+ '" : "'+ DIOCBuffer.DiskDeviceName+'" '+Booltostr(emergency) );
+    DebugMsg('LDREUDriver: "' + DIOCBuffer.DriveFile + '" : "' +
+      DIOCBuffer.DiskDeviceName + '" ' + Booltostr(emergency));
 
-    if (DeviceIoControl(DriverHandle,
-      IOCTL_FREEOTFE_LDREU, @DIOCBuffer,
-      sizeof(DIOCBuffer), nil,
-      0, bytesReturned,
-      nil)) then begin
+    if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_LDREU, @DIOCBuffer,
+      sizeof(DIOCBuffer), nil, 0, bytesReturned, nil)) then begin
       Result := True;
     end;
   end;
@@ -1383,11 +1349,8 @@ begin
 
   StrPCopy(DIOCBuffer.DeviceName, deviceName);
 
-  if (DeviceIoControl(DriverHandle,
-    IOCTL_FREEOTFE_DESTROY, @DIOCBuffer,
-    sizeof(DIOCBuffer), nil,
-    0, bytesReturned,
-    nil)) then begin
+  if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_DESTROY, @DIOCBuffer,
+    sizeof(DIOCBuffer), nil, 0, bytesReturned, nil)) then begin
     Result := True;
   end;
 
@@ -1409,7 +1372,7 @@ begin
 
   if Result then begin
 
-DebugMsg('getVolumeInfo');
+    DebugMsg('getVolumeInfo');
 
     Result := GetVolumeInfo(driveLetter, volumeInfo);
 
@@ -1417,7 +1380,7 @@ DebugMsg('getVolumeInfo');
     // emergency dismount; we don't know which FreeOTFE device to dismount
     if (not Result) then begin
 
-DebugMsg('getVolumeInfo NOT Result');
+      DebugMsg('getVolumeInfo NOT Result');
 
       emergency := False;
     end;
@@ -1433,11 +1396,10 @@ DebugMsg('getVolumeInfo NOT Result');
   if Result then begin
     unableToOpenDrive := False;
 
-    DebugMsg('LDREUUserApp: "'+ driveLetter+ '" : "'+ volumeInfo.deviceName+'" '+Booltostr(emergency)+ Booltostr(unableToOpenDrive));
+    DebugMsg('LDREUUserApp: "' + driveLetter + '" : "' + volumeInfo.deviceName +
+      '" ' + Booltostr(emergency) + Booltostr(unableToOpenDrive));
 
-    Result            := LDREUUserApp(driveLetter,
-      volumeInfo.deviceName, emergency,
-      unableToOpenDrive);
+    Result := LDREUUserApp(driveLetter, volumeInfo.deviceName, emergency, unableToOpenDrive);
   end;
 
 
@@ -1447,7 +1409,8 @@ DebugMsg('getVolumeInfo NOT Result');
   // dismount (i.e. opening the volume) and carry out the LDREU
   if (not Result and unableToOpenDrive) then begin
 
-DebugMsg(Format('LDREUDriver "%s" "%s" %s',[driveLetter,volumeInfo.deviceName,Booltostr(emergency)]));
+    DebugMsg(Format('LDREUDriver "%s" "%s" %s', [driveLetter, volumeInfo.deviceName,
+      Booltostr(emergency)]));
 
 
     Result := LDREUDriver(driveLetter, volumeInfo.deviceName, emergency);
@@ -1455,7 +1418,7 @@ DebugMsg(Format('LDREUDriver "%s" "%s" %s',[driveLetter,volumeInfo.deviceName,Bo
 
   if (Result or emergency) then begin
 
-DebugMsg('remove definition');
+    DebugMsg('remove definition');
 
     Result := DeleteDosDeviceSymlink(volumeInfo.deviceName, driveLetter);
   end;
@@ -1464,7 +1427,7 @@ DebugMsg('remove definition');
   // And finally... Destroy the device
   if (Result or emergency) then begin
 
-DebugMsg('destroy device');
+    DebugMsg('destroy device');
 
     Result := DestroyDiskDevice(volumeInfo.deviceName);
   end;
@@ -1484,11 +1447,8 @@ begin
   if (fCachedVersionID <> VERSION_ID_NOT_CACHED) then begin
     Result := fCachedVersionID;
   end else begin
-    if (DeviceIoControl(DriverHandle,
-      IOCTL_FREEOTFE_VERSION, nil,
-      0, @DIOCBuffer,
-      sizeof(DIOCBuffer), BytesReturned,
-      nil)) then begin
+    if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_VERSION, nil, 0,
+      @DIOCBuffer, sizeof(DIOCBuffer), BytesReturned, nil)) then begin
       if BytesReturned = sizeof(DIOCBuffer) then begin
         Result           := DIOCBuffer.VersionID;
         fCachedVersionID := Result;
@@ -1513,10 +1473,8 @@ begin
 
   CheckActive();
 
-  if (DeviceIoControl(DriverHandle,
-    IOCTL_FREEOTFE_GET_DISK_DEVICE_COUNT, nil,
-    0, @DIOCBuffer, sizeof(DIOCBuffer),
-    BytesReturned, nil)) then begin
+  if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_GET_DISK_DEVICE_COUNT, nil,
+    0, @DIOCBuffer, sizeof(DIOCBuffer), BytesReturned, nil)) then begin
     if BytesReturned = sizeof(DIOCBuffer) then begin
       Result := DIOCBuffer.Count;
     end;
@@ -1557,18 +1515,15 @@ begin
   bufferSize := bufferSize + (DIOC_BOUNDRY - (bufferSize mod DIOC_BOUNDRY));
   ptrBuffer  := allocmem(bufferSize);
 
-  if (DeviceIoControl(DriverHandle,
-    IOCTL_FREEOTFE_GET_DISK_DEVICE_LIST, nil,
-    0, ptrBuffer, bufferSize,
-    BytesReturned, nil)) then begin
+  if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_GET_DISK_DEVICE_LIST, nil,
+    0, ptrBuffer, bufferSize, BytesReturned, nil)) then begin
     if BytesReturned <= bufferSize then begin
       // In case devices were unmounted between the call to
       // GetDiskDeviceCount() and the DIOC call...
       ptrDIOCDeviceNameList := ptrBuffer;
       deviceCount           := ptrDIOCDeviceNameList.DeviceCount;
 
-      ptrBufferOffset := Pointer(PAnsiChar(ptrBuffer) +
-        sizeof(ptrDIOCDeviceNameList^) -
+      ptrBufferOffset := Pointer(PAnsiChar(ptrBuffer) + sizeof(ptrDIOCDeviceNameList^) -
         FREEOTFE_MAX_FILENAME_LENGTH);
       for i := 1 to deviceCount do begin
         devName := Copy(PAnsiChar(ptrBufferOffset), 1, StrLen(PAnsiChar(ptrBufferOffset)));
@@ -1584,7 +1539,7 @@ begin
 
   end else begin
 
-DebugMsg('devicelist DIOC 2 FAIL');
+    DebugMsg('devicelist DIOC 2 FAIL');
 
   end;
 
@@ -1735,17 +1690,14 @@ begin
 
   deviceName := GetDriveDeviceName(driveLetter);
 
-DebugMsg('deviceName: '+deviceName);
+  DebugMsg('deviceName: ' + deviceName);
 
   if (deviceName <> '') then begin
     StrPCopy(inBuffer.DeviceName, deviceName);
 
-    if (DeviceIoControl(DriverHandle,
-      IOCTL_FREEOTFE_GET_DISK_DEVICE_STATUS,
-      @inBuffer, sizeof(inBuffer),
-      @outBuffer, sizeof(outBuffer),
-      BytesReturned, nil)) then
-    begin
+    if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_GET_DISK_DEVICE_STATUS,
+      @inBuffer, sizeof(inBuffer), @outBuffer, sizeof(outBuffer), BytesReturned, nil))
+    then begin
       if (BytesReturned <= sizeof(outBuffer)) then begin
         volumeInfo.Filename         := Copy(outBuffer.Filename, 1, StrLen(outBuffer.Filename));
         volumeInfo.DeviceName       :=
@@ -1779,9 +1731,7 @@ DebugMsg('deviceName: '+deviceName);
         Result := GetVolumeMetaData(driveLetter, outBuffer.MetaDataLength, volumeInfo.MetaData);
 
         volumeInfo.MetaDataStructValid :=
-          ParseVolumeMetadata(
-          volumeInfo.MetaData,
-          volumeInfo.MetaDataStruct);
+          ParseVolumeMetadata(volumeInfo.MetaData, volumeInfo.MetaDataStruct);
 
       end;
 
@@ -1809,7 +1759,7 @@ begin
   driveLetter := upcase(driveLetter);
 
 
-DebugMsg('expectedLength: '+inttostr(expectedLength));
+  DebugMsg('expectedLength: ' + IntToStr(expectedLength));
 
   deviceName := GetDriveDeviceName(driveLetter);
   if (deviceName <> '') then begin
@@ -1824,11 +1774,8 @@ DebugMsg('expectedLength: '+inttostr(expectedLength));
     try
       StrPCopy(inBuffer.DeviceName, deviceName);
 
-      if (DeviceIoControl(DriverHandle,
-        IOCTL_FREEOTFE_GET_DISK_DEVICE_METADATA,
-        @inBuffer, sizeof(inBuffer),
-        ptrDIOCBuffer, bufferSize,
-        BytesReturned, nil))
+      if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_GET_DISK_DEVICE_METADATA,
+        @inBuffer, sizeof(inBuffer), ptrDIOCBuffer, bufferSize, BytesReturned, nil))
       then begin
         if (BytesReturned <= bufferSize) then begin
           // Set metaData so that it has enough characters which can be
@@ -1836,8 +1783,8 @@ DebugMsg('expectedLength: '+inttostr(expectedLength));
           metaData := StringOfChar(Ansichar(#0), ptrDIOCBuffer.MetaDataLength);
           StrMove(PAnsiChar(metaData), @ptrDIOCBuffer.MetaData, ptrDIOCBuffer.MetaDataLength);
 
-DebugMsg('Metadata length: '+inttostr(ptrDIOCBuffer.MetaDataLength));
-DebugMsgBinary(metaData);
+          DebugMsg('Metadata length: ' + IntToStr(ptrDIOCBuffer.MetaDataLength));
+          DebugMsgBinary(metaData);
 
 
           Result := True;
@@ -1939,12 +1886,8 @@ function TOTFEFreeOTFE.ConnectDevice(devicename: String): THandle;
 var
   deviceHandle: THandle;
 begin
-  deviceHandle := CreateFile(PChar(devicename),
-    GENERIC_READ or GENERIC_WRITE,
-    FILE_SHARE_READ or FILE_SHARE_WRITE,
-    nil, OPEN_EXISTING,
-    FILE_FLAG_NO_BUFFERING,
-    0);
+  deviceHandle := CreateFile(PChar(devicename), GENERIC_READ or GENERIC_WRITE,
+    FILE_SHARE_READ or FILE_SHARE_WRITE, nil, OPEN_EXISTING, FILE_FLAG_NO_BUFFERING, 0);
 
   if (deviceHandle = INVALID_HANDLE_VALUE) then begin
     deviceHandle := 0;
@@ -1990,13 +1933,10 @@ begin
     driveLetterColon := DriveLetter + ':';
 
     if CreateNotDelete then begin
-      Result := DefineDosDevice(DDD_RAW_TARGET_PATH,
-        PWideChar(driveLetterColon),
+      Result := DefineDosDevice(DDD_RAW_TARGET_PATH, PWideChar(driveLetterColon),
         PWideChar(deviceName));
     end else begin
-      Result := DefineDosDevice(DDD_REMOVE_DEFINITION,
-        PWideChar(driveLetterColon),
-        nil);
+      Result := DefineDosDevice(DDD_REMOVE_DEFINITION, PWideChar(driveLetterColon), nil);
     end;
 
   end else begin
@@ -2012,10 +1952,8 @@ begin
       DIOCCode := IOCTL_FREEOTFE_DELETE_DOS_MOUNTPOINT;
     end;
 
-    if (DeviceIoControl(DriverHandle, DIOCCode,
-      @DIOCBuffer, sizeof(DIOCBuffer),
-      nil, 0, bytesReturned,
-      nil)) then begin
+    if (DeviceIoControl(DriverHandle, DIOCCode, @DIOCBuffer, sizeof(DIOCBuffer),
+      nil, 0, bytesReturned, nil)) then begin
       Result := True;
 
       BroadcastDriveChangeMessage(CreateNotDelete, DriveLetter);
@@ -2038,13 +1976,11 @@ begin
   //                   );
   //       here, as lazy evaluation will prevent one or the other from being
   //       evaluated - we want *both* to always be executed!
-  if DosDeviceSymlink(False, DeviceName,
-    DriveLetter, True) then begin
+  if DosDeviceSymlink(False, DeviceName, DriveLetter, True) then begin
     Result := True;
   end;
 
-  if DosDeviceSymlink(False, DeviceName,
-    DriveLetter, False) then begin
+  if DosDeviceSymlink(False, DeviceName, DriveLetter, False) then begin
     Result := True;
   end;
 
@@ -2253,11 +2189,11 @@ end;
 function TOTFEFreeOTFE._GetCypherDriverCyphers_v1(cypherDriver: Ansistring;
   var cypherDriverDetails: TFreeOTFECypherDriver): Boolean;
 var
-  cypherHandle:       THandle;
-  BytesReturned:      DWORD;
-  DIOCBuffer:         TDIOC_CYPHER_IDENTIFYDRIVER;
-  ptrBuffer:          Pointer;
-  ptrBufferOffset:    Pointer;
+  cypherHandle:      THandle;
+  BytesReturned:     DWORD;
+  DIOCBuffer:        TDIOC_CYPHER_IDENTIFYDRIVER;
+  ptrBuffer:         Pointer;
+  ptrBufferOffset:   Pointer;
   DIOCBufferCyphers: PDIOC_CYPHER_IDENTIFYSUPPORTED_v1;  // for debugging only
 
   bufferSize:         Cardinal;
@@ -2276,35 +2212,34 @@ begin
     deviceUserModeName := GetCypherDeviceUserModeDeviceName(cypherDriver);
 
 
-DebugMsg('Connecting to: '+deviceUserModeName);
+    DebugMsg('Connecting to: ' + deviceUserModeName);
 
     cypherHandle := ConnectDevice(deviceUserModeName);
     if (cypherHandle = 0) then begin
 
-DebugMsg('Couldn''t connect to: '+deviceUserModeName);
+      DebugMsg('Couldn''t connect to: ' + deviceUserModeName);
 
     end else begin
-      if (DeviceIoControl(cypherHandle,
-        IOCTL_FREEOTFECYPHER_IDENTIFYDRIVER, nil,
-        0, @DIOCBuffer,
-        sizeof(DIOCBuffer), BytesReturned,
-        nil)) then begin
+      if (DeviceIoControl(cypherHandle, IOCTL_FREEOTFECYPHER_IDENTIFYDRIVER,
+        nil, 0, @DIOCBuffer, sizeof(DIOCBuffer), BytesReturned, nil)) then begin
 
-  DebugMsg('_1_ supplied: '+inttostr(sizeof(DIOCBuffer))+' used: '+inttostr(BytesReturned));
+        DebugMsg('_1_ supplied: ' + IntToStr(sizeof(DIOCBuffer)) + ' used: ' +
+          IntToStr(BytesReturned));
 
         if BytesReturned = sizeof(DIOCBuffer) then begin
           cypherDriverDetails.DriverGUID           := DIOCBuffer.DriverGUID;
           cypherDriverDetails.DeviceName           := GetDeviceName(cypherDriver);
           cypherDriverDetails.LibFNOrDevKnlMdeName := cypherDriver;
           cypherDriverDetails.DeviceUserModeName   := DeviceUserModeName;
-          cypherDriverDetails.Title                := Copy(DIOCBuffer.Title, 1, StrLen(DIOCBuffer.Title));
+          cypherDriverDetails.Title                :=
+            Copy(DIOCBuffer.Title, 1, StrLen(DIOCBuffer.Title));
           cypherDriverDetails.VersionID            := DIOCBuffer.VersionID;
           cypherDriverDetails.CypherCount          := DIOCBuffer.CypherCount;
 
 
           bufferSize := sizeof(TDIOC_CYPHER_IDENTIFYSUPPORTED_v1) -
-            sizeof(cypherDetails^) +
-            (sizeof(cypherDetails^) * cypherDriverDetails.CypherCount);
+            sizeof(cypherDetails^) + (sizeof(cypherDetails^) *
+            cypherDriverDetails.CypherCount);
           // Round up to next "DIOC boundry". Although this always results in an
           // oversized buffer, it's guaranteed to be big enough.
           bufferSize := bufferSize + (DIOC_BOUNDRY - (bufferSize mod DIOC_BOUNDRY));
@@ -2312,22 +2247,18 @@ DebugMsg('Couldn''t connect to: '+deviceUserModeName);
 
           SetLength(cypherDriverDetails.Cyphers, cypherDriverDetails.CypherCount);
 
-          if (DeviceIoControl(cypherHandle,
-            IOCTL_FREEOTFECYPHER_IDENTIFYSUPPORTED_v1,
-            nil, 0, ptrBuffer,
-            bufferSize, BytesReturned,
-            nil)) then begin
-  DebugMsg('_2_ supplied: '+inttostr(bufferSize)+' used: '+inttostr(BytesReturned));
+          if (DeviceIoControl(cypherHandle, IOCTL_FREEOTFECYPHER_IDENTIFYSUPPORTED_v1,
+            nil, 0, ptrBuffer, bufferSize, BytesReturned, nil)) then begin
+            DebugMsg('_2_ supplied: ' + IntToStr(bufferSize) + ' used: ' +
+              IntToStr(BytesReturned));
 
             if BytesReturned <= bufferSize then begin
-  DIOCBufferCyphers := (PDIOC_CYPHER_IDENTIFYSUPPORTED_v1(ptrBuffer));
-  DebugMsg('cypher details count: '+inttostr(DIOCBufferCyphers.BufCount));
+              DIOCBufferCyphers := (PDIOC_CYPHER_IDENTIFYSUPPORTED_v1(ptrBuffer));
+              DebugMsg('cypher details count: ' + IntToStr(DIOCBufferCyphers.BufCount));
 
               ptrBufferOffset :=
-                Pointer(PAnsiChar(ptrBuffer) +
-                sizeof(TDIOC_CYPHER_IDENTIFYSUPPORTED_v1) -
-                sizeof(
-                cypherDetails^));
+                Pointer(PAnsiChar(ptrBuffer) + sizeof(
+                TDIOC_CYPHER_IDENTIFYSUPPORTED_v1) - sizeof(cypherDetails^));
               arrIdx          := low(cypherDriverDetails.Cyphers);
               for i := 1 to cypherDriverDetails.CypherCount do begin
                 cypherDetails := (PCYPHER_v1(ptrBufferOffset));
@@ -2337,8 +2268,8 @@ DebugMsg('Couldn''t connect to: '+deviceUserModeName);
 
                 // Failsafe to "unknown"
                 cypherDriverDetails.Cyphers[arrIdx].Mode := focmUnknown;
-                for currCypherMode := low(FreeOTFECypherModeID) to high(FreeOTFECypherModeID) do
-                begin
+                for currCypherMode :=
+                  low(FreeOTFECypherModeID) to high(FreeOTFECypherModeID) do begin
                   if (cypherDetails.Mode = FreeOTFECypherModeID[currCypherMode]) then begin
                     cypherDriverDetails.Cyphers[arrIdx].Mode := currCypherMode;
                   end;
@@ -2355,9 +2286,7 @@ DebugMsg('Couldn''t connect to: '+deviceUserModeName);
 
                 // Setup for the next one...
                 ptrBufferOffset :=
-                  Pointer(PAnsiChar(ptrBufferOffset) +
-                  sizeof(
-                  cypherDetails^));
+                  Pointer(PAnsiChar(ptrBufferOffset) + sizeof(cypherDetails^));
                 Inc(arrIdx);
               end;
 
@@ -2369,7 +2298,7 @@ DebugMsg('Couldn''t connect to: '+deviceUserModeName);
 
           end else begin
 
-  DebugMsg('getcypherdrivers DIOC 2 FAIL');
+            DebugMsg('getcypherdrivers DIOC 2 FAIL');
 
           end;
 
@@ -2385,7 +2314,7 @@ DebugMsg('Couldn''t connect to: '+deviceUserModeName);
 
 
 
-DebugMsg('Exiting function...');
+  DebugMsg('Exiting function...');
 end;
 
  // ----------------------------------------------------------------------------
@@ -2399,7 +2328,7 @@ var
   DIOCBuffer:         TDIOC_CYPHER_IDENTIFYDRIVER;
   ptrBuffer:          Pointer;
   ptrBufferOffset:    Pointer;
-  DIOCBufferCyphers: PDIOC_CYPHER_IDENTIFYSUPPORTED_v3;// for debugging only
+  DIOCBufferCyphers:  PDIOC_CYPHER_IDENTIFYSUPPORTED_v3;// for debugging only
   bufferSize:         Cardinal;
   cypherDetails:      PCYPHER_v3;
   i:                  Integer;
@@ -2416,19 +2345,16 @@ begin
     deviceUserModeName := GetCypherDeviceUserModeDeviceName(cypherDriver);
 
 
-DebugMsg('Connecting to: '+deviceUserModeName);
+    DebugMsg('Connecting to: ' + deviceUserModeName);
 
     cypherHandle := ConnectDevice(deviceUserModeName);
     if (cypherHandle = 0) then begin
 
-DebugMsg('Couldn''t connect to: '+deviceUserModeName);
+      DebugMsg('Couldn''t connect to: ' + deviceUserModeName);
 
     end else begin
-      if (DeviceIoControl(cypherHandle,
-        IOCTL_FREEOTFECYPHER_IDENTIFYDRIVER, nil,
-        0, @DIOCBuffer,
-        sizeof(DIOCBuffer), BytesReturned,
-        nil)) then begin
+      if (DeviceIoControl(cypherHandle, IOCTL_FREEOTFECYPHER_IDENTIFYDRIVER,
+        nil, 0, @DIOCBuffer, sizeof(DIOCBuffer), BytesReturned, nil)) then begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('_1_ supplied: '+inttostr(sizeof(DIOCBuffer))+' used: '+inttostr(BytesReturned));
   {$ENDIF}
@@ -2437,14 +2363,15 @@ DebugMsg('Couldn''t connect to: '+deviceUserModeName);
           cypherDriverDetails.DeviceName           := GetDeviceName(cypherDriver);
           cypherDriverDetails.LibFNOrDevKnlMdeName := cypherDriver;
           cypherDriverDetails.DeviceUserModeName   := DeviceUserModeName;
-          cypherDriverDetails.Title                := Copy(DIOCBuffer.Title, 1, StrLen(DIOCBuffer.Title));
+          cypherDriverDetails.Title                :=
+            Copy(DIOCBuffer.Title, 1, StrLen(DIOCBuffer.Title));
           cypherDriverDetails.VersionID            := DIOCBuffer.VersionID;
           cypherDriverDetails.CypherCount          := DIOCBuffer.CypherCount;
 
 
           bufferSize := sizeof(TDIOC_CYPHER_IDENTIFYSUPPORTED_v3) -
-            sizeof(cypherDetails^) +
-            (sizeof(cypherDetails^) * cypherDriverDetails.CypherCount);
+            sizeof(cypherDetails^) + (sizeof(cypherDetails^) *
+            cypherDriverDetails.CypherCount);
           // Round up to next "DIOC boundry". Although this always results in an
           // oversized buffer, it's guaranteed to be big enough.
           bufferSize := bufferSize + (DIOC_BOUNDRY - (bufferSize mod DIOC_BOUNDRY));
@@ -2452,24 +2379,20 @@ DebugMsg('Couldn''t connect to: '+deviceUserModeName);
 
           SetLength(cypherDriverDetails.Cyphers, cypherDriverDetails.CypherCount);
 
-          if (DeviceIoControl(cypherHandle,
-            IOCTL_FREEOTFECYPHER_IDENTIFYSUPPORTED_v3,
-            nil, 0, ptrBuffer,
-            bufferSize, BytesReturned,
-            nil)) then begin
+          if (DeviceIoControl(cypherHandle, IOCTL_FREEOTFECYPHER_IDENTIFYSUPPORTED_v3,
+            nil, 0, ptrBuffer, bufferSize, BytesReturned, nil)) then begin
 
-  DebugMsg('_2_ supplied: '+inttostr(bufferSize)+' used: '+inttostr(BytesReturned));
+            DebugMsg('_2_ supplied: ' + IntToStr(bufferSize) + ' used: ' +
+              IntToStr(BytesReturned));
 
             if BytesReturned <= bufferSize then begin
 
-  DIOCBufferCyphers := (PDIOC_CYPHER_IDENTIFYSUPPORTED_v3(ptrBuffer));
-  DebugMsg('cypher details count: '+inttostr(DIOCBufferCyphers.BufCount));
+              DIOCBufferCyphers := (PDIOC_CYPHER_IDENTIFYSUPPORTED_v3(ptrBuffer));
+              DebugMsg('cypher details count: ' + IntToStr(DIOCBufferCyphers.BufCount));
 
               ptrBufferOffset :=
-                Pointer(PAnsiChar(ptrBuffer) +
-                sizeof(TDIOC_CYPHER_IDENTIFYSUPPORTED_v3) -
-                sizeof(
-                cypherDetails^));
+                Pointer(PAnsiChar(ptrBuffer) + sizeof(
+                TDIOC_CYPHER_IDENTIFYSUPPORTED_v3) - sizeof(cypherDetails^));
               arrIdx          := low(cypherDriverDetails.Cyphers);
               for i := 1 to cypherDriverDetails.CypherCount do begin
                 cypherDetails := (PCYPHER_v3(ptrBufferOffset));
@@ -2479,8 +2402,8 @@ DebugMsg('Couldn''t connect to: '+deviceUserModeName);
 
                 // Failsafe to "unknown"
                 cypherDriverDetails.Cyphers[arrIdx].Mode := focmUnknown;
-                for currCypherMode := low(FreeOTFECypherModeID) to high(FreeOTFECypherModeID) do
-                begin
+                for currCypherMode :=
+                  low(FreeOTFECypherModeID) to high(FreeOTFECypherModeID) do begin
                   if (cypherDetails.Mode = FreeOTFECypherModeID[currCypherMode]) then begin
                     cypherDriverDetails.Cyphers[arrIdx].Mode := currCypherMode;
                   end;
@@ -2496,9 +2419,7 @@ DebugMsg('Couldn''t connect to: '+deviceUserModeName);
 
                 // Setup for the next one...
                 ptrBufferOffset :=
-                  Pointer(PAnsiChar(ptrBufferOffset) +
-                  sizeof(
-                  cypherDetails^));
+                  Pointer(PAnsiChar(ptrBufferOffset) + sizeof(cypherDetails^));
                 Inc(arrIdx);
               end;
 
@@ -2631,11 +2552,8 @@ DebugMsg('Couldn''t connect to: '+deviceUserModeName);
 {$ENDIF}
     end else begin
 
-      if (DeviceIoControl(hashHandle,
-        IOCTL_FREEOTFEHASH_IDENTIFYDRIVER, nil,
-        0, @DIOCBuffer,
-        sizeof(DIOCBuffer), BytesReturned,
-        nil)) then begin
+      if (DeviceIoControl(hashHandle, IOCTL_FREEOTFEHASH_IDENTIFYDRIVER,
+        nil, 0, @DIOCBuffer, sizeof(DIOCBuffer), BytesReturned, nil)) then begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('_3_ supplied: '+inttostr(sizeof(DIOCBuffer))+' used: '+inttostr(BytesReturned));
 {$ENDIF}
@@ -2644,14 +2562,14 @@ DebugMsg('_3_ supplied: '+inttostr(sizeof(DIOCBuffer))+' used: '+inttostr(BytesR
           hashDriverDetails.DeviceName           := GetDeviceName(hashDriver);
           hashDriverDetails.LibFNOrDevKnlMdeName := hashDriver;
           hashDriverDetails.DeviceUserModeName   := DeviceUserModeName;
-          hashDriverDetails.Title                := Copy(DIOCBuffer.Title, 1, StrLen(DIOCBuffer.Title));
+          hashDriverDetails.Title                :=
+            Copy(DIOCBuffer.Title, 1, StrLen(DIOCBuffer.Title));
           hashDriverDetails.VersionID            := DIOCBuffer.VersionID;
           hashDriverDetails.HashCount            := DIOCBuffer.HashCount;
 
 
           bufferSize := sizeof(TDIOC_HASH_IDENTIFYSUPPORTED) -
-            sizeof(hashDetails^) + (sizeof(hashDetails^) *
-            hashDriverDetails.HashCount);
+            sizeof(hashDetails^) + (sizeof(hashDetails^) * hashDriverDetails.HashCount);
           // Round up to next "DIOC boundry". Although this always results in an
           // oversized buffer, it's guaranteed to be big enough.
           bufferSize := bufferSize + (DIOC_BOUNDRY - (bufferSize mod DIOC_BOUNDRY));
@@ -2659,12 +2577,8 @@ DebugMsg('_3_ supplied: '+inttostr(sizeof(DIOCBuffer))+' used: '+inttostr(BytesR
 
           SetLength(hashDriverDetails.Hashes, hashDriverDetails.HashCount);
 
-          if (DeviceIoControl(hashHandle,
-            IOCTL_FREEOTFEHASH_IDENTIFYSUPPORTED,
-            nil, 0,
-            ptrBuffer, bufferSize,
-            BytesReturned, nil
-            )) then begin
+          if (DeviceIoControl(hashHandle, IOCTL_FREEOTFEHASH_IDENTIFYSUPPORTED,
+            nil, 0, ptrBuffer, bufferSize, BytesReturned, nil)) then begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('_4_ supplied: '+inttostr(bufferSize)+' used: '+inttostr(BytesReturned));
 {$ENDIF}
@@ -2674,8 +2588,7 @@ DIOCBufferHashes := (PDIOC_HASH_IDENTIFYSUPPORTED(ptrBuffer));
 DebugMsg('hash details count: '+inttostr(DIOCBufferHashes.BufCount));
 {$ENDIF}
               ptrBufferOffset := Pointer(PAnsiChar(ptrBuffer) +
-                sizeof(TDIOC_HASH_IDENTIFYSUPPORTED) -
-                sizeof(hashDetails^));
+                sizeof(TDIOC_HASH_IDENTIFYSUPPORTED) - sizeof(hashDetails^));
               arrIdx          := low(hashDriverDetails.Hashes);
               for i := 1 to hashDriverDetails.HashCount do begin
                 hashDetails := (PHASH(ptrBufferOffset));
@@ -2802,7 +2715,8 @@ DebugMsg('couldn''t connect to: '+deviceUserModeName);
         if (hashDetails.Length = -1) then begin
           expectedHashSizeBits := (Length(Data) * 8);
         end;
-        bufferSizeOut    := sizeof(ptrDIOCBufferOut^) - sizeof(Byte) + (expectedHashSizeBits div 8);
+        bufferSizeOut    := sizeof(ptrDIOCBufferOut^) - sizeof(Byte) +
+          (expectedHashSizeBits div 8);
         ptrDIOCBufferOut := allocmem(bufferSizeOut);
         try
           ptrDIOCBufferIn.HashGUID := hashGUID;
@@ -2810,12 +2724,9 @@ DebugMsg('couldn''t connect to: '+deviceUserModeName);
           ptrDIOCBufferIn.DataLength := Length(Data) * 8;
           StrMove(@ptrDIOCBufferIn.Data, PAnsiChar(Data), Length(Data));
 
-          if (DeviceIoControl(hashHandle,
-            IOCTL_FREEOTFEHASH_HASHDATA,
-            ptrDIOCBufferIn, bufferSizeIn,
-            ptrDIOCBufferOut, bufferSizeOut,
-            BytesReturned, nil
-            )) then begin
+          if (DeviceIoControl(hashHandle, IOCTL_FREEOTFEHASH_HASHDATA,
+            ptrDIOCBufferIn, bufferSizeIn, ptrDIOCBufferOut, bufferSizeOut,
+            BytesReturned, nil)) then begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('_5_ supplied: '+inttostr(bufferSizeOut)+' used: '+inttostr(BytesReturned));
 {$ENDIF}
@@ -2905,8 +2816,7 @@ begin
   CheckActive();
 
   bufferSizeIn    := sizeof(ptrDIOCBufferIn^) - sizeof(ptrDIOCBufferIn^.Key) +
-    Length(key) - sizeof(ptrDIOCBufferIn^.Data) +
-    Length(data);
+    Length(key) - sizeof(ptrDIOCBufferIn^.Data) + Length(data);
   // Round up to next "DIOC boundry". Although this always results in an
   // oversized buffer, it's guaranteed to be big enough.
   bufferSizeIn    := bufferSizeIn + (DIOC_BOUNDRY - (bufferSizeIn mod DIOC_BOUNDRY));
@@ -2942,11 +2852,9 @@ begin
       StrMove(((PAnsiChar(@ptrDIOCBufferIn.Key)) + length(key)), PAnsiChar(data), Length(data));
 
 
-      if (DeviceIoControl(DriverHandle,
-        IOCTL_FREEOTFE_GENERATE_MAC, ptrDIOCBufferIn,
-        bufferSizeIn, ptrDIOCBufferOut,
-        bufferSizeOut, BytesReturned,
-        nil)) then begin
+      if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_GENERATE_MAC,
+        ptrDIOCBufferIn, bufferSizeIn, ptrDIOCBufferOut, bufferSizeOut, BytesReturned, nil))
+      then begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('MAC out buffer supplied: '+inttostr(bufferSizeOut)+'; DIOC call used: '+inttostr(BytesReturned)+'; min: '+inttostr(minBufferSizeOut));
 {$ENDIF}
@@ -3014,19 +2922,17 @@ var
   tmpSizeBytes:     Integer;
   minBufferSizeOut: Integer;
 begin
-
-
   DebugMsg('DeriveKey:');
-  DebugMsg(IntToStr(ord(kdfAlgorithm)));
+  DebugMsg(IntToStr(Ord(kdfAlgorithm)));
   DebugMsg(HashDriver);
   DebugMsg(HashGUID);
   DebugMsg(CypherDriver);
   DebugMsg(CypherGUID);
   DebugMsg(Password);
+  DebugMsg(Format('Password len %d',[length(Password)]));
   DebugMsg(Salt);
   DebugMsg(Iterations);
   DebugMsg(dkLenBits);
-
 
   LastErrorCode := OTFE_ERR_SUCCESS;
   Result        := False;
@@ -3035,8 +2941,7 @@ begin
 
 
   bufferSizeIn    := sizeof(ptrDIOCBufferIn^) - sizeof(ptrDIOCBufferIn^.Password) +
-    Length(Password) - sizeof(ptrDIOCBufferIn^.Salt) +
-    Length(Salt);
+    Length(Password) - sizeof(ptrDIOCBufferIn^.Salt) + Length(Salt);
   // Round up to next "DIOC boundry". Although this always results in an
   // oversized buffer, it's guaranteed to be big enough.
   bufferSizeIn    := bufferSizeIn + (DIOC_BOUNDRY - (bufferSizeIn mod DIOC_BOUNDRY));
@@ -3073,21 +2978,17 @@ begin
         PAnsiChar(@Salt[0]), Length(Salt));
 
 
-      if (DeviceIoControl(DriverHandle,
-        IOCTL_FREEOTFE_DERIVE_KEY, ptrDIOCBufferIn,
-        bufferSizeIn, ptrDIOCBufferOut,
-        bufferSizeOut, BytesReturned,
-        nil)) then begin
+      if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_DERIVE_KEY, ptrDIOCBufferIn,
+        bufferSizeIn, ptrDIOCBufferOut, bufferSizeOut, BytesReturned, nil)) then begin
 
-DebugMsg('MAC out buffer supplied: '+inttostr(bufferSizeOut)+'; DIOC call used: '+inttostr(BytesReturned)+'; min: '+inttostr(minBufferSizeOut));
+        DebugMsg('MAC out buffer supplied: ' + IntToStr(bufferSizeOut) +
+          '; DIOC call used: ' + IntToStr(BytesReturned) + '; min: ' + IntToStr(minBufferSizeOut));
 
         if ((BytesReturned >= DWORD(minBufferSizeOut)) and
           (BytesReturned <= DWORD(bufferSizeOut))) then begin
           outputByteCount := (ptrDIOCBufferOut.DerivedKeyLength div 8);
 
-DebugMsg('outputByteCount: '+inttostr(outputByteCount));
-
-
+          DebugMsg('outputByteCount: ' + IntToStr(outputByteCount));
           // Set DK so that it has enough characters which can be
           // overwritten with StrMove
           SDUInitAndZeroBuffer(outputByteCount, DK);
@@ -3098,14 +2999,14 @@ DebugMsg('outputByteCount: '+inttostr(outputByteCount));
         end else begin
           LastErrorCode := OTFE_ERR_KDF_FAILURE;
 
-DebugMsg('incorrect bytecount returned');
+          DebugMsg('incorrect bytecount returned');
 
         end;
 
       end else begin
         LastErrorCode := OTFE_ERR_KDF_FAILURE;
 
-DebugMsg('MAC DIOC 2 FAIL');
+        DebugMsg('MAC DIOC 2 FAIL');
 
       end;
 
@@ -3118,7 +3019,7 @@ DebugMsg('MAC DIOC 2 FAIL');
     FillChar(ptrDIOCBufferIn^, bufferSizeIn, 0);
     FreeMem(ptrDIOCBufferIn);
   end;
-    DebugMsg(DK);
+  DebugMsg(DK);
 end;
 
 
@@ -3156,9 +3057,9 @@ begin
     cypherHandle := ConnectDevice(deviceUserModeName);
     if (cypherHandle = 0) then begin
       LastErrorCode := OTFE_ERR_DRIVER_FAILURE;
-{$IFDEF FREEOTFE_DEBUG}
-DebugMsg('couldn''t connect to: '+deviceUserModeName);
-{$ENDIF}
+
+      DebugMsg('couldn''t connect to: ' + deviceUserModeName);
+
     end else begin
       dwIoControlCode := IOCTL_FREEOTFECYPHER_DECRYPT;
       if encryptFlag then begin
@@ -3166,9 +3067,8 @@ DebugMsg('couldn''t connect to: '+deviceUserModeName);
       end;
 
 
-      bufferSizeIn    := sizeof(ptrDIOCBufferIn^) - sizeof(
-        ptrDIOCBufferIn^.Key) + Length(key) -
-        sizeof(ptrDIOCBufferIn^.IV) + Length(IV) -
+      bufferSizeIn    := sizeof(ptrDIOCBufferIn^) - sizeof(ptrDIOCBufferIn^.Key) +
+        Length(key) - sizeof(ptrDIOCBufferIn^.IV) + Length(IV) -
         sizeof(ptrDIOCBufferIn^.Data) + Length(inData);
       // Round up to next "DIOC boundry". Although this always results in an
       // oversized buffer, it's guaranteed to be big enough.
@@ -3194,11 +3094,8 @@ DebugMsg('couldn''t connect to: '+deviceUserModeName);
           StrMove(((PAnsiChar(@ptrDIOCBufferIn.Key)) + length(key) + length(IV)),
             PAnsiChar(inData), Length(inData));
 
-          if (DeviceIoControl(cypherHandle,
-            dwIoControlCode, ptrDIOCBufferIn,
-            bufferSizeIn, ptrDIOCBufferOut,
-            bufferSizeOut, BytesReturned,
-            nil)) then begin
+          if (DeviceIoControl(cypherHandle, dwIoControlCode, ptrDIOCBufferIn,
+            bufferSizeIn, ptrDIOCBufferOut, bufferSizeOut, BytesReturned, nil)) then begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('_6_ supplied: '+inttostr(bufferSizeOut)+' used: '+inttostr(BytesReturned));
 {$ENDIF}
@@ -3295,9 +3192,8 @@ DebugMsg('couldn''t connect to: '+deviceUserModeName);
       end;
 
 
-      bufferSizeIn    := sizeof(ptrDIOCBufferIn^) - sizeof(
-        ptrDIOCBufferIn^.Key) + Length(key) -
-        sizeof(ptrDIOCBufferIn^.IV) + Length(IV) -
+      bufferSizeIn    := sizeof(ptrDIOCBufferIn^) - sizeof(ptrDIOCBufferIn^.Key) +
+        Length(key) - sizeof(ptrDIOCBufferIn^.IV) + Length(IV) -
         sizeof(ptrDIOCBufferIn^.Data) + Length(inData);
       // Round up to next "DIOC boundry". Although this always results in an
       // oversized buffer, it's guaranteed to be big enough.
@@ -3325,11 +3221,8 @@ DebugMsg('couldn''t connect to: '+deviceUserModeName);
           StrMove(((PAnsiChar(@ptrDIOCBufferIn.Key)) + length(key) + length(IV)),
             PAnsiChar(inData), Length(inData));
 
-          if (DeviceIoControl(cypherHandle,
-            dwIoControlCode, ptrDIOCBufferIn,
-            bufferSizeIn, ptrDIOCBufferOut,
-            bufferSizeOut, BytesReturned,
-            nil)) then begin
+          if (DeviceIoControl(cypherHandle, dwIoControlCode, ptrDIOCBufferIn,
+            bufferSizeIn, ptrDIOCBufferOut, bufferSizeOut, BytesReturned, nil)) then begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('_6_ supplied: '+inttostr(bufferSizeOut)+' used: '+inttostr(BytesReturned));
 {$ENDIF}
@@ -3372,11 +3265,8 @@ DebugMsg('cypher DIOC 2 FAIL');
 
     // If there was a problem, fallback to using v1 cypher API
     if not (Result) then begin
-      Result := _EncryptDecryptData(encryptFlag,
-        cypherDriver, cypherGUID,
-        key, IV,
-        inData, outData
-        );
+      Result := _EncryptDecryptData(encryptFlag, cypherDriver, cypherGUID,
+        key, IV, inData, outData);
 
     end;
 
@@ -3472,12 +3362,8 @@ var
 begin
   DriverControlObj := TDriverControl.Create();
   try
-    Result := DriverControlObj.InstallMultipleDrivers(
-      driverFilenames,
-      True,
-      showProgress,
-      True
-      );
+    Result := DriverControlObj.InstallMultipleDrivers(driverFilenames, True,
+      showProgress, True);
   finally
     DriverControlObj.Free();
   end;
@@ -3617,8 +3503,7 @@ begin
     Delete(userModeFilename, 1, 1);
     Result := '\??\UNC' + userModeFilename;
   end else
-  if ((Pos(':\', userModeFilename) = 2) or
-    (Pos(':/', userModeFilename) = 2)) then begin
+  if ((Pos(':\', userModeFilename) = 2) or (Pos(':/', userModeFilename) = 2)) then begin
     // C:\path\filedisk.img
     Result := '\??\' + userModeFilename;
   end else begin
@@ -3668,18 +3553,15 @@ begin
     DIOCBufferIn.DataLength := dataLength;
 
 
-  DebugMsg('Read raw data from: '+filename);
+    DebugMsg('Read raw data from: ' + filename);
 
-    if (DeviceIoControl(DriverHandle,
-      IOCTL_FREEOTFE_GET_RAW, @DIOCBufferIn,
-      sizeof(DIOCBufferIn), ptrDIOCBufferOut,
-      dataLength, BytesReturned,
-      nil)) then begin
-  DebugMsg('DIOC OK (bytes: '+inttostr(BytesReturned)+')');
+    if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_GET_RAW, @DIOCBufferIn,
+      sizeof(DIOCBufferIn), ptrDIOCBufferOut, dataLength, BytesReturned, nil)) then begin
+      DebugMsg('DIOC OK (bytes: ' + IntToStr(BytesReturned) + ')');
 
       if (BytesReturned = dataLength) then begin
 
-  DebugMsg('Bytes OK');
+        DebugMsg('Bytes OK');
 
         // Set data so that it has enough characters which can be
         // overwritten with StrMove
@@ -3738,11 +3620,8 @@ begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('Write raw data from: '+filename);
   {$ENDIF}
-    if (DeviceIoControl(DriverHandle,
-      IOCTL_FREEOTFE_SET_RAW, ptrDIOCBuffer,
-      bufferSize, nil, 0,
-      BytesReturned, nil)) then
-    begin
+    if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_SET_RAW, ptrDIOCBuffer,
+      bufferSize, nil, 0, BytesReturned, nil)) then begin
   {$IFDEF FREEOTFE_DEBUG}
   DebugMsg('Written OK');
   {$ENDIF}
@@ -3794,27 +3673,27 @@ begin
 
   CheckActive();
 
-DebugMsg('BEGIN  ReadWritePlaintextToVolume');
-DebugMsg(readNotWrite);
-DebugMsg(volFilename);
-DebugMsg(volumeKey);
-DebugMsg(Ord(sectorIVGenMethod));
-DebugMsg(IVHashDriver);
-DebugMsg(IVHashGUID       );
-DebugMsg(IVCypherDriver   );
-DebugMsg(IVCypherGUID     );
-DebugMsg(mainCypherDriver );
-DebugMsg(mainCypherGUID   );
-DebugMsg(VolumeFlags      );
-DebugMsg(Ord(mountMountAs     ));
-DebugMsg(dataOffset       );
-DebugMsg(dataLength       );
-DebugMsg(offset           );
-DebugMsg(size             );
-DebugMsg(Ord(storageMediaType) );
-DebugMsg('END  ReadWritePlaintextToVolume');
+  DebugMsg('BEGIN  ReadWritePlaintextToVolume');
+  DebugMsg(readNotWrite);
+  DebugMsg(volFilename);
+  DebugMsg(volumeKey);
+  DebugMsg(Ord(sectorIVGenMethod));
+  DebugMsg(IVHashDriver);
+  DebugMsg(IVHashGUID);
+  DebugMsg(IVCypherDriver);
+  DebugMsg(IVCypherGUID);
+  DebugMsg(mainCypherDriver);
+  DebugMsg(mainCypherGUID);
+  DebugMsg(VolumeFlags);
+  DebugMsg(Ord(mountMountAs));
+  DebugMsg(dataOffset);
+  DebugMsg(dataLength);
+  DebugMsg(offset);
+  DebugMsg(size);
+  DebugMsg(Ord(storageMediaType));
+  DebugMsg('END  ReadWritePlaintextToVolume');
 
- // Attempt to create a new device to be used
+  // Attempt to create a new device to be used
   deviceName := CreateDiskDevice(FreeOTFEMountAsDeviceType[mountMountAs]);
   Result     := (deviceName <> '');
   if (Result) then begin
@@ -3826,29 +3705,23 @@ DebugMsg('END  ReadWritePlaintextToVolume');
         );
       // SDUInitAndZeroBuffer(0,emptyIV);
       // Attempt to mount the device
-      Result := MountDiskDevice(deviceName,
-        volFilename, volumeKey,
-        sectorIVGenMethod, nil,
-        False, IVHashDriver,
-        IVHashGUID, IVCypherDriver,  // IV cypher
+      Result := MountDiskDevice(deviceName, volFilename, volumeKey,
+        sectorIVGenMethod, nil, False, IVHashDriver, IVHashGUID, IVCypherDriver,
+        // IV cypher
         IVCypherGUID,                // IV cypher
         mainCypherDriver,            // Main cypher
         mainCypherGUID,              // Main cypher
-        VolumeFlags, dummyMetadata,
-        offset, size,
+        VolumeFlags, dummyMetadata, offset, size,
         FreeOTFEMountAsStorageMediaType[mountMountAs]);
       if (Result) then begin
         try
           // Read decrypted data from mounted device
           if (readNotWrite) then begin
-            Result := ReadRawVolumeData(deviceName,
-              dataOffset, dataLength,
-              strData);
+            Result := ReadRawVolumeData(deviceName, dataOffset, dataLength, strData);
             data   := SDUStringToSDUBytes(strData);
 
           end else begin
-            Result := WriteRawVolumeData(deviceName,
-              dataOffset,
+            Result := WriteRawVolumeData(deviceName, dataOffset,
               SDUBytesToString(data));
           end;
 
