@@ -64,7 +64,7 @@
 			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
 			<DCC_ExeOutput>..\..\..\..\bin\PC\$(Config)\$(Platform)</DCC_ExeOutput>
 			<DCC_DcuOutput>P:\src\PC\gui\explorer\dcus\$(Config)\$(Platform)</DCC_DcuOutput>
-			<DCC_Define>FREEOTFE_EXPLORER;AlwaysClearFreedMemory;FORCE_LOCAL_PAD;$(DCC_Define)</DCC_Define>
+			<DCC_Define>FREEOTFE_EXPLORER;AlwaysClearFreedMemory;$(DCC_Define)</DCC_Define>
 			<Icon_MainIcon>..\..\..\Common\Common\images\DoxBox.ico</Icon_MainIcon>
 			<DCC_UnitSearchPath>..\..\..\..\SDeanComponents\Components\SDeanUtils;..\..\..\..\\SDeanComponents\Components\SDeanSecurity\Shredder\;..\..\..\..\\SDeanComponents\Components\SDeanSecurity\MouseRNG\;..\..\..\..\SDeanComponents\Components\SDeanSecurity\PasswordRichEdit\;..\..\..\..\SDeanComponents\Components\SDeanFilesystem\;..\..\..\..\SDeanComponents\Components\OTFE\OTFEFreeOTFE\;..\..\..\..\\SDeanComponents\Components\OTFE\OTFE\;..\common\SDeanUtils\;..\common;..\..\..\3rd_party\FastMM\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
 			<Manifest_File>None</Manifest_File>
@@ -125,7 +125,7 @@
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-			<Debugger_RunParams>-test</Debugger_RunParams>
+			<Debugger_RunParams>/dev_menu /noexit</Debugger_RunParams>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<VerInfo_Keys>CompanyName=LibreCrypt;FileDescription=LibreCrypt Explorer;FileVersion=6.2.0.0;InternalName=;LegalCopyright=;LegalTrademarks=LibreCrypt;OriginalFilename=;ProductName=LibreCrypt Explorer;ProductVersion=;Comments=</VerInfo_Keys>
 			<VerInfo_Locale>1033</VerInfo_Locale>
@@ -194,10 +194,10 @@
 			<DCCReference Include="frmExplorerMain.pas">
 				<Form>frmExplorerMain</Form>
 			</DCCReference>
-			<DCCReference Include="FreeOTFEExplorerfrmNewDirDlg.pas">
+			<DCCReference Include="frmNewDirDlg.pas">
 				<Form>frmNewDirDlg</Form>
 			</DCCReference>
-			<DCCReference Include="FreeOTFEExplorerfrmPropertiesDlg_Base.pas">
+			<DCCReference Include="frmProperties.pas">
 				<Form>frmPropertiesDialog_Base</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\frmAbout.pas">
@@ -223,13 +223,13 @@
 			<DCCReference Include="..\common\CommonfrmGridReport_Cypher.pas">
 				<Form>frmGridReport_Cypher</Form>
 			</DCCReference>
-			<DCCReference Include="FreeOTFEExplorerfrmPropertiesDlg_File.pas">
+			<DCCReference Include="frmFileProperties.pas">
 				<Form>frmPropertiesDialog_File</Form>
 			</DCCReference>
-			<DCCReference Include="FreeOTFEExplorerfrmPropertiesDlg_Directory.pas">
+			<DCCReference Include="frmDirProperties.pas">
 				<Form>frmPropertiesDialog_Directory</Form>
 			</DCCReference>
-			<DCCReference Include="FreeOTFEExplorerfrmPropertiesDlg_Multiple.pas">
+			<DCCReference Include="frmMultipleProperties.pas">
 				<Form>frmPropertiesDialog_Multiple</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\fmeBaseOptions.pas">
@@ -251,17 +251,17 @@
 				<Form>fmeOptions_FreeOTFEExplorerGeneral</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="FreeOTFEExplorerfrmOptions.pas">
+			<DCCReference Include="frmExplorerOptions.pas">
 				<Form>frmOptions_FreeOTFEExplorer</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\frmVersionCheck.pas">
 				<Form>frmVersionCheck</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\CommonConsts.pas"/>
-			<DCCReference Include="FreeOTFEExplorerfrmSelectDirectoryDlg.pas">
+			<DCCReference Include="frmSelectDirectory.pas">
 				<Form>frmSelectDirectoryDlg</Form>
 			</DCCReference>
-			<DCCReference Include="FreeOTFEExplorerfrmPropertiesDlg_Volume.pas">
+			<DCCReference Include="frmVolumeProperties.pas">
 				<Form>frmPropertiesDialog_Volume</Form>
 			</DCCReference>
 			<DCCReference Include="fmeAdvancedExplorerOptions.pas">
@@ -363,11 +363,11 @@
 			<DCCReference Include="..\common\SDeanUtils\SDUWindows.pas"/>
 			<DCCReference Include="..\common\SDeanUtils\SDUClasses.pas"/>
 			<DCCReference Include="..\common\SDeanUtils\SDUDirIterator_U.pas"/>
-			<DCCReference Include="FreeOTFEExplorerfmeOptions_WebDAV.pas">
+			<DCCReference Include="fmeExplorerWebDAVOptions.pas">
 				<Form>fmeOptions_FreeOTFEExplorerWebDAV</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="FreeOTFEExplorerWebDAV.pas"/>
+			<DCCReference Include="ExplorerWebDAV.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmHashInfo.pas">
 				<Form>frmHashInfo</Form>
 			</DCCReference>
