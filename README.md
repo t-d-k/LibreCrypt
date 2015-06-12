@@ -13,24 +13,26 @@ _[LibreCrypt](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 <BUTTON class="download">
 <a href="https://github.com/t-d-k/doxbox/releases/download/v6.2-beta/InstallLibreCrypt_v62Beta.exe">Download</a>
 </BUTTON> 
+</DIV>
+<DIV class="download-group">
 <BUTTON class="download-alt">
 <a href="https://github.com/t-d-k/doxbox/releases/download/v6.2-beta/LibreCryptExplorer_v6.2.zip">Download LibreCrypt Portable</a>
 </BUTTON>
 </DIV>
 
-## Please take the survey on [new features](https://www.surveymonkey.com/s/XFHP5LS) for LibreCrypt
+## Please take the survey on [LibreCrypt](https://www.surveymonkey.com/r/PFC8VJ6) 
 
 ##	Features
 
 * Easy to use, with a 'wizard' for creating new 'containers'.
 * Full transparent encryption, containers appear as removable disks in Windows Explorer.
-* Explorer mode lets you access containers when you don't have admin permissions.
+* Explorer mode lets you access containers when you don't have administrator permissions.
 * Compatible with Linux encryption, Cryptoloop "losetup", dm-crypt, and LUKS. Linux shell scripts support deniable encryption on Linux.
 * Supports smartcards and security tokens.
 * Encrypted containers can be a file, a partition, or a whole disk.
 * Opens legacy volumes created with FreeOTFE
 * Runs on Windows Vista onwards (see note below for 64 bit versions).
-* Supports numerous hash (including SHA-512, RIPEMD-320, Tiger) and encryption algorithms (Including AES, Twofish, and Serpent) in several modes (CBC, LRW, and XTS), giving more options than any other disk encryption software.
+* Supports many hash (including SHA-512, RIPEMD-320, Tiger) and encryption algorithms (Including AES, Twofish, and Serpent) in several modes (CBC, LRW, and XTS).
 * Optional 'key files' let you use a thumb-drive as a key.
 * Portable mode doesn't need to be installed and leaves little trace on 3rd party PCs (administrator rights needed).
 * Deniable encryption protects you from 'rubber hose cryptography'.
@@ -41,7 +43,7 @@ _[LibreCrypt](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 
  * Change of name to 'LibreCrypt'
  * Many UI bugs fixed - see [Issue 20](https://github.com/t-d-k/doxbox/issues/20)
- * Improved support for GPT partitioned discs. **LUKS partitions on GPT discs have not been tested and should be used with caution.**
+ * Improved support for GPT partitioned discs.
  * Improved new password dialog.
  * Improved partition information when running as non-admin.
 
@@ -51,6 +53,8 @@ _[LibreCrypt](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 *LibreCrypt installed on Windows Vista and later 64 bit versions adds the text "Test Mode" to the Windows desktop. Please see the documentation for details on removing this.*
 *On Windows 8 please turn off 'Safe Boot' and disklocker before installing.*
 *There has been a report that Kaspersky anti-virus falsely reports LibreCrypt as having the 'generic.Trojan' virus, please disable or replace this before installing.*
+*LUKs partitions on LVM volumes, or LVM volumes in LUKS partitions cannot be accessed due to Windows limitations*
+*This release has changes to the drivers, if upgrading from previous versions of LibreCrypt,DoxBox or FreeOTFE please completely uninstall the old version first
 
 * Please follow these instructions to run LibreCrypt in portable mode on 64 bit Windows; if you do not do this you will get the error "Windows requires a digitally signed driver" when starting the drivers. There is no need to do this if LibreCrypt is installed.
 	+ Start LibreCrypt, click 'No' on the prompt to start the portable drivers, and 'OK' on the warning dialog about not having any loaded drivers.
