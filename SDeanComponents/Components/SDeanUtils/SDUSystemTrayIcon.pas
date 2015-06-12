@@ -1,34 +1,34 @@
 unit SDUSystemTrayIcon;
-// Description: System Tray Icon
-// By Sarah Dean
-// Email: sdean12@sdean12.org
-// WWW:   http://www.SDean12.org/
-//
-// -----------------------------------------------------------------------------
-//
+ // Description: System Tray Icon
+ // By Sarah Dean
+ // Email: sdean12@sdean12.org
+ // WWW:   http://www.SDean12.org/
+ //
+ // -----------------------------------------------------------------------------
+ //
 
 
 interface
 
-// This just uses the later structures for "TNotifyIconData_...", which should
-// be harmless with earlier versions - the shell just ignores the extra data
-// Note: To get the version ID of the shell, use 'shell32.dll' and the version
-//       ID lib code from SDUGeneral
+ // This just uses the later structures for "TNotifyIconData_...", which should
+ // be harmless with earlier versions - the shell just ignores the extra data
+ // Note: To get the version ID of the shell, use 'shell32.dll' and the version
+ //       ID lib code from SDUGeneral
 
 uses
   Menus,
   SysUtils,  // Required for Exceptions
-  Windows,  // Required for hIcon
+  Windows,   // Required for hIcon
   Graphics,  // Required for TIcon
   Controls,  // Required for TImageList
   ExtCtrls,  // Required for TTimer
-  Classes,  // Required for TComponent
+  Classes,   // Required for TComponent
   Messages,  // Required for TMessage
-  imgList;  // Required for TChangeLink
+  ImgList;   // Required for TChangeLink
 
 type
   // Exceptions...
-  ESDUSystemTrayIconError = Exception;
+  ESDUSystemTrayIconError     = Exception;
   ESDUSystemTrayIconNotActive = ESDUSystemTrayIconError;
 
   TSDUSystemTrayIconBubbleIcon = (shbiNone, shbiInfo, shbiWarning, shbiError);
@@ -38,28 +38,28 @@ type
 {$ELSE}
   WParameter = Word;
 {$ENDIF}
-  LParameter = LongInt;
+  LParameter = Longint;
 
-  TSDUSystemTrayIcon = class(TComponent)
+  TSDUSystemTrayIcon = class (TComponent)
   private
     // Various which may be set by user
-    FActive: boolean;
+    FActive: Boolean;
 
-    FMinimizeToIcon: boolean;
+    FMinimizeToIcon: Boolean;
 
     FPopupMenuMenu: TPopupMenu;
-    FTip: string;
+    FTip:           String;
 
     FIcon: TIcon;
 
     FAnimationIcons: TImageList;
-    FAnimateIcon: boolean;
+    FAnimateIcon:    Boolean;
 
-    FOnClick: TNotifyEvent;
-    FOnDblClick: TNotifyEvent;
-    FOnContextPopup: TContextPopupEvent;
-    FOnBalloonShow: TNotifyEvent;
-    FOnBalloonHide: TNotifyEvent;
+    FOnClick:          TNotifyEvent;
+    FOnDblClick:       TNotifyEvent;
+    FOnContextPopup:   TContextPopupEvent;
+    FOnBalloonShow:    TNotifyEvent;
+    FOnBalloonHide:    TNotifyEvent;
     FOnBalloonTimeout: TNotifyEvent;
     FOnBalloonUserClick: TNotifyEvent;
 
@@ -68,32 +68,32 @@ type
 
     FhWindow: HWND;
 
-    FAnimationPos: integer;
+    FAnimationPos:   Integer;
     FAnimationTimer: TTimer;
 
-    FOldAppProc: Pointer;
+    FOldAppProc:    Pointer;
     FOldWindowProc: Pointer;
-    FNewAppProc: Pointer;
+    FNewAppProc:    Pointer;
     FNewWindowProc: Pointer;
 
-    FSystemShuttingDown: boolean;
-    FActiveBeforeQES: boolean;
+    FSystemShuttingDown: Boolean;
+    FActiveBeforeQES:    Boolean;
 
   protected
-    procedure SetActive(status: boolean);
-    procedure SetAnimateIcon(animate: boolean);
-    procedure SetTip(tip: string);
+    procedure SetActive(status: Boolean);
+    procedure SetAnimateIcon(animate: Boolean);
+    procedure SetTip(tip: String);
     procedure SetIcon(icon: TIcon);
     procedure SetAnimationIcons(Value: TImageList);
-    function  GetAnimationDelay(): integer;
-    procedure SetAnimationDelay(delay: integer);
+    function GetAnimationDelay(): Integer;
+    procedure SetAnimationDelay(delay: Integer);
 
     procedure TimerFired(Sender: TObject);
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
 
     procedure AddOrRemoveTrayIcon();
     procedure UpdateTrayIcon(); overload;
-    procedure UpdateTrayIcon(dwMessage: cardinal); overload;
+    procedure UpdateTrayIcon(dwMessage: Cardinal); overload;
 
     procedure TrayIconCallback(var msg: TMessage);
     procedure AnimationListChanged(Sender: TObject);
@@ -111,12 +111,12 @@ type
     procedure UntrapWindowMessages_WindowProc();
 
     procedure Loaded(); override;
-    procedure DebugWM(wmFrom: string; msg: TMessage);
+    procedure DebugWM(wmFrom: String; msg: TMessage);
     // AppWM - Set to TRUE for app WM, FALSE for window WM
-    function  ProcessWM(AppProcNotWindowProc: boolean; var msg: TMessage): boolean;
-    
-    function  IsOnMainForm(): boolean;
-    function  TheMainHandle(): THandle;
+    function ProcessWM(AppProcNotWindowProc: Boolean; var msg: TMessage): Boolean;
+
+    function IsOnMainForm(): Boolean;
+    function TheMainHandle(): THandle;
 
   public
     // Procedures made public for developer convenience
@@ -125,30 +125,31 @@ type
 
   published
     constructor Create(AOwner: TComponent); override;
-    destructor  Destroy; override;
+    destructor Destroy; override;
 
-    procedure BubbleMessage(Title: AnsiChar; Info: AnsiChar; Icon: TSDUSystemTrayIconBubbleIcon = shbiNone; Timeout: integer = 15000);
+    procedure BubbleMessage(Title: AnsiChar; Info: AnsiChar;
+      Icon: TSDUSystemTrayIconBubbleIcon = shbiNone; Timeout: Integer = 15000);
 
-    property Active: boolean read FActive write SetActive;
+    property Active: Boolean Read FActive Write SetActive;
 
-    property MinimizeToIcon: boolean read FMinimizeToIcon write FMinimizeToIcon;
+    property MinimizeToIcon: Boolean Read FMinimizeToIcon Write FMinimizeToIcon;
 
-    property PopupMenu: TPopupMenu read FPopupMenuMenu write FPopupMenuMenu;
+    property PopupMenu: TPopupMenu Read FPopupMenuMenu Write FPopupMenuMenu;
 
-    property Tip: string read FTip write SetTip;
-    property Icon: TIcon read FIcon write SetIcon;
+    property Tip: String Read FTip Write SetTip;
+    property Icon: TIcon Read FIcon Write SetIcon;
 
-    property AnimationIcons: TImageList read FAnimationIcons write SetAnimationIcons;
-    property AnimateIcon: boolean read FAnimateIcon write SetAnimateIcon;
-    property AnimationDelay: integer read GetAnimationDelay write SetAnimationDelay;
+    property AnimationIcons: TImageList Read FAnimationIcons Write SetAnimationIcons;
+    property AnimateIcon: Boolean Read FAnimateIcon Write SetAnimateIcon;
+    property AnimationDelay: Integer Read GetAnimationDelay Write SetAnimationDelay;
 
-    property OnClick: TNotifyEvent read FOnClick write FOnClick;
-    property OnDblClick: TNotifyEvent read FOnDblClick write FOnDblClick;
-    property OnContextPopup: TContextPopupEvent read FOnContextPopup write FOnContextPopup;
-    property OnBalloonShow: TNotifyEvent read FOnBalloonShow write FOnBalloonShow;
-    property OnBalloonHide: TNotifyEvent read FOnBalloonHide write FOnBalloonHide;
-    property OnBalloonTimeout: TNotifyEvent read FOnBalloonTimeout write FOnBalloonTimeout;
-    property OnBalloonUserClick: TNotifyEvent read FOnBalloonUserClick write FOnBalloonUserClick;
+    property OnClick: TNotifyEvent Read FOnClick Write FOnClick;
+    property OnDblClick: TNotifyEvent Read FOnDblClick Write FOnDblClick;
+    property OnContextPopup: TContextPopupEvent Read FOnContextPopup Write FOnContextPopup;
+    property OnBalloonShow: TNotifyEvent Read FOnBalloonShow Write FOnBalloonShow;
+    property OnBalloonHide: TNotifyEvent Read FOnBalloonHide Write FOnBalloonHide;
+    property OnBalloonTimeout: TNotifyEvent Read FOnBalloonTimeout Write FOnBalloonTimeout;
+    property OnBalloonUserClick: TNotifyEvent Read FOnBalloonUserClick Write FOnBalloonUserClick;
 
   end;
 
@@ -189,10 +190,12 @@ begin
 end;
   {$ENDIF}
 {$ELSE}
-procedure SendDebug(x: string);
+
+procedure SendDebug(x: String);
 begin
   // Do nothing
 end;
+
 {$ENDIF}
 
 
@@ -204,23 +207,23 @@ end;
 
 
 // ----------------------------------------------------------------------------
-constructor TSDUSystemTrayIcon.Create(AOwner : TComponent);
+constructor TSDUSystemTrayIcon.Create(AOwner: TComponent);
 begin
   inherited;
 
-  FActive:= FALSE;
+  FActive := False;
 
-  FMinimizeToIcon := FALSE;
+  FMinimizeToIcon := False;
 
-  FPopupMenuMenu:= nil;
-  FTip:= '';
+  FPopupMenuMenu := nil;
+  FTip           := '';
 
-  FIcon:= TIcon.Create();
+  FIcon           := TIcon.Create();
   FAnimationIcons := nil;
-  FAnimateIcon:= FALSE;
+  FAnimateIcon    := False;
 
-  FOnClick:= nil;
-  FOnDblClick:= nil;
+  FOnClick    := nil;
+  FOnDblClick := nil;
 
   // Internal state
   // Delphi 6 and later moved AllocateHWnd to "Classes"
@@ -229,17 +232,17 @@ begin
                                                    // the callback function for window
                                                    // messages
 {$ELSE}
-  FhWindow:= Classes.AllocateHWnd(self.TrayIconCallback);  // Allocate a new window, specifying
-                                                           // the callback function for window
-                                                           // messages
+  FhWindow := Classes.AllocateHWnd(self.TrayIconCallback);  // Allocate a new window, specifying
+  // the callback function for window
+  // messages
 {$ENDIF}
 
-  FAnimationTimer:= TTimer.Create(self);
-  FAnimationTimer.Enabled := FALSE;
-  FAnimationTimer.OnTimer := TimerFired;
-  FAnimationTimer.Interval := 1000;
-  FAnimationPos:= 0;
-  FAnimationChangeLink := TChangeLink.Create();
+  FAnimationTimer               := TTimer.Create(self);
+  FAnimationTimer.Enabled       := False;
+  FAnimationTimer.OnTimer       := TimerFired;
+  FAnimationTimer.Interval      := 1000;
+  FAnimationPos                 := 0;
+  FAnimationChangeLink          := TChangeLink.Create();
   FAnimationChangeLink.OnChange := self.AnimationListChanged;
 
   FOldAppProc    := nil;
@@ -247,8 +250,8 @@ begin
   FNewAppProc    := nil;
   FNewWindowProc := nil;
 
-  FSystemShuttingDown := FALSE;
-  FActiveBeforeQES := Active;
+  FSystemShuttingDown := False;
+  FActiveBeforeQES    := Active;
 
 end;
 
@@ -256,12 +259,11 @@ end;
 // ----------------------------------------------------------------------------
 destructor TSDUSystemTrayIcon.Destroy;
 begin
-  Active := FALSE;
+  Active := False;
 
-  if not(csDesigning in ComponentState) then
-    begin
+  if not (csDesigning in ComponentState) then begin
     UntrapWindowMessages();
-    end;
+  end;
 
   // Delphi 6 and later moved AllocateHWnd to "Classes"
 {$IFDEF VER130}
@@ -270,7 +272,7 @@ begin
   Classes.DeAllocateHWnd(FhWindow);
 {$ENDIF}
 
-  FAnimationTimer.Enabled := FALSE;
+  FAnimationTimer.Enabled := False;
   FAnimationTimer.Free();
 
   FAnimationChangeLink.Free();
@@ -280,12 +282,12 @@ begin
 end;
 
 
-// ----------------------------------------------------------------------------
-// Note: This cannot be done in the constructor
+ // ----------------------------------------------------------------------------
+ // Note: This cannot be done in the constructor
 procedure TSDUSystemTrayIcon.Loaded();
-//var
-//  showWindowStatus: integer;
-//  si: TStartupInfo;
+ //var
+ //  showWindowStatus: integer;
+ //  si: TStartupInfo;
 begin
   inherited;
 
@@ -346,7 +348,7 @@ var
   useHandle: THandle;
 begin
   useHandle := Application.Handle;
-// Delphi 2007 and later only
+  // Delphi 2007 and later only
 {$IFDEF VER180}
   if (
       Application.MainFormOnTaskBar and
@@ -368,31 +370,25 @@ procedure TSDUSystemTrayIcon.DoMinimizeToIcon();
 begin
   SendDebug('DoMinimizeToIcon');
 
-  if Active then
-    begin
+  if Active then begin
     // Set the window procedure back to the old window procedure
-    if (Owner <> nil) then
-      begin
-      if (Owner is TWinControl) then
-        begin
+    if (Owner <> nil) then begin
+      if (Owner is TWinControl) then begin
         // If our owner is the main form, it's an Application.Minimize
-        if IsOnMainForm() then
-          begin
-          Application.MainForm.Visible := FALSE;
+        if IsOnMainForm() then begin
+          Application.MainForm.Visible := False;
           ShowWindow(TheMainHandle(), SW_HIDE);
-//          ShowWindow(Application.Handle, SW_HIDE);
-//          ShowWindow(Application.MainForm.Handle, SW_HIDE);
-//          ShowWindow(Application.MainFormHandle, SW_HIDE);
-          //  Application.ShowMainForm := FALSE;  NO! We don't do this - may be wanted by app...
-          end
-        else
-          // Otherwise, just hide the owner
-          begin
+                 //          ShowWindow(Application.Handle, SW_HIDE);
+                 //          ShowWindow(Application.MainForm.Handle, SW_HIDE);
+                 //          ShowWindow(Application.MainFormHandle, SW_HIDE);
+                 //  Application.ShowMainForm := FALSE;  NO! We don't do this - may be wanted by app...
+        end else // Otherwise, just hide the owner
+        begin
           ShowWindow(TWinControl(Owner).Handle, SW_HIDE);
-          end;
         end;
       end;
     end;
+  end;
 
 end;
 
@@ -401,22 +397,19 @@ end;
 procedure TSDUSystemTrayIcon.DoRestore();
 begin
   SendDebug('DoRestore');
-  if (Owner <> nil) then
-    begin
-    if (Owner is TForm) then
-      begin
+  if (Owner <> nil) then begin
+    if (Owner is TForm) then begin
       TForm(Owner).Show();
       TForm(Owner).WindowState := wsNormal;
-      end;
     end;
+  end;
 
   Application.Restore();
 
   // Only requrid if we're the main form
-  if IsOnMainForm() then
-    begin
+  if IsOnMainForm() then begin
     ShowWindow(TheMainHandle(), SW_RESTORE);
-    end;
+  end;
 
   //Application.ShowMainForm := TRUE;  NO! We didn't do this on minimise...
 
@@ -428,10 +421,9 @@ end;
 // ----------------------------------------------------------------------------
 procedure TSDUSystemTrayIcon.CheckActive();
 begin
-  if not(Active) then
-    begin
+  if not (Active) then begin
     raise ESDUSystemTrayIconNotActive.Create(EXCPT_SYSTEMTRAYICON_NOT_ACTIVE);
-    end;
+  end;
 
 end;
 
@@ -440,28 +432,28 @@ end;
 procedure TSDUSystemTrayIcon.AnimationListChanged(Sender: TObject);
 begin
   FAnimationPos := 0;
-  
+
 end;
 
 
 // ----------------------------------------------------------------------------
 procedure TSDUSystemTrayIcon.TrayIconCallback(var msg: TMessage);
 var
-  csrPos: TPoint;
-  bHandled: boolean;
+  csrPos:   TPoint;
+  bHandled: Boolean;
 begin
   DebugWM('TrayIconCallback', msg);
 
   case msg.Msg of
     WM_QUERYENDSESSION:
-      begin
+    begin
       // As far as our (invisible) window is concerned; the system can
       // shutdown at any time
       msg.Result := 1;
-      end;
+    end;
 
     WM_SDU_SYSTEMTRAYICON:
-      begin
+    begin
       case msg.LParam of
         // From:
         // http://msdn.microsoft.com/library/default.asp?url=/library/en-us/shellcc/platform/shell/reference/functions/shell_notifyicon.asp
@@ -473,87 +465,77 @@ begin
         WM_CONTEXTMENU,
         NIN_KEYSELECT,
         NIN_SELECT:
-          begin
+        begin
           GetCursorPos(csrPos);  // Get the cursor position on screen
 
           bHandled := False;
-          if Assigned(FOnContextPopup) then
-            begin
+          if Assigned(FOnContextPopup) then begin
             FOnContextPopup(Self, csrPos, bHandled);
-            end;
+          end;
           msg.Result := Ord(bHandled);
 
-          if not(bHandled) then
-            begin
-            if Assigned(PopupMenu) then
-              begin
-              if PopupMenu.AutoPopup then
-                begin
+          if not (bHandled) then begin
+            if Assigned(PopupMenu) then begin
+              if PopupMenu.AutoPopup then begin
                 SetForegroundWindow(TheMainHandle());  // Set the foreground window
-                                                          // as the application - see MS KB Q135788
+                // as the application - see MS KB Q135788
                 Application.ProcessMessages();
                 // ? - SendCancelMode(nil);  
                 PopupMenu.PopupComponent := Self;
                 PopupMenu.Popup(csrPos.X, csrPos.Y);  // Popup TPopupMenu
                 PostMessage(TheMainHandle(), WM_NULL, 0, 0);  // Post a WM_NULL message; this
-                                                                 // will make sure the menu closes
-                                                                 // when it loses focus - see MS KB Q135788
+                // will make sure the menu closes
+                // when it loses focus - see MS KB Q135788
                 msg.Result := 1;
-                end;
-
               end;
+
             end;
           end;
+        end;
 
 
         WM_LBUTTONDBLCLK:
-          begin
-          if Assigned(OnDblClick) then
-            begin
+        begin
+          if Assigned(OnDblClick) then begin
             OnDblClick(self);
-            end;
           end;
+        end;
 
         WM_LBUTTONDOWN:
-          begin
-          if Assigned(OnClick) then
-            begin
+        begin
+          if Assigned(OnClick) then begin
             OnClick(self);
-            end;
           end;
+        end;
 
 
         NIN_BALLOONSHOW:
-          begin
-          if Assigned(OnBalloonShow) then
-            begin
+        begin
+          if Assigned(OnBalloonShow) then begin
             OnBalloonShow(self);
-            end;
           end;
+        end;
 
         NIN_BALLOONHIDE:
-          begin
-          if Assigned(OnBalloonHide) then
-            begin
+        begin
+          if Assigned(OnBalloonHide) then begin
             OnBalloonHide(self);
-            end;
           end;
+        end;
 
         NIN_BALLOONTIMEOUT:
-          begin
-          if Assigned(OnBalloonTimeout) then
-            begin
+        begin
+          if Assigned(OnBalloonTimeout) then begin
             OnBalloonTimeout(self);
-            end;
           end;
+        end;
 
         NIN_BALLOONUSERCLICK:
-          begin
-          if Assigned(OnBalloonUserClick) then
-            begin
+        begin
+          if Assigned(OnBalloonUserClick) then begin
             OnBalloonUserClick(self);
-            end;
           end;
+        end;
 
 
         //WM_LBUTTONDOWN    : showmessage('WM_LBUTTONDOWN');
@@ -571,72 +553,59 @@ begin
         //WM_RBUTTONDOWN    : showmessage('WM_RBUTTONDOWN');
         //etc...
 
-        end;
-      end;  // WM_SDU_SYSTEMTRAYICON case
+      end;
+    end;  // WM_SDU_SYSTEMTRAYICON case
 
-    end;  // case msg.Msg of
+  end;  // case msg.Msg of
 
 end;
 
 
 // ----------------------------------------------------------------------------
-procedure TSDUSystemTrayIcon.SetActive(status: boolean);
+procedure TSDUSystemTrayIcon.SetActive(status: Boolean);
 begin
-  if (status <> FActive) then
-    begin
-    SendDebug('System tray icon component state changing to: '+SDUBoolToStr(status));
+  if (status <> FActive) then begin
+    SendDebug('System tray icon component state changing to: ' + SDUBoolToStr(status));
     FActive := status;
 
-    if not(csdesigning in ComponentState) then
-      begin
+    if not (csdesigning in ComponentState) then begin
       AddOrRemoveTrayIcon();
 
-      if status then
-        begin
+      if status then begin
         TrapWindowMessages();
-        end
-      else
-        begin
+      end else begin
         UntrapWindowMessages();
-        end;
-
-      FAnimationPos := 0;
-      FAnimationTimer.Enabled := (Active and AnimateIcon);
       end;
 
+      FAnimationPos           := 0;
+      FAnimationTimer.Enabled := (Active and AnimateIcon);
     end;
+
+  end;
 
 end;
 
 
 // ----------------------------------------------------------------------------
-procedure TSDUSystemTrayIcon.SetAnimateIcon(animate: boolean);
+procedure TSDUSystemTrayIcon.SetAnimateIcon(animate: Boolean);
 begin
   FAnimateIcon := animate;
-  if (
-      Active and
-      not(csdesigning in ComponentState)
-     ) then
-    begin
+  if (Active and not (csdesigning in ComponentState)) then begin
     FAnimationTimer.Enabled := animate;
 
     UpdateTrayIcon();
-    end;
+  end;
 
 end;
 
 
 // ----------------------------------------------------------------------------
-procedure TSDUSystemTrayIcon.SetTip(tip: string);
+procedure TSDUSystemTrayIcon.SetTip(tip: String);
 begin
   FTip := tip;
-  if (
-      Active and
-      not(csdesigning in ComponentState)
-     ) then
-    begin
+  if (Active and not (csdesigning in ComponentState)) then begin
     UpdateTrayIcon();
-    end;
+  end;
 
 end;
 
@@ -644,58 +613,44 @@ end;
 // ----------------------------------------------------------------------------
 procedure TSDUSystemTrayIcon.SetIcon(icon: TIcon);
 begin
-  if (icon <> nil) then
-    begin
+  if (icon <> nil) then begin
     FIcon.Assign(icon);
-    if (
-        Active and
-        not(csdesigning in ComponentState)
-       ) then
-      begin
+    if (Active and not (csdesigning in ComponentState)) then begin
       UpdateTrayIcon();
-      end;
     end;
+  end;
 
 end;
 
 
-// ----------------------------------------------------------------------------
-// Taken from ComCtrls.pas (TListView)
+ // ----------------------------------------------------------------------------
+ // Taken from ComCtrls.pas (TListView)
 procedure TSDUSystemTrayIcon.SetAnimationIcons(Value: TImageList);
 begin
-  if (AnimationIcons <> Value) then
-    begin
-    if (AnimationIcons <> nil) then
-      begin
+  if (AnimationIcons <> Value) then begin
+    if (AnimationIcons <> nil) then begin
       AnimationIcons.UnRegisterChanges(FAnimationChangeLink);
-      end;
+    end;
 
     FAnimationIcons := Value;
 
-    if (AnimationIcons <> nil) then
-      begin
+    if (AnimationIcons <> nil) then begin
       AnimationIcons.RegisterChanges(FAnimationChangeLink);
       AnimationIcons.FreeNotification(Self);
-      end
-    else
-      begin
-      Active := FALSE;
-      end;
-
-    if (
-        Active and
-        not(csdesigning in ComponentState)
-       ) then
-      begin
-      UpdateTrayIcon();
-      end;
+    end else begin
+      Active := False;
     end;
+
+    if (Active and not (csdesigning in ComponentState)) then begin
+      UpdateTrayIcon();
+    end;
+  end;
 
 end;
 
 
 // ----------------------------------------------------------------------------
-function TSDUSystemTrayIcon.GetAnimationDelay(): integer;
+function TSDUSystemTrayIcon.GetAnimationDelay(): Integer;
 begin
   Result := FAnimationTimer.Interval;
 
@@ -703,16 +658,12 @@ end;
 
 
 // ----------------------------------------------------------------------------
-procedure TSDUSystemTrayIcon.SetAnimationDelay(delay: integer);
+procedure TSDUSystemTrayIcon.SetAnimationDelay(delay: Integer);
 begin
   FAnimationTimer.Interval := delay;
-  if (
-      Active and
-      not(csdesigning in ComponentState)
-     ) then
-    begin
+  if (Active and not (csdesigning in ComponentState)) then begin
     UpdateTrayIcon();
-    end;
+  end;
 
 end;
 
@@ -720,36 +671,27 @@ end;
 // ----------------------------------------------------------------------------
 procedure TSDUSystemTrayIcon.TimerFired(Sender: TObject);
 begin
-  inc(FAnimationPos);
-  if (FAnimationPos > (AnimationIcons.Count-1)) then
-    begin
+  Inc(FAnimationPos);
+  if (FAnimationPos > (AnimationIcons.Count - 1)) then begin
     FAnimationPos := 0;
-    end;
+  end;
 
-  if (
-      Active and
-      not(csdesigning in ComponentState)
-     ) then
-    begin
+  if (Active and not (csdesigning in ComponentState)) then begin
     UpdateTrayIcon();
-    end;
+  end;
 
 end;
 
 
-// ----------------------------------------------------------------------------
-// Taken from ComCtrls.pas
+ // ----------------------------------------------------------------------------
+ // Taken from ComCtrls.pas
 procedure TSDUSystemTrayIcon.Notification(AComponent: TComponent;
   Operation: TOperation);
 begin
   inherited Notification(AComponent, Operation);
-  if (
-      (Operation = opRemove) and
-      (AComponent = AnimationIcons)
-     ) then
-    begin
+  if ((Operation = opRemove) and (AComponent = AnimationIcons)) then begin
     AnimationIcons := nil;
-    end;
+  end;
 
 end;
 
@@ -757,14 +699,11 @@ end;
 // ----------------------------------------------------------------------------
 procedure TSDUSystemTrayIcon.AddOrRemoveTrayIcon();
 begin
-  if Active then
-    begin
+  if Active then begin
     UpdateTrayIcon(NIM_ADD);
-    end
-  else
-    begin
+  end else begin
     UpdateTrayIcon(NIM_DELETE);
-    end;
+  end;
 
 end;
 
@@ -778,54 +717,43 @@ end;
 
 
 // ----------------------------------------------------------------------------
-procedure TSDUSystemTrayIcon.UpdateTrayIcon(dwMessage: cardinal);
+procedure TSDUSystemTrayIcon.UpdateTrayIcon(dwMessage: Cardinal);
 var
- { done 1 -otdk -crefactor : use _NOTIFYICONDATA_v5W for widechar }
-  trayIcon: TNotifyIconData_v5w;
-  tmpIcon: TIcon;
+  { todo 1 -otdk -crefactor : use _NOTIFYICONDATA_v5W for widechar - but truncates tooltip for now }
+  trayIcon: TNotifyIconData_v5;
+  tmpIcon:  TIcon;
 begin
-  tmpIcon:= TIcon.Create();
+  tmpIcon := TIcon.Create();
   try
-    if (
-        Active or
-        (dwMessage = NIM_DELETE)
-       ) then
-      begin
-      trayIcon.cbSize := sizeof(trayIcon);  // Size of struct
-      trayIcon.hWnd:= FhWindow;  // Handle to window which will receive callbacks
-      trayIcon.uID:= 0;
-      trayIcon.uFlags:= NIF_ICON or NIF_TIP or NIF_MESSAGE;
+    if (Active or (dwMessage = NIM_DELETE)) then begin
+      trayIcon.cbSize           := sizeof(trayIcon);  // Size of struct
+      trayIcon.hWnd             := FhWindow;          // Handle to window which will receive callbacks
+      trayIcon.uID              := 0;
+      trayIcon.uFlags           := NIF_ICON or NIF_TIP or NIF_MESSAGE;
       trayIcon.uCallbackMessage := WM_SDU_SYSTEMTRAYICON;  // The message the icon answers to
 
       // Fallback to application's icon
-      trayIcon.hIcon:= Application.Icon.Handle;
+      trayIcon.hIcon := Application.Icon.Handle;
 
-      if not(AnimateIcon) then
-        begin
-        if not(FIcon.Empty) then
-          begin
-          trayIcon.hIcon:= FIcon.Handle;
-          end;
-        end
-      else
-        begin
-        if Assigned(FAnimationIcons) then
-          begin
+      if not (AnimateIcon) then begin
+        if not (FIcon.Empty) then begin
+          trayIcon.hIcon := FIcon.Handle;
+        end;
+      end else begin
+        if Assigned(FAnimationIcons) then begin
           // Sanity check...
-          if (FAnimationPos > (FAnimationIcons.Count-1)) then
-            begin
+          if (FAnimationPos > (FAnimationIcons.Count - 1)) then begin
             FAnimationPos := 0;
-            end;
+          end;
 
-          if (FAnimationPos <= (FAnimationIcons.Count-1)) then
-            begin
+          if (FAnimationPos <= (FAnimationIcons.Count - 1)) then begin
             FAnimationIcons.GetIcon(FAnimationPos, tmpIcon);
-            trayIcon.hIcon:= tmpIcon.Handle;
-            end;
-
+            trayIcon.hIcon := tmpIcon.Handle;
           end;
 
         end;
+
+      end;
 
       // From the Microsoft help:
       //   "Pointer to a null-terminated string with the text for a standard
@@ -834,10 +762,10 @@ begin
       //   For Version 5.0 and later, szTip can have a maximum of 128
       //   characters, including the terminating NULL."
 
-      StrPLCopy(trayIcon.szTip, fTip, (sizeof(trayIcon.szTip)-1));
+      StrPLCopy(trayIcon.szTip, fTip, (sizeof(trayIcon.szTip) - 1));
 
       Shell_NotifyIcon(dwMessage, @trayIcon);
-      end;
+    end;
 
   finally
     tmpIcon.Free();
@@ -847,40 +775,41 @@ end;
 
 
 // ----------------------------------------------------------------------------
-procedure TSDUSystemTrayIcon.BubbleMessage(Title: AnsiChar; Info: AnsiChar; Icon: TSDUSystemTrayIconBubbleIcon; Timeout: integer);
+procedure TSDUSystemTrayIcon.BubbleMessage(Title: AnsiChar; Info: AnsiChar;
+  Icon: TSDUSystemTrayIconBubbleIcon; Timeout: Integer);
 var
   trayIcon: TNotifyIconData_v2;
 begin
   CheckActive();
 
   trayIcon.cbSize := sizeof(trayIcon);  // Size of struct
-  trayIcon.hWnd:= FhWindow;  // Handle to window which will receive callbacks
-  trayIcon.uID:= 0;
-  trayIcon.uFlags:= NIF_INFO;
+  trayIcon.hWnd   := FhWindow;          // Handle to window which will receive callbacks
+  trayIcon.uID    := 0;
+  trayIcon.uFlags := NIF_INFO;
 
   case Icon of
-    shbiNone:    trayIcon.dwInfoFlags := NIIF_NONE;
-    shbiInfo:    trayIcon.dwInfoFlags := NIIF_INFO;
+    shbiNone: trayIcon.dwInfoFlags    := NIIF_NONE;
+    shbiInfo: trayIcon.dwInfoFlags    := NIIF_INFO;
     shbiWarning: trayIcon.dwInfoFlags := NIIF_WARNING;
-    shbiError:   trayIcon.dwInfoFlags := NIIF_ERROR;
-  else
-    trayIcon.dwInfoFlags := NIIF_NONE;
+    shbiError: trayIcon.dwInfoFlags   := NIIF_ERROR;
+    else
+      trayIcon.dwInfoFlags := NIIF_NONE;
   end;
 
 
-  StrPLCopy(trayIcon.szInfoTitle, Title, (sizeof(trayIcon.szInfoTitle)-1));
-  StrPLCopy(trayIcon.szInfo, Info, (sizeof(trayIcon.szInfo)-1));
+  StrPLCopy(trayIcon.szInfoTitle, Title, (sizeof(trayIcon.szInfoTitle) - 1));
+  StrPLCopy(trayIcon.szInfo, Info, (sizeof(trayIcon.szInfo) - 1));
 
-//  trayIcon.TimeoutVersion.uTimeout := Timeout;
+  //  trayIcon.TimeoutVersion.uTimeout := Timeout;
   trayIcon.TimeoutVersion.uTimeout := Timeout or NOTIFYICON_VERSION;
   Shell_NotifyIcon(NIM_MODIFY, @trayIcon);
 
 end;
 
 
-// ----------------------------------------------------------------------------
-// See: Trapping Windows Messages in Delphi
-// http://community.borland.com/article/0,1410,16487,00.html
+ // ----------------------------------------------------------------------------
+ // See: Trapping Windows Messages in Delphi
+ // http://community.borland.com/article/0,1410,16487,00.html
 procedure TSDUSystemTrayIcon.TrapWindowMessages();
 begin
   TrapWindowMessages_AppProc();
@@ -898,21 +827,18 @@ begin
 {$ENDIF}
 
 
-  FOldAppProc := Pointer(SetWindowLong(
-                                       Application.Handle,
-                                       GWL_WNDPROC,
-                                       LongInt(FNewAppProc)
-                                      ));
+  FOldAppProc := Pointer(SetWindowLong(Application.Handle,
+    GWL_WNDPROC,
+    Longint(
+    FNewAppProc)));
 
 end;
 
 procedure TSDUSystemTrayIcon.TrapWindowMessages_WindowProc();
 begin
   // Set the new app procedure for the control and remember the old window procedure.
-  if (Owner <> nil) then
-    begin
-    if (Owner is TWinControl) then
-      begin
+  if (Owner <> nil) then begin
+    if (Owner is TWinControl) then begin
       // Set the new app procedure for the control and remember the old app procedure.
       // Delphi 6 and later moved MakeObjectInstance to "Classes"
 {$IFDEF VER130}
@@ -922,19 +848,18 @@ begin
 {$ENDIF}
 
       FOldWindowProc := Pointer(SetWindowLong(
-                                              TWinControl(Owner).Handle,
-                                              GWL_WNDPROC,
-                                              LongInt(FNewWindowProc)
-                                             ));
-      end;
+        TWinControl(Owner).Handle,
+        GWL_WNDPROC,
+        Longint(FNewWindowProc)));
     end;
-    
+  end;
+
 end;
 
 
-// ----------------------------------------------------------------------------
-// See: Trapping Windows Messages in Delphi
-// http://community.borland.com/article/0,1410,16487,00.html
+ // ----------------------------------------------------------------------------
+ // See: Trapping Windows Messages in Delphi
+ // http://community.borland.com/article/0,1410,16487,00.html
 procedure TSDUSystemTrayIcon.UntrapWindowMessages();
 begin
   UntrapWindowMessages_AppProc();
@@ -944,56 +869,50 @@ end;
 procedure TSDUSystemTrayIcon.UntrapWindowMessages_AppProc();
 begin
   // Set the app procedure back to the old app procedure
-  if (FOldAppProc <> nil) then
-    begin
+  if (FOldAppProc <> nil) then begin
     SetWindowLong(
-                  Application.Handle,
-                  GWL_WNDPROC,
-                  LongInt(FOldAppProc)
-                 );
-    if (FNewAppProc <> nil) then
-      begin
+      Application.Handle,
+      GWL_WNDPROC,
+      Longint(FOldAppProc)
+      );
+    if (FNewAppProc <> nil) then begin
       // Delphi 6 and later moved FreeObjectInstance to "Classes"
 {$IFDEF VER130}
       Forms.FreeObjectInstance(FNewAppProc);
 {$ELSE}
       Classes.FreeObjectInstance(FNewAppProc);
 {$ENDIF}
-      end;
     end;
+  end;
 
   FOldAppProc := nil;
   FNewAppProc := nil;
-    
+
 end;
 
 procedure TSDUSystemTrayIcon.UntrapWindowMessages_WindowProc();
 begin
   // Set the window procedure back to the old window procedure
-  if (FOldWindowProc <> nil) then
-    begin
-    if (Owner <> nil) then
-      begin
-      if (Owner is TWinControl) then
-        begin
+  if (FOldWindowProc <> nil) then begin
+    if (Owner <> nil) then begin
+      if (Owner is TWinControl) then begin
         SetWindowLong(
-                      TWinControl(Owner).Handle,
-                      GWL_WNDPROC,
-                      LongInt(FOldWindowProc)
-                     );
+          TWinControl(Owner).Handle,
+          GWL_WNDPROC,
+          Longint(FOldWindowProc)
+          );
 
-        if (FNewWindowProc <> nil) then
-          begin
+        if (FNewWindowProc <> nil) then begin
           // Delphi 6 and later moved FreeObjectInstance to "Classes"
 {$IFDEF VER130}
           Forms.FreeObjectInstance(FNewWindowProc);
 {$ELSE}
           Classes.FreeObjectInstance(FNewWindowProc);
 {$ENDIF}
-          end;
         end;
       end;
     end;
+  end;
 
   FOldWindowProc := nil;
   FNewWindowProc := nil;
@@ -1001,63 +920,62 @@ begin
 end;
 
 
-// ----------------------------------------------------------------------------
-// Dump debug information out about certain window messaes received
-procedure TSDUSystemTrayIcon.DebugWM(wmFrom: string; msg: TMessage);
+ // ----------------------------------------------------------------------------
+ // Dump debug information out about certain window messaes received
+procedure TSDUSystemTrayIcon.DebugWM(wmFrom: String; msg: TMessage);
 var
-  si: TStartupInfo;
-  showWindowStatus: integer;
+  si:               TStartupInfo;
+  showWindowStatus: Integer;
 begin
-  wmFrom := '------------- '+wmFrom+' -------------';
+  wmFrom := '------------- ' + wmFrom + ' -------------';
 
 
   // Debug out the window message details
   case msg.Msg of
     WM_ENDSESSION:
-      begin
+    begin
       SendDebug(wmFrom);
       SendDebug('WM_ENDSESSION');
-      SendDebug(' - Shuting down: '+SDUBoolToStr(TWMEndSession(msg).EndSession));
-      end;
+      SendDebug(' - Shuting down: ' + SDUBoolToStr(TWMEndSession(msg).EndSession));
+    end;
 
     WM_SHOWWINDOW:
-      begin
+    begin
       SendDebug(wmFrom);
       showWindowStatus := msg.LParam;
-      if (msg.LParam = SW_SHOWDEFAULT) then
-        begin
+      if (msg.LParam = SW_SHOWDEFAULT) then begin
         GetStartupInfo(si);
         showWindowStatus := si.wShowWindow;
-        end;
+      end;
 
       SendDebug('WM_SHOWWINDOW');
-      SendDebug(' - showWindowStatus: '+inttostr(showWindowStatus));
-      SendDebug('    - SW_MINIMIZE       : '+SDUBoolToStr(showWindowStatus = SW_MINIMIZE));
-      SendDebug('    - SW_SHOWMINIMIZED  : '+SDUBoolToStr(showWindowStatus = SW_SHOWMINIMIZED));
-      SendDebug('    - SW_SHOWMINNOACTIVE: '+SDUBoolToStr(showWindowStatus = SW_SHOWMINNOACTIVE));
-      end;
+      SendDebug(' - showWindowStatus: ' + IntToStr(showWindowStatus));
+      SendDebug('    - SW_MINIMIZE       : ' + SDUBoolToStr(showWindowStatus = SW_MINIMIZE));
+      SendDebug('    - SW_SHOWMINIMIZED  : ' + SDUBoolToStr(showWindowStatus = SW_SHOWMINIMIZED));
+      SendDebug('    - SW_SHOWMINNOACTIVE: ' + SDUBoolToStr(showWindowStatus = SW_SHOWMINNOACTIVE));
+    end;
 
     WM_SIZE:
-      begin
+    begin
       SendDebug(wmFrom);
       SendDebug('WM_SIZE');
-      SendDebug(' - SIZE_MINIMIZED: '+SDUBoolToStr(msg.WParam = SIZE_MINIMIZED));
-      end;
+      SendDebug(' - SIZE_MINIMIZED: ' + SDUBoolToStr(msg.WParam = SIZE_MINIMIZED));
+    end;
 
     WM_SYSCOMMAND:
-      begin
+    begin
       SendDebug(wmFrom);
       SendDebug('WM_SYSCOMMAND');
-      SendDebug(' - SC_CLOSE   : '+SDUBoolToStr(msg.WParam = SC_CLOSE));
-      SendDebug(' - SC_MINIMIZE: '+SDUBoolToStr(msg.WParam = SC_MINIMIZE));
-      SendDebug(' - SC_ICON    : '+SDUBoolToStr(msg.WParam = SC_ICON));
-      end;
+      SendDebug(' - SC_CLOSE   : ' + SDUBoolToStr(msg.WParam = SC_CLOSE));
+      SendDebug(' - SC_MINIMIZE: ' + SDUBoolToStr(msg.WParam = SC_MINIMIZE));
+      SendDebug(' - SC_ICON    : ' + SDUBoolToStr(msg.WParam = SC_ICON));
+    end;
 
-//    CM_RECREATEWND:
-//      begin
-//      SendDebug(wmFrom);
-//      SendDebug('CM_RECREATEWND');
-//      end;
+    //    CM_RECREATEWND:
+    //      begin
+    //      SendDebug(wmFrom);
+    //      SendDebug('CM_RECREATEWND');
+    //      end;
 
     WM_NCPAINT,
     WM_GETTEXT,
@@ -1067,15 +985,15 @@ begin
     WM_SETCURSOR,
     WM_MOUSEMOVE,
     WM_MOUSEACTIVATE:
-      begin
+    begin
       // Ignore
-      end;
+    end;
 
     else
-      begin
+    begin
       SendDebug(wmFrom);
       SendDebug(SDUWMToString(msg.Msg));
-      end;
+    end;
 
   end;
 
@@ -1083,15 +1001,15 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TSDUSystemTrayIcon.ProcessWM(AppProcNotWindowProc: boolean; var msg: TMessage): boolean;
+function TSDUSystemTrayIcon.ProcessWM(AppProcNotWindowProc: Boolean; var msg: TMessage): Boolean;
 var
-//  si: TStartupInfo;
-//  showWindowStatus: integer;
-  minOrClose: boolean;
-  intercept: boolean;
+  //  si: TStartupInfo;
+  //  showWindowStatus: integer;
+  minOrClose: Boolean;
+  intercept:  Boolean;
 begin
-  minOrClose := FALSE;
-  intercept := FALSE;
+  minOrClose := False;
+  intercept  := False;
 
   // Process the message of your choice here
   case msg.Msg of
@@ -1140,9 +1058,9 @@ begin
 }
 
     WM_SIZE:
-      begin
+    begin
       minOrClose := MinimizeToIcon and (msg.WParam = SIZE_MINIMIZED);
-      end;
+    end;
 
 
 {
@@ -1167,156 +1085,125 @@ begin
       end;
 }
 
-// Enabling this causes the main menu to disappear!
-//    WM_DESTROY:
-//      begin
-//      UntrapWindowMessages_WindowProc();
-//      FReceivedWM_DESTROY := TRUE;
-//      end;
+    // Enabling this causes the main menu to disappear!
+    //    WM_DESTROY:
+    //      begin
+    //      UntrapWindowMessages_WindowProc();
+    //      FReceivedWM_DESTROY := TRUE;
+    //      end;
 
-//    WM_WINDOWPOSCHANGING:
-//      begin
-//      if FReceivedWM_DESTROY then
-//        begin
-//        TrapWindowMessages_WindowProc();
-//        end;
-//      end;
+    //    WM_WINDOWPOSCHANGING:
+    //      begin
+    //      if FReceivedWM_DESTROY then
+    //        begin
+    //        TrapWindowMessages_WindowProc();
+    //        end;
+    //      end;
 
   end;
 
-  if minOrClose then
-    begin
+  if minOrClose then begin
     DoMinimizeToIcon();
-    end;
+  end;
 
   Result := intercept or minOrClose;
-//  Result := FALSE;
+  //  Result := FALSE;
 
-  if Result then
-    begin
+  if Result then begin
     SendDebug('+++ Window message processed +++');
-    end;
+  end;
 
 end;
 
 
-// ----------------------------------------------------------------------------
-// Application window message received
+ // ----------------------------------------------------------------------------
+ // Application window message received
 procedure TSDUSystemTrayIcon.NewAppProc(var msg: TMessage);
 var
-  handled: boolean;
+  handled: Boolean;
 begin
   DebugWM('NewAppProc', msg);
-  handled := FALSE;
-  if IsOnMainForm() then
-    begin
-    handled := ProcessWM(TRUE, msg);
-    end;
+  handled := False;
+  if IsOnMainForm() then begin
+    handled := ProcessWM(True, msg);
+  end;
 
-  if handled then
-    begin
+  if handled then begin
     msg.Result := 1;
-    end
-  else
-    begin
+  end else begin
     // Call the old Window procedure to allow processing of the message.
-    msg.Result := CallWindowProc(
-                                 FOldAppProc,
-                                 Application.Handle,
-                                 msg.Msg,
-                                 msg.WParam,
-                                 msg.LParam
-                                );
-    end;
+    msg.Result := CallWindowProc(FOldAppProc,
+      Application.Handle, msg.Msg,
+      msg.WParam, msg.LParam
+      );
+  end;
 
 end;
 
 
 // ----------------------------------------------------------------------------
-function TSDUSystemTrayIcon.IsOnMainForm(): boolean;
+function TSDUSystemTrayIcon.IsOnMainForm(): Boolean;
 begin
   Result :=
-      (owner <> nil) and
+    (owner <> nil) and
 {$IF CompilerVersion >= 18.5}
-      (
-       // If Application.MainFormOnTaskbar is set, use the form name,
-       // otherwise check exactly
-       (
-        Application.MainFormOnTaskbar and
-        (application.mainform <> nil) and
-        (application.mainform.name = owner.name)
-       ) or
-       (
-        not(Application.MainFormOnTaskbar) and
-//        (application.mainform = owner)
-        (application.mainform <> nil) and
-        (application.mainform.name = owner.name)
-       )
-      )
+    (
+    // If Application.MainFormOnTaskbar is set, use the form name,
+    // otherwise check exactly
+    (Application.MainFormOnTaskbar and (application.mainform <> nil) and
+    (application.mainform.Name = owner.Name)) or
+    (not (Application.MainFormOnTaskbar) and
+    //        (application.mainform = owner)
+    (application.mainform <> nil) and (application.mainform.Name =
+    owner.Name)))
 {$ELSE}
         (application.mainform = owner)
 {$IFEND}
-      ;
+  ;
 
 end;
 
 
-// ----------------------------------------------------------------------------
-// Window window message received
+ // ----------------------------------------------------------------------------
+ // Window window message received
 procedure TSDUSystemTrayIcon.NewWindowProc(var msg: TMessage);
 var
-  handled: boolean;
+  handled: Boolean;
 begin
   DebugWM('NewWindowProc', msg);
-  handled := FALSE;
+  handled := False;
   // Note: This is NOT the same as IsOnMainForm(...) in the previous version
 {$IF CompilerVersion >= 18.5}
-  if  (owner <> nil) and
-      (
-       // If Application.MainFormOnTaskbar is set, use the form name,
-       // otherwise check exactly
-       (
-        Application.MainFormOnTaskbar and
-        (application.mainform <> nil) and
-        (application.mainform.name = owner.name)
-       ) or
-       (
-        not(Application.MainFormOnTaskbar) and
-//        (application.mainform <> owner)
-        (application.mainform <> nil) and
-        (application.mainform.name <> self.name)
-       )
-      ) then
-{$ELSE}
+  if (owner <> nil) and (
+    // If Application.MainFormOnTaskbar is set, use the form name,
+    // otherwise check exactly
+    (Application.MainFormOnTaskbar and (application.mainform <> nil) and
+    (application.mainform.Name = owner.Name)) or
+    (not (Application.MainFormOnTaskbar) and
+    //        (application.mainform <> owner)
+    (application.mainform <> nil) and (application.mainform.Name <>
+    self.Name))) then
+ {$ELSE}
   if ((owner <> nil) and (application.mainform <> owner)) then
 {$IFEND}
-    begin
-    handled := ProcessWM(FALSE, msg);
-    end;
+  begin
+    handled := ProcessWM(False, msg);
+  end;
 
-  if handled then
-    begin
+  if handled then begin
     msg.Result := 1;
-    end
-  else
-    begin
+  end else begin
     // Call the old Window procedure to allow processing of the message.
-    msg.Result := CallWindowProc(
-                                 FOldWindowProc,
-                                 TWinControl(Owner).Handle,
-                                 msg.Msg,
-                                 msg.WParam,
-                                 msg.LParam
-                                );
-    end;
+    msg.Result := CallWindowProc(FOldWindowProc,
+      TWinControl(Owner).Handle,
+      msg.Msg, msg.WParam,
+      msg.LParam);
+  end;
 
 end;
 
 
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
+ // ----------------------------------------------------------------------------
+ // ----------------------------------------------------------------------------
 
-END.
-
-
-
+end.
