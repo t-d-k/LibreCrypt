@@ -86,7 +86,7 @@ The latest version of this FAQ, along with the latest LibreCrypt user manual, ca
 * [How do I delete an encrypted volume?](#ge)
 * [How do I backup an encrypted volume?](#et)
 * [Can I use **any** filename/file extension for my LibreCrypt?](#hf)
-* [Does LibreCrypt support LVM2?](#gw)
+* [Does LibreCrypt support LVM2?](#lvm)
 * [Is it worth running file overwriter ("shredder") programs to securely delete existing data stored on my encrypted drive?](#gx)
 * [What is the difference between the main LibreCrypt/LibreCrypt Explorer release and the PortableApps.com version?](#gy)
 * [What is the difference between the main LibreCrypt/LibreCrypt Explorer release and the U3 version?](#gz)
@@ -923,23 +923,19 @@ No matter **what** you're backing up, when you setup a backup system for the fir
 
 <a name="hf"></a>
 *Q: Can I use **any** filename/file extension for my container?
-
 *A:*
-Yes!
+Yes.
 
-Filenames and file extensions have no special meaning to container, which means any filename can be used.
+Filenames and file extensions have no special meaning to LibreCrypt, which means any filename can be used.
 
 * * *
 
-<a name="gw"></a>
+<a name="lvm"></a>
 *Q: Does LibreCrypt support LVM2?*
-
 *A:*
-Yes - it certainly can!
+Unfortunately, there is no Windows driver capable of reading LVM2 volumes for current versions of Windows, so this is not possible.
 
-LibreCrypt fully supports Linux LVM2 volumes, provided that you have a suitable Windows driver which allows access to LVM2 volumes, this will allow LibreCrypt to carry out disk encryption either above or below the LVM management system (i.e. on physical or logical volumes)
-
-(It should be noted however that LVM2 is **not** a disk encryption issue!)
+It should be noted however that LVM2 is **not** a disk encryption issue, and outside the scope of what LibreCrypt can be expected to do.
 
 * * *
 
