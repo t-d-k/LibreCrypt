@@ -51,10 +51,11 @@ _[LibreCrypt](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 *Important: LibreCrypt in Portable mode will not work on Windows Vista and later 64 bit versions without a extra step before use.*
 
 *LibreCrypt installed on Windows Vista and later 64 bit versions adds the text "Test Mode" to the Windows desktop. Please see the documentation for details on removing this.*
-*On Windows 8 please turn off 'Safe Boot' and disklocker before installing.*
-*There has been a report that Kaspersky anti-virus falsely reports LibreCrypt as having the 'generic.Trojan' virus, please disable or replace this before installing.*
-*LUKs partitions on LVM volumes, or LVM volumes in LUKS partitions cannot be accessed due to Windows limitations*
-*This release has changes to the drivers, if upgrading from previous versions of LibreCrypt,DoxBox or FreeOTFE please completely uninstall the old version first
+
+* On Windows 8 please turn off 'Safe Boot' and disklocker before installing.
+* There has been a report that Kaspersky anti-virus falsely reports LibreCrypt as having the 'generic.Trojan' virus, please disable or replace this before installing.
+* LUKs partitions on LVM volumes, or LVM volumes in LUKS partitions cannot be accessed due to Windows limitations
+* This release has changes to the drivers, if upgrading from previous versions of LibreCrypt,DoxBox or FreeOTFE please completely uninstall the old version first
 
 * Please follow these instructions to run LibreCrypt in portable mode on 64 bit Windows; if you do not do this you will get the error "Windows requires a digitally signed driver" when starting the drivers. There is no need to do this if LibreCrypt is installed.
 	+ Start LibreCrypt, click 'No' on the prompt to start the portable drivers, and 'OK' on the warning dialog about not having any loaded drivers.
@@ -63,7 +64,6 @@ _[LibreCrypt](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 	+ After rebooting the words "Test Mode" appear in the four corners of the Desktop. Please see the documentation for details on removing this.
 	+ After finishing with LibreCrypt you can click the Tools->"Disallow Test-signed drivers" menu item to remove the "Test Mode" text.
 *	To run in portable mode, you need to have admin rights.  
-*	Backwards compatibility with older versions of FreeOTFE (before 5.21) will be removed in a future version. Please convert any FreeOTFE volumes. This can be done by creating a new 'box' and copying the files across.
 *	Support for the following cyphers will be removed in a future version, please convert to another: xor, plain, single DES. Ditto for the 'plain' hash. 
 *	LibreCrypt does not support encryption of the operating system partition, for this we recommend Ubuntu Linux.
 * LibreCrypt needs to be run as administrator the first time it is run. After that it can be run as an ordinary user. 
