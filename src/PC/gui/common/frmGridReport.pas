@@ -1,4 +1,4 @@
-unit CommonfrmGridReport;
+unit frmGridReport;
 
 interface
 
@@ -64,7 +64,7 @@ type
     procedure PopulateGrid(); VIRTUAL;
     function IsColumnAdvanced(colIdx: Integer): Boolean; VIRTUAL;
   PUBLIC
-//    OTFEFreeOTFE: TOTFEFreeOTFEBase;
+
   end;
 
 resourcestring
@@ -186,8 +186,8 @@ var
 begin
   totalAlgs := CountImplementations();
 
-  lblTotalDrivers.Caption    := SDUParamSubstitute(_('Total drivers: %1'), [CountDrivers]);
-  lblTotalAlgorithms.Caption := SDUParamSubstitute(_('Total algorithms: %1'), [totalAlgs]);
+  lblTotalDrivers.Caption    := Format(_('Total drivers: %d'), [CountDrivers]);
+  lblTotalAlgorithms.Caption := Format(_('Total algorithms: %d'), [totalAlgs]);
 
   ckShowAdvanced.Checked := False;
 
@@ -255,8 +255,8 @@ begin
         GetFreeOTFEBase().AddStdDumpHeader(stlContent, self.Caption);
         stlContent.Add(_('Summary'));
         stlContent.Add(StringOfChar('-', length(_('Summary'))));
-        stlContent.Add(SDUParamSubstitute(_('Total drivers   : %1'), [CountDrivers()]));
-        stlContent.Add(SDUParamSubstitute(_('Total algorithms: %1'), [CountImplementations()]));
+        stlContent.Add(Format(_('Total drivers   : %d'), [CountDrivers()]));
+        stlContent.Add(Format(_('Total algorithms: %d'), [CountImplementations()]));
         stlContent.Add('');
         stlContent.Add('');
         stlContent.Add(_('Details'));

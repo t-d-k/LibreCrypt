@@ -1,4 +1,4 @@
-object frmCDBBackupRestore: TfrmCDBBackupRestore
+object frmHdrBackupRestore: TfrmHdrBackupRestore
   Left = 294
   Top = 227
   BorderStyle = bsDialog

@@ -1,4 +1,4 @@
-unit CommonfrmInstallOnUSBDrive;
+unit frmInstallOnUSBDrive;
 
 interface
 

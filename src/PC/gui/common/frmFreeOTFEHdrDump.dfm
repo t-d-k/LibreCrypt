@@ -1,25 +1,22 @@
-inherited frmCDBDump_FreeOTFE: TfrmFreeOTFEHdrDump
+inherited frmFreeOTFEHdrDump: TfrmFreeOTFEHdrDump
   PixelsPerInch = 96
   TextHeight = 13
   inherited GroupBox1: TGroupBox
-    inherited Label2: TLabel
-      FocusControl = preUserKey
-    end
-    object lblOffset: TLabel [2]
+    object lblOffset: TLabel [1]
       Left = 8
       Top = 124
       Width = 31
       Height = 13
       Caption = '&Offset:'
     end
-    object lblSaltLengthBits: TLabel [3]
+    object lblSaltLengthBits: TLabel [2]
       Left = 244
       Top = 152
       Width = 16
       Height = 13
       Caption = 'bits'
     end
-    object lblSaltLength: TLabel [4]
+    object lblSaltLength: TLabel [3]
       Left = 8
       Top = 152
       Width = 53
@@ -27,7 +24,7 @@ inherited frmCDBDump_FreeOTFE: TfrmFreeOTFEHdrDump
       Caption = '&Salt length:'
       FocusControl = seSaltLength
     end
-    object lblKeyIterations: TLabel [5]
+    object lblKeyIterations: TLabel [4]
       Left = 8
       Top = 180
       Width = 66
@@ -41,7 +38,7 @@ inherited frmCDBDump_FreeOTFE: TfrmFreeOTFEHdrDump
       Width = 121
       Height = 22
       Increment = 1
-      TabOrder = 3
+      TabOrder = 2
     end
     object seKeyIterations: TSpinEdit64
       Left = 116
@@ -49,14 +46,14 @@ inherited frmCDBDump_FreeOTFE: TfrmFreeOTFEHdrDump
       Width = 121
       Height = 22
       Increment = 1
-      TabOrder = 4
+      TabOrder = 3
     end
     object se64UnitOffset: TSDUSpin64Unit_Storage
       Left = 116
       Top = 120
       Width = 226
       Height = 29
-      TabOrder = 2
+      TabOrder = 1
       Units.Strings = (
         'bytes'
         'KB'
@@ -67,21 +64,30 @@ inherited frmCDBDump_FreeOTFE: TfrmFreeOTFEHdrDump
       MaxLength = 0
       ReadOnly = False
     end
-    object preUserKey: TPasswordRichEdit
-      Left = 116
-      Top = 48
-      Width = 337
-      Height = 65
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Lines.Strings = (
-        'preUserKey')
-      ParentFont = False
-      ScrollBars = ssBoth
-      TabOrder = 1
+    inline frmePassword1: TfrmePassword
+      Left = 8
+      Top = 47
+      Width = 454
+      Height = 71
+      TabOrder = 4
+      ExplicitLeft = 8
+      ExplicitTop = 47
+      ExplicitWidth = 454
+      ExplicitHeight = 71
+      inherited lblKeyPhrase: TLabel
+        Left = 0
+        Width = 56
+        ExplicitLeft = 0
+        ExplicitWidth = 56
+      end
+      inherited preUserKeyFirst: TOTFEFreeOTFE_PasswordRichEdit
+        Left = 108
+        Width = 333
+        Height = 65
+        ExplicitLeft = 108
+        ExplicitWidth = 333
+        ExplicitHeight = 65
+      end
     end
   end
 end

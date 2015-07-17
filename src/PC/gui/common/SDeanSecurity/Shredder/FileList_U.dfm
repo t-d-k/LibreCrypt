@@ -1,4 +1,4 @@
-object FileList_F: TFileList_F
+object FileList_F: TfrmFileList
   Left = 284
   Top = 369
   Caption = 'Report'
@@ -43,6 +43,7 @@ object FileList_F: TFileList_F
     Width = 429
     Height = 289
     Anchors = [akLeft, akTop, akRight, akBottom]
+    BevelOuter = bvNone
     Caption = 'pnlPlaceholder'
     TabOrder = 1
     object lbFiles: TListBox
@@ -61,6 +62,12 @@ object FileList_F: TFileList_F
       Width = 185
       Height = 89
       Color = clBtnFace
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       ReadOnly = True
       ScrollBars = ssBoth
       TabOrder = 1

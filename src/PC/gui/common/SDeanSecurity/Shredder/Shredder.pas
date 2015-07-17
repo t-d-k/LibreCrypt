@@ -12,7 +12,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  SDUGeneral, SDUProgressDlg,
+  SDUGeneral, dlgProgress,
   FileList_U,
   SDUClasses;
 
@@ -78,7 +78,7 @@ type
   TNotifyStartingFileOverwritePass = procedure (Sender: TObject; itemName: string; passNumber: integer; totalPasses: integer) of object;
   TCheckForUserCancel = procedure (Sender: TObject; var userCancelled: boolean) of object;
 
-  TShredder = class(TComponent)
+  TShredder = class(TObject)
   private
     FFileDirUseInt: boolean;
     FFreeUseInt: boolean;
@@ -106,7 +106,7 @@ type
                                 filename : string;
                                 quickShred: boolean;
                                 silent: boolean;
-                                silentProgressDlg: TSDUProgressDialog;
+                                silentProgressDlg: TdlgProgress;
                                 leaveFile: boolean = FALSE
                                ): TShredResult;
     function  DeleteFileOrDir(itemname: string): TShredResult;
@@ -123,16 +123,17 @@ type
     procedure GetBlockGutmann(passNum: integer; var outputBlock: TShredBlock);
     function  GetGutmannChars(passNum: integer): TShredDetails;
     function  SetGutmannDetails(nOne: integer; nTwo: integer; nThree: integer): TShredDetails;
-    function  CreateEmptyFile(filename: string; size: int64; blankArray: TShredFreeSpaceBlockObj; progressDlg: TSDUProgressDialog): TShredResult;
+    function  CreateEmptyFile(filename: string; size: int64; blankArray: TShredFreeSpaceBlockObj; progressDlg: TdlgProgress): TShredResult;
     function  GetTempFilename(driveDir: string; serialNo: integer): string;
-    function  WipeFileSlacksInDir(dirName: string; progressDlg: TSDUProgressDialog; problemFiles: TStringList): TShredResult;
+    function  WipeFileSlacksInDir(dirName: string; progressDlg: TdlgProgress; problemFiles: TStringList): TShredResult;
     function  CountFiles(dirName: string): integer;
     function  GenerateRndDotFilename(path: string; origFilename: string): string;
   protected
     function IsDevice(filename: string): boolean;
     function DeviceDrive(filename: string): char;
   public
-    constructor Create(AOwner: TComponent); override;
+//    constructor Create(AOwner: TComponent); override;
+    constructor Create({AOwner: TComponent});
     destructor Destroy(); override;
 
     // Call this to shred all free space on the specified drive
@@ -258,7 +259,7 @@ procedure OverwriteAndFree(var x: TSDUMemoryStream); overload;
 procedure OverwriteAndFree(var x: TStringList); overload;
 
 
-procedure Register;
+ // procedure Register;
 
 implementation
 
@@ -281,11 +282,11 @@ const
 resourcestring
   USER_CANCELLED = 'User cancelled';
 
-procedure Register;
+(*procedure Register;
 begin
   RegisterComponents('SDeanSecurity', [TShredder]);
 end;
-
+*)
 function ShredMethodTitle(shredMethod: TShredMethod): string;
 begin
   Result := LoadResString(TShredMethodTitle[shredMethod]);
@@ -372,9 +373,9 @@ begin
     end;
 end;
 
-constructor TShredder.Create(AOwner: TComponent);
+constructor TShredder.Create({AOwner: TComponent});
 begin
-  inherited;
+//  inherited;
 
   FFileDirUseInt:= TRUE;
   FFreeUseInt:= TRUE;
@@ -552,7 +553,7 @@ function TShredder.InternalShredFile(
                                      filename: string;
                                      quickShred: boolean;
                                      silent: boolean;
-                                     silentProgressDlg: TSDUProgressDialog;
+                                     silentProgressDlg: TdlgProgress;
                                      leaveFile: boolean = FALSE
                                     ): TShredResult;
 var
@@ -563,7 +564,7 @@ var
   bytesToShredHi: DWORD;
   bytesWritten: DWORD;
   numPasses: integer;
-  progressDlg: TSDUProgressDialog;
+  progressDlg: TdlgProgress;
   bpc: DWORD;
   bpcMod: DWORD;
   tmpDWORD: DWORD;
@@ -595,7 +596,7 @@ begin
     numPasses := FIntPasses;
     end;
 
-  progressDlg:= TSDUProgressDialog.create(nil);
+  progressDlg:= TdlgProgress.create(nil);
   try
     progressDlg.ShowTimeRemaining := TRUE;
     try  // Exception handler for EShredderErrorUserCancel
@@ -707,8 +708,8 @@ begin
                   begin
                   useShredMethodTitle := _('Custom');
                   end;
-                progressDlg.Caption := SDUParamSubstitute(
-                                              _('Shredding (%1 pass %2/%3) %4'),
+                progressDlg.Caption := Format(
+                                              _('Shredding (%s pass %d/%d) %s'),
                                               [useShredMethodTitle, i, numPasses, filename]
                                              );
                 progressDlg.i64Position := 0;
@@ -1285,7 +1286,7 @@ var
   i: integer;
   lastFilename: string;
   shredderCommandLine: Ansistring;
-  progressDlg: TSDUProgressDialog;
+  progressDlg: TdlgProgress;
   diskNumber: integer;
   userCancel: boolean;
   failure: boolean;
@@ -1315,7 +1316,7 @@ begin
     end
   else
     begin
-    progressDlg := TSDUProgressDialog.Create(nil);
+    progressDlg := TdlgProgress.Create(nil);
     try
       progressDlg.ShowTimeRemaining := TRUE;
       blankArray := TShredFreeSpaceBlockObj.Create();
@@ -1338,7 +1339,7 @@ begin
         // While there is FIntFreeSpcFileSize (or smart) bytes diskspace
         // left, create a file FIntFreeSpcFileSize (or smart) big
         freeSpace := DiskFree(diskNumber);
-        progressDlg.Caption := SDUParamSubstitute(_('Shredding free space on drive %1:'), [driveLetter]);
+        progressDlg.Caption := Format(_('Shredding free space on drive %s:'), [driveLetter]);
         progressDlg.i64Max := freeSpace;
         progressDlg.i64Min := 0;
         progressDlg.i64Position := 0;
@@ -1557,7 +1558,7 @@ end;
 //               set to a progress dialog. This progress dialog will
 //               *only* be used for checking to see if the user's
 //               cancelled the operation
-function TShredder.CreateEmptyFile(filename: string; size: int64; blankArray: TShredFreeSpaceBlockObj; progressDlg: TSDUProgressDialog): TShredResult;
+function TShredder.CreateEmptyFile(filename: string; size: int64; blankArray: TShredFreeSpaceBlockObj; progressDlg: TdlgProgress): TShredResult;
 var
   retVal: TShredResult;
   userCancel: boolean;
@@ -1658,21 +1659,21 @@ end;
 
 function TShredder.OverwriteAllFileSlacks(driveLetter: Ansichar; silent: boolean): TShredResult;
 var
-  progressDlg: TSDUProgressDialog;
+  progressDlg: TdlgProgress;
   rootDir: string;
   problemFiles: TStringList;
-  reportDlg: TFileList_F;
+  reportDlg: TfrmFileList;
   drive: Ansistring;
 begin
   drive := uppercase(driveLetter);
   driveLetter := drive[1];
-  progressDlg := TSDUProgressDialog.Create(nil);
+  progressDlg := TdlgProgress.Create(nil);
   problemFiles:= TStringList.create();
   try
     rootDir:= driveLetter+':\';
 
     progressDlg.ShowTimeRemaining := TRUE;
-    progressDlg.Caption := SDUParamSubstitute(_('Shredding file slack on drive %1:'), [driveLetter]);
+    progressDlg.Caption := Format(_('Shredding file slack on drive %s:'), [driveLetter]);
     progressDlg.i64Max := CountFiles(rootDir);
     progressDlg.i64Min := 0;
     progressDlg.i64Position := 0;
@@ -1685,7 +1686,7 @@ begin
 
     if not(silent) AND (problemFiles.count>0) then
       begin
-      reportDlg := TFileList_F.Create(nil);
+      reportDlg := TfrmFileList.Create(nil);
       try
         reportDlg.lbFiles.visible := TRUE;
         reportDlg.lblTitle.caption := _('The following files could not have their slack space shredded:');
@@ -1704,7 +1705,7 @@ end;
 
 
 // Perform file slack shredding on all files in specified dir
-function TShredder.WipeFileSlacksInDir(dirName: string; progressDlg: TSDUProgressDialog; problemFiles: TStringList): TShredResult;
+function TShredder.WipeFileSlacksInDir(dirName: string; progressDlg: TdlgProgress; problemFiles: TStringList): TShredResult;
 var
   slackFile: string;
   fileIterator: TSDUFileIterator;

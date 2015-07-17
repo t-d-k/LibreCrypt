@@ -1,9 +1,9 @@
-unit CommonfrmGridReport_Cypher;
+unit frmCypherReport;
 
 interface
 
 uses
-  ActnList, Buttons, Classes, ComCtrls, CommonfrmGridReport, Controls, Dialogs, ExtCtrls,
+  ActnList, Buttons, Classes, ComCtrls, frmGridReport, Controls, Dialogs, ExtCtrls,
   Forms,
   Graphics, Grids, Menus, Messages, lcDialogs, SDUStringGrid, StdCtrls,
   SysUtils, Variants, Windows, SDUDialogs;
@@ -27,7 +27,7 @@ type
     gccCypherGUID
     );
 
-  TfrmGridReport_Cypher = class (TfrmGridReport)
+  TfrmCypherReport = class (TfrmGridReport)
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   PRIVATE
@@ -85,12 +85,12 @@ const
 
 
 
-function TfrmGridReport_Cypher.ColumnToColIdx(column: TGridColumn_Cypher): Integer;
+function TfrmCypherReport.ColumnToColIdx(column: TGridColumn_Cypher): Integer;
 begin
   Result := Ord(column);
 end;
 
-function TfrmGridReport_Cypher.ColIdxToColumn(colIdx: Integer): TGridColumn_Cypher;
+function TfrmCypherReport.ColIdxToColumn(colIdx: Integer): TGridColumn_Cypher;
 var
   i:      TGridColumn_Cypher;
 begin
@@ -106,7 +106,7 @@ begin
 
 end;
 
-procedure TfrmGridReport_Cypher.AddSubItem(col: TGridColumn_Cypher; item: TListItem;
+procedure TfrmCypherReport.AddSubItem(col: TGridColumn_Cypher; item: TListItem;
   Value: String);
 var
   dispValue: String;
@@ -143,7 +143,7 @@ begin
 
 end;
 
-procedure TfrmGridReport_Cypher.SetupGrid();
+procedure TfrmCypherReport.SetupGrid();
 var
   i: TGridColumn_Cypher;
 begin
@@ -158,7 +158,7 @@ begin
 
 end;
 
-procedure TfrmGridReport_Cypher.PopulateGrid();
+procedure TfrmCypherReport.PopulateGrid();
 var
   allData:    TFreeOTFECypherDriverArray;
   i:          Integer;
@@ -207,12 +207,12 @@ begin
   ResizeColumns();
 end;
 
-function TfrmGridReport_Cypher.IsColumnAdvanced(colIdx: Integer): Boolean;
+function TfrmCypherReport.IsColumnAdvanced(colIdx: Integer): Boolean;
 begin
   Result := (ColIdxToColumn(colIdx) in ADVANCED_COLS_CYPHER);
 end;
 
-function TfrmGridReport_Cypher.CountDrivers(): Integer;
+function TfrmCypherReport.CountDrivers(): Integer;
 var
   allData: TFreeOTFECypherDriverArray;
 begin
@@ -226,7 +226,7 @@ begin
 
 end;
 
-function TfrmGridReport_Cypher.CountImplementations(): Integer;
+function TfrmCypherReport.CountImplementations(): Integer;
 var
   allData:    TFreeOTFECypherDriverArray;
   i:          Integer;
@@ -245,7 +245,7 @@ begin
 
 end;
 
-procedure TfrmGridReport_Cypher.FormCreate(Sender: TObject);
+procedure TfrmCypherReport.FormCreate(Sender: TObject);
 begin
   inherited;
 
@@ -254,7 +254,7 @@ begin
 
 end;
 
-procedure TfrmGridReport_Cypher.FormShow(Sender: TObject);
+procedure TfrmCypherReport.FormShow(Sender: TObject);
 var
   msg: String;
 begin
@@ -272,7 +272,7 @@ begin
 
 end;
 
-function TfrmGridReport_Cypher.GetColumnTitle(column: TGridColumn_Cypher): WideString;
+function TfrmCypherReport.GetColumnTitle(column: TGridColumn_Cypher): WideString;
 begin
   Result := RS_UNKNOWN;
   case column of

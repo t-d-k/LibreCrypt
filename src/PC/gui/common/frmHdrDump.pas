@@ -1,4 +1,4 @@
-unit CommonfrmCDBDump_Base;
+unit frmHdrDump;
  // Description: 
  // By Sarah Dean
  // Email: sdean12@sdean12.org
@@ -24,7 +24,6 @@ type
     pbCancel:                  TButton;
     GroupBox1:                 TGroupBox;
     Label1:                    TLabel;
-    Label2:                    TLabel;
     GroupBox2:                 TGroupBox;
     Label3:                    TLabel;
     feDumpFilename:            TSDUFilenameEdit;
@@ -34,20 +33,19 @@ type
     procedure ControlChanged(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
     procedure OTFEFreeOTFEVolumeSelect1Change(Sender: TObject);
-  PRIVATE
+  PROTECTED
     function GetVolumeFilename(): String;
     function GetDumpFilename(): String;
 
-  PROTECTED
+
     procedure EnableDisableControls(); VIRTUAL; ABSTRACT;
 
     function DumpLUKSDataToFile(): Boolean; VIRTUAL; ABSTRACT;
 
   PUBLIC
-//    OTFEFreeOTFE: TOTFEFreeOTFEBase;
-
-    property VolumeFilename: String Read GetVolumeFilename;
-    property DumpFilename: String Read GetDumpFilename;
+//
+//    property VolumeFilename: String Read GetVolumeFilename;
+//    property DumpFilename: String Read GetDumpFilename;
   end;
 
 
@@ -149,12 +147,12 @@ begin
 
     if (SDUMessageDlg(_(
       'A human readable copy of your critical data block has been written to:') +
-      SDUCRLF + SDUCRLF + DumpFilename + SDUCRLF + SDUCRLF +
+      SDUCRLF + SDUCRLF + GetDumpFilename + SDUCRLF + SDUCRLF +
       _('Do you wish to open this file in Windows Notepad?'), mtInformation,
       [mbYes, mbNo], 0) = mrYes) then begin
 
 
-      if not (SDUWinExecNoWait32('notepad',DumpFilename, SW_RESTORE)) then begin
+      if not (SDUWinExecNoWait32('notepad',GetDumpFilename, SW_RESTORE)) then begin
         SDUMessageDlg(_('Error running Notepad'), mtError, [], 0);
       end;
 

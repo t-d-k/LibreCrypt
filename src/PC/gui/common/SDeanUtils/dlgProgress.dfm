@@ -1,4 +1,4 @@
-object SDUProgressDialog: TSDUProgressDialog
+object SDUProgressDialog: TdlgProgress
   Left = 458
   Top = 332
   BorderIcons = [biMinimize]

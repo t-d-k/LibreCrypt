@@ -1,4 +1,4 @@
-unit SDUProgressDlg;
+unit dlgProgress;
  // Description: Progress bar dialog
  // By Sarah Dean
  // Email: sdean12@sdean12.org
@@ -9,11 +9,12 @@ unit SDUProgressDlg;
 
  // This unit defines two different progress dialogs:
  //
- //   TSDUProgressDialog        - A basic "progress" dialog. Based on a Delphi
+ //   TdlgProgress              - A basic "progress" dialog. Based on a Delphi
  //                               form
  //   TSDUWindowsProgressDialog - The MS Windows standard progress dialog, as
  //                               seen when copying files within MS Windows
  //                               Explorer. Based on Windows IProgressDialog.
+ //                               This is no a form or dialog - just a class  that calls windows api
 
 
  // TSDUWindowsProgressDialog usage:
@@ -106,7 +107,7 @@ uses
   SDUForms, SDUGeneral, SDUStdCtrls, StdCtrls, SysUtils, Windows;
 
 type
-  TSDUProgressDialog = class (TSDUForm)
+  TdlgProgress = class (TSDUForm)
     pnlProgressBar:            TPanel;
     pbCancel:                  TButton;
     pnlStatusText:             TPanel;
@@ -371,7 +372,7 @@ type
   end;
 
 
-procedure Register;
+// procedure Register;
 
 implementation
 
@@ -423,13 +424,13 @@ begin
   end;
   Result := ShellModule;
 end;
-
+(*
 procedure Register;
 begin
-  RegisterComponents('SDeanUtils', [TSDUProgressDialog]);
+  RegisterComponents('SDeanUtils', [TdlgProgress]);
 end;
-
-constructor TSDUProgressDialog.Create(AOwner: TComponent);
+*)
+constructor TdlgProgress.Create(AOwner: TComponent);
 begin
   inherited;
   SDUClearPanel(pnlProgressBarPlaceholder);
@@ -443,22 +444,22 @@ begin
 
 end;
 
-destructor TSDUProgressDialog.Destroy();
+destructor TdlgProgress.Destroy();
 begin
   inherited;
 end;
 
-procedure TSDUProgressDialog.SetTitle(title: String);
+procedure TdlgProgress.SetTitle(title: String);
 begin
   self.Caption := title;
 end;
 
-function TSDUProgressDialog.GetTitle(): String;
+function TdlgProgress.GetTitle(): String;
 begin
   Result := self.Caption;
 end;
 
-procedure TSDUProgressDialog.UpdateI64ProgressBar();
+procedure TdlgProgress.UpdateI64ProgressBar();
 var
   barLength:  Int64;
   barPos:     Int64;
@@ -479,17 +480,17 @@ end;
 
 
 
-procedure TSDUProgressDialog.iSetMax(max: Integer);
+procedure TdlgProgress.iSetMax(max: Integer);
 begin
   pgbOverall.Max := max;
 end;
 
-procedure TSDUProgressDialog.iSetMin(min: Integer);
+procedure TdlgProgress.iSetMin(min: Integer);
 begin
   pgbOverall.Min := min;
 end;
 
-procedure TSDUProgressDialog.iSetPosition(position: Integer);
+procedure TdlgProgress.iSetPosition(position: Integer);
 var
   currTime:      TDateTime;
   timeDone:      TDateTime;
@@ -536,16 +537,16 @@ begin
         // Only display two most significant units; anything beyond that is
         // not particularly significant
         if (ADay > 0) then begin
-          newLabel := SDUParamSubstitute(_('%1 days, %2 hours'), [ADay, AHour]);
+          newLabel := Format(_('%d days, %d hours'), [ADay, AHour]);
         end else
         if (AHour > 0) then begin
-          newLabel := SDUParamSubstitute(_('%1 hours, %2 minutes'), [AHour, AMinute]);
+          newLabel := Format(_('%d hours, %d minutes'), [AHour, AMinute]);
         end else
         if (AMinute > 0) then begin
-          newLabel := SDUParamSubstitute(_('%1 minutes, %2 seconds'),
+          newLabel := Format(_('%d minutes, %d seconds'),
             [AMinute, ASecond]);
         end else begin
-          newLabel := SDUParamSubstitute(_('%1 seconds'), [ASecond]);
+          newLabel := Format(_('%d seconds'), [ASecond]);
         end;
 
       end;
@@ -558,48 +559,48 @@ begin
   Application.ProcessMessages();
 end;
 
-procedure TSDUProgressDialog.iSetInversePosition(position: Integer);
+procedure TdlgProgress.iSetInversePosition(position: Integer);
 begin
   iSetPosition(pgbOverall.Max - position);
 
 end;
 
-procedure TSDUProgressDialog.IncPosition();
+procedure TdlgProgress.IncPosition();
 begin
   iSetPosition(pgbOverall.Position + 1);
 
 end;
 
 
-procedure TSDUProgressDialog.i64SetMax(max: Int64);
+procedure TdlgProgress.i64SetMax(max: Int64);
 begin
   i64MaxValue := max;
   UpdateI64ProgressBar();
 
 end;
 
-procedure TSDUProgressDialog.i64SetMin(min: Int64);
+procedure TdlgProgress.i64SetMin(min: Int64);
 begin
   i64MinValue := min;
   UpdateI64ProgressBar();
 
 end;
 
-procedure TSDUProgressDialog.i64SetPosition(position: Int64);
+procedure TdlgProgress.i64SetPosition(position: Int64);
 begin
   i64PositionValue := position;
   UpdateI64ProgressBar();
 
 end;
 
-procedure TSDUProgressDialog.i64SetInversePosition(position: Int64);
+procedure TdlgProgress.i64SetInversePosition(position: Int64);
 begin
   i64PositionValue := i64MaxValue - position;
   UpdateI64ProgressBar();
 
 end;
 
-procedure TSDUProgressDialog.i64IncPosition();
+procedure TdlgProgress.i64IncPosition();
 begin
   i64PositionValue := i64PositionValue + 1;
   UpdateI64ProgressBar();
@@ -607,7 +608,7 @@ begin
 end;
 
 
-procedure TSDUProgressDialog.pbCancelClick(Sender: TObject);
+procedure TdlgProgress.pbCancelClick(Sender: TObject);
 begin
   Cancel           := True;
   pbCancel.Enabled := False;
@@ -621,7 +622,7 @@ begin
 
 end;
 
-procedure TSDUProgressDialog.FormCreate(Sender: TObject);
+procedure TdlgProgress.FormCreate(Sender: TObject);
 begin
   pbCancel.Enabled := True;
   Cancel           := False;
@@ -647,7 +648,7 @@ begin
 
 end;
 
-procedure TSDUProgressDialog.SetShowStatusText(showStatusText: Boolean);
+procedure TdlgProgress.SetShowStatusText(showStatusText: Boolean);
 begin
   if (fShowStatusText <> showStatusText) then begin
     if showStatusText then begin
@@ -662,24 +663,24 @@ begin
   fShowStatusText := showStatusText;
 end;
 
-procedure TSDUProgressDialog.SetStatusText(statusText: String);
+procedure TdlgProgress.SetStatusText(statusText: String);
 begin
   lblStatus.Caption := statusText;
 
 end;
 
-function TSDUProgressDialog.GetStatusText(): String;
+function TdlgProgress.GetStatusText(): String;
 begin
   Result := lblStatus.Caption;
 
 end;
 
-procedure TSDUProgressDialog.FormShow(Sender: TObject);
+procedure TdlgProgress.FormShow(Sender: TObject);
 begin
   fStartTime := Now;
 end;
 
-procedure TSDUProgressDialog.SetShowTimeRemaining(Value: Boolean);
+procedure TdlgProgress.SetShowTimeRemaining(Value: Boolean);
 begin
   fShowTimeRemaining := Value;
 
@@ -687,33 +688,33 @@ begin
   lblEstTimeRemainText.Visible := fShowTimeRemaining;
 end;
 
-function TSDUProgressDialog.GetIndeterminate(): Boolean;
+function TdlgProgress.GetIndeterminate(): Boolean;
 begin
   Result := pgbIndeterminate.Visible;
 end;
 
-procedure TSDUProgressDialog.SetIndeterminate(newValue: Boolean);
+procedure TdlgProgress.SetIndeterminate(newValue: Boolean);
 begin
   pgbIndeterminate.Visible := newValue;
   pgbOverall.Visible       := not (pgbIndeterminate.Visible);
 end;
 
-function TSDUProgressDialog.GetIndeterminateRunning(): Boolean;
+function TdlgProgress.GetIndeterminateRunning(): Boolean;
 begin
   Result := pgbIndeterminate.Marquee;
 end;
 
-procedure TSDUProgressDialog.SetIndeterminateRunning(newValue: Boolean);
+procedure TdlgProgress.SetIndeterminateRunning(newValue: Boolean);
 begin
   pgbIndeterminate.Marquee := newValue;
 end;
 
-function TSDUProgressDialog.GetIndeterminateUpdate(): Integer;
+function TdlgProgress.GetIndeterminateUpdate(): Integer;
 begin
   Result := pgbIndeterminate.MarqueeUpdate;
 end;
 
-procedure TSDUProgressDialog.SetIndeterminateUpdate(newValue: Integer);
+procedure TdlgProgress.SetIndeterminateUpdate(newValue: Integer);
 begin
   pgbIndeterminate.MarqueeUpdate := newValue;
 end;

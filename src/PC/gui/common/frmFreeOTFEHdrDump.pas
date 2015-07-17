@@ -1,4 +1,4 @@
-unit CommonfrmCDBDump_FreeOTFE;
+unit frmFreeOTFEHdrDump;
  // Description: 
  // By Sarah Dean
  // Email: sdean12@sdean12.org
@@ -16,10 +16,10 @@ uses
   Forms, Graphics, Messages, PasswordRichEdit, Spin64,
   StdCtrls, SysUtils, Windows,
   //librecrypt
-  Buttons, CommonfrmCDBDump_Base,
+  Buttons, frmHdrDump,
   OTFE_U, fmeVolumeSelect,
   OTFEFreeOTFEBase_U, lcDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
-  SDUGeneral, SDUSpin64Units;
+  SDUGeneral, SDUSpin64Units, fmePassword;
 
 type
   TfrmFreeOTFEHdrDump = class (TfrmHdrDump)
@@ -30,7 +30,7 @@ type
     seKeyIterations:   TSpinEdit64;
     lblKeyIterations:  TLabel;
     se64UnitOffset:    TSDUSpin64Unit_Storage;
-    preUserKey:        TPasswordRichEdit;
+    frmePassword1: TfrmePassword;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ControlChanged(Sender: TObject);
@@ -48,11 +48,11 @@ type
     function DumpLUKSDataToFile(): Boolean; OVERRIDE;
 
   PUBLIC
-    property UserKey: TSDUBytes Read GetUserKey;
-
-    property Offset: Int64 Read GetOffset;
-    property SaltLength: Integer Read GetSaltLength;
-    property KeyIterations: Integer Read GetKeyIterations;
+//    property UserKey: TSDUBytes Read GetUserKey;
+//
+//    property Offset: Int64 Read GetOffset;
+//    property SaltLength: Integer Read GetSaltLength;
+//    property KeyIterations: Integer Read GetKeyIterations;
   end;
 
 
@@ -75,7 +75,7 @@ const
 
 function TfrmFreeOTFEHdrDump.GetUserKey(): TSDUBytes;
 begin
-  Result := SDUStringToSDUBytes(preUserKey.Text);
+  Result := frmePassword1.GetKeyPhrase;
 end;
 
 function TfrmFreeOTFEHdrDump.GetOffset(): Int64;
@@ -97,14 +97,8 @@ procedure TfrmFreeOTFEHdrDump.FormCreate(Sender: TObject);
 begin
   inherited;
 
-  self.Caption := _('Dump Critical Data Block');
+  self.Caption := _('Dump FreeOTFE Header');
 
-  preUserKey.Plaintext   := True;
-  // FreeOTFE volumes CAN have newlines in the user's password
-  preUserKey.WantReturns := True;
-  preUserKey.WordWrap    := True;
-  preUserKey.Lines.Clear();
-  preUserKey.PasswordChar := '*';
 
   // se64UnitOffset set in OnShow event (otherwise units not shown correctly)
 
@@ -121,10 +115,10 @@ end;
 
 procedure TfrmFreeOTFEHdrDump.EnableDisableControls();
 begin
-  pbOK.Enabled := ((VolumeFilename <> '') and (feDumpFilename.Filename <> '') and
-    (feDumpFilename.Filename <> VolumeFilename) and
+  pbOK.Enabled := ((GetVolumeFilename <> '') and (feDumpFilename.Filename <> '') and
+    (feDumpFilename.Filename <> GetVolumeFilename) and
     // Don't overwrite the volume with the dump!!!
-    (KeyIterations > 0));
+    (GetKeyIterations > 0));
 end;
 
 procedure TfrmFreeOTFEHdrDump.FormShow(Sender: TObject);
@@ -144,9 +138,9 @@ end;
 
 function TfrmFreeOTFEHdrDump.DumpLUKSDataToFile(): Boolean;
 begin
-  Result := GetFreeOTFEBase().DumpCriticalDataToFile(VolumeFilename, Offset,
-    GetUserKey, SaltLength,  // In bits
-    KeyIterations, DumpFilename);
+  Result := GetFreeOTFEBase().DumpCriticalDataToFile(GetVolumeFilename, GetOffset,
+    GetUserKey, GetSaltLength,  // In bits
+    GetKeyIterations, GetDumpFilename);
 end;
 
 procedure TfrmFreeOTFEHdrDump.pbOKClick(Sender: TObject);
@@ -175,11 +169,11 @@ begin
 
     if (SDUMessageDlg(_(
       'A human readable copy of your critical data block has been written to:') +
-      SDUCRLF + SDUCRLF + DumpFilename + SDUCRLF + SDUCRLF +
+      SDUCRLF + SDUCRLF + GetDumpFilename + SDUCRLF + SDUCRLF +
       _('Do you wish to open this file in Windows Notepad?'), mtInformation,
       [mbYes, mbNo], 0) = mrYes) then begin
 
-      if not (SDUWinExecNoWait32('notepad',DumpFilename, SW_RESTORE)) then begin
+      if not (SDUWinExecNoWait32('notepad',GetDumpFilename, SW_RESTORE)) then begin
         SDUMessageDlg(_('Error running Notepad'), mtError, [], 0);
       end;
 

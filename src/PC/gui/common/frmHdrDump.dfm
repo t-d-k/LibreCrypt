@@ -1,8 +1,8 @@
-object frmCDBDump_Base: TfrmHdrDump
+object frmHdrDump: TfrmHdrDump
   Left = 493
   Top = 263
   BorderStyle = bsDialog
-  Caption = 'TITLE SET AUTOMATICALLY'
+  Caption = 'Dump LUKS Details'
   ClientHeight = 342
   ClientWidth = 483
   Color = clBtnFace
@@ -47,16 +47,9 @@ object frmCDBDump_Base: TfrmHdrDump
     object Label1: TLabel
       Left = 8
       Top = 24
-      Width = 73
+      Width = 83
       Height = 13
       Caption = '&Container/keyfile:'
-    end
-    object Label2: TLabel
-      Left = 8
-      Top = 52
-      Width = 49
-      Height = 13
-      Caption = '&Password:'
     end
     inline OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect
       Left = 116

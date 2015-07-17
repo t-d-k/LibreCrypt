@@ -16,15 +16,12 @@ uses
   DriverAPI,  // Required for DEVICE_FREEOTFE_ROOT
   OTFEFreeOTFE_DriverHashAPI;  // Required for MAX_HASH_LENGTH
 
-
-
-
 // ENCRYPTION DRIVER RELATED
 const
   MAX_CYPHER_NAME = 256;
 
-
 type
+(*
   // THIS DEPENDS ON DELPHI ALIGNING VALUES IN A RECORD ON WORD BOUNDRIES!!!
   //   - i.e. it's not a "packed record"
   PCYPHER_v1 = ^TCYPHER_v1;
@@ -37,7 +34,7 @@ type
     BlockSize: DWORD;  // In bits
     VersionID: DWORD;
   end;
-
+   *)
   // THIS DEPENDS ON DELPHI ALIGNING VALUES IN A RECORD ON WORD BOUNDRIES!!!
   //   - i.e. it's not a "packed record"
   PCYPHER_v3 = ^TCYPHER_v3;
@@ -62,7 +59,7 @@ type
     VersionID: DWORD;
     CypherCount: DWORD;
   end;
-
+  (*
   // THIS DEPENDS ON DELPHI ALIGNING VALUES IN A RECORD ON WORD BOUNDRIES!!!
   //   - i.e. it's not a "packed record"
   PDIOC_CYPHER_IDENTIFYSUPPORTED_v1 = ^TDIOC_CYPHER_IDENTIFYSUPPORTED_v1;
@@ -70,6 +67,7 @@ type
     BufCount: DWORD;
     Cyphers: array [0..0] of TCYPHER_v1;  // Variable length array of them
   end;
+  *)
   // THIS DEPENDS ON DELPHI ALIGNING VALUES IN A RECORD ON WORD BOUNDRIES!!!
   //   - i.e. it's not a "packed record"
   PDIOC_CYPHER_IDENTIFYSUPPORTED_v3 = ^TDIOC_CYPHER_IDENTIFYSUPPORTED_v3;

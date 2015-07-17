@@ -15,7 +15,7 @@ uses
   StdCtrls, ComCtrls, ExtCtrls, SDUForms;
 
 type
-  TFileList_F = class(TSDUForm)
+  TfrmFileList = class(TSDUForm)
     pbOK: TButton;
     lblTitle: TLabel;
     pnlPlaceholder: TPanel;
@@ -29,7 +29,7 @@ type
   end;
 
 var
-  FileList_F: TFileList_F;
+  FileList_F: TfrmFileList;
 
 implementation
 
@@ -38,18 +38,16 @@ implementation
 uses SDUGeneral;
 
 
-procedure TFileList_F.FormShow(Sender: TObject);
+procedure TfrmFileList.FormShow(Sender: TObject);
 var
   i: integer;
 begin
-  pnlPlaceholder.BevelOuter := bvNone;
+//  pnlPlaceholder.BevelOuter := bvNone;
   lbFiles.align := alClient;
   reReport.align := alClient;
 
   for i:=0 to (lbFiles.items.count-1) do
-    begin
     lbFiles.items[i] := SDUConvertSFNToLFN(lbFiles.items[i]);
-    end;
 
 end;
 

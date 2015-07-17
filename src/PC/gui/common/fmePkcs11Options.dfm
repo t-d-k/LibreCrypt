@@ -1,4 +1,4 @@
-inherited fmeOptions_PKCS11: TfmeOptions_PKCS11
+inherited fmePkcs11Options: TfmePkcs11Options
   Width = 492
   Height = 289
   ExplicitWidth = 492
@@ -87,6 +87,12 @@ inherited fmeOptions_PKCS11: TfmeOptions_PKCS11
         DesignSize = (
           310
           21)
+        inherited edFilename: TEdit
+          Left = -3
+          Top = 1
+          ExplicitLeft = -3
+          ExplicitTop = 1
+        end
       end
     end
     object feLibFilename: TSDUFilenameEdit

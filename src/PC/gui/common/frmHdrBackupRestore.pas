@@ -1,12 +1,11 @@
-unit CommonfrmCDBBackupRestore;
+unit frmHdrBackupRestore;
  // Description:
  // By Sarah Dean
  // Email: sdean12@sdean12.org
  // WWW:   http://www.FreeOTFE.org/
  //
- // -----------------------------------------------------------------------------
- //
-
+{backs up and restores hdr for fotfe and linux vols}
+                                                       
 
 interface
 
@@ -22,7 +21,7 @@ uses
 type
   TCDBOperationType = (opBackup, opRestore);
 
-  TfrmCDBBackupRestore = class (TSDUForm)
+  TfrmHdrBackupRestore = class (TSDUForm)
     pbCancel:       TButton;
     pbOK:           TButton;
     gbDest:         TGroupBox;
@@ -46,7 +45,6 @@ type
     procedure SetDestFilename(const Value: String);
   protected
     FOpType:       TCDBOperationType;
-    //    FOTFEFreeOTFE: TOTFEFreeOTFEBase;
     fsilent:       Boolean;
     fsilentResult: TModalResult;
 
@@ -63,7 +61,6 @@ type
     procedure EnableDisableControls();
 
   public
-    //    OTFEFreeOTFE: TOTFEFreeOTFEBase;
 
     property OpType: TCDBOperationType Read FOpType Write SetOpType;
     property silent: Boolean Read fsilent Write fsilent;
@@ -97,7 +94,7 @@ const
 resourcestring
   USE_NOT_IN_USE = 'Please ensure that the container is not open, or otherwise in use';
 
-procedure TfrmCDBBackupRestore.FormShow(Sender: TObject);
+procedure TfrmHdrBackupRestore.FormShow(Sender: TObject);
 begin
   if not fsilent then begin
     SelectSrcFile.Filename  := '';
@@ -154,7 +151,7 @@ end;
 
 
 
-procedure TfrmCDBBackupRestore.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TfrmHdrBackupRestore.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   inherited;
   // Posting WM_CLOSE causes Delphi to reset ModalResult to mrCancel.
@@ -164,7 +161,7 @@ begin
   end;
 end;
 
-procedure TfrmCDBBackupRestore.FormCreate(Sender: TObject);
+procedure TfrmHdrBackupRestore.FormCreate(Sender: TObject);
 begin
   SelectSrcFile.SelectFor  := fndOpen;
   SelectDestFile.SelectFor := fndSave;
@@ -179,7 +176,7 @@ end;
 
  // Sanity check a BACKUP operation
  // Returns TRUE if all values entered make sense, otherwise FALSE
-function TfrmCDBBackupRestore.SanityCheckBackup(): Boolean;
+function TfrmHdrBackupRestore.SanityCheckBackup(): Boolean;
 begin
   Result := True;
 
@@ -207,7 +204,7 @@ end;
 
  // Sanity check a RESTORE operation
  // Returns TRUE if all values entered make sense, otherwise FALSE
-function TfrmCDBBackupRestore.SanityCheckRestore(): Boolean;
+function TfrmHdrBackupRestore.SanityCheckRestore(): Boolean;
 var
   confirm: DWORD;
   srcSize: ULONGLONG;
@@ -241,11 +238,11 @@ begin
       if fsilent then
         confirm := mrYes
       else
-        confirm := SDUMessageDlg(SDUParamSubstitute(_(
+        confirm := SDUMessageDlg(Format(_(
           'Please confirm: Do you wish to restore the critial data block from backup file:' +
-          SDUCRLF + SDUCRLF + '%1' + SDUCRLF + SDUCRLF + 'Into the container:' +
-          SDUCRLF + SDUCRLF + '%2' + SDUCRLF + SDUCRLF +
-          'Starting from offset %3 in the container?'), [GetSrcFilename,
+          SDUCRLF + SDUCRLF + '%s' + SDUCRLF + SDUCRLF + 'Into the container:' +
+          SDUCRLF + SDUCRLF + '%s' + SDUCRLF + SDUCRLF +
+          'Starting from offset %d in the container?'), [GetSrcFilename,
           GetDestFilename, GetDestOffset]), mtConfirmation, [mbYes, mbNo], 0);
 
       if (confirm = mrYes) then begin
@@ -259,7 +256,7 @@ begin
 end;
 
 
-procedure TfrmCDBBackupRestore.pbOKClick(Sender: TObject);
+procedure TfrmHdrBackupRestore.pbOKClick(Sender: TObject);
 var
   allOK: Boolean;
 begin
@@ -307,39 +304,39 @@ begin
 
 end;
 
-function TfrmCDBBackupRestore.GetSrcFilename(): String;
+function TfrmHdrBackupRestore.GetSrcFilename(): String;
 begin
   Result := SelectSrcFile.Filename;
 end;
 
-procedure TfrmCDBBackupRestore.SetSrcFilename(const Value: String);
+procedure TfrmHdrBackupRestore.SetSrcFilename(const Value: String);
 begin
   SelectSrcFile.Filename := Value;
 end;
 
 
-function TfrmCDBBackupRestore.GetSrcOffset(): Int64;
+function TfrmHdrBackupRestore.GetSrcOffset(): Int64;
 begin
   Result := se64UnitOffsetSrc.Value;
 end;
 
-function TfrmCDBBackupRestore.GetDestFilename(): String;
+function TfrmHdrBackupRestore.GetDestFilename(): String;
 begin
   Result := SelectDestFile.Filename;
 end;
 
-procedure TfrmCDBBackupRestore.SetDestFilename(const Value: String);
+procedure TfrmHdrBackupRestore.SetDestFilename(const Value: String);
 begin
   SelectDestFile.Filename := Value;
 end;
 
-function TfrmCDBBackupRestore.GetDestOffset(): Int64;
+function TfrmHdrBackupRestore.GetDestOffset(): Int64;
 begin
   Result := se64UnitOffsetDest.Value;
 end;
 
 
-procedure TfrmCDBBackupRestore.EnableDisableControls();
+procedure TfrmHdrBackupRestore.EnableDisableControls();
 begin
   // Src and dest must be specified, and different
   // Offsets must be 0 or +ve
@@ -352,7 +349,7 @@ end;
 
 
 
-procedure TfrmCDBBackupRestore.SetOpType(dType: TCDBOperationType);
+procedure TfrmHdrBackupRestore.SetOpType(dType: TCDBOperationType);
 begin
   FOpType := dType;
 
@@ -375,7 +372,7 @@ end;
 
 
 
-procedure TfrmCDBBackupRestore.ControlChange(Sender: TObject);
+procedure TfrmHdrBackupRestore.ControlChange(Sender: TObject);
 begin
   EnableDisableControls();
 

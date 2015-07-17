@@ -14,7 +14,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs;
 
 type
-  TKeyboardDialog = class(TComponent)
+  TKeyboardDialog = class(TObject)
   private
     { Private declarations }
   protected
@@ -33,10 +33,10 @@ implementation
 
 uses KeyboardEntryDlg_U;
 
-procedure Register;
-begin
-  RegisterComponents('SDeanSecurity', [TKeyboardDialog]);
-end;
+//procedure Register;
+//begin
+//  RegisterComponents('SDeanSecurity', [TKeyboardDialog]);
+//end;
 
 function TKeyboardDialog.Execute(): boolean;
 var
@@ -46,8 +46,7 @@ begin
 
   entryDlg:= TKeyboardEntryDlg.create(nil);
   try
-    if entryDlg.Showmodal()=mrOK then
-      begin
+    if entryDlg.Showmodal()=mrOK then       begin
       Password := entryDlg.Password;
       entryDlg.BlankPassword();
       Result := TRUE;
