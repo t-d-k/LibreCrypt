@@ -169,7 +169,7 @@ begin
       end
     else
       begin
-      SDUMessageDlg(SDUParamSubstitute(_('Key "%1" created'), [edLabel.text]), mtInformation);
+      SDUMessageDlg(Format(_('Key "%s" created'), [edLabel.text]), mtInformation);
       end;
     end;
 

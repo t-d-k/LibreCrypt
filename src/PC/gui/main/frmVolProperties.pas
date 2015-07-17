@@ -152,7 +152,7 @@ begin
     edHiddenOffset.Text := IntToStr(GetHiddenOffset());
   end else begin
     SDUMessageDlg(
-      SDUParamSubstitute(_('Unable to get drive properties for drive %1:'), [fDriveLetter]),
+      Format(_('Unable to get drive properties for drive %s:'), [fDriveLetter]),
       mtError
       );
   end;

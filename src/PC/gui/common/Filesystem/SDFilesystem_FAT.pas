@@ -365,7 +365,7 @@ type
 
     function FilesystemTitle(): String; override;
 
-    function Format(): Boolean; override;
+    function FormatFS(): Boolean; override;
     function _Format(fmtType: TFATType): Boolean;
 
     function CheckFilesystem(): Boolean; override;
@@ -2273,7 +2273,7 @@ begin
     Result := _LoadContentsFromDisk(startClusterID, items);
 
     if not (Result) then begin
-      LastErrorSet(SDUParamSubstitute(_('Unable to read contents of: %1'), [path]));
+      LastErrorSet(Format(_('Unable to read contents of: %s'), [path]));
     end;
   end;
 
@@ -2515,8 +2515,8 @@ begin
       // If extraction successful, set file attributes and date/timestamps
       if not (Result) then begin
         LastErrorSet(
-          SDUParamSubstitute(_(
-          'Unable to extract cluster chain data starting from cluster: %1'), [item.FirstCluster])
+          Format(_(
+          'Unable to extract cluster chain data starting from cluster: %d'), [item.FirstCluster])
           );
       end else begin
         // Set file attributes...
@@ -2542,8 +2542,8 @@ begin
           fileHandle := FileOpen(extractToFilename, fmOpenWrite);
           if (fileHandle = 0) then begin
             LastErrorSet(
-              SDUParamSubstitute(_(
-              'Unable to open extracted file to set timestamps: %1'),
+              Format(_(
+              'Unable to open extracted file to set timestamps: %s'),
               [extractToFilename])
               );
           end else begin
@@ -2642,8 +2642,8 @@ begin
             while (j < firstFAT.Size) do begin
               Result := (firstFAT.ReadByte = checkFAT.ReadByte);
               if not (Result) then begin
-                LastErrorSet(SDUParamSubstitute(
-                  _('FAT copy #%1 doesn''t match FAT copy #%2'), [1, i]));
+                LastErrorSet(Format(
+                  _('FAT copy #1 doesn''t match FAT copy #%d'), [i]));
                 break;
               end;
 
@@ -2714,8 +2714,7 @@ begin
     maxDataSize := (data.Size - data.Position);
     Assert(
       (maxDataSize >= maxSize),
-      'Insufficient data supplied for operation (need: ' + SDUIntToStr(
-      maxSize) + '; got: ' + SDUIntToStr(maxDataSize) + ')'
+      'Insufficient data supplied for operation (need: ' + IntToStr(maxSize) + '; got: ' + IntToStr(maxDataSize) + ')'
       );
   end;
 end;
@@ -4058,7 +4057,7 @@ begin
 
 end;
 
-function TSDFilesystem_FAT.Format(): Boolean;
+function TSDFilesystem_FAT.FormatFS(): Boolean;
 var
   useFATType: TFATType;
   i:          Integer;

@@ -23,7 +23,7 @@ object SDUAboutDialog: TSDUAboutDialog
   object lblBeta: TLabel
     Left = 23
     Top = -16
-    Width = 257
+    Width = 250
     Height = 111
     Caption = 'BETA'
     Font.Charset = ANSI_CHARSET
@@ -135,11 +135,17 @@ object SDUAboutDialog: TSDUAboutDialog
     Width = 261
     Height = 59
     Anchors = [akLeft, akTop, akRight, akBottom]
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
     Lines.Strings = (
       'BLURB GOES HERE'
       ''
       'NOTE: ENSURE BLURB CAN FIT IN THIS'
       'CONTROL WITHOUT THE VERTICAL SCROLLBAR')
+    ParentFont = False
     TabOrder = 3
   end
 end

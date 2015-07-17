@@ -217,8 +217,8 @@ begin
     else
       cont := SDUConfirmOK(format('Format drive %s?', [currDrive]));
     if cont then
-      formatRet := UACRun('cmd', cmd, False, True, errMsg); //no need to pass in allowuac - no risk of loop
-    //    formatRet := SHFormatDrive(frm.Handle, driveNum, SHFMT_ID_DEFAULT, SHFMT_OPT_FULL);
+      formatRet := UACRun('cmd', cmd, False, True, errMsg); //causes hang?
+//        formatRet := SHFormatDrive(Application.handle, Ord(currDrive) - Ord('A'), SHFMT_ID_DEFAULT, SHFMT_OPT_FULL);
 
     if not formatRet then begin
       Result := False;

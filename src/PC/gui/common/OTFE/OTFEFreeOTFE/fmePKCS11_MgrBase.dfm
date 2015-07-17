@@ -1,4 +1,4 @@
-object fmePKCS11_MgrBase: TfmePKCS11Mgr
+object fmePKCS11Mgr: TfmePKCS11Mgr
   Left = 0
   Top = 0
   Width = 320

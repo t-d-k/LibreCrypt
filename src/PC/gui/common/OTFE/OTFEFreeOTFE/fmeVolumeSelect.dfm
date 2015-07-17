@@ -1,4 +1,4 @@
-inherited OTFEFreeOTFEVolumeSelect: TfmeVolumeSelect
+inherited fmeVolumeSelect: TfmeVolumeSelect
   ParentFont = False
   DesignSize = (
     320

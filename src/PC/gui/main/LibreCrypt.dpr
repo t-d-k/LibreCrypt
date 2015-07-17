@@ -17,32 +17,31 @@ uses
   frmMain in 'frmMain.pas' {frmMain},
   frmVolProperties in 'frmVolProperties.pas' {frmFreeOTFEVolProperties},
   frmSelectOverwriteMethod in 'frmSelectOverwriteMethod.pas' {frmFreeOTFESelectOverwriteMethod},
-  CommonfrmCDBBackupRestore in '..\common\CommonfrmCDBBackupRestore.pas' {frmCDBBackupRestore},
+  frmHdrBackupRestore in '..\common\frmHdrBackupRestore.pas' {frmCDBBackupRestore},
   CommonSettings in '..\common\CommonSettings.pas',
   frmCommonOptions in '..\common\frmCommonOptions.pas' {frmOptions},
-  CommonfrmGridReport in '..\common\CommonfrmGridReport.pas' {frmGridReport},
-  CommonfrmGridReport_Hash in '..\common\CommonfrmGridReport_Hash.pas' {frmGridReport_Hash},
-  CommonfrmGridReport_Cypher in '..\common\CommonfrmGridReport_Cypher.pas' {frmGridReport_Cypher},
+  frmGridReport in '..\common\frmGridReport.pas' {frmGridReport},
+  frmHashReport in '..\common\frmHashReport.pas' {frmGridReport_Hash},
+  frmCypherReport in '..\common\frmCypherReport.pas' {frmCypherReport},
   fmeBaseOptions in '..\common\fmeBaseOptions.pas' {fmeOptions_Base: TFrame},
   fmeSystemTrayOptions in 'fmeSystemTrayOptions.pas' {fmeOptions_SystemTray: TFrame},
   fmeHotKeysOptions in 'fmeHotKeysOptions.pas' {fmeOptions_Hotkeys: TFrame},
-  CommonfmeOptions_PKCS11 in '..\common\CommonfmeOptions_PKCS11.pas' {fmeOptions_PKCS11: TFrame},
   fmeGeneralOptions in 'fmeGeneralOptions.pas' {fmeOptions_FreeOTFEGeneral: TFrame},
-  CommonfrmInstallOnUSBDrive in '..\common\CommonfrmInstallOnUSBDrive.pas' {frmInstallOnUSBDrive},
+  frmInstallOnUSBDrive in '..\common\frmInstallOnUSBDrive.pas' {frmInstallOnUSBDrive},
   frmAbout in '..\common\frmAbout.pas' {frmAbout},
   MainSettings in 'MainSettings.pas',
   frmOptions in 'frmOptions.pas' {frmOptions_FreeOTFE},
   fmeLcOptions in 'fmeLcOptions.pas' {fmeFreeOTFEOptions_Base: TFrame},
   fmeAdvancedOptions in 'fmeAdvancedOptions.pas' {fmeOptions_FreeOTFEAdvanced: TFrame},
   CommonConsts in '..\common\CommonConsts.pas',
-  CommonfrmCDBDump_LUKS in '..\common\CommonfrmCDBDump_LUKS.pas' {frmCDBDump_LUKS},
-  CommonfrmCDBDump_Base in '..\common\CommonfrmCDBDump_Base.pas' {frmCDBDump_Base},
-  CommonfrmCDBDump_FreeOTFE in '..\common\CommonfrmCDBDump_FreeOTFE.pas' {frmCDBDump_FreeOTFE},
+  frmLUKSHdrDump in '..\common\frmLUKSHdrDump.pas' {frmCDBDump_LUKS},
+  frmHdrDump in '..\common\frmHdrDump.pas' {frmCDBDump_Base},
+  frmFreeOTFEHdrDump in '..\common\frmFreeOTFEHdrDump.pas' {frmCDBDump_FreeOTFE},
   SDUForms in '..\common\SDUForms.pas' {SDUForm},
   SDUFrames in '..\common\SDUFrames.pas' {SDUFrame: TFrame},
   SDPartitionImage in '..\common\Filesystem\SDPartitionImage.pas',
   SDPartitionImage_File in '..\common\Filesystem\SDPartitionImage_File.pas',
-  SDUProgressDlg in '..\common\SDeanUtils\SDUProgressDlg.pas' {SDUProgressDialog},
+  dlgProgress in '..\common\SDeanUtils\dlgProgress.pas' {SDUProgressDialog},
   SDUDiskPropertiesDlg in '..\common\SDeanUtils\SDUDiskPropertiesDlg.pas' {SDUDiskPropertiesDialog},
   SDUFilenameEdit_U in '..\common\SDeanUtils\SDUFilenameEdit_U.pas' {SDUFilenameEdit: TFrame},
   SDUPartitionPropertiesDlg in '..\common\SDeanUtils\SDUPartitionPropertiesDlg.pas' {SDUPartitionPropertiesDialog},
@@ -106,7 +105,17 @@ uses
   fmeSDUBlocks in '..\common\SDeanUtils\fmeSDUBlocks.pas',
   cryptlib in '..\common\OTFE\OTFEFreeOTFE\cryptlib.pas',
   SDUSysUtils in '..\common\SDeanUtils\SDUSysUtils.pas',
-  OTFEConsts_U in '..\common\OTFE\OTFE\OTFEConsts_U.pas';
+  OTFEConsts_U in '..\common\OTFE\OTFE\OTFEConsts_U.pas',
+  OTFEFreeOTFEDLL_U in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_U.pas',
+  lcDebugLog in '..\common\lcDebugLog.pas',
+  Shredder in '..\common\SDeanSecurity\Shredder\Shredder.pas',
+  FileList_U in '..\common\SDeanSecurity\Shredder\FileList_U.pas' {FileList_F},
+  AFSplitMerge in '..\common\OTFE\AFSplitMerge.pas',
+  fmePassword in '..\common\fmePassword.pas' {frmePassword: TFrame},
+  KeyboardEntryDlg_U in '..\common\SDeanSecurity\KeyboardDialog\KeyboardEntryDlg_U.pas' {KeyboardEntryDlg},
+  LUKSTools in '..\common\LUKSTools.pas',
+  frmSelectHashCypher in '..\common\OTFE\OTFEFreeOTFE\frmSelectHashCypher.pas' {frmSelectHashCypher},
+  frmCreateLUKSVolumeWizard in 'frmCreateLUKSVolumeWizard.pas' {frmCreateLUKSVolumeWizard};
 
 {$R *.RES}
 
@@ -166,9 +175,9 @@ begin
 
       Application.ShowMainForm := False;
       // NOTE: The main form's Visible property is set to FALSE anyway - it *HAS*
-      // to be, otherwise it'll be displayed; dispite the following two lines
+      // to be, otherwise it'll be displayed; despite the following two lines
       Application.CreateForm(TfrmMain, GfrmMain);
-  GfrmMain.Visible         := False;
+      GfrmMain.Visible         := False;
       Application.ShowMainForm := False;
 
       CommandLineOnly := GfrmMain.HandleCommandLineOpts(cmdExitCode);

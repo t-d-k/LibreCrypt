@@ -15,13 +15,13 @@ uses
   Classes, ComCtrls, StdCtrls, SysUtils, Windows,Graphics, Messages,Controls, Dialogs,
   fmeAutorunOptions,
   fmeBaseOptions,
-  CommonfmeOptions_PKCS11,
+
   frmCommonOptions, CommonSettings,              
   ExtCtrls, Forms, fmeAdvancedOptions, fmeLcOptions,
   fmeGeneralOptions,
   fmeHotKeysOptions,
   fmeSystemTrayOptions,  OTFEFreeOTFE_U, SDUForms,
-  SDUStdCtrls
+  SDUStdCtrls, SDUFrames, SDUFilenameEdit_U, fmeVolumeSelect
   // librecrypt
   ;
 

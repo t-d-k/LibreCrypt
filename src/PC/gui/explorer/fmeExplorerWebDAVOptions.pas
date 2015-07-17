@@ -84,9 +84,9 @@ begin
   if SDUOSVistaOrLater() then begin
     SDUMessageDlg(
       RS_DRIVEMAPPING_NOT_SUPPORTED_UNDER_VISTA_AND_7 +
-      SDUCRLF + SDUParamSubstitute(
+      SDUCRLF + Format(
       _(
-      'Mounted volumes will only be mapped to drive letters when %1 is run under Windows 2000/Windows XP'),
+      'Mounted volumes will only be mapped to drive letters when %s is run under Windows 2000/Windows XP'),
       [Application.Title]),
       mtInformation
       );

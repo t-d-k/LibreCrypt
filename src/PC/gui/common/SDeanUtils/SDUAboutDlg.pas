@@ -4,8 +4,11 @@ unit SDUAboutDlg;
 // Email: sdean12@sdean12.org
 // WWW:   http://www.FreeOTFE.org/
 //
-// -----------------------------------------------------------------------------
-//
+{
+about dialog
+no particular advantage to using over a per app one
+NOT USED in LC
+}
 
 
 interface
@@ -58,7 +61,7 @@ uses
 
 procedure TSDUAboutDialog.FormShow(Sender: TObject);
 begin
-  self.Caption := SDUParamSubstitute(_('About %1'), [Title]);
+  self.Caption := Format(_('About %s'), [Title]);
   lblTitle.caption := Title;
 
   imIcon.picture.graphic := Application.Icon;
@@ -79,7 +82,7 @@ begin
     lblAuthor.Top := lblVersion.Top;
     end;
 
-  lblAuthor.Caption := SDUParamSubstitute(_('by %1'), [Author]);
+  lblAuthor.Caption := Format(_('by %s'), [Author]);
 
   reBlub.Lines.Text := Description;
 

@@ -129,7 +129,7 @@ implementation
 uses
   Controls,
   Forms, SDUGeneral,
-  SDUProgressDlg;
+  dlgProgress;
 
 type
   TThreadHTTPGet = class (tthread)
@@ -504,12 +504,12 @@ function SDUGetURLProgress_WithUserAgent(
   out ReturnedBody: String;
   UserAgent: WideString): TTimeoutGet;
 var
-  ProgressDlg: TSDUProgressDialog;
+  ProgressDlg: TdlgProgress;
   progResult:  Word;
   thrHTTPGet:  TThreadHTTPGet;
 begin
   Result      := tgFailure;
-  ProgressDlg := TSDUProgressDialog.Create(nil);
+  ProgressDlg := TdlgProgress.Create(nil);
   try
 
 

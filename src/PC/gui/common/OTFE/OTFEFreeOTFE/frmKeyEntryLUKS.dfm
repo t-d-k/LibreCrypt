@@ -13,6 +13,7 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
@@ -146,51 +147,56 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
     Height = 201
     Caption = 'Encryption'
     TabOrder = 0
-    object Label1: TLabel
+    inline frmeLUKSKeyOrKeyfileEntry: TfrmeLUKSKeyOrKeyfileEntry
       Left = 12
       Top = 24
-      Width = 21
-      Height = 13
-      Caption = '&Key:'
-    end
-    object ckBaseIVCypherOnHashLength: TSDUCheckBox
-      Left = 12
-      Top = 168
-      Width = 265
-      Height = 17
-      Caption = '&Base IV cypher on hash length (where applicable)'
-      TabOrder = 1
-      AutoSize = True
-    end
-    inline frmeLUKSKeyOrKeyfileEntry: TfrmeLUKSKeyOrKeyfileEntry
-      Left = 56
-      Top = 20
-      Width = 464
-      Height = 138
+      Width = 514
+      Height = 161
       TabOrder = 0
-      ExplicitLeft = 56
-      ExplicitTop = 20
+      ExplicitLeft = 12
+      ExplicitTop = 24
+      ExplicitWidth = 514
+      ExplicitHeight = 161
       inherited lblTreatNewlineAsEOF_1: TLabel
-        Left = 128
-        Top = 115
-        Width = 25
-        ExplicitLeft = 128
+        Top = 104
         ExplicitTop = 115
-        ExplicitWidth = 25
       end
-      inherited lblTreatNewlineAsEOF_2: TLabel
-        Left = 128
-        Top = 129
-        Width = 35
-        ExplicitLeft = 128
-        ExplicitTop = 129
-        ExplicitWidth = 35
+      inherited preUserKey: TOTFEFreeOTFE_PasswordRichEdit
+        Width = 377
+        Height = 50
+        ExplicitWidth = 377
+        ExplicitHeight = 50
+      end
+      inherited rbKeyFromUser: TRadioButton
+        Left = 3
+        Top = 3
+        Anchors = [akTop]
+        ExplicitLeft = 3
+        ExplicitTop = 3
+      end
+      inherited rbKeyFromKeyfile: TRadioButton
+        Top = 61
+        ExplicitTop = 61
+      end
+      inherited feKeyfile: TSDUFilenameEdit
+        Top = 57
+        Width = 369
+        ExplicitTop = 57
+        ExplicitWidth = 369
+      end
+      inherited ckKeyfileContainsASCII: TSDUCheckBox
+        Top = 85
+        ExplicitTop = 85
       end
       inherited cbNewlineType: TComboBox
-        Left = 181
-        Top = 115
-        ExplicitLeft = 181
-        ExplicitTop = 115
+        Left = 261
+        Top = 103
+        ExplicitLeft = 261
+        ExplicitTop = 103
+      end
+      inherited ckBaseIVCypherOnHashLength: TCheckBox
+        Top = 132
+        ExplicitTop = 132
       end
     end
   end

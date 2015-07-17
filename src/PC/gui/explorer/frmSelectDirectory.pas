@@ -87,7 +87,7 @@ begin
   dlgInstructions := _('Please select folder:');
   dlgOKButton     := _('OK');
 
-  itemText := SDUParamSubstitute(_('these %1 items'), [IntToStr(Items.Count)]);
+  itemText := Format(_('these %d items'), [Items.Count]);
   if (Items.Count = 1) then begin
     itemText := '''' + ExtractFilename(Items[0]) + '''';
   end;
@@ -96,8 +96,8 @@ begin
     sdtMove:
     begin
       dlgCaption      := _('Move Items');
-      dlgInstructions := SDUParamSubstitute(
-        _('Select the place where you want to move %1. Then click the Move button'),
+      dlgInstructions := Format(
+        _('Select the place where you want to move %s. Then click the Move button'),
         [itemText]);
       dlgOKButton     := _('Move');
     end;
@@ -105,8 +105,8 @@ begin
     sdtCopy:
     begin
       dlgCaption      := _('Copy Items');
-      dlgInstructions := SDUParamSubstitute(
-        _('Select the place where you want to copy %1. Then click the Copy button'),
+      dlgInstructions := Format(
+        _('Select the place where you want to copy %s. Then click the Copy button'),
         [itemText]);
       dlgOKButton     := _('Copy');
     end;
@@ -114,8 +114,8 @@ begin
     sdtStore:
     begin
       dlgCaption      := _('Store Items');
-      dlgInstructions := SDUParamSubstitute(
-        _('Select the place where you want to store %1. Then click the Store button'),
+      dlgInstructions := Format(
+        _('Select the place where you want to store %s. Then click the Store button'),
         [itemText]);
       dlgOKButton     := _('Store');
     end;

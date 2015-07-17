@@ -64,7 +64,7 @@ begin
         edLocation.Caption := ExtractFilePath(fPathAndFilename);
       end;
       edSize.Caption :=
-        SDUParamSubstitute(_('%1 (%2 bytes)'),
+        Format(_('%s (%s bytes)'),
         [SDUFormatAsBytesUnits(item.Size, 2), SDUIntToStrThousands(
         item.Size)]);
 

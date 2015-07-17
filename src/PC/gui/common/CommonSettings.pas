@@ -68,7 +68,7 @@ type
 
 resourcestring
   SAVELOCATION_DO_NOT_SAVE  = '<Do not save settings>';
-  SAVELOCATION_EXE_DIR      = 'File in %1 directory';
+  SAVELOCATION_EXE_DIR      = 'File in %s directory';
   SAVELOCATION_USER_PROFILE = 'File in user profile';
   SAVELOCATION_REGISTRY     = 'Windows registry';
   SAVELOCATION_CUSTOMISED   = 'Customised location';

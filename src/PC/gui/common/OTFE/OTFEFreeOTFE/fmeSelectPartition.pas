@@ -112,14 +112,14 @@ const
 resourcestring
   RS_NO_PARTITIONS_FOUND = '<No partitions found>';
 
-  RS_CANT_GET_DISK_LAYOUT = '<Unable to get disk layout information for disk #%1>';
-  RS_ENTIRE_DISK_X        = '<Entire disk #%1>';
-  RS_CDROM_IN_X           = '<CDROM/DVD in %1>';
+  RS_CANT_GET_DISK_LAYOUT = '<Unable to get disk layout information for disk #%d>';
+  RS_ENTIRE_DISK_X        = '<Entire disk #%d>';
+  RS_CDROM_IN_X           = '<CDROM/DVD in %s>';
 
   RS_DBLCLK_PROMPT_PARTITION = 'Doubleclick partition to display properties';
   RS_DBLCLK_PROMPT_DISK      = 'Doubleclick to display disk properties';
 
-  RS_PARTITION = 'Partition #%1';
+  RS_PARTITION = 'Partition #%d';
 
   RS_PART_ERROR_NO_PARTITION_NO      =
     'Windows has not allocated this partition a partition number';
@@ -217,7 +217,7 @@ begin
   if GetFreeOTFEBase().HDDNumbersList(diskNo) then begin
     for i := low(diskNo) to high(diskNo) do begin
       deviceIndicator := HIWORD_DISK + DWORD(diskNo[i]);
-      TabControl1.Tabs.AddObject(SDUParamSubstitute(_('Disk #%1'), [diskNo[i]]),
+      TabControl1.Tabs.AddObject(Format(_('Disk #%s'), [diskNo[i]]),
         TObject(deviceIndicator));
     end;
   end;
@@ -310,7 +310,7 @@ begin
 
     // If synthetic layout, clear block captions
     if SDUDiskPartitionsPanel1.SyntheticDriveLayout then begin
-      blk.Caption    := SDUParamSubstitute(RS_PARTITION,
+      blk.Caption    := Format(RS_PARTITION,
         [SDUDiskPartitionsPanel1.PartitionInfo[i].PartitionNumber]);
       blk.SubCaption := '';
     end;
@@ -355,15 +355,15 @@ begin
     if (TabControl1.TabIndex >= 0) then begin
       // CD/DVD drive selected
       pnlNoPartitionDisplay.Caption :=
-        SDUParamSubstitute(RS_CDROM_IN_X, [TabControl1.Tabs[TabControl1.TabIndex]]);
+        Format(RS_CDROM_IN_X, [TabControl1.Tabs[TabControl1.TabIndex]]);
     end;
   end else begin
     if not (SDUDiskPartitionsPanel1.DriveLayoutInformationValid) then begin
       pnlNoPartitionDisplay.Caption :=
-        SDUParamSubstitute(RS_CANT_GET_DISK_LAYOUT, [SDUDiskPartitionsPanel1.DiskNumber]);
+        Format(RS_CANT_GET_DISK_LAYOUT, [SDUDiskPartitionsPanel1.DiskNumber]);
     end else begin
       pnlNoPartitionDisplay.Caption :=
-        SDUParamSubstitute(RS_ENTIRE_DISK_X, [SDUDiskPartitionsPanel1.DiskNumber]);
+        Format(RS_ENTIRE_DISK_X, [SDUDiskPartitionsPanel1.DiskNumber]);
     end;
   end;
 
@@ -648,11 +648,11 @@ end;
 procedure TfmeSelectPartition.actPropertiesExecute(Sender: TObject);
 var
   dlgPartition: TSDUPartitionPropertiesDialog;
-  dlgDisk:      TSDUDiskPropertiesDialog;
+  dlgDisk:      TfrmDiskProperties;
 begin
   if ckEntireDisk.Checked then begin
     if (SDUDiskPartitionsPanel1.DiskNumber >= 0) then begin
-      dlgDisk := TSDUDiskPropertiesDialog.Create(nil);
+      dlgDisk := TfrmDiskProperties.Create(nil);
       try
         dlgDisk.fDiskNumber := SDUDiskPartitionsPanel1.DiskNumber;
 

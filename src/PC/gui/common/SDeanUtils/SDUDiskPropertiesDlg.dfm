@@ -1,4 +1,4 @@
-object SDUDiskPropertiesDialog: TSDUDiskPropertiesDialog
+object SDUDiskPropertiesDialog: TfrmDiskProperties
   Left = 20
   Top = 387
   BorderStyle = bsDialog

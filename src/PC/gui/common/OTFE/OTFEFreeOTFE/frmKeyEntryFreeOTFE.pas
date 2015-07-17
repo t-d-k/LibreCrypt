@@ -7,6 +7,7 @@ unit frmKeyEntryFreeOTFE;
  // -----------------------------------------------------------------------------
  //
 
+   { TODO 1 -otdk -crefactor : shares many fields with frmWizardChangePasswordCreateKeyfile - extract to frames}
 
  // Panels layout on this form:
  //
@@ -39,25 +40,26 @@ unit frmKeyEntryFreeOTFE;
 interface
 
 uses
-  Classes, ComCtrls, Controls, Dialogs,
+//delphi
+   Classes, ComCtrls, Controls, Dialogs,
   ExtCtrls,
-  Forms, Graphics, Messages, OTFEFreeOTFE_PasswordRichEdit, PKCS11Lib,
+  Forms, Graphics, Messages,   PasswordRichEdit, StdCtrls, SysUtils, Windows,
+// sdu , lc libs
+   OTFEFreeOTFE_PasswordRichEdit, PKCS11Lib,
   OTFEFreeOTFE_U,
-  OTFEFreeOTFEBase_U,
-  PasswordRichEdit, pkcs11_library, pkcs11_session,
+  OTFEFreeOTFEBase_U, pkcs11_library, pkcs11_session,
   SDUDropFiles, SDUFilenameEdit_U, SDUForms, SDUFrames,
   SDUGeneral,
   SDUSpin64Units, Spin64,
-  StdCtrls, SysUtils, Windows;
+//lc
+  fmePassword;
 
 type
   TfrmKeyEntryFreeOTFE = class (TSDUForm)
     pnlBasic:       TPanel;
     GroupBox1:      TGroupBox;
-    Label1:         TLabel;
     Label6:         TLabel;
     lblDrive:       TLabel;
-    preUserKey:     TOTFEFreeOTFE_PasswordRichEdit;
     cbDrive:        TComboBox;
     ckMountReadonly: TCheckBox;
     pnlLower:       TPanel;
@@ -87,6 +89,7 @@ type
     se64UnitOffset: TSDUSpin64Unit_Storage;
     feKeyfile:      TSDUFilenameEdit;
     SDUDropFiles_Keyfile: TSDUDropFiles;
+    frmePassword1: TfrmePassword;
     procedure pbOKClick(Sender: TObject);
     procedure preUserkeyKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure pbCancelClick(Sender: TObject);
@@ -112,7 +115,7 @@ type
     fsilentResult: TModalResult;
     fsilent:        Boolean;
     fVolumeFile:   string;
-    fmountedDrives: String;
+    fmountedDrive: DriveLetterChar;
 
     procedure PopulateDrives();
     procedure PopulateMountAs();
@@ -152,9 +155,9 @@ procedure SetVolumeFile(Value: String);
 
     procedure DisplayAdvanced(displayAdvanced: Boolean);
 
-    property Silent: Boolean Read fSilent Write fSilent;
+    property silent: Boolean Read fsilent Write fsilent;
     property VolumeFile: String Write SetVolumeFile;
-    property MountedDrives: String Read fMountedDrives;
+    property mountedDrive: DriveLetterChar Read fmountedDrive;
   end;
 
 
@@ -164,6 +167,7 @@ implementation
 
 
 uses
+//delphi
   ComObj,  // Required for StringToGUID
            // Disable useless warnings about faReadOnly, etc and FileSetAttr(...) being
            // platform-specific
@@ -171,11 +175,13 @@ uses
 {$WARN SYMBOL_PLATFORM OFF}
   FileCtrl,  // Required for TDriveType
 {$WARN SYMBOL_PLATFORM ON}
+//sdu, lc libs
   OTFEConsts_U,
   DriverAPI,
   frmPKCS11Session,
   pkcs11_object, lcDialogs,
   SDUi18n,
+  // lc
   Shredder;
 
 resourcestring
@@ -329,7 +335,6 @@ begin
       );
   end;
 
-
   if (cbPKCS11CDB.items.Count > 0) then begin
     cbPKCS11CDB.items.InsertObject(0, RS_NOT_SELECTED, nil);
   end else begin
@@ -381,7 +386,6 @@ begin
 
   // Select the none available/selected item
   cbPKCS11SecretKey.ItemIndex := 0;
-
 end;
 
 
@@ -425,17 +429,17 @@ begin
       usedSlotID         := FPKCS11Session.SlotID;
     end;
 
-    fMountedDrives := '';
+    fMountedDrive := #0;
     { TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
     Result         := GetFreeOTFEBase.MountFreeOTFE(fVolumeFile,
-      SDUStringToSDUBytes(preUserkey.Text), useKeyfilename, usePKCS11CDB,
+      frmePassword1.GetKeyPhrase(), useKeyfilename, usePKCS11CDB,
       usedSlotID, FPKCS11Session, usePKCS11SecretKey, seKeyIterations.Value,
       GetDriveLetter(), ckMountReadonly.Checked, GetMountAs(), se64UnitOffset.Value,
       ckOffsetPointsToCDB.Checked, seSaltLength.Value, ckMountForAllUsers.Checked,
-      fMountedDrives);
+      fMountedDrive);
     if not (Result) then begin
       GetFreeOTFEBase.CountMountedResults(
-        fMountedDrives,
+        fMountedDrive,
         cntMountOK,
         cntMountFailed
         );
@@ -479,10 +483,10 @@ begin
       end else
       if (cntMountFailed > 0) then begin
         // At least one volume was mounted, but not all of them
-        errMsg := SDUPluralMsg(cntMountOK, SDUParamSubstitute(
-          _('%1 container was opened successfully, but %2 could not be opened'),
-          [cntMountOK, cntMountFailed]), SDUParamSubstitute(
-          _('%1 containers were opened successfully, but %2 could not be opened'),
+        errMsg := SDUPluralMsg(cntMountOK, Format(
+          _('%d container was opened successfully, but %d could not be opened'),
+          [cntMountOK, cntMountFailed]), Format(
+          _('%d containers were opened successfully, but %d could not be opened'),
           [cntMountOK, cntMountFailed]));
 
         SilencableMessageDlg(errMSg, mtWarning);
@@ -496,7 +500,7 @@ end;
 
 function TfrmKeyEntryFreeOTFE.IsVolumeStoredOnReadonlyMedia(): Boolean;
 var
-  i:                   Integer;
+//  i:                   Integer;
   currVol:             String;
   testDriveColonSlash: String;
 begin
@@ -505,14 +509,14 @@ begin
 //  for i := 0 to (fVolumeFiles.Count - 1) do begin
     currVol := fVolumeFile;
 
-    if not (GetFreeOTFEBase.IsPartition_UserModeName(currVol)) then begin
+    if not GetFreeOTFEBase.IsPartition_UserModeName(currVol) then begin
       if (length(currVol) > 2) then begin
         // Check for ":" as 2nd char in filename; i.e. it's a filename with
         // <drive letter>:<path>\<filename>
         if (currVol[2] = ':') then begin
           testDriveColonSlash := currVol[1] + ':\';
           if (TDriveType(GetDriveType(PChar(testDriveColonSlash))) = dtCDROM) then begin
-            // At least one of the volumes is stored on a CDROM (readonly media)
+            //  the volume is stored on a CDROM (readonly media)
             Result := True;
 //            break;
           end;
@@ -526,7 +530,7 @@ end;
 
 function TfrmKeyEntryFreeOTFE.IsVolumeMarkedAsReadonly(): Boolean;
 var
-  i:       Integer;
+//  i:       Integer;
   currVol: String;
 begin
   Result := False;
@@ -534,13 +538,13 @@ begin
 //  for i := 0 to (fVolumeFiles.Count - 1) do begin
     currVol := fVolumeFile;
 
-    if not (GetFreeOTFEBase.IsPartition_UserModeName(currVol)) then begin
+    if not GetFreeOTFEBase.IsPartition_UserModeName(currVol) then begin
       if (length(currVol) > 2) then begin
         // Check for ":" as 2nd char in filename; i.e. it's a filename with
         // <drive letter>:<path>\<filename>
         if (currVol[2] = ':') then begin
           if FileIsReadOnly(currVol) then begin
-            // At least one of the volumes is readonly
+            // the volume is readonly
             Result := True;
 //            break;
           end;
@@ -552,13 +556,12 @@ begin
 //  end;
 end;
 
-
 function TfrmKeyEntryFreeOTFE.CheckInput(): Boolean;
 begin
   Result := True;
 
   if (seSaltLength.Value mod 8 <> 0) then begin
-    SilencableMessageDlg(      _('Salt length (in bits) must be a multiple of 8'),      mtError      );
+    SilencableMessageDlg(_('Salt length (in bits) must be a multiple of 8'),      mtError      );
     Result := False;
   end;
 end;
@@ -570,14 +573,12 @@ begin
   end;
 end;
 
-
 procedure TfrmKeyEntryFreeOTFE.preUserkeyKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if (key = 27) then begin
     DoCancel();
   end;
-
 end;
 
 procedure TfrmKeyEntryFreeOTFE.rbKeyfilePKCS11Click(Sender: TObject);
@@ -599,7 +600,6 @@ begin
   end;
 
   EnableDisableControls_Keyfile();
-
 end;
 
 procedure TfrmKeyEntryFreeOTFE.SDUDropFiles_KeyfileFileDrop(Sender: TObject;
@@ -640,24 +640,19 @@ end;
 procedure TfrmKeyEntryFreeOTFE.pbCancelClick(Sender: TObject);
 begin
   DoCancel();
-
 end;
-
 
 procedure TfrmKeyEntryFreeOTFE.DoCancel();
 begin
   ModalResult := mrCancel;
-
 end;
-
 
 procedure TfrmKeyEntryFreeOTFE.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   // Posting WM_CLOSE causes Delphi to reset ModalResult to mrCancel.
   // As a result, we reset ModalResult here
-  if fsilent then begin
+  if fsilent then
     ModalResult := FSilentResult;
-  end;
 end;
 
 procedure TfrmKeyEntryFreeOTFE.FormCreate(Sender: TObject);
@@ -690,11 +685,9 @@ begin
   SetLength(FTokenSecretKey, 0);
   cbPKCS11SecretKey.Items.AddObject(RS_NOT_SELECTED, nil);
 
-  preUserKey.Plaintext   := True;
   // FreeOTFE volumes CAN have newlines in the user's password
-  preUserKey.WantReturns := True;
-  preUserKey.WordWrap    := True;
-  preUserKey.Lines.Clear();
+//  preUserKey.WantReturns := True;
+  frmePassword1.ClearPassword();
 
   se64UnitOffset.Value        := 0;
   ckOffsetPointsToCDB.Checked := True;
@@ -733,10 +726,6 @@ begin
   feKeyfile.DefaultExt         := FILE_FILTER_DFLT_KEYFILES;
   feKeyfile.OpenDialog.Options := feKeyfile.OpenDialog.Options + [ofDontAddToRecent];
   feKeyfile.SaveDialog.Options := feKeyfile.SaveDialog.Options + [ofDontAddToRecent];
-
-  preUserKey.PasswordChar := GetFreeOTFEBase.PasswordChar;
-  preUserKey.WantReturns  := GetFreeOTFEBase.AllowNewlinesInPasswords;
-  preUserKey.WantTabs     := GetFreeOTFEBase.AllowTabsInPasswords;
 
   // Note: PKCS#11 CDB list only populated when selected; it's at that point
   //       that the user is prompted for their token's PIN
@@ -785,8 +774,7 @@ begin
 
   EnableDisableControls();
 
-  // Position cursor to the *end* of any password
-  preUserKey.SelStart := length(preUserKey.Text);
+
 
   if fSilent then begin
     if AttemptMount() then begin
@@ -931,7 +919,7 @@ end;
 
 procedure TfrmKeyEntryFreeOTFE.SetPassword(password: TSDUBytes);
 begin
-  preUserKey.Text := SDUBytesToString(password);
+  frmePassword1.SetKeyPhrase(password);
 end;
 
  // Display message only if not Silent

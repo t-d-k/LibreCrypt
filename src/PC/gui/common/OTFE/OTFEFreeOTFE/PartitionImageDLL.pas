@@ -175,7 +175,7 @@ begin
         Filesystem := TSDFilesystem_FAT.Create();
         try
           Filesystem.PartitionImage := PartitionImage;
-          Result                    := Filesystem.Format();
+          Result                    := Filesystem.FormatFS();
           PartitionImage.Mounted    := False;
         finally
           Filesystem.Free;

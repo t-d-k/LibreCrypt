@@ -15,6 +15,7 @@ inherited frmExplorerMain: TfrmExplorerMain
   inherited Label1: TLabel
     Top = 437
     Width = 995
+    Alignment = taCenter
     Font.Color = clHotLight
     ParentFont = False
     ExplicitTop = 437
@@ -347,6 +348,8 @@ inherited frmExplorerMain: TfrmExplorerMain
     ExplicitWidth = 995
   end
   inherited mmMain: TMainMenu
+    Left = 540
+    Top = 188
     inherited File1: TMenuItem
       object Plaintextimage1: TMenuItem [5]
         Caption = 'Plaintext &image'
@@ -501,12 +504,12 @@ inherited frmExplorerMain: TfrmExplorerMain
     end
   end
   inherited OpenDialog: TSDUOpenDialog
-    Left = 652
-    Top = 272
+    Left = 28
+    Top = 144
   end
   inherited ActionList1: TActionList
-    Left = 540
-    Top = 132
+    Left = 892
+    Top = 156
     object actPlaintextMountFile: TAction [2]
       Caption = '&Mount file...'
       Hint = 'Mount file based plaintext container'
@@ -709,10 +712,10 @@ inherited frmExplorerMain: TfrmExplorerMain
     end
   end
   inherited ilToolbarIcons_Small: TImageList
-    Left = 108
-    Top = 132
+    Left = 44
+    Top = 364
     Bitmap = {
-      494C010112002001080110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010112002001500110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1384,8 +1387,10 @@ inherited frmExplorerMain: TfrmExplorerMain
     Top = 128
   end
   inherited ilToolbarIcons_Large: TImageList
+    Left = 36
+    Top = 312
     Bitmap = {
-      494C010112000801F00018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010112000801380118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000078000000010020000000000000B4
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2877,9 +2882,19 @@ inherited frmExplorerMain: TfrmExplorerMain
       03F0003FFFF0FFF0FF0FF0FF0FFF87FF00000000000000000000000000000000
       000000000000}
   end
+  inherited ilWindowsStd_24x24: TImageList
+    Left = 132
+    Top = 360
+  end
+  inherited ilWindowsStd_16x16: TImageList
+    Left = 36
+    Top = 400
+  end
   inherited SDUMultimediaKeys1: TSDUMultimediaKeys
     OnBrowserBackward = actNavigateBackExecute
     OnBrowserForward = actNavigateForwardExecute
+    Left = 132
+    Top = 312
   end
   object actChooseDetails: TAction
     Caption = 'Choose Details...'
@@ -2901,8 +2916,8 @@ inherited frmExplorerMain: TfrmExplorerMain
   object pmTreeView: TPopupMenu
     Images = ilToolbarIcons_Small
     OnPopup = pmViewPopup
-    Left = 344
-    Top = 280
+    Left = 264
+    Top = 168
     object mnuTreeViewExpand: TMenuItem
       Caption = '&Expand'
       OnClick = mnuTreeViewExpandClick
@@ -2964,8 +2979,8 @@ inherited frmExplorerMain: TfrmExplorerMain
   object pmListView: TPopupMenu
     Images = ilToolbarIcons_Small
     OnPopup = pmViewPopup
-    Left = 382
-    Top = 264
+    Left = 358
+    Top = 176
     object mnuExploreView: TMenuItem
       Caption = '&Explore'
       OnClick = mnuExploreViewClick
@@ -3022,14 +3037,14 @@ inherited frmExplorerMain: TfrmExplorerMain
   end
   object SDUOpenDialog_MountPlaintextImage: TSDUOpenDialog
     PreserveCWD = False
-    Left = 91
-    Top = 251
+    Left = 27
+    Top = 195
   end
   object ImageList_StatusBar: TImageList
-    Left = 26
-    Top = 146
+    Left = 130
+    Top = 402
     Bitmap = {
-      494C010101000400C00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000400080110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000262626003E3E3E002626260000000000000000000000
@@ -3170,13 +3185,13 @@ inherited frmExplorerMain: TfrmExplorerMain
   end
   object SDUOpenDialog_Store: TSDUOpenDialog
     PreserveCWD = False
-    Left = 72
-    Top = 296
+    Left = 24
+    Top = 232
   end
   object SDUSaveDialog_Extract: TSDUSaveDialog
     PreserveCWD = False
-    Left = 128
-    Top = 296
+    Left = 152
+    Top = 232
   end
   object SDUDropFilesTreeView: TSDUDropFiles
     Active = False
@@ -3189,16 +3204,16 @@ inherited frmExplorerMain: TfrmExplorerMain
     Active = False
     DropControl = SDFilesystemListView1
     OnItemsDrop = SDUDropFilesListViewItemsDrop
-    Left = 460
+    Left = 532
     Top = 344
   end
   object pmToolbarBack: TPopupMenu
     OnPopup = pmToolbarBackPopup
-    Left = 296
+    Left = 264
     Top = 124
   end
   object pmToolbarViews: TPopupMenu
-    Left = 392
+    Left = 536
     Top = 124
     object Icons2: TMenuItem
       Action = actListStyleIcons
@@ -3219,11 +3234,11 @@ inherited frmExplorerMain: TfrmExplorerMain
   end
   object pmToolbarForward: TPopupMenu
     OnPopup = pmToolbarForwardPopup
-    Left = 328
+    Left = 352
     Top = 124
   end
   object pmToolbarStore: TPopupMenu
-    Left = 360
+    Left = 448
     Top = 124
     object mnuToolbarStoreFile: TMenuItem
       Action = actStoreFile
@@ -3233,8 +3248,8 @@ inherited frmExplorerMain: TfrmExplorerMain
     end
   end
   object pmToolbarMenu: TPopupMenu
-    Left = 496
-    Top = 3
+    Left = 440
+    Top = 179
     object FreeOTFEButtons1: TMenuItem
       Action = actCheckToolbarVolume
       AutoCheck = True
@@ -3250,7 +3265,7 @@ inherited frmExplorerMain: TfrmExplorerMain
   end
   object SDUOpenDialog_Overwrite: TSDUOpenDialog
     PreserveCWD = False
-    Left = 648
-    Top = 220
+    Left = 24
+    Top = 100
   end
 end

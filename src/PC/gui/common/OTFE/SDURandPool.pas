@@ -69,8 +69,15 @@ type
     // beforehand, and cryptlibUnload after use
     class procedure GetRandomData(bytesRequired: Integer;
     // Output
-      out randomData: TSDUBytes);
-    class procedure FillRandomData(var randomData: array of Byte);
+      out randomData: TSDUBytes);  overload;
+
+ class procedure GetRandomData(bytesRequired: Integer;
+    // Output
+      randomData: PByteArray);overload;
+    class procedure FillRandomData(var randomData: array of Byte); overload;
+    class procedure FillRandomData(out randomData: LongWord); overload;
+    class procedure FillRandomData(out randomData: Word);  overload;
+
 
     class function CanUseCryptLib(): Boolean;
     //obsolete
@@ -321,6 +328,41 @@ begin
   SafeSetLength(currRandom, 0);
 end;
 
+class procedure TRandPool.FillRandomData(out randomData: LongWord);
+var
+  currRandom: TSDUBytes;
+   i:          Integer;
+begin
+  GetRandomData(sizeof(randomData), currRandom);
+  for i := 0 to high(currRandom) do
+    PByteArray(@randomData)[i] := currRandom[i];
+  SafeSetLength(currRandom, 0);
+end;
+
+class procedure TRandPool.FillRandomData(out randomData: Word);
+var
+  currRandom: TSDUBytes;
+   i:          Integer;
+begin
+  GetRandomData(sizeof(randomData), currRandom);
+  for i := 0 to high(currRandom) do
+    PByteArray(@randomData)[i] := currRandom[i];
+  SafeSetLength(currRandom, 0);
+end;
+
+ class procedure TRandPool.GetRandomData(bytesRequired: Integer;
+    // Output
+       randomData: PByteArray);
+var
+  currRandom: TSDUBytes;
+   i:          Integer;
+begin
+  GetRandomData(bytesRequired, currRandom);
+  for i := 0 to bytesRequired-1 do
+    randomData[i] := currRandom[i];
+  SafeSetLength(currRandom, 0);
+end;
+
 class procedure TRandPool.GetRandomData(bytesRequired: Integer;
   // Output
   out randomData: TSDUBytes);
@@ -533,6 +575,8 @@ begin
     cryptlibUnload();
   _CanUseCryptlib := False;
 end;
+
+
 
 function GetRandPool(): TRandPool;
 begin

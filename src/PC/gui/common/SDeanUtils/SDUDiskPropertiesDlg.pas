@@ -8,7 +8,7 @@ uses
   SDUForms, SDUGeneral, StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TSDUDiskPropertiesDialog = class (TSDUForm)
+  TfrmDiskProperties = class (TSDUForm)
     Label1:               TLabel;
     edTracksPerCylinder:  TEdit;
     pbClose:              TButton;
@@ -44,7 +44,7 @@ implementation
 resourcestring
   RS_UNABLE_TO_OBTAIN_DATA = '<Unable to obtain data>';
 
-procedure TSDUDiskPropertiesDialog.FormShow(Sender: TObject);
+procedure TfrmDiskProperties.FormShow(Sender: TObject);
 var
   layout:       TSDUDriveLayoutInformationEx;
   diskGeometry: TSDUDiskGeometry;

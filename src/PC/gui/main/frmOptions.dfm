@@ -1,6 +1,5 @@
-inherited frmOptions_FreeOTFE: TfrmOptions
+inherited frmOptions: TfrmOptions
   ClientHeight = 540
-  OnCreate = FormCreate
   ExplicitHeight = 568
   PixelsPerInch = 96
   TextHeight = 13
@@ -30,7 +29,6 @@ inherited frmOptions_FreeOTFE: TfrmOptions
   end
   inherited pcOptions: TPageControl
     Height = 396
-    ActivePage = tsAdvanced
     ExplicitHeight = 396
     inherited tsPKCS11: TTabSheet
       ExplicitHeight = 368
@@ -160,8 +158,8 @@ inherited frmOptions_FreeOTFE: TfrmOptions
             ExplicitWidth = 158
           end
           inherited lblOnNormalDismountFail: TLabel
-            Width = 188
-            ExplicitWidth = 188
+            Width = 157
+            ExplicitWidth = 157
           end
           inherited lblDefaultMountAs: TLabel
             Width = 92

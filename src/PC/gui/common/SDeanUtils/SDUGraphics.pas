@@ -274,7 +274,7 @@ uses
 {$WARN UNIT_PLATFORM ON}
 {$ENDIF}
   registry,
-  SDUProgressDlg,
+  dlgProgress,
   SDUDialogs,
   SDUi18n,
   Spin64,  // Required for TSpinEdit64

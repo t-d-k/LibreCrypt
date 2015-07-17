@@ -156,7 +156,7 @@ begin
             edCypherTitle.Text     := currCypher.Title;
             edCypherMode.Text      := FreeOTFECypherModeTitle(currCypher.Mode);
 
-            tmpString := SDUParamSubstitute(COUNT_BITS, [currCypher.KeySizeUnderlying]);
+            tmpString := Format(COUNT_BITS, [currCypher.KeySizeUnderlying]);
             if (currCypher.KeySizeUnderlying = 0) then
               begin
               tmpString := tmpString + ' '+ _('(null key only)');
@@ -167,7 +167,7 @@ begin
               end;
             edCypherKeySize.Text   := tmpString;
 
-            tmpString := SDUParamSubstitute(COUNT_BITS, [currCypher.BlockSize]);
+            tmpString := Format(COUNT_BITS, [currCypher.BlockSize]);
             if (currCypher.BlockSize = -1) then
               begin
               tmpString := tmpString + ' '+ _('(arbitary blocksize allowed)');

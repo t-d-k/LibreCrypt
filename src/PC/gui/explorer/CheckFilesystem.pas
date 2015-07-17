@@ -10,7 +10,9 @@ procedure CheckFATFilesystem(Filesystem: TSDFilesystem_FAT);
 implementation
 
 uses
-  Dialogs, Forms,
+//delphi
+  Dialogs, Forms, sysutils,
+  // sdu - utils
   lcDialogs,
   SDUGeneral,
   SDUi18n;
@@ -41,9 +43,9 @@ begin
   end else begin
     Filesystem.ReadOnly := True;
     SDUMessageDlg(
-      SDUParamSubstitute(_('Filesystem errors detected.' + SDUCRLF +
+      Format(_('Filesystem errors detected.' + SDUCRLF +
       SDUCRLF + 'Please mount as a normal drive, and run chkdsk to correct.' +
-      SDUCRLF + '%1 will continue in readonly mode'), [Application.Title]),
+      SDUCRLF + '%s will continue in readonly mode'), [Application.Title]),
       mtError
       );
   end;

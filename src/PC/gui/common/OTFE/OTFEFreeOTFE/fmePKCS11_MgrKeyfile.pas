@@ -112,8 +112,8 @@ begin
         for i := 0 to (stlDeletedOK.Count - 1) do begin
           msgList := msgList + '  ' + stlDeletedOK[i] + SDUCRLF;
         end;
-        msg := SDUParamSubstitute(_('The following keyfiles were deleted successfully:' + SDUCRLF +
-          SDUCRLF + '%1'),
+        msg := Format(_('The following keyfiles were deleted successfully:' + SDUCRLF +
+          SDUCRLF + '%s'),
           [msgList]);
       end;
       if (stlDeletedFail.Count > 0) then begin
@@ -123,8 +123,8 @@ begin
           msgList := msgList + '  ' + stlDeletedFail[i] + SDUCRLF;
         end;
         msg := msg + SDUCRLF;
-        msg := msg + SDUParamSubstitute(_('The following keyfiles could not be deleted:' + SDUCRLF +
-          SDUCRLF + '%1'),
+        msg := msg + Format(_('The following keyfiles could not be deleted:' + SDUCRLF +
+          SDUCRLF + '%s'),
           [msgList]);
       end;
 
@@ -156,8 +156,8 @@ begin
       SDUMessageDlg(_('Keyfile exported successfully'));
     end else begin
       SDUMessageDlg(
-        SDUParamSubstitute(_('Unable to export keyfile to:' + SDUCRLF +
-        SDUCRLF + '%1'),
+        Format(_('Unable to export keyfile to:' + SDUCRLF +
+        SDUCRLF + '%s'),
         [SaveDialog.Filename])
         );
     end;

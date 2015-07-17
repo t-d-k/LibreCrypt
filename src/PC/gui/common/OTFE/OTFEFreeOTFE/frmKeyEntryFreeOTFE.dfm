@@ -34,13 +34,6 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
       Height = 200
       Caption = 'Security details'
       TabOrder = 0
-      object Label1: TLabel
-        Left = 12
-        Top = 24
-        Width = 53
-        Height = 13
-        Caption = '&Keyphrase:'
-      end
       object Label6: TLabel
         Left = 12
         Top = 92
@@ -57,30 +50,13 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Caption = '&Drive:'
         FocusControl = cbDrive
       end
-      object preUserKey: TOTFEFreeOTFE_PasswordRichEdit
-        Left = 100
-        Top = 20
-        Width = 429
-        Height = 61
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Lines.Strings = (
-          'preUserKey')
-        ParentFont = False
-        ScrollBars = ssBoth
-        TabOrder = 0
-        OnKeyDown = preUserKeyKeyDown
-      end
       object cbDrive: TComboBox
         Left = 100
         Top = 143
         Width = 113
         Height = 21
         Style = csDropDownList
-        TabOrder = 5
+        TabOrder = 4
         Items.Strings = (
           'Z:')
       end
@@ -90,7 +66,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Width = 293
         Height = 17
         Caption = 'Mount &readonly'
-        TabOrder = 6
+        TabOrder = 5
       end
       object cbPKCS11CDB: TComboBox
         Left = 192
@@ -98,7 +74,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Width = 145
         Height = 21
         Style = csDropDownList
-        TabOrder = 4
+        TabOrder = 3
         OnChange = cbPKCS11CDBChange
       end
       object rbKeyfileFile: TRadioButton
@@ -107,7 +83,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Width = 85
         Height = 17
         Caption = '&File:'
-        TabOrder = 1
+        TabOrder = 0
         OnClick = rbKeyfileFileClick
       end
       object rbKeyfilePKCS11: TRadioButton
@@ -116,7 +92,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Width = 85
         Height = 17
         Caption = 'PKCS#&11:'
-        TabOrder = 3
+        TabOrder = 2
         OnClick = rbKeyfilePKCS11Click
       end
       object feKeyfile: TSDUFilenameEdit
@@ -126,13 +102,41 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Height = 21
         Constraints.MaxHeight = 21
         Constraints.MinHeight = 21
-        TabOrder = 2
+        TabOrder = 1
         TabStop = False
         FilterIndex = 0
         OnChange = feKeyfileChange
         DesignSize = (
           337
           21)
+      end
+      inline frmePassword1: TfrmePassword
+        Left = 3
+        Top = 20
+        Width = 539
+        Height = 62
+        TabOrder = 6
+        ExplicitLeft = 3
+        ExplicitTop = 20
+        ExplicitWidth = 539
+        ExplicitHeight = 62
+        inherited lblKeyPhrase: TLabel
+          Top = 0
+          Width = 56
+          Anchors = [akLeft, akTop, akRight]
+          ExplicitTop = 0
+          ExplicitWidth = 56
+        end
+        inherited preUserKeyFirst: TOTFEFreeOTFE_PasswordRichEdit
+          Left = 97
+          Top = 0
+          Width = 429
+          Height = 58
+          ExplicitLeft = 97
+          ExplicitTop = 0
+          ExplicitWidth = 429
+          ExplicitHeight = 58
+        end
       end
     end
   end

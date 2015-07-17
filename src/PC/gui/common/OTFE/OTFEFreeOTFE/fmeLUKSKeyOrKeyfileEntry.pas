@@ -3,25 +3,28 @@ unit fmeLUKSKeyOrKeyfileEntry;
 interface
 
 uses
+  //delphi
   Classes, Controls, Dialogs, Forms,
   Graphics, Messages, StdCtrls,
-  SysUtils, Variants, Windows, //LibreCrypt
-  ComCtrls,
-  OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFEBase_U,
-  PasswordRichEdit, SDUDropFiles,
-  SDUFilenameEdit_U, SDUFrames, SDUGeneral, SDUStdCtrls;
+  SysUtils, Variants, Windows, ComCtrls,
+   //3rd party
+  //SDU ,lclibs
+   PasswordRichEdit, SDUDropFiles,
+  SDUFilenameEdit_U, SDUFrames, SDUGeneral, SDUStdCtrls,
+  //librecrypt
+  OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFEBase_U   ;
 
 type
   TfrmeLUKSKeyOrKeyfileEntry = class (TFrame)
     lblTreatNewlineAsEOF_1: TLabel;
-    preUserKey:       TOTFEFreeOTFE_PasswordRichEdit;
     rbKeyFromUser:    TRadioButton;
     rbKeyFromKeyfile: TRadioButton;
     feKeyfile:        TSDUFilenameEdit;
     ckKeyfileContainsASCII: TSDUCheckBox;
     cbNewlineType:    TComboBox;
     SDUDropFiles_Keyfile: TSDUDropFiles;
-    lblTreatNewlineAsEOF_2: TLabel;
+    ckBaseIVCypherOnHashLength: TCheckBox;
+    preUserKey: TPasswordRichEdit;
     procedure rbKeyFromClick(Sender: TObject);
     procedure feKeyfileChange(Sender: TObject);
     procedure ckKeyfileContainsASCIIClick(Sender: TObject);
@@ -29,64 +32,69 @@ type
     procedure SDUDropFiles_KeyfileFileDrop(Sender: TObject; DropItem: String;
       DropPoint: TPoint);
   private
+
     procedure PopulateNewlineType();
+    procedure SetbaseIVCypherOnHashLength(const Value: boolean);
+    function GetbaseIVCypherOnHashLength: boolean;
   public
-    //    FreeOTFEObj: TOTFEFreeOTFEBase;
 
     procedure Initialize();
     procedure DefaultOptions();
 
     procedure EnableDisableControls();
 
+
     function GetKey(var userKey: TSDUBYtes): Boolean;
-    function GetKeyRaw(var userKey: String): Boolean;
-    function SetKey(userKey: PasswordString): Boolean;
-    function SetKeyfile(filename: String): Boolean;
-    function GetKeyfile(var filename: String): Boolean;
-    function GetKeyfileIsASCII(var isASCII: Boolean): Boolean;
-    function SetKeyfileIsASCII(isASCII: Boolean): Boolean;
+    function GetKeyRaw( ): String;
+    procedure SetKey(userKey: PasswordString);
+    procedure SetKeyfile(filename: String);
+    function GetKeyfile( ): String;
+    function GetKeyfileIsASCII(): Boolean;
+    procedure SetKeyfileIsASCII(isASCII: Boolean);
     function GetKeyfileNewlineType(var nlType: TSDUNewline): Boolean;
     function SetKeyfileNewlineType(nlType: TSDUNewline): Boolean;
 
     function KeyIsUserEntered(): Boolean;
 
     procedure CursorToEndOfPassword();
+
+    property baseIVCypherOnHashLength: boolean read GetbaseIVCypherOnHashLength write SetbaseIVCypherOnHashLength;
   end;
 
-//procedure Register;
 
 implementation
 
+uses
+  //delphi
+  //3rd party
+  //SDU ,lclibs
+  //librecrypt
+LUKSTools;
 {$R *.dfm}
 
- //procedure Register;
- //begin
- //  RegisterComponents('FreeOTFE', [TfrmeLUKSKeyOrKeyfileEntry]);
- //end;
+
 
 procedure TfrmeLUKSKeyOrKeyfileEntry.feKeyfileChange(Sender: TObject);
 begin
   rbKeyFromKeyfile.Checked := True;
   EnableDisableControls();
-
 end;
 
 procedure TfrmeLUKSKeyOrKeyfileEntry.preUserKeyChange(Sender: TObject);
 begin
   rbKeyFromUser.Checked := True;
   EnableDisableControls();
-
 end;
 
 procedure TfrmeLUKSKeyOrKeyfileEntry.rbKeyFromClick(Sender: TObject);
 begin
   EnableDisableControls();
-
 end;
 
 procedure TfrmeLUKSKeyOrKeyfileEntry.SDUDropFiles_KeyfileFileDrop(Sender: TObject;
   DropItem: String; DropPoint: TPoint);
 begin
+
   feKeyfile.Filename := DropItem;
   EnableDisableControls();
 end;
@@ -103,9 +111,6 @@ begin
     ckKeyfileContainsASCII.Checked));
   SDUEnableControl(cbNewlineType, (rbKeyFromKeyfile.Checked and
     ckKeyfileContainsASCII.Checked));
-  SDUEnableControl(lblTreatNewlineAsEOF_2, (rbKeyFromKeyfile.Checked and
-    ckKeyfileContainsASCII.Checked));
-
 end;
 
 procedure TfrmeLUKSKeyOrKeyfileEntry.PopulateNewlineType();
@@ -116,7 +121,6 @@ begin
   for currNewline := low(TSDUNewline) to high(TSDUNewline) do begin
     cbNewlineType.Items.Add(SDUNEWLINE_TITLE[currNewline]);
   end;
-
 end;
 
 procedure TfrmeLUKSKeyOrKeyfileEntry.Initialize();
@@ -127,7 +131,6 @@ begin
   feKeyfile.SaveDialog.Options := feKeyfile.SaveDialog.Options + [ofDontAddToRecent];
 
   SDUDropFiles_Keyfile.Active := True;
-
 end;
 
 procedure TfrmeLUKSKeyOrKeyfileEntry.DefaultOptions();
@@ -145,13 +148,16 @@ begin
   SetKeyfileNewlineType(LINUX_KEYFILE_DEFAULT_NEWLINE);
 
   rbKeyFromUser.Checked := True;
-
 end;
 
-function TfrmeLUKSKeyOrKeyfileEntry.GetKeyRaw(var userKey: String): Boolean;
+function TfrmeLUKSKeyOrKeyfileEntry.GetKeyRaw( ): String;
 begin
-  userKey := preUserkey.Text;
-  Result  := True;
+  result := preUserkey.Text;
+end;
+
+function TfrmeLUKSKeyOrKeyfileEntry.GetbaseIVCypherOnHashLength: boolean;
+begin
+  result := ckBaseIVCypherOnHashLength.Checked;
 end;
 
 function TfrmeLUKSKeyOrKeyfileEntry.GetKey(var userKey: TSDUBYtes): Boolean;
@@ -162,49 +168,50 @@ begin
   Result := False;
 
   if rbKeyFromUser.Checked then begin
-    { TODO 1 -otdk -cfix : warn user about losing unicde chars }
+    { TODO 1 -otdk -cfix : warn user about losing unicode chars }
     userKey := SDUStringToSDUBytes(preUserkey.Text);
     Result  := True;
   end else begin
     if (feKeyfile.Filename <> '') then begin
-      GetKeyfileIsASCII(keyfileIsASCII);
+      keyfileIsASCII:= GetKeyfileIsASCII();
       GetKeyfileNewlineType(keyfileNewlineType);
 
-      Result := GetFreeOTFEBase().ReadLUKSKeyFromFile(feKeyfile.Filename,
+      Result := LUKSTools.ReadLUKSKeyFromFile(feKeyfile.Filename,
         keyfileIsASCII, keyfileNewlineType, userKey);
     end;
   end;
 
 end;
 
-function TfrmeLUKSKeyOrKeyfileEntry.SetKey(userKey: PasswordString): Boolean;
+procedure TfrmeLUKSKeyOrKeyfileEntry.SetbaseIVCypherOnHashLength(
+  const Value: boolean);
+begin
+ckBaseIVCypherOnHashLength.Checked :=  Value;
+end;
+
+procedure TfrmeLUKSKeyOrKeyfileEntry.SetKey(userKey: PasswordString);
 begin
   preUserkey.Text := userKey;
-  Result          := True;
 end;
 
-function TfrmeLUKSKeyOrKeyfileEntry.SetKeyfile(filename: String): Boolean;
+procedure TfrmeLUKSKeyOrKeyfileEntry.SetKeyfile(filename: String);
 begin
   feKeyfile.Filename := filename;
-  Result             := True;
 end;
 
-function TfrmeLUKSKeyOrKeyfileEntry.GetKeyfile(var filename: String): Boolean;
+function TfrmeLUKSKeyOrKeyfileEntry.GetKeyfile( ): String;
 begin
-  filename := feKeyfile.Filename;
-  Result   := True;
+  Result := feKeyfile.Filename;
 end;
 
-function TfrmeLUKSKeyOrKeyfileEntry.GetKeyfileIsASCII(var isASCII: Boolean): Boolean;
+function TfrmeLUKSKeyOrKeyfileEntry.GetKeyfileIsASCII(): Boolean;
 begin
-  isASCII := ckKeyfileContainsASCII.Checked;
-  Result  := True;
+  result := ckKeyfileContainsASCII.Checked;
 end;
 
-function TfrmeLUKSKeyOrKeyfileEntry.SetKeyfileIsASCII(isASCII: Boolean): Boolean;
+procedure TfrmeLUKSKeyOrKeyfileEntry.SetKeyfileIsASCII(isASCII: Boolean);
 begin
   ckKeyfileContainsASCII.Checked := isASCII;
-  Result := True;
 end;
 
 function TfrmeLUKSKeyOrKeyfileEntry.GetKeyfileNewlineType(

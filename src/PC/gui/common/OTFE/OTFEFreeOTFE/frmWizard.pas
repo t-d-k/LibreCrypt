@@ -41,7 +41,6 @@ type
     //is tab required to be completed
     function IsTabRequired(tabSheet: TTabSheet): Boolean; virtual;
   public
-    //    fFreeOTFEObj: TOTFEFreeOTFEBase;
 
   published
     property OnWizardStepChanged: TNotifyEvent Read fOnWizardStepChanged
@@ -174,7 +173,7 @@ begin
     end;
 
 
-    //todo:seems a bit complicated - isn't there an activepageindex property?
+    //done:seems a bit complicated - isn't there an activepageindex property?
     //    if IsTabSkipped(pcWizard.Pages[i]) and  SDUIsTabSheetAfter(pcWizard, pcWizard.Pages[i], pcWizard.ActivePage) then
     //        Dec(currStage);
     if IsTabSkipped(pcWizard.Pages[i]) and (pcWizard.ActivePageIndex > i) then
@@ -182,7 +181,7 @@ begin
   end;
 
   pbStage.Min := 1;
-  // if have done all required stages, update wit non required ones
+  // if have done all required stages, update with non required ones
   if currStage <= totalReqStages then begin
     pbStage.Max      := totalReqStages;
     pbStage.Position := currStage;
@@ -292,7 +291,6 @@ begin
   else
   if pbBack.Enabled then
     pbBack.Default := True;
-
 end;
 
 procedure TfrmWizard.SetupInstructions();

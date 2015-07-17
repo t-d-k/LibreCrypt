@@ -26,7 +26,6 @@ type
     procedure EnableDisableControls();
 
   public
-//    OTFEFreeOTFE: TOTFEFreeOTFEBase;
     procedure SetDlgPurpose(encryptNotDecrypt: boolean);
     function Volume(): string;
     function Offset(): int64;

@@ -20,12 +20,16 @@ by calling OTFEFreeOTFEBase_U.GetFreeOTFE or  TOTFEFreeOTFE.GetFreeOTFE
 interface
 
 uses
-  Classes, Controls, dialogs,
+//delphi
+  Classes, Controls, dialogs, Graphics, Messages,  SysUtils,
+  Windows,
   DriverAPI,
   Forms,
+  //sdu
+     lcDebugLog,    OTFE_U,
+  OTFEConsts_U, SDUGeneral,
+  //librecrypt
   FreeOTFEDriverConsts,
-  Graphics, Messages, OTFE_U,
-  OTFEConsts_U,
   OTFEFreeOTFE_DriverCypherAPI,
   OTFEFreeOTFE_DriverHashAPI,
   OTFEFreeOTFE_LUKSAPI,
@@ -34,8 +38,7 @@ uses
   pkcs11_object,
   pkcs11_session,
   PKCS11Lib,
-  SDUGeneral, SysUtils, VolumeFileAPI,
-  Windows;
+   VolumeFileAPI;
 
 type
   TOTFEFreeOTFE = class (TOTFEFreeOTFEBase)
@@ -79,7 +82,6 @@ type
       storageMediaType: TFreeOTFEStorageMediaType =
       mtFixedMedia  // PC kernel drivers *only* - ignored otherwise
       ): Boolean; override;
-
 
 
     function DismountDiskDevice(
@@ -147,31 +149,6 @@ type
       data: Ansistring
       ): Boolean; override;
 
-    function ReadWritePlaintextToVolume(
-      readNotWrite: Boolean;
-
-      volFilename: String;
-      volumeKey: TSDUBytes;
-      sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-      IVHashDriver: Ansistring;
-      IVHashGUID: TGUID;
-      IVCypherDriver: Ansistring;
-      IVCypherGUID: TGUID;
-      mainCypherDriver: Ansistring;
-      mainCypherGUID: TGUID;
-      VolumeFlags: Integer;
-      mountMountAs: TFreeOTFEMountAs;
-
-      dataOffset: Int64;
-    // Offset from within mounted volume from where to read/write data
-      dataLength: Integer;  // Length of data to read/write. In bytes
-      var data: TSDUBytes;  // Data to read/write
-
-      offset: Int64 = 0;
-      size: Int64 = 0;
-      storageMediaType: TFreeOTFEStorageMediaType = mtFixedMedia
-      ): Boolean; override;
-
     // ---------
     // Misc functions
 
@@ -228,8 +205,8 @@ type
 
     // v1 / v3 Cypher API functions
     // Note: This shouldn't be called directly - only via wrapper functions!
-    function _GetCypherDriverCyphers_v1(cypherDriver: Ansistring;
-      var cypherDriverDetails: TFreeOTFECypherDriver): Boolean; override;
+//    function _GetCypherDriverCyphers_v1(cypherDriver: Ansistring;
+//      var cypherDriverDetails: TFreeOTFECypherDriver): Boolean; override;
     function _GetCypherDriverCyphers_v3(cypherDriver: Ansistring;
       var cypherDriverDetails: TFreeOTFECypherDriver): Boolean; override;
 
@@ -251,7 +228,7 @@ type
       override;
 
     function GetHashDrivers(var hashDrivers: TFreeOTFEHashDriverArray): Boolean; override;
-    function GetHashDriverHashes(hashDriver: Ansistring;
+    function GetHashDriverHashes(hashDriver: string;
       var hashDriverDetails: TFreeOTFEHashDriver): Boolean; override;
 
     function GetCypherDrivers(var cypherDrivers: TFreeOTFECypherDriverArray): Boolean; override;
@@ -357,6 +334,8 @@ type
 
     function CanUserManageDrivers(): Boolean;
 
+    procedure SetupOTFEComponent(); override;
+
 
     // ---------
     // See function comment in body of function
@@ -374,6 +353,31 @@ type
       ): string;
 {$ENDIF}
 
+    function ReadWritePlaintextToVolume(
+      readNotWrite: Boolean;
+
+      volFilename: String;
+      volumeKey: TSDUBytes;
+      sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
+      IVHashDriver: Ansistring;
+      IVHashGUID: TGUID;
+      IVCypherDriver: Ansistring;
+      IVCypherGUID: TGUID;
+      mainCypherDriver: Ansistring;
+      mainCypherGUID: TGUID;
+      VolumeFlags: Integer;
+      mountMountAs: TFreeOTFEMountAs;
+
+      dataOffset: Int64;
+    // Offset from within mounted volume from where to read/write data
+      dataLength: Integer;  // Length of data to read/write. In bytes
+      var data: TSDUBytes;  // Data to read/write
+
+      offset: Int64 = 0;
+      size: Int64 = 0;
+      storageMediaType: TFreeOTFEStorageMediaType = mtFixedMedia
+      ): Boolean; override;
+
   published
     property DefaultDriveLetter: DriveLetterChar Read fDefaultDriveLetter
       Write fDefaultDriveLetter default #0;
@@ -389,20 +393,34 @@ function GetFreeOTFE: TOTFEFreeOTFE;
 implementation
 
 uses
-  SDUi18n,
+ // delphi
+    Math,     // Required for min
+  ActiveX,  // Required for IsEqualGUID
+  ComObj,   // Required for GUIDToString
+  WinSvc,   // Required for SERVICE_ACTIVE
+
+
+ // 3rd party
 {$IFDEF LINUX_DETECT}
   DbugIntf,  // GExperts
 {$ENDIF}
 {$IFDEF FREEOTFE_DEBUG}
   DbugIntf,  // GExperts
 {$ENDIF}
-  SDUProgressDlg,
-  SDUDialogs,
+
+
+
+//sdu / lclibs
+ SDUi18n, SDUDialogs,
   SDUEndianIntegers,
+  //LibreCrypt
+  MainSettings,
+
+  dlgProgress,
+
   frmSelectVolumeType,
   frmKeyEntryFreeOTFE,
   frmKeyEntryLinux,
-  frmKeyEntryLUKS,
   frmHashInfo,
   frmCypherInfo,
   //  frmWizardCreateVolume,
@@ -411,11 +429,8 @@ uses
   frmDriverControl,
   frmSelectPartition,
   frmPKCS11Session,
-  frmPKCS11Management,
-  Math,     // Required for min
-  ActiveX,  // Required for IsEqualGUID
-  ComObj,   // Required for GUIDToString
-  WinSvc;   // Required for SERVICE_ACTIVE
+  frmPKCS11Management;
+
 
 
 
@@ -602,8 +617,7 @@ begin
     begin
     // Obtain details of all hashes...
     SetLength(hashDrivers, 0);
-    if not(GetHashDrivers(TFreeOTFEHashDriverArray(hashDrivers))) then
-      begin
+    if not(GetHashDrivers(TFreeOTFEHashDriverArray(hashDrivers))) then      begin
       Result := Result + 'Unable to get list of hash drivers.';
       end;
     end;
@@ -612,8 +626,7 @@ begin
     begin
     // Obtain details of all cyphers...
     SetLength(cypherDrivers, 0);
-    if not(GetCypherDrivers(TFreeOTFECypherDriverArray(cypherDrivers))) then
-      begin
+    if not(GetCypherDrivers(TFreeOTFECypherDriverArray(cypherDrivers))) then       begin
       Result := Result + 'Unable to get list of cypher drivers.';
       end;
     end;
@@ -937,6 +950,7 @@ DebugMsg('  strMetaData:');
 DebugMsgBinary(strMetaData);
 DebugMsg('  offset: '+inttostr(offset));
 DebugMsg('  size: '+inttostr(size));
+DebugMsg('  ReadOnly: '+BoolToStr(ReadOnly));
 {$ENDIF}
 
   CheckActive();
@@ -1049,6 +1063,7 @@ DebugMsg('+++ ---begin struct---');
 DebugMsgBinaryPtr(PAnsiChar(ptrDIOCBuffer), bufferSize);
 DebugMsg('+++ ---end struct---');
 {$ENDIF}
+DebugFlush();
     if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_MOUNT, ptrDIOCBuffer,
       bufferSize, nil, 0, bytesReturned, nil)) then begin
 
@@ -2136,6 +2151,7 @@ begin
   try
     if DoQueryDosDevice('', deviceNames) then begin
       for i := 0 to (deviceNames.Count - 1) do begin
+        DebugMsg('Device name: ' + deviceNames[i],0);
         deviceNameMapping := TStringList.Create();
         try
           if DoQueryDosDevice(deviceNames[i], deviceNameMapping) then begin
@@ -2155,6 +2171,7 @@ begin
                 // Note: This "break" condition differs between the DLL and kernel
                 //       driver versions
                 if Result then begin
+                   DebugMsg('Cypher Driver found : ' + IntToStr(j)+' ' + deviceNameMapping[j],0);
                   break;
                 end;
               end;
@@ -2179,10 +2196,10 @@ begin
   finally
     deviceNames.Free();
   end;
-
+  DebugMsg('Exit GetCypherDrivers',0);
 end;
 
-
+(*
  // ----------------------------------------------------------------------------
  // Get cypher details - using FreeOTFE v3 and later API
  // Don't call this function directly! Call GetCypherDriverCyphers(...) instead!
@@ -2315,7 +2332,7 @@ begin
 
 
   DebugMsg('Exiting function...');
-end;
+end;   *)
 
  // ----------------------------------------------------------------------------
  // Get cypher details - using FreeOTFE v3 and later API
@@ -2355,9 +2372,9 @@ begin
     end else begin
       if (DeviceIoControl(cypherHandle, IOCTL_FREEOTFECYPHER_IDENTIFYDRIVER,
         nil, 0, @DIOCBuffer, sizeof(DIOCBuffer), BytesReturned, nil)) then begin
-  {$IFDEF FREEOTFE_DEBUG}
+
   DebugMsg('_1_ supplied: '+inttostr(sizeof(DIOCBuffer))+' used: '+inttostr(BytesReturned));
-  {$ENDIF}
+
         if BytesReturned = sizeof(DIOCBuffer) then begin
           cypherDriverDetails.DriverGUID           := DIOCBuffer.DriverGUID;
           cypherDriverDetails.DeviceName           := GetDeviceName(cypherDriver);
@@ -2447,7 +2464,7 @@ begin
 
 
 {$IFDEF FREEOTFE_DEBUG}
-DebugMsg('Exiting function...');
+DebugMsg('Exiting _GetCypherDriverCyphers_v3');
 {$ENDIF}
 
 end;
@@ -2516,7 +2533,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFE.GetHashDriverHashes(hashDriver: Ansistring;
+function TOTFEFreeOTFE.GetHashDriverHashes(hashDriver: string;
   var hashDriverDetails: TFreeOTFEHashDriver): Boolean;
 var
   hashHandle:         THandle;
@@ -2524,9 +2541,8 @@ var
   DIOCBuffer:         TDIOC_HASH_IDENTIFYDRIVER;
   ptrBuffer:          Pointer;
   ptrBufferOffset:    Pointer;
-{$IFDEF FREEOTFE_DEBUG}
   DIOCBufferHashes: PDIOC_HASH_IDENTIFYSUPPORTED;
-{$ENDIF}
+
   bufferSize:         Cardinal;
   hashDetails:        PHASH;
   i:                  Integer;
@@ -2579,14 +2595,14 @@ DebugMsg('_3_ supplied: '+inttostr(sizeof(DIOCBuffer))+' used: '+inttostr(BytesR
 
           if (DeviceIoControl(hashHandle, IOCTL_FREEOTFEHASH_IDENTIFYSUPPORTED,
             nil, 0, ptrBuffer, bufferSize, BytesReturned, nil)) then begin
-{$IFDEF FREEOTFE_DEBUG}
+
 DebugMsg('_4_ supplied: '+inttostr(bufferSize)+' used: '+inttostr(BytesReturned));
-{$ENDIF}
+
             if (BytesReturned <= bufferSize) then begin
-{$IFDEF FREEOTFE_DEBUG}
+
 DIOCBufferHashes := (PDIOC_HASH_IDENTIFYSUPPORTED(ptrBuffer));
 DebugMsg('hash details count: '+inttostr(DIOCBufferHashes.BufCount));
-{$ENDIF}
+
               ptrBufferOffset := Pointer(PAnsiChar(ptrBuffer) +
                 sizeof(TDIOC_HASH_IDENTIFYSUPPORTED) - sizeof(hashDetails^));
               arrIdx          := low(hashDriverDetails.Hashes);
@@ -2611,9 +2627,9 @@ DebugMsg('hash details count: '+inttostr(DIOCBufferHashes.BufCount));
             end;
 
           end else begin
-{$IFDEF FREEOTFE_DEBUG}
+
 DebugMsg('gethashdrivers DIOC 2 FAIL');
-{$ENDIF}
+
           end;
 
           FreeMem(ptrBuffer);
@@ -2933,7 +2949,7 @@ begin
   DebugMsg(Salt);
   DebugMsg(Iterations);
   DebugMsg(dkLenBits);
-
+  assert(Iterations<= 1000000);// debugging
   LastErrorCode := OTFE_ERR_SUCCESS;
   Result        := False;
 
@@ -2977,7 +2993,7 @@ begin
       StrMove(((PAnsiChar(@ptrDIOCBufferIn.Password)) + length(Password)),
         PAnsiChar(@Salt[0]), Length(Salt));
 
-
+       DebugFlush();
       if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_DERIVE_KEY, ptrDIOCBufferIn,
         bufferSizeIn, ptrDIOCBufferOut, bufferSizeOut, BytesReturned, nil)) then begin
 
@@ -3696,7 +3712,7 @@ begin
   // Attempt to create a new device to be used
   deviceName := CreateDiskDevice(FreeOTFEMountAsDeviceType[mountMountAs]);
   Result     := (deviceName <> '');
-  if (Result) then begin
+  if Result then begin
     try
       PopulateVolumeMetadataStruct(
         False,              // Linux volume
@@ -3705,15 +3721,16 @@ begin
         );
       // SDUInitAndZeroBuffer(0,emptyIV);
       // Attempt to mount the device
+      DebugFlush();
       Result := MountDiskDevice(deviceName, volFilename, volumeKey,
-        sectorIVGenMethod, nil, False, IVHashDriver, IVHashGUID, IVCypherDriver,
+        sectorIVGenMethod, nil, readNotWrite, IVHashDriver, IVHashGUID, IVCypherDriver,
         // IV cypher
         IVCypherGUID,                // IV cypher
         mainCypherDriver,            // Main cypher
         mainCypherGUID,              // Main cypher
         VolumeFlags, dummyMetadata, offset, size,
         FreeOTFEMountAsStorageMediaType[mountMountAs]);
-      if (Result) then begin
+      if Result then begin
         try
           // Read decrypted data from mounted device
           if (readNotWrite) then begin
@@ -3764,6 +3781,13 @@ begin
 
 end;
 
+procedure TOTFEFreeOTFE.SetupOTFEComponent();
+begin
+  inherited;
+
+  fDefaultDriveLetter := gSettings.OptDefaultDriveLetter;
+  fDefaultMountAs     := gSettings.OptDefaultMountAs;
+end;
 
 
 {returns an instance of the only object. call SetFreeOTFEType first}

@@ -115,7 +115,7 @@
 			<DCC_Optimize>false</DCC_Optimize>
 			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
 			<DCC_RangeChecking>true</DCC_RangeChecking>
-			<DCC_Define>DEBUG;FREEOTFE_DEBUG_NO;FORCE_NO_RAND_NO;$(DCC_Define)</DCC_Define>
+			<DCC_Define>DEBUG;FREEOTFE_DEBUG;FORCE_NO_RAND_NO;LogMemoryLeakDetailtoFile_NO;FullDebugMode_NO;$(DCC_Define)</DCC_Define>
 			<DCC_DebugDCUs>true</DCC_DebugDCUs>
 			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
 			<BRCC_Defines>FullDebugMode;LogErrorsToFile;$(BRCC_Defines)</BRCC_Defines>
@@ -134,7 +134,6 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
 			<Debugger_RunParams>/dev_menu /noexit</Debugger_RunParams>
-			<DCC_Define>FREEOTFE_DEBUG;$(DCC_Define)</DCC_Define>
 			<VerInfo_Keys>CompanyName=LibreCrypt;FileDescription=LibreCrypt: Open-Source transparent disk encryption;FileVersion=6.2.0.0;InternalName=LibreCrypt;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=LibreCrypt;OriginalFilename=LibreCrypt;ProductName=LibreCrypt;ProductVersion=6.2;Comments=http://LibreCrypt.eu</VerInfo_Keys>
 			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
 			<DCC_RangeChecking>true</DCC_RangeChecking>
@@ -187,6 +186,7 @@
 					</Source>
 					<Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\9.0\Bpl\PBPreview_pack.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="C:\Program Files (x86)\FastReports\LibD16\dclfrxDB16.bpl">FastReport 4.0 DB Components</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
 					</Excluded_Packages>
@@ -213,21 +213,21 @@
 			<DCCReference Include="frmSelectOverwriteMethod.pas">
 				<Form>frmFreeOTFESelectOverwriteMethod</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\CommonfrmCDBBackupRestore.pas">
+			<DCCReference Include="..\common\frmHdrBackupRestore.pas">
 				<Form>frmCDBBackupRestore</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\CommonSettings.pas"/>
 			<DCCReference Include="..\common\frmCommonOptions.pas">
 				<Form>frmOptions</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\CommonfrmGridReport.pas">
+			<DCCReference Include="..\common\frmGridReport.pas">
 				<Form>frmGridReport</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\CommonfrmGridReport_Hash.pas">
+			<DCCReference Include="..\common\frmHashReport.pas">
 				<Form>frmGridReport_Hash</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\CommonfrmGridReport_Cypher.pas">
-				<Form>frmGridReport_Cypher</Form>
+			<DCCReference Include="..\common\frmCypherReport.pas">
+				<Form>frmCypherReport</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\fmeBaseOptions.pas">
 				<Form>fmeOptions_Base</Form>
@@ -241,15 +241,11 @@
 				<Form>fmeOptions_Hotkeys</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="..\common\CommonfmeOptions_PKCS11.pas">
-				<Form>fmeOptions_PKCS11</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="fmeGeneralOptions.pas">
 				<Form>fmeOptions_FreeOTFEGeneral</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="..\common\CommonfrmInstallOnUSBDrive.pas">
+			<DCCReference Include="..\common\frmInstallOnUSBDrive.pas">
 				<Form>frmInstallOnUSBDrive</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\frmAbout.pas">
@@ -268,13 +264,13 @@
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="..\common\CommonConsts.pas"/>
-			<DCCReference Include="..\common\CommonfrmCDBDump_LUKS.pas">
+			<DCCReference Include="..\common\frmLUKSHdrDump.pas">
 				<Form>frmCDBDump_LUKS</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\CommonfrmCDBDump_Base.pas">
+			<DCCReference Include="..\common\frmHdrDump.pas">
 				<Form>frmCDBDump_Base</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\CommonfrmCDBDump_FreeOTFE.pas">
+			<DCCReference Include="..\common\frmFreeOTFEHdrDump.pas">
 				<Form>frmCDBDump_FreeOTFE</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\SDUForms.pas">
@@ -286,7 +282,7 @@
 			</DCCReference>
 			<DCCReference Include="..\common\Filesystem\SDPartitionImage.pas"/>
 			<DCCReference Include="..\common\Filesystem\SDPartitionImage_File.pas"/>
-			<DCCReference Include="..\common\SDeanUtils\SDUProgressDlg.pas">
+			<DCCReference Include="..\common\SDeanUtils\dlgProgress.pas">
 				<Form>SDUProgressDialog</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\SDeanUtils\SDUDiskPropertiesDlg.pas">
@@ -403,6 +399,27 @@
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\cryptlib.pas"/>
 			<DCCReference Include="..\common\SDeanUtils\SDUSysUtils.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFE\OTFEConsts_U.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_U.pas"/>
+			<DCCReference Include="..\common\lcDebugLog.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\Shredder\Shredder.pas"/>
+			<DCCReference Include="..\common\SDeanSecurity\Shredder\FileList_U.pas">
+				<Form>FileList_F</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\AFSplitMerge.pas"/>
+			<DCCReference Include="..\common\fmePassword.pas">
+				<Form>frmePassword</Form>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\SDeanSecurity\KeyboardDialog\KeyboardEntryDlg_U.pas">
+				<Form>KeyboardEntryDlg</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\LUKSTools.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmSelectHashCypher.pas">
+				<Form>frmSelectHashCypher</Form>
+			</DCCReference>
+			<DCCReference Include="frmCreateLUKSVolumeWizard.pas">
+				<Form>frmCreateLUKSVolumeWizard</Form>
+			</DCCReference>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

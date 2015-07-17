@@ -3,8 +3,8 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
   Top = 281
   BorderStyle = bsDialog
   Caption = 'LibreCrypt dm-crypt Key Entry'
-  ClientHeight = 406
-  ClientWidth = 423
+  ClientHeight = 370
+  ClientWidth = 457
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,23 +17,28 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
+  DesignSize = (
+    457
+    370)
   PixelsPerInch = 96
   TextHeight = 13
   object pbCancel: TButton
-    Left = 336
-    Top = 372
+    Left = 374
+    Top = 334
     Width = 75
-    Height = 25
+    Height = 28
+    Anchors = [akRight, akBottom]
     Cancel = True
     Caption = 'Cancel'
     TabOrder = 4
     OnClick = pbCancelClick
   end
   object pbOK: TButton
-    Left = 248
-    Top = 372
-    Width = 75
-    Height = 25
+    Left = 287
+    Top = 334
+    Width = 81
+    Height = 28
+    Anchors = [akRight, akBottom]
     Caption = 'OK'
     Default = True
     TabOrder = 3
@@ -42,30 +47,70 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
   object pcEntry: TPageControl
     Left = 0
     Top = 0
-    Width = 423
-    Height = 361
-    ActivePage = tsKey
+    Width = 457
+    Height = 317
+    ActivePage = tsNewKey
     Align = alTop
+    Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 0
+    object tsNewKey: TTabSheet
+      Caption = 'New Key'
+      ImageIndex = 5
+      inline frmeNewPassword1: TfrmeNewPassword
+        Left = 0
+        Top = 0
+        Width = 449
+        Height = 289
+        Align = alClient
+        Constraints.MinHeight = 223
+        Constraints.MinWidth = 223
+        TabOrder = 0
+        ExplicitWidth = 449
+        ExplicitHeight = 289
+        inherited lblInstructPassword: TLabel
+          Width = 449
+          ExplicitLeft = 0
+          ExplicitWidth = 448
+        end
+        inherited lblStrength: TLabel
+          Top = 264
+          Width = 94
+          Anchors = [akLeft, akBottom]
+          ExplicitTop = 264
+          ExplicitWidth = 94
+        end
+        inherited ProgressBar1: TProgressBar
+          Top = 264
+          Width = 314
+          Anchors = [akLeft, akRight, akBottom]
+          ExplicitTop = 264
+          ExplicitWidth = 314
+        end
+        inherited preUserKeyFirst: TOTFEFreeOTFE_PasswordRichEdit
+          Width = 313
+          ExplicitWidth = 313
+        end
+        inherited preUserKeyConfirm: TOTFEFreeOTFE_PasswordRichEdit
+          Width = 313
+          Height = 70
+          ExplicitWidth = 313
+          ExplicitHeight = 70
+        end
+      end
+    end
     object tsKey: TTabSheet
       Caption = 'Key'
       object GroupBox1: TGroupBox
-        Left = 4
-        Top = 4
-        Width = 405
-        Height = 153
+        Left = 0
+        Top = 0
+        Width = 449
+        Height = 289
+        Align = alClient
         Caption = 'Key'
         TabOrder = 0
-        object Label1: TLabel
-          Left = 12
-          Top = 24
-          Width = 21
-          Height = 13
-          Caption = '&Key:'
-        end
         object Label16: TLabel
-          Left = 376
-          Top = 120
+          Left = 375
+          Top = 256
           Width = 16
           Height = 13
           Caption = '(-K)'
@@ -78,8 +123,8 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           ParentFont = False
         end
         object Label15: TLabel
-          Left = 376
-          Top = 92
+          Left = 375
+          Top = 220
           Width = 17
           Height = 13
           Caption = '(-G)'
@@ -93,42 +138,38 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
         end
         object Label14: TLabel
           Left = 12
-          Top = 92
+          Top = 220
           Width = 81
           Height = 13
           Caption = '&GPG executable:'
           Enabled = False
         end
         object Label21: TLabel
-          Left = 12
-          Top = 120
+          Left = 11
+          Top = 256
           Width = 59
           Height = 13
           Caption = 'G&PG keyfile:'
           Enabled = False
           FocusControl = feGPGKeyfile
         end
-        object preUserKey: TOTFEFreeOTFE_PasswordRichEdit
-          Left = 108
-          Top = 20
-          Width = 285
-          Height = 61
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Lines.Strings = (
-            'preUserKey')
-          ParentFont = False
-          ScrollBars = ssBoth
-          TabOrder = 0
-          OnChange = SelectionChange
-          OnKeyDown = preUserKeyKeyDown
-        end
         object feGPGExecutable: TSDUFilenameEdit
           Left = 108
-          Top = 88
+          Top = 216
+          Width = 261
+          Height = 21
+          Constraints.MaxHeight = 21
+          Constraints.MinHeight = 21
+          TabOrder = 0
+          TabStop = False
+          FilterIndex = 0
+          DesignSize = (
+            261
+            21)
+        end
+        object feGPGKeyfile: TSDUFilenameEdit
+          Left = 108
+          Top = 251
           Width = 261
           Height = 21
           Constraints.MaxHeight = 21
@@ -140,28 +181,51 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
             261
             21)
         end
-        object feGPGKeyfile: TSDUFilenameEdit
-          Left = 108
-          Top = 116
-          Width = 261
-          Height = 21
-          Constraints.MaxHeight = 21
-          Constraints.MinHeight = 21
+        inline frmePassword1: TfrmePassword
+          Left = 3
+          Top = 16
+          Width = 443
+          Height = 194
           TabOrder = 2
-          TabStop = False
-          FilterIndex = 0
-          DesignSize = (
-            261
-            21)
+          ExplicitLeft = 3
+          ExplicitTop = 16
+          ExplicitWidth = 443
+          ExplicitHeight = 194
+          inherited lblKeyPhrase: TLabel
+            Left = 9
+            Width = 56
+            ExplicitLeft = 9
+            ExplicitWidth = 56
+          end
+          inherited preUserKeyFirst: TOTFEFreeOTFE_PasswordRichEdit
+            Left = 87
+            Width = 344
+            Height = 174
+            ExplicitLeft = 87
+            ExplicitWidth = 344
+            ExplicitHeight = 174
+          end
         end
       end
+    end
+    object tsKeyOptions: TTabSheet
+      Caption = 'Key Options'
+      ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox5: TGroupBox
-        Left = 4
-        Top = 168
-        Width = 405
-        Height = 157
+        Left = 0
+        Top = 0
+        Width = 449
+        Height = 289
+        Align = alClient
         Caption = 'Key processing'
-        TabOrder = 1
+        TabOrder = 0
+        DesignSize = (
+          449
+          289)
         object Label2: TLabel
           Left = 12
           Top = 52
@@ -179,10 +243,11 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           Enabled = False
         end
         object Label13: TLabel
-          Left = 376
-          Top = 52
+          Left = 407
+          Top = 51
           Width = 17
           Height = 13
+          Anchors = [akTop, akRight]
           Caption = '(-H)'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -200,8 +265,8 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           Enabled = False
         end
         object Label3: TLabel
-          Left = 112
-          Top = 128
+          Left = 107
+          Top = 127
           Width = 36
           Height = 13
           Caption = '&Cypher:'
@@ -209,10 +274,11 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           FocusControl = cbKeyProcCypher
         end
         object Label7: TLabel
-          Left = 376
-          Top = 100
+          Left = 407
+          Top = 99
           Width = 16
           Height = 13
+          Anchors = [akTop, akRight]
           Caption = '(-C)'
           Enabled = False
           Font.Charset = DEFAULT_CHARSET
@@ -231,10 +297,11 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           FocusControl = edKeySeed
         end
         object Label19: TLabel
-          Left = 376
-          Top = 24
+          Left = 408
+          Top = 23
           Width = 16
           Height = 13
+          Anchors = [akTop, akRight]
           Caption = '(-S)'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -246,9 +313,10 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
         object cbKeyProcHash: TComboBox
           Left = 108
           Top = 48
-          Width = 145
+          Width = 237
           Height = 21
           Style = csDropDownList
+          Anchors = [akLeft, akTop, akBottom]
           TabOrder = 1
           OnChange = SelectionChange
         end
@@ -264,30 +332,33 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           OnChange = SelectionChange
         end
         object pbKeyProcHashInfo: TButton
-          Left = 252
-          Top = 48
+          Left = 363
+          Top = 47
           Width = 21
           Height = 21
+          Anchors = [akTop, akRight]
           Caption = '?'
           TabOrder = 2
           OnClick = pbKeyProcHashInfoClick
         end
         object pbKeyProcCypherInfo: TButton
-          Left = 300
+          Left = 363
           Top = 124
           Width = 21
           Height = 21
+          Anchors = [akTop, akRight]
           Caption = '?'
           Enabled = False
           TabOrder = 6
           OnClick = pbKeyProcCypherInfoClick
         end
         object cbKeyProcCypher: TComboBox
-          Left = 156
+          Left = 149
           Top = 124
-          Width = 145
+          Width = 196
           Height = 21
           Style = csDropDownList
+          Anchors = [akTop, akRight]
           Enabled = False
           TabOrder = 4
           OnChange = SelectionChange
@@ -295,8 +366,9 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
         object edKeySeed: TEdit
           Left = 108
           Top = 20
-          Width = 249
+          Width = 285
           Height = 21
+          Anchors = [akLeft, akTop, akRight]
           TabOrder = 0
           Text = 'edKeySeed'
           OnChange = SelectionChange
@@ -320,25 +392,30 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
       ExplicitWidth = 0
       ExplicitHeight = 0
       object GroupBox3: TGroupBox
-        Left = 37
-        Top = 16
-        Width = 341
-        Height = 245
+        Left = 0
+        Top = 0
+        Width = 449
+        Height = 289
+        Align = alClient
         Caption = 'Encryption options'
         TabOrder = 0
+        DesignSize = (
+          449
+          289)
         object Label23: TLabel
           Left = 12
-          Top = 24
+          Top = 28
           Width = 36
           Height = 13
           Caption = '&Cypher:'
           FocusControl = cbMainCypher
         end
         object Label24: TLabel
-          Left = 300
-          Top = 24
+          Left = 424
+          Top = 28
           Width = 15
           Height = 13
+          Anchors = [akTop, akRight]
           Caption = '(-e)'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -349,27 +426,30 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
         end
         object cbMainCypher: TComboBox
           Left = 64
-          Top = 20
-          Width = 145
+          Top = 24
+          Width = 314
           Height = 21
           Style = csDropDownList
+          Anchors = [akLeft, akTop, akRight]
           TabOrder = 0
           OnChange = SelectionChange
         end
         object pbMainCypherInfo: TButton
-          Left = 208
-          Top = 20
+          Left = 384
+          Top = 24
           Width = 21
           Height = 21
+          Anchors = [akTop, akRight]
           Caption = '?'
           TabOrder = 1
           OnClick = pbMainCypherInfoClick
         end
         object GroupBox6: TGroupBox
           Left = 12
-          Top = 52
-          Width = 317
-          Height = 181
+          Top = 51
+          Width = 427
+          Height = 222
+          Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'IV Generation'
           TabOrder = 2
           object Label5: TLabel
@@ -428,8 +508,8 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
             OnChange = SelectionChange
           end
           object pbIVHashInfo: TButton
-            Left = 228
-            Top = 120
+            Left = 235
+            Top = 121
             Width = 21
             Height = 21
             Caption = '?'
@@ -459,7 +539,7 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
             OnChange = SelectionChange
           end
           object pbIVCypherInfo: TButton
-            Left = 228
+            Left = 235
             Top = 148
             Width = 21
             Height = 21
@@ -478,12 +558,16 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
       ExplicitWidth = 0
       ExplicitHeight = 0
       object GroupBox4: TGroupBox
-        Left = 35
-        Top = 16
-        Width = 346
-        Height = 97
+        Left = 0
+        Top = 0
+        Width = 449
+        Height = 289
+        Align = alClient
         Caption = 'File options'
         TabOrder = 0
+        DesignSize = (
+          449
+          289)
         object Label8: TLabel
           Left = 12
           Top = 24
@@ -492,10 +576,11 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           Caption = '&Offset:'
         end
         object Label9: TLabel
-          Left = 312
+          Left = 424
           Top = 24
           Width = 15
           Height = 13
+          Anchors = [akTop, akRight]
           Caption = '(-o)'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -512,10 +597,11 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           Caption = 'Si&zelimit:'
         end
         object Label11: TLabel
-          Left = 312
+          Left = 424
           Top = 52
           Width = 14
           Height = 13
+          Anchors = [akTop, akRight]
           Caption = '(-s)'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -534,8 +620,9 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
         object se64UnitOffset: TSDUSpin64Unit_Storage
           Left = 92
           Top = 20
-          Width = 217
+          Width = 317
           Height = 29
+          Anchors = [akLeft, akTop, akBottom]
           TabOrder = 0
           Units.Strings = (
             'bytes'
@@ -550,8 +637,9 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
         object se64UnitSizeLimit: TSDUSpin64Unit_Storage
           Left = 92
           Top = 48
-          Width = 217
+          Width = 317
           Height = 29
+          Anchors = [akLeft, akTop, akBottom]
           TabOrder = 1
           Units.Strings = (
             'bytes'
@@ -573,10 +661,11 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
       ExplicitWidth = 0
       ExplicitHeight = 0
       object GroupBox2: TGroupBox
-        Left = 75
-        Top = 16
-        Width = 265
-        Height = 129
+        Left = 0
+        Top = 0
+        Width = 449
+        Height = 289
+        Align = alClient
         Caption = 'Mount options'
         TabOrder = 0
         object lblDrive: TLabel
@@ -651,31 +740,33 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
     end
   end
   object pbLoad: TButton
-    Left = 8
-    Top = 372
+    Left = 13
+    Top = 334
     Width = 75
-    Height = 25
+    Height = 28
+    Anchors = [akLeft, akBottom]
     Caption = '&Load...'
     TabOrder = 1
     OnClick = pbLoadClick
   end
   object pbSave: TButton
-    Left = 92
-    Top = 372
+    Left = 94
+    Top = 334
     Width = 75
-    Height = 25
+    Height = 28
+    Anchors = [akLeft, akBottom]
     Caption = 'Sa&ve...'
     TabOrder = 2
     OnClick = pbSaveClick
   end
   object OpenSettingsFileDlg: TSDUOpenDialog
     PreserveCWD = False
-    Left = 36
+    Left = 212
     Top = 328
   end
   object SaveSettingsFileDlg: TSDUSaveDialog
     PreserveCWD = False
-    Left = 120
-    Top = 336
+    Left = 248
+    Top = 328
   end
 end

@@ -26,9 +26,9 @@ uses
 type
   TfrmeNewPassword = class (TSDUFrame)
     lblInstructPassword: TLabel;
-    Label17:         TLabel;
+    lblKeyphrase: TLabel;
     preUserKeyFirst: TOTFEFreeOTFE_PasswordRichEdit;
-    Label3:          TLabel;
+    lblConfirm: TLabel;
     preUserKeyConfirm: TOTFEFreeOTFE_PasswordRichEdit;
     ProgressBar1:    TProgressBar;
     lblStrength:     TLabel;
@@ -49,6 +49,7 @@ type
     procedure SetKeyPhrase(Value: TSDUBytes);
     function IsPasswordValid: Boolean;
     function GetKeyPhrase: TSDUBytes;
+    procedure ClearKeyPhrase();
   published
     property OnChange: TNotifyEvent Read FOnChange Write FOnChange;
   end;
@@ -84,6 +85,12 @@ const
   G_VALID_FILENAME: TSysCharSet        = [#43..#46, #48..#57, #65..#90, #95, #97..#122];
 
 { TfrmeNewPassword }
+
+procedure TfrmeNewPassword.ClearKeyPhrase;
+begin
+  preUserKeyFirst.Text   := '';
+  preUserKeyConfirm.Text := preUserKeyFirst.Text;
+end;
 
 constructor TfrmeNewPassword.Create(AOwner: TComponent);
 begin

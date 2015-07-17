@@ -1,4 +1,4 @@
-object frmSelectDirectoryDlg: TfrmSelectDirectory
+object frmSelectDirectory: TfrmSelectDirectory
   Left = 188
   Top = 81
   Caption = 'CAPTION SET AUTOMATICALLY'

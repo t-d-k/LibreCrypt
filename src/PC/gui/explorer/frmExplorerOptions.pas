@@ -3,12 +3,13 @@ unit frmExplorerOptions;
 interface
                                                      
 uses
-  Classes, ComCtrls, fmeAutorunOptions, fmeBaseOptions, CommonfmeOptions_PKCS11,
+  Classes, ComCtrls, fmeAutorunOptions, fmeBaseOptions,
   frmCommonOptions, Controls, Dialogs, ExtCtrls,
   Forms,
   fmeAdvancedExplorerOptions, fmeCommonExplorerOptions,
   fmeExplorerOptions, fmeExplorerWebDAVOptions,
-  Graphics, Messages, OTFEFreeOTFEDLL_U, SDUStdCtrls, StdCtrls, SysUtils, Variants, Windows;
+  Graphics, Messages, OTFEFreeOTFEDLL_U, SDUStdCtrls, StdCtrls, SysUtils, Variants, Windows,
+  SDUFrames, SDUFilenameEdit_U, fmeVolumeSelect;
 
 type
   TfrmExplorerOptions = class (TfrmCommonOptions)

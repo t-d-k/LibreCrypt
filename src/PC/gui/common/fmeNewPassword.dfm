@@ -33,7 +33,7 @@ inherited frmeNewPassword: TfrmeNewPassword
     ExplicitLeft = -207
     ExplicitWidth = 514
   end
-  object Label17: TLabel
+  object lblKeyphrase: TLabel
     Left = 3
     Top = 99
     Width = 111
@@ -42,7 +42,7 @@ inherited frmeNewPassword: TfrmeNewPassword
     Caption = '&Keyphrase:'
     Constraints.MinWidth = 111
   end
-  object Label3: TLabel
+  object lblConfirm: TLabel
     Left = 3
     Top = 187
     Width = 111

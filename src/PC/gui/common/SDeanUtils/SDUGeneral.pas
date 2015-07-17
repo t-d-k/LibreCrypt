@@ -1008,9 +1008,9 @@ function SDUIntToHex(val: ULONGLONG; digits: Integer): String;
  // Convert from int to string representation
  // Implemented as Delphi 2007 truncates int64 values to 32 bits when
  // using inttostr(...)!
-function SDUIntToStr(val: Int64): String; overload;
+ //function SDUIntToStr(val: Int64): String; overload;
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
-function SDUIntToStr(val: ULONGLONG): String; overload;
+ //function SDUIntToStr(val: ULONGLONG): String; overload;
 {$IFEND}
 // As SDUIntToStr, but with thousands seperators inserted
 function SDUIntToStrThousands(val: Int64): String; overload;
@@ -1053,7 +1053,8 @@ procedure SDUCopyLimit(var aTo: TSDUBytes; const aFrom: TSDUBytes; limit: Intege
 function SDUMapNetworkDrive(networkShare: String; useDriveLetter: Char): Boolean;
 
 const
-EXEC_FAIL_CODE = $FFFFFFFF;
+  EXEC_FAIL_CODE = $FFFFFFFF;
+
 implementation
 
 uses
@@ -1071,7 +1072,7 @@ uses
   registry,
   SDUDialogs,
   SDUi18n,
-  SDUProgressDlg,
+  dlgProgress,
   SDUWindows,
   Spin64,  // Required for TSpinEdit64
   Math,    // Required for Power(...)
@@ -1789,7 +1790,7 @@ var
   //  zCurDir:array[0..255] of char;
   //  WorkDir:String;
   StartupInfo: TStartupInfo;
-  prInfo: TProcessInformation;
+  prInfo:      TProcessInformation;
   pWrkDir:     PWideChar;
   pAppName:    PWideChar;
 begin
@@ -1853,7 +1854,7 @@ var
   ReadPipe:             THandle;
   WritePipe:            THandle;
   StartupInfo:          TStartUpInfo;
-  prInfo:          TProcessInformation;
+  prInfo:               TProcessInformation;
   Buffer:               PAnsiChar;
   TotalBytesRead:       DWORD;
   BytesRead:            DWORD;
@@ -1922,7 +1923,7 @@ function SDUWinExecAndWriteInput(const cmdLine: WideString; const input: Ansistr
 var
   Security:           TSecurityAttributes;
   si:                 TStartupInfo;
-  prInfo:                 TProcessInformation;
+  prInfo:             TProcessInformation;
   BytesWritten:       Longword;
   ReadPipe, hInWrite: THandle;
   zAppName:           array[0..512] of Char;
@@ -1944,17 +1945,17 @@ begin
 
     ZeroMemory(@prInfo, SizeOf(prInfo));
     StrPCopy(zAppName, cmdLine);
-    if CreateProcess(nil, zAppName, nil, nil, True,
-      CREATE_NEW_CONSOLE or NORMAL_PRIORITY_CLASS, nil, nil, si, prInfo) then begin
-    CloseHandle(prInfo.hThread);
-    CloseHandle(ReadPipe);
-    // Write input to program
-    WriteFile(hInWrite, input, length(input), BytesWritten, nil);
-    CloseHandle(hInWrite);
-    WaitForSingleObject(prInfo.hProcess, 120000); // 2 minutes
-    GetExitCodeProcess(prInfo.hProcess, Result);
-    CloseHandle(prInfo.hProcess);
-      end;
+    if CreateProcess(nil, zAppName, nil, nil, True, CREATE_NEW_CONSOLE or
+      NORMAL_PRIORITY_CLASS, nil, nil, si, prInfo) then begin
+      CloseHandle(prInfo.hThread);
+      CloseHandle(ReadPipe);
+      // Write input to program
+      WriteFile(hInWrite, input, length(input), BytesWritten, nil);
+      CloseHandle(hInWrite);
+      WaitForSingleObject(prInfo.hProcess, 120000); // 2 minutes
+      GetExitCodeProcess(prInfo.hProcess, Result);
+      CloseHandle(prInfo.hProcess);
+    end;
   end;
 end;
 
@@ -2453,7 +2454,6 @@ end;
 function SDUHexToInt(hex: String): Integer;
 begin
   Result := StrToInt('$' + hex);
-
 end;
 
 function SDUTryHexToInt(hex: String; var Value: Integer): Boolean;
@@ -3209,7 +3209,7 @@ var
   buffer:            PAnsiChar;
   x:                 Int64;
   bytesWritten:      DWORD;
-  progressDlg:       TSDUProgressDialog;
+  progressDlg:       TdlgProgress;
   fullChunksToWrite: Int64;
   prevCursor:        TCursor;
   driveLetter:       Char;
@@ -3260,7 +3260,7 @@ begin
         Screen.Cursor := crAppStart;
         try
           if (showProgress) then begin
-            progressDlg := TSDUProgressDialog.Create(nil);
+            progressDlg := TdlgProgress.Create(nil);
           end;
           try
 
@@ -3903,12 +3903,11 @@ function SDUFormatAsBytesAndBytesUnits(Value: ULONGLONG; accuracy: Integer = 2):
 var
   sizeAsUnits: String;
 begin
-  Result      := SDUIntToStr(Value) + ' ' + SDUUnitsStorageToText(usBytes);
+  Result      := IntToStr(Value) + ' ' + SDUUnitsStorageToText(usBytes);
   sizeAsUnits := SDUFormatAsBytesUnits(Value);
   if (Pos(SDUUnitsStorageToText(usBytes), sizeAsUnits) <= 0) then begin
     Result := Result + ' (' + sizeAsUnits + ')';
   end;
-
 end;
 
 
@@ -5534,8 +5533,9 @@ begin
 
 end;
 
- // ----------------------------------------------------------------------------
  // Delphi's inttostr(...) function truncates 64 bit values to 32 bits
+ { DONE 1 -otdk -crefactor : this is not still true. replace with std fn }
+(*
 function SDUIntToStr(val: Int64): String;
 var
   tmpVal:  Int64;
@@ -5556,8 +5556,8 @@ begin
     end;
   end;
 
-end;
-
+end;  *)
+   (*
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUIntToStr(val: ULONGLONG): String;
 var
@@ -5582,6 +5582,7 @@ begin
 end;
 
 {$IFEND}
+*)
 
 
  // ----------------------------------------------------------------------------
@@ -5592,7 +5593,7 @@ var
   i:    Integer;
   ctr:  Integer;
 begin
-  sVal := SDUIntToStr(val);
+  sVal := IntToStr(val);
 
   Result := '';
   ctr    := 0;
@@ -5615,7 +5616,7 @@ var
   i:    Integer;
   ctr:  Integer;
 begin
-  sVal := SDUIntToStr(val);
+  sVal := IntToStr(val);
 
   Result := '';
   ctr    := 0;
@@ -5744,7 +5745,7 @@ begin
     end else begin
       // Strip out "." from extension
       extn   := StringReplace(extn, '.', '', [rfReplaceAll]);
-      Result := SDUParamSubstitute(_('%1 File'), [uppercase(extn)]);
+      Result := Format(_('%s File'), [uppercase(extn)]);
     end;
   end else begin
     // Found in calling *this* routine.

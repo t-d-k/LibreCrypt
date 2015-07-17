@@ -54,7 +54,6 @@ type
     fShowDriverName: String;
     fShowGUID:       TGUID;
   PUBLIC
-//    OTFEFreeOTFEObj: TOTFEFreeOTFEBase;
      property ShowDriverName : String write fShowDriverName ;
      property ShowGUID : TGUID write fShowGUID;
   end;
@@ -141,13 +140,13 @@ begin
             edHashTitle.Text     := currHash.Title;
             edHashVersionID.Text := GetFreeOTFEBase().VersionIDToStr(currHash.VersionID);
 
-            tmpString := SDUParamSubstitute(COUNT_BITS, [currHash.Length]);
+            tmpString := Format(COUNT_BITS, [currHash.Length]);
             if (currHash.Length = -1) then begin
               tmpString := tmpString + ' ' + _('(length of hash returned may vary)');
             end;
             edHashLength.Text := tmpString;
 
-            tmpString := SDUParamSubstitute(COUNT_BITS, [currHash.BlockSize]);
+            tmpString := Format(COUNT_BITS, [currHash.BlockSize]);
             if (currHash.BlockSize = -1) then begin
               tmpString := tmpString + ' ' + _('(n/a)');
             end;

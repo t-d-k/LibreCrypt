@@ -1,7 +1,4 @@
 inherited frmExplorerOptions: TfrmExplorerOptions
-  OnCreate = FormCreate
-  ExplicitWidth = 519
-  ExplicitHeight = 516
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcOptions: TPageControl

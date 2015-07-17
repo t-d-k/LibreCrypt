@@ -6,7 +6,7 @@ unit frmWizardChangePasswordCreateKeyfile;
  //
  // -----------------------------------------------------------------------------
  //
-
+ { TODO 1 -otdk -crefactor : shares many fields with frmKeyEntryFreeOTFE - extract to frames}
 
 interface
 
@@ -16,7 +16,7 @@ uses
   Forms, Graphics, Messages, MouseRNG,
   PasswordRichEdit, Spin64, StdCtrls, SysUtils, Windows,
   //sdu
-  lcDialogs, sdurandpool, SDUStdCtrls, SDUGeneral,  fmeDiskPartitionsPanel,
+  lcDialogs, sdurandpool, SDUStdCtrls, SDUGeneral, fmeDiskPartitionsPanel,
   //LibreCrypt
   DriverAPI,   // Required for CRITICAL_DATA_LEN
   fmeSelectPartition,
@@ -25,7 +25,7 @@ uses
   OTFEFreeOTFEBase_U,
   fmeSDUBlocks,
   fmeSDUDiskPartitions, SDUForms, SDUFrames, SDUSpin64Units, SDUDialogs,
-  fmeNewPassword;
+  fmeNewPassword, fmePassword;
 
 type
   TChangePasswordCreateKeyfile = (opChangePassword, opCreateKeyfile);
@@ -51,17 +51,15 @@ type
     tsRNGSelect:     TTabSheet;
     reInstructRNGSelect1: TLabel;
     Label9:          TLabel;
-    Label1:          TLabel;
     Label4:          TLabel;
     Label6:          TLabel;
-    preSrcUserKey:   TOTFEFreeOTFE_PasswordRichEdit;
     seSrcSaltLength: TSpinEdit64;
     Label5:          TLabel;
     seDestSaltLength: TSpinEdit64;
     Label7:          TLabel;
     cbDestDriveLetter: TComboBox;
     Label12:         TLabel;
-    gbKeyFile: TGroupBox;
+    gbKeyFile:       TGroupBox;
     lblDestFilename: TSDUFilenameLabel;
     pbBrowseDest:    TButton;
     tsSrcFile:       TTabSheet;
@@ -98,6 +96,7 @@ type
     reInstructRNGSelect2: TLabel;
     reInstructRNGSelect3: TLabel;
     reInstructRNGSelect4: TLabel;
+    frmePassword1:   TfrmePassword;
 
     procedure FormShow(Sender: TObject);
     procedure edSrcFilenameChange(Sender: TObject);
@@ -118,10 +117,8 @@ type
     procedure preSrcUserKeyChange(Sender: TObject);
   private
 
-    //    fCombinedRandomData: Ansistring;
-
-    deviceList:  TStringList;
-    deviceTitle: TStringList;
+    fdeviceList:  TStringList;
+    fdeviceTitle: TStringList;
 
     FPKCS11TokensAvailable: Boolean;
 
@@ -133,22 +130,23 @@ type
     function GetSrcUserKey(): TSDUBytes;
     function GetSrcSaltLength(): Integer;
     function GetSrcKeyIterations(): Integer;
+    procedure SetSrcFilename(const Value: String);
+    procedure SetSrcUserKey(const Value: TSDUBytes);
+
     function GetDestFilename(): String;
     procedure SetDestFilename(filename: String);
     function GetDestUserKey(): TSDUBytes;
     function GetDestSaltLength(): Integer;
     function GetDestKeyIterations(): Integer;
     function GetDestRequestedDriveLetter(): DriveLetterChar;
-    //    function GetRandomData(): Ansistring;
+    procedure SetDestUserKey(const Value: TSDUBytes);
 
     procedure PopulatePKCS11Tokens();
 
     procedure SetupInstructionsCreateKeyfile();
 
-    procedure SetSrcFilename(const Value: String);
-    procedure SetDestUserKey(const Value: TSDUBytes);
     procedure SetIsPartition(const Value: Boolean);
-    procedure SetSrcUserKey(const Value: TSDUBytes);
+
 
   protected
     fsilent:       Boolean;
@@ -179,7 +177,7 @@ type
 {    property DestSaltLength: Integer Read GetDestSaltLength;
     property DestKeyIterations: Integer Read GetDestKeyIterations;
     property DestRequestedDriveLetter: ansichar Read GetDestRequestedDriveLetter; }
-    //    property RandomData: Ansistring Read GetRandomData;
+
 
   end;
 
@@ -190,8 +188,8 @@ implementation
 
 uses
   MSCryptoAPI,
-  PKCS11Lib, OTFEFreeOTFEDLL_U,
-  SDUi18n;
+  OTFEFreeOTFEDLL_U,
+  PKCS11Lib, SDUi18n;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -237,12 +235,12 @@ end;
 function TfrmWizardChangePasswordCreateKeyfile.GetSrcUserKey(): TSDUBytes;
 begin
   { TODO 1 -otdk -cfix : warn user - no unicode }
-  Result := SDUStringToSDUBytes(preSrcUserKey.Text);
+  Result := frmePassword1.GetKeyPhrase;
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.SetSrcUserKey(const Value: TSDUBytes);
 begin
-  preSrcUserKey.Text := SDUBytesToString(Value);
+  frmePassword1.SetKeyPhrase(Value);
 end;
 
 function TfrmWizardChangePasswordCreateKeyfile.GetSrcSaltLength(): Integer;
@@ -295,13 +293,6 @@ begin
   end;
 
 end;
-
-
- //function TfrmWizardChangePasswordCreateKeyfile.GetRandomData(): Ansistring;
- //begin
- //  Result := fCombinedRandomData;
- //end;
-
 
 // Returns TRUE if the specified tab should be skipped in 'next' progression, otherwise FALSE
 function TfrmWizardChangePasswordCreateKeyfile.IsTabSkipped(tabSheet: TTabSheet): Boolean;
@@ -481,15 +472,9 @@ begin
   //  fmeSelectPartition.Initialize();
 
   // tsSrcDetails
-  preSrcUserKey.Plaintext   := True;
-  // FreeOTFE volumes CAN have newlines in the user's password
-  preSrcUserKey.WantReturns := True;
-  preSrcUserKey.WordWrap    := True;
+
   if not fsilent then
-    preSrcUserKey.Lines.Clear();
-  preSrcUserKey.PasswordChar := GetFreeOTFEBase().PasswordChar;
-  preSrcUserKey.WantReturns  := GetFreeOTFEBase().AllowNewlinesInPasswords;
-  preSrcUserKey.WantTabs     := GetFreeOTFEBase().AllowTabsInPasswords;
+    frmePassword1.ClearPassword;
 
   se64UnitOffset.Value := 0;
 
@@ -595,9 +580,9 @@ begin
   SDUTranslateComp(reInstructSrcDetails);
   SDUTranslateComp(reInstructDestFile);
   SDUTranslateComp(reInstructRNGSelect1);
-    SDUTranslateComp(reInstructRNGSelect2);
-      SDUTranslateComp(reInstructRNGSelect3);
-        SDUTranslateComp(reInstructRNGSelect4);
+  SDUTranslateComp(reInstructRNGSelect2);
+  SDUTranslateComp(reInstructRNGSelect3);
+  SDUTranslateComp(reInstructRNGSelect4);
   SDUTranslateComp(reInstructDestFile);
 
   SDUTranslateComp(reInstructRNGMouseMovement);
@@ -800,12 +785,12 @@ begin
 
   SDUTranslateComp(lblInstructDestDetails);
 
-//  reInstructRNGSelect.Caption :=
-//    _('In order to create a new keyfile, a certain amount of random data is required.' +
-//    SDUCRLF + SDUCRLF + 'This data will be used for the following:' + SDUCRLF +
-//    SDUCRLF + '1) Password salting' + SDUCRLF + '2) Random padding data' +
-//    SDUCRLF + SDUCRLF +
-//    'In order to generate this data, please select which random number generators you wish to use from the options below.');
+  //  reInstructRNGSelect.Caption :=
+  //    _('In order to create a new keyfile, a certain amount of random data is required.' +
+  //    SDUCRLF + SDUCRLF + 'This data will be used for the following:' + SDUCRLF +
+  //    SDUCRLF + '1) Password salting' + SDUCRLF + '2) Random padding data' +
+  //    SDUCRLF + SDUCRLF +
+  //    'In order to generate this data, please select which random number generators you wish to use from the options below.');
 
 end;
 
@@ -912,8 +897,8 @@ end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.FormCreate(Sender: TObject);
 begin
-  deviceList                  := TStringList.Create();
-  deviceTitle                 := TStringList.Create();
+  fdeviceList                 := TStringList.Create();
+  fdeviceTitle                := TStringList.Create();
   fmeSelectPartition.OnChange := fmeSelectPartitionChanged;
 
   OnWizardStepChanged := FormWizardStepChanged;
@@ -929,8 +914,8 @@ end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.FormDestroy(Sender: TObject);
 begin
-  deviceList.Free();
-  deviceTitle.Free();
+  fdeviceList.Free();
+  fdeviceTitle.Free();
 
   PurgeMouseRNGData();
 end;

@@ -26,12 +26,12 @@ type
  //                                 unsigned int,
  //                                 DIOC_CYPHER_IDENTIFYSUPPORTED_v1*
  //                                );
-const
-  DLLEXPORT_CYPHER_IDENTIFYSUPPORTED_v1 = 'CypherIdentifySupported';
+//const
+//  DLLEXPORT_CYPHER_IDENTIFYSUPPORTED_v1 = 'CypherIdentifySupported';
 
-type
-  PCypherDLLFnIdentifySupported_v1 = function(BufferSize: Integer;  // In bytes
-    Buffer: PDIOC_CYPHER_IDENTIFYSUPPORTED_v1): DWORD; CDECL;
+//type
+//  PCypherDLLFnIdentifySupported_v1 = function(BufferSize: Integer;  // In bytes
+//    Buffer: PDIOC_CYPHER_IDENTIFYSUPPORTED_v1): DWORD; CDECL;
 
  //#define DLLEXPORT_CYPHER_IDENTIFYSUPPORTED_v3 TEXT("CypherIdentifySupported_v3")
  //typedef DWORD (* PCypherDLLFnIdentifySupported_v3)(
@@ -51,13 +51,13 @@ type
  //typedef DWORD (* PCypherDLLFnGetCypherDetails_v1)(
  //                                 GUID*,
  //                                 CYPHER_v1*
- //                                );
-const
-  DLLEXPORT_CYPHER_GETCYPHERDETAILS_v1 = 'CypherGetCypherDetails';
-
-type
-  PCypherDLLFnGetCypherDetails_v1 = function(CypherGUID: PGUID;
-    CypherDetails: PCYPHER_v1): DWORD; CDECL;
+ //                                );//
+//const
+//  DLLEXPORT_CYPHER_GETCYPHERDETAILS_v1 = 'CypherGetCypherDetails';
+//
+//type
+//  PCypherDLLFnGetCypherDetails_v1 = function(CypherGUID: PGUID;
+//    CypherDetails: PCYPHER_v1): DWORD; CDECL;
 
  //#define DLLEXPORT_CYPHER_GETCYPHERDETAILS_v3 TEXT("CypherGetCypherDetails_v3")
  //typedef DWORD (* PCypherDLLFnGetCypherDetails_v3)(

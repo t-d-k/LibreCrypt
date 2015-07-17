@@ -54,7 +54,7 @@ type
 // -- end Windows standard bits taken from "dbt.h", not included with Delphi --
 
 
-// -----------------------------------------------------------------------------
+
 type
 
   TOTFE = class(TObject)
@@ -72,8 +72,6 @@ type
     //       cannot be set to this state
     procedure SetActive(status: Boolean); virtual;
 
-    // Raises exception if the component isn't active
-    procedure CheckActive();
 
     // Broadcast a message, notifying everyone that a drive has been
     // added/removed
@@ -100,7 +98,7 @@ type
     // Sets mountedAs to the drive letters of the mounted volumes, in order.
     // Volumes that could not be mounted have #0 as their drive letter
     // Returns TRUE if any of the volumes mounted correctly, otherwise FALSE
-    function  Mount(volumeFilename: string; var mountedAs: DriveLetterString; readonly: boolean = FALSE): boolean; overload; virtual; abstract;
+    function  Mount(volumeFilename: string; var mountedAs: DriveLetterChar; readonly: boolean = FALSE): boolean; overload; virtual; abstract;
 
     // Example:
     //   Set:
@@ -122,7 +120,7 @@ type
     // Prompt the user for a device (if appropriate) and password (and drive
     // letter if necessary), then mount the device selected
     // Returns the drive letter of the mounted devices on success, #0 on failure
-    function  MountDevices(): DriveLetterString; virtual; abstract;
+     function MountDevices(): DriveLetterChar; virtual; abstract;
 
     // Determine if OTFE component can mount devices.
     // Returns TRUE if it can, otherwise FALSE
@@ -208,6 +206,9 @@ type
     //
     // (Can't represent in the base class, but...)
     // function GetDriveInfo(driveLetter: char): TDiskInfo; virtual; abstract;
+
+    // Raises exception if the component isn't active
+    procedure CheckActive();
 
   published
     property Active: boolean read FActive write SetActive;

@@ -207,8 +207,8 @@ begin
         for i := 0 to (stlDeletedOK.Count - 1) do begin
           msgList := msgList + '  ' + stlDeletedOK[i] + SDUCRLF;
         end;
-        msg := SDUParamSubstitute(_('The following keys were deleted successfully:' +
-          SDUCRLF + SDUCRLF + '%1'), [msgList]);
+        msg := Format(_('The following keys were deleted successfully:' +
+          SDUCRLF + SDUCRLF + '%s'), [msgList]);
       end;
       if (stlDeletedFail.Count > 0) then begin
         msgType := mtWarning;
@@ -217,8 +217,8 @@ begin
           msgList := msgList + '  ' + stlDeletedFail[i] + SDUCRLF;
         end;
         msg := msg + SDUCRLF;
-        msg := msg + SDUParamSubstitute(_('The following keys could not be deleted:' +
-          SDUCRLF + SDUCRLF + '%1'), [msgList]);
+        msg := msg + Format(_('The following keys could not be deleted:' +
+          SDUCRLF + SDUCRLF + '%s'), [msgList]);
       end;
 
       SDUMessageDlg(msg, msgType);
@@ -322,17 +322,17 @@ begin
         end;
 
         if (offset <> 0) then begin
-          Result := SDUConfirmYN(SDUParamSubstitute(
+          Result := SDUConfirmYN(Format(
             _('Are you sure you wish to use PKCS#11 secret key:' + SDUCRLF +
-            SDUCRLF + '%1' + SDUCRLF + SDUCRLF +
-            'to %2 the CDB starting from offset %3 within container:' +
-            SDUCRLF + SDUCRLF + '%4'), [SecretKey.XLabel, secureUnsecure,
+            SDUCRLF + '%s' + SDUCRLF + SDUCRLF +
+            'to %s the CDB starting from offset %d within container:' +
+            SDUCRLF + SDUCRLF + '%s'), [SecretKey.XLabel, secureUnsecure,
             offset, fileToSecure]));
         end else begin
-          Result := SDUConfirmYN(SDUParamSubstitute(
-            _('Are you sure you wish to %1 the container/keyfile:' + SDUCRLF +
-            SDUCRLF + '%2' + SDUCRLF + SDUCRLF +
-            'using the PKCS#11 secret key:' + SDUCRLF + SDUCRLF + '%3'),
+          Result := SDUConfirmYN(Format(
+            _('Are you sure you wish to %s the container/keyfile:' + SDUCRLF +
+            SDUCRLF + '%s' + SDUCRLF + SDUCRLF +
+            'using the PKCS#11 secret key:' + SDUCRLF + SDUCRLF + '%s'),
             [secureUnsecure, fileToSecure, SecretKey.XLabel]));
         end;
       end;
@@ -380,7 +380,7 @@ begin
   end;
 
   if Result then begin
-    SDUMessageDlg(SDUParamSubstitute(_('Container/keyfile now %1'), [secureUnsecure]), mtInformation);
+    SDUMessageDlg(Format(_('Container/keyfile now %s'), [secureUnsecure]), mtInformation);
   end;
 
 end;

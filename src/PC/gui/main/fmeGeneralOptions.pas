@@ -261,9 +261,9 @@ begin
 
   rcdLanguage := SelectedLanguage();
   SDUMessageDlg(
-    SDUParamSubstitute(_('Language name: %1'), [rcdLanguage.Name]) + SDUCRLF +
-    SDUParamSubstitute(_('Language code: %1'), [rcdLanguage.Code]) + SDUCRLF +
-    SDUParamSubstitute(_('Translator: %1'), [rcdLanguage.Contact])
+    Format(_('Language name: %s'), [rcdLanguage.Name]) + SDUCRLF +
+    Format(_('Language code: %s'), [rcdLanguage.Code]) + SDUCRLF +
+    Format(_('Translator: %s'), [rcdLanguage.Contact])
     );
 
 end;

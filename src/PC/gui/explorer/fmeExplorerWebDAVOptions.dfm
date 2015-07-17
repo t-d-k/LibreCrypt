@@ -1,4 +1,4 @@
-inherited fmeOptions_FreeOTFEExplorerWebDAV: TfmeExplorerWebDAVOptions
+inherited fmeExplorerWebDAVOptions: TfmeExplorerWebDAVOptions
   Width = 486
   Height = 344
   ExplicitWidth = 486

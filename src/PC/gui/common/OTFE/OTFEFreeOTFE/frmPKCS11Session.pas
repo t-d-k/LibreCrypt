@@ -139,7 +139,7 @@ begin
     if (FPKCS11Session = nil) then
       begin
       SDUMessageDlg(
-                    SDUParamSubstitute(_('Unable to open session for token in slot %1'), [slotID])+SDUCRLF+
+                    Format(_('Unable to open session for token in slot %d'), [slotID])+SDUCRLF+
                     SDUCRLF+
                     FPKCS11Session.RVToString(FPKCS11Session.LastRV),
                     mtError

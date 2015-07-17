@@ -39,7 +39,6 @@ type
     procedure SetEnabled(setValue: Boolean); OVERRIDE;
 
   PUBLIC
-//    OTFEFreeOTFE: TOTFEFreeOTFEBase;
 
     constructor Create(AOwner: TComponent); OVERRIDE;
     destructor Destroy(); OVERRIDE;

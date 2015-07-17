@@ -1,4 +1,4 @@
-object frmFreeOTFEVolProperties: TfrmVolProperties
+object frmVolProperties: TfrmVolProperties
   Left = 322
   Top = 353
   BorderStyle = bsDialog
@@ -38,7 +38,7 @@ object frmFreeOTFEVolProperties: TfrmVolProperties
   object Label5: TLabel
     Left = 8
     Top = 36
-    Width = 38
+    Width = 48
     Height = 13
     Caption = '&Container:'
     FocusControl = edVolumeFile

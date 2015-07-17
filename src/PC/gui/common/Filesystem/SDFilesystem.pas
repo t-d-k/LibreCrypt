@@ -106,7 +106,7 @@ type
 
     function FilesystemTitle(): String; virtual; abstract;
 
-    function Format(): Boolean; virtual; abstract;
+    function FormatFS(): Boolean; virtual; abstract;
 
     function CheckFilesystem(): Boolean; virtual;
 

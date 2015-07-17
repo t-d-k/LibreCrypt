@@ -46,7 +46,6 @@ type
 
     procedure EnableDisableControls();
   public
-    FreeOTFEObj: TOTFEFreeOTFEBase;
 
     procedure AddCombination(
       HashDriverKernelModeName: String;
@@ -126,19 +125,19 @@ begin
   hashText       := '';
   if (HashDriverKernelModeName <> '') then begin
     prettyHashDriverName := '???';
-    if FreeOTFEObj.GetHashDriverHashes(HashDriverKernelModeName, tmpHashDriverDetails) then
+    if GetFreeOTFEBase().GetHashDriverHashes(HashDriverKernelModeName, tmpHashDriverDetails) then
       prettyHashDriverName := tmpHashDriverDetails.Title + ' (' +
-        FreeOTFEObj.VersionIDToStr(tmpHashDriverDetails.VersionID) + ')';
+        GetFreeOTFEBase().VersionIDToStr(tmpHashDriverDetails.VersionID) + ')';
 
     prettyHashName := '???';
-    if FreeOTFEObj.GetSpecificHashDetails(HashDriverKernelModeName, HashGUID, tmpHashDetails) then
-      prettyHashName := FreeOTFEObj.GetHashDisplayTitle(tmpHashDetails);
+    if GetFreeOTFEBase().GetSpecificHashDetails(HashDriverKernelModeName, HashGUID, tmpHashDetails) then
+      prettyHashName := GetFreeOTFEBase().GetHashDisplayTitle(tmpHashDetails);
 
 
-    hashText := SDUParamSubstitute(_('Hash implementation: %1'), [prettyHashDriverName]) +
-      SDUCRLF + '  ' + SDUParamSubstitute(_('Kernel mode driver: %1'),
-      [HashDriverKernelModeName]) + SDUCRLF + '  ' + SDUParamSubstitute(
-      _('Algorithm GUID: %1'), [GUIDToString(HashGUID)]);
+    hashText := Format(_('Hash implementation: %s'), [prettyHashDriverName]) +
+      SDUCRLF + '  ' + Format(_('Kernel mode driver: %s'),
+      [HashDriverKernelModeName]) + SDUCRLF + '  ' + Format(
+      _('Algorithm GUID: %s'), [GUIDToString(HashGUID)]);
   end;
 
 
@@ -147,20 +146,20 @@ begin
   cypherText       := '';
   if (CypherDriverKernelModeName <> '') then begin
     prettyCypherDriverName := '???';
-    if FreeOTFEObj.GetCypherDriverCyphers(CypherDriverKernelModeName,
+    if GetFreeOTFEBase().GetCypherDriverCyphers(CypherDriverKernelModeName,
       tmpCypherDriverDetails) then
       prettyCypherDriverName := tmpCypherDriverDetails.Title + ' (' +
-        FreeOTFEObj.VersionIDToStr(tmpCypherDriverDetails.VersionID) + ')';
+        GetFreeOTFEBase().VersionIDToStr(tmpCypherDriverDetails.VersionID) + ')';
 
     prettyCypherName := '???';
-    if FreeOTFEObj.GetSpecificCypherDetails(CypherDriverKernelModeName,
+    if GetFreeOTFEBase().GetSpecificCypherDetails(CypherDriverKernelModeName,
       CypherGUID, tmpCypherDetails) then
-      prettyCypherName := FreeOTFEObj.GetCypherDisplayTitle(tmpCypherDetails);
+      prettyCypherName := GetFreeOTFEBase().GetCypherDisplayTitle(tmpCypherDetails);
 
-    cypherText := SDUParamSubstitute(_('Cypher implementation: %1'),
-      [prettyCypherDriverName]) + SDUCRLF + '  ' + SDUParamSubstitute(
-      _('Kernel mode driver: %1'), [CypherDriverKernelModeName]) + SDUCRLF +
-      '  ' + SDUParamSubstitute(_('Algorithm GUID: %1'), [GUIDToString(CypherGUID)]);
+    cypherText := Format(_('Cypher implementation: %s'),
+      [prettyCypherDriverName]) + SDUCRLF + '  ' + Format(
+      _('Kernel mode driver: %s'), [CypherDriverKernelModeName]) + SDUCRLF +
+      '  ' + Format(_('Algorithm GUID: %s'), [GUIDToString(CypherGUID)]);
   end;
 
 
@@ -188,7 +187,7 @@ end;
 
 procedure TfrmSelectHashCypher.miHashDetailsClick(Sender: TObject);
 begin
-  FreeOTFEObj.ShowHashDetailsDlg(
+  GetFreeOTFEBase().ShowHashDetailsDlg(
     SelectedHashDriverKernelModeName(),
     SelectedHashGUID()
     );
@@ -197,7 +196,7 @@ end;
 
 procedure TfrmSelectHashCypher.miCypherDetailsClick(Sender: TObject);
 begin
-  FreeOTFEObj.ShowCypherDetailsDlg(
+  GetFreeOTFEBase().ShowCypherDetailsDlg(
     SelectedCypherDriverKernelModeName(),
     SelectedCypherGUID()
     );

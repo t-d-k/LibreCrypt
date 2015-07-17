@@ -8,7 +8,8 @@ uses
   Buttons, Classes, ComCtrls,
   Controls, Dialogs, ExtCtrls, Forms, StdCtrls, SysUtils, ToolWin, Variants, Windows, XPMan,
   Graphics, ImgList, Menus, Messages,
-  //sdu libs
+
+  //sdu/lc libs
   SDUWinHttp_API,
   OTFE_U, OTFEConsts_U,
   OTFEFreeOTFEBase_U, PartitionImageDLL,
@@ -22,7 +23,7 @@ uses
   SDUGeneral,
   SDUMRUList,
   SDUMultimediaKeys,
-  SDUProgressDlg,
+  dlgProgress,
   Shredder, SDUDialogs,
 
   //LibreCrypt
@@ -318,19 +319,19 @@ type
     fPartitionImage: TSDPartitionImage;
     fFilesystem:     TSDFilesystem_FAT;
 
-    fInFormShow:   Boolean;
-    fInRefreshing: Boolean;
+    finFormShow:   Boolean;
+    finRefreshing: Boolean;
   protected
     fLastFocussed: TLastFocussed;
 
     fNavigateHistory: TStringList;
-    fNavigateIdx:     Integer;
+    fnavigateIdx:     Integer;
 
     fShredderObj:   TShredder;
     fOpProgressDlg: TSDUWindowsProgressDialog;
 
     fWebDAVObj:   TExplorerWebDAV;
-    fMappedDrive: DriveLetterChar;
+    fmappedDrive: DriveLetterChar;
 
     function HandleCommandLineOpts_Create(): eCmdLine_Exit; override;
     function HandleCommandLineOpts_Mount(): eCmdLine_Exit; override;
@@ -340,8 +341,8 @@ type
     procedure RefreshMRUList(); override;
     procedure MRUListItemClicked(mruList: TSDUMRUList; idx: Integer); override;
 
-    procedure MountFiles(mountAsSystem: TDragDropFileType; filenames: TStringList;
-      ReadOnly, forceHidden: Boolean); overload; override;
+    procedure MountFile(mountAsSystem: TDragDropFileType; filename: String;
+      ReadOnly, forceHidden: Boolean; createVol: Boolean = False); overload; override;
 
     procedure PostMountGUISetup(driveLetter: DriveLetterChar);
 
@@ -526,6 +527,7 @@ implementation
 {$R *.dfm}
 
 uses
+  //delphi
   // Turn off useless hints about FileCtrl.pas being platform specific
 {$WARN SYMBOL_PLATFORM OFF}
 {$WARN UNIT_PLATFORM OFF}
@@ -540,7 +542,12 @@ uses
 {$IFDEF UNICODE}
   AnsiStrings,
 {$ENDIF}
-  frmAbout,
+   DriverControl,
+  // Just required for DEFAULT_HTTP_PORT
+  WinSvc,
+
+  //sdu/lc libs
+
   lcConsts,
   SDUAboutDlg,
   SDUClipBrd,
@@ -548,11 +555,11 @@ uses
   SDUHTTPServer, SDUi18n,
   SDUSysUtils,
   SDUWebDav,
-  DriverControl,
-  // Just required for DEFAULT_HTTP_PORT
-  WinSvc,
-  //   SDUWinSvc,
-  CheckFilesystem,
+     CheckFilesystem,
+   SDFATBootSectorPropertiesDlg,
+
+    //LibreCrypt
+     frmAbout,
   frmNewDirDlg,
   frmExplorerOptions,
   frmOverwritePrompt,
@@ -563,7 +570,8 @@ uses
   frmSelectCopyOrMove,
   frmSelectDirectory,
   frmNewVolumeSize,
-  SDFATBootSectorPropertiesDlg
+
+  LUKSTools
   //  frmWebDAVStatus { TODO 1 -otdk -cenhance : implement webdav }
   ;
 
@@ -731,6 +739,7 @@ begin
   StatusBar_Status.Height := max(StatusBar_Status.Height, 20);
   StatusBar_Hint.Height   := StatusBar_Status.Height;
 
+  //  DoFullTests;
 end;
 
 // Reload settings, setting up any components as needed
@@ -782,32 +791,32 @@ begin
   // WARNING! If a transfer was in mid-progress, this may well probably
   // nobble it, though the volume contents should be consistent.
   WebDAVShutdown();
-  WebDAVStartup();
+  //  WebDAVStartup();
 end;
 
-procedure TfrmExplorerMain.MountFiles(mountAsSystem: TDragDropFileType;
-  filenames: TStringList; ReadOnly, forceHidden: Boolean);
+procedure TfrmExplorerMain.MountFile(mountAsSystem: TDragDropFileType; filename: String;
+  ReadOnly, forceHidden: Boolean; createVol: Boolean = False);
 var
-  mountedAs: DriveLetterString;
+  mountedAs: DriveLetterChar;
   mountedOK: Boolean;
 begin
   // Sanity check
-  if (filenames.Count <> 1) then begin
-    SDUMessageDlg(_('Please specify a single container to be opened'), mtError);
+  if (filename = '') then begin
+    SDUMessageDlg(_('Please specify a container to be opened'), mtError);
     exit;
   end;
 
   Dismount();
 
-  AddToMRUList(filenames);
+  AddToMRUList(filename);
 
   if (mountAsSystem = ftFreeOTFE) then
-    mountedOK := GetFreeOTFEDLL().MountFreeOTFE(filenames, mountedAs, ReadOnly)
+    mountedOK := GetFreeOTFEDLL().MountFreeOTFE(filename, mountedAs, ReadOnly)
   else
   if (mountAsSystem = ftLinux) then
-    mountedOK := GetFreeOTFEDLL().MountLinux(filenames, mountedAs, ReadOnly)
+    mountedOK := GetFreeOTFEDLL().MountLinux(filename, mountedAs, ReadOnly)
   else
-    mountedOK := GetFreeOTFEDLL().Mount(filenames, mountedAs, ReadOnly);
+    mountedOK := GetFreeOTFEDLL().Mount(filename, mountedAs, ReadOnly);
 
 
   if not (mountedOK) then begin
@@ -819,8 +828,8 @@ begin
         );
     end;
   end else begin
-    PostMountGUISetup(mountedAs[1]);
-    WebDAVStartup();
+    PostMountGUISetup(mountedAs);
+    //    WebDAVStartup();
   end;
 
 end;
@@ -915,9 +924,9 @@ begin
       fWebDAVObj.fLogAccess.Filename := gSettings.OptWebDAVLogAccess;
       if (fWebDAVObj.fLogAccess.Filename <> '') then begin
         SDUMessageDlg(
-          Format(_('Volume access logging is ENABLED.' + SDUCRLF +
-          SDUCRLF + 'All accesses to the network server will be written to:' +
-          SDUCRLF + SDUCRLF + '%s'), [fWebDAVObj.fLogAccess.Filename]),
+          Format(_('Volume access logging is ENABLED.' + SDUCRLF + SDUCRLF +
+          'All accesses to the network server will be written to:' + SDUCRLF + SDUCRLF + '%s'),
+          [fWebDAVObj.fLogAccess.Filename]),
           mtWarning
           );
       end;
@@ -925,8 +934,8 @@ begin
       fWebDAVObj.fLogDebug.Filename := gSettings.OptWebDAVLogDebug;
       if (fWebDAVObj.fLogDebug.Filename <> '') then begin
         SDUMessageDlg(
-          Format(_('Volume access DEBUG logging is ENABLED.' +
-          SDUCRLF + SDUCRLF + 'All accesses to the network server will be written to:' +
+          Format(_('Volume access DEBUG logging is ENABLED.' + SDUCRLF +
+          SDUCRLF + 'All accesses to the network server will be written to:' +
           SDUCRLF + SDUCRLF + '%s'), [fWebDAVObj.fLogDebug.Filename]),
           mtWarning
           );
@@ -1133,8 +1142,8 @@ begin
       lastErrorNo  := GetLastError();
       lastErrorMsg := SysErrorMessage(lastErrorNo) + ' (0x' + SDUIntToHex(lastErrorNo, 8) + ')';
       comment      := '';
-      if ((lastErrorNo = ERROR_NO_NET_OR_BAD_PATH) or (lastErrorNo =
-        ERROR_WORKSTATION_DRIVER_NOT_INSTALLED)) then begin
+      if ((lastErrorNo = ERROR_NO_NET_OR_BAD_PATH) or
+        (lastErrorNo = ERROR_WORKSTATION_DRIVER_NOT_INSTALLED)) then begin
         comment := _('Please ensure that the WebClient service is running');
       end;
 
@@ -1200,8 +1209,7 @@ begin
             SDUCRLF +
             'This service is required in order to map the mounted container to a drive letter.' +
             SDUCRLF + SDUCRLF + 'Do you wish to start this service now?'),
-            [serviceName]), mtConfirmation, [mbYes, mbNo], 0) = mrYes) then
-          begin
+            [serviceName]), mtConfirmation, [mbYes, mbNo], 0) = mrYes) then begin
             if sc.StartStopService(serviceName, True) then begin
               // Delay to allow service to start up.
               // Not sure if strictly needed, but if a drive is mapped
@@ -1213,8 +1221,7 @@ begin
               Result := True;
             end else begin
               SDUMessageDlg(
-                Format(_('Unable to start the "%s" service.'),
-                [serviceName]),
+                Format(_('Unable to start the "%s" service.'), [serviceName]),
                 mtError
                 );
             end;
@@ -1390,8 +1397,8 @@ begin
   targetIdx := TMenuItem(Sender).Tag;
 
   // Sanity check
-  if ((FNavigateHistory.Count > 0) and (targetIdx >= 0) and (targetIdx <=
-    (FNavigateHistory.Count - 1))) then begin
+  if ((FNavigateHistory.Count > 0) and (targetIdx >= 0) and
+    (targetIdx <= (FNavigateHistory.Count - 1))) then begin
     NavigateToHistoryIdx(targetIdx);
   end;
 
@@ -1931,7 +1938,7 @@ begin
       SetupControls();
       SetTitleCaption();
 
-      WebDAVStartup();
+      //      WebDAVStartup();
     end;
   end;
 
@@ -2065,7 +2072,7 @@ begin
 
       if (newMounted <> '') then begin
         PostMountGUISetup(newMounted[1]);
-        WebDAVStartup();
+        //        WebDAVStartup();
       end;
 
       EnableDisableControls();
@@ -2168,7 +2175,7 @@ begin
         tmpFilesystem := TSDFilesystem_FAT.Create();
         try
           tmpFilesystem.PartitionImage := tmpPartitionImage;
-          tmpFilesystem.Format();
+          tmpFilesystem.FormatFS();
         finally
           tmpFilesystem.Free();
         end;
@@ -2260,7 +2267,7 @@ end;
 procedure TfrmExplorerMain.actMapNetworkDriveExecute(Sender: TObject);
 begin
   inherited;
-  WebDAVStartup();
+  //  WebDAVStartup();
 end;
 
 procedure TfrmExplorerMain.actDisconnectNetworkDriveExecute(Sender: TObject);
@@ -2641,7 +2648,6 @@ begin
 
   dlg := TfrmExplorerOptions.Create(self);
   try
-    //    dlg.OTFEFreeOTFEBase := fOTFEFreeOTFEBase;
     if (dlg.ShowModal() = mrOk) then begin
       ReloadSettings();
       actRefreshExecute(nil);
@@ -3265,9 +3271,9 @@ end;
 procedure TfrmExplorerMain.SetupToolbarFromSettings();
 
   procedure SortToolbar(processToolbar: TToolbar; displayToolbar: Boolean);
-  var
-    toolbarWidth: Integer;
-    i:            Integer;
+//  var
+//    toolbarWidth: Integer;
+//    i:            Integer;
   begin
     processToolbar.Height       := processToolbar.Images.Height + TOOLBAR_ICON_BORDER;
     processToolbar.ButtonHeight := processToolbar.Images.Height;
@@ -3356,9 +3362,6 @@ begin
 
   gSettings.Save();
 
-
-  //  fOTFEFreeOTFEBase.Free();
-
 end;
 
 procedure TfrmExplorerMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -3376,15 +3379,13 @@ var
 begin
   gSettings := TExplorerSettings.Create();
   SetFreeOTFEType(TOTFEFreeOTFEDLL);
-  //  fOTFEFreeOTFEBase := TOTFEFreeOTFEDLL.Create();
-
 
   FInFormShow   := False;
   FInRefreshing := False;
 
 
 
-  fShredderObj := TShredder.Create(nil);
+  fShredderObj := TShredder.Create();
   fWebDAVObj   := TExplorerWebDAV.Create(nil);
   FMappedDrive := #0;
 
@@ -3700,11 +3701,6 @@ begin
   Result := fFilesystem.CreateDir(path, newDirName);
 end;
 
- //function TfrmExplorerMain.OTFEFreeOTFE(): TOTFEFreeOTFEDLL;
- //begin
- //  Result := TOTFEFreeOTFEDLL(fOTFEFreeOTFEBase);
- //end;
-
 function TfrmExplorerMain.Mounted(): Boolean;
 begin
   Result := False;
@@ -3818,7 +3814,7 @@ begin
       (postMounted <> '')  // Sanity check
       ) then begin
       PostMountGUISetup(postMounted[1]);
-      WebDAVStartup();
+      //      WebDAVStartup();
       EnableDisableControls();
     end;
   end;
@@ -4388,8 +4384,8 @@ begin
     end;
   end else begin
     //    SDUMessageDlg(
-    //                  SDUParamSubstitute(
-    //                                     _('%1 completed successfully.'),
+    //                  Format(
+    //                                     _('%s completed successfully.'),
     //                                     [SDUInitialCapital(OperationTitle(opType))]
     //                                    ),
     //                  mtInformation
@@ -4862,15 +4858,15 @@ begin
     // COPY OPERATIONS...
     if (opType = cmCopy) then begin
       if (srcIsMountedFSNotLocalFS and destIsMountedFSNotLocalFS) then begin
-        SetStatusMsg(SDUParamSubstitute(_('Copying: %1'), [srcItem]));
+        SetStatusMsg(Format(_('Copying: %s'), [srcItem]));
         Result := fFilesystem.CopyFile(srcItem, destItem);
       end else
       if (srcIsMountedFSNotLocalFS and not (destIsMountedFSNotLocalFS)) then begin
-        SetStatusMsg(SDUParamSubstitute(_('Extracting: %1'), [srcItem]));
+        SetStatusMsg(Format(_('Extracting: %s'), [srcItem]));
         Result := fFilesystem.ExtractFile(srcItem, destItem);
       end else
       if (not (srcIsMountedFSNotLocalFS) and destIsMountedFSNotLocalFS) then begin
-        SetStatusMsg(SDUParamSubstitute(_('Storing: %1'), [srcItem]));
+        SetStatusMsg(Format(_('Storing: %s'), [srcItem]));
         Result := _StoreFile(destDir, srcItem);
       end else
       if (not (srcIsMountedFSNotLocalFS) and not (destIsMountedFSNotLocalFS)) then begin
@@ -4880,18 +4876,18 @@ begin
     else
     if (opType = cmMove) then begin
       if (srcIsMountedFSNotLocalFS and destIsMountedFSNotLocalFS) then begin
-        SetStatusMsg(SDUParamSubstitute(_('Moving: %1'), [srcItem]));
+        SetStatusMsg(Format(_('Moving: %s'), [srcItem]));
         Result := fFilesystem.MoveFileOrDir(srcItem, destItem);
       end else
       if (srcIsMountedFSNotLocalFS and not (destIsMountedFSNotLocalFS)) then begin
-        SetStatusMsg(SDUParamSubstitute(_('Extracting: %1'), [srcItem]));
+        SetStatusMsg(Format(_('Extracting: %s'), [srcItem]));
         Result := fFilesystem.ExtractFile(srcItem, destItem);
         if Result then begin
           fFilesystem.DeleteFileOrDir(srcItem);
         end;
       end else
       if (not (srcIsMountedFSNotLocalFS) and destIsMountedFSNotLocalFS) then begin
-        SetStatusMsg(SDUParamSubstitute(_('Storing: %1'), [srcItem]));
+        SetStatusMsg(Format(_('Storing: %s'), [srcItem]));
         Result := _StoreFile(destDir, srcItem);
         if Result then begin
           Result := DeleteLocalFSItemUsingMethod(moveDeletionMethod, srcItem);
@@ -4903,7 +4899,7 @@ begin
     end // DELETE OPERATIONS...
     else
     if (opType = cmDelete) then begin
-      SetStatusMsg(SDUParamSubstitute(_('Deleting: %1'), [srcItem]));
+      SetStatusMsg(Format(_('Deleting: %s'), [srcItem]));
       if srcIsMountedFSNotLocalFS then begin
         Result := fFilesystem.DeleteFileOrDir(srcItem);
       end else begin
@@ -4931,7 +4927,7 @@ begin
     // Don't bother to set progress strings - MS Windows Explorer doesn't for
     // *it's* simple move/deletes
     //    ProgressDlgSetLineTwo(_('Deleting original...'));
-    //    SetStatusMsg(SDUParamSubstitute(_('Deleting: %1'), [item]));
+    //    SetStatusMsg(Format(_('Deleting: %s'), [item]));
 
     if FileExists(item) then begin
       Result := SysUtils.DeleteFile(item);
@@ -4948,7 +4944,7 @@ begin
   if (moveDeletionMethod = mdmOverwrite) then begin
     // Overwrite then delete...
     ProgressDlgSetLineTwo(_('Overwriting original...'));
-    SetStatusMsg(SDUParamSubstitute(_('Overwriting: %1'), [item]));
+    SetStatusMsg(Format(_('Overwriting: %s'), [item]));
 
     Result := (fShredderObj.DestroyFileOrDir(item, False, True) = srSuccess);
   end;
@@ -4956,13 +4952,13 @@ begin
   // If there was a problem, allow the user to abort/retry/ignore
   if not (Result) then begin
     if (moveDeletionMethod = mdmDelete) then begin
-      promptMsg := _('Deletion of %1 failed');
+      promptMsg := _('Deletion of %s failed');
     end else
     if (moveDeletionMethod = mdmOverwrite) then begin
-      promptMsg := _('Overwrite of %1 failed');
+      promptMsg := _('Overwrite of %s failed');
     end;
 
-    userPrompt := SDUMessageDlg(SDUParamSubstitute(promptMsg, [ExtractFilename(item)]),
+    userPrompt := SDUMessageDlg(Format(promptMsg, [ExtractFilename(item)]),
       mtWarning, [mbAbort, mbRetry, mbIgnore], 0);
 
     if (userPrompt = mrAbort) then begin
@@ -4985,7 +4981,7 @@ procedure TfrmExplorerMain.OverwritePassStarted(Sender: TObject;
   itemName: String; passNumber: Integer; totalPasses: Integer);
 begin
   ProgressDlgSetLineTwo(
-    SDUParamSubstitute(_('Overwriting original (Pass: %1 / %2)...'),
+    Format(_('Overwriting original (Pass: %d / %d)...'),
     [passNumber, totalPasses]));
 end;
 
@@ -5087,9 +5083,9 @@ begin
         destItemExistsFile := SysUtils.FileExists(destItem);
       end;
       if destItemExistsFile then begin
-        SDUMessageDlg(SDUParamSubstitute(
+        SDUMessageDlg(Format(
           _(
-          'Cannot create or replace %1: There is already a file with the same name as the folder name you specified. Specify a different name.'),
+          'Cannot create or replace %s: There is already a file with the same name as the folder name you specified. Specify a different name.'),
           [ExtractFilename(srcItem)]),
           mtError
           );
@@ -5104,10 +5100,12 @@ begin
         end;
         if destItemExistsDir then begin
           if promptOverwriteDirs then begin
-            confirmResult := SDUMessageDlg(SDUParamSubstitute(
-              _('This folder already contains a folder named ''%1''.' +
+            confirmResult := SDUMessageDlg(Format(
+              _('This folder already contains a folder named ''%s''.' +
               SDUCRLF + SDUCRLF +
-              'If the files in the existing folder have the same name as files in the folder you are moving or copying, they will be replaced. Do you still want to move or copy the folder?'), [ExtractFilename(srcItem)]), mtWarning, [mbYes, mbNo, mbCancel, mbYesToAll], 0);
+              'If the files in the existing folder have the same name as files in the folder you are moving or copying,'+
+              ' they will be replaced. Do you still want to move or copy the folder?'),
+               [ExtractFilename(srcItem)]), mtWarning, [mbYes, mbNo, mbCancel, mbYesToAll], 0);
 
             if (confirmResult = mrYes) then begin
               // Do nothing - goodToDoOp already set to TRUE
@@ -5310,11 +5308,12 @@ end;
 
 function TfrmExplorerMain.DoFullTests: Boolean;
 var
-  mountList: TStringList;
-  mountedAs: DriveLetterString;
+  mountFile: String;
+  mountedAs: DriveLetterChar;
   vol_path, key_file, les_file, projPath: String;
   vl:        Integer;
 const
+
   TEST_VOLS: array[0..12] of String =
     ('a.box', 'b.box', 'c.box', 'd.box', 'e.box',
     'e.box', 'f.box', 'luks.box', 'luks_essiv.box', 'a.box',
@@ -5340,6 +5339,21 @@ const
     '', '', '', '', '',
     '', 'dmcrypt_dx.les', 'dmcrypt_hid.les');
 
+  {
+      TEST_VOLS: array[0..1] of String =
+    ( 'dmcrypt_dx.box', 'dmcrypt_dx.box');
+  PASSWORDS: array[0..1] of Ansistring =
+    ( 'password', '5ekr1t');
+  ITERATIONS: array[0..1] of Integer =
+    ( 2048, 2048);
+  OFFSET: array[0..1] of Integer =
+    ( 0, 0);
+  KEY_FILES: array[0..1] of String =
+    ( '', '');
+  LES_FILES: array[0..1] of String =
+    ( 'dmcrypt_dx.les', 'dmcrypt_hid.les');
+     }
+
   procedure CheckMountedOK;
   var
     s: String;
@@ -5347,7 +5361,7 @@ const
     //    RefreshDrives();
     // Mount successful
     //        prettyMountedAs := prettyPrintDriveLetters(mountedAs);
-    PostMountGUISetup(mountedAs[1]);
+    PostMountGUISetup(mountedAs);
     s := SDFilesystemListView1.DirItem[0].Filename;//ToNode(SDFilesystemListView1.Items[0]);
     //    s:= GetSelectedPath(nil);
     if LowerCase(s) <> 'readme.txt' then begin
@@ -5391,55 +5405,54 @@ begin
     exit;
   end;
 
-  mountList := TStringList.Create();
-  try
-    //for loop is optimised into reverse order , but want to process forwards
-    vl       := 0;
-    // debug ver is in subdir
+  //  mountList := TStringList.Create();
+  //  try
+  //for loop is optimised into reverse order , but want to process forwards
+  vl       := 0;
+  // debug ver is in subdir
     {$IFDEF DEBUG}
       projPath := 'P:\';
     {$ELSE}
-    projPath := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\');
+  projPath := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\');
     {$ENDIF}
-    vol_path := projPath + 'test_vols\';
-    while vl <= high(TEST_VOLS) do begin
+  vol_path := projPath + 'test_vols\';
+  while vl <= high(TEST_VOLS) do begin
 
-      //test one at a time as this is normal use
-      mountList.Clear;
-      mountList.Add(vol_path + TEST_VOLS[vl]);
-      mountedAs := '';
-      key_file  := '';
-      if KEY_FILES[vl] <> '' then
-        key_file := vol_path + KEY_FILES[vl];
-      if LES_FILES[vl] <> '' then
-        les_file := vol_path + LES_FILES[vl];
+    //test one at a time as this is normal use
+    //      mountList.Clear;
+    mountFile := vol_path + TEST_VOLS[vl];
+    mountedAs := #0;
+    key_file  := '';
+    if KEY_FILES[vl] <> '' then
+      key_file := vol_path + KEY_FILES[vl];
+    if LES_FILES[vl] <> '' then
+      les_file := vol_path + LES_FILES[vl];
 
-      if GetFreeOTFEDLL().IsLUKSVolume(vol_path + TEST_VOLS[vl]) or (LES_FILES[vl] <> '') then
-      begin
-        if not GetFreeOTFEDLL().MountLinux(mountList, mountedAs, True,
-          les_file, SDUStringToSDUBytes(PASSWORDS[vl]), key_file, False, nlLF, 0, True) then
-          Result := False;
-      end else begin
-        //call silently
-        if not GetFreeOTFEDLL().MountFreeOTFE(mountList, mountedAs, True,
-          key_file, SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False,
-          True, 256, ITERATIONS[vl]) then
-          Result := False;
-      end;
-      if not Result then begin
-        SDUMessageDlg(
-          _('Unable to open ') + TEST_VOLS[vl] + '.', mtError);
-      end else begin
-        CheckMountedOK;
-        UnMountAndCheck;
-      end;
-      Inc(vl);
+    if IsLUKSVolume(vol_path + TEST_VOLS[vl]) or (LES_FILES[vl] <> '') then    begin
+      if not GetFreeOTFEDLL().MountLinux(mountFile, mountedAs, True,
+        les_file, SDUStringToSDUBytes(PASSWORDS[vl]), key_file, False, nlLF, 0, True) then
+        Result := False;
+    end else begin
+      //call silently
+      if not GetFreeOTFEDLL().MountFreeOTFE(mountFile, mountedAs, True,
+        key_file, SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False,
+        True, 256, ITERATIONS[vl]) then
+        Result := False;
     end;
-
-
-  finally
-    mountList.Free();
+    if not Result then begin
+      SDUMessageDlg(
+        _('Unable to open ') + TEST_VOLS[vl] + '.', mtError);
+    end else begin
+      CheckMountedOK;
+      UnMountAndCheck;
+    end;
+    Inc(vl);
   end;
+
+
+  //  finally
+  //    mountList.Free();
+  //  end;
 
   if Result then
     SDUMessageDlg('All functional tests passed')

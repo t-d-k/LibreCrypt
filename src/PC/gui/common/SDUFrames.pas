@@ -4,8 +4,7 @@ unit SDUFrames;
  // Email: sdean12@sdean12.org
  // WWW:   http://www.SDean12.org/
  //
- // -----------------------------------------------------------------------------
- //
+ // what does this add to tframe? 
 
 
 interface

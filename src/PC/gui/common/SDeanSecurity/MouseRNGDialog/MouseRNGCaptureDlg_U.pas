@@ -69,8 +69,8 @@ uses
   Math;  // Required for "min(...)"
 
 resourcestring
-  BITS_REQUIRED = 'Bits required: %1';
-  BITS_GENERATED = 'Bits generated: %1';
+  BITS_REQUIRED = 'Bits required: %d';
+  BITS_GENERATED = 'Bits generated: %d';
 
 procedure TMouseRNGCaptureDlg.SetRequiredBits(bits: integer);
 begin
@@ -95,7 +95,7 @@ begin
     begin
     lblRequired.visible := TRUE;
 
-    lblRequired.caption := SDUParamSubstitute(BITS_REQUIRED, [FRequiredBits]);
+    lblRequired.caption := Format(BITS_REQUIRED, [FRequiredBits]);
 
     enoughGenerated := (FBitsCollected>=FRequiredBits);
 
@@ -115,7 +115,7 @@ begin
     SDUEnableControl(pbOK, TRUE);
     end;
 
-  lblStored.caption := SDUParamSubstitute(BITS_GENERATED, [FBitsCollected]);
+  lblStored.caption := Format(BITS_GENERATED, [FBitsCollected]);
 
 end;
 

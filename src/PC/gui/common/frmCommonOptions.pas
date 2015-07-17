@@ -5,17 +5,23 @@ unit frmCommonOptions;
  // WWW:   http://www.FreeOTFE.org/
  //
  // -----------------------------------------------------------------------------
- { TODO 1 -otdk -crefactor : TfmeOptions_PKCS11; frame is only used here - move into this dialog }
+ { done 1 -otdk -crefactor : TfmePkcs11Options; frame is only used here - move into this dialog }
 
 interface
 
 uses
   Classes, ComCtrls,
   fmeBaseOptions,
-  CommonfmeOptions_PKCS11, CommonSettings,
+  CommonSettings,
   Controls, Dialogs,
-  ExtCtrls, Forms, Graphics, Messages, OTFEFreeOTFEBase_U, SDUForms, SDUStdCtrls,
-  StdCtrls, SysUtils, Windows;
+  ExtCtrls, Forms, Graphics, Messages,
+  StdCtrls, SysUtils, Windows,
+  //sdu
+   SDUFrames, SDUFilenameEdit_U , SDUForms, SDUStdCtrls,
+   //librecrypt
+   fmeVolumeSelect,
+    OTFEFreeOTFEBase_U
+  ;
 
 type
   TfrmCommonOptions = class (TSDUForm)
@@ -27,12 +33,32 @@ type
     pcOptions: TPageControl;
     imgNoSaveWarning: TImage;
     tsPKCS11:  TTabSheet;
-    fmeOptions_PKCS11: TfmeOptions_PKCS11;
+    gbPKCS11: TGroupBox;
+    lblLibrary: TLabel;
+    ckEnablePKCS11: TCheckBox;
+    pbVerify: TButton;
+    gbPKCS11AutoActions: TGroupBox;
+    lblAutoMountVolume: TLabel;
+    ckPKCS11AutoDismount: TCheckBox;
+    ckPKCS11AutoMount: TCheckBox;
+    OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect;
+    feLibFilename: TSDUFilenameEdit;
+    pbAutoDetect: TButton;
 
     procedure pbOKClick(Sender: TObject);
     procedure pbCancelClick(Sender: TObject);
     procedure ControlChanged(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure pbAutoDetectClick(Sender: TObject);
+    procedure pbVerifyClick(Sender: TObject);
+  private
+    procedure InitializePkcs11Options;
+    procedure ReadPkcs11Settings(config: TCommonSettings);
+    function LibraryDLL: String;
+    function VerifyLibrary: Boolean;
+    procedure WritePkcs11Settings(config: TCommonSettings);
+    function CheckPkcs11Settings: Boolean;
   protected
     FOrigAssociateFiles: Boolean;
 
@@ -55,6 +81,7 @@ implementation
 {$R *.DFM}
 
 uses
+//delphi
   ShlObj,  // Required for CSIDL_PROGRAMS
 {$IFDEF FREEOTFE_MAIN}
   MainSettings,
@@ -62,8 +89,14 @@ uses
 {$IFDEF FREEOTFE_EXPLORER}
   ExplorerSettings,
 {$ENDIF}
+
+//sdu
+  pkcs11_library,
   lcDialogs, SDUGeneral,
-  SDUi18n;
+  SDUi18n,
+  //librecrypt
+  OTFEFreeOTFEDLL_U
+  ;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -74,9 +107,11 @@ const
   SDUCRLF = ''#13#10;
 {$ENDIF}
 
+resourcestring
+  FILTER_LIBRARY_FILES = 'Library files (*.dll)|*.dll|All files|*.*';
+
 const
   SHELL_VERB = 'Open';
-
   CONTROL_MARGIN = 10;
 
 
@@ -101,7 +136,7 @@ begin
 
   case loc of
     slNone: Result     := SAVELOCATION_DO_NOT_SAVE;
-    slExeDir: Result   := SDUParamSubstitute(SAVELOCATION_EXE_DIR, [Application.Title]);
+    slExeDir: Result   := Format(SAVELOCATION_EXE_DIR, [Application.Title]);
     slProfile: Result  := SAVELOCATION_USER_PROFILE;
     slRegistry: Result := SAVELOCATION_REGISTRY;
     slCustom: Result   := SAVELOCATION_CUSTOMISED;
@@ -118,6 +153,47 @@ begin
   end;
 
 end;
+
+procedure TfrmCommonOptions.pbVerifyClick(Sender: TObject);
+begin
+  inherited;
+
+  if VerifyLibrary() then begin
+    SDUMessageDlg(_('PKCS#11 library appears to be functional'), mtInformation);
+  end;
+
+end;
+
+
+
+function TfrmCommonOptions.CheckPkcs11Settings(): Boolean;
+begin
+  Result := true;
+
+  if Result then begin
+    if ckEnablePKCS11.Checked then begin
+      Result := VerifyLibrary();
+    end;
+  end;
+
+  if ckEnablePKCS11.Checked then begin
+    if Result then begin
+      if ckPKCS11AutoMount.Checked then begin
+        if (OTFEFreeOTFEVolumeSelect1.Filename = '') then begin
+          SDUMessageDlg(
+            _(
+            'If automount on PKCS#11 token insertion is enabled, the container to be mounted must be specified'),
+            mtError
+            );
+          Result := False;
+        end;
+      end;
+
+    end;
+  end;
+
+end;
+
 
 function TfrmCommonOptions.DoOKClicked(): Boolean;
 var
@@ -158,9 +234,9 @@ begin
       // Don't do special processing on this message
       GSDUDialogsStripSingleCRLF    := False;  // Don't do special processing on this message
       SDUMessageDlg(
-        SDUParamSubstitute(_(
+        Format(_(
         'Under Windows Vista, you cannot save your settings file anywhere under:' +
-        SDUCRLF + SDUCRLF + '%1' + SDUCRLF + SDUCRLF +
+        SDUCRLF + SDUCRLF + '%s' + SDUCRLF + SDUCRLF +
         'due to Vista''s security/mapping system.'), [programFilesDir]) +
         SDUCRLF + SDUCRLF + _(
         'Please either select another location for storing your settings (e.g. your user profile), or move the LibreCrypt executable such that it is not stored underneath the directory shown above.'),
@@ -172,6 +248,12 @@ begin
 
   end;
 
+  if Result then begin
+  if not CheckPkcs11Settings() then begin
+    pcOptions.ActivePage := pcOptions.Pages[0];
+    Result               := False;
+  end;
+  end;
   if Result then begin
     // For each tab, scan it's controls; if it's one of our frames, get it to
     // process...
@@ -246,8 +328,8 @@ begin
           if ((oldSettingsLocation = slExeDir) or (oldSettingsLocation = slProfile) or
             (oldSettingsLocation = slCustom)) then begin
             SDUMessageDlg(
-              SDUParamSubstitute(_('Your previous settings file stored at:' +
-              SDUCRLF + SDUCRLF + '%1' + SDUCRLF + SDUCRLF +
+              Format(_('Your previous settings file stored at:' +
+              SDUCRLF + SDUCRLF + '%s' + SDUCRLF + SDUCRLF +
               'could not be deleted. Please remove this file manually.'),
               [gSettings.GetSettingsFilename(oldSettingsLocation)]),
               mtInformation
@@ -255,9 +337,9 @@ begin
           end else
           if (oldSettingsLocation = slRegistry) then begin
             SDUMessageDlg(
-              SDUParamSubstitute(_(
+              Format(_(
               'Your previous settings file stored in the Windows registry under:' +
-              SDUCRLF + SDUCRLF + '%1' + SDUCRLF + SDUCRLF +
+              SDUCRLF + SDUCRLF + '%s' + SDUCRLF + SDUCRLF +
               'could not be deleted. Please delete this registry key manually.'),
               [gSettings.RegistryKey()]),
               mtInformation
@@ -269,17 +351,17 @@ begin
         if ((oldSettingsLocation = slExeDir) or (oldSettingsLocation = slProfile) or
           (oldSettingsLocation = slCustom)) then begin
           SDUMessageDlg(
-            SDUParamSubstitute(_('Your previous settings will remain stored at:' +
-            SDUCRLF + SDUCRLF + '%1'),
+            Format(_('Your previous settings will remain stored at:' +
+            SDUCRLF + SDUCRLF + '%s'),
             [gSettings.GetSettingsFilename(oldSettingsLocation)]),
             mtInformation
             );
         end else
         if (oldSettingsLocation = slRegistry) then begin
           SDUMessageDlg(
-            SDUParamSubstitute(_(
+            Format(_(
             'Your previous settings will remain stored in the Windows registry under:' +
-            SDUCRLF + SDUCRLF + '%1'), [gSettings.RegistryKey()]),
+            SDUCRLF + SDUCRLF + '%s'), [gSettings.RegistryKey()]),
             mtInformation
             );
         end;
@@ -342,6 +424,40 @@ begin
 
 end;
 
+
+procedure TfrmCommonOptions.InitializePkcs11Options();
+begin
+   SDUCenterControl(gbPKCS11, ccHorizontal);
+  SDUCenterControl(gbPKCS11, ccVertical, 25);
+
+  feLibFilename.DefaultExt         := 'dll';
+  feLibFilename.OpenDialog.Options :=
+    feLibFilename.OpenDialog.Options + [ofPathMustExist, ofFileMustExist, ofForceShowHidden];
+  feLibFilename.OpenDialog.Options := feLibFilename.OpenDialog.Options + [ofDontAddToRecent];
+  feLibFilename.Filter             := FILTER_LIBRARY_FILES;
+  feLibFilename.FilterIndex        := 0;
+
+  //  OTFEFreeOTFEVolumeSelect1.OTFEFreeOTFE         := OTFEFreeOTFE;
+  OTFEFreeOTFEVolumeSelect1.FileSelectFilter     := FILE_FILTER_FLT_VOLUMES;
+  OTFEFreeOTFEVolumeSelect1.FileSelectDefaultExt := FILE_FILTER_DFLT_VOLUMES;
+
+  // Disallow partition selection if running under DLL version
+  OTFEFreeOTFEVolumeSelect1.AllowPartitionSelect := not (GetFreeOTFEBase() is TOTFEFreeOTFEDLL);
+
+end;
+
+procedure TfrmCommonOptions.ReadPkcs11Settings(config: TCommonSettings);
+begin
+  // General...
+  ckEnablePKCS11.Checked := config.OptPKCS11Enable;
+  feLibFilename.Filename := config.OptPKCS11Library;
+
+  ckPKCS11AutoMount.Checked          := config.OptPKCS11AutoMount;
+  OTFEFreeOTFEVolumeSelect1.Filename := config.OptPKCS11AutoMountVolume;
+  ckPKCS11AutoDismount.Checked       := config.OptPKCS11AutoDismount;
+
+end;
+
 procedure TfrmCommonOptions.AllTabs_InitAndReadSettings(config: TCommonSettings);
 var
   i:            Integer;
@@ -350,6 +466,9 @@ var
   maxWidth:     Integer;
 begin
   PopulateSaveLocation();
+
+  InitializePkcs11Options();
+  ReadPkcs11Settings(config);
 
   // For each tab, scan it's controls; if it's one of our frames, get it to
   // process...
@@ -391,12 +510,24 @@ begin
 end;
 
 
+procedure TfrmCommonOptions.WritePkcs11Settings(config: TCommonSettings);
+begin
+  // General...
+  config.OptPKCS11Enable          := ckEnablePKCS11.Checked;
+  config.OptPKCS11Library         := LibraryDLL;
+  config.OptPKCS11AutoMount       := ckPKCS11AutoMount.Checked;
+  config.OptPKCS11AutoMountVolume := OTFEFreeOTFEVolumeSelect1.Filename;
+  config.OptPKCS11AutoDismount    := ckPKCS11AutoDismount.Checked;
+
+end;
+
 procedure TfrmCommonOptions.AllTabs_WriteSettings(config: TCommonSettings);
 var
   i:            Integer;
   j:            Integer;
   currTabSheet: TTabSheet;
 begin
+WritePkcs11Settings(config);
   // For each tab, scan it's controls; if it's one of our frames, get it to
   // process...
   for i := 0 to (pcOptions.PageCount - 1) do begin
@@ -409,6 +540,13 @@ begin
   end;
 end;
 
+
+procedure TfrmCommonOptions.FormCreate(Sender: TObject);
+begin
+  inherited;
+  OTFEFreeOTFEVolumeSelect1.SelectFor            := fndOpen;
+  OTFEFreeOTFEVolumeSelect1.AllowPartitionSelect := True;
+end;
 
 procedure TfrmCommonOptions.FormShow(Sender: TObject);
 begin
@@ -434,7 +572,23 @@ var
   i:            Integer;
   j:            Integer;
   currTabSheet: TTabSheet;
+  pkcs11Enabled: Boolean;
 begin
+ pkcs11Enabled := ckEnablePKCS11.Checked;
+
+  SDUEnableControl(feLibFilename, pkcs11Enabled);
+  SDUEnableControl(lblLibrary, pkcs11Enabled);
+  SDUEnableControl(pbAutoDetect, pkcs11Enabled);
+  SDUEnableControl(pbVerify, (pkcs11Enabled and (LibraryDLL <> '')));
+
+
+  SDUEnableControl(gbPKCS11AutoActions, pkcs11Enabled);
+  SDUEnableControl(OTFEFreeOTFEVolumeSelect1,
+    (pkcs11Enabled and
+    // Yes, this is needed; otherwise it'll enable/disable regardless
+    ckPKCS11AutoMount.Checked));
+  SDUEnableControl(lblAutoMountVolume, OTFEFreeOTFEVolumeSelect1.Enabled);
+
   // For each tab, scan it's controls; if it's one of our frames, get it to
   // process...
   for i := 0 to (pcOptions.PageCount - 1) do begin
@@ -460,6 +614,29 @@ begin
 
 end;
 
+procedure TfrmCommonOptions.pbAutoDetectClick(Sender: TObject);
+var
+  detectedLib: String;
+begin
+  inherited;
+
+  detectedLib := PKCS11AutoDetectLibrary(self);
+  if (detectedLib = PKCS11_USER_CANCELED) then begin
+    // User canceled - do nothing
+  end else
+  if (detectedLib = '') then begin
+    SDUMessageDlg(
+      _('No PKCS#11 libraries detected.' + SDUCRLF + SDUCRLF +
+      'Please manually enter the PKCS#11 library to be used.'),
+      mtError
+      );
+  end else begin
+    feLibFilename.Filename := detectedLib;
+  end;
+
+end;
+
+
 procedure TfrmCommonOptions.pbCancelClick(Sender: TObject);
 begin
   // Reset langugage used, in case it was changed by the user
@@ -472,6 +649,33 @@ end;
 procedure TfrmCommonOptions.ControlChanged(Sender: TObject);
 begin
   EnableDisableControls();
+
+end;
+
+
+
+
+function TfrmCommonOptions.LibraryDLL(): String;
+begin
+  Result := trim(feLibFilename.Filename);
+end;
+
+function TfrmCommonOptions.VerifyLibrary(): Boolean;
+begin
+  Result := True;
+  if (LibraryDLL = '') then begin
+    SDUMessageDlg(_('Please specify the PKCS#11 library to be used'), mtError);
+    Result := False;
+  end;
+
+  if Result then begin
+    Result := PKCS11VerifyLibrary(LibraryDLL);
+
+    if not (Result) then begin
+      SDUMessageDlg(_('The library specified does not appear to be a valid/working PKCS#11 library'),
+        mtError);
+    end;
+  end;
 
 end;
 

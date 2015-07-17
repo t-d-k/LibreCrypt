@@ -85,7 +85,7 @@ const
 resourcestring
   E_EPKCS11_LISTINDEXOUTOFBOUNDS = 'List index out of bounds';
   E_EPKCS11_TOKENNOTPRESENT = 'Token not present';
-  E_EPKCS11_DLLNOTFOUND = 'Unable to locate/load PKCS#11 library: %1';
+  E_EPKCS11_DLLNOTFOUND = 'Unable to locate/load PKCS#11 library: %s';
   E_EPKCS11_DLLNOAPI = 'Library specified doesn''t support the PKCS#11 API';
 
 type
