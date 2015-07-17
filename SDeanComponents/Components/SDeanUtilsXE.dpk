@@ -5,25 +5,25 @@ package SDeanUtilsXE;
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
-{$DEBUGINFO ON}
+{$DEBUGINFO OFF}
 {$EXTENDEDSYNTAX ON}
 {$IMPORTEDDATA ON}
 {$IOCHECKS ON}
-{$LOCALSYMBOLS ON}
+{$LOCALSYMBOLS OFF}
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
-{$OPTIMIZATION OFF}
-{$OVERFLOWCHECKS ON}
-{$RANGECHECKS ON}
-{$REFERENCEINFO ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
 {$SAFEDIVIDE OFF}
-{$STACKFRAMES ON}
+{$STACKFRAMES OFF}
 {$TYPEDADDRESS OFF}
 {$VARSTRINGCHECKS ON}
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DEFINE DEBUG}
+{$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
 {$IMPLICITBUILD ON}
 
@@ -49,17 +49,10 @@ contains
   SDUSystemTrayIcon in 'SDeanUtils\SDUSystemTrayIcon.pas',
   SDUSystemTrayIconShellAPI in 'SDeanUtils\SDUSystemTrayIconShellAPI.pas',
   Spin64 in 'SDeanUtils\Spin64.pas',
-  OTFEFreeOTFE_DriverCommon in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverCommon.pas',
-  OTFEFreeOTFE_DriverCypherAPI in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverCypherAPI.pas',
-  OTFEFreeOTFE_DriverHashAPI in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverHashAPI.pas',
   OTFEFreeOTFE_InstructionRichEdit in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_InstructionRichEdit.pas',
-  OTFEFreeOTFE_LUKSAPI in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSAPI.pas',
   OTFEFreeOTFE_PasswordRichEdit in 'OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PasswordRichEdit.pas',
   SDUCheckLst in 'SDeanUtils\SDUCheckLst.pas',
-  Shredder in 'SDeanSecurity\Shredder\Shredder.pas',
-  FileList_U in 'SDeanSecurity\Shredder\FileList_U.pas' {FileList_F},
   SDFilesystemCtrls in 'SDeanFilesystem\SDFilesystemCtrls.pas',
-  OTFEConsts_U in 'OTFE\OTFE\OTFEConsts_U.pas',
   MouseRNG in 'SDeanSecurity\MouseRNG\MouseRNG.pas',
   SDUDialogs in 'SDeanUtils\SDUDialogs.pas',
   HashAlg_U in 'Hash\HashAlg_U.pas',
@@ -93,49 +86,45 @@ contains
   OTFEBestCryptGetDriveLetter_U in 'OTFE\OTFEBestCrypt\OTFEBestCryptGetDriveLetter_U.pas' {GetDriveLetter_F},
   OTFEBestCryptStructures_U in 'OTFE\OTFEBestCrypt\OTFEBestCryptStructures_U.pas',
   OTFEE4MPasswordEntry_U in 'OTFE\OTFEE4M\OTFEE4MPasswordEntry_U.pas' {OTFEE4MPasswordEntry_F},
-  OTFEE4MScramDiskPasswordEntry_U in 'OTFE\OTFEE4M\OTFEE4MScramDiskPasswordEntry_U.pas' {OTFEE4MScramDiskPasswordEntry_F},
   OTFEE4MStructures_U in 'OTFE\OTFEE4M\OTFEE4MStructures_U.pas',
-  KeyboardDialog_U in 'SDeanSecurity\KeyboardDialog\KeyboardDialog_U.pas',
-  KeyboardEntryDlg_U in 'SDeanSecurity\KeyboardDialog\KeyboardEntryDlg_U.pas' {KeyboardEntryDlg},
   OTFEPGPDiskMounting_U in 'OTFE\OTFEPGPDisk\OTFEPGPDiskMounting_U.pas' {OTFEPGPDiskMounting_F},
   OTFEPGPDiskStructures_U in 'OTFE\OTFEPGPDisk\OTFEPGPDiskStructures_U.pas',
-  OTFEScramDiskPasswordEntry_U in 'OTFE\OTFEScramDisk\OTFEScramDiskPasswordEntry_U.pas' {OTFEScramDiskPasswordEntry_F},
   SdStructures_U in 'OTFE\OTFEScramDisk\SdStructures_U.pas',
   WindowsMissing_U in 'OTFE\OTFEScramDisk\WindowsMissing_U.pas',
   CrossCrypt_PasswordConfirm in 'OTFE\OTFECrossCrypt\CrossCrypt_PasswordConfirm.pas' {CrossCrypt_PasswordConfirm_F},
   OTFECrossCrypt_DriverAPI in 'OTFE\OTFECrossCrypt\OTFECrossCrypt_DriverAPI.pas',
   OTFECrossCrypt_PasswordConfirm in 'OTFE\OTFECrossCrypt\OTFECrossCrypt_PasswordConfirm.pas' {OTFECrossCrypt_PasswordConfirm_F},
   OTFECrossCrypt_PasswordEntry in 'OTFE\OTFECrossCrypt\OTFECrossCrypt_PasswordEntry.pas' {OTFECrossCrypt_PasswordEntry_F},
-  SDUForms in '..\..\src\PC\gui\common\SDUForms.pas' {SDUForm},
-  SDUFrames in '..\..\src\PC\gui\common\SDUFrames.pas' {SDUFrame: TFrame},
-  SDUGeneral in '..\..\src\PC\gui\common\SDeanUtils\SDUGeneral.pas',
-  SDUWinHTTP in '..\..\src\PC\gui\common\SDeanUtils\SDUWinHTTP.pas',
-  SDUWinHttp_API in '..\..\src\PC\gui\common\SDeanUtils\SDUWinHttp_API.pas',
-  SDUi18n in '..\..\src\PC\gui\common\SDeanUtils\SDUi18n.pas',
-  SDUGraphics in '..\..\src\PC\gui\common\SDeanUtils\SDUGraphics.pas',
-  SDUWindows64 in '..\..\src\PC\gui\common\SDeanUtils\SDUWindows64.pas',
-  SDUWindows in '..\..\src\PC\gui\common\SDeanUtils\SDUWindows.pas',
-  SDUObjectManager in '..\..\src\PC\gui\common\SDeanUtils\SDUObjectManager.pas',
-  SDUDirIterator_U in '..\..\src\PC\gui\common\SDeanUtils\SDUDirIterator_U.pas',
-  SDUEndianIntegers in '..\..\src\PC\gui\common\SDeanUtils\SDUEndianIntegers.pas',
-  SDUClasses in '..\..\src\PC\gui\common\SDeanUtils\SDUClasses.pas',
-  SDUSysUtils in '..\..\src\PC\gui\common\SDeanUtils\SDUSysUtils.pas',
-  SDPartitionImage in '..\..\src\PC\gui\common\Filesystem\SDPartitionImage.pas',
-  SDPartitionImage_File in '..\..\src\PC\gui\common\Filesystem\SDPartitionImage_File.pas',
-  SDFilesystem in '..\..\src\PC\gui\common\Filesystem\SDFilesystem.pas',
-  SDFilesystem_FAT in '..\..\src\PC\gui\common\Filesystem\SDFilesystem_FAT.pas',
-  SDUFilenameEdit_U in '..\..\src\PC\gui\common\SDeanUtils\SDUFilenameEdit_U.pas',
-  SDFilesystemCtrls_ColDetails in '..\..\src\PC\gui\common\Filesystem\SDFilesystemCtrls_ColDetails.pas' {SDFilesystemListView_ColDetails},
-  SDUDiskPropertiesDlg in '..\..\src\PC\gui\common\SDeanUtils\SDUDiskPropertiesDlg.pas' {SDUDiskPropertiesDialog},
-  SDUPartitionPropertiesDlg in '..\..\src\PC\gui\common\SDeanUtils\SDUPartitionPropertiesDlg.pas' {SDUPartitionPropertiesDialog},
-  SDUProgressDlg in '..\..\src\PC\gui\common\SDeanUtils\SDUProgressDlg.pas' {SDUProgressDialog},
-  OTFEFreeOTFE_VolumeFileAPI in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas',
+  SDUForms in 'P:\src\PC\gui\common\SDUForms.pas' {SDUForm},
+  SDUFrames in 'P:\src\PC\gui\common\SDUFrames.pas' {SDUFrame: TFrame},
+  SDUGeneral in 'P:\src\PC\gui\common\SDeanUtils\SDUGeneral.pas',
+  SDUWinHTTP in 'P:\src\PC\gui\common\SDeanUtils\SDUWinHTTP.pas',
+  SDUWinHttp_API in 'P:\src\PC\gui\common\SDeanUtils\SDUWinHttp_API.pas',
+  SDUi18n in 'P:\src\PC\gui\common\SDeanUtils\SDUi18n.pas',
+  SDUGraphics in 'P:\src\PC\gui\common\SDeanUtils\SDUGraphics.pas',
+  SDUWindows64 in 'P:\src\PC\gui\common\SDeanUtils\SDUWindows64.pas',
+  SDUWindows in 'P:\src\PC\gui\common\SDeanUtils\SDUWindows.pas',
+  SDUObjectManager in 'P:\src\PC\gui\common\SDeanUtils\SDUObjectManager.pas',
+  SDUDirIterator_U in 'P:\src\PC\gui\common\SDeanUtils\SDUDirIterator_U.pas',
+  SDUEndianIntegers in 'P:\src\PC\gui\common\SDeanUtils\SDUEndianIntegers.pas',
+  SDUClasses in 'P:\src\PC\gui\common\SDeanUtils\SDUClasses.pas',
+  SDUSysUtils in 'P:\src\PC\gui\common\SDeanUtils\SDUSysUtils.pas',
+  SDPartitionImage in 'P:\src\PC\gui\common\Filesystem\SDPartitionImage.pas',
+  SDPartitionImage_File in 'P:\src\PC\gui\common\Filesystem\SDPartitionImage_File.pas',
+  SDFilesystem in 'P:\src\PC\gui\common\Filesystem\SDFilesystem.pas',
+  SDFilesystem_FAT in 'P:\src\PC\gui\common\Filesystem\SDFilesystem_FAT.pas',
+  SDUFilenameEdit_U in 'P:\src\PC\gui\common\SDeanUtils\SDUFilenameEdit_U.pas',
+  SDFilesystemCtrls_ColDetails in 'P:\src\PC\gui\common\Filesystem\SDFilesystemCtrls_ColDetails.pas' {SDFilesystemListView_ColDetails},
+  SDUDiskPropertiesDlg in 'P:\src\PC\gui\common\SDeanUtils\SDUDiskPropertiesDlg.pas' {SDUDiskPropertiesDialog},
+  SDUPartitionPropertiesDlg in 'P:\src\PC\gui\common\SDeanUtils\SDUPartitionPropertiesDlg.pas' {SDUPartitionPropertiesDialog},
   PasswordRichEdit in 'SDeanSecurity\PasswordRichEdit\PasswordRichEdit.pas',
-  FreeOTFEDLLCypherAPI in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas',
-  FreeOTFEDLLHashAPI in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas',
-  FreeOTFEDLLMainAPI in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas',
-  OTFEFreeOTFE_cryptlib in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_cryptlib.pas',
-  OTFEFreeOTFE_DriverAPI in '..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas';
+  FreeOTFEDLLMainAPI in 'P:\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas',
+  CommonSettings in 'P:\src\PC\gui\common\CommonSettings.pas',
+  FreeOTFEDriverConsts in 'OTFE\OTFEFreeOTFE\FreeOTFEDriverConsts.pas',
+  DriverAPI in 'P:\src\PC\gui\common\OTFE\OTFEFreeOTFE\DriverAPI.pas',
+  lcDialogs in 'P:\src\PC\gui\common\SDeanUtils\lcDialogs.pas',
+  SDUMRUList in 'P:\src\PC\gui\common\SDeanUtils\SDUMRUList.pas',
+  dlgProgress in 'P:\src\PC\gui\common\SDeanUtils\dlgProgress.pas';
 
 end.
 

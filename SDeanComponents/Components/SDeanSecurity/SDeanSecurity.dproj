@@ -171,7 +171,7 @@
 				<Form>KeyboardEntryDlg</Form>
 			</DCCReference>
 			<DCCReference Include="Shredder\Shredder.pas"/>
-			<DCCReference Include="Shredder\FileList_U.pas">
+			<DCCReference Include="Shredder\frmFileList.pas">
 				<Form>FileList_F</Form>
 			</DCCReference>
 			<DCCReference Include="MouseRNG\MouseRNG.pas"/>

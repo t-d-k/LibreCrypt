@@ -149,8 +149,7 @@ begin
   OTFComponents[otfesCrossCrypt] := TOTFECrossCrypt.Create(nil);
   OTFComponents[otfesFreeOTFE  ] := TOTFEFreeOTFE.Create(nil);
 
-  for OTFSystemLoop:=low(OTFComponents) to high(OTFComponents) do
-    begin
+  for OTFSystemLoop:=low(OTFComponents) to high(OTFComponents) do     begin
     OTFEnabledComponents[OTFSystemLoop] := TRUE;
     end;
 
@@ -160,8 +159,7 @@ destructor TOTFEUnified.Destroy();
 var
   OTFSystemLoop: TOTFESystem;
 begin
-  for OTFSystemLoop:=low(OTFComponents) to high(OTFComponents) do
-    begin
+  for OTFSystemLoop:=low(OTFComponents) to high(OTFComponents) do     begin
     OTFComponents[OTFSystemLoop].Free();
     end;
 
@@ -175,17 +173,14 @@ var
 begin
   inherited;
 
-  for OTFSystemLoop:=low(OTFComponents) to high(OTFComponents) do
-    begin
-    if OTFEnabledComponents[OTFSystemLoop] then
-      begin
+  for OTFSystemLoop:=low(OTFComponents) to high(OTFComponents) do     begin
+    if OTFEnabledComponents[OTFSystemLoop] then      begin
       try
         OTFComponents[OTFSystemLoop].Active := status;
         OTFEnabledComponents[OTFSystemLoop] := OTFComponents[OTFSystemLoop].Active;
       except
         // Damn. Oh well, better disable this component
-        if OTFComponents[OTFSystemLoop].Active<>status then
-          begin
+        if OTFComponents[OTFSystemLoop].Active<>status then          begin
           OTFEnabledComponents[OTFSystemLoop] := FALSE;
           FLastErrCode := OTFComponents[OTFSystemLoop].LastErrorCode;
           end;
@@ -196,10 +191,8 @@ begin
   // If at least one of the components was set active, then we accept that this
   // unified component may also be set active
   FActive := FALSE;
-  for OTFSystemLoop:=low(OTFComponents) to high(OTFComponents) do
-    begin
-    if OTFComponents[OTFSystemLoop].Active then
-      begin
+  for OTFSystemLoop:=low(OTFComponents) to high(OTFComponents) do    begin
+    if OTFComponents[OTFSystemLoop].Active then      begin
       FActive := TRUE;
       break;
       end;
@@ -215,12 +208,9 @@ begin
   stlTemp := TStringList.Create();
   try
     stlTemp.Add(volumeFilename);
-    if Mount(stlTemp, mountedAs, readonly) then
-      begin
+    if Mount(stlTemp, mountedAs, readonly) then      begin
       Result := mountedAs[1];
-      end
-    else
-      begin
+      end    else      begin
       Result := #0;
       end;
   finally
@@ -246,14 +236,11 @@ begin
   lastMatched := otfesFreeOTFE; // Doesn't matter; this value should never be used
   if (volumeFilenames.Count>0) then
     begin
-    for OTFSystemLoop:=low(OTFComponents) to high(OTFComponents) do
-      begin
+    for OTFSystemLoop:=low(OTFComponents) to high(OTFComponents) do      begin
       matchingOTFE[OTFSystemLoop] := FALSE;
-      if OTFComponents[OTFSystemLoop].Active then
-        begin
+      if OTFComponents[OTFSystemLoop].Active then        begin
         matchingOTFE[OTFSystemLoop] := OTFComponents[OTFSystemLoop].IsEncryptedVolFile(volumeFilenames[0]);
-        if (matchingOTFE[OTFSystemLoop]) then
-          begin
+        if (matchingOTFE[OTFSystemLoop]) then          begin
           inc(cntMatched);
           lastMatched := OTFSystemLoop;
           end;

@@ -6,8 +6,8 @@ unit OTFEFreeOTFE_InstructionRichEdit;
  //
  // -----------------------------------------------------------------------------
  //
- // This control jsut sets some default values and sets them differently at design time - DO NOT USE. use TRichEdit instead 
-
+ // This control just sets some default values and sets them differently at design time - DO NOT USE. use TRichEdit instead
+            { TODO 1 -otdk -crefactor : replace instances with trichedit }
 
 interface
 

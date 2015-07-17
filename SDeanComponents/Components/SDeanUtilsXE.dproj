@@ -113,19 +113,10 @@
 			<DCCReference Include="SDeanUtils\SDUSystemTrayIcon.pas"/>
 			<DCCReference Include="SDeanUtils\SDUSystemTrayIconShellAPI.pas"/>
 			<DCCReference Include="SDeanUtils\Spin64.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverCommon.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverCypherAPI.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverHashAPI.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_InstructionRichEdit.pas"/>
-			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSAPI.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\OTFEFreeOTFE_PasswordRichEdit.pas"/>
 			<DCCReference Include="SDeanUtils\SDUCheckLst.pas"/>
-			<DCCReference Include="SDeanSecurity\Shredder\Shredder.pas"/>
-			<DCCReference Include="SDeanSecurity\Shredder\FileList_U.pas">
-				<Form>FileList_F</Form>
-			</DCCReference>
 			<DCCReference Include="SDeanFilesystem\SDFilesystemCtrls.pas"/>
-			<DCCReference Include="OTFE\OTFE\OTFEConsts_U.pas"/>
 			<DCCReference Include="SDeanSecurity\MouseRNG\MouseRNG.pas"/>
 			<DCCReference Include="SDeanUtils\SDUDialogs.pas"/>
 			<DCCReference Include="Hash\HashAlg_U.pas"/>
@@ -163,21 +154,11 @@
 			<DCCReference Include="OTFE\OTFEE4M\OTFEE4MPasswordEntry_U.pas">
 				<Form>OTFEE4MPasswordEntry_F</Form>
 			</DCCReference>
-			<DCCReference Include="OTFE\OTFEE4M\OTFEE4MScramDiskPasswordEntry_U.pas">
-				<Form>OTFEE4MScramDiskPasswordEntry_F</Form>
-			</DCCReference>
 			<DCCReference Include="OTFE\OTFEE4M\OTFEE4MStructures_U.pas"/>
-			<DCCReference Include="SDeanSecurity\KeyboardDialog\KeyboardDialog_U.pas"/>
-			<DCCReference Include="SDeanSecurity\KeyboardDialog\KeyboardEntryDlg_U.pas">
-				<Form>KeyboardEntryDlg</Form>
-			</DCCReference>
 			<DCCReference Include="OTFE\OTFEPGPDisk\OTFEPGPDiskMounting_U.pas">
 				<Form>OTFEPGPDiskMounting_F</Form>
 			</DCCReference>
 			<DCCReference Include="OTFE\OTFEPGPDisk\OTFEPGPDiskStructures_U.pas"/>
-			<DCCReference Include="OTFE\OTFEScramDisk\OTFEScramDiskPasswordEntry_U.pas">
-				<Form>OTFEScramDiskPasswordEntry_F</Form>
-			</DCCReference>
 			<DCCReference Include="OTFE\OTFEScramDisk\SdStructures_U.pas"/>
 			<DCCReference Include="OTFE\OTFEScramDisk\WindowsMissing_U.pas"/>
 			<DCCReference Include="OTFE\OTFECrossCrypt\CrossCrypt_PasswordConfirm.pas">
@@ -190,49 +171,47 @@
 			<DCCReference Include="OTFE\OTFECrossCrypt\OTFECrossCrypt_PasswordEntry.pas">
 				<Form>OTFECrossCrypt_PasswordEntry_F</Form>
 			</DCCReference>
-			<DCCReference Include="..\..\src\PC\gui\common\SDUForms.pas">
+			<DCCReference Include="P:\src\PC\gui\common\SDUForms.pas">
 				<Form>SDUForm</Form>
 			</DCCReference>
-			<DCCReference Include="..\..\src\PC\gui\common\SDUFrames.pas">
+			<DCCReference Include="P:\src\PC\gui\common\SDUFrames.pas">
 				<Form>SDUFrame</Form>
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUGeneral.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUWinHTTP.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUWinHttp_API.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUi18n.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUGraphics.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUWindows64.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUWindows.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUObjectManager.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUDirIterator_U.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUEndianIntegers.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUClasses.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUSysUtils.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\Filesystem\SDPartitionImage.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\Filesystem\SDPartitionImage_File.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\Filesystem\SDFilesystem.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\Filesystem\SDFilesystem_FAT.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUFilenameEdit_U.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\Filesystem\SDFilesystemCtrls_ColDetails.pas">
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUGeneral.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUWinHTTP.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUWinHttp_API.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUi18n.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUGraphics.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUWindows64.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUWindows.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUObjectManager.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUDirIterator_U.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUEndianIntegers.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUClasses.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUSysUtils.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\Filesystem\SDPartitionImage.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\Filesystem\SDPartitionImage_File.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\Filesystem\SDFilesystem.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\Filesystem\SDFilesystem_FAT.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUFilenameEdit_U.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\Filesystem\SDFilesystemCtrls_ColDetails.pas">
 				<Form>SDFilesystemListView_ColDetails</Form>
 			</DCCReference>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUDiskPropertiesDlg.pas">
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUDiskPropertiesDlg.pas">
 				<Form>SDUDiskPropertiesDialog</Form>
 			</DCCReference>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUPartitionPropertiesDlg.pas">
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUPartitionPropertiesDlg.pas">
 				<Form>SDUPartitionPropertiesDialog</Form>
 			</DCCReference>
-			<DCCReference Include="..\..\src\PC\gui\common\SDeanUtils\SDUProgressDlg.pas">
-				<Form>SDUProgressDialog</Form>
-			</DCCReference>
-			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_VolumeFileAPI.pas"/>
 			<DCCReference Include="SDeanSecurity\PasswordRichEdit\PasswordRichEdit.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_cryptlib.pas"/>
-			<DCCReference Include="..\..\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverAPI.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\CommonSettings.pas"/>
+			<DCCReference Include="OTFE\OTFEFreeOTFE\FreeOTFEDriverConsts.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\OTFE\OTFEFreeOTFE\DriverAPI.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\lcDialogs.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUMRUList.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\dlgProgress.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
@@ -288,6 +267,7 @@
 					<Platform value="OSX32">False</Platform>
 					<Platform value="Win32">True</Platform>
 				</Platforms>
+				<ModelSupport>False</ModelSupport>
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>
 		</ProjectExtensions>
