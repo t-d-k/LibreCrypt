@@ -150,7 +150,7 @@ _Warning_:Once a hidden container has been made, subsequently saving data to the
 Once created in this way you should only open the outer container as read-only, and never save any files to the outer container.
 </p>
 
-Please see the [Plausible Deniability](plausible_deniability.html) section for further information on the practical uses and considerations of hidden Containers.
+Please see the [Plausible Deniability](plausible_deniability.md) section for further information on the practical uses and considerations of hidden Containers.
 
 * * *
  <!-- ---------------------------------------------------------------------------- -->
@@ -236,7 +236,7 @@ Padding also reduces the amount of information available to an attacker with res
 When creating a new container the file or partition is first overwritten with psuedo-random data. This prevents any attacker from telling how much data is stored in the container and whether there is any hidden container. This data is known as "chaff".
 
 Writing the 'chaff' can take some time - particularly with flash drives.
-Please see [plausible deniability](plausible_deniability.html) for details.
+Please see [plausible deniability](plausible_deniability.md) for details.
 
 * * *
 
@@ -245,7 +245,7 @@ Please see [plausible deniability](plausible_deniability.html) for details.
 ### Password Entry: Advanced Options
 </A>
 
-_Note: This section only covers the password entry dialog shown when opening LibreCrypt volumes. For opening Linux volumes, please see the section on [Linux volumes](Linux_volumes.html)._
+_Note: This section only covers the password entry dialog shown when opening LibreCrypt volumes. For opening Linux volumes, please see the section on [Linux volumes](Linux_volumes.md)._
 
 ![MountAdvanced](https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/docs/images/screenshots/PC/MountAdvanced.png)
  
@@ -278,7 +278,7 @@ By default, this is set to 2048 iterations - the same default number used when c
 ##### PKCS#11 secret key
 </A>
 
-This option is only available if PKCS#11 support is enabled (see the section on [Security Token/Smartcard Support](pkcs11_support.html) for more information on how to use this setting).
+This option is only available if PKCS#11 support is enabled (see the section on [Security Token/Smartcard Support](pkcs11_support.md) for more information on how to use this setting).
 
 <A NAME="level_4_heading_11">
 

@@ -111,7 +111,7 @@ If you create a volume without using 'chaff' and at a later date you want to add
 1. Click "OK"
 1. Click "Yes" to confirm you wish to proceed
 		
-At this point, the free space will be overwritten. Depending on your hardware, _this process may take some time_ . To create a hidden volume, dismount the drive and carry out the normal procedure for creating a hidden volume (see the [Advanced Topics](advanced_topics.html) section for instructions on how to do this).	
+At this point, the free space will be overwritten. Depending on your hardware, _this process may take some time_ . To create a hidden volume, dismount the drive and carry out the normal procedure for creating a hidden volume (see the [Advanced Topics](advanced_topics.md) section for instructions on how to do this).	
 		
 Note this will miss overwriting parts of the volume which the filesystem reserves, it is also slower than using 'chaff' to start with (as the data is encrypted twice). 
 

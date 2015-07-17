@@ -26,9 +26,9 @@ The latest version of this document can be found at the [LibreCrypt project site
             
 ## Fault/Bug Reporting
 
-Although LibreCrypt should be pretty stable and have no faults, it's always possible that you may find *something* not quite right. In these cases, it would be *very much appreciated* if you could report it as shown in the [contact details](contact_details.html).
+Although LibreCrypt should be pretty stable and have no faults, it's always possible that you may find *something* not quite right. In these cases, it would be *very much appreciated* if you could report it as shown in the [contact details](contact_details.md).
 
-If you have recently upgraded to a newer version of LibreCrypt, please could you ensure that you have followed the upgrade procedure *exactly* before reporting a fault. (See [Installation and Upgrading from a Previous Version](installation_and_upgrading__PC.html) section)
+If you have recently upgraded to a newer version of LibreCrypt, please could you ensure that you have followed the upgrade procedure *exactly* before reporting a fault. (See [Installation and Upgrading from a Previous Version](installation_and_upgrading__PC.md) section)
 
 When reporting a fault with LibreCrypt, please include as much detail as possible, preferably including as much of the following as possible (Note: Not all of the following may apply):
 

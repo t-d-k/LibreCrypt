@@ -28,7 +28,7 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 
 ## Miscellaneous Notes
 
-* Please, do _read the documentation_ (the [FAQ section](FAQ.html), in particular) _before_ emailing questions! The [FAQ section](FAQ.html) in particular may well have the answer you're looking for.
+* Please, do _read the documentation_ (the [FAQ section](FAQ.md), in particular) _before_ emailing questions! The [FAQ section](FAQ.md) in particular may well have the answer you're looking for.
 * Both versions of LibreCrypt, and LibreCrypt Explorer, are fully compatible with one another.
 * From the main window, doubleclicking on a mounted drive will launch explorer on that drive. Rightclicking brings up a context menu.
 * After creating a new container it is recommended that you make a backup of the volume's CDB.

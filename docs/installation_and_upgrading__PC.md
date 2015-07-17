@@ -42,7 +42,7 @@ If you wish to use LibreCrypt in portable mode, you do **not** have to carry out
 3. Click on the menu Tools->Allow Test-signed Drivers.
 4. Reboot.
 
-Then you can then start using LibreCrypt in [Portable Mode](portable_mode.html).
+Then you can then start using LibreCrypt in [Portable Mode](portable_mode.md).
 
 Alternatively, to install the app, which will allow non-administrator users to create and open containers, run _InstallLibreCrypt\_vNN.exe_ as described below.
 
@@ -58,7 +58,7 @@ A manual installation procedure is also detailed below.
 1. Run InstallLibreCrypt_vNN.exe, accept any prompts.
 1. After prompting you for some simple details, LibreCrypt will be installed on your PC.
 1. Reboot your PC after the installation is complete.
-1. You will see the text that Windows is in 'Test Mode' on the desktop - to remove this see [here](impact_of_kernel_driver_signing.html). 
+1. You will see the text that Windows is in 'Test Mode' on the desktop - to remove this see [here](impact_of_kernel_driver_signing.md). 
 1. Right click on the LibreCrypt icon and click "run as Administrator" - you will see a dialog saying "Driver Installation Successful" (the first time LibreCrypt is run it installs its drivers).
 1. After that LibreCrypt may be run normally as a non-administrator.
 
@@ -110,7 +110,7 @@ A number of the cyphers (e.g. RC6 and Twofish) have multiple drivers; these refl
 ## Upgrading from a Previous Version, or from FreeOTFE
 </A>
 
-Because of potential changes within the driver API, you must ensure that you completely uninstall your existing LibreCrypt installation before installing and using the latest version. Please see the section on [uninstalling](uninstalling.html) for details on how to do this.
+Because of potential changes within the driver API, you must ensure that you completely uninstall your existing LibreCrypt installation before installing and using the latest version. Please see the section on [uninstalling](uninstalling.md) for details on how to do this.
 This does not apply if upgrading from FreeOTFE 5.2 to LibreCrypt 6.0, as the driver API is the same.
 
 <A NAME="level_5_heading_1">

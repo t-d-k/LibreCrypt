@@ -49,7 +49,7 @@ After it has been installed, run it the first time as administrator; this will i
 
 After that, it may be run as a non-administrator.
 
-Please see the section on [Installation and Upgrading](installation_and_upgrading__PC.html) for more instructions.
+Please see the section on [Installation and Upgrading](installation_and_upgrading__PC.md) for more instructions.
 
 <A NAME="port">
 ### Portable mode
@@ -58,7 +58,7 @@ Please see the section on [Installation and Upgrading](installation_and_upgradin
 Before LibreCrypt Portable can be used, it must be unzipped from the portable zip file.
 It needs to be run as administrator, in order to install the drivers in 'portable mode'. 
 
-Please see the section on [Installation and Upgrading](installation_and_upgrading__PC.html) for more instructions.
+Please see the section on [Installation and Upgrading](installation_and_upgrading__PC.md) for more instructions.
 
 * * * 
 <A NAME="level_3_heading_2">
@@ -128,7 +128,7 @@ Do not simply copy an existing volume file to create a new one - even if you cha
 
 
 <SPAN CLASS="security_tip">
-By default, to increase security, as part of creating a volume it is overwritten with secure pseudo-random data. However, this process can take some time and may be skipped if required. This option is on the 'chaff' tab of the advanced dialog. See section on [plausible deniability](plausible_deniability.html) for further details  
+By default, to increase security, as part of creating a volume it is overwritten with secure pseudo-random data. However, this process can take some time and may be skipped if required. This option is on the 'chaff' tab of the advanced dialog. See section on [plausible deniability](plausible_deniability.md) for further details  
 </SPAN>
 
 After clicking 'OK' on the Container creation dialog, you will see a Windows 'format drive' dialog. Use this to format the virtual drive.
@@ -168,7 +168,7 @@ You will then be able to choose which container you want to open; do so, and cli
 
 Enter your Container's keyphrase, and click "OK". If the correct keyphrase has been entered, the volume will be opened and shown in the main LibreCrypt window.
  
-<SPAN class="tip"> To reduce the time taken LibreCrypt spends opening boxes, see the FAQ [How can I speed LibreCrypt up when mounting my volumes?](FAQ.html#bm)  </SPAN>
+<SPAN class="tip"> To reduce the time taken LibreCrypt spends opening boxes, see the FAQ [How can I speed LibreCrypt up when mounting my volumes?](FAQ.md#bm)  </SPAN>
 
 Once opened, a virtual drive can be used in the same way _as any other drive_ (e.g. they will appear in Windows Explorer and in Open/Save dialogs shown by applications); transparently encrypting and decrypting your files as and when needed.
 

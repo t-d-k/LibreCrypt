@@ -28,7 +28,7 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 
 ### Technical Details: LibreCrypt Critical Data Block (CDB) Layout (CDB Format ID 2)
 
-<font color="RED">*NOTE: This CDB layout is *_obsolete_*; all new volumes should use the [latest CDB format](technical_details__FreeOTFE_CDB_layout_format_3.html).*</font>
+<font color="RED">*NOTE: This CDB layout is *_obsolete_*; all new volumes should use the [latest CDB format](technical_details__FreeOTFE_CDB_layout_format_3.md).*</font>
 
 <A NAME="level_4_heading_1">
 #### Overview

@@ -271,7 +271,7 @@ Note there is a maintained fork of TrueCrypt called VeraCrypt.
 <a name="al"></a>
 *Q: How can I trust LibreCrypt?*
 
-*A:* Review the source code to your satisfaction, and build your own (see section [Building LibreCrypt](technical_details__build_notes.html))
+*A:* Review the source code to your satisfaction, and build your own (see section [Building LibreCrypt](technical_details__build_notes.md))
 
 This is **strongly recommended**, and the best way of ensuring that the software is not compromised.
 
@@ -411,7 +411,7 @@ Most users can simply accept the default algorithms offered, which provides a fa
 
 Using more than one RNG increases the security offered by LibreCrypt as the combined random data generated will be at least as random as the most random RNG selected. Should one of the RNGs subsequently be found to be weak (i.e. producing data that is not as random as it should be), the random data used will still be as strong as the strongest RNG used.
 
-See the [Technical Details: Random Number Generators (RNGs)](technical_details__RNGs.html) section for further information.
+See the [Technical Details: Random Number Generators (RNGs)](technical_details__RNGs.md) section for further information.
 
 * * *
 
@@ -560,7 +560,7 @@ For this reason it is necessary to create an outer container containing files yo
 Once the outer container has been created an inner 'hidden' container can be created to hold the data you actually wish to hide.
 LibreCrypt supports an arbitrary number of nested hidden boxes.
 
-See the section on ["Plausible Deniability"](plausible_deniability.html) for technical details.
+See the section on ["Plausible Deniability"](plausible_deniability.md) for technical details.
 
  * * *
  <a name="aq_1"></a>
@@ -669,7 +669,7 @@ Yes, though there is nothing to be gained from compressing encrypted data, as it
 *Q: What hash algorithms does LibreCrypt use?*
 
 *A:*
-A full list of the hash algorithms used by LibreCrypt can be found on the [introduction page](description.html)
+A full list of the hash algorithms used by LibreCrypt can be found on the [introduction page](description.md)
 
 * * *
 
@@ -677,7 +677,7 @@ A full list of the hash algorithms used by LibreCrypt can be found on the [intro
 *Q: What encryption algorithms does LibreCrypt use?*
 
 *A:*
-A full list of the cyphers and cypher modes used by LibreCrypt can be found on the [introduction page](description.html)
+A full list of the cyphers and cypher modes used by LibreCrypt can be found on the [introduction page](description.md)
 
 * * *
 
@@ -686,7 +686,7 @@ A full list of the cyphers and cypher modes used by LibreCrypt can be found on t
 
 *A:* With the exception of the NULL and XOR cyphers, LibreCrypt offers CBC, LRW and XTS modes, and has the flexibility for other modes to be easily added by simply changing drivers.
 
-A full list of the cyphers and cypher modes used by LibreCrypt can be found on the [introduction page](description.html)
+A full list of the cyphers and cypher modes used by LibreCrypt can be found on the [introduction page](description.md)
 
 * * *
 
@@ -847,7 +847,7 @@ Furthermore, because this attack may allow whatever was in the computer's memory
 <a name="ei"></a>
 *Q: Does LibreCrypt have any form of password recovery?*
 
-*A:* Yes; LibreCrypt keyfiles can be used to provide a form of password recovery; see the [Getting Started Guide](getting_started.html)
+*A:* Yes; LibreCrypt keyfiles can be used to provide a form of password recovery; see the [Getting Started Guide](getting_started.md)
 
 * * *
 
@@ -980,7 +980,7 @@ The ".u3p" file is simply a ZIP archive which has been renamed; it may be rename
 *Q: When dismounting a file based volume, what does LibreCrypt do with the file timestamps?*
 
 *A:*
-By default, when mounting file based volumes, LibreCrypt stores the volume file's timestamps, and resets them back again after dismounting. This is carried out for security reasons (see section on [plausible deniability](plausible_deniability.html)).
+By default, when mounting file based volumes, LibreCrypt stores the volume file's timestamps, and resets them back again after dismounting. This is carried out for security reasons (see section on [plausible deniability](plausible_deniability.md)).
 
 This functionality can be turned off if needed (e.g. to assist backup processes; see FAQ "[How do I backup an encrypted volume?](#et)") by turning off the "Revert volume timestamps on dismount" option on the Options dialog ("View | Options").
 
@@ -995,9 +995,9 @@ by detecting large files with a high amount of entropy and a file size that is a
 
 "Padding" is additional (random) data added to the end of the volume, and is used to prevent detection of containers by automated volume-finding tools which only carry out a cursory search for volumes, and rely on the size of files found.
 
-Furthermore, padding also reduces the amount of information an attacker has about a volume, by preventing reliable detection of the size of the mounted volume (subject to the mounted volume being overwritten as described in the [Plausible Deniability](plausible_deniability.html) section).
+Furthermore, padding also reduces the amount of information an attacker has about a volume, by preventing reliable detection of the size of the mounted volume (subject to the mounted volume being overwritten as described in the [Plausible Deniability](plausible_deniability.md) section).
 
-Padding will not prevent a reasonably knowledgeable IT person from being able to reasonably identify an encrypted volume as such - like any security mechanism, padding is simply another tool which would be employed from a larger toolbox. For this reason, it is **not** recommended that padding be relied upon to help secure data against an attacker, and users considering using padding may benefit from reading the section on ["Plausible Deniability"](plausible_deniability.html)
+Padding will not prevent a reasonably knowledgeable IT person from being able to reasonably identify an encrypted volume as such - like any security mechanism, padding is simply another tool which would be employed from a larger toolbox. For this reason, it is **not** recommended that padding be relied upon to help secure data against an attacker, and users considering using padding may benefit from reading the section on ["Plausible Deniability"](plausible_deniability.md)
 
 * * *
 
@@ -1013,7 +1013,7 @@ Padding takes up additional storage on your hard drive beyond that required by t
 *Q: Where can I get dictionary/wordlist files from?*
 
 *A:*
-A list of suitable dictionary files can be found in the ["Advanced Topics"](advanced_topics.html) section, under "Dictionary Files".
+A list of suitable dictionary files can be found in the ["Advanced Topics"](advanced_topics.md) section, under "Dictionary Files".
 
 * * *
 
@@ -1120,7 +1120,7 @@ To prevent the prompt appearing, please uninstall one of the offending drivers.
 
 *A:* No - Although Administrator privileges are needed to install the FreeOTFE drivers, or start/stop portable mode.
 
-To allow "standard" (non Administrator) users to use LibreCrypt, please install the LibreCrypt drivers by following the instructions in the [Installation and Upgrading](installation_and_upgrading__PC.html) section. After which, any user will be free to use LibreCrypt (e.g. to create, mount, dismount and use encrypted volumes)
+To allow "standard" (non Administrator) users to use LibreCrypt, please install the LibreCrypt drivers by following the instructions in the [Installation and Upgrading](installation_and_upgrading__PC.md) section. After which, any user will be free to use LibreCrypt (e.g. to create, mount, dismount and use encrypted volumes)
 
 To access an encrypted volume on a PC which **doesn't** have LibreCrypt installed, and on which you **don't** have Administrator privileges, please use LibreCrypt Explorer.
 
@@ -1170,7 +1170,7 @@ LibreCrypt Explorer however, can be used under Linux when run under [Wine](http:
 
 *A:* By creating a shortcut with suitable command line parameters in your "Startup" directory (click the MS Windows "Start" button, then go to "Programs | Startup"), LibreCrypt can mount volume files after your system starts up/you login.
 
-See the [Command Line Interface](command_line.html) section for full details of LibreCrypt's command line options.
+See the [Command Line Interface](command_line.md) section for full details of LibreCrypt's command line options.
 
 * * *
 
@@ -1204,7 +1204,7 @@ When it starts up, LibreCrypt will attempt to locate this file and read in your 
 <a name="ch"></a>
 *Q: After associating LibreCrypt with ".vol" files from the options dialog, I double-clicked my ".vol" volume file, and nothing happened!*
 
-*A:* The LibreCrypt drivers must be running in order for you to mount a volume by double-clicking on it. Please either install the LibreCrypt drivers (see the [portable mode](installation_and_upgrading__PC.html)installation section, or start LibreCrypt's portable mode ([see](portable_mode.html) section).
+*A:* The LibreCrypt drivers must be running in order for you to mount a volume by double-clicking on it. Please either install the LibreCrypt drivers (see the [portable mode](installation_and_upgrading__PC.md)installation section, or start LibreCrypt's portable mode ([see](portable_mode.md) section).
 
 * * *
 
@@ -1302,7 +1302,7 @@ The above systems have limitations which prevent them from "seeing" mounted volu
 Q: Can I use LibreCrypt with my USB flash drive?
 
 *A:* Yes
-LibreCrypt has been designed to be portable; see the section on [Portable Mode](portable_mode.html) for details on which files to copy onto your USB drive. Alternatively, insert your USB drive and select the "Tools | Copy LibreCrypt to USB drive..." menu-item to automatically copy LibreCrypt to your USB drive.
+LibreCrypt has been designed to be portable; see the section on [Portable Mode](portable_mode.md) for details on which files to copy onto your USB drive. Alternatively, insert your USB drive and select the "Tools | Copy LibreCrypt to USB drive..." menu-item to automatically copy LibreCrypt to your USB drive.
 
 You can then use LibreCrypt on any PC - even if it doesn't have LibreCrypt installed.
 
@@ -1373,7 +1373,7 @@ In order to use LibreCrypt in this way, you must first either
 * Start LibreCrypt's portable mode on the **host PC**, or
 * Install and start the LibreCrypt drivers on the **host PC**
 
-(See the [Portable mode](portable_mode.html) and [Installation](installation_and_upgrading__PC.html) sections for further information
+(See the [Portable mode](portable_mode.md) and [Installation](installation_and_upgrading__PC.md) sections for further information
 
 When running MojoPac, your MojoPac device (i.e. your USB drive, iPod, etc) will appear as **both** the removable drive it is normally mounted as on the host PC (e.g. D:, E:), and as your MojoPac's C: drive.
 
@@ -1548,7 +1548,7 @@ By displaying additional information, there is less likelihood of creating a vol
 
 *A:* The more important thing to do in this kind of situation is *STOP* and *THINK*. Before attempting any kind of recovery, understand what you are going to do and how you are going to do it - **before** doing  anything.
 
-For safety reasons, LibreCrypt only writes the initial 512 byte CDB to the start of the disk/partition when creating a  new disk/partition based volume (see the [Plausible Deniability](plausible_deniability.html) section for  how to initialize a volume by overwriting it). If you haven't yet mounted the volume and started writing data to it,  or overwriting it, you have a good chance of getting your files back.
+For safety reasons, LibreCrypt only writes the initial 512 byte CDB to the start of the disk/partition when creating a  new disk/partition based volume (see the [Plausible Deniability](plausible_deniability.md) section for  how to initialize a volume by overwriting it). If you haven't yet mounted the volume and started writing data to it,  or overwriting it, you have a good chance of getting your files back.
 
 Obviously, if you have written data to the encrypted volume (e.g. by selecting one of the overwrite options or  copying files to it), the amount you will be able to recover will decrease.
 
@@ -1597,7 +1597,7 @@ To encrypt a whole disk, proceed as though creating an encrypted partition and s
 
 *A:* Please ensure that you have configured LibreCrypt to use your token via the "PKCS#11" tab on the Options dialog ("View | Options...")
 
-See the section on [Security Token/Smartcard Support](pkcs11_support.html) for further details
+See the section on [Security Token/Smartcard Support](pkcs11_support.md) for further details
 
 * * *
 
@@ -1702,7 +1702,7 @@ These prompts form part of Windows Vista's "User Access Control" (UAC) system, w
 
 **(This FAQ is only applicable when running under Windows Vista and later; it is not relevant for other operating systems)**
 
-*A:* The 64 bit versions of MS Windows Vista and MS Windows 7 both use driver signing; please see the section on installing LibreCrypt on [Windows Vista x64 and Windows 7 x64](impact_of_kernel_driver_signing.html)
+*A:* The 64 bit versions of MS Windows Vista and MS Windows 7 both use driver signing; please see the section on installing LibreCrypt on [Windows Vista x64 and Windows 7 x64](impact_of_kernel_driver_signing.md)
 
 * * *
 

@@ -37,7 +37,7 @@ Please note that:
 * This list is *_not exhaustive_* - many more tokens are supported than are listed here.
 </OL>
 
-If you are using a token which isn't mentioned on the list below, please check with your token supplier as to what to enter, and [get in touch](contact_details.html) to have it added to the list.
+If you are using a token which isn't mentioned on the list below, please check with your token supplier as to what to enter, and [get in touch](contact_details.md) to have it added to the list.
 
 <TABLE BORDER=1>
 <TR>

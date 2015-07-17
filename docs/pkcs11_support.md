@@ -74,7 +74,7 @@ The menu-item under the "Tools" menu should then be enabled, as should
 the options (when appropriate) on the password entry dialog when
 mounting LibreCrypt volumes
 
-A list of driver library names supplied by common manufacturers may be found at [Appendix E: PKCS#11 Driver Libraries](pkcs11_drivers.html)
+A list of driver library names supplied by common manufacturers may be found at [Appendix E: PKCS#11 Driver Libraries](pkcs11_drivers.md)
 
 * * * 
 <A NAME="level_3_heading_2">

@@ -34,10 +34,10 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 Please select which CDB Format you would like information on:
 
 <UL>
-* [CDB Format ID 1](technical_details__FreeOTFE_CDB_layout_format_1.html) _(obsolete)_
-* [CDB Format ID 2](technical_details__FreeOTFE_CDB_layout_format_2.html) _(obsolete)_
-* [CDB Format ID 3](technical_details__FreeOTFE_CDB_layout_format_3.html) _(obsolete)_
-* [CDB Format ID 4](technical_details__FreeOTFE_CDB_layout_format_4.html)
+* [CDB Format ID 1](technical_details__FreeOTFE_CDB_layout_format_1.md) _(obsolete)_
+* [CDB Format ID 2](technical_details__FreeOTFE_CDB_layout_format_2.md) _(obsolete)_
+* [CDB Format ID 3](technical_details__FreeOTFE_CDB_layout_format_3.md) _(obsolete)_
+* [CDB Format ID 4](technical_details__FreeOTFE_CDB_layout_format_4.md)
 </UL>
 
 

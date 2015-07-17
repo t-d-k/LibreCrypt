@@ -33,7 +33,7 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 
 Both of the above issues are currently under investigation, and should be fixed in a later version
 
-If you believe that you have found a bug in LibreCrypt, it would be **very much appreciated** if you could get in touch and report it; please see the section on: [Fault/Bug Reporting](fault_reporting.html)
+If you believe that you have found a bug in LibreCrypt, it would be **very much appreciated** if you could get in touch and report it; please see the section on: [Fault/Bug Reporting](fault_reporting.md)
 
 
 
