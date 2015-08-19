@@ -113,7 +113,6 @@ contains
   SDPartitionImage_File in 'P:\src\PC\gui\common\Filesystem\SDPartitionImage_File.pas',
   SDFilesystem in 'P:\src\PC\gui\common\Filesystem\SDFilesystem.pas',
   SDFilesystem_FAT in 'P:\src\PC\gui\common\Filesystem\SDFilesystem_FAT.pas',
-  SDUFilenameEdit_U in 'P:\src\PC\gui\common\SDeanUtils\SDUFilenameEdit_U.pas',
   SDFilesystemCtrls_ColDetails in 'P:\src\PC\gui\common\Filesystem\SDFilesystemCtrls_ColDetails.pas' {SDFilesystemListView_ColDetails},
   SDUDiskPropertiesDlg in 'P:\src\PC\gui\common\SDeanUtils\SDUDiskPropertiesDlg.pas' {SDUDiskPropertiesDialog},
   SDUPartitionPropertiesDlg in 'P:\src\PC\gui\common\SDeanUtils\SDUPartitionPropertiesDlg.pas' {SDUPartitionPropertiesDialog},

@@ -25,6 +25,10 @@ object frmMain: TfrmMain
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Overwrite drive free space'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox1: TGroupBox
         Left = 8
         Top = 20
@@ -68,6 +72,10 @@ object frmMain: TfrmMain
     object TabSheet2: TTabSheet
       Caption = 'Overwrite file slack'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox2: TGroupBox
         Left = 8
         Top = 8
@@ -155,6 +163,10 @@ object frmMain: TfrmMain
     object TabSheet4: TTabSheet
       Caption = 'Destroy file or dir'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 8
         Top = 20
@@ -224,6 +236,10 @@ object frmMain: TfrmMain
     object TabSheet5: TTabSheet
       Caption = 'Destroy registry key'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox5: TGroupBox
         Left = 8
         Top = 20
@@ -273,20 +289,6 @@ object frmMain: TfrmMain
     Caption = 'Close'
     TabOrder = 1
     OnClick = pbCloseClick
-  end
-  object ShredderObj: TShredder
-    FileDirUseInt = True
-    FreeUseInt = True
-    ExtShredFilesThenDir = False
-    IntFirstBytes = 1048576
-    IntGutmann = False
-    IntPasses = 1
-    IntFreeSpcFileSize = 52428800
-    IntFreeSpcSmartFileSize = True
-    IntFreeSpcFileCreationBlkSize = 1048576
-    IntFileBufferSize = 1048576
-    Left = 264
-    Top = 284
   end
   object OpenDialog1: TOpenDialog
     Left = 228

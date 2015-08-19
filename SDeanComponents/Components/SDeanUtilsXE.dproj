@@ -194,7 +194,6 @@
 			<DCCReference Include="P:\src\PC\gui\common\Filesystem\SDPartitionImage_File.pas"/>
 			<DCCReference Include="P:\src\PC\gui\common\Filesystem\SDFilesystem.pas"/>
 			<DCCReference Include="P:\src\PC\gui\common\Filesystem\SDFilesystem_FAT.pas"/>
-			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUFilenameEdit_U.pas"/>
 			<DCCReference Include="P:\src\PC\gui\common\Filesystem\SDFilesystemCtrls_ColDetails.pas">
 				<Form>SDFilesystemListView_ColDetails</Form>
 			</DCCReference>
@@ -259,7 +258,11 @@
 						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
 						<VersionInfoKeys Name="Comments"/>
 					</VersionInfoKeys>
-					<Excluded_Packages/>
+					<Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\9.0\Bpl\PBPreview_pack.bpl">(untitled)</Excluded_Packages>
+						<Excluded_Packages Name="C:\Program Files (x86)\FastReports\LibD16\dclfrxDB16.bpl">FastReport 4.0 DB Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+					</Excluded_Packages>
 				</Delphi.Personality>
 				<Deployment/>
 				<Platforms>
