@@ -5,8 +5,6 @@ interface
 uses
   Classes, SDUGeneral, SyncObjs, SysUtils, Windows;
 
-const
-  DEFAULT_SECTOR_SIZE = 512;
 
 type
   EPartitionError = class (Exception);
@@ -57,6 +55,9 @@ implementation
 
 uses
   SDUClasses;
+
+const
+  DEFAULT_SECTOR_SIZE = 512;
 
 constructor TSDPartitionImage.Create();
 begin

@@ -1,15 +1,21 @@
 unit fmeLcOptions;
-
+OBSOLETE - mechanism not used
 interface
 
 uses
-  Classes, fmeBaseOptions,
-  CommonSettings,
-  Controls, Dialogs, Forms,
-  MainSettings, Graphics, Messages, SysUtils, Variants, Windows;
+     //delphi & libs
+      Classes,Graphics, Messages, SysUtils, Variants, Windows, Controls, Dialogs, Forms,
+  //sdu & LibreCrypt utils
+     CommonSettings,
+
+  MainSettings,
+   // LibreCrypt forms
+
+  fmeBaseOptions
+   ;
 
 type
-  TfmeLcOptions = class (TfmeBaseOptions )
+  TfmeLcOptions = class (TFrame )
   PROTECTED
     procedure _ReadSettings(config: TMainSettings); VIRTUAL; ABSTRACT;
     procedure _WriteSettings(config: TMainSettings); VIRTUAL; ABSTRACT;

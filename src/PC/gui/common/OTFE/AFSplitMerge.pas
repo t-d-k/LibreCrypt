@@ -14,7 +14,7 @@ uses
   //delphi
   //3rd party
   //SDU ,lclibs
-  SDUGeneral,
+  lcTypes,
   lcDebugLog
   //librecrypt
   ;
@@ -32,6 +32,7 @@ uses
   //3rd party
   //SDU/ lc lib
   SDUEndianIntegers,
+sduGeneral,
   //librecrypt
   OTFEFreeOTFEBase_U;
 
@@ -177,10 +178,10 @@ begin
     // Get block "i"
     _GetBlock(stripeData, blockLength, i, blockN);
 
-{$IFDEF FREEOTFE_DEBUG}
+
 DebugMsg('Before XOR ('+inttostr(blkNum)+'):');
-DebugMsgBinary(SDUBytesToString( prev));
-{$ENDIF}
+DebugMsgBinary( prev);
+
 
     // XOR previous block output with current stripe
     tmpData := '';

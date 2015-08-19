@@ -108,26 +108,26 @@ uses
 
 type
   TdlgProgress = class (TSDUForm)
-    pnlProgressBar:            TPanel;
-    pbCancel:                  TButton;
-    pnlStatusText:             TPanel;
-    lblStatus:                 TSDUTruncatingLabel;
-    lblEstTimeRemainText:      TLabel;
-    lblEstTimeRemaining:       TLabel;
+    pnlProgressBar:   TPanel;
+    pbCancel:         TButton;
+    pnlStatusText:    TPanel;
+    lblStatus:        TSDUTruncatingLabel;
+    lblEstTimeRemainText: TLabel;
+    lblEstTimeRemaining: TLabel;
     pnlProgressBarPlaceholder: TPanel;
-    pgbOverall:                TProgressBar;
-    pgbIndeterminate:          TSDProgressBarIndeterminate;
+    pgbOverall:       TProgressBar;
+    pgbIndeterminate: TSDProgressBarIndeterminate;
     procedure pbCancelClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-  PRIVATE
-    fShowStatusText:        Boolean;
-    fConfirmCancel:         Boolean;
-    i64MinValue:            Int64;
-    i64MaxValue:            Int64;
-    i64PositionValue:       Int64;
-    fShowTimeRemaining:     Boolean;
-    fStartTime:             TDateTime;
+  private
+    fShowStatusText:    Boolean;
+    fConfirmCancel:     Boolean;
+    i64MinValue:        Int64;
+    i64MaxValue:        Int64;
+    i64PositionValue:   Int64;
+    fShowTimeRemaining: Boolean;
+    fStartTime:         TDateTime;
     fCancelSetsModalResult: Boolean;
 
     procedure SetTitle(title: String);
@@ -158,11 +158,11 @@ type
     procedure i64SetMin(min: Int64);
     procedure i64SetPosition(position: Int64);
     procedure i64SetInversePosition(position: Int64);
-  PUBLIC
+  public
     Cancel: Boolean;
 
-    constructor Create(AOwner: TComponent); OVERRIDE;
-    destructor Destroy(); OVERRIDE;
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy(); override;
 
     property Title: String Read GetTitle Write SetTitle;
 
@@ -186,7 +186,7 @@ type
     property i64InversePosition: Int64 Write i64SetInversePosition;
     procedure i64IncPosition();
 
-    property ConfirmCancel: Boolean Write fConfirmCancel DEFAULT True;
+    property ConfirmCancel: Boolean Write fConfirmCancel default True;
 
     property ShowStatusText: Boolean Read fShowStatusText Write SetShowStatusText;
     property StatusText: String Read GetStatusText Write SetStatusText;
@@ -197,15 +197,15 @@ type
 
 
 const
-                                    // Values to be used with TSDUWindowsProgressDialog.Timer(...)
-                                    // Time Actions (dwTimerAction)
+  // Values to be used with TSDUWindowsProgressDialog.Timer(...)
+  // Time Actions (dwTimerAction)
   PDTIMER_RESET  = $00000001;       // Reset the timer so the progress will be
-                                    // calculated from now until the first
-                                    // ::SetProgress() is called so those
-                                    // this time will correspond to the values
-                                    // passed to ::SetProgress().  Only do
-                                    // this before ::SetProgress() is called.
-                                    // Windows Vista and later only...
+  // calculated from now until the first
+  // ::SetProgress() is called so those
+  // this time will correspond to the values
+  // passed to ::SetProgress().  Only do
+  // this before ::SetProgress() is called.
+  // Windows Vista and later only...
   PDTIMER_PAUSE  = $00000002;
   PDTIMER_RESUME = $00000003;
 
@@ -232,23 +232,23 @@ type
   IProgressDialog = interface (IUnknown)
     [SID_SProgressUI]
     function StartProgressDialog(hwndParent: HWND; punkEnableModless: IUnknown;
-      dwFlags: DWORD; pvResevered: Pointer): HResult; STDCALL;
-    function StopProgressDialog(): HResult; STDCALL;
-    function SetTitle(pwzTitle: PWideChar): HResult; STDCALL;
-    function SetAnimation(hInstAnimation: HINST; idAnimation: UINT): HResult; STDCALL;
-    function HasUserCancelled(): BOOL; STDCALL;
-    function SetProgress(dwCompleted: DWORD; dwTotal: DWORD): HResult; STDCALL;
-    function SetProgress64(ullCompleted: ULONGLONG; ullTotal: ULONGLONG): HResult; STDCALL;
+      dwFlags: DWORD; pvResevered: Pointer): HResult; stdcall;
+    function StopProgressDialog(): HResult; stdcall;
+    function SetTitle(pwzTitle: PWideChar): HResult; stdcall;
+    function SetAnimation(hInstAnimation: HINST; idAnimation: UINT): HResult; stdcall;
+    function HasUserCancelled(): BOOL; stdcall;
+    function SetProgress(dwCompleted: DWORD; dwTotal: DWORD): HResult; stdcall;
+    function SetProgress64(ullCompleted: ULONGLONG; ullTotal: ULONGLONG): HResult; stdcall;
     function SetLine(dwLineNum: DWORD; pwzString: PWideChar; fCompactPath: BOOL;
-      pvResevered: Pointer): HResult; STDCALL;
-    function SetCancelMsg(pwzCancelMsg: PWideChar; pvResevered: Pointer): HResult; STDCALL;
-    function Timer(dwTimerAction: DWORD; pvResevered: Pointer): HResult; STDCALL;
+      pvResevered: Pointer): HResult; stdcall;
+    function SetCancelMsg(pwzCancelMsg: PWideChar; pvResevered: Pointer): HResult; stdcall;
+    function Timer(dwTimerAction: DWORD; pvResevered: Pointer): HResult; stdcall;
   end;
 
 
 {$M+}// Required to get rid of compiler warning "W1055 PUBLISHED caused RTTI ($M+) to be added to type '%s'"
   TSDUWindowsProgressDialog = class
-  PROTECTED
+  protected
     FintfProgressDialog: IProgressDialog;
     FParentHWnd:         THandle;
 
@@ -300,9 +300,9 @@ type
     function GetActualResHandle: THandle;
     function GetActualResId: Integer;
 
-  PUBLIC
+  public
     constructor Create();
-    destructor Destroy(); OVERRIDE;
+    destructor Destroy(); override;
 
     // Note: idx may only be one of 1..3 (1..ProgressDialog_MAXLINES)
     property LineText[idx: Integer]: WideString Read GetLineText Write SetLineText;
@@ -314,7 +314,7 @@ type
     function HasUserCancelled(): Boolean;
     function Timer(dwTimerAction: DWORD): HResult;
 
-  PUBLISHED
+  published
     // Set this to Application.Handle to prevent any MessageDlg(...) dialog
     // boxes shown during the long operation getting hidden if the user clicks
     // the main window.
@@ -336,7 +336,7 @@ type
     //   * AVI clips must either be uncompressed or compressed with run-length
     //     (BI_RLE8) encoding. If you attempt to use an unsupported compression
     //     type, no animation is displayed.
-    property CommonAVI: TCommonAVI Write SetCommonAVI DEFAULT aviNone;
+    property CommonAVI: TCommonAVI Write SetCommonAVI default aviNone;
     property ResHandle: THandle Write SetResHandle;
     property ResID: Integer Write SetResID;
     property ResName: String Write SetResName;
@@ -379,9 +379,12 @@ implementation
 {$R *.DFM}
 
 uses
+  //delphi
   ActiveX,
   ComObj, DateUtils,
-  math,
+  Math,
+  //sdu, lc utils
+  lcConsts,
   lcDialogs,
   SDUGraphics,
   SDUi18n;
@@ -424,6 +427,7 @@ begin
   end;
   Result := ShellModule;
 end;
+
 (*
 procedure Register;
 begin
@@ -495,7 +499,8 @@ var
   currTime:      TDateTime;
   timeDone:      TDateTime;
   newLabel:      String;
-  AYear, AMonth, ADay, AHour, AMinute, ASecond, AMilliSecond: Word;
+  AHour, AMinute, ASecond, AMilliSecond: Word;
+  ADay:          Int64;
   timeRemaining: TDateTime;
   cntDone:       Integer;
   cntTotal:      Integer;
@@ -522,33 +527,31 @@ begin
       cntRemaining := cntTotal - cntDone;
 
       if (cntDone <> 0) then begin
-        timeRemaining := (timeDone / cntDone) * cntRemaining;
-        DecodeDateTime(
+        timeRemaining := (timeDone * cntRemaining) / cntDone;
+        DecodeTime(
           timeRemaining,
-          AYear,
-          AMonth,
-          ADay,
           AHour,
           AMinute,
           ASecond,
           AMilliSecond
           );
+        // dont use decodedatetime because zero date is dec 31 1899
         ADay := trunc(timeRemaining);
+
         // Only display two most significant units; anything beyond that is
         // not particularly significant
         if (ADay > 0) then begin
-          newLabel := Format(_('%d days, %d hours'), [ADay, AHour]);
+          newLabel := FormatDateTime(_('d "days", h "hours"'), timeRemaining);
         end else
         if (AHour > 0) then begin
-          newLabel := Format(_('%d hours, %d minutes'), [AHour, AMinute]);
+          newLabel := FormatDateTime(_('h "hours", n "minutes"'), timeRemaining);
         end else
         if (AMinute > 0) then begin
-          newLabel := Format(_('%d minutes, %d seconds'),
-            [AMinute, ASecond]);
-        end else begin
-          newLabel := Format(_('%d seconds'), [ASecond]);
-        end;
-
+          newLabel := FormatDateTime(_('n "minutes", s "seconds"'), timeRemaining);
+        end else
+          newLabel := FormatDateTime(_('s "seconds"'), timeRemaining);
+      end else begin
+        fStartTime := currTime; // 0% done - reset start
       end;
 
       lblEstTimeRemaining.Caption := newLabel;

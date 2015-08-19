@@ -49,7 +49,7 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
     Top = 0
     Width = 457
     Height = 317
-    ActivePage = tsNewKey
+    ActivePage = tsMountOptions
     Align = alTop
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 0
@@ -153,7 +153,7 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           Enabled = False
           FocusControl = feGPGKeyfile
         end
-        object feGPGExecutable: TSDUFilenameEdit
+        inline feGPGExecutable: TSDUFilenameEdit
           Left = 108
           Top = 216
           Width = 261
@@ -161,13 +161,15 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           Constraints.MaxHeight = 21
           Constraints.MinHeight = 21
           TabOrder = 0
-          TabStop = False
-          FilterIndex = 0
+          ExplicitLeft = 108
+          ExplicitTop = 216
+          ExplicitWidth = 261
+          ExplicitHeight = 21
           DesignSize = (
             261
             21)
         end
-        object feGPGKeyfile: TSDUFilenameEdit
+        inline feGPGKeyfile: TSDUFilenameEdit
           Left = 108
           Top = 251
           Width = 261
@@ -175,8 +177,10 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           Constraints.MaxHeight = 21
           Constraints.MinHeight = 21
           TabOrder = 1
-          TabStop = False
-          FilterIndex = 0
+          ExplicitLeft = 108
+          ExplicitTop = 251
+          ExplicitWidth = 261
+          ExplicitHeight = 21
           DesignSize = (
             261
             21)
@@ -197,12 +201,12 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
             ExplicitLeft = 9
             ExplicitWidth = 56
           end
-          inherited preUserKeyFirst: TOTFEFreeOTFE_PasswordRichEdit
-            Left = 87
-            Width = 344
+          inherited mmShown: TMemo
+            Left = 71
+            Width = 369
             Height = 174
-            ExplicitLeft = 87
-            ExplicitWidth = 344
+            ExplicitLeft = 71
+            ExplicitWidth = 369
             ExplicitHeight = 174
           end
         end
@@ -568,16 +572,16 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
         DesignSize = (
           449
           289)
-        object Label8: TLabel
-          Left = 12
-          Top = 24
+        object lblOffset: TLabel
+          Left = 11
+          Top = 82
           Width = 31
           Height = 13
           Caption = '&Offset:'
         end
-        object Label9: TLabel
-          Left = 424
-          Top = 24
+        object lblOffsetO: TLabel
+          Left = 423
+          Top = 82
           Width = 15
           Height = 13
           Anchors = [akTop, akRight]
@@ -590,15 +594,15 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           ParentFont = False
         end
         object Label10: TLabel
-          Left = 12
-          Top = 52
+          Left = 11
+          Top = 28
           Width = 40
           Height = 13
           Caption = 'Si&zelimit:'
         end
         object Label11: TLabel
-          Left = 424
-          Top = 52
+          Left = 423
+          Top = 28
           Width = 14
           Height = 13
           Anchors = [akTop, akRight]
@@ -611,15 +615,15 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           ParentFont = False
         end
         object Label22: TLabel
-          Left = 92
-          Top = 76
+          Left = 91
+          Top = 59
           Width = 123
           Height = 13
           Caption = '("0" indicates no sizelimit.)'
         end
         object se64UnitOffset: TSDUSpin64Unit_Storage
-          Left = 92
-          Top = 20
+          Left = 91
+          Top = 78
           Width = 317
           Height = 29
           Anchors = [akLeft, akTop, akBottom]
@@ -635,8 +639,8 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           ReadOnly = False
         end
         object se64UnitSizeLimit: TSDUSpin64Unit_Storage
-          Left = 92
-          Top = 48
+          Left = 91
+          Top = 24
           Width = 317
           Height = 29
           Anchors = [akLeft, akTop, akBottom]

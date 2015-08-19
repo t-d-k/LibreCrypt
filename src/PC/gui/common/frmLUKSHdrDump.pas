@@ -11,17 +11,17 @@ unit frmLUKSHdrDump;
 interface
 
 uses
- // delphi
+  // delphi
   Buttons, Classes, ComCtrls,
   Controls, Dialogs,
-  Windows,       Messages,Graphics,  Forms, StdCtrls, SysUtils,
-    //sdu, lcutils
+  Windows, Messages, Graphics, Forms, StdCtrls, SysUtils,
+  //sdu, lcutils
   PasswordRichEdit, SDUFilenameEdit_U, SDUForms, SDUFrames,
   SDUSpin64Units, Spin64,
-   lcDialogs,
-   // librecrypt
-   OTFEFreeOTFEBase_U,fmeLUKSKeyOrKeyfileEntry, fmeVolumeSelect,
-   frmHdrDump;
+  lcDialogs,
+  // librecrypt
+  OTFEFreeOTFEBase_U, fmeLUKSKeyOrKeyfileEntry, fmeVolumeSelect,
+  frmHdrDump;
 
 type
   TfrmLUKSHdrDump = class (TfrmHdrDump)
@@ -34,8 +34,8 @@ type
     function GetLUKSBaseIVCypherOnHashLength(): Boolean;
 
   protected
-    procedure EnableDisableControls(); override;
-    function DumpLUKSDataToFile(): Boolean; override;
+    function _DumpHdrDataToFile(): Boolean; override;
+            procedure SetPassword(const Value: string);  override;
   public
 
   end;
@@ -47,9 +47,9 @@ implementation
 
 uses
   //sdu, lcutils
-  SDUGeneral, SDUi18n
+  SDUGeneral, SDUi18n, lcTypes, lcConsts,
   // librecrypt
-  ,LUKSTools ;
+  LUKSTools;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -74,21 +74,16 @@ begin
   frmeLUKSKeyOrKeyfileEntry1.Initialize();
   frmeLUKSKeyOrKeyfileEntry1.DefaultOptions();
   frmeLUKSKeyOrKeyfileEntry1.baseIVCypherOnHashLength := True;
+  _EnableDisableControls;
 end;
 
-procedure TfrmLUKSHdrDump.EnableDisableControls();
-begin
-  pbOK.Enabled := ((GetVolumeFilename <> '') and (feDumpFilename.Filename <> '') and
-    (feDumpFilename.Filename <> GetVolumeFilename) // Don't overwrite the volume with the dump!!!
-    );
-end;
 
 procedure TfrmLUKSHdrDump.ControlChanged(Sender: TObject);
 begin
-  EnableDisableControls();
+  _EnableDisableControls();
 end;
 
-function TfrmLUKSHdrDump.DumpLUKSDataToFile(): Boolean;
+function TfrmLUKSHdrDump._DumpHdrDataToFile(): Boolean;
 var
   userKey:            TSDUBytes;
   keyfile:            String;
@@ -105,56 +100,15 @@ begin
 end;
 
 procedure TfrmLUKSHdrDump.pbOKClick(Sender: TObject);
-var
-{$IFDEF FREEOTFE_TIME_CDB_DUMP}
-  startTime: TDateTime;
-  stopTime: TDateTime;
-  diffTime: TDateTime;
-  Hour, Min, Sec, MSec: Word;
-{$ENDIF}
-  dumpOK: Boolean;
-  //  notepadCommandLine: String;
 begin
-{$IFDEF FREEOTFE_TIME_CDB_DUMP}
-  startTime := Now();
-{$ENDIF}
+  _PromptDumpData('LUKS');
+end;
 
-  dumpOK := DumpLUKSDataToFile();
-
-  if dumpOK then begin
-{$IFDEF FREEOTFE_TIME_CDB_DUMP}
-    stopTime := Now();
-    diffTime := (stopTime - startTime);
-    DecodeTime(diffTime, Hour, Min, Sec, MSec);
-    showmessage('Time taken to dump CDB: '+inttostr(Hour)+' hours, '+inttostr(Min)+' mins, '+inttostr(Sec)+'.'+inttostr(MSec)+' secs');
-{$ENDIF}
-
-    if (SDUMessageDlg(_(
-      'A human readable copy of your critical data block has been written to:') +
-      SDUCRLF + SDUCRLF + GetDumpFilename + SDUCRLF + SDUCRLF +
-      _('Do you wish to open this file in Windows Notepad?'), mtInformation,
-      [mbYes, mbNo], 0) = mrYes) then begin
-
-      if not (SDUWinExecNoWait32('notepad', GetDumpFilename, SW_RESTORE)) then
-        SDUMessageDlg(_('Error running Notepad'), mtError, [], 0);
-
-    end;
-
-    ModalResult := mrOk;
-  end else begin
-{$IFDEF FREEOTFE_TIME_CDB_DUMP}
-    stopTime := Now();
-    diffTime := (stopTime - startTime);
-    DecodeTime(diffTime, Hour, Min, Sec, MSec);
-    showmessage('Time taken to FAIL to dump CDB: '+inttostr(Hour)+' hours, '+inttostr(Min)+' mins, '+inttostr(Sec)+'.'+inttostr(MSec)+' secs');
-{$ENDIF}
-
-    SDUMessageDlg(
-      _('Unable to dump out critical data block.') + SDUCRLF + SDUCRLF +
-      _('Please ensure that your password and details are entered correctly, and that this file is not currently in use (e.g. mounted)'),
-      mtError, [mbOK], 0);
-  end;
-
+procedure TfrmLUKSHdrDump.SetPassword(const Value: string);
+begin
+  inherited;
+  frmeLUKSKeyOrKeyfileEntry1.SetKey(Value);
+   frmeLUKSKeyOrKeyfileEntry1. rbKeyFromUser.Checked := true;
 end;
 
 function TfrmLUKSHdrDump.GetLUKSBaseIVCypherOnHashLength(): Boolean;

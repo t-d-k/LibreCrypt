@@ -12,7 +12,7 @@ uses
   pkcs11_session,
   pkcs11_object,
   //sdu
-  sdugeneral
+lcTypes
   //LibreCrypt
   ;
 
@@ -327,7 +327,7 @@ implementation
 uses
   SysUtils,
   //sdu
-
+sdugeneral,
   SDUi18n,
   pkcs11_attribute,
   pkcs11_slot,

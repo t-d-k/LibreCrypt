@@ -11,11 +11,18 @@ unit frmCypherInfo;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+     //delphi & libs
+      Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls,
-  OTFEFreeOTFE_U,
+  //sdu & LibreCrypt utils
+     OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U,
-  SDUForms;
+  SDUForms
+   // LibreCrypt forms
+
+
+
+;
 
 type
   TfrmCypherInfo = class(TSDUForm)
@@ -53,25 +60,33 @@ type
   private
     { Private declarations }
   public
-    OTFEFreeOTFEObj: TOTFEFreeOTFEBase;
 
     // These two items uniquely identify which should be shown
-    ShowDriverName: string;
-    ShowGUID: TGUID;
+    fShowDriverName: string;
+    fShowGUID: TGUID;
   end;
 
+    // Display a standard dialog with details of the specific cypher identified
+    procedure ShowCypherDetailsDlg(driverName: String; cypherGUID: TGUID);
 
 implementation
 
 {$R *.DFM}
 
 uses
-  SDUi18n,
-  ComObj,  // Required for GUIDToString(...)
+
+     //delphi & libs
+      ComObj,  // Required for GUIDToString(...)
   ActiveX,  // Required for IsEqualGUID
+  //sdu & LibreCrypt utils
+      SDUi18n,
+
   SDUGeneral,
   OTFEFreeOTFE_DriverCypherAPI,
-  OTFEFreeOTFEDLL_U;
+  OTFEFreeOTFEDLL_U
+   // LibreCrypt forms
+
+;
 
 resourcestring
   RS_UNABLE_LOCATE_CYPHER_DRIVER = '<Unable to locate correct cypher driver>';
@@ -107,8 +122,7 @@ begin
   edCypherKeySize.Text   := RS_UNABLE_LOCATE_CYPHER;
   edCypherBlockSize.Text := RS_UNABLE_LOCATE_CYPHER;
 
-  if (OTFEFreeOTFEObj is TOTFEFreeOTFEDLL) then
-    begin
+  if (GetFreeOTFEBase() is TOTFEFreeOTFEDLL) then    begin
     lblDeviceName.caption := _('Library:');
 
     lblDeviceUserModeName.visible := FALSE;
@@ -119,30 +133,27 @@ begin
     end;
 
   SetLength(cypherDrivers, 0);
-  if OTFEFreeOTFEObj.GetCypherDrivers(TFreeOTFECypherDriverArray(cypherDrivers)) then
+  if GetFreeOTFEBase().GetCypherDrivers(TFreeOTFECypherDriverArray(cypherDrivers)) then
     begin
     for i:=low(cypherDrivers) to high(cypherDrivers) do
       begin
       currCypherDriver := cypherDrivers[i];
 
       if (
-          (currCypherDriver.LibFNOrDevKnlMdeName = ShowDriverName) OR
-          (currCypherDriver.DeviceUserModeName = ShowDriverName)
+          (currCypherDriver.LibFNOrDevKnlMdeName = fShowDriverName) OR
+          (currCypherDriver.DeviceUserModeName = fShowDriverName)
           ) then
         begin
         edDriverGUID.Text                 := GUIDToString(currCypherDriver.DriverGUID);
-        if (OTFEFreeOTFEObj is TOTFEFreeOTFEDLL) then
-          begin
+        if (GetFreeOTFEBase() is TOTFEFreeOTFEDLL) then          begin
           edDriverDeviceName.Text           := currCypherDriver.LibFNOrDevKnlMdeName;
-          end
-        else
-          begin
+          end        else          begin
           edDriverDeviceName.Text           := currCypherDriver.DeviceName;
           edDriverDeviceKernelModeName.Text := currCypherDriver.LibFNOrDevKnlMdeName;
           edDriverDeviceUserModeName.Text   := currCypherDriver.DeviceUserModeName;
           end;
         edDriverTitle.Text                := currCypherDriver.Title;
-        edDriverVersionID.Text            := OTFEFreeOTFEObj.VersionIDToStr(currCypherDriver.VersionID);
+        edDriverVersionID.Text            := GetFreeOTFEBase().VersionIDToStr(currCypherDriver.VersionID);
         edDriverCypherCount.Text          := inttostr(currCypherDriver.CypherCount);
 
 
@@ -150,7 +161,7 @@ begin
           begin
           currCypher := cypherDrivers[i].Cyphers[j];
 
-          if (IsEqualGUID(currCypher.CypherGUID, ShowGUID)) then
+          if (IsEqualGUID(currCypher.CypherGUID, fShowGUID)) then
             begin
             edCypherGUID.Text      := GUIDToString(currCypher.CypherGUID);
             edCypherTitle.Text     := currCypher.Title;
@@ -174,7 +185,7 @@ begin
               end;
             edCypherBlockSize.Text := tmpString;
 
-            edCypherVersionID.Text := OTFEFreeOTFEObj.VersionIDToStr(currCypher.VersionID);
+            edCypherVersionID.Text := GetFreeOTFEBase().VersionIDToStr(currCypher.VersionID);
             end;
 
           end;
@@ -187,6 +198,22 @@ begin
 
 end;
 
+// ----------------------------------------------------------------------------
+procedure ShowCypherDetailsDlg(driverName: String; cypherGUID: TGUID);
+var
+  detailsDlg: TfrmCypherInfo;
+begin
+  detailsDlg := TfrmCypherInfo.Create(nil);
+  try
+    detailsDlg.fShowDriverName  := driverName;
+    detailsDlg.fShowGUID        := cypherGUID;
+
+    detailsDlg.ShowModal();
+  finally
+    detailsDlg.Free();
+  end;
+
+end;
 
 END.
 

@@ -44,6 +44,11 @@ type
   end;
 
 
+// Display dialog to allow user to select a partition
+// Returns '' if the user cancels/on error, otherwise returns a partition
+// identifier
+function SelectPartition(): String;
+
 implementation
 
 {$R *.DFM}
@@ -55,12 +60,12 @@ uses
 
 procedure TfrmSelectPartition.FormCreate(Sender: TObject);
 begin
-  SDUClearPanel(pnlButtonCenter);
+//  SDUClearPanel(pnlButtonCenter);
 end;
 
 procedure TfrmSelectPartition.FormResize(Sender: TObject);
 begin
-  SDUCenterControl(pnlButtonCenter, ccHorizontal);
+//  SDUCenterControl(pnlButtonCenter, ccHorizontal);
 end;
 
 procedure TfrmSelectPartition.FormShow(Sender: TObject);
@@ -103,6 +108,26 @@ procedure TfrmSelectPartition.fmeSelectPartitionpnlNoPartitionDisplayDblClick(
   Sender: TObject);
 begin
   pbOKClick(Sender);
+end;
+
+
+ // ----------------------------------------------------------------------------
+ // Display dialog to allow user to select a partition
+ // Returns '' if the user cancels/on error, otherwise returns a partition
+ // identifier
+function SelectPartition(): String;
+var
+  dlg: TfrmSelectPartition;
+begin
+  Result := '';
+
+  dlg := TfrmSelectPartition.Create(nil);
+  try
+    if (dlg.ShowModal() = mrOk) then
+      Result := dlg.Partition;
+  finally
+    dlg.Free();
+  end;
 end;
 
 END.

@@ -161,12 +161,6 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
         Top = 104
         ExplicitTop = 115
       end
-      inherited preUserKey: TOTFEFreeOTFE_PasswordRichEdit
-        Width = 377
-        Height = 50
-        ExplicitWidth = 377
-        ExplicitHeight = 50
-      end
       inherited rbKeyFromUser: TRadioButton
         Left = 3
         Top = 3
@@ -197,6 +191,12 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
       inherited ckBaseIVCypherOnHashLength: TCheckBox
         Top = 132
         ExplicitTop = 132
+      end
+      inherited preUserKey: TPasswordRichEdit
+        Width = 377
+        Height = 50
+        ExplicitWidth = 377
+        ExplicitHeight = 50
       end
     end
   end

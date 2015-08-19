@@ -9,6 +9,8 @@ uses
   SysUtils, Variants, Windows, ComCtrls,
    //3rd party
   //SDU ,lclibs
+lcTypes,
+
    PasswordRichEdit, SDUDropFiles,
   SDUFilenameEdit_U, SDUFrames, SDUGeneral, SDUStdCtrls,
   //librecrypt
@@ -68,7 +70,10 @@ uses
   //delphi
   //3rd party
   //SDU ,lclibs
+lcConsts,
+
   //librecrypt
+  CommonSettings,
 LUKSTools;
 {$R *.dfm}
 
@@ -131,6 +136,12 @@ begin
   feKeyfile.SaveDialog.Options := feKeyfile.SaveDialog.Options + [ofDontAddToRecent];
 
   SDUDropFiles_Keyfile.Active := True;
+
+
+  feKeyfile. TabStop := False                ;
+  feKeyfile.  FilterIndex := 0               ;
+  feKeyfile.  OnChange := feKeyfileChange    ;
+
 end;
 
 procedure TfrmeLUKSKeyOrKeyfileEntry.DefaultOptions();
@@ -140,9 +151,12 @@ begin
   preUserKey.WantReturns := False;
   preUserKey.WordWrap    := True;
   preUserKey.Lines.Clear();
-  preUserKey.PasswordChar := GetFreeOTFEBase().PasswordChar;
-  preUserKey.WantReturns  := GetFreeOTFEBase().AllowNewlinesInPasswords;
-  preUserKey.WantTabs     := GetFreeOTFEBase().AllowTabsInPasswords;
+
+  if not GetSettings().OptShowPasswords then
+    preUserKey.PasswordChar := '*';//defaults to #0
+
+  preUserKey.WantReturns  := GetSettings().OptAllowNewlinesInPasswords;
+  preUserKey.WantTabs     := GetSettings().OptAllowTabsInPasswords;
 
   SetKeyfileIsASCII(LINUX_KEYFILE_DEFAULT_IS_ASCII);
   SetKeyfileNewlineType(LINUX_KEYFILE_DEFAULT_NEWLINE);

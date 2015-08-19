@@ -3,13 +3,12 @@ unit frmExplorerMain;
 interface
 
 uses
-  //delphi
+  //delphi & libs
   ActnList,
   Buttons, Classes, ComCtrls,
   Controls, Dialogs, ExtCtrls, Forms, StdCtrls, SysUtils, ToolWin, Variants, Windows, XPMan,
   Graphics, ImgList, Menus, Messages,
-
-  //sdu/lc libs
+  //sdu & LibreCrypt utils
   SDUWinHttp_API,
   OTFE_U, OTFEConsts_U,
   OTFEFreeOTFEBase_U, PartitionImageDLL,
@@ -25,12 +24,12 @@ uses
   SDUMultimediaKeys,
   dlgProgress,
   Shredder, SDUDialogs,
-
-  //LibreCrypt
-  frmCommonMain,
+  lcTypes,
   CommonSettings,
   ExplorerSettings,
-  ExplorerWebDAV;
+  ExplorerWebDAV,
+  // LibreCrypt forms
+  frmCommonMain;
 
 const
   WM_FREEOTFE_EXPLORER_REFRESH = WM_USER + 1;
@@ -196,7 +195,6 @@ type
     mnuViewRename: TMenuItem;
     actMoveTo:    TAction;
     actCopyTo:    TAction;
-    N19:          TMenuItem;
     CopyToFolder1: TMenuItem;
     MoveToFolder1: TMenuItem;
     actInvertSelection: TAction;
@@ -281,7 +279,7 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure pmToolbarBackPopup(Sender: TObject);
     procedure pmToolbarForwardPopup(Sender: TObject);
-    procedure actFreeOTFENewExecute(Sender: TObject);
+
     procedure actOptionsExecute(Sender: TObject);
     procedure edPathChange(Sender: TObject);
     procedure SDUDropFilesTreeViewItemsDrop(Sender: TObject; DropItems: TStringList;
@@ -315,12 +313,15 @@ type
     procedure actMapNetworkDriveExecute(Sender: TObject);
     procedure actDisconnectNetworkDriveExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure actFreeOTFENewHiddenExecute(Sender: TObject);
+    procedure actFreeOTFENewNotHiddenExecute(Sender: TObject);
   private
     fPartitionImage: TSDPartitionImage;
     fFilesystem:     TSDFilesystem_FAT;
 
     finFormShow:   Boolean;
     finRefreshing: Boolean;
+    procedure _PromptCreateFreeOTFEVolume(isHidden: Boolean);
   protected
     fLastFocussed: TLastFocussed;
 
@@ -341,8 +342,8 @@ type
     procedure RefreshMRUList(); override;
     procedure MRUListItemClicked(mruList: TSDUMRUList; idx: Integer); override;
 
-    procedure MountFile(mountAsSystem: TDragDropFileType; filename: String;
-      ReadOnly, forceHidden: Boolean; createVol: Boolean = False); overload; override;
+    procedure _MountFile(mountAsSystem: TVolumeType; filename: String;
+      ReadOnly, isHidden: Boolean; createVol: Boolean = False); overload; override;
 
     procedure PostMountGUISetup(driveLetter: DriveLetterChar);
 
@@ -355,9 +356,9 @@ type
     function CheckNetServiceStatusAndPrompt(): Boolean; overload;
     function CheckNetServiceStatusAndPrompt(const serviceName: String): Boolean; overload;
 
-    procedure RecaptionToolbarAndMenuIcons(); override;
-    procedure SetIconListsAndIndexes(); override;
-    procedure SetupToolbarFromSettings(); override;
+    //    procedure RecaptionToolbarAndMenuIcons(); override;
+    //    procedure SetIconListsAndIndexes(); override;
+    //    procedure SetupToolbarFromSettings(); override;
 
     procedure MountPlaintextImage(filename: String; mountReadonly: Boolean);
 
@@ -507,9 +508,8 @@ type
     procedure SetupControls();
     procedure EnableDisableControls(); override;
 
-    // Handle any command line options; returns TRUE if command line options
-    // were passed through
-    function HandleCommandLineOpts(out cmdExitCode: eCmdLine_Exit): Boolean; override;
+    // Handle any command line options; returns exit code
+    function HandleCommandLineOpts( ):eCmdLine_Exit; override;
 
   end;
 
@@ -527,7 +527,7 @@ implementation
 {$R *.dfm}
 
 uses
-  //delphi
+  //delphi & libs
   // Turn off useless hints about FileCtrl.pas being platform specific
 {$WARN SYMBOL_PLATFORM OFF}
 {$WARN UNIT_PLATFORM OFF}
@@ -542,12 +542,10 @@ uses
 {$IFDEF UNICODE}
   AnsiStrings,
 {$ENDIF}
-   DriverControl,
+  DriverControl,
   // Just required for DEFAULT_HTTP_PORT
   WinSvc,
-
-  //sdu/lc libs
-
+  //sdu & LibreCrypt utils
   lcConsts,
   SDUAboutDlg,
   SDUClipBrd,
@@ -555,11 +553,11 @@ uses
   SDUHTTPServer, SDUi18n,
   SDUSysUtils,
   SDUWebDav,
-     CheckFilesystem,
-   SDFATBootSectorPropertiesDlg,
+  CheckFilesystem,
+  SDFATBootSectorPropertiesDlg, LUKSTools,   lcCommandLine,
+  // LibreCrypt forms
 
-    //LibreCrypt
-     frmAbout,
+  frmAbout,
   frmNewDirDlg,
   frmExplorerOptions,
   frmOverwritePrompt,
@@ -570,10 +568,10 @@ uses
   frmSelectCopyOrMove,
   frmSelectDirectory,
   frmNewVolumeSize,
-
-  LUKSTools
+  frmWizardCreateVolume,
+  frmKeyEntryFreeOTFE
   //  frmWebDAVStatus { TODO 1 -otdk -cenhance : implement webdav }
-  ;
+  , frmKeyEntryLinux, frmSelectVolumeType;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -707,14 +705,14 @@ begin
   // toolbar/statusbar as needed
   EnableDisableControls();
 
-  SetupToolbarFromSettings();
+  ReloadSettings();
   // SetupToolbarFromSettings(...) can change the window's width if large
   // icons are being used
   // We recenter the window here so it looks right
   // But! Only if no main window layout has been stored! If it has, we set it
   // to default
   // SEE CALL TO SDUSetFormLayout(...) FOR DETAILS
-  if (gSettings.OptMainWindowLayout = '') then begin
+  if (GetExplorerSettings().OptMainWindowLayout = '') then begin
     self.Position := poScreenCenter;
   end else begin
     self.Position := poDefault;
@@ -738,12 +736,50 @@ begin
   // Needs to be at least 20 pixels high to allow the icon to be shown properly
   StatusBar_Status.Height := max(StatusBar_Status.Height, 20);
   StatusBar_Hint.Height   := StatusBar_Status.Height;
-
-  //  DoFullTests;
+    Application.ProcessMessages;
+//      DoFullTests;
 end;
 
 // Reload settings, setting up any components as needed
 procedure TfrmExplorerMain.ReloadSettings();
+
+  procedure SortToolbar(processToolbar: TToolbar; displayToolbar: Boolean);
+  //  var
+  //    toolbarWidth: Integer;
+  //    i:            Integer;
+  begin
+    processToolbar.Height       := processToolbar.Images.Height + TOOLBAR_ICON_BORDER;
+    processToolbar.ButtonHeight := processToolbar.Images.Height;
+    processToolbar.ButtonWidth  := processToolbar.Images.Width;
+
+    //    if displayToolbar then begin
+    //      // Turning captions on can cause the buttons to wrap if the window isn't big
+    //      // enough.
+    //      // This looks pretty poor, so resize the window if it's too small
+    //      toolbarWidth := 0;
+    //      for i := 0 to (processToolbar.ButtonCount - 1) do begin
+    //        toolbarWidth := toolbarWidth + processToolbar.Buttons[i].Width;
+    //      end;
+    //      if (toolbarWidth > self.Width) then begin
+    //        self.Width           := toolbarWidth;
+    //        processToolbar.Width := self.Width;
+    //      end;
+    //      // Adjusting the width to the sum of the toolbar buttons doens't make it wide
+    //      // enough to prevent wrapping (presumably due to window borders); nudge the
+    //      // size until it does
+    //      // (Crude, but effective)
+    //      while (processToolbar.RowCount > 1) do begin
+    //        self.Width           := self.Width + 10;
+    //        processToolbar.Width := self.Width;
+    //      end;
+    //    end;
+
+  end;
+
+var
+  tmpToolBarVolumeVisible:   Boolean;
+  tmpToolBarExplorerVisible: Boolean;
+
 begin
   inherited;
 
@@ -751,29 +787,76 @@ begin
   SDUClearPanel(pnlAddressBar);
   SDUClearPanel(pnlExplorer);
 
-  SetupToolbarFromSettings();
-
   SetTitleCaption();
 
   // Off man out...
-  ToolBarVolume.Visible   := gSettings.OptShowToolbarVolume;
-  ToolBarExplorer.Visible := gSettings.OptShowToolbarExplorer;
+  ToolBarVolume.Visible   := GetExplorerSettings().OptShowToolbarVolume;
+  ToolBarExplorer.Visible := GetExplorerSettings().OptShowToolbarExplorer;
 
   // Treeview...
-  SDFilesystemTreeView1.ShowHiddenItems    := gSettings.OptShowHiddenItems;
+  SDFilesystemTreeView1.ShowHiddenItems    := GetExplorerSettings().OptShowHiddenItems;
   // Listview...
-  SDFilesystemListView1.ShowHiddenItems    := gSettings.OptShowHiddenItems;
-  SDFilesystemListView1.HideKnownFileExtns := gSettings.OptHideKnownFileExtns;
+  SDFilesystemListView1.ShowHiddenItems    := GetExplorerSettings().OptShowHiddenItems;
+  SDFilesystemListView1.HideKnownFileExtns := GetExplorerSettings().OptHideKnownFileExtns;
 
   fShredderObj.FileDirUseInt               := True;
   fShredderObj.OnStartingFileOverwritePass := OverwritePassStarted;
   fShredderObj.OnCheckForUserCancel        := OverwriteCheckForUserCancel;
-  fShredderObj.IntMethod                   := gSettings.OptOverwriteMethod;
-  fShredderObj.IntPasses                   := gSettings.OptOverwritePasses;
+  fShredderObj.IntMethod                   := GetExplorerSettings().OptOverwriteMethod;
+  fShredderObj.IntPasses                   := GetExplorerSettings().OptOverwritePasses;
 
   if (fFilesystem <> nil) then
     if (fFilesystem is TSDFilesystem_FAT) then
-      fFilesystem.PreserveTimeDateStamps := gSettings.OptPreserveTimestampsOnStoreExtract;
+      fFilesystem.PreserveTimeDateStamps :=
+        GetExplorerSettings().OptPreserveTimestampsOnStoreExtract;
+
+
+  if GetExplorerSettings().OptToolbarVolumeLarge then begin
+    ToolbarVolume.Images := ilToolbarIcons_Large;
+
+  end else begin
+    ToolbarVolume.Images := ilToolbarIcons_Small;
+
+  end;
+
+  if GetExplorerSettings().OptToolbarExplorerLarge then begin
+    ToolbarExplorer.Images := ilToolbarIcons_Large;
+
+  end else begin
+    ToolbarExplorer.Images := ilToolbarIcons_Small;
+
+  end;
+
+
+
+  // Visible/invisible are set in EnableDisableControls()
+
+  // Toolbar captions...
+  if GetExplorerSettings().OptToolbarVolumeLarge then begin
+    ToolBarVolume.ShowCaptions := GetExplorerSettings().OptToolbarVolumeCaptions;
+  end else begin
+    ToolBarVolume.ShowCaptions := False;
+  end;
+
+  // Toolbar captions...
+  if GetExplorerSettings().OptToolbarExplorerLarge then begin
+    ToolBarExplorer.ShowCaptions := GetExplorerSettings().OptToolbarExplorerCaptions;
+  end else begin
+    ToolBarExplorer.ShowCaptions := False;
+  end;
+
+
+  tmpToolBarExplorerVisible := ToolBarExplorer.Visible;
+  ToolBarExplorer.Visible   := False;
+  SortToolbar(ToolBarVolume, tmpToolBarExplorerVisible);
+
+  tmpToolBarVolumeVisible := ToolBarVolume.Visible;
+  ToolBarVolume.Visible   := False;
+  SortToolbar(ToolBarExplorer, tmpToolBarVolumeVisible);
+
+  ToolBarVolume.Visible   := tmpToolBarVolumeVisible;
+  ToolBarExplorer.Visible := tmpToolBarExplorerVisible;
+
 
   // We DO NOT restart WebDAV functionality here
   //
@@ -792,10 +875,11 @@ begin
   // nobble it, though the volume contents should be consistent.
   WebDAVShutdown();
   //  WebDAVStartup();
+
 end;
 
-procedure TfrmExplorerMain.MountFile(mountAsSystem: TDragDropFileType; filename: String;
-  ReadOnly, forceHidden: Boolean; createVol: Boolean = False);
+procedure TfrmExplorerMain._MountFile(mountAsSystem: TVolumeType; filename: String;
+  ReadOnly, isHidden: Boolean; createVol: Boolean = False);
 var
   mountedAs: DriveLetterChar;
   mountedOK: Boolean;
@@ -810,13 +894,28 @@ begin
 
   AddToMRUList(filename);
 
-  if (mountAsSystem = ftFreeOTFE) then
-    mountedOK := GetFreeOTFEDLL().MountFreeOTFE(filename, mountedAs, ReadOnly)
-  else
-  if (mountAsSystem = ftLinux) then
-    mountedOK := GetFreeOTFEDLL().MountLinux(filename, mountedAs, ReadOnly)
-  else
-    mountedOK := GetFreeOTFEDLL().Mount(filename, mountedAs, ReadOnly);
+
+  if (mountAsSystem = vtFreeOTFE) then begin
+    mountedOK := MountFreeOTFE(filename, mountedAs, ReadOnly);
+  end else begin
+    if (mountAsSystem = vtPlainLinux) then begin
+      mountedOK := frmKeyEntryLinux.MountPlainLinux(filename, mountedAs,
+        ReadOnly, '', nil, 0, createVol, isHidden);
+    end else begin
+      if (mountAsSystem = vtLUKS) then begin
+        assert(not isHidden);
+        if not IsLUKSVolume(filename) then begin
+          SDUMessageDlg(Format(_('%s is not a LUKS container.'), [filename]), mtError);
+          mountedOK := False;
+        end else begin
+          mountedOK := LUKSTools.MountLUKS(filename, mountedAs, ReadOnly,
+            nil, '', False, LINUX_KEYFILE_DEFAULT_NEWLINE, False);
+        end;
+      end else begin
+        mountedOK := frmSelectVolumeType.Mount(filename, mountedAs, ReadOnly);
+      end;
+    end;
+  end;
 
 
   if not (mountedOK) then begin
@@ -839,15 +938,15 @@ begin
   inherited;
 
   // Refresh menuitems...
-  gSettings.OptMRUList.RemoveMenuItems(mmMain);
-  gSettings.OptMRUList.InsertAfter(miLinuxVolume);
+  GetSettings().OptMRUList.RemoveMenuItems(mmMain);
+  GetSettings().OptMRUList.InsertAfter(miDismountMain);
 end;
 
 procedure TfrmExplorerMain.MRUListItemClicked(mruList: TSDUMRUList; idx: Integer);
 begin
   //lplp - this isnt' right; should cater for plaintext images, and linux volumes being in the MRU list
   //  MountFilesDetectLUKS(mruList.Items[idx], FALSE, Settings.OptDragDropFileType);
-  MountFilesDetectLUKS(mruList.Items[idx], False, ftFreeOTFE);  // ftPrompt ?
+  _MountFilesDetectLUKS(mruList.Items[idx], False, vtUnknown);  // ftPrompt ?
 end;
 
  // Configure up the GUI, assuming the filename supplied has been mounted under
@@ -871,7 +970,8 @@ begin
 
   if (fPartitionImage <> nil) then begin
     fFilesystem := TSDFilesystem_FAT.Create();
-    fFilesystem.PreserveTimeDateStamps := gSettings.OptPreserveTimestampsOnStoreExtract;
+    fFilesystem.PreserveTimeDateStamps :=
+      GetExplorerSettings().OptPreserveTimestampsOnStoreExtract;
 
     fFilesystem.PartitionImage := fPartitionImage;
     try
@@ -913,7 +1013,7 @@ begin
   // Shutdown any running...
   WebDAVShutdown();
 
-  if (gSettings.OptWebDAVEnableServer and (fFilesystem <> nil)) then begin
+  if (GetExplorerSettings().OptWebDAVEnableServer and (fFilesystem <> nil)) then begin
 
     if {SDUOSVistaOrLater()} False then begin
       SDUMessageDlg(
@@ -921,7 +1021,7 @@ begin
         mtInformation
         );
     end else begin
-      fWebDAVObj.fLogAccess.Filename := gSettings.OptWebDAVLogAccess;
+      fWebDAVObj.fLogAccess.Filename := GetExplorerSettings().OptWebDAVLogAccess;
       if (fWebDAVObj.fLogAccess.Filename <> '') then begin
         SDUMessageDlg(
           Format(_('Volume access logging is ENABLED.' + SDUCRLF + SDUCRLF +
@@ -931,7 +1031,7 @@ begin
           );
       end;
 
-      fWebDAVObj.fLogDebug.Filename := gSettings.OptWebDAVLogDebug;
+      fWebDAVObj.fLogDebug.Filename := GetExplorerSettings().OptWebDAVLogDebug;
       if (fWebDAVObj.fLogDebug.Filename <> '') then begin
         SDUMessageDlg(
           Format(_('Volume access DEBUG logging is ENABLED.' + SDUCRLF +
@@ -948,13 +1048,13 @@ begin
 
       fWebDAVObj.fServerSoftware := serverPrettyID;
       // Port our server runs on...
-      fWebDAVObj.fDefaultPort    := gSettings.OptWebDAVPort;
+      fWebDAVObj.fDefaultPort    := GetExplorerSettings().OptWebDAVPort;
 
       // We generate a random share name in order to prevent caching from "trying
       // it on"
       fWebDAVObj.ShareName := SDURandomHexString(4);
-      if (gSettings.OptWebDAVShareName <> '') then begin
-        fWebDAVObj.ShareName := gSettings.OptWebDAVShareName + '_';
+      if (GetExplorerSettings().OptWebDAVShareName <> '') then begin
+        fWebDAVObj.ShareName := GetExplorerSettings().OptWebDAVShareName + '_';
       end;
       fWebDAVObj.ShareName := fWebDAVObj.ShareName + SDURandomHexString(4);
 
@@ -1105,7 +1205,7 @@ var
 begin
   Result := False;
 
-  useDriveLetter := GetNextDriveLetter(#0, gSettings.OptDefaultDriveLetter);
+  useDriveLetter := GetNextDriveLetter(#0, GetSettings().OptDefaultDriveLetter);
 
   if (useDriveLetter = #0) then begin
     if displayErrors then begin
@@ -1126,24 +1226,24 @@ begin
     FMappedDrive := useDriveLetter;
     Result       := True;
 
-    if gSettings.OptPromptMountSuccessful then begin
+    if GetSettings().OptPromptMountSuccessful then begin
       msg := Format(_('Your FreeOTFE container has been mounted as drive: %s'),
         [useDriveLetter + ':']);
       SDUMessageDlg(msg, mtInformation);
     end;
 
-    if gSettings.OptExploreAfterMount then begin
-      ExploreDrive(useDriveLetter);
+    if GetSettings().OptExploreAfterMount then begin
+      _ExploreDrive(useDriveLetter);
     end;
 
-    AutoRunExecute(arPostMount, useDriveLetter, False);
+    _AutoRunExecute(arPostMount, useDriveLetter, False);
   end else begin
     if displayErrors then begin
       lastErrorNo  := GetLastError();
       lastErrorMsg := SysErrorMessage(lastErrorNo) + ' (0x' + SDUIntToHex(lastErrorNo, 8) + ')';
       comment      := '';
-      if ((lastErrorNo = ERROR_NO_NET_OR_BAD_PATH) or
-        (lastErrorNo = ERROR_WORKSTATION_DRIVER_NOT_INSTALLED)) then begin
+      if ((lastErrorNo = ERROR_NO_NET_OR_BAD_PATH) or (lastErrorNo =
+        ERROR_WORKSTATION_DRIVER_NOT_INSTALLED)) then begin
         comment := _('Please ensure that the WebClient service is running');
       end;
 
@@ -1242,16 +1342,16 @@ end;
 procedure TfrmExplorerMain.DisconnectNetworkDrive();
 begin
   if (FMappedDrive <> #0) then begin
-    AutoRunExecute(arPreDismount, FMappedDrive, False);
+    _AutoRunExecute(arPreDismount, FMappedDrive, False);
 
-    if gSettings.OptOverwriteWebDAVCacheOnDismount then begin
+    if GetExplorerSettings().OptOverwriteWebDAVCacheOnDismount then begin
       OverwriteAllWebDAVCachedFiles();
     end;
 
     //    SDUDisconnectNetworkDrive(Char(FMappedDrive), Force);
     //    SDUDisconnectNetworkDrive(Char(FMappedDrive), TRUE);
 
-    AutoRunExecute(arPostDismount, FMappedDrive, False);
+    _AutoRunExecute(arPostDismount, FMappedDrive, False);
 
     FMappedDrive := #0;
   end;
@@ -1397,8 +1497,8 @@ begin
   targetIdx := TMenuItem(Sender).Tag;
 
   // Sanity check
-  if ((FNavigateHistory.Count > 0) and (targetIdx >= 0) and
-    (targetIdx <= (FNavigateHistory.Count - 1))) then begin
+  if ((FNavigateHistory.Count > 0) and (targetIdx >= 0) and (targetIdx <=
+    (FNavigateHistory.Count - 1))) then begin
     NavigateToHistoryIdx(targetIdx);
   end;
 
@@ -1500,10 +1600,10 @@ begin
   actDisconnectNetworkDrive.Visible := False;
 
   actMapNetworkDrive.Enabled :=
-    (Mounted() and (FMappedDrive = #0) and gSettings.OptWebDAVEnableServer);
+    (Mounted() and (FMappedDrive = #0) and GetExplorerSettings().OptWebDAVEnableServer);
 
   actDisconnectNetworkDrive.Enabled :=
-    (Mounted() and (FMappedDrive <> #0) and gSettings.OptWebDAVEnableServer);
+    (Mounted() and (FMappedDrive <> #0) and GetExplorerSettings().OptWebDAVEnableServer);
 
   // IMPORTANT!
   // Because the treeview's menuitems have their actionitem set to nil in
@@ -1918,7 +2018,8 @@ begin
 
   if (fPartitionImage <> nil) then begin
     fFilesystem := TSDFilesystem_FAT.Create();
-    fFilesystem.PreserveTimeDateStamps := gSettings.OptPreserveTimestampsOnStoreExtract;
+    fFilesystem.PreserveTimeDateStamps :=
+      GetExplorerSettings().OptPreserveTimestampsOnStoreExtract;
 
     fFilesystem.PartitionImage := fPartitionImage;
     try
@@ -2046,7 +2147,7 @@ begin
 
 end;
 
-procedure TfrmExplorerMain.actFreeOTFENewExecute(Sender: TObject);
+procedure TfrmExplorerMain._PromptCreateFreeOTFEVolume(isHidden: Boolean);
 var
   prevMounted: DriveLetterString;
   newMounted:  DriveLetterString;
@@ -2056,9 +2157,9 @@ begin
 
   prevMounted := GetFreeOTFEDLL().DrivesMounted;
 
-  if not (GetFreeOTFEDLL().CreateFreeOTFEVolumeWizard()) then begin
+  if not (CreateFreeOTFEVolume(isHidden)) then begin
     if (GetFreeOTFEDLL().LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
-      SDUMessageDlg(_('LibreCrypt could not be created'), mtError);
+      SDUMessageDlg(_('LibreCrypt container could not be created'), mtError);
     end;
   end else begin
     newMounted := GetFreeOTFEDLL().DrivesMounted;
@@ -2079,11 +2180,23 @@ begin
     end;
 
     SDUMessageDlg(
-      _('LibreCrypt created successfully.'),
+      _('LibreCrypt container created successfully.'),
       mtInformation
       );
   end;
 
+end;
+
+procedure TfrmExplorerMain.actFreeOTFENewHiddenExecute(Sender: TObject);
+begin
+  inherited;
+   _PromptCreateFreeOTFEVolume(True);
+end;
+
+procedure TfrmExplorerMain.actFreeOTFENewNotHiddenExecute(Sender: TObject);
+begin
+  inherited;
+  _PromptCreateFreeOTFEVolume(false);
 end;
 
 procedure TfrmExplorerMain.actListStyleExecute(Sender: TObject);
@@ -2410,21 +2523,21 @@ begin
     // Note: If Settings.OptStoreLayout is TRUE, then the layout would have
     //       been deleted from the settings the last time settings were
     //       saved - so this should be using the defaults
-    SDUSetFormLayout(self, gSettings.OptMainWindowLayout);
+    SDUSetFormLayout(self, GetExplorerSettings().OptMainWindowLayout);
 
-    ToolBarVolume.Visible         := gSettings.OptShowToolbarVolume;
-    ToolBarExplorer.Visible       := gSettings.OptShowToolbarExplorer;
-    pnlAddressBar.Visible         := gSettings.OptShowAddressBar;
+    ToolBarVolume.Visible         := GetExplorerSettings().OptShowToolbarVolume;
+    ToolBarExplorer.Visible       := GetExplorerSettings().OptShowToolbarExplorer;
+    pnlAddressBar.Visible         := GetExplorerSettings().OptShowAddressBar;
     // Important: Must turn these next two on/off in this order!
-    Splitter1.Visible             := (gSettings.OptShowExplorerBar <> ebNone);
-    SDFilesystemTreeView1.Visible := (gSettings.OptShowExplorerBar = ebFolders);
-    StatusBar_Status.Visible      := gSettings.OptShowStatusbar;
+    Splitter1.Visible             := (GetExplorerSettings().OptShowExplorerBar <> ebNone);
+    SDFilesystemTreeView1.Visible := (GetExplorerSettings().OptShowExplorerBar = ebFolders);
+    StatusBar_Status.Visible      := GetExplorerSettings().OptShowStatusbar;
     StatusBar_Hint.Visible        := False;
 
-    if (gSettings.OptExplorerBarWidth > 0) then
-      SDFilesystemTreeView1.Width := gSettings.OptExplorerBarWidth;
+    if (GetExplorerSettings().OptExplorerBarWidth > 0) then
+      SDFilesystemTreeView1.Width := GetExplorerSettings().OptExplorerBarWidth;
 
-    SDFilesystemListView1.Layout := gSettings.OptListViewLayout;
+    SDFilesystemListView1.Layout := GetExplorerSettings().OptListViewLayout;
 
     EnableDisableControls();
   finally
@@ -2643,8 +2756,8 @@ begin
   inherited;
 
   // Odd man out...
-  gSettings.OptShowToolbarVolume   := ToolBarVolume.Visible;
-  gSettings.OptShowToolbarExplorer := ToolBarExplorer.Visible;
+  GetExplorerSettings().OptShowToolbarVolume   := ToolBarVolume.Visible;
+  GetExplorerSettings().OptShowToolbarExplorer := ToolBarExplorer.Visible;
 
   dlg := TfrmExplorerOptions.Create(self);
   try
@@ -3160,185 +3273,6 @@ At present, moving via MS Windows Explorer isn't supported - pressing
 end;
 
 
-procedure TfrmExplorerMain.RecaptionToolbarAndMenuIcons();
-begin
-  inherited;
-
-  // Change toolbar captions to shorter captions
-  tbbNew.Caption       := RS_TOOLBAR_CAPTION_NEW;
-  tbbMountFile.Caption := RS_TOOLBAR_CAPTION_MOUNTFILE;
-  tbbDismount.Caption  := RS_TOOLBAR_CAPTION_DISMOUNT;
-
-  tbbNavigateBack.Caption           := RS_TOOLBAR_CAPTION_BACK;
-  tbbNavigateForward.Caption        := RS_TOOLBAR_CAPTION_FORWARD;
-  tbbUp.Caption                     := RS_TOOLBAR_CAPTION_UP;
-  tbbMoveTo.Caption                 := RS_TOOLBAR_CAPTION_MOVETO;
-  tbbCopyTo.Caption                 := RS_TOOLBAR_CAPTION_COPYTO;
-  tbbDelete.Caption                 := RS_TOOLBAR_CAPTION_DELETE;
-  tbbViews.Caption                  := RS_TOOLBAR_CAPTION_VIEWS;
-  tbbExtract.Caption                := RS_TOOLBAR_CAPTION_EXTRACT;
-  tbbStore.Caption                  := RS_TOOLBAR_CAPTION_STORE;
-  tbbItemProperties.Caption         := RS_TOOLBAR_CAPTION_ITEMPROPERTIES;
-  tbbExplorerBarFolders.Caption     := RS_TOOLBAR_CAPTION_FOLDERS;
-  tbbMapNetworkDrive.Caption        := RS_TOOLBAR_CAPTION_MAP_DRIVE;
-  tbbDisconnectNetworkDrive.Caption := RS_TOOLBAR_CAPTION_DISCONNECT;
-
-  mnuToolbarStoreFile.Caption := RS_TOOLBAR_MNU_CAPTION_STORE_FILE;
-  mnuToolbarStoreDir.Caption  := RS_TOOLBAR_MNU_CAPTION_STORE_DIR;
-
-  // Toolbar hints...
-  tbbNew.Hint       := RS_TOOLBAR_HINT_NEW;
-  tbbMountFile.Hint := RS_TOOLBAR_HINT_MOUNTFILE;
-  tbbDismount.Hint  := RS_TOOLBAR_HINT_DISMOUNT;
-
-  tbbNavigateBack.Hint           := RS_TOOLBAR_HINT_BACK;
-  tbbNavigateForward.Hint        := RS_TOOLBAR_HINT_FORWARD;
-  tbbUp.Hint                     := RS_TOOLBAR_HINT_UP;
-  tbbMoveTo.Hint                 := RS_TOOLBAR_HINT_MOVETO;
-  tbbCopyTo.Hint                 := RS_TOOLBAR_HINT_COPYTO;
-  tbbDelete.Hint                 := RS_TOOLBAR_HINT_DELETE;
-  tbbViews.Hint                  := RS_TOOLBAR_HINT_VIEWS;
-  tbbExtract.Hint                := RS_TOOLBAR_HINT_EXTRACT;
-  tbbStore.Hint                  := RS_TOOLBAR_HINT_STORE;
-  tbbItemProperties.Hint         := RS_TOOLBAR_HINT_ITEMPROPERTIES;
-  tbbExplorerBarFolders.Hint     := RS_TOOLBAR_HINT_EXPLORERBARFOLDERS;
-  tbbMapNetworkDrive.Hint        := RS_TOOLBAR_HINT_MAP_DRIVE;
-  tbbDisconnectNetworkDrive.Hint := RS_TOOLBAR_HINT_DISCONNECT;
-
-  mnuToolbarStoreFile.Hint := RS_TOOLBAR_MNU_HINT_STORE_FILE;
-  mnuToolbarStoreDir.Hint  := RS_TOOLBAR_MNU_HINT_STORE_DIR;
-
-end;
-
-procedure TfrmExplorerMain.SetIconListsAndIndexes();
-begin
-  inherited;
-
-  if gSettings.OptToolbarVolumeLarge then begin
-    ToolbarVolume.Images := ilToolbarIcons_Large;
-       {
-    tbbNew.ImageIndex       := FIconIdx_Large_New;
-    tbbMountFile.ImageIndex := FIconIdx_Large_MountFile;
-    tbbDismount.ImageIndex  := FIconIdx_Large_Dismount;
-    }
-  end else begin
-    ToolbarVolume.Images := ilToolbarIcons_Small;
-     {
-    tbbNew.ImageIndex       := FIconIdx_Small_New;
-    tbbMountFile.ImageIndex := FIconIdx_Small_MountFile;
-    tbbDismount.ImageIndex  := FIconIdx_Small_Dismount;
-    }
-  end;
-
-  if gSettings.OptToolbarExplorerLarge then begin
-    ToolbarExplorer.Images := ilToolbarIcons_Large;
-    (*
-    tbbNavigateBack.ImageIndex           := FIconIdx_Large_Back;
-    tbbNavigateForward.ImageIndex        := FIconIdx_Large_Forward;
-    tbbUp.ImageIndex                     := FIconIdx_Large_Up;
-    tbbMoveTo.ImageIndex                 := FIconIdx_Large_MoveTo;
-    tbbCopyTo.ImageIndex                 := FIconIdx_Large_CopyTo;
-    tbbDelete.ImageIndex                 := FIconIdx_Large_Delete;
-    tbbViews.ImageIndex                  := FIconIdx_Large_Views;
-    tbbExtract.ImageIndex                := FIconIdx_Large_Extract;
-    tbbStore.ImageIndex                  := FIconIdx_Large_Store;
-    tbbItemProperties.ImageIndex         := FIconIdx_Large_ItemProperties;
-    tbbExplorerBarFolders.ImageIndex     := FIconIdx_Large_Folders;
-    tbbMapNetworkDrive.ImageIndex        := FIconIdx_Large_MapNetworkDrive;
-    tbbDisconnectNetworkDrive.ImageIndex := FIconIdx_Large_DisconnectNetworkDrive;
-    *)
-  end else begin
-    ToolbarExplorer.Images := ilToolbarIcons_Small;
-            (*
-    tbbNavigateBack.ImageIndex           := FIconIdx_Small_Back;
-    tbbNavigateForward.ImageIndex        := FIconIdx_Small_Forward;
-    tbbUp.ImageIndex                     := FIconIdx_Small_Up;
-    tbbMoveTo.ImageIndex                 := FIconIdx_Small_MoveTo;
-    tbbCopyTo.ImageIndex                 := FIconIdx_Small_CopyTo;
-    tbbDelete.ImageIndex                 := FIconIdx_Small_Delete;
-    tbbViews.ImageIndex                  := FIconIdx_Small_Views;
-    tbbExtract.ImageIndex                := FIconIdx_Small_Extract;
-    tbbStore.ImageIndex                  := FIconIdx_Small_Store;
-    tbbItemProperties.ImageIndex         := FIconIdx_Small_ItemProperties;
-    tbbExplorerBarFolders.ImageIndex     := FIconIdx_Small_Folders;
-    tbbMapNetworkDrive.ImageIndex        := FIconIdx_Small_MapNetworkDrive;
-    tbbDisconnectNetworkDrive.ImageIndex := FIconIdx_Small_DisconnectNetworkDrive;
-    *)
-  end;
-
-end;
-
-procedure TfrmExplorerMain.SetupToolbarFromSettings();
-
-  procedure SortToolbar(processToolbar: TToolbar; displayToolbar: Boolean);
-//  var
-//    toolbarWidth: Integer;
-//    i:            Integer;
-  begin
-    processToolbar.Height       := processToolbar.Images.Height + TOOLBAR_ICON_BORDER;
-    processToolbar.ButtonHeight := processToolbar.Images.Height;
-    processToolbar.ButtonWidth  := processToolbar.Images.Width;
-
-    //    if displayToolbar then begin
-    //      // Turning captions on can cause the buttons to wrap if the window isn't big
-    //      // enough.
-    //      // This looks pretty poor, so resize the window if it's too small
-    //      toolbarWidth := 0;
-    //      for i := 0 to (processToolbar.ButtonCount - 1) do begin
-    //        toolbarWidth := toolbarWidth + processToolbar.Buttons[i].Width;
-    //      end;
-    //      if (toolbarWidth > self.Width) then begin
-    //        self.Width           := toolbarWidth;
-    //        processToolbar.Width := self.Width;
-    //      end;
-    //      // Adjusting the width to the sum of the toolbar buttons doens't make it wide
-    //      // enough to prevent wrapping (presumably due to window borders); nudge the
-    //      // size until it does
-    //      // (Crude, but effective)
-    //      while (processToolbar.RowCount > 1) do begin
-    //        self.Width           := self.Width + 10;
-    //        processToolbar.Width := self.Width;
-    //      end;
-    //    end;
-
-  end;
-
-var
-  tmpToolBarVolumeVisible:   Boolean;
-  tmpToolBarExplorerVisible: Boolean;
-begin
-  SetIconListsAndIndexes();
-
-  // Visible/invisible are set in EnableDisableControls()
-
-  // Toolbar captions...
-  if gSettings.OptToolbarVolumeLarge then begin
-    ToolBarVolume.ShowCaptions := gSettings.OptToolbarVolumeCaptions;
-  end else begin
-    ToolBarVolume.ShowCaptions := False;
-  end;
-
-  // Toolbar captions...
-  if gSettings.OptToolbarExplorerLarge then begin
-    ToolBarExplorer.ShowCaptions := gSettings.OptToolbarExplorerCaptions;
-  end else begin
-    ToolBarExplorer.ShowCaptions := False;
-  end;
-
-
-  tmpToolBarExplorerVisible := ToolBarExplorer.Visible;
-  ToolBarExplorer.Visible   := False;
-  SortToolbar(ToolBarVolume, tmpToolBarExplorerVisible);
-
-  tmpToolBarVolumeVisible := ToolBarVolume.Visible;
-  ToolBarVolume.Visible   := False;
-  SortToolbar(ToolBarExplorer, tmpToolBarVolumeVisible);
-
-  ToolBarVolume.Visible   := tmpToolBarVolumeVisible;
-  ToolBarExplorer.Visible := tmpToolBarExplorerVisible;
-
-end;
-
 
 procedure TfrmExplorerMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -3348,19 +3282,19 @@ begin
   // visible/invisible, etc settings
   // Note that if the user hasn't configured a location to save their settings,
   // this save will have no effect
-  gSettings.OptMainWindowLayout    := SDUGetFormLayout(self);
-  gSettings.OptExplorerBarWidth    := SDFilesystemTreeView1.Width;
-  gSettings.OptListViewLayout      := SDFilesystemListView1.Layout;
-  gSettings.OptShowToolbarVolume   := ToolBarVolume.Visible;
-  gSettings.OptShowToolbarExplorer := ToolBarExplorer.Visible;
-  gSettings.OptShowAddressBar      := pnlAddressBar.Visible;
-  gSettings.OptShowExplorerBar     := ebNone;
+  GetExplorerSettings().OptMainWindowLayout    := SDUGetFormLayout(self);
+  GetExplorerSettings().OptExplorerBarWidth    := SDFilesystemTreeView1.Width;
+  GetExplorerSettings().OptListViewLayout      := SDFilesystemListView1.Layout;
+  GetExplorerSettings().OptShowToolbarVolume   := ToolBarVolume.Visible;
+  GetExplorerSettings().OptShowToolbarExplorer := ToolBarExplorer.Visible;
+  GetExplorerSettings().OptShowAddressBar      := pnlAddressBar.Visible;
+  GetExplorerSettings().OptShowExplorerBar     := ebNone;
   if SDFilesystemTreeView1.Visible then begin
-    gSettings.OptShowExplorerBar := ebFolders;
+    GetExplorerSettings().OptShowExplorerBar := ebFolders;
   end;
-  gSettings.OptShowStatusbar := (StatusBar_Status.Visible or StatusBar_Hint.Visible);
+  GetExplorerSettings().OptShowStatusbar := (StatusBar_Status.Visible or StatusBar_Hint.Visible);
 
-  gSettings.Save();
+  GetSettings().Save();
 
 end;
 
@@ -3377,8 +3311,10 @@ var
   //  sysMagGlassIcon: TIcon;
   settingsFilename: String;
 begin
-  gSettings := TExplorerSettings.Create();
+  //  GSettings := TExplorerSettings.Create();
   SetFreeOTFEType(TOTFEFreeOTFEDLL);
+  SetSettingsType(TExplorerSettings);
+
 
   FInFormShow   := False;
   FInRefreshing := False;
@@ -3390,12 +3326,13 @@ begin
   FMappedDrive := #0;
 
 
-  CommonSettingsObj := gSettings;
-  if SDUCommandLineParameter(CMDLINE_SETTINGSFILE, settingsFilename) then begin
-    settingsFilename         := SDURelativePathToAbsolute(settingsFilename);
-    gSettings.CustomLocation := settingsFilename;
+  //  CommonSettingsObj := gSettings;
+  settingsFilename := GetCmdLine.settingsFileArg;
+  if  settingsFilename<>'' then begin
+    settingsFilename             := SDURelativePathToAbsolute(settingsFilename);
+    GetSettings().CustomLocation := settingsFilename;
   end;
-  gSettings.Load();
+  GetSettings().Load();
 
   inherited;
 
@@ -3500,6 +3437,52 @@ begin
   // previously selected node appears selected
   SDFilesystemTreeView1.RightClickSelect := True;
 
+
+  { TODO 1 -otdk -crefactor : whats the point of this instead of doing in designer? investigate and fix}
+  // Change toolbar captions to shorter captions
+  tbbNew.Caption       := RS_TOOLBAR_CAPTION_NEW;
+  tbbMountFile.Caption := RS_TOOLBAR_CAPTION_MOUNTFILE;
+  tbbDismount.Caption  := RS_TOOLBAR_CAPTION_DISMOUNT;
+
+  tbbNavigateBack.Caption           := RS_TOOLBAR_CAPTION_BACK;
+  tbbNavigateForward.Caption        := RS_TOOLBAR_CAPTION_FORWARD;
+  tbbUp.Caption                     := RS_TOOLBAR_CAPTION_UP;
+  tbbMoveTo.Caption                 := RS_TOOLBAR_CAPTION_MOVETO;
+  tbbCopyTo.Caption                 := RS_TOOLBAR_CAPTION_COPYTO;
+  tbbDelete.Caption                 := RS_TOOLBAR_CAPTION_DELETE;
+  tbbViews.Caption                  := RS_TOOLBAR_CAPTION_VIEWS;
+  tbbExtract.Caption                := RS_TOOLBAR_CAPTION_EXTRACT;
+  tbbStore.Caption                  := RS_TOOLBAR_CAPTION_STORE;
+  tbbItemProperties.Caption         := RS_TOOLBAR_CAPTION_ITEMPROPERTIES;
+  tbbExplorerBarFolders.Caption     := RS_TOOLBAR_CAPTION_FOLDERS;
+  tbbMapNetworkDrive.Caption        := RS_TOOLBAR_CAPTION_MAP_DRIVE;
+  tbbDisconnectNetworkDrive.Caption := RS_TOOLBAR_CAPTION_DISCONNECT;
+
+  mnuToolbarStoreFile.Caption := RS_TOOLBAR_MNU_CAPTION_STORE_FILE;
+  mnuToolbarStoreDir.Caption  := RS_TOOLBAR_MNU_CAPTION_STORE_DIR;
+
+  // Toolbar hints...
+  tbbNew.Hint       := RS_TOOLBAR_HINT_NEW;
+  tbbMountFile.Hint := RS_TOOLBAR_HINT_MOUNTFILE;
+  tbbDismount.Hint  := RS_TOOLBAR_HINT_DISMOUNT;
+
+  tbbNavigateBack.Hint           := RS_TOOLBAR_HINT_BACK;
+  tbbNavigateForward.Hint        := RS_TOOLBAR_HINT_FORWARD;
+  tbbUp.Hint                     := RS_TOOLBAR_HINT_UP;
+  tbbMoveTo.Hint                 := RS_TOOLBAR_HINT_MOVETO;
+  tbbCopyTo.Hint                 := RS_TOOLBAR_HINT_COPYTO;
+  tbbDelete.Hint                 := RS_TOOLBAR_HINT_DELETE;
+  tbbViews.Hint                  := RS_TOOLBAR_HINT_VIEWS;
+  tbbExtract.Hint                := RS_TOOLBAR_HINT_EXTRACT;
+  tbbStore.Hint                  := RS_TOOLBAR_HINT_STORE;
+  tbbItemProperties.Hint         := RS_TOOLBAR_HINT_ITEMPROPERTIES;
+  tbbExplorerBarFolders.Hint     := RS_TOOLBAR_HINT_EXPLORERBARFOLDERS;
+  tbbMapNetworkDrive.Hint        := RS_TOOLBAR_HINT_MAP_DRIVE;
+  tbbDisconnectNetworkDrive.Hint := RS_TOOLBAR_HINT_DISCONNECT;
+
+  mnuToolbarStoreFile.Hint := RS_TOOLBAR_MNU_HINT_STORE_FILE;
+  mnuToolbarStoreDir.Hint  := RS_TOOLBAR_MNU_HINT_STORE_DIR;
+
 end;
 
 procedure TfrmExplorerMain.FormDestroy(Sender: TObject);
@@ -3509,7 +3492,7 @@ begin
   WebDAVShutdown();
   FreeAndNil(fWebDAVObj);
   FNavigateHistory.Free();
-  FreeAndNil(gSettings);
+  //  FreeAndNil(GetSettings());
 end;
 
 procedure TfrmExplorerMain.FormResize(Sender: TObject);
@@ -3801,7 +3784,7 @@ var
   postMounted: DriveLetterString;
 begin
   Result := ceSUCCESS;
-  if SDUCommandLineSwitch(CMDLINE_MOUNT) then begin
+  if GetCmdLine.isMount then begin
 
     preMounted := GetFreeOTFEDLL().DrivesMounted;
 
@@ -3826,56 +3809,34 @@ end;
 function TfrmExplorerMain.HandleCommandLineOpts_Create(): eCmdLine_Exit;
 begin
   Result := ceSUCCESS;
-  if SDUCommandLineSwitch(CMDLINE_CREATE) then
-    actFreeOTFENewExecute(nil);
+  if GetCmdLine.isCreate then
+    _PromptCreateFreeOTFEVolume(false);
 end;
 
 
 procedure TfrmExplorerMain.WMUserPostShow(var msg: TWMEndSession);
-var
-  junk: eCmdLine_Exit;
 begin
   inherited;
-  HandleCommandLineOpts(junk);
-
+  HandleCommandLineOpts();
 end;
 
  // Handle any command line options; returns TRUE if command line options
  // were passed through, and "/noexit" wasn't specified as a command line
  // parameter
-function TfrmExplorerMain.HandleCommandLineOpts(out cmdExitCode: eCmdLine_Exit): Boolean;
-var
-  ignoreParams: Integer;
-  settingsFile: String;
+function TfrmExplorerMain.HandleCommandLineOpts( ): eCmdLine_Exit;
 begin
-  cmdExitCode := ceSUCCESS;
+  result := ceSUCCESS;
 
   // All command line options below require FreeOTFE to be active before they
   // can be used
-  cmdExitCode := HandleCommandLineOpts_Create();
+  result := HandleCommandLineOpts_Create();
 
-  if cmdExitCode = ceSUCCESS then
-    cmdExitCode := HandleCommandLineOpts_EnableDevMenu();
+  if result = ceSUCCESS then
+    result := HandleCommandLineOpts_EnableDevMenu();
 
-  if cmdExitCode = ceSUCCESS then
-    cmdExitCode := HandleCommandLineOpts_Mount();
+  if result = ceSUCCESS then
+    result := HandleCommandLineOpts_Mount();
 
-  // Return TRUE if there were no parameters specified on the command line
-  // and "/noexit" wasn't specified
-  // Note: Disregard any CMDLINE_SETTINGSFILE and parameter
-  Result := False;
-  if not (SDUCommandLineSwitch(CMDLINE_NOEXIT)) then begin
-    ignoreParams := 0;
-
-    if SDUCommandLineParameter(CMDLINE_SETTINGSFILE, settingsFile) then begin
-      Inc(ignoreParams);
-      if (settingsFile <> '') then begin
-        Inc(ignoreParams);
-      end;
-    end;
-
-    Result := (ParamCount > ignoreParams);
-  end;
 end;
 
 procedure TfrmExplorerMain.OnFreeOTFEExplorerRefreshMsg(var Msg: TMessage);
@@ -4140,10 +4101,10 @@ var
 begin
   allOK := True;
 
-  if (gSettings.OptDefaultStoreOp = dsoCopy) then begin
+  if (GetExplorerSettings().OptDefaultStoreOp = dsoCopy) then begin
     opType := cmCopy;
   end else
-  if (gSettings.OptDefaultStoreOp = dsoMove) then begin
+  if (GetExplorerSettings().OptDefaultStoreOp = dsoMove) then begin
     opType := cmMove;
   end else begin
     opType := cmCopy; // Get rid of compiler warning
@@ -4312,7 +4273,7 @@ begin
   end;
 
 
-  useMoveDeletionMethod := gSettings.OptMoveDeletionMethod;
+  useMoveDeletionMethod := GetExplorerSettings().OptMoveDeletionMethod;
   if ((opType = cmMove) and not (srcIsMountedFSNotLocalFS)) then begin
     if (useMoveDeletionMethod = mdmPrompt) then begin
       dlgOverwritePrompt := TfrmOverwritePrompt.Create(self);
@@ -4981,8 +4942,7 @@ procedure TfrmExplorerMain.OverwritePassStarted(Sender: TObject;
   itemName: String; passNumber: Integer; totalPasses: Integer);
 begin
   ProgressDlgSetLineTwo(
-    Format(_('Overwriting original (Pass: %d / %d)...'),
-    [passNumber, totalPasses]));
+    Format(_('Overwriting original (Pass: %d / %d)...'), [passNumber, totalPasses]));
 end;
 
 procedure TfrmExplorerMain.OverwriteCheckForUserCancel(Sender: TObject;
@@ -5083,8 +5043,7 @@ begin
         destItemExistsFile := SysUtils.FileExists(destItem);
       end;
       if destItemExistsFile then begin
-        SDUMessageDlg(Format(
-          _(
+        SDUMessageDlg(Format(_(
           'Cannot create or replace %s: There is already a file with the same name as the folder name you specified. Specify a different name.'),
           [ExtractFilename(srcItem)]),
           mtError
@@ -5103,9 +5062,10 @@ begin
             confirmResult := SDUMessageDlg(Format(
               _('This folder already contains a folder named ''%s''.' +
               SDUCRLF + SDUCRLF +
-              'If the files in the existing folder have the same name as files in the folder you are moving or copying,'+
+              'If the files in the existing folder have the same name as files in the folder you are moving or copying,'
+              +
               ' they will be replaced. Do you still want to move or copy the folder?'),
-               [ExtractFilename(srcItem)]), mtWarning, [mbYes, mbNo, mbCancel, mbYesToAll], 0);
+              [ExtractFilename(srcItem)]), mtWarning, [mbYes, mbNo, mbCancel, mbYesToAll], 0);
 
             if (confirmResult = mrYes) then begin
               // Do nothing - goodToDoOp already set to TRUE
@@ -5339,20 +5299,20 @@ const
     '', '', '', '', '',
     '', 'dmcrypt_dx.les', 'dmcrypt_hid.les');
 
-  {
-      TEST_VOLS: array[0..1] of String =
-    ( 'dmcrypt_dx.box', 'dmcrypt_dx.box');
-  PASSWORDS: array[0..1] of Ansistring =
-    ( 'password', '5ekr1t');
-  ITERATIONS: array[0..1] of Integer =
-    ( 2048, 2048);
-  OFFSET: array[0..1] of Integer =
-    ( 0, 0);
-  KEY_FILES: array[0..1] of String =
-    ( '', '');
-  LES_FILES: array[0..1] of String =
-    ( 'dmcrypt_dx.les', 'dmcrypt_hid.les');
-     }
+ {
+      TEST_VOLS: array[0..0] of String =
+    ( 'luks.box');
+  PASSWORDS: array[0..0] of Ansistring =
+    ( 'password');
+  ITERATIONS: array[0..0] of Integer =
+    ( 2048);
+  OFFSET: array[0..0] of Integer =
+    ( 0);
+  KEY_FILES: array[0..0] of String =
+    ( '');
+  LES_FILES: array[0..0] of String =
+    ( '');
+      }
 
   procedure CheckMountedOK;
   var
@@ -5405,8 +5365,6 @@ begin
     exit;
   end;
 
-  //  mountList := TStringList.Create();
-  //  try
   //for loop is optimised into reverse order , but want to process forwards
   vl       := 0;
   // debug ver is in subdir
@@ -5428,16 +5386,23 @@ begin
     if LES_FILES[vl] <> '' then
       les_file := vol_path + LES_FILES[vl];
 
-    if IsLUKSVolume(vol_path + TEST_VOLS[vl]) or (LES_FILES[vl] <> '') then    begin
-      if not GetFreeOTFEDLL().MountLinux(mountFile, mountedAs, True,
-        les_file, SDUStringToSDUBytes(PASSWORDS[vl]), key_file, False, nlLF, 0, True) then
+    if IsLUKSVolume(mountFile) then begin
+      if not LUKSTools.MountLUKS(mountFile, mountedAs, True,
+        SDUStringToSDUBytes(PASSWORDS[vl])
+        , key_file, False, nlLF, True) then
         Result := False;
     end else begin
-      //call silently
-      if not GetFreeOTFEDLL().MountFreeOTFE(mountFile, mountedAs, True,
-        key_file, SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False,
-        True, 256, ITERATIONS[vl]) then
-        Result := False;
+      if (LES_FILES[vl] <> '') then begin
+        if not frmKeyEntryLinux.MountPlainLinux(mountFile, mountedAs, True,
+          les_file, SDUStringToSDUBytes(PASSWORDS[vl])
+          , OFFSET[vl],  False, OFFSET[vl] <> 0) then
+          Result := False;
+      end else begin
+        //call silently
+        if not MountFreeOTFE(mountFile, mountedAs, True, key_file,
+          SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False, True, 256, ITERATIONS[vl]) then
+          Result := False;
+      end;
     end;
     if not Result then begin
       SDUMessageDlg(
@@ -5449,10 +5414,6 @@ begin
     Inc(vl);
   end;
 
-
-  //  finally
-  //    mountList.Free();
-  //  end;
 
   if Result then
     SDUMessageDlg('All functional tests passed')

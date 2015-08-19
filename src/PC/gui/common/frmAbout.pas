@@ -49,13 +49,7 @@ type
 
   end;
 
-const
-   {$IFDEF FREEOTFE_MAIN}
-  APP_DESCRIPTION = 'LibreCrypt: Open-Source Transparent Encryption';
-  {$ELSE}
-  APP_DESCRIPTION =
-    'LibreCrypt Explorer: Access containers without administrator rights';
-  {$ENDIF}
+
 implementation
 
 {$R *.DFM}
@@ -67,11 +61,18 @@ uses
   //sdu & LibreCrypt utils  - layer 1
   SDUGeneral,
   SDUi18n,
-
   lcConsts    // for APP_BETA_BUILD
   // LibreCrypt forms - layer 2
   //main form - layer 3
   ;
+
+const
+   {$IFDEF FREEOTFE_MAIN}
+  APP_DESCRIPTION = 'LibreCrypt: Open-Source Transparent Encryption';
+  {$ELSE}
+  APP_DESCRIPTION =
+    'LibreCrypt Explorer: Access containers without administrator rights';
+  {$ENDIF}
 
 procedure TfrmAbout.FormCreate(Sender: TObject);
 begin

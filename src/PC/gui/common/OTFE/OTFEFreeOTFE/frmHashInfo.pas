@@ -11,11 +11,20 @@ unit frmHashInfo;
 interface
 
 uses
-  Classes, Controls, Dialogs,
-  Forms, Graphics, Messages, OTFEFreeOTFE_U,
-  OTFEFreeOTFEBase_U,
-  SDUForms, StdCtrls,
-  SysUtils, Windows;
+
+     //delphi & libs
+       Classes, Controls, Dialogs,
+  Forms, Graphics, Messages,
+   StdCtrls,
+  SysUtils, Windows,
+  //sdu & LibreCrypt utils
+   SDUForms,   OTFEFreeOTFE_U,
+  OTFEFreeOTFEBase_U
+   // LibreCrypt forms
+
+
+
+;
 
 type
   TfrmHashInfo = class (TSDUForm)
@@ -59,15 +68,23 @@ type
   end;
 
 
+      // Display a standard dialog with details of the specific hash identified
+    procedure ShowHashDetailsDlg(driverName: String; hashGUID: TGUID);
+
+
 implementation
 
 {$R *.DFM}
 
 uses
+     //delphi & libs
   ComObj, SDUi18n,
             // Required for GUIDToString(...)
   ActiveX,  // Required for IsEqualGUID
-  OTFEFreeOTFEDLL_U, SDUGeneral;
+  //sdu & LibreCrypt utils
+       OTFEFreeOTFEDLL_U, SDUGeneral
+   // LibreCrypt forms
+ ;
 
 resourcestring
   RS_UNABLE_LOCATE_HASH_DRIVER = '<Unable to locate correct hash driver>';
@@ -159,6 +176,23 @@ begin
 
     end;
 
+  end;
+
+end;
+
+// ----------------------------------------------------------------------------
+procedure ShowHashDetailsDlg(driverName: String; hashGUID: TGUID);
+var
+  detailsDlg: TfrmHashInfo;
+begin
+  detailsDlg := TfrmHashInfo.Create(nil);
+  try
+    detailsDlg.ShowDriverName := driverName;
+    detailsDlg.ShowGUID       := hashGUID;
+
+    detailsDlg.ShowModal();
+  finally
+    detailsDlg.Free();
   end;
 
 end;

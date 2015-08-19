@@ -84,6 +84,10 @@ type
 
   end;
 
+var
+ //global single instance
+GPKCS11Library : TPKCS11Library;
+
 // Autodetect PKCS#11 library. If more than one are found, prompt the user
 // which one to use
 // Returns: One of:

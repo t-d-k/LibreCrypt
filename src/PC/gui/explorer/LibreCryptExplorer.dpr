@@ -1,5 +1,23 @@
 program LibreCryptExplorer;
 
+{
+ layers used are:
+ //delphi / 3rd party libs (layer 0)
+  //sdu & LibreCrypt utils (ie all not forms - layer 1)
+   // LibreCrypt forms (layer 2)
+    //main form (layer 3)
+
+     //delphi & libs
+
+  //sdu & LibreCrypt utils
+
+   // LibreCrypt forms
+
+    //main form
+
+
+  }
+
 uses
   FastMM4,
   Forms,
@@ -8,7 +26,6 @@ uses
   frmProperties in 'frmProperties.pas' {frmPropertiesDialog_Base},
   frmAbout in '..\common\frmAbout.pas' {frmAbout},
   CommonSettings in '..\common\CommonSettings.pas',
-  frmCommonMain in '..\common\frmCommonMain.pas' {frmMain},
   ExplorerSettings in 'ExplorerSettings.pas',
   frmHdrBackupRestore in '..\common\frmHdrBackupRestore.pas' {frmCDBBackupRestore},
   frmInstallOnUSBDrive in '..\common\frmInstallOnUSBDrive.pas' {frmInstallOnUSBDrive},
@@ -18,16 +35,12 @@ uses
   frmFileProperties in 'frmFileProperties.pas' {frmPropertiesDialog_File},
   frmDirProperties in 'frmDirProperties.pas' {frmPropertiesDialog_Directory},
   frmMultipleProperties in 'frmMultipleProperties.pas' {frmPropertiesDialog_Multiple},
-  fmeBaseOptions in '..\common\fmeBaseOptions.pas' {fmeOptions_Base: TFrame},
   frmCommonOptions in '..\common\frmCommonOptions.pas' {frmOptions},
-  fmeCommonExplorerOptions in 'fmeCommonExplorerOptions.pas' {fmeFreeOTFEExplorerOptions_Base: TFrame},
-  fmeExplorerOptions in 'fmeExplorerOptions.pas' {fmeOptions_FreeOTFEExplorerGeneral: TFrame},
   frmExplorerOptions in 'frmExplorerOptions.pas' {frmOptions_FreeOTFEExplorer},
   frmVersionCheck in '..\common\frmVersionCheck.pas' {frmVersionCheck},
   CommonConsts in '..\common\CommonConsts.pas',
   frmSelectDirectory in 'frmSelectDirectory.pas' {frmSelectDirectoryDlg},
   frmVolumeProperties in 'frmVolumeProperties.pas' {frmPropertiesDialog_Volume},
-  fmeAdvancedExplorerOptions in 'fmeAdvancedExplorerOptions.pas' {fmeOptions_FreeOTFEExplorerAdvanced: TFrame},
   frmOverwritePrompt in 'frmOverwritePrompt.pas' {frmOverwritePrompt},
   frmSelectCopyOrMove in 'frmSelectCopyOrMove.pas' {frmSelectCopyOrMove},
   frmLUKSHdrDump in '..\common\frmLUKSHdrDump.pas' {frmCDBDump_LUKS},
@@ -72,7 +85,6 @@ uses
   SDUWindows in '..\common\SDeanUtils\SDUWindows.pas',
   SDUClasses in '..\common\SDeanUtils\SDUClasses.pas',
   SDUDirIterator_U in '..\common\SDeanUtils\SDUDirIterator_U.pas',
-  fmeExplorerWebDAVOptions in 'fmeExplorerWebDAVOptions.pas' {fmeOptions_FreeOTFEExplorerWebDAV: TFrame},
   ExplorerWebDAV in 'ExplorerWebDAV.pas',
   frmHashInfo in '..\common\OTFE\OTFEFreeOTFE\frmHashInfo.pas' {frmHashInfo},
   frmCypherInfo in '..\common\OTFE\OTFEFreeOTFE\frmCypherInfo.pas' {frmCypherInfo},
@@ -86,7 +98,6 @@ uses
   fmePKCS11_MgrBase in '..\common\OTFE\OTFEFreeOTFE\fmePKCS11_MgrBase.pas' {fmePKCS11_MgrBase: TFrame},
   fmePKCS11_MgrKeyfile in '..\common\OTFE\OTFEFreeOTFE\fmePKCS11_MgrKeyfile.pas' {fmePKCS11_MgrKeyfile: TFrame},
   fmePKCS11_MgrSecretKey in '..\common\OTFE\OTFEFreeOTFE\fmePKCS11_MgrSecretKey.pas' {fmePKCS11_MgrSecretKey: TFrame},
-  frmSelectVolumeType in '..\common\OTFE\OTFEFreeOTFE\frmSelectVolumeType.pas' {frmSelectVolumeType},
   frmSelectHashCypher in '..\common\OTFE\OTFEFreeOTFE\frmSelectHashCypher.pas' {frmSelectHashCypher},
   frmSelectVolumeAndOffset in '..\common\OTFE\OTFEFreeOTFE\frmSelectVolumeAndOffset.pas',
   MouseRNGCaptureDlg_U in '..\common\SDeanSecurity\MouseRNGDialog\MouseRNGCaptureDlg_U.pas' {MouseRNGCaptureDlg},
@@ -129,7 +140,8 @@ uses
   OTFEFreeOTFE_DriverCypherAPI in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverCypherAPI.pas',
   OTFEFreeOTFE_DriverHashAPI in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverHashAPI.pas',
   OTFEFreeOTFE_LUKSAPI in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSAPI.pas',
-  AFSplitMerge in '..\common\OTFE\AFSplitMerge.pas';
+  AFSplitMerge in '..\common\OTFE\AFSplitMerge.pas',
+  frmSelectVolumeType in '..\common\OTFE\OTFEFreeOTFE\frmSelectVolumeType.pas' {frmSelectVolumeType};
 
 {$R *.res}
 {$R FreeOTFEExplorerCursors.res}

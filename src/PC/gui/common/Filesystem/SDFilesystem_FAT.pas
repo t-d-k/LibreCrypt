@@ -410,7 +410,11 @@ function FATTypeTitle(fatType: TFATType): String;
 implementation
 
 uses
-  DateUtils, Math,
+
+//delphi
+ DateUtils, Math,
+ //lc utils
+lcConsts,
   SDUi18n,
   SDUSysUtils;
 

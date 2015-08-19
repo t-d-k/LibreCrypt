@@ -13,11 +13,12 @@ interface
 
 uses
   //delphi and 3rd party libs - layer 0
-  Classes, SysUtils,
+  Classes, SysUtils, system.Types, Vcl.Controls, Vcl.StdCtrls,
   //sdu & LibreCrypt utils - layer 1
   fmeSDUBlocks,
-  SDUGeneral,
-  SDUObjectManager, Vcl.Controls, Vcl.StdCtrls;
+  lcTypes,
+  PartitionTools,//for TSDUPartitionInfo
+  SDUObjectManager;
 
 type
   // Exceptions...
@@ -28,10 +29,15 @@ const
   NO_DISK      = -1;
   NO_PARTITION = -1;
 
+
+
 resourcestring
   UNABLE_TO_GET_DISK_LAYOUT = 'Unable to get disk layout for disk: %u';
 
 type
+
+
+
   TfmeSDUDiskPartitions = class (TfmeSDUBlocks)
   private
     FDiskNumber:           Integer;
@@ -65,8 +71,9 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy(); override;
 
+    function IsValidPartition(idx: Integer) :Boolean;
     property PartitionInfo[idx: Integer]: TPartitionInformationEx Read GetPartitionInfo;
-    property DriveLetter[idx: Integer]: Char Read GetDriveLetter;
+    property DriveLetterForPart[idx: Integer]: Char Read GetDriveLetter;
 
     procedure Clear(); override;
 
@@ -84,23 +91,25 @@ type
     property DriveLayoutInformationValid: Boolean Read FDriveLayoutInfoValid;
   end;
 
-//procedure Register;
+// Get layout of disk
+function SDUGetDriveLayout(physicalDiskNo: Integer;
+  var driveLayout: TSDUDriveLayoutInformationEx): Boolean;
+function SDUGetDriveLayout_Device(driveDevice: String;
+  var driveLayout: TSDUDriveLayoutInformationEx): Boolean;
 
 implementation
 
 uses
   Math,
-  Windows;
+  Windows,
+  //lcutils
+  sdugeneral,
+  lcConsts;
 
 {$R *.dfm}
 
 const
   ULL_ONEMEG: ULONGLONG = 1024 * 1024;
-
- //procedure Register;
- //begin
- //  RegisterComponents('SDeanUtils', [TfmeSDUDiskPartitions]);
- //end;
 
 
 constructor TfmeSDUDiskPartitions.Create(AOwner: TComponent);
@@ -221,7 +230,7 @@ begin
             prettyPartitionType := SDUGptPartitionType(currPartition.gpt.PartitionType, False);
           end else begin
             //raw
-            prettyPartitionType := 'RAW psartition';
+            prettyPartitionType := 'RAW partition';
           end;
         end;
 
@@ -229,6 +238,10 @@ begin
         blk.Caption    := SDUFormatAsBytesUnits(currPartition.PartitionLength) +
           SDUCRLF + drive;
         blk.SubCaption := prettyPartitionType;
+        if currPartition.PartitionStyle = PARTITION_STYLE_GPT then begin
+          blk.SubCaption := blk.SubCaption + ' "' + currPartition.Gpt.Name +'" ' +#10#13 + 'GUID: '+GUIDToString(currPartition.Gpt.PartitionId);
+        end;
+
         //'Idx: '+inttostr(idx)+SDUCRLF+
         //'PN: '+inttostr(currPartition.PartitionNumber)+SDUCRLF+
         //'PT: 0x'+inttohex(currPartition.PartitionType, 2);
@@ -259,6 +272,12 @@ begin
   FDiskNumber := DiskNo;
   RefreshPartitions();
   Invalidate();
+end;
+
+function TfmeSDUDiskPartitions.IsValidPartition(idx: Integer): Boolean;
+begin
+result :=  (idx >= 0) and (idx< FMapBlockToPartition.count) ;
+
 end;
 
 function TfmeSDUDiskPartitions.GetPartitionInfo(idx: Integer): TPartitionInformationEx;
@@ -323,8 +342,8 @@ var
 begin
   Result := #0;
 
-  if (idx >= 0) then begin
-    partInfo := PartitionInfo[idx];
+  if (idx >= 0) and (idx< FMapBlockToPartition.count) then begin
+    partInfo := GetPartitionInfo(idx);
     Result   := GetDriveLetterForPartition(DiskNumber, partInfo.PartitionNumber);
   end;
 
@@ -341,12 +360,74 @@ begin
   Result := (
     // USE CAUTION! We don't want the user selecting a partition, and
     // ending up using the whole HDD (partition number zero)
-    (not (ShowPartitionsWithPNZero) and (partInfo.PartitionNumber = 0)) or
+    (not (FShowPartitionsWithPNZero) and (partInfo.PartitionNumber = 0)) or
     // Piddly partitions; extended partitions, etc
     (partInfo.PartitionLength < ULL_ONEMEG) or
     // $05/$0F = extended partition definition
     ((partInfo.PartitionStyle = PARTITION_STYLE_MBR) and
     (partInfo.mbr.PartitionType = $05) or (partInfo.mbr.PartitionType = $0F)));
+
+end;
+
+
+// ----------------------------------------------------------------------------
+function SDUGetDriveLayout(physicalDiskNo: Integer;
+  var driveLayout: TSDUDriveLayoutInformationEx): Boolean;
+var
+  deviceName: String;
+begin
+  deviceName := Format(FMT_DEVICENAME_HDD_PHYSICAL_DISK, [physicalDiskNo]);
+  Result     := SDUGetDriveLayout_Device(deviceName, driveLayout);
+end;
+
+
+
+// ----------------------------------------------------------------------------
+function SDUGetDriveLayout_Device(driveDevice: String;
+  var driveLayout: TSDUDriveLayoutInformationEx): Boolean;
+var
+  fileHandle:      THandle;
+  //  DIOCBufferOut: TSDUDriveLayoutInformation;
+  bytesReturned:   DWORD;
+  DriveLayoutInfo: TSDUDriveLayoutInformationEx;
+  //    str :string;
+begin
+  Result     := False;
+  // http://stackoverflow.com/questions/17110543/how-to-retrieve-the-disk-signature-of-all-the-disks-in-windows-using-delphi-7 says better way
+  // Open file and get it's size
+  fileHandle := CreateFile(PChar(driveDevice),
+                   // pointer to name of the file
+    0,             // access (read-write) mode
+    (FILE_SHARE_READ or FILE_SHARE_WRITE),
+        // share mode
+    nil,                      // pointer to security attributes
+    OPEN_EXISTING,            // how to create
+    0,  // file attributes
+    0                         // handle to file with attributes to copy
+    );
+
+  if (fileHandle <> INVALID_HANDLE_VALUE) then begin
+    if DeviceIoControl(fileHandle, IOCTL_DISK_GET_DRIVE_LAYOUT_EX, nil, 0,
+      @DriveLayoutInfo, SizeOf(DriveLayoutInfo), BytesReturned, nil) then begin
+      driveLayout := DriveLayoutInfo;
+  {
+        case DriveLayoutInfo.PartitionStyle of
+        PARTITION_STYLE_MBR:
+          str :=  driveDevice + ', MBR, ' +
+            IntToHex(DriveLayoutInfo.DriveLayoutInformation.Mbr.Signature, 8);
+        PARTITION_STYLE_GPT:
+         str := driveDevice + ', GPT, ' +
+            GUIDToString(DriveLayoutInfo.DriveLayoutInformation.Gpt.DiskId);
+        PARTITION_STYLE_RAW:
+          str := driveDevice + ', RAW';
+        end;
+         ShowMessage(str);
+         }
+      Result      := True;
+    end;
+
+    CloseHandle(fileHandle);
+  end;
 
 end;
 

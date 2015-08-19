@@ -7,7 +7,7 @@ unit frmKeyEntryFreeOTFE;
  // -----------------------------------------------------------------------------
  //
 
-   { TODO 1 -otdk -crefactor : shares many fields with frmWizardChangePasswordCreateKeyfile - extract to frames}
+{ TODO 1 -otdk -crefactor : shares many fields with frmWizardChangePasswordCreateKeyfile - extract to frames}
 
  // Panels layout on this form:
  //
@@ -40,18 +40,18 @@ unit frmKeyEntryFreeOTFE;
 interface
 
 uses
-//delphi
-   Classes, ComCtrls, Controls, Dialogs,
+  //delphi
+  Classes, ComCtrls, Controls, Dialogs,
   ExtCtrls,
-  Forms, Graphics, Messages,   PasswordRichEdit, StdCtrls, SysUtils, Windows,
-// sdu , lc libs
-   OTFEFreeOTFE_PasswordRichEdit, PKCS11Lib,
+  Forms, Graphics, Messages, PasswordRichEdit, StdCtrls, SysUtils, Windows,
+  // sdu , lc libs
+  PKCS11Lib,
   OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U, pkcs11_library, pkcs11_session,
   SDUDropFiles, SDUFilenameEdit_U, SDUForms, SDUFrames,
-  SDUGeneral,
+lcTypes,
   SDUSpin64Units, Spin64,
-//lc
+  //lc  forms
   fmePassword;
 
 type
@@ -89,7 +89,7 @@ type
     se64UnitOffset: TSDUSpin64Unit_Storage;
     feKeyfile:      TSDUFilenameEdit;
     SDUDropFiles_Keyfile: TSDUDropFiles;
-    frmePassword1: TfrmePassword;
+    frmePassword1:  TfrmePassword;
     procedure pbOKClick(Sender: TObject);
     procedure preUserkeyKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure pbCancelClick(Sender: TObject);
@@ -113,14 +113,14 @@ type
     fPkcs11session:  TPKCS11Session;
 
     fsilentResult: TModalResult;
-    fsilent:        Boolean;
-    fVolumeFile:   string;
+    fsilent:       Boolean;
+    fVolumeFile:   String;
     fmountedDrive: DriveLetterChar;
-
-    procedure PopulateDrives();
-    procedure PopulateMountAs();
-    procedure PopulatePKCS11CDB();
-    procedure PopulatePKCS11SecretKey();
+    fisHidden :       Boolean;
+    procedure _PopulateDrives();
+    procedure _PopulateMountAs();
+    procedure _PopulatePKCS11CDB();
+    procedure _PopulatePKCS11SecretKey();
 
     procedure DoCancel();
 
@@ -142,7 +142,7 @@ type
 
     // only show if not silent
     function SilencableMessageDlg(Content: String; DlgType: TMsgDlgType): Integer;
-procedure SetVolumeFile(Value: String);
+
   public
 
     procedure SetPassword(password: TSDUBytes);
@@ -156,10 +156,41 @@ procedure SetVolumeFile(Value: String);
     procedure DisplayAdvanced(displayAdvanced: Boolean);
 
     property silent: Boolean Read fsilent Write fsilent;
-    property VolumeFile: String Write SetVolumeFile;
+    property VolumeFile: String Write fVolumeFile;
     property mountedDrive: DriveLetterChar Read fmountedDrive;
+    property isHidden: Boolean Read fisHidden Write fisHidden;
+
   end;
 
+{ TODO -otdk -crefactor : move into FreeOTFE utils file }
+function MountFreeOTFE(volumeFilename: String;
+  ReadOnly: Boolean = False; keyfile: String = ''; password: TSDUBytes = nil;
+  offset: ULONGLONG = 0; noCDBAtOffset: Boolean = False; silent: Boolean = False;
+  saltLength: Integer = DEFAULT_SALT_LENGTH;
+  keyIterations: Integer = DEFAULT_KEY_ITERATIONS;isHidden: Boolean = False ): DriveLetterChar; overload;
+
+function MountFreeOTFE(volumeFilename: String; var mountedAs: DriveLetterChar;
+  ReadOnly: Boolean = False; keyfile: String = ''; password: TSDUBytes = nil;
+  offset: ULONGLONG = 0; noCDBAtOffset: Boolean = False; silent: Boolean = False;
+  saltLength: Integer = DEFAULT_SALT_LENGTH;
+  keyIterations: Integer = DEFAULT_KEY_ITERATIONS;isHidden: Boolean = False): Boolean; overload;
+
+function MountFreeOTFE(volumeFilename: String; UserKey: TSDUBytes;
+  Keyfile: String; CDB: Ansistring; // CDB data (e.g. already read in PKCS#11 token)
+  // If CDB is specified, "Keyfile" will be ignored
+  SlotID: Integer;
+  // Set to PKCS#11 slot ID if PKCS#11 slot was *actually* used for mounting
+  PKCS11Session: TPKCS11Session;  // Set to nil if not needed
+  PKCS11SecretKeyRecord: PPKCS11SecretKey;  // Set to nil if not needed
+  KeyIterations: Integer; UserDriveLetter: Char;
+  // PC kernel drivers *only* - ignored otherwise
+  MountReadonly: Boolean; MountMountAs: TFreeOTFEMountAs;
+  // PC kernel drivers *only* - ignored otherwise
+  Offset: Int64; OffsetPointsToCDB: Boolean; SaltLength: Integer;  // In *bits*
+  MountForAllUsers: Boolean;
+  // PC kernel drivers *only* - ignored otherwise
+  var mountedAs: DriveLetterChar): Boolean;
+  overload;
 
 implementation
 
@@ -167,7 +198,7 @@ implementation
 
 
 uses
-//delphi
+           //delphi
   ComObj,  // Required for StringToGUID
            // Disable useless warnings about faReadOnly, etc and FileSetAttr(...) being
            // platform-specific
@@ -175,14 +206,15 @@ uses
 {$WARN SYMBOL_PLATFORM OFF}
   FileCtrl,  // Required for TDriveType
 {$WARN SYMBOL_PLATFORM ON}
-//sdu, lc libs
+  //sdu, lc libs
   OTFEConsts_U,
   DriverAPI,
-  frmPKCS11Session,
   pkcs11_object, lcDialogs,
   SDUi18n,
-  // lc
-  Shredder;
+  lcConsts, sdugeneral, CommonSettings,  MainSettings, Shredder, VolumeFileAPI
+  // lc forms
+ ,
+  frmPKCS11Session;
 
 resourcestring
   RS_NOT_SELECTED   = '<none selected>';
@@ -258,7 +290,7 @@ begin
 
 end;
 
-procedure TfrmKeyEntryFreeOTFE.PopulateDrives();
+procedure TfrmKeyEntryFreeOTFE._PopulateDrives();
 var
   driveLetters: String;
   i:            Integer;
@@ -280,7 +312,7 @@ begin
 end;
 
 
-procedure TfrmKeyEntryFreeOTFE.PopulateMountAs();
+procedure TfrmKeyEntryFreeOTFE._PopulateMountAs();
 var
   currMountAs: TFreeOTFEMountAs;
 begin
@@ -294,7 +326,7 @@ begin
 
 end;
 
-procedure TfrmKeyEntryFreeOTFE.PopulatePKCS11CDB();
+procedure TfrmKeyEntryFreeOTFE._PopulatePKCS11CDB();
 var
   errMsg:     String;
   i:          Integer;
@@ -309,8 +341,8 @@ begin
   cbPKCS11CDB.items.Clear();
   if (session <> nil) then begin
     if not (GetAllPKCS11CDB(session, FTokenCDB, errMsg)) then begin
-      SilencableMessageDlg(_('Unable to get list of CDB entries from Token') + SDUCRLF +
-        SDUCRLF + errMsg, mtError);
+      SilencableMessageDlg(_('Unable to get list of CDB entries from Token') +
+        SDUCRLF + SDUCRLF + errMsg, mtError);
     end;
   end;
 
@@ -352,7 +384,7 @@ begin
 
 end;
 
-procedure TfrmKeyEntryFreeOTFE.PopulatePKCS11SecretKey();
+procedure TfrmKeyEntryFreeOTFE._PopulatePKCS11SecretKey();
 var
   errMsg:  String;
   i:       Integer;
@@ -431,12 +463,11 @@ begin
 
     fMountedDrive := #0;
     { TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
-    Result         := GetFreeOTFEBase.MountFreeOTFE(fVolumeFile,
-      frmePassword1.GetKeyPhrase(), useKeyfilename, usePKCS11CDB,
-      usedSlotID, FPKCS11Session, usePKCS11SecretKey, seKeyIterations.Value,
-      GetDriveLetter(), ckMountReadonly.Checked, GetMountAs(), se64UnitOffset.Value,
-      ckOffsetPointsToCDB.Checked, seSaltLength.Value, ckMountForAllUsers.Checked,
-      fMountedDrive);
+    Result        := MountFreeOTFE(fVolumeFile, frmePassword1.GetKeyPhrase(),
+      useKeyfilename, usePKCS11CDB, usedSlotID, FPKCS11Session, usePKCS11SecretKey,
+      seKeyIterations.Value, GetDriveLetter(), ckMountReadonly.Checked,
+      GetMountAs(), se64UnitOffset.Value, ckOffsetPointsToCDB.Checked,
+      seSaltLength.Value, ckMountForAllUsers.Checked, fMountedDrive);
     if not (Result) then begin
       GetFreeOTFEBase.CountMountedResults(
         fMountedDrive,
@@ -500,60 +531,60 @@ end;
 
 function TfrmKeyEntryFreeOTFE.IsVolumeStoredOnReadonlyMedia(): Boolean;
 var
-//  i:                   Integer;
+  //  i:                   Integer;
   currVol:             String;
   testDriveColonSlash: String;
 begin
   Result := False;
 
-//  for i := 0 to (fVolumeFiles.Count - 1) do begin
-    currVol := fVolumeFile;
+  //  for i := 0 to (fVolumeFiles.Count - 1) do begin
+  currVol := fVolumeFile;
 
-    if not GetFreeOTFEBase.IsPartition_UserModeName(currVol) then begin
-      if (length(currVol) > 2) then begin
-        // Check for ":" as 2nd char in filename; i.e. it's a filename with
-        // <drive letter>:<path>\<filename>
-        if (currVol[2] = ':') then begin
-          testDriveColonSlash := currVol[1] + ':\';
-          if (TDriveType(GetDriveType(PChar(testDriveColonSlash))) = dtCDROM) then begin
-            //  the volume is stored on a CDROM (readonly media)
-            Result := True;
-//            break;
-          end;
-
+  if not GetFreeOTFEBase.IsPartition_UserModeName(currVol) then begin
+    if (length(currVol) > 2) then begin
+      // Check for ":" as 2nd char in filename; i.e. it's a filename with
+      // <drive letter>:<path>\<filename>
+      if (currVol[2] = ':') then begin
+        testDriveColonSlash := currVol[1] + ':\';
+        if (TDriveType(GetDriveType(PChar(testDriveColonSlash))) = dtCDROM) then begin
+          //  the volume is stored on a CDROM (readonly media)
+          Result := True;
+          //            break;
         end;
+
       end;
     end;
+  end;
 
-//  end;
+  //  end;
 end;
 
 function TfrmKeyEntryFreeOTFE.IsVolumeMarkedAsReadonly(): Boolean;
 var
-//  i:       Integer;
+  //  i:       Integer;
   currVol: String;
 begin
   Result := False;
 
-//  for i := 0 to (fVolumeFiles.Count - 1) do begin
-    currVol := fVolumeFile;
+  //  for i := 0 to (fVolumeFiles.Count - 1) do begin
+  currVol := fVolumeFile;
 
-    if not GetFreeOTFEBase.IsPartition_UserModeName(currVol) then begin
-      if (length(currVol) > 2) then begin
-        // Check for ":" as 2nd char in filename; i.e. it's a filename with
-        // <drive letter>:<path>\<filename>
-        if (currVol[2] = ':') then begin
-          if FileIsReadOnly(currVol) then begin
-            // the volume is readonly
-            Result := True;
-//            break;
-          end;
-
+  if not GetFreeOTFEBase.IsPartition_UserModeName(currVol) then begin
+    if (length(currVol) > 2) then begin
+      // Check for ":" as 2nd char in filename; i.e. it's a filename with
+      // <drive letter>:<path>\<filename>
+      if (currVol[2] = ':') then begin
+        if FileIsReadOnly(currVol) then begin
+          // the volume is readonly
+          Result := True;
+          //            break;
         end;
+
       end;
     end;
+  end;
 
-//  end;
+  //  end;
 end;
 
 function TfrmKeyEntryFreeOTFE.CheckInput(): Boolean;
@@ -561,7 +592,7 @@ begin
   Result := True;
 
   if (seSaltLength.Value mod 8 <> 0) then begin
-    SilencableMessageDlg(_('Salt length (in bits) must be a multiple of 8'),      mtError      );
+    SilencableMessageDlg(_('Salt length (in bits) must be a multiple of 8'), mtError);
     Result := False;
   end;
 end;
@@ -583,7 +614,7 @@ end;
 
 procedure TfrmKeyEntryFreeOTFE.rbKeyfilePKCS11Click(Sender: TObject);
 begin
-  PopulatePKCS11CDB();
+  _PopulatePKCS11CDB();
 
   // If there are no keyfiles; flip back
   if (cbPKCS11CDB.items.Count <= 1) then begin
@@ -613,11 +644,11 @@ var
   pkcs11Dlg: TfrmPKCS11Session;
 begin
   if (FPKCS11Session = nil) then begin
-    if PKCS11LibraryReady(GetFreeOTFEBase.PKCS11Library) then begin
+    if PKCS11LibraryReady(GPKCS11Library) then begin
       // Setup PKCS11 session, as appropriate
       pkcs11Dlg := TfrmPKCS11Session.Create(nil);
       try
-        pkcs11Dlg.PKCS11LibObj := GetFreeOTFEBase.PKCS11Library;
+        pkcs11Dlg.PKCS11LibObj := GPKCS11Library;
         pkcs11Dlg.AllowSkip    := False;
         if (pkcs11Dlg.ShowModal = mrOk) then begin
           FPKCS11Session := pkcs11Dlg.Session;
@@ -657,9 +688,9 @@ end;
 
 procedure TfrmKeyEntryFreeOTFE.FormCreate(Sender: TObject);
 begin
-//  fVolumeFiles := TStringList.Create;
+  //  fVolumeFiles := TStringList.Create;
   fVolumeFile := '';
-  fsilent      := False;
+  fsilent     := False;
 
   pnlLower.BevelOuter    := bvNone;
   pnlLower.BevelInner    := bvNone;
@@ -686,7 +717,7 @@ begin
   cbPKCS11SecretKey.Items.AddObject(RS_NOT_SELECTED, nil);
 
   // FreeOTFE volumes CAN have newlines in the user's password
-//  preUserKey.WantReturns := True;
+  //  preUserKey.WantReturns := True;
   frmePassword1.ClearPassword();
 
   se64UnitOffset.Value        := 0;
@@ -702,6 +733,11 @@ begin
   seKeyIterations.Value     := DEFAULT_KEY_ITERATIONS;
 
   DisplayAdvanced(False);
+
+  feKeyfile.TabStop     := False;
+  feKeyfile.FilterIndex := 0;
+  feKeyfile.OnChange    := feKeyfileChange;
+
 end;
 
 procedure TfrmKeyEntryFreeOTFE.FormDestroy(Sender: TObject);
@@ -714,7 +750,7 @@ begin
     FPKCS11Session.CloseSession();
     FPKCS11Session.Free();
   end;
-//  fVolumeFiles.Free;
+  //  fVolumeFiles.Free;
 end;
 
 procedure TfrmKeyEntryFreeOTFE.FormShow(Sender: TObject);
@@ -731,16 +767,16 @@ begin
   //       that the user is prompted for their token's PIN
   // PopulatePKCS11CDB();
 
-  PopulateDrives();
+  _PopulateDrives();
   if (cbDrive.Items.Count > 0) then begin
     cbDrive.ItemIndex := 0;
 
-    if (GetFreeOTFEBase is TOTFEFreeOTFE) then begin
-      if (GetFreeOTFE.DefaultDriveLetter <> #0) then begin
+    if (GetSettings() is TMainSettings) then begin
+      if (GetMainSettings().OptDefaultDriveLetter <> #0) then begin
         // Start from 1; skip the default
         for i := 1 to (cbDrive.items.Count - 1) do begin
           currDriveLetter := cbDrive.Items[i][1];
-          if (currDriveLetter >= GetFreeOTFE.DefaultDriveLetter) then begin
+          if (currDriveLetter >= GetMainSettings().OptDefaultDriveLetter) then begin
             cbDrive.ItemIndex := i;
             break;
           end;
@@ -749,10 +785,10 @@ begin
     end;
   end;
 
-  PopulateMountAs();
+  _PopulateMountAs();
 
-  if (GetFreeOTFEBase is TOTFEFreeOTFE) then begin
-    SetMountAs(GetFreeOTFE.DefaultMountAs);
+  if (GetSettings is TMainSettings) then begin
+    SetMountAs(GetMainSettings().OptDefaultMountAs);
   end else begin
     SetMountAs(fomaRemovableDisk);
   end;
@@ -826,8 +862,8 @@ begin
 
   // Protect as this can be called as part of creation
   if (GetFreeOTFEBase <> nil) then begin
-    SDUEnableControl(rbKeyfilePKCS11, PKCS11LibraryReady(GetFreeOTFEBase.PKCS11Library));
-    if not (PKCS11LibraryReady(GetFreeOTFEBase.PKCS11Library)) then begin
+    SDUEnableControl(rbKeyfilePKCS11, PKCS11LibraryReady(GPKCS11Library));
+    if not (PKCS11LibraryReady(GPKCS11Library)) then begin
       rbKeyfileFile.Checked   := True;
       rbKeyfilePKCS11.Checked := False;
     end;
@@ -901,7 +937,7 @@ begin
     if pnlAdvanced.Visible then begin
       self.Height := self.Height + pnlAdvanced.Height;
 
-      PopulatePKCS11SecretKey();
+      _PopulatePKCS11SecretKey();
       EnableDisableControls_SecretKey();
     end else begin
       self.Height := self.Height - pnlAdvanced.Height;
@@ -922,7 +958,7 @@ begin
   frmePassword1.SetKeyPhrase(password);
 end;
 
- // Display message only if not Silent
+// Display message only if not Silent
 function TfrmKeyEntryFreeOTFE.SilencableMessageDlg(Content: String; DlgType: TMsgDlgType): Integer;
 begin
   Result := mrOk;
@@ -930,9 +966,224 @@ begin
     Result := SDUMessageDlg(Content, DlgType);
 end;
 
-procedure TfrmKeyEntryFreeOTFE.SetVolumeFile(Value: String);
+
+function MountFreeOTFE(volumeFilename: String;
+  var mountedAs: DriveLetterChar; ReadOnly: Boolean = False; keyfile: String = '';
+  password: TSDUBytes = nil; offset: ULONGLONG = 0; noCDBAtOffset: Boolean = False;
+  silent: Boolean = False; saltLength: Integer = DEFAULT_SALT_LENGTH;
+  keyIterations: Integer = DEFAULT_KEY_ITERATIONS;isHidden: Boolean = False): Boolean;
+var
+  keyEntryDlg:      TfrmKeyEntryFreeOTFE;
+  mr:               Integer;
+  advancedMountDlg: Boolean;
 begin
-  fVolumeFile := Value;
+  GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS;
+  Result    := False;
+  mountedAs := AnsiChar(#0);
+
+  GetFreeOTFEBase().CheckActive();
+
+  if (GetFreeOTFEBase().LastErrorCode = OTFE_ERR_SUCCESS) then begin
+    keyEntryDlg := TfrmKeyEntryFreeOTFE.Create(nil);
+    try
+      advancedMountDlg   := GetSettings().OptAdvancedMountDlg;
+      keyEntryDlg.Silent := silent;
+      keyEntryDlg.SetPassword(password);
+      keyEntryDlg.SetReadonly(ReadOnly);
+      keyEntryDlg.SetOffset(offset);
+      keyEntryDlg.SetCDBAtOffset(not (noCDBAtOffset));
+      keyEntryDlg.SetSaltLength(saltLength);
+      keyEntryDlg.SetKeyIterations(keyIterations);
+      keyEntryDlg.SetKeyfile(keyfile);
+
+      keyEntryDlg.DisplayAdvanced(advancedMountDlg);
+      keyEntryDlg.VolumeFile := volumeFilename;
+      keyEntryDlg.ishidden := isHidden;
+      mr := keyEntryDlg.ShowModal();
+      if (mr = mrCancel) then begin
+        GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
+      end else begin
+        mountedAs := keyEntryDlg.MountedDrive;
+        Result    := True;
+      end;
+
+    finally
+      keyEntryDlg.Free()
+    end;
+  end;
 end;
 
+
+// ----------------------------------------------------------------------------
+function MountFreeOTFE(volumeFilename: String;
+  ReadOnly: Boolean = False; keyfile: String = ''; password: TSDUBytes = nil;
+  offset: ULONGLONG = 0; noCDBAtOffset: Boolean = False; silent: Boolean = False;
+  saltLength: Integer = DEFAULT_SALT_LENGTH;
+  keyIterations: Integer = DEFAULT_KEY_ITERATIONS;isHidden: Boolean = False): DriveLetterChar;
+var
+  mountedAs: DriveLetterChar;
+begin
+  GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS;
+  Result := #0;
+
+  if MountFreeOTFE(volumeFilename, mountedAs, ReadOnly, keyfile, password,
+    offset, noCDBAtOffset, silent, saltLength, keyIterations,isHidden) then begin
+    Result := mountedAs;
+  end;
+
+end;
+
+
+
+ // ----------------------------------------------------------------------------
+ // Important: To use CDB from keyfile/volume, "CDB" *must* be set to an empty
+ //            string
+function MountFreeOTFE(volumeFilename: String;
+  UserKey: TSDUBytes; Keyfile: String; CDB: Ansistring;
+  // CDB data (e.g. already read in PKCS#11 token)
+  // If CDB is specified, "Keyfile" will be ignored
+  SlotID: Integer;
+  // Set to PKCS#11 slot ID if PKCS#11 slot was *actually* used for mounting
+  PKCS11Session: TPKCS11Session;  // Set to nil if not needed
+  PKCS11SecretKeyRecord: PPKCS11SecretKey;  // Set to nil if not needed
+  KeyIterations: Integer; UserDriveLetter: Char; MountReadonly: Boolean;
+  MountMountAs: TFreeOTFEMountAs; Offset: Int64; OffsetPointsToCDB: Boolean;
+  SaltLength: Integer;  // In *bits*
+  MountForAllUsers: Boolean; var mountedAs: DriveLetterChar): Boolean;
+
+var
+  currMountFilename: String;
+  useFileOffset:     Int64;
+  mountDriveLetter:  Char;
+
+  volumeDetails: TVolumeDetailsBlock;
+  CDBMetaData:   TCDBMetaData;
+
+  useCDB:       Ansistring;
+  decryptedCDB: Ansistring;
+  commonCDB:    Ansistring;
+  errMsg:       String;
+
+  prevCursor: TCursor;
+begin
+  GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS;
+  Result := True;
+
+  GetFreeOTFEBase().CheckActive();
+
+  commonCDB := '';
+  if (CDB <> '') then begin
+    commonCDB := CDB;
+  end else
+  if (Keyfile <> '') then begin
+    // Attempt to obtain the current file's critical data
+    Result := GetFreeOTFEBase().ReadRawVolumeCriticalData(Keyfile, 0, commonCDB);
+    if not (Result) then begin
+      GetFreeOTFEBase().LastErrorCode := OTFE_ERR_KEYFILE_NOT_FOUND;
+    end;
+  end;
+
+  if Result then begin
+    prevCursor    := Screen.Cursor;
+    Screen.Cursor := crHourglass;
+    try
+
+      useCDB            := commonCDB;
+      currMountFilename := volumeFilename;
+
+      if (useCDB = '') then begin
+        // Attempt to obtain the current file's critical data
+        if not (GetFreeOTFEBase().ReadRawVolumeCriticalData(volumeFilename, Offset, useCDB)) then
+        begin
+          // Bad file...
+          GetFreeOTFEBase().LastErrorCode := OTFE_ERR_VOLUME_FILE_NOT_FOUND;
+          mountedAs := #0;
+          Result    := False;
+          exit;
+        end;
+      end;
+
+      // If CDB encrypted by PKCS#11 secret key, decrypt it now...
+      decryptedCDB := useCDB;
+      if ((PKCS11Session <> nil) and (PKCS11SecretKeyRecord <> nil)) then begin
+        if not (PKCS11DecryptCDBWithSecretKey(PKCS11Session, PKCS11SecretKeyRecord,
+          useCDB, decryptedCDB, errMsg)) then begin
+          GetFreeOTFEBase().LastErrorCode := OTFE_ERR_PKCS11_SECRET_KEY_DECRYPT_FAILURE;
+          mountedAs := #0;
+          Result    := False;
+          // Bail out; can't continue as problem with token
+          exit;
+        end;
+      end;
+
+      // Process CDB passed in into CDBMetaData
+      if not (GetFreeOTFEBase().ReadVolumeCriticalData_CDB(decryptedCDB, UserKey, SaltLength,
+        // In *bits*
+        KeyIterations, volumeDetails, CDBMetaData)) then begin
+        // Wrong password, bad volume file, correct hash/cypher driver not installed
+        GetFreeOTFEBase().LastErrorCode := OTFE_ERR_WRONG_PASSWORD;
+        mountedAs := #0;
+        Result    := False;
+        exit;
+      end;
+
+      // Mount the volume
+      if (volumeDetails.RequestedDriveLetter = #0) then begin
+        // Nudge on to prevent getting drive A: or B:
+        volumeDetails.RequestedDriveLetter := 'C';
+      end;
+      mountDriveLetter := GetFreeOTFEBase().GetNextDriveLetter(UserDriveLetter,
+        volumeDetails.RequestedDriveLetter);
+      if (mountDriveLetter = #0) then begin
+        // Skip onto next volume file...
+        GetFreeOTFEBase().LastErrorCode := OTFE_ERR_NO_FREE_DRIVE_LETTERS;
+        mountedAs := #0;
+        Result    := False;
+        exit;
+      end;
+
+      // Locate where the actual encrypted partition starts within the
+      // volume file
+      useFileOffset := Offset;
+      if OffsetPointsToCDB then begin
+        useFileOffset := useFileOffset + Int64((CRITICAL_DATA_LENGTH div 8));
+      end;
+
+      if GetFreeOTFEBase().CreateMountDiskDevice(currMountFilename,
+        volumeDetails.MasterKey, volumeDetails.SectorIVGenMethod,
+        volumeDetails.VolumeIV, MountReadonly, CDBMetaData.HashDriver,
+        CDBMetaData.HashGUID, CDBMetaData.CypherDriver,  // IV cypher
+        CDBMetaData.CypherGUID,    // IV cypher
+        CDBMetaData.CypherDriver,  // Main cypher
+        CDBMetaData.CypherGUID,    // Main cypher
+        volumeDetails.VolumeFlags, mountDriveLetter, useFileOffset,
+        volumeDetails.PartitionLen, False, SlotID, MountMountAs, MountForAllUsers) then begin
+        mountedAs := mountDriveLetter;
+      end else begin
+        mountedAs := #0;
+        // LastErrorCode set by MountDiskDevice (called by CreateMountDiskDevice)????
+        GetFreeOTFEBase().LastErrorCode := OTFE_ERR_MOUNT_FAILURE;
+        Result    := False;
+      end;
+
+
+    finally
+      Screen.Cursor := prevCursor;
+    end;
+
+  end;
+
+
+  // Pad out unmounted volume files...
+  // Yes, it is "+1"; if you have only 1 volume file, you want exactly one #0
+  //  for i := (length(mountedAs) + 1) to (volumeFilenames.Count) do begin
+  //    mountedAs := mountedAs + #0;
+  //
+  //    // This should not be needed; included to ensure sanity...
+  //    Result := False;
+  //  end;
+end;
+
+
 end.
+

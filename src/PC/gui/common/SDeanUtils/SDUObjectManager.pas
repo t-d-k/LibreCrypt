@@ -7,7 +7,7 @@ uses
   MSntdll,
 
   //sdu
-  SDUGeneral;
+  lcTypes;
 
 type
   TObjectType = (otDirectory, otDevice, otSymlink, otOther);

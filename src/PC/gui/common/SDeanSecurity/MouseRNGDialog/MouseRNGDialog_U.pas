@@ -11,7 +11,12 @@ unit MouseRNGDialog_U;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs;
+  //sdu & LibreCrypt utils
+    Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs
+   // LibreCrypt forms
+
+    //main form
+  ;
 
 type
 
@@ -56,8 +61,15 @@ type
 implementation
 
 uses
-  MouseRNGCaptureDlg_U,
-  Math;  // Required for "min(...)"
+ //delphi & libs
+  Math,
+  //sdu & LibreCrypt utils
+
+   // LibreCrypt forms
+      MouseRNGCaptureDlg_U
+    //main form
+
+ ;  // Required for "min(...)"
 
 
 //procedure Register;

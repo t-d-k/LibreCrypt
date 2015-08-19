@@ -25,11 +25,11 @@ uses
   Windows,
   DriverAPI,
   Forms,
-  //sdu
+  //sdu , lc utils
+
      lcDebugLog,    OTFE_U,
-  OTFEConsts_U, SDUGeneral,
-  //librecrypt
-  FreeOTFEDriverConsts,
+  OTFEConsts_U,     lcTypes,
+     FreeOTFEDriverConsts,
   OTFEFreeOTFE_DriverCypherAPI,
   OTFEFreeOTFE_DriverHashAPI,
   OTFEFreeOTFE_LUKSAPI,
@@ -38,19 +38,19 @@ uses
   pkcs11_object,
   pkcs11_session,
   PKCS11Lib,
-   VolumeFileAPI;
+   VolumeFileAPI
+  //librecrypt forms
+;
 
 type
   TOTFEFreeOTFE = class (TOTFEFreeOTFEBase)
   protected
-    DriverHandle:        THandle;
-    fDefaultDriveLetter: DriveLetterChar;
-    fDefaultMountAs:     TFreeOTFEMountAs;
+    fdriver_handle:        THandle;
 
 
     // Connect/disconnect to the main FreeOTFE device driver
     function Connect(): Boolean; override;
-    function Disconnect(): Boolean; override;
+    procedure Disconnect(); override;
 
 
     // ---------
@@ -131,7 +131,11 @@ type
     // Note: These all transfer RAW data to/from the volume - no
     //       encryption/decryption takes place
 
-    // This executes a sipmle call to the driver to read dataLength bytes from
+    { TODO 2 -otdk -csecurity :
+driver allows raw device access w.out admin privs - pretty big security flaw
+instead use windows standard file fns (as in base class) - will need admin privs }
+
+    // This executes a simple call to the driver to read dataLength bytes from
     // offsetWithinFile
     // Note: Will probably not work when reading directly from partitions;
     //       they typically need read/writes carried out in sector sized blocks
@@ -180,9 +184,6 @@ type
     // Convert kernel mode device name to user mode device name
     function GetCypherDeviceUserModeDeviceName(cypherKernelModeDeviceName: String): String;
 
-
-    function GetNextDriveLetter(userDriveLetter, requiredDriveLetter: Char): Char; override;
-
     function DriverType(): String; override;
 
     // ---------
@@ -203,14 +204,13 @@ type
     function GetVolumeMetaData(driveLetter: Char; expectedLength: Integer;
       var metaData: Ansistring): Boolean;
 
-    // v1 / v3 Cypher API functions
+    // v3 Cypher API functions
     // Note: This shouldn't be called directly - only via wrapper functions!
-//    function _GetCypherDriverCyphers_v1(cypherDriver: Ansistring;
-//      var cypherDriverDetails: TFreeOTFECypherDriver): Boolean; override;
     function _GetCypherDriverCyphers_v3(cypherDriver: Ansistring;
       var cypherDriverDetails: TFreeOTFECypherDriver): Boolean; override;
 
   public
+    function GetNextDriveLetter(userDriveLetter, requiredDriveLetter: Char): Char; override;
     // -----------------------------------------------------------------------
     // TOTFE standard API
     constructor Create(); override;
@@ -219,7 +219,6 @@ type
       overload; override;
     function Version(): Cardinal; overload; override;
     function DrivesMounted(): String; overload; override;
-
 
     // -----------------------------------------------------------------------
     // TOTFEFreeOTFEBase standard API
@@ -232,7 +231,6 @@ type
       var hashDriverDetails: TFreeOTFEHashDriver): Boolean; override;
 
     function GetCypherDrivers(var cypherDrivers: TFreeOTFECypherDriverArray): Boolean; override;
-
 
     function _EncryptDecryptData(
       encryptFlag: Boolean;
@@ -320,8 +318,6 @@ type
     // ---------
     // FreeOTFE Driver handling...
 
-    // Display control for controlling underlying drivers
-    procedure ShowDriverControlDlg();
 
     // Install and start FreeOTFE drivers in portable mode
     function PortableStart(driverFilenames: TStringList; showProgress: Boolean): Boolean;
@@ -334,24 +330,8 @@ type
 
     function CanUserManageDrivers(): Boolean;
 
-    procedure SetupOTFEComponent(); override;
 
 
-    // ---------
-    // See function comment in body of function
-{$IFDEF LINUX_DETECT}
-    function  DetectLinux(
-      volumeFilename: string;
-      userKey: string;
-      keyProcSeed: string;
-      keyProcIterations: integer;
-      fileOptOffset: int64;
-      fileOptSize: int64;
-      mountDriveLetter: char;
-      mountMountAs: TFreeOTFEMountAs;
-      testFilename: string
-      ): string;
-{$ENDIF}
 
     function ReadWritePlaintextToVolume(
       readNotWrite: Boolean;
@@ -379,10 +359,7 @@ type
       ): Boolean; override;
 
   published
-    property DefaultDriveLetter: DriveLetterChar Read fDefaultDriveLetter
-      Write fDefaultDriveLetter default #0;
-    property DefaultMountAs: TFreeOTFEMountAs Read fDefaultMountAs
-      Write fDefaultMountAs default fomaRemovableDisk;
+
   end;
 
 
@@ -408,28 +385,15 @@ uses
   DbugIntf,  // GExperts
 {$ENDIF}
 
-
-
 //sdu / lclibs
  SDUi18n, SDUDialogs,
   SDUEndianIntegers,
-  //LibreCrypt
-  MainSettings,
-
+     CommonSettings,
+  sduGeneral,
   dlgProgress,
-
-  frmSelectVolumeType,
-  frmKeyEntryFreeOTFE,
-  frmKeyEntryLinux,
-  frmHashInfo,
-  frmCypherInfo,
-  //  frmWizardCreateVolume,
-  frmSelectHashCypher,
-  DriverControl,
-  frmDriverControl,
-  frmSelectPartition,
-  frmPKCS11Session,
-  frmPKCS11Management;
+     DriverControl
+  //LibreCrypt forms
+  ;
 
 
 
@@ -502,9 +466,9 @@ function TOTFEFreeOTFE.Connect(): Boolean;
 begin
   Result := False;
 
-  DriverHandle := ConnectDevice(DEVICE_SYMLINK_MAIN_NAME);
+  fdriver_handle := ConnectDevice(DEVICE_SYMLINK_MAIN_NAME);
 
-  if (DriverHandle <> 0) then begin
+  if (fdriver_handle <> 0) then begin
     Result := True;
   end else begin
     LastErrorCode := OTFE_ERR_DRIVER_FAILURE;
@@ -514,353 +478,10 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFE.Disconnect(): Boolean;
+procedure TOTFEFreeOTFE.Disconnect();
 begin
-  DisconnectDevice(DriverHandle);
-  Result := True;
+  DisconnectDevice(fdriver_handle);
 end;
-
-
-// ----------------------------------------------------------------------------
-{$IFDEF LINUX_DETECT}
-// This function was included to allow the detection of Linux encrypted
-// volume's settings
-// This function is *not* normally built, and it's inclusion is only for
-// development/diagnostic purposes; not for general use
-// It operates by being given the volume's password, and the filename of a file
-// stored on the encrypted volume.
-// This function cycles through all possible combinations of Linux settings for
-// that password, attempting to mount the volume using the given password.
-// It does not terminate on a successful mount, as there may be more than one
-// set of settings which mount correctly
-// IMPORTANT: The encrypted volume *must* be formatted with a filesystem
-//            MS Windows understands (e.g. FAT)
-// WARNING: This procedure can take some time to complete(!)
-// WARNING: Some parts of this function may be commented out in order to
-//          increase it's speed, but at a cost of not checking all combinations
-// NOTE: Makes use of GExpert's (3rd party) debugging tool to pump out details
-//       of successful mounts before this function returns
-function TOTFEFreeOTFE.DetectLinux(
-  volumeFilename: string;
-  userKey: string;
-  keyProcSeed: string;
-  keyProcIterations: integer;
-  fileOptOffset: int64;
-  fileOptSize: int64;
-  mountDriveLetter: char;
-  mountMountAs: TFreeOTFEMountAs;
-  testFilename: string
-  ): string;
-var
-  deviceName: string;
-  i: integer;
-  volumeKey: string;
-
-  keyProcHashDriver: string;
-  keyProcHashGUID: TGUID;
-  keyProcHashWithAs: boolean;
-  keyProcCypherDriver: string;
-  keyProcCypherGUID: TGUID;
-  mainCypherDriver: string;
-  mainCypherGUID: TGUID;
-  mainIVHashDriver: string;
-  mainIVHashGUID: TGUID;
-  mainIVCypherDriver: string;
-  mainIVCypherGUID: TGUID;
-  currDriveLetter: Ansichar;
-  startOfVolFile: boolean;
-  startOfEndData: boolean;
-  VolumeFlags: DWORD;
-  mr: integer;
-  mainCypherDetails: TFreeOTFECypher;
-
-  hashDrivers: array of TFreeOTFEHashDriver;
-  cypherDrivers: array of TFreeOTFECypherDriver;
-
-  kph_i, kph_j: integer;
-  kpc_i, kpc_j: integer;
-  mc_i, mc_j: integer;
-  hashWithAsInt: integer;
-  ivh_i, ivh_j: integer;
-  ivc_i, ivc_j: integer;
-  sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-  ivStartSectorInt: integer;
-
-  kph_currDriver: TFreeOTFEHashDriver;
-  kph_currImpl: TFreeOTFEHash;
-  kpc_currDriver: TFreeOTFECypherDriver;
-  kpc_currImpl: TFreeOTFECypher;
-  mc_currDriver: TFreeOTFECypherDriver;
-  mc_currImpl: TFreeOTFECypher;
-  ivh_currDriver: TFreeOTFEHashDriver;
-  ivh_currImpl: TFreeOTFEHash;
-  ivc_currDriver: TFreeOTFECypherDriver;
-  ivc_currImpl: TFreeOTFECypher;
-
-begin
-  LastErrorCode := OTFE_ERR_SUCCESS;
-  Result := '';
-
-  CheckActive();
-
-  // Sanity checking
-  // Is the user attempting to mount Linux LUKS volumes?
-  // Mount as LUKS if they are...
-  if (IsLUKSVolume(volumeFilename)) then
-    begin
-    Result := Result + 'LUKS container; no need to do exhaustive search';
-    exit;
-    end;
-
-
-  if (Result = '') then
-    begin
-    // Obtain details of all hashes...
-    SetLength(hashDrivers, 0);
-    if not(GetHashDrivers(TFreeOTFEHashDriverArray(hashDrivers))) then      begin
-      Result := Result + 'Unable to get list of hash drivers.';
-      end;
-    end;
-
-  if (Result = '') then
-    begin
-    // Obtain details of all cyphers...
-    SetLength(cypherDrivers, 0);
-    if not(GetCypherDrivers(TFreeOTFECypherDriverArray(cypherDrivers))) then       begin
-      Result := Result + 'Unable to get list of cypher drivers.';
-      end;
-    end;
-
-
-  if (Result = '') then
-    begin
-    currDriveLetter := GetNextDriveLetter(mountDriveLetter, #0);
-    if (currDriveLetter = #0) then
-      begin
-      // No more drive letters following the user's specified drive
-      // letter - don't mount further drives
-      Result := Result + 'Out of drive letters.';
-      end;
-    end;
-
-
-  if (Result = '') then
-    begin
-    // KEY PROCESSING
-    // FOR ALL HASH DRIVERS...
-    SendDateTime('START', now);
-    for kph_i:=low(hashDrivers) to high(hashDrivers) do
-      begin
-      SendDebug('-kph_i: '+inttostr(kph_i)+'/'+inttostr(high(hashDrivers) - low(hashDrivers)));
-      kph_currDriver := hashDrivers[kph_i];
-      // FOR ALL HASHES SUPPORTED BY THE CURRENT DRIVER...
-      for kph_j:=low(kph_currDriver.Hashes) to high(kph_currDriver.Hashes) do
-        begin
-        SendDebug('--kph_j: '+inttostr(kph_j)+'/'+inttostr(high(kph_currDriver.Hashes) - low(kph_currDriver.Hashes)));
-        kph_currImpl := kph_currDriver.Hashes[kph_j];
-
-        keyProcHashDriver := kph_currDriver.DeviceKernelModeName;
-        keyProcHashGUID := kph_currImpl.HashGUID;
-
-        // KEY PROCESSING
-        // FOR ALL CYPHER DRIVERS...
-        for kpc_i:=low(cypherDrivers) to high(cypherDrivers) do
-          begin
-          SendDebug('---kpc_i: '+inttostr(kpc_i)+'/'+inttostr(high(cypherDrivers) - low(cypherDrivers)));
-          kpc_currDriver := cypherDrivers[kpc_i];
-          // FOR ALL CYPHERS SUPPORTED BY THE CURRENT DRIVER...
-          for kpc_j:=low(kpc_currDriver.Cyphers) to high(kpc_currDriver.Cyphers) do
-            begin
-            SendDebug('----kpc_j: '+inttostr(kpc_j)+'/'+inttostr(high(kpc_currDriver.Cyphers) - low(kpc_currDriver.Cyphers)));
-            kpc_currImpl := kpc_currDriver.Cyphers[kpc_j];
-
-            keyProcCypherDriver := kpc_currDriver.DeviceKernelModeName;
-            keyProcCypherGUID := kpc_currImpl.CypherGUID;
-
-//            // MAIN CYPHER
-//            // FOR ALL CYPHER DRIVERS...
-//            for mc_i:=low(cypherDrivers) to high(cypherDrivers) do
-//              begin
-//              mc_currDriver := cypherDrivers[mc_i];
-//              // FOR ALL CYPHERS SUPPORTED BY THE CURRENT DRIVER...
-//              for mc_j:=low(mc_currDriver.Cyphers) to high(mc_currDriver.Cyphers) do
-//                begin
-//                mc_currImpl := kpc_currDriver.Cyphers[mc_j];
-
-// xxx
-// xxx
-mc_currDriver := kpc_currDriver;
-mc_currImpl := kpc_currImpl;
-
-                mainCypherDriver := mc_currDriver.DeviceKernelModeName;
-                mainCypherGUID := mc_currImpl.CypherGUID;
-                mainCypherDetails := mc_currImpl;
-
-
-                for hashWithAsInt:=0 to 1 do
-                  begin
-                  SendDebug('-----hashWithAsInt: '+inttostr(hashWithAsInt)+'/(0-1)');
-
-                  // Generate volume key for encryption/decryption
-                  if not(GenerateLinuxVolumeKey(
-                                                keyProcHashDriver,
-                                                keyProcHashGUID,
-                                                userKey,
-                                                keyProcSeed,
-                                                (hashWithAsInt = 1),
-                                                mainCypherDetails.KeySize,
-                                                volumeKey
-                                               )) then
-                    begin
-                    Result := Result + 'HASH FAILURE: '+keyProcHashDriver+':'+GUIDToString(keyProcHashGUID);
-                    continue;
-                    end;
-
-
-                  // IV GENERATION
-                  // FOR ALL HASH DRIVERS...
-                  for ivh_i:=low(hashDrivers) to high(hashDrivers) do
-                    begin
-                    SendDebug('------ivh_i: '+inttostr(ivh_i)+'/'+inttostr(high(hashDrivers) - low(hashDrivers)));
-                    ivh_currDriver := hashDrivers[ivh_i];
-                    // FOR ALL HASHES SUPPORTED BY THE CURRENT DRIVER...
-                    for ivh_j:=low(ivh_currDriver.Hashes) to high(ivh_currDriver.Hashes) do
-                      begin
-                      SendDebug('-------ivh_j: '+inttostr(ivh_j)+'/'+inttostr(high(ivh_currDriver.Hashes) - low(ivh_currDriver.Hashes)));
-                      ivh_currImpl := ivh_currDriver.Hashes[ivh_j];
-
-                      mainIVHashDriver := ivh_currDriver.DeviceKernelModeName;
-                      mainIVHashGUID := ivh_currImpl.HashGUID;
-
-//                      // IV GENERATION
-//                      // FOR ALL CYPHER DRIVERS...
-//                      for ivc_i:=low(cypherDrivers) to high(cypherDrivers) do
-//                        begin
-//                        ivc_currDriver := cypherDrivers[ivc_i];
-//                        // FOR ALL CYPHERS SUPPORTED BY THE CURRENT DRIVER...
-//                        for ivc_j:=low(ivc_currDriver.Cyphers) to high(ivc_currDriver.Cyphers) do
-//                          begin
-//                          ivc_currImpl := ivc_currDriver.Cyphers[ivc_j];
-
-// xxx
-ivc_currDriver := kpc_currDriver;
-ivc_currImpl := kpc_currImpl;
-
-                          mainIVCypherDriver := ivc_currDriver.DeviceKernelModeName;
-                          mainIVCypherGUID := ivc_currImpl.CypherGUID;
-
-                          // IV GENERATION
-//                          for sectorIVGenMethod := low(sectorIVGenMethod) to high(sectorIVGenMethod) do
-sectorIVGenMethod := foivg32BitSectorID;
-                            begin
-//                            SendDebug('--------sectorIVGenMethod: '+inttostr(ord(sectorIVGenMethod))+'/'+inttostr(ord(high(sectorIVGenMethod)) - loword((sectorIVGenMethod))));
-
-//                            for ivStartSectorInt:=0 to 1 do
-                              begin
-ivStartSectorInt := 1;
-//                              SendDebug('---------ivStartSectorInt: '+inttostr(ivStartSectorInt)+'/(0-1)');
-
-                              startOfVolFile := (ivStartSectorInt = 0);
-                              startOfEndData := (ivStartSectorInt = 1);
-
-                              // Encode IV generation method to flags...
-                              VolumeFlags := 0;
-                              if (startOfVolFile) then
-                                begin
-                                VolumeFlags := VolumeFlags OR VOL_FLAGS_SECTOR_ID_ZERO_VOLSTART;
-                                end;
-
-
-                              // Attempt to create a new device to be used
-                              deviceName := CreateDiskDevice(FreeOTFEMountAsDeviceType[mountMountAs]);
-                              if (deviceName <> '') then
-                                begin
-                                // Attempt to mount the device
-                                if MountDiskDevice(
-                                                   deviceName,
-                                                   volumeFilename,
-                                                   volumeKey,
-                                                   sectorIVGenMethod,
-                                                   '',  // Linux volumes don't have per-volume IVs
-                                                   TRUE,
-                                                   mainIVHashDriver,
-                                                   mainIVHashGUID,
-                                                   mainIVCypherDriver,
-                                                   mainIVCypherGUID,
-                                                   mainCypherDriver,
-                                                   mainCypherGUID,
-                                                   VolumeFlags,
-                                                   '',
-                                                   fileOptOffset,
-                                                   fileOptSize,
-                                                   FreeOTFEMountAsStorageMediaType[mountMountAs]
-                                                  ) then
-                                  begin
-                                  if DosDeviceSymlink(
-                                                      TRUE,
-                                                      deviceName,
-                                                      currDriveLetter,
-                                                      TRUE
-                                                     ) then
-                                    begin
-                                    // Test if mounted OK
-                                    if FileExists(currDriveLetter+':'+testFilename) then
-                                      begin
-                                      Result := Result + '---------------------------------------------------------------';
-                                      Result := Result + 'OK!';
-                                      Result := Result + 'mountedAs: '+currDriveLetter;
-                                      Result := Result + 'kph: '+keyProcHashDriver +':'+GUIDToString(keyProcHashGUID );
-                                      Result := Result + 'kpc: '+keyProcCypherDriver +':'+GUIDToString(keyProcCypherGUID );
-                                      Result := Result + 'mc: '+mainCypherDriver +':'+GUIDToString(mainCypherGUID);
-                                      Result := Result + 'hashWithAsInt: '+inttostr(hashWithAsInt);
-                                      Result := Result + 'ivh: '+mainIVHashDriver +':'+GUIDToString(mainIVHashGUID );
-                                      Result := Result + 'ivc: '+mainIVCypherDriver +':'+GUIDToString(mainIVCypherGUID );
-                                      Result := Result + 'sectorIVGenMethod: '+inttostr(ord(sectorIVGenMethod));
-                                      Result := Result + 'ivStartSectorInt: '+inttostr(ivStartSectorInt);
-                                      Result := Result + '---------------------------------------------------------------';
-SendDateTime('HIT', now);
-SendDebug('Result: '+Result);
-                                      end;
-
-                                    Dismount(currDriveLetter);
-                                    end
-                                  else
-                                    begin
-                                    // Cleardown
-                                    DismountDiskDevice(deviceName, TRUE);
-                                    DestroyDiskDevice(deviceName);
-                                    end;  // ELSE PART - if DefineDosDevice(
-
-                                  end
-                                else
-                                  begin
-                                  // Cleardown
-                                  DestroyDiskDevice(deviceName);
-                                  end;  // ELSE PART - if MountDiskDevice(
-
-                                end;  // ELSE PART - if (deviceName <> '') then
-
-
-                              end;  // for ivStartSectorInt:=0 to 1 do
-                            end;  // for sectorIVGenMethod := low(sectorIVGenMethod) to high(sectorIVGenMethod) do
-//                          end;  // for ivc_j:=low(ivc_currDriver.Cyphers) to high(ivc_currDriver.Cyphers) do
-//                        end;  // for ivc_i:=low(cypherDrivers) to high(cypherDrivers) do
-                      end;  // for ivh_j:=low(ivh_currDriver.Hashes) to high(ivh_currDriver.Hashes) do
-                    end;  // for ivh_i:=low(hashDrivers) to high(hashDrivers) do
-                  end;  // for hashWithAsInt:=0 to 1 do
-//                end;  // for mc_j:=low(mc_currDriver.Cyphers) to high(mc_currDriver.Cyphers) do
-//              end;  // for mc_i:=low(cypherDrivers) to high(cypherDrivers) do
-            end;  // for kpc_j:=low(kpc_currDriver.Cyphers) to high(kpc_currDriver.Cyphers) do
-          end;  // for kpc_i:=low(cypherDrivers) to high(cypherDrivers) do
-        end;  // for kph_j:=low(kph_currDriver.Hashes) to high(kph_currDriver.Hashes) do
-      end;  // for kph_i:=low(hashDrivers) to high(hashDrivers) do
-    end;  //  if (Result = '') then
-
-SendDateTime('FINISHED', now);
-
-
-end;
-{$ENDIF}
 
 
  // ----------------------------------------------------------------------------
@@ -883,7 +504,7 @@ begin
 
   DIOCBufferIn.DeviceType := deviceType;
 
-  if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_CREATE, @DIOCBufferIn,
+  if (DeviceIoControl(fdriver_handle, IOCTL_FREEOTFE_CREATE, @DIOCBufferIn,
     sizeof(DIOCBufferIn), @DIOCBufferOut, sizeof(DIOCBufferOut), bytesReturned, nil)) then begin
     Result := copy(DIOCBufferOut.DeviceName, 1, StrLen(DIOCBufferOut.DeviceName));
 
@@ -1035,7 +656,7 @@ DebugMsg('  ReadOnly: '+BoolToStr(ReadOnly));
     useVolumeFlags := VolumeFlags;
     // Yes, this timestamp reverting is the right way around; if the bit
     // *isn't* set, the timestamps get reverted
-    if frevertVolTimestamps then
+    if GetSettings().OptRevertVolTimestamps then
       // Strip off bit VOL_FLAGS_NORMAL_TIMESTAMPS
       useVolumeFlags := useVolumeFlags and not (VOL_FLAGS_NORMAL_TIMESTAMPS)
     else
@@ -1064,7 +685,7 @@ DebugMsgBinaryPtr(PAnsiChar(ptrDIOCBuffer), bufferSize);
 DebugMsg('+++ ---end struct---');
 {$ENDIF}
 DebugFlush();
-    if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_MOUNT, ptrDIOCBuffer,
+    if (DeviceIoControl(fdriver_handle, IOCTL_FREEOTFE_MOUNT, ptrDIOCBuffer,
       bufferSize, nil, 0, bytesReturned, nil)) then begin
 
       DebugMsg('Mounted OK!');
@@ -1163,7 +784,7 @@ begin
   StrPCopy(DIOCBuffer.DiskDeviceName, deviceName);
   DIOCBuffer.Emergency := emergency;
 
-  if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_DISMOUNT, @DIOCBuffer,
+  if (DeviceIoControl(fdriver_handle, IOCTL_FREEOTFE_DISMOUNT, @DIOCBuffer,
     sizeof(DIOCBuffer), nil, 0, bytesReturned, nil)) then begin
     Result := True;
   end;
@@ -1342,7 +963,7 @@ begin
     DebugMsg('LDREUDriver: "' + DIOCBuffer.DriveFile + '" : "' +
       DIOCBuffer.DiskDeviceName + '" ' + Booltostr(emergency));
 
-    if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_LDREU, @DIOCBuffer,
+    if (DeviceIoControl(fdriver_handle, IOCTL_FREEOTFE_LDREU, @DIOCBuffer,
       sizeof(DIOCBuffer), nil, 0, bytesReturned, nil)) then begin
       Result := True;
     end;
@@ -1364,7 +985,7 @@ begin
 
   StrPCopy(DIOCBuffer.DeviceName, deviceName);
 
-  if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_DESTROY, @DIOCBuffer,
+  if (DeviceIoControl(fdriver_handle, IOCTL_FREEOTFE_DESTROY, @DIOCBuffer,
     sizeof(DIOCBuffer), nil, 0, bytesReturned, nil)) then begin
     Result := True;
   end;
@@ -1462,7 +1083,7 @@ begin
   if (fCachedVersionID <> VERSION_ID_NOT_CACHED) then begin
     Result := fCachedVersionID;
   end else begin
-    if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_VERSION, nil, 0,
+    if (DeviceIoControl(fdriver_handle, IOCTL_FREEOTFE_VERSION, nil, 0,
       @DIOCBuffer, sizeof(DIOCBuffer), BytesReturned, nil)) then begin
       if BytesReturned = sizeof(DIOCBuffer) then begin
         Result           := DIOCBuffer.VersionID;
@@ -1488,7 +1109,7 @@ begin
 
   CheckActive();
 
-  if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_GET_DISK_DEVICE_COUNT, nil,
+  if (DeviceIoControl(fdriver_handle, IOCTL_FREEOTFE_GET_DISK_DEVICE_COUNT, nil,
     0, @DIOCBuffer, sizeof(DIOCBuffer), BytesReturned, nil)) then begin
     if BytesReturned = sizeof(DIOCBuffer) then begin
       Result := DIOCBuffer.Count;
@@ -1530,7 +1151,7 @@ begin
   bufferSize := bufferSize + (DIOC_BOUNDRY - (bufferSize mod DIOC_BOUNDRY));
   ptrBuffer  := allocmem(bufferSize);
 
-  if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_GET_DISK_DEVICE_LIST, nil,
+  if (DeviceIoControl(fdriver_handle, IOCTL_FREEOTFE_GET_DISK_DEVICE_LIST, nil,
     0, ptrBuffer, bufferSize, BytesReturned, nil)) then begin
     if BytesReturned <= bufferSize then begin
       // In case devices were unmounted between the call to
@@ -1710,7 +1331,7 @@ begin
   if (deviceName <> '') then begin
     StrPCopy(inBuffer.DeviceName, deviceName);
 
-    if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_GET_DISK_DEVICE_STATUS,
+    if (DeviceIoControl(fdriver_handle, IOCTL_FREEOTFE_GET_DISK_DEVICE_STATUS,
       @inBuffer, sizeof(inBuffer), @outBuffer, sizeof(outBuffer), BytesReturned, nil))
     then begin
       if (BytesReturned <= sizeof(outBuffer)) then begin
@@ -1789,7 +1410,7 @@ begin
     try
       StrPCopy(inBuffer.DeviceName, deviceName);
 
-      if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_GET_DISK_DEVICE_METADATA,
+      if (DeviceIoControl(fdriver_handle, IOCTL_FREEOTFE_GET_DISK_DEVICE_METADATA,
         @inBuffer, sizeof(inBuffer), ptrDIOCBuffer, bufferSize, BytesReturned, nil))
       then begin
         if (BytesReturned <= bufferSize) then begin
@@ -1967,7 +1588,7 @@ begin
       DIOCCode := IOCTL_FREEOTFE_DELETE_DOS_MOUNTPOINT;
     end;
 
-    if (DeviceIoControl(DriverHandle, DIOCCode, @DIOCBuffer, sizeof(DIOCBuffer),
+    if (DeviceIoControl(fdriver_handle, DIOCCode, @DIOCBuffer, sizeof(DIOCBuffer),
       nil, 0, bytesReturned, nil)) then begin
       Result := True;
 
@@ -2868,7 +2489,7 @@ begin
       StrMove(((PAnsiChar(@ptrDIOCBufferIn.Key)) + length(key)), PAnsiChar(data), Length(data));
 
 
-      if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_GENERATE_MAC,
+      if (DeviceIoControl(fdriver_handle, IOCTL_FREEOTFE_GENERATE_MAC,
         ptrDIOCBufferIn, bufferSizeIn, ptrDIOCBufferOut, bufferSizeOut, BytesReturned, nil))
       then begin
 {$IFDEF FREEOTFE_DEBUG}
@@ -2994,7 +2615,7 @@ begin
         PAnsiChar(@Salt[0]), Length(Salt));
 
        DebugFlush();
-      if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_DERIVE_KEY, ptrDIOCBufferIn,
+      if (DeviceIoControl(fdriver_handle, IOCTL_FREEOTFE_DERIVE_KEY, ptrDIOCBufferIn,
         bufferSizeIn, ptrDIOCBufferOut, bufferSizeOut, BytesReturned, nil)) then begin
 
         DebugMsg('MAC out buffer supplied: ' + IntToStr(bufferSizeOut) +
@@ -3346,28 +2967,6 @@ begin
 end;
 
 
- // ----------------------------------------------------------------------------
- // Display control for controlling underlying drivers
- // You *shouldn't* call this while the component is active, as the user may
- // try to do something dumn like uninstall the main FreeOTFE driver while we're
- // connected to it!
-procedure TOTFEFreeOTFE.ShowDriverControlDlg();
-var
-  dlg: TfrmDriverControl;
-begin
-  // TfrmDriverControl.Create(nil) will raise an exception if the user doesn't
-  // have the required privs to access driver control
-  dlg := TfrmDriverControl.Create(nil);
-  try
-    dlg.ShowModal();
-  finally
-    dlg.Free();
-  end;
-
-  // In case drivers were added/removed...
-  CachesFlush();
-end;
-
 
  // ----------------------------------------------------------------------------
  //PortableDriverFilenames
@@ -3518,6 +3117,7 @@ begin
     // Remove first "\"
     Delete(userModeFilename, 1, 1);
     Result := '\??\UNC' + userModeFilename;
+//         Result := userModeFilename
   end else
   if ((Pos(':\', userModeFilename) = 2) or (Pos(':/', userModeFilename) = 2)) then begin
     // C:\path\filedisk.img
@@ -3563,6 +3163,7 @@ begin
   try
     // Determine the filename as the kernel sees it
     kmFilename := GetKernelModeVolumeFilename(filename);
+//      kmFilename := '\\.\PHYSICALDRIVE1';
 
     StrPCopy(DIOCBufferIn.Filename, kmFilename);
     DIOCBufferIn.Offset     := offsetWithinFile;
@@ -3570,8 +3171,8 @@ begin
 
 
     DebugMsg('Read raw data from: ' + filename);
-
-    if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_GET_RAW, @DIOCBufferIn,
+    BytesReturned := 0;
+    if (DeviceIoControl(fdriver_handle, IOCTL_FREEOTFE_GET_RAW, @DIOCBufferIn,
       sizeof(DIOCBufferIn), ptrDIOCBufferOut, dataLength, BytesReturned, nil)) then begin
       DebugMsg('DIOC OK (bytes: ' + IntToStr(BytesReturned) + ')');
 
@@ -3633,14 +3234,11 @@ begin
 
     StrMove(@ptrDIOCBuffer.Data, PAnsiChar(data), Length(data));
 
-  {$IFDEF FREEOTFE_DEBUG}
-  DebugMsg('Write raw data from: '+filename);
-  {$ENDIF}
-    if (DeviceIoControl(DriverHandle, IOCTL_FREEOTFE_SET_RAW, ptrDIOCBuffer,
+
+    DebugMsg('Write raw data from: '+filename);
+    if (DeviceIoControl(fdriver_handle, IOCTL_FREEOTFE_SET_RAW, ptrDIOCBuffer,
       bufferSize, nil, 0, BytesReturned, nil)) then begin
-  {$IFDEF FREEOTFE_DEBUG}
-  DebugMsg('Written OK');
-  {$ENDIF}
+      DebugMsg('Written OK');
       Result := True;
     end;
 
@@ -3781,16 +3379,8 @@ begin
 
 end;
 
-procedure TOTFEFreeOTFE.SetupOTFEComponent();
-begin
-  inherited;
 
-  fDefaultDriveLetter := gSettings.OptDefaultDriveLetter;
-  fDefaultMountAs     := gSettings.OptDefaultMountAs;
-end;
-
-
-{returns an instance of the only object. call SetFreeOTFEType first}
+{returns an instance of the only object, must be type TOTFEFreeOTFE. call SetFreeOTFEType first}
 function GetFreeOTFE: TOTFEFreeOTFE;
 begin
   assert(GetFreeOTFEBase is TOTFEFreeOTFE, 'call SetFreeOTFEType with correct type');

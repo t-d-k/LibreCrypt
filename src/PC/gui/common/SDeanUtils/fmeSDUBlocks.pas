@@ -9,7 +9,8 @@ unit fmeSDUBlocks;
 interface
 
 uses
-  Classes, fmeBaseOptions,
+  Classes,
+//  fmeBaseOptions,
   CommonSettings, Controls, Dialogs, ExtCtrls,
   Forms,
   MainSettings,

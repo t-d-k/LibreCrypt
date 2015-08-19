@@ -1,8 +1,9 @@
-inherited fmeOptions_Autorun: TfmeAutorunOptions
+object fmeAutorunOptions: TfmeAutorunOptions
+  Left = 0
+  Top = 0
   Width = 471
   Height = 358
-  ExplicitWidth = 471
-  ExplicitHeight = 358
+  TabOrder = 0
   object gbAutorun: TGroupBox
     Left = 7
     Top = 16

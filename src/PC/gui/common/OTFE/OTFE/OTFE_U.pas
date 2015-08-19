@@ -13,12 +13,15 @@ interface
 
 // -----------------------------------------------------------------------------
 uses
-  classes,
+     //delphi & libs
+       classes,
   Windows, // Needed for UINT, ULONG
   sysUtils,
-  //sdu
+  //sdu & LibreCrypt utils
+      lcTypes,
   sdugeneral,
-  OTFEConsts_U;
+  OTFEConsts_U
+;
 
 // -----------------------------------------------------------------------------
 const
@@ -88,39 +91,13 @@ type
 
     // === Mounting, dismounting drives ========================================
 
-    // Prompt the user for a password (and drive letter if necessary), then
-    // mount the specified volume file
-    // Returns the drive letter of the mounted volume on success, #0 on failure
-    function  Mount(volumeFilename: ansistring; readonly: boolean = FALSE): char; overload; virtual; abstract;
 
-    // As previous Mount, but more than one volumes is specified. Volumes are
-    // mounted using the same password
-    // Sets mountedAs to the drive letters of the mounted volumes, in order.
-    // Volumes that could not be mounted have #0 as their drive letter
-    // Returns TRUE if any of the volumes mounted correctly, otherwise FALSE
-    function  Mount(volumeFilename: string; var mountedAs: DriveLetterChar; readonly: boolean = FALSE): boolean; overload; virtual; abstract;
-
-    // Example:
-    //   Set:
-    //     volumeFilenames[0] = c:\test0.dat
-    //     volumeFilenames[1] = c:\test1.dat
-    //     volumeFilenames[2] = c:\test2.dat
-    //   Call Mount described above in which:
-    //     volume test0.dat was sucessfully mounted as W:
-    //     volume test1.dat failed to mount
-    //     volume test2.dat was sucessfully mounted as X:
-    //   Then this function should set:
-    //     mountedAs = 'W.X' (where '.' is #0)
 
     // Given the "mountedAs" parameter set by the above Mount(...) function,
     // this will give a count of the number of volumes mounted successfully, and failed
     procedure CountMountedResults(mountedAs: DriveLetterString; out CntMountedOK: integer; out CntMountFailed: integer); virtual;
 
 
-    // Prompt the user for a device (if appropriate) and password (and drive
-    // letter if necessary), then mount the device selected
-    // Returns the drive letter of the mounted devices on success, #0 on failure
-     function MountDevices(): DriveLetterChar; virtual; abstract;
 
     // Determine if OTFE component can mount devices.
     // Returns TRUE if it can, otherwise FALSE
@@ -212,6 +189,7 @@ type
 
   published
     property Active: boolean read FActive write SetActive;
+    { TODO -otdk -crefactor : remove and replace with return codes from functions }
     property LastErrorCode: integer read FLastErrCode write FLastErrCode default OTFE_ERR_SUCCESS;
 
   end;
@@ -238,8 +216,13 @@ procedure ChangeCWDToSafeDir();
 implementation
 
 uses
-  ShlObj,  // Needed for SHChangeNotify(...), etc
+     //delphi & libs
+    ShlObj,  // Needed for SHChangeNotify(...), etc
   Messages  // Needed for WM_DEVICECHANGE
+  //sdu & LibreCrypt utils
+
+
+
   ;
 
 
@@ -820,10 +803,10 @@ begin
   for i:=1 to length(mountedAs) do    begin
     if (mountedAs[i] = #0) then         begin
       inc(CntMountFailed);
-      end    else      begin
+    end    else      begin
       inc(CntMountedOK);
-      end;
     end;
+  end;
 
 end;
 

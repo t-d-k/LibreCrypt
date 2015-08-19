@@ -11,15 +11,19 @@ unit frmFreeOTFEHdrDump;
 interface
 
 uses
-  Classes, ComCtrls,
+  //delphi
+  Classes, ComCtrls, Buttons,
   Controls, Dialogs,
   Forms, Graphics, Messages, PasswordRichEdit, Spin64,
   StdCtrls, SysUtils, Windows,
-  //librecrypt
-  Buttons, frmHdrDump,
-  OTFE_U, fmeVolumeSelect,
-  OTFEFreeOTFEBase_U, lcDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
-  SDUGeneral, SDUSpin64Units, fmePassword;
+  //sdu / lc utils
+  lcTypes, OTFEFreeOTFEBase_U, lcDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
+  SDUGeneral, SDUSpin64Units, OTFE_U,
+  //librecrypt forms
+
+  frmHdrDump,
+  fmeVolumeSelect,
+  fmePassword;
 
 type
   TfrmFreeOTFEHdrDump = class (TfrmHdrDump)
@@ -30,29 +34,29 @@ type
     seKeyIterations:   TSpinEdit64;
     lblKeyIterations:  TLabel;
     se64UnitOffset:    TSDUSpin64Unit_Storage;
-    frmePassword1: TfrmePassword;
+    frmePassword1:     TfrmePassword;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ControlChanged(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
-  PRIVATE
+  private
     function GetUserKey(): TSDUBytes;
 
     function GetOffset(): Int64;
     function GetSaltLength(): Integer;
     function GetKeyIterations(): Integer;
 
-  PROTECTED
-    procedure EnableDisableControls(); OVERRIDE;
+  protected
+    procedure _EnableDisableControls(); override;
 
-    function DumpLUKSDataToFile(): Boolean; OVERRIDE;
-
-  PUBLIC
-//    property UserKey: TSDUBytes Read GetUserKey;
-//
-//    property Offset: Int64 Read GetOffset;
-//    property SaltLength: Integer Read GetSaltLength;
-//    property KeyIterations: Integer Read GetKeyIterations;
+    function _DumpHdrDataToFile(): Boolean; override;
+            procedure SetPassword(const Value: string);  override;
+  public
+    //    property UserKey: TSDUBytes Read GetUserKey;
+    //
+    //    property Offset: Int64 Read GetOffset;
+    //    property SaltLength: Integer Read GetSaltLength;
+    //    property KeyIterations: Integer Read GetKeyIterations;
   end;
 
 
@@ -61,7 +65,9 @@ implementation
 {$R *.DFM}
 
 uses
-  SDUi18n;
+
+  //sdu / lc utils
+  lcConsts, SDUi18n;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -113,12 +119,10 @@ begin
 
 end;
 
-procedure TfrmFreeOTFEHdrDump.EnableDisableControls();
+procedure TfrmFreeOTFEHdrDump._EnableDisableControls();
 begin
-  pbOK.Enabled := ((GetVolumeFilename <> '') and (feDumpFilename.Filename <> '') and
-    (feDumpFilename.Filename <> GetVolumeFilename) and
-    // Don't overwrite the volume with the dump!!!
-    (GetKeyIterations > 0));
+  inherited;
+  pbOK.Enabled := pbOK.Enabled and (GetKeyIterations > 0);
 end;
 
 procedure TfrmFreeOTFEHdrDump.FormShow(Sender: TObject);
@@ -127,73 +131,32 @@ begin
 
   se64UnitOffset.Value := 0;
 
-  EnableDisableControls();
+  _EnableDisableControls();
 
 end;
 
 procedure TfrmFreeOTFEHdrDump.ControlChanged(Sender: TObject);
 begin
-  EnableDisableControls();
+  _EnableDisableControls();
 end;
 
-function TfrmFreeOTFEHdrDump.DumpLUKSDataToFile(): Boolean;
+function TfrmFreeOTFEHdrDump._DumpHdrDataToFile(): Boolean;
 begin
   Result := GetFreeOTFEBase().DumpCriticalDataToFile(GetVolumeFilename, GetOffset,
     GetUserKey, GetSaltLength,  // In bits
     GetKeyIterations, GetDumpFilename);
 end;
 
+
 procedure TfrmFreeOTFEHdrDump.pbOKClick(Sender: TObject);
-var
-{$IFDEF FREEOTFE_TIME_CDB_DUMP}
-  startTime: TDateTime;
-  stopTime: TDateTime;
-  diffTime: TDateTime;
-  Hour, Min, Sec, MSec: Word;
-{$ENDIF}
-  dumpOK:             Boolean;
 begin
-{$IFDEF FREEOTFE_TIME_CDB_DUMP}
-  startTime := Now();
-{$ENDIF}
+  _PromptDumpData('FreeOTFE');
+end;
 
-  dumpOK := DumpLUKSDataToFile();
-
-  if dumpOK then begin
-{$IFDEF FREEOTFE_TIME_CDB_DUMP}
-    stopTime := Now();
-    diffTime := (stopTime - startTime);
-    DecodeTime(diffTime, Hour, Min, Sec, MSec);
-    showmessage('Time taken to dump CDB: '+inttostr(Hour)+' hours, '+inttostr(Min)+' mins, '+inttostr(Sec)+'.'+inttostr(MSec)+' secs');
-{$ENDIF}
-
-    if (SDUMessageDlg(_(
-      'A human readable copy of your critical data block has been written to:') +
-      SDUCRLF + SDUCRLF + GetDumpFilename + SDUCRLF + SDUCRLF +
-      _('Do you wish to open this file in Windows Notepad?'), mtInformation,
-      [mbYes, mbNo], 0) = mrYes) then begin
-
-      if not (SDUWinExecNoWait32('notepad',GetDumpFilename, SW_RESTORE)) then begin
-        SDUMessageDlg(_('Error running Notepad'), mtError, [], 0);
-      end;
-
-    end;
-
-    ModalResult := mrOk;
-  end else begin
-{$IFDEF FREEOTFE_TIME_CDB_DUMP}
-    stopTime := Now();
-    diffTime := (stopTime - startTime);
-    DecodeTime(diffTime, Hour, Min, Sec, MSec);
-    showmessage('Time taken to FAIL to dump CDB: '+inttostr(Hour)+' hours, '+inttostr(Min)+' mins, '+inttostr(Sec)+'.'+inttostr(MSec)+' secs');
-{$ENDIF}
-
-    SDUMessageDlg(
-      _('Unable to dump out critical data block.') + SDUCRLF + SDUCRLF +
-      _('Please ensure that your password and details are entered correctly, and that this file is not currently in use (e.g. mounted)'),
-      mtError, [mbOK], 0);
-  end;
-
+procedure TfrmFreeOTFEHdrDump.SetPassword(const Value: string);
+begin
+  inherited;
+  frmePassword1.SetKeyPhrase(Value);
 end;
 
 end.

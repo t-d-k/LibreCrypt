@@ -10,12 +10,13 @@ uses
   //delphi
   //3rd party
   //SDU ,lclibs
-  SDUGeneral,
+lcTypes,
   lcDebugLog,
   //librecrypt
   OTFEFreeOTFE_LUKSAPI,
   OTFEFreeOTFEBase_U, DriverAPI;
 
+{creates, mounts and formats }
 function CreateNewLUKS(fileName: String;
   password: TSDUBytes;
   contSizeBytes: Uint64;
@@ -26,7 +27,8 @@ function CreateNewLUKS(fileName: String;
 
 
 {creates and mounts but doesn't format }
-function CreateLUKS(volumeFilename: String;
+function CreateLUKS(
+  volumeFilename: String;
   password: TSDUBytes;
   contSizeBytes: Uint64;
   hash: String;
@@ -65,16 +67,20 @@ uses
   //SDU ,lclibs
   SDUSysUtils, SDUi18n,
   PKCS11Lib, SDUEndianIntegers,
+ lcConsts,
+sduGeneral,
+
   //librecrypt
   SDURandPool,
   OTFEFreeOTFE_U,
   OTFEConsts_U,
   AFSplitMerge, frmKeyEntryLUKS, frmSelectHashCypher;
-
+const
+  SDUNEWLINE_STRING: array [TSDUNewline] of String = (SDUCRLF, SDUCR, SDULF);
 
 {
 creates luks volume with given parameters
-this will be in new luks wizard}
+called from new luks wizard}
 function CreateNewLUKS(fileName: String;
   password: TSDUBytes;
   contSizeBytes: Uint64;
@@ -84,7 +90,6 @@ function CreateNewLUKS(fileName: String;
   out refreshDrives: Boolean): Boolean;
 var
   prevMounted: DriveLetterString;
-
 begin
   refreshDrives := False;
 
@@ -853,14 +858,17 @@ end;
 
 
 {creates and mounts but doesn't format }
-function CreateLUKS(volumeFilename: String;
+function CreateLUKS(
+volumeFilename: String;
   password: TSDUBytes;
   contSizeBytes: Uint64;
   hash: String;
-  out errMsg: String; out drive: DriveLetterChar): Boolean;
+  out errMsg: String;
+  out drive: DriveLetterChar): Boolean;
 
 var
   volumeKey: TSDUBytes;
+  isPartition   : Boolean;
 
   //  userKey:          TSDUBytes;
   //  fileOptSize:      Int64;
@@ -877,16 +885,23 @@ var
   //  mountForAllUsers:         Boolean;
 
 begin
+Result := true;
   if FileExists(volumeFilename, True) then begin
     Result := False;
     exit;
   end;
+  isPartition := (AnsiPos ('\Device\',volumeFilename) = 1) or (AnsiPos('\\.\PHYSICALDRIVE',volumeFilename)= 1);
 
-  if not (SDUCreateLargeFile(volumeFilename, contSizeBytes{bytes}, True, userCancel)) then begin
+  if  not isPartition then begin
+     if  not (SDUCreateLargeFile(volumeFilename, contSizeBytes{bytes}, True, userCancel)) then begin
     if not userCancel then
       errMsg := _('An error occurred while trying to create your LUKS container');
     Result := False;
-  end else begin
+     end;
+  end;
+
+  if Result and (not userCancel) then begin
+
 
     Result := True;
     GetRandPool.SetUpRandPool([rngcryptlib], PKCS11_NO_SLOT_ID, '');
@@ -982,13 +997,12 @@ end;
  //  =====  ==================
  //    48   total keyslot size
  //  =====  ==================
-function _ParseLUKSHeader(rawData: Ansistring;
-  var LUKSheader: TLUKSHeader): Boolean;
+function _ParseLUKSHeader(rawData: Ansistring;   var LUKSheader: TLUKSHeader): Boolean;
 var
   rawLUKSheader: TLUKSHeaderRaw;
   strGUID:       Ansistring;
   i:             Integer;
-  faultFlag:     Boolean;
+
   keySlotActive: DWORD;
 begin
   Result := False;
@@ -1029,14 +1043,14 @@ begin
         strGUID                   := '{' + strGUID + '}';
         LUKSheader.uuid           := StringToGUID(strGUID);
 
-        faultFlag := False;
+        result := true;
         for i := 0 to (LUKS_NUMKEYS - 1) do begin
           keySlotActive := SDUBigEndian32ToDWORD(rawLUKSheader.keySlot[i].active);
 
           // Sanity check
           if ((keySlotActive <> LUKS_KEY_ENABLED) and (keySlotActive <>
             LUKS_KEY_DISABLED)) then begin
-            faultFlag := True;
+            result := false;
             break;
           end;
 
@@ -1058,7 +1072,6 @@ begin
 
         end;
 
-        Result := not (faultFlag);
       end;
 
     end;
@@ -1270,7 +1283,6 @@ begin
     dumpReport.Add('');
     dumpReport.Add('Dump Created By');
     dumpReport.Add('---------------');
-    dumpReport.Add('Platform              : PC');
     dumpReport.Add('Application version   : v' + SDUGetVersionInfoString(ParamStr(0)));
     dumpReport.Add('Driver ID             : ' + GetFreeOTFEBase().VersionStr());
 
@@ -1388,11 +1400,11 @@ begin
           dumpReport.Add('  IV hash driver KM name  : ' + LUKSheader.IVHashKernelModeDeviceName);
           dumpReport.Add('  IV hash GUID            : ' + GUIDToString(LUKSheader.IVHashGUID));
 
-          if baseIVCypherOnHashLength then begin
-            dumpReport.Add('  IV cypher               : <based on IV hash length>');
-          end else begin
+          if baseIVCypherOnHashLength then
+            dumpReport.Add('  IV cypher               : <based on IV hash length>')
+          else
             dumpReport.Add('  IV cypher               : <same as main cypher>');
-          end;
+
 
           dumpReport.Add('  IV cypher pretty title  : ' + IVCypherTitle);
           dumpReport.Add('  IV cypher driver KM name: ' + LUKSheader.IVCypherKernelModeDeviceName);
@@ -1424,9 +1436,8 @@ begin
         if not (userKeyOK) then begin
           dumpReport.Add('Unable to read password from keyfile.');
         end else begin
-          if keyfileIsASCII then begin
+          if keyfileIsASCII then
             dumpReport.Add('Password from keyfile    : ' + SDUBytesToString(userKey));
-          end;
 
           dumpReport.Add('Password as binary       : ');
           prettyPrintData := TStringList.Create();
@@ -1527,6 +1538,11 @@ begin
   Result := True;
 
   GetFreeOTFEBase().CheckActive();
+  GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS;
+
+  mountedAs     := #0;
+
+
 
   keyEntryDlg := TfrmKeyEntryLUKS.Create(nil);
   try

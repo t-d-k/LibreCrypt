@@ -16,12 +16,12 @@ interface
 uses
   //delphi
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, SDUFrames, Vcl.StdCtrls, Vcl.ComCtrls,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,  Vcl.StdCtrls, Vcl.ComCtrls,
+  Vcl.Samples.Gauges,
   //sdu
-  SDUGeneral,
+lcTypes,  SDUFrames,
   //librecrypt
-  PasswordRichEdit, OTFEFreeOTFE_PasswordRichEdit, SDUComCtrls,
-  Vcl.Samples.Gauges;
+  PasswordRichEdit, OTFEFreeOTFE_PasswordRichEdit, SDUComCtrls;
 
 type
   TfrmeNewPassword = class (TSDUFrame)
@@ -63,8 +63,9 @@ implementation
 
 uses
   SDUi18n, strutils,{CommCtrl,uxTheme,}
-
+   SDUGeneral,
   //librecrypt
+  CommonSettings,
   OTFEFreeOTFEBase_U;
 
 const
@@ -116,9 +117,12 @@ begin
   preUserKeyFirst.WantReturns := True;
   preUserKeyFirst.WordWrap    := True;
 
-  preUserKeyFirst.PasswordChar := GetFreeOTFEBase().PasswordChar;
-  preUserKeyFirst.WantReturns  := GetFreeOTFEBase().AllowNewlinesInPasswords;
-  preUserKeyFirst.WantTabs     := GetFreeOTFEBase().AllowTabsInPasswords;
+
+  if not GetSettings().OptShowPasswords then
+    preUserKeyFirst.PasswordChar := '*';//defaults to #0
+
+  preUserKeyFirst.WantReturns  := GetSettings().OptAllowNewlinesInPasswords;
+  preUserKeyFirst.WantTabs     := GetSettings().OptAllowTabsInPasswords;
 
   preUserKeyConfirm.Plaintext   := True;
   // FreeOTFE volumes CAN have newlines in the user's password
@@ -130,9 +134,11 @@ begin
     preUserKeyFirst.Lines.Clear();
   end;
 
-  preUserKeyConfirm.PasswordChar := GetFreeOTFEBase().PasswordChar;
-  preUserKeyConfirm.WantReturns  := GetFreeOTFEBase().AllowNewlinesInPasswords;
-  preUserKeyConfirm.WantTabs     := GetFreeOTFEBase().AllowTabsInPasswords;
+  if not GetSettings().OptShowPasswords then
+    preUserKeyConfirm.PasswordChar := '*';//defaults to #0
+
+  preUserKeyConfirm.WantReturns  := GetSettings().OptAllowNewlinesInPasswords;
+  preUserKeyConfirm.WantTabs     := GetSettings().OptAllowTabsInPasswords;
 end;
 
 function TfrmeNewPassword.IsPasswordValid(): Boolean;

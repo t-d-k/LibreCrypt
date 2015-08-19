@@ -3,7 +3,7 @@ object frmSelectVolumeType: TfrmSelectVolumeType
   Top = 406
   BorderStyle = bsDialog
   Caption = 'Container Type'
-  ClientHeight = 150
+  ClientHeight = 158
   ClientWidth = 181
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,47 +13,58 @@ object frmSelectVolumeType: TfrmSelectVolumeType
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  DesignSize = (
+    181
+    158)
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
-    Left = 12
+    Left = 8
     Top = 8
-    Width = 157
-    Height = 29
-    AutoSize = False
+    Width = 119
+    Height = 26
+    Anchors = [akLeft, akTop, akRight, akBottom]
     Caption = 'Please select the type of container:'
     WordWrap = True
   end
   object rgVolumeType: TRadioGroup
-    Left = 44
-    Top = 40
-    Width = 93
-    Height = 57
+    Left = 8
+    Top = 48
+    Width = 161
+    Height = 70
+    Anchors = [akLeft, akRight, akBottom]
     Caption = 'Container Type'
     ItemIndex = 0
     Items.Strings = (
       'LibreCrypt'
-      'Linux')
+      'Plain dm-crypt (Linux)')
     TabOrder = 0
+    ExplicitTop = 40
   end
   object pbCancel: TButton
-    Left = 96
-    Top = 116
+    Left = 98
+    Top = 125
     Width = 75
     Height = 25
+    Anchors = [akRight, akBottom]
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 1
+    ExplicitLeft = 94
+    ExplicitTop = 112
   end
   object pbOK: TButton
-    Left = 8
-    Top = 116
+    Left = 12
+    Top = 125
     Width = 75
     Height = 25
+    Anchors = [akRight, akBottom]
     Caption = 'OK'
     Default = True
     ModalResult = 1
     TabOrder = 2
+    ExplicitLeft = 8
+    ExplicitTop = 112
   end
 end

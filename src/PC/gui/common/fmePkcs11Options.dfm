@@ -1,6 +1,7 @@
 inherited fmePkcs11Options: TfmePkcs11Options
   Width = 492
   Height = 289
+  OnClick = FrameClick
   ExplicitWidth = 492
   ExplicitHeight = 289
   object gbPKCS11: TGroupBox
@@ -95,7 +96,7 @@ inherited fmePkcs11Options: TfmePkcs11Options
         end
       end
     end
-    object feLibFilename: TSDUFilenameEdit
+    inline feLibFilename: TSDUFilenameEdit
       Left = 148
       Top = 48
       Width = 293
@@ -103,9 +104,10 @@ inherited fmePkcs11Options: TfmePkcs11Options
       Constraints.MaxHeight = 21
       Constraints.MinHeight = 21
       TabOrder = 1
-      TabStop = False
-      FilterIndex = 0
-      OnChange = ControlChanged
+      ExplicitLeft = 148
+      ExplicitTop = 48
+      ExplicitWidth = 293
+      ExplicitHeight = 21
       DesignSize = (
         293
         21)

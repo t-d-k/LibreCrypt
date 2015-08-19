@@ -11,9 +11,14 @@ unit frmSelectOverwriteMethod;
 interface
 
 uses
-  Classes, ComCtrls, Controls, Dialogs,
-  Forms, Graphics, Messages, OTFEFreeOTFE_InstructionRichEdit, OTFEFreeOTFE_U, SDUForms, StdCtrls,
-  SysUtils, Windows;
+     //delphi & libs
+        Classes, ComCtrls, Controls, Dialogs,
+  Forms, Graphics, Messages, StdCtrls,
+  SysUtils, Windows,
+  //sdu & LibreCrypt utils
+     OTFEFreeOTFE_InstructionRichEdit, OTFEFreeOTFE_U, SDUForms
+   // LibreCrypt forms
+;
 
 type
   TfrmSelectOverwriteMethod = class (TSDUForm)
@@ -50,9 +55,16 @@ implementation
 {$R *.DFM}
 
 uses
+//delphi
   ComObj,  // Required for StringToGUID
+   //sdu, lcutils
+lcConsts,
+
+
   lcDialogs,
-  SDUGeneral, SDUi18n;
+  SDUGeneral, SDUi18n,
+  //lc forms
+   frmCypherInfo;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -78,7 +90,7 @@ end;
 
 procedure TfrmSelectOverwriteMethod.pbCypherDetailsClick(Sender: TObject);
 begin
-  OTFEFreeOTFEObj.ShowCypherDetailsDlg(
+  frmCypherInfo.ShowCypherDetailsDlg(
     cypherKernelModeDriverNames[cbCypher.ItemIndex],
     StringToGUID(cypherGUIDs[cbCypher.ItemIndex])
     );
@@ -90,12 +102,7 @@ var
   tmpDisplayTitles: TStringList;
 begin
   { TODO 2 -otdk -csecurity : default to secure wipe }
-  reInstructOverwriteType.Text :=
-    _('Please select the type of data that should be used to overwrite the free space:' +
-    SDUCRLF + SDUCRLF +
-    'Pseudorandom data - This is faster, but less secure if you wish to create a hidden container within this container later.'
-    + SDUCRLF + SDUCRLF +
-    'Encrypted data - This is more secure, but slower. Pseudorandom data will be encrypted with your choice of cypher before being written to the drive.');
+
 
   tmpDisplayTitles := TStringList.Create();
   try

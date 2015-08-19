@@ -3,9 +3,16 @@ unit PartitionImageDLL;
 interface
 
 uses
-  Classes, OTFEFreeOTFEDLL_U,
-  SDPartitionImage,
-  SDUGeneral, Windows;
+ //delphi / libs
+  Classes,
+   Windows,
+  //sdu & LibreCrypt utils
+        lcTypes,
+   OTFEFreeOTFEDLL_U,
+  SDPartitionImage
+   // LibreCrypt forms
+
+;
 
 type
   TPartitionImageDLL = class (TSDPartitionImage)
@@ -42,8 +49,17 @@ function PostMount_Format_using_dll(drive: DriveLetterChar): Boolean;
 implementation
 
 uses
-  Math,
-  OTFEFreeOTFEBase_U, SDFilesystem_FAT, SDUClasses;
+ //delphi / libs
+    Math,
+  //sdu & LibreCrypt utils
+      sduGeneral,
+  PartitionTools,
+  OTFEFreeOTFEBase_U, SDFilesystem_FAT, SDUClasses,
+   // LibreCrypt forms
+   frmSelectVolumeType
+
+
+;
 
 constructor TPartitionImageDLL.Create();
 begin
@@ -70,7 +86,7 @@ begin
   FFOTFEMountedOnPartitionMount := True;
   if (FMountedAs = #0) then begin
     FFOTFEMountedOnPartitionMount := False;
-    FMountedAs                    := FreeOTFEObj.Mount(fFilename);
+    FMountedAs                    := frmSelectVolumeType.Mount(fFilename);
   end;
 
   if (FMountedAs = #0) then begin

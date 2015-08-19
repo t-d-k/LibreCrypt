@@ -4,17 +4,20 @@ interface
 
 uses
   //delphi and 3rd party libs - layer 0
-  SysUtils, Variants, Classes, Windows, Graphics, Messages, Controls, Dialogs, Forms,
+  SysUtils, Variants, Classes, Windows, Graphics, Messages, Controls, Dialogs, Forms, Vcl.StdCtrls,
   //sdu  - layer 1
   SDUGeneral,
   //LibreCrypt utils -also layer 1
-  OTFEFreeOTFEBase_U, fmeSDUDiskPartitions, MainSettings, fmeBaseOptions,  fmeSDUBlocks,
-  CommonSettings, Vcl.StdCtrls
-  // LibreCrypt forms - layer 2
+  OTFEFreeOTFEBase_U,  MainSettings,
+  CommonSettings,
+  PartitionTools,
+  // LibreCrypt forms/frames - layer 2
+    fmeSDUBlocks, fmeSDUDiskPartitions
   //main form - layer 3
   ;
 
 type
+     { TODO 1 -crefactor : TfmeSDUDiskPartitions has only one child, this one, so merge }
   TfmeDiskPartitionsPanel = class (TfmeSDUDiskPartitions)
   private
 
@@ -33,17 +36,10 @@ type
 
   end;
 
-//procedure Register;
-
 implementation
 
 {$R *.dfm}
 
-
- //procedure Register;
- //begin
- //  RegisterComponents('FreeOTFE', [TfmeDiskPartitionsPanel]);
- //end;
 
 function TfmeDiskPartitionsPanel.GetDriveLayout(physicalDiskNo: Integer;
   var driveLayout: TSDUDriveLayoutInformationEx): Boolean;

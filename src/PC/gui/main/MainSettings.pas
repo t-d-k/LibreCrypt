@@ -12,11 +12,14 @@ interface
 
 uses
   Classes, // Required for TShortCut
-  CommonSettings,
+
   IniFiles,
-  OTFEFreeOTFEBase_U,
+//  OTFEFreeOTFEBase_U,
   //sdu
-  sdugeneral;
+    lcTypes,
+  CommonSettings;
+
+
 const
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -29,8 +32,7 @@ const
 
   FREEOTFE_REGISTRY_SETTINGS_LOCATION = '\Software\LibreCrypt';
 
-  // Command line parameter handled in the .dpr
-  CMDLINE_MINIMIZE = 'minimize';
+
 
 resourcestring
   RS_PROMPT_USER = 'Prompt user';
@@ -64,8 +66,7 @@ const
 type
   eOnNormalDismountFail = (ondfForceDismount, ondfPromptUser, ondfCancelDismount);
 
-  // is app running? used to detect crashes
-  eAppRunning = (arDontKnow{no settings file}, arRunning{set in InitApp}, arClosed{set in Form.close});
+
 
 resourcestring
   ONNORMALDISMOUNTFAIL_FORCEDISMOUNT  = 'Force dismount';
@@ -116,16 +117,12 @@ type
 
   PUBLIC
     // General...
-    OptDisplayToolbar:         Boolean;
-    OptDisplayToolbarLarge:    Boolean;
-    OptDisplayToolbarCaptions: Boolean;
-    OptDisplayStatusbar:       Boolean;
     OptAllowMultipleInstances: Boolean;
     OptAutoStartPortable:      Boolean;
 //    OptInstalled:              Boolean;// has installer been run?
     OptDefaultDriveLetter:     DriveLetterChar;
     OptDefaultMountAs:         TFreeOTFEMountAs;
-    feAppRunning        :         eAppRunning;
+
     // Prompts and messages
     OptWarnBeforeForcedDismount: Boolean;
     OptOnExitWhenMounted:        eOnExitWhenMounted;
@@ -153,9 +150,11 @@ type
   end;
 
 
-var
+//var
   // Global variable
-  gSettings: TMainSettings;
+//  gSettings: TMainSettings;
+{returns an instance of the only object, must be type TMainSettings. call SetSettingsType first}
+function GetMainSettings: TMainSettings;
 
 function OnExitWhenMountedTitle(Value: eOnExitWhenMounted): String;
 function OnExitWhenPortableModeTitle(Value: eOnExitWhenPortableMode): String;
@@ -182,14 +181,8 @@ const
   // -- General section --
   // Note: "Advanced" options are *also* stored within the "General" section
   //       This is done because some "General" settings were moved to become "Advanced" settings
-  OPT_DISPLAYTOOLBAR              = 'DisplayToolbar';
-  DFLT_OPT_DISPLAYTOOLBAR         = True;
-  OPT_DISPLAYTOOLBARLARGE         = 'DisplayToolbarLarge';
-  DFLT_OPT_DISPLAYTOOLBARLARGE    = True;
-  OPT_DISPLAYTOOLBARCAPTIONS      = 'DisplayToolbarCaptions';
-  DFLT_OPT_DISPLAYTOOLBARCAPTIONS = True;
-  OPT_DISPLAYSTATUSBAR            = 'DisplayStatusbar';
-  DFLT_OPT_DISPLAYSTATUSBAR       = True;
+
+
   OPT_ALLOWMULTIPLEINSTANCES      = 'AllowMultipleInstances';
   DFLT_OPT_ALLOWMULTIPLEINSTANCES = False;
   OPT_AUTOSTARTPORTABLE           = 'AutoStartPortable';
@@ -198,8 +191,7 @@ const
   DFLT_OPT_DEFAULTMOUNTAS         = fomaRemovableDisk;
 //  OPT_OPTINSTALLED                = 'Installed';
 //  DFLT_OPT_OPTINSTALLED           = False;
-  OPT_APPRUNNING                 = 'AppRunning';
-  DFLT_OPT_APPRUNNING            = arDontKnow;
+
 
   // -- Prompts and messages --
   // Section name defined in parent class's unit
@@ -275,24 +267,15 @@ end;
 procedure TMainSettings._Load(iniFile: TCustomINIFile);
 begin
   inherited _Load(iniFile);
-  // todo -otdk : combine load and save, and/or use rtti
-  OptDisplayToolbar         := iniFile.ReadBool(SECTION_GENERAL, OPT_DISPLAYTOOLBAR,
-    DFLT_OPT_DISPLAYTOOLBAR);
-  OptDisplayToolbarLarge    := iniFile.ReadBool(SECTION_GENERAL,
-    OPT_DISPLAYTOOLBARLARGE, DFLT_OPT_DISPLAYTOOLBARLARGE);
-  OptDisplayToolbarCaptions := iniFile.ReadBool(SECTION_GENERAL,
-    OPT_DISPLAYTOOLBARCAPTIONS, DFLT_OPT_DISPLAYTOOLBARCAPTIONS);
-  OptDisplayStatusbar       := iniFile.ReadBool(SECTION_GENERAL,
-    OPT_DISPLAYSTATUSBAR, DFLT_OPT_DISPLAYSTATUSBAR);
+
+
   OptAllowMultipleInstances := iniFile.ReadBool(SECTION_GENERAL,
     OPT_ALLOWMULTIPLEINSTANCES, DFLT_OPT_ALLOWMULTIPLEINSTANCES);
   OptAutoStartPortable      := iniFile.ReadBool(SECTION_GENERAL, OPT_AUTOSTARTPORTABLE,
     DFLT_OPT_AUTOSTARTPORTABLE);
   OptDefaultMountAs         := TFreeOTFEMountAs(iniFile.ReadInteger(SECTION_GENERAL,
     OPT_DEFAULTMOUNTAS, Ord(DFLT_OPT_DEFAULTMOUNTAS)));
-  feAppRunning      :=
-    eAppRunning(iniFile.ReadInteger(SECTION_GENERAL,
-    OPT_APPRUNNING, Ord(DFLT_OPT_APPRUNNING)));
+
 
   OptWarnBeforeForcedDismount := iniFile.ReadBool(SECTION_CONFIRMATION,
     OPT_WARNBEFOREFORCEDISMOUNT, DFLT_OPT_WARNBEFOREFORCEDISMOUNT);
@@ -339,21 +322,15 @@ begin
   Result := inherited _Save(iniFile);
   if Result then begin
     try
-      iniFile.WriteBool(SECTION_GENERAL, OPT_DISPLAYTOOLBAR, OptDisplayToolbar);
-      iniFile.WriteBool(SECTION_GENERAL, OPT_DISPLAYTOOLBARLARGE,
-        OptDisplayToolbarLarge);
-      iniFile.WriteBool(SECTION_GENERAL, OPT_DISPLAYTOOLBARCAPTIONS,
-        OptDisplayToolbarCaptions);
-      iniFile.WriteBool(SECTION_GENERAL, OPT_DISPLAYSTATUSBAR,
-        OptDisplayStatusbar);
+
+
       iniFile.WriteBool(SECTION_GENERAL, OPT_ALLOWMULTIPLEINSTANCES,
         OptAllowMultipleInstances);
       iniFile.WriteBool(SECTION_GENERAL, OPT_AUTOSTARTPORTABLE,
         OptAutoStartPortable);
       iniFile.WriteInteger(SECTION_GENERAL, OPT_DEFAULTMOUNTAS,
         Ord(OptDefaultMountAs));
-     iniFile.WriteInteger(SECTION_GENERAL, OPT_APPRUNNING,
-        Ord(feAppRunning));
+
 
       iniFile.WriteBool(SECTION_CONFIRMATION, OPT_WARNBEFOREFORCEDISMOUNT,
         OptWarnBeforeForcedDismount);
@@ -399,6 +376,13 @@ end;
 function TMainSettings.RegistryKey(): String;
 begin
   Result := FREEOTFE_REGISTRY_SETTINGS_LOCATION;
+end;
+
+{returns an instance of the only object, must be type TMainSettings. call SetSettingsType first}
+function GetMainSettings: TMainSettings;
+begin
+  assert(GetSettings is TMainSettings, 'call SetSettingsType with correct type');
+  Result := GetSettings as TMainSettings;
 end;
 
 end.

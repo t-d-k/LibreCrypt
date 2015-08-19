@@ -1,4 +1,4 @@
-object SDUBlocksPanel: TfmeSDUBlocks
+object fmeSDUBlocks: TfmeSDUBlocks
   Left = 0
   Top = 0
   Width = 320

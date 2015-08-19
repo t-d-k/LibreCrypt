@@ -1,4 +1,4 @@
-object fmeOptions_Base: TfmeBaseOptions
+object fmeBaseOptions: TfmeBaseOptions
   Left = 0
   Top = 0
   Width = 320

@@ -11,7 +11,7 @@ interface
 
 uses
   Classes, ComCtrls,
-  fmeBaseOptions,
+//  fmeBaseOptions,
   CommonSettings,
   Controls, Dialogs,
   ExtCtrls, Forms, Graphics, Messages,
@@ -70,7 +70,8 @@ type
     function DoOKClicked(): Boolean; virtual;
 
     procedure AllTabs_InitAndReadSettings(config: TCommonSettings); virtual;
-    procedure AllTabs_WriteSettings(config: TCommonSettings);
+    procedure AllTabs_WriteSettings(config: TCommonSettings);  virtual;
+    function AreSettingsValid :Boolean  ; virtual;
   public
 
     procedure ChangeLanguage(langCode: String); virtual; abstract;
@@ -90,7 +91,9 @@ uses
   ExplorerSettings,
 {$ENDIF}
 
-//sdu
+
+  //sdu, lcutils
+lcConsts,
   pkcs11_library,
   lcDialogs, SDUGeneral,
   SDUi18n,
@@ -119,7 +122,7 @@ function TfrmCommonOptions.GetSettingsLocation(): TSettingsSaveLocation;
 var
   sl: TSettingsSaveLocation;
 begin
-  Result := gSettings.OptSaveSettings;
+  Result := GetSettings().OptSaveSettings;
   for sl := low(sl) to high(sl) do begin
     if (SettingsLocationDisplay(sl) = cbSettingsLocation.Items[cbSettingsLocation.ItemIndex]) then
     begin
@@ -212,7 +215,7 @@ begin
   Result := True;
 
   // Decode settings save location
-  oldSettingsLocation := gSettings.OptSaveSettings;
+  oldSettingsLocation := GetSettings().OptSaveSettings;
   newSettingsLocation := GetSettingsLocation();
 
   if Result then begin
@@ -223,7 +226,7 @@ begin
     vistaProgFilesDirWarn := False;
     if (SDUOSVistaOrLater() and (newSettingsLocation = slExeDir)) then begin
       programFilesDir       := SDUGetSpecialFolderPath(SDU_CSIDL_PROGRAM_FILES);
-      filename              := gSettings.GetSettingsFilename(newSettingsLocation);
+      filename              := GetSettings().GetSettingsFilename(newSettingsLocation);
       vistaProgFilesDirWarn := (Pos(uppercase(programFilesDir), uppercase(filename)) > 0);
     end;
 
@@ -249,15 +252,10 @@ begin
   end;
 
   if Result then begin
-  if not CheckPkcs11Settings() then begin
-    pcOptions.ActivePage := pcOptions.Pages[0];
-    Result               := False;
-  end;
-  end;
-  if Result then begin
+    Result               := AreSettingsValid;
     // For each tab, scan it's controls; if it's one of our frames, get it to
     // process...
-    for i := 0 to (pcOptions.PageCount - 1) do begin
+   { for i := 0 to (pcOptions.PageCount - 1) do begin
       currTabSheet := pcOptions.Pages[i];
       for j := 0 to (currTabSheet.Controlcount - 1) do begin
         if (currTabSheet.Controls[j] is TfmeBaseOptions ) then begin
@@ -273,16 +271,16 @@ begin
       if not (Result) then begin
         break;
       end;
-    end;
+    end;  }
   end;
 
   if Result then begin
-    gSettings.OptSaveSettings := newSettingsLocation;
+    GetSettings().OptSaveSettings := newSettingsLocation;
 
-    AllTabs_WriteSettings(gSettings);
+    AllTabs_WriteSettings(GetSettings());
 
-    if (gSettings.OptSaveSettings <> slNone) then begin
-      Result := gSettings.Save();
+    if (GetSettings().OptSaveSettings <> slNone) then begin
+      Result := GetSettings().Save();
     end;
 
   end;
@@ -324,14 +322,14 @@ begin
       end;
 
       if deleteOldLocation then begin
-        if not (gSettings.DestroySettingsFile(oldSettingsLocation)) then begin
+        if not (GetSettings().DestroySettingsFile(oldSettingsLocation)) then begin
           if ((oldSettingsLocation = slExeDir) or (oldSettingsLocation = slProfile) or
             (oldSettingsLocation = slCustom)) then begin
             SDUMessageDlg(
               Format(_('Your previous settings file stored at:' +
               SDUCRLF + SDUCRLF + '%s' + SDUCRLF + SDUCRLF +
               'could not be deleted. Please remove this file manually.'),
-              [gSettings.GetSettingsFilename(oldSettingsLocation)]),
+              [GetSettings().GetSettingsFilename(oldSettingsLocation)]),
               mtInformation
               );
           end else
@@ -341,7 +339,7 @@ begin
               'Your previous settings file stored in the Windows registry under:' +
               SDUCRLF + SDUCRLF + '%s' + SDUCRLF + SDUCRLF +
               'could not be deleted. Please delete this registry key manually.'),
-              [gSettings.RegistryKey()]),
+              [GetSettings().RegistryKey()]),
               mtInformation
               );
           end;
@@ -353,7 +351,7 @@ begin
           SDUMessageDlg(
             Format(_('Your previous settings will remain stored at:' +
             SDUCRLF + SDUCRLF + '%s'),
-            [gSettings.GetSettingsFilename(oldSettingsLocation)]),
+            [GetSettings().GetSettingsFilename(oldSettingsLocation)]),
             mtInformation
             );
         end else
@@ -361,7 +359,7 @@ begin
           SDUMessageDlg(
             Format(_(
             'Your previous settings will remain stored in the Windows registry under:' +
-            SDUCRLF + SDUCRLF + '%s'), [gSettings.RegistryKey()]),
+            SDUCRLF + SDUCRLF + '%s'), [GetSettings().RegistryKey()]),
             mtInformation
             );
         end;
@@ -409,14 +407,14 @@ begin
   idx    := -1;
   useIdx := -1;
   for sl := low(sl) to high(sl) do begin
-    if ((sl = slCustom) and (gSettings.CustomLocation = '')) then begin
+    if ((sl = slCustom) and (GetSettings().CustomLocation = '')) then begin
       // Skip this one; no custom location set
       continue;
     end;
 
     Inc(idx);
     cbSettingsLocation.Items.Add(SettingsLocationDisplay(sl));
-    if (gSettings.OptSaveSettings = sl) then begin
+    if (GetSettings().OptSaveSettings = sl) then begin
       useIdx := idx;
     end;
   end;
@@ -469,7 +467,7 @@ begin
 
   InitializePkcs11Options();
   ReadPkcs11Settings(config);
-
+  {
   // For each tab, scan it's controls; if it's one of our frames, get it to
   // process...
   for i := 0 to (pcOptions.PageCount - 1) do begin
@@ -481,7 +479,7 @@ begin
         TfmeBaseOptions (currTabSheet.Controls[j]).ReadSettings(config);
       end;
     end;
-  end;
+  end;   this now done by inheritence}
 
   // Center "assocate with .vol files" checkbox
   ckAssociateFiles.Caption := Format(
@@ -527,9 +525,10 @@ var
   j:            Integer;
   currTabSheet: TTabSheet;
 begin
-WritePkcs11Settings(config);
+  WritePkcs11Settings(config);
   // For each tab, scan it's controls; if it's one of our frames, get it to
   // process...
+  {
   for i := 0 to (pcOptions.PageCount - 1) do begin
     currTabSheet := pcOptions.Pages[i];
     for j := 0 to (currTabSheet.Controlcount - 1) do begin
@@ -537,9 +536,15 @@ WritePkcs11Settings(config);
         TfmeBaseOptions (currTabSheet.Controls[j]).WriteSettings(config);
       end;
     end;
-  end;
+  end; this now done by inheritence}
 end;
 
+
+function TfrmCommonOptions.AreSettingsValid: Boolean;
+begin
+  result := CheckPkcs11Settings;
+  if not result then pcOptions.ActivePage := pcOptions.Pages[0];
+end;
 
 procedure TfrmCommonOptions.FormCreate(Sender: TObject);
 begin
@@ -553,7 +558,7 @@ begin
   // Special handling...
   //  fmeOptions_PKCS11.OTFEFreeOTFE := OTFEFreeOTFEBase;
 
-  AllTabs_InitAndReadSettings(gSettings);
+  AllTabs_InitAndReadSettings(GetSettings());
 
   // Push the PKCS#11 tab to the far end; the "General" tab should be the
   // leftmost one
@@ -564,6 +569,9 @@ begin
   ckAssociateFiles.Checked := FOrigAssociateFiles;
 
   EnableDisableControls();
+     feLibFilename.        TabStop := False           ;
+     feLibFilename.     FilterIndex := 0         ;
+     feLibFilename.     OnChange := ControlChanged;
 
 end;
 
@@ -574,7 +582,8 @@ var
   currTabSheet: TTabSheet;
   pkcs11Enabled: Boolean;
 begin
- pkcs11Enabled := ckEnablePKCS11.Checked;
+
+   pkcs11Enabled := ckEnablePKCS11.Checked;
 
   SDUEnableControl(feLibFilename, pkcs11Enabled);
   SDUEnableControl(lblLibrary, pkcs11Enabled);
@@ -588,7 +597,7 @@ begin
     // Yes, this is needed; otherwise it'll enable/disable regardless
     ckPKCS11AutoMount.Checked));
   SDUEnableControl(lblAutoMountVolume, OTFEFreeOTFEVolumeSelect1.Enabled);
-
+    {
   // For each tab, scan it's controls; if it's one of our frames, get it to
   // process...
   for i := 0 to (pcOptions.PageCount - 1) do begin
@@ -598,7 +607,7 @@ begin
         TfmeBaseOptions (currTabSheet.Controls[j]).EnableDisableControls();
       end;
     end;
-  end;
+  end;    this now done by inheritence}
 
   if (GetSettingsLocation() = slNone) then begin
     imgNoSaveWarning.Visible       := True;
@@ -640,7 +649,7 @@ end;
 procedure TfrmCommonOptions.pbCancelClick(Sender: TObject);
 begin
   // Reset langugage used, in case it was changed by the user
-  SDUSetLanguage(gSettings.OptLanguageCode);
+  SDUSetLanguage(GetSettings().OptLanguageCode);
 
   ModalResult := mrCancel;
 

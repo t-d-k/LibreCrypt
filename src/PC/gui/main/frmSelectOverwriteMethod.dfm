@@ -1,4 +1,4 @@
-object frmFreeOTFESelectOverwriteMethod: TfrmSelectOverwriteMethod
+object frmSelectOverwriteMethod: TfrmSelectOverwriteMethod
   Left = 454
   Top = 330
   BorderStyle = bsDialog
@@ -93,7 +93,13 @@ object frmFreeOTFESelectOverwriteMethod: TfrmSelectOverwriteMethod
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     Lines.Strings = (
-      'reInstructOverwriteType')
+      'Please select the type of data that should be used '
+      'to overwrite the free space:Pseudorandom data - '
+      'This is faster, but less secure if you wish to create '
+      'a hidden container within this container later.'
+      'Encrypted data - This is more secure, but slower. '
+      'Pseudorandom data will be encrypted with your '
+      'choice of cypher before being written to the drive.')
     ParentFont = False
     TabOrder = 3
   end

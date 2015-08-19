@@ -33,6 +33,10 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsFileOrPartition: TTabSheet
         Caption = 'Container File or Partition'
         ImageIndex = 7
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           600
           345)
@@ -62,8 +66,8 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Anchors = [akLeft, akRight, akBottom]
           Caption = 'File or Partition'
           Items.Strings = (
-            '1st of two'
-            '2nd of two')
+            'File'
+            'Partition')
           TabOrder = 1
           OnClick = rgFileOrPartitionClick
         end
@@ -89,6 +93,10 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsSrcFile: TTabSheet
         Caption = 'Source file'
         ImageIndex = 6
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           600
           345)
@@ -219,7 +227,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           end
           inherited ilErrorWarning: TImageList
             Bitmap = {
-              494C010103000400DC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400FC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -362,6 +370,10 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       end
       object tsSrcDetails: TTabSheet
         Caption = 'Src Details'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           600
           345)
@@ -473,17 +485,21 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
             ExplicitLeft = 3
             ExplicitWidth = 56
           end
-          inherited preUserKeyFirst: TOTFEFreeOTFE_PasswordRichEdit
-            Width = 513
-            Height = 189
-            ExplicitWidth = 513
-            ExplicitHeight = 189
+          inherited mmShown: TMemo
+            Width = 505
+            Height = 174
+            ExplicitWidth = 505
+            ExplicitHeight = 174
           end
         end
       end
       object tsDestFile: TTabSheet
         Caption = 'Destination file'
         ImageIndex = 4
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           600
           345)
@@ -647,6 +663,10 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsRNGSelect: TTabSheet
         Caption = 'RNG Select'
         ImageIndex = 6
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructRNGSelect1: TLabel
           Left = 3
           Top = 12
@@ -766,6 +786,10 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsRNGMouseMovement: TTabSheet
         Caption = 'RNG Mouse movement'
         ImageIndex = 4
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           600
           345)
@@ -813,6 +837,10 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsRNGPKCS11: TTabSheet
         Caption = 'RNG PKCS#11 token'
         ImageIndex = 9
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lblToken: TLabel
           Left = 11
           Top = 51
@@ -858,6 +886,10 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsRNGGPG: TTabSheet
         Caption = 'RNG GPG'
         ImageIndex = 5
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         DesignSize = (
           600
           345)

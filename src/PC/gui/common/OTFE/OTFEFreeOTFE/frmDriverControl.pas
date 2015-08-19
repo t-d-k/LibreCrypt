@@ -11,13 +11,17 @@ unit frmDriverControl;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+
+     //delphi & libs
+        Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls,
   registry,
-  DriverControl,
-  OTFEFreeOTFEBase_U,
-  WinSVC,  // Required for service related definitions and functions
-  OTFEFreeOTFE_U, SDUForms, lcDialogs, SDUDialogs;
+    WinSVC,  // Required for service related definitions and functions
+  //sdu & LibreCrypt utils
+        DriverControl,
+  OTFEFreeOTFEBase_U,  OTFEFreeOTFE_U, lcDialogs, SDUDialogs,
+   // LibreCrypt forms
+  SDUForms;
 
 type
   TfrmDriverControl = class (TSDUForm)
@@ -74,6 +78,9 @@ type
     constructor Create(AOwner: TComponent); override;
   end;
 
+    // Display control for controlling underlying drivers
+    procedure ShowDriverControlDlg();
+
 
 implementation
 
@@ -82,8 +89,12 @@ implementation
 {$R OTFEFreeOTFE_DriverImages.dcr}
 
 uses
-  Math, SDUGeneral,
-  SDUi18n;  // Required for max(...)
+     //delphi & libs
+    Math,    // Required for max(...)
+  //sdu & LibreCrypt utils
+  lcConsts,   sduGeneral, SDUi18n
+   // LibreCrypt forms
+  ;
 
 
 resourcestring
@@ -624,6 +635,29 @@ begin
 
   Result := offset;
 
+end;
+
+
+ // ----------------------------------------------------------------------------
+ // Display control for controlling underlying drivers
+ // You *shouldn't* call this while the component is active, as the user may
+ // try to do something dumn like uninstall the main FreeOTFE driver while we're
+ // connected to it!
+procedure ShowDriverControlDlg();
+var
+  dlg: TfrmDriverControl;
+begin
+  // TfrmDriverControl.Create(nil) will raise an exception if the user doesn't
+  // have the required privs to access driver control
+  dlg := TfrmDriverControl.Create(nil);
+  try
+    dlg.ShowModal();
+  finally
+    dlg.Free();
+  end;
+
+  // In case drivers were added/removed...
+  GetFreeOTFEBase().CachesFlush();
 end;
 
 

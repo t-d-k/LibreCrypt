@@ -13,6 +13,8 @@ uses
 //delphi
   Dialogs, Forms, sysutils,
   // sdu - utils
+
+lcConsts,
   lcDialogs,
   SDUGeneral,
   SDUi18n;

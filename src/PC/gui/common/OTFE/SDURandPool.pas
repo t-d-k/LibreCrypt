@@ -22,7 +22,7 @@ interface
 uses
   SysUtils,
   Windows,//sdu
-  SDUGeneral,
+  lcTypes,
   //LibreCrypt
   pkcs11_library;
 
@@ -121,6 +121,7 @@ uses
   //sdu
   lcDialogs,
   SDUi18n,
+  sdugeneral, lcConsts,
   //librecrypt
   cryptlib,
   PKCS11Lib,
@@ -143,7 +144,7 @@ var
   _MouseRNGStore:  TSDUBytes;
   _RandPool:       TRandPool;
   _rngset:         TRNGSet;
-  _PKCS11Library:  TPKCS11Library;
+//  _PKCS11Library:  TPKCS11Library;
   _PKCS11SlotID:   Integer;
   _gpgFilename:    String;
   _inited:         Boolean = False;
@@ -195,7 +196,7 @@ begin
     rngCryptoAPI:
     begin
       Result := GenerateRNGDataMSCryptoAPI(bytesRequired, randomData);
-      Result := Result and (length(randomData) = bytesRequired);
+//      Result := Result and (length(randomData) = bytesRequired);
       if not Result then begin
         SDUMessageDlg(
           _('The MS CryptoAPI could not be used to generate random data.') +
@@ -209,7 +210,7 @@ begin
     rngcryptlib:
     begin
       Result := GenerateRNGDataCryptlib(bytesRequired, randomData);
-      Result := Result and (length(randomData) = bytesRequired);
+//      Result := Result and (length(randomData) = bytesRequired);
       if not Result then begin
         SDUMessageDlg(
           _('cryptlib could not be used to generate random data.') + SDUCRLF +
@@ -223,9 +224,9 @@ begin
     // PKCS#11 token...
     rngPKCS11:
     begin
-      Result := GenerateRNGDataPKCS11(_PKCS11Library, _PKCS11SlotID, bytesRequired,
+      Result := GenerateRNGDataPKCS11(GPKCS11Library, _PKCS11SlotID, bytesRequired,
         randomData);
-      Result := Result and (length(randomData) = bytesRequired);
+//      Result := Result and (length(randomData) = bytesRequired);
       if not Result then begin
         SDUMessageDlg(
           _('PKCS#11 token could not be used to generate random data.') +
@@ -246,7 +247,7 @@ begin
       //                                  gpgFilename,
       //                                  randomData
       //                                 );
-      Result := Result and (length(randomData) = bytesRequired);
+//      Result := Result and (length(randomData) = bytesRequired);
       if not Result then begin
         SDUMessageDlg(
           _('GPG could not be used to generate random data.') + SDUCRLF +
@@ -269,22 +270,26 @@ begin
 
   end;
 
-  // Sanity check
-  if Result then begin
-    Result := (length(randomData) = bytesRequired);
-    if not Result then begin
+   // Sanity check
+    if (length(randomData) <> bytesRequired) then begin
       raise EInsufficientRandom.Create(Format('%d bytes required %d found',
         [bytesRequired, length(randomData)]));
-     { SDUMessageDlg(
-        _('Insufficient random data generated?!') + SDUCRLF + SDUCRLF +
-        PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
-        mtError
-        );  Result := False;
-      }
+      end;
+//  if Result then begin
+//    Result := (length(randomData) = bytesRequired);
+//    if not Result then begin
+//      raise EInsufficientRandom.Create(Format('%d bytes required %d found',
+//        [bytesRequired, length(randomData)]));
+//     { SDUMessageDlg(
+//        _('Insufficient random data generated?!') + SDUCRLF + SDUCRLF +
+//        PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
+//        mtError
+//        );  Result := False;
+//      }
+//
+//    end;
 
-    end;
-
-  end;
+//  end;
 end;
 
  //obsolete
@@ -308,7 +313,7 @@ class procedure TRandPool.SetUpRandPool(rngset: TRNGSet;
   gpgFilename: String);
 begin
   _rngset        := rngset;
-  _PKCS11Library := GetFreeOTFEBase().PKCS11Library;
+//  _PKCS11Library := GetFreeOTFEBase().PKCS11Library;
   _PKCS11SlotID  := SlotID;
   _gpgFilename   := gpgFilename;
   _inited        := True;

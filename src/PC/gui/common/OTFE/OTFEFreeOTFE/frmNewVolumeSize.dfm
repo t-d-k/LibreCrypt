@@ -67,7 +67,7 @@ object frmNewVolumeSize: TfrmNewVolumeSize
     MaxLength = 0
     ReadOnly = False
   end
-  object feFilename: TSDUFilenameEdit
+  inline feFilename: TSDUFilenameEdit
     Left = 112
     Top = 16
     Width = 233
@@ -75,9 +75,10 @@ object frmNewVolumeSize: TfrmNewVolumeSize
     Constraints.MaxHeight = 21
     Constraints.MinHeight = 21
     TabOrder = 0
-    TabStop = False
-    FilenameEditType = fetSave
-    FilterIndex = 0
+    ExplicitLeft = 112
+    ExplicitTop = 16
+    ExplicitWidth = 233
+    ExplicitHeight = 21
     DesignSize = (
       233
       21)

@@ -3,10 +3,15 @@ unit fmeVolumeSelect;
 interface
 
 uses
-  Classes, Controls, Dialogs, Forms,
-  Graphics, Messages, OTFEFreeOTFEBase_U, SDUDialogs, SDUFrames, StdCtrls,
+     //delphi & libs
+           Classes, Controls, Dialogs, Forms,
+  Graphics, Messages, StdCtrls,
   SysUtils, Variants, Vcl.Buttons,
-  Windows;
+  Windows,
+  //sdu & LibreCrypt utils
+    OTFEFreeOTFEBase_U, SDUDialogs,
+   // LibreCrypt forms
+ SDUFrames;
 
 type
   TOpenSave = (fndOpen, fndSave);
@@ -63,7 +68,14 @@ implementation
    {$R *.dfm}
 
 uses
-  SDUGeneral;
+     //delphi & libs
+
+  //sdu & LibreCrypt utils
+     SDUGeneral,
+   // LibreCrypt forms
+
+
+  frmSelectPartition;
 
 // procedure Register;
 // begin
@@ -96,7 +108,7 @@ var
   selectedPartition: String;
 begin
   if (GetFreeOTFEBase() <> nil) then begin
-    selectedPartition := GetFreeOTFEBase().SelectPartition();
+    selectedPartition := frmSelectPartition.SelectPartition();
     if (selectedPartition <> '') then begin
       edFilename.Text := selectedPartition;
     end;

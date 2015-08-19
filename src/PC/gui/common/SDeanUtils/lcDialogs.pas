@@ -54,15 +54,17 @@ function SDUMessageDlg(Content: String): Integer; overload;
 implementation
 
 uses
-  Classes,
+  Classes,   SysUtils,   // Required for StringReplace
   Controls,  // Required for mrXXX
              //  Consts,
              //  RTLConsts,
   Forms,     // Required for Application
+  UITypes,
+  //sdu.lcutils
   SDUGeneral,
   CommonSettings,
-  SysUtils,   // Required for StringReplace
-  UITypes;
+
+  lcConsts;
 
 
 resourcestring
@@ -120,7 +122,7 @@ begin
     Content := _SDUDialogs_StripSingleNewlines(Content);
 
   // do enhancements here
-  if not CommonSettingsObj.IsRememberedDlgAnswer(Content,Result) then
+  if not Getsettings().IsRememberedDlgAnswer(Content,Result) then
       Result := MessageDlg(Content, DlgType, Buttons, HelpCtx);
 end;
 

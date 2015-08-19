@@ -9,7 +9,7 @@ uses
   pkcs11_attribute,
   pkcs11_mechanism,
   //sdu
-  sdugeneral;
+  lcTypes;
 
 type
   TPKCS11UserType = (utUser, utSecurityOfficer, utContextSpecific);
@@ -220,7 +220,10 @@ implementation
 
 uses
   Math, Shredder,
-  SysUtils;
+  SysUtils,
+  //sdu
+  sdugeneral
+  ;
 
 const
   PKCS11_IGNORE_PARAMETER = '!!IGNORE_THIS_PARAMETER!!';

@@ -92,12 +92,17 @@ object frmCommonOptions: TfrmCommonOptions
       Caption = 'PKCS#11'
       ImageIndex = 4
       object gbPKCS11: TGroupBox
-        Left = 16
-        Top = 16
-        Width = 457
-        Height = 241
+        Left = 0
+        Top = 0
+        Width = 492
+        Height = 348
+        Align = alClient
         Caption = 'Security Token/Smartcard support'
         TabOrder = 0
+        ExplicitLeft = 16
+        ExplicitTop = 16
+        ExplicitWidth = 457
+        ExplicitHeight = 241
         object lblLibrary: TLabel
           Left = 36
           Top = 52
@@ -189,7 +194,7 @@ object frmCommonOptions: TfrmCommonOptions
             end
           end
         end
-        object feLibFilename: TSDUFilenameEdit
+        inline feLibFilename: TSDUFilenameEdit
           Left = 148
           Top = 48
           Width = 293
@@ -197,9 +202,10 @@ object frmCommonOptions: TfrmCommonOptions
           Constraints.MaxHeight = 21
           Constraints.MinHeight = 21
           TabOrder = 1
-          TabStop = False
-          FilterIndex = 0
-          OnChange = ControlChanged
+          ExplicitLeft = 148
+          ExplicitTop = 48
+          ExplicitWidth = 293
+          ExplicitHeight = 21
           DesignSize = (
             293
             21)

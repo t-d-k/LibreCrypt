@@ -131,11 +131,14 @@ Commented out; not used atm
 implementation
 
 uses
-  Controls, Forms,
+//delphi
+   Controls, Forms,  registry,
+//lc utils
+lcConsts,
   lcDialogs,
   OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U,
-  registry,
+
   SDUi18n,
   dlgProgress,
   SDUWindows64;

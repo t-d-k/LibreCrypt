@@ -1,24 +1,28 @@
 inherited SDUFilenameEdit: TSDUFilenameEdit
-  Width = 307
-  Height = 122
+  Width = 304
+  Height = 43
   OnEnter = FrameEnter
-  OnResize = FrameResize
-  ExplicitWidth = 307
-  ExplicitHeight = 122
+  ExplicitWidth = 304
+  ExplicitHeight = 43
+  DesignSize = (
+    304
+    43)
   object edFilename: TEdit
-    Left = 24
-    Top = 16
-    Width = 121
+    Left = 16
+    Top = 3
+    Width = 192
     Height = 21
+    Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
     Text = 'edFilename'
     OnChange = edFilenameChange
   end
   object pbBrowse: TButton
-    Left = 172
-    Top = 16
+    Left = 214
+    Top = 3
     Width = 75
     Height = 25
+    Anchors = [akTop, akRight]
     Caption = '...'
     TabOrder = 1
     OnClick = pbBrowseClick
@@ -26,11 +30,11 @@ inherited SDUFilenameEdit: TSDUFilenameEdit
   object OpenDialog1: TSDUOpenDialog
     PreserveCWD = False
     Left = 72
-    Top = 56
+    Top = 8
   end
   object SaveDialog1: TSDUSaveDialog
     PreserveCWD = False
-    Left = 116
-    Top = 56
+    Left = 100
+    Top = 8
   end
 end

@@ -11,6 +11,7 @@ inherited frmLUKSHdrDump: TfrmLUKSHdrDump
     Left = 314
     Top = 362
     Anchors = [akRight, akBottom]
+    OnClick = pbOKClick
     ExplicitLeft = 314
     ExplicitTop = 362
   end

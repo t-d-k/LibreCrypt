@@ -287,7 +287,6 @@ inherited frmExplorerMain: TfrmExplorerMain
     object tbbNew: TToolButton
       Left = 0
       Top = 0
-      Action = actFreeOTFENew
       ImageIndex = 3
     end
     object ToolButton2: TToolButton
@@ -300,7 +299,6 @@ inherited frmExplorerMain: TfrmExplorerMain
     object tbbMountFile: TToolButton
       Left = 31
       Top = 0
-      Action = actFreeOTFEMountFile
     end
     object ToolButton5: TToolButton
       Left = 54
@@ -375,9 +373,6 @@ inherited frmExplorerMain: TfrmExplorerMain
       end
       object Paste1: TMenuItem
         Action = actPaste
-      end
-      object N19: TMenuItem
-        Caption = '-'
       end
       object CopyToFolder1: TMenuItem
         Action = actCopyTo
@@ -515,12 +510,12 @@ inherited frmExplorerMain: TfrmExplorerMain
       Hint = 'Mount file based plaintext container'
       OnExecute = actPlaintextMountFileExecute
     end
-    inherited actDismount: TAction
-      OnExecute = actDismountExecute
-    end
     object actLinuxMountHidden: TAction [5]
       Caption = '&Mount file (hidden) ...'
       Hint = 'Mount Linux file and disable LUKS detection'
+    end
+    inherited actDismount: TAction
+      OnExecute = actDismountExecute
     end
     inherited actAbout: TAction
       OnExecute = actAboutExecute
@@ -715,7 +710,7 @@ inherited frmExplorerMain: TfrmExplorerMain
     Left = 44
     Top = 364
     Bitmap = {
-      494C010112002001500110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101120020017C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1390,7 +1385,7 @@ inherited frmExplorerMain: TfrmExplorerMain
     Left = 36
     Top = 312
     Bitmap = {
-      494C010112000801380118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010112000801640118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000078000000010020000000000000B4
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3044,7 +3039,7 @@ inherited frmExplorerMain: TfrmExplorerMain
     Left = 130
     Top = 402
     Bitmap = {
-      494C010101000400080110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000400340110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000262626003E3E3E002626260000000000000000000000

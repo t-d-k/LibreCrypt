@@ -11,7 +11,7 @@ unit CommonConsts;
 interface
 
 const
-  { TODO -otdk -cclean : seems a lot of repitition of these consts }
+  { done -otdk -cclean : seems a lot of repitition of these consts }
   // Homepage...
   URL_HOMEPAGE = 'http://LibreCrypt.eu/';
   // Download URL...

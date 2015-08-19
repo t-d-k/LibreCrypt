@@ -6,31 +6,32 @@ unit frmCreateLUKSVolumeWizard;
 interface
 
 uses
-  //delphi
-  Classes, ComCtrls, Controls, Dialogs,
+     //delphi & libs
+   Classes, ComCtrls, Controls, Dialogs,
   ExtCtrls,
   Forms, Graphics, Messages,
   Spin64, StdCtrls, SysUtils, Windows,
-  //sdu, lcutils
-  PasswordRichEdit, lcDialogs, sdurandpool, SDUStdCtrls, SDUGeneral, SDUForms,
+  //sdu & LibreCrypt utils
+     PasswordRichEdit, lcDialogs, sdurandpool, SDUStdCtrls, SDUGeneral, SDUForms,
   SDUFrames, SDUSpin64Units, SDUDialogs, SDUFilenameEdit_U,
-  //LibreCrypt
-  DriverAPI,   // Required for CRITICAL_DATA_LEN
-  fmeDiskPartitionsPanel, fmeSelectPartition,
-  frmWizard, OTFEFreeOTFE_InstructionRichEdit, OTFEFreeOTFE_PasswordRichEdit,
+  lcTypes,  OTFEFreeOTFE_InstructionRichEdit, OTFEFreeOTFE_PasswordRichEdit,
   OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U,
+   DriverAPI,   // Required for CRITICAL_DATA_LEN
+
+   // LibreCrypt forms
+  fmeDiskPartitionsPanel, fmeSelectPartition,
+  frmWizard,
   fmeSDUBlocks,
   fmeSDUDiskPartitions,
-  fmeNewPassword;
+  fmeNewPassword, fmeContainerSize;
+
+ 
 
 type
 
   TfrmCreateLUKSVolumeWizard = class (TfrmWizard)
     tsEncDetails:    TTabSheet;
-    OpenDialog:      TSDUOpenDialog;
-    SaveDialog:      TSDUSaveDialog;
-    GPGOpenDialog:   TSDUOpenDialog;
     tsRNGSelect:     TTabSheet;
     reInstructRNGSelect1: TLabel;
     Label5:          TLabel;
@@ -64,6 +65,9 @@ type
     GroupBox1:       TGroupBox;
     rgFileOrPartition: TRadioGroup;
     feVolFilename:   TSDUFilenameEdit;
+    tsSize: TTabSheet;
+    fmeContainerSize1: TTfmeContainerSize;
+    lblFileInstruct: TLabel;
 
     procedure FormShow(Sender: TObject);
     procedure seSaltLengthChange(Sender: TObject);
@@ -76,10 +80,9 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure pbRefreshClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure frmeNewPasswordChange(Sender: TObject);
 
     procedure feVolFilenameChange(Sender: TObject);
-
+        procedure ControlChanged(Sender: TObject);
   private
 
     fDeviceList:  TStringList;
@@ -98,35 +101,34 @@ type
     function GetSaltLength(): Integer;
     function GetKeyIterations(): Integer;
     function GetRequestedDriveLetter(): DriveLetterChar;
-
-    procedure PopulatePKCS11Tokens();
-
-    procedure SetUserKey(const Value: TSDUBytes);
+     procedure SetUserKey(const Value: TSDUBytes);
     procedure SetIsPartition(const Value: Boolean);
+    function GetSize: ULONGLONG;
 
+    procedure _PopulatePKCS11Tokens();
 
   protected
     fsilent:       Boolean;
     fsilentResult: TModalResult;
 
-    procedure EnableDisableControls(); override;
+    procedure _EnableDisableControls(); override;
 
-    function IsTabSkipped(tabSheet: TTabSheet): Boolean; override;
+    function _IsTabSkipped(tabSheet: TTabSheet): Boolean; override;
 
-    procedure FormWizardStepChanged(Sender: TObject);
-    function IsTabComplete(checkTab: TTabSheet): Boolean; override;
+    procedure _FormWizardStepChanged(Sender: TObject);
+    function _IsTabComplete(checkTab: TTabSheet): Boolean; override;
   public
 
     procedure fmeSelectPartitionChanged(Sender: TObject);
 
   published
     property silent: Boolean Read fsilent Write fsilent;
-    property IsPartition: Boolean Read GetIsPartition Write SetIsPartition;
+    property isPartition: Boolean Read GetIsPartition Write SetIsPartition;
     property UserKey: TSDUBytes Read GetUserKey Write SetUserKey;
 
   end;
 
-function CreateLUKSVolume(): Boolean;
+function CreateLUKSVolume(out user_canceled: Boolean): Boolean;
 
 implementation
 
@@ -135,12 +137,13 @@ implementation
 uses
   //delphi
   MSCryptoAPI,
-  OTFEFreeOTFEDLL_U, OTFEConsts_U,
-  PKCS11Lib, SDUi18n,
 
   //sdu, lcutils
-  LUKSTools
-  //LibreCrypt
+   OTFEFreeOTFEDLL_U, OTFEConsts_U,
+  PKCS11Lib, SDUi18n,  pkcs11_library,
+lcConsts, LUKSTools
+  //LibreCrypt forms
+
   ;
 
 {$IFDEF _NEVER_DEFINED}
@@ -151,15 +154,14 @@ uses
 const
   SDUCRLF = ''#13#10;
 {$ENDIF}
+const
+  FILEORPART_OPT_PARTITION_INDEX = 1; //index of 'partition' item in rgFileOrPartition
+  FILEORPART_OPT_VOLUME_FILE_INDEX = 0;// index of 'file' item
 
-resourcestring
-  FILEORPART_OPT_VOLUME_FILE = 'File';
-  FILEORPART_OPT_PARTITION   = 'Partition';
 
 { TODO 2 -otdk -crefactor : this uses a lot of same code and GUI as create volume - turn into frames }
 function TfrmCreateLUKSVolumeWizard.GetVolFilename(): String;
 begin
-
   if GetIsPartition() then begin
     Result := fmeSelectPartition.SelectedDevice;
   end else begin
@@ -176,7 +178,6 @@ begin
     feVolFilename.Filename := Value;
   end;
 end;
-
 
 
 function TfrmCreateLUKSVolumeWizard.GetUserKey(): TSDUBytes;
@@ -201,20 +202,17 @@ begin
 end;
 
 function TfrmCreateLUKSVolumeWizard.GetRequestedDriveLetter(): DriveLetterChar;
-
 begin
   Result := #0;
   if (cbDestDriveLetter.ItemIndex > 0) then begin
     Result := cbDestDriveLetter.Items[cbDestDriveLetter.ItemIndex][1];
   end;
-
 end;
 
-
 // Returns TRUE if the specified tab should be skipped in 'next' progression, otherwise FALSE
-function TfrmCreateLUKSVolumeWizard.IsTabSkipped(tabSheet: TTabSheet): Boolean;
+function TfrmCreateLUKSVolumeWizard._IsTabSkipped(tabSheet: TTabSheet): Boolean;
 begin
-  Result := inherited IsTabSkipped(tabSheet);
+  Result := inherited _IsTabSkipped(tabSheet);
 
   // If the user isn't creating a volume within a volume file, skip that tab
   if (tabSheet = tsVolFile) then begin
@@ -233,20 +231,35 @@ begin
 end;
 
 
-procedure TfrmCreateLUKSVolumeWizard.EnableDisableControls();
+procedure TfrmCreateLUKSVolumeWizard._EnableDisableControls();
 begin
   inherited;
+  fmeContainerSize1.EnableDisableControls(GetIsPartition(),false,fmeSelectPartition.SyntheticDriveLayout);
+end;
 
-  // (No wizard specific code for *this* wizard.)
-
+function TfrmCreateLUKSVolumeWizard.GetIsPartition(): Boolean;
+begin
+  Result := (rgFileOrPartition.ItemIndex = FILEORPART_OPT_PARTITION_INDEX);
 end;
 
 
+function TfrmCreateLUKSVolumeWizard.GetSize(): ULONGLONG;
+begin
+  if fmeContainerSize1.GetIsSizeEntirePartitionDisk() then begin
+    Result := fmeSelectPartition.SelectedSize();
+
+  end else begin
+
+    Result := fmeContainerSize1.GetSize();
+  end;
+end;
+
  // This procedure will check to see if all items on the current tabsheet have
- // been successfully completed
-function TfrmCreateLUKSVolumeWizard.IsTabComplete(checkTab: TTabSheet): Boolean;
+ // been successfully completed . only called for not skipped tabs
+function TfrmCreateLUKSVolumeWizard._IsTabComplete(checkTab: TTabSheet): Boolean;
 var
-  randomBitsGenerated: Integer;
+  volSize:           ULONGLONG;
+//  randomBitsGenerated: Integer;
 begin
   inherited;
 
@@ -256,12 +269,11 @@ begin
     // Ensure one option has been selected
     Result := (rgFileOrPartition.ItemIndex >= 0);
     if Result then begin
-
       // Flag tabsheet complete if a valid filename has been specified
       if (GetIsPartition()) then begin
         Result := True;
       end else begin
-        Result := FileExists(GetVolFilename());
+        Result := (GetVolFilename()<>'') and not FileExists(GetVolFilename());
       end;
     end;
 
@@ -273,11 +285,6 @@ begin
     end else begin
       Result := (fmeSelectPartition.SelectedDevice <> '');
     end;
-
-  end else
-  if (checkTab = tsVolFile) then begin
-    // Dest filename entered
-    Result := (GetVolFilename() <> '');
 
   end else
   if (checkTab = tsEncDetails) then begin
@@ -297,7 +304,48 @@ begin
     // Must have at least one RNG selected
     Result := (FPKCS11TokensAvailable and (cbToken.ItemIndex >= 0));
 
-  end;
+   end else
+  if (checkTab = tsSize) then begin
+
+
+    volSize := GetSize();
+        // minimum volume size = 1mb
+    Result   := volSize >= BYTES_IN_MEGABYTE ;
+
+    if Result then
+      // mutiple of sectors
+      Result   := (volSize mod ASSUMED_HOST_SECTOR_SIZE) = 0;
+
+    if Result then begin
+
+      if GetIsPartition() then begin
+        if fmeSelectPartition.SyntheticDriveLayout then begin
+          // We don't know the size of the selected drive/partition; assume user
+          // input OK
+          Result := True;
+        end else begin
+          // Note: fmeSelectPartition.SelectedSize() already takes into account
+          //       whether or not the "entire disk" option was selected on the
+          //       frame
+          Result := fmeSelectPartition.SelectedSize()  >=            volSize;
+        end;
+      end else
+//      if (FileExists(GetVolFilename)) then begin
+//        // If creating a hidden container, ensure that the existing file is large
+//        // enough to store the hidden container
+//        Result := ((SDUGetFileSize(GetVolFilename) - GetOffset()) >= volSizeWithCDBAndPadding);
+//      end else begin
+        // It would be *nice* to check that the volume the filename is stored on
+        // has enough storage for the requested size volume, but that is not
+        // a priority to implement right now...
+
+        // Always completed (seSize always returns a minimum of "1", and the
+        // units must always be set to something)
+        Result := True;
+//      end;
+end;
+
+   end else assert(false,'add tab');
 end;
 
 
@@ -310,19 +358,17 @@ begin
   inherited;
   //SDUInitAndZeroBuffer(0,fCombinedRandomData);
 
-  { TODO -otdk -crefactor : this should all be in formcreate - but need to have global TOTFEFreeOTFEBase object first }
+  { TODO -otdk -crefactor : review what needs to be in formcreate }
 
 
   // tsPartitionSelect
   // Setup and make sure nothing is selected
-  //  fmeSelectPartition.FreeOTFEObj := fFreeOTFEObj;
   // Only list CDROMs if we're creating a keyfile
   //  - CDROMs can't have their passwords changed
   fmeSelectPartition.AllowCDROM := True;
   fmeSelectPartition.OnChange   := fmeSelectPartitionChanged;
   fmeSelectPartition.Tag        := 1;
-  //  fmeSelectPartition.Initialize();
-
+  fmeContainerSize1.IsHidden := false;
 
   if not fsilent then
     frmeNewPassword.ClearKeyPhrase;
@@ -359,11 +405,11 @@ begin
   if ckRNGcryptlib.Enabled then
     ckRNGcryptlib.Checked := True;
 
-  ckRNGPKCS11.Enabled := PKCS11LibraryReady(GetFreeOTFEBase().PKCS11Library);
+  ckRNGPKCS11.Enabled := PKCS11LibraryReady(GPKCS11Library);
 
 
   // tsRNGPKCS11
-  PopulatePKCS11Tokens();
+  _PopulatePKCS11Tokens();
 
 
 
@@ -395,7 +441,7 @@ begin
   end;
 
 
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 
   if fSilent then begin
     ModalResult := mrCancel;
@@ -418,17 +464,19 @@ begin
   SDUTranslateComp(reInstructRNGSelect4);
 
   SDUTranslateComp(reInstructRNGPKCS11);
+
+
 end;
 
 
-procedure TfrmCreateLUKSVolumeWizard.frmeNewPasswordChange(Sender: TObject);
+procedure TfrmCreateLUKSVolumeWizard.ControlChanged(Sender: TObject);
 begin
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 end;
 
 procedure TfrmCreateLUKSVolumeWizard.seSaltLengthChange(Sender: TObject);
 begin
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 end;
 
 procedure TfrmCreateLUKSVolumeWizard.ckRNGClick(Sender: TObject);
@@ -442,7 +490,7 @@ begin
     end;
   end;
 
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 end;
 
 
@@ -493,9 +541,8 @@ begin
     GetRandPool.GetRandomData(GetSaltLength() div 8, saltBytes);
     //  salt := SDUBytesToString(saltBytes);
     // do process
-    CreateNewLUKS(GetVolFilename(), GetUserkey(), 4 * 1024 * 1024, 'SHA256',
-      amsg, adrive, arefreshDrives);
-
+    CreateNewLUKS(GetVolFilename(), GetUserkey(),GetSize(), 'SHA256', amsg, adrive, arefreshDrives);
+    allOK := true;
 
   except
     on E: EInsufficientRandom do begin
@@ -515,7 +562,8 @@ begin
   end else begin
 
     SDUMessageDlg(
-      _('Unable to complete requested operation: please ensure that your container is not already open or otherwise in use, and that the keyphrase, salt and offset entered are correct.'),
+      _('Unable to complete requested operation: please ensure that your container is not already open or otherwise in use'+
+      ', and that the keyphrase, salt and offset entered are correct.'),
       mtError
       );
   end;
@@ -532,25 +580,20 @@ end;
 
 procedure TfrmCreateLUKSVolumeWizard.rgFileOrPartitionClick(Sender: TObject);
 begin
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 end;
 
 
-function TfrmCreateLUKSVolumeWizard.GetIsPartition(): Boolean;
-begin
-  Result := (rgFileOrPartition.ItemIndex = rgFileOrPartition.Items.IndexOf(
-    FILEORPART_OPT_PARTITION));
-end;
 
 procedure TfrmCreateLUKSVolumeWizard.SetIsPartition(const Value: Boolean);
 begin
   if Value then
-    rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_PARTITION)
+    rgFileOrPartition.ItemIndex := FILEORPART_OPT_PARTITION_INDEX
   else
-    rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_VOLUME_FILE);
+    rgFileOrPartition.ItemIndex := FILEORPART_OPT_VOLUME_FILE_INDEX;
 end;
 
-procedure TfrmCreateLUKSVolumeWizard.FormWizardStepChanged(Sender: TObject);
+procedure TfrmCreateLUKSVolumeWizard._FormWizardStepChanged(Sender: TObject);
 begin
   inherited;
 
@@ -565,6 +608,7 @@ begin
   end;
 
 end;
+
 
 procedure TfrmCreateLUKSVolumeWizard.FormClose(Sender: TObject;
   var Action: TCloseAction);
@@ -582,60 +626,71 @@ begin
   fdeviceList                 := TStringList.Create();
   fdeviceTitle                := TStringList.Create();
   fmeSelectPartition.OnChange := fmeSelectPartitionChanged;
-
-  OnWizardStepChanged := FormWizardStepChanged;
+  feVolFilename.FilenameEditType := fetSave;
+  feVolFilename.OnChange    := ControlChanged;
+  OnWizardStepChanged := _FormWizardStepChanged;
   { done -otdk -crefactor : populate in designer }
 
   // tsFileOrPartition
-  rgFileOrPartition.Items.Clear();
-  rgFileOrPartition.Items.Add(FILEORPART_OPT_VOLUME_FILE);
-  rgFileOrPartition.Items.Add(FILEORPART_OPT_PARTITION);
-  rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_VOLUME_FILE);
-  frmeNewPassword.OnChange    := frmeNewPasswordChange;
+  rgFileOrPartition.ItemIndex := FILEORPART_OPT_VOLUME_FILE_INDEX;
+  frmeNewPassword.OnChange    := ControlChanged;
+  fmeContainerSize1.OnChange := ControlChanged;
+  fmeContainerSize1.IsHidden := false;
+  fmeContainerSize1.Initialise;
+  { values used
+    cypher: aes 256
+    hash: SHA256
+    number of AF stripes    = 2
+    cipher mode = 'xts-plain64'
+    master key digest iterations = 1000
+    sector IV Gen Method         = 32 bit sector ID
+    base IV Cypher On Hash Length =  True
+    key Slot = 0
+  }
 end;
 
 procedure TfrmCreateLUKSVolumeWizard.FormDestroy(Sender: TObject);
 begin
   fdeviceList.Free();
   fdeviceTitle.Free();
-
 end;
 
-procedure TfrmCreateLUKSVolumeWizard.PopulatePKCS11Tokens();
+procedure TfrmCreateLUKSVolumeWizard._PopulatePKCS11Tokens();
 begin
-  FPKCS11TokensAvailable := (PKCS11PopulateTokenList(GetFreeOTFEBase().PKCS11Library,
+  FPKCS11TokensAvailable := (PKCS11PopulateTokenList(GPKCS11Library,
     cbToken) > 0);
 end;
 
-
-
 procedure TfrmCreateLUKSVolumeWizard.pbRefreshClick(Sender: TObject);
 begin
-  PopulatePKCS11Tokens();
+  _PopulatePKCS11Tokens();
 end;
 
 procedure TfrmCreateLUKSVolumeWizard.feVolFilenameChange(Sender: TObject);
 begin
   inherited;
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 end;
-
-
 
 procedure TfrmCreateLUKSVolumeWizard.fmeSelectPartitionChanged(Sender: TObject);
 begin
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
+
+  fmeContainerSize1.SetPartitionSize(fmeSelectPartition.SelectedSize());
+
+  // Size tab must be marked as incomplete
+  tsSize.Tag := 0;
+
+  _UpdateUIAfterChangeOnCurrentTab();
 end;
 
-
-
-function CreateLUKSVolume(): Boolean;
+function CreateLUKSVolume(out user_canceled: Boolean): Boolean;
 var
   frmWizard: TfrmCreateLUKSVolumeWizard;
   mr:        Integer;
 begin
   Result := False;
-  GetFreeOTFEBase().LastErrorCode := OTFE_ERR_UNKNOWN_ERROR;
+  user_canceled  := False;
 
   GetFreeOTFEBase().CheckActive();
 
@@ -644,11 +699,7 @@ begin
     try
       mr     := frmWizard.ShowModal();
       Result := mr = mrOk;
-      if Result then
-        GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS
-      else
-      if (mr = mrCancel) then
-        GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
+      user_canceled  := mr = mrCancel;
     finally
       frmWizard.Free();
     end;

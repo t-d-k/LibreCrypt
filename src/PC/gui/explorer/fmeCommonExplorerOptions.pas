@@ -1,5 +1,5 @@
 unit fmeCommonExplorerOptions;
-
+    OBSOLETE
 interface
 
 uses

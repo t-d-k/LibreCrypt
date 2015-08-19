@@ -36,7 +36,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
       TabOrder = 0
       object Label6: TLabel
         Left = 12
-        Top = 92
+        Top = 83
         Width = 34
         Height = 13
         Caption = '&Keyfile:'
@@ -69,7 +69,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         TabOrder = 5
       end
       object cbPKCS11CDB: TComboBox
-        Left = 192
+        Left = 191
         Top = 116
         Width = 145
         Height = 21
@@ -78,8 +78,8 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         OnChange = cbPKCS11CDBChange
       end
       object rbKeyfileFile: TRadioButton
-        Left = 100
-        Top = 92
+        Left = 101
+        Top = 83
         Width = 85
         Height = 17
         Caption = '&File:'
@@ -95,31 +95,48 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         TabOrder = 2
         OnClick = rbKeyfilePKCS11Click
       end
-      object feKeyfile: TSDUFilenameEdit
-        Left = 192
-        Top = 88
-        Width = 337
-        Height = 21
-        Constraints.MaxHeight = 21
-        Constraints.MinHeight = 21
+      inline feKeyfile: TSDUFilenameEdit
+        Left = 176
+        Top = 81
+        Width = 353
+        Height = 29
         TabOrder = 1
-        TabStop = False
-        FilterIndex = 0
-        OnChange = feKeyfileChange
+        ExplicitLeft = 176
+        ExplicitTop = 81
+        ExplicitWidth = 353
+        ExplicitHeight = 29
         DesignSize = (
-          337
-          21)
+          353
+          29)
+        inherited edFilename: TEdit
+          Width = 208
+          ExplicitWidth = 208
+        end
+        inherited pbBrowse: TButton
+          Left = 230
+          Top = 2
+          ExplicitLeft = 230
+          ExplicitTop = 2
+        end
+        inherited OpenDialog1: TSDUOpenDialog
+          Left = 104
+          Top = 0
+        end
+        inherited SaveDialog1: TSDUSaveDialog
+          Left = 140
+          Top = 0
+        end
       end
       inline frmePassword1: TfrmePassword
         Left = 3
         Top = 20
         Width = 539
-        Height = 62
+        Height = 57
         TabOrder = 6
         ExplicitLeft = 3
         ExplicitTop = 20
         ExplicitWidth = 539
-        ExplicitHeight = 62
+        ExplicitHeight = 57
         inherited lblKeyPhrase: TLabel
           Top = 0
           Width = 56
@@ -127,15 +144,15 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
           ExplicitTop = 0
           ExplicitWidth = 56
         end
-        inherited preUserKeyFirst: TOTFEFreeOTFE_PasswordRichEdit
-          Left = 97
-          Top = 0
-          Width = 429
-          Height = 58
-          ExplicitLeft = 97
-          ExplicitTop = 0
-          ExplicitWidth = 429
-          ExplicitHeight = 58
+        inherited mmShown: TMemo
+          Left = 84
+          Top = 1
+          Width = 442
+          Height = 53
+          ExplicitLeft = 84
+          ExplicitTop = 1
+          ExplicitWidth = 442
+          ExplicitHeight = 53
         end
       end
     end

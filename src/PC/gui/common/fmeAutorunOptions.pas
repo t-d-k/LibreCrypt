@@ -4,12 +4,13 @@ interface
 
 uses
   Classes, ComCtrls,
-  fmeBaseOptions, CommonSettings, Controls, Dialogs, Forms,
+//  fmeBaseOptions,
+   CommonSettings, Controls, Dialogs, Forms,
   Graphics, Messages, OTFEFreeOTFE_InstructionRichEdit, SDUDialogs, SDUStdCtrls,
   StdCtrls, SysUtils, Variants, Windows;
 
 type
-  TfmeAutorunOptions = class (TfmeBaseOptions )
+  TfmeAutorunOptions = class (TFrame )
     gbAutorun:            TGroupBox;
     Label33:              TLabel;
     Label34:              TLabel;
@@ -27,9 +28,9 @@ type
     procedure pbPreDismountBrowseClick(Sender: TObject);
     procedure pbPostDismountBrowseClick(Sender: TObject);
   PUBLIC
-    procedure Initialize(); OVERRIDE;
-    procedure ReadSettings(config: TCommonSettings); OVERRIDE;
-    procedure WriteSettings(config: TCommonSettings); OVERRIDE;
+    procedure Initialize();
+    procedure ReadSettings(config: TCommonSettings);
+    procedure WriteSettings(config: TCommonSettings);
   end;
 
 implementation
@@ -37,6 +38,8 @@ implementation
 {$R *.dfm}
 
 uses
+  //sdu, lcutils
+lcConsts,
   SDUGeneral, SDUi18n;
 
 {$IFDEF _NEVER_DEFINED}

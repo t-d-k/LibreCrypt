@@ -65,9 +65,13 @@ type
 implementation
 
 uses
+//delphi
+SysUtils ,
+//sdu, lc utils
+lcConsts,
   SDUClasses, SDUHTTPServer,
-  Shredder,
-  SysUtils;
+  Shredder
+  ;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message

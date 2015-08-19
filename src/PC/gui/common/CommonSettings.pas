@@ -16,8 +16,8 @@ uses
   Controls,  // Required for TDate
   INIFiles,
   //sdu
-  SDUFilenameEdit_U,
-  SDUGeneral, SDUMRUList;
+  lcTypes,
+   SDUMRUList;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -51,16 +51,25 @@ const
     );
 
 type
-  TDragDropFileType = (ftPrompt, ftFreeOTFE, ftLinux);
+  //type to mount a file as if it has no header
+//  TDragDropFileType = (ftPrompt, ftFreeOTFE, ftPlainLinux);
+
+  //type of volume - but can also be hidden if 1st two
+  TVolumeType = (vtUnknown, vtFreeOTFE, vtPlainLinux, vtLUKS);
+  TVolumeTypeSet = set of TVolumeType;
+const
+  //these cant be detected
+  sDragDropFileType : TVolumeTypeSet =  [vtUnknown, vtFreeOTFE, vtPlainLinux];
+
 
 resourcestring
   DRAGDROPFILETYPE_PROMPT   = '<prompt user>';
   DRAGDROPFILETYPE_FREEOTFE = 'FreeOTFE';
-  DRAGDROPFILETYPE_LINUX    = 'Linux';
-
+  DRAGDROPFILETYPE_LINUX    = 'dm-crypt';
+   DRAGDROPFILETYPE_LUKS    = 'LUKS';
 const
-  DragDropFileTypeTitlePtr: array [TDragDropFileType] of Pointer =
-    (@DRAGDROPFILETYPE_PROMPT, @DRAGDROPFILETYPE_FREEOTFE, @DRAGDROPFILETYPE_LINUX
+  DragDropFileTypeTitlePtr: array [TVolumeType] of Pointer =
+    (@DRAGDROPFILETYPE_PROMPT, @DRAGDROPFILETYPE_FREEOTFE, @DRAGDROPFILETYPE_LINUX,  @DRAGDROPFILETYPE_LUKS
     );
 
 type
@@ -94,12 +103,15 @@ const
 type
 {$M+}// Required to get rid of compiler warning "W1055 PUBLISHED caused RTTI ($M+) to be added to type '%s'"
 
+  // is app running? used to detect crashes
+  eAppRunning = (arDontKnow{no settings file}, arRunning{set in InitApp}, arClosed{set in Form.close});
+
   { TODO -otdk -crefactor : use rtti to read and write -much easier, just define properties + defaults }
   TCommonSettings = class
   private
     FCustomLocation: String;
   protected
-    function IdentifyWhereSettingsStored(): TSettingsSaveLocation;
+    function _IdentifyWhereSettingsStored(): TSettingsSaveLocation;
 
     procedure _Load(iniFile: TCustomINIFile); virtual;
     function _Save(iniFile: TCustomINIFile): Boolean; virtual;
@@ -110,6 +122,9 @@ type
     OptSaveSettings:    TSettingsSaveLocation;
 
     // General...
+        OptDisplayToolbar:         Boolean;
+            OptDisplayToolbarCaptions: Boolean;
+
     OptExploreAfterMount:    Boolean;
     OptAdvancedMountDlg:     Boolean;
     OptRevertVolTimestamps:  Boolean;
@@ -117,8 +132,11 @@ type
     OptAllowNewlinesInPasswords: Boolean;
     OptAllowTabsInPasswords: Boolean;
     OptLanguageCode:         String;
-    OptDragDropFileType:     TDragDropFileType;
+    OptDragDropFileType:     TVolumeType;
     OptDefaultDriveLetter:   DriveLetterChar;
+        feAppRunning        :         eAppRunning;
+         OptDisplayToolbarLarge:    Boolean;
+             OptDisplayStatusbar:       Boolean;
 
     // Prompts and messages
     OptPromptMountSuccessful: Boolean;  // If set, display an info msg after successful mount
@@ -145,6 +163,7 @@ type
     OptPostDismountExe: String;
     OptPrePostExeWarn:  Boolean;
 
+    // do NOT call directly
     constructor Create(); virtual;
     destructor Destroy(); override;
 
@@ -166,35 +185,60 @@ type
     property CustomLocation: String Read FCustomLocation Write FCustomLocation;
   end;
 
-var
-  // Global variable
-  CommonSettingsObj: TCommonSettings;
+    {
+TCommonSettings is a singleton class, only ever one instance - this is enforced by assertion in ctor
+set up instance by calling SetSettingsType then get instance by calling GetSettings
+}
+  TSettingsClass = class of TCommonSettings;
+
+{ factory fn creates an instance that is returned by GetSettings}
+procedure SetSettingsType(typ: TSettingsClass);
+
+{returns an instance of type set in SetSettingsType}
+function GetSettings: TCommonSettings;
+
+// allow to freee early so can write and catch exceptions, but if not called will be freed in finalisation
+// DO NOT do GetSettings.free
+procedure FreeSettings;
+
 
 function UpdateFrequencyTitle(updateFrequency: TUpdateFrequency): String;
-function DragDropFileTypeTitle(dragDropfileType: TDragDropFileType): String;
+function DragDropFileTypeTitle(dragDropfileType: TVolumeType): String;
 
 // These functions are duplicated in MainSettings.pas and ExplorerSettings.pas - can't move to CommonSettings.pas as they both use "Settings" object which is different for each of them
  // Turn on/off option on open/save dialogs to add file selected under Start
  // menu's "Documents", depending on whether MRU list is enabled or not
 procedure FreeOTFEGUISetupOpenSaveDialog(dlg: TCommonDialog); overload;
-procedure FreeOTFEGUISetupOpenSaveDialog(fe: TSDUFilenameEdit); overload;
+
 
 implementation
 
 uses
+vcl.forms,
   Windows,   // Required to get rid of compiler hint re DeleteFile
   SysUtils,  // Required for ChangeFileExt, DeleteFile
   Menus, Registry,
            // Required for ShortCutToText and TextToShortCut
   ShlObj,  // Required for CSIDL_PERSONAL
            //sdu
-  lcDialogs, SDUi18n;
+             SDUGeneral,
+  lcDialogs, SDUi18n,lcConsts;
+
+var
+  //single instance of object, get by calling GetSettings. normally is of derived class
+  _SettingsObj: TCommonSettings;
 
 const
   SETTINGS_V1 = 1;
   SETTINGS_V2 = 2;
 
   // -- General section --
+  OPT_DISPLAYTOOLBAR              = 'DisplayToolbar';
+  DFLT_OPT_DISPLAYTOOLBAR         = True;
+
+  OPT_DISPLAYTOOLBARCAPTIONS      = 'DisplayToolbarCaptions';
+  DFLT_OPT_DISPLAYTOOLBARCAPTIONS = True;
+
   OPT_SETTINGSVERSION           = 'SettingsVersion';
   DFLT_OPT_SETTINGSVERSION      = SETTINGS_V2;
   OPT_SAVESETTINGS              = 'SaveSettings';
@@ -210,13 +254,21 @@ const
   OPT_LANGUAGECODE              = 'LanguageCode';
   DFLT_OPT_LANGUAGECODE         = '';
   OPT_DRAGDROP                  = 'DragDropFileType';
-  DFLT_OPT_DRAGDROP             = Ord(ftFreeOTFE);
+  DFLT_OPT_DRAGDROP             = Ord(vtFreeOTFE);
   OPT_ALLOWNEWLINESINPASSWORDS  = 'AllowNewlinesInPasswords';
   DFLT_OPT_ALLOWNEWLINESINPASSWORDS = True;
   OPT_ALLOWTABSINPASSWORDS      = 'AllowTabsInPasswords';
   DFLT_OPT_ALLOWTABSINPASSWORDS = False;
   OPT_DEFAULTDRIVELETTER        = 'DefaultDriveLetter';
   DFLT_OPT_DEFAULTDRIVELETTER   = '#';
+    OPT_APPRUNNING                 = 'AppRunning';
+  DFLT_OPT_APPRUNNING            = arDontKnow;
+
+    OPT_DISPLAYTOOLBARLARGE         = 'DisplayToolbarLarge';
+  DFLT_OPT_DISPLAYTOOLBARLARGE    = True;
+
+    OPT_DISPLAYSTATUSBAR            = 'DisplayStatusbar';
+  DFLT_OPT_DISPLAYSTATUSBAR       = True;
 
   // -- Prompts and messages --
   OPT_PROMPTMOUNTSUCCESSFUL      = 'OptPromptMountSuccessful';
@@ -269,7 +321,7 @@ begin
   Result := LoadResString(UpdateFrequencyTitlePtr[updateFrequency]);
 end;
 
-function DragDropFileTypeTitle(dragDropfileType: TDragDropFileType): String;
+function DragDropFileTypeTitle(dragDropfileType: TVolumeType): String;
 begin
   Result := LoadResString(DragDropFileTypeTitlePtr[dragDropfileType]);
 end;
@@ -283,17 +335,20 @@ begin
   end;
 
   // Sanity check
-  if (CommonSettingsObj = nil) then begin
+  if (_SettingsObj = nil) then begin
     exit;
   end;
 
-  if (CommonSettingsObj.OptMRUList.MaxItems <= 0) then begin
+  if (Getsettings().OptMRUList.MaxItems <= 0) then begin
     if (dlg is TSaveDialog) then begin
       TSaveDialog(dlg).Options := TSaveDialog(dlg).Options + [ofDontAddToRecent];
     end else
     if (dlg is TOpenDialog) then begin
       TOpenDialog(dlg).Options := TOpenDialog(dlg).Options + [ofDontAddToRecent];
     end;
+    //prevent form opening at last directory
+    { TODO 2 -otdk -csecurity : windows still saves this dir. set guid? https://msdn.microsoft.com/en-us/library/windows/desktop/bb776913%28v=vs.85%29.aspx#state_persistence }
+//    TOpenDialog(dlg).InitialDir:=    ExtractFilePath(Application.ExeName);
   end else begin
     if (dlg is TSaveDialog) then begin
       TSaveDialog(dlg).Options := TSaveDialog(dlg).Options - [ofDontAddToRecent];
@@ -304,15 +359,12 @@ begin
   end;
 end;
 
-procedure FreeOTFEGUISetupOpenSaveDialog(fe: TSDUFilenameEdit);
-begin
-  FreeOTFEGUISetupOpenSaveDialog(fe.OpenDialog);
-  FreeOTFEGUISetupOpenSaveDialog(fe.SaveDialog);
-end;
 
 constructor TCommonSettings.Create();
 begin
   inherited;
+
+  assert(_SettingsObj = nil, 'Do not call TCommonSettings.Create directly - only call GetSettings');
 
   CustomLocation := '';
   OptMRUList     := TSDUMRUList.Create();
@@ -330,7 +382,7 @@ procedure TCommonSettings.Load();
 var
   iniFile: TCustomINIFile;
 begin
-  OptSaveSettings := IdentifyWhereSettingsStored();
+  OptSaveSettings := _IdentifyWhereSettingsStored();
   iniFile         := GetSettingsObj();
   try
     _Load(iniFile);
@@ -344,6 +396,13 @@ procedure TCommonSettings._Load(iniFile: TCustomINIFile);
 var
   useDefaultDriveLetter: DriveLetterString;
 begin
+  // todo -otdk : combine load and save, and/or use rtti
+  OptDisplayToolbar         := iniFile.ReadBool(SECTION_GENERAL, OPT_DISPLAYTOOLBAR,
+    DFLT_OPT_DISPLAYTOOLBAR);
+
+  OptDisplayToolbarCaptions := iniFile.ReadBool(SECTION_GENERAL,
+    OPT_DISPLAYTOOLBARCAPTIONS, DFLT_OPT_DISPLAYTOOLBARCAPTIONS);
+
   OptSettingsVersion := iniFile.ReadInteger(SECTION_GENERAL, OPT_SETTINGSVERSION, SETTINGS_V1);
 
   OptExploreAfterMount        := iniFile.ReadBool(SECTION_GENERAL,
@@ -361,7 +420,7 @@ begin
   OptLanguageCode             := iniFile.ReadString(SECTION_GENERAL, OPT_LANGUAGECODE,
     DFLT_OPT_LANGUAGECODE);
   OptDragDropFileType         :=
-    TDragDropFileType(iniFile.ReadInteger(SECTION_GENERAL, OPT_DRAGDROP, DFLT_OPT_DRAGDROP));
+    TVolumeType(iniFile.ReadInteger(SECTION_GENERAL, OPT_DRAGDROP, DFLT_OPT_DRAGDROP));
   useDefaultDriveLetter       :=
     DriveLetterString(iniFile.ReadString(SECTION_GENERAL, OPT_DEFAULTDRIVELETTER,
     DFLT_OPT_DEFAULTDRIVELETTER));
@@ -371,8 +430,17 @@ begin
     OptDefaultDriveLetter := #0;
   end;
 
+    feAppRunning      :=
+    eAppRunning(iniFile.ReadInteger(SECTION_GENERAL,
+    OPT_APPRUNNING, Ord(DFLT_OPT_APPRUNNING)));
+  OptDisplayToolbarLarge    := iniFile.ReadBool(SECTION_GENERAL,
+    OPT_DISPLAYTOOLBARLARGE, DFLT_OPT_DISPLAYTOOLBARLARGE);
+
   OptPromptMountSuccessful := iniFile.ReadBool(SECTION_CONFIRMATION,
     OPT_PROMPTMOUNTSUCCESSFUL, DFLT_OPT_PROMPTMOUNTSUCCESSFUL);
+
+      OptDisplayStatusbar       := iniFile.ReadBool(SECTION_GENERAL,
+    OPT_DISPLAYSTATUSBAR, DFLT_OPT_DISPLAYSTATUSBAR);
 
   OptUpdateChkFrequency              :=
     TUpdateFrequency(iniFile.ReadInteger(SECTION_CHKUPDATE, OPT_CHKUPDATE_FREQ,
@@ -451,6 +519,11 @@ begin
   Result := True;
 
   try
+        iniFile.WriteBool(SECTION_GENERAL, OPT_DISPLAYTOOLBAR, OptDisplayToolbar);
+
+      iniFile.WriteBool(SECTION_GENERAL, OPT_DISPLAYTOOLBARCAPTIONS,
+        OptDisplayToolbarCaptions);
+
     iniFile.WriteInteger(SECTION_GENERAL, OPT_SETTINGSVERSION, SETTINGS_V2);
 
     iniFile.WriteBool(SECTION_GENERAL, OPT_EXPLOREAFTERMOUNT, OptExploreAfterMount);
@@ -473,6 +546,11 @@ begin
     iniFile.WriteString(SECTION_GENERAL, OPT_DEFAULTDRIVELETTER,
       String(useDefaultDriveLetter));
 
+           iniFile.WriteInteger(SECTION_GENERAL, OPT_APPRUNNING,
+        Ord(feAppRunning));
+    iniFile.WriteBool(SECTION_GENERAL, OPT_DISPLAYTOOLBARLARGE,
+        OptDisplayToolbarLarge);
+
     iniFile.WriteBool(SECTION_CONFIRMATION, OPT_PROMPTMOUNTSUCCESSFUL,
       OptPromptMountSuccessful);
 
@@ -484,6 +562,8 @@ begin
       OptUpdateChkSuppressNotifyVerMajor);
     iniFile.WriteInteger(SECTION_CHKUPDATE, OPT_CHKUPDATE_SUPPRESSNOTIFYVERMINOR,
       OptUpdateChkSuppressNotifyVerMinor);
+           iniFile.WriteBool(SECTION_GENERAL, OPT_DISPLAYSTATUSBAR,
+        OptDisplayStatusbar);
 
     iniFile.WriteBool(SECTION_PKCS11, OPT_PKCS11ENABLE, OptPKCS11Enable);
     iniFile.WriteString(SECTION_PKCS11, OPT_PKCS11LIBRARY, OptPKCS11Library);
@@ -617,7 +697,7 @@ begin
 end;
 
 // Identify where user settings are stored
-function TCommonSettings.IdentifyWhereSettingsStored(): TSettingsSaveLocation;
+function TCommonSettings._IdentifyWhereSettingsStored(): TSettingsSaveLocation;
 var
   sl:            TSettingsSaveLocation;
   filename:      String;
@@ -722,4 +802,35 @@ begin
 
 end;
 
+
+{ factory fn creates an instance that is returned by GetSettings}
+procedure SetSettingsType(typ: TSettingsClass);
+begin
+  assert(_SettingsObj = nil,
+    'call SetSettingsType only once, and do not call TCommonSettings.create');
+  _SettingsObj := typ.Create;
+end;
+
+{returns an instance of type set in SetSettingsType}
+function GetSettings: TCommonSettings;
+begin
+  assert(_SettingsObj <> nil, 'call SetFreeOTFEType before GetFreeOTFE/GetFreeOTFEBase');
+  Result := _SettingsObj;
+end;
+
+// allow to freee early so can write and catch exceptions, but if not called will be freed in finalisation
+// DO NOT do GetSettings.free
+procedure FreeSettings;
+begin
+  FreeAndNil(_SettingsObj);
+end;
+
+
+initialization
+  _SettingsObj := nil; //create by calling SetSettingsType
+
+finalization
+  _SettingsObj.Free;
+
 end.
+

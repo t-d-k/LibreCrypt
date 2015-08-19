@@ -51,6 +51,8 @@ implementation
 {$R *.dfm}
 
 uses
+//sdu lcutils
+lcConsts,
   OTFEFreeOTFE_U, OTFEFreeOTFEBase_U,
   SDUGeneral,
   SDUi18n;

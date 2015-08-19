@@ -1,2 +1,2 @@
-inherited fmeFreeOTFEOptions_Base: TfmeLcOptions
+inherited fmeLcOptions: TfmeLcOptions
 end

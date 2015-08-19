@@ -1,7 +1,7 @@
 inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
   Left = 440
   Top = 266
-  Caption = 'Change Keyphrase/Other Details'
+  Caption = 'Create LUKS Container'
   ClientHeight = 437
   ClientWidth = 610
   Font.Name = 'MS Sans Serif'
@@ -19,46 +19,77 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
     ExplicitWidth = 610
     ExplicitHeight = 437
     inherited bvlLine: TBevel
-      Top = 373
+      Top = 374
       Width = 608
       ExplicitTop = 373
       ExplicitWidth = 595
     end
     inherited pcWizard: TPageControl
       Width = 608
-      Height = 372
+      Height = 373
       ActivePage = tsVolFile
       ExplicitWidth = 608
       ExplicitHeight = 373
       object tsVolFile: TTabSheet
         Caption = 'Container file'
         ImageIndex = 6
-        ExplicitHeight = 345
         DesignSize = (
           600
-          344)
+          345)
+        object lblFileInstruct: TLabel
+          Left = 3
+          Top = 3
+          Width = 417
+          Height = 156
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          Caption = 
+            'LUKS container creation is a beta feature.'#13#10'Some values that wil' +
+            'l be configurable later are fixed in this version to ease bug di' +
+            'agnosis.'#13#10'The values that will be used for the container are:'#13#10'c' +
+            'ypher: aes 256 '#13#10'hash: SHA256'#13#10'number of AF stripes    = 2'#13#10'ciph' +
+            'er mode = '#39'xts-plain64'#39#13#10'master key digest iterations = 1000'#13#10'se' +
+            'ctor IV Gen Method         = 32 bit sector ID'#13#10'base IV Cypher On' +
+            ' Hash Length =  True'#13#10'key Slot = 0 '#13#10'The container is NOT overwr' +
+            'itten with chaff before use'
+        end
         object GroupBox1: TGroupBox
           Left = 0
-          Top = 277
+          Top = 278
           Width = 600
           Height = 67
           Align = alBottom
           Caption = 'Container filename'
           TabOrder = 0
-          ExplicitTop = 278
-          object feVolFilename: TSDUFilenameEdit
-            Left = 176
-            Top = 24
-            Width = 307
-            Height = 21
-            Constraints.MaxHeight = 21
-            Constraints.MinHeight = 21
+          inline feVolFilename: TSDUFilenameEdit
+            Left = 3
+            Top = 16
+            Width = 594
+            Height = 48
             TabOrder = 0
-            TabStop = False
-            FilterIndex = 0
+            ExplicitLeft = 3
+            ExplicitTop = 16
+            ExplicitWidth = 594
+            ExplicitHeight = 48
             DesignSize = (
-              307
-              21)
+              594
+              48)
+            inherited edFilename: TEdit
+              Left = 3
+              Top = 11
+              Width = 498
+              ExplicitLeft = 3
+              ExplicitTop = 11
+              ExplicitWidth = 498
+            end
+            inherited pbBrowse: TButton
+              Left = 515
+              Top = 11
+              ExplicitLeft = 515
+              ExplicitTop = 11
+            end
+            inherited SaveDialog1: TSDUSaveDialog
+              Left = 108
+            end
           end
         end
         object rgFileOrPartition: TRadioGroup
@@ -69,19 +100,18 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
           Anchors = [akLeft, akRight, akBottom]
           Caption = 'File or Partition'
           Items.Strings = (
-            '1st of two'
-            '2nd of two')
+            'File'
+            'Partition')
           TabOrder = 1
-          ExplicitTop = 179
+          OnClick = ControlChanged
         end
       end
       object tsPartitionSelect: TTabSheet
         Caption = 'Partition Select'
         ImageIndex = 8
-        ExplicitHeight = 345
         DesignSize = (
           600
-          344)
+          345)
         object Label21: TLabel
           Left = 212
           Top = 31
@@ -113,7 +143,7 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
           ExplicitLeft = 8
           ExplicitTop = 50
           ExplicitWidth = 585
-          ExplicitHeight = 280
+          ExplicitHeight = 279
           inherited lblErrorWarning: TLabel
             Left = 176
             Top = 263
@@ -130,33 +160,33 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
             Width = 585
             Height = 234
             ExplicitWidth = 585
-            ExplicitHeight = 235
+            ExplicitHeight = 234
             inherited SDUDiskPartitionsPanel1: TfmeDiskPartitionsPanel
               Height = 206
-              ExplicitHeight = 207
+              ExplicitHeight = 206
             end
             inherited pnlNoPartitionDisplay: TPanel
               Left = 396
               Height = 206
               ExplicitLeft = 396
-              ExplicitHeight = 207
+              ExplicitHeight = 206
             end
           end
           inherited ckShowCDROM: TCheckBox
             Left = 352
             Top = 240
             ExplicitLeft = 352
-            ExplicitTop = 241
+            ExplicitTop = 240
           end
           inherited ckEntireDisk: TCheckBox
             Left = 496
             Top = 240
             ExplicitLeft = 496
-            ExplicitTop = 241
+            ExplicitTop = 240
           end
           inherited ilErrorWarning: TImageList
             Bitmap = {
-              494C010103000400EC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400340110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -297,10 +327,60 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
           end
         end
       end
+      object tsSize: TTabSheet
+        Caption = 'Size'
+        ImageIndex = 5
+        inline fmeContainerSize1: TTfmeContainerSize
+          Left = 0
+          Top = 0
+          Width = 600
+          Height = 345
+          Align = alClient
+          TabOrder = 0
+          ExplicitWidth = 600
+          ExplicitHeight = 345
+          inherited lblPartitionDiskSize: TLabel
+            Left = 137
+            Top = 260
+            Width = 53
+            ExplicitLeft = 137
+            ExplicitTop = 260
+            ExplicitWidth = 53
+          end
+          inherited Label6: TLabel
+            Left = 3
+            Top = 260
+            Width = 105
+            ExplicitLeft = 3
+            ExplicitTop = 260
+            ExplicitWidth = 105
+          end
+          inherited lblInstructSizeCommon: TLabel
+            Width = 600
+            ExplicitWidth = 584
+          end
+          inherited lblInstructSizeHidden: TLabel
+            Width = 600
+          end
+          inherited lblInstructSizeNotHidden: TLabel
+            Width = 600
+          end
+          inherited ckSizeEntirePartitionDisk: TCheckBox
+            Left = 3
+            Top = 229
+            ExplicitLeft = 3
+            ExplicitTop = 229
+          end
+          inherited se64UnitSize: TSDUSpin64Unit_Storage
+            Top = 295
+            MinValue = 1
+            ExplicitTop = 295
+          end
+        end
+      end
       object tsEncDetails: TTabSheet
         Caption = 'Encryption details'
         ImageIndex = 3
-        ExplicitHeight = 345
         object Label5: TLabel
           Left = 8
           Top = 271
@@ -414,7 +494,6 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
       object tsRNGSelect: TTabSheet
         Caption = 'RNG Select'
         ImageIndex = 6
-        ExplicitHeight = 345
         object reInstructRNGSelect1: TLabel
           Left = 3
           Top = 12
@@ -534,7 +613,6 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
       object tsRNGPKCS11: TTabSheet
         Caption = 'RNG PKCS#11 token'
         ImageIndex = 9
-        ExplicitHeight = 345
         object lblToken: TLabel
           Left = 11
           Top = 51
@@ -579,7 +657,7 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
       end
     end
     inherited pnlButtons: TPanel
-      Top = 394
+      Top = 395
       Width = 608
       ExplicitTop = 395
       ExplicitWidth = 608
@@ -604,24 +682,5 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
         ExplicitLeft = 522
       end
     end
-  end
-  object OpenDialog: TSDUOpenDialog
-    PreserveCWD = False
-    Left = 412
-    Top = 72
-  end
-  object SaveDialog: TSDUSaveDialog
-    PreserveCWD = False
-    Left = 336
-    Top = 72
-  end
-  object GPGOpenDialog: TSDUOpenDialog
-    DefaultExt = 'exe'
-    FileName = 'gpg.exe'
-    Filter = 'GPG (gpg.exe)|gpg.exe|Executables (*.exe)|*.exe|All files|*.*'
-    Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
-    PreserveCWD = False
-    Left = 368
-    Top = 76
   end
 end

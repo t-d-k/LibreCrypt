@@ -5,12 +5,12 @@ interface
 
 uses
   Classes, fmeBaseOptions, CommonSettings, Controls, Dialogs, Forms,
-  Graphics, Messages, fmeVolumeSelect, OTFEFreeOTFEBase_U, SDUFilenameEdit_U,
+  Graphics, Messages,  OTFEFreeOTFEBase_U, SDUFilenameEdit_U,
   SDUFrames, StdCtrls,
-  SysUtils, Variants, Windows;
+  SysUtils, Variants, Windows, fmeVolumeSelect;
 
 type
-  TfmePkcs11Options = class (TfmeBaseOptions)
+  TfmePkcs11Options = class (TFrame)
     gbPKCS11:           TGroupBox;
     lblLibrary:         TLabel;
     ckEnablePKCS11:     TCheckBox;
@@ -21,10 +21,11 @@ type
     ckPKCS11AutoMount:  TCheckBox;
     feLibFilename:      TSDUFilenameEdit;
     pbAutoDetect:       TButton;
-    OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect;
+
     procedure pbVerifyClick(Sender: TObject);
     procedure ControlChanged(Sender: TObject);
     procedure pbAutoDetectClick(Sender: TObject);
+    procedure FrameClick(Sender: TObject);
 
   private
     function LibraryDLL(): String;
@@ -60,6 +61,8 @@ uses
 const
   SDUCRLF = ''#13#10;
 {$ENDIF}
+
+
 
 
 

@@ -78,6 +78,11 @@ implementation
 
 
 uses
+  //delphi
+
+ //lc utils
+lcConsts,
+
   lcDialogs,
   DriverAPI, SDUGeneral,
   SDUi18n;  // Required for CRITICAL_DATA_LENGTH
@@ -108,7 +113,7 @@ begin
   se64UnitOffsetSrc.Value  := 0;
   se64UnitOffsetDest.Value := 0;
 
-  { TODO -otdk -crefactor : have permanant  header and volume sections and get rid of swapping round }
+  { TODO -otdk -crefactor : have permanant header and volume sections and get rid of swapping round }
   if (FOpType = opBackup) then begin
     self.Caption := _('Backup FreeOTFE Container Header');
 
@@ -156,9 +161,9 @@ begin
   inherited;
   // Posting WM_CLOSE causes Delphi to reset ModalResult to mrCancel.
   // As a result, we reset ModalResult here, note will only close automatically if mr = mrok anyway
-  if fsilent then begin
+  if fsilent then
     ModalResult := FSilentResult;
-  end;
+
 end;
 
 procedure TfrmHdrBackupRestore.FormCreate(Sender: TObject);
@@ -298,9 +303,8 @@ begin
   end;  // ELSE PART - if (dlgType = opBackup) then
 
 
-  if (allOK) then begin
+  if allOK then
     ModalResult := mrOk;
-  end;
 
 end;
 

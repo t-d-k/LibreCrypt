@@ -45,9 +45,12 @@ implementation
 {$R *.dfm}
 
 uses
+ //lc Utils
   SDUi18n,
   SDUGeneral,
-  lcDialogs;
+  lcDialogs,
+
+  lcConsts;
 
 // Populate list of key types with all those available on the token
 procedure TfrmPKCS11NewSecretKey.PopulateKeyTypes();

@@ -113,9 +113,11 @@ type
 function DefaultStoreOpTitle(defaultStoreOp: TDefaultStoreOp): String;
 function MoveDeletionMethodTitle(moveDeletionMethod: TMoveDeletionMethod): String;
 
-var
+{returns an instance of the only object, must be type TExplorerSettings. call SetSettingsType first}
+function GetExplorerSettings: TExplorerSettings;
+//var
   // Global variable
-  gSettings: TExplorerSettings;
+//  gSettings: TExplorerSettings;
 
 implementation
 
@@ -391,5 +393,13 @@ function TExplorerSettings.RegistryKey(): String;
 begin
   Result := FREEOTFE_REGISTRY_SETTINGS_LOCATION;
 end;
+
+{returns an instance of the only object, must be type TExplorerSettings. call SetSettingsType first}
+function GetExplorerSettings: TExplorerSettings;
+begin
+  assert(GetSettings is TExplorerSettings, 'call SetSettingsType with correct type');
+  Result := GetSettings as TExplorerSettings;
+end;
+
 
 end.

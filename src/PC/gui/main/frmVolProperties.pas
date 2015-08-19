@@ -11,12 +11,17 @@ unit frmVolProperties;
 interface
 
 uses
+//delphi
   Classes, Controls, Dialogs,
   Forms, Graphics, Messages, StdCtrls,
-  SysUtils, Windows, //LibreCrypt
-  OTFEFreeOTFE_U,
+  SysUtils, Windows,
+   //sdu, lc utils
+  lcTypes,
+      OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U,
-  SDUForms, SDUGeneral;
+  SDUForms, SDUGeneral
+ //LibreCrypt forms
+;
 
 type
   TfrmVolProperties = class (TSDUForm)
@@ -48,27 +53,29 @@ type
     procedure pbInfoIVCypherClick(Sender: TObject);
   private
     fDriveLetter: DriveLetterChar;
-    function GetHiddenOffset(): Int64;
+
 
     { Private declarations }
   public
     property DriveLetter: DriveLetterChar Read fDriveLetter Write fDriveLetter;
-    //    OTFEFreeOTFE: TOTFEFreeOTFE;
   end;
 
+    function GetHiddenOffset(DriveLetter: DriveLetterChar): Int64;
 implementation
 
 {$R *.DFM}
 
 
 uses
+//delphi
   ActiveX,  // Required for IsEqualGUID
   ComObj,   // Required for StringToGUID
+
             //sdu
   lcDialogs,
-  SDUi18n,
-  //LibreCrypt
-  DriverAPI;  // Required for NULL_GUID
+  SDUi18n,  DriverAPI,
+  //LibreCrypt forms
+  frmCypherInfo, frmHashInfo;  // Required for NULL_GUID
 
 
 procedure TfrmVolProperties.FormShow(Sender: TObject);
@@ -149,7 +156,7 @@ begin
 
     edDeviceName.Text := volumeInfo.DeviceName;
 
-    edHiddenOffset.Text := IntToStr(GetHiddenOffset());
+    edHiddenOffset.Text := IntToStr(GetHiddenOffset(fDriveLetter));
   end else begin
     SDUMessageDlg(
       Format(_('Unable to get drive properties for drive %s:'), [fDriveLetter]),
@@ -165,7 +172,7 @@ var
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
 begin
   if GetFreeOTFEBase().GetVolumeInfo(fDriveLetter, volumeInfo) then begin
-    GetFreeOTFEBase().ShowHashDetailsDlg(volumeInfo.IVHashDevice, volumeInfo.IVHashGUID);
+    frmHashInfo.ShowHashDetailsDlg(volumeInfo.IVHashDevice, volumeInfo.IVHashGUID);
   end;
 
 end;
@@ -175,7 +182,7 @@ var
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
 begin
   if GetFreeOTFEBase().GetVolumeInfo(fDriveLetter, volumeInfo) then begin
-    GetFreeOTFEBase().ShowCypherDetailsDlg(volumeInfo.MainCypherDevice, volumeInfo.MainCypherGUID);
+    frmCypherInfo.ShowCypherDetailsDlg(volumeInfo.MainCypherDevice, volumeInfo.MainCypherGUID);
   end;
 
 end;
@@ -185,18 +192,18 @@ var
   volumeInfo: TOTFEFreeOTFEVolumeInfo;
 begin
   if GetFreeOTFEBase().GetVolumeInfo(fDriveLetter, volumeInfo) then begin
-    GetFreeOTFEBase().ShowCypherDetailsDlg(volumeInfo.IVCypherDevice, volumeInfo.IVCypherGUID);
+    frmCypherInfo.ShowCypherDetailsDlg(volumeInfo.IVCypherDevice, volumeInfo.IVCypherGUID);
   end;
 
 end;
 
-//todo: put in library - to keep gui separate
-function TfrmVolProperties.GetHiddenOffset(): Int64;
+//todo: put in other unit - to keep gui separate
+function GetHiddenOffset(DriveLetter: DriveLetterChar): Int64;
 var
   Total, Avail, Used: Int64;
   Disk:               Byte;
 begin
-  Disk   := Byte(fDriveLetter) - $40;
+  Disk   := Byte(DriveLetter) - $40;
   Total  := DiskSize(Disk);
   Avail  := DiskFree(Disk);
   Used   := Total - Avail;

@@ -170,7 +170,7 @@ begin
 
   if (wwwResult = tgCancel) then begin
     // if can't save settings then no point in asking whether to check again (will automatically)
-    if gSettings.OptSaveSettings = slNone then begin
+    if Getsettings().OptSaveSettings = slNone then begin
       SDUMessageDlg(_('Canceled checking for updated version'), mtInformation);
     end else begin
       if not (SDUConfirmYN(_('Canceled checking for updated version') +

@@ -204,9 +204,6 @@
 				<Form>frmAbout</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\CommonSettings.pas"/>
-			<DCCReference Include="..\common\frmCommonMain.pas">
-				<Form>frmMain</Form>
-			</DCCReference>
 			<DCCReference Include="ExplorerSettings.pas"/>
 			<DCCReference Include="..\common\frmHdrBackupRestore.pas">
 				<Form>frmCDBBackupRestore</Form>
@@ -232,20 +229,8 @@
 			<DCCReference Include="frmMultipleProperties.pas">
 				<Form>frmPropertiesDialog_Multiple</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\fmeBaseOptions.pas">
-				<Form>fmeOptions_Base</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="..\common\frmCommonOptions.pas">
 				<Form>frmOptions</Form>
-			</DCCReference>
-			<DCCReference Include="fmeCommonExplorerOptions.pas">
-				<Form>fmeFreeOTFEExplorerOptions_Base</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
-			<DCCReference Include="fmeExplorerOptions.pas">
-				<Form>fmeOptions_FreeOTFEExplorerGeneral</Form>
-				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="frmExplorerOptions.pas">
 				<Form>frmOptions_FreeOTFEExplorer</Form>
@@ -259,10 +244,6 @@
 			</DCCReference>
 			<DCCReference Include="frmVolumeProperties.pas">
 				<Form>frmPropertiesDialog_Volume</Form>
-			</DCCReference>
-			<DCCReference Include="fmeAdvancedExplorerOptions.pas">
-				<Form>fmeOptions_FreeOTFEExplorerAdvanced</Form>
-				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="frmOverwritePrompt.pas">
 				<Form>frmOverwritePrompt</Form>
@@ -359,10 +340,6 @@
 			<DCCReference Include="..\common\SDeanUtils\SDUWindows.pas"/>
 			<DCCReference Include="..\common\SDeanUtils\SDUClasses.pas"/>
 			<DCCReference Include="..\common\SDeanUtils\SDUDirIterator_U.pas"/>
-			<DCCReference Include="fmeExplorerWebDAVOptions.pas">
-				<Form>fmeOptions_FreeOTFEExplorerWebDAV</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="ExplorerWebDAV.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmHashInfo.pas">
 				<Form>frmHashInfo</Form>
@@ -403,9 +380,6 @@
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\fmePKCS11_MgrSecretKey.pas">
 				<Form>fmePKCS11_MgrSecretKey</Form>
 				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmSelectVolumeType.pas">
-				<Form>frmSelectVolumeType</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmSelectHashCypher.pas">
 				<Form>frmSelectHashCypher</Form>
@@ -466,6 +440,9 @@
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverHashAPI.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSAPI.pas"/>
 			<DCCReference Include="..\common\OTFE\AFSplitMerge.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmSelectVolumeType.pas">
+				<Form>frmSelectVolumeType</Form>
+			</DCCReference>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

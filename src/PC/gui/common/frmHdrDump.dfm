@@ -25,7 +25,6 @@ object frmHdrDump: TfrmHdrDump
     Caption = 'OK'
     Default = True
     TabOrder = 2
-    OnClick = pbOKClick
   end
   object pbCancel: TButton
     Left = 248
@@ -71,7 +70,7 @@ object frmHdrDump: TfrmHdrDump
   end
   object GroupBox2: TGroupBox
     Left = 8
-    Top = 232
+    Top = 241
     Width = 465
     Height = 57
     Caption = 'Dump file'
@@ -90,22 +89,29 @@ object frmHdrDump: TfrmHdrDump
       Caption = '&Dump to file:'
       FocusControl = feDumpFilename
     end
-    object feDumpFilename: TSDUFilenameEdit
-      Left = 116
+    inline feDumpFilename: TSDUFilenameEdit
+      Left = 88
       Top = 20
-      Width = 337
-      Height = 21
-      Constraints.MaxHeight = 21
-      Constraints.MinHeight = 21
+      Width = 365
+      Height = 34
       TabOrder = 0
-      TabStop = False
-      FilenameEditType = fetSave
-      FilterIndex = 0
-      Filename = 'edFilename'
-      OnChange = ControlChanged
+      ExplicitLeft = 88
+      ExplicitTop = 20
+      ExplicitWidth = 365
+      ExplicitHeight = 34
       DesignSize = (
-        337
-        21)
+        365
+        34)
+      inherited edFilename: TEdit
+        Width = 257
+        ExplicitWidth = 257
+      end
+      inherited pbBrowse: TButton
+        Left = 287
+        Top = 6
+        ExplicitLeft = 287
+        ExplicitTop = 6
+      end
     end
   end
 end

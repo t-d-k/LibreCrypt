@@ -19,10 +19,16 @@ interface
  //       THIS *SHOULDN'T* BE NEEDED - but is!!!
 
 uses
-  ActnList, Classes, ComCtrls,
-  Controls, Dialogs, ExtCtrls, fmeDiskPartitionsPanel, fmeSDUBlocks, fmeSDUDiskPartitions, Forms,
-  Graphics, ImgList, Menus, Messages, OTFEFreeOTFEBase_U,
-  SDUGeneral, StdCtrls, SysUtils, Variants, Windows;
+
+ //delphi / libs
+    ActnList, Classes, ComCtrls, StdCtrls, SysUtils, Variants, Windows,
+  Controls, Dialogs, ExtCtrls,  Forms,
+  Graphics, ImgList, Menus, Messages,
+  //sdu & LibreCrypt utils
+    OTFEFreeOTFEBase_U,SDUGeneral,
+   // LibreCrypt forms
+    fmeDiskPartitionsPanel, fmeSDUBlocks, fmeSDUDiskPartitions
+  ;
 
 type
   TfmeSelectPartition = class (TFrame)
@@ -89,10 +95,15 @@ implementation
 {$R *.dfm}
 
 uses
-  GraphUtil,  // Required for GetHighLightColor(...)
-  SDUDiskPropertiesDlg,
+ //delphi / libs
+    GraphUtil,  // Required for GetHighLightColor(...)
+  //sdu & LibreCrypt utils
+    SDUDiskPropertiesDlg,
   SDUi18n,
-  SDUPartitionPropertiesDlg;
+  SDUPartitionPropertiesDlg,lcTypes,PartitionTools
+   // LibreCrypt forms
+
+   ;
 
 const
   COLOR_USABLE   = TColor($00C000); // clLime too bright, clGreen too dark
@@ -217,7 +228,7 @@ begin
   if GetFreeOTFEBase().HDDNumbersList(diskNo) then begin
     for i := low(diskNo) to high(diskNo) do begin
       deviceIndicator := HIWORD_DISK + DWORD(diskNo[i]);
-      TabControl1.Tabs.AddObject(Format(_('Disk #%s'), [diskNo[i]]),
+      TabControl1.Tabs.AddObject(Format(_('Disk #%d'), [diskNo[i]]),
         TObject(deviceIndicator));
     end;
   end;
@@ -385,13 +396,13 @@ begin
     if ((deviceIndicator and HIWORD_CDROM) = HIWORD_CDROM) then begin
       // Device name can be found in FRemovableDevices
       Result := FRemovableDevices[useDevice];
-    end else
+    end else begin
     if ((deviceIndicator and HIWORD_DISK) = HIWORD_DISK) then begin
       partitionNo := NO_PARTITION;
       if SDUDiskPartitionsPanel1.DriveLayoutInformationValid then begin
         if ckEntireDisk.Checked then begin
-          partitionNo := 0;
-        end else
+          partitionNo := 0;  //    FMT_DEVICENAME_HDD_PHYSICAL_DISK  or   FMT_DEVICENAME_HDD_DEVICE        ?
+        end else begin
         if (SDUDiskPartitionsPanel1.Selected > NO_PARTITION) then begin
           partInfo := SDUDiskPartitionsPanel1.PartitionInfo[SDUDiskPartitionsPanel1.Selected];
           // Sanity...
@@ -399,11 +410,13 @@ begin
             partitionNo := partInfo.PartitionNumber;
           end;
         end;
+        end;
       end;
 
       if (partitionNo > NO_PARTITION) then
         Result := SDUDeviceNameForPartition(useDevice, partitionNo);
 
+    end;
     end;
   end;
 
@@ -466,9 +479,8 @@ begin
     // 0 is the entire disk, partitions start at 1
     (SDUDiskPartitionsPanel1.Selected >= 0));
 
-  if Assigned(FOnChange) then begin
-    FOnChange(self);
-  end;
+  if Assigned(FOnChange) then     FOnChange(self);
+
 end;
 
 procedure TfmeSelectPartition.SelectionErrorWarning(var msg: String;
@@ -500,11 +512,14 @@ var
     partInfo: TPartitionInformationEx;
   begin
     selectedDriveLetters := selectedDriveLetters +
-      SDUDiskPartitionsPanel1.DriveLetter[partno];
+      SDUDiskPartitionsPanel1.DriveLetterForPart[partno];
+      //if ignroed partition (eg too small) then cant get details
+      if SDUDiskPartitionsPanel1.IsValidPartition(partno) then begin
+
     partInfo             := SDUDiskPartitionsPanel1.PartitionInfo[partno];
-    if partInfo.PartitionStyle = PARTITION_STYLE_MBR then
+    if partInfo.PartitionStyle = PARTITION_STYLE_MBR then begin
       bootableFlag := (bootableFlag or partInfo.mbr.BootIndicator)
-    else
+    end else begin
 
     if partInfo.PartitionStyle = PARTITION_STYLE_GPT then begin
       // no 'bootable' fag for gpt - but 'required' flag
@@ -512,8 +527,10 @@ var
         bootableFlag or ((partInfo.gpt.Attributes and GPT_ATTRIBUTE_PLATFORM_REQUIRED) > 0);
       IsGptDisc    := True;
     end;
+    end;
 
     badPartitionNumber := (partInfo.PartitionNumber = 0);
+      end;
   end;
 
 var
@@ -670,7 +687,7 @@ begin
         dlgPartition.fPartitionInfo  :=
           SDUDiskPartitionsPanel1.PartitionInfo[SDUDiskPartitionsPanel1.Selected];
         dlgPartition.fMountedAsDrive :=
-          SDUDiskPartitionsPanel1.DriveLetter[SDUDiskPartitionsPanel1.Selected];
+          SDUDiskPartitionsPanel1.DriveLetterForPart[SDUDiskPartitionsPanel1.Selected];
 
         dlgPartition.ShowModal();
       finally

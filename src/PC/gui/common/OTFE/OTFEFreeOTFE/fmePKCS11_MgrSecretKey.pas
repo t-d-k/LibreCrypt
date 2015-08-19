@@ -37,14 +37,13 @@ type
   private
     FTokenSecretKeys: TPKCS11SecretKeyPtrArray;
 
-    procedure PopulateSecretKeys();
-    procedure ResizeColumns();
+    procedure _PopulateSecretKeys();
+    procedure _ResizeColumns();
 
-    function EncryptDecryptCDB(encryptNotDecrypt: Boolean): Boolean;
+    function _EncryptDecryptCDB(encryptNotDecrypt: Boolean): Boolean;
   protected
     procedure Refresh(); override;
   public
-    //    FreeOTFEObj: TOTFEFreeOTFEBase;
     procedure Initialize(); override;
     procedure EnableDisableControls(); override;
   end;
@@ -54,11 +53,12 @@ implementation
 {$R *.dfm}
 
 uses
+//lc utils
   frmPKCS11NewSecretKey,
   frmSelectVolumeAndOffset,
   SDUGeneral,
   SDUi18n,
-  Shredder;
+  Shredder,lcConsts;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -90,7 +90,7 @@ begin
   newCol.Caption  := _('Keysize');
   newCol.Autosize := True;
 
-  PopulateSecretKeys();
+  _PopulateSecretKeys();
 
   EnableDisableControls();
 
@@ -115,11 +115,11 @@ end;
 
 procedure TfmePKCS11_MgrSecretKey.Refresh();
 begin
-  PopulateSecretKeys();
+  _PopulateSecretKeys();
   inherited;
 end;
 
-procedure TfmePKCS11_MgrSecretKey.PopulateSecretKeys();
+procedure TfmePKCS11_MgrSecretKey._PopulateSecretKeys();
 var
   errMsg:  String;
   i:       Integer;
@@ -157,7 +157,7 @@ begin
     screen.Cursor := csrPrev;
   end;
 
-  ResizeColumns();
+  _ResizeColumns();
 end;
 
 procedure TfmePKCS11_MgrSecretKey.actDeleteExecute(Sender: TObject);
@@ -236,14 +236,14 @@ end;
 procedure TfmePKCS11_MgrSecretKey.actEncryptExecute(Sender: TObject);
 begin
   inherited;
-  EncryptDecryptCDB(True);
+  _EncryptDecryptCDB(True);
 
 end;
 
 procedure TfmePKCS11_MgrSecretKey.actDecryptExecute(Sender: TObject);
 begin
   inherited;
-  EncryptDecryptCDB(False);
+  _EncryptDecryptCDB(False);
 
 end;
 
@@ -274,7 +274,7 @@ begin
 
 end;
 
-function TfmePKCS11_MgrSecretKey.EncryptDecryptCDB(encryptNotDecrypt: Boolean): Boolean;
+function TfmePKCS11_MgrSecretKey._EncryptDecryptCDB(encryptNotDecrypt: Boolean): Boolean;
 var
   cdbBefore:      Ansistring;
   cdbAfter:       Ansistring;
@@ -385,7 +385,7 @@ begin
 
 end;
 
-procedure TfmePKCS11_MgrSecretKey.ResizeColumns();
+procedure TfmePKCS11_MgrSecretKey._ResizeColumns();
 const
   // Resize the columns such that they're as wide as the widest item/subitem
   // text

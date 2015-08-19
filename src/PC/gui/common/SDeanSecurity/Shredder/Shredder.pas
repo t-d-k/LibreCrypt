@@ -11,8 +11,12 @@ unit Shredder;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  SDUGeneral, dlgProgress,
+ //delphi
+   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+   //sdu, lcLibs
+  lcTypes, lcConsts,
+  SDUGeneral, //for
+   dlgProgress,
   FileList_U,
   SDUClasses;
 
@@ -74,10 +78,15 @@ const
 
 type
   // The array passed in is zero-indexed; populate elements zero to "bytesRequired"
-  TGenerateOverwriteDataEvent = procedure (Sender: TObject; passNumber: integer; bytesRequired: cardinal; var generatedOK: boolean; var outputBlock: TShredBlock) of object;
+//  TGenerateOverwriteDataEvent = procedure (Sender: TObject; passNumber: integer; bytesRequired: cardinal; var generatedOK: boolean; var outputBlock: TShredBlock) of object;
+  //encrypt data with IV - if set uses insead of internal prng
+  TTweakEncryptDataEvent    = function (cypherKernelModeDeviceName: Ansistring;
+      cypherGUID: TGUID; SectorID: LARGE_INTEGER; SectorSize: Integer;
+      var key: TSDUBytes; var IV: Ansistring; var plaintext: Ansistring;
+      var cyphertext: Ansistring): Boolean of object;
   TNotifyStartingFileOverwritePass = procedure (Sender: TObject; itemName: string; passNumber: integer; totalPasses: integer) of object;
   TCheckForUserCancel = procedure (Sender: TObject; var userCancelled: boolean) of object;
-
+   {$M+}
   TShredder = class(TObject)
   private
     FFileDirUseInt: boolean;
@@ -95,7 +104,15 @@ type
     FIntFreeSpcFileCreationBlkSize: integer;
     FIntFileBufferSize: integer;
 
-    FOnOverwriteDataReq: TGenerateOverwriteDataEvent;
+//    FOnOverwriteDataReq: TGenerateOverwriteDataEvent;
+    FOnTweakEncryptDataEvent :TTweakEncryptDataEvent;
+
+    fOverwriteCypherBlockSize: Integer;          // In bits - only used if  FOnTweakEncryptDataEvent set
+    ftempCypherEncBlockNo:   Int64;//used by overwrite cypher
+    fTempCypherKey:        TSDUBytes;//used by overwrite cypher
+    fTempCypherDriver:Ansistring;
+        ftempCypherGUID:       TGUID;
+
     FOnStartingFileOverwritePass: TNotifyStartingFileOverwritePass;
     FOnCheckForUserCancel: TCheckForUserCancel;
 
@@ -128,6 +145,14 @@ type
     function  WipeFileSlacksInDir(dirName: string; progressDlg: TdlgProgress; problemFiles: TStringList): TShredResult;
     function  CountFiles(dirName: string): integer;
     function  GenerateRndDotFilename(path: string; origFilename: string): string;
+
+    procedure _GenerateOverwriteData(Sender: TObject;
+      passNumber: Integer;
+      bytesRequired: Cardinal;
+      var generatedOK: Boolean;
+      var outputBlock: TShredBlock
+      );
+
   protected
     function IsDevice(filename: string): boolean;
     function DeviceDrive(filename: string): char;
@@ -146,6 +171,9 @@ type
 
     // Call this to wipe all file slack on the specified drive
     function  OverwriteAllFileSlacks(driveLetter: Ansichar; silent: boolean = FALSE): TShredResult;
+
+function DestroyPart(itemname: string; quickShred: boolean;   {partInfo:TPartitionInformationEx; }silent: boolean = FALSE): TShredResult;
+
 
     // You probably don't want to call this one - call
     // OverwriteDriveFreeSpace(...) instead
@@ -202,8 +230,14 @@ type
     // IntMethod will be IGNORED if this is set
     // IF SET, THE METHOD THAT THIS IS SET TO MUST POPULATE THE BUFFER IT IS
     // SUPPLIED WITH
-    property OnOverwriteDataReq: TGenerateOverwriteDataEvent read FOnOverwriteDataReq write FOnOverwriteDataReq default nil;
-    
+//    property OnOverwriteDataReq: TGenerateOverwriteDataEvent read FOnOverwriteDataReq write FOnOverwriteDataReq default nil;
+    // if this is set then OverwriteCypherBlockSize,TempCypherKey, and fTempCypherDriver MUST all be set
+    property  OnTweakEncryptDataEvent :TTweakEncryptDataEvent write FOnTweakEncryptDataEvent  default nil;
+    property  OverwriteCypherBlockSize :Integer write fOverwriteCypherBlockSize  default 0;
+    property  TempCypherKey :TSDUBytes write fTempCypherKey;
+    property  TempCypherDriver :Ansistring write fTempCypherDriver;
+     property          tempCypherGUID:       TGUID write ftempCypherGUID;
+
     // If this parameter is set, this event will be called whenever a file is
     // being overwritten, and it's starting a new pass
     property OnStartingFileOverwritePass: TNotifyStartingFileOverwritePass read FOnStartingFileOverwritePass write FOnStartingFileOverwritePass default nil;
@@ -264,11 +298,14 @@ procedure OverwriteAndFree(var x: TStringList); overload;
 implementation
 
 uses
-  Math,
+//delphi
+   Math, Registry,
+//sdu , lc utils
+
   SDUi18n,
   SDUFileIterator_U, SDUDirIterator_U,
   lcDialogs,
-  Registry;
+  PartitionTools;
 
 type
   // Exceptions... These should *all* be handled internally
@@ -403,16 +440,12 @@ end;
 
 // Returns #0 on failure
 function TShredder.DeviceDrive(filename: string): char;
-var
-  retval: char;
 begin
-  retval := #0;
-  if IsDevice(filename) then
-    begin
-    retval := filename[5];
-    end;
+  Result := #0;
+  if IsDevice(filename) then     begin
+    Result := filename[5];
+  end;
 
-  Result := retval;
 end;
 
 function TShredder.IsDevice(filename: string): boolean;
@@ -437,10 +470,15 @@ end;
 function TShredder.DestroyDevice(itemname: string; quickShred: boolean; silent: boolean = FALSE): TShredResult;
 begin
   result := srError;
-  if IsDevice(itemname) then
-    begin
+  if IsDevice(itemname) then     begin
     result := InternalShredFile(itemname, quickShred, silent, nil, TRUE);
     end;
+end;
+
+
+function TShredder.DestroyPart(itemname: string; quickShred: boolean;   {partInfo:TPartitionInformationEx; }silent: boolean = FALSE): TShredResult;
+begin
+    result := InternalShredFile(itemname, quickShred, silent, nil, TRUE);
 end;
 
 
@@ -477,21 +515,15 @@ begin
 {$IFDEF LINUX}
   xxx - to be implemented: remove any readonly attribute from the file
 {$ENDIF}
+    ftempCypherEncBlockNo := 0;
 
-
-  if (fileAttributes AND faDirectory)<>0 then
-    begin
+  if (fileAttributes AND faDirectory)<>0 then      begin
     retval := ShredDir(itemname, silent);
-    end
-  else
-    begin
+    end    else    begin
     itemname := SDUConvertLFNToSFN(itemname);
-    if FFileDirUseInt then
-      begin
+    if FFileDirUseInt then      begin
       retval := InternalShredFile(itemname, quickShred, silent, nil, leaveFile);
-      end
-    else
-      begin
+    end    else      begin
       shredderCommandLine := format(FExtFileExe, [itemname]); { TODO 1 -otdk -cinvestigate : what happens if unicode filename? }
       WinExec(PAnsiChar(shredderCommandLine), SW_MINIMIZE);
       // Assume success
@@ -586,6 +618,8 @@ begin
   failure := FALSE;
   userCancel := FALSE;
   eventUserCancel := FALSE;
+       // Initilize zeroed IV for encryption
+        ftempCypherEncBlockNo := 0;
 
   bpc:= BytesPerCluster(filename);
 
@@ -600,36 +634,31 @@ begin
   try
     progressDlg.ShowTimeRemaining := TRUE;
     try  // Exception handler for EShredderErrorUserCancel
-      if not(silent) then
-        begin
+      if not(silent) then        begin
         progressDlg.Show();
-        end;
+      end;
 
       // Nuke any file attributes (e.g. readonly)
 {$IFDEF MSWINDOWS}
-{$WARN SYMBOL_PLATFORM OFF}  // Useless warning about platform - we're already 
+{$WARN SYMBOL_PLATFORM OFF}  // Useless warning about platform - we're already
                              // protecting against that!
       FileSetAttr(filename, 0);
 {$WARN SYMBOL_PLATFORM ON}
 {$ENDIF}
-{$IFDEF LINUX}
-   xxx - to be implemented: strip off any readonly attribute from the file
-{$ENDIF}
+
 
       gotSize := FALSE;
       bytesToShredHi := 0;
       bytesToShredLo := 0;
-      if IsDevice(filename) then
-        begin
+      if IsDevice(filename) then        begin
         drive := DeviceDrive(filename);
         gotSize := SDUGetPartitionInfo(drive, partInfo);
-        if gotSize then
-          begin
+        if gotSize then          begin
           tmpUint64 := (partInfo.PartitionLength shr 32);
           bytesToShredHi := tmpUint64 and $00000000FFFFFFFF;
           bytesToShredLo := partInfo.PartitionLength and $00000000FFFFFFFF;
-          end;
         end;
+      end;
 
       fileHandle := CreateFile(PChar(filename),
                                GENERIC_READ or GENERIC_WRITE,
@@ -638,54 +667,43 @@ begin
                                OPEN_EXISTING,
                                FILE_ATTRIBUTE_NORMAL or FILE_FLAG_WRITE_THROUGH,
                                0);
-      if (fileHandle = INVALID_HANDLE_VALUE) then
-        begin
+      if (fileHandle = INVALID_HANDLE_VALUE) then         begin
         failure := TRUE;
-        end
-      else
-        begin
+      end      else        begin
         try
           // Identify the size of the file being overwritten...
-          if not(IsDevice(filename)) then
-            begin
+          if not(IsDevice(filename)) then            begin
             bytesToShredLo := GetFileSize(fileHandle, @bytesToShredHi);
             gotSize := not( (bytesToShredLo = $FFFFFFFF) AND (GetLastError()<>NO_ERROR) );
-            end;
+          end;
 
           // Check that the GetFileSize call was successful...
-          if gotSize then
-            begin
+          if gotSize then            begin
             // Adjust to increase up to the nearest bytes per sector boundry
             // Note: This makes the reasonable assumption that ($FFFFFFFF + 1)
             //       will always be a multiple of "bpc"; so we don't need to
             //       bother involving the high DWORD of the file's size in this
             //       calculation
             bpcMod := (bytesToShredLo mod bpc);
-            if (bpcMod>0) then
-              begin
+            if (bpcMod>0) then              begin
               tmpDWORD := bytesToShredLo + (bpc - bpcMod);
               // In case that causes an overflow...
-              if (bytesToShredLo > tmpDWORD) then
-                begin
+              if (bytesToShredLo > tmpDWORD) then                begin
                 inc(bytesToShredHi);
-                end;
-              bytesToShredLo := tmpDWORD;
               end;
+              bytesToShredLo := tmpDWORD;
+            end;
 
             // Sanity check - we can only handle files less than 2^63 bytes long
             // tmpInt64 used to prevent Delphi effectivly casting to DWORD
             tmpInt64 := bytesToShredHi;
             bytesLeftToWrite := (tmpInt64 shl 32) + bytesToShredLo;
-            if (bytesLeftToWrite < 0) then
-              begin
+            if (bytesLeftToWrite < 0) then                begin
               // Do nothing - retVal defaults to error
-              end
-            else
-              begin
+              end            else              begin
               startOffsetLo := 0;
               startOffsetHi := 0;
-              if quickShred then
-                begin
+              if quickShred then                 begin
                 startOffsetLo := (IntSegmentOffset AND $FFFFFFFF);
                 startOffsetHi := (IntSegmentOffset shr 32);
 
@@ -700,43 +718,35 @@ begin
               progressDlg.i64Min := 0;
               progressDlg.i64Max := bytesLeftToWrite;
 
-              for i:=1 to numPasses do
-                begin
+              for i:=1 to numPasses do                begin
                 // Let user know what's going on...
                 useShredMethodTitle := ShredMethodTitle(IntMethod);
-                if assigned(FOnOverwriteDataReq) then
-                  begin
+                if assigned(FOnTweakEncryptDataEvent) then
                   useShredMethodTitle := _('Custom');
-                  end;
+
                 progressDlg.Caption := Format(
                                               _('Shredding (%s pass %d/%d) %s'),
                                               [useShredMethodTitle, i, numPasses, filename]
                                              );
                 progressDlg.i64Position := 0;
 
-                if assigned(OnStartingFileOverwritePass) then
-                  begin
+                if assigned(OnStartingFileOverwritePass) then                  begin
                   OnStartingFileOverwritePass(self, filename, i, numPasses);
                   end;
 
                 // Has user cancelled?
                 Application.ProcessMessages();
-                if progressDlg.Cancel then
-                  begin
+                if progressDlg.Cancel then                               begin
                   raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                   end;
-                if (silentProgressDlg <> nil) then
-                  begin
-                  if silentProgressDlg.Cancel then
-                    begin
+                if (silentProgressDlg <> nil) then                       begin
+                  if silentProgressDlg.Cancel then                         begin
                     raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                     end;
                   end;
-                if assigned(FOnCheckForUserCancel) then
-                  begin
+                if assigned(FOnCheckForUserCancel) then                  begin
                   FOnCheckForUserCancel(self, eventUserCancel);
-                  if eventUserCancel then
-                    begin
+                  if eventUserCancel then                    begin
                     raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                     end;
                   end;
@@ -756,10 +766,9 @@ begin
 
                 // Fill a block with random garbage
                 SetLength(blankingBytes, FIntFileBufferSize);
-                if not(assigned(FOnOverwriteDataReq)) then
-                  begin
+                if not(assigned(FOnTweakEncryptDataEvent)) then
                   failure := not(GetRandomDataBlock(i, blankingBytes));
-                  end;
+
 
 
                 while (
@@ -771,31 +780,25 @@ begin
 
                   // Has user cancelled?
                   Application.ProcessMessages();
-                  if progressDlg.Cancel then
-                    begin
+                  if progressDlg.Cancel then                    begin
                     raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                     end;
-                  if (silentProgressDlg <> nil) then
-                    begin
-                    if silentProgressDlg.Cancel then
-                      begin
+                  if (silentProgressDlg <> nil) then                      begin
+                    if silentProgressDlg.Cancel then                             begin
                       raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                       end;
                     end;
-                  if assigned(FOnCheckForUserCancel) then
-                    begin
+                  if assigned(FOnCheckForUserCancel) then                      begin
                     FOnCheckForUserCancel(self, eventUserCancel);
-                    if eventUserCancel then
-                      begin
+                    if eventUserCancel then                                      begin
                       raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                       end;
                     end;
 
                   // Generate new data if user supplied routine...
-                  if (assigned(FOnOverwriteDataReq)) then
-                    begin
+                  if (assigned(FOnTweakEncryptDataEvent)) then
                     failure := not(GetRandomDataBlock(i, blankingBytes));
-                    end;
+
 
                   // Note: Cast to int64 to ensure no problems
                   bytesToWriteNow := (min(bytesLeftToWrite, int64(FIntFileBufferSize)) AND $FFFFFFFF);
@@ -831,8 +834,7 @@ begin
         end;  // ELSE PART - if (fileHandle = INVALID_HANDLE_VALUE) then
 
     except
-      on EShredderErrorUserCancel do
-        begin
+      on EShredderErrorUserCancel do        begin
         // Ensure flag set
         userCancel := TRUE;
         end;
@@ -845,23 +847,17 @@ begin
 
 
   // Clean up file?
-  if not(leaveFile) then
-    begin
+  if not(leaveFile) then    begin
     DeleteFileOrDir(filename);
     end;
 
 
   // Determine return value...
-  if (failure) then
-    begin
+  if (failure) then    begin
     retVal := srError;
-    end
-  else if (userCancel) then
-    begin
+  end  else if (userCancel) then    begin
     retVal := srUserCancel;
-    end
-  else
-    begin
+    end   else    begin
     // Everything OK...
     retVal := srSuccess;
     end;
@@ -917,21 +913,16 @@ begin
         end;
 
       largeFilename := ExtractFilePath(itemname) + MASSIVE_FILENAME;
-      if length(largeFilename)>MAX_PATH then
-        begin
+      if length(largeFilename)>MAX_PATH then        begin
         Delete(largeFilename, MAX_PATH-1, length(largeFilename)-MAX_PATH+1);
         end;
 
 
-      if RenameFile(itemname, largeFilename) then
-        begin
-        if not(RenameFile(largeFilename, deleteFilename)) then
-          begin
+      if RenameFile(itemname, largeFilename) then        begin
+        if not(RenameFile(largeFilename, deleteFilename)) then          begin
           deleteFilename := largeFilename;
           end;
-        end
-      else
-        begin
+        end      else        begin
         deleteFilename := itemname;
         end;;
 
@@ -1019,18 +1010,99 @@ begin
 end;
 
 
+{ The array passed in is zero-indexed; populate elements zero to "bytesRequired"
+only called if FOnTweakEncryptDataEvent is set - generates csprng data using encryption }
+procedure TShredder._GenerateOverwriteData(
+  Sender: TObject;
+  passNumber: Integer;
+  bytesRequired: Cardinal;
+  var generatedOK: Boolean;
+  var outputBlock: TShredBlock
+  );
+var
+  i:                Integer;
+  tempArraySize:    Cardinal;
+  blocksizeBytes:   Cardinal;
+  plaintext:        Ansistring;
+  cyphertext:       Ansistring;
+  IV:               Ansistring;
+  localIV:          Int64;
+  sectorID:         LARGE_INTEGER;
+  tempCipherkeyStr: Ansistring;
+const
+    DUMMY_SECTOR_SIZE = 512;
+begin
+   assert(assigned(FOnTweakEncryptDataEvent));
+  // Generate an array of random data containing "bytesRequired" bytes of data,
+  // plus additional random data to pad out to the nearest multiple of the
+  // cypher's blocksize bits
+  // Cater for if the blocksize was -ve or zero
+  if (fOverwriteCypherBlockSize < 1) then begin
+    blocksizeBytes := 1;
+  end else begin
+    blocksizeBytes := (fOverwriteCypherBlockSize div 8);
+  end;
+  tempArraySize := bytesRequired + (blocksizeBytes - (bytesRequired mod blocksizeBytes));
+
+  plaintext := '';
+  for i := 1 to tempArraySize do begin
+    plaintext := plaintext + Ansichar(random(256));
+    { DONE 2 -otdk -csecurity : This is not secure PRNG - but is encrypted below, so the result is secure }
+  end;
+
+
+  Inc(ftempCypherEncBlockNo);
+
+  // Adjust the IV so that this block of encrypted pseudorandom data should be
+  // reasonably unique
+  IV := '';
+  if (fOverwriteCypherBlockSize > 0) then begin
+    IV := StringOfChar(AnsiChar(#0), (fOverwriteCypherBlockSize div 8));
+
+    localIV := ftempCypherEncBlockNo;
+
+    for i := 1 to min(sizeof(localIV), length(IV)) do begin
+      IV[i]   := Ansichar((localIV and $FF));
+      localIV := localIV shr 8;
+    end;
+
+  end;
+
+  // Adjust the sectorID so that this block of encrypted pseudorandom data
+  // should be reasonably unique
+  sectorID.QuadPart := ftempCypherEncBlockNo;
+  // Encrypt the pseudorandom data generated
+  tempCipherkeyStr := SDUBytesToString(ftempCypherKey);
+  if not (FOnTweakEncryptDataEvent(ftempCypherDriver, ftempCypherGUID,
+    sectorID, DUMMY_SECTOR_SIZE, ftempCypherKey, IV, plaintext, cyphertext)) then begin
+    SDUMessageDlg(
+      _('Error: unable to encrypt pseudorandom data before using for overwrite buffer')
+//      SDUCRLF + SDUCRLF + Format(_('Error #: %d'), [GetFreeOTFEBase().LastErrorCode])
+,
+      mtError
+      );
+
+    generatedOK := False;
+  end else begin
+    // Copy the encrypted data into the outputBlock
+    for i := 0 to (bytesRequired - 1) do
+      outputBlock[i] := Byte(cyphertext[i + 1]);
+
+    generatedOK := True;
+  end;
+end;
+
+
+
 function TShredder.GetRandomDataBlock(passNum: integer; var outputBlock: TShredBlock): boolean;
 var
   allOK: boolean;
 begin
   allOK := TRUE;
 
-  if assigned(FOnOverwriteDataReq) then
-    begin
-    FOnOverwriteDataReq(self, passNum, (high(outputBlock)-low(outputBlock)), allOK, outputBlock);
-    end
-  else
-    begin
+  if assigned(FOnTweakEncryptDataEvent) then    begin
+    _GenerateOverwriteData(self, passNum, (high(outputBlock)-low(outputBlock)), allOK, outputBlock);
+   end  else    begin
     case IntMethod of
       smZeros:
         begin
@@ -1300,6 +1372,8 @@ begin
   userCancel := FALSE;
   failure := FALSE;
   eventUserCancel := FALSE;
+       // Initilize zeroed IV for encryption
+        ftempCypherEncBlockNo := 0;
 
   if not(FFreeUseInt) then
     begin
@@ -1344,8 +1418,7 @@ begin
         progressDlg.i64Min := 0;
         progressDlg.i64Position := 0;
         prevCursor := Screen.Cursor;
-        if not(silent) then
-          begin
+        if not(silent) then            begin
           Screen.Cursor := crAppStart;
 
           progressDlg.Show();
@@ -1357,16 +1430,12 @@ begin
 
             try  // Finally
 
-              if FIntFreeSpcSmartFileSize then
-                begin
+              if FIntFreeSpcSmartFileSize then                 begin
                 useTmpFileSize:= max((freeSpace div 10), FIVE_MB);
-                if (useTmpFileSize >= int64(FIntFreeSpcFileSize)) then
-                  begin
+                if (useTmpFileSize >= int64(FIntFreeSpcFileSize)) then                  begin
                   useTmpFileSize := FIntFreeSpcFileSize;
                   end;
-                end
-              else
-                begin
+                end              else                begin
                 useTmpFileSize:= FIntFreeSpcFileSize;
                 end;
 
@@ -1374,14 +1443,12 @@ begin
 
               // This is > and not >= so that the last file to be created (outside this
               // loop) isn't zero bytes long
-              while (freeSpace>useTmpFileSize) do
-                begin
+              while (freeSpace>useTmpFileSize) do                begin
                 inc(fileNumber);
                 currFilename := GetTempFilename(tempDriveDir, fileNumber);
 
                 createOK := CreateEmptyFile(currFilename, useTmpFileSize, blankArray, progressDlg);
-                if (createOK = srUserCancel) then
-                  begin
+                if (createOK = srUserCancel) then                  begin
                   raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                   end
                 else if (createOK = srError) then
@@ -1391,11 +1458,9 @@ begin
                   break;
                   end;
 
-                if assigned(FOnCheckForUserCancel) then
-                  begin
+                if assigned(FOnCheckForUserCancel) then                  begin
                   FOnCheckForUserCancel(self, eventUserCancel);
-                  if eventUserCancel then
-                    begin
+                  if eventUserCancel then                                  begin
                     raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                     end;
                   end;
@@ -1404,41 +1469,34 @@ begin
                 // Shred the file, but _don't_ _delete_ _it_
                 // Note that this will overwrite any slack space at the end of the file
                 internalShredOK := InternalShredFile(currFilename, FALSE, TRUE, progressDlg, TRUE);
-                if (internalShredOK = srUserCancel) then
-                  begin
+                if (internalShredOK = srUserCancel) then                  begin
                   raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                   end
-                else if (internalShredOK = srError) then
-                  begin
+                else if (internalShredOK = srError) then                  begin
                   failure := TRUE;
                   // Quit loop...
                   break;
                   end;
 
-                if assigned(FOnCheckForUserCancel) then
-                  begin
+                if assigned(FOnCheckForUserCancel) then                   begin
                   FOnCheckForUserCancel(self, eventUserCancel);
-                  if eventUserCancel then
-                    begin
+                  if eventUserCancel then                                   begin
                     raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                     end;
                   end;
-                  
+
 
                 freeSpace := DiskFree(diskNumber);
                 progressDlg.i64InversePosition := freeSpace;
 
                 // Check for user cancel...
                 Application.ProcessMessages();
-                if progressDlg.Cancel then
-                  begin
+                if progressDlg.Cancel then                  begin
                   raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                   end;
-                if assigned(FOnCheckForUserCancel) then
-                  begin
+                if assigned(FOnCheckForUserCancel) then                  begin
                   FOnCheckForUserCancel(self, eventUserCancel);
-                  if eventUserCancel then
-                    begin
+                  if eventUserCancel then                    begin
                     raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                     end;
                   end;
@@ -1447,38 +1505,31 @@ begin
 
 
               // Create a file with the remaining disk bytes
-              if not(failure) then
-                begin
+              if not(failure) then                begin
                 lastFilename := GetTempFilename(tempDriveDir, fileNumber+1);
                 createOK := CreateEmptyFile(lastFilename, freeSpace, blankArray, progressDlg);
-                if (createOK = srUserCancel) then
-                  begin
+                if (createOK = srUserCancel) then                  begin
                   raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                   end
-                else if (createOK = srError) then
-                  begin
+                else if (createOK = srError) then                  begin
                   failure := TRUE;
                   end;
 
-                if assigned(FOnCheckForUserCancel) then
-                  begin
+                if assigned(FOnCheckForUserCancel) then                  begin
                   FOnCheckForUserCancel(self, eventUserCancel);
-                  if eventUserCancel then
-                    begin
+                  if eventUserCancel then                    begin
                     raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                     end;
                   end;
-                  
+
                 end;  // if not(failure) then
 
 
               // Shred the last file
-              if not(failure) then
-                begin
+              if not(failure) then                begin
                 internalShredOK := InternalShredFile(lastFilename, FALSE, TRUE, progressDlg, TRUE);
                 // Note that this will overwrite any slack space at the end of the file
-                if (internalShredOK = srUserCancel) then
-                  begin
+                if (internalShredOK = srUserCancel) then                  begin
                   raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                   end
                 else if (internalShredOK = srError) then

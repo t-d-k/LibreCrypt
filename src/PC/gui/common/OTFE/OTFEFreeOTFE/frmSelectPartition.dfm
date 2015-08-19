@@ -28,16 +28,18 @@ object frmSelectPartition: TfrmSelectPartition
     Caption = 'Please select from the following disks/partitions:'
   end
   object pnlButtonCenter: TPanel
-    Left = 48
-    Top = 172
-    Width = 189
+    Left = 0
+    Top = 163
+    Width = 576
     Height = 41
-    Anchors = [akLeft, akBottom]
-    Caption = 'pnlButtonCenter'
+    Align = alBottom
     TabOrder = 1
+    ExplicitLeft = 48
+    ExplicitTop = 172
+    ExplicitWidth = 189
     object pbOK: TButton
-      Left = 8
-      Top = 8
+      Left = 219
+      Top = 9
       Width = 75
       Height = 25
       Caption = 'OK'
@@ -46,8 +48,8 @@ object frmSelectPartition: TfrmSelectPartition
       OnClick = pbOKClick
     end
     object pbCancel: TButton
-      Left = 100
-      Top = 8
+      Left = 307
+      Top = 9
       Width = 75
       Height = 25
       Cancel = True
@@ -78,7 +80,7 @@ object frmSelectPartition: TfrmSelectPartition
     inherited TabControl1: TTabControl
       Width = 565
       Height = 97
-      ExplicitTop = -1
+      ExplicitWidth = 565
       ExplicitHeight = 97
       inherited SDUDiskPartitionsPanel1: TfmeDiskPartitionsPanel
         Height = 69
@@ -89,6 +91,7 @@ object frmSelectPartition: TfrmSelectPartition
         Left = 376
         Height = 69
         OnDblClick = fmeSelectPartitionpnlNoPartitionDisplayDblClick
+        ExplicitLeft = 376
         ExplicitHeight = 69
       end
     end
@@ -102,7 +105,7 @@ object frmSelectPartition: TfrmSelectPartition
     end
     inherited ilErrorWarning: TImageList
       Bitmap = {
-        494C010103000400340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+        494C010103000400400010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
         0000000000003600000028000000400000001000000001002000000000000010
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000

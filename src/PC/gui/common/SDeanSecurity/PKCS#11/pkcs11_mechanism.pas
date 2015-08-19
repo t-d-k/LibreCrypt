@@ -52,9 +52,14 @@ type
 implementation
 
 uses
+
+//delphi
+ SysUtils ,
+//lc utils
+lcConsts,
   pkcs11f, SDUGeneral,
-  SDUi18n,
-  SysUtils;
+  SDUi18n
+  ;
 
 function TPKCS11Mechanism.GetMechanismInfo(var info: CK_MECHANISM_INFO): Boolean;
 begin

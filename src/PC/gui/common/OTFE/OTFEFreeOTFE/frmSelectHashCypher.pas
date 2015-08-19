@@ -11,10 +11,16 @@ unit frmSelectHashCypher;
 interface
 
 uses
-  Classes, Controls, Dialogs,
+     //delphi & libs
+        Classes, Controls, Dialogs,
   Forms, Graphics, Grids,
-  Menus, Messages, OTFEFreeOTFEBase_U,
-  SDUForms, StdCtrls, SysUtils, VolumeFileAPI, Windows;
+  Menus, Messages,  StdCtrls, SysUtils, Windows,
+  //sdu & LibreCrypt utils
+        OTFEFreeOTFEBase_U,
+  SDUForms,  VolumeFileAPI
+   // LibreCrypt forms
+
+;
 
 { TODO -otdk -cui : doesnt look good - replace custom draw with simple grid }
 type
@@ -67,10 +73,14 @@ implementation
 
 
 uses
-  ComObj,  // Required for GUIDToString
-  OTFEFreeOTFE_U,
+     //delphi & libs
+       ComObj,  // Required for GUIDToString
+  //sdu & LibreCrypt utils
+       OTFEFreeOTFE_U,
   SDUi18n,
-  SDUGeneral;
+   lcConsts,
+   // LibreCrypt forms
+ frmCypherInfo, frmHashInfo;
 
 procedure TfrmSelectHashCypher.FormCreate(Sender: TObject);
 begin
@@ -187,7 +197,7 @@ end;
 
 procedure TfrmSelectHashCypher.miHashDetailsClick(Sender: TObject);
 begin
-  GetFreeOTFEBase().ShowHashDetailsDlg(
+  frmHashInfo.ShowHashDetailsDlg(
     SelectedHashDriverKernelModeName(),
     SelectedHashGUID()
     );
@@ -196,7 +206,7 @@ end;
 
 procedure TfrmSelectHashCypher.miCypherDetailsClick(Sender: TObject);
 begin
-  GetFreeOTFEBase().ShowCypherDetailsDlg(
+  frmCypherInfo.ShowCypherDetailsDlg(
     SelectedCypherDriverKernelModeName(),
     SelectedCypherGUID()
     );

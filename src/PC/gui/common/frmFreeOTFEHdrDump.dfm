@@ -1,6 +1,9 @@
 inherited frmFreeOTFEHdrDump: TfrmFreeOTFEHdrDump
   PixelsPerInch = 96
   TextHeight = 13
+  inherited pbOK: TButton
+    OnClick = pbOKClick
+  end
   inherited GroupBox1: TGroupBox
     object lblOffset: TLabel [1]
       Left = 8
@@ -80,13 +83,19 @@ inherited frmFreeOTFEHdrDump: TfrmFreeOTFEHdrDump
         ExplicitLeft = 0
         ExplicitWidth = 56
       end
-      inherited preUserKeyFirst: TOTFEFreeOTFE_PasswordRichEdit
+      inherited mmShown: TMemo
         Left = 108
-        Width = 333
-        Height = 65
+        Width = 329
         ExplicitLeft = 108
-        ExplicitWidth = 333
-        ExplicitHeight = 65
+        ExplicitWidth = 329
+      end
+      inherited mmReal: TMemo
+        Left = 122
+        Top = 3
+        Lines.Strings = (
+          '')
+        ExplicitLeft = 122
+        ExplicitTop = 3
       end
     end
   end

@@ -83,17 +83,24 @@ implementation
 {$R *.dfm}
 
 uses
-  Clipbrd, // Required for clipboard functions
+ //delphi
+ Clipbrd, // Required for clipboard functions
   Math,
-  SDUGeneral,
+
+
+
+  //sdu, lcutils
+  lcConsts,
+   SDUGeneral,
   SDUi18n,
-  {$IFDEF FREEOTFE_MAIN}
+  CommonSettings,
+  SDUGraphics
+  //lc
+    {$IFDEF FREEOTFE_MAIN}
   // When run under main FreeOTFE GUI, user can access driver control dialog
   // via main FreeOTFE app
-  frmMain,
-{$ENDIF}
-  CommonSettings,
-  SDUGraphics;
+  ,frmMain
+{$ENDIF};
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message

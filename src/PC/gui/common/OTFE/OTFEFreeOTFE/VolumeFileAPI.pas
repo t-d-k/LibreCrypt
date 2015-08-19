@@ -7,14 +7,16 @@ unit VolumeFileAPI;
 // -----------------------------------------------------------------------------
 //
 
-
+{ interface to FreeOTFE format volumes
+}
+{ TODO -otdk -crefactor : rename to FreeOTFEApi }
 interface
 
 uses
 
   Windows,// Required for DWORD
   //LibreCrypt
-   DriverAPI, SDUGeneral  ;
+   DriverAPI, lcTypes  ;
 
 const
   // The CDB version ID to be used in all new CDBs

@@ -35,7 +35,7 @@ object frmeLUKSKeyOrKeyfileEntry: TfrmeLUKSKeyOrKeyfileEntry
     TabOrder = 0
     OnClick = rbKeyFromClick
   end
-  object feKeyfile: TSDUFilenameEdit
+  inline feKeyfile: TSDUFilenameEdit
     Left = 120
     Top = 52
     Width = 306
@@ -44,9 +44,10 @@ object frmeLUKSKeyOrKeyfileEntry: TfrmeLUKSKeyOrKeyfileEntry
     Constraints.MaxHeight = 21
     Constraints.MinHeight = 21
     TabOrder = 1
-    TabStop = False
-    FilterIndex = 0
-    OnChange = feKeyfileChange
+    ExplicitLeft = 120
+    ExplicitTop = 52
+    ExplicitWidth = 306
+    ExplicitHeight = 21
     DesignSize = (
       306
       21)

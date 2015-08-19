@@ -147,10 +147,14 @@ type
 
 implementation
 
+
 uses
-  DateUtils,
-  SDUGeneral, SDUi18n,
-  SysUtils;
+//delphi
+ DateUtils,
+  SysUtils,
+//ls utils
+
+  SDUGeneral, SDUi18n, lcConsts;
 
 function TPKCS11Attribute.MapPKCS11AttrTypeToDelphiAttrType(pkcs11AttrType: CK_ATTRIBUTE_TYPE):
 TAttributeDataType;

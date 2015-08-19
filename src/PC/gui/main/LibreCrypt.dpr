@@ -3,9 +3,18 @@ program LibreCrypt;
  {
  layers used are:
  //delphi and 3rd party libs - layer 0
-  //sdu & LibreCrypt utils - layer 1
+  //sdu & LibreCrypt utils ie all not forms - layer 1
    // LibreCrypt forms - layer 2
     //main form - layer 3
+
+     //delphi & libs
+
+  //sdu & LibreCrypt utils
+
+   // LibreCrypt forms
+
+    //main form
+
   }
 
 uses
@@ -23,17 +32,10 @@ uses
   frmGridReport in '..\common\frmGridReport.pas' {frmGridReport},
   frmHashReport in '..\common\frmHashReport.pas' {frmGridReport_Hash},
   frmCypherReport in '..\common\frmCypherReport.pas' {frmCypherReport},
-  fmeBaseOptions in '..\common\fmeBaseOptions.pas' {fmeOptions_Base: TFrame},
-  fmeSystemTrayOptions in 'fmeSystemTrayOptions.pas' {fmeOptions_SystemTray: TFrame},
-  fmeHotKeysOptions in 'fmeHotKeysOptions.pas' {fmeOptions_Hotkeys: TFrame},
-  fmeGeneralOptions in 'fmeGeneralOptions.pas' {fmeOptions_FreeOTFEGeneral: TFrame},
   frmInstallOnUSBDrive in '..\common\frmInstallOnUSBDrive.pas' {frmInstallOnUSBDrive},
   frmAbout in '..\common\frmAbout.pas' {frmAbout},
   MainSettings in 'MainSettings.pas',
   frmOptions in 'frmOptions.pas' {frmOptions_FreeOTFE},
-  fmeLcOptions in 'fmeLcOptions.pas' {fmeFreeOTFEOptions_Base: TFrame},
-  fmeAdvancedOptions in 'fmeAdvancedOptions.pas' {fmeOptions_FreeOTFEAdvanced: TFrame},
-  CommonConsts in '..\common\CommonConsts.pas',
   frmLUKSHdrDump in '..\common\frmLUKSHdrDump.pas' {frmCDBDump_LUKS},
   frmHdrDump in '..\common\frmHdrDump.pas' {frmCDBDump_Base},
   frmFreeOTFEHdrDump in '..\common\frmFreeOTFEHdrDump.pas' {frmCDBDump_FreeOTFE},
@@ -97,7 +99,6 @@ uses
   fmeLUKSKeyOrKeyfileEntry in '..\common\OTFE\OTFEFreeOTFE\fmeLUKSKeyOrKeyfileEntry.pas' {frmeLUKSKeyOrKeyfileEntry: TFrame},
   lcConsts in '..\common\lcConsts.pas',
   frmWizardCreateVolume in '..\common\OTFE\OTFEFreeOTFE\frmWizardCreateVolume.pas' {frmWizardCreateVolume},
-  frmCommonMain in '..\common\frmCommonMain.pas' {frmCommonMain},
   frmWizardChangePasswordCreateKeyfile in '..\common\OTFE\OTFEFreeOTFE\frmWizardChangePasswordCreateKeyfile.pas' {frmWizardChangePasswordCreateKeyfile},
   fmeSelectPartition in '..\common\OTFE\OTFEFreeOTFE\fmeSelectPartition.pas',
   fmeDiskPartitionsPanel in '..\common\OTFE\OTFEFreeOTFE\fmeDiskPartitionsPanel.pas',
@@ -110,18 +111,27 @@ uses
   lcDebugLog in '..\common\lcDebugLog.pas',
   Shredder in '..\common\SDeanSecurity\Shredder\Shredder.pas',
   FileList_U in '..\common\SDeanSecurity\Shredder\FileList_U.pas' {FileList_F},
-  AFSplitMerge in '..\common\OTFE\AFSplitMerge.pas',
   fmePassword in '..\common\fmePassword.pas' {frmePassword: TFrame},
   KeyboardEntryDlg_U in '..\common\SDeanSecurity\KeyboardDialog\KeyboardEntryDlg_U.pas' {KeyboardEntryDlg},
   LUKSTools in '..\common\LUKSTools.pas',
   frmSelectHashCypher in '..\common\OTFE\OTFEFreeOTFE\frmSelectHashCypher.pas' {frmSelectHashCypher},
-  frmCreateLUKSVolumeWizard in 'frmCreateLUKSVolumeWizard.pas' {frmCreateLUKSVolumeWizard};
+  frmCreateLUKSVolumeWizard in 'frmCreateLUKSVolumeWizard.pas' {frmCreateLUKSVolumeWizard},
+  fmeContainerSize in '..\common\fmeContainerSize.pas' {TfmeContainerSize: TFrame},
+  lcTypes in '..\common\lcTypes.pas',
+  PartitionTools in '..\common\PartitionTools.pas',
+  frmCypherInfo in '..\common\OTFE\OTFEFreeOTFE\frmCypherInfo.pas' {frmCypherInfo},
+  frmSelectVolumeType in '..\common\OTFE\OTFEFreeOTFE\frmSelectVolumeType.pas' {frmSelectVolumeType},
+  AFSplitMerge in '..\common\OTFE\AFSplitMerge.pas',
+  CommonConsts in '..\common\CommonConsts.pas',
+  frmDriverControl in '..\common\OTFE\OTFEFreeOTFE\frmDriverControl.pas' {frmDriverControl},
+  frmCommonMain in '..\common\frmCommonMain.pas' {frmCommonMain},
+  lcCommandLine in '..\common\lcCommandLine.pas';
 
 {$R *.RES}
 
 var
   otherRunningAppWindow: THandle;
-  CommandLineOnly:       Boolean;
+//  CommandLineOnly:       Boolean;
   cmdExitCode:           eCmdLine_Exit;
   settingsFilename:      String;
 {$IF CompilerVersion >= 18.5}
@@ -159,28 +169,32 @@ begin
   Application.MainFormOnTaskbar := True;
 {$IFEND}
   Application.Title             := 'LibreCrypt';
-  CommandLineOnly               := False; // if error reading cmds,loading settings, default to off
+  cmdExitCode := ceSUCCESS;
+//  CommandLineOnly               := False; // if error reading cmds,loading settings, default to off
   try
 
 
-    MainSettings.gSettings := TMainSettings.Create();
+  //    must call early so correct settings type used
+  SetSettingsType(TMainSettings);
+  OTFEFreeOTFEBase_U.SetFreeOTFEType(TOTFEFreeOTFE);
+
     try
-      CommonSettings.CommonSettingsObj := MainSettings.gSettings;
-      if SDUCommandLineParameter(CMDLINE_SETTINGSFILE, settingsFilename) then begin
+      settingsFilename :=  GetCmdLine.settingsFileArg;
+      if  settingsFilename<>'' then begin
         settingsFilename := SDURelativePathToAbsolute(settingsFilename);
-        MainSettings.gSettings.CustomLocation := settingsFilename;
+        GetSettings().CustomLocation := settingsFilename;
       end;
 
-      MainSettings.gSettings.Load();
+      GetSettings().Load();
 
       Application.ShowMainForm := False;
       // NOTE: The main form's Visible property is set to FALSE anyway - it *HAS*
       // to be, otherwise it'll be displayed; despite the following two lines
       Application.CreateForm(TfrmMain, GfrmMain);
-      GfrmMain.Visible         := False;
+  GfrmMain.Visible         := False;
       Application.ShowMainForm := False;
+     cmdExitCode := GfrmMain.HandleCommandLineOpts();
 
-      CommandLineOnly := GfrmMain.HandleCommandLineOpts(cmdExitCode);
 
       //   if we were called with no command line arguments then
       //     if no running app was found then
@@ -191,10 +205,10 @@ begin
       //     quit (ran with command line arguments)
 
       // if we were called with no command line arguments then
-      if (not (CommandLineOnly)) then begin
+      if (not (GetCmdLine.IsCommandLineOnly)) then begin
         otherRunningAppWindow := SDUDetectExistingApp();
         // If no running app was found then
-        if ((otherRunningAppWindow = 0) or gSettings.OptAllowMultipleInstances) then begin
+        if ((otherRunningAppWindow = 0) or GetMainSettings().OptAllowMultipleInstances) then begin
           // We continue to run the main app
           GfrmMain.Visible         := True;
           Application.ShowMainForm := True;
@@ -218,7 +232,7 @@ begin
             // here, but not a priority...
           end;
 {$IFEND}
-          if SDUCommandLineSwitch(CMDLINE_MINIMIZE) then
+          if GetCmdLine.IsMinimize then
             Application.Minimize();
 
           Application.Run;
@@ -238,12 +252,8 @@ begin
       end;
 
     finally
-      // Note: We *don't* free of the Settings object if the main form was shown;
-      //       the main form is still closing down at this stage, and this causes
-      //       an exception.
-      //       Instead, this is free'd off in the FormDestroy(...) method
-      if not (Application.ShowMainForm) then
-        MainSettings.gSettings.Free();
+        //      free early so can catch any exceptions
+        FreeSettings();
     end;
     // only place is, or should be, catch-all exeption
   except
@@ -256,6 +266,6 @@ begin
 
   end;
 
-  if (CommandLineOnly and (cmdExitCode <> ceSUCCESS)) then
+  if (GetCmdLine.IsCommandLineOnly and (cmdExitCode <> ceSUCCESS)) then
     Halt(Integer(cmdExitCode)); // Note: System.ExitCode may be tested in finalization sections
 end.

@@ -12,11 +12,10 @@ by calling OTFEFreeOTFEBase_U.GetFreeOTFE or  TOTFEFreeOTFEDLL.GetFreeOTFE
 interface
 
 uses
-  //delphi
-  Classes, Windows,
-  //sdu
-
-  SDUGeneral,
+ //delphi / libs
+    Classes, Windows,
+  //sdu & LibreCrypt utils
+   lcTypes, sdugeneral,
   OTFE_U,
   OTFEFreeOTFEBase_U,
   pkcs11_session,
@@ -25,10 +24,13 @@ uses
   FreeOTFEDLLHashAPI,
   FreeOTFEDLLCypherAPI,
   DriverAPI,
-  lcDebugLog,
-  // lc
+  lcDebugLog,  PartitionTools,
   OTFEFreeOTFE_DriverHashAPI,
-  OTFEFreeOTFE_DriverCypherAPI;
+  OTFEFreeOTFE_DriverCypherAPI
+   // LibreCrypt forms
+
+
+  ;
 
 type
   TMainAPI = record
@@ -95,7 +97,7 @@ type
     function GetDLLDir: String;
 
   protected
-    DriverAPI:           TMainAPI;
+    fDriver_API:           TMainAPI;
     fMountedHandles:     TStringList;// in unicdoe
     fCachedDiskGeometry: TStringList;
 
@@ -106,12 +108,13 @@ type
 
 
     function Connect(): Boolean; override;
-    function Disconnect(): Boolean; override;
+    procedure Disconnect(); override;
 
     procedure AddHandles(driveLetter: Char; handles: TMountedHandle);
     function GetHandles(driveLetter: Char; var handles: TMountedHandle): Boolean;
     procedure DeleteHandles(driveLetter: Char);
 
+    //todo:move DiskGeometry fns to separate file eg PartitionTools
     procedure AddDiskGeometry(driveLetter: Char; diskGeometry: TSDUDiskGeometry);
     procedure DeleteDiskGeometry(driveLetter: Char);
     // Internal use only; callers should normally use GetDiskGeometry(...)
@@ -172,35 +175,6 @@ type
 
 
     // ---------
-    // Raw volume access functions
-
-    function ReadWritePlaintextToVolume(
-      readNotWrite: Boolean;
-      volFilename: String;
-      volumeKey: TSDUBytes;
-      sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-      IVHashDriver: Ansistring;
-      IVHashGUID: TGUID;
-      IVCypherDriver: Ansistring;
-      IVCypherGUID: TGUID;
-      mainCypherDriver: Ansistring;
-      mainCypherGUID: TGUID;
-      VolumeFlags: Integer;
-      mountMountAs: TFreeOTFEMountAs;
-
-      dataOffset: Int64;
-    // Offset from within mounted volume from where to read/write data
-      dataLength: Integer;  // Length of data to read/write. In bytes
-      var data: TSDUBytes;  // Data to read/write
-
-      offset: Int64 = 0;
-      size: Int64 = 0;
-      storageMediaType: TFreeOTFEStorageMediaType = mtFixedMedia
-      ): Boolean; override;
-
-
-
-    // ---------
     // Internal caching functions
     procedure CachesCreate(); override;
     procedure CachesDestroy(); override;
@@ -234,6 +208,33 @@ type
       var hashDriverDetails: TFreeOTFEHashDriver): Boolean; override;
 
     function GetCypherDrivers(var cypherDrivers: TFreeOTFECypherDriverArray): Boolean; override;
+
+       // ---------
+    // Raw volume access functions
+
+    function ReadWritePlaintextToVolume(
+      readNotWrite: Boolean;
+      volFilename: String;
+      volumeKey: TSDUBytes;
+      sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
+      IVHashDriver: Ansistring;
+      IVHashGUID: TGUID;
+      IVCypherDriver: Ansistring;
+      IVCypherGUID: TGUID;
+      mainCypherDriver: Ansistring;
+      mainCypherGUID: TGUID;
+      VolumeFlags: Integer;
+      mountMountAs: TFreeOTFEMountAs;
+
+      dataOffset: Int64;
+    // Offset from within mounted volume from where to read/write data
+      dataLength: Integer;  // Length of data to read/write. In bytes
+      var data: TSDUBytes;  // Data to read/write
+
+      offset: Int64 = 0;
+      size: Int64 = 0;
+      storageMediaType: TFreeOTFEStorageMediaType = mtFixedMedia
+      ): Boolean; override;
 
 
     function _EncryptDecryptData(
@@ -362,21 +363,22 @@ function GetFreeOTFEDLL: TOTFEFreeOTFEDLL;
 implementation
 
 uses
-  // delphi
-  Dialogs,
+ //delphi / libs
+       Dialogs,
   SysUtils, Math, Controls, Forms,
   strutils,
-  //sdu / lclibs
-  SDUSysUtils,
+  //sdu & LibreCrypt utils
+      SDUSysUtils,
   SDUi18n,
   SDUClasses,
-  SDUFileIterator_U,
-  //LibreCrypt
-  OTFEConsts_U,
-  frmKeyEntryFreeOTFE,
-  frmKeyEntryLinux,
+  SDUFileIterator_U,OTFEConsts_U,
+
   OTFEFreeOTFE_LUKSAPI,
-  VolumeFileAPI;
+  VolumeFileAPI,
+  CommonSettings
+
+   // LibreCrypt forms
+  ;
 
 const
   DLL_HASH_FILE_PREFIX   = 'FreeOTFEHash';
@@ -510,7 +512,7 @@ function TOTFEFreeOTFEDLL.Connect(): Boolean;
 begin
   Result := False;
 
-  if LoadLibraryMain(DriverAPI) then begin
+  if LoadLibraryMain(fDriver_API) then begin
     Result := True;
   end else begin
     LastErrorCode := OTFE_ERR_DRIVER_FAILURE;
@@ -520,10 +522,9 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.Disconnect(): Boolean;
+procedure TOTFEFreeOTFEDLL.Disconnect();
 begin
-  FreeLibraryMain(DriverAPI);
-  Result := True;
+  FreeLibraryMain(fDriver_API);
 end;
 
 
@@ -577,7 +578,7 @@ begin
   // SDUInitAndZeroBuffer(0,emptyIV);
   Result               := MountDiskDevice(tempMountDriveLetter,
     volFilename, volumeKey,
-    sectorIVGenMethod, nil, False,
+    sectorIVGenMethod, nil, readNotWrite,  // mount as read only if reading
     IVHashDriver, IVHashGUID,
     IVCypherDriver,    // IV cypher
     IVCypherGUID,      // IV cypher
@@ -1553,7 +1554,7 @@ begin
       StrMove(@ptrDIOCBufferIn.Key, PAnsiChar(key), Length(key));
       StrMove(((PAnsiChar(@ptrDIOCBufferIn.Key)) + length(key)), PAnsiChar(data), Length(data));
 
-      if (DriverAPI.MainDLLFnMACData(bufferSizeIn,
+      if (fDriver_API.MainDLLFnMACData(bufferSizeIn,
         ptrDIOCBufferIn,
         bufferSizeOut,
         ptrDIOCBufferOut) =
@@ -1659,7 +1660,7 @@ begin
         PAnsiChar(@Salt[0]), Length(Salt));
 
 
-      if (DriverAPI.MainDLLFnDeriveKey(bufferSizeIn,
+      if (fDriver_API.MainDLLFnDeriveKey(bufferSizeIn,
         ptrDIOCBufferIn,
         bufferSizeOut,
         ptrDIOCBufferOut) =
@@ -2090,7 +2091,7 @@ DebugMsg('  size: '+inttostr(size));
     useVolumeFlags := VolumeFlags;
     // Yes, this timestamp reverting is the right way around; if the bit
     // *isn't* set, the timestamps get reverted
-    if frevertVolTimestamps then begin
+    if GetSettings().OptRevertVolTimestamps then begin
       // Strip off bit VOL_FLAGS_NORMAL_TIMESTAMPS
       useVolumeFlags := useVolumeFlags and not (VOL_FLAGS_NORMAL_TIMESTAMPS);
     end else begin
@@ -2112,7 +2113,7 @@ DebugMsg('  size: '+inttostr(size));
       PAnsiChar(strMetaData), Length(strMetaData));
 
 
-    mntHandles.DeviceHandle := DriverAPI.DSK_Init(nil, ptrDIOCBuffer);
+    mntHandles.DeviceHandle := fDriver_API.DSK_Init(nil, ptrDIOCBuffer);
     if (mntHandles.DeviceHandle <> 0) then begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('Mounted OK!');
@@ -2123,13 +2124,13 @@ DebugMsg('Mounted OK!');
       end;
       openShareMode := 0; // Don't allow sharing
 
-      mntHandles.OpenHandle := DriverAPI.DSK_Open(
+      mntHandles.OpenHandle := fDriver_API.DSK_Open(
         mntHandles.DeviceHandle,
         openAccessCode,
         openShareMode
         );
       if (mntHandles.OpenHandle = 0) then begin
-        DriverAPI.DSK_Deinit(mntHandles.DeviceHandle);
+        fDriver_API.DSK_Deinit(mntHandles.DeviceHandle);
       end else begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('Opened OK!');
@@ -2239,7 +2240,7 @@ begin
   if GetHandles(useDriveLetter, handles) then begin
     if emergency then begin
       DIOCBuffer.ForceDismounts := emergency;
-      DriverAPI.DSK_IOControl(
+      fDriver_API.DSK_IOControl(
         handles.OpenHandle,
         IOCTL_FREEOTFE_SET_FORCE_DISMOUNT,
         @DIOCBuffer,
@@ -2249,8 +2250,8 @@ begin
         );
     end;
 
-    DriverAPI.DSK_Close(handles.OpenHandle);
-    DriverAPI.DSK_Deinit(handles.DeviceHandle);
+    fDriver_API.DSK_Close(handles.OpenHandle);
+    fDriver_API.DSK_Deinit(handles.DeviceHandle);
 
     DeleteDiskGeometry(useDriveLetter);
     DeleteHandles(useDriveLetter);
@@ -2349,7 +2350,7 @@ begin
   driveLetter := upcase(driveLetter);
 
   if GetHandles(driveLetter, handles) then begin
-    if DriverAPI.DSK_IOControl(handles.OpenHandle,
+    if fDriver_API.DSK_IOControl(handles.OpenHandle,
       IOCTL_FREEOTFE_GET_DISK_DEVICE_STATUS,
       nil, 0,
       @outBuffer, sizeof(outBuffer),
@@ -2411,7 +2412,7 @@ begin
   CheckActive();
 
   if GetHandles(driveLetter, handles) then begin
-    if (DriverAPI.DSK_Seek(handles.OpenHandle,
+    if (fDriver_API.DSK_Seek(handles.OpenHandle,
       offset, FILE_BEGIN
       ) =
       ERROR_SUCCESS) then begin
@@ -2449,7 +2450,7 @@ begin
       sgReq.sr_sglist[1].sb_len := bufferSize;
       sgReq.sr_sglist[1].sb_buf := ptrBuffer;
 
-      if DriverAPI.DSK_IOControl(handles.OpenHandle,
+      if fDriver_API.DSK_IOControl(handles.OpenHandle,
         IOCTL_DISK_READ,
         // DISK_IOCTL_READ, - old const; changed to IOCTL_DISK_READ in WinCE 3.0
         @sgReq, sizeof(sgReq),
@@ -2498,7 +2499,7 @@ begin
       sgReq.sr_sglist[1].sb_len := bufferSize;
       sgReq.sr_sglist[1].sb_buf := ptrBuffer;
 
-      if DriverAPI.DSK_IOControl(handles.OpenHandle,
+      if fDriver_API.DSK_IOControl(handles.OpenHandle,
         IOCTL_DISK_WRITE,
         // DISK_IOCTL_WRITE, - old const; changed to IOCTL_DISK_WRITE in WinCE 3.0
         @sgReq, sizeof(sgReq),
@@ -2668,7 +2669,7 @@ begin
   CheckActive();
 
   if GetHandles(driveLetter, handles) then begin
-    if DriverAPI.DSK_IOControl(handles.OpenHandle,
+    if fDriver_API.DSK_IOControl(handles.OpenHandle,
       IOCTL_DISK_GETINFO, nil,
       0, @diskGeometry,
       sizeof(diskGeometry),

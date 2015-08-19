@@ -11,8 +11,14 @@ unit MouseRNGCaptureDlg_U;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  MouseRNG, StdCtrls, SDUForms;
+     //delphi & libs
+         Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  //sdu & LibreCrypt utils
+       MouseRNG, StdCtrls,
+   // LibreCrypt forms
+
+
+  SDUForms;
 
 const
   BUFFER_SIZE = 1024*1024*8;  // 1MB of data

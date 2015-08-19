@@ -133,7 +133,7 @@
 			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-			<Debugger_RunParams>/dev_menu /noexit</Debugger_RunParams>
+			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
 			<VerInfo_Keys>CompanyName=LibreCrypt;FileDescription=LibreCrypt: Open-Source transparent disk encryption;FileVersion=6.2.0.0;InternalName=LibreCrypt;LegalCopyright=Copyright (C) 2010 Sarah Dean &amp; tdk;LegalTrademarks=LibreCrypt;OriginalFilename=LibreCrypt;ProductName=LibreCrypt;ProductVersion=6.2;Comments=http://LibreCrypt.eu</VerInfo_Keys>
 			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
 			<DCC_RangeChecking>true</DCC_RangeChecking>
@@ -229,22 +229,6 @@
 			<DCCReference Include="..\common\frmCypherReport.pas">
 				<Form>frmCypherReport</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\fmeBaseOptions.pas">
-				<Form>fmeOptions_Base</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
-			<DCCReference Include="fmeSystemTrayOptions.pas">
-				<Form>fmeOptions_SystemTray</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
-			<DCCReference Include="fmeHotKeysOptions.pas">
-				<Form>fmeOptions_Hotkeys</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
-			<DCCReference Include="fmeGeneralOptions.pas">
-				<Form>fmeOptions_FreeOTFEGeneral</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="..\common\frmInstallOnUSBDrive.pas">
 				<Form>frmInstallOnUSBDrive</Form>
 			</DCCReference>
@@ -255,15 +239,6 @@
 			<DCCReference Include="frmOptions.pas">
 				<Form>frmOptions_FreeOTFE</Form>
 			</DCCReference>
-			<DCCReference Include="fmeLcOptions.pas">
-				<Form>fmeFreeOTFEOptions_Base</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
-			<DCCReference Include="fmeAdvancedOptions.pas">
-				<Form>fmeOptions_FreeOTFEAdvanced</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
-			<DCCReference Include="..\common\CommonConsts.pas"/>
 			<DCCReference Include="..\common\frmLUKSHdrDump.pas">
 				<Form>frmCDBDump_LUKS</Form>
 			</DCCReference>
@@ -386,9 +361,6 @@
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmWizardCreateVolume.pas">
 				<Form>frmWizardCreateVolume</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\frmCommonMain.pas">
-				<Form>frmCommonMain</Form>
-			</DCCReference>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmWizardChangePasswordCreateKeyfile.pas">
 				<Form>frmWizardChangePasswordCreateKeyfile</Form>
 			</DCCReference>
@@ -405,7 +377,6 @@
 			<DCCReference Include="..\common\SDeanSecurity\Shredder\FileList_U.pas">
 				<Form>FileList_F</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\OTFE\AFSplitMerge.pas"/>
 			<DCCReference Include="..\common\fmePassword.pas">
 				<Form>frmePassword</Form>
 				<DesignClass>TFrame</DesignClass>
@@ -420,6 +391,28 @@
 			<DCCReference Include="frmCreateLUKSVolumeWizard.pas">
 				<Form>frmCreateLUKSVolumeWizard</Form>
 			</DCCReference>
+			<DCCReference Include="..\common\fmeContainerSize.pas">
+				<Form>TfmeContainerSize</Form>
+				<FormType>dfm</FormType>
+				<DesignClass>TFrame</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\common\lcTypes.pas"/>
+			<DCCReference Include="..\common\PartitionTools.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmCypherInfo.pas">
+				<Form>frmCypherInfo</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmSelectVolumeType.pas">
+				<Form>frmSelectVolumeType</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\OTFE\AFSplitMerge.pas"/>
+			<DCCReference Include="..\common\CommonConsts.pas"/>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmDriverControl.pas">
+				<Form>frmDriverControl</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\frmCommonMain.pas">
+				<Form>frmCommonMain</Form>
+			</DCCReference>
+			<DCCReference Include="..\common\lcCommandLine.pas"/>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

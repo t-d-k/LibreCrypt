@@ -16,7 +16,9 @@ uses
   Forms, Graphics, Messages, MouseRNG,
   PasswordRichEdit, Spin64, StdCtrls, SysUtils, Windows,
   //sdu
-  lcDialogs, sdurandpool, SDUStdCtrls, SDUGeneral, fmeDiskPartitionsPanel,
+  lcDialogs, sdurandpool, SDUStdCtrls,  fmeDiskPartitionsPanel,
+lcTypes,
+
   //LibreCrypt
   DriverAPI,   // Required for CRITICAL_DATA_LEN
   fmeSelectPartition,
@@ -151,14 +153,13 @@ type
   protected
     fsilent:       Boolean;
     fsilentResult: TModalResult;
-    procedure SetupInstructions(); override;
+    procedure _SetupInstructions(); override;
 
-    procedure EnableDisableControls(); override;
 
-    function IsTabSkipped(tabSheet: TTabSheet): Boolean; override;
+    function _IsTabSkipped(tabSheet: TTabSheet): Boolean; override;
 
     procedure FormWizardStepChanged(Sender: TObject);
-    function IsTabComplete(checkTab: TTabSheet): Boolean; override;
+    function _IsTabComplete(checkTab: TTabSheet): Boolean; override;
   public
     fChangePasswordCreateKeyfile: TChangePasswordCreateKeyfile;
 
@@ -181,15 +182,24 @@ type
 
   end;
 
+      function WizardChangePassword(SrcFilename: String = ''; OrigKeyPhrase: Ansistring = '';
+      NewKeyPhrase: Ansistring = ''; silent: Boolean = False): Boolean;
+    function WizardCreateKeyfile(silent: Boolean = False): Boolean;
+
 
 implementation
 
 {$R *.DFM}
 
 uses
+//delphi
   MSCryptoAPI,
+  // sdu/lcutils
+lcConsts, sduGeneral,
+
   OTFEFreeOTFEDLL_U,
-  PKCS11Lib, SDUi18n;
+  PKCS11Lib, SDUi18n,
+  pkcs11_library;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -200,9 +210,9 @@ const
   SDUCRLF = ''#13#10;
 {$ENDIF}
 
-resourcestring
-  FILEORPART_OPT_VOLUME_FILE = 'File';
-  FILEORPART_OPT_PARTITION   = 'Partition';
+const
+  FILEORPART_OPT_PARTITION_INDEX = 1; //index of 'partition' item in rgFileOrPartition
+  FILEORPART_OPT_VOLUME_FILE_INDEX = 0;// index of 'file' item
 
 { TODO 2 -otdk -crefactor : this uses a lot of same code and GUI as create volume - turn into frames }
 function TfrmWizardChangePasswordCreateKeyfile.GetSrcFilename(): String;
@@ -295,9 +305,9 @@ begin
 end;
 
 // Returns TRUE if the specified tab should be skipped in 'next' progression, otherwise FALSE
-function TfrmWizardChangePasswordCreateKeyfile.IsTabSkipped(tabSheet: TTabSheet): Boolean;
+function TfrmWizardChangePasswordCreateKeyfile._IsTabSkipped(tabSheet: TTabSheet): Boolean;
 begin
-  Result := inherited IsTabSkipped(tabSheet);
+  Result := inherited _IsTabSkipped(tabSheet);
 
   // DLL doesn't currently support partitions
   if (tabSheet = tsFileOrPartition) then begin
@@ -337,18 +347,10 @@ begin
 end;
 
 
-procedure TfrmWizardChangePasswordCreateKeyfile.EnableDisableControls();
-begin
-  inherited;
-
-  // (No wizard specific code for *this* wizard.)
-
-end;
-
 
  // This procedure will check to see if all items on the current tabsheet have
  // been successfully completed
-function TfrmWizardChangePasswordCreateKeyfile.IsTabComplete(checkTab: TTabSheet): Boolean;
+function TfrmWizardChangePasswordCreateKeyfile._IsTabComplete(checkTab: TTabSheet): Boolean;
 var
   randomBitsGenerated: Integer;
 begin
@@ -451,7 +453,7 @@ begin
   //SDUInitAndZeroBuffer(0,fCombinedRandomData);
 
   //  fCombinedRandomData := '';
-  { TODO -otdk -crefactor : this should all be in formcreate - but need to have global TOTFEFreeOTFEBase object first }
+  { TODO -otdk -crefactor : review what should be in formcreate  }
   // tsSrcFile
   if not fsilent then
     lblSrcFilename.Caption := '';
@@ -516,7 +518,7 @@ begin
   if ckRNGcryptlib.Enabled then
     ckRNGcryptlib.Checked := True;
 
-  ckRNGPKCS11.Enabled := PKCS11LibraryReady(GetFreeOTFEBase().PKCS11Library);
+  ckRNGPKCS11.Enabled := PKCS11LibraryReady(GPKCS11Library);
 
   // tsRNGMouseMovement
   InitMouseRNGData();
@@ -559,7 +561,7 @@ begin
   end;
 
 
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 
   if fSilent then begin
     ModalResult := mrCancel;
@@ -599,22 +601,22 @@ begin
   if (fChangePasswordCreateKeyfile = opChangePassword) then
     SetDestFilename(GetSrcFilename());
 
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.se64OffsetChange(Sender: TObject);
 begin
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.frmeNewPasswordChange(Sender: TObject);
 begin
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.seSaltLengthChange(Sender: TObject);
 begin
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.ckRNGClick(Sender: TObject);
@@ -644,7 +646,7 @@ begin
     end;
   end;
 
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.MouseRNGByteGenerated(Sender: TObject;
@@ -655,7 +657,7 @@ begin
     AddToMouseRNGData(random);
   end;
 
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 
 end;
 
@@ -670,7 +672,7 @@ begin
     lblGPGFilename.Caption := GPGOpenDialog.Filename;
   end;
 
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 
 end;
 
@@ -794,7 +796,7 @@ begin
 
 end;
 
-procedure TfrmWizardChangePasswordCreateKeyfile.SetupInstructions();
+procedure TfrmWizardChangePasswordCreateKeyfile._SetupInstructions();
 begin
   inherited;
 
@@ -827,7 +829,7 @@ begin
 
   end;
 
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 
 end;
 
@@ -843,29 +845,28 @@ begin
     lblSrcFilename.Caption := OpenDialog.Filename;
   end;
 
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.rgFileOrPartitionClick(Sender: TObject);
 begin
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 
 end;
 
 
 function TfrmWizardChangePasswordCreateKeyfile.GetIsPartition(): Boolean;
 begin
-  Result := (rgFileOrPartition.ItemIndex = rgFileOrPartition.Items.IndexOf(
-    FILEORPART_OPT_PARTITION));
+  Result := (rgFileOrPartition.ItemIndex = FILEORPART_OPT_PARTITION_INDEX);
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.SetIsPartition(const Value: Boolean);
 begin
   if Value then
-    rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_PARTITION)
+    rgFileOrPartition.ItemIndex := FILEORPART_OPT_PARTITION_INDEX
   else
-    rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_VOLUME_FILE);
+    rgFileOrPartition.ItemIndex := FILEORPART_OPT_VOLUME_FILE_INDEX;
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.FormWizardStepChanged(Sender: TObject);
@@ -905,10 +906,7 @@ begin
   { done -otdk -crefactor : populate in designer }
 
   // tsFileOrPartition
-  rgFileOrPartition.Items.Clear();
-  rgFileOrPartition.Items.Add(FILEORPART_OPT_VOLUME_FILE);
-  rgFileOrPartition.Items.Add(FILEORPART_OPT_PARTITION);
-  rgFileOrPartition.ItemIndex := rgFileOrPartition.Items.IndexOf(FILEORPART_OPT_VOLUME_FILE);
+  rgFileOrPartition.ItemIndex := FILEORPART_OPT_VOLUME_FILE_INDEX;
   frmeNewPassword.OnChange    := frmeNewPasswordChange;
 end;
 
@@ -922,7 +920,7 @@ end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.PopulatePKCS11Tokens();
 begin
-  FPKCS11TokensAvailable := (PKCS11PopulateTokenList(GetFreeOTFEBase().PKCS11Library,
+  FPKCS11TokensAvailable := (PKCS11PopulateTokenList(GPKCS11Library,
     cbToken) > 0);
 end;
 
@@ -930,7 +928,7 @@ procedure TfrmWizardChangePasswordCreateKeyfile.preSrcUserKeyChange(
   Sender: TObject);
 begin
   inherited;
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.pbRefreshClick(Sender: TObject);
@@ -940,7 +938,62 @@ end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.fmeSelectPartitionChanged(Sender: TObject);
 begin
-  UpdateUIAfterChangeOnCurrentTab();
+  _UpdateUIAfterChangeOnCurrentTab();
 end;
+
+
+// ----------------------------------------------------------------------------
+function WizardChangePassword(SrcFilename: String = '';
+  OrigKeyPhrase: Ansistring = ''; NewKeyPhrase: Ansistring = ''; silent: Boolean = False): Boolean;
+var
+  dlg: TfrmWizardChangePasswordCreateKeyfile;
+begin
+  Result := False;
+
+  if GetFreeOTFE().WarnIfNoHashOrCypherDrivers() then begin
+    dlg := TfrmWizardChangePasswordCreateKeyfile.Create(nil);
+    try
+      dlg.fChangePasswordCreateKeyfile := opChangePassword;
+      dlg.IsPartition := False;
+      dlg.SrcFileName := SrcFilename;
+      dlg.SrcUserKey := SDUStringToSDUBytes(OrigKeyPhrase);
+      dlg.DestUserKey := SDUStringToSDUBytes(NewKeyPhrase);
+      dlg.silent := silent;
+      Result     := (dlg.ShowModal() = mrOk);
+    finally
+      dlg.Free();
+    end;
+  end;
+end;
+
+// ----------------------------------------------------------------------------
+function WizardCreateKeyfile(silent: Boolean = False): Boolean;
+var
+  dlg: TfrmWizardChangePasswordCreateKeyfile;
+begin
+  Result := False;
+
+  if GetFreeOTFE().WarnIfNoHashOrCypherDrivers() then begin
+    dlg := TfrmWizardChangePasswordCreateKeyfile.Create(nil);
+    try
+      dlg.fChangePasswordCreateKeyfile := opCreateKeyfile;
+      dlg.silent := silent;
+      //thinks this not needed:
+{
+      if silent then begin
+        dlg.pbFinishClick(self);
+        Result := True;
+      end else begin
+
+      end;    }
+      Result     := (dlg.ShowModal() = mrOk);
+
+    finally
+      dlg.Free();
+    end;
+
+  end;
+end;
+
 
 end.

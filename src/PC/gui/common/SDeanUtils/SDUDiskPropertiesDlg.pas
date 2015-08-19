@@ -3,9 +3,18 @@ unit SDUDiskPropertiesDlg;
 interface
 
 uses
+ //delphi & libs
   CheckLst, Classes, Controls, Dialogs, ExtCtrls, Forms,
-  Graphics, Messages, SDUCheckLst,
-  SDUForms, SDUGeneral, StdCtrls, SysUtils, Variants, Windows;
+  Graphics, Messages, StdCtrls, SysUtils, Variants, Windows,
+  //sdu & lc utils
+
+
+   SDUCheckLst,
+  SDUForms, SDUGeneral
+   // lc forms
+    //main form
+
+  ;
 
 type
   TfrmDiskProperties = class (TSDUForm)
@@ -40,6 +49,14 @@ type
 implementation
 
 {$R *.dfm}
+uses
+ //delphi & libs
+  //sdu & lc utils
+  PartitionTools,  //for TSDUDriveLayoutInformationEx
+fmeSDUDiskPartitions
+   // lc forms
+    //main form
+;
 
 resourcestring
   RS_UNABLE_TO_OBTAIN_DATA = '<Unable to obtain data>';

@@ -11,14 +11,21 @@ unit frmKeyEntryLUKS;
 interface
 
 uses
+   //delphi
   Classes, ComCtrls, Controls, Dialogs,
-  ExtCtrls, Forms, Graphics, Messages, OTFEFreeOTFE_U, PasswordRichEdit, SDUForms,
+  ExtCtrls, Forms, Graphics, Messages,
   Spin64,
-  StdCtrls, SysUtils, Windows, // Required for TFreeOTFEMountAs
-  DriverAPI, OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFEBase_U,
+  StdCtrls, SysUtils, Windows,
+
+
+
+//lc utils
+      DriverAPI, OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFEBase_U, OTFEFreeOTFE_U, PasswordRichEdit, SDUForms,
   SDUFrames,
   SDUSpin64Units, SDUStdCtrls,  // Required for TFreeOTFESectorIVGenMethod and NULL_GUID
-  fmeLUKSKeyOrKeyfileEntry, SDUDropFiles, SDUFilenameEdit_U, SDUGeneral;
+ SDUDropFiles, SDUFilenameEdit_U, lcTypes,
+  //lc forms
+    fmeLUKSKeyOrKeyfileEntry;
 
 type
   TfrmKeyEntryLUKS = class (TSDUForm)
@@ -111,11 +118,20 @@ implementation
 
 
 uses
+//delphi
   ComObj,                      // Required for StringToGUID
   VolumeFileAPI,               // Required for SCTRIVGEN_USES_SECTOR_ID and SCTRIVGEN_USES_HASH
-  INIFiles, OTFEFreeOTFEDLL_U,
+  INIFiles,
+  // sdu, lcutils
+  OTFEFreeOTFEDLL_U,
   lcDialogs,
-  SDUi18n;
+  SDUi18n,
+lcConsts,
+sduGeneral,
+  CommonSettings,
+  MainSettings
+  //lc forms
+  ;
 
 procedure TfrmKeyEntryLUKS.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -189,11 +205,11 @@ begin
     if (cbDrive.Items.Count > 0) then begin
       cbDrive.ItemIndex := 0;
 
-      if (GetFreeOTFE().DefaultDriveLetter <> #0) then begin
+      if (GetSettings().OptDefaultDriveLetter <> #0) then begin
         // Start from 1; skip the default
         for i := 1 to (cbDrive.items.Count - 1) do begin
           currDriveLetter := cbDrive.Items[i][1];
-          if (currDriveLetter >= GetFreeOTFE().DefaultDriveLetter) then begin
+          if (currDriveLetter >= GetSettings().OptDefaultDriveLetter) then begin
             cbDrive.ItemIndex := i;
             break;
           end;
@@ -202,8 +218,8 @@ begin
     end;
   end;
 
-  if (GetFreeOTFEBase() is TOTFEFreeOTFE) then begin
-    SetMountAs(GetFreeOTFE().DefaultMountAs);
+  if (GetSettings() is TMainSettings) then begin
+    SetMountAs(GetMainSettings().OptDefaultMountAs);
   end else begin
     SetMountAs(fomaRemovableDisk);
   end;

@@ -3,9 +3,6 @@ inherited frmePassword: TfrmePassword
   Height = 81
   ExplicitWidth = 498
   ExplicitHeight = 81
-  DesignSize = (
-    498
-    81)
   object lblKeyPhrase: TLabel
     Left = 8
     Top = 3
@@ -13,23 +10,27 @@ inherited frmePassword: TfrmePassword
     Height = 13
     Caption = '&Key phrase:'
   end
-  object preUserKeyFirst: TOTFEFreeOTFE_PasswordRichEdit
-    Left = 71
+  object mmShown: TMemo
+    Left = 80
     Top = 3
-    Width = 424
-    Height = 75
-    Anchors = [akLeft, akTop, akRight, akBottom]
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
+    Width = 401
+    Height = 65
     Lines.Strings = (
       '')
-    ParentFont = False
-    PlainText = True
-    ScrollBars = ssBoth
     TabOrder = 0
-    OnChange = preUserKeyFirstChange
+    OnChange = mmShownChange
+    OnKeyDown = mmShownKeyDown
+    OnKeyPress = mmShownKeyPress
+    OnKeyUp = mmShownKeyUp
+  end
+  object mmReal: TMemo
+    Left = 184
+    Top = 19
+    Width = 145
+    Height = 22
+    Lines.Strings = (
+      'mmReal')
+    TabOrder = 1
+    Visible = False
   end
 end

@@ -1,4 +1,7 @@
 unit SDUFilenameEdit_U;
+{
+frame with browse button and edit box for opening or saving files
+}
 
 interface
 
@@ -17,7 +20,7 @@ type
     procedure pbBrowseClick(Sender: TObject);
     procedure FrameEnter(Sender: TObject);
     procedure edFilenameChange(Sender: TObject);
-    procedure FrameResize(Sender: TObject);
+
   PRIVATE
     FFilenameEditType: TSDUFilenamEditType;
 
@@ -27,19 +30,9 @@ type
     FDefaultExt:  String;
     FOnChange:    TNotifyEvent;
 
-    procedure TweakControlsLayout();
+//    procedure TweakControlsLayout();
 
   PROTECTED
-{
-    function  GetInitialDir(): string;
-    procedure SetInitialDir(value: string);
-    function  GetFilter(): string;
-    procedure SetFilter(value: string);
-    function  GetFilterIndex(): integer;
-    procedure SetFilterIndex(value: integer);
-    function  GetDefaultExt(): string;
-    procedure SetDefaultExt(value: string);
-}
 
     function GetFilename(): String;
     procedure SetFilename(Value: String);
@@ -48,9 +41,9 @@ type
 
     procedure SetEnabled(Value: Boolean); OVERRIDE;
 
-    procedure Resizing(State: TWindowState); OVERRIDE;
 
-    procedure DesigningSummary();
+
+//    procedure DesigningSummary();
 
     procedure BrowseDialogOpen();
     procedure BrowseDialogSave();
@@ -84,60 +77,62 @@ type
     property OnChange: TNotifyEvent Read FOnChange Write FOnChange;
   end;
 
-procedure Register;
+//procedure Register;
+procedure FreeOTFEGUISetupOpenSaveDialog(fe: TSDUFilenameEdit); overload;
 
 implementation
 
 {$R *.dfm}
 
 uses
-  SDUGeneral;
+  //sdu
+  SDUGeneral,CommonSettings;
 
 const
   // The space between the two controls
   CONTROL_MARGIN = 5;
 
-procedure Register;
-begin
-  RegisterComponents('SDeanUtils', [TSDUFilenameEdit]);
-end;
+//procedure Register;
+//begin
+//  RegisterComponents('SDeanUtils', [TSDUFilenameEdit]);
+//end;
 
 constructor TSDUFilenameEdit.Create(AOwner: TComponent);
 begin
   inherited;
 
-  DesigningSummary();
+//  DesigningSummary();
 
   edFilename.Text := '';
 
-  self.Height := edFilename.Height;
+//  self.Height := edFilename.Height;
 
-  TweakControlsLayout();
+//  TweakControlsLayout();
 
-  edFilename.Anchors := [akLeft, akRight, akTop];
-  pbBrowse.Anchors   := [akRight, akTop];
-
-  self.Constraints.MinHeight := edFilename.Height;
-  self.Constraints.MaxHeight := edFilename.Height;
+//  edFilename.Anchors := [akLeft, akRight, akTop];
+//  pbBrowse.Anchors   := [akRight, akTop];
+//
+//  self.Constraints.MinHeight := edFilename.Height;
+//  self.Constraints.MaxHeight := edFilename.Height;
 end;
 
 destructor TSDUFilenameEdit.Destroy();
 begin
   inherited;
 end;
-
-procedure TSDUFilenameEdit.TweakControlsLayout();
-begin
-  pbBrowse.Height := edFilename.Height;
-  pbBrowse.Width  := pbBrowse.Height;
-
-  edFilename.Top   := 0;
-  edFilename.left  := 0;
-  edFilename.Width := self.Width - (pbBrowse.Width + CONTROL_MARGIN);
-
-  pbBrowse.Top  := 0;
-  pbBrowse.left := edFilename.Width + CONTROL_MARGIN;
-end;
+//
+//procedure TSDUFilenameEdit.TweakControlsLayout();
+//begin
+//  pbBrowse.Height := edFilename.Height;
+//  pbBrowse.Width  := pbBrowse.Height;
+//
+//  edFilename.Top   := 0;
+//  edFilename.left  := 0;
+//  edFilename.Width := self.Width - (pbBrowse.Width + CONTROL_MARGIN);
+//
+//  pbBrowse.Top  := 0;
+//  pbBrowse.left := edFilename.Width + CONTROL_MARGIN;
+//end;
 
 {
 function TSDUFilenameEdit.GetInitialDir(): string;
@@ -300,35 +295,41 @@ end;
  // design time.
  // This makes it easier to see what type of filename edit it is. At runtime,
  // the button's caption will revert to "..."
-procedure TSDUFilenameEdit.DesigningSummary();
-begin
-  if (csDesigning in ComponentState) then begin
-    pbBrowse.Font.Style := [fsBold];
-    pbBrowse.Caption    := 'O';
-    if (FilenameEditType = fetSave) then begin
-      pbBrowse.Caption := 'S';
-    end;
+//procedure TSDUFilenameEdit.DesigningSummary();
+//begin
+//  if (csDesigning in ComponentState) then begin
+//
+////    pbBrowse.Caption    := 'O';
+//    if (FilenameEditType = fetSave) then begin
+////      pbBrowse.Caption := 'S';
+//      pbBrowse.Font.Style := [fsBold];
+//    end;
+//  end;
+//end;
 
-  end;
-
-end;
-
-procedure TSDUFilenameEdit.Resizing(State: TWindowState);
-begin
-  inherited;
-  DesigningSummary();
-end;
+//procedure TSDUFilenameEdit.Resizing(State: TWindowState);
+//begin
+//  inherited;
+//  DesigningSummary();
+//end;
 
 procedure TSDUFilenameEdit.SetFilenameEditType(Value: TSDUFilenamEditType);
 begin
   FFilenameEditType := Value;
-  DesigningSummary();
+//  DesigningSummary();
 end;
 
-procedure TSDUFilenameEdit.FrameResize(Sender: TObject);
+//procedure TSDUFilenameEdit.FrameResize(Sender: TObject);
+//begin
+//  inherited;
+////  TweakControlsLayout();
+//end;
+
+
+procedure FreeOTFEGUISetupOpenSaveDialog(fe: TSDUFilenameEdit);
 begin
-  inherited;
-  TweakControlsLayout();
+  FreeOTFEGUISetupOpenSaveDialog(fe.OpenDialog1);
+  FreeOTFEGUISetupOpenSaveDialog(fe.SaveDialog1);
 end;
 
 end.

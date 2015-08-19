@@ -48,9 +48,13 @@ implementation
 {$R *.DFM}
 
 uses
+//lc utils
   lcDialogs,
   OTFEFreeOTFE_U, SDUGeneral,
   SDUi18n;
+const
+  // Default volume size as 25MB
+  DEFAULT_VOLUME_SIZE: ULONGLONG = 25 * BYTES_IN_MEGABYTE;
 
 procedure TfrmNewVolumeSize.pbOKClick(Sender: TObject);
 begin

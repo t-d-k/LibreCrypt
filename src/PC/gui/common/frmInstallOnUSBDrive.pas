@@ -44,9 +44,13 @@ implementation
 {$R *.dfm}
 
 uses
+//delphi
 {$WARN UNIT_PLATFORM OFF}
   FileCtrl,
 {$WARN UNIT_PLATFORM ON}
+//sdu lcutils
+lcConsts,
+
   lcDialogs,
   SDUGeneral, SDUi18n;
 

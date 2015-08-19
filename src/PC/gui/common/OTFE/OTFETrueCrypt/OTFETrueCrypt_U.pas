@@ -54,7 +54,7 @@ type
     CurrentOS: integer;
 
     function  Connect(): boolean;
-    function  Disconnect(): boolean;
+    procedure  Disconnect();
     procedure SetActive(AValue : Boolean); override;
 
     function  GetDisksMounted(var mountedDrives: Ansistring; volumeFilenames: TStrings): boolean;
@@ -299,13 +299,11 @@ begin
 
 end;
 
-function TOTFETrueCrypt.Disconnect(): boolean;
+procedure TOTFETrueCrypt.Disconnect();
 begin
   if Active then
-    begin
+
     CloseHandle(hTrueCryptVxD);
-    end;
-  Result := TRUE;
 
 end;
 
@@ -3092,7 +3090,7 @@ begin
           finished := (LastErrorCode<>OTFE_ERR_WRONG_PASSWORD);
           if not(finished) then
             begin
-            MessageDlg('Wrong passsword entered; try again', mtError, [mbOK], 0);
+            MessageDlg('Wrong password entered; try again', mtError, [mbOK], 0);
             end;
           end;
         end;

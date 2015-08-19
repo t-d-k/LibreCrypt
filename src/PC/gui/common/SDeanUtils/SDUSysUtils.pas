@@ -7,7 +7,7 @@ interface
 uses
   SysUtils, Windows, Forms,
   //sdu
-  SDUGeneral {for DriveLetterString};
+lcTypes {for DriveLetterString};
 
  // Identical to FileAge(filename, datetime) in Delphi 2007
  // This function included to allow same API call to be used in Delphi 7
@@ -36,7 +36,7 @@ function SHFormatDrive(Handle: HWND; Drive, ID, Options: Word): Longint;
 function UACRun(filenameAndPath, cmdLineParams: String;
   suppressMsgs: Boolean; allowUACEscalation: Boolean; out errMsg: String): Boolean;
 
-function Format_drive(drivesToFormat: DriveLetterString;silent:Boolean  =false): Boolean;
+function Format_drive(driveToFormat: DriveLetterChar;silent:Boolean  =false): Boolean;
 
 resourcestring
   FORMAT_ERR = 'Your encrypted drive could not be formatted.'#10#13#10#13 +
@@ -48,7 +48,10 @@ uses
 {$IF CompilerVersion >= 18.5}
   WideStrUtils,
 {$IFEND}
-  lcDialogs, System.UITypes, ShellApi;
+  lcDialogs, System.UITypes, ShellApi,
+  //sdu,lcutils
+  sdugeneral
+  ;
 
 const
   // for shformat
@@ -184,20 +187,19 @@ begin
 end;
 
 
-function Format_drive(drivesToFormat: DriveLetterString;silent:Boolean  =false): Boolean;
-resourcestring
-  FORMAT_CAPTION = 'Format';
+function Format_drive(driveToFormat: DriveLetterChar;silent:Boolean  =false): Boolean;
+//resourcestring
+//  FORMAT_CAPTION = 'Format';
 var
-  i:         Integer;
-  currDrive: DriveLetterChar;
+//  i:         Integer;
+//  currDrive: DriveLetterChar;
   //  driveNum:  Word;
-  formatRet: Boolean;
-cont :boolean;
+//  formatRet: Boolean;
+//cont :boolean;
   cmd, errMsg, newlinePath: String;
 begin
   Result := True;
-  for i := 1 to length(drivesToFormat) do begin
-    currDrive   := drivesToFormat[i];
+//    currDrive   := drivesToFormat[i];
     //    driveNum  := Ord(currDrive) - Ord('A');
     {DONE: use cmd line - see below}
     //http://stackoverflow.com/questions/2648305/format-drive-by-c
@@ -210,21 +212,19 @@ begin
     {$ENDIF}
     newlinePath := newlinePath + 'tools\newline.txt';  // contains newlines
     newlinePath := SDUGetFinalPath(newlinePath);       // resolve any mapped drives, as will run as admin
-    cmd         := format('/c format %s: /fs:fat /q /v:LibreCrypt < %s', [currDrive, newlinePath]);
-    formatRet   := False;
-    if silent then
-      cont := true
-    else
-      cont := SDUConfirmOK(format('Format drive %s?', [currDrive]));
-    if cont then
-      formatRet := UACRun('cmd', cmd, False, True, errMsg); //causes hang?
+    cmd         := format('/c format %s: /fs:fat /q /v:LibreCrypt < %s', [driveToFormat, newlinePath]);
+//    formatRet   := False;
+    if not silent then
+      Result := SDUConfirmOK(format('Format drive %s?', [driveToFormat]));
+    if Result then begin
+      Result := UACRun('cmd', cmd, False, True, errMsg); //causes hang?
 //        formatRet := SHFormatDrive(Application.handle, Ord(currDrive) - Ord('A'), SHFMT_ID_DEFAULT, SHFMT_OPT_FULL);
 
-    if not formatRet then begin
-      Result := False;
-      SDUMessageDlg(errMsg, TMsgDlgType.mtError);
-      break;
-    end else begin
+      if (not Result) and (not silent) then begin
+        SDUMessageDlg(errMsg, TMsgDlgType.mtError);
+    end;
+//      break;
+//    end else begin
     {  dialog only returns when done - use cmd line as above
       // close format dlg
       // see also http://stackoverflow.com/questions/15469657/why-is-findwindow-not-100-reliable
@@ -234,7 +234,7 @@ begin
       end;
       }
     end;
-  end;
+//  end;
 
   // This is *BIZARRE*.
   // If you are running under Windows Vista, and you mount a volume for

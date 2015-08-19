@@ -49,6 +49,8 @@ implementation
 {$R *.dfm}
 
 uses
+//lc utils
+lcConsts,
   DriverAPI,
   OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U,
