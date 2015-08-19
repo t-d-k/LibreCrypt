@@ -23,7 +23,7 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 
 ## Linux Examples: dm-crypt
 
-This section gives a series of examples of how to create Linux dm-crypt volumes, and then mount them using LibreCrypt.
+This section gives a series of examples of how to create Linux dm-crypt containers, and then open them using LibreCrypt.
 
 These examples have been
 tested using Fedora Core 3, with a v2.6.11.7 kernel installed; though
@@ -32,14 +32,14 @@ they should work for all compatible Linux distributions.
 <UL>
   * [Initial Setup](#level_3_heading_1)
   * [Defaults](#level_3_heading_2)
-  * [Example #1: Mounting a dm-crypt Volume Encrypted Using dm-crypt's Default Encryption](#level_3_heading_3)
-  * [Example #2: Mounting a dm-crypt Volume Encrypted Using 128 bit AES](#level_3_heading_4)
-  * [Example #3: Mounting a dm-crypt Volume Encrypted Using 256 bit AES, using SHA256 ESSIV](#level_3_heading_5)
-  * [Example #4: Mounting a dm-crypt Volume Encrypted Using 448 bit Blowfish](#level_3_heading_6)
-  * [Example #5: Mounting a dm-crypt Volume Encrypted Using 256 bit Twofish and Offset](#level_3_heading_7)
-  * [Example #6: Mounting a dm-crypt Volume Encrypted Using 256 bit AES with MD5 Password Hashing](#level_3_heading_8)
-  * [Example #7: Mounting a dm-crypt Volume Encrypted Using 448 bit Blowfish, MD5 Password Hashing and SHA-256 ESSIV](#level_3_heading_9)
-  * [Example #8: Mounting a dm-crypt Volume Encrypted Using AES-256 in XTS Mode (aka XTS-AES-256)](#level_3_heading_10)
+  * [Example #1: Opening a dm-crypt Container Encrypted Using dm-crypt's Default Encryption](#level_3_heading_3)
+  * [Example #2: Opening a dm-crypt Container Encrypted Using 128 bit AES](#level_3_heading_4)
+  * [Example #3: Opening a dm-crypt Container Encrypted Using 256 bit AES, using SHA256 ESSIV](#level_3_heading_5)
+  * [Example #4: Opening a dm-crypt Container Encrypted Using 448 bit Blowfish](#level_3_heading_6)
+  * [Example #5: Opening a dm-crypt Container Encrypted Using 256 bit Twofish and Offset](#level_3_heading_7)
+  * [Example #6: Opening a dm-crypt Container Encrypted Using 256 bit AES with MD5 Password Hashing](#level_3_heading_8)
+  * [Example #7: Opening a dm-crypt Container Encrypted Using 448 bit Blowfish, MD5 Password Hashing and SHA-256 ESSIV](#level_3_heading_9)
+  * [Example #8: Opening a dm-crypt Container Encrypted Using AES-256 in XTS Mode (aka XTS-AES-256)](#level_3_heading_10)
 </UL>
 
 * * * 
@@ -117,18 +117,18 @@ If not overridden by the user, dm-crypt defaults to encrypting with:
 
 * * * 
 <A NAME="level_3_heading_3">
-### Example #1: Mounting a dm-crypt Volume Encrypted Using dm-crypt's Default Encryption
+### Example #1: Opening a dm-crypt Container Encrypted Using dm-crypt's Default Encryption
 </A>
 
-This example demonstrates use of a dm-crypt volume using the dm-crypt's
+This example demonstrates use of a dm-crypt container using the dm-crypt's
 default encryption system: AES128 with the user's password hashed with
 RIPEMD160, using the 32 bit sector IDs as encryption IVs
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 	
-	dd if=/dev/zero of=./volumes/vol_default.vol bs=1K count=100
-	losetup /dev/loop0 ./volumes/vol_default.vol
+	dd if=/dev/zero of=./containers/vol_default.vol bs=1K count=100
+	losetup /dev/loop0 ./containers/vol_default.vol
 	echo password1234567890ABC | cryptsetup create myMapper /dev/loop0
 	dmsetup ls
 	dmsetup table
@@ -148,13 +148,13 @@ Creating the volume file under Linux:
 	rm -rf ./test_mountpoint
 
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
 <OL>
 
-  * Select "Linux | Mount..."
+  * Select "Linux | Open..."
 
-  * Select the volume file
+  * Select the container file
 
   * "Key" tab:
 
@@ -169,7 +169,6 @@ Mounting the volume under LibreCrypt:
 
   </UL>
   * "Encryption" tab:
-
   <UL>
 * Select the "AES (CBC; 256/128)" cypher
 * Select "32 bit sector ID" as the IV generation method* Set "Sector zero location" to "Start of encrypted data"
@@ -182,7 +181,7 @@ Mounting the volume under LibreCrypt:
 * Leave sizelimit at 0
 
   </UL>
-  * "Mount options" tab:
+  * "Open options" tab:
 
   <UL>
 * Select any unused drive letter
@@ -195,15 +194,15 @@ Mounting the volume under LibreCrypt:
 
 * * * 
 <A NAME="level_3_heading_4">
-### Example #2: Mounting a dm-crypt Volume Encrypted Using 128 bit AES
+### Example #2: Opening a dm-crypt Container Encrypted Using 128 bit AES
 </A>
 
-This example demonstrates use of a dm-crypt AES128 volume.
+This example demonstrates use of a dm-crypt AES128 container.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
-	dd if=/dev/zero of=./volumes/vol_aes128.vol bs=1K count=100
-	losetup /dev/loop0 ./volumes/vol_aes128.vol
+	dd if=/dev/zero of=./containers/vol_aes128.vol bs=1K count=100
+	losetup /dev/loop0 ./containers/vol_aes128.vol
 	echo password1234567890ABC | cryptsetup  -c aes -s 128 create myMapper /dev/loop0
 	dmsetup ls
 	dmsetup table
@@ -222,10 +221,10 @@ Creating the volume file under Linux:
 	losetup -d /dev/loop0
 	rm -rf ./test_mountpoint
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
-1. Select "Linux | Mount..."
-1. Select the volume file
+1. Select "Linux | Open..."
+1. Select the container file
 1. "Key" tab:
 
 	+ Enter "password1234567890ABC" as the key
@@ -246,7 +245,7 @@ Mounting the volume under LibreCrypt:
 	+ Leave offset at 0
 	+ Leave sizelimit at 0
 
-1. "Mount options" tab:
+1. "Open options" tab:
 
 	+ Select any unused drive letter
 	+ Leave readonly unchecked
@@ -257,17 +256,17 @@ Mounting the volume under LibreCrypt:
 
 * * * 
 <A NAME="level_3_heading_5">
-### Example #3: Mounting a dm-crypt Volume Encrypted Using 256 bit AES, using SHA256 ESSIV
+### Example #3: Opening a dm-crypt Container Encrypted Using 256 bit AES, using SHA256 ESSIV
 </A>
 
-This example demonstrates use of a dm-crypt AES256 volume using SHA-256 ESSIV sector IVs.
+This example demonstrates use of a dm-crypt AES256 container using SHA-256 ESSIV sector IVs.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_aes_essiv_sha256.vol bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_aes_essiv_sha256.vol
+dd if=/dev/zero of=./containers/vol_aes_essiv_sha256.vol bs=1K count=100
+losetup /dev/loop0 ./containers/vol_aes_essiv_sha256.vol
 echo password1234567890ABC | cryptsetup  -c aes-cbc-essiv:sha256 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -288,12 +287,12 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
 <OL>
 
-* Select "Linux | Mount..."
-* Select the volume file
+* Select "Linux | Open..."
+* Select the container file
 * "Key" tab:
 <UL>
 	* Enter "password1234567890ABC" as the key
@@ -319,7 +318,7 @@ Mounting the volume under LibreCrypt:
 	* Leave offset at 0
 	* Leave sizelimit at 0
 </UL>
-* "Mount options" tab:
+* "Open options" tab:
 <UL>
 	* Select any unused drive letter
 	* Leave readonly unchecked
@@ -330,17 +329,17 @@ Mounting the volume under LibreCrypt:
 
 * * * 
 <A NAME="level_3_heading_6">
-### Example #4: Mounting a dm-crypt Volume Encrypted Using 448 bit Blowfish
+### Example #4: Opening a dm-crypt Container Encrypted Using 448 bit Blowfish
 </A>
 
-This example demonstrates use of a dm-crypt Blowfish 448 volume.
+This example demonstrates use of a dm-crypt Blowfish 448 container.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_blowfish_448.vol bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_blowfish_448.vol
+dd if=/dev/zero of=./containers/vol_blowfish_448.vol bs=1K count=100
+losetup /dev/loop0 ./containers/vol_blowfish_448.vol
 echo password1234567890ABC | cryptsetup -c blowfish -s 448 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -361,13 +360,13 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
 <OL>
 
-* Select "Linux | Mount..."
+* Select "Linux | Open..."
 
-* Select the volume file
+* Select the container file
 
 * "Key" tab:
 
@@ -395,7 +394,7 @@ Mounting the volume under LibreCrypt:
 	* Leave sizelimit at 0
 
 </UL>
-* "Mount options" tab:
+* "Open options" tab:
 
 <UL>
 	* Select any unused drive letter
@@ -408,19 +407,19 @@ Mounting the volume under LibreCrypt:
 
 * * * 
 <A NAME="level_3_heading_7">
-### Example #5: Mounting a dm-crypt Volume Encrypted Using 256 bit Twofish and Offset
+### Example #5: Opening a dm-crypt Container Encrypted Using 256 bit Twofish and Offset
 </A>
 
-This example demonstrates use of a dm-crypt Twofish 256 volume, with the
-encrypted volume beginning at an offset of 3 sectors (3 x 512 = 1536 bytes) into the volume
+This example demonstrates use of a dm-crypt Twofish 256 container, with the
+encrypted container beginning at an offset of 3 sectors (3 x 512 = 1536 bytes) into the container
 file.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_twofish_o3.vol bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_twofish_o3.vol
+dd if=/dev/zero of=./containers/vol_twofish_o3.vol bs=1K count=100
+losetup /dev/loop0 ./containers/vol_twofish_o3.vol
 echo password1234567890ABC | cryptsetup -c twofish -o 3 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -441,12 +440,12 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
 <OL>
 
-* Select "Linux | Mount..."
-* Select the volume file
+* Select "Linux | Open..."
+* Select the container file
 * "Key" tab:
 <UL>
 * Enter "password1234567890ABC" as the key
@@ -468,7 +467,7 @@ Mounting the volume under LibreCrypt:
 <UL>
 * Set offset to 1536 bytes (i.e. 3 sectors, each of 512 bytes)* Leave sizelimit at 0
 </UL>
-* "Mount options" tab:
+* "Open options" tab:
 <UL>
 * Select any unused drive letter
 * Leave readonly unchecked
@@ -479,18 +478,18 @@ Mounting the volume under LibreCrypt:
 
 * * * 
 <A NAME="level_3_heading_8">
-### Example #6: Mounting a dm-crypt Volume Encrypted Using 256 bit AES with MD5 Password Hashing
+### Example #6: Opening a dm-crypt Container Encrypted Using 256 bit AES with MD5 Password Hashing
 </A>
 
-This example demonstrates use of a dm-crypt Twofish 256 volume, with the
+This example demonstrates use of a dm-crypt Twofish 256 container, with the
 user's password processed with MD5.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_aes_md5.vol bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_aes_md5.vol
+dd if=/dev/zero of=./containers/vol_aes_md5.vol bs=1K count=100
+losetup /dev/loop0 ./containers/vol_aes_md5.vol
 echo password1234567890ABC | cryptsetup -c aes -h md5 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -511,12 +510,12 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
 <OL>
 
-* Select "Linux | Mount..."
-* Select the volume file
+* Select "Linux | Open..."
+* Select the container file
 * "Key" tab:
 <UL>
 	* Enter "password1234567890ABC" as the key
@@ -543,7 +542,7 @@ Mounting the volume under LibreCrypt:
     * Leave sizelimit at 0
 
 </UL>
-* "Mount options" tab:
+* "Open options" tab:
 <UL>
 * Select any unused drive letter
 * Leave readonly unchecked
@@ -554,20 +553,20 @@ Mounting the volume under LibreCrypt:
 
 * * * 
 <A NAME="level_3_heading_9">
-### Example #7: Mounting a dm-crypt Volume Encrypted Using 448 bit Blowfish, MD5 Password Hashing and SHA-256 ESSIV
+### Example #7: Opening a dm-crypt Container Encrypted Using 448 bit Blowfish, MD5 Password Hashing and SHA-256 ESSIV
 </A>
 
-This example demonstrates use of a dm-crypt Blowfish 448 volume, with the
+This example demonstrates use of a dm-crypt Blowfish 448 container, with the
 user's password processed with MD5 and ESSIV using SHA-256.
 
 Note that although the main cypher is Blowfish 448, Blowfish 256 is used as the IV cypher as the IV hash outputs 256 bytes
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_blowfish_448_essivsha256_md5.vol bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_blowfish_448_essivsha256_md5.vol
+dd if=/dev/zero of=./containers/vol_blowfish_448_essivsha256_md5.vol bs=1K count=100
+losetup /dev/loop0 ./containers/vol_blowfish_448_essivsha256_md5.vol
 echo password1234567890ABC | cryptsetup -c blowfish-cbc-essiv:sha256 -s 448 -h md5 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -588,12 +587,12 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
 <OL>
 
-* Select "Linux | Mount..."
-* Select the volume file
+* Select "Linux | Open..."
+* Select the container file
 * "Key" tab:
 <UL>
 * Enter "password1234567890ABC" as the key
@@ -624,7 +623,7 @@ Mounting the volume under LibreCrypt:
     * Leave sizelimit at 0
 
 </UL>
-* "Mount options" tab:
+* "Open options" tab:
 <UL>
 * Select any unused drive letter
 * Leave readonly unchecked
@@ -635,17 +634,17 @@ Mounting the volume under LibreCrypt:
 
 * * * 
 <A NAME="level_3_heading_10">
-### Example #8: Mounting a dm-crypt Volume Encrypted Using AES-256 in XTS Mode (aka XTS-AES-256)
+### Example #8: Opening a dm-crypt Container Encrypted Using AES-256 in XTS Mode (aka XTS-AES-256)
 </A>
 
-This example demonstrates use of a dm-crypt AES-256 volume in XTS mode (aka XTS-AES-256) and using SHA-512 for hashing
+This example demonstrates use of a dm-crypt AES-256 container in XTS mode (aka XTS-AES-256) and using SHA-512 for hashing
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_aes_xts.vol bs=1K count=100
-losetup /dev/loop0 ./volumes/vol_aes_xts.vol
+dd if=/dev/zero of=./containers/vol_aes_xts.vol bs=1K count=100
+losetup /dev/loop0 ./containers/vol_aes_xts.vol
 echo password1234567890ABC | cryptsetup -h sha512 -c aes-xts-plain --key-size 512 create myMapper /dev/loop0
 dmsetup ls
 dmsetup table
@@ -666,11 +665,11 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
 <OL>
-* Select "Linux | Mount..."
-* Select the volume file
+* Select "Linux | Open..."
+* Select the container file
 * "Key" tab:
 <UL>
 * Enter "password1234567890ABC" as the key
@@ -691,7 +690,7 @@ Mounting the volume under LibreCrypt:
 * Leave offset at 0
 * Leave sizelimit at 0
 </UL>
-* "Mount options" tab:
+* "Open options" tab:
 <UL>
 * Select any unused drive letter
 * Leave readonly unchecked

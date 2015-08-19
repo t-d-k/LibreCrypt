@@ -39,7 +39,7 @@ The latest version of this document can be found at the [LibreCrypt project site
 * [Portable Mode](portable_mode.md)
 * [Security Token/Smartcard Support](pkcs11_support.md)
 * [Command Line Interface](command_line.md)
-* [Linux Volumes](Linux_volumes.md)
+* [Linux Containers](Linux_volumes.md)
 
 	+ [Examples: Cryptoloop](Linux_examples__cryptoloop.md)
 	+ [Examples: dm-crypt](Linux_examples__dm-crypt.md)
@@ -55,7 +55,7 @@ The latest version of this document can be found at the [LibreCrypt project site
 * [Technical Details](technical_details.md)
 
 
-* [Volumes and Keyfiles](technical_details__FreeOTFE_volumes_and_keyfiles.md)
+* [Containers and Keyfiles](technical_details__FreeOTFE_volumes_and_keyfiles.md)
 
 * [Critical Data Block Layouts](technical_details__FreeOTFE_CDB_layout.md)
 
@@ -65,8 +65,8 @@ The latest version of this document can be found at the [LibreCrypt project site
 	+ [Format ID 4](technical_details__FreeOTFE_CDB_layout_format_4.md)
 
 
-* [Creating Volumes](technical_details__creating_FreeOTFE_volumes.md)
-* [Mounting Volumes](technical_details__mounting_FreeOTFE_volumes.md)
+* [Creating Containers](technical_details__creating_FreeOTFE_volumes.md)
+* [Opening Containers](technical_details__mounting_FreeOTFE_volumes.md)
 * [Encrypted Partition Image Encryption/Decryption](technical_details__partition_encryption_decryption.md)
 * [Registry Entries](technical_details__registry_entries.md)
 * [Random Number Generators (RNGs)](technical_details__RNGs.md)

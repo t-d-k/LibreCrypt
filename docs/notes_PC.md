@@ -30,7 +30,7 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 
 
 
-* After creating a new volume, it must be mounted and formatted. 
+* After creating a new container, it is automatically opened and formatted. 
 * Linux encryption settings files (".les") files are straightforward text files which contain the settings entered.
 * Peter Gutmann's "cryptlib" may (**optionally**) be used as an RNG, this is inculded in the LibreCrypt installation. It may also be downloaded from [http://www.cs.auckland.ac.nz/~pgut001/cryptlib/](http://www.cs.auckland.ac.nz/%7Epgut001/cryptlib/). 
 If installed, the "cryptlib" option is not greyed out on RNG selection dialogs.
@@ -43,17 +43,17 @@ removing registry entries completely is another matter.
 * Creating an encrypted partition/disk will **overwrite** whatever data was stored on the partition/disk you select. **Be careful!**
 * An additional option is available to allow a program to be automatically executed:
   
-    * After a volume has been mounted
-    * Before a volume is dismounted
-    * After a volume is dismounted
+    * After a container has been opened
+    * Before a container is closed
+    * After a container is closed
 
 This functionality gives significantly more flexibility than the standard Windows "autorun" feature, and allows automated integrity checking, setup, cleanup to be carried out
 
-* For security reasons, any file launched by the post-mount and pre-dismount options must reside on the encrypted volume; a path relative to the root directory of the mounted volume should be specified in the options dialog (e.g. "\MyFiles\start.bat").
-For the post-dismount option, the absolute path to the file to be launched should be specified (e.g. "C:\volume_just_dismounted.bat")
+* For security reasons, any file launched by the post-open and pre-close options must reside on the encrypted container; a path relative to the root directory of the opened container should be specified in the options dialog (e.g. "\MyFiles\start.bat").
+For the post-close option, the absolute path to the file to be launched should be specified (e.g. "C:\container_just_closed.bat")
 
-* The pre-dismount executable must terminate before the dismount will be carried out.
-* The pre-dismount executable will not be launched in case of a forced/emergency dismount
+* The pre-close executable must terminate before the close will be carried out.
+* The pre-close executable will not be launched in case of a forced/emergency close
 
 
 <A NAME="level_4_heading_1">

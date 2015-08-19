@@ -1,5 +1,4 @@
 
-
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 <meta name="keywords" content="disk encryption, security, transparent, AES, plausible deniability, virtual drive, Linux, MS Windows, portable, USB drive, partition">
 <meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
@@ -31,11 +30,11 @@ Regardless of which installation procedure is used 'Safe Boot' needs to be disab
 Once installed it should be possible to turn it on again.
 
 ## Kaspersky
-There has been a report that Kapsersky anti-virus falsely reports LibreCrypt as a virus. Please disable this before installing.
+There have been reports that Kapsersky anti-virus falsely reports LibreCrypt as a virus. Please disable this before installing.
           
 ## Installation and Upgrading from a Previous Version
 
-If you wish to use LibreCrypt in portable mode, you do **not** have to carry out the installation described below; simply :
+If you wish to use LibreCrypt in portable mode, you do **not** have to carry out the installation described below; simply:
 
 1. Unzip the LibreCrypt_portable.zip file to wherever you want 
 2. When logged on as a user with administrator rights, double-click on "LibreCrypt.exe" (i.e. the file with the black box icon).
@@ -93,7 +92,7 @@ A manual installation procedure is also detailed below.
 		2. Change the driver's startup option to "At system startup" and click "Update"	
 9. Click the "Close" button
 
-These steps will install and setup a container in a minimalist installation. With these steps complete, you may now use LibreCrypt to create and open LibreCrypt and Linux encrypted volumes.
+These steps will install and setup a container in a minimalist installation. With these steps complete, you may now use LibreCrypt to create and open LibreCrypt and Linux encrypted containers.
 
 The drivers installed are configured such that they **do not automatically startup when your system boots**. Once you are happy that LibreCrypt is stable enough, you may return to the driver management dialog, select each driver in turn, and set them to start automatically at system startup.
 
@@ -104,7 +103,7 @@ Note: In order to use LibreCrypt, you **must** have the following drivers **inst
   1. At least one cypher driver ("FreeOTFECypher...")
 
 A number of the cyphers (e.g. RC6 and Twofish) have multiple drivers; these reflect different implementations (e.g. LibreCrypt comes with three Twofish implementations; one based on the libtomcrypt library, one based on the optimised reference implementation, and one based on Brian Gladman's implementation). Each of these drivers provides pretty much the same functionality, it's just the implementation that differs.	 
-**Were multiple drivers are provided for the same cypher, you only need to install one of them**. You **can** mix drivers based on different implementations (e.g. install the Gladman version of Twofish, while installing the libtomcrypt version of AES). Installing **all** of the drivers them is harmless, but does mean that you'll be prompted which one to use during mounting a volume, if more than one can be used to encrypt/decrypt that volume.
+**Were multiple drivers are provided for the same cypher, you only need to install one of them**. You **can** mix drivers based on different implementations (e.g. install the Gladman version of Twofish, while installing the libtomcrypt version of AES). Installing **all** of the drivers them is harmless, but does mean that you'll be prompted which one to use during opening a container, if more than one can be used to encrypt/decrypt that container.
 
 <A NAME="level_4_heading_1">
 ## Upgrading from a Previous Version, or from FreeOTFE
@@ -114,24 +113,19 @@ Because of potential changes within the driver API, you must ensure that you com
 This does not apply if upgrading from FreeOTFE 5.2 to LibreCrypt 6.0, as the driver API is the same.
 
 <A NAME="level_5_heading_1">
-### Special Notes if Upgrading from v2.00 of FreeOTFE
+### Special Notes if Upgrading from versions before 5.2 of FreeOTFE
 </A>
 
-Although the FreeOTFE drivers are backwardly compatible, v2.00 of the main FreeOTFE driver cannot correctly use LRW or XTS encrypted volumes. Such volumes may be mounted with the v2.00 driver, but their contents will not be usable.
+LibreCrypt dropped support for containers created in these versions in LibreCrypt version 6.3.
 
-<A NAME="level_5_heading_2">
-### Special Notes if Upgrading from v00.00.02 of FreeOTFE
-</A>
+Containers created with these versions will not open in LibreCrypt 6.3 or later.
 
-With the possible exception of those volumes which were generated using the "NULL" hash algorithm (which was only intended for testing purposes), the latest version of LibreCrypt should be backward compatible with existing volume files and you should experience no problems with mounting and using them.
-
-You will notice that when mounting volumes, you are presented with more options than with your previous version of LibreCrypt. For the purposes of mounting older volumes, these additional controls can be ignored **except for the "salt length" option**. Newer versions of LibreCrypt default this value to 256 bits, and you may well have to change this to the previous default of 128 bits. 
-
-When mounting containers, LibreCrypt will attempt to mount using the latest CDB format, only falling back and attempting to mount using the older CDB format if this fails.
-
-Although LibreCrypt is backward compatible with volumes created with FreeOTFE older than version 5.2, it is **highly recommended** that you update your volume files to ensure that they use the new CDB format, as this will allow you to take advantage of the numerous security improvements that the latest version provides. The easiest way to update your volume files to the new CDB format is to simply change their passwords by selecting "Tools | Change volume/keyfile password/details...".
+The easiest way to update your container files to the new format is to:
+* Open the containers in LibreCrypt version 6.2 or before, or FreeOTFE 5.2
+* Change the container passwords by selecting "Tools | Change Container/keyfile password/details...".
 
 IMPORTANT: If you created any ".les" (Linux Encryption Settings) files, please double check the next time you reload them, and ensure that your settings are correct. Changes due to ongoing development **may** cause some settings to change; to fix, simply confirm your settings are correct, and save them out again.
+
 
 
 

@@ -28,104 +28,99 @@ The latest version of this document can be found at the [LibreCrypt project site
       
             
 
-## Linux Volumes
+## Linux Containers
 
  
-_IMPORTANT_: This is obvious, _but_... If you are using FTP to transfer your Linux volumes between your Linux and MS Windows systems, _make sure you transfer the volume file in binary mode!_
+_IMPORTANT_: This is obvious, _but_... If you are using FTP to transfer your Linux containers between your Linux and MS Windows systems, _make sure you transfer the container file in binary mode!_
 
-  * [Creating Linux Volumes](#level_3_heading_1)
-  * [Hiding a Linux Volume Within Another Volume](#level_3_heading_2)
-  * [Mounting Volumes Created under Linux](#level_3_heading_3)
+  * [Creating dm-crypt Containers](#level_3_heading_1)
+  * [Hiding a dm-crypt Container Within Another Container](#level_3_heading_2)
+  * [Mounting Containers Created under Linux](#level_3_heading_3)
   * [Cryptoloop Specific Information](#level_3_heading_4)
   * [dm-crypt Specific Information](#level_3_heading_5)
   * [LUKS Specific Information](#level_3_heading_6)
-  * [Additional Notes on Linux Volumes](#level_3_heading_7)
+  * [Additional Notes on Linux Containers](#level_3_heading_7)
 
 * * * 
 <A NAME="level_3_heading_1">
-### Creating Linux Volumes
+### Creating Linux Containers
 </A>
 
-_*IMPORTANT: *Ifyou select the wrong options when creating a Linux volume using LibreCrypt, you will not be able to read it under Linux! (Although this is patently obvious, there are some people who...!)*NOTE:* At time of writing (17th July 2005), although LibreCrypt can read and write LUKS volumes, it cannot create them itself._
+_*IMPORTANT: *If you select the wrong options when creating a Linux dm-crypt container using LibreCrypt, you will not be able to read it under Linux! (Although this is patently obvious, there are some people who...!)_
 
-To create a new encrypted Linux-compatible volume:
+_*NOTE:* At time of writing (July 2015), although LibreCrypt can create LUKS containers, this is a beta stability feature._
+
+_LUKS is based on dm-crypt, however in this guide the term 'dm-crypt' is used for 'plain' dm-crypt containers with no LUKS headers._
+_On Linux, containers are called 'volumes', opening a container is called 'mounting' it, and closing, 'dismounting'._
+
+To create a new encrypted Linux-compatible dm-crypt container:
 
   1. Launch LibreCrypt
-  1. If you are creating a file-based volume (as opposed to an encrypted partition):
+  1. If you are creating a file-based container (as opposed to an encrypted partition):
   
-    2. Select "File | Linux volume | New..."
-    2. Enter the filename and size of the volume required.
+    2. Select "File | New Plain dm-crypt container ..."
+    2. Enter the filename and size of the container required.
     2. Click the "OK" button
     	This will create a file of the appropriate size, and is the equivalent of the Linux command:
 
 				dd if=/dev/zero of=./vol_none bs=1M count=**x**
 
-		Where "_x_" is the size of the volume in MB.	
+		Where "_x_" is the size of the container in MB.	
 	
 	        Option 2:
 	                         
 	                        mkfs.${fs}  -n {vol_name} -L {size --in MGTP) 
 		
-		This step is unnecessary in case of using an existing partition on your HDD --unless not previously crypted and or you need guaranteed verification the previous signatures are gone --  and is only required in order to create the file which is to store the encrypted data, and is best practice.
-
-  1.  Select "File | Linux volume | Mount..."
-  1.  Enter the appropriate parameters into the mount dialog.
-  		See the "Linux Examples" section in the documentation for example configurations; the choices you make here must reflect those options that are supported by the version of Linux you wish to subsequently use the volume with.
-  1. Click the "OK" button This will mount the volume using the encryption system(s) specified, and is analogous to executing the Linux commands:	
+	  This also formats and mounts the container, and is analogous to executing the Linux commands:	
 			
-				losetup /dev/loop0 &lt;volume file&gt; &lt;various options&gt;
+	  		# open loopback container
+				losetup /dev/loop0 &lt;container file&gt; &lt;various options&gt;
 				mkdir ./mountpoint
 				mount /dev/loop0 ./mountpoint
-
-		At this point a new drive should appear, although at this stage it is unformatted and you will be given an error if you attempt to access it (e.g. using Windows Explorer) 
-  1. Select the new drive 
-  1. Select "Tools | Format..."
-  	You will be shown the standard MS Windows format dialog. It is suggested that you select either the FAT or FAT32 filesystem.
-  1. Click "OK" button to format the volume.
-		This is analogous to the Linux command:
+				
+				# format it
+				mkdosfs /dev/loop0
+				# or
+        mkfs.dos  /dev/loop0  // if  dosprogs or  dos4unix are installed. 
+	  
+	  Choosing to overwrite with secure pseudorandom data ('chaff') is not absolutely necessary. For security reasons it is highly recommended if the file or partition is not previously encrypted and/or you need the previous data to be wiped.
+	
+		If overwriting with 'chaff' omitted it may be possible for an attacker to determine the amount of data you have stored on your container (the actual process of creating the container file otherwise consists of creating a file filled with zeros) 
+		Note: It is especially important that this step be carried out if you intend using the container just created as a "outer container" for storing a hidden container, or an attacker will be able to detect the hidden container. 
 		
+		Your container file is now fully ready for use.	
 		
-			mkdosfs /dev/loop0
-                        mkfs.dos  /dev/loop0  // if  dosprogs or  dos4unix are installed. 
-		
-		Your volume file is now fully ready for use, although for security reasons it is highly recommended that you now initialize the volume by writing data to all its sectors before making any further use of it.	
-		
-		This process is recommended because if omitted it may be possible for an attacker to determine the amount of data you have stored on your volume file (as stated above, the actual process of creating the volume file consists of creating a suitably large file, filled with zeros) 
-		Note: It is important that this step be carried out if you intend using the volume file just created as a "host" file for storing a second, hidden, encrypted volume. 
-			
-		
-	1. Switch back to LibreCrypt, and select "Tools | Overwrite free space..."
-	2. Click "Yes" when prompted if you wish to proceed.
-			LibreCrypt will then write pseudorandom data to the drive, which will then be encrypted before being written to the volume file.
-
 * * * 
 <A NAME="level_3_heading_2">
-### Hiding a Linux Volume Within Another Volume
+### Hiding a dm-crypt Container Within Another Container
 </A>
 
-To create a Linux volume within another volume file:
+To create a dm-crypt container hidden within another container file:
 
-  1. Create a container/Linux volume as normal, **ensuring that you initialize the volume by mounting it, formatting it, and then overwriting all its free space**.
-  1. Unmount the "outer" volume
-  1. Remount the "outer" volume, but specify a reasonable offset on the "File options" tab of the Linux mount dialog.
+  1. Create any kind of container as normal, **ensuring that it was creaed with chaff**. If it was not created with chaff, you should initialize the container by opening it, formatting it, and then overwriting all its free space.
+  1. If the outer container has been in use for some time, with files being deleted, it is safest to first overwrite all its free space even if it was originally created with chaff, see the FAQ for details.
+  1. Go to the properties of the opened container, and make a note of the "default hidden offset" value. 
+  1. Unmount the "outer" container
+  1. Click the "File | new hidden d,-cr" menu item, Remount the "outer" container as dm-crypt, but specify the offset on the "File options" tab of the dm-crypt open dialog.
+  
 
 * * * 
 <A NAME="level_3_heading_3">
-### Mounting Volumes Created under Linux
+### Mounting dm-crypt Containers Created under Linux
 </A>
 
-Select "File | Linux volume | Mount file.../Mount partition".
+Select "File | Open dm-crypt container ...".
 
-Enter the volume's password, and set all appropriate options
+Enter the container's password, and set all appropriate options
 
 Click "OK".
 
 Note that if you do not:
 
-  1. Set the same options as used when the volume is mounted and used while under Linux
-  1. Format the volume using a filesystem MS Windows understands (i.e. NTFS/FAT/FAT32)
+  1. Set the same options as used when the container is mounted and used while under Linux
+  1. Format the container using a filesystem MS Windows understands (i.e. NTFS/FAT/FAT32)
 
-then although your Linux volume may well be mounted, its contents will probably be unreadable.
+then although your Linux container may well be mounted, its contents will probably be unreadable.
 
 * * * 
 <A NAME="level_3_heading_4">
@@ -136,7 +131,7 @@ then although your Linux volume may well be mounted, its contents will probably 
 #### Hash Selection
 </A>
 
-Cryptoloop ("losetup") Linux volumes use the hash of the user's key as the key used for reading/writing to the encrypted volume.
+Cryptoloop ("losetup") Linux containers use the hash of the user's key as the key used for reading/writing to the encrypted container.
 
 <A NAME="level_4_heading_2">
 #### Cryptoloop and RIPEMD-160
@@ -192,7 +187,7 @@ This is carried out as (in my tests) the latter appears to result in failure:
 #### Hash Selection
 </A>
 
-If an attempt is made to mount a volume using a cypher with a larger keysize than the hash algorithm used to processes the user's password, dm-crypt appears to use the following algorithm to generate the actual encryption/decryption key used by the cypher:
+If an attempt is made to open a container using a cypher with a larger keysize than the hash algorithm used to processes the user's password, dm-crypt appears to use the following algorithm to generate the actual encryption/decryption key used by the cypher:
 
   1. The user's password is hashed.
   1. If the hash output contains fewer bits than the cypher's keysize, the capital letter "A" is prepended to the user's password, and a new hash is generated.
@@ -204,11 +199,11 @@ If an attempt is made to mount a volume using a cypher with a larger keysize tha
 
 i.e. This is the same as Cryptoloop uses for its RIPEMD-160 hashing, but is extended to produce a key of arbitrary length, by adding multiple "A" characters to the password and hashing, until a key of the required length is obtained.
 
-LibreCrypt supports this form of key processing, which can be invoked by selecting the option "Hash with "A"s, if hash output is too short" on the Linux mount dialog.
+LibreCrypt supports this form of key processing, which can be invoked by selecting the option "Hash with "A"s, if hash output is too short" on the Linux open dialog.
 
 Note that, under linux, the actual encryption/decryption key can be shown in its hex representation by running "dmsetup table".
 
-For example, if the volume's password is "password1234567890ABC", then:
+For example, if the container's password is "password1234567890ABC", then:
 
 If AES (256 bit key) is used for encryption/decryption, and the user's password is processed with RIPEMD-160, the actual encryption/decryption key will be:
 
@@ -258,9 +253,9 @@ This is made up as follows:
 
 dm-crypt's ESSIV functionality is available with v2.6.10 and later Linux kernels.
 
-The manner in which Linux uses ESSIV differs from LibreCrypt volumes in how the ESSIV encryption key is generated. Both hash the master encryption/decryption key to generate the key used for ESSIV, however dm-crypt uses the full hash output as the ESSIV key. This means that if you have a dm-crypt volume which is encrypted using 256 bit AES, and specify MD5 as the ESSIV hash, the ESSIV process will actually use AES-128 for creating the "salt" for ESSIV IVs (MD5 generates 128 bit hashes).
+The manner in which Linux uses ESSIV differs from LibreCrypt containers in how the ESSIV encryption key is generated. Both hash the master encryption/decryption key to generate the key used for ESSIV, however dm-crypt uses the full hash output as the ESSIV key. This means that if you have a dm-crypt container which is encrypted using 256 bit AES, and specify MD5 as the ESSIV hash, the ESSIV process will actually use AES-128 for creating the "salt" for ESSIV IVs (MD5 generates 128 bit hashes).
 
-It is for this reason, you cannot create a dm-crypt volume under Linux using 256 bit Twofish, and specify SHA-512 as the ESSIV hash; Twofish doesn't support 512 bit keys, and so dm-crypt fails.
+It is for this reason, you cannot create a dm-crypt container under Linux using 256 bit Twofish, and specify SHA-512 as the ESSIV hash; Twofish doesn't support 512 bit keys, and so dm-crypt fails.
 
 * * * 
 <A NAME="level_3_heading_6">
@@ -272,7 +267,7 @@ LibreCrypt supports LUKS to v1.1 of the LUKS specification. This is the latest v
 
  
 <SPAN class="tip">
-As well as using the "File | Linux | Mount file/partition..." menu items, LUKS volumes may also be mounted using the main "File | Mount file/partition..." menu items and toolbar buttons. (LibreCrypt detects LUKS volumes by their signature and offers to mount them appropriately)   
+As well as using the "File | Open LUKS  container..." menu items, LUKS containers may also be mounted using the main "File | Open file/partition..." menu items and toolbar buttons. (LibreCrypt detects LUKS containers by their signature and offers to open them appropriately)   
 </SPAN>
 
 <A NAME="level_4_heading_6">
@@ -283,9 +278,9 @@ LibreCrypt supports LUKS with ESSIV, subject to the condition that the ESSIV has
 
 Also at time of writing (25th February 2007), the current LUKS implementation of "cryptsetup" only supports the SHA1 hash algorithm, although other hashes may be used for ESSIV.
 
-Because of the way in which dm-crypt operates (see also the "dm-crypt" section on ESSIV, above), LUKS ESSIV doesn't do what you'd probably expect it to do. Specifically, if you have (for example) a Blowfish-448 encrypted volume, and specify cbc-essiv:sha256 for use as IVs - LUKS (dm-crypt) will actually use Blowfish-256 as the ESSIV cypher, and **not **Blowfish-448. In other words, the ESSIV cypher used will be from the same "family" of cypher (AES, Blowfish, Serpent, etc) - but will use the keylength which matches the ESSIV hash output length.
+Because of the way in which dm-crypt operates (see also the "dm-crypt" section on ESSIV, above), LUKS ESSIV doesn't do what you'd probably expect it to do. Specifically, if you have (for example) a Blowfish-448 encrypted container, and specify cbc-essiv:sha256 for use as IVs - LUKS (dm-crypt) will actually use Blowfish-256 as the ESSIV cypher, and **not **Blowfish-448. In other words, the ESSIV cypher used will be from the same "family" of cypher (AES, Blowfish, Serpent, etc) - but will use the keylength which matches the ESSIV hash output length.
 
-As a result of this, another option appears on the LUKS password entry dialog; "Base IV cypher on hash length". If this is checked, then when mounting an ESSIV volume, the keylength of the cypher used for ESSIV generation will be that of the ESSIV hash. If this is unchecked, the ESSIV cypher used will have the same keylength as the main bulk encryption cypher used for securing the encrypted disk image.
+As a result of this, another option appears on the LUKS password entry dialog; "Base IV cypher on hash length". If this is checked, then when mounting an ESSIV container, the keylength of the cypher used for ESSIV generation will be that of the ESSIV hash. If this is unchecked, the ESSIV cypher used will have the same keylength as the main bulk encryption cypher used for securing the encrypted disk image.
 
 Most users will want this option **checked**.
 
@@ -361,12 +356,12 @@ The following table lists compatibility with LUKS hashes:
 
 * * * 
 <A NAME="level_3_heading_7">
-### Additional Notes on Linux Volumes
+### Additional Notes on Linux Containers
 </A>
 
-Linux volumes should be formatted as FAT/FAT32/NTFS in order for them to be recognised by MS Windows. Although it should be possible for MS Windows can to understand other filesystems (e.g. ext2/ext3/riserFS), this does require 3rd party filesystem drivers to be installed.
+Linux containers should be formatted as FAT/FAT32/NTFS in order for them to be recognised by MS Windows. Although it should be possible for MS Windows can to understand other filesystems (e.g. ext2/ext3/riserFS), this does require 3rd party filesystem drivers to be installed.
 
-If you do wish to read an ext2/ext3 formatted volume from MS Windows, the filesystem drivers listed below are suggested. There may well be others, though at time of writing (23rd December 2005) these are the only ones that I have checked:
+If you do wish to read an ext2/ext3 formatted container from MS Windows, the filesystem drivers listed below are suggested. At time of writing (July 2015), there are no drivers that work with LVM on latest versions of windows.
 
 <TABLE style="text-align: left;">
   <TBODY>
@@ -383,7 +378,7 @@ If you do wish to read an ext2/ext3 formatted volume from MS Windows, the filesy
   </TBODY>
 </TABLE>
 
-Further information on Linux volumes may be obtained from:
+Further information on Linux containers may be obtained from:
 
 <TABLE style="text-align: left;">
 
@@ -403,7 +398,7 @@ Further information on Linux volumes may be obtained from:
   </TBODY>
 </TABLE>
 
-Note that for many of the controls on LibreCrypt's Linux mount volume dialog, the equivalent Cryptoloop ("losetup") parameter for that control is displayed in brackets.
+Note that for many of the controls on LibreCrypt's dm-crypt open container dialog, the equivalent Cryptoloop ("losetup") parameter for that control is displayed in brackets.
 
 
 

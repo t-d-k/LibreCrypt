@@ -24,7 +24,7 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 
 ### Technical Details: Mounting LibreCrypt Volumes
 
-To mount a container, the following information must be obtained from the user:
+To open a container, the following information must be obtained from the user:
 
 
 
@@ -37,7 +37,7 @@ To mount a container, the following information must be obtained from the user:
  1 The offset within the host file/volume that the hidden volume resides at
  1 If the offset specified gives the location of a CDB, or the "Encrypted partition image"
 
-Although this list may sound as though it places a significant burden on the user to remember a significant amount of information. However, for most users the only information required will be the volume the wish to mount, and their password; all of the other details may be defaulted to sensible values unless the user chooses to take advantage of the more advanced features of LibreCrypt.
+Although this list may sound as though it places a significant burden on the user to remember a significant amount of information. However, for most users the only information required will be the volume the wish to open, and their password; all of the other details may be defaulted to sensible values unless the user chooses to take advantage of the more advanced features of LibreCrypt.
 
 From the information supplied by the user, the following can be determined automatically:
 
@@ -92,7 +92,7 @@ After all possible hash/cypher combinations have been exhausted:
 
 * If exactly one cypher/hash combination successfully decrypted the "Volume details block", then the "Encrypted partition image" will be decrypted as necessary using this cypher/hash combination, together with the information obtained from the decrypted "Volume details block".
 
-As a result of the CDB layout, it is not necessary to store either the cypher or hash algorithm used for en/decryption anywhere. Nor is it necessary to prompt the user for this information as this information can be determined dynamically by attempting the mount using all possible combinations of installed hash/cypher and testing if the same check MAC can be generated using the decrypted data.
+As a result of the CDB layout, it is not necessary to store either the cypher or hash algorithm used for en/decryption anywhere. Nor is it necessary to prompt the user for this information as this information can be determined dynamically by attempting the open using all possible combinations of installed hash/cypher and testing if the same check MAC can be generated using the decrypted data.
 
 <A NAME="level_4_heading_1">
 #### Additional information
@@ -101,7 +101,7 @@ The driver API supports passing volume "metadata" to the driver when mounting a 
 
 When a user application calls DeviceIOControl with IOCTL_FREEOTFE_GET_DISK_DEVICE_STATUS, the number of bytes of volume metadata is returned. By calling with IOCTL_FREEOTFE_GET_DISK_DEVICE_METADATA, the actual data that was stored when mounting can be retrieved.
 
-This is intended for future development; to enable user applications to store information against volumes they mount (e.g. "This is a Linux volume", "This is a container"), which can later be retrieved for display to the user.
+This is intended for future development; to enable user applications to store information against volumes they open (e.g. "This is a Linux volume", "This is a container"), which can later be retrieved for display to the user.
 
 Volume metadata passed to the driver in this way should be kept to the **absolute minimum possible**.
 

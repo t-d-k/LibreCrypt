@@ -31,7 +31,7 @@ The latest version of this document can be found at the [LibreCrypt project site
 ### Overview
 </A>
 
-LibreCrypt comes complete with command line software which may be used to decrypt encrypted volumes (provided the correct decryption key is known).
+LibreCrypt comes complete with command line software which may be used to decrypt encrypted containers (provided the correct decryption key is known).
 
 This software is designed to fulfil two main objectives:
 
@@ -54,9 +54,9 @@ This software is **not** intended for general public use, but by those who under
 </A>
 Each of the command line decryption utilities is designed to operate in the following manner:
 
-  1. Open the (input) encrypted volume file.(The filename used is **hard coded** to "inFile.dat"; obviously this may be changed as required.)	
-  2. Open/Create the (output) plaintext volume file.(The filename used is **hard coded** to "outFile.dat"; obviously this may be changed as required.)	
-  3. Generate an IV, if required. (The method of generating the IV may vary, depending on how the volume was encrypted)
+  1. Open the (input) encrypted container file.(The filename used is **hard coded** to "inFile.dat"; obviously this may be changed as required.)	
+  2. Open/Create the (output) plaintext container file.(The filename used is **hard coded** to "outFile.dat"; obviously this may be changed as required.)	
+  3. Generate an IV, if required. (The method of generating the IV may vary, depending on how the container was encrypted)
   4. Read in a sector's worth of data from the input (encrypted) file
   5. Decrypt the sector, block by block
    * The key used here is **hard coded** in the source, and must be the actual key that was used to encrypt the data (obviously!)
@@ -69,9 +69,9 @@ Each of the command line decryption utilities is designed to operate in the foll
 Please note:
 
  1. This software is focused only on decrypting data. They do **not** hash user keys, etc
- 1. The hard coded keys must represent the actual encryption keys. In the case of Linux volumes, this is the user's password hashed as appropriate. In the case of LibreCrypt volumes, this is the "master key" stored in the volume's "critical data block"
+ 1. The hard coded keys must represent the actual encryption keys. In the case of Linux containers, this is the user's password hashed as appropriate. In the case of LibreCrypt containers, this is the "master key" stored in the container's "critical data block"
 
-At time of writing, although a separate command line decryption utility to decode a container's CDB/keyfiles has not been implemented, the LibreCrypt GUI does incorporate this functionality allowing developers to extract all of the information required contained within a CDB/keyfile. **(Note: For obvious reasons, this requires the volume's password and all other details that are required to use the CDB are known - it is simply not possible to decrypt this information otherwise)**
+At time of writing, although a separate command line decryption utility to decode a container's CDB/keyfiles has not been implemented, the LibreCrypt GUI does incorporate this functionality allowing developers to extract all of the information required contained within a CDB/keyfile. **(Note: For obvious reasons, this requires the container's password and all other details that are required to use the CDB are known - it is simply not possible to decrypt this information otherwise)**
 
 
 

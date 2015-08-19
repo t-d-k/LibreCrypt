@@ -29,18 +29,18 @@ The latest version of this document can be found at the [LibreCrypt project site
 
 ## Linux Examples: LUKS
 
-This section gives a series of examples of how to create Linux LUKS volumes, and then mount them using LibreCrypt.
+This section gives a series of examples of how to create Linux LUKS containers, and then open them using LibreCrypt.
 
 These examples have been tested using Fedora Core 3, with a v2.6.20.1 kernel installed and using cryptsetup v1.0; though they should work for all compatible Linux distributions.
 
 
   * [Initial Setup](#level_3_heading_1)
   * [Defaults](#level_3_heading_2)
-  * [Example #1: Mounting a LUKS Volume Encrypted Using LUKS's Default Encryption](#level_3_heading_3)
-  * [Example #2: Mounting a LUKS Volume Encrypted Using 256 bit AES](#level_3_heading_4)
-  * [Example #3: Mounting a LUKS Volume Encrypted Using 128 bit Twofish](#level_3_heading_5)
-  * [Example #4: Mounting a LUKS Volume Encrypted Using 256 bit AES-XTS](#level_3_heading_6)
-  * [Example #5: Mounting a LUKS Volume Encrypted Using 256 bit Serpent XTS](#level_3_heading_7)
+  * [Example #1: Opening a LUKS Container Encrypted Using LUKS's Default Encryption](#level_3_heading_3)
+  * [Example #2: Opening a LUKS Container Encrypted Using 256 bit AES](#level_3_heading_4)
+  * [Example #3: Opening a LUKS Container Encrypted Using 128 bit Twofish](#level_3_heading_5)
+  * [Example #4: Opening a LUKS Container Encrypted Using 256 bit AES-XTS](#level_3_heading_6)
+  * [Example #5: Opening a LUKS Container Encrypted Using 256 bit Serpent XTS](#level_3_heading_7)
 
 
 * * * 
@@ -135,16 +135,16 @@ If not overridden by the user, LUKS defaults to encrypting with:
 
 * * * 
 <A NAME="level_3_heading_3">
-### Example #1: Mounting a LUKS Volume Encrypted Using LUKS's Default Encryption
+### Example #1: Opening a LUKS Container Encrypted Using LUKS's Default Encryption
 </A>
 
-This example demonstrates use of a LUKS volume using the LUKS's
+This example demonstrates use of a LUKS container using the LUKS's
 default encryption system: AES128 with the user's password hashed with SHA1, using 32 bit sector IDs as encryption IVs
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
-	dd if=/dev/zero of=./volumes/vol_default.vol bs=1M count=1
-	losetup /dev/loop0 ./volumes/vol_default.vol
+	dd if=/dev/zero of=./containers/vol_default.vol bs=1M count=1
+	losetup /dev/loop0 ./containers/vol_default.vol
 	echo password1234567890ABC | cryptsetup luksFormat /dev/loop0
 	cryptsetup luksDump /dev/loop0 
 	echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
@@ -166,26 +166,26 @@ Creating the volume file under Linux:
 	losetup -d /dev/loop0
 	rm -rf ./test_mountpoint
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
-  1. Select "Linux | Mount..."
-  1. Select the volume file
+  1. Select "Linux | Open..."
+  1. Select the container file
   1. In the dialog shown, enter "password1234567890ABC" as the key, and set any of the options wanted.
   1. Click the "OK" button
 
 * * * 
 <A NAME="level_3_heading_4">
-### Example #2: Mounting a LUKS Volume Encrypted Using 256 bit AES
+### Example #2: Opening a LUKS Container Encrypted Using 256 bit AES
 </A>
 
-This example demonstrates use of a LUKS AES256 volume.
+This example demonstrates use of a LUKS AES256 container.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 <blockquote>
 <pre>
-dd if=/dev/zero of=./volumes/vol_aes_256.vol bs=1M count=1
-losetup /dev/loop0 ./volumes/vol_aes_256.vol
+dd if=/dev/zero of=./containers/vol_aes_256.vol bs=1M count=1
+losetup /dev/loop0 ./containers/vol_aes_256.vol
 echo password1234567890ABC | cryptsetup -c aes -s 256 luksFormat /dev/loop0
 cryptsetup luksDump /dev/loop0 
 echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
@@ -209,25 +209,25 @@ rm -rf ./test_mountpoint
 </pre>
 </blockquote>
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
 
-1. Select "Linux | Mount..."
-1. Select the losetup volume file
+1. Select "Linux | Open..."
+1. Select the losetup container file
 1. In the dialog shown, enter "password1234567890ABC" as the key, and set any of the options wanted.
 1. Click the "OK" button
 
 * * * 
 <A NAME="level_3_heading_5">
-### Example #3: Mounting a LUKS Volume Encrypted Using 128 bit Twofish
+### Example #3: Opening a LUKS Container Encrypted Using 128 bit Twofish
 </A>
 
-This example demonstrates use of a LUKS Twofish 128 volume.
+This example demonstrates use of a LUKS Twofish 128 container.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
-	dd if=/dev/zero of=./volumes/vol_twofish.vol bs=1M count=1
-	losetup /dev/loop0 ./volumes/vol_twofish.vol
+	dd if=/dev/zero of=./containers/vol_twofish.vol bs=1M count=1
+	losetup /dev/loop0 ./containers/vol_twofish.vol
 	echo password1234567890ABC | cryptsetup -c twofish luksFormat /dev/loop0
 	cryptsetup luksDump /dev/loop0 
 	echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
@@ -252,10 +252,10 @@ Creating the volume file under Linux:
 	rm -rf ./test_mountpoint
 
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
-1. Select "Linux | Mount..."
-1. Select the losetup volume file
+1. Select "Linux | Open..."
+1. Select the losetup container file
 1. In the dialog shown, enter "password1234567890ABC" as the key, and set any of the options wanted.
 1. Click the "OK" button
 
@@ -263,16 +263,16 @@ Mounting the volume under LibreCrypt:
 
 * * * 
 <A NAME="level_3_heading_6">
-### Example #4: Mounting a LUKS Volume Encrypted Using 256 bit AES-XTS
+### Example #4: Opening a LUKS Container Encrypted Using 256 bit AES-XTS
 </A>
 
-This example demonstrates use of a LUKS AES 256 volume in XTS mode.
+This example demonstrates use of a LUKS AES 256 container in XTS mode.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 
-	dd if=/dev/zero of=./volumes/vol_aes_xts.vol bs=5M count=1
-	losetup /dev/loop0 ./volumes/vol_aes_xts.vol
+	dd if=/dev/zero of=./containers/vol_aes_xts.vol bs=5M count=1
+	losetup /dev/loop0 ./containers/vol_aes_xts.vol
 	echo password1234567890ABC | cryptsetup -c aes-xts-plain64 -s 512 luksFormat /dev/loop0
 	cryptsetup luksDump /dev/loop0 
 	echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
@@ -297,26 +297,26 @@ Creating the volume file under Linux:
 	rm -rf ./test_mountpoint
 
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
-1. Select "Linux | Mount..."
-1. Select the losetup volume file
+1. Select "Linux | Open..."
+1. Select the losetup container file
 1. In the dialog shown, enter "password1234567890ABC" as the key, and set any of the options wanted.
 1. Click the "OK" button
 
 
 * * * 
 <A NAME="level_3_heading_7">
-### Example #5: Mounting a LUKS Volume Encrypted Using 256 bit Serpent XTS
+### Example #5: Opening a LUKS Container Encrypted Using 256 bit Serpent XTS
 </A>
 
-This example demonstrates use of a LUKS Serpent 256 volume in XTS mode.
+This example demonstrates use of a LUKS Serpent 256 container in XTS mode.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 
-		dd if=/dev/zero of=./volumes/vol_serpent_xts.vol bs=5M count=1
-		losetup /dev/loop0 ./volumes/vol_serpent_xts.vol
+		dd if=/dev/zero of=./containers/vol_serpent_xts.vol bs=5M count=1
+		losetup /dev/loop0 ./containers/vol_serpent_xts.vol
 		echo password1234567890ABC | cryptsetup -c serpent-xts-plain64 -s 512 luksFormat /dev/loop0
 		cryptsetup luksDump /dev/loop0 
 		echo password1234567890ABC | cryptsetup luksOpen /dev/loop0 myMapper
@@ -341,10 +341,10 @@ Creating the volume file under Linux:
 		rm -rf ./test_mountpoint
 
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
-1. Select "Linux | Mount..."
-1. Select the losetup volume file
+1. Select "Linux | Open..."
+1. Select the losetup container file
 1. In the dialog shown, enter "password1234567890ABC" as the key, and set any of the options wanted.
 1. Click the "OK" button
 

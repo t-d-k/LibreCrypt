@@ -28,8 +28,7 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
   * [Hidden Volumes](#level_3_heading_3)
   * [Legacy Versions](#older)  
   * [Multiple Hidden Volumes](#multiple)
-	
-<!--  * [Practical problems with deniability](#practical) -->		
+  * [Practical problems with deniability](#practical)		
  
 
 * * * 
@@ -122,20 +121,7 @@ DoxBox v6.0 and FreeOTFE did _not_ use 'chaff' as described above. A manual proc
 If you ever intend to use hidden volumes, and you did not follow this process, it's recommended to create new volumes in DoxBox v6.1 or LibreCrypt 6.2 or later and move any data over.
 You should do likewise if you did not follow this process, and you wish to prevent an attacker knowing the amount of data stored in the container.
 
-<!--
-<A NAME="practical">
-### Practical problems with deniability
-</A>
 
-TODO:
-
-* repeated access (backups, wear levelling) may show cgd dta and reveal where data was enxd
-PD relies on the enc data looking like background 'chaff'. 
-* links, MRU lists
-* registry storing FS ids and device ids
-* deleted files in outer vol.
-* watermarking attacks
--->
 <A NAME="multiple">
 ### Multiple Hidden Volumes
 </A>
@@ -144,6 +130,18 @@ In order to increase security further, a transparant encryption system should no
 
 This gives better security over systems which only permit a maximum number of hidden volumes within any given host volume. Even if an attacker manages to force the user to reveal that a hidden volume has been stored, there is still no way in which to determine whether _more_ hidden volumes are still present. This has the side effect of reducing any incentive for a user to reveal the presence of _any_ hidden volume, as doing so would not prevent an attacker from continuing to apply pressure on the user on the basis that there _may_ be further hidden volumes.
 
+<A NAME="practical">
+### Practical problems with deniability
+</A>
+
+TODO:
+
+* repeated access (backups, wear levelling) may show changed data and reveal where data was encoded
+PD relies on the encoded data looking like background 'chaff'. 
+* links, MRU lists
+* registry storing File System ids and device ids
+* deleted files in outer vol.
+* watermarking attacks
 
 
 

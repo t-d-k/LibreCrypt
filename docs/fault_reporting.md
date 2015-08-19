@@ -37,13 +37,13 @@ When reporting a fault with LibreCrypt, please include as much detail as possibl
   1. Any service packs which have been applied to your OS.
   1. The LibreCrypt executable version (See the "Help | About..." dialog).
   1. The main FreeOTFE driver version (See the "Help | About..." dialog).
-  1. Details of how the volume in question was created (e.g. the summary shown on the last stage of creating a container).
-  1. The size of any volume file/partition involved.
-  1. If using a volume file, the filesystem used on the drive the volume file is stored on (e.g. NTFS/FAT/FAT32).
-  1. The filesystem the volume is formatted as (e.g. NTFS/FAT/FAT32).
-  1. A copy of the CDB dump taken from any volume file involved (See "Tools | Critical Data Block | Dump to human readable file...").
+  1. Details of how the container in question was created (e.g. the summary shown on the last stage of creating a container).
+  1. The size of any container file/partition involved.
+  1. If using a container file, the filesystem used on the drive the container file is stored on (e.g. NTFS/FAT/FAT32).
+  1. The filesystem the container is formatted as (e.g. NTFS/FAT/FAT32).
+  1. A copy of the CDB dump taken from any container file involved (See "Tools | Critical Data Block | Dump to human readable file...").
   1. If a keyfile is being used, a copy of the keyfile and password used.
-  1. A **small** test volume (e.g. 1MB) which can replicate the problem found (Note: _Please do *not* email volume files, unless asked to!_ An FTP site is available for uploading these)
+  1. A **small** test container (e.g. 1MB) which can replicate the problem found (Note: _Please do *not* email container files, unless asked to!_ An FTP site is available for uploading these)
 
 Some of the items listed above may include potentially sensitive data. In which case, feel free to omit that information - or better still, create a simple test case which replicates the problem, but doesn't include any such data.
 

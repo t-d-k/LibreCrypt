@@ -25,7 +25,14 @@ The latest version of this document can be found at the [LibreCrypt project site
             
 ## Appendix A: Version History
 
-* LibreCrypt v6.2β (TBD)
+* LibreCrypt v6.3β (TBD)
+	* Separated open and create hidden container dialogs from non-hidden ones - makes both dialogs simpler and less confusing
+	* Added experimetal feature to create LUKS containers.
+	* Bug fixes
+	* improved dm-crypt dialog
+
+
+* LibreCrypt v6.2β (2015)
 	* Renamed to 'LibreCrypt'
 	* Fixed bug with minimise on start not working
 	* Fixed bug with double click of drive not opening Windows Explorer
@@ -34,13 +41,13 @@ The latest version of this document can be found at the [LibreCrypt project site
 	
 * DoxBox v6.1β (17 April 2015)
   * Security improvements  
-     * Ensured any new volume is overwritten with Secure PRNG 'chaff' before use by default. This enables plausible deniability of hidden volumes, and also hides the amount of data stored in the volume. DoxBox (FreeOTFE) volumes only.
+     * Ensured any new container is overwritten with Secure PRNG 'chaff' before use by default. This enables plausible deniability of hidden containers, and also hides the amount of data stored in the container. DoxBox (FreeOTFE) container only.
      * Fix bug where the app was contacting the internet for documentation and for updates without a prompt
      * Rework internal handling of secure data (e.g keys and IVs) so all sensitive data is wiped in memory immediately after use. This reduces the risk of leaking to swap, hibernation file, and of cold-boot attacks.   
      
   * UI Improvements
      * Fixed issue with translations - updated gettext to Delphi 2009 version (see build notes)
-     * Prompts to format new volumes after creation.
+     * Prompts to format new containers after creation.
      * Many minor UI improvements.    
      * Much refactoring to ease future work.
   
@@ -50,8 +57,8 @@ The latest version of this document can be found at the [LibreCrypt project site
   * Converted driver projects to Visual Studio 2010
   * Converted drivers to use Windows Driver Development Kit (WinDDK) 7600.16385.1
   * Updated 'command line tools' to build with lib tomcrypt 1.17
-  * Add 'default hidden offset' to volume properties
-  * Add ability to mount hidden plain dm-crypt volumes inside LUKS or FreeOTFE volumes
+  * Add 'default hidden offset' to container properties
+  * Add ability to open hidden plain dm-crypt container inside LUKS or FreeOTFE containers
   * Add tool to set Windows to allow unsigned drivers 
   * Rename and re-brand to 'DoxBox'
   * Windows Mobile support dropped

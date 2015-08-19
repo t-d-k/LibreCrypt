@@ -37,11 +37,11 @@ See "Critical Data Block"
 
 AKA "CDB"
 
-The header of FreeOTFE format volumes. A block of data holding data vital to the correct mounting and use of an encrypted partition (volume). Among other things, a volume's CDB contains the master key used for encrypting/decrypting data as it is written/read from a the volume. CDBs are *encrypted*. A full description of what LibreCrypt stores in its CDBs can be found in the [Technical Details](technical_details.htm#technical_details) section.
+The header of FreeOTFE format containers. A block of data holding data vital to the correct opening and use of an encrypted partition (container). Among other things, a container's CDB contains the master key used for encrypting/decrypting data as it is written/read from a the container. CDBs are *encrypted*. A full description of what LibreCrypt stores in its CDBs can be found in the [Technical Details](technical_details.htm#technical_details) section.
 
 *LES file*
 
-Linux Encryption Settings file; a text file in which encryption settings for Linux volumes are held. Created by using the "Load..."/"Save..." buttons on the password entry dialog when mounting Linux volumes.
+Linux Encryption Settings file; a text file in which encryption settings for Linux containers are held. Created by using the "Load..."/"Save..." buttons on the password entry dialog when opening Linux containers.
 
 *OTFE*
 

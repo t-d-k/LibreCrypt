@@ -86,11 +86,15 @@ The following sections give more detailed instructions on how do carry out each 
 ### Creating a new Container
 </A>
 
-In order to use LibreCrypt, you must first create a "container" (also called a "volume") to represent your new drive.
+In order to use LibreCrypt, you must first create a "container" to contain your new drive.
 
 <SPAN CLASS="tech_note">
-This consists of using LibreCrypt to create a large file (or setup a partition) on your computer's hard drive filled with random data.
-This volume will hold an encrypted "disk image" of your container, and is where LibreCrypt will store all data written to your virtual drive. 
+This consists of using LibreCrypt to create a large file (or a partition) on your computer's hard drive filled with random data.
+This containers will hold an encrypted "disk image" of your container, and is where LibreCrypt will store all data written to your virtual drive. 
+</SPAN>
+
+<SPAN CLASS="tech_note">
+'Containers' are commonly called 'volumes' in other encryption programs
 </SPAN>
 
 This file (or partition) can then be "opened", at which point a virtual drive will appear on your computer - anything stored on one of these virtual drives will be automatically encrypted before being written to the file.
@@ -105,51 +109,51 @@ To create a new container, click the 'New' button on the toolbar to show the "Ne
   </TR>
   <TR>
     <TD COLSPAN="2">
-      _New volume wizard_
+      _New container wizard_
     </TD>
   </TR>
 </TABLE>
 
-When prompted to choose between creating a file or partition based Container, choose "File" - partition based volumes are intended for advanced users.
+When prompted to choose between creating a file or partition based container, if you are unsure, choose "File". Partition based containers are stored directly on your hard disc and are harder to delete.
 
-If you are unfamiliar with disk encryption you may not understand all of the options. If you are in this position, just accept the default values, which will give you a volume that will be secure enough. 
+The default values in the dialog are ones that will give you the most secure container; chane them only if you understand the change you are making.
 
-LibreCrypt is a highly flexible system that is used by both novice and advanced users alike; many of the options that the new container wizard provides you with are intended for more advanced users who understand the options provided (e.g. storing a volume's CDB separately to the volume file it relates to), and how they operate.
+LibreCrypt is a highly flexible system that is used by both novice and advanced users alike; many of the options that the new container wizard provides you with are intended for more advanced users who understand the options provided (e.g. storing a containers's header separately to the container it relates to), and how they operate. These options are on 'advanced' tabs that can be seen by clicking 'next' after the finish button is enabled.
 
  
 <SPAN class="tip">
-  You may want to create and use multiple Boxes; one to store work related files, one for personal files, etc    
+  You may want to create and use multiple Containers; one to store work related files, one for personal files, etc    
 </SPAN>
 
  
 <SPAN class="security_tip">
-Do not simply copy an existing volume file to create a new one - even if you change the keyphrase on the "new" volume. If you do this, both volumes will have the same encrypted master key, which reduces the amount of security offered.  
+Do not simply copy an existing containers file to create a new one - even if you change the keyphrase on the "new" containers. If you do this, both containers will have the same encrypted master key, which reduces the amount of security offered.  
 </SPAN>
 
 
 <SPAN CLASS="security_tip">
-By default, to increase security, as part of creating a volume it is overwritten with secure pseudo-random data. However, this process can take some time and may be skipped if required. This option is on the 'chaff' tab of the advanced dialog. See section on [plausible deniability](plausible_deniability.md) for further details  
+By default, to increase security, as part of creating a containers it is overwritten with secure pseudo-random data. However, this process can take some time and may be skipped if required. This option is on the 'chaff' tab of the advanced dialog. See section on [plausible deniability](plausible_deniability.md) for further details  
 </SPAN>
 
-After clicking 'OK' on the Container creation dialog, you will see a Windows 'format drive' dialog. Use this to format the virtual drive.
+After clicking 'OK' on the container creation dialog, you may see a Windows 'format drive' dialog. Use this to format the virtual drive.
 
-If you wish to use your volume on both PCs and Linux,it should be formatted as FAT, FAT32 or NTFS.
+If you wish to use your containers on both PCs and Linux,it should be formatted as FAT, FAT32 or NTFS.
 If you wish to use it with LibreCrypt Explorer, it should be formatted as either FAT or FAT32.
 
 * * * 
 <A NAME="level_3_heading_4">
-### Opening volumes
+### Opening containers
 </A>
 
-Once you have created a volume, it must be "opened" in order for it to appear as a virtual drive on your computer.
+Once you have created a containers, it must be "opened" in order for it to appear as a virtual drive on your computer.
 
-Click the 'Open' toolbar button to open a file based Container, or "File | Mount partition..." to open a partition based volume.
+Click the 'Open' toolbar button to open a file based container, or "File | Open partition..." to open a partition based container.
 
 You will then be able to choose which container you want to open; do so, and click "OK" to display the keyphrase entry dialog.
 
  
 <SPAN class="tip">
-   You can also open boxes by dragging and dropping the encrypted file onto the main LibreCrypt window.     
+   You can also open containers by dragging and dropping the encrypted file onto the main LibreCrypt window.     
 </SPAN>
 
 
@@ -166,9 +170,9 @@ You will then be able to choose which container you want to open; do so, and cli
   </TR>
 </TABLE>
 
-Enter your Container's keyphrase, and click "OK". If the correct keyphrase has been entered, the volume will be opened and shown in the main LibreCrypt window.
+Enter your Container's keyphrase, and click "OK". If the correct keyphrase has been entered, the containers will be opened and shown in the main LibreCrypt window.
  
-<SPAN class="tip"> To reduce the time taken LibreCrypt spends opening boxes, see the FAQ [How can I speed LibreCrypt up when mounting my volumes?](FAQ.md#bm)  </SPAN>
+<SPAN class="tip"> To reduce the time taken LibreCrypt spends opening containers, see the FAQ [How can I speed LibreCrypt up when opening my containers?](FAQ.md#bm)  </SPAN>
 
 Once opened, a virtual drive can be used in the same way _as any other drive_ (e.g. they will appear in Windows Explorer and in Open/Save dialogs shown by applications); transparently encrypting and decrypting your files as and when needed.
 
@@ -190,12 +194,12 @@ Once opened, a virtual drive can be used in the same way _as any other drive_ (e
 
 * * * 
 <A NAME="level_3_heading_5">
-### Dismounting volumes
+### Closeing containers
 </A>
 
 Once you have finished using your secured drive, it should be "locked". This will remove the virtual drive, and wipe any sensitive information LibreCrypt has stored in the computers memory.
 
-Select which boxes shown in the main LibreCrypt window you wish to 'lock' and click the 'lock' toolbar button; or use the context menu shown by right-clicking on one of the boxes shown.
+Select which containers shown in the main LibreCrypt window you wish to 'lock' and click the 'lock' toolbar button; or use the context menu shown by right-clicking on one of the containers shown.
 
 <TABLE WIDTH="100%">
   <TR>
@@ -214,25 +218,25 @@ Select which boxes shown in the main LibreCrypt window you wish to 'lock' and cl
   </TR>
 </TABLE>
 
-To quickly dismount all mounted volumes, use the "Dismount all" menu-item.
+To quickly close all open containers, use the "Close all" menu-item.
 
 * * * 
 <A NAME="level_3_heading_6">
-### Changing a volume's keyphrase
+### Changing a containers's keyphrase
 </A>
 
-To change a volume's keyphrase (or a keyfile's keyphrase), select the "Tools | Change volume/keyfile keyphrase/details..." menu-item to display the "change keyphrase wizard", which will guide you through the process in a series of simple steps.
+To change a containers's keyphrase (or a keyfile's keyphrase), select the "Tools | Change containers/keyfile keyphrase/details..." menu-item to display the "change keyphrase wizard", which will guide you through the process in a series of simple steps.
 
-Note that volumes must be _locked_ first before they can be modified in this way.
+Note that containers must be _locked_ first before they can be modified in this way.
 
  
 <SPAN class="tip">
-You may also change certain Container/keyfile details via this wizard; for example, the default drive letter which the volume will normally be mounted as. Advanced users may also change more technical details, such as the length of salt used in encrypting the volume's CDB/keyfile    
+You may also change certain Container/keyfile details via this wizard; for example, the default drive letter which the containers will normally be opened as. Advanced users may also change more technical details, such as the length of salt used in encrypting the containers's CDB/keyfile    
 </SPAN>
 
  
 <SPAN CLASS="tech_note">
-In common with most disk encryption systems, LibreCrypt uses an "encrypted master key" system to secure volumes. Every container has its own "master encryption key" which is generated when the volume is created. This master key is used to carry out the actual encryption/decryption process used to secure data stored within the volume. A volume's master encryption key is, in turn, encrypted with the (PBKDF2 processed) user's keyphrase. So LibreCrypt doesn't need to decrypt and re-encrypt the entire volume to change the user's keyphrase - only the encrypted master encryption key. This makes changing a volume/keyfile's keyphrase quicker and safer than a complete volume re-encryption.     
+In common with most disk encryption systems, LibreCrypt uses an "encrypted master key" system to secure containers. Every container has its own "master encryption key" which is generated when the containers is created. This master key is used to carry out the actual encryption/decryption process used to secure data stored within the containers. A containers's master encryption key is, in turn, encrypted with the (PBKDF2 processed) user's keyphrase. So LibreCrypt doesn't need to decrypt and re-encrypt the entire containers to change the user's keyphrase - only the encrypted master encryption key. This makes changing a containers/keyfile's keyphrase quicker and safer than a complete containers re-encryption.     
 </SPAN>
 
 

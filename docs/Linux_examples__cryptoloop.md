@@ -30,20 +30,20 @@ The latest version of this document can be found at the [LibreCrypt project site
 
 ## Linux Examples: Cryptoloop
 
-This section gives a series of examples of how to create Linux Cryptoloop (losetup) volumes, and then mount them using LibreCrypt.
+This section gives a series of examples of how to create Linux Cryptoloop (losetup) containers, and then open them using LibreCrypt.
 
 These examples have been tested using SuSE 9.2; though they should work for all compatible Linux distributions.
 
   * [Initial Setup](#level_3_heading_1)
   * [Defaults](#level_3_heading_2)
-  * [Example #1: Mounting a Cryptoloop Volume Without Encryption](#level_3_heading_3)
-  * [Example #2: Mounting a Cryptoloop Volume Encrypted Using XOR](#level_3_heading_4)
-  * [Example #3: Mounting a Cryptoloop Volume Encrypted Using 128 bit AES](#level_3_heading_5)
-  * [Example #4: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES](#level_3_heading_6)
-  * [Example #5: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES and rmd160 Hash](#level_3_heading_7)
-  * [Example #6: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES and Seed Value](#level_3_heading_8)
-  * [Example #7: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES and Offset](#level_3_heading_9)
-  * [Example #8: Mounting a Cryptoloop Volume Encrypted Using 256 bit Twofish](#level_3_heading_10)
+  * [Example #1: Opening a Cryptoloop Container Without Encryption](#level_3_heading_3)
+  * [Example #2: Opening a Cryptoloop Container Encrypted Using XOR](#level_3_heading_4)
+  * [Example #3: Opening a Cryptoloop Container Encrypted Using 128 bit AES](#level_3_heading_5)
+  * [Example #4: Opening a Cryptoloop Container Encrypted Using 256 bit AES](#level_3_heading_6)
+  * [Example #5: Opening a Cryptoloop Container Encrypted Using 256 bit AES and rmd160 Hash](#level_3_heading_7)
+  * [Example #6: Opening a Cryptoloop Container Encrypted Using 256 bit AES and Seed Value](#level_3_heading_8)
+  * [Example #7: Opening a Cryptoloop Container Encrypted Using 256 bit AES and Offset](#level_3_heading_9)
+  * [Example #8: Opening a Cryptoloop Container Encrypted Using 256 bit Twofish](#level_3_heading_10)
 
 * * * 
 <A NAME="level_3_heading_1">
@@ -76,16 +76,14 @@ modprobe anubis
 
 Typing "lsmod" will show you which modules are currently installed.
 
-The examples shown below may then be followed to create and use various volume files.
+The examples shown below may then be followed to create and use various container files.
 
 * * * 
 <A NAME="level_3_heading_2">
 ### Defaults
 </A>
 
-If not overridden by the user, Cryptoloop defaults to no
-encryption. If the user specifies that they **do** want encryption (i.e.
-passes "losetup" a "-e" parameter), Cryptoloop defaults to the following:
+If not overridden by the user, Cryptoloop defaults to no encryption. If the user specifies that they **do** want encryption (i.e. passes "losetup" a "-e" parameter), Cryptoloop defaults to the following:
 
 <TABLE style="text-align: left;">
   <TBODY>
@@ -132,12 +130,12 @@ passes "losetup" a "-e" parameter), Cryptoloop defaults to the following:
 
 * * * 
 <A NAME="level_3_heading_3">
-### Example #1: Mounting a Cryptoloop Volume Without Encryption
+### Example #1: Opening a Cryptoloop Container Without Encryption
 </A>
 
-This is the simplest form of Linux volume file, and the recommended starting point for checking that LibreCrypt is operating correctly.
+This is the simplest form of Linux container file, and the recommended starting point for checking that LibreCrypt is operating correctly.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 		
 		dd if=/dev/zero of=./vol_none bs=1k count=1024
@@ -150,10 +148,10 @@ Creating the volume file under Linux:
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
-1. Select "Linux | Mount..."
-1. Select the volume file
+1. Select "Linux | Open..."
+1. Select the container file
 1. "Key" tab:
 
 	* Leave key blank
@@ -174,7 +172,7 @@ Mounting the volume under LibreCrypt:
 	* Leave offset at 0
 	* Leave sizelimit at 0
 
-1. "Mount options" tab:
+1. "Open options" tab:
 
 	* Select any unused drive letter
 	* Leave readonly unchecked
@@ -183,14 +181,12 @@ Mounting the volume under LibreCrypt:
 
 * * * 
 <A NAME="level_3_heading_4">
-### Example #2: Mounting a Cryptoloop Volume Encrypted Using XOR
+### Example #2: Opening a Cryptoloop Container Encrypted Using XOR
 </A>
 
-This is the second simplest form of Linux volume file, and is the
-simplest case to confirm that passwords are being accepted and used
-correctly.
+This is the second simplest form of Linux container file, and is the simplest case to confirm that passwords are being accepted and used correctly.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 		dd if=/dev/zero of=./vol_xor bs=1k count=1024
 		losetup -e XOR /dev/loop0 ./vol_xor
@@ -203,10 +199,10 @@ Creating the volume file under Linux:
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
-1. Select "Linux | Mount..."
-1. Select the volume file
+1. Click "File | Open dm-crypt ..."
+1. Select the container file
 1. "Key" tab:
 	+ Enter "password1234567890ABC" as the key
 	+ Leave GPG executable blank
@@ -225,7 +221,7 @@ Mounting the volume under LibreCrypt:
 	* Leave offset at 0
 	* Leave sizelimit at 0
 
-1. "Mount options" tab:
+1. "Open options" tab:
 
 	* Select any unused drive letter
 	* Leave readonly unchecked
@@ -234,12 +230,12 @@ Mounting the volume under LibreCrypt:
 
 * * * 
 <A NAME="level_3_heading_5">
-### Example #3: Mounting a Cryptoloop Volume Encrypted Using 128 bit AES
+### Example #3: Opening a Cryptoloop Container Encrypted Using 128 bit AES
 </A>
 
-This example demonstrates use of a Linux AES128 volume.
+This example demonstrates use of a Linux AES128 container.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 		dd if=/dev/zero of=./vol_aes128 bs=1k count=1024
 		losetup -e AES128 /dev/loop0 ./vol_aes128
@@ -252,10 +248,10 @@ Creating the volume file under Linux:
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
-1. Select "Linux | Mount..."
-1. Select the volume file
+1. Click "File | Open dm-crypt ..."
+1. Select the container file
 1. "Key" tab:
 		* Enter "password1234567890ABC" as the key
 		* Leave GPG executable blank
@@ -271,19 +267,19 @@ Mounting the volume under LibreCrypt:
 1. "File options" tab:
 		* Leave offset at 0
 		* Leave sizelimit at 0
-1. "Mount options" tab:
+1. "Open options" tab:
 		* Select any unused drive letter
 		* Leave readonly unchecked
 1. Click the "OK" button
 
 * * * 
 <A NAME="level_3_heading_6">
-### Example #4: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES
+### Example #4: Opening a Cryptoloop Container Encrypted Using 256 bit AES
 </A>
 
-This example demonstrates use of a Linux AES256 volume.
+This example demonstrates use of a dm-crypt AES256 container.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 		
 		dd if=/dev/zero of=./vol_aes256 bs=1k count=1024
@@ -297,12 +293,12 @@ Creating the volume file under Linux:
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
 <OL>
 
-* Select "Linux | Mount..."
-* Select the volume file
+1. Click "File | Open dm-crypt ..."
+* Select the container file
 * "Key" tab:
 	<UL>
 	* Enter "password1234567890ABC" as the key
@@ -328,7 +324,7 @@ Mounting the volume under LibreCrypt:
 	* Leave offset at 0
 	* Leave sizelimit at 0
 	</UL>
-* "Mount options" tab:
+* "Open options" tab:
 	<UL>
 	* Select any unused drive letter
 	* Leave readonly unchecked
@@ -340,15 +336,15 @@ Mounting the volume under LibreCrypt:
 * * * 
 
 <A NAME="level_3_heading_7">
-### Example #5: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES and rmd160 Hash
+### Example #5: Opening a Cryptoloop Container Encrypted Using 256 bit AES and rmd160 Hash
 </A>
 
-This example demonstrates use of a Linux AES256 volume using the rmd160
+This example demonstrates use of a Linux AES256 container using the rmd160
 hash to process the user's password instead of the default SHA hash.
 
 *WARNING:* Note that this example uses the "rmd160" and not "ripemd160" hash.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 			
 			dd if=/dev/zero of=./vol_aes256_rmd160 bs=1k count=1024
@@ -365,12 +361,12 @@ Creating the volume file under Linux:
 			losetup -d /dev/loop0
 			rm -rf ./test_mountpoint
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
 <OL>
 
-* Select "Linux | Mount..."
-* Select the volume file
+1. Click "File | Open dm-crypt ..."
+* Select the container file
 * "Key" tab:
 	<UL>
 	* Enter "password1234567890ABC" as the key
@@ -396,7 +392,7 @@ Mounting the volume under LibreCrypt:
 		* Leave offset at 0
 		* Leave sizelimit at 0
 		</UL>
-* "Mount options" tab:
+* "Open options" tab:
 	<UL>
 	* Select any unused drive letter
 	* Leave readonly unchecked
@@ -407,12 +403,12 @@ Mounting the volume under LibreCrypt:
 
 * * * 
 <A NAME="level_3_heading_8">
-### Example #6: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES and Seed Value
+### Example #6: Opening a Cryptoloop Container Encrypted Using 256 bit AES and Seed Value
 </A>
 
-This example demonstrates use of a Linux AES256 volume with seeding. The seed used here is the string "seedvalue"
+This example demonstrates use of a Linux AES256 container with seeding. The seed used here is the string "seedvalue"
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 		dd if=/dev/zero of=./vol_aes256_seeded bs=1k count=1024
 		losetup -e AES256 -S seedvalue /dev/loop0 ./vol_aes256_seeded
@@ -429,10 +425,10 @@ Creating the volume file under Linux:
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
-1. Select "Linux | Mount..."
-1. Select the volume file
+1. Click "File | Open dm-crypt ..."
+1. Select the container file
 1. "Key" tab:
 	<UL>
 	* Enter "password1234567890ABC" as the key
@@ -457,7 +453,7 @@ Mounting the volume under LibreCrypt:
 	* Leave offset at 0
 	* Leave sizelimit at 0
 	</UL>
-1.* "Mount options" tab:
+1.* "Open options" tab:
 	<UL>
 	* Select any unused drive letter
 	* Leave readonly unchecked
@@ -466,12 +462,12 @@ Mounting the volume under LibreCrypt:
 
 * * * 
 <A NAME="level_3_heading_9">
-### Example #7: Mounting a Cryptoloop Volume Encrypted Using 256 bit AES and Offset
+### Example #7: Opening a Cryptoloop Container Encrypted Using 256 bit AES and Offset
 </A>
 
-This example demonstrates use of a Linux AES256 volume, with the encrypted volume beginning at an offset of 2560 bytes into the volume file.
+This example demonstrates use of a Linux AES256 container, with the encrypted container beginning at an offset of 2560 bytes into the container file.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 		dd if=/dev/zero of=./vol_aes256_2560 bs=1k count=1024
 		losetup -e AES256 -o 2560 /dev/loop0 ./vol_aes256_2560
@@ -484,10 +480,10 @@ Creating the volume file under Linux:
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
-1. Select "Linux | Mount..."
-1. Select the volume file
+1. Click "File | Open dm-crypt ..."
+1. Select the container file
 1. "Key" tab:
 
 	* Enter "password1234567890ABC" as the key
@@ -509,7 +505,7 @@ Mounting the volume under LibreCrypt:
 
 	* Change offset to 2560 bytes* Leave sizelimit at 0
 
-1. "Mount options" tab:
+1. "Open options" tab:
 
 		* Select any unused drive letter
 		* Leave readonly unchecked
@@ -518,12 +514,12 @@ Mounting the volume under LibreCrypt:
 
 * * * 
 <A NAME="level_3_heading_10">
-### Example #8: Mounting a Cryptoloop Volume Encrypted Using 256 bit Twofish
+### Example #8: Opening a Cryptoloop Container Encrypted Using 256 bit Twofish
 </A>
 
-This example demonstrates use of a Linux Twofish 256 bit volume.
+This example demonstrates use of a Linux Twofish 256 bit container.
 
-Creating the volume file under Linux:
+Creating the container file under Linux:
 
 		dd if=/dev/zero of=./vol_twofish256 bs=1k count=1024
 		losetup -e twofish256 /dev/loop0 ./vol_twofish256
@@ -537,10 +533,10 @@ Creating the volume file under Linux:
 		losetup -d /dev/loop0
 		rm -rf ./test_mountpoint
 
-Mounting the volume under LibreCrypt:
+Opening the container under LibreCrypt:
 
-1. Select "Linux | Mount..."
-1. Select the volume file
+1. Click "File | Open dm-crypt ..."
+1. Select the container file
 1. "Key" tab:
 	
 	* Enter "password1234567890ABC" as the key
@@ -567,7 +563,7 @@ Mounting the volume under LibreCrypt:
 	
 	* Leave sizelimit at 0
 	
-1. "Mount options" tab:
+1. "Open options" tab:
 	
 	* Select any unused drive letter
 	* Leave readonly unchecked
