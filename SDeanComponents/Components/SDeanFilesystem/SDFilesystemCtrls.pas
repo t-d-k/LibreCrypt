@@ -305,7 +305,11 @@ function FilesystemListViewColumnTitle(col: TFilesystemListViewColumn): string;
 implementation
 
 uses
-  Messages, Graphics, Math,
+//delphi
+ Messages, Graphics, Math,
+ // lc utils
+lcConsts,
+
   SDFilesystem_FAT,
   SDUi18n,
   SDUGraphics,

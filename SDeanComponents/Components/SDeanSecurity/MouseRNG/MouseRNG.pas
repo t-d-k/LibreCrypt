@@ -26,15 +26,6 @@ const
   // Set this value to 2 to reduce the risk of this happening
   MIN_DIFF = 2;
 
-  // This specifies how many of the least significant bits from the X & Y
-  // co-ordinates will be used as random data.
-  // If this is set too high, then
-  // If this is set too low, then the user has to move the mouse a greater
-  // distance between samples, otherwise the higher bits in the sample won't
-  // change.
-  // A setting of 1 will use the LSB of the mouse's X, Y co-ordinates
-  BITS_PER_SAMPLE = 1;
-
   // This specifies the time interval (in ms) between taking samples of the
   // mouse's position
   TIMER_INTERVAL = 100;
@@ -198,6 +189,17 @@ type
 procedure Register;
 
 implementation
+
+const
+
+  // This specifies how many of the least significant bits from the X & Y
+  // co-ordinates will be used as random data.
+  // If this is set too high, then
+  // If this is set too low, then the user has to move the mouse a greater
+  // distance between samples, otherwise the higher bits in the sample won't
+  // change.
+  // A setting of 1 will use the LSB of the mouse's X, Y co-ordinates
+  BITS_PER_SAMPLE = 1;
 
 
 procedure Register;

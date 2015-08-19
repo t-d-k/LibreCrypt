@@ -123,7 +123,27 @@ type
 
   end;
 
-const
+
+
+function WMAppCommandHook(nCode: Integer; wParam: DWORD; lParam: DWORD): Longint; stdcall;
+
+procedure Register;
+
+implementation
+
+uses
+  Contnrs,
+  SDUGeneral,
+  SysUtils;
+
+
+  const
+  // From winuser.h:
+  FAPPCOMMAND_MOUSE                  = $8000;
+  FAPPCOMMAND_KEY                    = 0;
+  FAPPCOMMAND_OEM                    = $1000;
+  FAPPCOMMAND_MASK                   = $F000;
+
   // From winuser.h:
   APPCOMMAND_BROWSER_BACKWARD        = 1;
   APPCOMMAND_BROWSER_FORWARD         = 2;
@@ -148,26 +168,6 @@ const
   APPCOMMAND_BASS_UP                 = 21;
   APPCOMMAND_TREBLE_DOWN             = 22;
   APPCOMMAND_TREBLE_UP               = 23;
-
-function WMAppCommandHook(nCode: Integer; wParam: DWORD; lParam: DWORD): Longint; stdcall;
-
-procedure Register;
-
-implementation
-
-uses
-  Contnrs,
-  SDUGeneral,
-  SysUtils;
-
-
-  const
-  // From winuser.h:
-  FAPPCOMMAND_MOUSE                  = $8000;
-  FAPPCOMMAND_KEY                    = 0;
-  FAPPCOMMAND_OEM                    = $1000;
-  FAPPCOMMAND_MASK                   = $F000;
-
 
 var
   SDMultimediaKeysHook: HHOOK;
