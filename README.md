@@ -5,7 +5,7 @@
 [![DoxBox logo](src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[LibreCrypt](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://Librecrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 
 
