@@ -783,11 +783,10 @@ begin
       // Skip hidden items, unless this control is set to show them
       if (
           currContent.IsHidden and
-          not(ShowHiddenItems)
-         ) then
-        begin
+          not(fShowHiddenItems)
+         ) then        begin
         showItemInTree := FALSE;
-        end;
+      end;
 
       if showItemInTree then
         begin
@@ -1591,7 +1590,7 @@ begin
         // Skip hidden items, unless this control is set to show them
         if (
             currItem.IsHidden and
-            not(ShowHiddenItems)
+            not(fShowHiddenItems)
            ) then
           begin
           continue;
