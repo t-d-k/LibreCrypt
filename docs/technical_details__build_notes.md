@@ -88,8 +88,49 @@ LibreCrypt/LibreCrypt Explorer comes in a number of parts:
 ##### translation
 </A>
 It is not necessary to do a full install of dxgettext to build with i18n support. Instead you can just add the file gnugettext.pas to the project.
-In order to update any ranslations, however dxgettext must be installed.
+In order to update any translations, however dxgettext must be installed.
 
+After any changes to the strings in the GUI, the translation files (.po) should be updated, and compiled into .mo files.
+The process for updating translations is:
+	*	Extract the default.po file from the source or executable.
+	* Remove any strings that need not be translated  
+	*	Update or create each locale .po file with the translations
+	*	Compile the .po files into .mo files.
+	
+Extracting the strings from the sources is preferred. 
+Updating or creating the .po files is done by the translators.
+For the convenience of translators, the English .po file is distributed with the executable, although it is not used.
+The ignore.po file should also be regenerated if there are a lot of changes to the source - see the msgmkignore command
+
+######	Extract the .po file from the source
+* Install dxgettext if not already installed. There is no need to integrate with Delphi.
+* Open a command prompt at the root LibreCrypt directory
+* run the following command `"c:\Program Files (x86)\dxgettext\dxgettext.exe" -r -b src/PC/gui/ --delphi -o bin/PC/locale/en/LC_MESSAGES`
+	This assumes that dxgettext is installed at `c:\Program Files (x86)\dxgettext\`
+	Note that the relative paths use a forward slash as a path separater
+	This command will give warnings for code like : `_(self.Caption)` - however these can be ignored as these strings will be found in the .dfm
+
+######	Extract the .po file from the executable
+* Install dxgettext if not already installed. 
+* Open a command prompt at the root LibreCrypt directory
+* run the following command `"c:\Program Files (x86)\dxgettext\dxgettext.exe" bin/PC/LibreCrypt.exe -o bin/PC/locale/en/LC_MESSAGES`
+	This assumes that dxgettext is installed at `c:\Program Files (x86)\dxgettext\`
+	Note that the relative paths use a forward slash as a path separater
+	
+##### Remove ignoreable strings	
+* Open a command prompt at the root LibreCrypt directory
+* run the following commands:
+	+ move bin\PC\locale\en\LC_MESSAGES\default.po bin\PC\locale\en\LC_MESSAGES\full.po
+	+ `"c:\Program Files (x86)\dxgettext\msgremove.exe" bin/PC/locale/en/LC_MESSAGES/full.po -i src/PC/gui/translation/ignore.po -o bin/PC/locale/en/LC_MESSAGES/default.po`	
+
+###### Compile the .po files into .mo files.
+* Install dxgettext if not already installed. 
+* Open a command prompt at the root LibreCrypt directory
+* run the following command, replacing 'de' with the language code, for each language `"c:\Program Files (x86)\dxgettext\msgfmt.exe" 	  src/PC/gui/translation/de/default.po -o bin/PC/locale/de/LC_MESSAGES/default.mo`
+	This assumes that dxgettext is installed at `c:\Program Files (x86)\dxgettext\`
+	Note that the relative paths use a forward slash as a path separater
+It is also possible to do this from Windows Explorer - see (translations)[translations.md].
+There is a bat file under 'tools' - `update_mo_files.bat` -  that compiles all the .mo files. 
 
 <A NAME="building_kernel_drivers">
 #### Building the Kernel Drivers

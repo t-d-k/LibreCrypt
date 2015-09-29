@@ -62,6 +62,8 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 			+  Download and install the latest copy of `GNU gettext for Delphi` from [http://dybdahl.dk/dxgettext/](http://dybdahl.dk/dxgettext/)
 			+  In Windows explorer, right-click your `default.po` file
 			+  Select `Compile to mo file` from the context menu displayed. This should then generate you a `default.mo` file
+			+  This can also be done using the command line 'msgfmt' program - see (technical details - build notes)[technical_details__build_notes.md]
+			
 
 	1.  Run LibreCrypt.exe
 	1. Select the `View | Options...` menu-item
