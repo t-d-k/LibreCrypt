@@ -27,7 +27,7 @@ uses
   //sdu & LibreCrypt utils
     OTFEFreeOTFEBase_U,SDUGeneral,
    // LibreCrypt forms
-    fmeDiskPartitionsPanel, fmeSDUBlocks, fmeSDUDiskPartitions
+    fmeSDUBlocks, fmeSDUDiskPartitions
   ;
 
 type
@@ -43,7 +43,7 @@ type
     ActionList1:   TActionList;
     actProperties: TAction;
     Properties1:   TMenuItem;
-    SDUDiskPartitionsPanel1: TfmeDiskPartitionsPanel;
+    SDUDiskPartitionsPanel1: TfmeSDUDiskPartitions;
     procedure TabControl1Change(Sender: TObject);
     procedure ckShowCDROMClick(Sender: TObject);
     procedure ckEntireDiskClick(Sender: TObject);
@@ -127,8 +127,8 @@ resourcestring
   RS_ENTIRE_DISK_X        = '<Entire disk #%d>';
   RS_CDROM_IN_X           = '<CDROM/DVD in %s>';
 
-  RS_DBLCLK_PROMPT_PARTITION = 'Doubleclick partition to display properties';
-  RS_DBLCLK_PROMPT_DISK      = 'Doubleclick to display disk properties';
+  RS_DBLCLK_PROMPT_PARTITION = 'Doubleclick partition to show properties';
+  RS_DBLCLK_PROMPT_DISK      = 'Doubleclick to show disk properties';
 
   RS_PARTITION = 'Partition #%d';
 

@@ -32,7 +32,7 @@ function CreateLUKS(
   password: TSDUBytes;
   contSizeBytes: Uint64;
   hash: String;
-  out errMsg: String; out drive: DriveLetterChar): Boolean;
+  out errMsg: String; out drive: DriveLetterChar): TMountResult;
 
 
 function DumpLUKSDataToFile(filename: String; userKey: TSDUBytes;
@@ -43,8 +43,7 @@ function DumpLUKSDataToFile(filename: String; userKey: TSDUBytes;
 function MountLUKS(volumeFilename: String;
   var mountedAs: DriveLetterChar; ReadOnly: Boolean = False; password: TSDUBytes = nil;
   keyfile: String = ''; keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
-  keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
-  silent: Boolean = False): Boolean;
+  keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE): TMountResult;
 
 
 // Determine if the specified volume is a Linux LUKS volume
@@ -64,17 +63,20 @@ uses
   system.Classes,
   vcl.Controls,
   //3rd party
+
   //SDU ,lclibs
   SDUSysUtils, SDUi18n,
   PKCS11Lib, SDUEndianIntegers,
  lcConsts,
 sduGeneral,
-
-  //librecrypt
   SDURandPool,
   OTFEFreeOTFE_U,
   OTFEConsts_U,
-  AFSplitMerge, frmKeyEntryLUKS, frmSelectHashCypher;
+  AFSplitMerge,
+  //librecrypt forms
+  frmKeyEntryLUKS, frmSelectHashCypher,
+  frmVersionCheck // for  SDUGetVersionInfoString
+  ;
 const
   SDUNEWLINE_STRING: array [TSDUNewline] of String = (SDUCRLF, SDUCR, SDULF);
 
@@ -90,13 +92,14 @@ function CreateNewLUKS(fileName: String;
   out refreshDrives: Boolean): Boolean;
 var
   prevMounted: DriveLetterString;
+  mres :TMountResult;
 begin
   refreshDrives := False;
 
   prevMounted := GetFreeOTFEBase().DrivesMounted;
-  Result      := CreateLUKS(fileName, password, contSizeBytes, hash, msg, drive);
-
-  if Result then begin
+  mres      := CreateLUKS(fileName, password, contSizeBytes, hash, msg, drive) ;
+     Result := false;
+  if mres = morOK then begin
     Result := Format_Drive(drive, True);
     if not Result then
       // Volumes couldn't be mounted for some reason...
@@ -104,7 +107,7 @@ begin
   end;
 
   if not Result then begin
-    if (GetFreeOTFEBase().LastErrorCode <> OTFE_ERR_USER_CANCEL) then
+    if mres <> morCancel then
       msg := _('LUKS container could not be created');
   end else begin
     // may be created but not mounted or formatted
@@ -864,7 +867,7 @@ volumeFilename: String;
   contSizeBytes: Uint64;
   hash: String;
   out errMsg: String;
-  out drive: DriveLetterChar): Boolean;
+  out drive: DriveLetterChar): TMountResult;
 
 var
   volumeKey: TSDUBytes;
@@ -885,9 +888,9 @@ var
   //  mountForAllUsers:         Boolean;
 
 begin
-Result := true;
+Result := morOK;
   if FileExists(volumeFilename, True) then begin
-    Result := False;
+    Result := morFail;
     exit;
   end;
   isPartition := (AnsiPos ('\Device\',volumeFilename) = 1) or (AnsiPos('\\.\PHYSICALDRIVE',volumeFilename)= 1);
@@ -896,14 +899,15 @@ Result := true;
      if  not (SDUCreateLargeFile(volumeFilename, contSizeBytes{bytes}, True, userCancel)) then begin
     if not userCancel then
       errMsg := _('An error occurred while trying to create your LUKS container');
-    Result := False;
+    Result := morFail;
      end;
   end;
+  if userCancel then result := morCancel;
 
-  if Result and (not userCancel) then begin
+
+  if (Result = morOK ) then begin
 
 
-    Result := True;
     GetRandPool.SetUpRandPool([rngcryptlib], PKCS11_NO_SLOT_ID, '');
     GetFreeOTFEBase().CheckActive();
     GetRandPool.GetRandomData(64, volumeKey);
@@ -940,15 +944,15 @@ Result := true;
 
     if not (_EncryptAndWriteMasterKey(volumeFilename, password,
       True{baseIVCypherOnHashLength}, LUKSHeader, 0{ keySlot}, volumeKey)) then
-      Result := False;
+      Result := morFail;
 
     DebugMsg('Created key OK');
     DebugMsg('key slot ' + IntToStr(0) + ' unlocked.');
     DebugMsg('Master key: ' + _PrettyHex(PChar(volumeKey), length(volumeKey)));
-    if Result then begin
+    if Result = morOK then begin
 
       Result := MountLUKS(volumeFilename, drive, False, password, '', False,
-        LINUX_KEYFILE_DEFAULT_NEWLINE, True);
+        LINUX_KEYFILE_DEFAULT_NEWLINE);
     end;
 
   end;
@@ -1517,8 +1521,7 @@ end;
 function MountLUKS(volumeFilename: String;
   var mountedAs: DriveLetterChar; ReadOnly: Boolean = False; password: TSDUBytes = nil;
   keyfile: String = ''; keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
-  keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
-  silent: Boolean = False): Boolean;
+  keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE): TMountResult;
 var
   keyEntryDlg: TfrmKeyEntryLUKS;
   volumeKey:   TSDUBytes;
@@ -1528,14 +1531,14 @@ var
   mountDriveLetter: DriveLetterChar;
   mountReadonly:    Boolean;
   currDriveLetter:  DriveLetterChar;
-  mountMountAs:     TFreeOTFEMountAs;
+  mountMountAs:     TMountDiskType;
   mr:               Integer;
   LUKSHeader:       TLUKSHeader;
   keySlot:          Integer;
   baseIVCypherOnHashLength: Boolean;
   mountForAllUsers: Boolean;
 begin
-  Result := True;
+  Result := morOK;
 
   GetFreeOTFEBase().CheckActive();
   GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS;
@@ -1543,12 +1546,11 @@ begin
   mountedAs     := #0;
 
 
-
   keyEntryDlg := TfrmKeyEntryLUKS.Create(nil);
   try
     keyEntryDlg.Initialize();
     keyEntryDlg.SetReadonly(ReadOnly);
-    keyEntryDlg.silent := silent;
+//    keyEntryDlg.silent := silent;
     keyEntryDlg.SetKey(SDUBytesToString(password));
     keyEntryDlg.SetKeyfile(keyfile);
     keyEntryDlg.SetKeyfileIsASCII(keyfileIsASCII);
@@ -1559,7 +1561,7 @@ begin
 
     // Get user password, drive letter to use, etc
     if (mr = mrCancel) then begin
-      Result := False;
+      Result := morCancel;
     end else
     if (mr = mrOk) then begin
 
@@ -1580,14 +1582,14 @@ begin
         if (currDriveLetter = #0) then begin
           // No more drive letters following the user's specified drive
           // letter - don't mount further drives
-          Result := False;
+          Result := morFail;
           // Bail out...
           exit;
         end;
 
         if not (_ReadAndDecryptMasterKey(volumeFilename, userKey,
           baseIVCypherOnHashLength, LUKSHeader, keySlot, volumeKey)) then begin
-          Result := False;
+          Result := morFail;
           // Bail out...
           exit;
         end;
@@ -1615,7 +1617,7 @@ begin
           mountedAs := currDriveLetter;
         end else begin
           mountedAs := #0;
-          Result    := False;
+          Result    := morFail;
         end;
       end;
     end;

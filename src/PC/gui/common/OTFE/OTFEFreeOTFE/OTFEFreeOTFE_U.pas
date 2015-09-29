@@ -49,8 +49,8 @@ type
 
 
     // Connect/disconnect to the main FreeOTFE device driver
-    function Connect(): Boolean; override;
-    procedure Disconnect(); override;
+    function _Connect(): Boolean; override;
+    procedure _Disconnect(); override;
 
 
     // ---------
@@ -61,7 +61,7 @@ type
     function CreateDiskDevice(deviceType: DWORD = FILE_DEVICE_DISK): String;
     function DestroyDiskDevice(deviceName: Ansistring): Boolean;
 
-    function MountDiskDevice(
+    function _MountDiskDevice(
       deviceName: String;
     // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
       volFilename: String;
@@ -84,8 +84,9 @@ type
       ): Boolean; override;
 
 
-    function DismountDiskDevice(
+    function _DismountDiskDevice(
       deviceName: String;
+//  driveLetter: DriveLetterChar;
     // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
       emergency: Boolean
       ): Boolean; override;
@@ -184,14 +185,11 @@ instead use windows standard file fns (as in base class) - will need admin privs
     // Convert kernel mode device name to user mode device name
     function GetCypherDeviceUserModeDeviceName(cypherKernelModeDeviceName: String): String;
 
-    function DriverType(): String; override;
+
 
     // ---------
     // Convert critical data area to/from a string representation
 
-    // Convert a user-space volume filename to a format the kernel mode driver
-    // can understand
-    function GetKernelModeVolumeFilename(userModeFilename: String): String;
     // Convert a kernel mode driver volume filename to format user-space
     // filename
     function GetUserModeVolumeFilename(kernelModeFilename: Ansistring): Ansistring;
@@ -210,6 +208,12 @@ instead use windows standard file fns (as in base class) - will need admin privs
       var cypherDriverDetails: TFreeOTFECypherDriver): Boolean; override;
 
   public
+      function GetDriverType(): String; override;
+
+      // Convert a user-space volume filename to a format the kernel mode driver
+    // can understand
+    function GetKernelModeVolumeFilename(userModeFilename: String): String;
+
     function GetNextDriveLetter(userDriveLetter, requiredDriveLetter: Char): Char; override;
     // -----------------------------------------------------------------------
     // TOTFE standard API
@@ -305,7 +309,7 @@ instead use windows standard file fns (as in base class) - will need admin privs
       size: Int64 = 0;
       MetaData_LinuxVolume: Boolean = False;  // Linux volume
       MetaData_PKCS11SlotID: Integer = PKCS11_NO_SLOT_ID;  // PKCS11 SlotID
-      MountMountAs: TFreeOTFEMountAs = fomaRemovableDisk;
+      MountMountAs: TMountDiskType = fomaRemovableDisk;
     // PC kernel drivers *only* - ignored otherwise
       mountForAllUsers: Boolean =
       True  // PC kernel drivers *only* - ignored otherwise
@@ -346,7 +350,7 @@ instead use windows standard file fns (as in base class) - will need admin privs
       mainCypherDriver: Ansistring;
       mainCypherGUID: TGUID;
       VolumeFlags: Integer;
-      mountMountAs: TFreeOTFEMountAs;
+      mountMountAs: TMountDiskType;
 
       dataOffset: Int64;
     // Offset from within mounted volume from where to read/write data
@@ -462,7 +466,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFE.Connect(): Boolean;
+function TOTFEFreeOTFE._Connect(): Boolean;
 begin
   Result := False;
 
@@ -478,7 +482,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-procedure TOTFEFreeOTFE.Disconnect();
+procedure TOTFEFreeOTFE._Disconnect();
 begin
   DisconnectDevice(fdriver_handle);
 end;
@@ -486,7 +490,8 @@ end;
 
  // ----------------------------------------------------------------------------
  // Attempt to create a new device to be used
-function TOTFEFreeOTFE.CreateDiskDevice(deviceType: DWORD): String;
+                       { TODO -otdk -crefactor : return driveLetterchar }
+ function TOTFEFreeOTFE.CreateDiskDevice(deviceType: DWORD): String;
 var
   DIOCBufferIn:  TDIOC_DISK_DEVICE_CREATE;
   DIOCBufferOut: TDIOC_DEVICE_NAME;
@@ -517,7 +522,7 @@ end;
 
  // ----------------------------------------------------------------------------
  // Attempt to mount on an existing device
-function TOTFEFreeOTFE.MountDiskDevice(
+function TOTFEFreeOTFE._MountDiskDevice(
   deviceName: String;
   volFilename: String;
   volumeKey: TSDUBytes;
@@ -656,7 +661,7 @@ DebugMsg('  ReadOnly: '+BoolToStr(ReadOnly));
     useVolumeFlags := VolumeFlags;
     // Yes, this timestamp reverting is the right way around; if the bit
     // *isn't* set, the timestamps get reverted
-    if GetSettings().OptRevertVolTimestamps then
+    if GetSettings().FreezeVolTimestamps then
       // Strip off bit VOL_FLAGS_NORMAL_TIMESTAMPS
       useVolumeFlags := useVolumeFlags and not (VOL_FLAGS_NORMAL_TIMESTAMPS)
     else
@@ -726,7 +731,7 @@ function TOTFEFreeOTFE.CreateMountDiskDevice(
   size: Int64 = 0;
   MetaData_LinuxVolume: Boolean = False;               // Linux volume
   MetaData_PKCS11SlotID: Integer = PKCS11_NO_SLOT_ID;  // PKCS11 SlotID
-  MountMountAs: TFreeOTFEMountAs = fomaRemovableDisk;
+  MountMountAs: TMountDiskType = fomaRemovableDisk;
   // PC kernel drivers *only* - ignored otherwise
   mountForAllUsers: Boolean =
   True  // PC kernel drivers *only* - ignored otherwise
@@ -747,7 +752,7 @@ begin
       );
 
     // Attempt to mount the device
-    if MountDiskDevice(deviceName, volFilename, volumeKey, sectorIVGenMethod,
+    if _MountDiskDevice(deviceName, volFilename, volumeKey, sectorIVGenMethod,
       volumeIV, ReadOnly, IVHashDriver, IVHashGUID, IVCypherDriver, IVCypherGUID,
       mainCypherDriver, mainCypherGUID, VolumeFlags, mountMetadata, offset,
       size, FreeOTFEMountAsStorageMediaType[MountMountAs]) then begin
@@ -755,7 +760,7 @@ begin
         Result := True;
       end else begin
         // Cleardown
-        DismountDiskDevice(deviceName, True);
+        _DismountDiskDevice(deviceName, True);
         DestroyDiskDevice(deviceName);
       end;
 
@@ -770,9 +775,8 @@ begin
 end;
 
 
- // ----------------------------------------------------------------------------
  // Attempt to dismount a device
-function TOTFEFreeOTFE.DismountDiskDevice(deviceName: String; emergency: Boolean): Boolean;
+function TOTFEFreeOTFE._DismountDiskDevice(  deviceName: string; emergency: Boolean): Boolean;
 var
   DIOCBuffer:    TDIOC_DISMOUNT;
   bytesReturned: DWORD;
@@ -904,7 +908,7 @@ begin
 
     DebugMsg('dismountdevice');
 
-    Result := DismountDiskDevice(volumeInfo.deviceName, emergency);
+    Result := _DismountDiskDevice(volumeInfo.deviceName, emergency);
   end;
 
 
@@ -1570,7 +1574,7 @@ begin
 
     if CreateNotDelete then begin
       Result := DefineDosDevice(DDD_RAW_TARGET_PATH, PWideChar(driveLetterColon),
-        PWideChar(deviceName));
+        PWideChar(string(deviceName)));
     end else begin
       Result := DefineDosDevice(DDD_REMOVE_DEFINITION, PWideChar(driveLetterColon), nil);
     end;
@@ -1619,7 +1623,6 @@ begin
   if DosDeviceSymlink(False, DeviceName, DriveLetter, False) then begin
     Result := True;
   end;
-
 end;
 
 
@@ -1976,7 +1979,7 @@ var
 begin
   Result := False;
 
-  if CachesGetCypherDriver(cypherDriver, cypherDriverDetails) then begin
+  if _CachesGetCypherDriver(cypherDriver, cypherDriverDetails) then begin
     Result := True;
   end else begin
     // Determine the user mode MSDOS device name from the kernel mode device name
@@ -2961,7 +2964,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFE.DriverType(): String;
+function TOTFEFreeOTFE.GetDriverType(): String;
 begin
   Result := _('Kernel driver');
 end;
@@ -3094,7 +3097,6 @@ begin
 end;
 
 
- // ----------------------------------------------------------------------------
  // Convert a user mode volume filename to a kernel mode volume filename
 function TOTFEFreeOTFE.GetKernelModeVolumeFilename(userModeFilename: String): String;
 begin
@@ -3268,7 +3270,7 @@ function TOTFEFreeOTFE.ReadWritePlaintextToVolume(
   mainCypherDriver: Ansistring;
   mainCypherGUID: TGUID;
   VolumeFlags: Integer;
-  mountMountAs: TFreeOTFEMountAs;
+  mountMountAs: TMountDiskType;
 
   dataOffset: Int64;    // Offset from within mounted volume from where to read/write data
   dataLength: Integer;  // Length of data to read/write. In bytes
@@ -3320,7 +3322,7 @@ begin
       // SDUInitAndZeroBuffer(0,emptyIV);
       // Attempt to mount the device
       DebugFlush();
-      Result := MountDiskDevice(deviceName, volFilename, volumeKey,
+      Result := _MountDiskDevice(deviceName, volFilename, volumeKey,
         sectorIVGenMethod, nil, readNotWrite, IVHashDriver, IVHashGUID, IVCypherDriver,
         // IV cypher
         IVCypherGUID,                // IV cypher
@@ -3342,7 +3344,7 @@ begin
 
         finally
           // Unmount
-          DismountDiskDevice(deviceName, True);
+          _DismountDiskDevice(deviceName, True);
         end;
 
       end;  // if (Result) then

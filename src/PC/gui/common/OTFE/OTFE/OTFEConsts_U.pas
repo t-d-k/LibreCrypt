@@ -16,7 +16,7 @@ const
   OTFE_ERR_SUCCESS          = $00; // No error
   OTFE_ERR_NOT_ACTIVE       = $01;
   OTFE_ERR_DRIVER_FAILURE   = $02;
-  OTFE_ERR_USER_CANCEL      = $03;
+//  OTFE_ERR_USER_CANCEL      = $03;
   OTFE_ERR_WRONG_PASSWORD   = $04;
   OTFE_ERR_VOLUME_FILE_NOT_FOUND = $05;
   OTFE_ERR_INVALID_DRIVE    = $06; // You've attempted to mount a

@@ -11,7 +11,7 @@ unit frmKeyEntryLUKS;
 interface
 
 uses
-   //delphi
+  //delphi
   Classes, ComCtrls, Controls, Dialogs,
   ExtCtrls, Forms, Graphics, Messages,
   Spin64,
@@ -19,13 +19,14 @@ uses
 
 
 
-//lc utils
-      DriverAPI, OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFEBase_U, OTFEFreeOTFE_U, PasswordRichEdit, SDUForms,
+  //lc utils
+  DriverAPI, OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFEBase_U, OTFEFreeOTFE_U,
+  PasswordRichEdit, SDUForms,
   SDUFrames,
   SDUSpin64Units, SDUStdCtrls,  // Required for TFreeOTFESectorIVGenMethod and NULL_GUID
- SDUDropFiles, SDUFilenameEdit_U, lcTypes,
+  SDUDropFiles, SDUFilenameEdit_U, lcTypes,
   //lc forms
-    fmeLUKSKeyOrKeyfileEntry;
+  fmeLUKSKeyOrKeyfileEntry;
 
 type
   TfrmKeyEntryLUKS = class (TSDUForm)
@@ -61,7 +62,7 @@ type
     fCypherKernelModeDriverNames: TStringList;
     fCypherGUIDs: TStringList;
 
-        fsilent:         Boolean;
+    //        fsilent:         Boolean;
     fsilentResult:   TModalResult;
     fsilentPassword: PasswordString;
     // some bug whereby password is reset in silent mode { TODO 1 -otdk -crefactor : investigate }
@@ -100,15 +101,15 @@ type
     function SetDriveLetter(mountDriveLetter: DriveLetterChar): Boolean;
     function GetReadonly(): Boolean;
     procedure SetReadonly(mountReadonly: Boolean);
-    function GetMountAs(var mountAs: TFreeOTFEMountAs): Boolean;
-    function SetMountAs(mountAs: TFreeOTFEMountAs): Boolean;
+    function GetMountAs(var mountAs: TMountDiskType): Boolean;
+    function SetMountAs(mountAs: TMountDiskType): Boolean;
     function GetMountForAllUsers(): Boolean;
     procedure SetMountForAllUsers(allUsers: Boolean);
-    procedure SetVolumeFilename(volumeFilename:string);
+    procedure SetVolumeFilename(volumeFilename: String);
 
 
     //properties
-        property silent: boolean write fsilent;
+    //        property silent: boolean write fsilent;
   end;
 
 
@@ -118,7 +119,7 @@ implementation
 
 
 uses
-//delphi
+  //delphi
   ComObj,                      // Required for StringToGUID
   VolumeFileAPI,               // Required for SCTRIVGEN_USES_SECTOR_ID and SCTRIVGEN_USES_HASH
   INIFiles,
@@ -126,17 +127,17 @@ uses
   OTFEFreeOTFEDLL_U,
   lcDialogs,
   SDUi18n,
-lcConsts,
-sduGeneral,
+  lcConsts,
+  sduGeneral,
   CommonSettings,
-  MainSettings
+  MainSettings, lcCommandLine
   //lc forms
   ;
 
 procedure TfrmKeyEntryLUKS.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   inherited;
-    if fsilent then
+  if GetCmdLine.isSilent then
     ModalResult := FSilentResult;
 
 end;
@@ -147,7 +148,7 @@ begin
   fhashGUIDs                   := TStringList.Create();
   fcypherKernelModeDriverNames := TStringList.Create();
   fcypherGUIDs                 := TStringList.Create();
-  fsilent := False;
+  //  fsilent := False;
 end;
 
 procedure TfrmKeyEntryLUKS.FormDestroy(Sender: TObject);
@@ -182,10 +183,10 @@ end;
 
 procedure TfrmKeyEntryLUKS.PopulateMountAs();
 var
-  currMountAs: TFreeOTFEMountAs;
+  currMountAs: TMountDiskType;
 begin
   cbMediaType.Items.Clear();
-  for currMountAs := low(TFreeOTFEMountAs) to high(TFreeOTFEMountAs) do begin
+  for currMountAs := low(TMountDiskType) to high(TMountDiskType) do begin
     if (currMountAs <> fomaUnknown) then begin
       cbMediaType.Items.Add(FreeOTFEMountAsTitle(currMountAs));
     end;
@@ -205,11 +206,11 @@ begin
     if (cbDrive.Items.Count > 0) then begin
       cbDrive.ItemIndex := 0;
 
-      if (GetSettings().OptDefaultDriveLetter <> #0) then begin
+      if (GetSettings().DefaultDriveChar <> #0) then begin
         // Start from 1; skip the default
         for i := 1 to (cbDrive.items.Count - 1) do begin
           currDriveLetter := cbDrive.Items[i][1];
-          if (currDriveLetter >= GetSettings().OptDefaultDriveLetter) then begin
+          if (currDriveLetter >= GetSettings().DefaultDriveChar) then begin
             cbDrive.ItemIndex := i;
             break;
           end;
@@ -219,7 +220,7 @@ begin
   end;
 
   if (GetSettings() is TMainSettings) then begin
-    SetMountAs(GetMainSettings().OptDefaultMountAs);
+    SetMountAs(GetMainSettings().DefaultMountDiskType);
   end else begin
     SetMountAs(fomaRemovableDisk);
   end;
@@ -270,7 +271,7 @@ end;
 procedure TfrmKeyEntryLUKS.EnableDisableControls();
 var
   mountAsOK:  Boolean;
-  tmpMountAs: TFreeOTFEMountAs;
+  tmpMountAs: TMountDiskType;
 begin
   // Ensure we know what to mount as
   mountAsOK               := GetMountAs(tmpMountAs);
@@ -313,9 +314,9 @@ begin
 
   EnableDisableControls();
   if fsilentPassword <> '' then
-  frmeLUKSKeyOrKeyfileEntry.SetKey( fsilentPassword);
-   if fSilent then begin
-    frmeLUKSKeyOrKeyfileEntry.SetKey( fsilentPassword);
+    frmeLUKSKeyOrKeyfileEntry.SetKey(fsilentPassword);
+  if GetCmdLine.isSilent then begin
+    frmeLUKSKeyOrKeyfileEntry.SetKey(fsilentPassword);
     pbOKClick(nil);
 
     FSilentResult := ModalResult;
@@ -324,7 +325,6 @@ begin
   end;
 
 end;
-
 
 
 
@@ -408,11 +408,11 @@ begin
   se64UnitSizeLimit.Value := fileOptSizeLimit;
 end;
 
-procedure TfrmKeyEntryLUKS.SetVolumeFilename(volumeFilename: string);
+procedure TfrmKeyEntryLUKS.SetVolumeFilename(volumeFilename: String);
 begin
   if FileIsReadOnly(volumeFilename) then begin
-    ckMountReadonly.Checked := true;
-    ckMountReadonly.Enabled := false;
+    ckMountReadonly.Checked := True;
+    ckMountReadonly.Enabled := False;
   end;
 
 end;
@@ -460,13 +460,13 @@ begin
 
 end;
 
-function TfrmKeyEntryLUKS.GetMountAs(var mountAs: TFreeOTFEMountAs): Boolean;
+function TfrmKeyEntryLUKS.GetMountAs(var mountAs: TMountDiskType): Boolean;
 var
-  currMountAs: TFreeOTFEMountAs;
+  currMountAs: TMountDiskType;
 begin
   Result := False;
 
-  for currMountAs := low(TFreeOTFEMountAs) to high(TFreeOTFEMountAs) do begin
+  for currMountAs := low(TMountDiskType) to high(TMountDiskType) do begin
     if (cbMediaType.Items[cbMediaType.ItemIndex] = FreeOTFEMountAsTitle(currMountAs)) then begin
       mountAs := currMountAs;
       Result  := True;
@@ -477,7 +477,7 @@ begin
 end;
 
 
-function TfrmKeyEntryLUKS.SetMountAs(mountAs: TFreeOTFEMountAs): Boolean;
+function TfrmKeyEntryLUKS.SetMountAs(mountAs: TMountDiskType): Boolean;
 var
   idx: Integer;
 begin

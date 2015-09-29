@@ -244,7 +244,7 @@ begin
         confirm := mrYes
       else
         confirm := SDUMessageDlg(Format(_(
-          'Please confirm: Do you wish to restore the critial data block from backup file:' +
+          'Please confirm: Do you wish to restore the header from backup file:' +
           SDUCRLF + SDUCRLF + '%s' + SDUCRLF + SDUCRLF + 'Into the container:' +
           SDUCRLF + SDUCRLF + '%s' + SDUCRLF + SDUCRLF +
           'Starting from offset %d in the container?'), [GetSrcFilename,

@@ -131,7 +131,6 @@ type
     ffile_name:  String;          // file to create/mount
     fmounted_as: DriveLetterChar; //dive mounted or #0
 
-    fsilent:         Boolean;
     fsilent_result:   TModalResult;
     fsilent_password: PasswordString;
     // some bug whereby password is reset in silent mode { TODO 1 -otdk -crefactor : investigate }
@@ -199,8 +198,8 @@ function GetKey( ):Ansistring;
     function SetDriveLetter(mountDriveLetter: DriveLetterChar): Boolean;
     //    procedure GetReadonly(var mountReadonly: Boolean);
     procedure SetReadonly(mountReadonly: Boolean);
-    function GetMountAs(var mountAs: TFreeOTFEMountAs): Boolean;
-    function SetMountAs(mountAs: TFreeOTFEMountAs): Boolean;
+    function GetMountAs(var mountAs: TMountDiskType): Boolean;
+    function SetMountAs(mountAs: TMountDiskType): Boolean;
     //    function GetMountForAllUsers(): Boolean;
     procedure SetMountForAllUsers(allUsers: Boolean);
 
@@ -221,7 +220,7 @@ function GetKey( ):Ansistring;
   end;
 
 function MountPlainLinux(volumeFilename: String;var mountedAs: DriveLetterChar;ReadOnly: Boolean = False; lesFile: String = '';password: TSDUBytes = nil;
-offset: ULONGLONG = 0; createVol: Boolean = False;isHidden: Boolean = False ):Boolean;
+offset: ULONGLONG = 0; createVol: Boolean = False;isHidden: Boolean = False ):TMountresult;
 
 //function CreatePlainLinuxVolumeWizard(out fileName: String): Boolean;
 function CreateFileWithPrompt(var fileName: String;out user_cancelled: Boolean): Boolean;
@@ -259,7 +258,7 @@ function CreateFileWithPrompt(var fileName: String;out user_cancelled: Boolean):
     //      forceHidden: Boolean = False): DriveLetterChar;
     //      overload;
 
-    { TODO 1 -otdk -crefaactor : split into mountLUKS and mountplainlinux fns }
+    { done 1 -otdk -crefaactor : split into mountLUKS and mountplainlinux fns }
     {
 function MountLinux(volumeFilename: String; var mountedAs: DriveLetterChar;
       ReadOnly: Boolean = False; lesFile: String = ''; password: TSDUBytes = nil;
@@ -354,7 +353,7 @@ procedure TfrmKeyEntryPlainLinux.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
   inherited;
-  if fsilent then
+  if GetCmdLine.isSilent then
     ModalResult := fsilent_result;
 end;
 
@@ -365,8 +364,7 @@ begin
   fCypherKernelModeDriverNames := TStringList.Create();
   fCypherGUIDs := TStringList.Create();
   pcEntry.ActivePage := tsKey;
-  fsilent := False;
-  fsilent:= GetCmdLine.isSilent;
+
 
   frmePassword1.ClearPassword;
   // Linux volumes CAN NOT have newlines in the user's password
@@ -494,10 +492,10 @@ end;
 
 procedure TfrmKeyEntryPlainLinux._PopulateMountAs();
 var
-  currMountAs: TFreeOTFEMountAs;
+  currMountAs: TMountDiskType;
 begin
   cbMediaType.Items.Clear();
-  for currMountAs := low(TFreeOTFEMountAs) to high(TFreeOTFEMountAs) do
+  for currMountAs := low(TMountDiskType) to high(TMountDiskType) do
     // do not allow dm-crypt vols as 'fixed discs' - work-around BSoD issue
     if not (currMountAs in [fomaUnknown, fomaFixedDisk]) then
       cbMediaType.Items.Add(FreeOTFEMountAsTitle(currMountAs));
@@ -577,11 +575,11 @@ begin
     if (cbDrive.Items.Count > 0) then begin
       cbDrive.ItemIndex := 0;
 
-      if (GetSettings().OptDefaultDriveLetter <> #0) then begin
+      if (GetSettings().DefaultDriveChar <> #0) then begin
         // Start from 1; skip the default
         for i := 1 to (cbDrive.items.Count - 1) do begin
           currDriveLetter := cbDrive.Items[i][1];
-          if (currDriveLetter >= GetSettings().OptDefaultDriveLetter) then begin
+          if (currDriveLetter >= GetSettings().DefaultDriveChar) then begin
             cbDrive.ItemIndex := i;
             break;
           end;
@@ -591,7 +589,7 @@ begin
   end;
 
   if (GetSettings() is TMainSettings) then begin
-    SetMountAs(GetMainSettings().OptDefaultMountAs);
+    SetMountAs(GetMainSettings().DefaultMountDiskType);
   end else begin
     SetMountAs(fomaRemovableDisk);
   end;
@@ -634,7 +632,7 @@ var
   sectorIVGenMethod:   TFreeOTFESectorIVGenMethod;
   startOfVolFile:      Boolean;
   //  startOfEndData:      Boolean;
-  mountMountAs:        TFreeOTFEMountAs;
+  mountMountAs:        TMountDiskType;
   VolumeFlags:         DWORD;
   mainCypherDetails:   TFreeOTFECypher_v3;
   mountForAllUsers:    Boolean;
@@ -823,7 +821,7 @@ var
   IVCypherOK:            Boolean;
   mountAsOK:             Boolean;
   sectorIVGenMethod:     TFreeOTFESectorIVGenMethod;
-  tmpMountAs:            TFreeOTFEMountAs;
+  tmpMountAs:            TMountDiskType;
 begin
   SDUEnableControl(cbKeyProcCypher, (seKeyProcCypherIterations.Value > 0));
 
@@ -906,8 +904,6 @@ begin
 
 
 
-   { TODO 1 -otdk -ccomplete : hide offset unless hidden }
-      { TODO 1 -otdk -ccomplete : hide filename if hidden }
 
   // Items NOT YET IMPLEMENTED
   //  - after implementing; DON'T FORGET TO ENABLE THE ASSOCIATED LABELS!
@@ -1001,6 +997,9 @@ begin
   tsKey.Visible := not  fcreate_vol;
   tsNewKey.Visible :=  fcreate_vol;
 
+  { done 1 -otdk -ccomplete : hide offset unless hidden }
+      { TODO 1 -otdk -ccomplete : hide filename if hidden }
+
  lblOffset.Visible:=  fis_hidden;
  se64UnitOffset.Visible:=  fis_hidden;
  lblOffsetO.Visible:=  fis_hidden;
@@ -1008,7 +1007,7 @@ begin
   _EnableDisableControls();
 
 
-  if fSilent then begin
+  if GetCmdLine.isSilent then begin
     frmePassword1.SetKeyPhrase( fsilent_password);
     //    LoadSettings(OpenSettingsFileDlg.Filename);?
     if _MountVolume() then begin
@@ -1265,13 +1264,13 @@ end;
 
 
 
-function TfrmKeyEntryPlainLinux.GetMountAs(var mountAs: TFreeOTFEMountAs): Boolean;
+function TfrmKeyEntryPlainLinux.GetMountAs(var mountAs: TMountDiskType): Boolean;
 var
-  currMountAs: TFreeOTFEMountAs;
+  currMountAs: TMountDiskType;
 begin
   Result := False;
 
-  for currMountAs := low(TFreeOTFEMountAs) to high(TFreeOTFEMountAs) do begin
+  for currMountAs := low(TMountDiskType) to high(TMountDiskType) do begin
     if (cbMediaType.Items[cbMediaType.ItemIndex] = FreeOTFEMountAsTitle(currMountAs)) then begin
       mountAs := currMountAs;
       Result  := True;
@@ -1286,7 +1285,7 @@ begin
   Result := fmounted_as;
 end;
 
-function TfrmKeyEntryPlainLinux.SetMountAs(mountAs: TFreeOTFEMountAs): Boolean;
+function TfrmKeyEntryPlainLinux.SetMountAs(mountAs: TMountDiskType): Boolean;
 begin
   cbMediaType.ItemIndex :=
     cbMediaType.Items.IndexOf(FreeOTFEMountAsTitle(mountAs));
@@ -1748,7 +1747,7 @@ begin
 
     tmpInteger := settingsFile.ReadInteger(SETTINGS_SECTION_MOUNT_OPTIONS,
       SETTINGS_VALUE_MountAs, Ord(fomaRemovableDisk));
-    if not SetMountAs(TFreeOTFEMountAs(tmpInteger)) then
+    if not SetMountAs(TMountDiskType(tmpInteger)) then
       Ok := False;
 
 
@@ -1780,7 +1779,7 @@ var
   tmpChar:              DriveLetterChar;
   startOfVolFile, startOfEndData: Boolean;
   tmpSectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-  tmpMountAs:           TFreeOTFEMountAs;
+  tmpMountAs:           TMountDiskType;
 begin
   if (SaveSettingsFileDlg.Execute) then begin
     settingsFile := TINIFile.Create(SaveSettingsFileDlg.Filename);
@@ -2031,19 +2030,19 @@ function TfrmKeyEntryPlainLinux._SilencableMessageDlg(Content: String;
   DlgType: TMsgDlgType; Buttons: TMsgDlgButtons): Integer;
 begin
   Result := mrOk;
-  if not fsilent then
+  if not GetCmdLine.isSilent then
     Result := SDUMessageDlg(Content, DlgType, Buttons, 0);
 end;
 
 
 function MountPlainLinux(volumeFilename: String; var mountedAs: DriveLetterChar;
 ReadOnly: Boolean = False; lesFile: String = '';password: TSDUBytes = nil;
-offset: ULONGLONG = 0;{silent: Boolean = False;} createVol: Boolean = False;isHidden: Boolean = False):Boolean;
+offset: ULONGLONG = 0;{silent: Boolean = False;} createVol: Boolean = False;isHidden: Boolean = False):TMountresult;
 var
   keyEntryDlg: TfrmKeyEntryPlainLinux;
   mr:          Integer;
 begin
-   Result        := true;
+   Result        := morOK;
 
      GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS;
 //  Result        := True;
@@ -2056,19 +2055,18 @@ begin
     keyEntryDlg.SetOffset(offset); // do before keyfile as that has offset in
     if (lesFile <> '') then
       keyEntryDlg.LoadSettings(lesFile);
-//    keyEntryDlg.silent := silent;
     keyEntryDlg.SetReadonly(ReadOnly);
     keyEntryDlg.SetKey(SDUBytesToString(password));
     keyEntryDlg.fileName := volumeFilename;
 
     keyEntryDlg.createVol := createVol;
-    keyEntryDlg.  isHidden := isHidden;
+    keyEntryDlg.isHidden := isHidden;
     mr := keyEntryDlg.ShowModal();
 
     // Get user password, drive letter to use, etc
     if (mr = mrCancel) then begin
-          GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
-      Result        := False;
+//          GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
+      Result        := morCancel;
     end else begin
       if (mr = mrOk) then begin
         mountedAs := keyEntryDlg.GetmountedAs();

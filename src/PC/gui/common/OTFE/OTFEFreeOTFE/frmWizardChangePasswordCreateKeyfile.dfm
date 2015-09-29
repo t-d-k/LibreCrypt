@@ -71,7 +71,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           TabOrder = 1
           OnClick = rgFileOrPartitionClick
         end
-        inline TSDUDiskPartitionsPanel1: TfmeDiskPartitionsPanel
+        inline TSDUDiskPartitionsPanel1: TfmeSDUDiskPartitions
           Left = 3
           Top = 179
           Width = 590
@@ -202,7 +202,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
             Height = 235
             ExplicitWidth = 585
             ExplicitHeight = 235
-            inherited SDUDiskPartitionsPanel1: TfmeDiskPartitionsPanel
+            inherited SDUDiskPartitionsPanel1: TfmeSDUDiskPartitions
               Height = 207
               ExplicitHeight = 207
             end
@@ -227,7 +227,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           end
           inherited ilErrorWarning: TImageList
             Bitmap = {
-              494C010103000400FC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400080110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000

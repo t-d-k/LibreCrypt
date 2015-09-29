@@ -9,14 +9,7 @@ uses
   Dialogs,
   Windows;
 
-var
-  // If set, then any messages displayed will have any single CRLFs stripped
-  // out, while double CRLFs (SDU_CRLF+SDUCRLF) will be preserved under
-  // Windows Vista and later
-  // This allows messages to have CRLFs included in them for pre-Vista systems,
-  // in order to break up long lines - but on Vista, which does more sensible
-  // word wrapping, such CRLFs will be removed
-  GSDUDialogsStripSingleCRLF: Boolean = True;
+
 
  // set to true to suppress all dialogs (ege for testing)
  //  G_SuppressDialogs : boolean = False;
@@ -50,6 +43,21 @@ function SDUMessageDlg(Content: String;
 
 function SDUMessageDlg(Content: String): Integer; overload;
 
+type
+
+   OnHideMsg = function (msg: String; out answer: Integer): Boolean;
+var
+  //set to a value to get a callback for all messages - return true to suppress msg
+  GOnHideMsg :OnHideMsg = nil;
+
+var
+  // If set, then any messages displayed will have any single CRLFs stripped
+  // out, while double CRLFs (SDU_CRLF+SDUCRLF) will be preserved under
+  // Windows Vista and later
+  // This allows messages to have CRLFs included in them for pre-Vista systems,
+  // in order to break up long lines - but on Vista, which does more sensible
+  // word wrapping, such CRLFs will be removed
+  GSDUDialogsStripSingleCRLF: Boolean = True;
 
 implementation
 
@@ -62,7 +70,7 @@ uses
   UITypes,
   //sdu.lcutils
   SDUGeneral,
-  CommonSettings,
+//  CommonSettings,
 
   lcConsts;
 
@@ -93,41 +101,47 @@ resourcestring
 
 function _SDUDialogs_StripSingleNewlines(msg: String): String; forward;
 
-
-
-// ----------------------------------------------------------------------------
 function SDUMessageBox(
   hWnd: HWND;
   Content: String;
   WindowTitle: String;
   Flags: Longint): Integer;
+  var
+  show_msg   : Boolean;
 begin
-  if GSDUDialogsStripSingleCRLF then
-    Content := _SDUDialogs_StripSingleNewlines(Content);
+  Content := _SDUDialogs_StripSingleNewlines(Content);
 
   // do enhancements here
-  Result := MessageBox(hWnd, PChar(Content), PChar(WindowTitle), Flags);
+    show_msg := true;
+  // do enhancements here
+  if assigned(GOnHideMsg) then begin
+    show_msg := not GOnHideMsg(Content,Result) ;
+  end;
+
+  if show_msg then Result := MessageBox(hWnd, PChar(Content), PChar(WindowTitle), Flags);
 end;
 
-// ----------------------------------------------------------------------------
 function SDUMessageDlg(
   Content: String;
   DlgType: TMsgDlgType;
   Buttons: TMsgDlgButtons;
   HelpCtx: Longint): Integer;
+var
+  show_msg   : Boolean;
 begin
   //  if G_SuppressDialogs then exit;
 
-  if GSDUDialogsStripSingleCRLF then
-    Content := _SDUDialogs_StripSingleNewlines(Content);
+  Content := _SDUDialogs_StripSingleNewlines(Content);
 
+  show_msg := true;
   // do enhancements here
-  if not Getsettings().IsRememberedDlgAnswer(Content,Result) then
-      Result := MessageDlg(Content, DlgType, Buttons, HelpCtx);
+  if assigned(GOnHideMsg) then begin
+    show_msg := not GOnHideMsg(Content,Result) ;
+  end;
+  if show_msg then  Result := MessageDlg(Content, DlgType, Buttons, HelpCtx);
 end;
 
 
-// ----------------------------------------------------------------------------
 function SDUMessageDlg(
   Content: String;
   DlgType: TMsgDlgType): Integer;
@@ -136,7 +150,6 @@ begin
 end;
 
 
-// ----------------------------------------------------------------------------
 function SDUMessageDlg(
   Content: String): Integer;
 begin
@@ -151,6 +164,8 @@ function _SDUDialogs_StripSingleNewlines(msg: String): String;
 const
   DBLCRLF_MARKER = #13;
 begin
+  if GSDUDialogsStripSingleCRLF then begin
+
   if SDUOSVistaOrLater() then begin
     // Replace double-CRLFs with a special flag marker to preserve them
     msg := StringReplace(msg, SDUCRLF + SDUCRLF, DBLCRLF_MARKER, [rfReplaceAll]);
@@ -163,6 +178,7 @@ begin
 
     // Revert double-CRLFs
     msg := StringReplace(msg, DBLCRLF_MARKER, SDUCRLF + SDUCRLF, [rfReplaceAll]);
+  end;
   end;
 
   Result := msg;

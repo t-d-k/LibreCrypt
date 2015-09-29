@@ -12,10 +12,11 @@ interface
 
 uses
 //sdu,lcutils
-lctypes;
+  lctypes;
+
 const
   // Set to "-1" to indicate release/non-beta
-  APP_BETA_BUILD = 0;
+   APP_BETA_BUILD = 0;
 
   { DONE 1 -otdk -cenhancement : update homepage }
   // Online user manual URL...
@@ -35,13 +36,9 @@ const
   SERVICE_WEBCLIENT = 'WebClient';
   SERVICE_MRXDAV    = 'MRXDAV';
 
-
-
-    SDUCR   = #$0D; // #13
+  SDUCR   = #$0D; // #13
   SDULF   = #$0A; // #10
   SDUCRLF = SDUCR + SDULF;
-
-
 
   SDUNEWLINE_TITLE: array [TSDUNewline] of String = ('CRLF', 'CR', 'LF');
  // SDUNEWLINE_TITLEWITHOS: array [TSDUNewline] of String =
@@ -56,7 +53,7 @@ const
 
 resourcestring
   RS_DRIVEMAPPING_NOT_SUPPORTED_UNDER_VISTA_AND_7 =
-    'For security reasons, drive mapping is not currently supported under Windows Vista/Windows 7';
+    'For security reasons, drive mapping is not currently supported under Windows Vista and above';
       RS_UNKNOWN = '<unknown>';
 
 implementation

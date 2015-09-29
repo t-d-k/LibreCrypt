@@ -86,7 +86,7 @@ begin
       dlgPKCS11Session.PKCS11LibObj := GPKCS11Library;
       dlgPKCS11Session.AllowSkip    := False;
       if (dlgPKCS11Session.ShowModal = mrCancel) then begin
-        GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
+//        GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
       end else begin
         pkcs11session := dlgPKCS11Session.Session;
       end;

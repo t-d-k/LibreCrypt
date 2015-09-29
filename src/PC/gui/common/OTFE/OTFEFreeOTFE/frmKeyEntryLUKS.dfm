@@ -44,7 +44,7 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
     Top = 220
     Width = 214
     Height = 125
-    Caption = 'Mount options'
+    Caption = 'Open options'
     TabOrder = 1
     object lblDrive: TLabel
       Left = 12
@@ -59,7 +59,7 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
       Top = 52
       Width = 47
       Height = 13
-      Caption = '&Mount as:'
+      Caption = '&Open as:'
       FocusControl = cbMediaType
     end
     object cbDrive: TComboBox
@@ -78,7 +78,7 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
       Top = 76
       Width = 97
       Height = 17
-      Caption = 'Mount &readonly'
+      Caption = 'Open &readonly'
       TabOrder = 2
       OnClick = SelectionChange
       AutoSize = True
@@ -97,7 +97,7 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
       Top = 96
       Width = 121
       Height = 17
-      Caption = 'Mount for all &users'
+      Caption = 'Open for all &users'
       TabOrder = 3
       AutoSize = True
     end

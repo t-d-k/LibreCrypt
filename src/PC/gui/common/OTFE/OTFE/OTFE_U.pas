@@ -346,17 +346,17 @@ begin
 
     OTFE_ERR_NOT_ACTIVE                : Result := 'Component not active';
     OTFE_ERR_DRIVER_FAILURE            : Result := 'Driver failure';
-    OTFE_ERR_USER_CANCEL               : Result := 'User cancelled operation';
+//    OTFE_ERR_USER_CANCEL               : Result := 'User cancelled operation';
     OTFE_ERR_WRONG_PASSWORD            : Result := 'Wrong Keyphrase entered';
     OTFE_ERR_VOLUME_FILE_NOT_FOUND     : Result := 'Container file not found';
     OTFE_ERR_INVALID_DRIVE             : Result := 'Invalid drive';
-    OTFE_ERR_MOUNT_FAILURE             : Result := 'Mount failure';
-    OTFE_ERR_DISMOUNT_FAILURE          : Result := 'Dismount failure';
+    OTFE_ERR_MOUNT_FAILURE             : Result := 'Open failure';
+    OTFE_ERR_DISMOUNT_FAILURE          : Result := 'Lock failure';
     OTFE_ERR_FILES_OPEN                : Result := 'Files open in container';
-    OTFE_ERR_STREAMING_DATA            : Result := 'Can''t dismount while still streaming data, or was doing so in the last few seconds';
+    OTFE_ERR_STREAMING_DATA            : Result := 'Can''t lock while still streaming data, or was doing so in the last few seconds';
     OTFE_ERR_FILE_NOT_ENCRYPTED_VOLUME : Result := 'File is not an encrypted container';
     OTFE_ERR_UNABLE_TO_LOCATE_FILE     : Result := 'Unable to locate file';
-    OTFE_ERR_DISMOUNT_RECURSIVE        : Result := 'Dismounting recursively mounted drive';
+    OTFE_ERR_DISMOUNT_RECURSIVE        : Result := 'Locking recursively opened drive';
     OTFE_ERR_INSUFFICENT_RIGHTS        : Result := 'Insufficient rights';
     OTFE_ERR_NOT_W9X                   : Result := 'Operation not available under Windows 95/98/ME';
     OTFE_ERR_NOT_WNT                   : Result := 'Operation not available under Windows NT/2000';
@@ -367,7 +367,7 @@ begin
     OTFE_ERR_UNKNOWN_KEYGEN            : Result := 'Unknown key generator';
 
     // ScramDisk
-    OTFE_ERR_UNABLE_MOUNT_COMPRESSED   : Result := 'Can''t mount compressed container';
+    OTFE_ERR_UNABLE_MOUNT_COMPRESSED   : Result := 'Can''t open compressed container';
 
     // PANIC!
     OTFE_ERR_UNKNOWN_ERROR             : Result := 'Unknown error';

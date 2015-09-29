@@ -79,7 +79,7 @@ object OTFEE4MScramDiskPasswordEntry_F: TOTFEE4MScramDiskPasswordEntry_F
     Top = 112
     Width = 73
     Height = 13
-    Caption = 'Mount as &drive:'
+    Caption = 'Open as &drive:'
     FocusControl = cbDrives
   end
   object pbOK: TButton

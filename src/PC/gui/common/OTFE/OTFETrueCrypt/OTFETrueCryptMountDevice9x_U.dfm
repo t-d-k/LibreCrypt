@@ -2,7 +2,7 @@ object OTFETrueCryptMountDevice9x_F: TOTFETrueCryptMountDevice9x_F
   Left = 541
   Top = 321
   BorderStyle = bsDialog
-  Caption = 'Mount Device'
+  Caption = 'Open Device'
   ClientHeight = 183
   ClientWidth = 174
   Color = clBtnFace

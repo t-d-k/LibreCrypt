@@ -64,8 +64,6 @@ object frmSelectHashCypher: TfrmSelectHashCypher
     OnClick = sgCombinationsClick
     OnDblClick = sgCombinationsDblClick
     OnDrawCell = sgCombinationsDrawCell
-    ExplicitWidth = 493
-    ExplicitHeight = 229
     ColWidths = (
       64)
   end
@@ -79,7 +77,6 @@ object frmSelectHashCypher: TfrmSelectHashCypher
     Default = True
     TabOrder = 1
     OnClick = pbOKClick
-    ExplicitTop = 340
   end
   object pbCancel: TButton
     Left = 262
@@ -91,7 +88,6 @@ object frmSelectHashCypher: TfrmSelectHashCypher
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 2
-    ExplicitTop = 340
   end
   object miPopup: TPopupMenu
     Left = 20

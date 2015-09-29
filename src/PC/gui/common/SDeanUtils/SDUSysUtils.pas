@@ -40,15 +40,17 @@ function Format_drive(driveToFormat: DriveLetterChar;silent:Boolean  =false): Bo
 
 resourcestring
   FORMAT_ERR = 'Your encrypted drive could not be formatted.'#10#13#10#13 +
-    'Please lock this container and re-open it with the "Mount for all users" option checked, before trying again.';
+    'Please lock this container and re-open it with the "Open for all users" option checked, before trying again.';
 
 implementation
 
 uses
+   System.UITypes, ShellApi,
 {$IF CompilerVersion >= 18.5}
   WideStrUtils,
 {$IFEND}
-  lcDialogs, System.UITypes, ShellApi,
+  lcDialogs,
+
   //sdu,lcutils
   sdugeneral
   ;

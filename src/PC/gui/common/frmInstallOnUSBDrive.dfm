@@ -42,7 +42,7 @@ object frmInstallOnUSBDrive: TfrmInstallOnUSBDrive
       'This function provides an easy means of copying %s to a USB driv' +
       'e, and configuring it to launch automatically when the USB drive' +
       ' is plugged in. Please select the USB drive, and location on it,' +
-      ' where you would like %S to be copied to:'
+      ' where you would like %s to be copied to:'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11

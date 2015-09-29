@@ -45,10 +45,10 @@ type
     procedure sgCombinationsDblClick(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
   private
-    HashDriverKernelModeNames: TStringList;
-    HashGUIDs:   TStringList;
-    CypherDriverKernelModeNames: TStringList;
-    CypherGUIDs: TStringList;
+    fHash_driver_kernel_mode_names: TStringList;
+    fHash_Guids:   TStringList;
+    fCypher_driver_kernel_mode_names: TStringList;
+    fCypher_Guids: TStringList;
 
     procedure EnableDisableControls();
   public
@@ -86,10 +86,10 @@ procedure TfrmSelectHashCypher.FormCreate(Sender: TObject);
 begin
   sgCombinations.ColWidths[0] := sgCombinations.Width;
 
-  HashDriverKernelModeNames   := TStringList.Create();
-  HashGUIDs                   := TStringList.Create();
-  CypherDriverKernelModeNames := TStringList.Create();
-  CypherGUIDs                 := TStringList.Create();
+  fHash_driver_kernel_mode_names   := TStringList.Create();
+  fHash_Guids                   := TStringList.Create();
+  fCypher_driver_kernel_mode_names := TStringList.Create();
+  fCypher_Guids                 := TStringList.Create();
 
 end;
 
@@ -117,10 +117,10 @@ var
   cellContents:           String;
 begin
   // Store the details...
-  HashDriverKernelModeNames.Add(HashDriverKernelModeName);
-  HashGUIDs.Add(GUIDToString(HashGUID));
-  CypherDriverKernelModeNames.Add(CypherDriverKernelModeName);
-  CypherGUIDs.Add(GUIDToString(CypherGUID));
+  fHash_driver_kernel_mode_names.Add(HashDriverKernelModeName);
+  fHash_Guids.Add(GUIDToString(HashGUID));
+  fCypher_driver_kernel_mode_names.Add(CypherDriverKernelModeName);
+  fCypher_Guids.Add(GUIDToString(CypherGUID));
 
 
   // >2 because we always have one fixed row, and one data row
@@ -229,28 +229,28 @@ end;
 
 function TfrmSelectHashCypher.SelectedHashDriverKernelModeName(): String;
 begin
-  Result := HashDriverKernelModeNames[sgCombinations.Row];
+  Result := fHash_driver_kernel_mode_names[sgCombinations.Row];
 
 end;
 
 
 function TfrmSelectHashCypher.SelectedHashGUID(): TGUID;
 begin
-  Result := StringToGUID(HashGUIDs[sgCombinations.Row]);
+  Result := StringToGUID(fHash_Guids[sgCombinations.Row]);
 
 end;
 
 
 function TfrmSelectHashCypher.SelectedCypherDriverKernelModeName(): String;
 begin
-  Result := CypherDriverKernelModeNames[sgCombinations.Row];
+  Result := fCypher_driver_kernel_mode_names[sgCombinations.Row];
 
 end;
 
 
 function TfrmSelectHashCypher.SelectedCypherGUID(): TGUID;
 begin
-  Result := StringToGUID(CypherGUIDs[sgCombinations.Row]);
+  Result := StringToGUID(fCypher_Guids[sgCombinations.Row]);
 
 end;
 
@@ -309,10 +309,10 @@ end;
 
 procedure TfrmSelectHashCypher.FormDestroy(Sender: TObject);
 begin
-  HashDriverKernelModeNames.Free();
-  HashGUIDs.Free();
-  CypherDriverKernelModeNames.Free();
-  CypherGUIDs.Free();
+  fHash_driver_kernel_mode_names.Free();
+  fHash_Guids.Free();
+  fCypher_driver_kernel_mode_names.Free();
+  fCypher_Guids.Free();
 
 end;
 

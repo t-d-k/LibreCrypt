@@ -75,7 +75,6 @@ TYPE
     MaxPartitionCount: DWORD;
   end;
 
-
   TPartitionInformationMbr = record
     PartitionType:       Byte;
     BootIndicator:       Boolean;

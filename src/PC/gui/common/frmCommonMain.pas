@@ -127,7 +127,7 @@ type
     N100:         TMenuItem;
     StatusBar_Hint: TStatusBar;
     Mountfilehidden1: TMenuItem;
-    Label1:       TLabel;
+    lblFooter: TLabel;
     miDev:        TMenuItem;
     actFullTest:  TAction;
     DoTests1:     TMenuItem;
@@ -136,6 +136,10 @@ type
     N5: TMenuItem;
     N9: TMenuItem;
     N19: TMenuItem;
+    timHideFooter: TTimer;
+    actNewLuks: TAction;
+    Hidden1: TMenuItem;
+    N3: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure miCreateKeyfileClick(Sender: TObject);
     procedure miChangePasswordClick(Sender: TObject);
@@ -165,9 +169,10 @@ type
     procedure actFullTestExecute(Sender: TObject);
     procedure aLuksTestExecute(Sender: TObject);
     procedure aMountLUKSExecute(Sender: TObject);
-
+    procedure timHideFooterTimer(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+     procedure actLUKSNewExecute(Sender: TObject);
   private
-
 
 
   protected
@@ -181,7 +186,6 @@ type
     // This is set to TRUE at the end of calling WMUserPostShow(...) is called
     fwmUserPostShowCalledAlready: Boolean;
 
-
     // Flag to indicate that the login session is about to end
     fendSessionFlag:    Boolean;
     // Flag to indicate that the executable is about to exit
@@ -192,35 +196,38 @@ type
     fPkcs11Library: TPKCS11Library;
 
     fFuncTestPending: Boolean;
+
+    procedure _RefreshDrives(); virtual; // rereshes display if new drive mounted
+
     // if functional test was selected in cmd line but not run yet
 
     procedure DoAppIdle(Sender: TObject; var Done: Boolean); // TIdleEvent
 
-    function HandleCommandLineOpts_Create(): eCmdLine_Exit; virtual; abstract;
-    function HandleCommandLineOpts_Mount(): eCmdLine_Exit; virtual;
-    function HandleCommandLineOpts_EnableDevMenu(): eCmdLine_Exit; virtual;
-    function HandleCommandLineOpts_DumpLUKSHdr: eCmdLine_Exit; virtual;
+    function _ProcessCommandLine_Create(): eCmdLine_Exit; virtual; abstract;
+    function _ProcessCommandLine_Mount(): eCmdLine_Exit; virtual;
+    function _ProcessCommandLine_EnableDevMenu(): eCmdLine_Exit; virtual;
+    function _ProcessCommandLine_DumpLUKSHdr: eCmdLine_Exit; virtual;
 
-    procedure ReloadSettings(); virtual;
+    procedure _ReloadSettings(); virtual;
 
-    function ActivateFreeOTFEComponent(suppressMsgs: Boolean): Boolean; virtual;
-    procedure DeactivateFreeOTFEComponent(); virtual;
-    procedure ShowOldDriverWarnings(); virtual;
+    function _ActivateFreeOTFEComponent(suppressMsgs: Boolean): Boolean; virtual;
+    procedure _DeactivateFreeOTFEComponent(); virtual;
+    procedure _ShowOldDriverWarnings(); virtual;
 
-    procedure SetupPKCS11(suppressMsgs: Boolean);
-    procedure ShutdownPKCS11();
-    procedure PKCS11SlotEvent(Sender: TObject; SlotID: Integer);
-    procedure PKCS11TokenRemoved(SlotID: Integer); virtual; abstract;
-    procedure PKCS11TokenInserted(SlotID: Integer); virtual;
+    procedure _SetupPKCS11(suppressMsgs: Boolean);
+    procedure _ShutdownPKCS11();
+    procedure _PKCS11SlotEvent(Sender: TObject; SlotID: Integer);
+    procedure _PKCS11TokenRemoved(SlotID: Integer); virtual; abstract;
+    procedure _PKCS11TokenInserted(SlotID: Integer); virtual;
 
     procedure AddToMRUList(filenames: TStringList); overload;
     procedure AddToMRUList(filename: String); overload;
-    procedure RefreshMRUList(); virtual;
+    procedure _RefreshMRUList(); virtual;
     procedure MRUListItemClicked(mruList: TSDUMRUList; idx: Integer);
       virtual; abstract;
 
     procedure SetStatusBarText(statusText: String);
-    procedure EnableDisableControls(); virtual;
+    procedure _EnableDisableControls(); virtual;
 
     procedure _DumpDetailsToFile(LUKSDump: Boolean);
 
@@ -238,8 +245,8 @@ type
     procedure _MountFile(mountAsSystem: TVolumeType; filename: String;
       ReadOnly, isHidden: Boolean; createVol: Boolean = False); overload; virtual; abstract;
 
-      // mount dm-crypt
-    procedure _PlainLinuxMountFile(isHidden: Boolean);
+    // prompt user for filename and mount volume
+    procedure _PromptAndMountFile(mountAsType: TVolumeType;isHidden: Boolean = false);
 
     {$IFDEF VER180}
     {$IFNDEF VER185}
@@ -263,9 +270,13 @@ type
     procedure SetStatusBarToHint(Sender: TObject);
     function EnsureOTFEComponentActive: Boolean;
 
-    function DoFullTests: Boolean; virtual; abstract;
-    function DoLuksTests: Boolean; virtual; abstract;
+    procedure _DoFullTests; virtual; abstract;
+    procedure _DoLuksTests; virtual; abstract;
 
+        // Handle common command line options; returns TRUE if command line options
+    // were passed through
+    //requires  driver to be active before called
+    function _ProcessCommonCommandLine( ):eCmdLine_Exit;
   public
     constructor Create(AOwner: TComponent); override;
 
@@ -273,10 +284,7 @@ type
 
     procedure InitApp(); virtual;
 
-    // Handle any command line options; returns TRUE if command line options
-    // were passed through
-    function HandleCommandLineOpts( ):eCmdLine_Exit;
-      virtual; abstract;
+
 
     {$IFDEF VER180}
     {$IFNDEF VER185}
@@ -299,11 +307,8 @@ resourcestring
 const
   USERGUIDE_LOCAL = '.\docs\index.html';
 
- 
-
   // Toolbar button height is set to the image size + this value
   TOOLBAR_ICON_BORDER = 4;
-
 
 implementation
 
@@ -347,7 +352,7 @@ uses
   frmHashReport,
   frmInstallOnUSBDrive,
   frmVersionCheck, frmKeyEntryLinux,frmKeyEntryFreeOTFE, frmSelectVolumeType,frmPKCS11Management,
-  frmWizardChangePasswordCreateKeyfile;
+  frmWizardChangePasswordCreateKeyfile,frmCreateLUKSVolumeWizard;
 
 {$IFDEF _NEVER_DEFINED}
 
@@ -361,9 +366,9 @@ const
 
 
 resourcestring
-  AUTORUN_POST_MOUNT    = 'post mount';
-  AUTORUN_PRE_MOUNT     = 'pre dismount';
-  AUTORUN_POST_DISMOUNT = 'post dismount';
+  AUTORUN_POST_MOUNT    = 'post open';
+  AUTORUN_PRE_MOUNT     = 'pre lock';
+  AUTORUN_POST_DISMOUNT = 'post lock';
 
 const
   AUTORUN_TITLE: array [TAutorunType] of String = (
@@ -526,6 +531,12 @@ begin
 end;
 
 
+procedure TfrmCommonMain.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  inherited;
+  if GetSettings().StoreLayout then GetSettings().MainWindowLayout    := SDUGetFormLayout(self);
+end;
+
 procedure TfrmCommonMain.FormCreate(Sender: TObject);
 begin
 
@@ -556,10 +567,10 @@ begin
 
 
   // Reload settings to ensure any any components are setup, etc
-  ReloadSettings();
+  _ReloadSettings();
 
   // We set these to invisible so that if they're disabled by the user
-  // settings, it doens't flicker on them off
+  // settings, it doesn't flicker on them off
   StatusBar_Hint.Visible   := False;
   StatusBar_Status.Visible := False;
   Application.OnHint       := SetStatusBarToHint;
@@ -574,11 +585,19 @@ begin
   actInstallOnUSBDrive.Caption :=
     Format(_('&Copy %s to USB drive...'), [Application.Title]);
 
+// hide footer quicker in debug
+{$IFDEF DEBUG}
+timHideFooter.Interval := 1000;
+{$ENDIF}
+
 end;
 
 
 procedure TfrmCommonMain.FormShow(Sender: TObject);
 begin
+
+
+
   // Post a message back to *this* form to allow any automatic updates check
   // to be carried out *after* the main form is displayed (i.e. post-show)
   // This way, there's no risk of an updates dialog getting "lost", and not
@@ -588,9 +607,14 @@ end;
 
 
 // Reload settings, setting up any components as needed
-procedure TfrmCommonMain.ReloadSettings();
+procedure TfrmCommonMain._RefreshDrives;
 begin
-  SDUSetLanguage(Getsettings().OptLanguageCode);
+//do nothing
+end;
+
+procedure TfrmCommonMain._ReloadSettings();
+begin
+  SDUSetLanguage(Getsettings().LanguageCode);
   try
     SDURetranslateComponent(self);
   except
@@ -599,9 +623,9 @@ begin
     end;
   end;
 
-  SetupPKCS11(False);
+  _SetupPKCS11(False);
 
-  RefreshMRUList();
+  _RefreshMRUList();
 end;
 
  // procedure TfrmCommonMain.MountFiles(mountAsSystem: TDragDropFileType; filename: String;
@@ -623,35 +647,35 @@ end;
 procedure TfrmCommonMain.AddToMRUList(filenames: TStringList);
 begin
   if (filenames <> nil) then begin
-    GetSettings().OptMRUList.Add(filenames);
+    GetSettings().MruList.Add(filenames);
 
-    if (GetSettings().OptSaveSettings <> slNone) then begin
+    if (GSettingsSaveLocation <> slNone) then begin
       GetSettings().Save();
     end;
   end;
 
-  RefreshMRUList();
+  _RefreshMRUList();
 
 end;
 
 procedure TfrmCommonMain.AddToMRUList(filename: String);
 begin
 
-  GetSettings().OptMRUList.Add(filename);
+  GetSettings().MruList.Add(filename);
 
-  if (GetSettings().OptSaveSettings <> slNone) then begin
+  if (GSettingsSaveLocation <> slNone) then begin
     GetSettings().Save();
   end;
 
 
-  RefreshMRUList();
+  _RefreshMRUList();
 
 end;
 
 
-procedure TfrmCommonMain.RefreshMRUList();
+procedure TfrmCommonMain._RefreshMRUList();
 begin
-  GetSettings().OptMRUList.OnClick := MRUListItemClicked;
+  GetSettings().MruList.OnClick := MRUListItemClicked;
 end;
 
  // procedure TfrmCommonMain.MountFilesDetectLUKS(fileToMount: String; ReadOnly: Boolean;
@@ -695,10 +719,10 @@ begin
   _MountFile(mountType, fileToMount, ReadOnly, False);
 end;
 
-procedure TfrmCommonMain.EnableDisableControls();
+procedure TfrmCommonMain._EnableDisableControls();
 
 begin
-  actPKCS11TokenManagement.Enabled := GetSettings().OptPKCS11Enable;
+  actPKCS11TokenManagement.Enabled := GetSettings().EnablePKCS11;
 
   // The FreeOTFE object may not be active...
   actFreeOTFENewNotHidden.Enabled       := GetFreeOTFEBase().Active;
@@ -732,7 +756,7 @@ begin
 end;
 
 
-function TfrmCommonMain.ActivateFreeOTFEComponent(suppressMsgs: Boolean): Boolean;
+function TfrmCommonMain._ActivateFreeOTFEComponent(suppressMsgs: Boolean): Boolean;
 var
   obsoleteDriver: Boolean;
 begin
@@ -780,17 +804,17 @@ begin
 
   // Old driver warnings
   if GetFreeOTFEBase().Active then
-    ShowOldDriverWarnings();
+    _ShowOldDriverWarnings();
 
   Result := GetFreeOTFEBase().Active;
 end;
 
-procedure TfrmCommonMain.ShowOldDriverWarnings();
+procedure TfrmCommonMain._ShowOldDriverWarnings();
 begin
   // No warnings to be shown in base class
 end;
 
-procedure TfrmCommonMain.DeactivateFreeOTFEComponent();
+procedure TfrmCommonMain._DeactivateFreeOTFEComponent();
 begin
   GetFreeOTFEBase().Active := False;
 end;
@@ -919,28 +943,26 @@ begin
   case autorun of
 
     arPostMount:
-    begin
-      exeFullCmdLine := GetSettings().OptPostMountExe;
-    end;
+
+      exeFullCmdLine := GetSettings().PostMountExe;
+
 
     arPreDismount:
     begin
       // We don't bother with predismount in case of emergency
-      if not (isEmergency) then begin
-        exeFullCmdLine := GetSettings().OptPreDismountExe;
-      end;
+      if not (isEmergency) then
+        exeFullCmdLine := GetSettings().PreDismountExe;
     end;
 
     arPostDismount:
-    begin
-      exeFullCmdLine := GetSettings().OptPostDismountExe;
-    end;
+      exeFullCmdLine := GetSettings().PostDismountExe;
+
 
     else
     begin
-      if not (isEmergency) then begin
+      if not (isEmergency) then
         SDUMessageDlg(_('Unknown autorun type?!'), mtError);
-      end;
+
     end;
 
   end;
@@ -977,7 +999,7 @@ begin
     // NOTE: THIS MUST BE UPDATED IF CMDLINE IS TO SUPPORT COMMAND LINE
     // PARAMETERS!
     if not (FileExists(exeOnly)) then begin
-      if (not (isEmergency) and GetSettings().OptPrePostExeWarn) then begin
+      if (not (isEmergency) and GetSettings().WarnAutoRunExeErr) then begin
         SDUMessageDlg(
           Format(_('Unable to locate %s executable:'), [AUTORUN_TITLE[autorun]]) +
           SDUCRLF + SDUCRLF + exeOnly,
@@ -1033,14 +1055,10 @@ begin
 
 end;
 
-{ DONE 1 -otdk -ccomplete : add similar for hidden volumes }
-procedure TfrmCommonMain.actFreeOTFEMountFileNotHiddenExecute(Sender: TObject);
-//var
-//buf:array[0..99] of Widechar;
+
+procedure TfrmCommonMain._PromptAndMountFile(mountAsType: TVolumeType;isHidden: Boolean = false);
 begin
-// GetCurrentDirectory(100,buf);
   if GetFreeOTFEBase().WarnIfNoHashOrCypherDrivers() then begin
-//    ForceCurrentDirectory:= true;
 
     SDUOpenSaveDialogSetup(OpenDialog, '');
     FreeOTFEGUISetupOpenSaveDialog(OpenDialog);
@@ -1051,32 +1069,88 @@ begin
 
     if OpenDialog.Execute() then begin
     //warn if luks?
-       _MountFile(vtFreeOTFE, OpenDialog.filename, ((ofReadOnly in OpenDialog.Options) or FileIsReadOnly(
+       _MountFile(mountAsType, OpenDialog.filename, ((ofReadOnly in OpenDialog.Options) or FileIsReadOnly(
         OpenDialog.filename)
-        ), False);
+        ), isHidden);
 
     end;
   end;
 end;
 
+{ DONE 1 -otdk -ccomplete : add similar for luks }
+//procedure TfrmCommonMain._PlainLinuxMountFile(isHidden: Boolean);
+//begin
+//  if GetFreeOTFEBase().WarnIfNoHashOrCypherDrivers() then begin
+//    SDUOpenSaveDialogSetup(OpenDialog, '');
+//    FreeOTFEGUISetupOpenSaveDialog(OpenDialog);
+//    { TODO 1 -otdk -crefactor : move these properties into designer }
+//    OpenDialog.Filter     := FILE_FILTER_FLT_VOLUMES;
+//    OpenDialog.DefaultExt := FILE_FILTER_DFLT_VOLUMES;
+//    OpenDialog.Options    := OpenDialog.Options - [ofAllowMultiSelect];
+//    if OpenDialog.Execute() then begin
+//      _MountFile(
+//        vtPlainLinux,
+//        OpenDialog.filename,
+//        ((ofReadOnly in OpenDialog.Options) or FileIsReadOnly(
+//        OpenDialog.filename) // Only bother checking the first files
+//        ), isHidden
+//        );
+//    end;
+//  end;
+//
+//end;
+
+
+procedure TfrmCommonMain.aMountLUKSExecute(Sender: TObject);
+begin
+  inherited;
+  _PromptAndMountFile(vtLUKS,false);
+end;
+
+procedure TfrmCommonMain.actFreeOTFEMountFileNotHiddenExecute(Sender: TObject);
+begin
+_PromptAndMountFile(vtFreeOTFE,false);
+//  if GetFreeOTFEBase().WarnIfNoHashOrCypherDrivers() then begin
+//
+//    SDUOpenSaveDialogSetup(OpenDialog, '');
+//    FreeOTFEGUISetupOpenSaveDialog(OpenDialog);
+//    assert(OpenDialog <> nil);
+//    OpenDialog.Filter     := FILE_FILTER_FLT_VOLUMES;
+//    OpenDialog.DefaultExt := FILE_FILTER_DFLT_VOLUMES;
+//    OpenDialog.Options    := OpenDialog.Options - [ofAllowMultiSelect];
+//
+//    if OpenDialog.Execute() then begin
+//    //warn if luks?
+//       _MountFile(vtFreeOTFE, OpenDialog.filename, ((ofReadOnly in OpenDialog.Options) or FileIsReadOnly(
+//        OpenDialog.filename)
+//        ), false);
+//
+//    end;
+//  end;
+end;
+
+
+
+
 procedure TfrmCommonMain.actFreeOTFEMountFileHiddenExecute(Sender: TObject);
 begin
-  if GetFreeOTFEBase().WarnIfNoHashOrCypherDrivers() then begin
-    SDUOpenSaveDialogSetup(OpenDialog, '');
-    FreeOTFEGUISetupOpenSaveDialog(OpenDialog);
-    assert(OpenDialog <> nil);
-    OpenDialog.Filter     := FILE_FILTER_FLT_VOLUMES;
-    OpenDialog.DefaultExt := FILE_FILTER_DFLT_VOLUMES;
-    OpenDialog.Options    := OpenDialog.Options - [ofAllowMultiSelect];
-
-    if OpenDialog.Execute() then begin
-    //warn if luks?
-       _MountFile(vtFreeOTFE, OpenDialog.filename, ((ofReadOnly in OpenDialog.Options) or FileIsReadOnly(
-        OpenDialog.filename)
-        ), true);
-
-    end;
-  end;
+_PromptAndMountFile(vtFreeOTFE,true);
+//  if GetFreeOTFEBase().WarnIfNoHashOrCypherDrivers() then begin
+//    SDUOpenSaveDialogSetup(OpenDialog, '');
+//    FreeOTFEGUISetupOpenSaveDialog(OpenDialog);
+//    assert(OpenDialog <> nil);
+//    OpenDialog.Filter     := FILE_FILTER_FLT_VOLUMES;
+//    OpenDialog.DefaultExt := FILE_FILTER_DFLT_VOLUMES;
+//    OpenDialog.Options    := OpenDialog.Options - [ofAllowMultiSelect];
+//
+//    if OpenDialog.Execute() then begin
+//    //warn if luks?
+//       _MountFile(vtFreeOTFE, OpenDialog.filename, ((ofReadOnly in OpenDialog.Options) or FileIsReadOnly(
+//        OpenDialog.filename)
+//        ), true);
+//
+//    end;
+//  end;
 end;
 
 // creates plain dmcrypt vol
@@ -1133,45 +1207,20 @@ begin
 
 end;
 
-{ DONE 1 -otdk -ccomplete : add similar for luks }
-procedure TfrmCommonMain._PlainLinuxMountFile(isHidden: Boolean);
-begin
-  if GetFreeOTFEBase().WarnIfNoHashOrCypherDrivers() then begin
-    SDUOpenSaveDialogSetup(OpenDialog, '');
-    FreeOTFEGUISetupOpenSaveDialog(OpenDialog);
-    { TODO 1 -otdk -crefactor : move these properties into designer }
-    OpenDialog.Filter     := FILE_FILTER_FLT_VOLUMES;
-    OpenDialog.DefaultExt := FILE_FILTER_DFLT_VOLUMES;
-    OpenDialog.Options    := OpenDialog.Options - [ofAllowMultiSelect];
-    if OpenDialog.Execute() then begin
-      _MountFile(
-        vtPlainLinux,
-        OpenDialog.filename,
-        ((ofReadOnly in OpenDialog.Options) or FileIsReadOnly(
-        OpenDialog.filename) // Only bother checking the first files
-        ), isHidden
-        );
-    end;
-  end;
 
-end;
 
-procedure TfrmCommonMain.aMountLUKSExecute(Sender: TObject);
-begin
-  inherited;
-  _MountFile(vtLUKS,'',false,false,false);
-end;
+
 
 
 
 procedure TfrmCommonMain.actMountDmcryptNotHiddenExecute(Sender: TObject);
 begin
-  _PlainLinuxMountFile(False);
+  _PromptAndMountFile(vtPlainLinux,False);
 end;
 
 procedure TfrmCommonMain.actMountDmcryptHiddenExecute(Sender: TObject);
 begin
-  _PlainLinuxMountFile(True);
+  _PromptAndMountFile(vtPlainLinux,True);
 end;
 
 procedure TfrmCommonMain.actPKCS11TokenManagementExecute(Sender: TObject);
@@ -1188,13 +1237,13 @@ end;
 procedure TfrmCommonMain.actFullTestExecute(Sender: TObject);
 begin
   inherited;
-  DoFullTests(); // abstract
+  _DoFullTests(); // abstract
 end;
 
 procedure TfrmCommonMain.aLuksTestExecute(Sender: TObject);
 begin
   inherited;
-  DoLuksTests(); // abstract
+  _DoLuksTests(); // abstract
 end;
 
 
@@ -1292,17 +1341,17 @@ end;
 {$ENDIF}
 
 
-procedure TfrmCommonMain.SetupPKCS11(suppressMsgs: Boolean);
+procedure TfrmCommonMain._SetupPKCS11(suppressMsgs: Boolean);
 var
   tmpPKCS11Lib: TPKCS11Library;
 begin
-  ShutdownPKCS11();
+  _ShutdownPKCS11();
 
   tmpPKCS11Lib := nil;
-  if (GetSettings().OptPKCS11Enable and (GetSettings().OptPKCS11Library <> '')) then begin
+  if (GetSettings().EnablePKCS11 and (GetSettings().PKCS11LibraryPath <> '')) then begin
     try
-      tmpPKCS11Lib             := TPKCS11Library.Create(GetSettings().OptPKCS11Library);
-      tmpPKCS11Lib.OnSlotEvent := PKCS11SlotEvent;
+      tmpPKCS11Lib             := TPKCS11Library.Create(GetSettings().PKCS11LibraryPath);
+      tmpPKCS11Lib.OnSlotEvent := _PKCS11SlotEvent;
       tmpPKCS11Lib.Initialize();
       fPkcs11Library                  := tmpPKCS11Lib;
       GPKCS11Library := fPkcs11Library;
@@ -1325,7 +1374,7 @@ begin
 
 end;
 
-procedure TfrmCommonMain.ShutdownPKCS11();
+procedure TfrmCommonMain._ShutdownPKCS11();
 begin
   // Sanity; strip from FreeOTFE copmponent
   GPKCS11Library := nil;
@@ -1345,24 +1394,24 @@ begin
 end;
 
 
-procedure TfrmCommonMain.PKCS11TokenInserted(SlotID: Integer);
+procedure TfrmCommonMain._PKCS11TokenInserted(SlotID: Integer);
 var
   // tmpFilename:   TStringList;
   mountNameOnly: String;
 begin
   SetStatusBarText(Format(_('Detected insertion of token into slot ID: %u'), [SlotID]));
-  if GetSettings().OptPKCS11AutoMount then begin
+  if GetSettings().PKCS11AutoMount then begin
     // Attempt automount...
     // tmpFilename := TStringList.Create;
     // try
     // tmpFilename.Add(GetSettings().OptPKCS11AutoMountVolume);
-    mountNameOnly := ExtractFilename(GetSettings().OptPKCS11AutoMountVolume);
+    mountNameOnly := ExtractFilename(GetSettings().MountPathOnPKCS11);
     SetStatusBarText(Format(_('Automounting: %s'), [mountNameOnly]));
     _MountFilesDetectLUKS(
-      GetSettings().OptPKCS11AutoMountVolume,
+      GetSettings().MountPathOnPKCS11,
       False,
       {$IFDEF FREEOTFE_MAIN}
-      GetSettings().OptDragDropFileType
+      GetSettings().DefaultVolType
       {$ENDIF}
       {$IFDEF FREEOTFE_EXPLORER}
       vtUnknown // lplp
@@ -1376,7 +1425,7 @@ begin
 
 end;
 
-procedure TfrmCommonMain.PKCS11SlotEvent(Sender: TObject; SlotID: Integer);
+procedure TfrmCommonMain._PKCS11SlotEvent(Sender: TObject; SlotID: Integer);
 var
   lib:  TPKCS11Library;
   slot: TPKCS11Slot;
@@ -1390,12 +1439,12 @@ begin
     if (slot = nil) then begin
       // Assume token removed, and the PKCS#11 driver dynamically removes the
       // slot when that happens
-      PKCS11TokenRemoved(SlotID);
+      _PKCS11TokenRemoved(SlotID);
     end else begin
       if slot.TokenPresent then begin
-        PKCS11TokenInserted(SlotID);
+        _PKCS11TokenInserted(SlotID);
       end else begin
-        PKCS11TokenRemoved(SlotID);
+        _PKCS11TokenRemoved(SlotID);
       end;
     end;
 
@@ -1409,27 +1458,29 @@ var
 begin
   doCheck   := False; // fix warning
   nextCheck := 0;     // fix warning
-  case GetSettings().OptUpdateChkFrequency of
+  case GetSettings().UpdateChkFreq of
     ufNever:
       doCheck := False;
-    // for ufRandom - check once per 1000 calls
+
+    // for ufRandom - check once per 500 starts
     ufRandom:
-      doCheck := Random(1000) = 123;
+      doCheck := Random(500) = 123;
+
     ufAlways:
       doCheck := True;
 
     ufWeekly:
       // Simply add on 7 days
-      nextCheck := GetSettings().OptUpdateChkLastChecked + 7;
+      nextCheck := GetSettings().LastCheckedForUpdate + 7;
 
     ufMonthly:
       // Add on the number of days in the month it was last checked
-      nextCheck := GetSettings().OptUpdateChkLastChecked +
-        DaysInMonth(GetSettings().OptUpdateChkLastChecked);
+      nextCheck := GetSettings().LastCheckedForUpdate +
+        DaysInMonth(GetSettings().LastCheckedForUpdate);
 
     ufAnnually:
-      nextCheck := GetSettings().OptUpdateChkLastChecked +
-        DaysInYear(GetSettings().OptUpdateChkLastChecked);
+      nextCheck := GetSettings().LastCheckedForUpdate +
+        DaysInYear(GetSettings().LastCheckedForUpdate);
     else
     begin
       assert(False, 'UPDATE TfrmCommonMain.StartupUpdateCheck');
@@ -1437,25 +1488,28 @@ begin
     end;
   end;
 
-  if GetSettings().OptUpdateChkFrequency in [ufMonthly, ufAnnually, ufWeekly] then
+  if GetSettings().UpdateChkFreq in [ufMonthly, ufAnnually, ufWeekly] then
     doCheck := nextCheck <= Now();
 
   if doCheck then begin
-    CheckForUpdates_AutoCheck(
-      URL_PADFILE,
-      GetSettings().OptUpdateChkFrequency,
-      GetSettings().OptUpdateChkLastChecked,
-      GetSettings().OptUpdateChkSuppressNotifyVerMajor,
-      GetSettings().OptUpdateChkSuppressNotifyVerMinor
-      );
+
+    CheckForUpdates_AutoCheck(      );
     // Save any changes to the auto check for updates settings (eg check date)...
     GetSettings().Save();
   end;
 end;
 
+procedure TfrmCommonMain.timHideFooterTimer(Sender: TObject);
+begin
+  inherited;
+  // hide splash screen after 1 min - show on startup as req'd in licence
+  lblFooter.Hide;
+  timHideFooter.Enabled := false;
+end;
+
 procedure TfrmCommonMain.actCheckForUpdatesExecute(Sender: TObject);
 begin
-  CheckForUpdates_UserCheck(URL_PADFILE);
+  CheckForUpdates_UserCheck();
 end;
 
 procedure TfrmCommonMain.WMUserPostShow(var msg: TWMEndSession);
@@ -1469,17 +1523,18 @@ end;
 procedure TfrmCommonMain.InitApp();
 begin
   finitAppCalled := True;
+  // If user deleted layout this should be using the defaults, so load even if StoreLayout is false
+  SDUSetFormLayout(self, GetSettings().MainWindowLayout);
 end;
 
 function TfrmCommonMain.EnsureOTFEComponentActive(): Boolean;
 begin
   Result := True;
   if not GetFreeOTFEBase().Active then
-    Result := ActivateFreeOTFEComponent(True);
+    Result := _ActivateFreeOTFEComponent(True);
 end;
 
-
-function TfrmCommonMain.HandleCommandLineOpts_EnableDevMenu(): eCmdLine_Exit;
+function TfrmCommonMain._ProcessCommandLine_EnableDevMenu(): eCmdLine_Exit;
 begin
   Result           := ceSUCCESS;
   fFuncTestPending := False;
@@ -1489,9 +1544,7 @@ begin
   end;
 end;
 
- // Handle "/dump" command line
- // Returns: Exit code
- function TfrmCommonMain.HandleCommandLineOpts_DumpLUKSHdr(): eCmdLine_Exit;
+function TfrmCommonMain._ProcessCommandLine_DumpLUKSHdr(): eCmdLine_Exit;
 // var
 //  volume:                VolumeFilenameString;
 //  password:        String;
@@ -1519,7 +1572,7 @@ end;
 
  // Handle "/mount" command line
  // Returns: Exit code
-function TfrmCommonMain.HandleCommandLineOpts_Mount(): eCmdLine_Exit;
+function TfrmCommonMain._ProcessCommandLine_Mount(): eCmdLine_Exit;
 var
   volume:                VolumeFilenameString;
   ReadOnly:              Boolean;
@@ -1589,7 +1642,7 @@ begin
           if (length(useDriveLetter) = 0) then
             fileOK                           := False
           else
-            GetSettings().OptDefaultDriveLetter := (uppercase(useDriveLetter))[1];
+            GetSettings().DefaultDriveChar := (uppercase(useDriveLetter))[1];
 
         end;
         {$ENDIF}
@@ -1671,7 +1724,7 @@ begin
 
            // if still unknown, use drag drop default
            if useType = vtUnknown then
-              useType := GetSettings().OptDragDropFileType;
+              useType := GetSettings().DefaultVolType;
 
            case useType of
               vtPlainLinux:
@@ -1681,17 +1734,15 @@ begin
               vtLUKS:
                 MountLUKS(volume,mountAs, ReadOnly,
                usePassword,useKeyfile ,GetCmdLine.isKeyfileisascii,useKeyfileNewlineType,
-              GetCmdLine.IsSilent);
+              );
               vtFreeOTFE:
                    mountAs := MountFreeOTFE(volume, ReadOnly,
               useKeyfile, usePassword, useOffset, useNoCDBAtOffset,
-              GetCmdLine.IsSilent, useSaltLength, useKeyIterations);
+              useSaltLength, useKeyIterations);
               else
                 //still unknown - prompt
                 mountAs := frmSelectVolumeType.Mount(volume, ReadOnly);
            end;
-
-
 
           Result := ceSUCCESS;
           if (mountAs = #0) then
@@ -1701,6 +1752,20 @@ begin
       end;
     end;
   end;
+end;
+
+function TfrmCommonMain._ProcessCommonCommandLine: eCmdLine_Exit;
+begin
+ // All command line options below require FreeOTFE to be active before they
+  // can be used
+  result := _ProcessCommandLine_Create();
+
+  if result = ceSUCCESS then
+    result := _ProcessCommandLine_EnableDevMenu();
+
+  if result = ceSUCCESS then
+    result := _ProcessCommandLine_Mount();
+
 end;
 
 procedure TfrmCommonMain.SetStatusBarToHint(Sender: TObject);
@@ -1729,6 +1794,57 @@ begin
     StatusBar_Hint.Visible        := False;
     StatusBar_Hint.panels[0].Text := '';
   end;
+
+end;
+
+
+
+procedure TfrmCommonMain.actLUKSNewExecute(Sender: TObject);
+var
+  //  prevMounted:    DriveLetterString;
+  //  newMounted:       DriveLetterString;
+  //  createdMountedAs: DriveLetterString;
+  //  msg:            String;
+  //  i:                Integer;
+  //  allOK:          Boolean;
+  //  fileName:       String;
+  //  drive:          DriveLetterChar;
+  //  refresh_drives: Boolean;
+  // hashDispTitles , hashKernelModeDriverNames,  hashGUIDs :tstringList;
+  user_canceled: Boolean;
+
+begin
+  inherited;
+
+  if not (frmCreateLUKSVolumeWizard.CreateLUKSVolume(user_canceled)) then begin
+    if not user_canceled then
+      SDUMessageDlg(_('LUKS container could not be created'), mtError);
+
+  end else begin
+
+    // If the "drive letters" mounted have changed, the new volume was
+    // automatically mounted; setup for this
+    // Get new drive on display...
+    _RefreshDrives();
+
+    SDUMessageDlg(_('LUKS container created successfully and opened.'), mtInformation);
+  end;
+
+
+  //  fileName := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\..\..\test_vols\') +
+  //    'luks.new.vol';
+  //  SysUtils.DeleteFile(fileName);
+
+
+  //
+  //  allOK := CreateNewLUKS(fileName, 'password', 4 * 1024 * 1024, 'SHA256', msg, drive,refresh_drives);
+  //  if refresh_drives then RefreshDrives;
+
+  //
+  //  if allOK then
+  //    SDUMessageDlg(msg, mtInformation)
+  //  else
+  //    SDUMessageDlg(msg, mtError);
 
 end;
 

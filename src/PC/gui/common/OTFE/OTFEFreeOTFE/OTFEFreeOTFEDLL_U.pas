@@ -107,8 +107,8 @@ type
     fCachedCypherAPI: TStringList;
 
 
-    function Connect(): Boolean; override;
-    procedure Disconnect(); override;
+    function _Connect(): Boolean; override;
+    procedure _Disconnect(); override;
 
     procedure AddHandles(driveLetter: Char; handles: TMountedHandle);
     function GetHandles(driveLetter: Char; var handles: TMountedHandle): Boolean;
@@ -145,7 +145,7 @@ type
     // FreeOTFE *disk* *device* management functions
     // These talk directly to the disk devices to carrry out operations
 
-    function MountDiskDevice(
+    function _MountDiskDevice(
       deviceName: String;
     // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
       volFilename: String;
@@ -167,8 +167,9 @@ type
       mtFixedMedia  // PC kernel drivers *only* - ignored otherwise
       ): Boolean; override;
 
-    function DismountDiskDevice(
-      deviceName: String;
+    function _DismountDiskDevice(
+//      driveLetter: DriveLetterChar;
+      deviceName: string;
     // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
       emergency: Boolean
       ): Boolean; override;
@@ -184,10 +185,11 @@ type
     function CachesGetCypherAPI(const libFilename: String; var api: TCypherAPI): Boolean;
 
 
-    // Misc functions
-    function DriverType(): String; override;
 
   public
+
+    // Misc functions
+    function GetDriverType(): String; override;
 
     // TOTFE standard API
     constructor Create(); override;
@@ -224,7 +226,7 @@ type
       mainCypherDriver: Ansistring;
       mainCypherGUID: TGUID;
       VolumeFlags: Integer;
-      mountMountAs: TFreeOTFEMountAs;
+      mountMountAs: TMountDiskType;
 
       dataOffset: Int64;
     // Offset from within mounted volume from where to read/write data
@@ -344,7 +346,7 @@ type
       size: Int64 = 0;
       MetaData_LinuxVolume: Boolean = False;  // Linux volume
       MetaData_PKCS11SlotID: Integer = PKCS11_NO_SLOT_ID;  // PKCS11 SlotID
-      MountMountAs: TFreeOTFEMountAs = fomaRemovableDisk;
+      MountMountAs: TMountDiskType = fomaRemovableDisk;
     // PC kernel drivers *only* - ignored otherwise
       mountForAllUsers: Boolean =
       True  // PC kernel drivers *only* - ignored otherwise
@@ -375,9 +377,10 @@ uses
 
   OTFEFreeOTFE_LUKSAPI,
   VolumeFileAPI,
-  CommonSettings
+  CommonSettings,
 
    // LibreCrypt forms
+   frmVersionCheck // for TVersion and SDUGetVersionInfo
   ;
 
 const
@@ -459,7 +462,7 @@ begin
 
     DebugMsg('dismountdevice');
 
-    Result := DismountDiskDevice(driveLetter, emergency);
+    Result := _DismountDiskDevice(driveLetter, emergency);
   end;
 end;
 
@@ -467,7 +470,7 @@ end;
 // ----------------------------------------------------------------------------
 function TOTFEFreeOTFEDLL.Version(): Cardinal;
 var
-  majorVersion, minorVersion, revisionVersion, buildVersion: Integer;
+  version:TBuildVersion;
 begin
   Result := VERSION_ID_FAILURE;
 
@@ -477,12 +480,9 @@ begin
   if (fCachedVersionID <> VERSION_ID_NOT_CACHED) then begin
     Result := fCachedVersionID;
   end else begin
-    if SDUGetVersionInfo(MainDLLFilename(),
-      majorVersion, minorVersion,
-      revisionVersion, buildVersion
-      ) then begin
-      Result           := ((majorVersion shl 24) + (minorVersion shl 16) +
-        (revisionVersion));
+    if SDUGetVersionInfo(MainDLLFilename(),      version      ) then begin
+      Result           := ((version.major shl 24) + (version.minor shl 16) +
+        (version.revision));
       fCachedVersionID := Result;
     end;
 
@@ -508,7 +508,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.Connect(): Boolean;
+function TOTFEFreeOTFEDLL._Connect(): Boolean;
 begin
   Result := False;
 
@@ -522,7 +522,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-procedure TOTFEFreeOTFEDLL.Disconnect();
+procedure TOTFEFreeOTFEDLL._Disconnect();
 begin
   FreeLibraryMain(fDriver_API);
 end;
@@ -546,7 +546,7 @@ function TOTFEFreeOTFEDLL.ReadWritePlaintextToVolume(
   mainCypherDriver: Ansistring;
   mainCypherGUID: TGUID;
   VolumeFlags: Integer;
-  mountMountAs: TFreeOTFEMountAs;
+  mountMountAs: TMountDiskType;
 
   dataOffset: Int64;    // Offset from within mounted volume from where to read/write data
   dataLength: Integer;  // Length of data to read/write. In bytes
@@ -576,7 +576,7 @@ begin
 
   tempMountDriveLetter := GetNextDriveLetter();
   // SDUInitAndZeroBuffer(0,emptyIV);
-  Result               := MountDiskDevice(tempMountDriveLetter,
+  Result               := _MountDiskDevice(tempMountDriveLetter,
     volFilename, volumeKey,
     sectorIVGenMethod, nil, readNotWrite,  // mount as read only if reading
     IVHashDriver, IVHashGUID,
@@ -616,7 +616,7 @@ begin
 
     finally
       // Unmount
-      DismountDiskDevice(tempMountDriveLetter, True);
+      _DismountDiskDevice(tempMountDriveLetter, True);
     end;
 
   end;  // if (Result) then
@@ -1289,7 +1289,7 @@ var
 begin
   Result := False;
 
-  if CachesGetCypherDriver(cypherDriver, cypherDriverDetails) then begin
+  if _CachesGetCypherDriver(cypherDriver, cypherDriverDetails) then begin
     Result := True;
   end else begin
 {$IFDEF FREEOTFE_DEBUG}
@@ -1945,7 +1945,7 @@ end;
 
  // ----------------------------------------------------------------------------
  // Attempt to mount on an existing device
-function TOTFEFreeOTFEDLL.MountDiskDevice(
+function TOTFEFreeOTFEDLL._MountDiskDevice(
   deviceName: String;
   volFilename: String;
   volumeKey: TSDUBytes;
@@ -2084,14 +2084,14 @@ DebugMsg('  size: '+inttostr(size));
 
     ptrDIOCBuffer.ReadOnly    := ReadOnly;
     ptrDIOCBuffer.MountSource := FreeOTFEMountSourceID[fomsFile];
-    if IsPartition_UserModeName(volFilename) then begin
+    if IsPartitionUserModeName(volFilename) then begin
       ptrDIOCBuffer.MountSource := FreeOTFEMountSourceID[fomsPartition];
     end;
 
     useVolumeFlags := VolumeFlags;
     // Yes, this timestamp reverting is the right way around; if the bit
     // *isn't* set, the timestamps get reverted
-    if GetSettings().OptRevertVolTimestamps then begin
+    if GetSettings().FreezeVolTimestamps then begin
       // Strip off bit VOL_FLAGS_NORMAL_TIMESTAMPS
       useVolumeFlags := useVolumeFlags and not (VOL_FLAGS_NORMAL_TIMESTAMPS);
     end else begin
@@ -2149,7 +2149,7 @@ DebugMsg('Opened OK!');
 
           Result := True;
         end else begin
-          DismountDiskDevice(useDriveLetter, False);
+          _DismountDiskDevice(useDriveLetter, False);
         end;
       end;
     end;
@@ -2185,7 +2185,7 @@ function TOTFEFreeOTFEDLL.CreateMountDiskDevice(
   size: Int64 = 0;
   MetaData_LinuxVolume: Boolean = False;               // Linux volume
   MetaData_PKCS11SlotID: Integer = PKCS11_NO_SLOT_ID;  // PKCS11 SlotID
-  MountMountAs: TFreeOTFEMountAs = fomaRemovableDisk;
+  MountMountAs: TMountDiskType = fomaRemovableDisk;
   // PC kernel drivers *only* - ignored otherwise
   mountForAllUsers: Boolean =
   True  // PC kernel drivers *only* - ignored otherwise
@@ -2202,7 +2202,7 @@ begin
     );
 
   // Attempt to mount the device
-  if MountDiskDevice(DriveLetter, volFilename,
+  if _MountDiskDevice(DriveLetter, volFilename,
     volumeKey, sectorIVGenMethod,
     volumeIV, ReadOnly, IVHashDriver,
     IVHashGUID, IVCypherDriver,
@@ -2218,7 +2218,7 @@ end;
 
  // ----------------------------------------------------------------------------
  // Attempt to dismount a device
-function TOTFEFreeOTFEDLL.DismountDiskDevice(deviceName: String; emergency: Boolean): Boolean;
+function TOTFEFreeOTFEDLL._DismountDiskDevice(deviceName: string; emergency: Boolean): Boolean;
 var
   DIOCBuffer:     TDIOC_FORCE_DISMOUNTS;
   bytesReturned:  DWORD;
@@ -2232,9 +2232,9 @@ begin
   // Sanity check...
   Assert(
     (deviceName <> ''),
-    'deviceName set to empty string in call to DismountDiskDevice'
+    'deviceName set to empty in call to DismountDiskDevice'
     );
-  { TODO 1 -otdk -cclean : pass in just drive letter }
+ // cant pass in just drive letter becuaseis device name (string) in other overloads
   useDriveLetter := deviceName[1];
 
   if GetHandles(useDriveLetter, handles) then begin
@@ -2328,7 +2328,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEDLL.DriverType(): String;
+function TOTFEFreeOTFEDLL.GetDriverType(): String;
 begin
   Result := _('DLL driver');
 end;

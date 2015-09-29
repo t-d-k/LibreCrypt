@@ -57,7 +57,7 @@ implementation
 
 uses
   SDUi18n,
-  SDUGeneral;
+  SDUGeneral,frmVersionCheck;
 
 procedure TSDUAboutDialog.FormShow(Sender: TObject);
 begin

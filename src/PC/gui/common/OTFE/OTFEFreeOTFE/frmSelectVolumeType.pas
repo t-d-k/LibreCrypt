@@ -62,7 +62,7 @@ type
       overload;
     function Mount(volumeFilename: String;
       var mountedAs: DriveLetterChar;
-      ReadOnly: Boolean = False): Boolean; overload;
+      ReadOnly: Boolean = False): TMountResult; overload;
 
 
     // Prompt the user for a device (if appropriate) and password (and drive
@@ -100,12 +100,12 @@ end;
 
 
 function Mount(volumeFilename: String; var mountedAs: DriveLetterChar;
-  ReadOnly: Boolean = False): Boolean;
+  ReadOnly: Boolean = False): TMountResult;
 var
   frmSelectVolumeType: TfrmSelectVolumeType;
   mr:                  Integer;
 begin
-  Result := False;
+  Result := morFail;
 
   GetFreeOTFEBase().CheckActive();
 
@@ -113,7 +113,8 @@ begin
   try
     mr := frmSelectVolumeType.ShowModal();
     if (mr = mrCancel) then begin
-      GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
+//      GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
+      Result := morCancel;
     end else
     if (mr = mrOk) then begin
       if frmSelectVolumeType.IsFreeOTFEVolume then begin
@@ -135,7 +136,7 @@ var
 begin
   Result := #0;
 
-  if Mount(volumeFilename, mountedAs, ReadOnly) then
+  if Mount(volumeFilename, mountedAs, ReadOnly) = morOK then
     Result := mountedAs;
 end;
 
@@ -162,22 +163,22 @@ begin
     try
       mr := frmSelectVolumeType.ShowModal();
       if (mr = mrCancel) then begin
-        GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
+//        GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
       end else
       if (mr = mrOk) then begin
         // Ask the user which partition they want to mount
         selectedPartition := frmSelectPartition.SelectPartition();
         if (selectedPartition = '') then begin
-          GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
+//          GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
         end else begin
           // Mount the partition as the appropriate type
           if frmSelectVolumeType.IsFreeOTFEVolume then begin
             Result := MountFreeOTFE(selectedPartition, False);
           end else begin
             if LUKSTools.IsLUKSVolume(selectedPartition) then begin
-               LUKSTools.MOuntLUKS(selectedPartition, Result)
+               LUKSTools.MountLUKS(selectedPartition, Result)
             end else begin
-              if not frmKeyEntryLinux.MountPlainLinux(selectedPartition, Result) then
+              if frmKeyEntryLinux.MountPlainLinux(selectedPartition, Result)<> morOK then
                 Result := #0;
             end;
           end;

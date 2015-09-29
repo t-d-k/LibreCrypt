@@ -7,9 +7,9 @@ object TfmeContainerSize: TTfmeContainerSize
   object lblPartitionDiskSize: TLabel
     Left = 113
     Top = 148
-    Width = 59
+    Width = 58
     Height = 13
-    Caption = 'Approx: %1'
+    Caption = 'Approx: %s'
   end
   object Label6: TLabel
     Left = 0

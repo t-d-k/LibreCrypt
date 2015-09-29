@@ -12,9 +12,9 @@ type
   DriveLetterChar   = Char;
   DriveLetterString = String;
   TSDUBytes         = array of Byte;
-  TFreeOTFEMountAs  = (fomaFixedDisk, fomaRemovableDisk, fomaCD, fomaDVD, fomaUnknown);
+  TMountDiskType  = (fomaFixedDisk, fomaRemovableDisk, fomaCD, fomaDVD, fomaUnknown);
   TSDUNewline_Enum  = (nlCRLF, nlCR, nlLF);
-
+  TMountResult = (morFail,morOK,morCancel);//result of prompted mount operation (ie dialog)
 
   // Note: FWIW:
   //   Windows normally uses CRLF

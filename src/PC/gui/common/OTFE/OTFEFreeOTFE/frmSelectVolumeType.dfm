@@ -39,7 +39,6 @@ object frmSelectVolumeType: TfrmSelectVolumeType
       'LibreCrypt'
       'Plain dm-crypt (Linux)')
     TabOrder = 0
-    ExplicitTop = 40
   end
   object pbCancel: TButton
     Left = 98
@@ -51,8 +50,6 @@ object frmSelectVolumeType: TfrmSelectVolumeType
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 1
-    ExplicitLeft = 94
-    ExplicitTop = 112
   end
   object pbOK: TButton
     Left = 12
@@ -64,7 +61,5 @@ object frmSelectVolumeType: TfrmSelectVolumeType
     Default = True
     ModalResult = 1
     TabOrder = 2
-    ExplicitLeft = 8
-    ExplicitTop = 112
   end
 end

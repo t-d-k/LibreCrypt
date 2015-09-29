@@ -42,7 +42,7 @@ inherited fmePkcs11Options: TfmePkcs11Options
       Top = 120
       Width = 425
       Height = 105
-      Caption = 'Automount/dismount'
+      Caption = 'Autoopen/lock'
       TabOrder = 3
       object lblAutoMountVolume: TLabel
         Left = 32
@@ -56,7 +56,7 @@ inherited fmePkcs11Options: TfmePkcs11Options
         Top = 72
         Width = 397
         Height = 17
-        Caption = 'Auto &dismount PKCS#11 volumes when associated token is removed'
+        Caption = 'Auto &lock PKCS#11 containers when associated token is removed'
         TabOrder = 1
         OnClick = ControlChanged
       end
@@ -65,7 +65,7 @@ inherited fmePkcs11Options: TfmePkcs11Options
         Top = 20
         Width = 397
         Height = 17
-        Caption = 'Auto &mount specified container on token insertion'
+        Caption = 'Auto &open specified container on token insertion'
         TabOrder = 0
         OnClick = ControlChanged
       end

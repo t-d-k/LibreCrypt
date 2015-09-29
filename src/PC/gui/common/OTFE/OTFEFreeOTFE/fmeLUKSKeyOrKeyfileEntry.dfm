@@ -22,7 +22,7 @@ object frmeLUKSKeyOrKeyfileEntry: TfrmeLUKSKeyOrKeyfileEntry
     Width = 125
     Height = 17
     Caption = '&User entered:'
-    TabOrder = 3
+    TabOrder = 2
     OnClick = rbKeyFromClick
   end
   object rbKeyFromKeyfile: TRadioButton
@@ -32,34 +32,33 @@ object frmeLUKSKeyOrKeyfileEntry: TfrmeLUKSKeyOrKeyfileEntry
     Height = 17
     Anchors = [akLeft, akBottom]
     Caption = 'Read from ke&yfile:'
-    TabOrder = 0
+    TabOrder = 3
     OnClick = rbKeyFromClick
   end
   inline feKeyfile: TSDUFilenameEdit
     Left = 120
     Top = 52
     Width = 306
-    Height = 21
+    Height = 29
     Anchors = [akLeft, akRight, akBottom]
-    Constraints.MaxHeight = 21
     Constraints.MinHeight = 21
     TabOrder = 1
     ExplicitLeft = 120
     ExplicitTop = 52
     ExplicitWidth = 306
-    ExplicitHeight = 21
+    ExplicitHeight = 29
     DesignSize = (
       306
-      21)
+      29)
   end
   object ckKeyfileContainsASCII: TSDUCheckBox
     Left = 128
-    Top = 80
+    Top = 82
     Width = 175
     Height = 13
     Anchors = [akLeft, akBottom]
     Caption = 'Keyfile contains ASC&II password'
-    TabOrder = 2
+    TabOrder = 4
     OnClick = ckKeyfileContainsASCIIClick
     AutoSize = True
   end
@@ -70,7 +69,7 @@ object frmeLUKSKeyOrKeyfileEntry: TfrmeLUKSKeyOrKeyfileEntry
     Height = 21
     Style = csDropDownList
     Anchors = [akLeft, akBottom]
-    TabOrder = 4
+    TabOrder = 5
   end
   object ckBaseIVCypherOnHashLength: TCheckBox
     Left = 128
@@ -79,11 +78,11 @@ object frmeLUKSKeyOrKeyfileEntry: TfrmeLUKSKeyOrKeyfileEntry
     Height = 17
     Anchors = [akLeft, akBottom]
     Caption = 'Base IV cypher on hash length'
-    TabOrder = 5
+    TabOrder = 6
   end
   object preUserKey: TPasswordRichEdit
     Left = 120
-    Top = 2
+    Top = 3
     Width = 306
     Height = 44
     Font.Charset = ANSI_CHARSET
@@ -94,7 +93,7 @@ object frmeLUKSKeyOrKeyfileEntry: TfrmeLUKSKeyOrKeyfileEntry
     Lines.Strings = (
       '')
     ParentFont = False
-    TabOrder = 6
+    TabOrder = 0
   end
   object SDUDropFiles_Keyfile: TSDUDropFiles
     Active = False

@@ -25,7 +25,6 @@ resourcestring
 
  // "English" is required as both a const, and a resourcestring (to be included
  // in the .po file)
-const
   CONST_LANGUAGE_ENGLISH = 'English'; // Hardcoded "English"
 
 resourcestring

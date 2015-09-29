@@ -11,22 +11,23 @@ unit frmWizardChangePasswordCreateKeyfile;
 interface
 
 uses
-  Classes, ComCtrls, Controls, Dialogs,
+
+ //delphi & libs
+   Classes, ComCtrls, Controls, Dialogs,
   ExtCtrls,
   Forms, Graphics, Messages, MouseRNG,
   PasswordRichEdit, Spin64, StdCtrls, SysUtils, Windows,
-  //sdu
-  lcDialogs, sdurandpool, SDUStdCtrls,  fmeDiskPartitionsPanel,
+  //sdu & LibreCrypt utils
+     lcDialogs, sdurandpool, SDUStdCtrls,  fmeSDUDiskPartitions,
 lcTypes,
-
-  //LibreCrypt
-  DriverAPI,   // Required for CRITICAL_DATA_LEN
-  fmeSelectPartition,
-  frmWizard, OTFEFreeOTFE_InstructionRichEdit, OTFEFreeOTFE_PasswordRichEdit,
+DriverAPI,   // Required for CRITICAL_DATA_LEN
+  OTFEFreeOTFE_InstructionRichEdit, OTFEFreeOTFE_PasswordRichEdit,
   OTFEFreeOTFE_U,
-  OTFEFreeOTFEBase_U,
+  OTFEFreeOTFEBase_U,  SDUForms, SDUFrames, SDUSpin64Units, SDUDialogs,
+   // LibreCrypt forms and frames
+  fmeSelectPartition,
+  frmWizard,
   fmeSDUBlocks,
-  fmeSDUDiskPartitions, SDUForms, SDUFrames, SDUSpin64Units, SDUDialogs,
   fmeNewPassword, fmePassword;
 
 type
@@ -92,7 +93,7 @@ type
     pbRefresh:       TButton;
     fmeSelectPartition: TfmeSelectPartition;
     se64UnitOffset:  TSDUSpin64Unit_Storage;
-    TSDUDiskPartitionsPanel1: TfmeDiskPartitionsPanel;
+    TSDUDiskPartitionsPanel1: TfmeSDUDiskPartitions;
     frmeNewPassword: TfrmeNewPassword;
     lblInstructDestDetails: TLabel;
     reInstructRNGSelect2: TLabel;
@@ -153,6 +154,7 @@ type
   protected
     fsilent:       Boolean;
     fsilentResult: TModalResult;
+        fChangePasswordCreateKeyfile: TChangePasswordCreateKeyfile;
     procedure _SetupInstructions(); override;
 
 
@@ -161,7 +163,6 @@ type
     procedure FormWizardStepChanged(Sender: TObject);
     function _IsTabComplete(checkTab: TTabSheet): Boolean; override;
   public
-    fChangePasswordCreateKeyfile: TChangePasswordCreateKeyfile;
 
     procedure fmeSelectPartitionChanged(Sender: TObject);
 
@@ -192,14 +193,16 @@ implementation
 {$R *.DFM}
 
 uses
-//delphi
-  MSCryptoAPI,
-  // sdu/lcutils
-lcConsts, sduGeneral,
-
+  //delphi & libs (0)
+   MSCryptoAPI,
+  //sdu & LibreCrypt utils (1)
+    lcConsts, sduGeneral,
   OTFEFreeOTFEDLL_U,
   PKCS11Lib, SDUi18n,
-  pkcs11_library;
+  pkcs11_library
+   // LibreCrypt forms and frames (2)
+    //main form  (3)
+;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -735,7 +738,7 @@ begin
     on E: EInsufficientRandom do begin
       allOK := False;
       SDUMessageDlg(
-        _('Insufficient random data generated: ' + E.message) + SDUCRLF +
+        _('Insufficient random data generated: ') + E.message + SDUCRLF +
         SDUCRLF + PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
         mtError
         );
@@ -772,16 +775,18 @@ begin
 
   reInstructSrcFile.Caption :=
     _('Please enter the full path and filename of either:' + SDUCRLF + SDUCRLF +
-    '1) A container containing a CDB, or' + SDUCRLF + '2) An existing keyfile' +
+    '1) A container containing a FreeOTFE header, or' + SDUCRLF + '2) An existing keyfile' +
     SDUCRLF + SDUCRLF + 'for the container you wish to create a keyfile for.' +
     SDUCRLF + SDUCRLF +
-    'If you wish to update a "hidden" container which is inside another container, and your hidden container includes a CDB, please specify the filename of the outer container which stores your hidden container.');
+    'If you wish to update a "hidden" container which is inside another container, and your hidden container includes a CDB, please '+
+    'specify the filename of the outer container which stores your hidden container.');
 
 
   reInstructSrcDetails.Caption :=
     _('Please enter the full details of the container you wish to create a keyfile for.' +
     SDUCRLF + SDUCRLF +
-    'If you wish to update a "hidden" container which is inside another container, and your hidden container includes a CDB, please specify the offset within the outer container where your hidden container is located.');
+    'If you wish to update a "hidden" container which is inside another container, and your hidden container includes a header, '+
+    'please specify the offset within the outer container where your hidden container is located.');
 
 
 

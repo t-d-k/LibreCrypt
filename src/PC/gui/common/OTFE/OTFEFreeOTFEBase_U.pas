@@ -83,7 +83,7 @@ resourcestring
   FILE_FILTER_FLT_TEXTFILES  = 'Text files (*.txt)|*.txt|All files|*.*';
   FILE_FILTER_DFLT_TEXTFILES = 'txt';
 
-  FILE_FILTER_FLT_CDBBACKUPS  = 'CDB backups (*.cdbBackup)|*.cdbBackup|All files|*.*';
+  FILE_FILTER_FLT_CDBBACKUPS  = 'Header backups (*.cdbBackup)|*.cdbBackup|All files|*.*';
   FILE_FILTER_DFLT_CDBBACKUPS = 'cdbBackup';
 
   FILE_FILTER_FLT_EXECUTABLES  = 'Executable files (*.exe)|*.exe|All files|*.*';
@@ -172,12 +172,12 @@ resourcestring
   RS_UNKNOWN = '<Unknown>';
 
 const
-  FreeOTFEMountAsTitlePtr: array [TFreeOTFEMountAs] of Pointer =
+  FreeOTFEMountAsTitlePtr: array [TMountDiskType] of Pointer =
     (@MOUNT_AS_FIXED_DISK, @MOUNT_AS_REMOVABLE_DISK, @MOUNT_AS_CD, @MOUNT_AS_DVD, @RS_UNKNOWN
     );
 
   // Indicate which of the above emulated devices are writable
-  FreeOTFEMountAsCanWrite: array [TFreeOTFEMountAs] of Boolean = (
+  FreeOTFEMountAsCanWrite: array [TMountDiskType] of Boolean = (
     True,
     True,
     False,
@@ -186,7 +186,7 @@ const
     );
 
   // Decode the above into device types/media types
-  FreeOTFEMountAsDeviceType: array [TFreeOTFEMountAs] of DWORD = (
+  FreeOTFEMountAsDeviceType: array [TMountDiskType] of DWORD = (
     FILE_DEVICE_DISK,
     FILE_DEVICE_DISK,
     FILE_DEVICE_CD_ROM,
@@ -195,7 +195,7 @@ const
     );
 
   // Decode the above into device types/media types
-  FreeOTFEMountAsStorageMediaType: array [TFreeOTFEMountAs] of TFreeOTFEStorageMediaType = (
+  FreeOTFEMountAsStorageMediaType: array [TMountDiskType] of TFreeOTFEStorageMediaType = (
     mtFixedMedia,
     mtRemovableMedia,
     mtCD_ROM,
@@ -396,15 +396,7 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
 }
   TOTFEFreeOTFEBase = class (TOTFE)
   private
-    // This is a bit hacky, but the Dump functionality does things that you
-    // wouldn't normally do (i.e. it's a high level function that wants to
-    // know about the inner workings of lower-level functionality; CDB
-    // processing)
-    fdumpFlag:     Boolean;
-    fdumpCriticalDataKey: TSDUBytes;
-    fdumpCheckMAC: String;
-    fdumpPlaintextEncryptedBlock: String;
-    fdumpVolumeDetailsBlock: String;
+
 
   protected
 
@@ -425,8 +417,8 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
     procedure SetActive(status: Boolean); override;
 
     // Connect/disconnect to the main FreeOTFE device driver
-    function Connect(): Boolean; virtual; abstract;
-    procedure Disconnect(); virtual; abstract;
+    function _Connect(): Boolean; virtual; abstract;
+    procedure _Disconnect(); virtual; abstract;
 
     function GetNextDriveLetter(): Char; overload;
 
@@ -436,7 +428,7 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
 
     // volFilename - This is the filename of the file/partition as seen by the
     //               user mode software
-    function MountDiskDevice(deviceName: String;
+    function _MountDiskDevice(deviceName: String;
     // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
       volFilename: String; volumeKey: TSDUBytes;
       sectorIVGenMethod: TFreeOTFESectorIVGenMethod; volumeIV: TSDUBytes;
@@ -450,7 +442,8 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
 
 
 
-    function DismountDiskDevice(deviceName: String;
+    function _DismountDiskDevice(
+    deviceName: String;
     // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
       emergency: Boolean): Boolean;
       virtual; abstract;
@@ -494,10 +487,6 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
     // ---------
     // Misc functions
 
-
-    // Returns the type of driver used; either "DLL driver" or "Kernel driver"
-    function DriverType(): String; virtual; abstract;
-
     // ---------
     // Convert critical data area to/from a string representation
 
@@ -507,11 +496,6 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
     // Note: Ignores any random padding data
     function ParseVolumeDetailsBlock(stringRep: Ansistring;
       var volumeDetailsBlock: TVolumeDetailsBlock): Boolean;
-
-
-    // Return a nicely formatted string, decoding one bit of a bitmapped value
-    function DumpCriticalDataToFileBitmap(Value: DWORD; bit: Integer;
-      unsetMeaning: String; setMeaning: String): String;
 
     // Convert a user-space volume filename to a format the kernel mode driver
     // can understand
@@ -535,26 +519,30 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
     // Internal caching functions
     procedure CachesCreate(); virtual;
     procedure CachesDestroy(); virtual;
+
     // Add a hash to the cache...
     // hashDriver - Kernel drivers: hashKernelModeDeviceName
     //              DLL drivers:    hashLibFilename
     procedure CachesAddHashDriver(hashDriver: String; hashDriverDetails: TFreeOTFEHashDriver);
+
     // Get a hash from the cache...
     // Note: A cache MISS will cause this to return FALSE
     // hashDriver - Kernel drivers: hashKernelModeDeviceName
     //              DLL drivers:    hashLibFilename
     function CachesGetHashDriver(hashDriver: String;
       var hashDriverDetails: TFreeOTFEHashDriver): Boolean;
+
     // Add a cypher to the cache...
     // cypherDriver - Kernel drivers: hashKernelModeDeviceName
     //                DLL drivers:    hashLibFilename
     procedure CachesAddCypherDriver(cypherDriver: Ansistring;
       cypherDriverDetails: TFreeOTFECypherDriver);
+
     // Get a cypher from the cache...
     // Note: A cache MISS will cause this to return FALSE
     // cypherDriver - Kernel drivers: hashKernelModeDeviceName
     //                DLL drivers:    hashLibFilename
-    function CachesGetCypherDriver(cypherDriver: Ansistring;
+    function _CachesGetCypherDriver(cypherDriver: Ansistring;
       var cypherDriverDetails: TFreeOTFECypherDriver): Boolean;
 
     // v1 / v3 Cypher API functions
@@ -569,6 +557,20 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
 
 
   public
+        { TODO 2 -otdk -crefactor : make into paramters to function }
+          // This is a hacky, but the Dump functionality does things that you
+    // wouldn't normally do (i.e. it's a high level function that wants to
+    // know about the inner workings of lower-level functionality; CDB
+    // processing)
+    fdumpFlag:     Boolean;
+    fdumpCriticalDataKey: TSDUBytes;
+    fdumpCheckMAC: String;
+    fdumpPlaintextEncryptedBlock: String;
+    fdumpVolumeDetailsBlock: String;
+
+
+    // Returns the type of driver used; either "DLL driver" or "Kernel driver"
+    function GetDriverType(): String; virtual; abstract;
 
     function ReadRawVolumeData(filename: String; offsetWithinFile: Int64; dataLength: DWORD;
     // In bytes
@@ -602,8 +604,6 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
 
     // -----------------------------------------------------------------------
     // Extended FreeOTFE specific functions
-
-
 
     // Get information on a mounted volume
     function GetVolumeInfo(driveLetter: DriveLetterChar;
@@ -668,10 +668,6 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
 
     // Convert a version ID into a prettyprinted version string
     function VersionIDToStr(versionID: DWORD): String;
-
-    // Handy function!
-    procedure AddStdDumpHeader(content: TStringList; title: String);
-    procedure AddStdDumpSection(content: TStringList; sectionTitle: String);
 
     // ---------
     // Algorithm driver functions
@@ -781,7 +777,8 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
     function ReadVolumeCriticalData_CDB_v2(CDB: Ansistring; userPassword: TSDUBytes;
       saltLength: Integer;  // In bits
       keyIterations: Integer; var volumeDetails: TVolumeDetailsBlock;
-      var CDBMetaData: TCDBMetaData): Boolean; overload;
+      var CDBMetaData: TCDBMetaData
+        ): Boolean; overload;
 
 
    // when multiple valid cphers or hashes are found (eg alternate drivers), prompt user to choose one
@@ -810,9 +807,7 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
     function RestoreVolumeCriticalData(srcFilename: String; destFilename: String;
       destOffsetWithinFile: Int64): Boolean;
 
-    function DumpCriticalDataToFile(volFilename: String; offsetWithinFile: Int64;
-      userPassword: TSDUBytes; saltLength: Integer;  // In bits
-      keyIterations: Integer; dumpFilename: String): Boolean;
+
 
     function ChangeVolumePassword(filename: String; offsetWithinFile: Int64;
       oldUserPassword: TSDUBytes; oldSaltLength: Integer;  // In bits
@@ -881,7 +876,7 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
       mainCypherDriver: String;
       mainCypherGUID: TGUID;
       VolumeFlags: Integer;
-      mountMountAs: TFreeOTFEMountAs;
+      mountMountAs: TMountDiskType;
 
       dataOffset: Int64;
     // Offset from within mounted volume from where to read/write data
@@ -895,7 +890,7 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
 
     // Return TRUE/FALSE, depending on whether the specified USER MODE volume
     // filename refers to a partition/file
-    function IsPartition_UserModeName(userModeFilename: String): Boolean;
+    function IsPartitionUserModeName(userModeFilename: String): Boolean;
 
 
     function GetNextDriveLetter(userDriveLetter, requiredDriveLetter: Char): Char;
@@ -910,7 +905,7 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
       offset: Int64 = 0; size: Int64 = 0; MetaData_LinuxVolume: Boolean = False;
     // Linux volume
       MetaData_PKCS11SlotID: Integer = PKCS11_NO_SLOT_ID;  // PKCS11 SlotID
-      MountMountAs: TFreeOTFEMountAs = fomaRemovableDisk;
+      MountMountAs: TMountDiskType = fomaRemovableDisk;
     // PC kernel drivers *only* - ignored otherwise
       mountForAllUsers: Boolean = True  // PC kernel drivers *only* - ignored otherwise
       ): Boolean; virtual; abstract;
@@ -919,7 +914,7 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
       volumeKey: TSDUBytes; sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
       IVHashDriver: Ansistring; IVHashGUID: TGUID; IVCypherDriver: Ansistring;
       IVCypherGUID: TGUID; mainCypherDriver: Ansistring; mainCypherGUID: TGUID;
-      VolumeFlags: Integer; mountMountAs: TFreeOTFEMountAs; dataOffset: Int64;
+      VolumeFlags: Integer; mountMountAs: TMountDiskType; dataOffset: Int64;
     // Offset from within mounted volume from where to read/write data
       dataLength: Integer;   // Length of data to read/write. In bytes
       var data: TSDUBytes;  // Data to read/write
@@ -952,7 +947,7 @@ procedure SetFreeOTFEType(typ: TOTFEFreeOTFEBaseClass);
 {returns an instance of type set in SetFreeOTFEType}
 function GetFreeOTFEBase: TOTFEFreeOTFEBase;
 
-function FreeOTFEMountAsTitle(mountAs: TFreeOTFEMountAs): String;
+function FreeOTFEMountAsTitle(mountAs: TMountDiskType): String;
 function FreeOTFECypherModeTitle(cypherMode: TFreeOTFECypherMode): String;
 function FreeOTFEMACTitle(MACAlgorithm: TFreeOTFEMACAlgorithm): String;
 function FreeOTFEKDFTitle(KDFAlgorithm: TFreeOTFEKDFAlgorithm): String;
@@ -1066,7 +1061,7 @@ const
 
 
 // ----------------------------------------------------------------------------
-function FreeOTFEMountAsTitle(mountAs: TFreeOTFEMountAs): String;
+function FreeOTFEMountAsTitle(mountAs: TMountDiskType): String;
 begin
   Result := LoadResString(FreeOTFEMountAsTitlePtr[mountAs]);
 end;
@@ -1133,13 +1128,13 @@ begin
 
   if (status <> Active) then begin
     if status then begin
-      allOK := Connect();
+      allOK := _Connect();
       if not (allOK) then begin
         raise EFreeOTFEConnectFailure.Create('FreeOTFE driver not installed/not running');
       end;
 
     end else begin
-      Disconnect();
+      _Disconnect();
   //    if not (allOK) then begin
 //        raise EFreeOTFEConnectFailure.Create('Could not disconnect from FreeOTFE driver?!');
 //      end;
@@ -1828,14 +1823,14 @@ function TOTFEFreeOTFEBase.ReadVolumeCriticalData_CDB(CDB: Ansistring;
   var CDBMetaData: TCDBMetaData): Boolean;
 begin
 
-  DebugMsg('Attempting v2 format CDB decode...');
+  DebugMsg('Attempting v2 format FreOTFE Header decode...');
 
   Result := ReadVolumeCriticalData_CDB_v2(CDB, userPassword, saltLength,
     keyIterations, volumeDetails, CDBMetaData);
   (*
   if not Result then begin
 {$IFDEF FREEOTFE_DEBUG}
-DebugMsg('v2 format CDB decode failed - attempting v1...');
+DebugMsg('v2 format Header decode failed - attempting v1...');
 {$ENDIF}
     Result := ReadVolumeCriticalData_CDB_v1(CDB, userPassword, saltLength,
       volumeDetails, CDBMetaData);
@@ -2265,7 +2260,9 @@ end;
 function TOTFEFreeOTFEBase.ReadVolumeCriticalData_CDB_v2(CDB: Ansistring;
   userPassword: TSDUBytes; saltLength: Integer;  // In bits
   keyIterations: Integer; var volumeDetails: TVolumeDetailsBlock;
-  var CDBMetaData: TCDBMetaData): Boolean;
+  var CDBMetaData: TCDBMetaData
+
+  ): Boolean;
 var
   validVolumeDetails: TVolumeDetailsBlockArray;
   validCDBMetaData:   TCDBMetaDataArray;
@@ -2642,7 +2639,7 @@ DebugMsg('Volume details block is length: '+inttostr(length(volumeDetailsBlock))
 
 
                     // Additional: Store internal information, if dumping
-                    if fDumpFlag then begin
+                    if fdumpFlag then begin
                       SDUCopy(fDumpCriticalDataKey, criticalDataKey);
                       fdumpCheckMAC                := checkMAC;
                       fdumpPlaintextEncryptedBlock := plaintextEncryptedBlock;
@@ -2693,7 +2690,6 @@ DebugMsg('Volume details block is length: '+inttostr(length(volumeDetailsBlock))
 
 end;
 
-// ----------------------------------------------------------------------------
 function TOTFEFreeOTFEBase.ChooseFromValid(validVolumeDetails: TVolumeDetailsBlockArray;
   validCDBMetaDatas: TCDBMetaDataArray; var volumeDetails: TVolumeDetailsBlock;
   var CDBMetaData: TCDBMetaData): Boolean;
@@ -2735,7 +2731,7 @@ begin
       end;
 
       if (hashCypherSelectDlg.ShowModal() <> mrOk) then begin
-        LastErrorCode := OTFE_ERR_USER_CANCEL;
+//        LastErrorCode := OTFE_ERR_USER_CANCEL;
         DebugMsg('User cancelled');
 
         Result := False;
@@ -3381,7 +3377,6 @@ begin
 end;
 
 
-// -----------------------------------------------------------------------------
 function TOTFEFreeOTFEBase.CreateKeyfile(srcFilename: String; srcOffsetWithinFile: Int64;
   srcUserPassword: TSDUBytes; srcSaltLength: Integer;  // In bits
   srcKeyIterations: Integer; keyFilename: String; keyfileUserPassword: TSDUBytes;
@@ -3416,7 +3411,6 @@ begin
 end;
 
 
-// -----------------------------------------------------------------------------
 function TOTFEFreeOTFEBase.ChangeVolumePassword(filename: String; offsetWithinFile: Int64;
   oldUserPassword: TSDUBytes; oldSaltLength: Integer;  // In bits
   oldKeyIterations: Integer; newUserPassword: TSDUBytes; newSaltBytes: TSDUBytes;
@@ -3441,291 +3435,8 @@ begin
     Result := WriteVolumeCriticalData(filename, offsetWithinFile, newUserPassword,
       newSaltBytes, newKeyIterations, volumeDetails, CDBMetaData{, newRandomPadData});
   end;
-
 end;
 
-
-// -----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.DumpCriticalDataToFile(volFilename: String;
-  offsetWithinFile: Int64; userPassword: TSDUBytes; saltLength: Integer;  // In bits
-  keyIterations: Integer; dumpFilename: String): Boolean;
-var
-  volumeDetails:        TVolumeDetailsBlock;
-  CDBMetaData:          TCDBMetaData;
-  dumpReport:           TStringList;
-  prettyPrintData:      TStringList;
-  criticalDataBuffer:   Ansistring;
-  hashTitle:            String;
-  cypherTitle:          String;
-  hashDetails:          TFreeOTFEHash;
-  cypherDetails:        TFreeOTFECypher_v3;
-  readTimeStart:        TDateTime;
-  readTimeStop:         TDateTime;
-  readTimeDiff:         TDateTime;
-  Hour, Min, Sec, MSec: Word;
-begin
-  LastErrorCode := OTFE_ERR_UNKNOWN_ERROR;
-  Result        := False;
-
-  CheckActive();
-
-  prettyPrintData := TStringList.Create();
-  try
-    fdumpFlag := True;
-
-    readTimeStart := Now();
-
-    // Read in the raw CDB to display the encrypted version, and then read it in
-    // again to get the decrypt it
-    if (ReadRawVolumeCriticalData(volFilename, offsetWithinFile, criticalDataBuffer) and
-      ReadVolumeCriticalData(volFilename, offsetWithinFile, userPassword,
-      saltLength,  // In bits
-      keyIterations, volumeDetails, CDBMetaData)) then begin
-      readTimeStop := Now();
-
-      // Generate the report
-      dumpReport := TStringList.Create();
-      try
-        AddStdDumpHeader(dumpReport, _('Critical Data Block Dump'));
-
-        AddStdDumpSection(dumpReport, _('User Supplied Information'));
-        dumpReport.Add(Format(_('Filename (user mode)  : %s'), [volFilename]));
-        dumpReport.Add(Format(_('Filename (kernel mode): %s'),
-          [GetKernelModeVolumeFilename(volFilename)]));
-        dumpReport.Add(_('Password              : '));
-        dumpReport.Add('  ' + Format(_('Length: %u bits'), [(Length(userPassword) * 8)]));
-        dumpReport.Add('  ' + _('Data  : '));
-        prettyPrintData.Clear();
-        SDUPrettyPrintHex(
-          userPassword,
-          0,
-          Length(userPassword),
-          prettyPrintData
-          );
-        dumpReport.AddStrings(prettyPrintData);
-        dumpReport.Add(Format(_('Offset                : %d bytes'), [offsetWithinFile]));
-        dumpReport.Add(Format(_('Salt length           : %d bits'), [saltLength]));
-        dumpReport.Add(Format(_('Key iterations        : %d'), [keyIterations]));
-
-        AddStdDumpSection(dumpReport, _('Plaintext Information'));
-        dumpReport.Add(_('Salt data             :'));
-        prettyPrintData.Clear();
-        SDUPrettyPrintHex(
-          criticalDataBuffer,
-          0,
-          (saltLength div 8),
-          prettyPrintData
-          );
-        dumpReport.AddStrings(prettyPrintData);
-
-
-        AddStdDumpSection(dumpReport, _('Dump Performance'));
-        readTimeDiff := (readTimeStop - readTimeStart);
-        DecodeTime(readTimeDiff, Hour, Min, Sec, MSec);
-        dumpReport.Add(Format(_('Time to process CDB   : %u hours, %u mins, %u.%u secs'),
-          [Hour, Min, Sec, MSec]));
-
-
-        AddStdDumpSection(dumpReport, _('Autodetermined Information'));
-
-        hashTitle := _('ERROR: Unable to determine hash title?!');
-        if GetSpecificHashDetails(CDBMetaData.HashDriver, CDBMetaData.HashGUID,
-          hashDetails) then begin
-          hashTitle := GetHashDisplayTechTitle(hashDetails);
-        end;
-
-        cypherTitle := _('ERROR: Unable to determine cypher title?!');
-        if GetSpecificCypherDetails(CDBMetaData.CypherDriver, CDBMetaData.CypherGUID,
-          cypherDetails) then begin
-          cypherTitle := GetCypherDisplayTechTitle(cypherDetails);
-        end;
-
-        dumpReport.Add(Format(_('Hash pretty title        : %s'), [hashTitle]));
-        dumpReport.Add(Format(_('Hash driver lib/KM name  : %s'),
-          [CDBMetaData.HashDriver]));
-        dumpReport.Add(Format(_('Hash GUID                : %s'),
-          [GUIDToString(CDBMetaData.HashGUID)]));
-        dumpReport.Add(Format(_('Cypher pretty title      : %s'), [cypherTitle]));
-        dumpReport.Add(Format(_('Cypher driver lib/KM name: %s'),
-          [CDBMetaData.CypherDriver]));
-        dumpReport.Add(Format(_('Cypher GUID              : %s'),
-          [GUIDToString(CDBMetaData.CypherGUID)]));
-        dumpReport.Add(_('Critical data key     : '));
-        dumpReport.Add('  ' + Format(_('KDF   : %s'),
-          [FreeOTFEKDFTitle(CDBMetaData.KDFAlgorithm)]));
-        dumpReport.Add('  ' + Format(_('Length: %d bits'),
-          [(Length(fdumpCriticalDataKey) * 8)]));
-        dumpReport.Add('  ' + _('Key   : '));
-        prettyPrintData.Clear();
-        SDUPrettyPrintHex(
-          fdumpCriticalDataKey,
-          0,
-          Length(fdumpCriticalDataKey),
-          prettyPrintData
-          );
-        dumpReport.AddStrings(prettyPrintData);
-        dumpReport.Add(_('Plaintext encrypted block: '));
-        dumpReport.Add('  ' + Format(_('Length: %d bits'),
-          [(Length(fdumpPlaintextEncryptedBlock) * 8)]));
-        dumpReport.Add('  ' + _('Data  : '));
-        prettyPrintData.Clear();
-        SDUPrettyPrintHex(
-          fdumpPlaintextEncryptedBlock,
-          0,
-          Length(fdumpPlaintextEncryptedBlock),
-          prettyPrintData
-          );
-        dumpReport.AddStrings(prettyPrintData);
-        dumpReport.Add(_('Check MAC             : '));
-        dumpReport.Add('  ' + Format(_('MAC algorithm: %s'),
-          [FreeOTFEMACTitle(CDBMetaData.MACAlgorithm)]));
-        dumpReport.Add('  ' + Format(_('Length       : %d bits'),
-          [(Length(fdumpCheckMAC) * 8)]));
-        dumpReport.Add('  ' + _('Data         : '));
-        prettyPrintData.Clear();
-        SDUPrettyPrintHex(
-          fdumpCheckMAC,
-          0,
-          Length(fdumpCheckMAC),
-          prettyPrintData
-          );
-        dumpReport.AddStrings(prettyPrintData);
-        dumpReport.Add(_('Container details block  : '));
-        dumpReport.Add('  ' + Format(_('Length       : %d bits'),
-          [(Length(fdumpVolumeDetailsBlock) * 8)]));
-        dumpReport.Add('  ' + _('Data         : '));
-        prettyPrintData.Clear();
-        SDUPrettyPrintHex(
-          fdumpVolumeDetailsBlock,
-          0,
-          Length(fdumpVolumeDetailsBlock),
-          prettyPrintData
-          );
-        dumpReport.AddStrings(prettyPrintData);
-
-
-        AddStdDumpSection(dumpReport, _('Container Details Block'));
-        dumpReport.Add(Format(_('CDB format ID         : %d'),
-          [volumeDetails.CDBFormatID]));
-
-        // Decode the VolumeFlags to human-readable format
-        dumpReport.Add(Format(_('Container flags          : %d'),
-          [volumeDetails.VolumeFlags]));
-        dumpReport.Add(_('                        ') + DumpCriticalDataToFileBitmap(
-          volumeDetails.VolumeFlags, VOL_FLAGS_SECTOR_ID_ZERO_VOLSTART,
-          _('Sector ID zero is at the start of the encrypted data'), _(
-          'Sector ID zero is at the start of the host file/partition')));
-
-        dumpReport.Add(Format(_('Partition length      : %d bytes'),
-          [volumeDetails.PartitionLen]));
-
-        dumpReport.Add(_('Master key            : '));
-        dumpReport.Add('  ' + Format(_('Length: %d bits'),
-          [volumeDetails.MasterKeyLength]));
-        dumpReport.Add('  ' + _('Key   :'));
-        prettyPrintData.Clear();
-        SDUPrettyPrintHex(
-          volumeDetails.MasterKey,
-          0,
-          (volumeDetails.MasterKeyLength div 8),
-          prettyPrintData
-          );
-        dumpReport.AddStrings(prettyPrintData);
-        dumpReport.Add(Format(_('Sector IV generation  : %s'),
-          [FreeOTFESectorIVGenMethodTitle[volumeDetails.SectorIVGenMethod]]));
-        dumpReport.Add(_('Container IV             : '));
-        dumpReport.Add('  ' + Format(_('Length : %d bits'),
-          [volumeDetails.VolumeIVLength]));
-        dumpReport.Add('  ' + _('IV data:'));
-        prettyPrintData.Clear();
-        SDUPrettyPrintHex(
-          volumeDetails.VolumeIV,
-          0,
-          (volumeDetails.VolumeIVLength div 8),
-          prettyPrintData
-          );
-        dumpReport.AddStrings(prettyPrintData);
-
-        if (volumeDetails.RequestedDriveLetter = #0) then begin
-          dumpReport.Add(_('Requested drive letter: None; use default'));
-        end else begin
-          dumpReport.Add(Format(_('Requested drive letter: %s'),
-            [volumeDetails.RequestedDriveLetter + ':']));
-        end;
-
-        AddStdDumpSection(dumpReport, _('Encrypted CDB'));
-        prettyPrintData.Clear();
-        SDUPrettyPrintHex(
-          criticalDataBuffer,
-          0,
-          (CRITICAL_DATA_LENGTH div 8),
-          prettyPrintData
-          );
-        dumpReport.AddStrings(prettyPrintData);
-
-
-        // Save the report out to disk...
-        dumpReport.SaveToFile(dumpFilename);
-        Result := True;
-      finally
-        fdumpFlag := False;
-        SDUZeroBuffer(fdumpCriticalDataKey);
-        fdumpCheckMAC                := '';
-        fdumpPlaintextEncryptedBlock := '';
-        fdumpVolumeDetailsBlock      := '';
-
-        dumpReport.Clear();
-        dumpReport.Free();
-      end;
-
-    end;
-
-  finally
-    prettyPrintData.Free();
-  end;
-
-  if Result then
-    LastErrorCode := OTFE_ERR_SUCCESS;
-
-end;
-
-
- // ----------------------------------------------------------------------------
- // Return a nicely formatted string, decoding one bit of a bitmapped value
- // bit - The zero-offset bit (i.e. the LSB is bit 0)
-function TOTFEFreeOTFEBase.DumpCriticalDataToFileBitmap(Value: DWORD;
-  bit: Integer; unsetMeaning: String; setMeaning: String): String;
-var
-  x:          DWORD;
-  i:          Integer;
-  oneZero:    Integer;
-  useMeaning: String;
-begin
-  Result := '';
-
-  x := 1;
-  for i := 1 to bit do begin
-    x := x * 2;
-  end;
-
-  oneZero    := 0;
-  useMeaning := unsetMeaning;
-  if ((Value and x) = x) then begin
-    oneZero    := 1;
-    useMeaning := setMeaning;
-  end;
-
-  Result := Format(_('Bit %d: %d (%s)'), [bit, oneZero, useMeaning]);
-
-end;
-
-
-
-
-
-
-
- // ----------------------------------------------------------------------------
  // Convert a kernel mode volume filename to a user mode volume filename
 function TOTFEFreeOTFEBase.GetUserModeVolumeFilename(kernelModeFilename: String): String;
 begin
@@ -3798,7 +3509,7 @@ end;
  // ----------------------------------------------------------------------------
  // Return TRUE/FALSE, depending on whether the specified KERNEL MODE volume
  // filename refers to a partition/file
-function TOTFEFreeOTFEBase.IsPartition_UserModeName(userModeFilename: String): Boolean;
+function TOTFEFreeOTFEBase.IsPartitionUserModeName(userModeFilename: String): Boolean;
 begin
   // In user mode, partitions start with "\\.\"
   Result := (Pos('\\.\', userModeFilename) = 1);
@@ -3935,7 +3646,7 @@ function TOTFEFreeOTFEBase.DEBUGReadWritePlaintextToVolume(
   mainCypherDriver: String;
   mainCypherGUID: TGUID;
   VolumeFlags: Integer;
-  mountMountAs: TFreeOTFEMountAs;
+  mountMountAs: TMountDiskType;
 
   dataOffset: Int64;
   // Offset from within mounted volume from where to read/write data
@@ -3961,9 +3672,8 @@ end;
 function TOTFEFreeOTFEBase.WriteRawVolumeCriticalData(filename: String;
   offsetWithinFile: Int64; criticalData: Ansistring): Boolean;
 begin
-  if (length(criticalData) <> (CRITICAL_DATA_LENGTH div 8)) then begin
-    EFreeOTFEInvalidParameter.Create('Invalid CDB passed in for raw writing');
-  end;
+  if (length(criticalData) <> (CRITICAL_DATA_LENGTH div 8)) then
+    EFreeOTFEInvalidParameter.Create('Invalid FreeOTFE header passed in for raw writing');
 
   Result := WriteRawVolumeData(filename, offsetWithinFile, criticalData);
 end;
@@ -4236,7 +3946,7 @@ begin
 end;
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.CachesGetCypherDriver(cypherDriver: Ansistring;
+function TOTFEFreeOTFEBase._CachesGetCypherDriver(cypherDriver: Ansistring;
   var cypherDriverDetails: TFreeOTFECypherDriver): Boolean;
 var
   ptrRec:   PFreeOTFECypherDriver;
@@ -4317,56 +4027,6 @@ begin
 
   Result := (hashCount > 0) and (cypherCount > 0);
 end;
-
-
-// ----------------------------------------------------------------------------
-procedure TOTFEFreeOTFEBase.AddStdDumpHeader(content: TStringList; title: String);
-var
-  driverVersion:      String;
-  platformID:         String;
-  envARCHITECTURE:    String;
-  envARCH_W3264:      String;
-  useEnvARCHITECTURE: String;
-  useEnvARCH_W3264:   String;
-begin
-  // This function may be called when the driver isn't running
-  try
-    driverVersion := VersionStr();
-  except
-    driverVersion := RS_UNKNOWN;
-  end;
-
-  content.Add(title);
-  content.Add(StringOfChar('=', length(title)));
-  // content.Add(''); - Newlines not needed; AddStdDumpSection(..) adds newlines
-  AddStdDumpSection(content, _('Dump Created By'));
-  useEnvARCHITECTURE := '---';
-  if SDUGetEnvironmentVar(EVN_VAR_PROC_ARCHITECTURE, envARCHITECTURE) then begin
-    useEnvARCHITECTURE := envARCHITECTURE;
-  end;
-  useEnvARCH_W3264 := '---';
-  if SDUGetEnvironmentVar(EVN_VAR_PROC_ARCH_W3264, envARCH_W3264) then begin
-    useEnvARCH_W3264 := envARCH_W3264;
-  end;
-  platformID := 'PC ' + DriverType() + ' (' + INSTALLED_OS_TITLE[SDUInstalledOS()] +
-    '; ' + IntToStr(SDUOSCPUSize()) + ' bit [' + useEnvARCHITECTURE + '/' +
-    useEnvARCH_W3264 + ']' + ')';
-  content.Add(Format(_('Platform              : %s'), [platformID]));
-  content.Add(Format(_('Application version   : %s'),
-    ['v' + SDUGetVersionInfoString(ParamStr(0))]));
-  content.Add(Format(_('Driver ID             : %s'), [driverVersion]));
-  //  content.Add(''); // Newlines not needed - added by following section header
-end;
-
-// ----------------------------------------------------------------------------
-procedure TOTFEFreeOTFEBase.AddStdDumpSection(content: TStringList; sectionTitle: String);
-begin
-  content.Add('');
-  content.Add('');
-  content.Add(sectionTitle);
-  content.Add(StringOfChar('-', length(sectionTitle)));
-end;
-
 
 
 { factory fn creates an instance that is returned by GetFreeOTFEBase}

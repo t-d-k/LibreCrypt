@@ -203,6 +203,7 @@ var
 
   dumpOK: Boolean;
 begin
+ startTime := 0;
   if fshow_time then
     startTime := Now();
 
@@ -221,8 +222,8 @@ begin
 
     if not fsilent then
 
-      if (SDUMessageDlg(_('A human readable copy of your ' + hdrType +
-        ' Header has been written to:') + SDUCRLF + SDUCRLF + GetDumpFilename +
+      if (SDUMessageDlg(format(_('A human readable copy of your %s Header has been written to: '+ SDUCRLF + SDUCRLF +'%s'),
+      [hdrType,GetDumpFilename])   +
         SDUCRLF + SDUCRLF + _('Do you wish to open this file in Windows Notepad?'),
         mtInformation, [mbYes, mbNo], 0) = mrYes) then
 

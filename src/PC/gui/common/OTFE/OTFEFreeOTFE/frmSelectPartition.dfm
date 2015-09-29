@@ -82,7 +82,7 @@ object frmSelectPartition: TfrmSelectPartition
       Height = 97
       ExplicitWidth = 565
       ExplicitHeight = 97
-      inherited SDUDiskPartitionsPanel1: TfmeDiskPartitionsPanel
+      inherited SDUDiskPartitionsPanel1: TfmeSDUDiskPartitions
         Height = 69
         OnDblClick = fmeSelectPartitionSDUDiskPartitionsPanel1DblClick
         ExplicitHeight = 69

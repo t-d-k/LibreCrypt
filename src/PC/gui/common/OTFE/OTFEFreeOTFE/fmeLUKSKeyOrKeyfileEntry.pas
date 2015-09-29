@@ -152,11 +152,11 @@ begin
   preUserKey.WordWrap    := True;
   preUserKey.Lines.Clear();
 
-  if not GetSettings().OptShowPasswords then
+  if not GetSettings().ShowPasswords then
     preUserKey.PasswordChar := '*';//defaults to #0
 
-  preUserKey.WantReturns  := GetSettings().OptAllowNewlinesInPasswords;
-  preUserKey.WantTabs     := GetSettings().OptAllowTabsInPasswords;
+  preUserKey.WantReturns  := GetSettings().AllowNewlinesInPasswords;
+  preUserKey.WantTabs     := GetSettings().AllowTabsInPasswords;
 
   SetKeyfileIsASCII(LINUX_KEYFILE_DEFAULT_IS_ASCII);
   SetKeyfileNewlineType(LINUX_KEYFILE_DEFAULT_NEWLINE);

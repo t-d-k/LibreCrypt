@@ -11,23 +11,23 @@ unit frmWizardCreateVolume;
 interface
 
 uses
-     //delphi & libs
-        Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  //delphi & libs
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ComCtrls, ExtCtrls,
   //sdu & LibreCrypt utils
-   MouseRNG,    Shredder,
+  MouseRNG, Shredder,
   lcTypes, SDURandPool, SDUStdCtrls, SDUForms, SDUFrames, SDUSpin64Units,
-  PasswordRichEdit, Spin64, SDUDialogs, lcDialogs,OTFEFreeOTFE_InstructionRichEdit,
-  lcDebugLog ,    OTFEFreeOTFEBase_U,
+  PasswordRichEdit, Spin64, SDUDialogs, lcDialogs, OTFEFreeOTFE_InstructionRichEdit,
+  lcDebugLog, OTFEFreeOTFEBase_U,
   VolumeFileAPI,  // Required for TVOLUME_CRITICAL_DATA
   DriverAPI,      // Required for CRITICAL_DATA_LEN
- OTFEFreeOTFE_PasswordRichEdit,
+  OTFEFreeOTFE_PasswordRichEdit,
   // LibreCrypt forms
-   fmeSelectPartition,
-   frmWizard,
-   fmeNewPassword, fmeContainerSize;
+  fmeSelectPartition,
+  frmWizard,
+  fmeNewPassword, fmeContainerSize;
 
-   { TODO 1 -otdk -ccleanup : use sdufilename edit for container }
+{ TODO 1 -otdk -ccleanup : use sdufilename edit for container }
 type
   TfrmCreateFreeOTFEVolume = class (TfrmWizard)
     tsFilename:      TTabSheet;
@@ -190,7 +190,7 @@ type
     procedure lblFilenameChange(Sender: TObject);
 
   published
-      procedure fmeSelectPartitionChanged(Sender: TObject);
+    procedure fmeSelectPartitionChanged(Sender: TObject);
   private
     // Advanced options...
     //    fkeyIterations:        Integer;
@@ -222,13 +222,13 @@ type
 
     // When the user selects a cypher, we cache it's keysize for later use.
     // This is set to CYPHER_KEYSIZE_NOT_CACHED_FLAG_KEYSIZE to indicate no keysize is cached
-    fcachedCypherKeysize:   Integer;
+    fcachedCypherKeysize: Integer;
     // When the user selects a cypher, we cache it's blocksize for later use.
     // This is set to CYPHER_BLOCKSIZE_NOT_CACHED_FLAG_BLOCKSIZE to indicate no blocksize is cached
     fcachedCypherBlocksize: Integer;
     // When the user selects a cypher, we cache it's mode for later use.
-    fcachedCypherMode:      TFreeOTFECypherMode;
-    fis_hidden:boolean; // are we ceating hidden volume
+    fcachedCypherMode: TFreeOTFECypherMode;
+    fis_hidden: Boolean; // are we ceating hidden volume
 
     // Returns the keysize for the user's selected cypher, as returned by the
     // driver
@@ -275,7 +275,7 @@ type
 
 
     // overwrite mounted drive if 'drive' set
-    function _OverwriteVolWithChaff(drive:DriveLetterChar = #0): Boolean;
+    function _OverwriteVolWithChaff(drive: DriveLetterChar = #0): Boolean;
 
 
     function _CreateNewVolume(): Boolean;
@@ -313,35 +313,35 @@ type
 
   public
 
-    property IsHidden : boolean read fis_hidden write fis_hidden;
+    property IsHidden: Boolean Read fis_hidden Write fis_hidden;
   end;
 
- function CreateFreeOTFEVolume(isHidden:Boolean): Boolean;
+function CreateFreeOTFEVolume(isHidden: Boolean): TMountResult;
 
 implementation
 
 {$R *.DFM}
 
 uses
-  // delphi
+            // delphi
   ActiveX,  // Required for IsEqualGUID
   ComObj,   // Required for StringToGUID
   Math,
 
-            //sdu
+  //sdu
   SDUi18n, SDPartitionImage,
   SDPartitionImage_File,
   SDFilesystem,
-    sdusysutils,  // format_drive
+  sdusysutils,  // format_drive
   SDFilesystem_FAT,
   pkcs11_library,
   lcConsts,
-sduGeneral,
-   OTFEConsts_U, // Required for OTFE_ERR_USER_CANCEL
+  sduGeneral,
+  OTFEConsts_U, // Required for OTFE_ERR_USER_CANCEL
   OTFEFreeOTFEDLL_U,
   PKCS11Lib,
   PartitionImageDLL,
-                //LibreCrypt forms
+  //LibreCrypt forms
 
   frmKeyEntryFreeOTFE // for MountFreeOTFE
   , frmCypherInfo, frmHashInfo;
@@ -374,8 +374,8 @@ const
 
   MIN_REC_VOLUME_SIZE = 4;
 
-  FILEORPART_OPT_PARTITION_INDEX = 1; //index of 'partition' item in rgFileOrPartition
-  FILEORPART_OPT_VOLUME_FILE_INDEX = 0;// index of 'file' item
+  FILEORPART_OPT_PARTITION_INDEX   = 1; //index of 'partition' item in rgFileOrPartition
+  FILEORPART_OPT_VOLUME_FILE_INDEX = 0; // index of 'file' item
 
 
 
@@ -421,7 +421,7 @@ begin
   SDUTranslateComp(reInstructWarningOffset3);
   SDUTranslateComp(reInstructWarningOffset4);
   fmeContainerSize1.IsHidden := fis_hidden;
- fmeContainerSize1.Initialise();
+  fmeContainerSize1.Initialise();
 
   { TODO 1 -otdk -ceasify : why mutiple of 512? simplify text }
   SDUTranslateComp(reInstructHashCypherIV);
@@ -557,24 +557,24 @@ begin
 
   lblFinished.Visible := False;//'click finished or next'
 
-//  tsOffset.Visible := fisHidden;
+  //  tsOffset.Visible := fisHidden;
 
-  lblInstructFileNotHidden1.Visible := not fis_hidden;
-  lblInstructFileNotHidden2.Visible := not fis_hidden;
+  lblInstructFileNotHidden1.Visible           := not fis_hidden;
+  lblInstructFileNotHidden2.Visible           := not fis_hidden;
   lblInstructPartitionSelectNotHidden.Visible := not fis_hidden;
-  lblInstructFileHidden1.Visible := fis_hidden;
-  lblInstructFileHidden2.Visible := fis_hidden;
-  lblInstructPartitionSelectHidden.Visible := fis_hidden;
-  lblInstructFilenameNotHidden.Visible := not fis_hidden;
-  lblInstructFilenameHidden.Visible := fis_hidden;
+  lblInstructFileHidden1.Visible              := fis_hidden;
+  lblInstructFileHidden2.Visible              := fis_hidden;
+  lblInstructPartitionSelectHidden.Visible    := fis_hidden;
+  lblInstructFilenameNotHidden.Visible        := not fis_hidden;
+  lblInstructFilenameHidden.Visible           := fis_hidden;
 
 
 
   // if hidden then file must exist, else should not exist
   if fis_hidden then
-    SaveDialog.Options    := SaveDialog.Options + [ofFileMustExist]
+    SaveDialog.Options := SaveDialog.Options + [ofFileMustExist]
   else
-    SaveDialog.Options    := SaveDialog.Options + [ofOverwritePrompt];
+    SaveDialog.Options := SaveDialog.Options + [ofOverwritePrompt];
 
   _UpdateUIAfterChangeOnCurrentTab();
 end;
@@ -588,7 +588,8 @@ begin
     (tabSheet = tsRNGPKCS11) or (tabSheet = tsKeyIterations) or (tabSheet = tsSalt) or
     (tabSheet = tsCDBLocation) or (tabSheet = tsPadding) or (tabSheet = tsSummary));
   // if hidden, tsOffset required
-  if tabSheet=tsOffset then result := fis_hidden;
+  if tabSheet = tsOffset then
+    Result := fis_hidden;
 
 end;
 
@@ -699,7 +700,8 @@ begin
 
 
   // Volume size related...
-  fmeContainerSize1.EnableDisableControls(GetIsPartition(),fis_hidden,fmeSelectPartition.SyntheticDriveLayout);
+  fmeContainerSize1.EnableDisableControls(GetIsPartition(), fis_hidden,
+    fmeSelectPartition.SyntheticDriveLayout);
 
 
   // Prevent user from disabling the automount when creating volumes using the
@@ -718,7 +720,7 @@ end;
 procedure TfrmCreateFreeOTFEVolume.pbBrowseFilenameClick(Sender: TObject);
 begin
   { TODO 1 -otdk -crefactor : move these properties  into designer }
-SaveDialog.Filter     := FILE_FILTER_FLT_VOLUMES;
+  SaveDialog.Filter     := FILE_FILTER_FLT_VOLUMES;
   SaveDialog.DefaultExt := FILE_FILTER_DFLT_VOLUMES;
   SaveDialog.Options    := SaveDialog.Options + [ofDontAddToRecent];
 
@@ -728,8 +730,6 @@ SaveDialog.Filter     := FILE_FILTER_FLT_VOLUMES;
     lblFilename.Text := SaveDialog.Filename;
     // warning label updated, and  _UpdateUIAfterChangeOnCurrentTab() called in edit change event
   end;
-
-
 
 end;
 
@@ -760,9 +760,9 @@ begin
     else begin
       // Flag tabsheet complete if a filename has been specified
       Result := (GetVolFilename <> '');
-      if result then begin
+      if Result then begin
         // if hidden file must exist and if not, not
-       Result :=(fis_hidden = FileExists(GetVolFilename()))  ;
+        Result := (fis_hidden = FileExists(GetVolFilename()));
       end;
     end;
 
@@ -780,14 +780,14 @@ begin
     end;
 
   end else
-  if (checkTab = tsOffset)  then begin
+  if (checkTab = tsOffset) then begin
     if fis_hidden then begin // only req'd for hidden volumes
-    // Check that the number entered is less than the max size...
-    if GetIsPartition() then begin
-      Result := (GetOffset() > 0);
-    end else begin
-      Result := (GetOffset() < SDUGetFileSize(GetVolFilename())) and (GetOffset() >= 0);
-    end;
+      // Check that the number entered is less than the max size...
+      if GetIsPartition() then begin
+        Result := (GetOffset() > 0);
+      end else begin
+        Result := (GetOffset() < SDUGetFileSize(GetVolFilename())) and (GetOffset() >= 0);
+      end;
     end;
 
   end else
@@ -827,7 +827,8 @@ begin
       if {FileExists(GetVolFilename)}fis_hidden then begin
         // If creating a hidden container, ensure that the existing file is large
         // enough to store the hidden container
-        Result :=FileExists(GetVolFilename) and ((SDUGetFileSize(GetVolFilename) - GetOffset()) >= volSizeWithCDBAndPadding);
+        Result := FileExists(GetVolFilename) and
+          ((SDUGetFileSize(GetVolFilename) - GetOffset()) >= volSizeWithCDBAndPadding);
       end else begin
         // It would be *nice* to check that the volume the filename is stored on
         // has enough storage for the requested size volume, but that is not
@@ -1023,16 +1024,16 @@ begin
   Result := (rgFileOrPartition.ItemIndex = FILEORPART_OPT_PARTITION_INDEX);
 end;
 
-//function TfrmCreateFreeOTFEVolume.GetIsHidden(): Boolean;
-//begin
-//  // If:
-//  //   a) The user wants to create the volume on a partition, and has
-//  //      specified they want to create a hidden partition, or
-//  //   b) The user wants to create the volume within a volume file, but has
-//  //      specified the filename of an existing file
-//  Result := ((GetIsPartition()) and (ckPartitionHidden.Checked)) or
-//    ((not (GetIsPartition())) and (FileExists(GetVolFilename)));
-//end;
+ //function TfrmCreateFreeOTFEVolume.GetIsHidden(): Boolean;
+ //begin
+ //  // If:
+ //  //   a) The user wants to create the volume on a partition, and has
+ //  //      specified they want to create a hidden partition, or
+ //  //   b) The user wants to create the volume within a volume file, but has
+ //  //      specified the filename of an existing file
+ //  Result := ((GetIsPartition()) and (ckPartitionHidden.Checked)) or
+ //    ((not (GetIsPartition())) and (FileExists(GetVolFilename)));
+ //end;
 
 function TfrmCreateFreeOTFEVolume.GetVolFilename(): String;
 begin
@@ -1049,18 +1050,19 @@ procedure TfrmCreateFreeOTFEVolume.lblFilenameChange(Sender: TObject);
 begin
   inherited;
   // update ui
-   se64UnitByteOffset.Value := 0;
-    lblFileExistsWarning.Visible :=FileExists(GetVolFilename) and not  fis_hidden;
-    if (FileExists(GetVolFilename)) then begin
-      // Force the user to reenter their offset, by marking the offset tabsheet
-      // as incomplete
-      if fis_hidden then   tsOffset.Tag := 0;
-    end else begin
-      // New file; critical data automatically stored at the start of the file;
-      // zero offset
-      //      tsOffset.Tag := 1;
-    end;
-    _UpdateUIAfterChangeOnCurrentTab();
+  se64UnitByteOffset.Value     := 0;
+  lblFileExistsWarning.Visible := FileExists(GetVolFilename) and not fis_hidden;
+  if (FileExists(GetVolFilename)) then begin
+    // Force the user to reenter their offset, by marking the offset tabsheet
+    // as incomplete
+    if fis_hidden then
+      tsOffset.Tag := 0;
+  end else begin
+    // New file; critical data automatically stored at the start of the file;
+    // zero offset
+    //      tsOffset.Tag := 1;
+  end;
+  _UpdateUIAfterChangeOnCurrentTab();
 end;
 
 function TfrmCreateFreeOTFEVolume.GetOffset(): ULONGLONG;
@@ -1079,7 +1081,7 @@ begin
     // If CDB forms part of the volume, reduce as appropriate
     if GetCDBInVolFile() then begin
       critSizeULL := (CRITICAL_DATA_LENGTH div 8);
-      Result     := Result - critSizeULL;
+      Result      := Result - critSizeULL;
     end;
 
   end else begin
@@ -1401,10 +1403,10 @@ begin
   cbDriveLetter.ItemIndex := 0;
 
   // tsCDBLocation
-  rbCDBInKeyfile.Checked   := False;
-  rbCDBInVolFile.Checked   := True;
-  lblKeyFilename.Caption   := '';
-  frmeNewPassword.OnChange := ControlChanged;
+  rbCDBInKeyfile.Checked     := False;
+  rbCDBInVolFile.Checked     := True;
+  lblKeyFilename.Caption     := '';
+  frmeNewPassword.OnChange   := ControlChanged;
   fmeContainerSize1.OnChange := ControlChanged;
 end;
 
@@ -1451,7 +1453,6 @@ begin
   fCachedCypherMode      := focmUnknown;
 
   _UpdateUIAfterChangeOnCurrentTab();
-
 end;
 
 
@@ -1464,6 +1465,8 @@ var
   PaddingLength: Int64;
   VolFilename:   TFilename;
   volSize:       ULONGLONG;
+  cont_size:     String;
+
 begin
   // int64Zero to prevent 32/64 bit integer conversion
   ULLZero       := 0;
@@ -1480,31 +1483,29 @@ begin
   if fis_hidden then
     reSummary.Lines.Add(Format(_('Hidden container starting at offset: %d'), [GetOffset()]));
 
-  if GetCDBInVolFile() then begin
-    if (PaddingLength > ULLZero) then begin
-      totalSize := volSize + ULONGLONG(CRITICAL_DATA_LENGTH div 8) + PaddingLength;
-      reSummary.Lines.Add(Format(
-        _('Container size: %d + %d (for CDB) + %d (padding) = %d bytes'),
-        [volSize, (CRITICAL_DATA_LENGTH div 8), PaddingLength, totalSize]));
-    end else begin
-      totalSize := volSize + ULONGLONG(CRITICAL_DATA_LENGTH div 8);
-      reSummary.Lines.Add(Format(_('Container size: %d + %d (for CDB) = %d bytes'),
-        [volSize, (CRITICAL_DATA_LENGTH div 8), totalSize]));
-    end;
-
-    reSummary.Lines.Add(_('CDB stored: At start of container file'));
-  end else begin
-    if (PaddingLength > ULLZero) then begin
-      totalSize := volSize + PaddingLength;
-      reSummary.Lines.Add(Format(_('Container size: %d + %d (padding) = %d bytes'),
-        [volSize, PaddingLength, totalSize]));
-    end else begin
-      reSummary.Lines.Add(Format(_('Container size: %d bytes'), [volSize]));
-    end;
-
-    reSummary.Lines.Add(_('CDB stored: In separate keyfile'));
-    reSummary.Lines.Add(Format(_('CDB keyfile: %s'), [GetCDBFilename()]));
+  cont_size := Format(_('Container size: %d '), [volSize]);
+  totalSize := volSize;
+  if (PaddingLength > ULLZero) then begin
+    totalSize := totalSize + PaddingLength;
+    cont_size := cont_size + Format(_('+ %d (padding) '), [PaddingLength]);
   end;
+
+  if GetCDBInVolFile() then begin
+    cont_size := cont_size + Format(_('+ %d (for header) '), [(CRITICAL_DATA_LENGTH div 8)]);
+    totalSize := totalSize + ULONGLONG(CRITICAL_DATA_LENGTH div 8);
+    reSummary.Lines.Add(_('Header stored: At start of container file'));
+  end else begin
+    reSummary.Lines.Add(_('Header stored: In separate keyfile'));
+    reSummary.Lines.Add(Format(_('Header keyfile: %s'), [GetCDBFilename()]));
+  end;
+
+  if (totalSize = volSize) then begin
+    cont_size := cont_size + _('bytes');
+  end else begin
+    cont_size := cont_size + Format(_('= %d bytes'), [totalSize]);
+  end;
+
+  reSummary.Lines.Add(cont_size);
 
   reSummary.Lines.Add(Format(_('Hash algorithm: %s'), [cbHash.Items[cbHash.ItemIndex]]));
   reSummary.Lines.Add('  ' + Format(_('[Hash driver: %s]'), [GetHashDriver()]));
@@ -1636,7 +1637,7 @@ begin
   except
     on E: EInsufficientRandom do
       SDUMessageDlg(
-        _('Insufficient random data generated: ' + E.message) + SDUCRLF +
+        _('Insufficient random data generated: ') + E.message + SDUCRLF +
         SDUCRLF + PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
         mtError
         );
@@ -1666,53 +1667,53 @@ begin
 
   if not fis_hidden then begin
 
-  // If the new volume is on a partition; we can skip creating a large file
-  // on the localfilesystem
-  if not GetIsPartition() then begin
-    // Create the volume file (if it doesn't already exist)
-    if (not (FileExists(VolFilename))) then begin
-      volumeFileSize := GetSize();
-      // Add on the size of the CDB, if stored in volume file
-      if GetCDBInVolFile() then begin
-        volumeFileSize := volumeFileSize + ULONGLONG(CRITICAL_DATA_LENGTH div 8);
-      end;
-
-      // Add on the size of any padding
-      volumeFileSize := volumeFileSize + GetPaddingLength();
-
-      Result := SDUCreateLargeFile(VolFilename, volumeFileSize, True, userCancel);
-      if not Result then
-        // If there was a problem, and not a user cancel, warn user
-        if userCancel then begin
-          SDUMessageDlg(_('Container creation canceled'), mtInformation);
-        end else begin
-          fileCreateProbMsg :=
-            Format(_(
-            'Unable to create container; please ensure you have %s free on the relavant drive'),
-            [SDUFormatAsBytesUnits(volumeFileSize)]);
-          if (volumeFileSize >= MAX_FAT_FILESIZE) then begin
-            fileCreateProbMsg :=
-              fileCreateProbMsg + SDUCRLF + SDUCRLF + _(
-              'Please note that FAT/FAT32 filesystems cannot store files that are 4GB or larger');
-          end;
-          SDUMessageDlg(fileCreateProbMsg, mtError);
+    // If the new volume is on a partition; we can skip creating a large file
+    // on the localfilesystem
+    if not GetIsPartition() then begin
+      // Create the volume file (if it doesn't already exist)
+      if (not (FileExists(VolFilename))) then begin
+        volumeFileSize := GetSize();
+        // Add on the size of the CDB, if stored in volume file
+        if GetCDBInVolFile() then begin
+          volumeFileSize := volumeFileSize + ULONGLONG(CRITICAL_DATA_LENGTH div 8);
         end;
-    end;  // if (not(FileExists(filename))) then
-  end;  // if not(IsPartition) then
 
-  if Result then begin
-    // Overwrite volume with SPRNG data, if required
-    // this also overwrites cdb and padding, cdb is created below
+        // Add on the size of any padding
+        volumeFileSize := volumeFileSize + GetPaddingLength();
+
+        Result := SDUCreateLargeFile(VolFilename, volumeFileSize, True, userCancel);
+        if not Result then
+          // If there was a problem, and not a user cancel, warn user
+          if userCancel then begin
+            SDUMessageDlg(_('Container creation canceled'), mtInformation);
+          end else begin
+            fileCreateProbMsg :=
+              Format(_(
+              'Unable to create container; please ensure you have %s free on the relavant drive'),
+              [SDUFormatAsBytesUnits(volumeFileSize)]);
+            if (volumeFileSize >= MAX_FAT_FILESIZE) then begin
+              fileCreateProbMsg :=
+                fileCreateProbMsg + SDUCRLF + SDUCRLF + _(
+                'Please note that FAT/FAT32 filesystems cannot store files that are 4GB or larger');
+            end;
+            SDUMessageDlg(fileCreateProbMsg, mtError);
+          end;
+      end;  // if (not(FileExists(filename))) then
+    end;  // if not(IsPartition) then
+
+    if Result then begin
+      // Overwrite volume with SPRNG data, if required
+      // this also overwrites cdb and padding, cdb is created below
         { if hidden also overwrite  from Offset? - this is arguably overkill bc should already have been overwritten,
           but perhaps if didnt do on outer vol then will stop attacker knowing size of data
           also less info leaked if attacker has b4/after snapshots
           for now not overwriting for performance
          }
-    { TODO 1 -otdk -cenhance : instead default FOverwriteWithChaff to false for hidden vols so user can still change}
-    if not getIsPartition then
-      {unfortuanely low level overwrite doesnt yet work for partitions- so partitions are overwritten after mount }
-      Result := _OverwriteVolWithChaff();
-  end;
+      { TODO 1 -otdk -cenhance : instead default FOverwriteWithChaff to false for hidden vols so user can still change}
+      if not getIsPartition then
+        {unfortuanely low level overwrite doesnt yet work for partitions- so partitions are overwritten after mount }
+        Result := _OverwriteVolWithChaff();
+    end;
   end;
 
   // Create separate CDB file, if needed
@@ -1728,7 +1729,7 @@ begin
 
 
   if Result then begin
-    DebugMsg('Is Hidden: '+BoolToStr(fis_hidden));
+    DebugMsg('Is Hidden: ' + BoolToStr(fis_hidden));
     DebugMsg('Populating FreeOTFE header ...');
 
     // Create the volume file header
@@ -1743,18 +1744,17 @@ begin
     CDBMetaData.CypherDriver := GetCypherDriver();
     CDBMetaData.CypherGUID   := GetCypherGUID();
 
-DebugMsg('Using hash driver: '+CDBMetaData.HashDriver);
-DebugMsg('Using hash: '+GUIDToString(CDBMetaData.HashGUID));
-DebugMsg('Using cypher driver: '+CDBMetaData.CypherDriver);
-DebugMsg('Using cypher: '+GUIDToString(CDBMetaData.CypherGUID));
+    DebugMsg('Using hash driver: ' + CDBMetaData.HashDriver);
+    DebugMsg('Using hash: ' + GUIDToString(CDBMetaData.HashGUID));
+    DebugMsg('Using cypher driver: ' + CDBMetaData.CypherDriver);
+    DebugMsg('Using cypher: ' + GUIDToString(CDBMetaData.CypherGUID));
 
 
     volumeDetails.CDBFormatID  := CDB_FORMAT_ID;
     volumeDetails.PartitionLen := GetSize();
 
     volumeDetails.VolumeFlags := 0;
-    DebugMsg('Container flags: ' +
-      IntToStr(volumeDetails.VolumeFlags) + ' bits');
+    DebugMsg('Container flags: ' + IntToStr(volumeDetails.VolumeFlags) + ' bits');
 
     volumeDetails.SectorIVGenMethod := GetSectorIVGenMethod();
 
@@ -1771,9 +1771,9 @@ DebugMsg('Using cypher: '+GUIDToString(CDBMetaData.CypherGUID));
     // SDUDeleteFromStart(randomPool, volumeDetails.MasterKeyLength div 8);
     //    Delete(randomPool, 1, (volumeDetails.MasterKeyLength div 8));
 
-DebugMsg('Master key length: '+inttostr(volumeDetails.MasterKeyLength)+' bits');
-DebugMsg('Master key follows:');
-DebugMsg(volumeDetails.MasterKey);
+    DebugMsg('Master key length: ' + IntToStr(volumeDetails.MasterKeyLength) + ' bits');
+    DebugMsg('Master key follows:');
+    DebugMsg(volumeDetails.MasterKey);
 
 
     // Grab 'n' bytes from the random pool to use as the volume IV
@@ -1791,9 +1791,9 @@ DebugMsg(volumeDetails.MasterKey);
 
     //    Delete(randomPool, 1, (volumeDetails.VolumeIVLength div 8));
 
-DebugMsg('Volume IV length: '+inttostr(volumeDetails.VolumeIVLength)+' bits');
-DebugMsg('Volume IV follows:');
-DebugMsg(volumeDetails.VolumeIV);
+    DebugMsg('Volume IV length: ' + IntToStr(volumeDetails.VolumeIVLength) + ' bits');
+    DebugMsg('Volume IV follows:');
+    DebugMsg(volumeDetails.VolumeIV);
 
 
 
@@ -1809,12 +1809,12 @@ DebugMsg(volumeDetails.VolumeIV);
     //    Delete(randomPool, 1, (seSaltLength.Value div 8));
 
 
-DebugMsg('About to write the FreeOTFE header ...');
-DebugMsg(frmeNewPassword.GetKeyPhrase());
-DebugMsg('Using salt... ');
-DebugMsg('-- begin salt --');
-DebugMsg(saltBytes);
-DebugMsg('-- end salt --');
+    DebugMsg('About to write the FreeOTFE header ...');
+    DebugMsg(frmeNewPassword.GetKeyPhrase());
+    DebugMsg('Using salt... ');
+    DebugMsg('-- begin salt --');
+    DebugMsg(saltBytes);
+    DebugMsg('-- end salt --');
 
 
     // Determine filename and offset within file storing CDB
@@ -1850,7 +1850,7 @@ begin
     cdbFile   := GetCDBFilename();
     cdbOffset := 0;
 
-    DebugMsg('CDB stored in separate keyfile: ' + cdbFile);
+    DebugMsg('Header stored in separate keyfile: ' + cdbFile);
   end;
 
 end;
@@ -1862,44 +1862,44 @@ var
 
   cntMountOK:     Integer;
   cntMountFailed: Integer;
-//  tmpVolumeFiles: TStringList;
+  //  tmpVolumeFiles: TStringList;
   cdbFile:        String;
   cdbOffset:      ULONGLONG;
   VolFilename:    tfilename;
 begin
   Result := True;
   if GetAutoMountAfterCreate() then begin
-    VolFilename    := GetVolFilename();
+    VolFilename := GetVolFilename();
 
-      Result := False;
+    Result := False;
 
-      GetCDBFileAndOffset(cdbFile, cdbOffset);
+    GetCDBFileAndOffset(cdbFile, cdbOffset);
 
-      if (VolFilename = cdbFile) then
-        cdbFile := '';
+    if (VolFilename = cdbFile) then
+      cdbFile := '';
 
 
-      MountedDrive := #0;
-      if MountFreeOTFE(VolFilename, frmeNewPassword.GetKeyPhrase(),
-        cdbFile, '',  // Empty string - read the CDB
-        PKCS11_NO_SLOT_ID, nil,
-              // PKCS#11 session not used
-        nil,  // PKCS#11 secret key not used
-        seKeyIterations.Value, GetDriveLetter(), False, // Readonly
-        DEFAULT_MOUNTAS, GetOffset(), GetCDBInVolFile(), seSaltLength.Value, True,
-        // Mount for all users
-        MountedDrive) then begin
-        GetFreeOTFEBase().CountMountedResults(
-          MountedDrive,
-          cntMountOK,
-          cntMountFailed
-          );
+    MountedDrive := #0;
+    if MountFreeOTFE(VolFilename, frmeNewPassword.GetKeyPhrase(), cdbFile,
+      '',  // Empty string - read the CDB
+      PKCS11_NO_SLOT_ID, nil,
+            // PKCS#11 session not used
+      nil,  // PKCS#11 secret key not used
+      seKeyIterations.Value, GetDriveLetter(), False, // Readonly
+      DEFAULT_MOUNTAS, GetOffset(), GetCDBInVolFile(), seSaltLength.Value, True,
+      // Mount for all users
+      MountedDrive) = morOK then begin
+      GetFreeOTFEBase().CountMountedResults(
+        MountedDrive,
+        cntMountOK,
+        cntMountFailed
+        );
 
-        if cntMountOK = 1 then begin
-          fnewVolumeMountedAs := MountedDrive;
-          Result              := True;
-        end;
+      if cntMountOK = 1 then begin
+        fnewVolumeMountedAs := MountedDrive;
+        Result              := True;
       end;
+    end;
 
     if not Result then
       // Volumes couldn't be mounted for some reason...
@@ -1914,9 +1914,9 @@ begin
           // Volumes couldn't be mounted for some reason...
           errMsg := FORMAT_ERR;
       end;
-          if result and getIsPartition then begin
+      if Result and getIsPartition then begin
         _OverwriteVolWithChaff(fnewVolumeMountedAs);
-    end;
+      end;
     end;
 
   end;
@@ -2042,22 +2042,22 @@ begin
 
 end;
 
-//procedure TfrmCreateFreeOTFEVolume.ckPartitionHiddenClick(Sender: TObject);
-//begin
-//  se64UnitByteOffset.Value := 0;
-//  if (ckPartitionHidden.Checked) then begin
-//    // Force the user to reenter their offset, by marking the offset tabsheet
-//    // as incomplete
-//    tsOffset.Tag := 0;
-//  end else begin
-//    // New file; critical data automatically stored at the start of the file;
-//    // zero offset
-//    tsOffset.Tag := 1;
-//  end;
-//
-//  _UpdateUIAfterChangeOnCurrentTab();
-//
-//end;
+ //procedure TfrmCreateFreeOTFEVolume.ckPartitionHiddenClick(Sender: TObject);
+ //begin
+ //  se64UnitByteOffset.Value := 0;
+ //  if (ckPartitionHidden.Checked) then begin
+ //    // Force the user to reenter their offset, by marking the offset tabsheet
+ //    // as incomplete
+ //    tsOffset.Tag := 0;
+ //  end else begin
+ //    // New file; critical data automatically stored at the start of the file;
+ //    // zero offset
+ //    tsOffset.Tag := 1;
+ //  end;
+ //
+ //  _UpdateUIAfterChangeOnCurrentTab();
+ //
+ //end;
 
 procedure TfrmCreateFreeOTFEVolume.rgFileOrPartitionClick(Sender: TObject);
 begin
@@ -2099,8 +2099,7 @@ end;
 
 procedure TfrmCreateFreeOTFEVolume._PopulatePKCS11Tokens();
 begin
-  FPKCS11TokensAvailable := (PKCS11PopulateTokenList(
-    GPKCS11Library, cbToken) > 0);
+  FPKCS11TokensAvailable := (PKCS11PopulateTokenList(GPKCS11Library, cbToken) > 0);
 end;
 
 procedure TfrmCreateFreeOTFEVolume.pbRefreshClick(Sender: TObject);
@@ -2136,15 +2135,15 @@ uses selected cypher and options as for enxn
 }
 
 
-function TfrmCreateFreeOTFEVolume._OverwriteVolWithChaff(drive:DriveLetterChar = #0): Boolean;
+function TfrmCreateFreeOTFEVolume._OverwriteVolWithChaff(drive: DriveLetterChar = #0): Boolean;
 var
   shredder: TShredder;
 
-  overwriteOK: TShredResult;
-  failMsg:     String;
+  overwriteOK:    TShredResult;
+  failMsg:        String;
   //  tmpZero: ULONGLONG;
-//  partInfo:TPartitionInformationEx;
-  chaffCypherKey:          TSDUBytes;
+  //  partInfo:TPartitionInformationEx;
+  chaffCypherKey: TSDUBytes;
 begin
   Result := True;
 
@@ -2165,7 +2164,7 @@ begin
      }
   if GetOverwriteWithChaff() then begin
     // Initilize zeroed IV for encryption
-//    ftempCypherEncBlockNo := 0;
+    //    ftempCypherEncBlockNo := 0;
 
     // Get *real* random data for encryption key
     chaffCypherKey := GetRandomData_PaddingKey();
@@ -2184,11 +2183,11 @@ begin
       // if PadWithEncryptedData then
       //        begin
       // Note: Setting this event overrides shredder.IntMethod
-      shredder.OnTweakEncryptDataEvent := GetFreeOTFEBase().EncryptSectorData;
+      shredder.OnTweakEncryptDataEvent  := GetFreeOTFEBase().EncryptSectorData;
       shredder.OverwriteCypherBlockSize := fchaffCypherDetails.BlockSize;
-      shredder.TempCypherKey := chaffCypherKey;
-      shredder.TempCypherDriver := GetCypherDriver();
-      shredder.tempCypherGUID :=GetCypherGUID();
+      shredder.TempCypherKey            := chaffCypherKey;
+      shredder.TempCypherDriver         := GetCypherDriver();
+      shredder.tempCypherGUID           := GetCypherGUID();
       //   end
       //      else
       //        begin
@@ -2196,15 +2195,15 @@ begin
       //        end;
       { TODO 2 -otdk -ctest : this has not been tested for devices }
       if GetIsPartition() then begin
-//       partInfo := fmeselectpartition.SDUDiskPartitionsPanel1.PartitionInfo[fmeselectpartition.SDUDiskPartitionsPanel1.Selected];
-{ TODO 2 -otdk -cfix : this doesnt work for partitions - need mounted drive filename }
-// think need to use WriteRawVolumeData - as otherwise cant get low level access to drive.
-// for now create vol first then shred opened volume (slower)
-//        overwriteOK := shredder.DestroyPart(GetVolFilename(), False, False);
+        //       partInfo := fmeselectpartition.SDUDiskPartitionsPanel1.PartitionInfo[fmeselectpartition.SDUDiskPartitionsPanel1.Selected];
+        { TODO 2 -otdk -cfix : this doesnt work for partitions - need mounted drive filename }
+        // think need to use WriteRawVolumeData - as otherwise cant get low level access to drive.
+        // for now create vol first then shred opened volume (slower)
+        //        overwriteOK := shredder.DestroyPart(GetVolFilename(), False, False);
         assert(drive <> #0);
         overwriteOK := shredder.OverwriteDriveFreeSpace(drive);
 
-      end      else begin
+      end else begin
         overwriteOK := shredder.DestroyFileOrDir(GetVolFilename(),
                    { TODO 1 -otdk -ccheck : check use of quickshred here }
           False,   // quickShred - do all
@@ -2232,86 +2231,86 @@ begin
     end;
 
   end;  // if (Result) then
-//  SDUInitAndZeroBuffer(0, chaffCypherKey);
+        //  SDUInitAndZeroBuffer(0, chaffCypherKey);
 
 end;//
-//
-//// The array passed in is zero-indexed; populate elements zero to "bytesRequired"
-//procedure TfrmCreateFreeOTFEVolume._GenerateOverwriteData(
-//  Sender: TObject;
-//  passNumber: Integer;
-//  bytesRequired: Cardinal;
-//  var generatedOK: Boolean;
-//  var outputBlock: TShredBlock
-//  );
-//var
-//  i:                Integer;
-//  tempArraySize:    Cardinal;
-//  blocksizeBytes:   Cardinal;
-//  plaintext:        Ansistring;
-//  cyphertext:       Ansistring;
-//  IV:               Ansistring;
-//  localIV:          Int64;
-//  sectorID:         LARGE_INTEGER;
-//  tempCipherkeyStr: Ansistring;
-//begin
-//  // Generate an array of random data containing "bytesRequired" bytes of data,
-//  // plus additional random data to pad out to the nearest multiple of the
-//  // cypher's blocksize bits
-//  // Cater for if the blocksize was -ve or zero
-//  if (fchaffCypherDetails.BlockSize < 1) then begin
-//    blocksizeBytes := 1;
-//  end else begin
-//    blocksizeBytes := (fchaffCypherDetails.BlockSize div 8);
-//  end;
-//  tempArraySize := bytesRequired + (blocksizeBytes - (bytesRequired mod blocksizeBytes));
-//
-//  plaintext := '';
-//  for i := 1 to tempArraySize do begin
-//    plaintext := plaintext + Ansichar(random(256));
+    //
+    //// The array passed in is zero-indexed; populate elements zero to "bytesRequired"
+    //procedure TfrmCreateFreeOTFEVolume._GenerateOverwriteData(
+    //  Sender: TObject;
+    //  passNumber: Integer;
+    //  bytesRequired: Cardinal;
+    //  var generatedOK: Boolean;
+    //  var outputBlock: TShredBlock
+    //  );
+    //var
+    //  i:                Integer;
+    //  tempArraySize:    Cardinal;
+    //  blocksizeBytes:   Cardinal;
+    //  plaintext:        Ansistring;
+    //  cyphertext:       Ansistring;
+    //  IV:               Ansistring;
+    //  localIV:          Int64;
+    //  sectorID:         LARGE_INTEGER;
+    //  tempCipherkeyStr: Ansistring;
+    //begin
+    //  // Generate an array of random data containing "bytesRequired" bytes of data,
+    //  // plus additional random data to pad out to the nearest multiple of the
+    //  // cypher's blocksize bits
+    //  // Cater for if the blocksize was -ve or zero
+    //  if (fchaffCypherDetails.BlockSize < 1) then begin
+    //    blocksizeBytes := 1;
+    //  end else begin
+    //    blocksizeBytes := (fchaffCypherDetails.BlockSize div 8);
+    //  end;
+    //  tempArraySize := bytesRequired + (blocksizeBytes - (bytesRequired mod blocksizeBytes));
+    //
+    //  plaintext := '';
+    //  for i := 1 to tempArraySize do begin
+    //    plaintext := plaintext + Ansichar(random(256));
 //    { DONE 2 -otdk -csecurity : This is not secure PRNG - but is encrypted below, so the result is secure }
-//  end;
-//
-//
-//  Inc(ftempCypherEncBlockNo);
-//
-//  // Adjust the IV so that this block of encrypted pseudorandom data should be
-//  // reasonably unique
-//  IV := '';
-//  if (fchaffCypherDetails.BlockSize > 0) then begin
-//    IV := StringOfChar(AnsiChar(#0), (fchaffCypherDetails.BlockSize div 8));
-//
-//    localIV := ftempCypherEncBlockNo;
-//
-//    for i := 1 to min(sizeof(localIV), length(IV)) do begin
-//      IV[i]   := Ansichar((localIV and $FF));
-//      localIV := localIV shr 8;
-//    end;
-//
-//  end;
-//
-//  // Adjust the sectorID so that this block of encrypted pseudorandom data
-//  // should be reasonably unique
-//  sectorID.QuadPart := ftempCypherEncBlockNo;
-//  // Encrypt the pseudorandom data generated
-//  tempCipherkeyStr := SDUBytesToString(ftempCypherKey);
-//  if not (GetFreeOTFEBase().EncryptSectorData(GetCypherDriver(), GetCypherGUID(),
+ //  end;
+ //
+ //
+ //  Inc(ftempCypherEncBlockNo);
+ //
+ //  // Adjust the IV so that this block of encrypted pseudorandom data should be
+ //  // reasonably unique
+ //  IV := '';
+ //  if (fchaffCypherDetails.BlockSize > 0) then begin
+ //    IV := StringOfChar(AnsiChar(#0), (fchaffCypherDetails.BlockSize div 8));
+ //
+ //    localIV := ftempCypherEncBlockNo;
+ //
+ //    for i := 1 to min(sizeof(localIV), length(IV)) do begin
+ //      IV[i]   := Ansichar((localIV and $FF));
+ //      localIV := localIV shr 8;
+ //    end;
+ //
+ //  end;
+ //
+ //  // Adjust the sectorID so that this block of encrypted pseudorandom data
+ //  // should be reasonably unique
+ //  sectorID.QuadPart := ftempCypherEncBlockNo;
+ //  // Encrypt the pseudorandom data generated
+ //  tempCipherkeyStr := SDUBytesToString(ftempCypherKey);
+ //  if not (GetFreeOTFEBase().EncryptSectorData(GetCypherDriver(), GetCypherGUID(),
 //    sectorID, FREEOTFE_v1_DUMMY_SECTOR_SIZE, ftempCypherKey, IV, plaintext, cyphertext)) then begin
-//    SDUMessageDlg(
-//      _('Error: unable to encrypt pseudorandom data before using for overwrite buffer') +
-//      SDUCRLF + SDUCRLF + Format(_('Error #: %d'), [GetFreeOTFEBase().LastErrorCode]),
-//      mtError
-//      );
-//
-//    generatedOK := False;
-//  end else begin
-//    // Copy the encrypted data into the outputBlock
-//    for i := 0 to (bytesRequired - 1) do
-//      outputBlock[i] := Byte(cyphertext[i + 1]);
-//
-//    generatedOK := True;
-//  end;
-//end;
+ //    SDUMessageDlg(
+ //      _('Error: unable to encrypt pseudorandom data before using for overwrite buffer') +
+ //      SDUCRLF + SDUCRLF + Format(_('Error #: %d'), [GetFreeOTFEBase().LastErrorCode]),
+ //      mtError
+ //      );
+ //
+ //    generatedOK := False;
+ //  end else begin
+ //    // Copy the encrypted data into the outputBlock
+ //    for i := 0 to (bytesRequired - 1) do
+ //      outputBlock[i] := Byte(cyphertext[i + 1]);
+ //
+ //    generatedOK := True;
+ //  end;
+ //end;
 
 function TfrmCreateFreeOTFEVolume._RNG_requiredBits(): Integer;
 begin
@@ -2387,13 +2386,12 @@ end;
 
 
 
-
-function CreateFreeOTFEVolume(isHidden:Boolean): Boolean;
+function CreateFreeOTFEVolume(isHidden: Boolean): TMountResult;
 var
   frmWizard: TfrmCreateFreeOTFEVolume;
   mr:        Integer;
 begin
-  Result        := False;
+  Result := morFail;
   GetFreeOTFEBase().LastErrorCode := OTFE_ERR_UNKNOWN_ERROR;
 
   GetFreeOTFEBase().CheckActive();
@@ -2401,14 +2399,16 @@ begin
   if GetFreeOTFEBase().WarnIfNoHashOrCypherDrivers() then begin
     frmWizard := TfrmCreateFreeOTFEVolume.Create(nil);
     try
-     frmWizard.isHidden:=isHidden;
-      mr     := frmWizard.ShowModal();
-      Result := mr = mrOk;
-      if Result then
-        GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS
-      else
+      frmWizard.isHidden := isHidden;
+      mr                 := frmWizard.ShowModal();
+
+      if mr = mrOk then begin
+        GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS;
+        Result := morOK;
+      end else
       if (mr = mrCancel) then
-        GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
+        //        GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
+        Result := morCancel;
     finally
       frmWizard.Free();
     end;

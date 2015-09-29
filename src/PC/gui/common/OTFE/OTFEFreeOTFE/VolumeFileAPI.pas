@@ -89,7 +89,7 @@ const
 
   
 type
-  // Note: If this is changed, the DumpCriticalDataToFile(...) function should
+  // Note: If this is changed, the DumpCriticalDataToFile(...) in frmFreeOTFEHdrDump function should
   //       probably also be changed
   // not stored in binary form - can change if needed
   PVolumeDetailsBlock = ^TVolumeDetailsBlock;
@@ -113,7 +113,7 @@ type
   TVolumeDetailsBlockArray = array of TVolumeDetailsBlock;
 
 
-  // Note: If this is changed, the DumpCriticalDataToFile(...) function should
+  // Note: If this is changed, the DumpCriticalDataToFile(...) function in frmFreeOTFEHdrDump should
   //       probably also be changed
   // This structure stores information that is not worked out automatically;
   // it's the information which the user *doens't* supply

@@ -131,7 +131,9 @@ begin
       if (Pos(' ', GetInstallRelativePath()) > 0) then begin
         Result := (SDUMessageDlg(Format(
           _('The path specified has spaces in it.' + SDUCRLF + SDUCRLF +
-          'Because of this, Windows will be able to display the %s icon for the drive, but not launch %1 automatically when the drive is inserted.' + SDUCRLF + SDUCRLF + 'Do you wish to continue?'), [Application.Title]), mtWarning, [mbYes, mbNo], 0) = mrYes);
+          'Because of this, Windows will be able to show the %s icon for the drive, '+
+          'but not launch %0:s automatically when the drive is inserted.'
+          + SDUCRLF + SDUCRLF + 'Do you wish to continue?'), [Application.Title]), mtWarning, [mbYes, mbNo], 0) = mrYes);
       end;
     end;
   end;

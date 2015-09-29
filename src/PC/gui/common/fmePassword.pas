@@ -126,8 +126,8 @@ memos when word wrap is on. widths have to be identical
 //   mmReal.Visible := true;//debugging
 
   mmShown.WordWrap    := True;
-  mmShown.WantReturns  := GetSettings().OptAllowNewlinesInPasswords;
-  mmShown.WantTabs     := GetSettings().OptAllowTabsInPasswords;
+  mmShown.WantReturns  := GetSettings().AllowNewlinesInPasswords;
+  mmShown.WantTabs     := GetSettings().AllowTabsInPasswords;
 
   mmReal.WordWrap    := mmShown.WordWrap;
   mmReal.WantReturns  := mmShown.WantReturns;
@@ -189,7 +189,7 @@ begin
   // allow backspace, CR and LF thru, others replace
 //  if not (Key in [#10, #13, #8]) then
   if Key >= #32 then
-    if not GetSettings().OptShowPasswords then
+    if not GetSettings().ShowPasswords then
         Key := '*';
 end;
 
@@ -220,7 +220,7 @@ procedure TfrmePassword.SetKeyPhrase(Value: TSDUBytes);
 begin
   { TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
   mmReal.Text   := SDUBytesToString(Value);
-  if GetSettings().OptShowPasswords then
+  if GetSettings().ShowPasswords then
     mmShown.Text := mmReal.Text
   else
     mmShown.Text := StringOfChar('*',length(mmReal.Text));

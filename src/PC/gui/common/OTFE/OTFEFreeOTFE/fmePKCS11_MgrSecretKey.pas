@@ -325,7 +325,7 @@ begin
           Result := SDUConfirmYN(Format(
             _('Are you sure you wish to use PKCS#11 secret key:' + SDUCRLF +
             SDUCRLF + '%s' + SDUCRLF + SDUCRLF +
-            'to %s the CDB starting from offset %d within container:' +
+            'to %s the header starting from offset %d within container:' +
             SDUCRLF + SDUCRLF + '%s'), [SecretKey.XLabel, secureUnsecure,
             offset, fileToSecure]));
         end else begin
@@ -341,7 +341,7 @@ begin
       if Result then begin
         if not (GetFreeOTFEBase().ReadRawVolumeCriticalData(
           fileToSecure, offset, cdbBefore)) then begin
-          SDUMessageDlg(_('Unable to read keyfile/container CDB'), mtError);
+          SDUMessageDlg(_('Unable to read keyfile/container header'), mtError);
           Result := False;
         end;
       end;

@@ -6,8 +6,8 @@ type
   TCommandLine = class (TObject)
   private
 
+    fis_silent   : Boolean; //this is cached so can be overridden for testing
 
-    function getIsSilent: Boolean;
     function getIsCount: Boolean;
     function getIsCreate: Boolean;
     function getIsForce: Boolean;
@@ -41,10 +41,12 @@ type
     function getSettingsFileArg: String;
     function getDismountArg: String;
 
+    procedure UpdateIsSilent;
+
   public
     constructor Create();
     // switches
-    property isSilent: Boolean Read getIsSilent;
+    property isSilent: Boolean  read fis_silent write fis_silent;  //cached so tests can overwrite
     property isCount: Boolean Read getIsCount;
     property isCreate: Boolean Read getIsCreate;
     property isForce: Boolean Read getIsForce;
@@ -157,7 +159,7 @@ var
 function SDUCommandLineParameter(parameter: String; var Value: String): Boolean; overload;
 function SDUCommandLineParameter(parameter: String; var Value: Integer): Boolean; overload;
 // Returns TRUE if the specified command line switch could be found, otherwise FALSE
-function SDUCommandLineSwitch(parameter: String): Boolean;
+function SDUCommandLineSwitch(parameter: String): Boolean;                                                       
 // Returns the parameter number in the command line of the specified parameter. Returns -1 on failure
 function SDUCommandLineSwitchNumber(parameter: String): Integer;}
 
@@ -325,9 +327,11 @@ begin
   end;
 end;
 
+
+
 constructor TCommandLine.Create;
 begin
-
+  UpdateIsSilent;
 end;
 
  //function TCommandLine.GetIsPortable: Boolean;
@@ -444,9 +448,9 @@ begin
   Result := SDUCommandLineSwitch(CMDLINE_READONLY);
 end;
 
-function TCommandLine.GetIsSilent: Boolean;
+procedure TCommandLine.UpdateIsSilent;
 begin
-  Result := SDUCommandLineSwitch(CMDLINE_SILENT);
+  fis_silent := SDUCommandLineSwitch(CMDLINE_SILENT);
 end;
 
 

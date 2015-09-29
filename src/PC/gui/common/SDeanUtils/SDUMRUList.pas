@@ -136,12 +136,14 @@ end;
 procedure TSDUMRUList.RemoveMenuItems(mnu: TMenuItem);
 var
   i: Integer;
+  cur:TMenuItem;
 begin
   for i := (mnu.Count - 1) downto 0 do begin
     RemoveMenuItems(mnu.items[i]);
-
     if ((mnu.items[i].Tag and MRUL_TAG) = MRUL_TAG) then begin
+      cur:= mnu.items[i]; //free removes from parent
       mnu.Delete(i);
+      cur.Free; // not deleted by parent delete and no longer owned by anyone
     end;
   end;
 end;
@@ -150,16 +152,14 @@ procedure TSDUMRUList.SetMaxItems(cnt: Cardinal);
 begin
   FMaxItems := cnt;
   ClearItemsBeyondMax();
-
 end;
 
 procedure TSDUMRUList.Add(items: TStringList);
 var
   i: Integer;
 begin
-  for i := 0 to (items.Count - 1) do begin
+  for i := 0 to (items.Count - 1) do
     Add(items[i]);
-  end;
 end;
 
 procedure TSDUMRUList.Add(item: string);
@@ -168,14 +168,12 @@ var
 begin
   // Delete any existing instance of the item
   idx := items.IndexOf(item);
-  if (idx >= 0) then begin
+  if (idx >= 0) then
     items.Delete(idx);
-  end;
 
   // Add the item to the head of the list
   items.Insert(0, item);
   ClearItemsBeyondMax();
-
 end;
 
 // If there are more items that the max allowed, delete the oldest
@@ -183,10 +181,8 @@ procedure TSDUMRUList.ClearItemsBeyondMax();
 var
   i: Integer;
 begin
-  for i := (items.Count - 1) downto MaxItems do begin
+  for i := (items.Count - 1) downto MaxItems do
     items.Delete(i);
-  end;
-
 end;
 
 procedure TSDUMRUList.MRUItemClick(Sender: TObject);

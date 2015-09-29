@@ -171,7 +171,7 @@ var
 begin
   Result := False;
   if (GetFreeOTFEBase() is TOTFEFreeOTFEDLL) then begin
-    Result         := True;
+//    Result         := True;
     PartitionImage := TPartitionImageDLL.Create();
     try
       PartitionImage.MountedAs := drive;

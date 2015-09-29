@@ -3,11 +3,16 @@ unit frmGridReport;
 interface
 
 uses
-  ActnList, Buttons, Classes, ComCtrls,
+     //delphi & libs
+      ActnList, Buttons, Classes, ComCtrls,
   Controls, Dialogs, ExtCtrls, Forms,
   Graphics, Grids,
-  Menus, Messages, OTFEFreeOTFEBase_U, lcDialogs, SDUForms, SDUStringGrid,
-  StdCtrls, SysUtils, Variants, Windows, SDUDialogs;
+  Menus, Messages,  StdCtrls, SysUtils, Variants, Windows,
+  //sdu & LibreCrypt utils
+  OTFEFreeOTFEBase_U, lcDialogs, SDUForms, SDUStringGrid,
+ SDUDialogs
+  // LibreCrypt forms
+  ;
 
 type
   TTextFormat = (clfText, clfTSV, clfCSV);
@@ -83,24 +88,24 @@ implementation
 {$R *.dfm}
 
 uses
- //delphi
+     //delphi & libs
  Clipbrd, // Required for clipboard functions
   Math,
-
-
-
-  //sdu, lcutils
+  //sdu & LibreCrypt utils
   lcConsts,
    SDUGeneral,
   SDUi18n,
   CommonSettings,
-  SDUGraphics
-  //lc
+  SDUGraphics,
+   // LibreCrypt forms
+     frmFreeOTFEHdrDump// for  AddStdDumpHeader
+   //main form
     {$IFDEF FREEOTFE_MAIN}
   // When run under main FreeOTFE GUI, user can access driver control dialog
   // via main FreeOTFE app
   ,frmMain
-{$ENDIF};
+{$ENDIF}
+;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
@@ -129,7 +134,6 @@ begin
   lvReport.RowSelect := True;
   FColumnToSort      := 0;
   lvReport.Columns.Clear();
-
 end;
 
 procedure TfrmGridReport.actCopyExecute(Sender: TObject);
@@ -173,14 +177,12 @@ begin
   for i := 0 to (lvReport.items.Count - 1) do begin
     lvReport.items[i].Selected := True;
   end;
-
 end;
 
 procedure TfrmGridReport.ckShowAdvancedClick(Sender: TObject);
 begin
   PopulateGrid();
 end;
-
 
 procedure TfrmGridReport.FormResize(Sender: TObject);
 begin
@@ -199,7 +201,6 @@ begin
   ckShowAdvanced.Checked := False;
 
   PopulateGrid();
-
 end;
 
 procedure TfrmGridReport.pbCloseClick(Sender: TObject);
@@ -213,9 +214,7 @@ begin
   // When run under main FreeOTFE GUI, user can access driver control dialog
   // via main FreeOTFE app
   if (Owner is TfrmMain) then
-    begin
     TfrmMain(Owner).DisplayDriverControlDlg();
-    end;
 {$ENDIF}
 
 end;
@@ -259,7 +258,7 @@ begin
     try
       // Add header if text report
       if (useFormat = clfText) then begin
-        GetFreeOTFEBase().AddStdDumpHeader(stlContent, self.Caption);
+        AddStdDumpHeader(stlContent, self.Caption);
         stlContent.Add(_('Summary'));
         stlContent.Add(StringOfChar('-', length(_('Summary'))));
         stlContent.Add(Format(_('Total drivers   : %d'), [CountDrivers()]));

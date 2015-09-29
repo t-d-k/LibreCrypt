@@ -363,18 +363,7 @@ const
 function SDUZLibCompressionLevelTitle(compressionLevel: TCompressionLevel): String;
 // Returns the string passed in, but with the initial letter capitalized
 function SDUInitialCapital(Value: String): String;
-// Get string representation of form's layout
-function SDUGetFormLayout(form: TForm): String;
- // Set form's layout based on string representation of it
- // !! IMPORTANT !!
- // If there's a window layout stored, set ".Position" to poDefault before
- // calling this - otherwise it messes up the window if it was stored as
- // maximised.
- // Specifically, it shows the main window with maximised dimensions, with
- // the "Maximise" button in the top-right ready to "Normalise"
- // (non-maximise) the window, but WITH THE WINDOW SHOWN ABOUT 50 PIXELS
- // DOWN!)
-procedure SDUSetFormLayout(form: TForm; layout: String);
+
 // Convert Window message ID to string representation
 function SDUWMToString(msgID: Cardinal): String;
 // Convert ShowWindow(...) show state to string
@@ -481,7 +470,7 @@ procedure SDUCenterControl(Controls: TControlArray; align: TCenterControl;
  // to the number of decimal places that truncation begins from
 function SDUFloatTrunc(X: Double; decimalPlaces: Integer): Double;
 // Format ULONGLONG passed in to add thousands separator
-function SDUFormatWithThousandsSeparator(const Value: ULONGLONG): String;
+function IntToStrWithCommas(const Value: ULONGLONG): String;
  // Given an amount and the units the amount is to be displayed in, this
  // function will pretty-print the value combined with the greatest denomination
  // unit it can
@@ -549,8 +538,7 @@ function SDUStrToBoolean(Value: String; strTrue: String = 'True';
   strFalse: String = 'False'): Boolean;
 function SDUStringToBoolean(Value: String; strTrue: String = 'True';
   strFalse: String = 'False'): Boolean;
-function SDUCharToBool(Value: Char; chars: String = 'TF'): Boolean;
-function SDUCharToBoolean(Value: Char; chars: String = 'TF'): Boolean;
+
 // Get the Windows directory
 function SDUGetWindowsDirectory(): String;
 // Get temp directory
@@ -711,46 +699,8 @@ procedure SDUEnableControl(control: TControl; enable: Boolean;
 procedure SDUReadonlyControl(control: TControl; ReadOnly: Boolean;
   affectAssociatedControls: Boolean = True);
 
-// Returns the executables version numbers as set in Project|Options|Version Info
-function SDUGetVersionInfo(filename: String; var majorVersion, minorVersion: Integer): Boolean;
-  overload;
-function SDUGetVersionInfo(filename: String;
-  var majorVersion, minorVersion, revisionVersion, buildVersion: Integer): Boolean; overload;
-// As SDUGetVersionInfo, but returns a nicely formatted string
-function SDUGetVersionInfoString(filename: String): String;
-function SDUVersionInfoToString(majorVersion: Integer; minorVersion: Integer;
-  betaVersion: Integer = -1): String; overload;
-function SDUVersionInfoToString(majorVersion: Integer; minorVersion: Integer;
-  revisionVersion: Integer; buildVersion: Integer; betaVersion: Integer = -1): String; overload;
- // As SDUGetVersionInfo, but gets information from the PAD file at the
- // specified URL, or the XML passed in directly
-function SDUGetPADFileVersionInfo(url: String; var majorVersion, minorVersion: Integer;
-  userAgent: WideString = DEFAULT_HTTP_USERAGENT; ShowProgressDlg: Boolean = True): TTimeoutGet;
-  overload;
-function SDUGetPADFileVersionInfo(url: String;
-  var majorVersion, minorVersion, revisionVersion, buildVersion: Integer;
-  userAgent: WideString = DEFAULT_HTTP_USERAGENT; ShowProgressDlg: Boolean = True): TTimeoutGet;
-  overload;
-function SDUGetPADFileVersionInfo_XML(XML: String;
-  var majorVersion, minorVersion, revisionVersion, buildVersion: Integer): Boolean;
- // As SDUGetVersionInfoString, but gets information from the PAD file at the
- // specified URL, or the XML passed in directly
-function SDUGetPADFileVersionInfoString(url: String): String;
-function SDUGetPADFileVersionInfoString_XML(XML: String): String;
- // Check version IDs
- // If A > B, return -1
- // If A = B, return  0
- // If A < B, return  1
-function SDUVersionCompare(A_MajorVersion, A_MinorVersion: Integer;
-  B_MajorVersion, B_MinorVersion: Integer): Integer; overload;
-function SDUVersionCompare(A_MajorVersion, A_MinorVersion, A_RevisionVersion,
-  A_BuildVersion: Integer; B_MajorVersion, B_MinorVersion, B_RevisionVersion,
-  B_BuildVersion: Integer): Integer; overload;
-function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion: Integer;
-  A_BetaVersion: Integer; B_MajorVersion, B_MinorVersion: Integer): Integer; overload;
-function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion,
-  A_RevisionVersion, A_BuildVersion: Integer; A_BetaVersion: Integer;
-  B_MajorVersion, B_MinorVersion, B_RevisionVersion, B_BuildVersion: Integer): Integer; overload;
+
+ 
  // Pause for the given number of ms
  // dont really want to do busy waits
  //procedure SDUPause(delayLen: Integer);
@@ -844,14 +794,13 @@ function SDUIntToBinary(Value: Integer; digits: Integer = 8): String;
 // Convert a hex number into an integer
 function SDUHexToInt(hex: String): Integer;
 function SDUTryHexToInt(hex: String; var Value: Integer): Boolean;
+
  // Convert from int to hex representation
- // Implemented as Delphi 2007 can't truncates int64 values to 32 bits when
- // using inttohex(...)!
-function SDUIntToHex(val: ULONGLONG; digits: Integer): String;
- // Convert from int to string representation
  // Implemented as Delphi 2007 truncates int64 values to 32 bits when
- // using inttostr(...)!
- //function SDUIntToStr(val: Int64): String; overload;
+ // using inttohex(...)!
+ // todo:  test and remove if ot needed
+function SDUIntToHex(val: ULONGLONG; digits: Integer): String;
+
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
  //function SDUIntToStr(val: ULONGLONG): String; overload;
 {$IFEND}
@@ -915,8 +864,7 @@ uses
 {$ENDIF}
      Math,    // Required for Power(...)
   Messages,
-     xmldom,  // Required for IDOMDocument, etc
-  XMLdoc,  // Required for TXMLDocument
+
   IOUtils, // for  TFile.ReadAllText
   registry,
 
@@ -941,11 +889,7 @@ const
 
   DIRECTORY_TYPE = 'Directory';
 
-  WINDOW_LAYOUT_STATE  = 'WINDOW_LAYOUT_STATE';
-  WINDOW_LAYOUT_TOP    = 'WINDOW_LAYOUT_TOP';
-  WINDOW_LAYOUT_LEFT   = 'WINDOW_LAYOUT_LEFT';
-  WINDOW_LAYOUT_HEIGHT = 'WINDOW_LAYOUT_HEIGHT';
-  WINDOW_LAYOUT_WIDTH  = 'WINDOW_LAYOUT_WIDTH';
+
 
 resourcestring
   ZLIBCOMPRESSLVL_NONE    = 'None';
@@ -1428,95 +1372,8 @@ begin
 end;
 
 
-function SDUGetVersionInfo(filename: String; var majorVersion, minorVersion: Integer): Boolean;
-var
-  junk: Integer;
-begin
-  Result := SDUGetVersionInfo(filename, majorVersion, minorVersion, junk, junk);
-end;
 
-// Set filename to '' to get version info on the currently running executable
-function SDUGetVersionInfo(filename: String;
-  var majorVersion, minorVersion, revisionVersion, buildVersion: Integer): Boolean;
-var
-  vsize:     Integer;
-  puLen:     Cardinal;
-  dwHandle:  DWORD;
-  pBlock:    Pointer;
-  pVPointer: Pointer;
-  tvs:       PVSFixedFileInfo;
-  //  iLastError: Cardinal;
-begin
-  Result := False;
 
-  if filename = '' then
-    filename := Application.ExeName;
-
-  vsize := GetFileVersionInfoSize(PChar(filename), dwHandle);
-
-  if vsize = 0 then
-    exit;
-
-  GetMem(pBlock, vsize);
-  try
-    if GetFileVersionInfo(PChar(filename), dwHandle, vsize, pBlock) then begin
-
-      VerQueryValue(pBlock, '\', pVPointer, puLen);
-      if puLen > 0 then begin
-        //      iLastError := GetLastError;
-        //      showmessage(Format('GetFileVersionInfo failed: (%d) %s',                           [iLastError, SysErrorMessage(iLastError)]));
-        tvs             := PVSFixedFileInfo(pVPointer);
-        majorVersion    := tvs^.dwFileVersionMS shr 16;
-        minorVersion    := tvs^.dwFileVersionMS and $ffff;
-        revisionVersion := tvs^.dwFileVersionLS shr 16;
-        buildVersion    := tvs^.dwFileVersionLS and $ffff;
-        Result          := True;
-      end;
-    end;
-  finally
-    FreeMem(pBlock);
-  end;
-
-end;
-
- // Get version ID string for the specified executable
- // filename - The name of the executable to extract the version ID from.
- //            Leave blank to get version ID from current executable
-function SDUGetVersionInfoString(filename: String): String;
-var
-  majorVersion:    Integer;
-  minorVersion:    Integer;
-  revisionVersion: Integer;
-  buildVersion:    Integer;
-begin
-  Result := '';
-  if SDUGetVersionInfo(filename, majorVersion, minorVersion, revisionVersion, buildVersion) then
-  begin
-    Result := SDUVersionInfoToString(majorVersion, minorVersion, revisionVersion,
-      buildVersion, -1);
-  end;
-
-end;
-
-function SDUVersionInfoToString(majorVersion: Integer; minorVersion: Integer;
-  betaVersion: Integer = -1): String;
-begin
-  Result := Format('%d.%d', [majorVersion, minorVersion]);
-
-  if (betaVersion > 0) then
-    Result := Result + ' ' + RS_BETA + ' ' + IntToStr(betaVersion);
-end;
-
-function SDUVersionInfoToString(majorVersion: Integer; minorVersion: Integer;
-  revisionVersion: Integer; buildVersion: Integer; betaVersion: Integer = -1): String;
-begin
-  // versions are normally shown as eg 6.1 so format similarly or can confuse ie not 6.01
-  Result := Format('%d.%d.%.2d.%.4d', [majorVersion, minorVersion, revisionVersion,
-    buildVersion]);
-
-  if (betaVersion > 0) then
-    Result := Result + ' ' + RS_BETA + ' ' + IntToStr(betaVersion);
-end;
 
  //procedure SDUPause(delayLen: Integer);
  //var
@@ -2998,7 +2855,7 @@ begin
   end;
 
   //done: no need to explicitly overwrite with zeros/random  as FastMM initialises,
-  // todo: better random - if not set this will include random memory - pos inc. keys etc.
+  // todo: better random .
   buffer := AllocMem(BUFFER_SIZE);
   try
     fileHandle := CreateFile(PChar(filename),
@@ -3499,21 +3356,6 @@ begin
   Result := (uppercase(Value) = uppercase(strTrue));
 end;
 
-function SDUCharToBool(Value: Char; chars: String = 'TF'): Boolean;
-begin
-  Result := SDUCharToBoolean(Value, chars);
-end;
-
-function SDUCharToBoolean(Value: Char; chars: String = 'TF'): Boolean;
-begin
-  // Sanity check
-  if (length(chars) < 2) then begin
-    raise Exception.Create('Exactly zero or two characters must be passed to BoolToChar');
-  end;
-
-  Result := (uppercase(Value) = uppercase(chars[1]));
-end;
-
 // ----------------------------------------------------------------------------
 function SDUFloatTrunc(X: Double; decimalPlaces: Integer): Double;
 var
@@ -3523,40 +3365,10 @@ begin
   Result     := (trunc(x * multiplier)) / multiplier;
 end;
 
- // ----------------------------------------------------------------------------
- // Format ULONGLONG passed in to add thousands separator
-function SDUFormatWithThousandsSeparator(const Value: ULONGLONG): String;
-var
-  tmp64:     ULONGLONG;
-  tmp64Zero: ULONGLONG;
-  tmp64Ten:  ULONGLONG;
-  tmp64Mod:  ULONGLONG;
-  digitCnt:  Integer;
+// Format ULONGLONG passed in to add thousands separator
+function IntToStrWithCommas(const Value: ULONGLONG): String;
 begin
-  Result := '';
-
-  tmp64     := Value;
-  tmp64Zero := 0;
-  tmp64Ten  := 10;
-
-  if (Value = tmp64Zero) then begin
-    Result := IntToStr(0);
-  end else begin
-    digitCnt := -1;
-    while (tmp64 > tmp64Zero) do begin
-      tmp64Mod := (tmp64 mod tmp64Ten);
-
-      Inc(digitCnt);
-      if ((digitCnt > 0) and ((digitCnt mod 3) = 0)) then begin
-        Result := FormatSettings.ThousandSeparator + Result;
-      end;
-
-      Result := IntToStr(tmp64Mod) + Result;
-
-      tmp64 := tmp64 div tmp64Ten;
-    end;
-  end;
-
+  Result := Format('%.0n', [Value * 1.0]) ;// http://www.delphigroups.info/2/11/471892.html
 end;
 
 // ----------------------------------------------------------------------------
@@ -4533,7 +4345,6 @@ end;
 
 
 
-// ----------------------------------------------------------------------------
 function SDUIntToHex(val: ULONGLONG; digits: Integer): String;
 var
   tmpVal: ULONGLONG;
@@ -4554,30 +4365,6 @@ begin
 
 end;
 
- // Delphi's inttostr(...) function truncates 64 bit values to 32 bits
- { DONE 1 -otdk -crefactor : this is not still true. replace with std fn }
-(*
-function SDUIntToStr(val: Int64): String;
-var
-  tmpVal:  Int64;
-  LSB:     Integer;
-  tmpZero: Int64;
-begin
-  Result := '';
-
-  tmpZero := 0;
-  if (val = tmpZero) then begin
-    Result := '0';
-  end else begin
-    tmpVal := val;
-    while (tmpVal > 0) do begin
-      lsb    := tmpVal mod 10;
-      Result := IntToStr(LSB) + Result;
-      tmpVal := tmpVal div 10;
-    end;
-  end;
-
-end;  *)
    (*
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUIntToStr(val: ULONGLONG): String;
@@ -5060,152 +4847,8 @@ begin
 end;
 
 
-// ----------------------------------------------------------------------------
-function SDUGetPADFileVersionInfo_XML(XML: String;
-  var majorVersion, minorVersion, revisionVersion, buildVersion: Integer): Boolean;
-const
-  XML_NODE_PROGRAM_NAME    = '/XML_DIZ_INFO/Program_Info/Program_Name';
-  XML_NODE_PROGRAM_VERSION = '/XML_DIZ_INFO/Program_Info/Program_Version';
-var
-  doc: TXMLDocument;
-
-  iXml:          IDOMDocument;
-  iNode:         IDOMNode;
-  DOMNodeSelect: IDOMNodeSelect;
-  iNodeEx:       IDOMNodeEx;
-
-  //  padAppID: string;
-
-  i:          Integer;
-  versionStr: String;
-  stlVersion: TStringList;
-begin
-  doc := TXMLDocument.Create(nil);
-  try
-    doc.XML.Add(XML);
-    doc.Active := True;
-
-    iXml := doc.DOMDocument;
-    iXml.QueryInterface(IDOMNodeSelect, DOMNodeSelect);
-
-{
-    iNode := DOMNodeSelect.selectNode(XML_NODE_PROGRAM_NAME);
-    iNodeEx := GetDOMNodeEx(iNode);
-    padAppID := iNodeEx.text;
-}
-
-    iNode      := DOMNodeSelect.selectNode(XML_NODE_PROGRAM_VERSION);
-    iNodeEx    := GetDOMNodeEx(iNode);
-    versionStr := iNodeEx.Text;
-
-    stlVersion := TStringList.Create();
-    try
-      stlVersion.Delimiter     := '.';
-      stlVersion.DelimitedText := versionStr;
-
-      Result := (stlVersion.Count > 0);
-
-      majorVersion    := 0;
-      minorVersion    := 0;
-      revisionVersion := 0;
-      buildVersion    := 0;
-      for i := 0 to (stlVersion.Count - 1) do begin
-        stlVersion[i] := trim(stlVersion[i]);
-
-        case i of
-          0: Result := TryStrToInt(stlVersion[i], majorVersion);
-          1: Result := TryStrToInt(stlVersion[i], minorVersion);
-          2: Result := TryStrToInt(stlVersion[i], revisionVersion);
-          3: Result := TryStrToInt(stlVersion[i], buildVersion);
-        end;
-
-        if not (Result) then begin
-          break;
-        end;
-
-      end;
-
-    finally
-      stlVersion.Free();
-    end;
-
-  finally
-    doc.Free();
-  end;
-
-end;
 
 
-// ----------------------------------------------------------------------------
-function SDUGetPADFileVersionInfoString_XML(XML: String): String;
-var
-  majorVersion:    Integer;
-  minorVersion:    Integer;
-  revisionVersion: Integer;
-  buildVersion:    Integer;
-begin
-  Result := '';
-  if SDUGetPADFileVersionInfo_XML(XML, majorVersion, minorVersion, revisionVersion,
-    buildVersion) then begin
-    Result := SDUVersionInfoToString(majorVersion, minorVersion, revisionVersion,
-      buildVersion, -1);
-  end;
-
-end;
-
-
-// ----------------------------------------------------------------------------
-function SDUGetPADFileVersionInfo(url: String; var majorVersion, minorVersion: Integer;
-  userAgent: WideString = DEFAULT_HTTP_USERAGENT; ShowProgressDlg: Boolean = True): TTimeoutGet;
-var
-  junk: Integer;
-begin
-  Result := SDUGetPADFileVersionInfo(url, majorVersion, minorVersion, junk,
-    junk, userAgent, ShowProgressDlg);
-end;
-
-function SDUGetPADFileVersionInfo(url: String;
-  var majorVersion, minorVersion, revisionVersion, buildVersion: Integer;
-  userAgent: WideString = DEFAULT_HTTP_USERAGENT; ShowProgressDlg: Boolean = True): TTimeoutGet;
-var
-  xml: String;
-begin
-
-{$IFDEF FORCE_LOCAL_PAD}
-     xml     := TFile.ReadAllText(url);
-      Result := tgOK;
-   {$ELSE}
-  Result := tgFailure;
-  if ShowProgressDlg then begin
-    Result := SDUGetURLProgress_WithUserAgent(_('Checking for latest version...'),
-      url, xml, userAgent);
-  end else begin
-    if SDUWinHTTPRequest_WithUserAgent(url, userAgent, xml) then begin
-      Result := tgOK;
-    end;
-  end;
-
-   {$ENDIF}
-  if (Result = tgOK) then begin
-    if not (SDUGetPADFileVersionInfo_XML(xml, majorVersion, minorVersion,
-      revisionVersion, buildVersion)) then begin
-      Result := tgFailure;
-    end;
-
-  end;
-
-end;
-
-
-// ----------------------------------------------------------------------------
-function SDUGetPADFileVersionInfoString(url: String): String;
-var
-  xml: String;
-begin
-  Result := '';
-  if SDUWinHTTPRequest(url, xml) then
-    Result := SDUGetPADFileVersionInfoString_XML(xml);
-end;
 
 
  // ----------------------------------------------------------------------------
@@ -5374,69 +5017,6 @@ begin
 end;
 
 
-// ----------------------------------------------------------------------------
-function _SDUVersionNumberCompare(A, B: Integer): Integer;
-begin
-  Result := 0;
-  if (A > B) then
-    Result := -1;
-  if (B > A) then
-    Result := 1;
-end;
-
- // Check version IDs
- // Returns:
- //   -1 if A is later
- //   0 if they are the same
- //   1 if B is later
-function SDUVersionCompare(A_MajorVersion, A_MinorVersion: Integer;
-  B_MajorVersion, B_MinorVersion: Integer): Integer;
-begin
-  Result := _SDUVersionNumberCompare(A_MajorVersion, B_MajorVersion);
-  if (Result = 0) then
-    Result := _SDUVersionNumberCompare(A_MinorVersion, B_MinorVersion);
-end;
-
-function SDUVersionCompare(A_MajorVersion, A_MinorVersion, A_RevisionVersion,
-  A_BuildVersion: Integer; B_MajorVersion, B_MinorVersion, B_RevisionVersion,
-  B_BuildVersion: Integer): Integer;
-begin
-  Result := SDUVersionCompare(A_MajorVersion, A_MinorVersion, B_MajorVersion, B_MinorVersion);
-
-  if (Result = 0) then begin
-    Result := _SDUVersionNumberCompare(A_RevisionVersion, B_RevisionVersion);
-  end;
-  if (Result = 0) then begin
-    Result := _SDUVersionNumberCompare(A_BuildVersion, B_BuildVersion);
-  end;
-end;
-
-
-function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion: Integer;
-  A_BetaVersion: Integer; B_MajorVersion, B_MinorVersion: Integer): Integer;
-begin
-  Result := SDUVersionCompare(A_MajorVersion, A_MinorVersion, B_MajorVersion, B_MinorVersion);
-  if (Result = 0) then begin
-    if (A_BetaVersion > 0) then begin
-      Result := 1;
-    end;
-  end;
-
-end;
-
-function SDUVersionCompareWithBetaFlag(A_MajorVersion, A_MinorVersion,
-  A_RevisionVersion, A_BuildVersion: Integer; A_BetaVersion: Integer;
-  B_MajorVersion, B_MinorVersion, B_RevisionVersion, B_BuildVersion: Integer): Integer;
-begin
-  Result := SDUVersionCompare(A_MajorVersion, A_MinorVersion, A_RevisionVersion,
-    A_BuildVersion, B_MajorVersion, B_MinorVersion, B_RevisionVersion, B_BuildVersion);
-  if (Result = 0) then begin
-    if (A_BetaVersion > 0) then begin
-      Result := 1;
-    end;
-  end;
-
-end;
 
 // ----------------------------------------------------------------------------
 function SDUWMToString(msgID: Cardinal): String;
@@ -5701,119 +5281,7 @@ begin
 end;
 
 
- // ----------------------------------------------------------------------------
- // Get string representation of form's layout
-function SDUGetFormLayout(form: TForm): String;
-var
-  stlLayout: TStringList;
-  placement: TWindowPlacement;
-begin
-  // If the window's maximised, the forms top, left, width and height are set
-  // to the maximised values - use this to get the normalised size and position
-  placement.Length := sizeof(placement);
-  GetWindowPlacement(form.Handle, @placement);
 
-  stlLayout := TStringList.Create();
-  try
-    if IsIconic(form.Handle) then begin
-      stlLayout.Values[WINDOW_LAYOUT_STATE] := IntToStr(Ord(wsMinimized));
-    end else begin
-      stlLayout.Values[WINDOW_LAYOUT_STATE] := IntToStr(Ord(form.WindowState));
-    end;
-
-    stlLayout.Values[WINDOW_LAYOUT_TOP]    := IntToStr(Ord(placement.rcNormalPosition.Top));
-    stlLayout.Values[WINDOW_LAYOUT_LEFT]   := IntToStr(Ord(placement.rcNormalPosition.Left));
-    stlLayout.Values[WINDOW_LAYOUT_HEIGHT] :=
-      IntToStr(Ord(placement.rcNormalPosition.Bottom - placement.rcNormalPosition.Top));
-    stlLayout.Values[WINDOW_LAYOUT_WIDTH]  :=
-      IntToStr(Ord(placement.rcNormalPosition.Right - placement.rcNormalPosition.Left));
-
-    stlLayout.Delimiter := ',';
-    stlLayout.QuoteChar := '"';
-    Result              := stlLayout.DelimitedText;
-  finally
-    stlLayout.Free();
-  end;
-
-end;
-
- // ----------------------------------------------------------------------------
- // Set form's layout based on string representation of it
- // !! IMPORTANT !!
- // If there's a window layout stored, set ".Position" to poDefault before
- // calling this - otherwise it messes up the window if it was stored as
- // maximised.
- // Specifically, it shows the main window with maximised dimensions, with
- // the "Maximise" button in the top-right ready to "Normalise"
- // (non-maximise) the window, but WITH THE WINDOW SHOWN ABOUT 50 PIXELS
- // DOWN!)
-procedure SDUSetFormLayout(form: TForm; layout: String);
-var
-  frmState:  TWindowState;
-  stlLayout: TStringList;
-  placement: TWindowPlacement;
-  tmpHeight: Integer;
-  tmpWidth:  Integer;
-begin
-  // Sanity...
-  if (trim(layout) = '') then begin
-    exit;
-  end;
-
-  stlLayout := TStringList.Create();
-  try
-    stlLayout.Delimiter     := ',';
-    stlLayout.QuoteChar     := '"';
-    stlLayout.DelimitedText := layout;
-
-    // If the window's maximised, the forms top, left, width and height are set
-    // to the maximised values - use this to get the normalised size and position
-    placement.Length := sizeof(placement);
-    GetWindowPlacement(form.Handle, @placement);
-
-    placement.rcNormalPosition.Top  :=
-      SDUTryStrToIntDflt(stlLayout.Values[WINDOW_LAYOUT_TOP], placement.rcNormalPosition.Top);
-    placement.rcNormalPosition.Left :=
-      SDUTryStrToIntDflt(stlLayout.Values[WINDOW_LAYOUT_LEFT],
-      placement.rcNormalPosition.Left);
-
-    tmpHeight := SDUTryStrToIntDflt(stlLayout.Values[WINDOW_LAYOUT_HEIGHT],
-      (placement.rcNormalPosition.Bottom - placement.rcNormalPosition.Top));
-    tmpWidth  := SDUTryStrToIntDflt(stlLayout.Values[WINDOW_LAYOUT_WIDTH],
-      (placement.rcNormalPosition.Right - placement.rcNormalPosition.Left));
-
-    placement.rcNormalPosition.Bottom := placement.rcNormalPosition.Top + tmpHeight;
-    placement.rcNormalPosition.Right  := placement.rcNormalPosition.Left + tmpWidth;
-
-    // Sanity check - we're only set the window position if it doesn't go
-    // off screen (partially off-screen should be OK enough though - as long
-    // as the title bar's visible, the user can always drag it back)
-    if ((placement.rcNormalPosition.Top >= 0) and
-      (placement.rcNormalPosition.Top < Screen.Height) and
-      (placement.rcNormalPosition.Left >= 0) and (placement.rcNormalPosition.Left <
-      Screen.Width)) then begin
-      SetWindowPlacement(form.Handle, @placement);
-    end;
-
-    frmState := TWindowState(SDUTryStrToIntDflt(
-      stlLayout.Values[WINDOW_LAYOUT_STATE], Ord(form.WindowState)));
-    // Special case - if minimised, call Application.Minimise(...) - otherwise
-    // the window looks like it's been "minimised to the desktop" - like an
-    // MDI child window with the desktop being the main window
-    if (frmState = wsMinimized) then begin
-      form.Visible := True;
-      Application.Minimize();
-    end else begin
-      form.WindowState := frmState;
-    end;
-
-  finally
-    stlLayout.Free();
-  end;
-
-end;
-
- // ----------------------------------------------------------------------------
  // Returns the string passed in, but with the initial letter capitalized
 function SDUInitialCapital(Value: String): String;
 begin

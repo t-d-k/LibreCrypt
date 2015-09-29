@@ -63,7 +63,7 @@ object SDUPartitionPropertiesDialog: TSDUPartitionPropertiesDialog
     Top = 40
     Width = 60
     Height = 13
-    Caption = 'Mounted as:'
+    Caption = 'Opened as:'
   end
   object Label8: TLabel
     Left = 15

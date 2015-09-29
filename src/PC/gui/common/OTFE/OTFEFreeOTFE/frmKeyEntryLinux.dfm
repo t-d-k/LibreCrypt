@@ -49,7 +49,7 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
     Top = 0
     Width = 457
     Height = 317
-    ActivePage = tsMountOptions
+    ActivePage = tsNewKey
     Align = alTop
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 0
@@ -658,7 +658,7 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
       end
     end
     object tsMountOptions: TTabSheet
-      Caption = 'Mount options'
+      Caption = 'Open options'
       ImageIndex = 3
       ExplicitLeft = 0
       ExplicitTop = 0
@@ -670,7 +670,7 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
         Width = 449
         Height = 289
         Align = alClient
-        Caption = 'Mount options'
+        Caption = 'Open options'
         TabOrder = 0
         object lblDrive: TLabel
           Left = 12
@@ -698,7 +698,7 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           Top = 52
           Width = 47
           Height = 13
-          Caption = '&Mount as:'
+          Caption = '&Open as:'
           FocusControl = cbMediaType
         end
         object cbDrive: TComboBox
@@ -717,7 +717,7 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           Top = 76
           Width = 129
           Height = 17
-          Caption = 'Mount &readonly'
+          Caption = 'Open &readonly'
           TabOrder = 2
           OnClick = SelectionChange
           AutoSize = True
@@ -736,7 +736,7 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           Top = 96
           Width = 145
           Height = 17
-          Caption = 'Mount for all &users'
+          Caption = 'Open for all &users'
           TabOrder = 3
           AutoSize = True
         end

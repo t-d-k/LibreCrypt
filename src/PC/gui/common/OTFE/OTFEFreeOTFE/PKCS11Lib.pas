@@ -902,7 +902,7 @@ begin
     if (length(PlaintextData) <> length(CyphertextData)) then begin
       retval   := False;
       strError := Format(
-        _('CDB length changed during encryption; from %d bytes to %d bytes'),
+        _('Header length changed during encryption; from %d bytes to %d bytes'),
         [length(PlaintextData), length(CyphertextData)]);
     end;
   end;
@@ -933,7 +933,7 @@ begin
     if (length(PlaintextData) <> length(CyphertextData)) then begin
       retval   := False;
       strError := Format(
-        _('CDB length changed during decryption; from %d bytes to %d bytes'),
+        _('Header length changed during decryption; from %d bytes to %d bytes'),
         [length(CyphertextData), length(PlaintextData)]);
     end;
   end;

@@ -65,7 +65,7 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Top = 170
         Width = 293
         Height = 17
-        Caption = 'Mount &readonly'
+        Caption = 'Open &readonly'
         TabOrder = 5
       end
       object cbPKCS11CDB: TComboBox
@@ -255,14 +255,14 @@ object frmKeyEntryFreeOTFE: TfrmKeyEntryFreeOTFE
         Top = 137
         Width = 215
         Height = 77
-        Caption = 'Mount options'
+        Caption = 'Open options'
         TabOrder = 1
         object Label9: TLabel
           Left = 12
           Top = 24
-          Width = 47
+          Width = 43
           Height = 13
-          Caption = '&Mount as:'
+          Caption = '&Open as:'
           FocusControl = cbMediaType
         end
         object cbMediaType: TComboBox

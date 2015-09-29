@@ -118,11 +118,11 @@ begin
   preUserKeyFirst.WordWrap    := True;
 
 
-  if not GetSettings().OptShowPasswords then
+  if not GetSettings().ShowPasswords then
     preUserKeyFirst.PasswordChar := '*';//defaults to #0
 
-  preUserKeyFirst.WantReturns  := GetSettings().OptAllowNewlinesInPasswords;
-  preUserKeyFirst.WantTabs     := GetSettings().OptAllowTabsInPasswords;
+  preUserKeyFirst.WantReturns  := GetSettings().AllowNewlinesInPasswords;
+  preUserKeyFirst.WantTabs     := GetSettings().AllowTabsInPasswords;
 
   preUserKeyConfirm.Plaintext   := True;
   // FreeOTFE volumes CAN have newlines in the user's password
@@ -134,11 +134,11 @@ begin
     preUserKeyFirst.Lines.Clear();
   end;
 
-  if not GetSettings().OptShowPasswords then
+  if not GetSettings().ShowPasswords then
     preUserKeyConfirm.PasswordChar := '*';//defaults to #0
 
-  preUserKeyConfirm.WantReturns  := GetSettings().OptAllowNewlinesInPasswords;
-  preUserKeyConfirm.WantTabs     := GetSettings().OptAllowTabsInPasswords;
+  preUserKeyConfirm.WantReturns  := GetSettings().AllowNewlinesInPasswords;
+  preUserKeyConfirm.WantTabs     := GetSettings().AllowTabsInPasswords;
 end;
 
 function TfrmeNewPassword.IsPasswordValid(): Boolean;

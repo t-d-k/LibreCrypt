@@ -41,7 +41,7 @@ type
     procedure _UpdateUIAfterChangeOnCurrentTab(); virtual;
     function _IsTabComplete(checkTab: TTabSheet): Boolean; virtual; abstract;
 
-    procedure _UpdateStageDisplay();
+    procedure _UpdateStepLabel();
     function _NextTabInDir(gotoNext: Boolean): TTabSheet;
     function _IsTabSkipped(tabSheet: TTabSheet): Boolean; virtual;
     //is tab required to be completed
@@ -157,7 +157,7 @@ begin
 end;
 
 
-procedure TfrmWizard._UpdateStageDisplay();
+procedure TfrmWizard._UpdateStepLabel();
 var
   totalReqStages, totalStages: Integer;
   currStage: Integer;
@@ -191,16 +191,12 @@ begin
   // if have done all required stages, update with non required ones
   if currStage <= totalReqStages then begin
     pbStage.Max      := totalReqStages;
-    pbStage.Position := currStage;
-
-    lblStage.Caption := Format(_('Stage %u of %u'), [currStage, totalReqStages]);
-
+    lblStage.Caption := Format(_('Step %u of %u'), [currStage, totalReqStages]);
   end else begin
     pbStage.Max      := totalStages;
-    pbStage.Position := currStage;
-
-    lblStage.Caption := Format(_('Stage %u of %u (Optional)'), [currStage, totalStages]);
+    lblStage.Caption := Format(_('Step %u of %u (Optional)'), [currStage, totalStages]);
   end;
+   pbStage.Position := currStage;
 
 end;
 
@@ -218,7 +214,7 @@ begin
 
   // This is a good time to update the stage X of Y display - any changes to
   // the tab's settings may have reduced/increased the number of stages
-  _UpdateStageDisplay();
+  _UpdateStepLabel();
 end;
 
  // Get the next tabsheet in the specified direction

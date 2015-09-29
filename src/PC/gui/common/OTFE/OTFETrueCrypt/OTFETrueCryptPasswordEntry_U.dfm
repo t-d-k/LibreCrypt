@@ -30,7 +30,7 @@ object OTFETrueCryptPasswordEntry_F: TOTFETrueCryptPasswordEntry_F
     Top = 56
     Width = 47
     Height = 13
-    Caption = '&Mount as:'
+    Caption = '&Open as:'
     FocusControl = cbDrives
   end
   object mePassword: TMaskEdit
@@ -93,7 +93,7 @@ object OTFETrueCryptPasswordEntry_F: TOTFETrueCryptPasswordEntry_F
     Top = 140
     Width = 97
     Height = 17
-    Caption = '&Force mount'
+    Caption = '&Force Open'
     TabOrder = 4
   end
   object ckMountReadonly: TCheckBox
@@ -101,7 +101,7 @@ object OTFETrueCryptPasswordEntry_F: TOTFETrueCryptPasswordEntry_F
     Top = 80
     Width = 97
     Height = 17
-    Caption = 'Mount &readonly'
+    Caption = 'Open &readonly'
     TabOrder = 7
   end
   object ckMountAsRemovable: TCheckBox
@@ -109,7 +109,7 @@ object OTFETrueCryptPasswordEntry_F: TOTFETrueCryptPasswordEntry_F
     Top = 100
     Width = 157
     Height = 17
-    Caption = 'Mount as removable &device'
+    Caption = 'Open as removable &device'
     TabOrder = 8
   end
 end

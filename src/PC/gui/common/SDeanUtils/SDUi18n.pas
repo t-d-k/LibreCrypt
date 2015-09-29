@@ -36,6 +36,7 @@ function SDUPluralMsg(n: Integer; singleMsg: WideString; pluralMsg: WideString):
 function SDUPluralMsg(n: Integer; msgs: array of WideString): WideString; OVERLOAD;
 procedure SDUSetLanguage(lang: String);
 procedure SDUTranslateComponent(Comp: TComponent);
+procedure SDURetranslateCombo(Combo: TComboBox);
 procedure SDURetranslateComponent(Comp: TComponent);
 procedure SDUGetLanguageCodes(langCodes: TStringList);
 function SDUGetCurrentLanguageCode(): String;
@@ -118,6 +119,20 @@ begin
   TranslateComponent(comp);
 {$ENDIF}
 end;
+
+//translate combo without changing selection
+procedure SDURetranslateCombo(Combo: TComboBox);
+var
+  useIdx    : Integer;
+begin
+{$IFDEF _DXGETTEXT}
+   useIdx := Combo.ItemIndex;
+  SDURetranslateComponent(Combo);
+   Combo.ItemIndex := useIdx;
+{$ENDIF}
+end;
+
+
 
 procedure SDURetranslateComponent(Comp: TComponent);
 begin

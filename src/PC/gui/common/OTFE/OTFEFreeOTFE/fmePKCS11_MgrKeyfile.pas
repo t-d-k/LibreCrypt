@@ -315,7 +315,7 @@ begin
 
     warnBadCDB := False;
     if not (GetAllPKCS11CDB(PKCS11Session, FTokenCDBs, errMsg)) then begin
-      SDUMessageDlg(_('Unable to get list of CDB entries from Token') + SDUCRLF +
+      SDUMessageDlg(_('Unable to get list of header entries from Token') + SDUCRLF +
         SDUCRLF + errMsg, mtError);
     end else begin
       for i := low(FTokenCDBs) to high(FTokenCDBs) do begin

@@ -32,8 +32,11 @@ uses
   ;
 
 var
-  _DebugStrings:      TStrings;
+
+    {$IFDEF FREEOTFE_DEBUG}
+     _DebugStrings:      TStrings;
   _debugShowMessage:  Boolean;
+  {$ENDIF}
   _debugLogfile:      String;
   _debugLevel : integer = 1; // set debug level to conrol amount. the smaller th more
 /////////////////// private fns ////////////////////////////
@@ -228,7 +231,9 @@ begin
 end;
 
 initialization
+{$IFDEF FREEOTFE_DEBUG}
   _DebugStrings := nil;
+ {$ENDIF}
 
 finalization
   StopDebugging; // stop pos. memory leak
