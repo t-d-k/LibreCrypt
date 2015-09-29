@@ -1,0 +1,842 @@
+#  Ignore list. Remove those that you do want to have translated.
+
+#  Seems like a Font.Name extract
+msgid "MS Sans Serif"
+
+#  Seems like a Font.Name extract
+msgid "Arial"
+
+#  Seems like a Font.Name extract
+msgid "Tahoma"
+
+#  Display placeholder
+msgid "v99.99.9999"
+
+#  Display placeholder
+msgid "..."
+
+#  Control
+msgid "ToolBar1"
+
+#  Control
+msgid "SDUForm"
+
+#  Control
+msgid "reInstructions"
+
+#  Control
+msgid "reInstructPadding"
+
+#  Control
+msgid "frmWizard"
+
+#  Doesn't have any letters
+msgid "-"
+
+#  Doesn't have any letters
+msgid "#0"
+
+#  Fixed string
+msgid "PKCS#11"
+
+#  Fixed string
+msgid "?"
+
+#  Control
+msgid "SDUDiskPartitionsPanel1"
+
+#  Fixed string
+msgid "PKCS#&11:"
+
+#  Control
+msgid "preDestUserKey1"
+
+#  Control
+msgid "preDestUserKey2"
+
+#  Fixed string
+msgid "gpg.exe"
+
+#  Control
+msgid "preUserKey1"
+
+#  Control
+msgid "preUserKey2"
+
+#  Fixed string(?)
+msgid "                        "
+
+#  Display placeholder
+msgid "App version no. here"
+
+#  Display placeholder
+msgid "by Sarah Dean"
+
+#  String never displayed
+msgid "<<< This item will be automatically centered"
+
+#  URL
+msgid "http://www.LibreCrypt.org/"
+
+#  Control
+msgid "edPostMountExe"
+
+#  Control
+msgid "edPreDismountExe"
+
+#  Control
+msgid "edPostDismountExe"
+
+#  Control
+msgid "pnlSplitter"
+
+#  Control
+msgid "pnlVertSplit"
+
+#  Control
+msgid "edLibFilename"
+
+#  Control
+msgid "edFilename"
+
+#  ?
+msgid "frmDoxBoxCDBBackupRestore"
+
+#  Placeholder text
+msgid "DEST"
+
+#  Placeholder text
+msgid "DEST FILE"
+
+#  Placeholder text
+msgid "SRC"
+
+#  Placeholder text
+msgid "SRC FILE"
+
+#  Placeholder text
+msgid "TITLE SET AUTOMATICALLY"
+
+#  Control
+msgid "preUserKey"
+
+#  Control
+msgid "edDumpFilename"
+
+#  Placeholder text
+msgid "LABEL CAPTION AUTOMATICALLY SET"
+
+#  Placeholder text
+msgid "FORM CAPTION AUTOMATICALLY SET"
+
+#  Control
+msgid "pnlBetweenButtons"
+
+#  Control
+msgid "pnlBetweenButtonsCenter"
+
+#  Placeholder text
+msgid "TOTAL DRIVERS"
+
+#  Placeholder text
+msgid "TOTAL ALGORITHMS"
+
+#  Placeholder text
+msgid "PORTABLE MODE CAPTION SET AUTOMATICALLY"
+
+#  Placeholder text
+msgid "TABS SET AUTOMATICALLY"
+
+#  Placeholder text
+msgid "CAPTION SET AUTOMATICALLY"
+
+#  Placeholder text
+msgid "INSTRUCTIONS SET AUTOMATICALLY"
+
+#  Placeholder text
+msgid "THIS CAPTION WILL BE SET AUTOMATICALLY"
+
+#  Placeholder text
+msgid "THIS TEXT WILL BE AUTOMATICALLY POPULATED."
+
+#  Control
+msgid "edDrive"
+
+#  Control
+msgid "edDeviceName"
+
+#  Control
+msgid "edVolumeFile"
+
+#  Control
+msgid "edReadOnly"
+
+#  Control
+msgid "edMainCypher"
+
+#  Control
+msgid "edIVHash"
+
+#  Control
+msgid "edSectorIVGenMethod"
+
+#  Control
+msgid "edIVCypher"
+
+#  Control
+msgid "edDriverDeviceName"
+
+#  Control
+msgid "edDriverDeviceUserModeName"
+
+#  Control
+msgid "edDriverDeviceKernelModeName"
+
+#  Control
+msgid "edDriverTitle"
+
+#  Control
+msgid "edDriverVersionID"
+
+#  Control
+msgid "edDriverCypherCount"
+
+#  Control
+msgid "edDriverGUID"
+
+#  Control
+msgid "edCypherGUID"
+
+#  Control
+msgid "edCypherTitle"
+
+#  Control
+msgid "edCypherMode"
+
+#  Control
+msgid "edCypherBlockSize"
+
+#  Control
+msgid "edCypherVersionID"
+
+#  Control
+msgid "edCypherKeySize"
+
+#  Control
+msgid "edDriverHashCount"
+
+#  Control
+msgid "edHashGUID"
+
+#  Control
+msgid "edHashTitle"
+
+#  Control
+msgid "edHashLength"
+
+#  Control
+msgid "edHashVersionID"
+
+#  Control
+msgid "edHashBlockSize"
+
+#  Control
+msgid "pnlBasic"
+
+#  Control
+msgid "edKeyfile"
+
+#  Control
+msgid "edGPGExecutable"
+
+#  Control
+msgid "edGPGKeyfile"
+
+#  Control
+msgid "edKeySeed"
+
+#  Control
+msgid "edLabel"
+
+#  Control
+msgid "edPIN"
+
+#  Control
+msgid "edTracksPerCylinder"
+
+#  Control
+msgid "edSectorsPerTrack"
+
+#  Control
+msgid "edPartitionLength"
+
+#  Control
+msgid "edMediaType"
+
+#  Control
+msgid "edSizeBytes"
+
+#  Control
+msgid "edCylinders"
+
+#  Control
+msgid "edDiskNumber"
+
+#  Control
+msgid "edDiskSignature"
+
+#  Control
+msgid "edDiskPartitionCount"
+
+#  Control
+msgid "edSizeUnits"
+
+#  Control
+msgid "edStartingOffset"
+
+#  Control
+msgid "edPartitionLengthBytes"
+
+#  Control
+msgid "edHiddenSectors"
+
+#  Control
+msgid "edPartitionNumber"
+
+#  Control
+msgid "edPartitionType"
+
+#  Control
+msgid "edMountedAs"
+
+#  Control
+msgid "edPartitionLengthUnits"
+
+#  Control
+msgid "pnlProgressBar"
+
+#  Control
+msgid "pnlNoPartitionDisplay"
+
+#  Control
+msgid "pnlLower"
+
+#  Control
+msgid "pnlButtons"
+
+#  Control
+msgid "pnlAdvanced"
+
+#  Control
+msgid "pnlButtonCenter"
+
+#  Control
+msgid "pnlWarningPartition"
+
+#  Control
+msgid "pnlWarningOffset"
+
+#  Control
+msgid "pnlPlaceholder"
+
+#  Control
+msgid "pnlStatusText"
+
+#  Control
+msgid "lblSrcFilename"
+
+#  Control
+msgid "lblDestFilename"
+
+#  Control
+msgid "lblGPGFilename"
+
+#  Control
+msgid "lblCompleteIndicator"
+
+#  Control
+msgid "lblFilename"
+
+#  Control
+msgid "lblPartitionDiskSize"
+
+#  Control
+msgid "lblKeyFilename"
+
+#  Control
+msgid "lblStored"
+
+#  Control
+msgid "lblRequired"
+
+#  Control
+msgid "lblEstTimeRemaining"
+
+#  Control
+msgid "lblStatus"
+
+#  Placeholder text
+msgid "Caption set to application title"
+
+#  Placeholder text
+msgid "ERROR OR WARNING MSG DISPLAYED HERE"
+
+#  ?
+msgid "Z:"
+
+#  Linux losetup switch
+msgid "(-K)"
+
+#  Linux losetup switch
+msgid "(-G)"
+
+#  Linux losetup switch
+msgid "(-H)"
+
+#  Linux losetup switch
+msgid "(-C)"
+
+#  Linux losetup switch
+msgid "(-S)"
+
+#  Linux losetup switch
+msgid "(-e)"
+
+#  Linux losetup switch
+msgid "(-o @)"
+
+#  Linux losetup switch
+msgid "(-o)"
+
+#  Linux losetup switch
+msgid "(-s)"
+
+#  Linux losetup switch
+msgid "(-r)"
+
+#  Number
+msgid "x 1000"
+
+#  Placeholder text
+msgid "1st of two"
+
+#  Placeholder text
+msgid "2nd of two"
+
+#  ?
+msgid "Src Details"
+
+#  Control
+msgid "preSrcUserKey"
+
+#  Actual name of library
+msgid "cryptlib"
+
+#  Placeholder text
+msgid "Random bits generated: 9999/9999"
+
+#  Placeholder text
+msgid "Stage 999 of 999"
+
+# Acronym
+msgid "ESSIV"
+
+#  File extension
+msgid "exe"
+
+#  File extension
+msgid "vol"
+
+#  File extension
+msgid "cdb"
+
+#  File extension
+msgid "les"
+
+#  ?
+msgid "GPG - INVISIBLE CHECKBOX"
+
+#  Technical term
+msgid "RCMP (DSX)"
+
+#  Technical term
+msgid "US DoD 5220.22-M (E)"
+
+#  Technical term
+msgid "US DoD 5220.22-M (ECE)"
+
+#  Application name!
+msgid "LibreCrypt"
+
+#  Placeholder text
+msgid "This is a placeholder for the title of this "
+"report"
+
+#  Control
+msgid "pnlWarningBorder_L"
+
+#  Control
+msgid "pnlWarningBorder_R"
+
+#  Control
+msgid "pnlWarningBorder_T"
+
+#  Control
+msgid "pnlWarningBorder_B"
+
+#  Control
+msgid "reSummary"
+
+#  Control
+msgid "reInstructKeyIterations"
+
+#  Control
+msgid "reInstructSalt"
+
+#  Control
+msgid "reInstructDriveLetter"
+
+#  Control
+msgid "reInstructCDBLocation"
+
+#  Control
+msgid "reInstructCopyToUSBDrive"
+
+#  Control
+msgid "reInstructOverwriteType"
+
+#  Control
+msgid "pnlRight"
+
+#  Control
+msgid "edPath"
+
+#  Control
+msgid "pnlDividerUpper"
+
+#  Control
+msgid "pnlDividerLower"
+
+#  Control
+msgid "pnlSeparatorUpper"
+
+#  Control
+msgid "pnlSeparatorLower"
+
+#  Control
+msgid "cbToken"
+
+#  Control
+msgid "pnlTopSpacing"
+
+#  Placeholder text
+msgid "APP VERSION ID GOES HERE"
+
+#  Placeholder text
+msgid "APP TITLE GOES HERE"
+
+#  Placeholder text
+msgid "AUTHOR NAME GOES HERE"
+
+#  Placeholder text
+msgid "URL SET AUTOMATICALLY"
+
+#  Placeholder text
+msgid "BLURB GOES HERE"
+
+#  Placeholder text
+msgid "NOTE: ENSURE BLURB CAN FIT IN THIS"
+
+#  Placeholder text
+msgid "CONTROL WITHOUT THE VERTICAL SCROLLBAR"
+
+#  Control
+msgid "pnlExplorer"
+
+#  Control
+msgid "pnlAddressBar"
+
+#  Control
+msgid "edDirName"
+
+#  Control
+msgid "Edit1"
+
+#  Control
+msgid "Button1"
+
+#  Control
+msgid "ToolButton1"
+
+#  Control
+msgid "ToolButton2"
+
+#  Control
+msgid "ToolButton3"
+
+#  Control
+msgid "ToolButton4"
+
+#  Control
+msgid "ToolButton5"
+
+#  Control
+msgid "ToolButton6"
+
+#  Control
+msgid "ToolButton7"
+
+#  Control
+msgid "ToolButton8"
+
+#  Control
+msgid "ToolButton9"
+
+#  Control
+msgid "CAPTION AUTOMATICALLY SET"
+
+#  Control
+msgid "frmCDBBackupRestore"
+
+#  Control
+msgid "\"ABOUT APPLICATION\" CAPTION SET AUTOMATICALLY"
+
+#  Control
+msgid "ToolbarExplorer"
+
+#  Control
+msgid "tbbMoveTo"
+
+#  Control
+msgid "tbbCopyTo"
+
+#  Control
+msgid "ToolBarVolume"
+
+#  Control
+msgid "frmOptions_DoxBoxExplorer"
+
+#  Control
+msgid "frmPropertiesDialog_Volume"
+
+#  Control
+msgid "frmPropertiesDialog_Directory"
+
+#  Control
+msgid "frmPropertiesDialog_File"
+
+#  Control
+msgid "frmPropertiesDialog_Multiple"
+
+#  Control
+msgid "edFileSystem"
+
+#  Control
+msgid "edFileType"
+
+#  Control
+msgid "edLocation"
+
+#  Control
+msgid "edSizeOnDisk"
+
+#  Control
+msgid "edSize"
+
+#  Control
+msgid "edContains"
+
+#  Control
+msgid "edOpensWith"
+
+#  Control
+msgid "edTimestampCreated"
+
+#  Control
+msgid "edTimestampModified"
+
+#  Control
+msgid "edTimestampAccessed"
+
+#  Control
+msgid "Panel1"
+
+#  Control
+msgid "Panel2"
+
+#  Control
+msgid "Panel3"
+
+#  Control
+msgid "Panel4"
+
+#  Control
+msgid "Panel5"
+
+#  Control
+msgid "Panel6"
+
+#  Control
+msgid "Panel7"
+
+#  Control
+msgid "Panel8"
+
+#  Control
+msgid "Panel9"
+
+#  Placeholder text
+msgid "COPY TO USB DRIVE CAPTION AUTOMATICALLY SET"
+
+#  Placeholder text
+msgid "SETUP AUTOINF TO AUTOLAUNCH CAPTION SET AUTOMATICALLY"
+
+#  Control
+msgid "edOEMName"
+
+#  Control
+msgid "edBytesPerSector"
+
+#  Control
+msgid "edSectorsPerCluster"
+
+#  Control
+msgid "edReservedSectorCount"
+
+#  Control
+msgid "edFATCount"
+
+#  Control
+msgid "edMaxRootEntries"
+
+#  Control
+msgid "edTotalSectors"
+
+#  Control
+msgid "edMediaDescriptor"
+
+#  Control
+msgid "edSectorsPerFAT"
+
+#  Control
+msgid "edNumberOfHeads"
+
+#  Control
+msgid "pnlProgressBarPlaceholder"
+
+#  Control
+msgid "lblVersionCurrent"
+
+#  Control
+msgid "lblVersionLatest"
+
+#  Control
+msgid "cdbBackup"
+
+#  Display placeholder
+msgid "OPTION 1"
+
+#  Display placeholder
+msgid "OPTION 2"
+
+#  Control
+msgid "edFilesystem"
+
+#  Control
+msgid "edUsedSpace_Bytes"
+
+#  Control
+msgid "edUsedSpace_UsefulUnits"
+
+#  Control
+msgid "edFreeSpace_Bytes"
+
+#  Control
+msgid "edFreeSpace_UsefulUnits"
+
+#  Control
+msgid "edCapacity_Bytes"
+
+#  Control
+msgid "edCapacity_UsefulUnits"
+
+#  Control
+msgid "pnlColorUsedSpace"
+
+#  Control
+msgid "TChart"
+
+#  Control
+msgid "PieValues"
+
+#  Technical term
+msgid "XTS"
+
+#  Technical term
+msgid "CBC"
+
+#  Technical term
+msgid "LRW"
+
+#  Technical term
+msgid "HMAC"
+
+#  Control
+msgid "edCheckResult"
+
+#  Control
+msgid "edCheckTitle"
+
+#  Control
+msgid "edDirectory"
+
+#  Control
+msgid "edDiskPartitionStyle"
+
+#  Control
+msgid "edIPAddress"
+
+#  Control
+msgid "edMappedDrive"
+
+#  Control
+msgid "edPartitionStyle"
+
+#  Control
+msgid "edServiceMRxDAV"
+
+#  Control
+msgid "edServiceWebClient"
+
+#  Control
+msgid "edShareName"
+
+#  Control
+msgid "edWebDAVServerState"
+
+#  Control
+msgid "edWebDAVShareName"
+
+#  Display placeholder
+msgid "TRANSLATOR CREDIT HERE"
+
+#  Control
+msgid "pnlDivider"
+
+#  Control
+msgid "pnlSeparator"
+
+#  Control
+msgid "reDescription"
+
+#  Control
+msgid "reExplanation"
+
+#  Display placeholder
+msgid "PASSED CAPTION SET AUTOMATICALLY"
+
+#  Display placeholder
+msgid "SKIPPED CAPTION SET AUTOMATICALLY"
+
+#  Display placeholder
+msgid "WARNING CAPTION SIZED AND SET AUTOMATICALLY"

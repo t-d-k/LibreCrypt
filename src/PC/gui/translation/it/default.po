@@ -1,0 +1,5152 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: LibreCrypt\n"
+"POT-Creation-Date: 2008-12-21 22:12\n"
+"PO-Revision-Date: 2008-12-24 12:13+0100\n"
+"Last-Translator: Daniele Brunengo <littleman@cyberdude.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: dxgettext 1.2.2\n"
+
+#. frmAbout..Caption
+#: common/frmAbout.dfm:6
+msgid "About LibreCrypt"
+msgstr "Informazioni su LibreCrypt"
+
+#. frmAbout..lblBeta..Caption
+#: common/frmAbout.dfm:25
+msgid "BETA"
+msgstr "BETA"
+
+#. frmAbout..Label1..Caption
+#: common/frmAbout.dfm:85
+msgid "LibreCrypt: Free On-The-Fly-Encryption"
+msgstr "LibreCrypt: Free On-The-Fly-Encryption"
+
+#. frmAbout..pbOK..Caption
+#. frmDoxBoxCDBBackupRestore..pbOK..Caption
+#. frmDoxBoxCDBDump..pbOK..Caption
+#. frmInstallOnUSBDrive..pbOK..Caption
+#. frmOptions..pbOK..Caption
+#. frmDoxBoxSelectOverwriteMethod..pbOK..Caption
+#. frmDoxBoxVolProperties..pbOK..Caption
+#. frmKeyEntryDoxBox..pnlLower..pnlButtons..pbOK..Caption
+#. frmKeyEntryPlainLinux..pbOK..Caption
+#. frmKeyEntryLUKS..pbOK..Caption
+#. frmNewVolumeSize..pbOK..Caption
+#. frmPKCS11NewSecretKey..pbOK..Caption
+#. frmPKCS11Session..pbOK..Caption
+#. frmSelectHashCypher..pbOK..Caption
+#. frmSelectPartition..pnlButtonCenter..pbOK..Caption
+#. frmSelectPartition_Simple..pbOK..Caption
+#. frmSelectVolumeFileAndOffset..pbOK..Caption
+#. frmSelectVolumeType..pbOK..Caption
+#. frmWizardCreateVolumeAdvanced..pbOK..Caption
+#. KeyboardEntryDlg..pbOK..Caption
+#. MouseRNGCaptureDlg..pbOK..Caption
+#. FileList_F..pbOK..Caption
+#: common/frmAbout.dfm:154
+#: DoxBoxfrmCDBBackupRestore.dfm:35
+#: DoxBoxfrmCDBDump.dfm:25
+#: DoxBoxfrmInstallOnUSBDrive.dfm:40
+#: DoxBoxfrmOptions.dfm:51
+#: DoxBoxfrmSelectOverwriteMethod.dfm:26
+#: DoxBoxfrmVolProperties.dfm:89
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:167
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:36
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:36
+#: OTFEDoxBox_frmNewVolumeSize.dfm:49
+#: OTFEDoxBox_frmPKCS11NewSecretKey.dfm:59
+#: OTFEDoxBox_frmPKCS11Session.dfm:68
+#: OTFEDoxBox_frmSelectHashCypher.dfm:71
+#: OTFEDoxBox_frmSelectPartition.dfm:43
+#: OTFEDoxBox_frmSelectPartition_Simple.dfm:34
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:94
+#: OTFEDoxBox_frmVolumeType.dfm:52
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:202
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:1027
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.dfm:57
+#: Shredder/FileList_U.dfm:35
+msgid "OK"
+msgstr "OK"
+
+#. frmCommonOptions..gbAutorun..Caption
+#: common/frmCommonOptions.dfm:12
+msgid "Autorun pre/post-open/lock"
+msgstr "Autoavvia pre/post-montaggio/smontaggio"
+
+#. frmCommonOptions..gbAutorun..Label33..Caption
+#: common/frmCommonOptions.dfm:19
+msgid "Post-&Open:"
+msgstr "Post-&montaggio"
+
+#. frmCommonOptions..gbAutorun..Label34..Caption
+#: common/frmCommonOptions.dfm:27
+msgid "&Pre-dismount:"
+msgstr "&Pre-smontaggio"
+
+#. frmCommonOptions..gbAutorun..Label35..Caption
+#: common/frmCommonOptions.dfm:35
+msgid "Post-&dismount:"
+msgstr "Post-smontaggio"
+
+#. frmCommonOptions..gbAutorun..ckPrePostExeWarn..Caption
+#: common/frmCommonOptions.dfm:94
+msgid "&Warn user if file is not found."
+msgstr "Avverti l'utente se il file non è trovato."
+
+#. fmeOptions_General..gbGeneral..Caption
+#. frmOptions..pcOptions..tsGeneral..Caption
+#: DoxBoxfmeOptions_General.dfm:12
+#: DoxBoxfrmOptions.dfm:92
+msgid "General"
+msgstr "Generali"
+
+#. fmeOptions_General..gbGeneral..lblDragDrop..Caption
+#: DoxBoxfmeOptions_General.dfm:19
+msgid "Assume files &dragged onto LibreCrypt are encrypted using:"
+msgstr "Presumi che i file trascinati su LibreCrypt vengano crittati usan&do:"
+
+#. fmeOptions_General..gbGeneral..Label1..Caption
+#: DoxBoxfmeOptions_General.dfm:28
+msgid "Default drive &letter:"
+msgstr "&Lettera per disco di default:"
+
+#. fmeOptions_General..gbGeneral..Label4..Caption
+#: DoxBoxfmeOptions_General.dfm:36
+msgid "(Set to 0 to disable MRU list)"
+msgstr "(Porre a 0 per disabilitare la lista MRU)"
+
+#. fmeOptions_General..gbGeneral..lblMRUMaxItemCount..Caption
+#: DoxBoxfmeOptions_General.dfm:43
+msgid "&Max. number of volumes to show in most recently used list:"
+msgstr "&Max. numero di volumi da mostrare nella lista volumi recenti:"
+
+#. fmeOptions_General..gbGeneral..Label2..Caption
+#: DoxBoxfmeOptions_General.dfm:52
+msgid "&Language:"
+msgstr "&Lingua:"
+
+#. fmeOptions_General..gbGeneral..ckAllowMultipleInstances..Caption
+#: DoxBoxfmeOptions_General.dfm:61
+msgid "&Allow multiple instances"
+msgstr "Permetti ist&anze multiple:"
+
+#. fmeOptions_General..gbGeneral..ckDisplayToolbar..Caption
+#: DoxBoxfmeOptions_General.dfm:69
+msgid "Display &toolbar"
+msgstr "Mostra &toolbar"
+
+#. fmeOptions_General..gbGeneral..ckDisplayStatusbar..Caption
+#: DoxBoxfmeOptions_General.dfm:78
+msgid "Show &statusbar"
+msgstr "Mostra barra &stato"
+
+#. fmeOptions_General..gbGeneral..ckAutoStartPortable....Caption
+#: DoxBoxfmeOptions_General.dfm:97
+msgid "Autostart &portable mode if LibreCrypt drivers not installed/running"
+msgstr "Autoavvia modalità trasferibile se i driver non sono installati/avviati"
+
+#. fmeOptions_General..gbGeneral..ckAdvancedMountDlg..Caption
+#: DoxBoxfmeOptions_General.dfm:106
+msgid "Display advanced &options when opening"
+msgstr "Mostra le &opzioni avanzate al montaggio"
+
+#. fmeOptions_General..gbGeneral..ckExploreAfterMount..Caption
+#: DoxBoxfmeOptions_General.dfm:115
+msgid "&Explore after Open"
+msgstr "&Esplora dopo il montaggio"
+
+#. fmeOptions_General..gbGeneral..ckRevertVolTimestamps..Caption
+#: DoxBoxfmeOptions_General.dfm:123
+msgid "&Revert volume timestamps on dismount"
+msgstr "&Resetta i timestamp allo smontaggio"
+
+#. fmeOptions_General..gbGeneral..ckShowPasswords..Caption
+#: DoxBoxfmeOptions_General.dfm:157
+msgid "Display &passwords when entered"
+msgstr "Mostra le password all'inserimento"
+
+#. fmeOptions_General..gbGeneral..ckPromptMountSuccessful..Caption
+#: DoxBoxfmeOptions_General.dfm:184
+msgid "Display &message on successful Open"
+msgstr "Mostra &messaggio a montaggio riuscito"
+
+#. fmeOptions_General..gbGeneral..ckDisplayToolbarLarge..Caption
+#: DoxBoxfmeOptions_General.dfm:192
+msgid "Large &icons"
+msgstr "&Icone grandi"
+
+#. fmeOptions_General..gbGeneral..ckDisplayToolbarCaptions..Caption
+#: DoxBoxfmeOptions_General.dfm:201
+msgid "Display &captions"
+msgstr "Mostra tips"
+
+#. fmeOptions_Hotkeys..gbHotkeys..Caption
+#. frmOptions..pcOptions..tsHotkeys..Caption
+#: DoxBoxfmeOptions_Hotkeys.dfm:8
+#: DoxBoxfrmOptions.dfm:123
+msgid "Hotkeys"
+msgstr "Hotkeys"
+
+#. fmeOptions_Hotkeys..gbHotkeys..Label1..Caption
+#: DoxBoxfmeOptions_Hotkeys.dfm:15
+msgid "&Hotkey:"
+msgstr "&Hotkey:"
+
+#. fmeOptions_Hotkeys..gbHotkeys..Label2..Caption
+#: DoxBoxfmeOptions_Hotkeys.dfm:23
+msgid "H&otkey:"
+msgstr "H&otkey:"
+
+#. fmeOptions_Hotkeys..gbHotkeys..ckHotkeyDismount..Caption
+#: DoxBoxfmeOptions_Hotkeys.dfm:40
+msgid "&Enable dismount all hotkey"
+msgstr "Abilita hotk&ey per smontare tutti i volumi"
+
+#. fmeOptions_Hotkeys..gbHotkeys..ckHotkeyDismountEmerg..Caption
+#: DoxBoxfmeOptions_Hotkeys.dfm:49
+msgid "E&nable emergency dismount all hotkey"
+msgstr "Abilita hotkey smo&ntaggio di emergenza"
+
+#. fmeOptions_PKCS11..gbPKCS11..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:12
+msgid "Security Token/Smartcard support"
+msgstr "Supporto Smartcard/Security Token"
+
+#. fmeOptions_PKCS11..gbPKCS11..lblLibrary..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:19
+msgid "PKCS#11 &library:"
+msgstr "&Libreria PKCS#11:"
+
+#. fmeOptions_PKCS11..gbPKCS11..ckEnablePKCS11..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:27
+msgid "&Enable PKCS#11 support"
+msgstr "Abilita il supporto a PKCS#11"
+
+#. fmeOptions_PKCS11..gbPKCS11..pbVerify..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:36
+msgid "&Verify"
+msgstr "&Verifica"
+
+#. fmeOptions_PKCS11..gbPKCS11..gbPKCS11AutoActions..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:45
+msgid "Automount/dismount"
+msgstr "Automontaggio/smontaggio"
+
+#. fmeOptions_PKCS11..gbPKCS11..gbPKCS11AutoActions..lblAutoMountVolume..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:52
+msgid "V&olume:"
+msgstr "V&olume:"
+
+#. fmeOptions_PKCS11..gbPKCS11..gbPKCS11AutoActions..ckPKCS11AutoDismount..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:60
+msgid "Auto &dismount PKCS#11 volumes when associated token is removed"
+msgstr "Auto smonta i volumi PKCS#11 quando il token associato è rimosso"
+
+#. fmeOptions_PKCS11..gbPKCS11..gbPKCS11AutoActions..ckPKCS11AutoMount..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:69
+msgid "Auto &Open specified volume on token insertion"
+msgstr "Auto &monta il volume specificato all'inserimento del token"
+
+#. fmeOptions_SystemTray..gbSystemTrayIcon..Caption
+#: DoxBoxfmeOptions_SystemTray.dfm:8
+msgid "System Tray Icon"
+msgstr "Icona nella barra di sistema"
+
+#. fmeOptions_SystemTray..gbSystemTrayIcon..ckUseSystemTrayIcon..Caption
+#: DoxBoxfmeOptions_SystemTray.dfm:15
+msgid "&Display system tray icon"
+msgstr "Mostra icona nel tray"
+
+#. fmeOptions_SystemTray..gbSystemTrayIcon..ckMinToIcon..Caption
+#: DoxBoxfmeOptions_SystemTray.dfm:24
+msgid "Hide when &minimised"
+msgstr "Nascondi se &minimizzo"
+
+#. fmeOptions_SystemTray..gbSystemTrayIcon..ckCloseToIcon..Caption
+#: DoxBoxfmeOptions_SystemTray.dfm:32
+msgid "Hide when &closed"
+msgstr "Nascondi se &chiudo"
+
+#. frmDoxBoxCDBBackupRestore..pbCancel..Caption
+#. frmDoxBoxCDBDump..pbCancel..Caption
+#. frmInstallOnUSBDrive..pbCancel..Caption
+#. frmOptions..pbCancel..Caption
+#. frmDoxBoxSelectOverwriteMethod..pbCancel..Caption
+#. frmKeyEntryDoxBox..pnlLower..pnlButtons..pbCancel..Caption
+#. frmKeyEntryPlainLinux..pbCancel..Caption
+#. frmKeyEntryLUKS..pbCancel..Caption
+#. frmNewVolumeSize..pbCancel..Caption
+#. frmPKCS11NewSecretKey..pbCancel..Caption
+#. frmPKCS11Session..pbCancel..Caption
+#. frmSelectHashCypher..pbCancel..Caption
+#. frmSelectPartition..pnlButtonCenter..pbCancel..Caption
+#. frmSelectPartition_Simple..pbCancel..Caption
+#. frmSelectVolumeFileAndOffset..pbCancel..Caption
+#. frmSelectVolumeType..pbCancel..Caption
+#. frmWizard..pnlRight..pnlButtons..pbCancel..Caption
+#. frmWizardCreateVolumeAdvanced..pbCancel..Caption
+#. KeyboardEntryDlg..pbCancel..Caption
+#. MouseRNGCaptureDlg..pbCancel..Caption
+#: DoxBoxfrmCDBBackupRestore.dfm:26
+#: DoxBoxfrmCDBDump.dfm:36
+#: DoxBoxfrmInstallOnUSBDrive.dfm:51
+#: DoxBoxfrmOptions.dfm:62
+#: DoxBoxfrmSelectOverwriteMethod.dfm:37
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:158
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:27
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:27
+#: OTFEDoxBox_frmNewVolumeSize.dfm:40
+#: OTFEDoxBox_frmPKCS11NewSecretKey.dfm:50
+#: OTFEDoxBox_frmPKCS11Session.dfm:79
+#: OTFEDoxBox_frmSelectHashCypher.dfm:82
+#: OTFEDoxBox_frmSelectPartition.dfm:54
+#: OTFEDoxBox_frmSelectPartition_Simple.dfm:45
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:105
+#: OTFEDoxBox_frmVolumeType.dfm:43
+#: OTFEDoxBox_frmWizard.dfm:9529
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:213
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:1009
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.dfm:69
+msgid "Cancel"
+msgstr "Annulla"
+
+#. frmDoxBoxCDBBackupRestore..gbDest..lblOffsetDest..Caption
+#: DoxBoxfrmCDBBackupRestore.dfm:59
+msgid "O&ffset:"
+msgstr "O&ffset:"
+
+#. frmDoxBoxCDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#. frmDoxBoxCDBBackupRestore..gbDest..se64UnitOffsetDest..SelectedUnits
+#. frmDoxBoxCDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#. frmDoxBoxCDBBackupRestore..gbSrc..se64UnitOffsetSrc..SelectedUnits
+#. frmDoxBoxCDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#. frmDoxBoxCDBDump..GroupBox1..se64UnitOffset..SelectedUnits
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset..SelectedUnits
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset..SelectedUnits
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit..SelectedUnits
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit..SelectedUnits
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#. frmNewVolumeSize..se64UnitSize..SelectedUnits
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#. frmSelectVolumeFileAndOffset..se64UnitOffset..SelectedUnits
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset..SelectedUnits
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset..SelectedUnits
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize..SelectedUnits
+#: DoxBoxfrmCDBBackupRestore.dfm:77
+#: DoxBoxfrmCDBBackupRestore.dfm:82
+#: DoxBoxfrmCDBBackupRestore.dfm:125
+#: DoxBoxfrmCDBBackupRestore.dfm:130
+#: DoxBoxfrmCDBDump.dfm:149
+#: DoxBoxfrmCDBDump.dfm:154
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:220
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:225
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:543
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:548
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:559
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:564
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:132
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:137
+#: OTFEDoxBox_frmNewVolumeSize.dfm:61
+#: OTFEDoxBox_frmNewVolumeSize.dfm:66
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:116
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:121
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:257
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:262
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:396
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:401
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:454
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:459
+msgid "bytes"
+msgstr "bytes"
+
+#. frmDoxBoxCDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#. frmDoxBoxCDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#. frmDoxBoxCDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#: DoxBoxfrmCDBBackupRestore.dfm:78
+#: DoxBoxfrmCDBBackupRestore.dfm:126
+#: DoxBoxfrmCDBDump.dfm:150
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:221
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:544
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:560
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:133
+#: OTFEDoxBox_frmNewVolumeSize.dfm:62
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:117
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:258
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:397
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:455
+msgid "KB"
+msgstr "KB"
+
+#. frmDoxBoxCDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#. frmDoxBoxCDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#. frmDoxBoxCDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#: DoxBoxfrmCDBBackupRestore.dfm:79
+#: DoxBoxfrmCDBBackupRestore.dfm:127
+#: DoxBoxfrmCDBDump.dfm:151
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:222
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:545
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:561
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:134
+#: OTFEDoxBox_frmNewVolumeSize.dfm:63
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:118
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:259
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:398
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:456
+msgid "MB"
+msgstr "MB"
+
+#. frmDoxBoxCDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#. frmDoxBoxCDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#. frmDoxBoxCDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#: DoxBoxfrmCDBBackupRestore.dfm:80
+#: DoxBoxfrmCDBBackupRestore.dfm:128
+#: DoxBoxfrmCDBDump.dfm:152
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:223
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:546
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:562
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:135
+#: OTFEDoxBox_frmNewVolumeSize.dfm:64
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:119
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:260
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:399
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:457
+msgid "GB"
+msgstr "GB"
+
+#. frmDoxBoxCDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#. frmDoxBoxCDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#. frmDoxBoxCDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#: DoxBoxfrmCDBBackupRestore.dfm:81
+#: DoxBoxfrmCDBBackupRestore.dfm:129
+#: DoxBoxfrmCDBDump.dfm:153
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:224
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:547
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:563
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:136
+#: OTFEDoxBox_frmNewVolumeSize.dfm:65
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:120
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:261
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:400
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:458
+msgid "TB"
+msgstr "TB"
+
+#. frmDoxBoxCDBBackupRestore..gbSrc..lblOffsetSrc..Caption
+#. frmDoxBoxCDBDump..GroupBox1..lblOffset..Caption
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..Label8..Caption
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..Label8..Caption
+#. frmSelectVolumeFileAndOffset..lblOffsetSrc..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label9..Caption
+#: DoxBoxfrmCDBBackupRestore.dfm:107
+#: DoxBoxfrmCDBDump.dfm:67
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:203
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:494
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:32
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:180
+msgid "&Offset:"
+msgstr "&Offset:"
+
+#. frmDoxBoxCDBDump..GroupBox1..Caption
+#: DoxBoxfrmCDBDump.dfm:45
+msgid "Volume/keyfile details"
+msgstr "Dettagli su volume/keyfile"
+
+#. frmDoxBoxCDBDump..GroupBox1..Label1..Caption
+#: DoxBoxfrmCDBDump.dfm:52
+msgid "&Volume/keyfile:"
+msgstr "&Volume/keyfile:"
+
+#. frmDoxBoxCDBDump..GroupBox1..Label2..Caption
+#. frmKeyEntryDoxBox..pnlBasic..GroupBox1..Label1..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPassword..Label17..Caption
+#. KeyboardEntryDlg..Label1..Caption
+#: DoxBoxfrmCDBDump.dfm:59
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:42
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:822
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:23
+msgid "&Password:"
+msgstr "&Password:"
+
+#. frmDoxBoxCDBDump..GroupBox1..lblSaltLengthBits..Caption
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox3..Label5..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label6..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label7..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsMasterKeyLength..Label9..Caption
+#: DoxBoxfrmCDBDump.dfm:74
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:284
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:203
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:347
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:584
+msgid "bits"
+msgstr "bits"
+
+#. frmDoxBoxCDBDump..GroupBox1..lblSaltLength..Caption
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox3..Label2..Caption
+#: DoxBoxfrmCDBDump.dfm:81
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:276
+msgid "&Salt length:"
+msgstr "Lunghezza &sale:"
+
+#. frmDoxBoxCDBDump..GroupBox1..lblKeyIterations..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label8..Caption
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsKeyIterations..Label22..Caption
+#: DoxBoxfrmCDBDump.dfm:89
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:362
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:39
+msgid "&Key iterations:"
+msgstr "Iterazioni chiave:"
+
+#. frmDoxBoxCDBDump..GroupBox1..lblOptional..Caption
+#: DoxBoxfrmCDBDump.dfm:97
+msgid "(optional)"
+msgstr "(opzionale)"
+
+#. frmDoxBoxCDBDump..GroupBox1..ckBaseIVCypherOnHashLength..Caption
+#: DoxBoxfrmCDBDump.dfm:130
+msgid "Base IV cypher on hash length"
+msgstr "Cypher base IV sulla lunghezza di hash"
+
+#. frmDoxBoxCDBDump..GroupBox2..Caption
+#: DoxBoxfrmCDBDump.dfm:164
+msgid "Dump file"
+msgstr "Dump file"
+
+#. frmDoxBoxCDBDump..GroupBox2..Label3..Caption
+#: DoxBoxfrmCDBDump.dfm:177
+msgid "&Dump to file:"
+msgstr "Scarica nel file"
+
+#. frmDoxBoxCDBDump..OpenDialog..Filter
+#. frmCommonMain..OpenDialog..Filter
+#: DoxBoxfrmCDBDump.dfm:199
+#: common/frmCommonMain:313
+msgid "All files (*.*)|*.*"
+msgstr "Tutti i file (*.*)|*.*"
+
+#. frmGridReport..pbSave..Caption
+#: DoxBoxfrmGridReport.dfm:38
+msgid "&Save..."
+msgstr "&Salva..."
+
+#. frmGridReport..pbClose..Caption
+#. frmCypherInfo..pbClose..Caption
+#. frmDriverControl..pbClose..Caption
+#. frmHashInfo..pbClose..Caption
+#. frmPKCS11Management..pbClose..Caption
+#. SDUDiskPropertiesDialog..pbClose..Caption
+#. SDUPartitionPropertiesDialog..pbClose..Caption
+#: DoxBoxfrmGridReport.dfm:49
+#: OTFEDoxBox_frmCypherInfo.dfm:262
+#: OTFEDoxBox_frmDriverControl.dfm:33
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:245
+#: OTFEDoxBox_frmPKCS11Management.dfm:29
+#: SDUDiskPropertiesDlg.dfm:105
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:91
+msgid "Close"
+msgstr "Chiudi"
+
+#. frmGridReport..pnlBetweenButtons..pnlBetweenButtonsCenter..ckShowAdvanced..Caption
+#: DoxBoxfrmGridReport.dfm:96
+msgid "Show &advanced"
+msgstr "Mostra &avanzate"
+
+#. frmGridReport..pbDrivers..Caption
+#: DoxBoxfrmGridReport.dfm:120
+msgid "&Drivers..."
+msgstr "&Drivers..."
+
+#. frmGridReport..ActionList1..actSelectAll..Caption
+#: DoxBoxfrmGridReport.dfm:129
+msgid "Select &all"
+msgstr "Selezion&a tutto"
+
+#. frmGridReport..ActionList1..actCopy..Caption
+#: DoxBoxfrmGridReport.dfm:134
+msgid "&Copy"
+msgstr "&Copia"
+
+#. frmInstallOnUSBDrive..Caption
+#: DoxBoxfrmInstallOnUSBDrive.dfm:5
+msgid "Copy %s to USB Drive"
+msgstr "Copia %s su disco USB"
+
+#. frmInstallOnUSBDrive..Label1..Caption
+#. frmDoxBoxVolProperties..Label22..Caption
+#. frmKeyEntryDoxBox..pnlBasic..GroupBox1..Label4..Caption
+#. frmKeyEntryPlainLinux..pcEntry..tsMountOptions..GroupBox2..Label4..Caption
+#. frmKeyEntryLUKS..GroupBox2..Label4..Caption
+#: DoxBoxfrmInstallOnUSBDrive.dfm:24
+#: DoxBoxfrmVolProperties.dfm:32
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:57
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:589
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:53
+msgid "&Drive:"
+msgstr "&Disco:"
+
+#. frmInstallOnUSBDrive..Label2..Caption
+#: DoxBoxfrmInstallOnUSBDrive.dfm:32
+msgid "&Path to copy to:"
+msgstr "Co&pia in:"
+
+#. frmInstallOnUSBDrive..edPath..Text
+#: DoxBoxfrmInstallOnUSBDrive.dfm:61
+msgid "edPath"
+msgstr "edPath"
+
+#. frmInstallOnUSBDrive..ckSetupAutoplay..Caption
+#: DoxBoxfrmInstallOnUSBDrive.dfm:78
+msgid "&Setup autorun.inf to launch %1 when drive inserted"
+msgstr "Configurare autorun.inf per lanciare %1 all'in&serimento del disco"
+
+#. frmInstallOnUSBDrive..pbRefreshDrives..Caption
+#. frmCommonMain..ActionList1..actRefresh..Caption
+#. fmePKCS11_MgrBase..ActionList1..actRefresh..Caption
+#. frmPKCS11Session..pbRefresh..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGPKCS11..pbRefresh..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGPKCS11..pbRefresh..Caption
+#: DoxBoxfrmInstallOnUSBDrive.dfm:95
+#: common/frmCommonMain:423
+#: OTFEDoxBox_fmePKCS11_MgrBase.dfm:11
+#: OTFEDoxBox_frmPKCS11Session.dfm:88
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:574
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:753
+msgid "&Refresh"
+msgstr "Aggio&rna"
+
+#. frmInstallOnUSBDrive..ckHideAutorunInf..Caption
+#: DoxBoxfrmInstallOnUSBDrive.dfm:104
+msgid "&Mark autorun.inf file as hidden"
+msgstr "Rendi autorun.inf un file nascosto"
+
+#. frmCommonMain..pnlTopSpacing..Caption
+#: common/frmCommonMain:118
+msgid "pnlTopSpacing"
+msgstr "pnlTopSpacing"
+
+#. frmCommonMain..mmMain..File1..Caption
+#: common/frmCommonMain:160
+msgid "&File"
+msgstr "&File"
+
+#. frmCommonMain..mmMain..File1..miLinuxVolume..Caption
+#: common/frmCommonMain:180
+msgid "&Linux volume"
+msgstr "Volume &Linux"
+
+#. frmCommonMain..mmMain..File1..miLinuxVolume..miLUKSDump..Caption
+#: common/frmCommonMain:197
+msgid "&Dump LUKS details to human readable file..."
+msgstr "Passa &dettagli LUKS a file leggibile..."
+
+#. frmCommonMain..mmMain..View1..Caption
+#: common/frmCommonMain:215
+msgid "&View"
+msgstr "&Vedi"
+
+#. frmCommonMain..mmMain..View1..miOptions..Caption
+#: common/frmCommonMain:223
+msgid "Options..."
+msgstr "Opzioni..."
+
+#. frmCommonMain..mmMain..miTools..Caption
+#: common/frmCommonMain:234
+msgid "&Tools"
+msgstr "S&trumenti"
+
+#. frmCommonMain..mmMain..miTools..miCreateKeyfile..Caption
+#: common/frmCommonMain:260
+msgid "&Create keyfile..."
+msgstr "&Crea keyfile..."
+
+#. frmCommonMain..mmMain..miTools..miChangePassword..Caption
+#: common/frmCommonMain:264
+msgid "Change volume/keyfile &password/details..."
+msgstr "Cambia &password/dettagli di volume/keyfile"
+
+#. frmCommonMain..mmMain..miTools..miCDB..Caption
+#: common/frmCommonMain:274
+msgid "Critical data &block"
+msgstr "&Blocco dati critici"
+
+#. frmCommonMain..mmMain..miTools..miCDB..miCDBBackup..Caption
+#: common/frmCommonMain:276
+msgid "&Backup..."
+msgstr "&Backup..."
+
+#. frmCommonMain..mmMain..miTools..miCDB..miCDBRestore..Caption
+#: common/frmCommonMain:280
+msgid "&Restore..."
+msgstr "&Ripristina.."
+
+#. frmCommonMain..mmMain..miTools..miCDB..miCDBPlaintextDump..Caption
+#: common/frmCommonMain:284
+msgid "&Dump to human readable file..."
+msgstr "Passa &dettagli a file leggibile..."
+
+#. frmCommonMain..mmMain..Help1..Caption
+#: common/frmCommonMain:290
+msgid "&Help"
+msgstr "Aiuto"
+
+#. frmCommonMain..mmMain..Help1..About1..Caption
+#: common/frmCommonMain:307
+msgid "&About LibreCrypt..."
+msgstr "Inform&azioni su LibreCrypt..."
+
+#. frmCommonMain..ActionList1..actDoxBoxNew..Caption
+#. fmePKCS11_MgrSecretKey..ActionList1..actNew..Caption
+#: common/frmCommonMain:335
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.dfm:79
+msgid "&New ..."
+msgstr "&Nuovo..."
+
+#. frmCommonMain..ActionList1..actDoxBoxNew..Hint
+#: common/frmCommonMain:336
+msgid "New encrypted volume"
+msgstr "Nuovo volume crittato"
+
+#. frmCommonMain..ActionList1..actDoxBoxMountFile..Caption
+#. frmCommonMain..ActionList1..actLinuxMountFile..Caption
+#: common/frmCommonMain:341
+#: common/frmCommonMain:373
+msgid "&Open file..."
+msgstr "&Monta file..."
+
+#. frmCommonMain..ActionList1..actDoxBoxMountFile..Hint
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_MOUNTFILE
+#: common/frmCommonMain:342
+#: DoxBoxfrmMain.pas:414
+msgid "Open file"
+msgstr "Monta file"
+
+#. frmCommonMain..ActionList1..actDoxBoxMountPartition..Caption
+#. frmCommonMain..ActionList1..actLinuxMountPartition..Caption
+#: common/frmCommonMain:348
+#: common/frmCommonMain:378
+msgid "Open &partition..."
+msgstr "Monta &partizione..."
+
+#. frmCommonMain..ActionList1..actDoxBoxMountPartition..Hint
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_MOUNTPARTITION
+#: common/frmCommonMain:349
+#: DoxBoxfrmMain.pas:415
+msgid "Open partition"
+msgstr "Monta partizione"
+
+#. frmCommonMain..ActionList1..actDismount..Caption
+#: common/frmCommonMain:355
+msgid "&Dismount"
+msgstr "Smonta"
+
+#. frmCommonMain..ActionList1..actDismount..Hint
+#: common/frmCommonMain:356
+msgid "Dismount selected"
+msgstr "Smonta selezionati"
+
+#. frmCommonMain..ActionList1..actDismountAll..Caption
+#: common/frmCommonMain:362
+msgid "Dismount &all"
+msgstr "Smont&a tutto"
+
+#. frmCommonMain..ActionList1..actDismountAll..Hint
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_DISMOUNTALL
+#: common/frmCommonMain:363
+#: DoxBoxfrmMain.pas:417
+msgid "Lock all"
+msgstr "Smonta tutto"
+
+#. frmCommonMain..ActionList1..actLinuxNew..Caption
+#: common/frmCommonMain:368
+msgid "&New file..."
+msgstr "&Nuovo file..."
+
+#. frmCommonMain..ActionList1..actLinuxNew..Hint
+#: common/frmCommonMain:369
+msgid "New Linux volume"
+msgstr "Nuovo volume Linux"
+
+#. frmCommonMain..ActionList1..actLinuxMountFile..Hint
+#: common/frmCommonMain:374
+msgid "Open Linux file"
+msgstr "Monta file Linux"
+
+#. frmCommonMain..ActionList1..actLinuxMountPartition..Hint
+#: common/frmCommonMain:379
+msgid "Open Linux partition"
+msgstr "Monta partizione Linux"
+
+#. frmCommonMain..ActionList1..actProperties..Caption
+#: common/frmCommonMain:383
+msgid "&Properties..."
+msgstr "&Proprietà..."
+
+#. frmCommonMain..ActionList1..actProperties..Hint
+#: common/frmCommonMain:384
+msgid "Properties of selected volume"
+msgstr "Proprietà del volume selezionato"
+
+#. frmCommonMain..ActionList1..actExit..Caption
+#: common/frmCommonMain:389
+msgid "E&xit"
+msgstr "Esci"
+
+#. frmCommonMain..ActionList1..actExit..Hint
+#: common/frmCommonMain:390
+msgid "Exit"
+msgstr "Esci"
+
+#. frmCommonMain..ActionList1..actDisplayConsole..Caption
+#. frmCommonMain..ActionList1..actDisplayConsole..Hint
+#: common/frmCommonMain:394
+#: common/frmCommonMain:395
+msgid "Display console"
+msgstr "Mostra console"
+
+#. frmCommonMain..ActionList1..actTogglePortableMode..Hint
+#: common/frmCommonMain:400
+msgid "Toggle portable mode on/off"
+msgstr "Attiva/disattiva modo trasferibile"
+
+#. frmCommonMain..ActionList1..actFormat..Caption
+#: common/frmCommonMain:405
+msgid "&Format..."
+msgstr "&Formatta..."
+
+#. frmCommonMain..ActionList1..actFormat..Hint
+#: common/frmCommonMain:406
+msgid "Format volume"
+msgstr "Formatta volume"
+
+#. frmCommonMain..ActionList1..actOverwriteFreeSpace..Caption
+#: common/frmCommonMain:410
+msgid "&Overwrite free space..."
+msgstr "S&ovrascrivi spazio libero..."
+
+#. frmCommonMain..ActionList1..actOverwriteFreeSpace..Hint
+#: common/frmCommonMain:411
+msgid "Overwrite free space on volume"
+msgstr "Sovrascrivi spazio libero sul volume"
+
+#. frmCommonMain..ActionList1..actOverwriteEntireDrive..Caption
+#: common/frmCommonMain:415
+msgid "Overwrite entire drive..."
+msgstr "Sovrascrivi l'intero disco..."
+
+#. frmCommonMain..ActionList1..actDrivers..Caption
+#: common/frmCommonMain:419
+msgid "Drivers..."
+msgstr "Drivers..."
+
+#. frmCommonMain..ActionList1..actListCyphers..Caption
+#: common/frmCommonMain:428
+msgid "List &cyphers..."
+msgstr "Elenca &cypher..."
+
+#. frmCommonMain..ActionList1..actListHashes..Caption
+#: common/frmCommonMain:432
+msgid "List &hashes..."
+msgstr "Elenca &hash..."
+
+#. frmCommonMain..ActionList1..actPKCS11TokenManagement..Caption
+#: common/frmCommonMain:436
+msgid "&PKCS#11 token management..."
+msgstr "Gestione token &PKCS#11..."
+
+#. frmCommonMain..ActionList1..actUserGuide..Caption
+#: common/frmCommonMain:440
+msgid "&User guide"
+msgstr "Guida &utente"
+
+#. frmCommonMain..ActionList1..actInstallOnUSBDrive..Caption
+#: common/frmCommonMain:444
+msgid "&Copy %s to USB Drive..."
+msgstr "&Copia %1 su disco USB..."
+
+#. frmCommonMain..pmSystemTray..mmRecentlyMounted..Caption
+#: common/frmCommonMain:453
+msgid "&Recently mounted"
+msgstr "Montati di &recente"
+
+#. frmOptions..Caption
+#: DoxBoxfrmOptions.dfm:5
+msgid "Options"
+msgstr "Opzioni"
+
+#. frmOptions..lblSettingsLocation..Caption
+#: DoxBoxfrmOptions.dfm:25
+msgid "&Save above settings to:"
+msgstr "&Salva le opzioni soprastanti in:"
+
+#. frmOptions..ckAssociateFiles..Caption
+#: DoxBoxfrmOptions.dfm:81
+msgid "Associate %s with \".vol\" &files"
+msgstr "Associa %s con i &file \".vol\""
+
+#. frmOptions..pcOptions..tcSystemTray..Caption
+#: DoxBoxfrmOptions.dfm:147
+msgid "System Tray"
+msgstr "System Tray"
+
+#. frmOptions..pcOptions..tsAutorun..Caption
+#: DoxBoxfrmOptions.dfm:165
+msgid "Autorun"
+msgstr "Autoavvia"
+
+#. frmDoxBoxSelectOverwriteMethod..Caption
+#: DoxBoxfrmSelectOverwriteMethod.dfm:5
+msgid "Select Type of Overwrite"
+msgstr "Seleziona tipo di sovrascrittura"
+
+#. frmDoxBoxSelectOverwriteMethod..GroupBox1..Caption
+#: DoxBoxfrmSelectOverwriteMethod.dfm:46
+msgid "Type of overwrite data"
+msgstr "Tipo di dati in sovrascrittura"
+
+#. frmDoxBoxSelectOverwriteMethod..GroupBox1..rbDataEncrypted..Caption
+#: DoxBoxfrmSelectOverwriteMethod.dfm:53
+msgid "Encrypted data"
+msgstr "Dati crittati"
+
+#. frmDoxBoxSelectOverwriteMethod..GroupBox1..rbDataPseudorandom..Caption
+#. Programmer's name for it: SHREDMETHOD_PSEUDORANDOM_DATA
+#: DoxBoxfrmSelectOverwriteMethod.dfm:62
+#: Shredder/Shredder.pas:45
+msgid "Pseudorandom data"
+msgstr "Dati pseudocasuali"
+
+#. frmDoxBoxVolProperties..Caption
+#: DoxBoxfrmVolProperties.dfm:5
+msgid "LibreCrypt Volume Properties"
+msgstr "Proprietà del volume LibreCrypt"
+
+#. frmDoxBoxVolProperties..Label15..Caption
+#: DoxBoxfrmVolProperties.dfm:24
+msgid "&Mounted for:"
+msgstr "&Montato per:"
+
+#. frmDoxBoxVolProperties..Label5..Caption
+#: DoxBoxfrmVolProperties.dfm:40
+#: DoxBoxfrmCDBBackupRestore.pas:105
+#: DoxBoxfrmCDBBackupRestore.pas:122
+msgid "&Volume:"
+msgstr "&Volume:"
+
+#. frmDoxBoxVolProperties..Label7..Caption
+#: DoxBoxfrmVolProperties.dfm:48
+msgid "M&ounted on device:"
+msgstr "M&ontato sull'unità:"
+
+#. frmDoxBoxVolProperties..Label6..Caption
+#: DoxBoxfrmVolProperties.dfm:56
+msgid "&Main cypher:"
+msgstr "Cypher principale:"
+
+#. frmDoxBoxVolProperties..lblIVHash..Caption
+#: DoxBoxfrmVolProperties.dfm:64
+msgid "&IV hash algorithm:"
+msgstr "Algoritmo hash &IV:"
+
+#. frmDoxBoxVolProperties..Label2..Caption
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..Label5..Caption
+#: DoxBoxfrmVolProperties.dfm:72
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:380
+msgid "&Sector IVs:"
+msgstr "&Settore IV:"
+
+#. frmDoxBoxVolProperties..lblIVCypher..Caption
+#: DoxBoxfrmVolProperties.dfm:80
+msgid "I&V cypher:"
+msgstr "Cypher I&V:"
+
+#: About_U.pas:71
+msgid "LibreCrypt driver: %s"
+msgstr "Driver LibreCrypt: %s"
+
+#: About_U.pas:76
+msgid "The main LibreCrypt driver is either not installed, or not started"
+msgstr "Il driver LibreCrypt principale non è installato, o non è avviato"
+
+#. Programmer's name for it: FILTER_EXECUTABLE_FILES
+#: common/frmCommonOptions.pas:55
+msgid "Program files (*.exe, *.com, *.bat)|*.exe; *.bat; *.com|All files|*.*"
+msgstr "File eseguibili (*.exe, *.com, *.bat)|*.exe; *.bat; *.com|Tutti i file|*.*"
+
+#: common/frmCommonOptions.pas:66
+msgid "Locate post Open executable"
+msgstr "Indica l'eseguibile post montaggio"
+
+#: common/frmCommonOptions.pas:80
+msgid "Locate pre dismount executable"
+msgstr "Indica l'eseguibile pre smontaggio"
+
+#: common/frmCommonOptions.pas:94
+msgid "Locate post dismount executable"
+msgstr "Indica l'eseguibile post smontaggio"
+
+#. Setup instructions text
+#: common/frmCommonOptions.pas:136
+msgid "LibreCrypt can be configured here to automatically run programs \n"
+"after opening, before locking, and after locking.\n"
+"Any post-open and pre-lock executables specified must use a relative path to the \n"
+"executable within the opened container.\n"
+"Executables with spaces in their paths/names must be surrounded with double quotes.\n"
+"\"%DRIVE\" will be substituted with the drive letter of the opened drive"
+msgstr ""
+"LibreCrypt può essere qui configurato per avviare automaticamente programmi dopo il montaggio, prima dello smontaggio, e dopo lo smontaggio.\n"
+"Qualsiasi eseguibile specificato in post-montaggio e pre-montaggio deve usare un percorso relativo che punti all'eseguibile nel volume montato (p.e. i percorsi assoluti e UNC non sono permessi per ragioni di sicurezza).\n"
+"Gli eseguibili con spazi nei loro percorsi/nomi devono essere delimitati da virgolette.\n"
+"\"%DRIVE\" verrà sostituito dalla lettera del disco montato."
+
+#. Programmer's name for it: USE_DEFAULT
+#. tsRequestedDriveLetter
+#: DoxBoxfmeOptions_General.pas:76
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:221
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:355
+#: OTFEDoxBox_frmKeyEntryLUKS.pas:126
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:548
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1519
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:206
+msgid "Use default"
+msgstr "Usa impostazioni di default"
+
+#. This should be set to the name of the language translated to
+#. Programmer's name for it: RS_LANGUAGE
+#: DoxBoxfmeOptions_General.pas:78
+#: DoxBoxfmeOptions_General.pas:299
+msgid "English"
+msgstr "Italiano"
+
+#: DoxBoxfmeOptions_General.pas:167
+msgid "Language name: %1"
+msgstr "Nome lingua: %1"
+
+#: DoxBoxfmeOptions_General.pas:168
+msgid "Language code: %1"
+msgstr "Codice lingua: %1"
+
+#: DoxBoxfmeOptions_General.pas:169
+msgid "Translator: %1"
+msgstr "Traduttore: %1"
+
+#. Add "default" into the list
+#: DoxBoxfmeOptions_General.pas:322
+msgid "(Default)"
+msgstr "(Default)"
+
+#. Programmer's name for it: FILTER_LIBRARY_FILES
+#: DoxBoxfmeOptions_PKCS11.pas:50
+msgid "Library files (*.dll)|*.dll|All files|*.*"
+msgstr "Estensioni applicazione (*.dll)|*.dll|Tutti i file|*.*"
+
+#: DoxBoxfmeOptions_PKCS11.pas:71
+msgid "PKCS#11 library appears to be functional"
+msgstr "La libreria PKCS#11 sembra in funzione"
+
+#: DoxBoxfmeOptions_PKCS11.pas:126
+msgid "Please specify the PKCS#11 library to be used"
+msgstr "Specificare la libreria PKCS#11 da utilizzare"
+
+#: DoxBoxfmeOptions_PKCS11.pas:149
+msgid "The library specified does not appear to be a valid/working PKCS#11 library"
+msgstr "La libreria PKCS#11 specificata non sembra essere valida/funzionante"
+
+#: DoxBoxfmeOptions_PKCS11.pas:180
+msgid "If automount on PKCS#11 token insertion is enabled, the volume to be mounted must be specified"
+msgstr "Se l'automontaggio all'inserimento del token PKCS#11 è abilitato, va specifiato il volume da montare"
+
+#. Programmer's name for it: USE_NOT_IN_USE
+#: DoxBoxfrmCDBBackupRestore.pas:88
+msgid "Please ensure that the volume is not mounted, or otherwise in use"
+msgstr "Assicurarsi che il volume non sia montato, o comunque in uso"
+
+#: DoxBoxfrmCDBBackupRestore.pas:102
+msgid "Backup Volume Critical Data Block"
+msgstr "Backup Dati Critici del Volume"
+
+#: DoxBoxfrmCDBBackupRestore.pas:104
+#: DoxBoxfrmCDBBackupRestore.pas:121
+msgid "Volume details"
+msgstr "Dettagli volume"
+
+#: DoxBoxfrmCDBBackupRestore.pas:107
+#: DoxBoxfrmCDBBackupRestore.pas:118
+msgid "Backup details"
+msgstr "Dettagli backup"
+
+#: DoxBoxfrmCDBBackupRestore.pas:108
+#: DoxBoxfrmCDBBackupRestore.pas:119
+msgid "&Backup filename:"
+msgstr "Nome file di &Backup:"
+
+#. Backup file starts from 0 - don't allow the user to change offset
+#: DoxBoxfrmCDBBackupRestore.pas:116
+msgid "Restore Volume Critical Data Block"
+msgstr "Ripristino Dati Critici del Volume"
+
+#. Note: You can only backup to a *file*
+#: DoxBoxfrmCDBBackupRestore.pas:166
+msgid "The file you are attempting to backup to already exists."
+msgstr "Il file su cui si vuole effettuare il backup esiste già."
+
+#: DoxBoxfrmCDBBackupRestore.pas:168
+msgid "Please delete this backup file and try again, or specify a different filename to backup to."
+msgstr "Cancellare questo file di backup e riprovare, o cambiare il nome del file per il backup."
+
+#. Note: You can only restore from a *file*
+#: DoxBoxfrmCDBBackupRestore.pas:197
+msgid "The backup file specified does not exist."
+msgstr "Il file di backup specificato non esiste."
+
+#. Check that the source file is the right size for a backup file
+#: DoxBoxfrmCDBBackupRestore.pas:209
+msgid "The source file you specified does not appear to be the right size for a backup file"
+msgstr "Il file specificato non sembra essere delle dimensioni corrette per un file di backup"
+
+#: DoxBoxfrmCDBBackupRestore.pas:211
+msgid "Please check your settings and try again."
+msgstr "Contollare le impostazioni e riprovare."
+
+#. Backup is relativly safe as it backs up to a file which doesn't exist
+#: DoxBoxfrmCDBBackupRestore.pas:231
+msgid ""
+"Please confirm: Do you wish to restore the header from backup file:\n"
+"\n"
+"%s\n"
+"\n"
+"Into the volume:\n"
+"\n"
+"%s\n"
+"\n"
+"Starting from offset %d in the container?"
+msgstr ""
+"Confirmare: Si vogliono ripristinare i dati critici dal file di backup:\n"
+"\n"
+"%s\n"
+"\n"
+"Nel volume:\n"
+"\n"
+"%s\n"
+"\n"
+"Iniziare dall'offset %d nel volume?"
+
+#: DoxBoxfrmCDBBackupRestore.pas:269
+msgid "Backup operation completed successfully."
+msgstr "Operazione di backup completata con successo."
+
+#: DoxBoxfrmCDBBackupRestore.pas:275
+msgid "Backup operation failed."
+msgstr "Operazione di backup fallita."
+
+#. if (dlgType = opBackup) then
+#: DoxBoxfrmCDBBackupRestore.pas:295
+msgid "Restore operation completed successfully."
+msgstr "Operazione di ripristino completata con successo."
+
+#: DoxBoxfrmCDBBackupRestore.pas:301
+msgid "Restore operation failed."
+msgstr "Operazione di ripristino fallita."
+
+#: DoxBoxfrmCDBDump.pas:229
+msgid "A human readable copy of your critical data block has been written to:"
+msgstr "Una copia leggibile dei dati critici è stata scritta in:"
+
+#: DoxBoxfrmCDBDump.pas:233
+msgid "Do you wish to open this file in Windows Notepad?"
+msgstr "Aprire questo file con il Blocco Note di Windows?"
+
+#: DoxBoxfrmCDBDump.pas:240
+msgid "Error running Notepad"
+msgstr "Errore apertura Blocco Note"
+
+#: DoxBoxfrmCDBDump.pas:257
+msgid "Unable to dump out critical data block."
+msgstr "Errore nel trasferimento dei dati critici."
+
+#: DoxBoxfrmCDBDump.pas:259
+msgid "Please ensure that your password and details are entered correctly, and that this file is not currently in use (e.g. mounted)"
+msgstr "Assicurarsi che la password e i dettagli siano corretti, e che il file non sia attualmente in uso (p.e. montato)"
+
+#: DoxBoxfrmCDBDump.pas:281
+msgid "Dump LUKS Details"
+msgstr "Trasferire Dettagli LUKS"
+
+#: DoxBoxfrmCDBDump.pas:288
+msgid "Dump Critical Data Block"
+msgstr "Trasferire Dati Critici"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_TITLE
+#: DoxBoxfrmGridReport.pas:70
+msgid "Driver title"
+msgstr "Nome driver"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_VERSION
+#: DoxBoxfrmGridReport.pas:71
+msgid "Driver version"
+msgstr "Versione driver"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_GUID
+#: DoxBoxfrmGridReport.pas:72
+msgid "Driver GUID"
+msgstr "GUID driver"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_DEVICE_NAME
+#: DoxBoxfrmGridReport.pas:73
+msgid "Driver device name"
+msgstr "Nome dispositivo driver"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_USER_MODE_NAME
+#: DoxBoxfrmGridReport.pas:74
+msgid "Driver user mode name"
+msgstr "Nome driver modalità utente"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_KERNEL_MODE_NAME
+#: DoxBoxfrmGridReport.pas:75
+msgid "Driver kernel mode name"
+msgstr "Nome driver modalità kernel"
+
+#. Save dialog related
+#. Programmer's name for it: FILE_FILTER_FLT_REPORTS
+#: DoxBoxfrmGridReport.pas:94
+msgid "Text report (*.txt)|*.txt|Comma separated values (*.csv)|*.csv|Tab separated values (*.tsv)|*.tsv"
+msgstr "Formato file rapporto (*.txt)|*.txt|Comma separated values (*.csv)|*.csv|Tab separated values (*.tsv)|*.tsv"
+
+#. Programmer's name for it: FILE_FILTER_DFLT_REPORTS
+#. Programmer's name for it: FILE_FILTER_DFLT_TEXTFILES
+#: DoxBoxfrmGridReport.pas:95
+#: OTFEDoxBox_U.pas:58
+msgid "txt"
+msgstr "txt"
+
+#: DoxBoxfrmGridReport.pas:178
+msgid "Total drivers: %d"
+msgstr "Driver totali: %d"
+
+#: DoxBoxfrmGridReport.pas:179
+#: DoxBoxfrmGridReport.pas:252
+msgid "Total algorithms: %d"
+msgstr "Algoritmi totali: %d"
+
+#. Generate file contents...
+#: DoxBoxfrmGridReport.pas:228
+msgid "No implementations found"
+msgstr "Nessuna implementazione trovata"
+
+#. Add header if text report
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSummary..Caption
+#: DoxBoxfrmGridReport.pas:249
+#: DoxBoxfrmGridReport.pas:250
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:866
+msgid "Summary"
+msgstr "Sommario"
+
+#: DoxBoxfrmGridReport.pas:251
+msgid "Total drivers   : %d"
+msgstr "Driver totali   : %d"
+
+#: DoxBoxfrmGridReport.pas:255
+#: DoxBoxfrmGridReport.pas:256
+msgid "Details"
+msgstr "Dettagli"
+
+#: DoxBoxfrmGridReport.pas:420
+msgid "Unknown output format?!"
+msgstr "Formato di output sconosciuto?!"
+
+#: DoxBoxfrmGridReport.pas:422
+msgid "Please report seeing this error!"
+msgstr "Per favore segnalate questo errore!"
+
+#. IMPORTANT: If this is updated, GetColumnTitle() MUST ALSO BE UPDATED
+#. Programmer's name for it: COL_TITLE_CYPHER_TITLE
+#: DoxBoxfrmGridReport_Cypher.pas:62
+msgid "Cypher title"
+msgstr "Titolo Cypher"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_KEYSIZE
+#: DoxBoxfrmGridReport_Cypher.pas:63
+msgid "Cypher keysize"
+msgstr "Keysiza Cypher"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_MODE
+#: DoxBoxfrmGridReport_Cypher.pas:64
+msgid "Cypher mode"
+msgstr "Modalità Cypher"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_VERSION
+#: DoxBoxfrmGridReport_Cypher.pas:65
+msgid "Cypher version"
+msgstr "Version Cypher"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_KEYSIZE_REQD
+#: DoxBoxfrmGridReport_Cypher.pas:66
+msgid "Cypher keysize required"
+msgstr "Keysize Cypher richiesto"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_BLOCKSIZE
+#: DoxBoxfrmGridReport_Cypher.pas:67
+msgid "Cypher blocksize"
+msgstr "Blocksize Cypher"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_GUID
+#: DoxBoxfrmGridReport_Cypher.pas:68
+msgid "Cypher GUID"
+msgstr "GUID Cypher"
+
+#: DoxBoxfrmGridReport_Cypher.pas:122
+#: DoxBoxfrmGridReport_Cypher.pas:134
+msgid "<null>"
+msgstr "<null>"
+
+#: DoxBoxfrmGridReport_Cypher.pas:126
+#: DoxBoxfrmGridReport_Cypher.pas:138
+#: DoxBoxfrmGridReport_Cypher.pas:146
+msgid "<any>"
+msgstr "<tutti>"
+
+#: DoxBoxfrmGridReport_Cypher.pas:272
+msgid "Available Cyphers"
+msgstr "Cypher disponibili"
+
+#: DoxBoxfrmGridReport_Cypher.pas:273
+msgid "The following cyphers are available for use:"
+msgstr "I seguenti cypher sono disponibili per l'uso:"
+
+#: DoxBoxfrmGridReport_Cypher.pas:284
+msgid "No cypher algorithms could be found."
+msgstr "Nessun algoritmo cypher trovato."
+
+#: DoxBoxfrmGridReport_Cypher.pas:286
+msgid "Please start portable mode, or click \"Drivers...\" to install one or more cypher drivers"
+msgstr "Avviare modalità trasferibile, o cliccare \"Driver...\" per installare uno o più driver cypher"
+
+#. IMPORTANT: If this is updated, GetColumnTitle() MUST ALSO BE UPDATED
+#. Programmer's name for it: COL_TITLE_HASH_TITLE
+#: DoxBoxfrmGridReport_Hash.pas:60
+msgid "Hash title"
+msgstr "Titolo Hash"
+
+#. Programmer's name for it: COL_TITLE_HASH_VERSION
+#: DoxBoxfrmGridReport_Hash.pas:61
+msgid "Hash version"
+msgstr "Versione Hash"
+
+#. Programmer's name for it: COL_TITLE_HASH_LENGTH
+#: DoxBoxfrmGridReport_Hash.pas:62
+msgid "Hash length"
+msgstr "Lunghezza Hash"
+
+#. Programmer's name for it: COL_TITLE_HASH_BLOCKSIZE
+#: DoxBoxfrmGridReport_Hash.pas:63
+msgid "Hash blocksize"
+msgstr "Blocksize Hash"
+
+#. Programmer's name for it: COL_TITLE_HASH_GUID
+#: DoxBoxfrmGridReport_Hash.pas:64
+msgid "Hash GUID"
+msgstr "GUID Hash"
+
+#: DoxBoxfrmGridReport_Hash.pas:117
+msgid "<variable>"
+msgstr "<variabile>"
+
+#: DoxBoxfrmGridReport_Hash.pas:125
+msgid "<n/a>"
+msgstr "<n/a>"
+
+#: DoxBoxfrmGridReport_Hash.pas:249
+msgid "Available Hashes"
+msgstr "Hash disponibili"
+
+#: DoxBoxfrmGridReport_Hash.pas:250
+msgid "The following hashes are available for use:"
+msgstr "I seguenti hash sono disponibili per l'uso:"
+
+#: DoxBoxfrmGridReport_Hash.pas:261
+msgid "No hash algorithms could be found."
+msgstr "Nessun algoritmo di hash trovato:"
+
+#: DoxBoxfrmGridReport_Hash.pas:263
+msgid "Please start portable mode, or click \"Drivers...\" to install one or more hash drivers"
+msgstr "Avviare modalità trasferibile, o cliccare \"Driver...\" per installare uno o più hash cypher"
+
+#: DoxBoxfrmInstallOnUSBDrive.pas:67
+msgid ""
+"This function provides an easy means of copying %s to a USB drive, and configuring it to launch automatically when the USB drive is plugged in.\n"
+"\n"
+"Please select the USB drive, and location on it, where you would like %s to be copied to:"
+msgstr ""
+"Questa funzione semplifica la copiatura di %s su un disco USB, e la sua configurazione per lanciarlo in automatico al collegamento del disco USB.\n"
+"\n"
+"Selezionare il disco USB, e il percorso su di esso, dove volete copiare %s:"
+
+#: DoxBoxfrmInstallOnUSBDrive.pas:85
+msgid "Select location to copy %1 to"
+msgstr "Selezionare la posizione in cui copiare %1"
+
+#: DoxBoxfrmInstallOnUSBDrive.pas:104
+msgid "%1 copy complete."
+msgstr "Copia di %1 completa"
+
+#. Note: GetInstallRelativePath() will return '\', at a minimum
+#: DoxBoxfrmInstallOnUSBDrive.pas:128
+msgid "You have opted to copy %1 to the root directory of your USB drive, and not a subdirectory."
+msgstr "Si è scelto di copiare %1 nella cartella principale del drive USB, e non una sottocartella."
+
+#: DoxBoxfrmInstallOnUSBDrive.pas:130
+msgid "Are you sure you wish to do this?"
+msgstr "Si conferma l'azione prescelta?"
+
+#. Note: This force-creates the destPath directory
+#: DoxBoxfrmInstallOnUSBDrive.pas:149
+msgid ""
+"Unable to copy %1 to:\n"
+"\n"
+"%2"
+msgstr ""
+"Impossible copiare %1 in:\n"
+"\n"
+"%2"
+
+#. Create autorun.inf file, if needed
+#: DoxBoxfrmInstallOnUSBDrive.pas:165
+msgid "%1 was successfully copied over, but an autoplay (autorun.inf) file could not be created."
+msgstr "%1 è stato copiato con successo, ma non è stato possible creare autorun.inf."
+
+#: DoxBoxfrmInstallOnUSBDrive.pas:204
+#: DoxBoxfrmInstallOnUSBDrive.pas:205
+msgid "Launch %1"
+msgstr "Avvia %1"
+
+#. Programmer's name for it: AUTORUN_POST_MOUNT
+#: DoxBoxfrmMain.pas:400
+msgid "post Open"
+msgstr "post montaggio"
+
+#. Programmer's name for it: AUTORUN_PRE_MOUNT
+#: DoxBoxfrmMain.pas:401
+msgid "pre dismount"
+msgstr "pre smontaggio"
+
+#. Programmer's name for it: AUTORUN_POST_DISMOUNT
+#: DoxBoxfrmMain.pas:402
+msgid "post dismount"
+msgstr "post smontaggio"
+
+#. Programmer's name for it: TEXT_NEED_ADMIN
+#: DoxBoxfrmMain.pas:411
+msgid "You need administrator privileges in order to carry out this operation."
+msgstr "C'è bisogno di privilegi di amministratore per compiere questa operazione."
+
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_NEW
+#: DoxBoxfrmMain.pas:413
+msgid "New"
+msgstr "Nuovo"
+
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_DISMOUNT
+#: DoxBoxfrmMain.pas:416
+msgid "Dismount"
+msgstr "Smonta"
+
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_PORTABLEMODE
+#: DoxBoxfrmMain.pas:418
+msgid "Portable mode"
+msgstr "Modalità trasferibile"
+
+#: DoxBoxfrmMain.pas:548
+msgid "The main LibreCrypt driver does not appear to be installed/running on this computer"
+msgstr "Il driver principale LibreCrypt non sembra essere installato/avviato su questo computer"
+
+#: DoxBoxfrmMain.pas:550
+msgid "Would you like to start LibreCrypt in portable mode?"
+msgstr "Si vuole avviare LibreCrypt in modalità trasferibile?"
+
+#: DoxBoxfrmMain.pas:564
+msgid "Please see the \"installation\" section of the accompanying documentation for instructions on how to install the LibreCrypt drivers."
+msgstr "Vedere la sezione \"installation\" della documentazione per istruzione su come installare i driver LibreCrypt."
+
+#. Listview columns...
+#: DoxBoxfrmMain.pas:828
+msgid "Drive"
+msgstr "Drive"
+
+#. tmpColumn.minwidth := lvDrives.width;
+#: DoxBoxfrmMain.pas:833
+msgid "Volume"
+msgstr "Volume"
+
+#: DoxBoxfrmMain.pas:1300
+msgid "Unable to Open volume."
+msgstr "Impossibile montare il volume."
+
+#: DoxBoxfrmMain.pas:1302
+msgid "Please check your password and settings, and try again."
+msgstr "Controllare password e impostazioni, e riprovare."
+
+#. Open successful
+#: DoxBoxfrmMain.pas:1313
+msgid "Your LibreCrypt volume has been mounted as drive: %1"
+msgstr "Il volume LibreCrypt è stato montato come disco: %1"
+
+#: DoxBoxfrmMain.pas:1317
+msgid "Your LibreCrypt volumes have been mounted as drives: %1"
+msgstr "I volumi LibreCrypt sono stati montati come dischi: %1"
+
+#. the drives to be dismounted - and we're not locking that drive
+#: DoxBoxfrmMain.pas:1633
+msgid "The volume currently mounted as %1: must be dismounted before %2: can be dismounted"
+msgstr "Il volume montato come %1: deve essere smontato prima che %2: possa essere smontato"
+
+#. an emergency dismount
+#: DoxBoxfrmMain.pas:1690
+msgid "Unable to dismount drive: %1"
+msgstr "Impossible smontare disco: %1"
+
+#: DoxBoxfrmMain.pas:1691
+msgid "Unable to dismount drives: %1"
+msgstr "Impossibile smontare dischi: %1"
+
+#. they want to attempt an emergency dismount
+#: DoxBoxfrmMain.pas:1702
+msgid "Do you wish to force a dismount on this drive?"
+msgstr "Forzare lo smontaggio di questo disco?"
+
+#: DoxBoxfrmMain.pas:1703
+msgid "Do you wish to force a dismount on these drives?"
+msgstr "Forzare lo smontaggio di questi dischi?"
+
+#: DoxBoxfrmMain.pas:1709
+msgid "Warning: Emergency dismounts are not recommended"
+msgstr "Attenzione: Smontaggi di emergenza non raccomandati"
+
+#: DoxBoxfrmMain.pas:1711
+#: DoxBoxfrmMain.pas:3516
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:520
+#: OTFEDoxBox_frmKeyEntryLUKS.pas:217
+msgid "Are you sure you wish to proceed?"
+msgstr "Si è sicuri di voler procedere?"
+
+#. portable mode status - and DOESN'T turn it on/off
+#: DoxBoxfrmMain.pas:1798
+msgid "Toggle portable mode drivers"
+msgstr "Attivare/disattivare driver modo trasferibile"
+
+#: DoxBoxfrmMain.pas:1802
+msgid "Use portable mode drivers"
+msgstr "Usa driver modalità trasferibile"
+
+#. Update status bar text, if visible
+#: DoxBoxfrmMain.pas:1854
+msgid "LibreCrypt main driver not connected."
+msgstr "Driver principale LibreCrypt non connesso."
+
+#: DoxBoxfrmMain.pas:1860
+msgid "%1 drive mounted."
+msgstr "%1 disco montato."
+
+#: DoxBoxfrmMain.pas:1861
+msgid "%1 drives mounted."
+msgstr "%1 dischi montati."
+
+#: DoxBoxfrmMain.pas:1878
+msgid "%1: Free Space: %2; Total size: %3"
+msgstr "%1: Spazio Libero: %2; Dimensione totale: %3"
+
+#: DoxBoxfrmMain.pas:1902
+msgid "%1 drive selected."
+msgstr "Disco %1 selezionato."
+
+#: DoxBoxfrmMain.pas:1903
+msgid "%1 drives selected."
+msgstr "Dischi %1 selezionati."
+
+#: DoxBoxfrmMain.pas:1985
+msgid "Unknown autorun type?!"
+msgstr "Tipo di autorun sconosciuto?!"
+
+#. PARAMETERS!
+#: DoxBoxfrmMain.pas:2037
+msgid "Unable to locate %1 executable:"
+msgstr "Impossibile trovare eseguibile %1:"
+
+#: DoxBoxfrmMain.pas:2062
+msgid "Error running %1 executable:"
+msgstr "Errore nell'esecuzione di %1:"
+
+#: DoxBoxfrmMain.pas:2129
+msgid "Error running Explorer"
+msgstr "Errore esecuzione Explorer"
+
+#. Don't complain to user is we're about to exit!
+#: DoxBoxfrmMain.pas:2213
+msgid "In order to use this software, you must first upgrade your %1 drivers to a later version."
+msgstr "Per usare questo software, è necessario aggiornare i driver %1 ad una versione recente."
+
+#: DoxBoxfrmMain.pas:2215
+msgid "If you have just upgraded your copy of %1 from a previous version, please ensure that you have followed the upgrade instructions that came with it, and have rebooted if necessary."
+msgstr "Se la copia di %1 è stata appena aggiornata, assicurarsi di aver seguito le istruzioni di aggiornamento e di aver riavviato il sistema se necessario."
+
+#: DoxBoxfrmMain.pas:2222
+msgid "Unable to connect to the main %1 driver."
+msgstr "Impossibile connettersi al driver %1 principale."
+
+#: DoxBoxfrmMain.pas:2224
+msgid "Please ensure that the main \"%1\" driver is installed and started."
+msgstr "Assicurarsi che il driver \"%1\" principale sia installato e avviato."
+
+#: DoxBoxfrmMain.pas:2226
+msgid "If you have only just installed %1, please reboot and try again."
+msgstr "Se %1 è stato appena installato, riavviare il sistema e riprovare"
+
+#. Old driver warnings
+#: DoxBoxfrmMain.pas:2241
+#: DoxBoxfrmMain.pas:2252
+msgid "The main LibreCrypt driver installed on this computer dates back to LibreCrypt %1"
+msgstr "Il driver LibreCrypt installato su questo computer corrisponde alla versione %1 di LibreCrypt"
+
+#: DoxBoxfrmMain.pas:2243
+msgid "It is highly recommended that you upgrade your LibreCrypt drivers to v3.00 or later as soon as possible, in order to allow the use of LRW and XTS based volumes."
+msgstr "E' altamente raccomandato l'aggiornamento dei driver LibreCrypt alla versione 3.00 o successiva appena possibile, in modo da permettere l'uso di volumi LRW e XTS."
+
+#: DoxBoxfrmMain.pas:2245
+#: DoxBoxfrmMain.pas:2256
+msgid "See documentation (installation section) for instructions on how to do this."
+msgstr "Vedere la documentazione (sezione installazione) per istruzioni a riguardo."
+
+#: DoxBoxfrmMain.pas:2254
+msgid "It is highly recommended that you upgrade your LibreCrypt drivers to those included in v4.30 or later as soon as possible, due to improvements in the main driver."
+msgstr "E' altamente raccomandato l'aggiornamento dei driver LibreCrypt alla versione 4.30 o successiva appena possibile, per via di miglioramenti nel driver principale."
+
+#. Encrypt the pseudorandom data generated
+#: DoxBoxfrmMain.pas:2355
+msgid "Unable to encrypt pseudorandom data before using for overwrite buffer?!"
+msgstr "Impossibile crittare dati pseudocasuali prima di usare il buffer di sovrascrittura?!"
+
+#: DoxBoxfrmMain.pas:2357
+msgid "Error #: %1"
+msgstr "Errore #: %1"
+
+#: DoxBoxfrmMain.pas:2497
+msgid "Unable to locate any portable LibreCrypt drivers."
+msgstr "Impossibile localizzare i driver trasferibili LibreCrypt."
+
+#: DoxBoxfrmMain.pas:2499
+msgid "Please ensure that the a copy of the LibreCrypt drivers (\".sys\" files) you wish to use are located in the correct directory."
+msgstr "Assicurarsi che una copia dei driver LibreCrypt (file \".sys\") che si desidera usare sia presente nella cartella corretta."
+
+#. end;
+#: DoxBoxfrmMain.pas:2525
+msgid "One or more of your portable LibreCrypt drivers could not be installed/started."
+msgstr "Impossibile installare/avviare uno o più driver trasferibili LibreCrypt."
+
+#: DoxBoxfrmMain.pas:2529
+#: DoxBoxfrmMain.pas:2612
+msgid "Please select \"File | Drivers...\" to check which drivers are currently operating."
+msgstr "Selezionare \"File | Driver...\" per verificare quali driver sono attivi."
+
+#. as no drives can be mounted
+#: DoxBoxfrmMain.pas:2568
+msgid "You have one or more volumes mounted."
+msgstr "Sono presenti uno o più volumi montati."
+
+#: DoxBoxfrmMain.pas:2570
+msgid "If any of the currently mounted volumes makes use of any of the LibreCrypt drivers which are currently in portable mode, stopping portable mode is not advisable."
+msgstr "Se uno dei volumi attualmente montati fa uso di un driver LibreCrypt attualmente in modalità trasferibile, è sconsigliabile interrompere la modalità trasferibile."
+
+#: DoxBoxfrmMain.pas:2572
+msgid "It is recommended that you dismount all volumes before stopping portable mode."
+msgstr "Si raccomanda di smontare tutti i volumi prima di interrompere la modalità trasferibile."
+
+#: DoxBoxfrmMain.pas:2574
+msgid "Do you wish to continue stopping portable mode?"
+msgstr "Si desidera continuare l'interruzione della modalità trasferibile?"
+
+#. problem
+#: DoxBoxfrmMain.pas:2597
+msgid "Portable mode drivers stopped and uninstalled."
+msgstr "Driver modalità trasferibile chiusi e disinstallati."
+
+#: DoxBoxfrmMain.pas:2608
+msgid "One or more of your portable LibreCrypt drivers could not be stopped/uninstalled."
+msgstr "Impossible chiudere/disinstallare uno o più driver LibreCrypt in modalità trasferibile."
+
+#: DoxBoxfrmMain.pas:2734
+msgid "LibreCrypt volume created successfully."
+msgstr "Volume LibreCrypt creato con successo."
+
+#: DoxBoxfrmMain.pas:2736
+msgid "Please Open, format and overwrite this volume's free space before use."
+msgstr "Montare, formattare e sovrascriver lo spazio libero del volume prima dell'uso."
+
+#: DoxBoxfrmMain.pas:2744
+msgid "LibreCrypt volume could not be created"
+msgstr "Impossibile creare il volume LibreCrypt"
+
+#: DoxBoxfrmMain.pas:2818
+msgid "Linux volume created successfully."
+msgstr "Volume Linux creato con successo."
+
+#: DoxBoxfrmMain.pas:2820
+msgid "Don't forget to Open and format this volume before use."
+msgstr "Non dimenticare di montare e formattare il volume prima dell'uso."
+
+#: DoxBoxfrmMain.pas:2827
+msgid "Linux volume could not be created"
+msgstr "Impossibile creare volume Linux"
+
+#: DoxBoxfrmMain.pas:3012
+msgid "One or more volumes are still mounted."
+msgstr "Uno o pià volumi sono ancora montati."
+
+#: DoxBoxfrmMain.pas:3014
+msgid "Do you wish to dismount all volumes before exiting?"
+msgstr "Vuoi smontare tutti i volumi prima di uscire?"
+
+#. portable mode shutdown
+#: DoxBoxfrmMain.pas:3060
+msgid "One or more of the LibreCrypt drivers are running in portable mode."
+msgstr "Uno o più driver LibreCrypt sono avviati in modalità trasferibile."
+
+#: DoxBoxfrmMain.pas:3062
+msgid "Do you wish to shutdown portable mode before exiting?"
+msgstr "Si desidera arrestare la modalità trasferibile prima di uscire?"
+
+#: DoxBoxfrmMain.pas:3270
+msgid "Error: Unable to assign hotkey %1"
+msgstr "Errore: Impossibile assegnare l'hotkey %1"
+
+#. Programmer's name for it: FORMAT_CAPTION
+#: DoxBoxfrmMain.pas:3346
+msgid "Format"
+msgstr "Format"
+
+#. just failed...
+#: DoxBoxfrmMain.pas:3374
+msgid "Your encrypted drive could not be formatted at this time."
+msgstr "Impossibile formattare il disco crittato in questo momento."
+
+#: DoxBoxfrmMain.pas:3376
+msgid "Please dismount this volume and remount it with the \"Open for all users\" option checked, before trying again."
+msgstr "Smontare questo volume e rimontarlo con l'opzione \"Monta per tutti gli utenti\" attivata, prima di riprovare."
+
+#: DoxBoxfrmMain.pas:3394
+msgid "Due to the destructive nature of overwriting entire drives, only one drive may be selected when this option is chosen."
+msgstr "A causa della natura distuttiva della sovrascrittura di interi dischi, un solo disco può essere selezionato con questa opzione."
+
+#: DoxBoxfrmMain.pas:3396
+msgid "Please ensure that only one mounted drive is selected, and retry."
+msgstr "Assicurarsi che soltanto un disco montato sia selezionato, e riprovare."
+
+#. it.
+#. it.
+#: DoxBoxfrmMain.pas:3404
+#: OTFEDoxBox_frmDriverControl.pas:263
+#: OTFEDoxBox_frmDriverControl.pas:309
+msgid "WARNING!"
+msgstr "ATTENZIONE!"
+
+#: DoxBoxfrmMain.pas:3406
+msgid "You are attempting to overwrite drive: %1:"
+msgstr "Si sta cercando di sovrascrivere il disco: %1:"
+
+#: DoxBoxfrmMain.pas:3408
+msgid "THIS WILL DESTROY ALL INFORMATION STORED ON DRIVE %1:, and require it to be reformatted"
+msgstr "QUESTO DISTRUGGERA' TUTTE LE INFORMAZIONE SUL DISCO %1:, e richiederà una riformattazione"
+
+#: DoxBoxfrmMain.pas:3410
+msgid "Are you ABSOLUTELY SURE you want to do this?"
+msgstr "Si conferma ASSOLUTAMENTE l'azione prescelta?"
+
+#: DoxBoxfrmMain.pas:3514
+msgid "Overwriting on a large volume may take awhile."
+msgstr "Sovrascrivere un volume di grandi dimesione può richiedere tempi lunghi."
+
+#: DoxBoxfrmMain.pas:3557
+msgid "Overwrite operation complete."
+msgstr "Operazione di sovrascrittura completata."
+
+#: DoxBoxfrmMain.pas:3560
+msgid "Please reformat the drive just overwritten before attempting to use it."
+msgstr "Riformattare il disco appena sovrascritto prima di tentare di usarlo."
+
+#: DoxBoxfrmMain.pas:3565
+msgid "Overwrite operation FAILED."
+msgstr "Operazione di sovrascrittura FALLITA."
+
+#: DoxBoxfrmMain.pas:3570
+msgid "Did you remember to format this drive first?"
+msgstr "Ci si è ricordati di formattare il disco prima?"
+
+#: DoxBoxfrmMain.pas:3577
+msgid "Overwrite operation cancelled by user."
+msgstr "Operazione di sovrascrittura annullata dall'utente."
+
+#: DoxBoxfrmMain.pas:3581
+msgid "No drives selected to overwrite?"
+msgstr "Nessun disco selezionato per la sovrascrittura?"
+
+#. any stupid warning messages about "unsigned drivers"
+#: DoxBoxfrmMain.pas:3735
+msgid "IMPORTANT: Please see the documentation for additional steps to be carried out after installing under this OS."
+msgstr "IMPORTANTE: Vedere la documentazione sui passi ulteriori da seguire dopo aver installato sotto questo OS."
+
+#: DoxBoxfrmMain.pas:4367
+msgid "Unable to initialize PKCS#11 support:"
+msgstr "Impossibile inizializzare il supporto PKCS#11:"
+
+#: DoxBoxfrmMain.pas:4414
+msgid "Detected removal of token from slot ID: %1"
+msgstr "Rilevata rimozione token dallo slot ID: %1"
+
+#: DoxBoxfrmMain.pas:4434
+msgid "Autodismounting drives: %1"
+msgstr "Autosmontaggio dischi: %1"
+
+#: DoxBoxfrmMain.pas:4445
+msgid "Detected insertion of token into slot ID: %1"
+msgstr "Rilevato inserimento token nello slot ID: %1"
+
+#. Attempt automount...
+#: DoxBoxfrmMain.pas:4453
+msgid "Automounting: %1"
+msgstr "Automontaggio: %1"
+
+#. Sanity check; we can't do anything if LibreCrypt component's not available
+#: DoxBoxfrmMain.pas:4475
+msgid "Slot event on slot ID: %1"
+msgstr "Evento slot nello slot ID: %1"
+
+#. Don't do special processing on this message
+#: DoxBoxfrmOptions.pas:182
+msgid ""
+"Under Windows Vista, you cannot save your settings file anywhere under:\n"
+"\n"
+"%1\n"
+"\n"
+"due to Vista's security/mapping system."
+msgstr ""
+"Sotto Windows Vista, è impossibile salvare il file impostazioni sotto:\n"
+"\n"
+"%1\n"
+"\n"
+"a causa del sistema di sicurezza/mappatura di Vista."
+
+#: DoxBoxfrmOptions.pas:184
+msgid "Please either select another location for storing your settings (e.g. your user profile), or move the LibreCrypt executable such that it is not stored underneath the directory shown above."
+msgstr "Scegliere un'altra posizione dove salvare le impostazioni (p.e. il profilo utente), o spostare l'eseguibile LibreCrypt in modo che non sia installato in una sottocartella del percorso scelto."
+
+#. warn user
+#: DoxBoxfrmOptions.pas:243
+msgid "You have not specified a location where LibreCrypt should save its settings to."
+msgstr "Non si è specificata una posizione dove LibreCrypt salvi le sue impostazioni."
+
+#: DoxBoxfrmOptions.pas:245
+msgid "Although the settings entered will take effect, they will revert back to their defaults when LibreCrypt is exited."
+msgstr "I settaggi scelti avranno effetto, ma verranno resettati a default all'uscita da LibreCrypt."
+
+#: DoxBoxfrmOptions.pas:247
+msgid "Do you wish to select a location in order to make your settings persistant?"
+msgstr "Si vuole selezionare una posizione in modo da rendere i settaggi persistenti?"
+
+#. old settings file
+#: DoxBoxfrmOptions.pas:263
+msgid "You have opted not to save your settings"
+msgstr "Si è scelto di non salvare i settaggi"
+
+#: DoxBoxfrmOptions.pas:267
+msgid "You have changed the location where your settings will be saved"
+msgstr "La posizione di salvataggio dei settaggi è stata cambiata"
+
+#. to delete it
+#: DoxBoxfrmOptions.pas:282
+msgid "Would you like LibreCrypt to delete your previous settings file?"
+msgstr "Si vogliono cancellare i vecchi file dei settaggi di LibreCrypt?"
+
+#: DoxBoxfrmOptions.pas:284
+msgid "Note: If you select \"No\" here, LibreCrypt may pick up your old settings the next time you start LibreCrypt"
+msgstr "Nota: Se si seleziona \"No\" qui, LibreCrypt potrebbe ripescare le vecchie impostazioni al suo prossimo avvio"
+
+#: DoxBoxfrmOptions.pas:305
+msgid ""
+"Your previous settings file stored at:\n"
+"\n"
+"%1\n"
+"\n"
+"could not be deleted. Please remove this file manually."
+msgstr ""
+"Il vecchio file dei settaggi memorizzato in:\n"
+"\n"
+"%1\n"
+"\n"
+"non è stato rimosso. Rimuovere il file manualmente."
+
+#: DoxBoxfrmOptions.pas:317
+msgid ""
+"Your previous settings file stored in the Windows registry under:\n"
+"\n"
+"%1\n"
+"\n"
+"could not be deleted. Please delete this registry key manually."
+msgstr ""
+"Il vecchio file dei settaggi memorizzato nel registro di Windows sotto:\n"
+"\n"
+"%1\n"
+"\n"
+"non è stato rimosso. Rimuovere le chiavi registro manualmente."
+
+#: DoxBoxfrmOptions.pas:335
+msgid ""
+"Your previous settings will remain stored at:\n"
+"\n"
+"%1"
+msgstr ""
+"I settaggi precedenti rimarranno memorizzati in:\n"
+"\n"
+"%1"
+
+#: DoxBoxfrmOptions.pas:345
+msgid ""
+"Your previous settings will remain stored in the Windows registry under:\n"
+"\n"
+"%1"
+msgstr ""
+"I settaggi precedenti rimarranno memorizzati nel registro di Windows sotto:\n"
+"\n"
+"%1"
+
+#: DoxBoxfrmSelectOverwriteMethod.pas:100
+msgid ""
+"Please select the type of data that should be used to overwrite the free space:\n"
+"\n"
+"Pseudorandom data - This is faster, but less secure if you wish to create a hidden volume within this volume at a later date.\n"
+"\n"
+"Encrypted data - This is more secure, but slower. Pseudorandom data will be encrypted with your choice of cypher before being written to the drive."
+msgstr ""
+"Seleziona il tipo di dati da usare per sovrascrivere lo spazio libero:\n"
+"\n"
+"Dati pseudocasuali - Più rapido, ma meno sicuro se in futuro si dovesse creare un volume nascosto all'interno di questo.\n"
+"\n"
+"Dati crittati - Più sicuro, ma più lento. I dati pseudocasuali verranno crittati con la tua scelta di cypher prima di essere scritti sul disco."
+
+#: DoxBoxfrmSelectOverwriteMethod.pas:112
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:318
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1268
+msgid "Unable to obtain list of cyphers."
+msgstr "Impossibile ottenre la lista dei cypher."
+
+#: DoxBoxfrmSelectOverwriteMethod.pas:114
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:320
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1270
+msgid "Please ensure that you have one or more LibreCrypt cypher drivers installed and started."
+msgstr "Assicurarsi di avere uno o più driver di cypher LibreCrypt installati e avviati."
+
+#: DoxBoxfrmSelectOverwriteMethod.pas:116
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:288
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:322
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1231
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1244
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1272
+#: OTFEDoxBox_U.pas:9974
+#: OTFEDoxBox_U.pas:9990
+msgid "If you have only just installed LibreCrypt, you may need to restart your computer."
+msgstr "Se LibreCrypt è stato appena installato, potrebbe essere necessario riavviare il pc."
+
+#. Programmer's name for it: RS_UNKNOWN
+#. This function may be called when the driver isn't running
+#. Programmer's name for it: RS_UNKNOWN
+#: DoxBoxfrmVolProperties.pas:66
+#: OTFEDoxBox_U.pas:10159
+#: SDUPartitionPropertiesDlg.pas:50
+msgid "<Unknown>"
+msgstr "<Sconosciuto>"
+
+#: DoxBoxfrmVolProperties.pas:98
+msgid "Readonly"
+msgstr "Sola lettura"
+
+#: DoxBoxfrmVolProperties.pas:102
+msgid "Read/write"
+msgstr "Leggi/Scrivi"
+
+#: DoxBoxfrmVolProperties.pas:114
+#: DoxBoxfrmVolProperties.pas:140
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:839
+msgid "n/a"
+msgstr "n/a"
+
+#: DoxBoxfrmVolProperties.pas:175
+msgid "Unable to get drive properties for drive %1:"
+msgstr "Impossibile ottenere le proprietà del drive %1:"
+
+#. Programmer's name for it: DRAGDROPFILETYPE_PROMPT
+#: DoxBoxSettings.pas:33
+msgid "<prompt user>"
+msgstr "<chiedere utente>"
+
+#. Programmer's name for it: DRAGDROPFILETYPE_LINUX
+#. frmSelectVolumeType..rgVolumeType....Items.Strings
+#: DoxBoxSettings.pas:35
+#: OTFEDoxBox_frmVolumeType.dfm:34
+msgid "Linux"
+msgstr "Linux"
+
+#. Programmer's name for it: SAVELOCATION_DO_NOT_SAVE
+#: DoxBoxSettings.pas:37
+msgid "<Do not save settings>"
+msgstr "<Non salvare i settaggi>"
+
+#. Programmer's name for it: SAVELOCATION_EXE_DIR
+#: DoxBoxSettings.pas:38
+msgid "File in %s directory"
+msgstr "File nella cartella %s"
+
+#. Programmer's name for it: SAVELOCATION_USER_PROFILE
+#: DoxBoxSettings.pas:39
+msgid "File in user profile"
+msgstr "File nel profilo utente"
+
+#. Programmer's name for it: SAVELOCATION_REGISTRY
+#: DoxBoxSettings.pas:40
+msgid "Windows registry"
+msgstr "Registro di Windows"
+
+#. Programmer's name for it: UNKNOWN_SETTINGS_LOCATION
+#: DoxBoxSettings.pas:42
+msgid "Unknown settings location?! Please report seeing this message!"
+msgstr "Posizione settaggi ignota?! Segnalare questo messaggio!"
+
+#: DoxBoxSettings.pas:362
+msgid "Your settings could not be saved."
+msgstr "Impossibile salvare i settaggi."
+
+#: DoxBoxSettings.pas:366
+msgid ""
+"Please ensure that you have suitable access rights in order to write to:\n"
+"\n"
+"%1"
+msgstr ""
+"Assicurarsi di avere diritti di accesso per scrivere in:\n"
+"\n"
+"%1"
+
+#. fmePKCS11_MgrKeyfile..Label1..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.dfm:15
+msgid "The following &keyfiles are stored on your PKCS#11 token:"
+msgstr "I seguenti keyfile sono memorizzati sul token PKCS#11:"
+
+#. fmePKCS11_MgrKeyfile..ActionList1..actImport..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.dfm:58
+msgid "&Import..."
+msgstr "&Importa..."
+
+#. fmePKCS11_MgrKeyfile..ActionList1..actExport..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.dfm:62
+msgid "&Export..."
+msgstr "&Esporta..."
+
+#. fmePKCS11_MgrKeyfile..ActionList1..actDelete..Caption
+#. fmePKCS11_MgrSecretKey..ActionList1..actDelete..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.dfm:66
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.dfm:83
+msgid "&Delete"
+msgstr "Elimina"
+
+#. fmePKCS11_MgrSecretKey..Label1..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.dfm:14
+msgid "The following secret &keys are stored on your PKCS#11 token:"
+msgstr "Le seguenti chiavi segrete sono memorizzate sul token PKCS#11:"
+
+#. fmePKCS11_MgrSecretKey..gbSecretKey..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.dfm:33
+msgid "Secret Key"
+msgstr "Chiave Segreta"
+
+#. fmePKCS11_MgrSecretKey..gbKeyfile..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.dfm:58
+msgid "Keyfile/volume"
+msgstr "Keyfile/volume"
+
+#. fmePKCS11_MgrSecretKey..ActionList1..actEncrypt..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.dfm:87
+msgid "&Secure..."
+msgstr "Proteggi..."
+
+#. fmePKCS11_MgrSecretKey..ActionList1..actDecrypt..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.dfm:91
+msgid "D&esecure"
+msgstr "Sprot&eggi"
+
+#. fmeSelectPartition..lblDblClickNotice..Caption
+#: OTFEDoxBox_fmeSelectPartition.dfm:16
+msgid "Doubleclick partition to display details"
+msgstr "Doppio click sulla partizione per i dettagli"
+
+#. fmeSelectPartition..ckShowCDROM..Caption
+#: OTFEDoxBox_fmeSelectPartition.dfm:93
+msgid "&Show CD/DVD drives"
+msgstr "Mostra lettori CD/DVD"
+
+#. fmeSelectPartition..ckEntireDisk..Caption
+#: OTFEDoxBox_fmeSelectPartition.dfm:103
+msgid "&Entire disk"
+msgstr "Int&ero disco"
+
+#. frmCypherInfo..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:5
+msgid "Cypher Details"
+msgstr "Dettagli Cypher"
+
+#. frmCypherInfo..gbCypherDriver..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:24
+msgid "Cypher Driver"
+msgstr "Driver Cypher"
+
+#. frmCypherInfo..gbCypherDriver..Label1..Caption
+#. frmHashInfo..gbHashDriver..Label1..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:31
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:31
+msgid "DeviceName:"
+msgstr "NomePeriferica:"
+
+#. frmCypherInfo..gbCypherDriver..Label2..Caption
+#. frmHashInfo..gbHashDriver..Label2..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:38
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:38
+msgid "DeviceUserModeName:"
+msgstr "NomePerifericaUserMode:"
+
+#. frmCypherInfo..gbCypherDriver..Label3..Caption
+#. frmHashInfo..gbHashDriver..Label3..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:45
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:45
+msgid "DeviceKernelModeName:"
+msgstr "NomePerifericaKernelMode:"
+
+#. frmCypherInfo..gbCypherDriver..Label4..Caption
+#. frmCypherInfo..gbCypher..Label7..Caption
+#. frmHashInfo..gbHashDriver..Label4..Caption
+#. frmHashInfo..gbHash..Label7..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:52
+#: OTFEDoxBox_frmCypherInfo.dfm:158
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:52
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:158
+msgid "Title:"
+msgstr "Titolo:"
+
+#. frmCypherInfo..gbCypherDriver..Label5..Caption
+#. frmCypherInfo..gbCypher..Label11..Caption
+#. frmHashInfo..gbHashDriver..Label5..Caption
+#. frmHashInfo..gbHash..Label11..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:59
+#: OTFEDoxBox_frmCypherInfo.dfm:186
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:59
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:179
+msgid "Version:"
+msgstr "Versione:"
+
+#. frmCypherInfo..gbCypherDriver..Label6..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:66
+msgid "Cyphers supported:"
+msgstr "Cypher supportati:"
+
+#. frmCypherInfo..gbCypherDriver..Label12..Caption
+#. frmCypherInfo..gbCypher..Label8..Caption
+#. frmHashInfo..gbHashDriver..Label9..Caption
+#. frmHashInfo..gbHash..Label8..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:73
+#: OTFEDoxBox_frmCypherInfo.dfm:165
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:73
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:165
+msgid "GUID:"
+msgstr "GUID:"
+
+#. frmCypherInfo..gbCypher..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:151
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:90
+msgid "Cypher"
+msgstr "Cypher"
+
+#. frmCypherInfo..gbCypher..Label9..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:172
+msgid "Mode:"
+msgstr "Modalità:"
+
+#. frmCypherInfo..gbCypher..Label10..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:179
+msgid "Blocksize:"
+msgstr "Blocksize:"
+
+#. frmCypherInfo..gbCypher..Label13..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:193
+msgid "Keysize:"
+msgstr "Keysize:"
+
+#. frmDriverControl..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:5
+msgid "LibreCrypt Driver Control"
+msgstr "Controllo Driver LibreCrypt"
+
+#. frmDriverControl..gbInstallNew..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:44
+msgid "Install new driver"
+msgstr "Installa nuovo driver"
+
+#. frmDriverControl..gbInstallNew..lblInstall....Caption
+#: OTFEDoxBox_frmDriverControl.dfm:53
+msgid "To install a new hash or cypher driver, please click \"Install...\""
+msgstr "Per installare un nuovo driver hash o cypher, cliccare\"Installa...\""
+
+#. frmDriverControl..gbInstallNew..pbInstall..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:60
+msgid "&Install..."
+msgstr "&Installa..."
+
+#. frmDriverControl..gbModifyExisting..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:70
+msgid "Modify existing driver"
+msgstr "Modifica driver esistente"
+
+#. frmDriverControl..gbModifyExisting..lblStart..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:81
+msgid "Driver &startup:"
+msgstr "Avvio driver:"
+
+#. frmDriverControl..gbModifyExisting..Label1..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:89
+msgid "&Existing drivers:"
+msgstr "Driver &esistenti:"
+
+#. frmDriverControl..gbModifyExisting..Label3..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:98
+msgid "Change driver status:"
+msgstr "Cambia stato driver:"
+
+#. frmDriverControl..gbModifyExisting..Label4..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:106
+msgid "Remove driver:"
+msgstr "Rimuovi driver:"
+
+#. frmDriverControl..gbModifyExisting..pbStart..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:126
+msgid "St&art"
+msgstr "St&art"
+
+#. frmDriverControl..gbModifyExisting..pbStop..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:136
+msgid "St&op"
+msgstr "St&op"
+
+#. frmDriverControl..gbModifyExisting..pbUninstall..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:146
+msgid "U&ninstall"
+msgstr "Disi&nstalla"
+
+#. frmDriverControl..gbModifyExisting..pbUpdate..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:176
+msgid "&Update"
+msgstr "Aggiorna"
+
+#. frmHashInfo..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:5
+msgid "Hash Details"
+msgstr "Dettagli Hash"
+
+#. frmHashInfo..gbHashDriver..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:24
+msgid "Hash Driver"
+msgstr "Driver Hash"
+
+#. frmHashInfo..gbHashDriver..Label6..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:66
+msgid "Hashes supported:"
+msgstr "Hash supportati:"
+
+#. frmHashInfo..gbHash..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:151
+msgid "Hash"
+msgstr "Hash"
+
+#. frmHashInfo..gbHash..Label10..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:172
+msgid "Length:"
+msgstr "Lunghezza"
+
+#. frmHashInfo..gbHash..Label12..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:186
+msgid "Block size:"
+msgstr "Dimensioni blocco:"
+
+#. frmKeyEntryDoxBox..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:5
+msgid "LibreCrypt Key Entry"
+msgstr "Inserimento Chiave LibreCrypt"
+
+#. frmKeyEntryDoxBox..pnlBasic..GroupBox1..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:35
+msgid "Security details"
+msgstr "Dettagli sicurezza"
+
+#. frmKeyEntryDoxBox..pnlBasic..GroupBox1..Label6..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:49
+msgid "&Keyfile:"
+msgstr "&Keyfile:"
+
+#. frmKeyEntryDoxBox..pnlBasic..GroupBox1..ckMountReadonly..Caption
+#. frmKeyEntryPlainLinux..pcEntry..tsMountOptions..GroupBox2..ckMountReadonly..Caption
+#. frmKeyEntryLUKS..GroupBox2..ckMountReadonly..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:87
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:630
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:81
+msgid "Open &readonly"
+msgstr "Monta&re in sola lettura"
+
+#. frmKeyEntryDoxBox..pnlBasic..GroupBox1..rbKeyfileFile..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:105
+msgid "&File:"
+msgstr "&File:"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlButtons..pbAdvanced..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:177
+msgid "Advanced >>"
+msgstr "Avanzato >>"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:196
+msgid "Volume options"
+msgstr "Opzioni volume"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..ckOffsetPointsToCDB..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:210
+msgid "Data from offset includes &CDB"
+msgstr "I dati dell'offset includono &CDB"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox2..Caption
+#. frmKeyEntryPlainLinux..pcEntry..tsMountOptions..Caption
+#. frmKeyEntryPlainLinux..pcEntry..tsMountOptions..GroupBox2..Caption
+#. frmKeyEntryLUKS..GroupBox2..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:235
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:571
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:582
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:46
+msgid "Open options"
+msgstr "Opzioni montaggio"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox2..Label9..Caption
+#. frmKeyEntryPlainLinux..pcEntry..tsMountOptions..GroupBox2..Label25..Caption
+#. frmKeyEntryLUKS..GroupBox2..Label25..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:242
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:610
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:61
+msgid "&Open as:"
+msgstr "&Monta come:"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox2..ckMountForAllUsers..Caption
+#. frmKeyEntryPlainLinux..pcEntry..tsMountOptions..GroupBox2..ckMountForAllUsers..Caption
+#. frmKeyEntryLUKS..GroupBox2..ckMountForAllUsers..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:260
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:649
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:100
+msgid "Open for all &users"
+msgstr "Monta per ogni &utente"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox3..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:269
+msgid "Advanced security details"
+msgstr "Dettagli avanzati sicurezza"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox3..Label7..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:291
+msgid "Key &iterations:"
+msgstr "&Iterazioni chiave:"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox3..Label10..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:299
+msgid "PKCS#&11 secret key:"
+msgstr "Chiave segreta PKCS#&11:"
+
+#. frmKeyEntryPlainLinux..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:5
+msgid "LibreCrypt dm-crypt Key Entry"
+msgstr "Inserimento chiave LibreCrypt Linux"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..Caption
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox1..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:50
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:60
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:87
+msgid "Key"
+msgstr "Key"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox1..Label1..Caption
+#. frmKeyEntryLUKS..GroupBox1..Label1..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:67
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:153
+msgid "&Key:"
+msgstr "&Key:"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox1..Label14..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:102
+msgid "&GPG executable:"
+msgstr "Eseguibile &GPG:"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox1..Label21..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:111
+msgid "G&PG keyfile:"
+msgstr "G&PG keyfile:"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox5..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:161
+msgid "Key processing"
+msgstr "Elaborazione key"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox5..Label2..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:168
+msgid "&Hash:"
+msgstr "&Hash:"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox5..Label6..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:176
+msgid "&Iteration count:"
+msgstr "Conteggio &iterazione:"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox5..Label3..Caption
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..Label23..Caption
+#. frmPKCS11NewSecretKey..Label1..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:205
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:333
+#: OTFEDoxBox_frmPKCS11NewSecretKey.dfm:26
+msgid "&Cypher:"
+msgstr "&Cypher:"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox5..Label18..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:228
+msgid "&Seed:"
+msgstr "&Seed:"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox5..ckHashWithAs..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:309
+msgid "Hash with \"A\"s, if hash output is too short"
+msgstr "Hash con \"A\", se l'hash output è troppo breve"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..Caption
+#. frmKeyEntryLUKS..GroupBox1..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:315
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:146
+msgid "Encryption"
+msgstr "Crittaggio"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:326
+msgid "Encryption options"
+msgstr "Opzioni di crittaggio"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:373
+msgid "IV Generation"
+msgstr "Generazione IV"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..lblIVHash..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:388
+msgid "&IV Hash:"
+msgstr "Hash &IV:"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..lblIVCypher..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:409
+msgid "I&V Cypher:"
+msgstr "Cypher I&V:"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..rgSectorIVSectorZeroPos..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:446
+msgid "Sector &zero location"
+msgstr "Posizione settore &zero"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..rgSectorIVSectorZeroPos....Items.Strings
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:448
+msgid "Start of host file"
+msgstr "Inizio del file host"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..rgSectorIVSectorZeroPos....Items.Strings
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:449
+msgid "Start of encrypted data"
+msgstr "Inizio dei dati crittati"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..Caption
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..Caption
+#. frmKeyEntryLUKS..GroupBox4..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:476
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:487
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:109
+msgid "File options"
+msgstr "Opzioni file"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..Label10..Caption
+#. frmKeyEntryLUKS..GroupBox4..Label10..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:514
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:116
+msgid "Si&zelimit:"
+msgstr "Si&zelimit:"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..Label22..Caption
+#. frmKeyEntryLUKS..GroupBox4..Label22..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:534
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:123
+msgid "(\"0\" indicates no sizelimit.)"
+msgstr "(\"0\" indica nessun sizelimit.)"
+
+#. frmKeyEntryPlainLinux..pbLoad..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:660
+msgid "&Load..."
+msgstr "Apri..."
+
+#. frmKeyEntryPlainLinux..pbSave..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:669
+msgid "Sa&ve..."
+msgstr "Sal&va..."
+
+#. frmKeyEntryLUKS..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:5
+msgid "Key Phrase For LUKS Container"
+msgstr "Inserimento chiave LibreCrypt LUKS"
+
+#. frmKeyEntryLUKS..GroupBox1..ckBaseIVCypherOnHashLength..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:172
+msgid "&Base IV cypher on hash length (where applicable)"
+msgstr "Cypher &Base IV su lunghezza di hash (ove applicabile)"
+
+#. frmNewVolumeSize..Caption
+#: OTFEDoxBox_frmNewVolumeSize.dfm:5
+msgid "Create Volume"
+msgstr "Crea Volume"
+
+#. frmNewVolumeSize..Label2..Caption
+#: OTFEDoxBox_frmNewVolumeSize.dfm:24
+msgid "&Filename:"
+msgstr "Nome &file:"
+
+#. frmNewVolumeSize..Label3..Caption
+#: OTFEDoxBox_frmNewVolumeSize.dfm:32
+msgid "Volume &size:"
+msgstr "Dimensioni volume:"
+
+#. frmPKCS11Management..Caption
+#: OTFEDoxBox_frmPKCS11Management.dfm:5
+msgid "Security Token/Smartcard Management"
+msgstr "Gestione Security Token/Smartcard"
+
+#. frmPKCS11Management..PageControl1..tsSecretKeys..Caption
+#: OTFEDoxBox_frmPKCS11Management.dfm:45
+msgid "Secret Keys"
+msgstr "Chiavi segrete"
+
+#. frmPKCS11Management..PageControl1..tsKeyfiles..Caption
+#: OTFEDoxBox_frmPKCS11Management.dfm:75
+msgid "Keyfiles"
+msgstr "Keyfiles"
+
+#. frmPKCS11NewSecretKey..Caption
+#: OTFEDoxBox_frmPKCS11NewSecretKey.dfm:5
+msgid "New PKCS#11 Secret Key"
+msgstr "Nuova chiave segreta PKCS#11"
+
+#. frmPKCS11NewSecretKey..Label2..Caption
+#: OTFEDoxBox_frmPKCS11NewSecretKey.dfm:34
+msgid "&Name:"
+msgstr "&Nome:"
+
+#. frmPKCS11NewSecretKey..Label3..Caption
+#: OTFEDoxBox_frmPKCS11NewSecretKey.dfm:42
+msgid "Please specify a name and cypher for the new secret key:"
+msgstr "Specificare nome e cypher per la nuova chiave segreta:"
+
+#. frmPKCS11Session..Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:5
+msgid "Security Token/Smartcard PIN"
+msgstr "Security Token/Smartcard PIN"
+
+#. frmPKCS11Session..lblPIN..Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:25
+msgid "&PIN:"
+msgstr "&PIN:"
+
+#. frmPKCS11Session..lblToken..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGPKCS11..lblToken..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGPKCS11..lblToken..Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:33
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:548
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:736
+msgid "&Token:"
+msgstr "&Token:"
+
+#. frmPKCS11Session..Label3....Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:43
+msgid "Please select appropriate security token/smartcard and enter its PIN"
+msgstr "Selezionare il giusto security token/smartcard e inserire il suo PIN"
+
+#. frmPKCS11Session..cbToken..Text
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGPKCS11..cbToken..Text
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGPKCS11..cbToken..Text
+#: OTFEDoxBox_frmPKCS11Session.dfm:53
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:567
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:746
+msgid "cbToken"
+msgstr "cbToken"
+
+#. frmPKCS11Session..ckUseSecureAuthPath..Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:97
+msgid "Use &secure authentication path"
+msgstr "Usare un percorso di autenticazione &sicuro"
+
+#. frmPKCS11Session..pbSkip..Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:106
+msgid "Skip"
+msgstr "Salta"
+
+#. frmSelectHashCypher..Caption
+#: OTFEDoxBox_frmSelectHashCypher.dfm:5
+msgid "Hash/Cypher Combination"
+msgstr "Combinazione Hash/Cypher"
+
+#. frmSelectHashCypher..Label1....Caption
+#: OTFEDoxBox_frmSelectHashCypher.dfm:28
+msgid "It appears that the volume specified may be decrypted with any of the following hash/cypher combinations:"
+msgstr "Sembra che il volume indicato possa essere decrittato con una delle seguenti combinazioni hash/cypher:"
+
+#. frmSelectHashCypher..Label2..Caption
+#: OTFEDoxBox_frmSelectHashCypher.dfm:36
+msgid "Please select the combination you wish to use, and click \"OK\""
+msgstr "Selezionare la combinazione che si vuole usare, e cliccare \"OK\""
+
+#. frmSelectHashCypher..Label3....Caption
+#: OTFEDoxBox_frmSelectHashCypher.dfm:45
+msgid "Right-clicking on a hash/cypher combination to see more "
+"details."
+msgstr "Cliccando col destro su una particolare combinazione hash/cypher, è possibile avere ulteriore dettagli sulla combinazione."
+
+#. frmSelectHashCypher..miPopup..miHashDetails..Caption
+#: OTFEDoxBox_frmSelectHashCypher.dfm:90
+msgid "&Hash details..."
+msgstr "Dettagli &Hash..."
+
+#. frmSelectHashCypher..miPopup..miCypherDetails..Caption
+#: OTFEDoxBox_frmSelectHashCypher.dfm:94
+msgid "&Cypher details..."
+msgstr "Dettagli &Cypher..."
+
+#. frmSelectPartition..Caption
+#. frmSelectPartition_Simple..Caption
+#: OTFEDoxBox_frmSelectPartition.dfm:4
+#: OTFEDoxBox_frmSelectPartition_Simple.dfm:5
+msgid "Select Partition"
+msgstr "Seleziona Partizione"
+
+#. frmSelectPartition..Label1..Caption
+#: OTFEDoxBox_frmSelectPartition.dfm:28
+msgid "Please select from the following disks/partitions:"
+msgstr "Selezionare tra i seguenti dischi/partizioni:"
+
+#. frmSelectPartition_Simple..Label1..Caption
+#: OTFEDoxBox_frmSelectPartition_Simple.dfm:26
+msgid "Please select from the following &partitions:"
+msgstr "Selezionare tra le seguenti &partizioni:"
+
+#. frmSelectPartition_Simple..ckListRemovable..Caption
+#: OTFEDoxBox_frmSelectPartition_Simple.dfm:64
+msgid "&List removable"
+msgstr "E&lenco rimovibili"
+
+#. frmSelectVolumeFileAndOffset..lblFileDescSrc..Caption
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:24
+msgid "Volume/keyfile:"
+msgstr "Volume/keyfile:"
+
+#. frmSelectVolumeType..Caption
+#. frmSelectVolumeType..rgVolumeType..Caption
+#: OTFEDoxBox_frmVolumeType.dfm:5
+#: OTFEDoxBox_frmVolumeType.dfm:30
+msgid "Volume Type"
+msgstr "Tipo di Volume"
+
+#. frmSelectVolumeType..Label1..Caption
+#: OTFEDoxBox_frmVolumeType.dfm:23
+msgid "Please select the type of volume:"
+msgstr "Selezionare il tipo di volume:"
+
+#. frmWizard..pnlRight..Caption
+#: OTFEDoxBox_frmWizard.dfm:9444
+msgid "pnlRight"
+msgstr "pnlRight"
+
+#. frmWizard..pnlRight..pnlButtons..pbNext..Caption
+#: OTFEDoxBox_frmWizard.dfm:9498
+msgid "&Next >"
+msgstr "Ava&nti >"
+
+#. frmWizard..pnlRight..pnlButtons..pbBack..Caption
+#: OTFEDoxBox_frmWizard.dfm:9508
+msgid "< &Back"
+msgstr "< Indietro"
+
+#. frmWizard..pnlRight..pnlButtons..pbFinish..Caption
+#: OTFEDoxBox_frmWizard.dfm:9518
+msgid "&Finish"
+msgstr "&Termina"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsFileOrPartition..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFileOrPartition..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:19
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:60
+msgid "Volume File or Partition"
+msgstr "File o partizione di volume"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsFileOrPartition..rgFileOrPartition..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:30
+msgid "File or Partition"
+msgstr "File o partizione"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcFile..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:48
+msgid "Source file"
+msgstr "File origine"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcFile..GroupBox2..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:68
+msgid "Source container/keyfile"
+msgstr "Volume/keyfile origine"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcFile..GroupBox2..pbBrowseSrc..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestFile..GroupBox1..pbBrowseDest..Caption
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGGPG..GroupBox5..pbBrowseGPG..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFilename..GroupBox1..pbBrowseFilename..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGGPG..GroupBox2..pbBrowseGPG..Caption
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..gbKeyfile..pbBrowseKeyfile..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:84
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:305
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:616
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:125
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:804
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:181
+msgid "&Browse..."
+msgstr "Esplora..."
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsPartitionSelect..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionSelect..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:91
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:232
+msgid "Partition Select"
+msgstr "Selezione partizione"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsPartitionSelect..Label21..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:102
+msgid "&Select disk/partition:"
+msgstr "&Seleziona disco/partizione:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label1..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:187
+msgid "Current &password:"
+msgstr "&Password attuale:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label4..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:195
+msgid "Current &salt length:"
+msgstr "Attuale lunghezza &sale:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label11..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:210
+msgid "Current &key iterations:"
+msgstr "Attuali iterazioni chiave:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestFile..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:269
+msgid "Destination file"
+msgstr "File destinazione"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestFile..GroupBox1..Caption
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..gbKeyfile..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:289
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:165
+msgid "Keyfile"
+msgstr "Keyfile"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:312
+msgid "Destination file details"
+msgstr "Dettagli file destinazione"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label2..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:323
+msgid "New &password:"
+msgstr "Nuova &password:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label3..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:331
+msgid "Confirm new p&assword:"
+msgstr "Confirmare nuova p&assword:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label5..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:339
+msgid "New &salt length:"
+msgstr "Nuova lunghezza &sale:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label12..Caption
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsDriveLetter..Label1..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:354
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:113
+msgid "&Requested drive letter:"
+msgstr "Lettera drive &richiesta:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:424
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:610
+msgid "RNG Select"
+msgstr "Selezione RNG"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..gbRNG..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..gbRNG..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:444
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:630
+msgid "Random number generator (RNG)"
+msgstr "Generatore di numeri random (RNG)"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGMouseMovement..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGMouseMovement..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:451
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:637
+msgid "Mouse movement"
+msgstr "Movimento mouse"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGCryptoAPI..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGCryptoAPI..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:460
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:646
+msgid "Microsoft CryptoAPI"
+msgstr "Microsoft CryptoAPI"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGPKCS11..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGPKCS11..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:478
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:664
+msgid "PKCS#11 token"
+msgstr "Token PKCS#11"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGMouseMovement..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGMouseMovement..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:495
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:681
+msgid "RNG Mouse movement"
+msgstr "Movimento mouse RNG"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGPKCS11..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:537
+msgid "RNG PKCS#11 token"
+msgstr "Token RNG PKCS#11"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGGPG..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGGPG..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:580
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:768
+msgid "RNG GPG"
+msgstr "RNG GPG"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGGPG..GroupBox5..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGGPG..GroupBox2..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:600
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:788
+msgid "GPG Executable"
+msgstr "Eseguibile GPG"
+
+#. frmWizardChangePasswordCreateKeyfile..GPGOpenDialog..Filter
+#. frmWizardCreateVolume..GPGOpenDialog..Filter
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:643
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:927
+msgid "GPG (gpg.exe)|gpg.exe|Executables (*.exe)|*.exe|All files|*.*"
+msgstr "GPG (gpg.exe)|gpg.exe|Eseguibili (*.exe)|*.exe|Tutti i file|*.*"
+
+#. frmWizardCreateVolume..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:4
+msgid "LibreCrypt Volume Creation Wizard"
+msgstr "Wizard Creazione Volume LibreCrypt"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsWelcome..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:24
+msgid "Welcome"
+msgstr "Benvenuto"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsWelcome..lblWelcomeBanner..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:34
+msgid "Welcome to the LibreCrypt Volume Creation Wizard."
+msgstr "Benvenuti nel Wizard Creazione Volume LibreCrypt"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsWelcome..lblWelcomeClickNext..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:47
+msgid "Please click \"Next >\" to continue."
+msgstr "Cliccare \"Avanti>\" per continuare."
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFileOrPartition..rgFileOrPartition..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:80
+msgid "File or Partition/Entire Disk"
+msgstr "File o partizione/Intero disco"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFilename..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFilename..GroupBox1..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:89
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:109
+msgid "Volume filename"
+msgstr "Nome file volume"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionWarning..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:132
+msgid "Partition Warning"
+msgstr "Avviso partizione"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionWarning..pnlWarningPartition..lblWarningPartition..Caption
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..pnlWarningOffset..lblWarningOffset..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:161
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:345
+msgid "WARNING"
+msgstr "ATTENZIONE"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionWarning..pnlWarningPartition..Label28....Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:179
+msgid "DO NOT PROCEED UNLESS YOU UNDERSTAND THE FULL IMPLICATIONS OF CREATING ENCRYPTED PARTITIONS."
+msgstr "NON PROCEDERE SE NON SI COMPRENDONO LE PIENE IMPLICAZIONI DELLA CREAZIONE DI PARTIZIONI CRITTATE."
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionSelect..Label21..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:243
+msgid "&Disk/partition to create encrypted volume on:"
+msgstr "&Disco/partizione su cui creare il volume crittato:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionSelect..ckPartitionHidden..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:259
+msgid "&Create hidden volume within selected partition"
+msgstr "&Creare volume nascosto nella partizione selezionata"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:320
+msgid "Offset"
+msgstr "Offset"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..Label7..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:331
+msgid "&Byte offset within volume:"
+msgstr "&Byte offset nel volume:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..pnlWarningOffset..Label13....Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:361
+msgid "DO NOT PROCEED UNLESS YOU UNDERSTAND THE FULL IMPLICATIONS OF CREATING HIDDEN VOLUMES."
+msgstr "NON PROCEDERE SE NON SI COMPRENDONO LE PIENE IMPLICAZIONI DELLA CREAZIONE DI VOLUMI NASCOSTI."
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:408
+msgid "Size"
+msgstr "Dimensioni"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..Label6..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:419
+msgid "&Size of new container:"
+msgstr "Dimensioni nuovo volume:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..ckSizeEntirePartitionDisk..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:442
+msgid "&Use entire partition/disk"
+msgstr "&Usa intera partizione/disco"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:466
+msgid "Hash, cypher and IV"
+msgstr "Hash, cypher e IV"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..Label4..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:478
+msgid "Select &hash:"
+msgstr "Seleziona &hash:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..Label5..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:487
+msgid "Select &cypher:"
+msgstr "Seleziona &cypher:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..lblSectorIVGenMethod..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:495
+msgid "Sector &IVs:"
+msgstr "Settore &IV:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..ckUsePerVolumeIV..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:550
+msgid "Additionally &XOR sector IV with per volume IV"
+msgstr "Addizionalmente settore IV &XOR con volume IV"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsMasterKeyLength..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:565
+msgid "Master Key Length"
+msgstr "Lunghezza chiave principale"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsMasterKeyLength..Label2..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:576
+msgid "&Size of master key:"
+msgstr "Dimen&sione chiave principale:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGPKCS11..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:725
+msgid "RNG PKCS token"
+msgstr "Token RNG PKCS"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPassword..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:811
+msgid "&Keyphrase:"
+msgstr "&Keyphrase:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPassword..Label3..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:830
+msgid "&Confirm Keyphrase:"
+msgstr "&Confermare la password:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSummary..pbAdvanced..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:895
+msgid "&Advanced..."
+msgstr "&Avanzate..."
+
+#. frmWizardCreateVolumeAdvanced..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:5
+msgid "Advanced Options"
+msgstr "Opzioni Avanzate"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsKeyIterations..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:28
+msgid "Key Iterations"
+msgstr "Iterazioni Chiavi"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsSalt..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:61
+msgid "Salt"
+msgstr "Sale"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsSalt..Label15..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:71
+msgid "&Length of salt:"
+msgstr "&Lunghezza sale:"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsSalt..Label18..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:79
+msgid "bits."
+msgstr "bits."
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsDriveLetter..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:102
+msgid "Drive Letter"
+msgstr "Lettera Drive"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:136
+msgid "CDB Location"
+msgstr "Posizione CDB"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..rbCDBInVolFile..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:147
+msgid "Include CDB as part of volume file"
+msgstr "Includere CDB nel file volume"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..rbCDBInKeyfile..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:156
+msgid "Store CDB as separate keyfile"
+msgstr "Salvare CDB come keyfile separato"
+
+#. Programmer's name for it: RS_MOUNTSOURCE_FILE
+#. Programmer's name for it: FILEORPART_OPT_VOLUME_FILE
+#: OTFEDoxBox_DriverAPI.pas:139
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:193
+msgid "File"
+msgstr "File"
+
+#. Programmer's name for it: RS_MOUNTSOURCE_PARTITION
+#. Programmer's name for it: FILEORPART_OPT_PARTITION
+#: OTFEDoxBox_DriverAPI.pas:140
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:194
+msgid "Partition"
+msgstr "Partizione"
+
+#. Programmer's name for it: RS_MOUNTSOURCE_UNKNOWN
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_UNKNOWN
+#. Programmer's name for it: MOUNT_AS_UNKNOWN
+#: OTFEDoxBox_DriverAPI.pas:141
+#: OTFEDoxBox_DriverAPI.pas:162
+#: OTFEDoxBox_U.pas:127
+msgid "Unknown"
+msgstr "Sconosciuto"
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_NULL_IV
+#: OTFEDoxBox_DriverAPI.pas:156
+msgid "Null IV"
+msgstr "Null IV"
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_SECTOR_ID_32
+#: OTFEDoxBox_DriverAPI.pas:157
+msgid "32 bit sector ID"
+msgstr "ID settore 32 bit"
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_SECTOR_ID_64
+#: OTFEDoxBox_DriverAPI.pas:158
+msgid "64 bit sector ID"
+msgstr "ID settore 64 bit"
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_HASHED_SECTOR_ID_32
+#: OTFEDoxBox_DriverAPI.pas:159
+msgid "Hashed 32 bit sector ID"
+msgstr "ID settore hashed 32 bit"
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_HASHED_SECTOR_ID_64
+#: OTFEDoxBox_DriverAPI.pas:160
+msgid "Hashed 64 bit sector ID"
+msgstr "ID settore hashed 64 bit"
+
+#. Programmer's name for it: TEXT_NEED_ADMIN
+#: OTFEDoxBox_DriverControl.pas:38
+msgid "Administrator privileges are required in order to carry out this operation."
+msgstr "Sono richiesti privilegi di amministratore per eseguire questa operazione."
+
+#: OTFEDoxBox_DriverControl.pas:145
+msgid "Unable to open service control manager."
+msgstr "Impossible aprire il service control manager."
+
+#. Installation SUCCESSFULL
+#. 2 x CRLF - one to end the last line, one for spacing
+#. 2 x CRLF - one to end the last line, one for spacing
+#: OTFEDoxBox_DriverControl.pas:609
+#: OTFEDoxBox_DriverControl.pas:658
+#: OTFEDoxBox_frmDriverControl.pas:334
+msgid "Please reboot your computer to allow changes to take effect."
+msgstr "Riavviare il computer affinché i cambiamenti abbiano effetto."
+
+#: OTFEDoxBox_DriverControl.pas:633
+msgid "This driver has been installed, started, and is now available for use"
+msgstr "Questo driver è stato installato, avviato, ed è pronto per l'uso"
+
+#: OTFEDoxBox_DriverControl.pas:637
+msgid "This driver has been installed but not started; you may need to "
+"reboot your PC for the installation to take "
+"effect"
+msgstr "Questo driver è stato installato ma non avviato; potrebbe essere necessario un riavvio per finalizzare l'installazione."
+
+#: OTFEDoxBox_DriverControl.pas:643
+msgid "Driver %s installed"
+msgstr "Driver %s installato"
+
+#. 2 x CRLF - one to end the last line, one for spacing
+#: OTFEDoxBox_DriverControl.pas:667
+msgid "This driver appears to already be installed."
+msgstr "Questo driver è già installato."
+
+#: OTFEDoxBox_DriverControl.pas:668
+msgid "Please uninstall the existing driver before attempting to reinstall."
+msgstr "Disinstallare il driver esistente prima di tentare la reinstallazione."
+
+#. 2 x CRLF - one to end the last line, one for spacing
+#: OTFEDoxBox_DriverControl.pas:677
+msgid "Unable to copy driver file to windows driver directory"
+msgstr "Impossibile copiare il file del driver nella cartella driver di windows"
+
+#: OTFEDoxBox_DriverControl.pas:683
+msgid "Unable to install driver."
+msgstr "Impossibile installare il driver."
+
+#. type of access to service
+#: OTFEDoxBox_DriverControl.pas:895
+msgid "Unable to open service for driver \"%1\""
+msgstr "Impossibile aprire il servizio driver \"%1\""
+
+#. (driverFilenames.count - 1)
+#: OTFEDoxBox_DriverControl.pas:1229
+msgid "Starting drivers in portable mode..."
+msgstr "Avvio driver in modalità trasferibile..."
+
+#: OTFEDoxBox_DriverControl.pas:1233
+msgid "Installing drivers..."
+msgstr "Installazione driver..."
+
+#: OTFEDoxBox_DriverControl.pas:1247
+msgid "Starting: "
+msgstr "Avvio:"
+
+#: OTFEDoxBox_DriverControl.pas:1251
+msgid "Installing: "
+msgstr "Installazione:"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:83
+msgid "Are you sure you wish to delete the selected keyfiles from the token?"
+msgstr "Si è sicuri di voler eliminare dal token i keyfile selezionati?"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:124
+msgid ""
+"The following keyfiles were deleted successfully:\n"
+"\n"
+"%s"
+msgstr ""
+"I keyfile seguenti sono stati eliminati con successo:\n"
+"\n"
+"%s"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:139
+msgid ""
+"The following keyfiles could not be deleted:\n"
+"\n"
+"%1"
+msgstr ""
+"Impossibile eliminare i keyfile seguenti:\n"
+"\n"
+"%1"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:170
+msgid "Keyfile exported successfully"
+msgstr "Keyfile esportato con successo"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:177
+msgid ""
+"Unable to export keyfile to:\n"
+"\n"
+"%1"
+msgstr ""
+"Impossibile esportare keyfile in:\n"
+"\n"
+"%1"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:206
+msgid "Unable to read keyfile contents"
+msgstr "Impossibile leggere contenuto keyfile"
+
+#. Sanity check...
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:214
+msgid "The file specified doesn't appear to be a LibreCrypt keyfile."
+msgstr "Il file specificato non sembra essere un keyfile LibreCrypt."
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:216
+msgid "Do you wish to continue anyway?"
+msgstr "Si vuole continuare comunque?"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:257
+msgid "Keyfile imported successfully as:"
+msgstr "Keyfile importato con successo come:"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:268
+msgid "Keyfile import failed"
+msgstr "Importazione keyfile fallita"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:347
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:271
+msgid "Unable to get list of CDB entries from Token"
+msgstr "Impossibile ottenere lista CDB dal Token"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:371
+msgid "One or more of the keyfiles stored on your token are invalid/corrupt"
+msgstr "Uno o più keyfile memorizzati sul token sono non validi/corrotti"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:93
+msgid "Keysize"
+msgstr "Keysize"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:142
+msgid "Unable to get list of keys from Token"
+msgstr "Impossibile ottenere lista chiavi dal Token"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:186
+msgid "Are you sure you wish to delete the selected keys from the token?"
+msgstr "Si è sicuri di voler eliminare le chiavi selezionate dal token?"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:227
+msgid ""
+"The following keys were deleted successfully:\n"
+"\n"
+"%1"
+msgstr ""
+"Le chiavi seguenti sono state eliminate con successo:\n"
+"\n"
+"%1"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:242
+msgid ""
+"The following keys could not be deleted:\n"
+"\n"
+"%1"
+msgstr ""
+"Impossibile eliminare le chiavi seguenti:\n"
+"\n"
+"%1"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:330
+msgid "Please select a secret key to use"
+msgstr "Selezionare una chiave segreta"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:350
+msgid "unsecure"
+msgstr "sproteggere"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:353
+msgid "secure"
+msgstr "proteggere"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:365
+msgid ""
+"Are you sure you wish to use PKCS#11 secret key:\n"
+"\n"
+"%1\n"
+"\n"
+"to %2 the CDB starting from offset %3 within volume:\n"
+"\n"
+"%4"
+msgstr ""
+"Si è sicuri di voler utilizzare la chiave segreta PKCS#11:\n"
+"\n"
+"%1\n"
+"\n"
+"fino %2 al CDB che inizia da offset %3 nel volume:\n"
+"\n"
+"%4"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:378
+msgid ""
+"Are you sure you wish to %1 the volume/keyfile:\n"
+"\n"
+"%2\n"
+"\n"
+"using the PKCS#11 secret key:\n"
+"\n"
+"%3"
+msgstr ""
+"Si è sicuri di voler %1 il volume/keyfile:\n"
+"%2\n"
+"\n"
+"usare la chiave segreta PKCS#11:\n"
+"\n"
+"%3"
+
+#. Read CDB...
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:393
+msgid "Unable to read keyfile/volume CDB"
+msgstr "Impossibile leggere il keyfile/volume CDB"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:424
+msgid "Unable to carry out encryption/decryption using Token"
+msgstr "Impossibile eseguire crittaggio/decrittaggio usando il Token"
+
+#. ...Write CDB.
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:437
+msgid "Unable to write keyfile/volume CDB"
+msgstr "Impossibile scrivere il CDB del keyfile/volume"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:452
+msgid "Volume/keyfile now %1"
+msgstr "Volume/keyfile ora %1"
+
+#. Programmer's name for it: RS_NO_PARTITIONS_FOUND
+#: OTFEDoxBox_fmeSelectPartition.pas:111
+msgid "<No partitions found>"
+msgstr "<Nessuna partizione trovata>"
+
+#. Programmer's name for it: RS_CANT_GET_DISK_LAYOUT
+#: OTFEDoxBox_fmeSelectPartition.pas:113
+msgid "<Unable to get disk layout information for disk #%1>"
+msgstr "<Impossibile ottenere informazioni sul layout del disco #%1>"
+
+#. Programmer's name for it: RS_ENTIRE_DISK_X
+#: OTFEDoxBox_fmeSelectPartition.pas:114
+msgid "<Entire disk #%1>"
+msgstr "<Intero disco #%1>"
+
+#. Programmer's name for it: RS_CDROM_IN_X
+#: OTFEDoxBox_fmeSelectPartition.pas:115
+msgid "<CDROM/DVD in %1>"
+msgstr "<CDROM/DVD in %1>"
+
+#. Programmer's name for it: RS_DBLCLK_PROMPT_PARTITION
+#: OTFEDoxBox_fmeSelectPartition.pas:117
+msgid "Doubleclick partition to display properties"
+msgstr "Fare doppio click sulla partizione per visualizzare le proprietà"
+
+#. Programmer's name for it: RS_DBLCLK_PROMPT_DISK
+#: OTFEDoxBox_fmeSelectPartition.pas:118
+msgid "Doubleclick to display disk properties"
+msgstr "Fare doppio click per visualizzare le proprietà del disco"
+
+#. Programmer's name for it: RS_PARTITION
+#: OTFEDoxBox_fmeSelectPartition.pas:120
+msgid "Partition #%1"
+msgstr "Partizione #%1"
+
+#. Programmer's name for it: RS_PART_ERROR_NO_PARTITION_NO
+#: OTFEDoxBox_fmeSelectPartition.pas:122
+msgid "Windows has not allocated this partition a partition number"
+msgstr "Windows non ha allocato un numero di partizione a questa partizione"
+
+#. Programmer's name for it: RS_PART_ERROR_SYSTEM_PARTITION
+#: OTFEDoxBox_fmeSelectPartition.pas:123
+msgid "This is where Windows is installed"
+msgstr "Qui è installato Windows"
+
+#. Programmer's name for it: RS_PART_ERROR_PROG_FILES_PARTITION
+#: OTFEDoxBox_fmeSelectPartition.pas:124
+msgid "This is where program files are installed"
+msgstr "Qui sono installati i programmi"
+
+#. Programmer's name for it: RS_PART_WARN_BOOTABLE
+#: OTFEDoxBox_fmeSelectPartition.pas:125
+msgid "Partition is marked as bootable"
+msgstr "La partizione è avviabile"
+
+#: OTFEDoxBox_fmeSelectPartition.pas:216
+msgid "Disk #%1"
+msgstr "Disco #%1"
+
+#. Programmer's name for it: RS_UNABLE_LOCATE_CYPHER_DRIVER
+#: OTFEDoxBox_frmCypherInfo.pas:74
+msgid "<Unable to locate correct cypher driver>"
+msgstr "<Impossibile localizzare il driver cypher corretto>"
+
+#. Programmer's name for it: RS_UNABLE_LOCATE_CYPHER
+#: OTFEDoxBox_frmCypherInfo.pas:75
+msgid "<Unable to locate cypher>"
+msgstr "<Impossibile localizzare cypher>"
+
+#: OTFEDoxBox_frmCypherInfo.pas:142
+msgid "(null key only)"
+msgstr "(solo null key)"
+
+#: OTFEDoxBox_frmCypherInfo.pas:146
+msgid "(arbitary keysize allowed)"
+msgstr "(keysize arbitrario permesso)"
+
+#: OTFEDoxBox_frmCypherInfo.pas:153
+msgid "(arbitary blocksize allowed)"
+msgstr "(blocksize arbitrario permesso)"
+
+#. Programmer's name for it: TEXT_MANUAL_START
+#: OTFEDoxBox_frmDriverControl.pas:90
+msgid "Manual"
+msgstr "Manuale"
+
+#. Programmer's name for it: TEXT_AUTO_START
+#: OTFEDoxBox_frmDriverControl.pas:91
+msgid "At system startup"
+msgstr "All'avvio del sistema"
+
+#. Programmer's name for it: FILE_FILTER_FLT_DRIVERS
+#: OTFEDoxBox_frmDriverControl.pas:93
+msgid "Driver files (*.sys)|*.sys|All files|*.*"
+msgstr "File driver (*.sys)|*.sys|Tutti i file|*.*"
+
+#: OTFEDoxBox_frmDriverControl.pas:238
+msgid "Unable to start driver \"%1\""
+msgstr "Impossibile avviare driver \"%1\""
+
+#: OTFEDoxBox_frmDriverControl.pas:265
+msgid "Stopping a LibreCrypt driver which is currently in use (e.g. by one or more mounted volumes) can lead to SYSTEM INSTABILITY."
+msgstr "Chiudere un driver LibreCrypt attualmente utilizzato (p.e. da uno o più volumi montati) può portare a INSTABILITA' DI SISTEMA."
+
+#: OTFEDoxBox_frmDriverControl.pas:267
+#: OTFEDoxBox_frmDriverControl.pas:313
+msgid "This option is intended for experienced users who REALLY know what they're doing."
+msgstr "Quest'opzione è intesa per utenti esperti che sanno DAVVERO cosa stanno facendo."
+
+#: OTFEDoxBox_frmDriverControl.pas:269
+msgid "Are you sure you wish to stop the \"%1\" driver?"
+msgstr "Si è sicuri di voler chiudere il driver \"%1\"?"
+
+#: OTFEDoxBox_frmDriverControl.pas:279
+msgid "Unable to stop driver \"%s\""
+msgstr "Impossibile chiudere il driver \"%s\" "
+
+#: OTFEDoxBox_frmDriverControl.pas:311
+msgid "Uninstalling a LibreCrypt driver which is currently in use (e.g. by one or more mounted volumes) can lead to SYSTEM INSTABILITY."
+msgstr "Disinstallare un driver LibreCrypt attualmente utilizzato (p.e. da uno o più volumi montati) può portare a INSTABILITA' DI SISTEMA."
+
+#: OTFEDoxBox_frmDriverControl.pas:315
+msgid "Are you sure you wish to uninstall the \"%1\" driver?"
+msgstr "Si è sicuri di voler disinstallare il driver \"%1\"?"
+
+#. 2 x CRLF - one to end the last line, one for spacing
+#: OTFEDoxBox_frmDriverControl.pas:343
+msgid "After rebooting, please remove the driver file from your <windows>\\system32\\drivers directory"
+msgstr "Dopo il riavvio, rimuovere il file driver dalla cartella <windows>\\system32\\drivers"
+
+#: OTFEDoxBox_frmDriverControl.pas:347
+msgid "The \"%1\" driver has now been uninstalled."
+msgstr "Il driver \"%1\" è stato disinstallato."
+
+#. Uninstallation FAILURE
+#: OTFEDoxBox_frmDriverControl.pas:357
+msgid "Unable to delete driver service \"%1\"."
+msgstr "Impossibile cancellare il servizio driver \"%1\"."
+
+#: OTFEDoxBox_frmDriverControl.pas:359
+msgid "Please disable this driver from starting up automatically, reboot, and try again."
+msgstr "Disabilitare l'avvio automatico del driver, riavviare e riprovare."
+
+#: OTFEDoxBox_frmDriverControl.pas:429
+msgid "Unable to set startup option for driver \"%1\"."
+msgstr "Impossibile settare l'opzione di avvio per il driver \"%1\"."
+
+#. Programmer's name for it: RS_UNABLE_LOCATE_HASH_DRIVER
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.pas:71
+msgid "<Unable to locate correct hash driver>"
+msgstr "<Impossibile localizzare il driver hash corretto>"
+
+#. Programmer's name for it: RS_UNABLE_LOCATE_HASH
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.pas:72
+msgid "<Unable to locate hash>"
+msgstr "<Impossibile localizzare l'hash>"
+
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.pas:137
+msgid "(length of hash returned may vary)"
+msgstr "(la lunghezza dell'hash può variare)"
+
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.pas:144
+msgid "(n/a)"
+msgstr "(n/a)"
+
+#. Programmer's name for it: RS_NOT_SELECTED
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:162
+msgid "<none selected>"
+msgstr "<nessuna selezione>"
+
+#. Programmer's name for it: RS_NONE_AVAILABLE
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:163
+msgid "<none available>"
+msgstr "<non disponibile>"
+
+#. Programmer's name for it: RS_BUTTON_ADVANCED
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:165
+msgid "&Advanced"
+msgstr "&Avanzato"
+
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:295
+msgid "One or more of the keyfiles stored on your token are invalid/corrupt and will be ignored"
+msgstr "Uno o più keyfile sul token sono invalidi/corrotti e verrano ignorati"
+
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:297
+msgid "Please check which keyfiles are stored on this token and correct"
+msgstr "Controllare i keyfile memorizzati sul token e correggere"
+
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:342
+msgid "Unable to get a list of secret keys from Token"
+msgstr "Impossibile ottenere una lista di chiavi segrete dal Token"
+
+#. No volumes were mounted...
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:460
+msgid "Unable to Open volume; please ensure that you entered the correct details (password, etc)"
+msgstr "Impossibile montare il volume; assicurarsi di aver inserito i dettagli corretti (password, etc)"
+
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:466
+msgid "Please ensure that you check/uncheck the \"Data from offset includes CDB\" option, as appropriate for your volume"
+msgstr "Assicurarsi di selezionare/deselezionare l'opzione \"I dati dall'offset includono CDB\", come necessario per il volume"
+
+#. At least one volume was mounted, but not all of them
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:476
+msgid "%1 volume was mounted successfully, but %2 could not be mounted"
+msgstr "Volume %1 montato con successo, ma impossibile montare %2"
+
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:477
+msgid "%1 volumes were mounted successfully, but %2 could not be mounted"
+msgstr "Volumi %1 montati con successo, ma impossibile montare %2"
+
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:499
+msgid "Salt length (in bits) must be a multiple of 8"
+msgstr "La lunghezza salt (in bit) deve essere multipla di 8"
+
+#. keyfiles are on the token, warn the user
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:540
+msgid "No keyfiles could be found on the token inserted."
+msgstr "Nessun keyfile trovato sul token inserito."
+
+#. Programmer's name for it: FILTER_GPG_FILES
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:252
+msgid "GPG files|*.gpg|All files|*.*"
+msgstr "File GPG|*.gpg|Tutti i file|*.*"
+
+#. Programmer's name for it: FILTER_GPG_EXE
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:253
+msgid "GPG Executable|GPG.exe|All files|*.*"
+msgstr "Eseguibile GPG|GPG.exe|Tutti i file|*.*"
+
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:284
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1240
+msgid "Unable to obtain list of hashes."
+msgstr "Impossibile ottenere la lista degli hash."
+
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:286
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1242
+msgid "Please ensure that you have one or more LibreCrypt hash drivers installed and started."
+msgstr "Assicurarsi di avere uno o più driver hash LibreCrypt installati e avviati."
+
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:518
+#: OTFEDoxBox_frmKeyEntryLUKS.pas:215
+msgid "You have not entered a password."
+msgstr "Non è stata digitata una password."
+
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:532
+msgid "The password you entered has less than 20 characters, and may not be compatible with some Linux volumes."
+msgstr "La password digitata ha meno di 20 caratteri, e potrebbe non essere compatibile con alcuni volumi Linux."
+
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:534
+msgid "Do you wish to proceed?"
+msgstr "Si vuole procedere?"
+
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:1436
+msgid "Settings file not found."
+msgstr "File settaggi non trovato."
+
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:1619
+msgid "One or more of your settings may not have loaded correctly; please check settings before continuing."
+msgstr "Uno o più settaggi potrebbero non essere stati caricati; si prega di controllare prima di continuare."
+
+#: OTFEDoxBox_frmNewVolumeSize.pas:51
+msgid "Please specify a filename for the new volume file by clicking the \"...\" button."
+msgstr "Specificare un nome file per il nuovo file volume cliccando il pulsante \"...\"."
+
+#: OTFEDoxBox_frmPKCS11NewSecretKey.pas:67
+msgid "Unable to get list of key types for Token"
+msgstr "Impossibile ottenere una lista di tipi di chiave per il Token"
+
+#: OTFEDoxBox_frmPKCS11NewSecretKey.pas:145
+msgid "A key with the name specified already exists."
+msgstr "Una chiave col nome specificato esiste già."
+
+#: OTFEDoxBox_frmPKCS11NewSecretKey.pas:147
+msgid "Please enter a unique key name"
+msgstr "Digitare un nome chiave unico"
+
+#: OTFEDoxBox_frmPKCS11NewSecretKey.pas:168
+msgid "Unable to create new key"
+msgstr "Impossibile creare nuova chiave"
+
+#: OTFEDoxBox_frmPKCS11NewSecretKey.pas:172
+msgid "Key \"%1\" created"
+msgstr "Chiave \"%1\" creata"
+
+#. Programmer's name for it: RS_SLOT_REMOVED
+#: OTFEDoxBox_frmPKCS11Session.pas:62
+msgid "Slot removed; token no longer available - please reselect and try again"
+msgstr "Slot remosso; token non più disponibile - riselezionare e riprovare"
+
+#. Programmer's name for it: RS_TOKEN_REMOVED
+#: OTFEDoxBox_frmPKCS11Session.pas:63
+msgid "Token no longer available; please reselect and try again"
+msgstr "Token non più disponibile; riselezionare e riprovare"
+
+#: OTFEDoxBox_frmPKCS11Session.pas:142
+msgid "Unable to open session for token in slot %1"
+msgstr "Impossibile aprire la sessione per il token nello slot %1"
+
+#: OTFEDoxBox_frmPKCS11Session.pas:170
+msgid "Login failed"
+msgstr "Login fallito"
+
+#: OTFEDoxBox_frmSelectHashCypher.pas:143
+msgid "Hash implementation: %1"
+msgstr "Implementazione hash: %1"
+
+#: OTFEDoxBox_frmSelectHashCypher.pas:144
+#: OTFEDoxBox_frmSelectHashCypher.pas:173
+msgid "Kernel mode driver: %1"
+msgstr "Kernel driver: %1"
+
+#: OTFEDoxBox_frmSelectHashCypher.pas:145
+#: OTFEDoxBox_frmSelectHashCypher.pas:174
+msgid "Algorithm GUID: %1"
+msgstr "Algoritmo GUID: %1"
+
+#: OTFEDoxBox_frmSelectHashCypher.pas:172
+msgid "Cypher implementation: %1"
+msgstr "Implementazione cypher: %1"
+
+#. Work out cell layout...
+#: OTFEDoxBox_frmSelectHashCypher.pas:203
+msgid "Error! Please report seeing this!"
+msgstr "Errore! Segnalare prego!"
+
+#: OTFEDoxBox_frmSelectVolumeAndOffset.pas:47
+msgid "Secure with PKCS#11 Secret Key"
+msgstr "Assicurare con Chiave Segreta PKCS#11"
+
+#: OTFEDoxBox_frmSelectVolumeAndOffset.pas:48
+msgid "Please enter the volume/keyfile you wish to encrypt using the selected PKCS#11 secret key."
+msgstr "Digitare il volume/keyfile che si desidera crittare usando la chave segreta PKCS#11 selezionata."
+
+#: OTFEDoxBox_frmSelectVolumeAndOffset.pas:52
+msgid "Remove PKCS#11 Secret Key Security"
+msgstr "Rimuovere la Chiave Segreta di Sicurezza PKCS#11"
+
+#: OTFEDoxBox_frmSelectVolumeAndOffset.pas:53
+msgid "Please enter the volume/keyfile you wish to decrypt using the selected PKCS#11 secret key."
+msgstr "Digitare il volume/keyfile che si desidera decrittare usando la chave segreta PKCS#11 selezionata."
+
+#: OTFEDoxBox_frmWizard.pas:159
+msgid "Step %u of %u"
+msgstr "Stadio %u di %u"
+
+#. generated...
+#. generated...
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:431
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:819
+msgid "Random bits generated: %d/%d"
+msgstr "Bit casuali generati: %d/%d"
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:800
+msgid "Completed successfully."
+msgstr "Completato con successo."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:806
+msgid "Unable to complete requested operation: please ensure that your encrypted volume is not mounted or otherwise in use, and that the password, salt and offset entered are correct."
+msgstr "Impossibile completare l'operazione: assicurarsi che il volume crittato non sia montato o altrimenti in uso, e che la password, il salt e l'offset digitati siano corretti."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:818
+msgid "Change Password/Other Details"
+msgstr "Cambia Password/Altri Dettagli"
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:823
+msgid ""
+"If you would like to modify an encrypted volume, please specify whether it is file or partition based.\n"
+"\n"
+"If you would like to modify a keyfile, please select \"file\" below."
+msgstr "Se si vuole modificare un volume crittato, per favore specificare se è basato su file o partizione."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:828
+msgid ""
+"Please enter the full path and filename of the volume/keyfile you wish to change.\n"
+"\n"
+"If you wish to update a \"hidden\" volume held within another file, please specify the filename of the host file which stores your encrypted volume"
+msgstr ""
+"Digitare il percorso completo e il nome file del volume/keyfile che si vuol modificare.\n"
+"\n"
+"Se si vuole aggiornare un volume \"nascosto\" contenuto in un altro file, specificare il nome file del file ospite che contiene il volume crittato"
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:831
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:875
+msgid "Please specify the partition your volume is stored on."
+msgstr "Specificare la partizione su cui è memorizzato il volume."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:836
+msgid ""
+"Please enter the full details of the volume/keyfile you wish to change.\n"
+"\n"
+"If you wish to update a \"hidden\" volume held within another file, please specify the offset within the host file where your hidden volume is located"
+msgstr ""
+"Digitare i dettagli completi del volume/keyfile che si vuol modificare.\n"
+"\n"
+"Se si vuole aggiornare un volume \"nascosto\" contenuto in un altro file, specificare l'offset nel file ospite che contiene il volume crittato"
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:842
+msgid "Please enter new details for your volume/keyfile."
+msgstr "Digitare nuovi dettagli per il volume/keyfile."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:852
+msgid ""
+"In order to change your volume/keyfile's details, a certain amount of random data is required.\n"
+"\n"
+"This data will be used for the following:\n"
+"\n"
+"1) Password salting\n"
+"2) Random padding data\n"
+"\n"
+"In order to generate this data, please select which random number generators you wish to use from the options below."
+msgstr ""
+"Per cambiare i dettagli del volume/keyfile, è richiesta una certa quantità di dati casuali.\n"
+"\n"
+"Questi dati saranno usati per:\n"
+"\n"
+"1) Salatura password\n"
+"2) Dati casuali di padding\n"
+"\n"
+"Per generare questi dati, selezionare quale generatore di numeri casuali si vuole usare dalle opzioni seguenti."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:859
+msgid "Create Keyfile for Volume"
+msgstr "Creare Keyfile o Volume"
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:862
+msgid "Please specify whether the volume you wish to create a keyfile for is file or partition based."
+msgstr "Specificare se il volume per il quale si vuole creare un keyfile è basato su file o partizione."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:872
+msgid ""
+"Please enter the full path and filename of either:\n"
+"\n"
+"1) A volume containing a CDB, or\n"
+"2) An existing keyfile\n"
+"\n"
+"for the volume you wish to create a keyfile for.\n"
+"\n"
+"If you wish to update a \"hidden\" volume which is held within another file, and your hidden volume includes a CDB, please specify the filename of the host file which stores your encrypted volume."
+msgstr ""
+"Digitare il percorso e nome file completo di:\n"
+"\n"
+"1) Un volume contenente un CDB, o\n"
+"2) Un keyfile esistente\n"
+"\n"
+"per il volume per cui si vuole creare un keyfile.\n"
+"\n"
+"Se si vuole aggiornare un volume \"nascosto\" memorizzato in un altro file, e il volume nascosto include un CDB, specificare il nome file del file host che contiene il volume crittato."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:880
+msgid ""
+"Please enter the full details of the volume you wish to create a keyfile for.\n"
+"\n"
+"If you wish to update a \"hidden\" volume which is held within another file, and your hidden volume includes a CDB, please specify the offset within the host file where your hidden volume is located."
+msgstr ""
+"Digitare i dettagli completi del volume per cui si desidera creare un keyfile.\n"
+"\n"
+"Se si vuole aggiornare un volume \"nascosto\" memorizzato in un altro file, e il volume nascosto include un CDB, specificare l'offset nel file host che contiene il volume crittato."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:883
+msgid "Please specify the full path and filename where the keyfile should be written to."
+msgstr "Specificare il percorso completo e il nome file dove deve essere scritto il keyfile."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:886
+msgid "Please specify the details for your new keyfile."
+msgstr "Specificare i dettagli del nuovo keyfile."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:896
+msgid ""
+"In order to create a new keyfile, a certain amount of random data is required.\n"
+"\n"
+"This data will be used for the following:\n"
+"\n"
+"1) Password salting\n"
+"2) Random padding data\n"
+"\n"
+"In order to generate this data, please select which random number generators you wish to use from the options below."
+msgstr ""
+"Per creare un nuovo keyfile, è richiesta una certa quantità di dati casuali.\n"
+"\n"
+"Questi dati saranno usati per:\n"
+"\n"
+"1) Salatura password\n"
+"2) Dati casuali di padding\n"
+"\n"
+"Per generare questi dati, selezionare quale generatore di numeri casuali si vuole usare dalle opzioni seguenti."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:921
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2129
+msgid ""
+"You have selected mouse movement to generate random data.\n"
+"\n"
+"Please \"waggle\" the mouse within the area below, until enough random data has been generated."
+msgstr ""
+"Si è scelto di usare il movimento del mouse per generare dati casuali.\n"
+"\n"
+"\"Agitare\" il mouse nell'area sottostante, fino alla generazione di sufficienti dati casuali."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:924
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2135
+msgid "In order to use GPG to generate random data, please specify the location of \"gpg.exe\" by clicking the browse button."
+msgstr "Per usare GPG nella generazione di dati casuali, specificare la posizione di \"gpg.exe\" cliccando il bottone Apri."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:927
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2132
+msgid "Please select the PKCS#11 token you wish to use to generate random data, from the list shown below"
+msgstr "Selezionare dalla lista sottostante il token PKCS#11 che si vuole utilizzare per generare dati casuali"
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:949
+msgid ""
+"A file with the filename you specified already exists.\n"
+"\n"
+"For safety reasons, you must specify a file which doesn't already exist.\n"
+"\n"
+"Please either delete the existing file, or specify a new filename."
+msgstr ""
+"Un file col nome file specificato esiste già.\n"
+"\n"
+"Per ragioni di sicurezza, deve essere specificato un file non esistente.\n"
+"\n"
+"Cancellare il file esistente, o specificare un nuovo nome file."
+
+#. Programmer's name for it: FILEORPART_OPT_VOLUME_FILE
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:293
+msgid "Volume file"
+msgstr "File volume"
+
+#. Programmer's name for it: FILEORPART_OPT_PARTITION
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:294
+msgid "Partition/entire disk"
+msgstr "Partizione/intero disco"
+
+#. Just warn user, and ignore...
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1202
+msgid "Unable to obtain hash details for %s"
+msgstr "Impossibile ottenere dettagli hash per %s"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1229
+msgid "You do not appear to have any LibreCrypt hash drivers that can be used to create new LibreCrypt volumes installed and started."
+msgstr "Non sembrano presenti driver LibreCrypt installati o avviati che possano essere usati per creare nuovi volumi LibreCrypt."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1400
+msgid "Partition: %s"
+msgstr "Partizione: %s"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1404
+msgid "Filename: %s"
+msgstr "Nome file: %s"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1409
+msgid "Hidden container starting at offset: %d"
+msgstr "Volume nascosto con inizio all'offset: %d"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1416
+msgid "Container size: %d + %d (for header) = %d bytes"
+msgstr "Dimensioni volume: %d + %d (per CDB) = %d byte"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1423
+msgid "CDB stored: At start of volume file"
+msgstr "CDB salvato: All'inizio del file volume"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1427
+msgid "Container size: %d "
+msgstr "Dimensioni volume: %d "
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1428
+msgid "CDB stored: In separate keyfile"
+msgstr "CDB salvato: In un keyfile separato"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1429
+msgid "CDB keyfile: %1"
+msgstr "CDB keyfile: %1"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1432
+msgid "Hash algorithm: %1"
+msgstr "Algoritmo hash: %1"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1433
+msgid "[Hash driver: %1]"
+msgstr "[Driver hash: %1]"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1434
+msgid "[Hash GUID: %1]"
+msgstr "[GUID Hash: %1]"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1436
+msgid "Key iterations: %1"
+msgstr "Iterazioni chiavi: %1"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1441
+msgid "Sector IVs will not be used (cypher has zero or variable blocksize)"
+msgstr "Il settore IVs non saranno usati (il cypher ha blocksize zero o variabile)"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1445
+msgid "Cypher has fixed, defined blocksize; sector IVs will be used"
+msgstr "Il cypher ha blocksize fisso, definito: il settore IVs sarà utilizzato"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1446
+msgid "Sector IV generation method: %1"
+msgstr "Metodo di generazione del settore IV: %1"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1450
+msgid "Sector IVs will be XORd with a per-volume IV before use"
+msgstr "Il settore IVs sarà passato in XOR con un per-volume IV prima dell'utilizzo"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1454
+msgid "A per-volume IV will not be used"
+msgstr "Non verrà utilizzato un per-volume IV "
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1459
+msgid "Cypher algorithm: %1"
+msgstr "Algoritmo cypher: %1"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1460
+msgid "[Cypher driver: %1]"
+msgstr "[Driver cypher: %1]"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1461
+msgid "[Cypher GUID: %1]"
+msgstr "[GUID cypher: %1]"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1463
+msgid "Master key length: %1 bits"
+msgstr "Lunghezza chiave principale: %1 bit"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1510
+msgid "RNG: %1"
+msgstr "RNG: %1"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1513
+msgid "Password: <entered>"
+msgstr "Password: <entered>"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1514
+msgid "Salt length: %1 bits"
+msgstr "Lunghezza salt: %1 bit"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1525
+#: OTFEDoxBox_U.pas:9073
+msgid "Requested drive letter: %1"
+msgstr "Lettera drive richiesta: %1"
+
+#. If there was a problem, and not a user cancel, warn user
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1649
+msgid "Volume creation canceled"
+msgstr "Creazione volume annullata"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1653
+msgid "Unable to create volume file; please ensure you have %1 free on the relevant drive"
+msgstr "Impossibile creare file volume; assicurarsi di avere %1 liberi sul drive"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1658
+msgid "Please note that FAT/FAT32 filesystems cannot store files that are 4GB or larger"
+msgstr "Notare che i file system FAT e FAT32 non possono contenere file di 4 o più GB"
+
+#. Create separate CDB file, if needed
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1678
+msgid "Unable to create separate CDB keyfile."
+msgstr "Impossbile creare un keyfile CDB separato."
+
+#. Write the header to the file, starting from the specified offset
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1790
+msgid "Unable to write FreeOTFE header."
+msgstr "Impossibile scrivere blocco dati critico."
+
+#. Ensure master key length is a multiple of 8 bits
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1812
+msgid "The master key length must be a multiple of 8"
+msgstr "La lunghezza della chiave principale deve essere un multiplo di 8"
+
+#. If we have it cached alredy, use it
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1843
+msgid "Unable to determine the keysize for your selected cypher."
+msgstr "Impossibile determinare il keysize per il cypher selezionato."
+
+#. If we have it cached alredy, use it
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1879
+msgid "Unable to determine the blocksize for your selected cypher."
+msgstr "Impossibile determinare il blocksize per il cypher selezionato."
+
+#. If we have it cached alredy, use it
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1914
+msgid "Unable to determine the cypher mode for your selected cypher."
+msgstr "Impossibile determinare la modalità cypher per il cypher selezionato."
+
+#. Warn user if volume size smaller than PDA version min
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2011
+msgid "Please note: If you would like your volume to be compatible with the PDA version of LibreCrypt, please specify a volume size greater than %1 MB"
+msgstr "Nota: Se si vuole che il volume sia compatibile con la version PDA di LibreCrypt, specificare una dimensione maggiore di %1 MB"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2036
+msgid "(Approx: %1)"
+msgstr "(Approx: %1)"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2059
+msgid ""
+"This \"wizard\" will guide you through the process of either creating a new LibreCrypt volume file, or a hidden volume within an existing file.\n"
+"\n"
+"If you are unsure as to how to answer any of the questions this wizard asks, simply accepting the default values should generate a volume that is secure enough for most purposes."
+msgstr ""
+"Questo \"wizard\" vi guiderà nel processo di creare un nuovo file volume LibreCrypt, o un volume nascosto all'interno di un file esistente.\n"
+"\n"
+"Se non sapete come rispondere a qualche domanda posta dal wizard, accettate i valori di default per generare un volume sicuro a sufficienza per la maggior parte delle esigenze."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2064
+msgid ""
+"Please specify whether the new volume should be created as a disk image file stored on your filesystem, or take up a disk partition/entire physical disk\n"
+"\n"
+"For most users, it is recommended that you use a volume file; encrypted partitions/physical disks are intended for advanced users."
+msgstr ""
+"Specificare se il nuovo volume deve essere creato come un file immagine disco memorizzato nel filesystem, o deve occupare una partizione/un intero disco fisico.\n"
+"\n"
+"Per la maggior parte degli utenti, è raccomandato usare un file volume; le partizioni/dischi crittate sono indirizzate agli utenti avanzati."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2069
+msgid ""
+"Please specify the filename and location where the new volume should be created, by clicking the browse button.\n"
+"\n"
+"If you wish to create a \"hidden\" volume within an existing volume, please specify your existing volume to be used."
+msgstr ""
+"Specificare il nome file e la posizione dove il nuovo volume deve essere creato, cliccando il bottone Esplora.\n"
+"\n"
+"Se si vuole creare un volume \"nascosto\" all'interno di un volume esistente, specificare volume da usare."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2076
+msgid ""
+"1) Creating encrypted partitions is POTENTIALLY DESTRUCTIVE.\n"
+"\n"
+"2) Data stored on the partition you select in the next stage may be OVERWRITTEN with encrypted data.\n"
+"\n"
+"3) It is RECOMMENDED that you backup your data as appropriate before continuing."
+msgstr ""
+"1) Creare partizioni crittate è POTENZIALMENTE DISTRUTTIVO.\n"
+"\n"
+"2) I dati contenuti nella partizione che si sta per selezionare potrebbero essere SOVRASCRITTI da dati crittati.\n"
+"\n"
+"3) Si RACCOMANDA di eseguire un appropriato backup dei dati prima di continuare."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2079
+msgid "Please select the partition you wish to create the new volume on, and whether you would like to create a \"hidden\" volume."
+msgstr "Selezionare la partizione su cui creare il nuovo volume,  ed indicare se si desidera creare un volume \"nascosto\"."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2084
+msgid ""
+"The volume file you specified already exists. To create a hidden volume within this file, please specify the byte offset within this file (multiple of 512), from where the new volume should begin.\n"
+"\n"
+"If you do NOT wish to create a hidden volume within your existing file, please click \"< Back\" and enter a different filename."
+msgstr ""
+"Il file volume specificato esiste già. Per creare un volume nascosto in questo file, specificare il byte offset in questo file (multiplo di 512), da cui deve avere inizio il nuovo volume.\n"
+"\n"
+"Se NON si vuole creare un volume nascosto nel file esistente, cliccare \"< Indietro\" e digitare un nuovo nome file."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2091
+msgid ""
+"1) Creating hidden volumes is POTENTIALLY DESTRUCTIVE.\n"
+"\n"
+"2) Data within the file/partition specified in the previous stage may be OVERWRITTEN, starting from byte offset specified, and running for the full length of the new hidden volume.\n"
+"\n"
+"3) Remember the offset entered! For security reasons, this information is not stored anywhere, nor can it be determined automatically; you will need to type in this offset whenever  you wish to Open your hidden volume."
+msgstr ""
+"1) Creare volumi nascosti è POTENZIALMENTE DISTRUTTIVO.\n"
+"\n"
+"2) I dati nel file/partizione specificato al passo precedente potrebbero essere SOVRASCRITTI, a partire dall'offset specificato, fino alla piena lunghezza del nuovo volume nascosto.\n"
+"\n"
+"3) Ricordare l'offset inserito! Per ragioni di sicurezza, queste informazioni non sono memorizzate sul pc, né possono essere determinate automaticamente; si dovrà digitare questo offset ogni volta per montare il volume nascosto."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2101
+msgid ""
+"Please enter the required size of the new volume.\n"
+"\n"
+"This value must be more than 1 MB, and must be a multiple of 512 bytes.\n"
+"\n"
+"If you are creating a hidden volume, then the size of the original volume file, less the byte offset entered in the previous stage, must be greater than the sum of the value entered here, and the size critical data area.\n"
+"\n"
+"Note: The size you specified here will be the size of the data part of the volume file. The actual file created will be larger than this by the size of the critical data area, which will be prepended onto the volume file."
+msgstr ""
+"Digitare le dimensioni del nuovo volume.\n"
+"\n"
+"Questo valore deve superare 1 MB ed essere multiplo di 512 bytes.\n"
+"\n"
+"Se si sta creando un  volume nascosto, allora le dimensioni del file volume originale, meno il byte offset inserito nel passo precedente, deve essere maggiore della somma del valore inserito qui, e delle dimensioni dell'area dati critici.\n"
+"\n"
+"Nota: Le dimensioni specificate saranno le dimensioni della parte dati del file volume. Il vero file creato le supererà di una quantità pari all'area dati, che precederà la file di volume."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2106
+msgid ""
+"Please select which security options should be used in securing your new volume.\n"
+"\n"
+"Most users can simply accept the defaults here, though more advanced users may prefer to specify their own options, depending on their needs."
+msgstr ""
+"Selezionare quali opzioni di sicurezza utilizzare per il nuovo volume.\n"
+"\n"
+"La maggioranza degli utenti può accettare i default qui, mentre gli utenti avanzati possono specificare le loro opzioni, a seconda della bisogna."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2113
+msgid ""
+"The cypher you selected supports arbitary key lengths.\n"
+"\n"
+"Please specify the length of the master key which will be used to encrypt/decrypt your data.\n"
+"\n"
+"Note: The value entered must be a multiple of 8."
+msgstr ""
+"Il cypher selezionato supporta chiavi di lunghezza arbitraria.\n"
+"\n"
+"Specificare la lunghezza della chiave principale che sarà usata per decrittare/crittare i dati.\n"
+"\n"
+"Nota: Il valore inserito deve essere multiplo di 8."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2124
+msgid ""
+"In order to create your new volume, a certain amount of random data is required.\n"
+"\n"
+"This data will be used for the following:\n"
+"\n"
+"1) Password salting\n"
+"2) The new volume's master key\n"
+"3) Random padding data\n"
+"\n"
+"In order to generate this data, please select which random number generators you wish to use from the options below."
+msgstr ""
+"Per creare un nuovo volume, è richiesta una certa quantità di dati casuali.\n"
+"\n"
+"Questi dati saranno usati per:\n"
+"\n"
+"1) Salatura password\n"
+"2) La chiave principale del nuovo volume\n"
+"3) Dati di protezione random\n"
+"\n"
+"Per generare questi dati, selezionare quale generatore di numeri casuali si vuole usare dalle opzioni seguenti."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2144
+msgid ""
+"Please enter the password to be used for securing your volume.\n"
+"\n"
+"It is suggested that you enter a mix of uppercase, lowercase, numbers, and punctuation symbols.\n"
+"\n"
+"Note: If you forget your password, you can forget your data.\n"
+"\n"
+"Note: Newlines (blank lines) are significant. It is recommended that you do not press <ENTER> after typing in your password, as this will add an extra newline to the end of your password."
+msgstr ""
+"Inserire la password da usare per proteggere il volume.\n"
+"\n"
+"Si suggerisce di digitare un misto di maiuscole, minuscole, numeri e simboli di punteggiatura.\n"
+"\n"
+"Nota: se la password viene dimenticata, i dati saranno irrecuperabili.\n"
+"\n"
+"Nota: Le linee a capo vengono rilevate. Si raccomanda di non premere <INVIO> dopo aver digitato la password, perché ciò aggiungerebbe una linea a capo a fine password."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2151
+msgid ""
+"You have now entered all the information required to create a new volume.\n"
+"\n"
+"Please check the summary shown below and click \"Finish\" to create the new volume, or use the \"Back\"/\"Next\" buttons to modify the details you have entered.\n"
+"\n"
+"If you would like to configure more advanced options, please select \"Advanced...\""
+msgstr ""
+"Sono state inserite tutte le informazioni richieste per creare un nuovo volume.\n"
+"\n"
+"Controllare il sommario seguente e cliccare \"Fine\" per creare il nuovo volume, o usare i pulsanti \"Indietro\"/\"Avanti\" per modificare i dettagli inseriti.\n"
+"\n"
+"Per configurare opzioni più avanzate, selezionare \"Avanzate...\""
+
+#. Ensure number of key iterations is > 0
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:104
+msgid "The number of key iterations must be 1 or more"
+msgstr "Il numero di iterazioni chiave deve essere 1 o più"
+
+#. Ensure salt length is a multiple of 8 bits
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:116
+msgid "The salt length must be a multiple of "
+"8"
+msgstr "La lunghezza salt deve essere un multiplo di 8"
+
+#. they've specified a keyfilename
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:130
+msgid "If you wish to store the volume's CDB in a keyfile, you must specify the file to use"
+msgstr "Se si vuole memorizzare il CDB del volume in un keyfile, si deve specificare il file da usare"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:231
+msgid ""
+"Please enter the number of PBKDF2 key iterations to be carried out on your password to generate an encryption key\n"
+"\n"
+"The higher the number, the greater the security offered - but the slower opening will be (especially if opening the volume on a PDA)\n"
+"\n"
+"Note: If this value is changed from its default, you will be required to enter it value every time you Open your volume. For this reason it is recommended that most users leave it at its default value, unless there is a particular need to do otherwise."
+msgstr ""
+"Digitare il numero di iterazioni di chiave PBKDF2 da eseguire sulla password per generare una chiave di crittaggio\n"
+"\n"
+"Più è alto il numero, maggiore è il livello di sicurezza - ma più è lento il montaggio (specialmente se si monta il volume su un PDA)\n"
+"\n"
+"Nota: Se questo valore viene cambiato dal default, vi verrà richiesto di inserirlo ogni volta che montate il volume. Per questa ragione si raccomanda per la maggioranza degli utenti di lasciarlo a default, a meno che non ci sia un motivo particolare per cambiarlo."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:240
+msgid ""
+"Please enter the amount of \"salt\" to be combined with your password to generate an encryption key.\n"
+"\n"
+"\"Salting\" your password increases security, and will slow down dictionary attacks against your volume.\n"
+"\n"
+"Note: The value entered must be a multiple of both 8 and the cypher's blocksize.\n"
+"\n"
+"Note: If this value is changed from its default, you will be required to enter it value every time you Open your volume. For this reason it is recommended that most users leave it at its default value, unless there is a particular need to do otherwise."
+msgstr ""
+"Inserire la quantità di \"salt\" da combinare con la password per generare una chiave di crittaggio.\n"
+"\n"
+"\"Dare salt\" alla password aumenta la sicurezza, e rallenta gli attacchi dizionario contro il vostro volume.\n"
+"\n"
+"Nota: Se questo valore viene cambiato dal default, vi verrà richiesto di inserirlo ogni volta che montate il volume. Per questa ragione si raccomanda per la maggioranza degli utenti di lasciarlo a default, a meno che non ci sia un motivo particolare per cambiarlo."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:245
+msgid ""
+"Please enter the drive letter you would normally like this volume mounted under.\n"
+"\n"
+"Note: You will be able to change this after the volume has been created."
+msgstr ""
+"Digitare la lettera di drive sotto la quale si vuole montare normalmente il volume.\n"
+"\n"
+"Nota: Sarà possibile cambiarla dopo che il volume è stato creato."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:256
+msgid ""
+"Please specify if you would like your volume's critical data block (CDB) to be written at the start of the new volume, or stored in a separate keyfile.\n"
+"\n"
+"The CDB is where metadata about your volume is stored, together with the master key used to carry out the actual encryption/decryption of your data.\n"
+"\n"
+"For most users, including the CDB as part of the volume file is probably the best option.\n"
+"\n"
+"If you store this information in a keyfile, you will need both your volume file AND a keyfile in order to Open your volume.\n"
+"\n"
+"Note: Storing the CDB as part of the volume file will increase your volume's size by 512 bytes."
+msgstr ""
+"Specificare se vorreste che il blocco dati critici del volume (CDB) deve essere scritto all'inizio del nuovo volume, o memorizzato in un keyfile separato.\n"
+"\n"
+"Nel CDB vengono salvati i metadati del volume, insieme alla chiave principale usata per implementare il crittaggio/decrittaggio dei dati.\n"
+"\n"
+"Per la maggioranza degli utenti, includere il CDB nel file volume è forse l'opzione migliore.\n"
+"\n"
+"Se salvate questa informazione in un keyfile, vi serviranno il volume E ANCHE un keyfile per poter montare il volume.\n"
+"\n"
+"Nota: Salvare il CDB come parte del file volume aumenterà le dimensioni del volume di 512 byte."
+
+#. Programmer's name for it: RS_PASTE
+#: OTFEDoxBox_PasswordRichEdit.pas:35
+msgid "Paste"
+msgstr "Incolla"
+
+#. Programmer's name for it: RS_NO_TOKENS_DETECTED
+#: OTFEDoxBox_PKCS11.pas:339
+msgid "<No tokens detected>"
+msgstr "<Nessun token>"
+
+#: OTFEDoxBox_PKCS11.pas:950
+msgid "CDB length changed during encryption; from %1 bytes to %2 bytes"
+msgstr "Lunghezza CDB cambiata durante il crittaggio: da %1 byte a %2 byte"
+
+#: OTFEDoxBox_PKCS11.pas:988
+msgid "CDB length changed during decryption; from %1 bytes to %2 bytes"
+msgstr "Lunghezza CDB cambiata durante il decrittaggio: da %1 byte a %2 byte"
+
+#. Open/Save file filters...
+#. Programmer's name for it: FILE_FILTER_FLT_VOLUMES
+#: OTFEDoxBox_U.pas:48
+msgid "Volume files (*.vol)|*.vol|All files|*.*"
+msgstr "File volume (*.vol)|*.vol|Tutti i file|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_KEYFILES
+#: OTFEDoxBox_U.pas:51
+msgid "Keyfiles (*.cdb)|*.cdb|All files|*.*"
+msgstr "Keyfile (*.cdb)|*.cdb|Tutti i file|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_VOLUMESANDKEYFILES
+#: OTFEDoxBox_U.pas:54
+msgid "Volume files and keyfiles (*.vol;*.cdb)|*.vol;*.cdb|Volume files (*.vol)|*.vol|Keyfiles (*.cdb)|*.cdb|All files|*.*"
+msgstr "File volume e keyfile (*.vol;*.cdb)|*.vol;*.cdb|File volume (*.vol)|*.vol|Keyfile (*.cdb)|*.cdb|Tutti i file|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_TEXTFILES
+#: OTFEDoxBox_U.pas:57
+msgid "Text files (*.txt)|*.txt|All files|*.*"
+msgstr "File di testo (*.txt)|*.txt|Tutti i file|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_CDBBACKUPS
+#: OTFEDoxBox_U.pas:60
+msgid "CDB backups (*.cdbBackup)|*.cdbBackup|All files|*.*"
+msgstr "Backup CDB (*.cdbBackup)|*.cdbBackup|Tutti i file|*.*"
+
+#. Programmer's name for it: FILE_FILTER_DFLT_CDBBACKUPS
+#: OTFEDoxBox_U.pas:61
+msgid "cdbBackup"
+msgstr "cdbBackup"
+
+#. Programmer's name for it: FILE_FILTER_FLT_EXECUTABLES
+#: OTFEDoxBox_U.pas:63
+msgid "Executable files (*.exe)|*.exe|All files|*.*"
+msgstr "File eseguibili (*.exe)|*.exe|Tutti i file|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_LINUX_SETTINGS
+#: OTFEDoxBox_U.pas:67
+msgid "Linux encryption settings (*.les)|*.les|All files|*.*"
+msgstr "Settaggi crittaggio Linux (*.les)|*.les|Tutti i file|*.*"
+
+#. Programmer's name for it: COUNT_BITS
+#: OTFEDoxBox_U.pas:69
+msgid "%1 bits"
+msgstr "%1 bit"
+
+#. Programmer's name for it: MOUNT_AS_FIXED_DISK
+#: OTFEDoxBox_U.pas:123
+msgid "Fixed disk"
+msgstr "Disco fisso"
+
+#. Programmer's name for it: MOUNT_AS_REMOVABLE_DISK
+#: OTFEDoxBox_U.pas:124
+msgid "Removable disk"
+msgstr "Disco removibile"
+
+#. Programmer's name for it: MOUNT_AS_CD
+#: OTFEDoxBox_U.pas:125
+msgid "CD"
+msgstr "CD"
+
+#. Programmer's name for it: MOUNT_AS_DVD
+#: OTFEDoxBox_U.pas:126
+msgid "DVD"
+msgstr "DVD"
+
+#. supports
+#: OTFEDoxBox_U.pas:6535
+msgid ""
+"WARNING: This volume appears to have been created with a later version of LibreCrypt than this software supports.\n"
+"\n"
+"You may continue, however:\n"
+"1) Your data may be read incorrectly due to changes in the decryption process, and\n"
+"2) It is not recommended that you write to this volume using this software."
+msgstr ""
+"AVVISO: Sembra che il volume sia stato creato con una versione di LibreCrypt non supportata da questo software.\n"
+"\n"
+"Si può continuare, ma:\n"
+"1) I dati potrebbero venir letti in modo errato per i cambiamenti nel processo di decrittaggio, e\n"
+"2) Non è raccomandato scrivere su questo volume usando questo software."
+
+#. cdkSizeBits
+#: OTFEDoxBox_U.pas:7190
+msgid "Failed to derive critical data key."
+msgstr "Impossibile derivare la chiave dati critici."
+
+#: OTFEDoxBox_U.pas:7192
+#: OTFEDoxBox_U.pas:7314
+msgid "Hash:"
+msgstr "Hash:"
+
+#: OTFEDoxBox_U.pas:7271
+msgid "Failed to decrypt encrypted block."
+msgstr "Impossibile decrittare blocco crittato."
+
+#: OTFEDoxBox_U.pas:7273
+#: OTFEDoxBox_U.pas:7317
+msgid "Cypher:"
+msgstr "Cypher:"
+
+#: OTFEDoxBox_U.pas:7313
+msgid "Failed to generate check MAC."
+msgstr "Impossibile generare controllo MAC."
+
+#. as appropriate
+#: OTFEDoxBox_U.pas:8169
+msgid "Mode unknown"
+msgstr "Modalità sconosciuta"
+
+#. Note the semicolon-space on the end
+#: OTFEDoxBox_U.pas:8194
+msgid "Mode unknown; "
+msgstr "Modalità sconosciuta;"
+
+#: OTFEDoxBox_U.pas:8271
+msgid "An error occured while trying to create your volume file"
+msgstr "Si è verificato un errore cercando di creare il file volume"
+
+#. Generate the report
+#: OTFEDoxBox_U.pas:8914
+msgid "Critical Data Block Dump"
+msgstr "Dump Blocco Dati Critici"
+
+#: OTFEDoxBox_U.pas:8916
+msgid "User Supplied Information"
+msgstr "Informazioni fornite dall'utente"
+
+#: OTFEDoxBox_U.pas:8917
+msgid "Filename (user mode)  : %1"
+msgstr "Nome file (modo user)  : %1"
+
+#: OTFEDoxBox_U.pas:8918
+msgid "Filename (kernel mode): %1"
+msgstr "Nome file (modo kernel): %1"
+
+#: OTFEDoxBox_U.pas:8919
+msgid "Password              : "
+msgstr "Password              : "
+
+#: OTFEDoxBox_U.pas:8920
+#: OTFEDoxBox_U.pas:8982
+#: OTFEDoxBox_U.pas:8993
+#: OTFEDoxBox_U.pas:9044
+msgid "Length: %1 bits"
+msgstr "Lunghezza: %1 bit"
+
+#: OTFEDoxBox_U.pas:8921
+#: OTFEDoxBox_U.pas:8994
+msgid "Data  : "
+msgstr "Dati   :"
+
+#: OTFEDoxBox_U.pas:8930
+msgid "Offset                : %1 bytes"
+msgstr "Offset                : %1 byte"
+
+#: OTFEDoxBox_U.pas:8931
+msgid "Salt length           : %1 bits"
+msgstr "Lunghezza Salt    : %1 bit"
+
+#: OTFEDoxBox_U.pas:8932
+msgid "Key iterations        : %1"
+msgstr "Iterazioni chiave    : %1"
+
+#: OTFEDoxBox_U.pas:8934
+msgid "Plaintext Information"
+msgstr "Informazioni in testo semplice"
+
+#: OTFEDoxBox_U.pas:8935
+msgid "Salt data             :"
+msgstr "Dati Salt              :"
+
+#: OTFEDoxBox_U.pas:8946
+msgid "Dump Performance"
+msgstr "Performance dump"
+
+#: OTFEDoxBox_U.pas:8949
+msgid "Time to process CDB   : %1 hours, %2 mins, %3.%4 secs"
+msgstr "Tempo per processare CDB   : %1 ore, %2 min, %3.%4 sec"
+
+#: OTFEDoxBox_U.pas:8952
+msgid "Autodetermined Information"
+msgstr "Informazioni autodeterminate"
+
+#: OTFEDoxBox_U.pas:8954
+msgid "ERROR: Unable to determine hash title?!"
+msgstr "ERRORE: Impossibile determinare il titolo hash?!"
+
+#: OTFEDoxBox_U.pas:8964
+msgid "ERROR: Unable to determine cypher title?!"
+msgstr "ERRORE: Impossibile determinare il titolo cypher?!"
+
+#: OTFEDoxBox_U.pas:8974
+msgid "Hash pretty title     : %1"
+msgstr "Titolo hash pretty   : %1"
+
+#: OTFEDoxBox_U.pas:8975
+msgid "Hash driver KM name   : %1"
+msgstr "Nome driver Hash KM   : %1"
+
+#: OTFEDoxBox_U.pas:8976
+msgid "Hash GUID             : %1"
+msgstr "GUID Hash             : %1"
+
+#: OTFEDoxBox_U.pas:8977
+msgid "Cypher pretty title   : %1"
+msgstr "Titolo cypher pretty : %1"
+
+#: OTFEDoxBox_U.pas:8978
+msgid "Cypher driver KM name : %1"
+msgstr "Nome driver cypher KM : %1"
+
+#: OTFEDoxBox_U.pas:8979
+msgid "Cypher GUID           : %1"
+msgstr "GUID Cypher           : %1"
+
+#: OTFEDoxBox_U.pas:8980
+msgid "Critical data key     : "
+msgstr "Chiave dati critici    :"
+
+#: OTFEDoxBox_U.pas:8981
+msgid "KDF   : %1"
+msgstr "KDF   : %1"
+
+#: OTFEDoxBox_U.pas:8983
+msgid "Key   : "
+msgstr "Chiave   : "
+
+#: OTFEDoxBox_U.pas:8992
+msgid "Plaintext encrypted block: "
+msgstr "Blocco crittato testo semplice:"
+
+#: OTFEDoxBox_U.pas:9003
+msgid "Check MAC             : "
+msgstr "Controllo MAC        :"
+
+#: OTFEDoxBox_U.pas:9004
+msgid "MAC algorithm: %1"
+msgstr "Algoritmo MAC: %1"
+
+#: OTFEDoxBox_U.pas:9005
+msgid "Length       : %1 bits"
+msgstr "Lunghezza : %1 bit"
+
+#: OTFEDoxBox_U.pas:9006
+#: OTFEDoxBox_U.pas:9017
+msgid "Data         : "
+msgstr "Dati          : "
+
+#: OTFEDoxBox_U.pas:9015
+msgid "Volume details block  : "
+msgstr "Dettagli blocco volume:"
+
+#: OTFEDoxBox_U.pas:9016
+msgid "Length       : %1"
+msgstr "Lunghezza : %1"
+
+#: OTFEDoxBox_U.pas:9028
+msgid "Volume Details Block"
+msgstr "Dettagli Blocco Volume"
+
+#: OTFEDoxBox_U.pas:9029
+msgid "CDB format ID         : %1"
+msgstr "ID formato CDB       : %1"
+
+#. Decode the VolumeFlags to human-readable format
+#: OTFEDoxBox_U.pas:9032
+msgid "Volume flags          : %1"
+msgstr "Flag volume           : %1"
+
+#: OTFEDoxBox_U.pas:9037
+msgid "Sector ID zero is at the start of the encrypted data"
+msgstr "Il settore ID zero è all'inizio dei dati crittati"
+
+#: OTFEDoxBox_U.pas:9038
+msgid "Sector ID zero is at the start of the host file/partition"
+msgstr "Il settore ID zero è all'inizio del file/partizione host"
+
+#: OTFEDoxBox_U.pas:9041
+msgid "Partition length      : %1 bytes"
+msgstr "Lunghezza partizione: %1 byte"
+
+#: OTFEDoxBox_U.pas:9043
+msgid "Master key            : "
+msgstr "Master key            :"
+
+#: OTFEDoxBox_U.pas:9045
+msgid "Key   :"
+msgstr "Chiave:"
+
+#: OTFEDoxBox_U.pas:9054
+msgid "Sector IV generation  : %1"
+msgstr "Generazione settore IV: %1"
+
+#: OTFEDoxBox_U.pas:9055
+msgid "Volume IV             : "
+msgstr "Volume IV             : "
+
+#: OTFEDoxBox_U.pas:9056
+msgid "Length : %1 bits"
+msgstr "Lunghezza : %1 bit"
+
+#: OTFEDoxBox_U.pas:9057
+msgid "IV data:"
+msgstr "Dati IV:"
+
+#: OTFEDoxBox_U.pas:9069
+msgid "Requested drive letter: None; use default"
+msgstr "Lettera driver richiesta: Nessuna; usa default"
+
+#: OTFEDoxBox_U.pas:9076
+msgid "Encrypted CDB"
+msgstr "CDB Crittato"
+
+#: OTFEDoxBox_U.pas:9148
+msgid "Bit %1: %2 (%3)"
+msgstr "Bit %1: %2 (%3)"
+
+#. The entire disk
+#: OTFEDoxBox_U.pas:9767
+msgid "Hard disk #%1 (entire disk)"
+msgstr "Hard disk #%1 (intero disco)"
+
+#. Note: We start from 1; partition 0 indicates the entire disk
+#: OTFEDoxBox_U.pas:9780
+msgid "Hard disk #%1, partition #%2"
+msgstr "Hard disk #%1, partizione #%2"
+
+#. Check to see if the entire disk exists, before checking for partitions
+#: OTFEDoxBox_U.pas:9823
+msgid "CDROM drive #%1"
+msgstr "CDROM drive #%1"
+
+#: OTFEDoxBox_U.pas:9972
+msgid "You do not appear to have any LibreCrypt hash drivers installed and started."
+msgstr "Non sembrano esserci driver LibreCrypt installati o avviati."
+
+#: OTFEDoxBox_U.pas:9988
+msgid "You do not appear to have any LibreCrypt cypher drivers installed and started."
+msgstr "Non sembrano esserci driver cypher LibreCrypt installati o avviati."
+
+#: OTFEDoxBox_U.pas:10165
+msgid "Dump Created By"
+msgstr "Dump Creato Da"
+
+#: OTFEDoxBox_U.pas:10180
+msgid "Platform              : %1"
+msgstr "Piattaforma         : %1"
+
+#: OTFEDoxBox_U.pas:10181
+msgid "Application version   : %1"
+msgstr "Versione applicazione: %1"
+
+#: OTFEDoxBox_U.pas:10182
+msgid "Driver ID             : %1"
+msgstr "ID Driver             : %1"
+
+#. Programmer's name for it: PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR
+#: OTFEDoxBox_WizardCommon.pas:108
+msgid "Please report seeing this message using the email address specified in the LibreCrypt documentation, together with a brief description of what you were attempting to do."
+msgstr "Si prega di segnalare questo messaggio usando l'indirizzo email specificato nella documentazione LibreCrypt, insieme con una breve descrizione di ciò che si stava tentando di fare."
+
+#. MS CryptoAPI...
+#: OTFEDoxBox_WizardCommon.pas:203
+msgid "The MS CryptoAPI could not be used to generate random data."
+msgstr "Impossibile usare la CryptoAPI MS per generare dati casuali."
+
+#: OTFEDoxBox_WizardCommon.pas:205
+#: OTFEDoxBox_WizardCommon.pas:546
+msgid "Please select another RNG, and try again"
+msgstr "Selezionare un altro RNG, e riprovare"
+
+#. cryptlib...
+#: OTFEDoxBox_WizardCommon.pas:220
+msgid "cryptlib could not be used to generate random data."
+msgstr "Impossibile usare cryptlib per generare dati casuali."
+
+#: OTFEDoxBox_WizardCommon.pas:222
+msgid "Please ensure the cryptlib DLL is in the correct location, and try again"
+msgstr "Assicurarsi che la DLL cryptlib sia nella posizione corretta, e riprovare"
+
+#. PKCS#11 token...
+#: OTFEDoxBox_WizardCommon.pas:242
+msgid "PKCS#11 token could not be used to generate random data."
+msgstr "Impossibile usare il token PKCS#11 per generare dati casuali."
+
+#: OTFEDoxBox_WizardCommon.pas:244
+msgid "Please ensure token is inserted and configured correctly"
+msgstr "Assicurarsi che il token sia inserito e configurato correttamente"
+
+#. GPG...
+#: OTFEDoxBox_WizardCommon.pas:263
+msgid "GPG could not be used to generate random data."
+msgstr "Impossibile usare GPG per generare dati casuali."
+
+#: OTFEDoxBox_WizardCommon.pas:265
+msgid "Please doublecheck the path to the GPG executable, and try again."
+msgstr "Ricontrollare il percorso dell'eseguibile GPG, e riprovare."
+
+#: OTFEDoxBox_WizardCommon.pas:274
+msgid "Unknown RNG selected?!"
+msgstr "RNG sconosciuto selezionato?!"
+
+#. Sanity check
+#: OTFEDoxBox_WizardCommon.pas:293
+msgid "Insufficient random data generated?!"
+msgstr "Insufficienti dati casuali generati?!"
+
+#: OTFEDoxBox_WizardCommon.pas:544
+msgid "The selected PKCS#11 token could not be used to generate random data."
+msgstr "Impossibile usare il token PKCS#11 selezionato per generare dati casuali."
+
+#. KeyboardEntryDlg..pbScramble..Caption
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:31
+msgid "Scramble &Keys"
+msgstr "Mescola chiavi"
+
+#. KeyboardEntryDlg..ckShift..Caption
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:999
+msgid "&Shift"
+msgstr "&Sposta"
+
+#. KeyboardEntryDlg..pbClear..Caption
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:1018
+msgid "C&lear"
+msgstr "Ripu&lisci"
+
+#. MouseRNGCaptureDlg..Caption
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.dfm:4
+msgid "Random Data Generation"
+msgstr "Generazione Dati Casuali"
+
+#. MouseRNGCaptureDlg..lblInstructions....Caption
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.dfm:48
+msgid "In order to generate sufficient random data, please waggle the mouse randomly over the area below until it changes color, then click \"OK\":"
+msgstr "Per generare dati casuali a sufficienza, agitare il mouse in modo casuale sull'area sottostante fino al cambio di colore, poi cliccare \"OK\":"
+
+#. FileList_F..Caption
+#: Shredder/FileList_U.dfm:4
+msgid "Report"
+msgstr "Rapporto"
+
+#. Programmer's name for it: BITS_REQUIRED
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.pas:72
+msgid "Bits required: %1"
+msgstr "Bit richiesti: %1"
+
+#. Programmer's name for it: BITS_GENERATED
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.pas:73
+msgid "Bits generated: %1"
+msgstr "Bit generati: %1"
+
+#. Programmer's name for it: E_EPKCS11_LISTINDEXOUTOFBOUNDS
+#: PKCS#11/pkcs11_api.pas:86
+msgid "List index out of bounds"
+msgstr "List index out of bounds"
+
+#. Programmer's name for it: E_EPKCS11_TOKENNOTPRESENT
+#: PKCS#11/pkcs11_api.pas:87
+msgid "Token not present"
+msgstr "Token non presente"
+
+#. Programmer's name for it: E_EPKCS11_DLLNOTFOUND
+#: PKCS#11/pkcs11_api.pas:88
+msgid "Unable to locate/load PKCS#11 library: %1"
+msgstr "Impossibile localizzare/caricare la libreria PKCS#11: %1"
+
+#. Programmer's name for it: E_EPKCS11_DLLNOAPI
+#: PKCS#11/pkcs11_api.pas:89
+msgid "Library specified doesn't support the PKCS#11 API"
+msgstr "La libreria specificata non supporta l'API PKCS#11"
+
+#. Programmer's name for it: SESSION_STATE_RO_PUBLIC
+#: PKCS#11/pkcs11_session.pas:38
+msgid "Read-only Public"
+msgstr "Pubblico sola lettura"
+
+#. Programmer's name for it: SESSION_STATE_RO_USER
+#: PKCS#11/pkcs11_session.pas:39
+msgid "Read-only User"
+msgstr "Utente sola lettura"
+
+#. Programmer's name for it: SESSION_STATE_RW_PUBLIC
+#: PKCS#11/pkcs11_session.pas:40
+msgid "Read/write Public"
+msgstr "Pubblico lettura/scrittura"
+
+#. Programmer's name for it: SESSION_STATE_RW_USER
+#: PKCS#11/pkcs11_session.pas:41
+msgid "Read/write User"
+msgstr "Utente lettura/scrittura"
+
+#. Programmer's name for it: SESSION_STATE_RW_SO
+#: PKCS#11/pkcs11_session.pas:42
+msgid "Read/write Security Officer"
+msgstr "Ufficiale Sicurezza lettura/scrittura"
+
+#. Programmer's name for it: SHREDMETHOD_ZEROS
+#: Shredder/Shredder.pas:44
+msgid "Zeros"
+msgstr "Zeri"
+
+#. Programmer's name for it: SHREDMETHOD_GUTMANN
+#: Shredder/Shredder.pas:49
+msgid "Gutmann (35 pass)"
+msgstr "Gutmann (35 passaggi)"
+
+#. Programmer's name for it: USER_CANCELLED
+#: Shredder/Shredder.pas:251
+msgid "User cancelled"
+msgstr "Utente annullato"
+
+#. Let user know what's going on...
+#: Shredder/Shredder.pas:606
+msgid "Custom"
+msgstr "Personalizzato"
+
+#: Shredder/Shredder.pas:609
+msgid "Shredding (%1 pass %2/%3) %4"
+msgstr "Obliterazione (%1 passaggio %2/%3) %4"
+
+#: Shredder/Shredder.pas:1141
+msgid "Error running external (3rd party) free space shredder"
+msgstr "Errore nell'esecuzione dell'obliteratore di spazio libero"
+
+#. left, create a file FIntFreeSpcFileSize (or smart) big
+#: Shredder/Shredder.pas:1173
+msgid "Shredding free space on drive %1:"
+msgstr "Obliterazione spazio libero sul drive %1:"
+
+#: Shredder/Shredder.pas:1453
+msgid "Shredding file slack on drive %1:"
+msgstr "Obliterazione file slack sul drive %1:"
+
+#: Shredder/Shredder.pas:1469
+msgid "The following files could not have their slack space shredded:"
+msgstr "Lo slack space dei seguenti files non è stato obliterato"
+
+#. SDUDiskPropertiesDialog..Caption
+#: SDUDiskPropertiesDlg.dfm:5
+msgid "Disk Properties"
+msgstr "Proprietà Disco"
+
+#. SDUDiskPropertiesDialog..Label1..Caption
+#: SDUDiskPropertiesDlg.dfm:24
+msgid "Tracks per cylinder:"
+msgstr "Tracce per cilindro:"
+
+#. SDUDiskPropertiesDialog..Label4..Caption
+#: SDUDiskPropertiesDlg.dfm:31
+msgid "Sectors per track:"
+msgstr "Settori per traccia:"
+
+#. SDUDiskPropertiesDialog..Label5..Caption
+#: SDUDiskPropertiesDlg.dfm:38
+msgid "Bytes per sector:"
+msgstr "Byte per settore:"
+
+#. SDUDiskPropertiesDialog..Label6..Caption
+#: SDUDiskPropertiesDlg.dfm:45
+msgid "MediaType"
+msgstr "Tipo Media"
+
+#. SDUDiskPropertiesDialog..Label7..Caption
+#: SDUDiskPropertiesDlg.dfm:52
+msgid "Size (in bytes):"
+msgstr "Dimensioni (byte):"
+
+#. SDUDiskPropertiesDialog..Label11..Caption
+#: SDUDiskPropertiesDlg.dfm:59
+msgid "Cylinders:"
+msgstr "Cilindri:"
+
+#. SDUDiskPropertiesDialog..Label8..Caption
+#: SDUDiskPropertiesDlg.dfm:66
+msgid "Disk number:"
+msgstr "Numero disco:"
+
+#. SDUDiskPropertiesDialog..Label10..Caption
+#: SDUDiskPropertiesDlg.dfm:73
+msgid "Disk signature:"
+msgstr "Firma disco:"
+
+#. SDUDiskPropertiesDialog..Label12..Caption
+#: SDUDiskPropertiesDlg.dfm:80
+msgid "Partition count:"
+msgstr "Conteggio partizioni:"
+
+#. SDUDiskPropertiesDialog..Label2..Caption
+#: SDUDiskPropertiesDlg.dfm:87
+msgid "Size (sensible units):"
+msgstr "Dimensioni (unità sensibili):"
+
+#. SDUPartitionPropertiesDialog..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:5
+msgid "Partition Properties"
+msgstr "Proprietà Partizione"
+
+#. SDUPartitionPropertiesDialog..Label1..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:24
+msgid "Starting offset:"
+msgstr "Offset iniziale:"
+
+#. SDUPartitionPropertiesDialog..Label4..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:31
+msgid "Partition length (in bytes):"
+msgstr "Lunghezza partizione (byte):"
+
+#. SDUPartitionPropertiesDialog..Label5..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:38
+msgid "Hidden sectors:"
+msgstr "Settori nascosti:"
+
+#. SDUPartitionPropertiesDialog..Label6..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:45
+msgid "Partition number:"
+msgstr "Numero partizione:"
+
+#. SDUPartitionPropertiesDialog..Label7..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:52
+msgid "Partition type:"
+msgstr "Tipo partizione:"
+
+#. SDUPartitionPropertiesDialog..Label9..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:59
+msgid "Flags:"
+msgstr "Indicatori:"
+
+#. SDUPartitionPropertiesDialog..Label11..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:66
+msgid "Mounted as:"
+msgstr "Montato come:"
+
+#. SDUPartitionPropertiesDialog..Label8..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:73
+msgid "Partition length (sensible units):"
+msgstr "Lunghezza partizione (unità sensibili):"
+
+#. SDUProgressDialog..Caption
+#: SDUProgressDlg.dfm:6
+msgid "Progress"
+msgstr "Progresso"
+
+#. SDUProgressDialog..pnlProgressBar..lblEstTimeRemainText..Caption
+#: SDUProgressDlg.dfm:37
+msgid "Estimated time remaining:"
+msgstr "Tempo rimanente stimato:"
+
+#. SDUProgressDialog..pnlProgressBar..pbCancel..Caption
+#: SDUProgressDlg.dfm:61
+msgid "&Cancel"
+msgstr "Annulla"
+
+#. compiler error; copy of consts from "Consts.pas"
+#. Programmer's name for it: SDU_SMsgDlgWarning
+#: SDUDialogs.pas:155
+msgid "Warning"
+msgstr "Attenzione"
+
+#. Programmer's name for it: SDU_SMsgDlgError
+#: SDUDialogs.pas:156
+msgid "Error"
+msgstr "Errore"
+
+#. Programmer's name for it: SDU_SMsgDlgInformation
+#: SDUDialogs.pas:157
+msgid "Information"
+msgstr "Informazioni"
+
+#. Programmer's name for it: SDU_SMsgDlgConfirm
+#: SDUDialogs.pas:158
+msgid "Confirm"
+msgstr "Conferma"
+
+#. Programmer's name for it: UNABLE_TO_GET_DISK_LAYOUT
+#: SDUDiskPartitionsPanel.pas:22
+msgid "Unable to get disk layout for disk: %1"
+msgstr "Impossibile ottenere il layout del disco: %1"
+
+#. Programmer's name for it: RS_UNABLE_TO_OBTAIN_DATA
+#: SDUDiskPropertiesDlg.pas:45
+msgid "<Unable to obtain data>"
+msgstr "<Impossibile ottenere i dati>"
+
+#. Programmer's name for it: RS_UNKNOWN
+#: SDUGeneral.pas:138
+msgid "<unknown>"
+msgstr "<sconosciuto>"
+
+#. Programmer's name for it: RS_BOOTABLE
+#: SDUPartitionPropertiesDlg.pas:46
+msgid "Bootable"
+msgstr "Avviabile"
+
+#. Programmer's name for it: RS_REWRITE
+#: SDUPartitionPropertiesDlg.pas:47
+msgid "Rewrite"
+msgstr "Riscrivi"
+
+#. Programmer's name for it: RS_RECOGNISED
+#: SDUPartitionPropertiesDlg.pas:48
+msgid "Recognised"
+msgstr "Riconosciuto"
+
+#. Programmer's name for it: RS_NO_DRIVE_LETTER
+#: SDUPartitionPropertiesDlg.pas:51
+msgid "<No drive letter>"
+msgstr "<Nessun disco>"
+
+#. not particularly significant
+#: SDUProgressDlg.pas:201
+msgid "%1 days, %2 hours"
+msgstr "%1 giorni, %2 ore"
+
+#: SDUProgressDlg.pas:208
+msgid "%1 hours, %2 minutes"
+msgstr "%1 ore, %2 minuti"
+
+#: SDUProgressDlg.pas:215
+msgid "%1 minutes, %2 seconds"
+msgstr "%1 minuti, %2 secondi"
+
+#: SDUProgressDlg.pas:221
+msgid "%1 seconds"
+msgstr "%1 secondi"
+
+#: SDUProgressDlg.pas:289
+msgid "Operation cancelled by user"
+msgstr "Operazione annullata dall'utente"
+
+#~ msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
+#~ msgstr "File di testo (*.txt)|*.txt|Tutti i file (*.*)|*.*"
+#~ msgid "(any)"
+#~ msgstr "(tutti)"
+#~ msgid "LibreCrypt executable dir"
+#~ msgstr "Cartella dell'eseguibile LibreCrypt"
+#~ msgid "reSummary"
+#~ msgstr "reSommario"
+#~ msgid ""
+#~ "Please specify whether the volume you wish to modify is file or partition "
+#~ "based."
+#~ msgstr ""
+#~ "Specificare se il volume che si desiderra modificare sia a base file o "
+#~ "partizione."
+#~ msgid "%1 bytes"
+#~ msgstr "%1 byte"
+
+#: SDUAboutDlg.pas:61
+msgid "About %s"
+msgstr "Informazioni su %s"
+
+msgid "About %1..."
+msgstr "Informazioni su %1..."
+
+#: SDUAboutDlg.pas:82
+msgid "by %1"
+msgstr "%1"
+
+#. Programmer's name for it: SDU_SMsgDlgHelpNone
+#: SDUDialogs.pas:191
+msgid "No help available"
+msgstr "Nessuno aiuto disponibile"
+
+#. Programmer's name for it: SDU_SMsgDlgHelpHelp
+#: SDUDialogs.pas:192
+msgid "Help"
+msgstr "Aiuto"
+
+#. Programmer's name for it: SDU_SMsgDlgAbort
+#: SDUDialogs.pas:193
+msgid "&Abort"
+msgstr "&Fine"
+
+#. Programmer's name for it: SDU_SMsgDlgRetry
+#: SDUDialogs.pas:194
+msgid "&Retry"
+msgstr "&Riprova"
+
+#. Programmer's name for it: SDU_SMsgDlgIgnore
+#: SDUDialogs.pas:195
+msgid "&Ignore"
+msgstr "I&gnora"
+
+#. Programmer's name for it: SDU_SMsgDlgAll
+#: SDUDialogs.pas:196
+msgid "&All"
+msgstr "&Tutto"
+
+#. Programmer's name for it: SDU_SMsgDlgNoToAll
+#: SDUDialogs.pas:197
+msgid "N&o to All"
+msgstr "N&o a tutti"
+
+#. Programmer's name for it: SDU_SMsgDlgYesToAll
+#: SDUDialogs.pas:198
+msgid "Yes to &All"
+msgstr "S&ì a tutti"
+
+#. Programmer's name for it: SDU_SMsgDlgYes
+#: SDUDialogs.pas:186
+msgid "&Yes"
+msgstr "&Sì"
+
+#. Programmer's name for it: SDU_SMsgDlgNo
+#: SDUDialogs.pas:187
+msgid "&No"
+msgstr "&No"
+

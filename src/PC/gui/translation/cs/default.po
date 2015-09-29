@@ -1,0 +1,5551 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Tomáš Růžička, 2009.
+# Tomáš Růžička <tr3027@horses-online.cz>, 2009.
+# Tomáš Růžička <tr3027@seznam.cz>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: default\n"
+"POT-Creation-Date: 2009-01-01 17:23\n"
+"PO-Revision-Date: 2009-03-13 20:45+0100\n"
+"Last-Translator: Tomáš Růžička <tr3027@seznam.cz>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 0.2\n"
+"Language-Team: Czech <tr3027@seznam.cz>\n"
+"Plural-Forms: nplurals=3;plural=n==1 ? 0 : n>=2 && n<=4 ? 1 : 2;\n"
+
+#. About_F..Caption
+#: About_U.dfm:6
+msgid "About LibreCrypt"
+msgstr "O LibreCrypt"
+
+#. About_F..lblBeta..Caption
+#: About_U.dfm:25
+msgid "BETA"
+msgstr "BETA"
+
+#. About_F..Label1..Caption
+#: About_U.dfm:85
+msgid "LibreCrypt: Free On-The-Fly-Encryption"
+msgstr "LibreCrypt: transparentní šifrování"
+
+#. About_F..pbOK..Caption
+#: About_U.dfm:154
+#. frmDoxBoxCDBBackupRestore..pbOK..Caption
+#: DoxBoxfrmCDBBackupRestore.dfm:35
+#. frmDoxBoxCDBDump..pbOK..Caption
+#: DoxBoxfrmCDBDump.dfm:25
+#. frmInstallOnUSBDrive..pbOK..Caption
+#: DoxBoxfrmInstallOnUSBDrive.dfm:40
+#. frmOptions..pbOK..Caption
+#: DoxBoxfrmOptions.dfm:51
+#. frmDoxBoxSelectOverwriteMethod..pbOK..Caption
+#: DoxBoxfrmSelectOverwriteMethod.dfm:26
+#. frmDoxBoxVolProperties..pbOK..Caption
+#: DoxBoxfrmVolProperties.dfm:89
+#. frmKeyEntryDoxBox..pnlLower..pnlButtons..pbOK..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:167
+#. frmKeyEntryPlainLinux..pbOK..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:36
+#. frmKeyEntryLUKS..pbOK..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:36
+#. frmNewVolumeSize..pbOK..Caption
+#: OTFEDoxBox_frmNewVolumeSize.dfm:49
+#. frmPKCS11NewSecretKey..pbOK..Caption
+#: OTFEDoxBox_frmPKCS11NewSecretKey.dfm:59
+#. frmPKCS11Session..pbOK..Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:68
+#. frmSelectHashCypher..pbOK..Caption
+#: OTFEDoxBox_frmSelectHashCypher.dfm:71
+#. frmSelectPartition..pnlButtonCenter..pbOK..Caption
+#: OTFEDoxBox_frmSelectPartition.dfm:43
+#. frmSelectPartition_Simple..pbOK..Caption
+#: OTFEDoxBox_frmSelectPartition_Simple.dfm:34
+#. frmSelectVolumeFileAndOffset..pbOK..Caption
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:94
+#. frmSelectVolumeType..pbOK..Caption
+#: OTFEDoxBox_frmVolumeType.dfm:52
+#. frmWizardCreateVolumeAdvanced..pbOK..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:202
+#. KeyboardEntryDlg..pbOK..Caption
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:1027
+#. MouseRNGCaptureDlg..pbOK..Caption
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.dfm:57
+#. FileList_F..pbOK..Caption
+#: Shredder/FileList_U.dfm:35
+msgid "OK"
+msgstr "&OK"
+
+#. frmCommonOptions..gbAutorun..Caption
+#: common/frmCommonOptions.dfm:12
+msgid "Autorun pre/post-open/lock"
+msgstr ""
+
+#. frmCommonOptions..gbAutorun..Label33..Caption
+#: common/frmCommonOptions.dfm:19
+msgid "Post-&Open:"
+msgstr ""
+
+#. frmCommonOptions..gbAutorun..Label34..Caption
+#: common/frmCommonOptions.dfm:27
+msgid "&Pre-dismount:"
+msgstr ""
+
+#. frmCommonOptions..gbAutorun..Label35..Caption
+#: common/frmCommonOptions.dfm:35
+msgid "Post-&dismount:"
+msgstr ""
+
+#. frmCommonOptions..gbAutorun..ckPrePostExeWarn..Caption
+#: common/frmCommonOptions.dfm:94
+msgid "&Warn user if file is not found."
+msgstr "Varovat pokud nebude soubor nalezen."
+
+#. fmeOptions_General..gbGeneral..Caption
+#: DoxBoxfmeOptions_General.dfm:12
+#. frmOptions..pcOptions..tsGeneral..Caption
+#: DoxBoxfrmOptions.dfm:92
+msgid "General"
+msgstr "Obecné"
+
+#. fmeOptions_General..gbGeneral..lblDragDrop..Caption
+#: DoxBoxfmeOptions_General.dfm:19
+msgid ""
+"Assume files &dragged onto LibreCrypt are encrypted "
+"using:"
+msgstr ""
+"Př&edpokládat, že soubory upuštěné do LibreCrypt jsou "
+"šifrované pomocí:"
+
+#. fmeOptions_General..gbGeneral..Label1..Caption
+#: DoxBoxfmeOptions_General.dfm:28
+msgid "Default drive &letter:"
+msgstr "Výchozí písmeno &disku:"
+
+#. fmeOptions_General..gbGeneral..Label4..Caption
+#: DoxBoxfmeOptions_General.dfm:36
+msgid "(Set to 0 to disable MRU list)"
+msgstr "(0 = žádná historie)"
+
+#. fmeOptions_General..gbGeneral..lblMRUMaxItemCount..Caption
+#: DoxBoxfmeOptions_General.dfm:43
+msgid ""
+"&Max. number of volumes to show in most recently used "
+"list:"
+msgstr "&Max. počet záznamů v historii:"
+
+#. fmeOptions_General..gbGeneral..Label2..Caption
+#: DoxBoxfmeOptions_General.dfm:52
+msgid "&Language:"
+msgstr "&Jazyk:"
+
+#. fmeOptions_General..gbGeneral..ckAllowMultipleInstances..Caption
+#: DoxBoxfmeOptions_General.dfm:61
+msgid "&Allow multiple instances"
+msgstr "Povolit více &instancí"
+
+#. fmeOptions_General..gbGeneral..ckDisplayToolbar..Caption
+#: DoxBoxfmeOptions_General.dfm:69
+msgid "Display &toolbar"
+msgstr "Zobrazit &lištu s nástroji"
+
+#. fmeOptions_General..gbGeneral..ckDisplayStatusbar..Caption
+#: DoxBoxfmeOptions_General.dfm:78
+msgid "Show &statusbar"
+msgstr "Zobrazit &stavovou lištu"
+
+#. fmeOptions_General..gbGeneral..ckAutoStartPortable....Caption
+#: DoxBoxfmeOptions_General.dfm:97
+msgid ""
+"Autostart &portable mode if LibreCrypt drivers not "
+"installed/running"
+msgstr ""
+"Automati&cky spustit v přenosném režimu nejsou-li "
+"nainstalované/aktivní ovladače"
+
+#. fmeOptions_General..gbGeneral..ckAdvancedMountDlg..Caption
+#: DoxBoxfmeOptions_General.dfm:106
+msgid "Display advanced &options when opening"
+msgstr "Zobrazit &rozšířené možnosti při připojování"
+
+#. fmeOptions_General..gbGeneral..ckExploreAfterMount..Caption
+#: DoxBoxfmeOptions_General.dfm:115
+msgid "&Explore after Open"
+msgstr "Spustit Průz&kumníka po připojení"
+
+#. fmeOptions_General..gbGeneral..ckRevertVolTimestamps..Caption
+#: DoxBoxfmeOptions_General.dfm:123
+msgid "&Revert volume timestamps on dismount"
+msgstr "&Vrátit časové razítko svazku po odpojení"
+
+#. fmeOptions_General..gbGeneral..ckShowPasswords..Caption
+#: DoxBoxfmeOptions_General.dfm:157
+msgid "Display &passwords when entered"
+msgstr "Zobrazovat &heslo při psaní"
+
+#. fmeOptions_General..gbGeneral..ckPromptMountSuccessful..Caption
+#: DoxBoxfmeOptions_General.dfm:184
+msgid "Display &message on successful Open"
+msgstr "Zobrazit zprávu po úspěš&ném připojení"
+
+#. fmeOptions_General..gbGeneral..ckDisplayToolbarLarge..Caption
+#: DoxBoxfmeOptions_General.dfm:192
+msgid "Large &icons"
+msgstr "Velké ikon&y"
+
+#. fmeOptions_General..gbGeneral..ckDisplayToolbarCaptions..Caption
+#: DoxBoxfmeOptions_General.dfm:201
+msgid "Display &captions"
+msgstr "Zo&brazit popisky"
+
+#. fmeOptions_Hotkeys..gbHotkeys..Caption
+#: DoxBoxfmeOptions_Hotkeys.dfm:8
+#. frmOptions..pcOptions..tsHotkeys..Caption
+#: DoxBoxfrmOptions.dfm:123
+msgid "Hotkeys"
+msgstr "Klávesové zkratky"
+
+#. fmeOptions_Hotkeys..gbHotkeys..Label1..Caption
+#: DoxBoxfmeOptions_Hotkeys.dfm:15
+msgid "&Hotkey:"
+msgstr "&Zkratka:"
+
+#. fmeOptions_Hotkeys..gbHotkeys..Label2..Caption
+#: DoxBoxfmeOptions_Hotkeys.dfm:23
+msgid "H&otkey:"
+msgstr "Z&kratka:"
+
+#. fmeOptions_Hotkeys..gbHotkeys..ckHotkeyDismount..Caption
+#: DoxBoxfmeOptions_Hotkeys.dfm:40
+msgid "&Enable dismount all hotkey"
+msgstr "Povolit zkratku pro odpojení &všech"
+
+#. fmeOptions_Hotkeys..gbHotkeys..ckHotkeyDismountEmerg..Caption
+#: DoxBoxfmeOptions_Hotkeys.dfm:49
+msgid "E&nable emergency dismount all hotkey"
+msgstr "Povolit zkratku pro &nouzové odpojení všech"
+
+#. fmeOptions_PKCS11..gbPKCS11..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:12
+msgid "Security Token/Smartcard support"
+msgstr "Podpora tokenů/Smart karet"
+
+#. fmeOptions_PKCS11..gbPKCS11..lblLibrary..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:19
+msgid "PKCS#11 &library:"
+msgstr "PKCS#11 &dll:"
+
+#. fmeOptions_PKCS11..gbPKCS11..ckEnablePKCS11..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:27
+msgid "&Enable PKCS#11 support"
+msgstr "Povolit podporu &PKCS#11"
+
+#. fmeOptions_PKCS11..gbPKCS11..pbVerify..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:36
+msgid "&Verify"
+msgstr "&Zkontrolovat"
+
+#. fmeOptions_PKCS11..gbPKCS11..gbPKCS11AutoActions..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:45
+msgid "Automount/dismount"
+msgstr "Automatické připojení/odpojení"
+
+#. fmeOptions_PKCS11..gbPKCS11..gbPKCS11AutoActions..lblAutoMountVolume..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:52
+msgid "V&olume:"
+msgstr "&Svazek:"
+
+#. fmeOptions_PKCS11..gbPKCS11..gbPKCS11AutoActions..ckPKCS11AutoDismount..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:60
+msgid ""
+"Auto &dismount PKCS#11 volumes when associated token is "
+"removed"
+msgstr "Au&tomaticky odpojit PKCS#11 svazky po vyjmutí tokenu"
+
+#. fmeOptions_PKCS11..gbPKCS11..gbPKCS11AutoActions..ckPKCS11AutoMount..Caption
+#: DoxBoxfmeOptions_PKCS11.dfm:69
+msgid ""
+"Auto &Open specified volume on token "
+"insertion"
+msgstr "Automaticky připojit &vybraný svazek po vložení tokenu"
+
+#. fmeOptions_SystemTray..gbSystemTrayIcon..Caption
+#: DoxBoxfmeOptions_SystemTray.dfm:8
+msgid "System Tray Icon"
+msgstr "Ikona v systémovém panelu"
+
+#. fmeOptions_SystemTray..gbSystemTrayIcon..ckUseSystemTrayIcon..Caption
+#: DoxBoxfmeOptions_SystemTray.dfm:15
+msgid "&Display system tray icon"
+msgstr "&Zobrazit ikonu v panelu"
+
+#. fmeOptions_SystemTray..gbSystemTrayIcon..ckMinToIcon..Caption
+#: DoxBoxfmeOptions_SystemTray.dfm:24
+msgid "Hide when &minimised"
+msgstr "Skrýt při &minimalizaci"
+
+#. fmeOptions_SystemTray..gbSystemTrayIcon..ckCloseToIcon..Caption
+#: DoxBoxfmeOptions_SystemTray.dfm:32
+msgid "Hide when &closed"
+msgstr "&Skrýt při uzavření"
+
+#. frmDoxBoxCDBBackupRestore..pbCancel..Caption
+#: DoxBoxfrmCDBBackupRestore.dfm:26
+#. frmDoxBoxCDBDump..pbCancel..Caption
+#: DoxBoxfrmCDBDump.dfm:36
+#. frmInstallOnUSBDrive..pbCancel..Caption
+#: DoxBoxfrmInstallOnUSBDrive.dfm:51
+#. frmOptions..pbCancel..Caption
+#: DoxBoxfrmOptions.dfm:62
+#. frmDoxBoxSelectOverwriteMethod..pbCancel..Caption
+#: DoxBoxfrmSelectOverwriteMethod.dfm:37
+#. frmKeyEntryDoxBox..pnlLower..pnlButtons..pbCancel..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:158
+#. frmKeyEntryPlainLinux..pbCancel..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:27
+#. frmKeyEntryLUKS..pbCancel..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:27
+#. frmNewVolumeSize..pbCancel..Caption
+#: OTFEDoxBox_frmNewVolumeSize.dfm:40
+#. frmPKCS11NewSecretKey..pbCancel..Caption
+#: OTFEDoxBox_frmPKCS11NewSecretKey.dfm:50
+#. frmPKCS11Session..pbCancel..Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:79
+#. frmSelectHashCypher..pbCancel..Caption
+#: OTFEDoxBox_frmSelectHashCypher.dfm:82
+#. frmSelectPartition..pnlButtonCenter..pbCancel..Caption
+#: OTFEDoxBox_frmSelectPartition.dfm:54
+#. frmSelectPartition_Simple..pbCancel..Caption
+#: OTFEDoxBox_frmSelectPartition_Simple.dfm:45
+#. frmSelectVolumeFileAndOffset..pbCancel..Caption
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:105
+#. frmSelectVolumeType..pbCancel..Caption
+#: OTFEDoxBox_frmVolumeType.dfm:43
+#. frmWizard..pnlRight..pnlButtons..pbCancel..Caption
+#: OTFEDoxBox_frmWizard.dfm:9529
+#. frmWizardCreateVolumeAdvanced..pbCancel..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:213
+#. KeyboardEntryDlg..pbCancel..Caption
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:1009
+#. MouseRNGCaptureDlg..pbCancel..Caption
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.dfm:69
+msgid "Cancel"
+msgstr "Storno"
+
+#. frmDoxBoxCDBBackupRestore..gbDest..lblOffsetDest..Caption
+#: DoxBoxfrmCDBBackupRestore.dfm:59
+msgid "O&ffset:"
+msgstr ""
+
+#. frmDoxBoxCDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#: DoxBoxfrmCDBBackupRestore.dfm:77
+#. frmDoxBoxCDBBackupRestore..gbDest..se64UnitOffsetDest..SelectedUnits
+#: DoxBoxfrmCDBBackupRestore.dfm:82
+#. frmDoxBoxCDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#: DoxBoxfrmCDBBackupRestore.dfm:125
+#. frmDoxBoxCDBBackupRestore..gbSrc..se64UnitOffsetSrc..SelectedUnits
+#: DoxBoxfrmCDBBackupRestore.dfm:130
+#. frmDoxBoxCDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#: DoxBoxfrmCDBDump.dfm:149
+#. frmDoxBoxCDBDump..GroupBox1..se64UnitOffset..SelectedUnits
+#: DoxBoxfrmCDBDump.dfm:154
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:220
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset..SelectedUnits
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:225
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:543
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset..SelectedUnits
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:548
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:559
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit..SelectedUnits
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:564
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:132
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit..SelectedUnits
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:137
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#: OTFEDoxBox_frmNewVolumeSize.dfm:61
+#. frmNewVolumeSize..se64UnitSize..SelectedUnits
+#: OTFEDoxBox_frmNewVolumeSize.dfm:66
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:116
+#. frmSelectVolumeFileAndOffset..se64UnitOffset..SelectedUnits
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:121
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:257
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset..SelectedUnits
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:262
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:396
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset..SelectedUnits
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:401
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:454
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize..SelectedUnits
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:459
+msgid "bytes"
+msgstr "bytů"
+
+#. frmDoxBoxCDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#: DoxBoxfrmCDBBackupRestore.dfm:78
+#. frmDoxBoxCDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#: DoxBoxfrmCDBBackupRestore.dfm:126
+#. frmDoxBoxCDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#: DoxBoxfrmCDBDump.dfm:150
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:221
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:544
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:560
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:133
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#: OTFEDoxBox_frmNewVolumeSize.dfm:62
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:117
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:258
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:397
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:455
+msgid "KB"
+msgstr "kB"
+
+#. frmDoxBoxCDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#: DoxBoxfrmCDBBackupRestore.dfm:79
+#. frmDoxBoxCDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#: DoxBoxfrmCDBBackupRestore.dfm:127
+#. frmDoxBoxCDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#: DoxBoxfrmCDBDump.dfm:151
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:222
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:545
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:561
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:134
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#: OTFEDoxBox_frmNewVolumeSize.dfm:63
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:118
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:259
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:398
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:456
+msgid "MB"
+msgstr "MB"
+
+#. frmDoxBoxCDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#: DoxBoxfrmCDBBackupRestore.dfm:80
+#. frmDoxBoxCDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#: DoxBoxfrmCDBBackupRestore.dfm:128
+#. frmDoxBoxCDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#: DoxBoxfrmCDBDump.dfm:152
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:223
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:546
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:562
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:135
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#: OTFEDoxBox_frmNewVolumeSize.dfm:64
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:119
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:260
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:399
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:457
+msgid "GB"
+msgstr "GB"
+
+#. frmDoxBoxCDBBackupRestore..gbDest..se64UnitOffsetDest....Units.Strings
+#: DoxBoxfrmCDBBackupRestore.dfm:81
+#. frmDoxBoxCDBBackupRestore..gbSrc..se64UnitOffsetSrc....Units.Strings
+#: DoxBoxfrmCDBBackupRestore.dfm:129
+#. frmDoxBoxCDBDump..GroupBox1..se64UnitOffset....Units.Strings
+#: DoxBoxfrmCDBDump.dfm:153
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:224
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitOffset....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:547
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..se64UnitSizeLimit....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:563
+#. frmKeyEntryLUKS..GroupBox4..se64UnitSizeLimit....Units.Strings
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:136
+#. frmNewVolumeSize..se64UnitSize....Units.Strings
+#: OTFEDoxBox_frmNewVolumeSize.dfm:65
+#. frmSelectVolumeFileAndOffset..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:120
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..se64UnitOffset....Units.Strings
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:261
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..se64UnitByteOffset....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:400
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..se64UnitSize....Units.Strings
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:458
+msgid "TB"
+msgstr "TB"
+
+#. frmDoxBoxCDBBackupRestore..gbSrc..lblOffsetSrc..Caption
+#: DoxBoxfrmCDBBackupRestore.dfm:107
+#. frmDoxBoxCDBDump..GroupBox1..lblOffset..Caption
+#: DoxBoxfrmCDBDump.dfm:67
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..Label8..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:203
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..Label8..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:494
+#. frmSelectVolumeFileAndOffset..lblOffsetSrc..Caption
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:32
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label9..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:180
+msgid "&Offset:"
+msgstr ""
+
+#. frmDoxBoxCDBDump..GroupBox1..Caption
+#: DoxBoxfrmCDBDump.dfm:45
+msgid "Volume/keyfile details"
+msgstr ""
+
+#. frmDoxBoxCDBDump..GroupBox1..Label1..Caption
+#: DoxBoxfrmCDBDump.dfm:52
+msgid "&Volume/keyfile:"
+msgstr ""
+
+#. frmDoxBoxCDBDump..GroupBox1..Label2..Caption
+#: DoxBoxfrmCDBDump.dfm:59
+#. frmKeyEntryDoxBox..pnlBasic..GroupBox1..Label1..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:42
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPassword..Label17..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:822
+#. KeyboardEntryDlg..Label1..Caption
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:23
+msgid "&Password:"
+msgstr "&Heslo:"
+
+#. frmDoxBoxCDBDump..GroupBox1..lblSaltLengthBits..Caption
+#: DoxBoxfrmCDBDump.dfm:74
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox3..Label5..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:284
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label6..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:203
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label7..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:347
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsMasterKeyLength..Label9..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:584
+msgid "bits"
+msgstr "bitů"
+
+#. frmDoxBoxCDBDump..GroupBox1..lblSaltLength..Caption
+#: DoxBoxfrmCDBDump.dfm:81
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox3..Label2..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:276
+msgid "&Salt length:"
+msgstr ""
+
+#. frmDoxBoxCDBDump..GroupBox1..lblKeyIterations..Caption
+#: DoxBoxfrmCDBDump.dfm:89
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label8..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:362
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsKeyIterations..Label22..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:39
+msgid "&Key iterations:"
+msgstr ""
+
+#. frmDoxBoxCDBDump..GroupBox1..lblOptional..Caption
+#: DoxBoxfrmCDBDump.dfm:97
+msgid "(optional)"
+msgstr "(volitelné)"
+
+#. frmDoxBoxCDBDump..GroupBox1..ckBaseIVCypherOnHashLength..Caption
+#: DoxBoxfrmCDBDump.dfm:130
+msgid "Base IV cypher on hash length"
+msgstr ""
+
+#. frmDoxBoxCDBDump..GroupBox2..Caption
+#: DoxBoxfrmCDBDump.dfm:164
+msgid "Dump file"
+msgstr ""
+
+#. frmDoxBoxCDBDump..GroupBox2..Label3..Caption
+#: DoxBoxfrmCDBDump.dfm:177
+msgid "&Dump to file:"
+msgstr ""
+
+#. frmDoxBoxCDBDump..OpenDialog..Filter
+#: DoxBoxfrmCDBDump.dfm:199
+#. frmCommonMain..OpenDialog..Filter
+#: common/frmCommonMain:313
+msgid "All files (*.*)|*.*"
+msgstr "Všechny soubory (*.* )|*.*"
+
+#. frmGridReport..pbSave..Caption
+#: DoxBoxfrmGridReport.dfm:38
+msgid "&Save..."
+msgstr "Uložit..."
+
+#. frmGridReport..pbClose..Caption
+#: DoxBoxfrmGridReport.dfm:49
+#. frmCypherInfo..pbClose..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:262
+#. frmDriverControl..pbClose..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:33
+#. frmHashInfo..pbClose..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:245
+#. frmPKCS11Management..pbClose..Caption
+#: OTFEDoxBox_frmPKCS11Management.dfm:29
+#. SDUDiskPropertiesDialog..pbClose..Caption
+#: SDUDiskPropertiesDlg.dfm:105
+#. SDUPartitionPropertiesDialog..pbClose..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:91
+msgid "Close"
+msgstr "&Zavřít"
+
+#. frmGridReport..pnlBetweenButtons..pnlBetweenButtonsCenter..ckShowAdvanced..Caption
+#: DoxBoxfrmGridReport.dfm:96
+msgid "Show &advanced"
+msgstr "Rozšířené možnosti"
+
+#. frmGridReport..pbDrivers..Caption
+#: DoxBoxfrmGridReport.dfm:120
+msgid "&Drivers..."
+msgstr "Ovladače..."
+
+#. frmGridReport..ActionList1..actSelectAll..Caption
+#: DoxBoxfrmGridReport.dfm:129
+msgid "Select &all"
+msgstr "Vybrat vše"
+
+#. frmGridReport..ActionList1..actCopy..Caption
+#: DoxBoxfrmGridReport.dfm:134
+msgid "&Copy"
+msgstr "Kopírovat"
+
+#. frmInstallOnUSBDrive..Caption
+#: DoxBoxfrmInstallOnUSBDrive.dfm:5
+msgid "Copy LibreCrypt to USB Drive"
+msgstr "Kopírovat LibreCrypt na USB disk"
+
+#. frmInstallOnUSBDrive..Label1..Caption
+#: DoxBoxfrmInstallOnUSBDrive.dfm:24
+#. frmDoxBoxVolProperties..Label22..Caption
+#: DoxBoxfrmVolProperties.dfm:32
+#. frmKeyEntryDoxBox..pnlBasic..GroupBox1..Label4..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:57
+#. frmKeyEntryPlainLinux..pcEntry..tsMountOptions..GroupBox2..Label4..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:589
+#. frmKeyEntryLUKS..GroupBox2..Label4..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:53
+msgid "&Drive:"
+msgstr "&Disk:"
+
+#. frmInstallOnUSBDrive..Label2..Caption
+#: DoxBoxfrmInstallOnUSBDrive.dfm:32
+msgid "&Path to copy to:"
+msgstr "Cílová složka pro kopírování:"
+
+#. frmInstallOnUSBDrive..edPath..Text
+#: DoxBoxfrmInstallOnUSBDrive.dfm:61
+msgid "edPath"
+msgstr ""
+
+#. frmInstallOnUSBDrive..ckSetupAutoplay..Caption
+#: DoxBoxfrmInstallOnUSBDrive.dfm:78
+msgid ""
+"&Setup autorun.inf to launch LibreCrypt when drive "
+"inserted"
+msgstr ""
+"Připravit autorun.inf pro spuštění LibreCrypt po "
+"vložení disku"
+
+#. frmInstallOnUSBDrive..pbRefreshDrives..Caption
+#: DoxBoxfrmInstallOnUSBDrive.dfm:95
+#. frmCommonMain..ActionList1..actRefresh..Caption
+#: common/frmCommonMain:424
+#. fmePKCS11_MgrBase..ActionList1..actRefresh..Caption
+#: OTFEDoxBox_fmePKCS11_MgrBase.dfm:11
+#. frmPKCS11Session..pbRefresh..Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:88
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGPKCS11..pbRefresh..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:574
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGPKCS11..pbRefresh..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:753
+msgid "&Refresh"
+msgstr "O&bnovit"
+
+#. frmInstallOnUSBDrive..ckHideAutorunInf..Caption
+#: DoxBoxfrmInstallOnUSBDrive.dfm:104
+msgid "&Mark autorun.inf file as hidden"
+msgstr "Skrýt autorun.inf"
+
+#. frmCommonMain..pnlTopSpacing..Caption
+#: common/frmCommonMain:118
+msgid "pnlTopSpacing"
+msgstr ""
+
+#. frmCommonMain..mmMain..File1..Caption
+#: common/frmCommonMain:160
+msgid "&File"
+msgstr "&Soubor"
+
+#. frmCommonMain..mmMain..File1..miLinuxVolume..Caption
+#: common/frmCommonMain:180
+msgid "&Linux volume"
+msgstr "&Linuxový svazek"
+
+#. frmCommonMain..mmMain..File1..miLinuxVolume..miLUKSDump..Caption
+#: common/frmCommonMain:197
+msgid ""
+"&Dump LUKS details to human readable "
+"file..."
+msgstr "Vypsat detaily o LUKSu do lidsky čitelného souboru..."
+
+#. frmCommonMain..mmMain..View1..Caption
+#: common/frmCommonMain:215
+msgid "&View"
+msgstr "&Zobrazit"
+
+#. frmCommonMain..mmMain..View1..miOptions..Caption
+#: common/frmCommonMain:223
+msgid "Options..."
+msgstr "&Možnosti..."
+
+#. frmCommonMain..mmMain..miTools..Caption
+#: common/frmCommonMain:234
+msgid "&Tools"
+msgstr "&Nástroje"
+
+#. frmCommonMain..mmMain..miTools..miCreateKeyfile..Caption
+#: common/frmCommonMain:260
+msgid "&Create keyfile..."
+msgstr "Vytvořit soubor s klíčem..."
+
+#. frmCommonMain..mmMain..miTools..miChangePassword..Caption
+#: common/frmCommonMain:264
+msgid "Change volume/keyfile &password/details..."
+msgstr "Změnit heslo/detaily svazku/klíče..."
+
+#. frmCommonMain..mmMain..miTools..miCDB..Caption
+#: common/frmCommonMain:274
+msgid "Critical data &block"
+msgstr ""
+
+#. frmCommonMain..mmMain..miTools..miCDB..miCDBBackup..Caption
+#: common/frmCommonMain:276
+msgid "&Backup..."
+msgstr "Zálohovat..."
+
+#. frmCommonMain..mmMain..miTools..miCDB..miCDBRestore..Caption
+#: common/frmCommonMain:280
+msgid "&Restore..."
+msgstr "O&bnovit..."
+
+#. frmCommonMain..mmMain..miTools..miCDB..miCDBPlaintextDump..Caption
+#: common/frmCommonMain:284
+msgid "&Dump to human readable file..."
+msgstr "Vypsat do lidsky čitelného souboru..."
+
+#. frmCommonMain..mmMain..Help1..Caption
+#: common/frmCommonMain:290
+msgid "&Help"
+msgstr "Nápo&věda"
+
+#. frmCommonMain..mmMain..Help1..About1..Caption
+#: common/frmCommonMain:307
+msgid "&About LibreCrypt..."
+msgstr "&O LibreCrypt..."
+
+#. frmCommonMain..ActionList1..actDoxBoxNew..Caption
+#: common/frmCommonMain:336
+#. fmePKCS11_MgrSecretKey..ActionList1..actNew..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.dfm:79
+msgid "&New ..."
+msgstr "&Nový..."
+
+#. frmCommonMain..ActionList1..actDoxBoxNew..Hint
+#: common/frmCommonMain:337
+msgid "New encrypted volume"
+msgstr "Nový šifrovaný svazek"
+
+#. frmCommonMain..ActionList1..actDoxBoxMountFile..Caption
+#: common/frmCommonMain:342
+#. frmCommonMain..ActionList1..actLinuxMountFile..Caption
+#: common/frmCommonMain:374
+msgid "&Open file..."
+msgstr "Připojit &soubor..."
+
+#. frmCommonMain..ActionList1..actDoxBoxMountFile..Hint
+#: common/frmCommonMain:343
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_MOUNTFILE
+#: DoxBoxfrmMain.pas:430
+msgid "Open file"
+msgstr "Připojit soubor"
+
+#. frmCommonMain..ActionList1..actDoxBoxMountPartition..Caption
+#: common/frmCommonMain:349
+#. frmCommonMain..ActionList1..actLinuxMountPartition..Caption
+#: common/frmCommonMain:379
+msgid "Open &partition..."
+msgstr "Připojit &oddíl..."
+
+#. frmCommonMain..ActionList1..actDoxBoxMountPartition..Hint
+#: common/frmCommonMain:350
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_MOUNTPARTITION
+#: DoxBoxfrmMain.pas:431
+msgid "Open partition"
+msgstr "Připojit oddíl"
+
+#. frmCommonMain..ActionList1..actDismount..Caption
+#: common/frmCommonMain:356
+msgid "&Dismount"
+msgstr "O&dpojit"
+
+#. frmCommonMain..ActionList1..actDismount..Hint
+#: common/frmCommonMain:357
+msgid "Dismount selected"
+msgstr "Odpojit vybraný disk"
+
+#. frmCommonMain..ActionList1..actDismountAll..Caption
+#: common/frmCommonMain:363
+msgid "Dismount &all"
+msgstr "Odpojit &vše"
+
+#. frmCommonMain..ActionList1..actDismountAll..Hint
+#: common/frmCommonMain:364
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_DISMOUNTALL
+#: DoxBoxfrmMain.pas:433
+msgid "Lock all"
+msgstr "Odpojit vše"
+
+#. frmCommonMain..ActionList1..actLinuxNew..Caption
+#: common/frmCommonMain:369
+msgid "&New file..."
+msgstr "&Nový soubor..."
+
+#. frmCommonMain..ActionList1..actLinuxNew..Hint
+#: common/frmCommonMain:370
+msgid "New Linux volume"
+msgstr "Nový Linuxový soubor"
+
+#. frmCommonMain..ActionList1..actLinuxMountFile..Hint
+#: common/frmCommonMain:375
+msgid "Open Linux file"
+msgstr "Připojit Linuxový soubor"
+
+#. frmCommonMain..ActionList1..actLinuxMountPartition..Hint
+#: common/frmCommonMain:380
+msgid "Open Linux partition"
+msgstr "Připojit Linuxový oddíl"
+
+#. frmCommonMain..ActionList1..actProperties..Caption
+#: common/frmCommonMain:384
+msgid "&Properties..."
+msgstr "&Vlastnosti..."
+
+#. frmCommonMain..ActionList1..actProperties..Hint
+#: common/frmCommonMain:385
+msgid "Properties of selected volume"
+msgstr "Vlastnosti vybraného disku"
+
+#. frmCommonMain..ActionList1..actExit..Caption
+#: common/frmCommonMain:390
+msgid "E&xit"
+msgstr "&Ukončit"
+
+#. frmCommonMain..ActionList1..actExit..Hint
+#: common/frmCommonMain:391
+msgid "Exit"
+msgstr "Ukončit"
+
+#. frmCommonMain..ActionList1..actDisplayConsole..Caption
+#: common/frmCommonMain:395
+#. frmCommonMain..ActionList1..actDisplayConsole..Hint
+#: common/frmCommonMain:396
+msgid "Display console"
+msgstr "Zobrazit konsoli"
+
+#. frmCommonMain..ActionList1..actTogglePortableMode..Hint
+#: common/frmCommonMain:401
+msgid "Toggle portable mode on/off"
+msgstr "Přepnout z/do přenosného režimu"
+
+#. frmCommonMain..ActionList1..actFormat..Caption
+#: common/frmCommonMain:406
+msgid "&Format..."
+msgstr "&Formátovat..."
+
+#. frmCommonMain..ActionList1..actFormat..Hint
+#: common/frmCommonMain:407
+msgid "Format volume"
+msgstr "Formátovat disk"
+
+#. frmCommonMain..ActionList1..actOverwriteFreeSpace..Caption
+#: common/frmCommonMain:411
+msgid "&Overwrite free space..."
+msgstr "&Přepsat volné místo..."
+
+#. frmCommonMain..ActionList1..actOverwriteFreeSpace..Hint
+#: common/frmCommonMain:412
+msgid "Overwrite free space on volume"
+msgstr "Přepsat volné místo na disku"
+
+#. frmCommonMain..ActionList1..actOverwriteEntireDrive..Caption
+#: common/frmCommonMain:416
+msgid "Overwrite entire drive..."
+msgstr "Přepsat celý disk... "
+
+#. frmCommonMain..ActionList1..actDrivers..Caption
+#: common/frmCommonMain:420
+msgid "Drivers..."
+msgstr "Ovladače..."
+
+#. frmCommonMain..ActionList1..actListCyphers..Caption
+#: common/frmCommonMain:429
+msgid "List &cyphers..."
+msgstr "&Zobrazit šifrovací algoritmy..."
+
+#. frmCommonMain..ActionList1..actListHashes..Caption
+#: common/frmCommonMain:433
+msgid "List &hashes..."
+msgstr "Zobrazit &hashovací algoritmy..."
+
+#. frmCommonMain..ActionList1..actPKCS11TokenManagement..Caption
+#: common/frmCommonMain:437
+msgid "&PKCS#11 token management..."
+msgstr "Správa &PKCS#11 tokenů..."
+
+#. frmCommonMain..ActionList1..actUserGuide..Caption
+#: common/frmCommonMain:441
+msgid "&User guide"
+msgstr "&Uživatelská příručka"
+
+#. frmCommonMain..ActionList1..actInstallOnUSBDrive..Caption
+#: common/frmCommonMain:445
+msgid "&Copy LibreCrypt to USB drive..."
+msgstr "Zkopírovat LibreCrypt na &USB disk..."
+
+#. frmCommonMain..pmSystemTray..mmRecentlyMounted..Caption
+#: common/frmCommonMain:454
+msgid "&Recently mounted"
+msgstr "&Historie připojení"
+
+#. frmOptions..Caption
+#: DoxBoxfrmOptions.dfm:5
+msgid "Options"
+msgstr "Možnosti"
+
+#. frmOptions..lblSettingsLocation..Caption
+#: DoxBoxfrmOptions.dfm:25
+msgid "&Save above settings to:"
+msgstr "&Uložit nastavení do:"
+
+#. frmOptions..ckAssociateFiles..Caption
+#: DoxBoxfrmOptions.dfm:81
+msgid "Associate LibreCrypt with \".vol\" &files"
+msgstr "&Asociovat LibreCrypt se soubory \".vol\""
+
+#. frmOptions..pcOptions..tcSystemTray..Caption
+#: DoxBoxfrmOptions.dfm:147
+msgid "System Tray"
+msgstr "Systémový panel"
+
+#. frmOptions..pcOptions..tsAutorun..Caption
+#: DoxBoxfrmOptions.dfm:165
+msgid "Autorun"
+msgstr "Automatické spouštění"
+
+#. frmDoxBoxSelectOverwriteMethod..Caption
+#: DoxBoxfrmSelectOverwriteMethod.dfm:5
+msgid "Select Type of Overwrite"
+msgstr "Zvolte způsob přepsání"
+
+#. frmDoxBoxSelectOverwriteMethod..GroupBox1..Caption
+#: DoxBoxfrmSelectOverwriteMethod.dfm:46
+msgid "Type of overwrite data"
+msgstr ""
+
+#. frmDoxBoxSelectOverwriteMethod..GroupBox1..rbDataEncrypted..Caption
+#: DoxBoxfrmSelectOverwriteMethod.dfm:53
+msgid "Encrypted data"
+msgstr "Zašifrovaná data"
+
+#. frmDoxBoxSelectOverwriteMethod..GroupBox1..rbDataPseudorandom..Caption
+#: DoxBoxfrmSelectOverwriteMethod.dfm:62
+#. Programmer's name for it: SHREDMETHOD_PSEUDORANDOM_DATA
+#: Shredder/Shredder.pas:45
+msgid "Pseudorandom data"
+msgstr "Pseudonáhodná data"
+
+#. frmDoxBoxVolProperties..Caption
+#: DoxBoxfrmVolProperties.dfm:5
+msgid "LibreCrypt Volume Properties"
+msgstr "Vlastnosti LibreCrypt svazku"
+
+#. frmDoxBoxVolProperties..Label15..Caption
+#: DoxBoxfrmVolProperties.dfm:24
+msgid "&Mounted for:"
+msgstr "&Připojeno pro:"
+
+#. frmDoxBoxVolProperties..Label5..Caption
+#: DoxBoxfrmVolProperties.dfm:40
+#: DoxBoxfrmCDBBackupRestore.pas:105
+#: DoxBoxfrmCDBBackupRestore.pas:122
+msgid "&Volume:"
+msgstr "&Svazek:"
+
+#. frmDoxBoxVolProperties..Label7..Caption
+#: DoxBoxfrmVolProperties.dfm:48
+msgid "M&ounted on device:"
+msgstr "Připojeno &jako:"
+
+#. frmDoxBoxVolProperties..Label6..Caption
+#: DoxBoxfrmVolProperties.dfm:56
+msgid "&Main cypher:"
+msgstr "&Hlavní šifra:"
+
+#. frmDoxBoxVolProperties..lblIVHash..Caption
+#: DoxBoxfrmVolProperties.dfm:64
+msgid "&IV hash algorithm:"
+msgstr "IV hashovacího algoritmu:"
+
+#. frmDoxBoxVolProperties..Label2..Caption
+#: DoxBoxfrmVolProperties.dfm:72
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..Label5..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:380
+msgid "&Sector IVs:"
+msgstr "IV stopy:"
+
+#. frmDoxBoxVolProperties..lblIVCypher..Caption
+#: DoxBoxfrmVolProperties.dfm:80
+msgid "I&V cypher:"
+msgstr ""
+
+#: About_U.pas:71
+msgid "LibreCrypt driver: %s"
+msgstr "LibreCrypt ovladač: %s"
+
+#: About_U.pas:76
+msgid ""
+"The main LibreCrypt driver is either not installed, or not "
+"started"
+msgstr ""
+"Hlavní ovladač LibreCrypt buď není nainstalovaný nebo "
+"není aktivní"
+
+#. Programmer's name for it: FILTER_EXECUTABLE_FILES
+#: common/frmCommonOptions.pas:55
+msgid ""
+"Program files (*.exe, *.com, *.bat)|*.exe; *.bat; *.com|All "
+"files|*.*"
+msgstr ""
+"Spustitelné soubory (*.exe, *.com, *.bat)|*.exe;*.bat;*.com| "
+"Všechny soubory|*.*"
+
+#: common/frmCommonOptions.pas:66
+msgid "Locate post Open executable"
+msgstr ""
+
+#: common/frmCommonOptions.pas:80
+msgid "Locate pre dismount executable"
+msgstr ""
+
+#: common/frmCommonOptions.pas:94
+msgid "Locate post dismount executable"
+msgstr ""
+
+#. Setup instructions text
+#: common/frmCommonOptions.pas:136
+msgid ""
+"LibreCrypt can be configured here to automatically run programs after "
+"opening, before locking, and after locking.\n"
+"\n"
+"Any post-Open and pre-dismount executables specified must use a "
+"relative path to the executable within the mounted volume (i.e. "
+"absolute and UNC paths are not allowed for security reasons)\n"
+"\n"
+"Executables with spaces in their paths/names must be surrounded with "
+"double quotes.\n"
+"\n"
+"\"%DRIVE\" will be substituted with the drive letter of the mounted "
+"drive letter"
+msgstr ""
+"Zde můžete nastavit automatické spouštění programů po připojení, před a po odpojení svazku.\n"
+"\n"
+"Veškeré cesty k programům po-připojení a před-odpojením musí být relativní v rámci připojeného svazku. "
+"Absolutní cesty ani UNC nejsou bezpečnostních důvodů povoleny.\n"
+"\n"
+"Programy s mezeramy v názvu nebo cestě musí být uzavřeny do uvozovek.\n"
+"\n"
+"\"%DRIVE\" bude v cestě nahrazen přiřazeným písmenem připojeného svazku."
+
+#. Programmer's name for it: USE_DEFAULT
+#: DoxBoxfmeOptions_General.pas:76
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:232
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:354
+#: OTFEDoxBox_frmKeyEntryLUKS.pas:126
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:547
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1525
+#. tsRequestedDriveLetter
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:205
+msgid "Use default"
+msgstr "Použít výchozí"
+
+#. This should be set to the name of the language translated to
+#. Programmer's name for it: RS_LANGUAGE
+#: DoxBoxfmeOptions_General.pas:78
+#: DoxBoxfmeOptions_General.pas:299
+msgid "English"
+msgstr "Česky"
+
+#: DoxBoxfmeOptions_General.pas:167
+msgid "Language name: %1"
+msgstr "Jazyk: %1"
+
+#: DoxBoxfmeOptions_General.pas:168
+msgid "Language code: %1"
+msgstr "Zkratka jazyka: %1"
+
+#: DoxBoxfmeOptions_General.pas:169
+msgid "Translator: %1"
+msgstr "Přeložil: %1"
+
+#. Add "default" into the list
+#: DoxBoxfmeOptions_General.pas:322
+msgid "(Default)"
+msgstr "(Výchozí)"
+
+#. Programmer's name for it: FILTER_LIBRARY_FILES
+#: DoxBoxfmeOptions_PKCS11.pas:50
+msgid "Library files (*.dll)|*.dll|All files|*.*"
+msgstr ""
+
+#: DoxBoxfmeOptions_PKCS11.pas:71
+msgid "PKCS#11 library appears to be functional"
+msgstr "PKCS#11 knihovna se zdá být funkční"
+
+#: DoxBoxfmeOptions_PKCS11.pas:126
+msgid ""
+"Please specify the PKCS#11 library to be "
+"used"
+msgstr "Prosím zvolte knihovnu PKCS#11"
+
+#: DoxBoxfmeOptions_PKCS11.pas:149
+msgid ""
+"The library specified does not appear to be a valid/working PKCS#11 "
+"library"
+msgstr "Zadaná knihovna není knihovnou PKCS#11 nebo není funkční."
+
+#: DoxBoxfmeOptions_PKCS11.pas:180
+msgid ""
+"If automount on PKCS#11 token insertion is enabled, the volume to be "
+"mounted must be specified"
+msgstr ""
+
+#. Programmer's name for it: USE_NOT_IN_USE
+#: DoxBoxfrmCDBBackupRestore.pas:88
+msgid ""
+"Please ensure that the volume is not mounted, or otherwise in "
+"use"
+msgstr "Prosím ujistěte se že disk není připojen nebo jinak používán"
+
+#: DoxBoxfrmCDBBackupRestore.pas:102
+msgid "Backup Volume Critical Data Block"
+msgstr ""
+
+#: DoxBoxfrmCDBBackupRestore.pas:104
+#: DoxBoxfrmCDBBackupRestore.pas:121
+msgid "Volume details"
+msgstr "Detaily svazku"
+
+#: DoxBoxfrmCDBBackupRestore.pas:107
+#: DoxBoxfrmCDBBackupRestore.pas:118
+msgid "Backup details"
+msgstr "Detaily zálohy"
+
+#: DoxBoxfrmCDBBackupRestore.pas:108
+#: DoxBoxfrmCDBBackupRestore.pas:119
+msgid "&Backup filename:"
+msgstr "Soubor zálohy:"
+
+#. Backup file starts from 0 - don't allow the user to change offset
+#: DoxBoxfrmCDBBackupRestore.pas:116
+msgid "Restore Volume Critical Data Block"
+msgstr ""
+
+#. Note: You can only backup to a *file*
+#: DoxBoxfrmCDBBackupRestore.pas:166
+msgid ""
+"The file you are attempting to backup to already "
+"exists."
+msgstr "Zadaný soubor se zálohou již existuje."
+
+#: DoxBoxfrmCDBBackupRestore.pas:168
+msgid ""
+"Please delete this backup file and try again, or specify a different "
+"filename to backup to."
+msgstr ""
+"Prosím smažte tento soubor se zálohou a zkuste zálohovat znovu "
+"nebo zadejte jiný název souboru."
+
+#. Note: You can only restore from a *file*
+#: DoxBoxfrmCDBBackupRestore.pas:197
+msgid "The backup file specified does not exist."
+msgstr "Soubor se zálohou neexistuje."
+
+#. Check that the source file is the right size for a backup file
+#: DoxBoxfrmCDBBackupRestore.pas:209
+msgid ""
+"The source file you specified does not appear to be the right size "
+"for a backup file"
+msgstr "Zvolený soubor se zálohou nemá správnou velikost"
+
+#: DoxBoxfrmCDBBackupRestore.pas:211
+msgid "Please check your settings and try again."
+msgstr "Prosím zkontrolujte nastavení a zkuste to znovu."
+
+#. Backup is relativly safe as it backs up to a file which doesn't exist
+#: DoxBoxfrmCDBBackupRestore.pas:231
+msgid ""
+"Please confirm: Do you wish to restore the critial data block from "
+"backup file:\n"
+"\n%s\n\nInto the volume:\n\n%s\n\n"
+"Starting from offset %d in the container?"
+msgstr ""
+
+#: DoxBoxfrmCDBBackupRestore.pas:269
+msgid "Backup operation completed successfully."
+msgstr "Zálohování proběhlo úspěšně."
+
+#: DoxBoxfrmCDBBackupRestore.pas:275
+msgid "Backup operation failed."
+msgstr "Zálohování se nezdařilo."
+
+#. if (dlgType = opBackup) then
+#: DoxBoxfrmCDBBackupRestore.pas:295
+msgid "Restore operation completed successfully."
+msgstr "Obnovení ze zálohy proběhlo úspěšně."
+
+#: DoxBoxfrmCDBBackupRestore.pas:301
+msgid "Restore operation failed."
+msgstr "Obnovení ze zálohy se nezdařilo."
+
+#: DoxBoxfrmCDBDump.pas:228
+msgid ""
+"A human readable copy of your critical data block has been written "
+"to:"
+msgstr ""
+
+#: DoxBoxfrmCDBDump.pas:232
+msgid ""
+"Do you wish to open this file in Windows "
+"Notepad?"
+msgstr ""
+"Chcete tento soubor otevřít "
+"v Poznámkovém bloku?"
+
+#: DoxBoxfrmCDBDump.pas:239
+msgid "Error running Notepad"
+msgstr "Nepodařilo se spustit Poznámkový blok"
+
+#: DoxBoxfrmCDBDump.pas:256
+msgid "Unable to dump out critical data block."
+msgstr ""
+
+#: DoxBoxfrmCDBDump.pas:258
+msgid ""
+"Please ensure that your password and details are entered correctly, "
+"and that this file is not currently in use (e.g. "
+"mounted)"
+msgstr ""
+"Ujistěte se, že jste zadali správné heslo a ostatní údaje, a že soubor "
+"není právě používán (např. již připojen)"
+
+#: DoxBoxfrmCDBDump.pas:280
+msgid "Dump LUKS Details"
+msgstr "Vypsat detaily o LUKS"
+
+#: DoxBoxfrmCDBDump.pas:287
+msgid "Dump Critical Data Block"
+msgstr ""
+
+#. Programmer's name for it: COL_TITLE_DRIVER_TITLE
+#: DoxBoxfrmGridReport.pas:70
+msgid "Driver title"
+msgstr "Název ovladače"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_VERSION
+#: DoxBoxfrmGridReport.pas:71
+msgid "Driver version"
+msgstr "Verze ovladače"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_GUID
+#: DoxBoxfrmGridReport.pas:72
+msgid "Driver GUID"
+msgstr "GUID ovladače"
+
+#. Programmer's name for it: COL_TITLE_DRIVER_DEVICE_NAME
+#: DoxBoxfrmGridReport.pas:73
+msgid "Driver device name"
+msgstr ""
+
+#. Programmer's name for it: COL_TITLE_DRIVER_USER_MODE_NAME
+#: DoxBoxfrmGridReport.pas:74
+msgid "Driver user mode name"
+msgstr ""
+
+#. Programmer's name for it: COL_TITLE_DRIVER_KERNEL_MODE_NAME
+#: DoxBoxfrmGridReport.pas:75
+msgid "Driver kernel mode name"
+msgstr ""
+
+#. Save dialog related
+#. Programmer's name for it: FILE_FILTER_FLT_REPORTS
+#: DoxBoxfrmGridReport.pas:93
+msgid ""
+"Text report (*.txt)|*.txt|Comma separated values (*.csv)|*.csv|Tab "
+"separated values (*.tsv)|*.tsv"
+msgstr ""
+"Textová zpráva (*.txt)|*.txt|Hodnoty oddělené čárkou (*.csv)|*.csv| "
+"Hodnoty oddělené tabulátorem (*.tab)|*.tab"
+
+#. Programmer's name for it: FILE_FILTER_DFLT_REPORTS
+#: DoxBoxfrmGridReport.pas:94
+#. Programmer's name for it: FILE_FILTER_DFLT_TEXTFILES
+#: OTFEDoxBox_U.pas:58
+msgid "txt"
+msgstr "txt"
+
+#: DoxBoxfrmGridReport.pas:177
+msgid "Total drivers: %d"
+msgstr "Ovladačů celkem: %d"
+
+#: DoxBoxfrmGridReport.pas:178
+#: DoxBoxfrmGridReport.pas:251
+msgid "Total algorithms: %d"
+msgstr "Algoritmů celkem: %d"
+
+#. Generate file contents...
+#: DoxBoxfrmGridReport.pas:227
+msgid "No implementations found"
+msgstr ""
+
+#. Add header if text report
+#: DoxBoxfrmGridReport.pas:248
+#: DoxBoxfrmGridReport.pas:249
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSummary..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:866
+msgid "Summary"
+msgstr "Souhrn"
+
+#: DoxBoxfrmGridReport.pas:250
+msgid "Total drivers   : %d"
+msgstr "Ovladačů celkem: %d"
+
+#: DoxBoxfrmGridReport.pas:254
+#: DoxBoxfrmGridReport.pas:255
+msgid "Details"
+msgstr "Detaily"
+
+#: DoxBoxfrmGridReport.pas:419
+msgid "Unknown output format?!"
+msgstr "Neznámý výstupní formát?!"
+
+#: DoxBoxfrmGridReport.pas:421
+msgid "Please report seeing this error!"
+msgstr "Prosím nahlašte tuto chybu!"
+
+#. IMPORTANT: If this is updated, GetColumnTitle() MUST ALSO BE UPDATED
+#. Programmer's name for it: COL_TITLE_CYPHER_TITLE
+#: DoxBoxfrmGridReport_Cypher.pas:62
+msgid "Cypher title"
+msgstr "Název šifry"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_KEYSIZE
+#: DoxBoxfrmGridReport_Cypher.pas:63
+msgid "Cypher keysize"
+msgstr "Délka klíče"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_MODE
+#: DoxBoxfrmGridReport_Cypher.pas:64
+msgid "Cypher mode"
+msgstr ""
+
+#. Programmer's name for it: COL_TITLE_CYPHER_VERSION
+#: DoxBoxfrmGridReport_Cypher.pas:65
+msgid "Cypher version"
+msgstr "Verze šifry"
+
+#. Programmer's name for it: COL_TITLE_CYPHER_KEYSIZE_REQD
+#: DoxBoxfrmGridReport_Cypher.pas:66
+msgid "Cypher keysize required"
+msgstr ""
+
+#. Programmer's name for it: COL_TITLE_CYPHER_BLOCKSIZE
+#: DoxBoxfrmGridReport_Cypher.pas:67
+msgid "Cypher blocksize"
+msgstr ""
+
+#. Programmer's name for it: COL_TITLE_CYPHER_GUID
+#: DoxBoxfrmGridReport_Cypher.pas:68
+msgid "Cypher GUID"
+msgstr "GUID šifry"
+
+#: DoxBoxfrmGridReport_Cypher.pas:122
+#: DoxBoxfrmGridReport_Cypher.pas:134
+msgid "<null>"
+msgstr "<nic>"
+
+#: DoxBoxfrmGridReport_Cypher.pas:126
+#: DoxBoxfrmGridReport_Cypher.pas:138
+#: DoxBoxfrmGridReport_Cypher.pas:146
+msgid "<any>"
+msgstr "<cokoliv>"
+
+#: DoxBoxfrmGridReport_Cypher.pas:272
+msgid "Available Cyphers"
+msgstr "Dostupné šifry"
+
+#: DoxBoxfrmGridReport_Cypher.pas:273
+msgid ""
+"The following cyphers are available for "
+"use:"
+msgstr "Následující šifry jsou k dispozici:"
+
+#: DoxBoxfrmGridReport_Cypher.pas:284
+msgid "No cypher algorithms could be found."
+msgstr "Nebyl nalezen žádný šifrovací algoritmus."
+
+#: DoxBoxfrmGridReport_Cypher.pas:286
+msgid ""
+"Please start portable mode, or click \"Drivers...\" to install one or "
+"more cypher drivers"
+msgstr ""
+"Prosím přejděte do přenosného režimu nebo klikněte na \"Ovladače...\" "
+"pro nainstalování jednoho či více šifrovacích ovladačů"
+
+#. IMPORTANT: If this is updated, GetColumnTitle() MUST ALSO BE UPDATED
+#. Programmer's name for it: COL_TITLE_HASH_TITLE
+#: DoxBoxfrmGridReport_Hash.pas:60
+msgid "Hash title"
+msgstr ""
+
+#. Programmer's name for it: COL_TITLE_HASH_VERSION
+#: DoxBoxfrmGridReport_Hash.pas:61
+msgid "Hash version"
+msgstr ""
+
+#. Programmer's name for it: COL_TITLE_HASH_LENGTH
+#: DoxBoxfrmGridReport_Hash.pas:62
+msgid "Hash length"
+msgstr ""
+
+#. Programmer's name for it: COL_TITLE_HASH_BLOCKSIZE
+#: DoxBoxfrmGridReport_Hash.pas:63
+msgid "Hash blocksize"
+msgstr ""
+
+#. Programmer's name for it: COL_TITLE_HASH_GUID
+#: DoxBoxfrmGridReport_Hash.pas:64
+msgid "Hash GUID"
+msgstr ""
+
+#: DoxBoxfrmGridReport_Hash.pas:117
+msgid "<variable>"
+msgstr ""
+
+#: DoxBoxfrmGridReport_Hash.pas:125
+msgid "<n/a>"
+msgstr "<N/A>"
+
+#: DoxBoxfrmGridReport_Hash.pas:249
+msgid "Available Hashes"
+msgstr ""
+
+#: DoxBoxfrmGridReport_Hash.pas:250
+msgid ""
+"The following hashes are available for "
+"use:"
+msgstr ""
+
+#: DoxBoxfrmGridReport_Hash.pas:261
+msgid "No hash algorithms could be found."
+msgstr ""
+
+#: DoxBoxfrmGridReport_Hash.pas:263
+msgid ""
+"Please start portable mode, or click \"Drivers...\" to install one or "
+"more hash drivers"
+msgstr ""
+
+#: DoxBoxfrmInstallOnUSBDrive.pas:67
+msgid ""
+"This function provides an easy means of copying LibreCrypt to a USB "
+"drive, and configuring it to launch automatically when the USB drive "
+"is plugged in.\n"
+"\n"
+"Please select the USB drive, and location on it, where you would like "
+"LibreCrypt to be copied to:"
+msgstr ""
+"Tato funkce umožňuje snadné zkopírování LibreCrypt na USB disk včetně "
+"konfigurace automatického spouštění po vložení disku.\n"
+"\n"
+"Prosím zvolte USB disk a složku, do které chcete LibreCrypt nakopírovat:"
+
+#: DoxBoxfrmInstallOnUSBDrive.pas:85
+msgid "Select location to copy LibreCrypt to"
+msgstr "Zvolte složku do které chcete LibreCrypt nainstalovat"
+
+#: DoxBoxfrmInstallOnUSBDrive.pas:104
+msgid "LibreCrypt copy complete."
+msgstr "Kopírování LibreCrypt bylo dokončeno."
+
+#. Note: GetInstallRelativePath() will return '\', at a minimum
+#: DoxBoxfrmInstallOnUSBDrive.pas:128
+msgid ""
+"You have opted to copy LibreCrypt to the root directory of your USB "
+"drive, and not a subdirectory."
+msgstr ""
+"Rozhodli jste se nakopírovat DoxBoxpřímo do kořenové složky vašeho "
+"USB disku, nikoliv do nějaké složky."
+
+#: DoxBoxfrmInstallOnUSBDrive.pas:130
+msgid "Are you sure you wish to do this?"
+msgstr "Opravdu si to přejete?"
+
+#. Note: This force-creates the destPath directory
+#: DoxBoxfrmInstallOnUSBDrive.pas:149
+msgid ""
+"Unable to copy LibreCrypt to:\n"
+"\n"
+"%1"
+msgstr ""
+"Nepodařilo se nakopírovat LibreCrypt do:\n"
+"\n"
+"%1"
+
+#. Create autorun.inf file, if needed
+#: DoxBoxfrmInstallOnUSBDrive.pas:165
+msgid ""
+"LibreCrypt was successfully copied over, but an autoplay (autorun.inf) "
+"file could not be created."
+msgstr ""
+"LibreCrypt bylo úspěšně nakopírováno, ale nepodařilo se vytvořit soubor "
+"automatického spouštění (autorun.inf)."
+
+#: DoxBoxfrmInstallOnUSBDrive.pas:204
+#: DoxBoxfrmInstallOnUSBDrive.pas:205
+msgid "Launch LibreCrypt"
+msgstr "Spustit LibreCrypt"
+
+#. Programmer's name for it: AUTORUN_POST_MOUNT
+#: DoxBoxfrmMain.pas:416
+msgid "post Open"
+msgstr ""
+
+#. Programmer's name for it: AUTORUN_PRE_MOUNT
+#: DoxBoxfrmMain.pas:417
+msgid "pre dismount"
+msgstr ""
+
+#. Programmer's name for it: AUTORUN_POST_DISMOUNT
+#: DoxBoxfrmMain.pas:418
+msgid "post dismount"
+msgstr ""
+
+#. Programmer's name for it: TEXT_NEED_ADMIN
+#: DoxBoxfrmMain.pas:427
+msgid ""
+"You need administrator privileges in order to carry out this "
+"operation."
+msgstr "Na provedení této operace musíte mít oprávnění administrátora."
+
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_NEW
+#: DoxBoxfrmMain.pas:429
+msgid "New"
+msgstr "Nový"
+
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_DISMOUNT
+#: DoxBoxfrmMain.pas:432
+msgid "Dismount"
+msgstr "Odpojit"
+
+#. Programmer's name for it: RS_TOOLBAR_CAPTION_PORTABLEMODE
+#: DoxBoxfrmMain.pas:434
+msgid "Portable mode"
+msgstr "Přenosný režim"
+
+#: DoxBoxfrmMain.pas:556
+msgid ""
+"The main LibreCrypt driver does not appear to be installed/running on "
+"this computer"
+msgstr ""
+"Zdá se, že hlavní ovladač LibreCrypt buď není nainstalovaný nebo "
+"není spuštěn."
+
+#: DoxBoxfrmMain.pas:558
+msgid ""
+"Would you like to start LibreCrypt in portable "
+"mode?"
+msgstr "Chcete spustit LibreCrypt v přenosném režimu?"
+
+#: DoxBoxfrmMain.pas:572
+msgid ""
+"Please see the \"installation\" section of the accompanying "
+"documentation for instructions on how to install the LibreCrypt "
+"drivers."
+msgstr ""
+"Bližší informace jak nainstalovat ovladače LibreCrypt naleznete v uživatelské příručce v oddíle \"Instalace\"."
+
+#. Listview columns...
+#: DoxBoxfrmMain.pas:836
+msgid "Drive"
+msgstr "Disk"
+
+#. tmpColumn.minwidth := lvDrives.width;
+#: DoxBoxfrmMain.pas:841
+msgid "Volume"
+msgstr "Jednotka"
+
+#: DoxBoxfrmMain.pas:1324
+msgid "Unable to Open volume."
+msgstr "Nepodařilo se připojit svazek."
+
+#: DoxBoxfrmMain.pas:1326
+msgid ""
+"Please check your password and settings, and try "
+"again."
+msgstr "Prosím zkontrolujte svoje heslo a nastavení a zkuste to znovu."
+
+#. Open successful
+#: DoxBoxfrmMain.pas:1337
+msgid ""
+"Your LibreCrypt volume has been mounted as drive: "
+"%1"
+msgstr "LibreCrypt svazek byl připojen jako disk %1"
+
+#: DoxBoxfrmMain.pas:1341
+msgid ""
+"Your LibreCrypt volumes have been mounted as drives: "
+"%1"
+msgstr "LibreCrypt svazky byly připojeny jako disky %1"
+
+#. the drives to be dismounted - and we're not locking that drive
+#: DoxBoxfrmMain.pas:1657
+msgid ""
+"The volume currently mounted as %1: must be dismounted before %2: can "
+"be dismounted"
+msgstr "Svazek připojený jako %1: musí být odpojen před odpojením disku %2:"
+
+#. an emergency dismount
+#: DoxBoxfrmMain.pas:1714
+msgid "Unable to dismount drive: %1"
+msgstr "Nepodařilo se odpojit disk: %1"
+
+#: DoxBoxfrmMain.pas:1715
+msgid "Unable to dismount drives: %1"
+msgstr "Nepodařilo se odpojit disky: %1"
+
+#. they want to attempt an emergency dismount
+#: DoxBoxfrmMain.pas:1726
+msgid ""
+"Do you wish to force a dismount on this "
+"drive?"
+msgstr "Chcete vynutit odpojení tohoto disku?"
+
+#: DoxBoxfrmMain.pas:1727
+msgid ""
+"Do you wish to force a dismount on these "
+"drives?"
+msgstr "Chcete vynutit odpojení těchto disků?"
+
+#: DoxBoxfrmMain.pas:1733
+msgid ""
+"Warning: Emergency dismounts are not "
+"recommended"
+msgstr "Varování: nouzové odpojení disků se nedoporučuje"
+
+#: DoxBoxfrmMain.pas:1735
+#: DoxBoxfrmMain.pas:3540
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:519
+#: OTFEDoxBox_frmKeyEntryLUKS.pas:217
+msgid "Are you sure you wish to proceed?"
+msgstr "Jste si jisti, že to chcete provést?"
+
+#. portable mode status - and DOESN'T turn it on/off
+#: DoxBoxfrmMain.pas:1822
+msgid "Toggle portable mode drivers"
+msgstr ""
+
+#: DoxBoxfrmMain.pas:1826
+msgid "Use portable mode drivers"
+msgstr "Použít ovladače přenosného režimu"
+
+#. Update status bar text, if visible
+#: DoxBoxfrmMain.pas:1878
+msgid "LibreCrypt main driver not connected."
+msgstr "Připojení k hlavnímu ovladači LibreCrypt není aktivní."
+
+#: DoxBoxfrmMain.pas:1884
+msgid "%1 drive mounted."
+msgstr "Připojené disky: %1"
+
+#: DoxBoxfrmMain.pas:1885
+msgid "%1 drives mounted."
+msgstr "Připojené disky: %1"
+
+#: DoxBoxfrmMain.pas:1902
+msgid "%1: Free Space: %2; Total size: %3"
+msgstr "%1: volné misto: %2; celková velikost: %3"
+
+#: DoxBoxfrmMain.pas:1926
+msgid "%1 drive selected."
+msgstr "Disk %1 je vybrán."
+
+#: DoxBoxfrmMain.pas:1927
+msgid "%1 drives selected."
+msgstr "Disky %1 jsou vybrané."
+
+#: DoxBoxfrmMain.pas:2009
+msgid "Unknown autorun type?!"
+msgstr "Neznámý soubor automatického spouštění?!"
+
+#. PARAMETERS!
+#: DoxBoxfrmMain.pas:2061
+msgid "Unable to locate %1 executable:"
+msgstr "Nelze najít %1:"
+
+#: DoxBoxfrmMain.pas:2086
+msgid "Error running %1 executable:"
+msgstr "Nelze spustit %1:"
+
+#: DoxBoxfrmMain.pas:2156
+msgid "Error running Explorer"
+msgstr "Nepodařilo se zpustit Průzkumníka Windows"
+
+#. Don't complain to user is we're about to exit!
+#: DoxBoxfrmMain.pas:2240
+msgid ""
+"In order to use this software, you must first upgrade your LibreCrypt "
+"drivers to a later version."
+msgstr ""
+"Abyste mohli tento program používat, musíte nejdříve aktualizovat LibreCrypt "
+"ovladače na novější verzi."
+
+#: DoxBoxfrmMain.pas:2242
+msgid ""
+"If you have just upgraded your copy of LibreCrypt from a previous "
+"version, please ensure that you have followed the upgrade "
+"instructions that came with it, and have rebooted if "
+"necessary."
+msgstr ""
+"Pokud jste právě aktualizovali vaší verzi LibreCrypt ze starší verze, "
+"ujistěte se, že jste postupovali podle instrukcí pro aktualizaci a pokud "
+"je to nutné i restartovali počítač."
+
+#: DoxBoxfrmMain.pas:2249
+msgid ""
+"Unable to connect to the main LibreCrypt "
+"driver."
+msgstr "Nepodařilo se připojit k hlavnímu ovladači LibreCrypt."
+
+#: DoxBoxfrmMain.pas:2251
+msgid ""
+"Please ensure that the main \"LibreCrypt\" driver is installed and "
+"started."
+msgstr "Ujistěte se, že hlavní ovladač LibreCrypt je nainstalovaný a že je spuštěn."
+
+#: DoxBoxfrmMain.pas:2253
+msgid ""
+"If you have only just installed LibreCrypt, please reboot and try "
+"again."
+msgstr "Pokud jste právě LibreCrypt nainstalovali, restartujte počítač a zkuste to znovu."
+
+#. Old driver warnings
+#: DoxBoxfrmMain.pas:2268
+#: DoxBoxfrmMain.pas:2279
+msgid ""
+"The main LibreCrypt driver installed on this computer dates back to "
+"LibreCrypt %1"
+msgstr "Hlavní ovladač LibreCrypt instalovaný na tomto počítači patří ke starší verzi LibreCrypt: %1"
+
+#: DoxBoxfrmMain.pas:2270
+msgid ""
+"It is highly recommended that you upgrade your LibreCrypt drivers to "
+"v3.00 or later as soon as possible, in order to allow the use of LRW "
+"and XTS based volumes."
+msgstr ""
+"Důrazně doporučujeme aktualizovat ovladače LibreCrypt na verzi v3.00 nebo novější ihned "
+"jakmile to bude možné. Poté budete moci používat i kontejnery založené na LRW a XTS."
+
+#: DoxBoxfrmMain.pas:2272
+#: DoxBoxfrmMain.pas:2283
+msgid ""
+"See documentation (installation section) for instructions on how to "
+"do this."
+msgstr "Návod si přečtěte v oddílu \"Instalace\" v přiložené dokumentaci."
+
+#: DoxBoxfrmMain.pas:2281
+msgid ""
+"It is highly recommended that you upgrade your LibreCrypt drivers to "
+"those included in v4.30 or later as soon as possible, due to "
+"improvements in the main driver."
+msgstr ""
+"Důrazně doporučujeme aktualizovat ovladače LibreCrypt na verzi obsaženou v balíčku v4.30 nebo novější ihned "
+"jakmile to bude možné."
+
+#. Encrypt the pseudorandom data generated
+#: DoxBoxfrmMain.pas:2382
+msgid ""
+"Unable to encrypt pseudorandom data before using for overwrite "
+"buffer?!"
+msgstr ""
+
+#: DoxBoxfrmMain.pas:2384
+msgid "Error #: %1"
+msgstr "Chyba č.: %1"
+
+#: DoxBoxfrmMain.pas:2524
+msgid ""
+"Unable to locate any portable LibreCrypt "
+"drivers."
+msgstr "Nepodařilo se najít žádné ovladače přenosného režimu LibreCrypt."
+
+#: DoxBoxfrmMain.pas:2526
+msgid ""
+"Please ensure that the a copy of the LibreCrypt drivers (\".sys\" files) "
+"you wish to use are located in the correct "
+"directory."
+msgstr "Ujistěte se, že se soubory ovladačů LibreCrypt (\".sys) nacházejí ve správné složce."
+
+#. end;
+#: DoxBoxfrmMain.pas:2552
+msgid ""
+"One or more of your portable LibreCrypt drivers could not be "
+"installed/started."
+msgstr "Některé ovladače přenosného režimu LibreCrypt se nepodařilo nainstalovat nebo spustit."
+
+#: DoxBoxfrmMain.pas:2556
+#: DoxBoxfrmMain.pas:2639
+msgid ""
+"Please select \"File | Drivers...\" to check which drivers are "
+"currently operating."
+msgstr "Které ovladače jsou právě funkční zjistíte pod nabídkou \"Soubor\" | \"Ovladače...\""
+
+#. as no drives can be mounted
+#: DoxBoxfrmMain.pas:2595
+msgid "You have one or more volumes mounted."
+msgstr "Máte připojený minimálně jeden svazek."
+
+#: DoxBoxfrmMain.pas:2597
+msgid ""
+"If any of the currently mounted volumes makes use of any of the "
+"LibreCrypt drivers which are currently in portable mode, stopping "
+"portable mode is not advisable."
+msgstr ""
+"Není vhodné ukončovat přenosný režim pokud některý z právě připojených svazků "
+"používá některý z ovladačů přenosného režimu LibreCrypt."
+
+#: DoxBoxfrmMain.pas:2599
+msgid ""
+"It is recommended that you dismount all volumes before stopping "
+"portable mode."
+msgstr "Doporučujeme odpojit všechny svazky než ukončíte přenosný režim."
+
+#: DoxBoxfrmMain.pas:2601
+msgid ""
+"Do you wish to continue stopping portable "
+"mode?"
+msgstr "Opravdu chcete opustit přenosný režim?"
+
+#. problem
+#: DoxBoxfrmMain.pas:2624
+msgid "Portable mode drivers stopped and uninstalled."
+msgstr "Ovladače přenosného režimu byly ukončeny a odinstalovány."
+
+#: DoxBoxfrmMain.pas:2635
+msgid ""
+"One or more of your portable LibreCrypt drivers could not be "
+"stopped/uninstalled."
+msgstr "Některé ovladače přenosného režimu LibreCrypt se nepodařilo ukončit nebo odinstalovat."
+
+#: DoxBoxfrmMain.pas:2761
+msgid "LibreCrypt volume created successfully."
+msgstr "LibreCrypt svazek byl úspěšně vytvořen."
+
+#: DoxBoxfrmMain.pas:2763
+msgid ""
+"Please Open, format and overwrite this volume's free space before "
+"use."
+msgstr "Před použitím tohoto svazku jej prosím připojte, zformátujte a vyčistěte prázdné místo."
+
+#: DoxBoxfrmMain.pas:2771
+msgid "LibreCrypt volume could not be created"
+msgstr "LibreCrypt svazek se nepodařilo vytvořit"
+
+#: DoxBoxfrmMain.pas:2845
+msgid "Linux volume created successfully."
+msgstr "Linuxový svazek byl úspěšně vytvořen."
+
+#: DoxBoxfrmMain.pas:2847
+msgid ""
+"Don't forget to Open and format this volume before "
+"use."
+msgstr "Před použitím tohoto svazku jej prosím připojte a zformátujte."
+
+#: DoxBoxfrmMain.pas:2854
+msgid "Linux volume could not be created"
+msgstr "Linuxový svazek se nepodařilo vytvořit"
+
+#: DoxBoxfrmMain.pas:3042
+msgid "One or volumes are still mounted."
+msgstr "Některé svazky jsou stále připojeny."
+
+#: DoxBoxfrmMain.pas:3044
+msgid ""
+"Do you wish to dismount all volumes before "
+"exiting?"
+msgstr "Chcete před ukončením odpojiv všechny svazky?"
+
+#. portable mode shutdown
+#: DoxBoxfrmMain.pas:3091
+msgid "One or more of the LibreCrypt drivers are running in portable mode."
+msgstr "Některé ovladače LibreCrypt jsou spuštěny v přenosném režimu."
+
+#: DoxBoxfrmMain.pas:3093
+msgid ""
+"Do you wish to shutdown portable mode before "
+"exiting?"
+msgstr "Chcete opustit přenosný režim před ukončením?"
+
+#: DoxBoxfrmMain.pas:3294
+msgid "Error: Unable to assign hotkey %1"
+msgstr "Chyba: nepodařilo se přiřadit klávesovou zkratku %1"
+
+#. Programmer's name for it: FORMAT_CAPTION
+#: DoxBoxfrmMain.pas:3370
+msgid "Format"
+msgstr "Formátovat"
+
+#. just failed...
+#: DoxBoxfrmMain.pas:3398
+msgid ""
+"Your encrypted drive could not be formatted at this "
+"time."
+msgstr "Váš šifrovaný disk nyní nelze zformátovat."
+
+#: DoxBoxfrmMain.pas:3400
+msgid ""
+"Please dismount this volume and remount it with the \"Open for all "
+"users\" option checked, before trying "
+"again."
+msgstr ""
+"Prosím odpojte tento svazek a znovu jej připojte s volbou \"Připojit pro všechny uživatele\" než tuto operaci "
+"zopakujete."
+
+#: DoxBoxfrmMain.pas:3418
+msgid ""
+"Due to the destructive nature of overwriting entire drives, only one "
+"drive may be selected when this option is "
+"chosen."
+msgstr ""
+
+#: DoxBoxfrmMain.pas:3420
+msgid ""
+"Please ensure that only one mounted drive is selected, and "
+"retry."
+msgstr "Prosím zvolte pouze jeden připojený disk a akci zopakujte."
+
+#: DoxBoxfrmMain.pas:3428
+#. it.
+#: OTFEDoxBox_frmDriverControl.pas:262
+#. it.
+#: OTFEDoxBox_frmDriverControl.pas:308
+msgid "WARNING!"
+msgstr "VAROVÁNÍ!"
+
+#: DoxBoxfrmMain.pas:3430
+msgid ""
+"You are are attempting to overwrite drive: "
+"%1:"
+msgstr "Chystáte se kompletně přepsat disk: %1:"
+
+#: DoxBoxfrmMain.pas:3432
+msgid ""
+"THIS WILL DESTROY ALL INFORMATION STORED ON DRIVE %1:, and require it "
+"to be reformatted"
+msgstr "DOJDE KE ZNIČENÍ VEŠKERÝCH INFORMACÍ ULOŽENÝCH NA DISKU %1:, a bude jej nutné znovu zformátovat"
+
+#: DoxBoxfrmMain.pas:3434
+msgid ""
+"Are you ABSOLUTELY SURE you want to do "
+"this?"
+msgstr "Opravdu to chcete provést?"
+
+#: DoxBoxfrmMain.pas:3538
+msgid ""
+"Overwriting on a large volume may take "
+"awhile."
+msgstr "Přepsání velkého svazku může nějkou chvíli trvat."
+
+#: DoxBoxfrmMain.pas:3581
+msgid "Overwrite operation complete."
+msgstr "Přepsání bylo dokončeno."
+
+#: DoxBoxfrmMain.pas:3584
+msgid ""
+"Please reformat the drive just overwritten before attempting to use "
+"it."
+msgstr "Před použitím právě přepsaného svazku jej nově zformátujte."
+
+#: DoxBoxfrmMain.pas:3589
+msgid "Overwrite operation FAILED."
+msgstr "Přepsání se nezdařilo."
+
+#: DoxBoxfrmMain.pas:3594
+msgid ""
+"Did you remember to format this drive "
+"first?"
+msgstr ""
+
+#: DoxBoxfrmMain.pas:3601
+msgid "Overwrite operation cancelled by user."
+msgstr "Přepsání bylo zrušeno uživatelem."
+
+#: DoxBoxfrmMain.pas:3605
+msgid "No drives selected to overwrite?"
+msgstr "Nebyl vybrán žádný disk k přepsání?"
+
+#. any stupid warning messages about "unsigned drivers"
+#: DoxBoxfrmMain.pas:3759
+msgid ""
+"IMPORTANT: Please see the documentation for additional steps to be "
+"carried out after installing under this "
+"OS."
+msgstr ""
+"DŮLEŽITÉ: prosíme přečtěte si v dokumentaci co je ještě potřeba udělat po instalaci v tomto operačním systému."
+
+#: DoxBoxfrmMain.pas:4410
+msgid "Unable to initialize PKCS#11 support:"
+msgstr "Inicializace podpory PKCS#11 se nezdařila:"
+
+#: DoxBoxfrmMain.pas:4457
+msgid ""
+"Detected removal of token from slot ID: "
+"%1"
+msgstr ""
+
+#: DoxBoxfrmMain.pas:4477
+msgid "Autodismounting drives: %1"
+msgstr "Automatické odpojení disků: %1"
+
+#: DoxBoxfrmMain.pas:4488
+msgid ""
+"Detected insertion of token into slot ID: "
+"%1"
+msgstr ""
+
+#. Attempt automount...
+#: DoxBoxfrmMain.pas:4496
+msgid "Automounting: %1"
+msgstr "Automatické připojení: %1"
+
+#. Sanity check; we can't do anything if LibreCrypt component's not available
+#: DoxBoxfrmMain.pas:4518
+msgid "Slot event on slot ID: %1"
+msgstr ""
+
+#. Don't do special processing on this message
+#: DoxBoxfrmOptions.pas:199
+msgid ""
+"Under Windows Vista, you cannot save your settings file anywhere "
+"under:\n"
+"\n%1\n\n"
+"due to Vista's security/mapping system."
+msgstr ""
+"Ve Windows Vista nelze z důvodu bezpečnostního nastavení uložit vaši konfiguraci kdekoliv:\n"
+"\n%1"
+
+#: DoxBoxfrmOptions.pas:201
+msgid ""
+"Please either select another location for storing your settings (e.g. "
+"your user profile), or move the LibreCrypt executable such that it is "
+"not stored underneath the directory shown "
+"above."
+msgstr ""
+"Buď vyberte jinou složku pro uložení vaší konfigurace (např. složku vašeho profilu) "
+"nebo přesuňte LibreCrypt do jiné složky než té co je zobrazena výše."
+
+#. warn user
+#: DoxBoxfrmOptions.pas:260
+msgid ""
+"You have not specified a location where LibreCrypt should save its "
+"settings to."
+msgstr "Nezadali jste složku, do které má LibreCrypt uložit své nastavení."
+
+#: DoxBoxfrmOptions.pas:262
+msgid ""
+"Although the settings entered will take effect, they will revert back "
+"to their defaults when LibreCrypt is exited."
+msgstr "Ikdyž se teď vaše nastavení použije, vrátí se po ukončení LibreCrypt na původní hodnoty."
+
+#: DoxBoxfrmOptions.pas:264
+msgid ""
+"Do you wish to select a location in order to make your settings "
+"persistant?"
+msgstr "Chcete vybrat složku pro uložení konfigurace, aby se neztratila?"
+
+#. old settings file
+#: DoxBoxfrmOptions.pas:280
+msgid "You have opted not to save your settings"
+msgstr "Rozhodli jste se neuložit vaši konfiguraci"
+
+#: DoxBoxfrmOptions.pas:284
+msgid ""
+"You have changed the location where your settings will be "
+"saved"
+msgstr "Změnili jste složku pro uložení vaší konfigurace"
+
+#. to delete it
+#: DoxBoxfrmOptions.pas:299
+msgid ""
+"Would you like LibreCrypt to delete your previous settings "
+"file?"
+msgstr "Chcete smazat předchozí soubor s konfigurací LibreCrypt?"
+
+#: DoxBoxfrmOptions.pas:301
+msgid ""
+"Note: If you select \"No\" here, LibreCrypt may pick up your old settings "
+"the next time you start LibreCrypt"
+msgstr "Poznámka: zvolíte-li nyní \"Ne\", LibreCrypt může při příštím spuštění nahrát staré nastavení"
+
+#: DoxBoxfrmOptions.pas:322
+msgid ""
+"Your previous settings file stored at:\n"
+"\n%1\n\n"
+"could not be deleted. Please remove this file "
+"manually."
+msgstr ""
+"Předchozí soubor s nastavením:\n"
+"\n%1\n\n"
+"se nepodařilo odstranit. Prosím odstraňte jej ručně."
+
+#: DoxBoxfrmOptions.pas:334
+msgid ""
+"Your previous settings file stored in the Windows registry under:\n"
+"\n%1\n\n"
+"could not be deleted. Please delete this registry key "
+"manually."
+msgstr ""
+"Vaše předchozí nastavení uložené v systémovém registru Windows:\n"
+"\n"
+"%1\n"
+"\n"
+"se nepodařilo odstranit. Prosím odstraňte jej ručně."
+
+#: DoxBoxfrmOptions.pas:352
+msgid ""
+"Your previous settings will remain stored at:\n"
+"\n"
+"%1"
+msgstr ""
+"Vaše předchozí nastavení zůstává uložené jako:\n"
+"\n"
+"%1"
+
+#: DoxBoxfrmOptions.pas:362
+msgid ""
+"Your previous settings will remain stored in the Windows registry "
+"under:\n"
+"\n"
+"%1"
+msgstr ""
+"Vaše předchozí nastavení zůstává uložené v systémovém registru Windows:\n"
+"\n"
+"%1"
+
+#: DoxBoxfrmSelectOverwriteMethod.pas:100
+msgid ""
+"Please select the type of data that should be used to overwrite the "
+"free space:\n"
+"\n"
+"Pseudorandom data - This is faster, but less secure if you wish to "
+"create a hidden volume within this volume at a later date.\n"
+"\n"
+"Encrypted data - This is more secure, but slower. Pseudorandom data "
+"will be encrypted with your choice of cypher before being written to "
+"the drive."
+msgstr ""
+"Zvolte typ dat, kterými bude prázdné místo přepsané:\n"
+"\n"
+"Pseudonáhodná data - je rychlejší, ale méně bezpečná varianta, budete-li chtít později v tomto svazku vytvořit "
+"skrytý svazek.\n"
+"\n"
+"Šifrovaná data - je bezpečnější, ale pomalejší. Pseudonáhodná data budou před zápisem na disk navíc ještě "
+"zašifrována vámi zvoleným ašifrovacím algoritmem."
+
+#: DoxBoxfrmSelectOverwriteMethod.pas:112
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:317
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1274
+msgid "Unable to obtain list of cyphers."
+msgstr "Nelze získat seznam šifrovacích algoritmů."
+
+#: DoxBoxfrmSelectOverwriteMethod.pas:114
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:319
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1276
+msgid ""
+"Please ensure that you have one or more LibreCrypt cypher drivers "
+"installed and started."
+msgstr "Ujistěte se, že máte instalovaný a aktivovaný alespoň jeden šifrovací ovladač LibreCrypt."
+
+#: DoxBoxfrmSelectOverwriteMethod.pas:116
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:287
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:321
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1237
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1250
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1278
+#: OTFEDoxBox_U.pas:10006
+#: OTFEDoxBox_U.pas:10022
+msgid ""
+"If you have only just installed LibreCrypt, you may need to restart "
+"your computer."
+msgstr "Pokud jste právě LibreCrypt nainstalovali, restartujte počítač a zkuste to znovu."
+
+#. Programmer's name for it: RS_UNKNOWN
+#: DoxBoxfrmVolProperties.pas:66
+#. This function may be called when the driver isn't running
+#: OTFEDoxBox_U.pas:10191
+#. Programmer's name for it: RS_UNKNOWN
+#: SDUPartitionPropertiesDlg.pas:50
+msgid "<Unknown>"
+msgstr "<neznámé>"
+
+#: DoxBoxfrmVolProperties.pas:98
+msgid "Readonly"
+msgstr "Pouze pro čtení"
+
+#: DoxBoxfrmVolProperties.pas:102
+msgid "Read/write"
+msgstr "Pro čtení i zápis"
+
+#: DoxBoxfrmVolProperties.pas:114
+#: DoxBoxfrmVolProperties.pas:140
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:838
+msgid "n/a"
+msgstr "N/A"
+
+#: DoxBoxfrmVolProperties.pas:175
+msgid ""
+"Unable to get drive properties for drive "
+"%1:"
+msgstr "Nepodařilo se načíst vlastnosti disku %1:"
+
+#. Programmer's name for it: DRAGDROPFILETYPE_PROMPT
+#: DoxBoxSettings.pas:33
+msgid "<prompt user>"
+msgstr ""
+
+#. Programmer's name for it: DRAGDROPFILETYPE_LINUX
+#: DoxBoxSettings.pas:35
+#. frmSelectVolumeType..rgVolumeType....Items.Strings
+#: OTFEDoxBox_frmVolumeType.dfm:34
+msgid "Linux"
+msgstr "Linux"
+
+#. Programmer's name for it: SAVELOCATION_DO_NOT_SAVE
+#: DoxBoxSettings.pas:37
+msgid "<Do not save settings>"
+msgstr ""
+
+#. Programmer's name for it: SAVELOCATION_EXE_DIR
+#: DoxBoxSettings.pas:38
+msgid "File in LibreCrypt directory"
+msgstr "Soubor ve složce LibreCrypt"
+
+#. Programmer's name for it: SAVELOCATION_USER_PROFILE
+#: DoxBoxSettings.pas:39
+msgid "File in user profile"
+msgstr "Soubor v uživatelském profilu"
+
+#. Programmer's name for it: SAVELOCATION_REGISTRY
+#: DoxBoxSettings.pas:40
+msgid "Windows registry"
+msgstr "Systémový registr Windows"
+
+#. Programmer's name for it: UNKNOWN_SETTINGS_LOCATION
+#: DoxBoxSettings.pas:42
+msgid ""
+"Unknown settings location?! Please report seeing this "
+"message!"
+msgstr "Nepodařilo se najít nastavení?! Prosím nahlašte tuto chybu!"
+
+#: DoxBoxSettings.pas:363
+msgid "Your settings could not be saved."
+msgstr "Nepodařilo se uložit vaše nastavení."
+
+#: DoxBoxSettings.pas:367
+msgid ""
+"Please ensure that you have suitable access rights in order to write "
+"to:\n"
+"\n"
+"%1"
+msgstr ""
+"Ujistěte se, že máte dostatečná práva k zápisu do složky:\n"
+"\n"
+"%1"
+
+#. fmePKCS11_MgrKeyfile..Label1..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.dfm:15
+msgid ""
+"The following &keyfiles are stored on your PKCS#11 "
+"token:"
+msgstr "Na vašem PKCS#11 tokenu jsou uloženy následující sobory s klíči:"
+
+#. fmePKCS11_MgrKeyfile..ActionList1..actImport..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.dfm:58
+msgid "&Import..."
+msgstr "Importovat..."
+
+#. fmePKCS11_MgrKeyfile..ActionList1..actExport..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.dfm:62
+msgid "&Export..."
+msgstr "Exportovat..."
+
+#. fmePKCS11_MgrKeyfile..ActionList1..actDelete..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.dfm:66
+#. fmePKCS11_MgrSecretKey..ActionList1..actDelete..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.dfm:83
+msgid "&Delete"
+msgstr "Smazat"
+
+#. fmePKCS11_MgrSecretKey..Label1..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.dfm:14
+msgid ""
+"The following secret &keys are stored on your PKCS#11 "
+"token:"
+msgstr "Na vašem PKCS#11 tokenu jsou uloženy následující tajné klíče:"
+
+#. fmePKCS11_MgrSecretKey..gbSecretKey..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.dfm:33
+msgid "Secret Key"
+msgstr ""
+
+#. fmePKCS11_MgrSecretKey..gbKeyfile..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.dfm:58
+msgid "Keyfile/volume"
+msgstr "Soubor s klíčem/svazek"
+
+#. fmePKCS11_MgrSecretKey..ActionList1..actEncrypt..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.dfm:87
+msgid "&Secure..."
+msgstr "Zabezpečit..."
+
+#. fmePKCS11_MgrSecretKey..ActionList1..actDecrypt..Caption
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.dfm:91
+msgid "D&esecure"
+msgstr "Zrušit zabezpečení"
+
+#. fmeSelectPartition..lblDblClickNotice..Caption
+#: OTFEDoxBox_fmeSelectPartition.dfm:16
+msgid "Doubleclick partition to display details"
+msgstr "Poklepejte na oddíl pro zobrazení detailů"
+
+#. fmeSelectPartition..ckShowCDROM..Caption
+#: OTFEDoxBox_fmeSelectPartition.dfm:93
+msgid "&Show CD/DVD drives"
+msgstr "Zobrazit CD/DVD disky"
+
+#. fmeSelectPartition..ckEntireDisk..Caption
+#: OTFEDoxBox_fmeSelectPartition.dfm:103
+msgid "&Entire disk"
+msgstr "Celý disk"
+
+#. frmCypherInfo..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:5
+msgid "Cypher Details"
+msgstr "Detaily šifrovacího algoritmu"
+
+#. frmCypherInfo..gbCypherDriver..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:24
+msgid "Cypher Driver"
+msgstr "Ovladač šifrovacího algoritmu"
+
+#. frmCypherInfo..gbCypherDriver..Label1..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:31
+#. frmHashInfo..gbHashDriver..Label1..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:31
+msgid "DeviceName:"
+msgstr "Název zařízení:"
+
+#. frmCypherInfo..gbCypherDriver..Label2..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:38
+#. frmHashInfo..gbHashDriver..Label2..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:38
+msgid "DeviceUserModeName:"
+msgstr ""
+
+#. frmCypherInfo..gbCypherDriver..Label3..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:45
+#. frmHashInfo..gbHashDriver..Label3..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:45
+msgid "DeviceKernelModeName:"
+msgstr ""
+
+#. frmCypherInfo..gbCypherDriver..Label4..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:52
+#. frmCypherInfo..gbCypher..Label7..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:158
+#. frmHashInfo..gbHashDriver..Label4..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:52
+#. frmHashInfo..gbHash..Label7..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:158
+msgid "Title:"
+msgstr "Název:"
+
+#. frmCypherInfo..gbCypherDriver..Label5..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:59
+#. frmCypherInfo..gbCypher..Label11..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:186
+#. frmHashInfo..gbHashDriver..Label5..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:59
+#. frmHashInfo..gbHash..Label11..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:179
+msgid "Version:"
+msgstr "Verze:"
+
+#. frmCypherInfo..gbCypherDriver..Label6..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:66
+msgid "Cyphers supported:"
+msgstr "Podporované šifr. algor.:"
+
+#. frmCypherInfo..gbCypherDriver..Label12..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:73
+#. frmCypherInfo..gbCypher..Label8..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:165
+#. frmHashInfo..gbHashDriver..Label9..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:73
+#. frmHashInfo..gbHash..Label8..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:165
+msgid "GUID:"
+msgstr "GUID:"
+
+#. frmCypherInfo..gbCypher..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:151
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:89
+msgid "Cypher"
+msgstr "Šifrovací algoritmus"
+
+#. frmCypherInfo..gbCypher..Label9..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:172
+msgid "Mode:"
+msgstr "Režim:"
+
+#. frmCypherInfo..gbCypher..Label10..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:179
+msgid "Blocksize:"
+msgstr "Velikost bloku:"
+
+#. frmCypherInfo..gbCypher..Label13..Caption
+#: OTFEDoxBox_frmCypherInfo.dfm:193
+msgid "Keysize:"
+msgstr "Délka klíče:"
+
+#. frmDriverControl..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:5
+msgid "LibreCrypt Driver Control"
+msgstr "LibreCrypt - správa ovladačů"
+
+#. frmDriverControl..gbInstallNew..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:44
+msgid "Install new driver"
+msgstr "Instalace nového ovladače"
+
+#. frmDriverControl..gbInstallNew..lblInstall....Caption
+#: OTFEDoxBox_frmDriverControl.dfm:53
+msgid ""
+"To install a new hash or cypher driver, please click "
+"\"Install...\""
+msgstr "Pro instalaci nového ovladače hašovacího nebo šifrovacího algoritmu klikněte na \"Instalovat...\""
+
+#. frmDriverControl..gbInstallNew..pbInstall..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:60
+msgid "&Install..."
+msgstr "&Instalovat..."
+
+#. frmDriverControl..gbModifyExisting..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:70
+msgid "Modify existing driver"
+msgstr "Nastavení nainstalovaných ovladačů"
+
+#. frmDriverControl..gbModifyExisting..lblStart..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:81
+msgid "Driver &startup:"
+msgstr "&Typ spouštění:"
+
+#. frmDriverControl..gbModifyExisting..Label1..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:89
+msgid "&Existing drivers:"
+msgstr "Seznam nainstalovaných &ovladačů:"
+
+#. frmDriverControl..gbModifyExisting..Label3..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:98
+msgid "Change driver status:"
+msgstr "Změna stavu ovladače:"
+
+#. frmDriverControl..gbModifyExisting..Label4..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:106
+msgid "Remove driver:"
+msgstr "Odstranit ovladač:"
+
+#. frmDriverControl..gbModifyExisting..pbStart..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:126
+msgid "St&art"
+msgstr "&Spustit"
+
+#. frmDriverControl..gbModifyExisting..pbStop..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:136
+msgid "St&op"
+msgstr "&Ukončit"
+
+#. frmDriverControl..gbModifyExisting..pbUninstall..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:146
+msgid "U&ninstall"
+msgstr "O&dinstalovat"
+
+#. frmDriverControl..gbModifyExisting..pbUpdate..Caption
+#: OTFEDoxBox_frmDriverControl.dfm:176
+msgid "&Update"
+msgstr "O&bnovit"
+
+#. frmHashInfo..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:5
+msgid "Hash Details"
+msgstr "Detaily hashe"
+
+#. frmHashInfo..gbHashDriver..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:24
+msgid "Hash Driver"
+msgstr ""
+
+#. frmHashInfo..gbHashDriver..Label6..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:66
+msgid "Hashes supported:"
+msgstr "Podporované hashe:"
+
+#. frmHashInfo..gbHash..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:151
+msgid "Hash"
+msgstr ""
+
+#. frmHashInfo..gbHash..Label10..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:172
+msgid "Length:"
+msgstr "Délka:"
+
+#. frmHashInfo..gbHash..Label12..Caption
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.dfm:186
+msgid "Block size:"
+msgstr "Velikost bloku:"
+
+#. frmKeyEntryDoxBox..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:5
+msgid "LibreCrypt Key Entry"
+msgstr "LibreCrypt - zadání klíče"
+
+#. frmKeyEntryDoxBox..pnlBasic..GroupBox1..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:35
+msgid "Security details"
+msgstr "Bezpečnostní detaily"
+
+#. frmKeyEntryDoxBox..pnlBasic..GroupBox1..Label6..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:49
+msgid "&Keyfile:"
+msgstr "Soubor s klíčem:"
+
+#. frmKeyEntryDoxBox..pnlBasic..GroupBox1..ckMountReadonly..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:87
+#. frmKeyEntryPlainLinux..pcEntry..tsMountOptions..GroupBox2..ckMountReadonly..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:630
+#. frmKeyEntryLUKS..GroupBox2..ckMountReadonly..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:81
+msgid "Open &readonly"
+msgstr "Připojit pouze pro čtení"
+
+#. frmKeyEntryDoxBox..pnlBasic..GroupBox1..rbKeyfileFile..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:105
+msgid "&File:"
+msgstr "Soubor:"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlButtons..pbAdvanced..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:177
+msgid "Advanced >>"
+msgstr "Rozšířené >>"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:196
+msgid "Volume options"
+msgstr "Nastavení svazku"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox4..ckOffsetPointsToCDB..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:210
+msgid "Data from offset includes &CDB"
+msgstr ""
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox2..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:235
+#. frmKeyEntryPlainLinux..pcEntry..tsMountOptions..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:571
+#. frmKeyEntryPlainLinux..pcEntry..tsMountOptions..GroupBox2..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:582
+#. frmKeyEntryLUKS..GroupBox2..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:46
+msgid "Open options"
+msgstr "Nastavení připojení"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox2..Label9..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:242
+#. frmKeyEntryPlainLinux..pcEntry..tsMountOptions..GroupBox2..Label25..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:610
+#. frmKeyEntryLUKS..GroupBox2..Label25..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:61
+msgid "&Open as:"
+msgstr "Připojit jako:"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox2..ckMountForAllUsers..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:260
+#. frmKeyEntryPlainLinux..pcEntry..tsMountOptions..GroupBox2..ckMountForAllUsers..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:649
+#. frmKeyEntryLUKS..GroupBox2..ckMountForAllUsers..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:100
+msgid "Open for all &users"
+msgstr "Připojit pro všechny uživatele"
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox3..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:269
+msgid "Advanced security details"
+msgstr ""
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox3..Label7..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:291
+msgid "Key &iterations:"
+msgstr ""
+
+#. frmKeyEntryDoxBox..pnlLower..pnlAdvanced..GroupBox3..Label10..Caption
+#: OTFEDoxBox_frmKeyEntryDoxBox.dfm:299
+msgid "PKCS#&11 secret key:"
+msgstr "Tajný klíč PKCS#11:"
+
+#. frmKeyEntryPlainLinux..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:5
+msgid "LibreCrypt dm-crypt Key Entry"
+msgstr ""
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:50
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox1..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:60
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:86
+msgid "Key"
+msgstr "Klíč"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox1..Label1..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:67
+#. frmKeyEntryLUKS..GroupBox1..Label1..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:153
+msgid "&Key:"
+msgstr "Klíč:"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox1..Label14..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:102
+msgid "&GPG executable:"
+msgstr ""
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox1..Label21..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:111
+msgid "G&PG keyfile:"
+msgstr "Soubor s GPG klíčem:"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox5..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:161
+msgid "Key processing"
+msgstr ""
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox5..Label2..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:168
+msgid "&Hash:"
+msgstr ""
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox5..Label6..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:176
+msgid "&Iteration count:"
+msgstr ""
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox5..Label3..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:205
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..Label23..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:333
+#. frmPKCS11NewSecretKey..Label1..Caption
+#: OTFEDoxBox_frmPKCS11NewSecretKey.dfm:26
+msgid "&Cypher:"
+msgstr "Šifrovací algoritmus:"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox5..Label18..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:228
+msgid "&Seed:"
+msgstr ""
+
+#. frmKeyEntryPlainLinux..pcEntry..tsKey..GroupBox5..ckHashWithAs..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:309
+msgid ""
+"Hash with \"A\"s, if hash output is too "
+"short"
+msgstr ""
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:315
+#. frmKeyEntryLUKS..GroupBox1..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:146
+msgid "Encryption"
+msgstr "Šifrování"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:326
+msgid "Encryption options"
+msgstr "Nastavení šifrování"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:373
+msgid "IV Generation"
+msgstr "Generování IV"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..lblIVHash..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:388
+msgid "&IV Hash:"
+msgstr "IV hashe:"
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..lblIVCypher..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:409
+msgid "I&V Cypher:"
+msgstr ""
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..rgSectorIVSectorZeroPos..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:446
+msgid "Sector &zero location"
+msgstr ""
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..rgSectorIVSectorZeroPos....Items.Strings
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:448
+msgid "Start of host file"
+msgstr ""
+
+#. frmKeyEntryPlainLinux..pcEntry..tsEncryption..GroupBox3..GroupBox6..rgSectorIVSectorZeroPos....Items.Strings
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:449
+msgid "Start of encrypted data"
+msgstr ""
+
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:476
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:487
+#. frmKeyEntryLUKS..GroupBox4..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:109
+msgid "File options"
+msgstr ""
+
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..Label10..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:514
+#. frmKeyEntryLUKS..GroupBox4..Label10..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:116
+msgid "Si&zelimit:"
+msgstr ""
+
+#. frmKeyEntryPlainLinux..pcEntry..tsFileOptions..GroupBox4..Label22..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:534
+#. frmKeyEntryLUKS..GroupBox4..Label22..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:123
+msgid "(\"0\" indicates no sizelimit.)"
+msgstr ""
+
+#. frmKeyEntryPlainLinux..pbLoad..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:660
+msgid "&Load..."
+msgstr "Nahrát..."
+
+#. frmKeyEntryPlainLinux..pbSave..Caption
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.dfm:669
+msgid "Sa&ve..."
+msgstr "Uložit..."
+
+#. frmKeyEntryLUKS..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:5
+msgid "Key Phrase For LUKS Container"
+msgstr ""
+
+#. frmKeyEntryLUKS..GroupBox1..ckBaseIVCypherOnHashLength..Caption
+#: OTFEDoxBox_frmKeyEntryLUKS.dfm:172
+msgid ""
+"&Base IV cypher on hash length (where "
+"applicable)"
+msgstr ""
+
+#. frmNewVolumeSize..Caption
+#: OTFEDoxBox_frmNewVolumeSize.dfm:5
+msgid "Create Volume"
+msgstr "Vytvořit svazek"
+
+#. frmNewVolumeSize..Label2..Caption
+#: OTFEDoxBox_frmNewVolumeSize.dfm:24
+msgid "&Filename:"
+msgstr "Název souboru:"
+
+#. frmNewVolumeSize..Label3..Caption
+#: OTFEDoxBox_frmNewVolumeSize.dfm:32
+msgid "Volume &size:"
+msgstr "Velikost svazku:"
+
+#. frmPKCS11Management..Caption
+#: OTFEDoxBox_frmPKCS11Management.dfm:5
+msgid "Security Token/Smartcard Management"
+msgstr ""
+
+#. frmPKCS11Management..PageControl1..tsSecretKeys..Caption
+#: OTFEDoxBox_frmPKCS11Management.dfm:45
+msgid "Secret Keys"
+msgstr "Tajné klíče"
+
+#. frmPKCS11Management..PageControl1..tsKeyfiles..Caption
+#: OTFEDoxBox_frmPKCS11Management.dfm:75
+msgid "Keyfiles"
+msgstr ""
+
+#. frmPKCS11NewSecretKey..Caption
+#: OTFEDoxBox_frmPKCS11NewSecretKey.dfm:5
+msgid "New PKCS#11 Secret Key"
+msgstr "Nový tajný klíč PKCS#11"
+
+#. frmPKCS11NewSecretKey..Label2..Caption
+#: OTFEDoxBox_frmPKCS11NewSecretKey.dfm:34
+msgid "&Name:"
+msgstr "Název:"
+
+#. frmPKCS11NewSecretKey..Label3..Caption
+#: OTFEDoxBox_frmPKCS11NewSecretKey.dfm:42
+msgid ""
+"Please specify a name and cypher for the new secret "
+"key:"
+msgstr "Zadejte název a šifrovací algoritmus nového tajného klíče:"
+
+#. frmPKCS11Session..Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:5
+msgid "Security Token/Smartcard PIN"
+msgstr "PIN bezpečnostního tokenu/Smart karty"
+
+#. frmPKCS11Session..lblPIN..Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:25
+msgid "&PIN:"
+msgstr "PIN:"
+
+#. frmPKCS11Session..lblToken..Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:33
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGPKCS11..lblToken..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:548
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGPKCS11..lblToken..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:736
+msgid "&Token:"
+msgstr "Token:"
+
+#. frmPKCS11Session..Label3....Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:43
+msgid ""
+"Please select appropriate security token/smartcard and enter its "
+"PIN"
+msgstr "Prosím zadejte token/smart kartu a zadejte příslušný PIN"
+
+#. frmPKCS11Session..cbToken..Text
+#: OTFEDoxBox_frmPKCS11Session.dfm:53
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGPKCS11..cbToken..Text
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:567
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGPKCS11..cbToken..Text
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:746
+msgid "cbToken"
+msgstr ""
+
+#. frmPKCS11Session..ckUseSecureAuthPath..Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:97
+msgid "Use &secure authentication path"
+msgstr ""
+
+#. frmPKCS11Session..pbSkip..Caption
+#: OTFEDoxBox_frmPKCS11Session.dfm:106
+msgid "Skip"
+msgstr "Přeskočit"
+
+#. frmSelectHashCypher..Caption
+#: OTFEDoxBox_frmSelectHashCypher.dfm:5
+msgid "Hash/Cypher Combination"
+msgstr ""
+
+#. frmSelectHashCypher..Label1....Caption
+#: OTFEDoxBox_frmSelectHashCypher.dfm:28
+msgid ""
+"It appears that the volume specified may be decrypted with any of the "
+"following hash/cypher combinations:"
+msgstr ""
+"Zdá se, že zvolený oddíl může být rozšifrován některou z následujících kombinací hašovacích/šifrovacích "
+"algoritmů:"
+
+#. frmSelectHashCypher..Label2..Caption
+#: OTFEDoxBox_frmSelectHashCypher.dfm:36
+msgid ""
+"Please select the combination you wish to use, and click "
+"\"OK\""
+msgstr "Prosím zvolte kombinaci kterou chcete použít a stiskněte \"OK\""
+
+#. frmSelectHashCypher..Label3....Caption
+#: OTFEDoxBox_frmSelectHashCypher.dfm:45
+msgid ""
+"By rightclicking on a particular hash/cypher combination, you may "
+"view further details on the selected "
+"combination."
+msgstr "Klikněte na některou z kombinací pravým tlačítkem pro bližší informace o zvolené kombinaci algoritmů."
+
+#. frmSelectHashCypher..miPopup..miHashDetails..Caption
+#: OTFEDoxBox_frmSelectHashCypher.dfm:90
+msgid "&Hash details..."
+msgstr "Detaily hashe..."
+
+#. frmSelectHashCypher..miPopup..miCypherDetails..Caption
+#: OTFEDoxBox_frmSelectHashCypher.dfm:94
+msgid "&Cypher details..."
+msgstr "Detaily šifry..."
+
+#. frmSelectPartition..Caption
+#: OTFEDoxBox_frmSelectPartition.dfm:4
+#. frmSelectPartition_Simple..Caption
+#: OTFEDoxBox_frmSelectPartition_Simple.dfm:5
+msgid "Select Partition"
+msgstr "Zvolte oddíl"
+
+#. frmSelectPartition..Label1..Caption
+#: OTFEDoxBox_frmSelectPartition.dfm:28
+msgid "Please select from the following disks/partitions:"
+msgstr "Prosím vyberte z následujících disků/oddílů:"
+
+#. frmSelectPartition_Simple..Label1..Caption
+#: OTFEDoxBox_frmSelectPartition_Simple.dfm:26
+msgid "Please select from the following &partitions:"
+msgstr "Prosím vyberte z následujících oddílů:"
+
+#. frmSelectPartition_Simple..ckListRemovable..Caption
+#: OTFEDoxBox_frmSelectPartition_Simple.dfm:64
+msgid "&List removable"
+msgstr "Zobrazit odstranitelné"
+
+#. frmSelectVolumeFileAndOffset..lblFileDescSrc..Caption
+#: OTFEDoxBox_frmSelectVolumeAndOffset.dfm:24
+msgid "Volume/keyfile:"
+msgstr ""
+
+#. frmSelectVolumeType..Caption
+#: OTFEDoxBox_frmVolumeType.dfm:5
+#. frmSelectVolumeType..rgVolumeType..Caption
+#: OTFEDoxBox_frmVolumeType.dfm:30
+msgid "Volume Type"
+msgstr "Typ svazku"
+
+#. frmSelectVolumeType..Label1..Caption
+#: OTFEDoxBox_frmVolumeType.dfm:23
+msgid "Please select the type of volume:"
+msgstr "Prosím zvolte typ svazku:"
+
+#. frmWizard..pnlRight..pnlButtons..pbNext..Caption
+#: OTFEDoxBox_frmWizard.dfm:9498
+msgid "&Next >"
+msgstr "Další >"
+
+#. frmWizard..pnlRight..pnlButtons..pbBack..Caption
+#: OTFEDoxBox_frmWizard.dfm:9508
+msgid "< &Back"
+msgstr "< Zpět"
+
+#. frmWizard..pnlRight..pnlButtons..pbFinish..Caption
+#: OTFEDoxBox_frmWizard.dfm:9518
+msgid "&Finish"
+msgstr "Dokončit"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsFileOrPartition..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:19
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFileOrPartition..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:60
+msgid "Volume File or Partition"
+msgstr "Soubor nebo oddíl svazku"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsFileOrPartition..rgFileOrPartition..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:30
+msgid "File or Partition"
+msgstr "Soubor nebo oddíl"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcFile..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:48
+msgid "Source file"
+msgstr "Zdrojový soubor"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcFile..GroupBox2..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:68
+msgid "Source container/keyfile"
+msgstr ""
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcFile..GroupBox2..pbBrowseSrc..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:84
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestFile..GroupBox1..pbBrowseDest..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:305
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGGPG..GroupBox5..pbBrowseGPG..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:616
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFilename..GroupBox1..pbBrowseFilename..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:125
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGGPG..GroupBox2..pbBrowseGPG..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:804
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..gbKeyfile..pbBrowseKeyfile..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:181
+msgid "&Browse..."
+msgstr "Procházet..."
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsPartitionSelect..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:91
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionSelect..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:232
+msgid "Partition Select"
+msgstr ""
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsPartitionSelect..Label21..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:102
+msgid "&Select disk/partition:"
+msgstr "Zvolte disk/oddíl:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label1..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:187
+msgid "Current &password:"
+msgstr "Stávající heslo:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label4..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:195
+msgid "Current &salt length:"
+msgstr ""
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsSrcDetails..Label11..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:210
+msgid "Current &key iterations:"
+msgstr ""
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestFile..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:269
+msgid "Destination file"
+msgstr "Cílový soubor"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestFile..GroupBox1..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:289
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..gbKeyfile..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:165
+msgid "Keyfile"
+msgstr "Soubor s klíčem"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:312
+msgid "Destination file details"
+msgstr "Detaily cílového souboru"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label2..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:323
+msgid "New &password:"
+msgstr "Nové heslo:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label3..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:331
+msgid "Confirm new p&assword:"
+msgstr "Potvrdit nové heslo:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label5..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:339
+msgid "New &salt length:"
+msgstr ""
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsDestDetails..Label12..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:354
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsDriveLetter..Label1..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:113
+msgid "&Requested drive letter:"
+msgstr "Požadované písmeno disku:"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:424
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:610
+msgid "RNG Select"
+msgstr "Vyberte GNČ"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..gbRNG..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:444
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..gbRNG..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:630
+msgid "Random number generator (RNG)"
+msgstr "Generátor náhodných čísel (GNČ)"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGMouseMovement..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:451
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGMouseMovement..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:637
+msgid "Mouse movement"
+msgstr "Pohyb myší"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGCryptoAPI..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:460
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGCryptoAPI..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:646
+msgid "Microsoft CryptoAPI"
+msgstr "Microsoft CryptoAPI"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGPKCS11..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:478
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGSelect..gbRNG..ckRNGPKCS11..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:664
+msgid "PKCS#11 token"
+msgstr "PKCS#11 token"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGMouseMovement..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:495
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGMouseMovement..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:681
+msgid "RNG Mouse movement"
+msgstr "GNČ - pohyb myší"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGPKCS11..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:537
+msgid "RNG PKCS#11 token"
+msgstr "GNČ - PKCS#11 token"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGGPG..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:580
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGGPG..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:768
+msgid "RNG GPG"
+msgstr "GNČ - GPG"
+
+#. frmWizardChangePasswordCreateKeyfile..pnlRight..pcWizard..tsRNGGPG..GroupBox5..Caption
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:600
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGGPG..GroupBox2..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:788
+msgid "GPG Executable"
+msgstr "Cesta k GPG"
+
+#. frmWizardChangePasswordCreateKeyfile..GPGOpenDialog..Filter
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.dfm:645
+#. frmWizardCreateVolume..GPGOpenDialog..Filter
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:928
+msgid ""
+"GPG (gpg.exe)|gpg.exe|Executables (*.exe)|*.exe|All "
+"files|*.*"
+msgstr "GPG (gpg.exe)|gpg.exe|Spustitelné soubory (*.exe)|*.exe|Všechny soubory (*.*)|*.*"
+
+#. frmWizardCreateVolume..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:4
+msgid "LibreCrypt Volume Creation Wizard"
+msgstr "Průvodce vytvořením šifrovaného svazku LibreCrypt"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsWelcome..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:24
+msgid "Welcome"
+msgstr "Vítejte!"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsWelcome..lblWelcomeBanner..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:34
+msgid ""
+"Welcome to the LibreCrypt Volume Creation "
+"Wizard."
+msgstr "Vítejte v průvodci vytvořením šifrovaného svazku"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsWelcome..lblWelcomeClickNext..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:47
+msgid "Please click \"Next >\" to continue."
+msgstr "Pro pokračování klikněte na \"Další\"."
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFileOrPartition..rgFileOrPartition..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:80
+msgid "File or Partition/Entire Disk"
+msgstr "Soubor, oddíl nebo celý disk"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFilename..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:89
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsFilename..GroupBox1..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:109
+msgid "Volume filename"
+msgstr "Soubor svazku"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionWarning..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:132
+msgid "Partition Warning"
+msgstr ""
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionWarning..pnlWarningPartition..lblWarningPartition..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:161
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..pnlWarningOffset..lblWarningOffset..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:345
+msgid "WARNING"
+msgstr "VAROVÁNÍ"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionWarning..pnlWarningPartition..Label28....Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:179
+msgid ""
+"DO NOT PROCEED UNLESS YOU UNDERSTAND THE FULL IMPLICATIONS OF "
+"CREATING ENCRYPTED PARTITIONS."
+msgstr "NEPOKRAČUJTE, NEZNÁTE-LI DŮKLADNĚ DŮSLEDKY VYTVÁŘENÍ ŠIFROVANÝCH DISKOVÝCH ODDÍLŮ."
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionSelect..Label21..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:243
+msgid ""
+"&Disk/partition to create encrypted volume "
+"on:"
+msgstr "Disk nebo oddíl pro vytvoření šifrovaného svazku:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPartitionSelect..ckPartitionHidden..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:259
+msgid ""
+"&Create hidden volume within selected "
+"partition"
+msgstr "Vytvořit skrytý svazek ve zvoleném oddílu"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:320
+msgid "Offset"
+msgstr ""
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..Label7..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:331
+msgid "&Byte offset within volume:"
+msgstr ""
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsOffset..pnlWarningOffset..Label13....Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:361
+msgid ""
+"DO NOT PROCEED UNLESS YOU UNDERSTAND THE FULL IMPLICATIONS OF "
+"CREATING HIDDEN VOLUMES."
+msgstr "NEPOKRAČUJTE, NEZNÁTE-LI DŮKLADNĚ DŮSLEDKY VYTVÁŘENÍ SKRYTÝCH SVAZKŮ."
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:408
+msgid "Size"
+msgstr "Velikost"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..Label6..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:419
+msgid "&Size of new container:"
+msgstr "Velikost nového svazku:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSize..ckSizeEntirePartitionDisk..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:442
+msgid "&Use entire partition/disk"
+msgstr "Použít celý oddíl/disk"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:466
+msgid "Hash, cypher and IV"
+msgstr "Hash, šifra a IV"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..Label4..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:478
+msgid "Select &hash:"
+msgstr "Vyberte hash:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..Label5..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:487
+msgid "Select &cypher:"
+msgstr "Vyberte šifru:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..lblSectorIVGenMethod..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:495
+msgid "Sector &IVs:"
+msgstr "IV stopy:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsHashCypherIV..ckUsePerVolumeIV..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:550
+msgid ""
+"Additionally &XOR sector IV with per volume "
+"IV"
+msgstr "Dodatečně &XORovat IV stopy IV svazku"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsMasterKeyLength..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:565
+msgid "Master Key Length"
+msgstr "Délka hlavního klíče"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsMasterKeyLength..Label2..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:576
+msgid "&Size of master key:"
+msgstr "Délka hlavního klíče:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsRNGPKCS11..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:725
+msgid "RNG PKCS token"
+msgstr "GNČ - PKCS#11 token"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPassword..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:811
+msgid "&Keyphrase:"
+msgstr "Heslo"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsPassword..Label3..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:830
+msgid "&Confirm Keyphrase:"
+msgstr "Potvrďte heslo:"
+
+#. frmWizardCreateVolume..pnlRight..pcWizard..tsSummary..pbAdvanced..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.dfm:895
+msgid "&Advanced..."
+msgstr "Rozšířené..."
+
+#. frmWizardCreateVolumeAdvanced..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:5
+msgid "Advanced Options"
+msgstr "Rozšířené nastavení"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsKeyIterations..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:28
+msgid "Key Iterations"
+msgstr ""
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsSalt..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:61
+msgid "Salt"
+msgstr ""
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsSalt..Label15..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:71
+msgid "&Length of salt:"
+msgstr ""
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsSalt..Label18..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:79
+msgid "bits."
+msgstr "bitů."
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsDriveLetter..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:102
+msgid "Drive Letter"
+msgstr "Písmeno disku"
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:136
+msgid "CDB Location"
+msgstr ""
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..rbCDBInVolFile..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:147
+msgid "Include CDB as part of volume file"
+msgstr ""
+
+#. frmWizardCreateVolumeAdvanced..pcAdvancedOpts..tsCDBLocation..rbCDBInKeyfile..Caption
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.dfm:156
+msgid "Store CDB as separate keyfile"
+msgstr ""
+
+#. Programmer's name for it: RS_MOUNTSOURCE_FILE
+#: OTFEDoxBox_DriverAPI.pas:139
+#. Programmer's name for it: FILEORPART_OPT_VOLUME_FILE
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:192
+msgid "File"
+msgstr "Soubor"
+
+#. Programmer's name for it: RS_MOUNTSOURCE_PARTITION
+#: OTFEDoxBox_DriverAPI.pas:140
+#. Programmer's name for it: FILEORPART_OPT_PARTITION
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:193
+msgid "Partition"
+msgstr "Oddíl"
+
+#. Programmer's name for it: RS_MOUNTSOURCE_UNKNOWN
+#: OTFEDoxBox_DriverAPI.pas:141
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_UNKNOWN
+#: OTFEDoxBox_DriverAPI.pas:162
+#. Programmer's name for it: MOUNT_AS_UNKNOWN
+#: OTFEDoxBox_U.pas:127
+msgid "Unknown"
+msgstr "Neznámé"
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_NULL_IV
+#: OTFEDoxBox_DriverAPI.pas:156
+msgid "Null IV"
+msgstr "Prázdný IV"
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_SECTOR_ID_32
+#: OTFEDoxBox_DriverAPI.pas:157
+msgid "32 bit sector ID"
+msgstr ""
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_SECTOR_ID_64
+#: OTFEDoxBox_DriverAPI.pas:158
+msgid "64 bit sector ID"
+msgstr ""
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_HASHED_SECTOR_ID_32
+#: OTFEDoxBox_DriverAPI.pas:159
+msgid "Hashed 32 bit sector ID"
+msgstr ""
+
+#. Programmer's name for it: RS_SECTORIVGENMETHOD_HASHED_SECTOR_ID_64
+#: OTFEDoxBox_DriverAPI.pas:160
+msgid "Hashed 64 bit sector ID"
+msgstr ""
+
+#. Programmer's name for it: TEXT_NEED_ADMIN
+#: OTFEDoxBox_DriverControl.pas:38
+msgid ""
+"Administrator privileges are required in order to carry out this "
+"operation."
+msgstr "Pro provedení této operace musíte mít oprávnění administrátora."
+
+#: OTFEDoxBox_DriverControl.pas:145
+msgid "Unable to open service control manager."
+msgstr "Nepodařilo se otevřít správce služeb."
+
+#. Installation SUCCESSFULL
+#: OTFEDoxBox_DriverControl.pas:609
+#. 2 x CRLF - one to end the last line, one for spacing
+#: OTFEDoxBox_DriverControl.pas:658
+#. 2 x CRLF - one to end the last line, one for spacing
+#: OTFEDoxBox_frmDriverControl.pas:333
+msgid ""
+"Please reboot your computer to allow changes to take "
+"effect."
+msgstr "Pro dokončení změn restartujte prosím počítač."
+
+#: OTFEDoxBox_DriverControl.pas:633
+msgid ""
+"This driver has been installed, started, and is now available for "
+"use"
+msgstr "Ovladač byl nainstalován, spuštěn a je připraven k použití."
+
+#: OTFEDoxBox_DriverControl.pas:637
+msgid ""
+"This driver has been installed but not started; you may need to "
+"reboot your PC for the installation to take "
+"effect"
+msgstr "Ovladač byl nainstalován ale neběží. Pro dokončení instalace restartujte prosím počítač."
+
+#: OTFEDoxBox_DriverControl.pas:643
+msgid "Driver %s installed"
+msgstr "Instalace ovladače %s byla úspěšná."
+
+#. 2 x CRLF - one to end the last line, one for spacing
+#: OTFEDoxBox_DriverControl.pas:667
+msgid "This driver appears to already be installed."
+msgstr "Ovladač se zdá být nainstalovaný."
+
+#: OTFEDoxBox_DriverControl.pas:668
+msgid ""
+"Please uninstall the existing driver before attempting to "
+"reinstall."
+msgstr "Prosím odinstalujte existující ovladač než budete instalovat nový."
+
+#. 2 x CRLF - one to end the last line, one for spacing
+#: OTFEDoxBox_DriverControl.pas:677
+msgid ""
+"Unable to copy driver file to windows driver "
+"directory"
+msgstr "Nepodařilo se zkopírovat soubor s ovladačem do složky ovladačů Windows"
+
+#: OTFEDoxBox_DriverControl.pas:683
+msgid "Unable to install driver."
+msgstr "Nepodařilo se nainstalovat ovladač."
+
+#. type of access to service
+#: OTFEDoxBox_DriverControl.pas:895
+msgid "Unable to open service for driver \"%1\""
+msgstr "Nepodařilo se spustit službu pro ovladač \"%1\""
+
+#. (driverFilenames.count - 1)
+#: OTFEDoxBox_DriverControl.pas:1229
+msgid "Starting drivers in portable mode..."
+msgstr "Spouštění ovladačů v přenosném režimu..."
+
+#: OTFEDoxBox_DriverControl.pas:1233
+msgid "Installing drivers..."
+msgstr "Instalace ovladačů..."
+
+#: OTFEDoxBox_DriverControl.pas:1247
+msgid "Starting: "
+msgstr "Nahrávám: "
+
+#: OTFEDoxBox_DriverControl.pas:1251
+msgid "Installing: "
+msgstr "Instalace:"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:82
+msgid ""
+"Are you sure you wish to delete the selected keyfiles from the "
+"token?"
+msgstr "Opravdu chcete odstranit vybrané soubory s klíči z tokenu?"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:123
+msgid ""
+"The following keyfiles were deleted successfully:\n"
+"\n"
+"%s"
+msgstr ""
+"Následující soubory s klíči byly úspěšně odstraněny:\n"
+"\n"
+"%s"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:138
+msgid ""
+"The following keyfiles could not be deleted:\n"
+"\n"
+"%1"
+msgstr ""
+"Následující soubory s klíči se nepodařilo odstranit:\n"
+"\n"
+"%1"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:169
+msgid "Keyfile exported successfully"
+msgstr "Export souboru s klíčem byl úspěšný"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:176
+msgid ""
+"Unable to export keyfile to:\n"
+"\n"
+"%1"
+msgstr ""
+"Nepodařilo se exportovat soubor s klíčem do:\n"
+"\n"
+"%1"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:205
+msgid "Unable to read keyfile contents"
+msgstr "Nepodařilo se načíst obsah souboru s klíčem"
+
+#. Sanity check...
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:213
+msgid ""
+"The file specified doesn't appear to be a LibreCrypt "
+"keyfile."
+msgstr "Zadaný soubor se nezdá být LibreCrypt souborem s klíčem."
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:215
+msgid "Do you wish to continue anyway?"
+msgstr "Chcete přesto pokračovat?"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:256
+msgid "Keyfile imported successfully as:"
+msgstr "Soubor s klíčem byl úspěšně importován jako:"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:267
+msgid "Keyfile import failed"
+msgstr "Import souboru s klíčem se nezdařil"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:346
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:282
+msgid ""
+"Unable to get list of CDB entries from "
+"Token"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrKeyfile.pas:370
+msgid ""
+"One or more of the keyfiles stored on your token are "
+"invalid/corrupt"
+msgstr "Nejméně jeden soubor s klíčem na vašem tokenu je neplatný/zničený"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:92
+msgid "Keysize"
+msgstr "Délka klíče"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:141
+msgid "Unable to get list of keys from Token"
+msgstr "Nepodařilo se načíst seznam klíčů na tokenu"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:185
+msgid ""
+"Are you sure you wish to delete the selected keys from the "
+"token?"
+msgstr "Opravdu chcete odstranit vybrané klíče z tokenu?"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:226
+msgid ""
+"The following keys were deleted successfully:\n"
+"\n"
+"%1"
+msgstr ""
+"Následující klíče byly úspěšně odstraněny:\n"
+"\n"
+"%1"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:241
+msgid ""
+"The following keys could not be deleted:\n"
+"\n"
+"%1"
+msgstr ""
+"Následující klíče se nepodařilo odstranit:\n"
+"\n"
+"%1"
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:329
+msgid "Please select a secret key to use"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:349
+msgid "unsecure"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:352
+msgid "secure"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:364
+msgid ""
+"Are you sure you wish to use PKCS#11 secret key:\n"
+"\n%1\n\nto %2 the CDB starting from offset %3 within volume:\n\n"
+"%4"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:377
+msgid ""
+"Are you sure you wish to %1 the volume/keyfile:\n"
+"\n%2\n\nusing the PKCS#11 secret key:\n\n"
+"%3"
+msgstr ""
+
+#. Read CDB...
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:392
+msgid "Unable to read keyfile/volume CDB"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:423
+msgid ""
+"Unable to carry out encryption/decryption using "
+"Token"
+msgstr "Nelze provést zašifrování/dešifrování pomocí tokenu"
+
+#. ...Write CDB.
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:436
+msgid "Unable to write keyfile/volume CDB"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/fmePKCS11_MgrSecretKey.pas:451
+msgid "Volume/keyfile now %1"
+msgstr ""
+
+#. Programmer's name for it: RS_NO_PARTITIONS_FOUND
+#: OTFEDoxBox_fmeSelectPartition.pas:111
+msgid "<No partitions found>"
+msgstr "<žádné oddíly>"
+
+#. Programmer's name for it: RS_CANT_GET_DISK_LAYOUT
+#: OTFEDoxBox_fmeSelectPartition.pas:113
+msgid ""
+"<Unable to get disk layout information for disk "
+"#%1>"
+msgstr "<nepodařilo se získat informace rozložení disku z #%1>"
+
+#. Programmer's name for it: RS_ENTIRE_DISK_X
+#: OTFEDoxBox_fmeSelectPartition.pas:114
+msgid "<Entire disk #%1>"
+msgstr "<Celý disk #%1>"
+
+#. Programmer's name for it: RS_CDROM_IN_X
+#: OTFEDoxBox_fmeSelectPartition.pas:115
+msgid "<CDROM/DVD in %1>"
+msgstr "<CDROM/DVD v %1>"
+
+#. Programmer's name for it: RS_DBLCLK_PROMPT_PARTITION
+#: OTFEDoxBox_fmeSelectPartition.pas:117
+msgid "Doubleclick partition to display properties"
+msgstr "Poklepáním na oddíl zobrazíte jeho vlastnosti"
+
+#. Programmer's name for it: RS_DBLCLK_PROMPT_DISK
+#: OTFEDoxBox_fmeSelectPartition.pas:118
+msgid "Doubleclick to display disk properties"
+msgstr "Poklepáním zobrazíte vlastnosti disku"
+
+#. Programmer's name for it: RS_PARTITION
+#: OTFEDoxBox_fmeSelectPartition.pas:120
+msgid "Partition #%1"
+msgstr "Oddíl #%1"
+
+#. Programmer's name for it: RS_PART_ERROR_NO_PARTITION_NO
+#: OTFEDoxBox_fmeSelectPartition.pas:122
+msgid ""
+"Windows has not allocated this partition a partition "
+"number"
+msgstr "Windows tomuto oddílu nepřiřadil číslo"
+
+#. Programmer's name for it: RS_PART_ERROR_SYSTEM_PARTITION
+#: OTFEDoxBox_fmeSelectPartition.pas:123
+msgid "This is where where Windows is installed"
+msgstr "Zde je nainstalovaný Windows"
+
+#. Programmer's name for it: RS_PART_ERROR_PROG_FILES_PARTITION
+#: OTFEDoxBox_fmeSelectPartition.pas:124
+msgid "This is where program files are installed"
+msgstr "Zde jsou nainstalované programy"
+
+#. Programmer's name for it: RS_PART_WARN_BOOTABLE
+#: OTFEDoxBox_fmeSelectPartition.pas:125
+msgid "Partition is marked as bootable"
+msgstr "Oddíl je nastaven pro spouštění systému"
+
+#: OTFEDoxBox_fmeSelectPartition.pas:216
+msgid "Disk #%1"
+msgstr "Disk #%1"
+
+#. Programmer's name for it: RS_UNABLE_LOCATE_CYPHER_DRIVER
+#: OTFEDoxBox_frmCypherInfo.pas:74
+msgid "<Unable to locate correct cypher driver>"
+msgstr "<Nepodařilo se najít správný šifrovací ovladač>"
+
+#. Programmer's name for it: RS_UNABLE_LOCATE_CYPHER
+#: OTFEDoxBox_frmCypherInfo.pas:75
+msgid "<Unable to locate cypher>"
+msgstr "<Nepodařilo se zjistit šifrovací algoritmus>"
+
+#: OTFEDoxBox_frmCypherInfo.pas:142
+msgid "(null key only)"
+msgstr ""
+
+#: OTFEDoxBox_frmCypherInfo.pas:146
+msgid "(arbitary keysize allowed)"
+msgstr ""
+
+#: OTFEDoxBox_frmCypherInfo.pas:153
+msgid "(arbitary blocksize allowed)"
+msgstr ""
+
+#. Programmer's name for it: TEXT_MANUAL_START
+#: OTFEDoxBox_frmDriverControl.pas:89
+msgid "Manual"
+msgstr "Ručně"
+
+#. Programmer's name for it: TEXT_AUTO_START
+#: OTFEDoxBox_frmDriverControl.pas:90
+msgid "At system startup"
+msgstr "Automaticky při startu"
+
+#. Programmer's name for it: FILE_FILTER_FLT_DRIVERS
+#: OTFEDoxBox_frmDriverControl.pas:92
+msgid "Driver files (*.sys)|*.sys|All files|*.*"
+msgstr "Soubory ovladačů (*.sys)|*.sys|Všechny soubory (*.*)|*.*"
+
+#: OTFEDoxBox_frmDriverControl.pas:237
+msgid "Unable to start driver \"%1\""
+msgstr "Nelze spustit ovladač \"%1\""
+
+#: OTFEDoxBox_frmDriverControl.pas:264
+msgid ""
+"Stopping a LibreCrypt driver which is currently in use (e.g. by one or "
+"more mounted volumes) can lead to SYSTEM "
+"INSTABILITY."
+msgstr "Ukončení ovladače, jež je používán některým připojeným oddílem, může vést k NESTABILITĚ CELÉHO SYSTÉMU."
+
+#: OTFEDoxBox_frmDriverControl.pas:266
+#: OTFEDoxBox_frmDriverControl.pas:312
+msgid ""
+"This option is intended for experienced users who REALLY know what "
+"they're doing."
+msgstr "Klikněte na \"Ano\" pouze pokud jste si jisti, že víte co děláte!"
+
+#: OTFEDoxBox_frmDriverControl.pas:268
+msgid ""
+"Are you sure you wish to stop the \"%1\" "
+"driver?"
+msgstr "Opravdu chcete ukočit ovladač \"%1\" ?"
+
+#: OTFEDoxBox_frmDriverControl.pas:278
+msgid "Unable to stop driver \"%s\""
+msgstr "Nepodařilo se ukončit ovladač \"%s\""
+
+#: OTFEDoxBox_frmDriverControl.pas:310
+msgid ""
+"Uninstalling a LibreCrypt driver which is currently in use (e.g. by one "
+"or more mounted volumes) can lead to SYSTEM "
+"INSTABILITY."
+msgstr "Odinstalace ovladače, jež je používán některým připojeným oddílem, může vést k NESTABILITĚ CELÉHO SYSTÉMU."
+
+#: OTFEDoxBox_frmDriverControl.pas:314
+msgid ""
+"Are you sure you wish to uninstall the \"%1\" "
+"driver?"
+msgstr "Opravdu chcete odinstalovat ovladač \"%1\"?"
+
+#. 2 x CRLF - one to end the last line, one for spacing
+#: OTFEDoxBox_frmDriverControl.pas:342
+msgid ""
+"After rebooting, please remove the driver file from your "
+"<windows>\\system32\\drivers directory"
+msgstr "Po restartu počítače prosím odstraňte soubor ovladače ze složky <windows>\\system32\\drivers"
+
+#: OTFEDoxBox_frmDriverControl.pas:346
+msgid "The \"%1\" driver has now been uninstalled."
+msgstr "Ovladač \"%1\" byl úspěšně odinstalován."
+
+#. Uninstallation FAILURE
+#: OTFEDoxBox_frmDriverControl.pas:356
+msgid "Unable to delete driver service \"%1\"."
+msgstr "Nepodařilo se smazat službu ovladače \"%1\"."
+
+#: OTFEDoxBox_frmDriverControl.pas:358
+msgid ""
+"Please disable this driver from starting up automatically, reboot, "
+"and try again."
+msgstr "Prosím zrušte automatické spouštění tohoto ovladače, restartujte počítač a zkuste to znovu."
+
+#: OTFEDoxBox_frmDriverControl.pas:428
+msgid ""
+"Unable to set startup option for driver "
+"\"%1\"."
+msgstr "Nepodařilo se nastavit typ spouštění ovladače \"%1\"."
+
+#. Programmer's name for it: RS_UNABLE_LOCATE_HASH_DRIVER
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.pas:71
+msgid "<Unable to locate correct hash driver>"
+msgstr "<Nepodařilo se najít správný hashovací ovladač>"
+
+#. Programmer's name for it: RS_UNABLE_LOCATE_HASH
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.pas:72
+msgid "<Unable to locate hash>"
+msgstr "<Nepodařilo se najít hash>"
+
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.pas:137
+msgid "(length of hash returned may vary)"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/frmHashInfo.pas:144
+msgid "(n/a)"
+msgstr "(N/A)"
+
+#. Programmer's name for it: RS_NOT_SELECTED
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:164
+msgid "<none selected>"
+msgstr ""
+
+#. Programmer's name for it: RS_NONE_AVAILABLE
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:165
+msgid "<none available>"
+msgstr ""
+
+#. Programmer's name for it: RS_BUTTON_ADVANCED
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:167
+msgid "&Advanced"
+msgstr "Rozšířené"
+
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:306
+msgid ""
+"One or more of the keyfiles stored on your token are invalid/corrupt "
+"and will be ignored"
+msgstr "Nejméně jeden soubor s klíčem na vašem tokenu je neplatný/zničený a bude ignorován"
+
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:308
+msgid ""
+"Please check which keyfiles are stored on this token and "
+"correct"
+msgstr ""
+
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:353
+msgid ""
+"Unable to get a list of secret keys from "
+"Token"
+msgstr "Nepodařilo se získat seznam tajných klíčů z tokenu"
+
+#. No volumes were mounted...
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:471
+msgid ""
+"Unable to Open volume; please ensure that you entered the correct "
+"details (password, etc)"
+msgstr "Nepodařilo se připojit svazek. Ujistěte se, že vámi zadané údaje (heslo, atd) jsou správné."
+
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:477
+msgid ""
+"Please ensure that you check/uncheck the \"Data from offset includes "
+"CDB\" option, as appropriate for your "
+"volume"
+msgstr ""
+
+#. At least one volume was mounted, but not all of them
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:487
+msgid ""
+"%1 volume was mounted successfully, but %2 could not be "
+"mounted"
+msgstr "Připojení svazku %1 bylo úspěšné, ale %2 se připojit nepodařilo"
+
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:488
+msgid ""
+"%1 volumes were mounted successfully, but %2 could not be "
+"mounted"
+msgstr "Připojení svazků %1 bylo úspěšné, ale %2 se připojit nepodařilo"
+
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:510
+msgid ""
+"Salt length (in bits) must be a multiple of "
+"8"
+msgstr ""
+
+#. keyfiles are on the token, warn the user
+#: OTFEDoxBox_frmKeyEntryDoxBox.pas:551
+msgid ""
+"No keyfiles could be found on the token "
+"inserted."
+msgstr "Na vloženém tokenu se nepodařilo nalézt žádné soubory s klíči."
+
+#. Programmer's name for it: FILTER_GPG_FILES
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:251
+msgid "GPG files|*.gpg|All files|*.*"
+msgstr "GPG soubory (*.gpg)|*.gpg|Všechny soubory (*.*)|*.*"
+
+#. Programmer's name for it: FILTER_GPG_EXE
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:252
+msgid "GPG Executable|GPG.exe|All files|*.*"
+msgstr "GPG (gpg.exe)|gpg.exe|Všechny soubory (*.*)|*.*"
+
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:283
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1246
+msgid "Unable to obtain list of hashes."
+msgstr "Nepodařilo se získat seznam hashů."
+
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:285
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1248
+msgid ""
+"Please ensure that you have one or more LibreCrypt hash drivers "
+"installed and started."
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:517
+#: OTFEDoxBox_frmKeyEntryLUKS.pas:215
+msgid "You have not entered a password."
+msgstr "Nezadali jste heslo."
+
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:531
+msgid ""
+"The password you entered has less than 20 characters, and may not be "
+"compatable with some Linux volumes."
+msgstr "Vámi zadané heslo má méně než 20 znaků a nemusí být kompatibilní s některými Linuxovými svazky."
+
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:533
+msgid "Do you wish to proceed?"
+msgstr "Chcete pokračovat?"
+
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:1435
+msgid "Settings file not found."
+msgstr "Soubor s nastavením nenalezen."
+
+#: common/OTFE/OTFEFreeOTFE/frmKeyEntryLinux.pas:1618
+msgid ""
+"One or more of your settings may not have loaded correctly; please "
+"check settings before continuing."
+msgstr "Některá nastavení se nepodařilo správně nahrát. Než bude pokračovat, zkontrolujte prosím nastavení."
+
+#: OTFEDoxBox_frmNewVolumeSize.pas:51
+msgid ""
+"Please specify a filename for the new volume file by clicking the "
+"\"...\" button."
+msgstr "Kliknutím na tlačítko \"...\" zadejte název souboru pro nový svazek."
+
+#: OTFEDoxBox_frmPKCS11NewSecretKey.pas:67
+msgid ""
+"Unable to get list of key types for "
+"Token"
+msgstr "Nepodařilo se získat seznam typů klíčů na tokenu"
+
+#: OTFEDoxBox_frmPKCS11NewSecretKey.pas:145
+msgid ""
+"A key with the name specified already "
+"exists."
+msgstr "Klíč s tímto názvem již existuje."
+
+#: OTFEDoxBox_frmPKCS11NewSecretKey.pas:147
+msgid "Please enter a unique key name"
+msgstr "Prosím zadejte jednoznačný název klíče"
+
+#: OTFEDoxBox_frmPKCS11NewSecretKey.pas:168
+msgid "Unable to create new key"
+msgstr "Nepodařilo se vytvořit nový klíč"
+
+#: OTFEDoxBox_frmPKCS11NewSecretKey.pas:172
+msgid "Key \"%1\" created"
+msgstr "Klíč \"%1\" byl vytvořen"
+
+#. Programmer's name for it: RS_SLOT_REMOVED
+#: OTFEDoxBox_frmPKCS11Session.pas:62
+msgid ""
+"Slot removed; token no longer available - please reselect and try "
+"again"
+msgstr ""
+
+#. Programmer's name for it: RS_TOKEN_REMOVED
+#: OTFEDoxBox_frmPKCS11Session.pas:63
+msgid ""
+"Token no longer available; please reselect and try "
+"again"
+msgstr "Token již není k dispozici. Vyberte jej znovu a akci opakujte"
+
+#: OTFEDoxBox_frmPKCS11Session.pas:142
+msgid ""
+"Unable to open session for token in slot "
+"%1"
+msgstr "Nepodařilo se otevřít relaci pro token ve slotu %1"
+
+#: OTFEDoxBox_frmPKCS11Session.pas:170
+msgid "Login failed"
+msgstr "Chyba při přihlášení"
+
+#: OTFEDoxBox_frmSelectHashCypher.pas:143
+msgid "Hash implementation: %1"
+msgstr ""
+
+#: OTFEDoxBox_frmSelectHashCypher.pas:144
+#: OTFEDoxBox_frmSelectHashCypher.pas:173
+msgid "Kernel mode driver: %1"
+msgstr ""
+
+#: OTFEDoxBox_frmSelectHashCypher.pas:145
+#: OTFEDoxBox_frmSelectHashCypher.pas:174
+msgid "Algorithm GUID: %1"
+msgstr "GUID algoritmu: %1"
+
+#: OTFEDoxBox_frmSelectHashCypher.pas:172
+msgid "Cypher implementation: %1"
+msgstr ""
+
+#. Work out cell layout...
+#: OTFEDoxBox_frmSelectHashCypher.pas:203
+msgid "Error! Please report seeing this!"
+msgstr "Chyba! Prosím nahlašte tuto chybu!"
+
+#: OTFEDoxBox_frmSelectVolumeAndOffset.pas:47
+msgid "Secure with PKCS#11 Secret Key"
+msgstr "Zabezpečit tajným klíčem PKCS#11"
+
+#: OTFEDoxBox_frmSelectVolumeAndOffset.pas:48
+msgid ""
+"Please enter the volume/keyfile you wish to encrypt using the "
+"selected PKCS#11 secret key."
+msgstr "Vyberte svazek/soubor s klíčem, který chcete zabezpečit zvoleným tajným klíčem PKCS#11."
+
+#: OTFEDoxBox_frmSelectVolumeAndOffset.pas:52
+msgid "Remove PKCS#11 Secret Key Security"
+msgstr "Zrušit zabezpečení tajným klíčem PKCS#11"
+
+#: OTFEDoxBox_frmSelectVolumeAndOffset.pas:53
+msgid ""
+"Please enter the volume/keyfile you wish to decrypt using the "
+"selected PKCS#11 secret key."
+msgstr "Vyberte svazek/soubor s klíčem, jehož zabezpečit zvoleným tajným klíčem PKCS#11 chcete zrušit."
+
+#: OTFEDoxBox_frmWizard.pas:159
+msgid "Step %u of %u"
+msgstr "Krok %u z %u"
+
+#. generated...
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:430
+#. generated...
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:825
+msgid "Random bits generated: %d/%d"
+msgstr "Generování náhodných bitů: %d/%d"
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:799
+msgid "Completed successfully."
+msgstr "Úspěšně dokončeno."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:805
+msgid ""
+"Unable to complete requested operation: please ensure that your "
+"encrypted volume is not mounted or otherwise in use, and that the "
+"password, salt and offset entered is "
+"correct."
+msgstr ""
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:817
+msgid "Change Password/Other Details"
+msgstr ""
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:822
+msgid ""
+"If you would like to modify an encrypted volume, please specify "
+"whether it is file or partition based.\n"
+"\n"
+"If you would like to modify a keyfile, please select \"file\" "
+"below."
+msgstr ""
+"Chcete-li modifikovat zašifrovaný svazek, zvolte zda se jedná o soubor nebo oddíl.\n"
+"\n"
+"chcete-li modifikovat soubor s klíčem, zvolte \"soubor\" níže."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:827
+msgid ""
+"Please enter the full path and filename of the volume/keyfile you "
+"wish to change.\n"
+"\n"
+"If you wish to update a \"hidden\" volume held within another file, "
+"please specify the filename of the host file which stores your "
+"encrypted volume"
+msgstr ""
+"Zadejte úplnou cestu a název svazku/souboru s klíčem který chcete změnit.\n"
+"\n"
+"Chcete-li změnit \"skrytý\" svazek uložený v jiném souboru, zadejte prosím název hostitelského souboru, ve "
+"kterém se váš zašifrovaný svazek nachází."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:830
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:874
+msgid ""
+"Please specify the partition your volume is stored "
+"on."
+msgstr "Zadejte oddíl, na kterém je váš svazek uložen."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:835
+msgid ""
+"Please enter the full details of the volume/keyfile you wish to "
+"change.\n"
+"\n"
+"If you wish to update a \"hidden\" volume held within another file, "
+"please specify the offset within the host file where your hidden "
+"volume is located"
+msgstr ""
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:841
+msgid "Please enter new details for your volume/keyfile."
+msgstr ""
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:851
+msgid ""
+"In order to change your volume/keyfile's details, a certain amount of "
+"random data is required.\n"
+"\nThis data will be used for the following:\n\n1) Password salting\n"
+"2) Random padding data\n"
+"\n"
+"In order to generate this data, please select which random number "
+"generators you wish to use from the options "
+"below."
+msgstr ""
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:858
+msgid "Create Keyfile for Volume"
+msgstr "Vytvořit soubor s klíčem pro svazek"
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:861
+msgid ""
+"Please specify whether the volume you wish to create a keyfile for is "
+"file or partition based."
+msgstr "Zvolte zda svazek, pro který chcete vytvořit soubor s klíčem, je uložen v souboru nebo na diskovém oddílu."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:871
+msgid ""
+"Please enter the full path and filename of either:\n"
+"\n1) A volume containing a CDB, or\n2) An existing keyfile\n\n"
+"for the volume you wish to create a keyfile for.\n"
+"\n"
+"If you wish to update a \"hidden\" volume which is held within another "
+"file, and your hidden volume includes a CDB, please specify the "
+"filename of the host file which stores your encrypted "
+"volume."
+msgstr ""
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:879
+msgid ""
+"Please enter the full details of the volume you wish to create a "
+"keyfile for.\n"
+"\n"
+"If you wish to update a \"hidden\" volume which is held within another "
+"file, and your hidden volume includes a CDB, please specify the "
+"offset within the host file where your hidden volume is "
+"located."
+msgstr ""
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:882
+msgid ""
+"Please specify the full path and filename where the keyfile should be "
+"written to."
+msgstr "Zadejte úplnou cestu a název souboru, kam se má soubor s klíčem uložit."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:885
+msgid ""
+"Please specify the details for your new "
+"keyfile."
+msgstr "Zadejte detaily pro váš nový soubor s klíčem."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:895
+msgid ""
+"In order to create a new keyfile, a certain amount of random data is "
+"required.\n"
+"\nThis data will be used for the following:\n\n1) Password salting\n"
+"2) Random padding data\n"
+"\n"
+"In order to generate this data, please select which random number "
+"generators you wish to use from the options "
+"below."
+msgstr ""
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:920
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2135
+msgid ""
+"You have elected to use mouse movement to generate random data.\n"
+"\n"
+"Please \"waggle\" the mouse within the area below, until enough random "
+"data has been generated."
+msgstr ""
+"Rozhodli jste se použít pohyby myší pro generování náhodných dat.\n"
+"\n"
+"Prosím pohybujte myší na ploše níže, dokud nebude vygenerován dostatek náhodných dat."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:923
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2141
+msgid ""
+"In order to use GPG to generate random data, please specify the "
+"location of \"gpg.exe\" by clicking the browse "
+"button."
+msgstr ""
+"Pro použití GPG jako zdroj náhodných dat prosím zadejte cestu k \"gpg.exe\" kliknutím na tlačítko \"Procházet\"."
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:926
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2138
+msgid ""
+"Please select the PKCS#11 token you wish to use to generate random "
+"data, from the list shown below"
+msgstr "Zvolte z následujícího seznamu PKCS#11 token, který chcete použít pro generování náhodných dat"
+
+#: OTFEDoxBox_frmWizardChangePasswordCreateKeyfile.pas:948
+msgid ""
+"A file with the filename you specified already exists.\n"
+"\n"
+"For safety reasons, you must specify a file which doesn't already "
+"exist.\n"
+"\n"
+"Please either delete the existing file, or specify a new "
+"filename."
+msgstr ""
+"Soubor se zadaným názvem již existuje.\n"
+"\n"
+"Z bezpečnostních důvodů nelze použít již existující soubor.\n"
+"\n"
+"Buď nejdříve existující soubor smažte nebo zadejte jiný název."
+
+#. Programmer's name for it: FILEORPART_OPT_VOLUME_FILE
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:292
+msgid "Volume file"
+msgstr "Soubor svazku"
+
+#. Programmer's name for it: FILEORPART_OPT_PARTITION
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:293
+msgid "Partition/entire disk"
+msgstr "Oddíl/celý disk"
+
+#. Just warn user, and ignore...
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1208
+msgid "Unable to obtain hash details for %s"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1235
+msgid ""
+"You do not appear to have any LibreCrypt hash drivers that can be used "
+"to create new LibreCrypt volumes installed and "
+"started."
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1406
+msgid "Partition: %s"
+msgstr "Oddíl: %s"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1410
+msgid "Filename: %s"
+msgstr "Soubor: %s"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1415
+msgid "Hidden container starting at offset: %d"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1422
+msgid ""
+"Volume size: %1 + %2 (for CDB) = %3 "
+"bytes"
+msgstr "Velikost svazku: %1 + %2 (pro CDB) = %3 byte"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1429
+msgid "CDB stored: At start of volume file"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1433
+msgid "Container size: %d "
+msgstr "Velikost svazku: %d "
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1434
+msgid "CDB stored: In separate keyfile"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1435
+msgid "CDB keyfile: %1"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1438
+msgid "Hash algorithm: %1"
+msgstr "Hashovací algoritmus: %1"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1439
+msgid "[Hash driver: %1]"
+msgstr "[Hashovací ovladač: %1]"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1440
+msgid "[Hash GUID: %1]"
+msgstr "[GUID hashe: %1]"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1442
+msgid "Key iterations: %1"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1447
+msgid ""
+"Sector IVs will not be used (cypher has zero or variable "
+"blocksize)"
+msgstr "IV stop nebudou použity (šifra má nulovou nebo proměnlivou velikost bloku)"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1451
+msgid ""
+"Cypher has fixed, defined blocksize; sector IVs will be "
+"used"
+msgstr "Šifra má pevně definovanou velikost bloku; IV stop budou použity"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1452
+msgid "Sector IV generation method: %1"
+msgstr "Metoda generování IV stopy: %1"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1456
+msgid ""
+"Sector IVs will be XORd with a per-volume IV before "
+"use"
+msgstr "IV stopy budou před použitím XORovány pomocí IV svazku"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1460
+msgid "A per-volume IV will not be used"
+msgstr "IV svazku nebude použit"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1465
+msgid "Cypher algorithm: %1"
+msgstr "Šifrovací algoritmus: %1"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1466
+msgid "[Cypher driver: %1]"
+msgstr "[Šifrovací ovladač: %1]"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1467
+msgid "[Cypher GUID: %1]"
+msgstr "[GUID šifry: %1]"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1469
+msgid "Master key length: %1 bits"
+msgstr "Délka hlavního klíče: %1 bitů"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1516
+msgid "RNG: %1"
+msgstr "GNČ: %1"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1519
+msgid "Password: <entered>"
+msgstr "Heslo: <zadané>"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1520
+msgid "Salt length: %1 bits"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1531
+#: OTFEDoxBox_U.pas:9105
+msgid "Requested drive letter: %1"
+msgstr "Požadované písmeno disku: %1"
+
+#. If there was a problem, and not a user cancel, warn user
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1655
+msgid "Volume creation canceled"
+msgstr "Vytváření svazku bylo zrušeno"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1659
+msgid ""
+"Unable to create volume file; please ensure you have %1 free on the "
+"relevant drive"
+msgstr "Nepodařilo se vytvořit soubor svazku. Ujistěte se že máte na cílovém disku minimálně %1 volného místa"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1664
+msgid ""
+"Please note that FAT/FAT32 filesystems cannot store files that are "
+"4GB or larger"
+msgstr "V souborovém systému FAT/FAT32 nelze vytvářet soubory větší než 4GB."
+
+#. Create separate CDB file, if needed
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1684
+msgid "Unable to create separate CDB keyfile."
+msgstr ""
+
+#. Write the header to the file, starting from the specified offset
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1796
+msgid "Unable to write FreeOTFE header."
+msgstr ""
+
+#. Ensure master key length is a multiple of 8 bits
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1818
+msgid ""
+"The master key length must be a multiple of "
+"8"
+msgstr "Délka hlavního klíče musí být násobkem 8"
+
+#. If we have it cached alredy, use it
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1849
+msgid ""
+"Unable to determine the keysize for your selected "
+"cypher."
+msgstr ""
+
+#. If we have it cached alredy, use it
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1885
+msgid ""
+"Unable to determine the blocksize for your selected "
+"cypher."
+msgstr ""
+
+#. If we have it cached alredy, use it
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:1920
+msgid ""
+"Unable to determine the cypher mode for your selected "
+"cypher."
+msgstr ""
+
+#. Warn user if volume size smaller than PDA version min
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2017
+msgid ""
+"Please note: If you would like your volume to be compatible with the "
+"PDA version of LibreCrypt, please specify a volume size greater than %1 "
+"MB"
+msgstr ""
+"Poznámka: chcete-li, aby byl váš svazek kompatibilní s PDA verzí LibreCrypt, nastavte jeho velikost větší než %1 MB"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2042
+msgid "(Approx: %1)"
+msgstr "(Přibližně: %1)"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2065
+msgid ""
+"This \"wizard\" will guide you through the process of either creating a "
+"new LibreCrypt volume file, or a hidden volume within an existing file.\n"
+"\n"
+"If you are unsure as to how to answer any of the questions this "
+"wizard asks, simply accepting the default values should generate a "
+"volume that is secure enough for most "
+"purposes."
+msgstr ""
+"Tento průvodce vám pomůže s vytvořením nového šifrovaného svazku, který může být uložen buď v samostatném "
+"souboru nebo ukrytý v již existujícím souboru.\n"
+"\n"
+"Pokud si nebudete jistí s odpovědí na některé otázky, ponechte výchozí nastavení, čímž vytvoříte dostatečně "
+"zabezpečený svazek pro většinu použití."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2070
+msgid ""
+"Please specify whether the new volume should be created as a disk "
+"image file stored on your filesystem, or take up a disk "
+"partition/entire physical disk\n"
+"\n"
+"For most users, it is recommended that you use a volume file; "
+"encrypted partitions/physical disks are intended for advanced "
+"users."
+msgstr ""
+"Vyberte, zda chcete váš nový šifrovaný svazek vytvořit jako soubor na disku nebo zda chcete šifrovat existující "
+"oddíl případně celý disk.\n"
+"\n"
+"Doporučujeme použít soubor svazku. Šifrované oddíly případně celé disky jsou určeny spíše zkušeným uživatelům."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2075
+msgid ""
+"Please specify the filename and location where the new volume should "
+"be created, by clicking the browse button.\n"
+"\n"
+"If you wish to create a \"hidden\" volume within an existing volume, "
+"please specify your existing volume to be "
+"used."
+msgstr ""
+"Kliknutím na tlačítko \"Procházet\" zvolte cestu a název souboru, do kterého chcete nový šifrovaný svazek uložit."
+"\n"
+"\n"
+"Chcete-li vytvořit skrytý svazek v jiiném, existujícím svazku, zadejte název existujícího svazku, který chcete "
+"pro vložení "
+"využít."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2082
+msgid ""
+"1) Creating encrypted partitions is POTENTIALLY DESTRUCTIVE.\n"
+"\n"
+"2) Data stored on the partition you select in the next stage may be "
+"OVERWRITTEN with encrypted data.\n"
+"\n"
+"3) It is RECOMMENDED that you backup your data as appropriate before "
+"continuing."
+msgstr ""
+"1) Vytvoření šifrovaného oddílu může mít destruktivní účinky\n"
+"\n"
+"2) Data uložená na oddílu, který vyberete v následujícím kroku mohou být PŘEPSÁNA zašifrovanými daty.\n"
+"\n"
+"3) Než budete pokračovat, DOPORUČUJEME zazálohovat veškerá data"
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2085
+msgid ""
+"Please select the partition you wish to create the new volume on, and "
+"whether you would like to create a \"hidden\" "
+"volume."
+msgstr "Vyberte oddíl, ve kterém chcete vytvořit nový svazek a jestli ho chcete vytvořit skrytý."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2090
+msgid ""
+"The volume file you specified already exists. To create a hidden "
+"volume within this file, please specify the byte offset within this "
+"file (multiple of 512), from where the new volume should begin.\n"
+"\n"
+"If you do NOT wish to create a hidden volume within your existing "
+"file, please click \"< Back\" and enter a different "
+"filename."
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2097
+msgid ""
+"1) Creating hidden volumes is POTENTIALLY DESTRUCTIVE.\n"
+"\n"
+"2) Data within the file/partition specified in the previous stage may "
+"be OVERWRITTEN, starting from byte offset specified, and running for "
+"the full length of the new hidden volume.\n"
+"\n"
+"3) Remember the offset entered! For security reasons, this "
+"information is not stored anywhere, nor can it be determined "
+"automatically; you will need to type in this offset whenever  you "
+"wish to Open your hidden volume."
+msgstr ""
+"1) Vytvoření skrytých svazků může mít destruktivní účinky\n"
+"\n"
+"2) Data uložená v souboru/oddílu zvoleném v předchozím kroku mohou být PŘEPSÁNA počínaje adresou offsetu v celé "
+"délce nového skrytého svazku.\n"
+"\n"
+"3) Zapamatujte si zadaný offset! Z bezpečnostních důvodů tato informace není nikde uložena ani ji nele "
+"automaticky zjistit. Offset budete muset zadávat při každém připojování skrytého svazku."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2107
+msgid ""
+"Please enter the required size of the new volume.\n"
+"\n"
+"This value must be more than 1 MB, and must be a multiple of 512 "
+"bytes.\n"
+"\n"
+"If you are creating a hidden volume, then the size of the original "
+"volume file, less the byte offset entered in the previous stage, must "
+"be greater than the sum of the value entered here, and the size "
+"critical data area.\n"
+"\n"
+"Note: The size you specified here will be the size of the data part "
+"of the volume file. The actual file created will be larger than this "
+"by the size of the critical data area, which will be prepended onto "
+"the volume file."
+msgstr ""
+"Zadejte požadovanou velikost nového svazku.\n"
+"\n"
+"Tato hodnota musí být větší než 1 MB a musí být násobkem 512 bytů.\n"
+"\n"
+"Vytváříte-li skrytý svazek, musí být velikost originálního svazku větší než zde zadaná velikost nového svazku + "
+"offset zadaný v předchozím kroku + velikost CDA.\n"
+"\n"
+"Poznámka: zde zadaná velikost bude velikostí datové části nového svazku. Konečná velikost svazku bude větší o "
+"velikost CDA, jež bude připojena na začátek nového svazku."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2112
+msgid ""
+"Please select which security options should be used in securing your "
+"new volume.\n"
+"\n"
+"Most users can simply accept the defaults here, though more advanced "
+"users may prefer to specify their own options, depending on their "
+"needs."
+msgstr ""
+"Vyberte bezpečnostní nastavení, která budou použita pro zabezpečení vašeho nového svazku.\n"
+"\n"
+"Většina uživatelů může jednoduše ponechat výchozí nastavení. Nicméně zkušení uživatelé mohou dávat přednost "
+"vlastnímu bezpečnostnímu nastavení na základě jejich vlastních požadavků."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2119
+msgid ""
+"The cypher you selected supports arbitary key lengths.\n"
+"\n"
+"Please specify the length of the master key which will be used to "
+"encrypt/decrypt your data.\n"
+"\n"
+"Note: The value entered must be a multiple of "
+"8."
+msgstr ""
+"Vámi zvolený šifrovací algoritmus podporuje libovolnou délku klíče.\n"
+"\n"
+"Zadejte délku hlavního klíče, který se použije pro šifrování/dešifrování vašich dat.\n"
+"\n"
+"Poznámka: zadaná hodnota musí být násobkem 8."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2130
+msgid ""
+"In order to create your new volume, a certain amount of random data "
+"is required.\n"
+"\nThis data will be used for the following:\n\n1) Password salting\n"
+"2) The new volume's master key\n"
+"3) Random padding data\n"
+"\n"
+"In order to generate this data, please select which random number "
+"generators you wish to use from the options "
+"below."
+msgstr ""
+"Pro vytvoření vašeho šifrovaného svazku je zapotřebí určité množství náhodných dat.\n"
+"\n"
+"Náhodná data se použijí na: \n"
+"\n"
+"1) osolení hesla\n"
+"2) vytvoření nového hlavního klíče svazku\n"
+"3) vygenerování náhodných výplňových dat\n"
+"\n"
+"Prosím vyberte typ generátoru náhodných čísel, který chcete pro získání náhodných dat použít."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2150
+msgid ""
+"Please enter the password to be used for securing your volume.\n"
+"\n"
+"It is suggested that you enter a mix of uppercase, lowercase, "
+"numbers, and punctuations symbols.\n"
+"\nNote: If you forget your password, you can forget your data.\n\n"
+"Note: Newlines (blank lines) are significant. It is recommended that "
+"you do not press <ENTER> after typing in your password, as this will "
+"add an extra newline to the end of your "
+"password."
+msgstr ""
+"Prosím zadejte heslo pro zajištění vašeho šifrovaného svazku.\n"
+"\n"
+"Aby bylo heslo bezpečné, mělo by obsahovat velká i malá písmena, číslice a speciální znaky.\n"
+"\n"
+"Poznámka: pokud toto heslo zapomenete, přijdete i o svá šifrovaná data!\n"
+"\n"
+"Poznámka: při zadávání hesla nemačkejte klávesu <ENTER>, přidali byste tak do hesla nový řádek, který by použití "
+"hesla znemožnil."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolume.pas:2157
+msgid ""
+"You have now entered all the information required to create a new "
+"volume.\n"
+"\n"
+"Please check the summary shown below and click \"Finish\" to create the "
+"new volume, or use the \"Back\"/\"Next\" buttons to modify the details "
+"you have entered.\n"
+"\n"
+"If you would like to configure more advanced options, please select "
+"\"Advanced...\""
+msgstr ""
+"Veškeré potřebné informace pro vytvoření nového svazku jste již zadali.\n"
+"\n"
+"Zkontrolujte veškeré níže zobrazené údaje a, jsou-li v pořádku, klikněte na \"Dokončit\" pro vytvoření nového "
+"svazku. Tlačítkem \"Zpět\" se v případě potřeby můžete vrátit na předchozí stránky a nastavení upravit.\n"
+"\n"
+"Chcete-li změnit rozšířené nastavení, klikněte na tlačítko \"Rozšířené...\"."
+
+#. Ensure number of key iterations is > 0
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:103
+msgid ""
+"The number of key iterations must be 1 or "
+"more"
+msgstr ""
+
+#. Ensure salt length is a multiple of 8 bits
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:115
+msgid ""
+"The salt length must be a multiple of "
+"8"
+msgstr ""
+
+#. they've specified a keyfilename
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:129
+msgid ""
+"If you wish to store the volume's CDB in a keyfile, you must specify "
+"the file to use"
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:230
+msgid ""
+"Please enter the number of PBKDF2 key iterations to be carried out on "
+"your password to generate an encryption key\n"
+"\n"
+"The higher the number, the greater the security offered - but the "
+"slower opening will be (especially if opening the volume on a PDA)\n"
+"\n"
+"Note: If this value is changed from its default, you will be required "
+"to enter it value every time you Open your volume. For this reason "
+"it is recommended that most users leave it at its default value, "
+"unless there is a particular need to do "
+"otherwise."
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:239
+msgid ""
+"Please enter the amount of \"salt\" to be combined with your password "
+"to generate an encryption key.\n"
+"\n"
+"\"Salting\" your password increases security, and will slow down "
+"dictionary attacks against your volume.\n"
+"\nNote: The value entered must be a multiple of 8.\n\n"
+"Note: If this value is changed from its default, you will be required "
+"to enter it value every time you Open your volume. For this reason "
+"it is recommended that most users leave it at its default value, "
+"unless there is a particular need to do "
+"otherwise."
+msgstr ""
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:244
+msgid ""
+"Please enter the drive letter you would normally like this volume "
+"mounted under.\n"
+"\n"
+"Note: You will be able to change this after the volume has been "
+"created."
+msgstr ""
+"Zadejte písmeno disku, pod kterým chcete tento svazek připojovat.\n"
+"\n"
+"Poznámka: písmeno lze po vytvoření svazku kdykoliv změnit."
+
+#: common/OTFE/OTFEFreeOTFE/frmWizardCreateVolumeAdvanced.pas:255
+msgid ""
+"Please specify if you would like your volume's critical data block "
+"(CDB) to be written at the start of the new volume, or stored in a "
+"separate keyfile.\n"
+"\n"
+"The CDB is where metadata about your volume is stored, together with "
+"the master key used to carry out the actual encryption/decryption of "
+"your data.\n"
+"\n"
+"For most users, including the CDB as part of the volume file is "
+"probably the best option.\n"
+"\n"
+"If you store this information in a keyfile, you will need both your "
+"volume file AND a keyfile in order to Open your volume.\n"
+"\n"
+"Note: Storing the CDB as part of the volume file will increase your "
+"volume's size by 512 bytes."
+msgstr ""
+
+#. Programmer's name for it: RS_PASTE
+#: OTFEDoxBox_PasswordRichEdit.pas:35
+msgid "Paste"
+msgstr "Vložit"
+
+#. Programmer's name for it: RS_NO_TOKENS_DETECTED
+#: OTFEDoxBox_PKCS11.pas:339
+msgid "<No tokens detected>"
+msgstr "<nebyl detekován žádný token>"
+
+#: OTFEDoxBox_PKCS11.pas:950
+msgid ""
+"CDB length changed during encryption; from %1 bytes to %2 "
+"bytes"
+msgstr ""
+
+#: OTFEDoxBox_PKCS11.pas:988
+msgid ""
+"CDB length changed during decryption; from %1 bytes to %2 "
+"bytes"
+msgstr ""
+
+#. Open/Save file filters...
+#. Programmer's name for it: FILE_FILTER_FLT_VOLUMES
+#: OTFEDoxBox_U.pas:48
+msgid "Volume files (*.vol)|*.vol|All files|*.*"
+msgstr "Soubory svazků (*.vol)|*.vol|Všechny soubory (*.*)|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_KEYFILES
+#: OTFEDoxBox_U.pas:51
+msgid "Keyfiles (*.cdb)|*.cdb|All files|*.*"
+msgstr "Soubory klíčů (*.cdb)|*.cdb|Všechny soubory (*.*)|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_VOLUMESANDKEYFILES
+#: OTFEDoxBox_U.pas:54
+msgid ""
+"Volume files and keyfiles (*.vol;*.cdb)|*.vol;*.cdb|Volume files "
+"(*.vol)|*.vol|Keyfiles (*.cdb)|*.cdb|All "
+"files|*.*"
+msgstr ""
+"Soubory svazků a klíčů (*.vol;*.cdb)|*.vol;*.cdb|Soubory svazků (*.vol)|*.vol|Soubory klíčů (*.cdb)|*."
+"cdb|Všechny soubory (*.*)|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_TEXTFILES
+#: OTFEDoxBox_U.pas:57
+msgid "Text files (*.txt)|*.txt|All files|*.*"
+msgstr "Textové soubory (*.txt)|*.txt|Všechny soubory (*.*)|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_CDBBACKUPS
+#: OTFEDoxBox_U.pas:60
+msgid ""
+"CDB backups (*.cdbBackup)|*.cdbBackup|All "
+"files|*.*"
+msgstr ""
+
+#. Programmer's name for it: FILE_FILTER_DFLT_CDBBACKUPS
+#: OTFEDoxBox_U.pas:61
+msgid "cdbBackup"
+msgstr ""
+
+#. Programmer's name for it: FILE_FILTER_FLT_EXECUTABLES
+#: OTFEDoxBox_U.pas:63
+msgid "Executable files (*.exe)|*.exe|All files|*.*"
+msgstr "Spustitelné soubory (*.exe)|*.exe|Všechny soubory (*.*)|*.*"
+
+#. Programmer's name for it: FILE_FILTER_FLT_LINUX_SETTINGS
+#: OTFEDoxBox_U.pas:67
+msgid ""
+"Linux encryption settings (*.les)|*.les|All "
+"files|*.*"
+msgstr "Linuxové šifrovací nastavení (*.les)|*.les|Všechny soubory (*.*)|*.*"
+
+#. Programmer's name for it: COUNT_BITS
+#: OTFEDoxBox_U.pas:69
+msgid "%1 bits"
+msgstr "%1 bitů"
+
+#. Programmer's name for it: MOUNT_AS_FIXED_DISK
+#: OTFEDoxBox_U.pas:123
+msgid "Fixed disk"
+msgstr "Pevný disk"
+
+#. Programmer's name for it: MOUNT_AS_REMOVABLE_DISK
+#: OTFEDoxBox_U.pas:124
+msgid "Removable disk"
+msgstr "Odstranitelný disk"
+
+#. Programmer's name for it: MOUNT_AS_CD
+#: OTFEDoxBox_U.pas:125
+msgid "CD"
+msgstr "CD"
+
+#. Programmer's name for it: MOUNT_AS_DVD
+#: OTFEDoxBox_U.pas:126
+msgid "DVD"
+msgstr "DVD"
+
+#. supports
+#: OTFEDoxBox_U.pas:6567
+msgid ""
+"WARNING: This volume appears to have been created with a later "
+"version of LibreCrypt than this software supports.\n"
+"\nYou may continue, however:\n"
+"1) Your data may be read incorrectly due to changes in the decryption "
+"process, and\n"
+"2) It is not recommended that you write to this volume using this "
+"software."
+msgstr ""
+"VAROVÁNÍ: Vypadá to, že svazek byl vytvořen novější verzí LibreCrypt, která není touto verzí plně podporována..\n"
+"\n"
+"Můžete pokračovat v připojení, nicméně: \n"
+"1) vaše data mohou být načtená nekorektně kvůli změnám v dešifrovacích algoritmech\n"
+"2) nedoporučujeme vám s touto verzi LibreCrypt do tohoto svazku zapisovat další data"
+
+#. cdkSizeBits
+#: OTFEDoxBox_U.pas:7222
+msgid "Failed to derive critical data key."
+msgstr ""
+
+#: OTFEDoxBox_U.pas:7224
+#: OTFEDoxBox_U.pas:7346
+msgid "Hash:"
+msgstr "Hash:"
+
+#: OTFEDoxBox_U.pas:7303
+msgid "Failed to decrypt encrypted block."
+msgstr "Nepodařilo se dešifrovat zašifrovaný blok."
+
+#: OTFEDoxBox_U.pas:7305
+#: OTFEDoxBox_U.pas:7349
+msgid "Cypher:"
+msgstr "Šifra:"
+
+#: OTFEDoxBox_U.pas:7345
+msgid "Failed to generate check MAC."
+msgstr ""
+
+#. as appropriate
+#: OTFEDoxBox_U.pas:8201
+msgid "Mode unknown"
+msgstr "Neznámý režim"
+
+#. Note the semicolon-space on the end
+#: OTFEDoxBox_U.pas:8226
+msgid "Mode unknown; "
+msgstr "Neznámý režim;"
+
+#: OTFEDoxBox_U.pas:8303
+msgid ""
+"An error occured while trying to create your volume "
+"file"
+msgstr "Při vytváření vašeho svazku se vyskytla chyba"
+
+#. Generate the report
+#: OTFEDoxBox_U.pas:8946
+msgid "Critical Data Block Dump"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:8948
+msgid "User Supplied Information"
+msgstr "Uživatelem zadané údaje"
+
+#: OTFEDoxBox_U.pas:8949
+msgid "Filename (user mode)  : %1"
+msgstr "Soubor (uživatelský režim): %1"
+
+#: OTFEDoxBox_U.pas:8950
+msgid "Filename (kernel mode): %1"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:8951
+msgid "Password              : "
+msgstr "Heslo:"
+
+#: OTFEDoxBox_U.pas:8952
+#: OTFEDoxBox_U.pas:9014
+#: OTFEDoxBox_U.pas:9025
+#: OTFEDoxBox_U.pas:9076
+msgid "Length: %1 bits"
+msgstr "Délka: %1 bitů"
+
+#: OTFEDoxBox_U.pas:8953
+#: OTFEDoxBox_U.pas:9026
+msgid "Data  : "
+msgstr "Data:"
+
+#: OTFEDoxBox_U.pas:8962
+msgid "Offset                : %1 bytes"
+msgstr "Offset: %1 bytů"
+
+#: OTFEDoxBox_U.pas:8963
+msgid "Salt length           : %1 bits"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:8964
+msgid "Key iterations        : %1"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:8966
+msgid "Plaintext Information"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:8967
+msgid "Salt data             :"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:8978
+msgid "Dump Performance"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:8981
+msgid ""
+"Time to process CDB   : %1 hours, %2 mins, %3.%4 "
+"secs"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:8984
+msgid "Autodetermined Information"
+msgstr "Detekované údaje"
+
+#: OTFEDoxBox_U.pas:8986
+msgid "ERROR: Unable to determine hash title?!"
+msgstr "CHYBA: nepodařilo se zjistit název hashe?!"
+
+#: OTFEDoxBox_U.pas:8996
+msgid "ERROR: Unable to determine cypher title?!"
+msgstr "CHYBA: nepodařilo se zjistit název šifry?!"
+
+#: OTFEDoxBox_U.pas:9006
+msgid "Hash pretty title     : %1"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:9007
+msgid "Hash driver KM name   : %1"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:9008
+msgid "Hash GUID             : %1"
+msgstr "GUID hashe: %1"
+
+#: OTFEDoxBox_U.pas:9009
+msgid "Cypher pretty title   : %1"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:9010
+msgid "Cypher driver KM name : %1"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:9011
+msgid "Cypher GUID           : %1"
+msgstr "GUID šifry: %1"
+
+#: OTFEDoxBox_U.pas:9012
+msgid "Critical data key     : "
+msgstr ""
+
+#: OTFEDoxBox_U.pas:9013
+msgid "KDF   : %1"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:9015
+msgid "Key   : "
+msgstr "Klíč:"
+
+#: OTFEDoxBox_U.pas:9024
+msgid "Plaintext encrypted block: "
+msgstr ""
+
+#: OTFEDoxBox_U.pas:9035
+msgid "Check MAC             : "
+msgstr ""
+
+#: OTFEDoxBox_U.pas:9036
+msgid "MAC algorithm: %1"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:9037
+msgid "Length       : %1 bits"
+msgstr "Délka: %1 bitů"
+
+#: OTFEDoxBox_U.pas:9038
+#: OTFEDoxBox_U.pas:9049
+msgid "Data         : "
+msgstr "Data:"
+
+#: OTFEDoxBox_U.pas:9047
+msgid "Volume details block  : "
+msgstr ""
+
+#: OTFEDoxBox_U.pas:9048
+msgid "Length       : %1"
+msgstr "Velikost: %1"
+
+#: OTFEDoxBox_U.pas:9060
+msgid "Volume Details Block"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:9061
+msgid "CDB format ID         : %1"
+msgstr ""
+
+#. Decode the VolumeFlags to human-readable format
+#: OTFEDoxBox_U.pas:9064
+msgid "Volume flags          : %1"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:9069
+msgid ""
+"Sector ID zero is at the start of the encrypted "
+"data"
+msgstr "Nulová stopa se nachází na začátku šifrovaných dat"
+
+#: OTFEDoxBox_U.pas:9070
+msgid ""
+"Sector ID zero is at the start of the host "
+"file/partition"
+msgstr "Nulová stopa se nachází na začátku hostitelského souboru/oddílu"
+
+#: OTFEDoxBox_U.pas:9073
+msgid "Partition length      : %1 bytes"
+msgstr "Velikost oddílu: %1 bytů"
+
+#: OTFEDoxBox_U.pas:9075
+msgid "Master key            : "
+msgstr "Hlavní klíč:"
+
+#: OTFEDoxBox_U.pas:9077
+msgid "Key   :"
+msgstr "Klíč:"
+
+#: OTFEDoxBox_U.pas:9086
+msgid "Sector IV generation  : %1"
+msgstr "Generování IV stopy: %1"
+
+#: OTFEDoxBox_U.pas:9087
+msgid "Volume IV             : "
+msgstr "IV svazku:"
+
+#: OTFEDoxBox_U.pas:9088
+msgid "Length : %1 bits"
+msgstr "Délka: %1 bitů"
+
+#: OTFEDoxBox_U.pas:9089
+msgid "IV data:"
+msgstr "Data IV:"
+
+#: OTFEDoxBox_U.pas:9101
+msgid "Requested drive letter: None; use default"
+msgstr "Požadované písmeno disku: žádné; použít výchozí"
+
+#: OTFEDoxBox_U.pas:9108
+msgid "Encrypted CDB"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:9180
+msgid "Bit %1: %2 (%3)"
+msgstr ""
+
+#. The entire disk
+#: OTFEDoxBox_U.pas:9799
+msgid "Hard disk #%1 (entire disk)"
+msgstr "Pevný disk #%1 (celý disk)"
+
+#. Note: We start from 1; partition 0 indicates the entire disk
+#: OTFEDoxBox_U.pas:9812
+msgid "Hard disk #%1, partition #%2"
+msgstr "Pevný disk #%1, oddíl #%2"
+
+#. Check to see if the entire disk exists, before checking for partitions
+#: OTFEDoxBox_U.pas:9855
+msgid "CDROM drive #%1"
+msgstr "Jednotka CD-ROM #%1"
+
+#: OTFEDoxBox_U.pas:10004
+msgid ""
+"You do not appear to have any LibreCrypt hash drivers installed and "
+"started."
+msgstr "Zdá se, že nemáte nainstalované a spuštěné žádné LibreCrypt hashovací ovladače."
+
+#: OTFEDoxBox_U.pas:10020
+msgid ""
+"You do not appear to have any LibreCrypt cypher drivers installed and "
+"started."
+msgstr "Zdá se, že nemáte nainstalované a spuštěné žádné LibreCrypt šifrovací ovladače."
+
+#: OTFEDoxBox_U.pas:10197
+msgid "Dump Created By"
+msgstr ""
+
+#: OTFEDoxBox_U.pas:10212
+msgid "Platform              : %1"
+msgstr "Platforma: %1"
+
+#: OTFEDoxBox_U.pas:10213
+msgid "Application version   : %1"
+msgstr "Verze programu: %1"
+
+#: OTFEDoxBox_U.pas:10214
+msgid "Driver ID             : %1"
+msgstr "ID ovladače: %1"
+
+#. Programmer's name for it: PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR
+#: OTFEDoxBox_WizardCommon.pas:108
+msgid ""
+"Please report seeing this message using the email address specified "
+"in the LibreCrypt documentation, together with a brief description of "
+"what you were attempting to do."
+msgstr ""
+"Prosím pošlete tento výpis společně s krátkým popisem toho, co jste se snažili udělat předtím, než se chyba "
+"objevila, na mailovou adresu uvedenou v dokumentaci LibreCrypt."
+
+#. MS CryptoAPI...
+#: OTFEDoxBox_WizardCommon.pas:203
+msgid ""
+"The MS CryptoAPI could not be used to generate random "
+"data."
+msgstr "MS CryptoAPI nelze použít pro generování náhodných dat."
+
+#: OTFEDoxBox_WizardCommon.pas:205
+#: OTFEDoxBox_WizardCommon.pas:546
+msgid "Please select another RNG, and try again"
+msgstr "Prosím zvolte jiný generátor náhodných čísel a zkuste to znovu"
+
+#. cryptlib...
+#: OTFEDoxBox_WizardCommon.pas:220
+msgid ""
+"cryptlib could not be used to generate random "
+"data."
+msgstr "Cryptlib nelze použít pro generování náhodných dat."
+
+#: OTFEDoxBox_WizardCommon.pas:222
+msgid ""
+"Please ensure the cryptlib DLL is in the correct location, and try "
+"again"
+msgstr "Ujistěte se, že je soubor s knihovnou cryptlib ve správné složce a zkuste to znovu"
+
+#. PKCS#11 token...
+#: OTFEDoxBox_WizardCommon.pas:242
+msgid ""
+"PKCS#11 token could not be used to generate random "
+"data."
+msgstr "PKCS#11 token nelze použít pro generování náhodných dat."
+
+#: OTFEDoxBox_WizardCommon.pas:244
+msgid ""
+"Please ensure token is inserted and configured "
+"correctly"
+msgstr "Ujistěte se, že je token připojený a správně nakonfigurovaný"
+
+#. GPG...
+#: OTFEDoxBox_WizardCommon.pas:263
+msgid ""
+"GPG could not be used to generate random "
+"data."
+msgstr "GPG nelze použít pro generování náhodných dat."
+
+#: OTFEDoxBox_WizardCommon.pas:265
+msgid ""
+"Please doublecheck the path to the GPG executable, and try "
+"again."
+msgstr "Zkontrolujte cestu k GPG a zkuste to znovu."
+
+#: OTFEDoxBox_WizardCommon.pas:274
+msgid "Unknown RNG selected?!"
+msgstr "Neznámý generátor náhodných čísel?!"
+
+#. Sanity check
+#: OTFEDoxBox_WizardCommon.pas:293
+msgid "Insufficient random data generated?!"
+msgstr "Nedostatek náhodných dat?!"
+
+#: OTFEDoxBox_WizardCommon.pas:544
+msgid ""
+"The selected PKCS#11 token could not be used to generate random "
+"data."
+msgstr "Zvolený PKCS#11 token nelze použít pro generování náhodných dat."
+
+#. KeyboardEntryDlg..pbScramble..Caption
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:31
+msgid "Scramble &Keys"
+msgstr ""
+
+#. KeyboardEntryDlg..ckShift..Caption
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:999
+msgid "&Shift"
+msgstr ""
+
+#. KeyboardEntryDlg..pbClear..Caption
+#: KeyboardDialog/KeyboardEntryDlg_U.dfm:1018
+msgid "C&lear"
+msgstr ""
+
+#. MouseRNGCaptureDlg..Caption
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.dfm:4
+msgid "Random Data Generation"
+msgstr "Generování náhodných dat"
+
+#. MouseRNGCaptureDlg..lblInstructions....Caption
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.dfm:48
+msgid ""
+"In order to generate sufficient random data, please waggle the mouse "
+"randomly over the area below until it changes color, then click "
+"\"OK\":"
+msgstr ""
+"Pro vygenerování dostatku náhodných dat, prosím pohybujte myší ploše níže, dokud nezmění svou barvu. Poté "
+"klikněte na \"OK\":"
+
+#. FileList_F..Caption
+#: Shredder/FileList_U.dfm:4
+msgid "Report"
+msgstr "Zpráva"
+
+#. Programmer's name for it: BITS_REQUIRED
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.pas:72
+msgid "Bits required: %1"
+msgstr "Bitů potřeba: %1"
+
+#. Programmer's name for it: BITS_GENERATED
+#: MouseRNGDialog/MouseRNGCaptureDlg_U.pas:73
+msgid "Bits generated: %1"
+msgstr "Bitů vygenerovaných: %1"
+
+#. Programmer's name for it: E_EPKCS11_LISTINDEXOUTOFBOUNDS
+#: PKCS#11/pkcs11_api.pas:86
+msgid "List index out of bounds"
+msgstr ""
+
+#. Programmer's name for it: E_EPKCS11_TOKENNOTPRESENT
+#: PKCS#11/pkcs11_api.pas:87
+msgid "Token not present"
+msgstr "Token není k dispozici"
+
+#. Programmer's name for it: E_EPKCS11_DLLNOTFOUND
+#: PKCS#11/pkcs11_api.pas:88
+msgid ""
+"Unable to locate/load PKCS#11 library: "
+"%1"
+msgstr "Nepodařilo se najít/nahrát PKCS#11 knihovnu: %1"
+
+#. Programmer's name for it: E_EPKCS11_DLLNOAPI
+#: PKCS#11/pkcs11_api.pas:89
+msgid ""
+"Library specified doesn't support the PKCS#11 "
+"API"
+msgstr "Zadaná knihovna neposkytuje PKCS#11 API"
+
+#. Programmer's name for it: SESSION_STATE_RO_PUBLIC
+#: PKCS#11/pkcs11_session.pas:38
+msgid "Read-only Public"
+msgstr "Pouze pro čtení všemi"
+
+#. Programmer's name for it: SESSION_STATE_RO_USER
+#: PKCS#11/pkcs11_session.pas:39
+msgid "Read-only User"
+msgstr "Pouze pro čtení uživatelem"
+
+#. Programmer's name for it: SESSION_STATE_RW_PUBLIC
+#: PKCS#11/pkcs11_session.pas:40
+msgid "Read/write Public"
+msgstr "Pro čtení a zápis všemi"
+
+#. Programmer's name for it: SESSION_STATE_RW_USER
+#: PKCS#11/pkcs11_session.pas:41
+msgid "Read/write User"
+msgstr "Pro čtení a zápis uživatelem"
+
+#. Programmer's name for it: SESSION_STATE_RW_SO
+#: PKCS#11/pkcs11_session.pas:42
+msgid "Read/write Security Officer"
+msgstr ""
+
+#. Programmer's name for it: SHREDMETHOD_ZEROS
+#: Shredder/Shredder.pas:44
+msgid "Zeros"
+msgstr ""
+
+#. Programmer's name for it: SHREDMETHOD_GUTMANN
+#: Shredder/Shredder.pas:49
+msgid "Gutmann (35 pass)"
+msgstr ""
+
+#. Programmer's name for it: USER_CANCELLED
+#: Shredder/Shredder.pas:251
+msgid "User cancelled"
+msgstr "Přerušeno uživatelem"
+
+#. Let user know what's going on...
+#: Shredder/Shredder.pas:606
+msgid "Custom"
+msgstr "Vlastní"
+
+#: Shredder/Shredder.pas:609
+msgid "Shredding (%1 pass %2/%3) %4"
+msgstr "Skartování (%1 průběh %2/%3) %4"
+
+#: Shredder/Shredder.pas:1141
+msgid ""
+"Error running external (3rd party) free space "
+"shredder"
+msgstr "Nepodařilo se spustit externí skartovačku volného místa"
+
+#. left, create a file FIntFreeSpcFileSize (or smart) big
+#: Shredder/Shredder.pas:1173
+msgid "Shredding free space on drive %1:"
+msgstr "Skartování volného místa na disku %1:"
+
+#: Shredder/Shredder.pas:1453
+msgid "Shredding file slack on drive %1:"
+msgstr "Skartování nevyužitého místa na disku %1:"
+
+#: Shredder/Shredder.pas:1469
+msgid ""
+"The following files could not have their slack space "
+"shredded:"
+msgstr "V následujících souborech se nepodařilo skartovat nepoužité místo:"
+
+#. SDUDiskPropertiesDialog..Caption
+#: SDUDiskPropertiesDlg.dfm:5
+msgid "Disk Properties"
+msgstr "Vlastnosti disku"
+
+#. SDUDiskPropertiesDialog..Label1..Caption
+#: SDUDiskPropertiesDlg.dfm:24
+msgid "Tracks per cylinder:"
+msgstr ""
+
+#. SDUDiskPropertiesDialog..Label4..Caption
+#: SDUDiskPropertiesDlg.dfm:31
+msgid "Sectors per track:"
+msgstr ""
+
+#. SDUDiskPropertiesDialog..Label5..Caption
+#: SDUDiskPropertiesDlg.dfm:38
+msgid "Bytes per sector:"
+msgstr ""
+
+#. SDUDiskPropertiesDialog..Label6..Caption
+#: SDUDiskPropertiesDlg.dfm:45
+msgid "MediaType"
+msgstr ""
+
+#. SDUDiskPropertiesDialog..Label7..Caption
+#: SDUDiskPropertiesDlg.dfm:52
+msgid "Size (in bytes):"
+msgstr "Velikost (v bytech):"
+
+#. SDUDiskPropertiesDialog..Label11..Caption
+#: SDUDiskPropertiesDlg.dfm:59
+msgid "Cylinders:"
+msgstr ""
+
+#. SDUDiskPropertiesDialog..Label8..Caption
+#: SDUDiskPropertiesDlg.dfm:66
+msgid "Disk number:"
+msgstr "Číslo disku:"
+
+#. SDUDiskPropertiesDialog..Label10..Caption
+#: SDUDiskPropertiesDlg.dfm:73
+msgid "Disk signature:"
+msgstr ""
+
+#. SDUDiskPropertiesDialog..Label12..Caption
+#: SDUDiskPropertiesDlg.dfm:80
+msgid "Partition count:"
+msgstr "Počet oddílů:"
+
+#. SDUDiskPropertiesDialog..Label2..Caption
+#: SDUDiskPropertiesDlg.dfm:87
+msgid "Size (sensible units):"
+msgstr ""
+
+#. SDUPartitionPropertiesDialog..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:5
+msgid "Partition Properties"
+msgstr "Vlastnosti oddílu"
+
+#. SDUPartitionPropertiesDialog..Label1..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:24
+msgid "Starting offset:"
+msgstr ""
+
+#. SDUPartitionPropertiesDialog..Label4..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:31
+msgid "Partition length (in bytes):"
+msgstr "Velikost oddílu (v bytech):"
+
+#. SDUPartitionPropertiesDialog..Label5..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:38
+msgid "Hidden sectors:"
+msgstr "Skryté stopy:"
+
+#. SDUPartitionPropertiesDialog..Label6..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:45
+msgid "Partition number:"
+msgstr "Číslo oddílu:"
+
+#. SDUPartitionPropertiesDialog..Label7..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:52
+msgid "Partition type:"
+msgstr "Typ oddílu:"
+
+#. SDUPartitionPropertiesDialog..Label9..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:59
+msgid "Flags:"
+msgstr "Příznaky:"
+
+#. SDUPartitionPropertiesDialog..Label11..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:66
+msgid "Mounted as:"
+msgstr "Připojeno jako:"
+
+#. SDUPartitionPropertiesDialog..Label8..Caption
+#: common/SDeanUtils/SDUPartitionPropertiesDlg.dfm:73
+msgid "Partition length (sensible units):"
+msgstr ""
+
+#. SDUProgressDialog..Caption
+#: SDUProgressDlg.dfm:6
+msgid "Progress"
+msgstr "Postup"
+
+#. SDUProgressDialog..pnlProgressBar..lblEstTimeRemainText..Caption
+#: SDUProgressDlg.dfm:37
+msgid "Estimated time remaining:"
+msgstr "Odhad zbývajícího času:"
+
+#. SDUProgressDialog..pnlProgressBar..pbCancel..Caption
+#: SDUProgressDlg.dfm:61
+msgid "&Cancel"
+msgstr "&Storno"
+
+#. compiler error; copy of consts from "Consts.pas"
+#. Programmer's name for it: SDU_SMsgDlgWarning
+#: SDUDialogs.pas:177
+msgid "Warning"
+msgstr "Varování"
+
+#. Programmer's name for it: SDU_SMsgDlgError
+#: SDUDialogs.pas:178
+msgid "Error"
+msgstr "Chyba"
+
+#. Programmer's name for it: SDU_SMsgDlgInformation
+#: SDUDialogs.pas:179
+msgid "Information"
+msgstr "Informace"
+
+#. Programmer's name for it: SDU_SMsgDlgConfirm
+#: SDUDialogs.pas:180
+msgid "Confirm"
+msgstr "Potvdit"
+
+#. Programmer's name for it: UNABLE_TO_GET_DISK_LAYOUT
+#: SDUDiskPartitionsPanel.pas:22
+msgid ""
+"Unable to get disk layout for disk: "
+"%1"
+msgstr "Nepodařilo se získat rozložení disku: %1"
+
+#. Programmer's name for it: RS_UNABLE_TO_OBTAIN_DATA
+#: SDUDiskPropertiesDlg.pas:45
+msgid "<Unable to obtain data>"
+msgstr "<Nelze získat data>"
+
+#. Programmer's name for it: RS_UNKNOWN
+#: SDUGeneral.pas:145
+msgid "<unknown>"
+msgstr "<neznámé>"
+
+#. Programmer's name for it: RS_BOOTABLE
+#: SDUPartitionPropertiesDlg.pas:46
+msgid "Bootable"
+msgstr ""
+
+#. Programmer's name for it: RS_REWRITE
+#: SDUPartitionPropertiesDlg.pas:47
+msgid "Rewrite"
+msgstr "Přepsat"
+
+#. Programmer's name for it: RS_RECOGNISED
+#: SDUPartitionPropertiesDlg.pas:48
+msgid "Recognised"
+msgstr "Rozeznán"
+
+#. Programmer's name for it: RS_NO_DRIVE_LETTER
+#: SDUPartitionPropertiesDlg.pas:51
+msgid "<No drive letter>"
+msgstr "<Žádné písmeno disku>"
+
+#. not particularly significant
+#: SDUProgressDlg.pas:201
+msgid "%1 days, %2 hours"
+msgstr "%1 dnů, %2 hodin"
+
+#: SDUProgressDlg.pas:208
+msgid "%1 hours, %2 minutes"
+msgstr "%1 hodin, %2 minut"
+
+#: SDUProgressDlg.pas:215
+msgid "%1 minutes, %2 seconds"
+msgstr "%1 minut, %2 sekund"
+
+#: SDUProgressDlg.pas:221
+msgid "%1 seconds"
+msgstr "%1 sekund"
+
+#: SDUProgressDlg.pas:289
+msgid "Operation cancelled by user"
+msgstr "Operace byla přerušena uživatelem"
+
