@@ -106,7 +106,6 @@ contains
   SDUWindows in 'P:\src\PC\gui\common\SDeanUtils\SDUWindows.pas',
   SDUObjectManager in 'P:\src\PC\gui\common\SDeanUtils\SDUObjectManager.pas',
   SDUDirIterator_U in 'P:\src\PC\gui\common\SDeanUtils\SDUDirIterator_U.pas',
-  SDUEndianIntegers in 'P:\src\PC\gui\common\SDeanUtils\SDUEndianIntegers.pas',
   SDUClasses in 'P:\src\PC\gui\common\SDeanUtils\SDUClasses.pas',
   SDUSysUtils in 'P:\src\PC\gui\common\SDeanUtils\SDUSysUtils.pas',
   SDPartitionImage in 'P:\src\PC\gui\common\Filesystem\SDPartitionImage.pas',
@@ -114,18 +113,19 @@ contains
   SDFilesystem in 'P:\src\PC\gui\common\Filesystem\SDFilesystem.pas',
   SDFilesystem_FAT in 'P:\src\PC\gui\common\Filesystem\SDFilesystem_FAT.pas',
   SDFilesystemCtrls_ColDetails in 'P:\src\PC\gui\common\Filesystem\SDFilesystemCtrls_ColDetails.pas' {SDFilesystemListView_ColDetails},
-  SDUDiskPropertiesDlg in 'P:\src\PC\gui\common\SDeanUtils\SDUDiskPropertiesDlg.pas' {SDUDiskPropertiesDialog},
-  SDUPartitionPropertiesDlg in 'P:\src\PC\gui\common\SDeanUtils\SDUPartitionPropertiesDlg.pas' {SDUPartitionPropertiesDialog},
   PasswordRichEdit in 'SDeanSecurity\PasswordRichEdit\PasswordRichEdit.pas',
-  FreeOTFEDLLMainAPI in 'P:\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas',
-  CommonSettings in 'P:\src\PC\gui\common\CommonSettings.pas',
   FreeOTFEDriverConsts in 'OTFE\OTFEFreeOTFE\FreeOTFEDriverConsts.pas',
   DriverAPI in 'P:\src\PC\gui\common\OTFE\OTFEFreeOTFE\DriverAPI.pas',
   lcDialogs in 'P:\src\PC\gui\common\SDeanUtils\lcDialogs.pas',
   SDUMRUList in 'P:\src\PC\gui\common\SDeanUtils\SDUMRUList.pas',
-  dlgProgress in 'P:\src\PC\gui\common\SDeanUtils\dlgProgress.pas';
+  dlgProgress in 'P:\src\PC\gui\common\SDeanUtils\dlgProgress.pas',
+  lcTypes in 'P:\src\PC\gui\common\lcTypes.pas',
+  lcConsts in 'P:\src\PC\gui\common\lcConsts.pas',
+  PartitionTools in 'P:\src\PC\gui\common\PartitionTools.pas',
+  SDURegistry in 'P:\src\PC\gui\common\SDeanUtils\SDURegistry.pas';
 
 end.
+
 
 
 

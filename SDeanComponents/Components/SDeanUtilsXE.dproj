@@ -187,7 +187,6 @@
 			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUWindows.pas"/>
 			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUObjectManager.pas"/>
 			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUDirIterator_U.pas"/>
-			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUEndianIntegers.pas"/>
 			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUClasses.pas"/>
 			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUSysUtils.pas"/>
 			<DCCReference Include="P:\src\PC\gui\common\Filesystem\SDPartitionImage.pas"/>
@@ -197,20 +196,16 @@
 			<DCCReference Include="P:\src\PC\gui\common\Filesystem\SDFilesystemCtrls_ColDetails.pas">
 				<Form>SDFilesystemListView_ColDetails</Form>
 			</DCCReference>
-			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUDiskPropertiesDlg.pas">
-				<Form>SDUDiskPropertiesDialog</Form>
-			</DCCReference>
-			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUPartitionPropertiesDlg.pas">
-				<Form>SDUPartitionPropertiesDialog</Form>
-			</DCCReference>
 			<DCCReference Include="SDeanSecurity\PasswordRichEdit\PasswordRichEdit.pas"/>
-			<DCCReference Include="P:\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas"/>
-			<DCCReference Include="P:\src\PC\gui\common\CommonSettings.pas"/>
 			<DCCReference Include="OTFE\OTFEFreeOTFE\FreeOTFEDriverConsts.pas"/>
 			<DCCReference Include="P:\src\PC\gui\common\OTFE\OTFEFreeOTFE\DriverAPI.pas"/>
 			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\lcDialogs.pas"/>
 			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDUMRUList.pas"/>
 			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\dlgProgress.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\lcTypes.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\lcConsts.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\PartitionTools.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanUtils\SDURegistry.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
