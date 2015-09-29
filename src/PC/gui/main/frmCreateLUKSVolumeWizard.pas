@@ -20,10 +20,9 @@ uses
    DriverAPI,   // Required for CRITICAL_DATA_LEN
 
    // LibreCrypt forms
-  fmeDiskPartitionsPanel, fmeSelectPartition,
+  fmeSDUDiskPartitions, fmeSelectPartition,
   frmWizard,
   fmeSDUBlocks,
-  fmeSDUDiskPartitions,
   fmeNewPassword, fmeContainerSize;
 
  
@@ -548,7 +547,7 @@ begin
     on E: EInsufficientRandom do begin
       allOK := False;
       SDUMessageDlg(
-        _('Insufficient random data generated: ' + E.message) + SDUCRLF +
+        _('Insufficient random data generated: ') + E.message + SDUCRLF +
         SDUCRLF + PLEASE_REPORT_TO_FREEOTFE_DOC_ADDR,
         mtError
         );

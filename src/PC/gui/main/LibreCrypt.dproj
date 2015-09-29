@@ -112,10 +112,11 @@
 			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_IMPLICIT_STRING_CAST>false</DCC_IMPLICIT_STRING_CAST>
 			<DCC_Optimize>false</DCC_Optimize>
 			<DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
 			<DCC_RangeChecking>true</DCC_RangeChecking>
-			<DCC_Define>DEBUG;FREEOTFE_DEBUG;FORCE_NO_RAND_NO;LogMemoryLeakDetailtoFile_NO;FullDebugMode_NO;$(DCC_Define)</DCC_Define>
+			<DCC_Define>DEBUG;FREEOTFE_DEBUG;FORCE_NO_RAND_NO;LogMemoryLeakDetailtoFile_NO;FullDebugMode_NO;FORCE_LOCAL_PAD;$(DCC_Define)</DCC_Define>
 			<DCC_DebugDCUs>true</DCC_DebugDCUs>
 			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
 			<BRCC_Defines>FullDebugMode;LogErrorsToFile;$(BRCC_Defines)</BRCC_Defines>
@@ -277,10 +278,6 @@
 			<DCCReference Include="..\common\SDeanUtils\SDUGeneral.pas"/>
 			<DCCReference Include="..\common\Filesystem\SDFilesystem.pas"/>
 			<DCCReference Include="..\common\Filesystem\SDFilesystem_FAT.pas"/>
-			<DCCReference Include="..\common\fmeAutorunOptions.pas">
-				<Form>fmeOptions_Autorun</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas"/>
@@ -365,7 +362,6 @@
 				<Form>frmWizardChangePasswordCreateKeyfile</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\fmeSelectPartition.pas"/>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\fmeDiskPartitionsPanel.pas"/>
 			<DCCReference Include="..\common\SDeanUtils\fmeSDUDiskPartitions.pas"/>
 			<DCCReference Include="..\common\SDeanUtils\fmeSDUBlocks.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\cryptlib.pas"/>

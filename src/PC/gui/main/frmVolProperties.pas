@@ -156,7 +156,7 @@ begin
 
     edDeviceName.Text := volumeInfo.DeviceName;
 
-    edHiddenOffset.Text := IntToStr(GetHiddenOffset(fDriveLetter));
+    edHiddenOffset.Text :=  IntToStrWithCommas(GetHiddenOffset(fDriveLetter));
   end else begin
     SDUMessageDlg(
       Format(_('Unable to get drive properties for drive %s:'), [fDriveLetter]),

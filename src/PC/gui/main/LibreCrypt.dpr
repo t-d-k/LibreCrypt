@@ -6,14 +6,17 @@ program LibreCrypt;
   //sdu & LibreCrypt utils ie all not forms - layer 1
    // LibreCrypt forms - layer 2
     //main form - layer 3
+}
 
-     //delphi & libs
+{
 
-  //sdu & LibreCrypt utils
+     //delphi & libs (0)
 
-   // LibreCrypt forms
+  //sdu & LibreCrypt utils (1)
 
-    //main form
+   // LibreCrypt forms and frames (2)
+
+    //main form  (3)
 
   }
 
@@ -54,7 +57,6 @@ uses
   SDUGeneral in '..\common\SDeanUtils\SDUGeneral.pas',
   SDFilesystem in '..\common\Filesystem\SDFilesystem.pas',
   SDFilesystem_FAT in '..\common\Filesystem\SDFilesystem_FAT.pas',
-  fmeAutorunOptions in '..\common\fmeAutorunOptions.pas' {fmeOptions_Autorun: TFrame},
   FreeOTFEDLLCypherAPI in '..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLCypherAPI.pas',
   FreeOTFEDLLHashAPI in '..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas',
   FreeOTFEDLLMainAPI in '..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas',
@@ -100,8 +102,7 @@ uses
   lcConsts in '..\common\lcConsts.pas',
   frmWizardCreateVolume in '..\common\OTFE\OTFEFreeOTFE\frmWizardCreateVolume.pas' {frmWizardCreateVolume},
   frmWizardChangePasswordCreateKeyfile in '..\common\OTFE\OTFEFreeOTFE\frmWizardChangePasswordCreateKeyfile.pas' {frmWizardChangePasswordCreateKeyfile},
-  fmeSelectPartition in '..\common\OTFE\OTFEFreeOTFE\fmeSelectPartition.pas',
-  fmeDiskPartitionsPanel in '..\common\OTFE\OTFEFreeOTFE\fmeDiskPartitionsPanel.pas',
+  fmeSelectPartition in '..\common\OTFE\OTFEFreeOTFE\fmeSelectPartition.pas',  
   fmeSDUDiskPartitions in '..\common\SDeanUtils\fmeSDUDiskPartitions.pas',
   fmeSDUBlocks in '..\common\SDeanUtils\fmeSDUBlocks.pas',
   cryptlib in '..\common\OTFE\OTFEFreeOTFE\cryptlib.pas',
@@ -131,14 +132,14 @@ uses
 
 var
   otherRunningAppWindow: THandle;
-//  CommandLineOnly:       Boolean;
+  //  CommandLineOnly:       Boolean;
   cmdExitCode:           eCmdLine_Exit;
-  settingsFilename:      String;
+
 {$IF CompilerVersion >= 18.5}
   // Delphi 7 doesn't need this, but Delphi 2007 (and 2006 as well? Not
   // checked...) need this to honor any "Run minimised" option set in any
   // launching MS Windows shortcut
-  sui:                   TStartUpInfo;
+  sui: TStartUpInfo;
 {$IFEND}
 
 begin
@@ -168,24 +169,24 @@ begin
   // Vista fix for Delphi 2007 and later
   Application.MainFormOnTaskbar := True;
 {$IFEND}
-  Application.Title             := 'LibreCrypt';
-  cmdExitCode := ceSUCCESS;
-//  CommandLineOnly               := False; // if error reading cmds,loading settings, default to off
+//dont translate
+Application.Title             := 'LibreCrypt';
+//set diff title in debug so doesnt get accidently released
+  {$IFDEF DEBUG}
+  Application.Title             := 'LCTest';
+  {$ENDIF}
+  cmdExitCode                   := ceSUCCESS;
+  //  CommandLineOnly               := False; // if error reading cmds,loading settings, default to off
   try
 
 
-  //    must call early so correct settings type used
-  SetSettingsType(TMainSettings);
-  OTFEFreeOTFEBase_U.SetFreeOTFEType(TOTFEFreeOTFE);
+    //    must call early so correct settings type used
+    SetSettingsType(TMainSettings);
+    OTFEFreeOTFEBase_U.SetFreeOTFEType(TOTFEFreeOTFE);
 
     try
-      settingsFilename :=  GetCmdLine.settingsFileArg;
-      if  settingsFilename<>'' then begin
-        settingsFilename := SDURelativePathToAbsolute(settingsFilename);
-        GetSettings().CustomLocation := settingsFilename;
-      end;
 
-      GetSettings().Load();
+      //      GetSettings().Load();
 
       Application.ShowMainForm := False;
       // NOTE: The main form's Visible property is set to FALSE anyway - it *HAS*
@@ -193,7 +194,7 @@ begin
       Application.CreateForm(TfrmMain, GfrmMain);
   GfrmMain.Visible         := False;
       Application.ShowMainForm := False;
-     cmdExitCode := GfrmMain.HandleCommandLineOpts();
+      cmdExitCode              := GfrmMain.HandleCommandLineOpts();
 
 
       //   if we were called with no command line arguments then
@@ -208,7 +209,7 @@ begin
       if (not (GetCmdLine.IsCommandLineOnly)) then begin
         otherRunningAppWindow := SDUDetectExistingApp();
         // If no running app was found then
-        if ((otherRunningAppWindow = 0) or GetMainSettings().OptAllowMultipleInstances) then begin
+        if ((otherRunningAppWindow = 0) or GetMainSettings().AllowMultipleInstances) then begin
           // We continue to run the main app
           GfrmMain.Visible         := True;
           Application.ShowMainForm := True;
@@ -252,8 +253,8 @@ begin
       end;
 
     finally
-        //      free early so can catch any exceptions
-        FreeSettings();
+      //      free early so can catch any exceptions
+      FreeSettings();
     end;
     // only place is, or should be, catch-all exeption
   except

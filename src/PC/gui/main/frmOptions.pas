@@ -4,9 +4,8 @@ unit frmOptions;
  // Email: sdean12@sdean12.org
  // WWW:   http://www.FreeOTFE.org/
  //
- // -----------------------------------------------------------------------------
- //
 
+{ TODO 1 -otdk -crefactor : move most controls on general tab to common options parent as shared with explorer }
 
 interface
 
@@ -19,30 +18,20 @@ uses
   CommonSettings, OTFEFreeOTFE_U, SDUStdCtrls, MainSettings, SDUFilenameEdit_U,
 
   // LibreCrypt forms
-  fmeAutorunOptions,
   frmCommonOptions,
 //  fmeAdvancedOptions, fmeSystemTrayOptions,
 //   fmeLcOptions,
 //   fmeBaseOptions,
     fmeVolumeSelect, SDUForms, SDUFrames,
-  Spin64;
+  Spin64, SDUDialogs;
 
 type
 
 
-  TLanguageTranslation = record
-    Name:    String;
-    Code:    String;
-    Contact: String;
-  end;
-  PLanguageTranslation = ^TLanguageTranslation;
   TfrmOptions = class (TfrmCommonOptions)
-    tsGeneral:        TTabSheet;
     tsHotkeys:        TTabSheet;
     tcSystemTray:     TTabSheet;
-    tsAutorun:        TTabSheet;
-    tsAdvanced:       TTabSheet;
-    fmeOptions_Autorun1: TfmeAutorunOptions;
+    tsMain: TTabSheet;
     ckLaunchAtStartup: TSDUCheckBox;
     ckLaunchMinimisedAtStartup: TSDUCheckBox;
     gbHotkeys:        TGroupBox;
@@ -54,8 +43,6 @@ type
     hkDismountEmerg:  THotKey;
     gbAdvanced: TGroupBox;
     lblDragDrop: TLabel;
-    lblMRUMaxItemCountInst: TLabel;
-    lblMRUMaxItemCount: TLabel;
     lblOnNormalDismountFail: TLabel;
     lblDefaultMountAs: TLabel;
     lblOnExitWhenMounted: TLabel;
@@ -63,33 +50,11 @@ type
     ckAllowMultipleInstances: TSDUCheckBox;
     cbDragDrop: TComboBox;
     ckAutoStartPortable: TSDUCheckBox;
-    ckAdvancedMountDlg: TSDUCheckBox;
-    ckRevertVolTimestamps: TSDUCheckBox;
-    pnlVertSplit: TPanel;
-    seMRUMaxItemCount: TSpinEdit64;
     ckWarnBeforeForcedDismount: TSDUCheckBox;
     cbOnNormalDismountFail: TComboBox;
     cbDefaultMountAs: TComboBox;
     cbOnExitWhenMounted: TComboBox;
     cbOnExitWhenPortableMode: TComboBox;
-    ckAllowNewlinesInPasswords: TSDUCheckBox;
-    ckAllowTabsInPasswords: TSDUCheckBox;
-    gbGeneral: TGroupBox;
-    lblDefaultDriveLetter: TLabel;
-    lblLanguage: TLabel;
-    lblChkUpdatesFreq: TLabel;
-    ckDisplayToolbar: TSDUCheckBox;
-    ckDisplayStatusbar: TSDUCheckBox;
-    ckExploreAfterMount: TSDUCheckBox;
-    Panel1: TPanel;
-    cbDrive: TComboBox;
-    ckShowPasswords: TSDUCheckBox;
-    cbLanguage: TComboBox;
-    pbLangDetails: TButton;
-    ckPromptMountSuccessful: TSDUCheckBox;
-    ckDisplayToolbarLarge: TSDUCheckBox;
-    ckDisplayToolbarCaptions: TSDUCheckBox;
-    cbChkUpdatesFreq: TComboBox;
     gbSystemTrayIcon: TGroupBox;
     ckUseSystemTrayIcon: TSDUCheckBox;
     ckMinToIcon: TSDUCheckBox;
@@ -97,17 +62,18 @@ type
     gbClickActions: TGroupBox;
     Label3: TLabel;
     Label4: TLabel;
-    rbSingleClick: TRadioButton;
-    rbDoubleClick: TRadioButton;
-    cbClickAction: TComboBox;
+    cbSingleClickAction: TComboBox;
+    Label5: TLabel;
+    Label6: TLabel;
+    cbDbleClickAction: TComboBox;
+    Label7: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ckLaunchAtStartupClick(Sender: TObject);
     procedure ControlChanged(Sender: TObject);
-    procedure cbLanguageChange(Sender: TObject);
-    procedure pbLangDetailsClick(Sender: TObject);
+
+
   private
-      FLanguages: array of TLanguageTranslation;
 
     procedure _InitializeHotKeys;
     procedure _WriteSettingsHotKeys(config: TMainSettings);
@@ -116,14 +82,9 @@ type
     procedure _InitializeAdvancedTab;
     procedure _ReadSettingsAdvanced(config: TMainSettings);
     procedure _WriteSettingsAdvanced(config: TMainSettings);
-    function _LanguageControlLanguage(idx: Integer): TLanguageTranslation;
-    function _SelectedLanguage: TLanguageTranslation;
-    procedure _PopulateLanguages;
-    procedure _SetLanguageSelection(langCode: String);
     procedure _EnableDisableControlsGeneral;
     procedure _InitializeGeneral;
     procedure _ReadSettingsGeneral(config: TMainSettings);
-    procedure _WriteSettingsGeneral(config: TMainSettings);
     procedure _InitializeSystemTrayOptions;
     procedure _EnableDisableControlsSystemTray;
     procedure _ReadSettingsSystemTray(config: TMainSettings);
@@ -135,20 +96,17 @@ type
     FOrigLaunchAtStartup:          Boolean;
     FOrigLaunchMinimisedAtStartup: Boolean;
 
-    procedure EnableDisableControls(); override;
-
-    procedure AllTabs_InitAndReadSettings(config: TCommonSettings); override;
-    procedure AllTabs_WriteSettings(config: TCommonSettings); override;
-
-    function DoOKClicked(): Boolean; override;
-
+    procedure _EnableDisableControls(); override;
+    procedure _InitAndReadSettings(config: TCommonSettings); override;
+    procedure _WriteAllSettings(config: TCommonSettings); override;
+    function _DoOKClicked(): Boolean; override;
   public
 
-    procedure ChangeLanguage(langCode: String); override;
+
   end;
 
-const
-  CONTROL_MARGIN_LBL_TO_CONTROL = 5;
+//const
+//  CONTROL_MARGIN_LBL_TO_CONTROL = 5;
 
 implementation
 
@@ -162,7 +120,7 @@ uses
   StrUtils,
   // sdu /librecrypt
   OTFEFreeOTFEBase_U,
-  SDUDialogs, SDUGeneral, lcTypes, CommonConsts,lcDialogs, lcConsts,
+  SDUGeneral, lcTypes, CommonConsts,lcDialogs, lcConsts,
   SDUi18n,
   lcCommandLine // for CMDLINE_MINIMIZE
   //forms
@@ -181,10 +139,11 @@ const
 procedure TfrmOptions._WriteSettingsHotKeys(config: TMainSettings);
 begin
   // Hotkeys...
-  config.OptHKeyEnableDismount      := ckHotkeyDismount.Checked;
-  config.OptHKeyKeyDismount         := hkDismount.HotKey;
-  config.OptHKeyEnableDismountEmerg := ckHotkeyDismountEmerg.Checked;
-  config.OptHKeyKeyDismountEmerg    := hkDismountEmerg.HotKey;
+  { TODO : what;s the point of separate enable options - just set keys to blank }
+  config.DismountHotKeyEnabled      := ckHotkeyDismount.Checked;
+  config.DismountHotKey         := hkDismount.HotKey;
+  config.EmergencyDismountHotKeyEnabled := ckHotkeyDismountEmerg.Checked;
+  config.EmergencyDismountHotKey    := hkDismountEmerg.HotKey;
 end;
 
 
@@ -201,25 +160,16 @@ begin
       break;
     end;
   end;
-
-
 end;
 
 procedure TfrmOptions._WriteSettingsSystemTray(config: TMainSettings);
 begin
   // System tray icon related...
-  config.OptSystemTrayIconDisplay := ckUseSystemTrayIcon.Checked;
-  config.OptSystemTrayIconMinTo   := ckMinToIcon.Checked;
-  config.OptSystemTrayIconCloseTo := ckCloseToIcon.Checked;
-
-  if rbSingleClick.Checked then begin
-    config.OptSystemTrayIconActionSingleClick := _GetClickAction(cbClickAction);
-    config.OptSystemTrayIconActionDoubleClick := stcaDoNothing;
-  end else begin
-    config.OptSystemTrayIconActionSingleClick := stcaDoNothing;
-    config.OptSystemTrayIconActionDoubleClick := _GetClickAction(cbClickAction);
-  end;
-
+  config.ShowSysTrayIcon := ckUseSystemTrayIcon.Checked;
+  config.MinimiseToSysTray   := ckMinToIcon.Checked;
+  config.CloseToSysTray := ckCloseToIcon.Checked;
+  config.SysTraySingleClickAction := _GetClickAction(cbSingleClickAction);
+  config.SysTrayDoubleClickAction := _GetClickAction(cbDbleClickAction);
 end;
 
 procedure TfrmOptions._WriteSettingsAdvanced(config: TMainSettings);
@@ -227,255 +177,87 @@ var
   owem: eOnExitWhenMounted;
   owrp: eOnExitWhenPortableMode;
   ondf: eOnNormalDismountFail;
-  ma:   TFreeOTFEMountAs;
+  ma:   TMountDiskType;
   ft:   TVolumeType;
 begin
   // Advanced...
-  config.OptAllowMultipleInstances   := ckAllowMultipleInstances.Checked;
-  config.OptAutoStartPortable        := ckAutoStartPortable.Checked;
-  config.OptAdvancedMountDlg         := ckAdvancedMountDlg.Checked;
-  config.OptRevertVolTimestamps      := ckRevertVolTimestamps.Checked;
-  config.OptWarnBeforeForcedDismount := ckWarnBeforeForcedDismount.Checked;
-  config.OptAllowNewlinesInPasswords := ckAllowNewlinesInPasswords.Checked;
-  config.OptAllowTabsInPasswords     := ckAllowTabsInPasswords.Checked;
+  config.AllowMultipleInstances   := ckAllowMultipleInstances.Checked;
+  config.AutoStartPortableMode        := ckAutoStartPortable.Checked;
+
+  config.WarnBeforeForceDismount := ckWarnBeforeForcedDismount.Checked;
 
   // Decode action on exiting when volumes mounted
-  config.OptOnExitWhenMounted := oewmPromptUser;
+  config.ExitWhenMountedAction := oewmPromptUser;
   for owem := low(owem) to high(owem) do begin
     if (OnExitWhenMountedTitle(owem) = cbOnExitWhenMounted.Items[cbOnExitWhenMounted.ItemIndex])
     then begin
-      config.OptOnExitWhenMounted := owem;
+      config.ExitWhenMountedAction := owem;
       break;
     end;
   end;
 
   // Decode action on exiting when in portable mode
-  config.OptOnExitWhenPortableMode := oewpPromptUser;
+  config.ExitWhenPortableModeAction := oewpPromptUser;
   for owrp := low(owrp) to high(owrp) do begin
     if (OnExitWhenPortableModeTitle(owrp) =
       cbOnExitWhenPortableMode.Items[cbOnExitWhenPortableMode.ItemIndex]) then begin
-      config.OptOnExitWhenPortableMode := owrp;
+      config.ExitWhenPortableModeAction := owrp;
       break;
     end;
   end;
 
   // Decode action when normal dismount fails
-  config.OptOnNormalDismountFail := ondfPromptUser;
+  config.NormalDismountFailAction := ondfPromptUser;
   for ondf := low(ondf) to high(ondf) do begin
     if (OnNormalDismountFailTitle(ondf) =
       cbOnNormalDismountFail.Items[cbOnNormalDismountFail.ItemIndex]) then begin
-      config.OptOnNormalDismountFail := ondf;
+      config.NormalDismountFailAction := ondf;
       break;
     end;
   end;
 
   // Decode default mount type
-  config.OptDefaultMountAs := fomaRemovableDisk;
+  config.DefaultMountDiskType := fomaRemovableDisk;
   for ma := low(ma) to high(ma) do begin
     if (FreeOTFEMountAsTitle(ma) = cbDefaultMountAs.Items[cbDefaultMountAs.ItemIndex]) then begin
-      config.OptDefaultMountAs := ma;
+      config.DefaultMountDiskType := ma;
       break;
     end;
   end;
 
   // Decode drag drop filetype
-  config.OptDragDropFileType := vtUnknown;
+  config.DefaultVolType := vtUnknown;
   for ft := low(ft) to high(ft) do begin
     if (DragDropFileTypeTitle(ft) = cbDragDrop.Items[cbDragDrop.ItemIndex]) then begin
-      config.OptDragDropFileType := ft;
+      config.DefaultVolType := ft;
       break;
     end;
   end;
 
-  config.OptMRUList.MaxItems := seMRUMaxItemCount.Value;
+
 
 end;
 
-procedure TfrmOptions.AllTabs_WriteSettings(config: TCommonSettings);
+procedure TfrmOptions._WriteAllSettings(config: TCommonSettings);
 begin
   inherited;
-  _WriteSettingsGeneral(config as TMainSettings);
   _WriteSettingsHotKeys(config as TMainSettings);
-  fmeOptions_Autorun1.WriteSettings(config);
+
   _WriteSettingsAdvanced(config as TMainSettings);
   _WriteSettingsSystemTray(config as TMainSettings);
 end;
-
-function TfrmOptions._SelectedLanguage(): TLanguageTranslation;
-begin
-  Result := _LanguageControlLanguage(cbLanguage.ItemIndex);
-
-end;
-
-
-procedure TfrmOptions._PopulateLanguages();
-var
-  i:            Integer;
-  origLangCode: String;
-  langCodes:    TStringList;
-  sortedList:   TStringList;
-begin
-  // Store language information for later use...
-  langCodes := TStringList.Create();
-  try
-    // Get all language codes...
-    SDUGetLanguageCodes(langCodes);
-
-    // +1 to include "Default"
-    SetLength(FLanguages, langCodes.Count);
-
-    // Spin though the languages, getting their corresponding human-readable
-    // names
-    origLangCode := SDUGetCurrentLanguageCode();
-    try
-      for i := 0 to (langCodes.Count - 1) do begin
-        SDUSetLanguage(langCodes[i]);
-
-        FLanguages[i].Code    := langCodes[i];
-        FLanguages[i].Name    := _(CONST_LANGUAGE_ENGLISH);
-        FLanguages[i].Contact := SDUGetTranslatorNameAndEmail();
-
-        // Force set contact details for English version; the dxgettext software sets
-        // this to some stupid default
-        if (langCodes[i] = ISO639_ALPHA2_ENGLISH) then begin
-          FLanguages[i].Contact := ENGLISH_TRANSLATION_CONTACT;
-        end;
-
-      end;
-    finally
-      // Flip back to original language...
-      SDUSetLanguage(origLangCode);
-    end;
-
-  finally
-    langCodes.Free();
-  end;
-
-  // Add "default" into the list
-  SetLength(FLanguages, (length(FLanguages) + 1));
-  FLanguages[length(FLanguages) - 1].Code    := '';
-  FLanguages[length(FLanguages) - 1].Name    := _('(Default)');
-  FLanguages[length(FLanguages) - 1].Contact := '';
-
-  // Populate list
-  sortedList := TStringList.Create();
-  try
-    for i := 0 to (length(FLanguages) - 1) do begin
-      sortedList.AddObject(FLanguages[i].Name, @(FLanguages[i]));
-    end;
-
-    sortedList.Sorted := True;
-    sortedList.Sorted := False;
-
-    cbLanguage.Items.Assign(sortedList)
-  finally
-    sortedList.Free();
-  end;
-
-end;
-
-procedure TfrmOptions._SetLanguageSelection(langCode: String);
-var
-  useIdx:   Integer;
-  currLang: TLanguageTranslation;
-  i:        Integer;
-begin
-  useIdx := 0;
-  for i := 0 to (cbLanguage.items.Count - 1) do begin
-    currLang := _LanguageControlLanguage(i);
-    if (currLang.Code = langCode) then begin
-      useIdx := i;
-      break;
-    end;
-  end;
-  cbLanguage.ItemIndex := useIdx;
-end;
-
-function TfrmOptions._LanguageControlLanguage(idx: Integer): TLanguageTranslation;
-begin
-  Result := (PLanguageTranslation(cbLanguage.Items.Objects[idx]))^;
-
-end;
-
-procedure TfrmOptions.pbLangDetailsClick(Sender: TObject);
-var
-  rcdLanguage: TLanguageTranslation;
-begin
-  inherited;
-
-  rcdLanguage := _SelectedLanguage();
-  SDUMessageDlg(
-    Format(_('Language name: %s'), [rcdLanguage.Name]) + SDUCRLF +
-    Format(_('Language code: %s'), [rcdLanguage.Code]) + SDUCRLF +
-    Format(_('Translator: %s'), [rcdLanguage.Contact])
-    );
-end;
-
-
-procedure TfrmOptions.cbLanguageChange(Sender: TObject);
-var
-  useLang: TLanguageTranslation;
-  langIdx: Integer;
-begin
-  inherited;
-
-  // Preserve selected language; the selected language gets change by the
-  // PopulateLanguages() call
-  langIdx := cbLanguage.ItemIndex;
-
-  useLang := _SelectedLanguage();
-  TfrmCommonOptions(Owner).ChangeLanguage(useLang.Code);
-  // Repopulate the languages list; translation would have translated them all
-  _PopulateLanguages();
-
-  // Restore selected
-  cbLanguage.ItemIndex := langIdx;
-
-  EnableDisableControls();
-end;
-
-
-procedure TfrmOptions.ChangeLanguage(langCode: String);
-var
-  tmpConfig: TMainSettings;
-begin
-  tmpConfig := TMainSettings.Create();
-  try
-    tmpConfig.Assign(GetSettings());
-    AllTabs_WriteSettings(tmpConfig);
-
-    SDUSetLanguage(langCode);
-    try
-      SDURetranslateComponent(self);
-    except
-      on E: Exception do begin
-        SDUTranslateComponent(self);
-      end;
-    end;
-
-    AllTabs_InitAndReadSettings(tmpConfig);
-
-  finally
-    tmpConfig.Free();
-  end;
-
-  // Call EnableDisableControls() as this re-jigs the "Save above settings to:"
-  // label
-  EnableDisableControls();
-end;
-
 
 
 procedure TfrmOptions.ckLaunchAtStartupClick(Sender: TObject);
 begin
   inherited;
-  EnableDisableControls();
+  _EnableDisableControls();
 end;
 
 procedure TfrmOptions.ControlChanged(Sender: TObject);
 begin
   inherited;
-  EnableDisableControls();
+  _EnableDisableControls();
 end;
 
 procedure TfrmOptions.FormCreate(Sender: TObject);
@@ -539,7 +321,7 @@ begin
   end;
 end;
 
-procedure TfrmOptions.EnableDisableControls();
+procedure TfrmOptions._EnableDisableControls();
 begin
   inherited;
   _EnableDisableControlsHotKeys;
@@ -590,61 +372,61 @@ const
   // This adjusts the width of a checkbox, and resets it caption so it
   // autosizes. If it autosizes such that it's too wide, it'll drop the width
   // and repeat
-  procedure NudgeCheckbox(chkBox: TCheckBox);
-  var
-    tmpCaption:     String;
-    maxWidth:       Integer;
-    useWidth:       Integer;
-    lastTriedWidth: Integer;
-  begin
-    tmpCaption := chkBox.Caption;
+//  procedure NudgeCheckbox(chkBox: TCheckBox);
+//  var
+//    tmpCaption:     String;
+//    maxWidth:       Integer;
+//    useWidth:       Integer;
+//    lastTriedWidth: Integer;
+//  begin
+//    tmpCaption := chkBox.Caption;
+//
+//    maxWidth := (pnlVertSplit.left - CHKBOX_CONTROL_MARGIN) - chkBox.Left;
+//    useWidth := maxWidth;
+//
+//    chkBox.Caption := 'X';
+//    chkBox.Width   := useWidth;
+//    lastTriedWidth := useWidth;
+//    chkBox.Caption := tmpCaption;
+//    while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0)) do begin
+//      // 5 used here; just needs to be something sensible to reduce the
+//      // width by; 1 would do pretty much just as well
+//      useWidth := useWidth - 5;
+//
+//      chkBox.Caption := 'X';
+//      chkBox.Width   := useWidth;
+//      lastTriedWidth := useWidth;
+//      chkBox.Caption := tmpCaption;
+//    end;
+//
+//  end;
 
-    maxWidth := (pnlVertSplit.left - CHKBOX_CONTROL_MARGIN) - chkBox.Left;
-    useWidth := maxWidth;
+//  procedure NudgeFocusControl(lbl: TLabel);
+//  begin
+//    if (lbl.FocusControl <> nil) then begin
+//      lbl.FocusControl.Top := lbl.Top + lbl.Height + CONTROL_MARGIN_LBL_TO_CONTROL;
+//    end;
+//
+//  end;
 
-    chkBox.Caption := 'X';
-    chkBox.Width   := useWidth;
-    lastTriedWidth := useWidth;
-    chkBox.Caption := tmpCaption;
-    while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0)) do begin
-      // 5 used here; just needs to be something sensible to reduce the
-      // width by; 1 would do pretty much just as well
-      useWidth := useWidth - 5;
-
-      chkBox.Caption := 'X';
-      chkBox.Width   := useWidth;
-      lastTriedWidth := useWidth;
-      chkBox.Caption := tmpCaption;
-    end;
-
-  end;
-
-  procedure NudgeFocusControl(lbl: TLabel);
-  begin
-    if (lbl.FocusControl <> nil) then begin
-      lbl.FocusControl.Top := lbl.Top + lbl.Height + CONTROL_MARGIN_LBL_TO_CONTROL;
-    end;
-
-  end;
-
-  procedure NudgeLabel(lbl: TLabel);
-  var
-    maxWidth: Integer;
-  begin
-    if (pnlVertSplit.left > lbl.left) then begin
-      maxWidth := (pnlVertSplit.left - LABEL_CONTROL_MARGIN) - lbl.left;
-    end else begin
-      maxWidth := (lbl.Parent.Width - LABEL_CONTROL_MARGIN) - lbl.left;
-    end;
-
-    lbl.Width := maxWidth;
-  end;
+//  procedure NudgeLabel(lbl: TLabel);
+//  var
+//    maxWidth: Integer;
+//  begin
+//    if (pnlVertSplit.left > lbl.left) then begin
+//      maxWidth := (pnlVertSplit.left - LABEL_CONTROL_MARGIN) - lbl.left;
+//    end else begin
+//      maxWidth := (lbl.Parent.Width - LABEL_CONTROL_MARGIN) - lbl.left;
+//    end;
+//
+//    lbl.Width := maxWidth;
+//  end;
 
 var
-  stlChkBoxOrder: TStringList;
-  YPos:           Integer;
-  i:              Integer;
-  currChkBox:     TCheckBox;
+//  stlChkBoxOrder: TStringList;
+//  YPos:           Integer;
+//  i:              Integer;
+//  currChkBox:     TCheckBox;
   groupboxMargin: Integer;
 begin
   inherited;
@@ -660,9 +442,9 @@ begin
   lblDragDrop.Width        := (gbAdvanced.Width - groupboxMargin) - lblDragDrop.left;
   lblMRUMaxItemCount.Width := (gbAdvanced.Width - groupboxMargin) - lblMRUMaxItemCount.left;
 
-  pnlVertSplit.Caption    := '';
-  pnlVertSplit.bevelouter := bvLowered;
-  pnlVertSplit.Width      := 3;
+//  pnlVertSplit.Caption    := '';
+//  pnlVertSplit.bevelouter := bvLowered;
+//  pnlVertSplit.Width      := 3;
 
   // Here we re-jig the checkboxes so that they are nicely spaced vertically.
   // This is needed as some language translation require the checkboxes to have
@@ -676,58 +458,58 @@ begin
   //      TCheckBox
   //   3) Make sure it's autosize property is TRUE
   //
-  stlChkBoxOrder := TStringList.Create();
-  try
-    // stlChkBoxOrder is used to order the checkboxes in their vertical order;
-    // this allows checkboxes to be added into the list below in *any* order,
-    // and it'll still work
-    stlChkBoxOrder.Sorted := True;
-
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowMultipleInstances.Top]),
-      ckAllowMultipleInstances);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAutoStartPortable.Top]), ckAutoStartPortable);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAdvancedMountDlg.Top]), ckAdvancedMountDlg);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckRevertVolTimestamps.Top]),
-      ckRevertVolTimestamps);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckWarnBeforeForcedDismount.Top]),
-      ckWarnBeforeForcedDismount);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowNewlinesInPasswords.Top]),
-      ckAllowNewlinesInPasswords);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowTabsInPasswords.Top]),
-      ckAllowTabsInPasswords);
-
-    currChkBox := TCheckBox(stlChkBoxOrder.Objects[0]);
-    YPos       := currChkBox.Top;
-    YPos       := YPos + currChkBox.Height;
-    for i := 1 to (stlChkBoxOrder.Count - 1) do begin
-      currChkBox := TCheckBox(stlChkBoxOrder.Objects[i]);
-
-      currChkBox.Top := YPos + CHKBOX_CONTROL_MARGIN;
-
-      // Sort out the checkbox's height
-      NudgeCheckbox(currChkBox);
-
-      YPos := currChkBox.Top;
-      YPos := YPos + currChkBox.Height;
-    end;
-
-  finally
-    stlChkBoxOrder.Free();
-  end;
+//  stlChkBoxOrder := TStringList.Create();
+//  try
+//    // stlChkBoxOrder is used to order the checkboxes in their vertical order;
+//    // this allows checkboxes to be added into the list below in *any* order,
+//    // and it'll still work
+//    stlChkBoxOrder.Sorted := True;
+//
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowMultipleInstances.Top]),
+//      ckAllowMultipleInstances);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckAutoStartPortable.Top]), ckAutoStartPortable);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckAdvancedMountDlg.Top]), ckAdvancedMountDlg);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckRevertVolTimestamps.Top]),
+//      ckRevertVolTimestamps);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckWarnBeforeForcedDismount.Top]),
+//      ckWarnBeforeForcedDismount);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowNewlinesInPasswords.Top]),
+//      ckAllowNewlinesInPasswords);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowTabsInPasswords.Top]),
+//      ckAllowTabsInPasswords);
+//
+//    currChkBox := TCheckBox(stlChkBoxOrder.Objects[0]);
+//    YPos       := currChkBox.Top;
+//    YPos       := YPos + currChkBox.Height;
+//    for i := 1 to (stlChkBoxOrder.Count - 1) do begin
+//      currChkBox := TCheckBox(stlChkBoxOrder.Objects[i]);
+//
+//      currChkBox.Top := YPos + CHKBOX_CONTROL_MARGIN;
+//
+//      // Sort out the checkbox's height
+//      NudgeCheckbox(currChkBox);
+//
+//      YPos := currChkBox.Top;
+//      YPos := YPos + currChkBox.Height;
+//    end;
+//
+//  finally
+//    stlChkBoxOrder.Free();
+//  end;
 
   // Nudge labels so they're as wide as can be allowed
-  NudgeLabel(lblOnExitWhenMounted);
-  NudgeLabel(lblOnExitWhenPortableMode);
-  NudgeLabel(lblOnNormalDismountFail);
-  NudgeLabel(lblDragDrop);
-  NudgeLabel(lblMRUMaxItemCount);
-  NudgeLabel(lblMRUMaxItemCountInst);
-  NudgeLabel(lblDefaultMountAs);
+//  NudgeLabel(lblOnExitWhenMounted);
+//  NudgeLabel(lblOnExitWhenPortableMode);
+//  NudgeLabel(lblOnNormalDismountFail);
+//  NudgeLabel(lblDragDrop);
+//  NudgeLabel(lblMRUMaxItemCount);
+//  NudgeLabel(lblMRUMaxItemCountInst);
+//  NudgeLabel(lblDefaultMountAs);
 
   // Here we move controls associated with labels, such that they appear
   // underneath the label
   //  NudgeFocusControl(lblLanguage);
-  NudgeFocusControl(lblDragDrop);
+//  NudgeFocusControl(lblDragDrop);
   //  NudgeFocusControl(lblDefaultDriveLetter);
   //  NudgeFocusControl(lblMRUMaxItemCount);
 
@@ -783,60 +565,60 @@ const
   // This adjusts the width of a checkbox, and resets it caption so it
   // autosizes. If it autosizes such that it's too wide, it'll drop the width
   // and repeat
-  procedure NudgeCheckbox(chkBox: TCheckBox);
-  var
-    tmpCaption:     String;
-    maxWidth:       Integer;
-    useWidth:       Integer;
-    lastTriedWidth: Integer;
-  begin
-    tmpCaption := chkBox.Caption;
+//  procedure NudgeCheckbox(chkBox: TCheckBox);
+//  var
+//    tmpCaption:     String;
+//    maxWidth:       Integer;
+//    useWidth:       Integer;
+//    lastTriedWidth: Integer;
+//  begin
+//    tmpCaption := chkBox.Caption;
 
-    maxWidth := (pnlVertSplit.left - CHKBOX_CONTROL_MARGIN) - chkBox.Left;
-    useWidth := maxWidth;
+//    maxWidth := (pnlVertSplit.left - CHKBOX_CONTROL_MARGIN) - chkBox.Left;
+//    useWidth := maxWidth;
+//
+//    chkBox.Caption := 'X';
+//    chkBox.Width   := useWidth;
+//    lastTriedWidth := useWidth;
+//    chkBox.Caption := tmpCaption;
+//    while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0)) do begin
+//      // 5 used here; just needs to be something sensible to reduce the
+//      // width by; 1 would do pretty much just as well
+//      useWidth := useWidth - 5;
+//
+//      chkBox.Caption := 'X';
+//      chkBox.Width   := useWidth;
+//      lastTriedWidth := useWidth;
+//      chkBox.Caption := tmpCaption;
+//    end;
 
-    chkBox.Caption := 'X';
-    chkBox.Width   := useWidth;
-    lastTriedWidth := useWidth;
-    chkBox.Caption := tmpCaption;
-    while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0)) do begin
-      // 5 used here; just needs to be something sensible to reduce the
-      // width by; 1 would do pretty much just as well
-      useWidth := useWidth - 5;
+//  end;
 
-      chkBox.Caption := 'X';
-      chkBox.Width   := useWidth;
-      lastTriedWidth := useWidth;
-      chkBox.Caption := tmpCaption;
-    end;
-
-  end;
-
-  procedure NudgeFocusControl(lbl: TLabel);
-  begin
-    if (lbl.FocusControl <> nil) then begin
-      lbl.FocusControl.Top := lbl.Top + lbl.Height + CONTROL_MARGIN_LBL_TO_CONTROL;
-    end;
-
-  end;
+//  procedure NudgeFocusControl(lbl: TLabel);
+//  begin
+//    if (lbl.FocusControl <> nil) then begin
+//      lbl.FocusControl.Top := lbl.Top + lbl.Height + CONTROL_MARGIN_LBL_TO_CONTROL;
+//    end;
+//
+//  end;
 
 var
   driveLetter:    Char;
-  stlChkBoxOrder: TStringList;
-  YPos:           Integer;
-  i:              Integer;
-  currChkBox:     TCheckBox;
+//  stlChkBoxOrder: TStringList;
+//  YPos:           Integer;
+//  i:              Integer;//
+//  currChkBox:     TCheckBox;
 begin
   inherited;
 
-  SDUCenterControl(gbGeneral, ccHorizontal);
-  SDUCenterControl(gbGeneral, ccVertical, 25);
+//  SDUCenterControl(gbGeneral, ccHorizontal);
+//  SDUCenterControl(gbGeneral, ccVertical, 25);
 
-  pnlVertSplit.Caption    := '';
-  pnlVertSplit.bevelouter := bvLowered;
-  pnlVertSplit.Width      := 3;
+//  pnlVertSplit.Caption    := '';
+//  pnlVertSplit.bevelouter := bvLowered;
+//  pnlVertSplit.Width      := 3;
 
-  _PopulateLanguages();
+
 
   cbDrive.Items.Clear();
   cbDrive.Items.Add(USE_DEFAULT);
@@ -858,44 +640,44 @@ begin
   //      TCheckBox
   //   3) Make sure it's autosize property is TRUE
   //
-  stlChkBoxOrder := TStringList.Create();
-  try
-    // stlChkBoxOrder is used to order the checkboxes in their vertical order;
-    // this allows checkboxes to be added into the list below in *any* order,
-    // and it'll still work
-    stlChkBoxOrder.Sorted := True;
+//  stlChkBoxOrder := TStringList.Create();
+//  try
+//    // stlChkBoxOrder is used to order the checkboxes in their vertical order;
+//    // this allows checkboxes to be added into the list below in *any* order,
+//    // and it'll still work
+//    stlChkBoxOrder.Sorted := True;
+//
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckExploreAfterMount.Top]), ckExploreAfterMount);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbar.Top]), ckDisplayToolbar);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbarLarge.Top]),
+//      ckDisplayToolbarLarge);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbarCaptions.Top]),
+//      ckDisplayToolbarCaptions);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayStatusbar.Top]), ckDisplayStatusbar);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckShowPasswords.Top]), ckShowPasswords);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckPromptMountSuccessful.Top]),
+//      ckPromptMountSuccessful);
 
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckExploreAfterMount.Top]), ckExploreAfterMount);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbar.Top]), ckDisplayToolbar);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbarLarge.Top]),
-      ckDisplayToolbarLarge);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbarCaptions.Top]),
-      ckDisplayToolbarCaptions);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayStatusbar.Top]), ckDisplayStatusbar);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckShowPasswords.Top]), ckShowPasswords);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckPromptMountSuccessful.Top]),
-      ckPromptMountSuccessful);
-
-    currChkBox := TCheckBox(stlChkBoxOrder.Objects[0]);
-    YPos       := currChkBox.Top;
-    YPos       := YPos + currChkBox.Height;
-    for i := 1 to (stlChkBoxOrder.Count - 1) do begin
-      currChkBox := TCheckBox(stlChkBoxOrder.Objects[i]);
-
-      if currChkBox.Visible then begin
-        currChkBox.Top := YPos + CHKBOX_CONTROL_MARGIN;
-
-        // Sort out the checkbox's height
-        NudgeCheckbox(currChkBox);
-
-        YPos := currChkBox.Top;
-        YPos := YPos + currChkBox.Height;
-      end;
-    end;
-
-  finally
-    stlChkBoxOrder.Free();
-  end;
+//    currChkBox := TCheckBox(stlChkBoxOrder.Objects[0]);
+//    YPos       := currChkBox.Top;
+//    YPos       := YPos + currChkBox.Height;
+//    for i := 1 to (stlChkBoxOrder.Count - 1) do begin
+//      currChkBox := TCheckBox(stlChkBoxOrder.Objects[i]);
+//
+//      if currChkBox.Visible then begin
+//        currChkBox.Top := YPos + CHKBOX_CONTROL_MARGIN;
+//
+//        // Sort out the checkbox's height
+//        NudgeCheckbox(currChkBox);
+//
+//        YPos := currChkBox.Top;
+//        YPos := YPos + currChkBox.Height;
+//      end;
+//    end;
+//
+//  finally
+//    stlChkBoxOrder.Free();
+//  end;
 
   // Here we move controls associated with labels, such that they appear
   // underneath the label
@@ -908,10 +690,10 @@ end;
 procedure TfrmOptions._ReadSettingsHotKeys(config: TMainSettings);
 begin
   // Hotkeys...
-  ckHotkeyDismount.Checked      := config.OptHKeyEnableDismount;
-  hkDismount.HotKey             := config.OptHKeyKeyDismount;
-  ckHotkeyDismountEmerg.Checked := config.OptHKeyEnableDismountEmerg;
-  hkDismountEmerg.HotKey        := config.OptHKeyKeyDismountEmerg;
+  ckHotkeyDismount.Checked      := config.DismountHotKeyEnabled;
+  hkDismount.HotKey             := config.DismountHotKey;
+  ckHotkeyDismountEmerg.Checked := config.EmergencyDismountHotKeyEnabled;
+  hkDismountEmerg.HotKey        := config.EmergencyDismountHotKey;
 end;
 
 
@@ -919,97 +701,36 @@ end;
 procedure TfrmOptions._ReadSettingsSystemTray(config: TMainSettings);
 begin
   // System tray icon related...
-  ckUseSystemTrayIcon.Checked := config.OptSystemTrayIconDisplay;
-  ckMinToIcon.Checked         := config.OptSystemTrayIconMinTo;
-  ckCloseToIcon.Checked       := config.OptSystemTrayIconCloseTo;
-
-  if (config.OptSystemTrayIconActionSingleClick <> stcaDoNothing) then begin
-    rbSingleClick.Checked := True;
-    _PopulateAndSetClickAction(cbClickAction, config.OptSystemTrayIconActionSingleClick);
-  end else begin
-    rbDoubleClick.Checked := True;
-    _PopulateAndSetClickAction(cbClickAction, config.OptSystemTrayIconActionDoubleClick);
-  end;
-
+  ckUseSystemTrayIcon.Checked := config.ShowSysTrayIcon;
+  ckMinToIcon.Checked         := config.MinimiseToSysTray;
+  ckCloseToIcon.Checked       := config.CloseToSysTray;
+  _PopulateAndSetClickAction(cbSingleClickAction, config.SysTraySingleClickAction);
+  _PopulateAndSetClickAction(cbDbleClickAction, config.SysTrayDoubleClickAction);
 end;
 
 
 procedure TfrmOptions._ReadSettingsGeneral(config: TMainSettings);
-var
-  uf:     TUpdateFrequency;
-  idx:    Integer;
-  useIdx: Integer;
+
+
+
 begin
   // General...
-  ckExploreAfterMount.Checked      := config.OptExploreAfterMount;
-  ckDisplayToolbar.Checked         := config.OptDisplayToolbar;
-  ckDisplayToolbarLarge.Checked    := config.OptDisplayToolbarLarge;
-  ckDisplayToolbarCaptions.Checked := config.OptDisplayToolbarCaptions;
-  ckDisplayStatusbar.Checked       := config.OptDisplayStatusbar;
-  ckShowPasswords.Checked          := config.OptShowPasswords;
 
-  ckPromptMountSuccessful.Checked := config.OptPromptMountSuccessful;
+  ckDisplayToolbar.Checked         := config.ShowToolbar;
+  ckDisplayToolbarLarge.Checked    := config.ShowLargeToolbar;
+  ckDisplayToolbarCaptions.Checked := config.ShowToolbarCaptions;
+  ckDisplayStatusbar.Checked       := config.ShowStatusbar;
 
-  // In case language code not found; reset to "(Default)" entry; at index 0
-  _SetLanguageSelection(config.OptLanguageCode);
+
 
   // Default drive letter
-  if (config.OptDefaultDriveLetter = #0) then begin
+  if (config.DefaultDriveChar = #0) then begin
     cbDrive.ItemIndex := 0;
   end else begin
-    cbDrive.ItemIndex := cbDrive.Items.IndexOf(config.OptDefaultDriveLetter + ':');
+    cbDrive.ItemIndex := cbDrive.Items.IndexOf(config.DefaultDriveChar + ':');
   end;
 
-  // Populate and set update frequency dropdown
-  cbChkUpdatesFreq.Items.Clear();
-  idx    := -1;
-  useIdx := -1;
-  for uf := low(uf) to high(uf) do begin
 
-    Inc(idx);
-    cbChkUpdatesFreq.Items.Add(UpdateFrequencyTitle(uf));
-    if (config.OptUpdateChkFrequency = uf) then begin
-      useIdx := idx;
-    end;
-  end;
-  cbChkUpdatesFreq.ItemIndex := useIdx;
-
-end;
-
-
-procedure TfrmOptions._WriteSettingsGeneral(config: TMainSettings);
-var
-  uf:      TUpdateFrequency;
-  useLang: TLanguageTranslation;
-begin
-  // General...
-  config.OptExploreAfterMount      := ckExploreAfterMount.Checked;
-  config.OptDisplayToolbar         := ckDisplayToolbar.Checked;
-  config.OptDisplayToolbarLarge    := ckDisplayToolbarLarge.Checked;
-  config.OptDisplayToolbarCaptions := ckDisplayToolbarCaptions.Checked;
-  config.OptDisplayStatusbar       := ckDisplayStatusbar.Checked;
-  config.OptShowPasswords          := ckShowPasswords.Checked;
-
-  config.OptPromptMountSuccessful := ckPromptMountSuccessful.Checked;
-
-  useLang                := _SelectedLanguage();
-  config.OptLanguageCode := useLang.Code;
-
-  // Default drive letter
-  if (cbDrive.ItemIndex = 0) then begin
-    config.OptDefaultDriveLetter := #0;
-  end else begin
-    config.OptDefaultDriveLetter := DriveLetterChar(cbDrive.Items[cbDrive.ItemIndex][1]);
-  end;
-
-  // Decode update frequency
-  config.OptUpdateChkFrequency := ufNever;
-  for uf := low(uf) to high(uf) do begin
-    if (UpdateFrequencyTitle(uf) = cbChkUpdatesFreq.Items[cbChkUpdatesFreq.ItemIndex]) then begin
-      config.OptUpdateChkFrequency := uf;
-      break;
-    end;
-  end;
 
 end;
 
@@ -1019,19 +740,16 @@ var
   owem:   eOnExitWhenMounted;
   owrp:   eOnExitWhenPortableMode;
   ondf:   eOnNormalDismountFail;
-  ma:     TFreeOTFEMountAs;
+  ma:     TMountDiskType;
   ft:     TVolumeType;
   idx:    Integer;
   useIdx: Integer;
 begin
   // Advanced...
-  ckAllowMultipleInstances.Checked   := config.OptAllowMultipleInstances;
-  ckAutoStartPortable.Checked        := config.OptAutoStartPortable;
-  ckAdvancedMountDlg.Checked         := config.OptAdvancedMountDlg;
-  ckRevertVolTimestamps.Checked      := config.OptRevertVolTimestamps;
-  ckWarnBeforeForcedDismount.Checked := config.OptWarnBeforeForcedDismount;
-  ckAllowNewlinesInPasswords.Checked := config.OptAllowNewlinesInPasswords;
-  ckAllowTabsInPasswords.Checked     := config.OptAllowTabsInPasswords;
+  ckAllowMultipleInstances.Checked   := config.AllowMultipleInstances;
+  ckAutoStartPortable.Checked        := config.AutoStartPortableMode;
+
+  ckWarnBeforeForcedDismount.Checked := config.WarnBeforeForceDismount;
 
   // Populate and set action on exiting when volumes mounted
   cbOnExitWhenMounted.Items.Clear();
@@ -1040,7 +758,7 @@ begin
   for owem := low(owem) to high(owem) do begin
     Inc(idx);
     cbOnExitWhenMounted.Items.Add(OnExitWhenMountedTitle(owem));
-    if (config.OptOnExitWhenMounted = owem) then begin
+    if (config.ExitWhenMountedAction = owem) then begin
       useIdx := idx;
     end;
   end;
@@ -1053,7 +771,7 @@ begin
   for owrp := low(owrp) to high(owrp) do begin
     Inc(idx);
     cbOnExitWhenPortableMode.Items.Add(OnExitWhenPortableModeTitle(owrp));
-    if (config.OptOnExitWhenPortableMode = owrp) then begin
+    if (config.ExitWhenPortableModeAction = owrp) then begin
       useIdx := idx;
     end;
   end;
@@ -1066,7 +784,7 @@ begin
   for ondf := low(ondf) to high(ondf) do begin
     Inc(idx);
     cbOnNormalDismountFail.Items.Add(OnNormalDismountFailTitle(ondf));
-    if (config.OptOnNormalDismountFail = ondf) then begin
+    if (config.NormalDismountFailAction = ondf) then begin
       useIdx := idx;
     end;
   end;
@@ -1083,7 +801,7 @@ begin
 
     Inc(idx);
     cbDefaultMountAs.Items.Add(FreeOTFEMountAsTitle(ma));
-    if (config.OptDefaultMountAs = ma) then begin
+    if (config.DefaultMountDiskType = ma) then begin
       useIdx := idx;
     end;
   end;
@@ -1098,18 +816,18 @@ begin
   if ft in sDragDropFileType then begin
     Inc(idx);
     cbDragDrop.Items.Add(DragDropFileTypeTitle(ft));
-    if (config.OptDragDropFileType = ft) then begin
+    if (config.DefaultVolType = ft) then begin
       cbDragDrop.ItemIndex := idx;
     end;
   end;
   end;
 
-  seMRUMaxItemCount.Value := config.OptMRUList.MaxItems;
+
 
 end;
 
 
-procedure TfrmOptions.AllTabs_InitAndReadSettings(config: TCommonSettings);
+procedure TfrmOptions._InitAndReadSettings(config: TCommonSettings);
  //var
  //  ckboxIndent:  Integer;
  //  maxCBoxWidth: Integer;
@@ -1122,8 +840,7 @@ begin
    _ReadSettingsGeneral(config as TMainSettings);
   _InitializeHotKeys();
    _ReadSettingsHotKeys(config as TMainSettings);
-   fmeOptions_Autorun1.Initialize;
-  fmeOptions_Autorun1.ReadSettings(config);
+
 
   _InitializeAdvancedTab;
   _ReadSettingsAdvanced(config as TMainSettings);
@@ -1137,14 +854,14 @@ begin
   //  ckLaunchAtStartup.Left          := ckAssociateFiles.Left;
   //  ckLaunchMinimisedAtStartup.left := ckLaunchAtStartup.left + ckboxIndent;
 
-  EnableDisableControls();
+  _EnableDisableControls();
 end;
 
-function TfrmOptions.DoOKClicked(): Boolean;
+function TfrmOptions._DoOKClicked(): Boolean;
 var
   minimisedParam: String;
 begin
-  Result := inherited DoOKClicked();
+  Result := inherited _DoOKClicked();
 
   if Result then begin
     if ((ckLaunchAtStartup.Checked <> FOrigLaunchAtStartup) or

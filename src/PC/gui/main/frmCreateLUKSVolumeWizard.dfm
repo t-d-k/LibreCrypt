@@ -161,7 +161,7 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
             Height = 234
             ExplicitWidth = 585
             ExplicitHeight = 234
-            inherited SDUDiskPartitionsPanel1: TfmeDiskPartitionsPanel
+            inherited SDUDiskPartitionsPanel1: TfmeSDUDiskPartitions
               Height = 206
               ExplicitHeight = 206
             end
@@ -186,7 +186,7 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
           end
           inherited ilErrorWarning: TImageList
             Bitmap = {
-              494C010103000400340110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C0101030004003C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -342,10 +342,10 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
           inherited lblPartitionDiskSize: TLabel
             Left = 137
             Top = 260
-            Width = 53
+            Width = 52
             ExplicitLeft = 137
             ExplicitTop = 260
-            ExplicitWidth = 53
+            ExplicitWidth = 52
           end
           inherited Label6: TLabel
             Left = 3
@@ -494,6 +494,10 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
       object tsRNGSelect: TTabSheet
         Caption = 'RNG Select'
         ImageIndex = 6
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object reInstructRNGSelect1: TLabel
           Left = 3
           Top = 12
@@ -613,6 +617,10 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
       object tsRNGPKCS11: TTabSheet
         Caption = 'RNG PKCS#11 token'
         ImageIndex = 9
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lblToken: TLabel
           Left = 11
           Top = 51

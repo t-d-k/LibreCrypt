@@ -24,7 +24,7 @@ object frmVolProperties: TfrmVolProperties
     Top = 60
     Width = 60
     Height = 13
-    Caption = '&Mounted for:'
+    Caption = '&Opened for:'
     FocusControl = edReadOnly
   end
   object Label22: TLabel
