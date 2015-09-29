@@ -2,10 +2,10 @@
 <LINK rel="shortcut icon" href="src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![DoxBox logo](src/Common/Common/images/DoxBox128.png)](http://DoxBox.eu/)
+[![LibreCrypt logo](src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[LibreCrypt](http://DoxBox.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 
 
@@ -35,7 +35,7 @@ _[LibreCrypt](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 * Supports many hash (including SHA-512, RIPEMD-320, Tiger) and encryption algorithms (Including AES, Twofish, and Serpent) in several modes (CBC, LRW, and XTS).
 * Optional 'key files' let you use a thumb-drive as a key.
 * Portable mode doesn't need to be installed and leaves little trace on 3rd party PCs (administrator rights needed).
-* Deniable encryption protects you from 'rubber hose cryptography'.
+* Deniable encryption in case of 'rubber hose cryptography'.
 
 **Please note this is a Beta version with some known limitations. Particularly on 64 bit Windows the text 'Test Mode' is shown on the desktop.**
 	
@@ -62,7 +62,7 @@ _[LibreCrypt](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 	+ Click the Tools->"Allow Test-signed drivers" menu item.
 	+ Reboot	
 	+ After rebooting the words "Test Mode" appear in the four corners of the Desktop. Please see the documentation for details on removing this.
-	+ After finishing with LibreCrypt you can click the Tools->"Disallow Test-signed drivers" menu item to remove the "Test Mode" text.
+
 *	To run in portable mode, you need to have admin rights.  
 *	Support for the following cyphers will be removed in a future version, please convert to another: xor, plain, single DES. Ditto for the 'plain' hash. 
 *	LibreCrypt does not support encryption of the operating system partition, for this we recommend Ubuntu Linux.
@@ -74,5 +74,5 @@ _[LibreCrypt](http://DoxBox.eu/): Open-Source disk encryption for Windows_
 *	The handling of keyphrases containing non-ASCII characters will change in a future version. This change will not be backwards compatible. So in this version it is recommended to use only ASCII characters in keyphrases.
 *	There are possible bugs in opening volumes created with FreeOTFE with non-ASCII characters. If you experience problems, please use the legacy app to change the password to an ASCII one and retry. Alternatively move the files to a native container.
 
-For more details, please see the [getting started guide](http://DoxBox.eu/doxbox/getting_started.html) and [FAQ](http://DoxBox.eu/doxbox/FAQ.html).
+For more details, please see the [getting started guide](http://LibreCrypt.eu/doxbox/getting_started.html) and [FAQ](http://LibreCrypt.eu/doxbox/FAQ.html).
  
