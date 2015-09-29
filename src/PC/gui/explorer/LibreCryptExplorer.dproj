@@ -61,6 +61,7 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_IMPLICIT_STRING_CAST>false</DCC_IMPLICIT_STRING_CAST>
 			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
 			<DCC_ExeOutput>..\..\..\..\bin\PC\$(Config)\$(Platform)</DCC_ExeOutput>
 			<DCC_DcuOutput>P:\src\PC\gui\explorer\dcus\$(Config)\$(Platform)</DCC_DcuOutput>
@@ -125,6 +126,7 @@
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<DCC_IMPLICIT_STRING_CAST>false</DCC_IMPLICIT_STRING_CAST>
 			<Debugger_RunParams>/dev_menu /noexit</Debugger_RunParams>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
 			<VerInfo_Keys>CompanyName=LibreCrypt;FileDescription=LibreCrypt Explorer;FileVersion=6.2.0.0;InternalName=;LegalCopyright=;LegalTrademarks=LibreCrypt;OriginalFilename=;ProductName=LibreCrypt Explorer;ProductVersion=;Comments=</VerInfo_Keys>
@@ -174,6 +176,7 @@
 					</Source>
 					<Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+						<Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\9.0\Bpl\PBPreview_pack.bpl">(untitled)</Excluded_Packages>
 						<Excluded_Packages Name="C:\Program Files (x86)\FastReports\LibD16\dclfrxDB16.bpl">FastReport 4.0 DB Components</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
 					</Excluded_Packages>
@@ -425,12 +428,7 @@
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="..\common\lcConsts.pas"/>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\fmeDiskPartitionsPanel.pas"/>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\PartitionImageDLL.pas"/>
-			<DCCReference Include="..\common\fmeAutorunOptions.pas">
-				<Form>fmeAutorunOptions</Form>
-				<DesignClass>TFrame</DesignClass>
-			</DCCReference>
 			<DCCReference Include="..\common\OTFE\OTFE\OTFEConsts_U.pas"/>
 			<DCCReference Include="..\common\SDeanSecurity\Shredder\Shredder.pas"/>
 			<DCCReference Include="..\common\SDeanSecurity\Shredder\FileList_U.pas">
@@ -443,6 +441,10 @@
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmSelectVolumeType.pas">
 				<Form>frmSelectVolumeType</Form>
 			</DCCReference>
+			<DCCReference Include="..\main\frmCreateLUKSVolumeWizard.pas">
+				<Form>frmCreateLUKSVolumeWizard</Form>
+			</DCCReference>
+			<DCCReference Include="P:\tools\gnugettext.pas"/>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>

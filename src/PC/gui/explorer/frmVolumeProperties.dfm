@@ -1,15 +1,9 @@
 inherited frmVolumeProperties: TfrmVolumeProperties
   Caption = 'frmPropertiesDialog_Volume'
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   inherited PageControl1: TPageControl
     inherited tsGeneral: TTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       inherited lblSizeOnDisk: TLabel
         Top = 376
         ExplicitTop = 376

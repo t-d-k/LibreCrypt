@@ -1,417 +1,196 @@
 inherited frmExplorerOptions: TfrmExplorerOptions
-  ExplicitWidth = 519
-  ExplicitHeight = 516
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcOptions: TPageControl
-    object tsGeneral: TTabSheet
-      Caption = 'General'
-      ImageIndex = 1
-      ExplicitLeft = 7
-      ExplicitTop = 33
-      object gbGeneral: TGroupBox
-        Left = 0
-        Top = 0
-        Width = 492
-        Height = 348
-        Align = alClient
-        Caption = 'General'
-        TabOrder = 0
-        ExplicitLeft = 16
-        ExplicitTop = 16
-        ExplicitWidth = 469
-        ExplicitHeight = 285
-        object tlab: TLabel
-          Left = 264
-          Top = 24
-          Width = 51
-          Height = 13
-          Caption = '&Language:'
-          FocusControl = cbLanguage
-          WordWrap = True
-        end
-        object lblChkUpdatesFreq: TLabel
-          Left = 264
-          Top = 160
-          Width = 90
-          Height = 13
-          Caption = 'Check for &updates:'
-          FocusControl = cbChkUpdatesFreq
-        end
-        object Label1: TLabel
-          Left = 264
-          Top = 76
-          Width = 164
-          Height = 13
-          Caption = '&When storing files/folders, perform:'
-          FocusControl = cbDefaultStoreOp
-        end
-        object ckDisplayToolbar: TSDUCheckBox
-          Left = 12
-          Top = 24
-          Width = 221
-          Height = 17
-          Caption = 'Display &toolbar'
-          TabOrder = 0
-          OnClick = ControlChanged
-          AutoSize = True
-        end
-        object Panel1: TPanel
-          Left = 240
-          Top = 28
-          Width = 8
-          Height = 221
-          Caption = 'pnlVertSplit'
-          TabOrder = 1
-        end
-        object ckShowPasswords: TSDUCheckBox
-          Left = 12
-          Top = 144
-          Width = 221
-          Height = 17
-          Caption = 'Display &passwords when entered'
-          TabOrder = 6
-          AutoSize = True
-        end
-        object cbLanguage: TComboBox
-          Left = 280
-          Top = 44
-          Width = 145
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 3
-          OnChange = cbLanguageChange
-        end
-        object pbLangDetails: TButton
-          Left = 428
-          Top = 44
-          Width = 21
-          Height = 21
-          Caption = '?'
-          TabOrder = 4
-          OnClick = pbLangDetailsClick
-        end
-        object ckDisplayToolbarLarge: TSDUCheckBox
-          Left = 32
-          Top = 44
-          Width = 201
-          Height = 17
-          Caption = 'Large &icons'
-          TabOrder = 2
-          OnClick = ControlChanged
-          AutoSize = True
-        end
-        object ckDisplayToolbarCaptions: TSDUCheckBox
-          Left = 32
-          Top = 64
-          Width = 201
-          Height = 17
-          Caption = 'Display &captions'
-          TabOrder = 5
-          AutoSize = True
-        end
-        object cbChkUpdatesFreq: TComboBox
-          Left = 280
-          Top = 180
-          Width = 145
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 8
-        end
-        object ckShowHiddenItems: TSDUCheckBox
-          Left = 12
-          Top = 164
-          Width = 163
-          Height = 13
-          Caption = 'Show &hidden files and folders'
-          TabOrder = 7
-          AutoSize = True
-        end
-        object ckHideKnownFileExtns: TSDUCheckBox
-          Left = 12
-          Top = 184
-          Width = 193
-          Height = 13
-          Caption = 'Hide extensions of &known file types'
-          TabOrder = 9
-          AutoSize = True
-        end
-        object ckStoreLayout: TSDUCheckBox
-          Left = 12
-          Top = 204
-          Width = 155
-          Height = 13
-          Caption = 'Save &window layout on exit'
-          TabOrder = 10
-          OnClick = ckStoreLayoutClick
-          AutoSize = True
-        end
-        object cbDefaultStoreOp: TComboBox
-          Left = 280
-          Top = 96
-          Width = 145
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 11
-          OnClick = ControlChanged
+    ActivePage = tsGeneral
+    inherited tsGeneral: TTabSheet
+      inherited gbGeneralMain: TGroupBox
+        inherited ckStoreLayout: TSDUCheckBox
+          Top = 190
+          ExplicitTop = 190
         end
       end
     end
-    object tsAdvanced: TTabSheet
-      Caption = 'Advanced'
+    object tsExplorer: TTabSheet [2]
+      Caption = 'Explorer'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object gbAdvanced: TGroupBox
-        Left = 16
-        Top = 3
-        Width = 469
-        Height = 345
+        Left = 0
+        Top = 0
+        Width = 505
+        Height = 348
+        Align = alClient
         Caption = 'Advanced'
         TabOrder = 0
-        object lblMRUMaxItemCountInst: TLabel
-          Left = 280
-          Top = 240
-          Width = 134
-          Height = 13
-          Caption = '(Set to 0 to disable MRU list)'
-        end
-        object lblMRUMaxItemCount: TLabel
-          Left = 264
-          Top = 184
-          Width = 158
-          Height = 26
-          Caption = '&Max. number of volumes to show in most recently used list:'
-          FocusControl = seMRUMaxItemCount
-          WordWrap = True
-        end
+        ExplicitLeft = 3
+        ExplicitTop = 3
         object lblOverwritePasses: TLabel
-          Left = 264
-          Top = 135
+          Left = 20
+          Top = 137
           Width = 84
           Height = 13
           Caption = 'Overwrite &passes:'
           FocusControl = seOverwritePasses
         end
         object lblOverwriteMethod: TLabel
-          Left = 264
-          Top = 88
+          Left = 20
+          Top = 98
           Width = 86
           Height = 13
           Caption = 'O&verwrite method:'
           FocusControl = cbOverwriteMethod
         end
         object lblMoveDeletionMethod: TLabel
-          Left = 264
-          Top = 28
-          Width = 147
-          Height = 26
-          Caption = 'When &moving files/folders to a mounted container:'
+          Left = 20
+          Top = 60
+          Width = 238
+          Height = 13
+          Caption = 'When &moving files/folders to an opened container:'
           FocusControl = cbMoveDeletionMethod
           WordWrap = True
         end
-        object ckAdvancedMountDlg: TSDUCheckBox
-          Left = 12
-          Top = 28
-          Width = 221
-          Height = 17
-          Caption = 'Display advanced &options when mounting'
-          TabOrder = 1
-          WordWrap = True
-          AutoSize = True
-        end
-        object ckRevertVolTimestamps: TSDUCheckBox
-          Left = 12
-          Top = 52
-          Width = 221
-          Height = 17
-          Caption = '&Revert container timestamps on dismount'
-          TabOrder = 3
-          WordWrap = True
-          AutoSize = True
-        end
-        object pnlVertSplit: TPanel
-          Left = 240
-          Top = 28
-          Width = 8
-          Height = 293
-          Caption = 'pnlVertSplit'
-          TabOrder = 0
-        end
-        object seMRUMaxItemCount: TSpinEdit64
-          Left = 280
-          Top = 216
-          Width = 145
-          Height = 22
-          Increment = 1
-          MaxValue = 10
-          TabOrder = 9
-        end
         object seOverwritePasses: TSpinEdit64
-          Left = 280
-          Top = 152
+          Left = 344
+          Top = 134
           Width = 145
           Height = 22
           Increment = 1
-          TabOrder = 8
+          TabOrder = 3
         end
         object cbOverwriteMethod: TComboBox
-          Left = 280
-          Top = 104
-          Width = 144
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 5
-          OnChange = ControlChanged
-        end
-        object cbMoveDeletionMethod: TComboBox
-          Left = 280
-          Top = 56
+          Left = 344
+          Top = 95
           Width = 144
           Height = 21
           Style = csDropDownList
           TabOrder = 2
           OnChange = ControlChanged
         end
+        object cbMoveDeletionMethod: TComboBox
+          Left = 344
+          Top = 57
+          Width = 144
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+          OnChange = ControlChanged
+        end
         object ckPreserveTimestampsOnStoreExtract: TSDUCheckBox
-          Left = 12
-          Top = 76
+          Left = 20
+          Top = 29
           Width = 222
           Height = 13
           Caption = 'Pre&serve file timestamps on store/extract'
-          TabOrder = 4
-          WordWrap = True
-          AutoSize = True
-        end
-        object ckAllowTabsInPasswords: TSDUCheckBox
-          Left = 12
-          Top = 120
-          Width = 137
-          Height = 13
-          Caption = 'Allow ta&bs in passwords'
-          TabOrder = 7
-          WordWrap = True
-          AutoSize = True
-        end
-        object ckAllowNewlinesInPasswords: TSDUCheckBox
-          Left = 12
-          Top = 96
-          Width = 157
-          Height = 13
-          Caption = 'Allow &newlines in passwords'
-          TabOrder = 6
+          TabOrder = 1
           WordWrap = True
           AutoSize = True
         end
       end
     end
-    object tsWebDAV: TTabSheet
+    object tsWebDAV: TTabSheet [3]
       Caption = 'Drive'
       ImageIndex = 3
       object gbWebDAV: TGroupBox
         Left = 0
         Top = 0
-        Width = 492
+        Width = 505
         Height = 348
         Align = alClient
-        Caption = 'Drive mount'
+        Caption = 'Drive open'
         TabOrder = 0
-        ExplicitLeft = 16
-        ExplicitTop = 8
-        ExplicitWidth = 373
-        ExplicitHeight = 301
-        object lblDefaultDriveLetter: TLabel
-          Left = 32
-          Top = 88
-          Width = 89
+        object Label1: TLabel
+          Left = 17
+          Top = 90
+          Width = 164
           Height = 13
-          Caption = 'Default drive &letter:'
-          FocusControl = cbDrive
+          Caption = '&When storing files/folders, perform:'
+          FocusControl = cbDefaultStoreOp
         end
         object ckWebDAV: TSDUCheckBox
-          Left = 12
-          Top = 20
+          Left = 17
+          Top = 21
           Width = 194
           Height = 13
-          Caption = '&Map mounted container to drive letter'
+          Caption = '&Map opened container to drive letter'
           TabOrder = 0
           WordWrap = True
           OnClick = ckWebDAVClick
           AutoSize = True
         end
-        object cbDrive: TComboBox
-          Left = 136
-          Top = 84
-          Width = 145
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 3
-        end
         object gbWebDAVAdvanced: TGroupBox
-          Left = 32
-          Top = 112
-          Width = 329
-          Height = 173
+          Left = 2
+          Top = 115
+          Width = 501
+          Height = 231
+          Align = alBottom
           Caption = 'Advanced'
-          TabOrder = 4
+          TabOrder = 1
           object Label6: TLabel
-            Left = 12
-            Top = 44
+            Left = 14
+            Top = 52
             Width = 86
             Height = 13
             Caption = '&Share base name:'
             FocusControl = edWebDAVShareName
           end
           inline fedWebDAVLogDebug: TSDUFilenameEdit
-            Left = 32
-            Top = 136
-            Width = 283
-            Height = 21
-            Constraints.MaxHeight = 21
+            Left = 91
+            Top = 128
+            Width = 399
+            Height = 33
             Constraints.MinHeight = 21
             TabOrder = 3
-            ExplicitLeft = 32
-            ExplicitTop = 136
-            ExplicitWidth = 283
-            ExplicitHeight = 21
+            ExplicitLeft = 91
+            ExplicitTop = 128
+            ExplicitWidth = 399
+            ExplicitHeight = 33
             DesignSize = (
-              283
-              21)
+              399
+              33)
             inherited edFilename: TEdit
-              Width = 171
-              ExplicitWidth = 171
+              Width = 297
+              ExplicitWidth = 297
             end
             inherited pbBrowse: TButton
-              Left = 193
-              ExplicitLeft = 193
+              Left = 336
+              Width = 48
+              ExplicitLeft = 336
+              ExplicitWidth = 48
             end
           end
           inline fedWebDAVLogAccess: TSDUFilenameEdit
-            Left = 32
-            Top = 88
-            Width = 283
-            Height = 21
-            Constraints.MaxHeight = 21
+            Left = 93
+            Top = 83
+            Width = 397
+            Height = 30
             Constraints.MinHeight = 21
             TabOrder = 2
-            ExplicitLeft = 32
-            ExplicitTop = 88
-            ExplicitWidth = 283
-            ExplicitHeight = 21
+            ExplicitLeft = 93
+            ExplicitTop = 83
+            ExplicitWidth = 397
+            ExplicitHeight = 30
             DesignSize = (
-              283
-              21)
+              397
+              30)
             inherited edFilename: TEdit
-              Width = 171
-              ExplicitWidth = 171
+              Width = 297
+              ExplicitWidth = 297
             end
             inherited pbBrowse: TButton
-              Left = 193
-              ExplicitLeft = 193
+              Left = 328
+              Width = 54
+              ExplicitLeft = 328
+              ExplicitWidth = 54
             end
           end
           object edWebDAVShareName: TEdit
-            Left = 108
-            Top = 40
-            Width = 121
+            Left = 110
+            Top = 48
+            Width = 294
             Height = 21
             TabOrder = 1
             Text = 'edWebDAVShareName'
@@ -421,14 +200,14 @@ inherited frmExplorerOptions: TfrmExplorerOptions
             Top = 20
             Width = 163
             Height = 13
-            Caption = '&Overwrite cache on dismount'
+            Caption = '&Overwrite cache on lock'
             TabOrder = 0
             WordWrap = True
             AutoSize = True
           end
           object ckWebDAVLogAccess: TSDUCheckBox
-            Left = 12
-            Top = 68
+            Left = 14
+            Top = 86
             Width = 73
             Height = 13
             Caption = '&Access log'
@@ -438,8 +217,8 @@ inherited frmExplorerOptions: TfrmExplorerOptions
             AutoSize = True
           end
           object ckWebDAVLogDebug: TSDUCheckBox
-            Left = 12
-            Top = 116
+            Left = 14
+            Top = 132
             Width = 71
             Height = 13
             Caption = 'De&bug log'
@@ -449,57 +228,67 @@ inherited frmExplorerOptions: TfrmExplorerOptions
             AutoSize = True
           end
         end
-        object ckExploreAfterMount: TSDUCheckBox
-          Left = 32
-          Top = 40
-          Width = 149
-          Height = 17
-          Caption = '&Explore after mount'
-          TabOrder = 1
-          AutoSize = False
-        end
-        object ckPromptMountSuccessful: TSDUCheckBox
-          Left = 32
-          Top = 60
-          Width = 217
-          Height = 17
-          Caption = 'Display &message on successful mount'
+        object cbDefaultStoreOp: TComboBox
+          Left = 345
+          Top = 87
+          Width = 145
+          Height = 21
+          Style = csDropDownList
           TabOrder = 2
-          AutoSize = False
+          OnClick = ControlChanged
+        end
+        object ckShowHiddenItems: TSDUCheckBox
+          Left = 17
+          Top = 59
+          Width = 163
+          Height = 13
+          Caption = 'Show &hidden files and folders'
+          TabOrder = 3
+          AutoSize = True
+        end
+        object ckHideKnownFileExtns: TSDUCheckBox
+          Left = 17
+          Top = 40
+          Width = 193
+          Height = 13
+          Caption = 'Hide extensions of &known file types'
+          TabOrder = 4
+          AutoSize = True
         end
       end
     end
-    object tsAutorun: TTabSheet
-      Caption = 'Autorun'
-      ImageIndex = 4
-      inline fmeOptions_Autorun1: TfmeAutorunOptions
-        Left = 21
-        Top = -10
-        Width = 471
-        Height = 358
-        TabOrder = 0
-        ExplicitLeft = 21
-        ExplicitTop = -10
-        inherited gbAutorun: TGroupBox
-          Left = 0
-          Top = 0
-          Width = 471
-          Height = 358
-          Align = alClient
-          inherited Label33: TLabel
-            Width = 56
-            ExplicitWidth = 56
-          end
-          inherited Label34: TLabel
-            Width = 64
-            ExplicitWidth = 64
-          end
-          inherited Label35: TLabel
-            Width = 69
-            ExplicitWidth = 69
-          end
+    inherited tsAutorun: TTabSheet
+      inherited gbAutorun: TGroupBox
+        ExplicitLeft = 3
+        inherited Label34: TLabel
+          Top = 116
+          ExplicitTop = 116
+        end
+        inherited Label35: TLabel
+          Top = 160
+          ExplicitTop = 160
+        end
+        inherited pbPreDismountBrowse: TButton
+          Top = 112
+          ExplicitTop = 112
+        end
+        inherited edPreDismountExe: TEdit
+          Top = 112
+          ExplicitTop = 112
+        end
+        inherited pbPostDismountBrowse: TButton
+          Top = 156
+          ExplicitTop = 156
+        end
+        inherited edPostDismountExe: TEdit
+          Top = 156
+          ExplicitTop = 156
         end
       end
     end
+  end
+  inherited OpenDialog: TSDUOpenDialog
+    Left = 368
+    Top = 320
   end
 end

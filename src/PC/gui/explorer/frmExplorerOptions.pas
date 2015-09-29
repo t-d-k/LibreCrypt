@@ -10,45 +10,26 @@ uses
   SDUFilenameEdit_U, OTFEFreeOTFEDLL_U, SDUStdCtrls, CommonSettings,
   Shredder, ExplorerSettings,
   // LibreCrypt forms
-  fmeAutorunOptions,
-//   fmeBaseOptions,
+  //   fmeBaseOptions,
   frmCommonOptions,
-  SDUFrames, fmeVolumeSelect, Spin64;
+  SDUFrames, fmeVolumeSelect, Spin64, SDUDialogs;
 
 type
-  TLanguageTranslation = record
-    Name:    String;
-    Code:    String;
-    Contact: String;
-  end;
-  PLanguageTranslation = ^TLanguageTranslation;
+
 
   TfrmExplorerOptions = class (TfrmCommonOptions)
-    tsGeneral:     TTabSheet;
-    tsAdvanced:    TTabSheet;
+    tsExplorer: TTabSheet;
     tsWebDAV:      TTabSheet;
-    tsAutorun:     TTabSheet;
-    fmeOptions_Autorun1: TfmeAutorunOptions;
     gbAdvanced:    TGroupBox;
-    lblMRUMaxItemCountInst: TLabel;
-    lblMRUMaxItemCount: TLabel;
     lblOverwritePasses: TLabel;
     lblOverwriteMethod: TLabel;
     lblMoveDeletionMethod: TLabel;
-    ckAdvancedMountDlg: TSDUCheckBox;
-    ckRevertVolTimestamps: TSDUCheckBox;
-    pnlVertSplit:  TPanel;
-    seMRUMaxItemCount: TSpinEdit64;
     seOverwritePasses: TSpinEdit64;
     cbOverwriteMethod: TComboBox;
     cbMoveDeletionMethod: TComboBox;
     ckPreserveTimestampsOnStoreExtract: TSDUCheckBox;
-    ckAllowTabsInPasswords: TSDUCheckBox;
-    ckAllowNewlinesInPasswords: TSDUCheckBox;
     gbWebDAV:      TGroupBox;
-    lblDefaultDriveLetter: TLabel;
     ckWebDAV:      TSDUCheckBox;
-    cbDrive:       TComboBox;
     gbWebDAVAdvanced: TGroupBox;
     Label6:        TLabel;
     fedWebDAVLogDebug: TSDUFilenameEdit;
@@ -57,44 +38,25 @@ type
     ckOverwriteCacheOnDismount: TSDUCheckBox;
     ckWebDAVLogAccess: TSDUCheckBox;
     ckWebDAVLogDebug: TSDUCheckBox;
-    ckExploreAfterMount: TSDUCheckBox;
-    ckPromptMountSuccessful: TSDUCheckBox;
-    gbGeneral:     TGroupBox;
-    tlab:          TLabel;
-    lblChkUpdatesFreq: TLabel;
-    Label1:        TLabel;
-    ckDisplayToolbar: TSDUCheckBox;
-    Panel1:        TPanel;
-    ckShowPasswords: TSDUCheckBox;
-    cbLanguage:    TComboBox;
-    pbLangDetails: TButton;
-    ckDisplayToolbarLarge: TSDUCheckBox;
-    ckDisplayToolbarCaptions: TSDUCheckBox;
-    cbChkUpdatesFreq: TComboBox;
+    Label1: TLabel;
+    cbDefaultStoreOp: TComboBox;
     ckShowHiddenItems: TSDUCheckBox;
     ckHideKnownFileExtns: TSDUCheckBox;
-    ckStoreLayout: TSDUCheckBox;
-    cbDefaultStoreOp: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure pbLangDetailsClick(Sender: TObject);
-    procedure cbLanguageChange(Sender: TObject);
-    procedure ckStoreLayoutClick(Sender: TObject);
+
     procedure ckWebDAVClick(Sender: TObject);
   private
-    FLanguages: array of TLanguageTranslation;
-    FFlagClearLayoutOnSave: Boolean;
+
+
     FWarnUserChangesRequireRemount: Boolean;
 
-    procedure _SetLanguageSelection(langCode: String);
 
-    function GetSelectedLanguage(): TLanguageTranslation;
-    function GetLanguage(idx: Integer): TLanguageTranslation;
-     procedure _PopulateLanguages;
-     function GetOverwriteMethod: TShredMethod;
+
+    function GetOverwriteMethod: TShredMethod;
     procedure SetOverwriteMethod(useMethod: TShredMethod);
 
-    procedure _NudgeCheckbox(chkBox: TCheckBox);
+//    procedure _NudgeCheckbox(chkBox: TCheckBox);
     procedure _PopulateOverwriteMethods;
     //procs to set up/read/write tabs
     procedure _EnableDisableControlsAdvancedExplorer;
@@ -113,11 +75,11 @@ type
     procedure _WriteSettingsWebDAV(config: TExplorerSettings);
 
   protected
-    procedure AllTabs_WriteSettings(config: TCommonSettings); override;
-    procedure AllTabs_InitAndReadSettings(config: TCommonSettings); override;
-    procedure EnableDisableControls(); override;
+    procedure _WriteAllSettings(config: TCommonSettings); override;
+    procedure _InitAndReadSettings(config: TCommonSettings); override;
+    procedure _EnableDisableControls(); override;
   public
-    procedure ChangeLanguage(langCode: String); override;
+
   end;
 
 
@@ -130,7 +92,7 @@ uses
   ShlObj,  // Required for CSIDL_PROGRAMS
            //sdu & LibreCrypt utils
   OTFEFreeOTFEBase_U,
-  SDUDialogs, SDUGeneral,
+  SDUGeneral,
   SDUi18n, lcDialogs, lcConsts, commonconsts, lcTypes
   // LibreCrypt forms
   ;
@@ -145,7 +107,7 @@ const
 {$ENDIF}
 
 const
-//  CONTROL_MARGIN_LBL_TO_CONTROL = 5;
+  //  CONTROL_MARGIN_LBL_TO_CONTROL = 5;
 
   // Vertical spacing between checkboxes, and min horizontal spacing between
   // checkbox label and the vertical separator line
@@ -153,12 +115,10 @@ const
   // cramped
   CHKBOX_CONTROL_MARGIN = 6;
 
-procedure TfrmExplorerOptions.AllTabs_InitAndReadSettings(
+procedure TfrmExplorerOptions._InitAndReadSettings(
   config: TCommonSettings);
 begin
   inherited;
-  fmeOptions_Autorun1.Initialize;
-  fmeOptions_Autorun1.ReadSettings(config);
 
   _InitializeAdvancedExplorer;
   _ReadSettingsAdvancedExplorer(config as TExplorerSettings);
@@ -174,7 +134,7 @@ end;
 
 procedure TfrmExplorerOptions._WriteSettingsGeneral(config: TExplorerSettings);
 
-  procedure GetGreyedCheckbox(chkBox: TCheckbox; var stateOne: Boolean; var stateTwo: Boolean);
+      procedure GetGreyedCheckbox(chkBox: TCheckbox; out stateOne: Boolean; out stateTwo: Boolean);
   begin
     if (chkBox.State <> cbGrayed) then begin
       stateOne := chkBox.Checked;
@@ -183,36 +143,32 @@ procedure TfrmExplorerOptions._WriteSettingsGeneral(config: TExplorerSettings);
   end;
 
 var
-  useLang: TLanguageTranslation;
+
   dso:     TDefaultStoreOp;
-  uf:      TUpdateFrequency;
+  showTemp   : Boolean;
 begin
-  // General...
-  GetGreyedCheckbox(
+
+   GetGreyedCheckbox(
     ckDisplayToolbar,
-    config.OptShowToolbarVolume,
-    config.OptShowToolbarExplorer
+    showTemp,
+    config.fOptShowToolbarExplorer
     );
+   config.showToolbar :=showTemp;
   GetGreyedCheckbox(
     ckDisplayToolbarLarge,
-    config.OptToolbarVolumeLarge,
-    config.OptToolbarExplorerLarge
+     showTemp,
+    config.fshowLargerExplorerToolbar
     );
+    config.ShowLargeToolbar :=   showTemp ;
   GetGreyedCheckbox(
     ckDisplayToolbarCaptions,
-    config.OptToolbarVolumeCaptions,
-    config.OptToolbarExplorerCaptions
+    showTemp,
+    config.fshowExplorerToolbarCaptions
     );
+    config.ShowToolbarCaptions :=   showTemp ;
 
-  config.OptShowPasswords      := ckShowPasswords.Checked;
-  config.OptShowHiddenItems    := ckShowHiddenItems.Checked;
+  config.ShowHiddenItems    := ckShowHiddenItems.Checked;
   config.OptHideKnownFileExtns := ckHideKnownFileExtns.Checked;
-  config.OptStoreLayout        := ckStoreLayout.Checked;
-
-  config.FlagClearLayoutOnSave := FFlagClearLayoutOnSave;
-
-  useLang                := GetSelectedLanguage();
-  config.OptLanguageCode := useLang.Code;
 
   // Decode default store op
   config.OptDefaultStoreOp := dsoPrompt;
@@ -223,14 +179,7 @@ begin
     end;
   end;
 
-  // Decode update frequency
-  config.OptUpdateChkFrequency := ufNever;
-  for uf := low(uf) to high(uf) do begin
-    if (UpdateFrequencyTitle(uf) = cbChkUpdatesFreq.Items[cbChkUpdatesFreq.ItemIndex]) then begin
-      config.OptUpdateChkFrequency := uf;
-      break;
-    end;
-  end;
+
 
 end;
 
@@ -240,13 +189,11 @@ var
   mdm: TMoveDeletionMethod;
 begin
   // Advanced...
-  config.OptAdvancedMountDlg                 := ckAdvancedMountDlg.Checked;
-  config.OptRevertVolTimestamps              := ckRevertVolTimestamps.Checked;
-  config.OptPreserveTimestampsOnStoreExtract := ckPreserveTimestampsOnStoreExtract.Checked;
-  config.OptAllowNewlinesInPasswords         := ckAllowNewlinesInPasswords.Checked;
-  config.OptAllowTabsInPasswords             := ckAllowTabsInPasswords.Checked;
 
-  config.OptMRUList.MaxItems := seMRUMaxItemCount.Value;
+  config.OptPreserveTimestampsOnStoreExtract := ckPreserveTimestampsOnStoreExtract.Checked;
+
+
+
 
   // Decode move deletion method
   config.OptMoveDeletionMethod := mdmPrompt;
@@ -270,13 +217,9 @@ var
   useIdx: Integer;
 begin
   // Advanced...
-  ckAdvancedMountDlg.Checked                 := config.OptAdvancedMountDlg;
-  ckRevertVolTimestamps.Checked              := config.OptRevertVolTimestamps;
-  ckPreserveTimestampsOnStoreExtract.Checked := config.OptPreserveTimestampsOnStoreExtract;
-  ckAllowNewlinesInPasswords.Checked         := config.OptAllowNewlinesInPasswords;
-  ckAllowTabsInPasswords.Checked             := config.OptAllowTabsInPasswords;
 
-  seMRUMaxItemCount.Value := config.OptMRUList.MaxItems;
+
+  ckPreserveTimestampsOnStoreExtract.Checked := config.OptPreserveTimestampsOnStoreExtract;
 
   // Populate and set move deletion method
   cbMoveDeletionMethod.Items.Clear();
@@ -308,22 +251,6 @@ begin
   end;
 end;
 
-procedure TfrmExplorerOptions._SetLanguageSelection(langCode: String);
-var
-  useIdx:   Integer;
-  currLang: TLanguageTranslation;
-  i:        Integer;
-begin
-  useIdx := 0;
-  for i := 0 to (cbLanguage.items.Count - 1) do begin
-    currLang := GetLanguage(i);
-    if (currLang.Code = langCode) then begin
-      useIdx := i;
-      break;
-    end;
-  end;
-  cbLanguage.ItemIndex := useIdx;
-end;
 
 
 procedure TfrmExplorerOptions.SetOverwriteMethod(useMethod: TShredMethod);
@@ -354,80 +281,20 @@ begin
 
 end;
 
-procedure TfrmExplorerOptions.AllTabs_WriteSettings(config: TCommonSettings);
+procedure TfrmExplorerOptions._WriteAllSettings(config: TCommonSettings);
 begin
   inherited;
-  fmeOptions_Autorun1.WriteSettings(config);
   _WriteSettingsAdvanced(config as TExplorerSettings);
   _WriteSettingsWebDAV(config as TExplorerSettings);
   _WriteSettingsGeneral(config as TExplorerSettings);
 end;
 
-procedure TfrmExplorerOptions.cbLanguageChange(Sender: TObject);
-var
-  useLang: TLanguageTranslation;
-  langIdx: Integer;
-begin
-  inherited;
-
-  // Preserve selected language; the selected language gets change by the
-  // PopulateLanguages() call
-  langIdx := cbLanguage.ItemIndex;
-
-  useLang := GetSelectedLanguage();
-  TfrmCommonOptions(Owner).ChangeLanguage(useLang.Code);
-  // Repopulate the languages list; translation would have translated them all
-  _PopulateLanguages();
-
-  // Restore selected
-  cbLanguage.ItemIndex := langIdx;
-
-  EnableDisableControls();
-end;
-
-procedure TfrmExplorerOptions.ChangeLanguage(langCode: String);
-var
-  tmpConfig: TExplorerSettings;
-begin
-  tmpConfig := TExplorerSettings.Create();
-  try
-    tmpConfig.Assign(GetSettings());
-    AllTabs_WriteSettings(tmpConfig);
-
-    SDUSetLanguage(langCode);
-    try
-      SDURetranslateComponent(self);
-    except
-      on E: Exception do begin
-        SDUTranslateComponent(self);
-      end;
-    end;
-
-    AllTabs_InitAndReadSettings(tmpConfig);
-
-  finally
-    tmpConfig.Free();
-  end;
-
-  // Call EnableDisableControls() as this re-jigs the "Save above settings to:"
-  // label
-  EnableDisableControls();
-end;
 
 
-procedure TfrmExplorerOptions.ckStoreLayoutClick(Sender: TObject);
-begin
-  inherited;
 
-  if not (ckStoreLayout.Checked) then begin
-    FFlagClearLayoutOnSave := SDUConfirmYN(Format(
-      _('You have turned off the option to automatically save the window layout on exiting.' +
-      SDUCRLF + SDUCRLF +
-      'Would you like to reset %s to its default window layout the next time it is started?'),
-      [Application.Title]));
-  end;
 
-end;
+
+
 
 procedure TfrmExplorerOptions.ckWebDAVClick(Sender: TObject);
 begin
@@ -436,8 +303,7 @@ begin
   if SDUOSVistaOrLater() then begin
     SDUMessageDlg(
       RS_DRIVEMAPPING_NOT_SUPPORTED_UNDER_VISTA_AND_7 + SDUCRLF + Format(
-      _('Opened containers will only be mapped to drive letters when %s is run under Windows 2000/Windows XP'),
-      [Application.Title]),
+      _('Opened containers will only be mapped to drive letters when %s is run under Windows 2000/Windows XP'), [Application.Title]),
       mtInformation
       );
   end else
@@ -450,73 +316,74 @@ begin
     FWarnUserChangesRequireRemount := False;
   end;
 
-  EnableDisableControls();
+  _EnableDisableControls();
 end;
-                        { TODO 1 -otdk -crefactor : whats with all the moving controls - try just using designer }
 
-// This adjusts the width of a checkbox, and resets it caption so it
-  // autosizes. If it autosizes such that it's too wide, it'll drop the width
-  // and repeat
-  procedure TfrmExplorerOptions._NudgeCheckbox(chkBox: TCheckBox);
-  var
-    tmpCaption:     String;
-    maxWidth:       Integer;
-    useWidth:       Integer;
-    lastTriedWidth: Integer;
-  begin
-    tmpCaption := chkBox.Caption;
+{ TODO 1 -otdk -crefactor : whats with all the moving controls - try just using designer and set to max translation size}
 
-    maxWidth := (pnlVertSplit.left - CHKBOX_CONTROL_MARGIN) - chkBox.Left;
-    useWidth := maxWidth;
-
-    chkBox.Caption := 'X';
-    chkBox.Width   := useWidth;
-    lastTriedWidth := useWidth;
-    chkBox.Caption := tmpCaption;
-    while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0)) do begin
-      // 5 used here; just needs to be something sensible to reduce the
-      // width by; 1 would do pretty much just as well
-      useWidth := useWidth - 5;
-
-      chkBox.Caption := 'X';
-      chkBox.Width   := useWidth;
-      lastTriedWidth := useWidth;
-      chkBox.Caption := tmpCaption;
-    end;
-
-  end;
+ // This adjusts the width of a checkbox, and resets it caption so it
+ // autosizes. If it autosizes such that it's too wide, it'll drop the width
+ // and repeat
+//procedure TfrmExplorerOptions._NudgeCheckbox(chkBox: TCheckBox);
+//var
+//  tmpCaption:     String;
+//  maxWidth:       Integer;
+//  useWidth:       Integer;
+//  lastTriedWidth: Integer;
+//begin
+//  tmpCaption := chkBox.Caption;
+//
+//  maxWidth := (pnlVertSplit.left - CHKBOX_CONTROL_MARGIN) - chkBox.Left;
+//  useWidth := maxWidth;
+//
+//  chkBox.Caption := 'X';
+//  chkBox.Width   := useWidth;
+//  lastTriedWidth := useWidth;
+//  chkBox.Caption := tmpCaption;
+//  while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0)) do begin
+//    // 5 used here; just needs to be something sensible to reduce the
+//    // width by; 1 would do pretty much just as well
+//    useWidth := useWidth - 5;
+//
+//    chkBox.Caption := 'X';
+//    chkBox.Width   := useWidth;
+//    lastTriedWidth := useWidth;
+//    chkBox.Caption := tmpCaption;
+//  end;
+//
+//end;
 
 procedure TfrmExplorerOptions._InitializeAdvancedExplorer();
 const
   // Min horizontal spacing between label and control to the right of it
   LABEL_CONTROL_MARGIN = 10;
 
-//  procedure NudgeFocusControl(lbl: TLabel);
+  //  procedure NudgeFocusControl(lbl: TLabel);
+  //  begin
+  //    if (lbl.FocusControl <> nil) then begin
+  //      lbl.FocusControl.Top := lbl.Top + lbl.Height + CONTROL_MARGIN_LBL_TO_CONTROL;
+  //    end;
+  //
+  //  end;
+
+//  procedure NudgeLabel(lbl: TLabel);
+//  var
+//    maxWidth: Integer;
 //  begin
-//    if (lbl.FocusControl <> nil) then begin
-//      lbl.FocusControl.Top := lbl.Top + lbl.Height + CONTROL_MARGIN_LBL_TO_CONTROL;
+//    if (pnlVertSplit.left > lbl.left) then begin
+//      maxWidth := (pnlVertSplit.left - LABEL_CONTROL_MARGIN) - lbl.left;
+//    end else begin
+//      maxWidth := (lbl.Parent.Width - LABEL_CONTROL_MARGIN) - lbl.left;
 //    end;
 //
+//    lbl.Width := maxWidth;
 //  end;
 
-  procedure NudgeLabel(lbl: TLabel);
-  var
-    maxWidth: Integer;
-  begin
-    if (pnlVertSplit.left > lbl.left) then begin
-      maxWidth := (pnlVertSplit.left - LABEL_CONTROL_MARGIN) - lbl.left;
-    end else begin
-      maxWidth := (lbl.Parent.Width - LABEL_CONTROL_MARGIN) - lbl.left;
-    end;
-
-    lbl.Width := maxWidth;
-  end;
-
 var
-  stlChkBoxOrder: TStringList;
-  YPos:           Integer;
-  i:              Integer;
-  currChkBox:     TCheckBox;
+//  stlChkBoxOrder: TStringList;
+//  YPos:           Integer;
+//  i:              Integer;
+//  currChkBox:     TCheckBox;
   groupboxMargin: Integer;
 begin
   inherited;
@@ -533,9 +400,9 @@ begin
   lblOverwriteMethod.Width    := (gbAdvanced.Width - groupboxMargin) - lblOverwriteMethod.left;
   lblOverwritePasses.Width    := (gbAdvanced.Width - groupboxMargin) - lblOverwritePasses.left;
 
-  pnlVertSplit.Caption    := '';
-  pnlVertSplit.bevelouter := bvLowered;
-  pnlVertSplit.Width      := 3;
+//  pnlVertSplit.Caption    := '';
+//  pnlVertSplit.bevelouter := bvLowered;
+//  pnlVertSplit.Width      := 3;
 
   // Here we re-jig the checkboxes so that they are nicely spaced vertically.
   // This is needed as some language translation require the checkboxes to have
@@ -549,48 +416,48 @@ begin
   //      TCheckBox
   //   3) Make sure it's autosize property is TRUE
   //
-  stlChkBoxOrder := TStringList.Create();
-  try
-    // stlChkBoxOrder is used to order the checkboxes in their vertical order;
-    // this allows checkboxes to be added into the list below in *any* order,
-    // and it'll still work
-    stlChkBoxOrder.Sorted := True;
-
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAdvancedMountDlg.Top]), ckAdvancedMountDlg);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckRevertVolTimestamps.Top]),
-      ckRevertVolTimestamps);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckPreserveTimestampsOnStoreExtract.Top]),
-      ckPreserveTimestampsOnStoreExtract);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowNewlinesInPasswords.Top]),
-      ckAllowNewlinesInPasswords);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowTabsInPasswords.Top]),
-      ckAllowTabsInPasswords);
-
-    currChkBox := TCheckBox(stlChkBoxOrder.Objects[0]);
-    YPos       := currChkBox.Top;
-    YPos       := YPos + currChkBox.Height;
-    for i := 1 to (stlChkBoxOrder.Count - 1) do begin
-      currChkBox := TCheckBox(stlChkBoxOrder.Objects[i]);
-
-      currChkBox.Top := YPos + CHKBOX_CONTROL_MARGIN;
-
-      // Sort out the checkbox's height
-      _NudgeCheckbox(currChkBox);
-
-      YPos := currChkBox.Top;
-      YPos := YPos + currChkBox.Height;
-    end;
-
-  finally
-    stlChkBoxOrder.Free();
-  end;
+//  stlChkBoxOrder := TStringList.Create();
+//  try
+//    // stlChkBoxOrder is used to order the checkboxes in their vertical order;
+//    // this allows checkboxes to be added into the list below in *any* order,
+//    // and it'll still work
+//    stlChkBoxOrder.Sorted := True;
+//
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckAdvancedMountDlg.Top]), ckAdvancedMountDlg);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckRevertVolTimestamps.Top]),
+//      ckRevertVolTimestamps);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckPreserveTimestampsOnStoreExtract.Top]),
+//      ckPreserveTimestampsOnStoreExtract);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowNewlinesInPasswords.Top]),
+//      ckAllowNewlinesInPasswords);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowTabsInPasswords.Top]),
+//      ckAllowTabsInPasswords);
+//
+//    currChkBox := TCheckBox(stlChkBoxOrder.Objects[0]);
+//    YPos       := currChkBox.Top;
+//    YPos       := YPos + currChkBox.Height;
+//    for i := 1 to (stlChkBoxOrder.Count - 1) do begin
+//      currChkBox := TCheckBox(stlChkBoxOrder.Objects[i]);
+//
+//      currChkBox.Top := YPos + CHKBOX_CONTROL_MARGIN;
+//
+//      // Sort out the checkbox's height
+//      _NudgeCheckbox(currChkBox);
+//
+//      YPos := currChkBox.Top;
+//      YPos := YPos + currChkBox.Height;
+//    end;
+//
+//  finally
+//    stlChkBoxOrder.Free();
+//  end;
 
   // Nudge labels so they're as wide as can be allowed
-  NudgeLabel(lblMoveDeletionMethod);
-  NudgeLabel(lblOverwriteMethod);
-  NudgeLabel(lblOverwritePasses);
-  NudgeLabel(lblMRUMaxItemCount);
-  NudgeLabel(lblMRUMaxItemCountInst);
+//  NudgeLabel(lblMoveDeletionMethod);
+//  NudgeLabel(lblOverwriteMethod);
+//  NudgeLabel(lblOverwritePasses);
+//  NudgeLabel(lblMRUMaxItemCount);
+//  NudgeLabel(lblMRUMaxItemCountInst);
 
   // Here we move controls associated with labels, such that they appear
   // underneath the label
@@ -619,7 +486,7 @@ begin
 end;
 
 
-procedure TfrmExplorerOptions.EnableDisableControls;
+procedure TfrmExplorerOptions._EnableDisableControls;
 begin
   inherited;
   _EnableDisableControlsGeneral();
@@ -633,7 +500,6 @@ begin
 
   // Set active page to the first one
   pcOptions.ActivePage := tsGeneral;
-
 end;
 
 procedure TfrmExplorerOptions.FormShow(Sender: TObject);
@@ -643,25 +509,6 @@ begin
   tsAdvanced.PageIndex := (pcOptions.PageCount - 1);
 end;
 
-function TfrmExplorerOptions.GetLanguage(
-  idx: Integer): TLanguageTranslation;
-begin
-  Result := (PLanguageTranslation(cbLanguage.Items.Objects[idx]))^;
-end;
-
-procedure TfrmExplorerOptions.pbLangDetailsClick(Sender: TObject);
-var
-  rcdLanguage: TLanguageTranslation;
-begin
-  inherited;
-
-  rcdLanguage := GetSelectedLanguage();
-  SDUMessageDlg(
-    Format(_('Language name: %s'), [rcdLanguage.Name]) + SDUCRLF +
-    Format(_('Language code: %s'), [rcdLanguage.Code]) + SDUCRLF +
-    Format(_('Translator: %s'), [rcdLanguage.Contact])
-    );
-end;
 
 procedure TfrmExplorerOptions._EnableDisableControlsWebDAV();
 begin
@@ -726,32 +573,32 @@ end;
 
 procedure TfrmExplorerOptions._InitializeGeneral();
 
-//  procedure NudgeFocusControl(lbl: TLabel);
-//  begin
-//    if (lbl.FocusControl <> nil) then begin
-//      lbl.FocusControl.Top := lbl.Top + lbl.Height + CONTROL_MARGIN_LBL_TO_CONTROL;
-//    end;
-//
-//  end;
+ //  procedure NudgeFocusControl(lbl: TLabel);
+ //  begin
+ //    if (lbl.FocusControl <> nil) then begin
+ //      lbl.FocusControl.Top := lbl.Top + lbl.Height + CONTROL_MARGIN_LBL_TO_CONTROL;
+ //    end;
+ //
+ //  end;
 
-var
-  stlChkBoxOrder: TStringList;
-  YPos:           Integer;
-  i:              Integer;
-  currChkBox:     TCheckBox;
+//var
+//  stlChkBoxOrder: TStringList;
+//  YPos:           Integer;
+//  i:              Integer;
+//  currChkBox:     TCheckBox;
 begin
   inherited;
 
-  FFlagClearLayoutOnSave := False;
 
-  SDUCenterControl(gbGeneral, ccHorizontal);
-  SDUCenterControl(gbGeneral, ccVertical, 25);
+//
+//  SDUCenterControl(gbGeneral, ccHorizontal);
+//  SDUCenterControl(gbGeneral, ccVertical, 25);
 
-  pnlVertSplit.Caption    := '';
-  pnlVertSplit.bevelouter := bvLowered;
-  pnlVertSplit.Width      := 3;
+//  pnlVertSplit.Caption    := '';
+//  pnlVertSplit.bevelouter := bvLowered;
+//  pnlVertSplit.Width      := 3;
 
-  _PopulateLanguages();
+
 
 
   // Here we re-jig the checkboxes so that they are nicely spaced vertically.
@@ -766,43 +613,43 @@ begin
   //      TCheckBox
   //   3) Make sure it's autosize property is TRUE
   //
-  stlChkBoxOrder := TStringList.Create();
-  try
-    // stlChkBoxOrder is used to order the checkboxes in their vertical order;
-    // this allows checkboxes to be added into the list below in *any* order,
-    // and it'll still work
-    stlChkBoxOrder.Sorted := True;
+ // stlChkBoxOrder := TStringList.Create();
+//  try
+//    // stlChkBoxOrder is used to order the checkboxes in their vertical order;
+//    // this allows checkboxes to be added into the list below in *any* order,
+//    // and it'll still work
+//    stlChkBoxOrder.Sorted := True;
+//
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbar.Top]), ckDisplayToolbar);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckShowPasswords.Top]), ckShowPasswords);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbarLarge.Top]),
+//      ckDisplayToolbarLarge);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbarCaptions.Top]),
+//      ckDisplayToolbarCaptions);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckShowHiddenItems.Top]), ckShowHiddenItems);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckHideKnownFileExtns.Top]), ckHideKnownFileExtns);
+//    stlChkBoxOrder.AddObject(Format('%.5d', [ckStoreLayout.Top]), ckStoreLayout);
 
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbar.Top]), ckDisplayToolbar);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckShowPasswords.Top]), ckShowPasswords);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbarLarge.Top]),
-      ckDisplayToolbarLarge);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbarCaptions.Top]),
-      ckDisplayToolbarCaptions);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckShowHiddenItems.Top]), ckShowHiddenItems);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckHideKnownFileExtns.Top]), ckHideKnownFileExtns);
-    stlChkBoxOrder.AddObject(Format('%.5d', [ckStoreLayout.Top]), ckStoreLayout);
-
-    currChkBox := TCheckBox(stlChkBoxOrder.Objects[0]);
-    YPos       := currChkBox.Top;
-    YPos       := YPos + currChkBox.Height;
-    for i := 1 to (stlChkBoxOrder.Count - 1) do begin
-      currChkBox := TCheckBox(stlChkBoxOrder.Objects[i]);
-
-      if currChkBox.Visible then begin
-        currChkBox.Top := YPos + CHKBOX_CONTROL_MARGIN;
-
-        // Sort out the checkbox's height
-        _NudgeCheckbox(currChkBox);
-
-        YPos := currChkBox.Top;
-        YPos := YPos + currChkBox.Height;
-      end;
-    end;
-
-  finally
-    stlChkBoxOrder.Free();
-  end;
+  //  currChkBox := TCheckBox(stlChkBoxOrder.Objects[0]);
+//    YPos       := currChkBox.Top;
+//    YPos       := YPos + currChkBox.Height;
+//    for i := 1 to (stlChkBoxOrder.Count - 1) do begin
+//      currChkBox := TCheckBox(stlChkBoxOrder.Objects[i]);
+//
+//      if currChkBox.Visible then begin
+//        currChkBox.Top := YPos + CHKBOX_CONTROL_MARGIN;
+//
+//        // Sort out the checkbox's height
+//        _NudgeCheckbox(currChkBox);
+//
+//        YPos := currChkBox.Top;
+//        YPos := YPos + currChkBox.Height;
+//      end;
+//    end;
+//
+//  finally
+//    stlChkBoxOrder.Free();
+//  end;
 
   // Here we move controls associated with labels, such that they appear
   // underneath the label
@@ -819,23 +666,22 @@ begin
   // get the warning message as the frame is loaded!
   prevWarnUserChangesRequireRemount := FWarnUserChangesRequireRemount;
   FWarnUserChangesRequireRemount    := False;
-  ckWebDAV.Checked                  := config.OptWebDAVEnableServer;
+  ckWebDAV.Checked                  := config.EnableWebDAVServer;
   FWarnUserChangesRequireRemount    := prevWarnUserChangesRequireRemount;
 
-  ckExploreAfterMount.Checked     := config.OptExploreAfterMount;
-  ckPromptMountSuccessful.Checked := config.OptPromptMountSuccessful;
+
 
   // Default drive letter
-  if (config.OptDefaultDriveLetter = #0) then
+  if (config.DefaultDriveChar = #0) then
     cbDrive.ItemIndex := 0
   else
-    cbDrive.ItemIndex := cbDrive.Items.IndexOf(config.OptDefaultDriveLetter + ':');
+    cbDrive.ItemIndex := cbDrive.Items.IndexOf(config.DefaultDriveChar + ':');
 
 
-  ckOverwriteCacheOnDismount.Checked := config.OptOverwriteWebDAVCacheOnDismount;
-  edWebDAVShareName.Text             := config.OptWebDavShareName;
-  fedWebDAVLogAccess.Filename        := config.OptWebDavLogAccess;
-  fedWebDAVLogDebug.Filename         := config.OptWebDavLogDebug;
+  ckOverwriteCacheOnDismount.Checked := config.OverwriteWebDAVCacheOnDismount;
+  edWebDAVShareName.Text             := config.WebDavShareName;
+  fedWebDAVLogAccess.Filename        := config.WebDavLogAccessFile;
+  fedWebDAVLogDebug.Filename         := config.WebDavLogDebugFile;
 
   ckWebDAVLogAccess.Checked := (trim(fedWebDAVLogAccess.Filename) <> '');
   ckWebDAVLogDebug.Checked  := (trim(fedWebDAVLogDebug.Filename) <> '');
@@ -856,35 +702,34 @@ procedure TfrmExplorerOptions._ReadSettingsGeneral(config: TExplorerSettings);
   end;
 
 var
-  uf:     TUpdateFrequency;
   dso:    TDefaultStoreOp;
   idx:    Integer;
   useIdx: Integer;
+  showTemp   : Boolean;
 begin
   // General...
+
   SetupGreyedCheckbox(
     ckDisplayToolbar,
-    config.OptShowToolbarVolume,
-    config.OptShowToolbarExplorer
+    config.ShowToolbar,
+    config.ShowExplorerToolBar
     );
+
   SetupGreyedCheckbox(
     ckDisplayToolbarLarge,
-    config.OptToolbarVolumeLarge,
-    config.OptToolbarExplorerLarge
+    config.ShowLargeToolbar,
+    config.ShowLargerExplorerToolbar
     );
+
   SetupGreyedCheckbox(
     ckDisplayToolbarCaptions,
-    config.OptToolbarVolumeCaptions,
-    config.OptToolbarExplorerCaptions
+    config.ShowToolbarCaptions ,
+    config.ShowExplorerToolbarCaptions
     );
 
-  ckShowPasswords.Checked      := config.OptShowPasswords;
-  ckShowHiddenItems.Checked    := config.OptShowHiddenItems;
-  ckHideKnownFileExtns.Checked := config.OptHideKnownFileExtns;
-  ckStoreLayout.Checked        := config.OptStoreLayout;
 
-  // In case language code not found; reset to "(Default)" entry; at index 0
-  _SetLanguageSelection(config.OptLanguageCode);
+  ckShowHiddenItems.Checked    := config.ShowHiddenItems;
+  ckHideKnownFileExtns.Checked := config.OptHideKnownFileExtns;
 
   // Populate and set default store op dropdown
   cbDefaultStoreOp.Items.Clear();
@@ -898,115 +743,19 @@ begin
     end;
   end;
   cbDefaultStoreOp.ItemIndex := useIdx;
-
-  // Populate and set update frequency dropdown
-  cbChkUpdatesFreq.Items.Clear();
-  idx    := -1;
-  useIdx := -1;
-  for uf := low(uf) to high(uf) do begin
-    // Daily and weekly disabled for now; not sure what the load on the
-    // server would be like
-
-    Inc(idx);
-    cbChkUpdatesFreq.Items.Add(UpdateFrequencyTitle(uf));
-    if (config.OptUpdateChkFrequency = uf) then begin
-      useIdx := idx;
-    end;
-  end;
-  cbChkUpdatesFreq.ItemIndex := useIdx;
-
 end;
 
 procedure TfrmExplorerOptions._WriteSettingsWebDAV(config: TExplorerSettings);
 begin
-  config.OptWebDAVEnableServer := ckWebDAV.Checked;
-
-  config.OptExploreAfterMount     := ckExploreAfterMount.Checked;
-  config.OptPromptMountSuccessful := ckPromptMountSuccessful.Checked;
-
-  // Default drive letter
-  if (cbDrive.ItemIndex = 0) then begin
-    config.OptDefaultDriveLetter := #0;
-  end else begin
-    config.OptDefaultDriveLetter := DriveLetterChar(cbDrive.Items[cbDrive.ItemIndex][1]);
-  end;
-
-  config.OptOverwriteWebDAVCacheOnDismount := ckOverwriteCacheOnDismount.Checked;
-  config.OptWebDavShareName                := edWebDAVShareName.Text;
-  config.OptWebDavLogDebug                 := fedWebDAVLogDebug.Filename;
-  config.OptWebDavLogAccess                := fedWebDAVLogAccess.Filename;
+  config.EnableWebDAVServer := ckWebDAV.Checked;
+  config.OverwriteWebDAVCacheOnDismount := ckOverwriteCacheOnDismount.Checked;
+  config.WebDavShareName                := edWebDAVShareName.Text;
+  config.WebDavLogDebugFile                 := fedWebDAVLogDebug.Filename;
+  config.WebDavLogAccessFile                := fedWebDAVLogAccess.Filename;
 
 end;
 
-procedure TfrmExplorerOptions._PopulateLanguages();
-var
-  i:            Integer;
-  origLangCode: String;
-  langCodes:    TStringList;
-  sortedList:   TStringList;
-begin
-  // Store language information for later use...
-  langCodes := TStringList.Create();
-  try
-    // Get all language codes...
-    SDUGetLanguageCodes(langCodes);
 
-    // +1 to include "Default"
-    SetLength(FLanguages, langCodes.Count);
 
-    // Spin though the languages, getting their corresponding human-readable
-    // names
-    origLangCode := SDUGetCurrentLanguageCode();
-    try
-      for i := 0 to (langCodes.Count - 1) do begin
-        SDUSetLanguage(langCodes[i]);
-
-        FLanguages[i].Code    := langCodes[i];
-        FLanguages[i].Name    := _(CONST_LANGUAGE_ENGLISH);
-        FLanguages[i].Contact := SDUGetTranslatorNameAndEmail();
-
-        // Force set contact details for English version; the dxgettext software sets
-        // this to some stupid default
-        if (langCodes[i] = ISO639_ALPHA2_ENGLISH) then begin
-          FLanguages[i].Contact := ENGLISH_TRANSLATION_CONTACT;
-        end;
-
-      end;
-    finally
-      // Flip back to original language...
-      SDUSetLanguage(origLangCode);
-    end;
-
-  finally
-    langCodes.Free();
-  end;
-
-  // Add "default" into the list
-  SetLength(FLanguages, (length(FLanguages) + 1));
-  FLanguages[length(FLanguages) - 1].Code    := '';
-  FLanguages[length(FLanguages) - 1].Name    := _('(Default)');
-  FLanguages[length(FLanguages) - 1].Contact := '';
-
-  // Populate list
-  sortedList := TStringList.Create();
-  try
-    for i := 0 to (length(FLanguages) - 1) do begin
-      sortedList.AddObject(FLanguages[i].Name, @(FLanguages[i]));
-    end;
-
-    sortedList.Sorted := True;
-    sortedList.Sorted := False;
-
-    cbLanguage.Items.Assign(sortedList)
-  finally
-    sortedList.Free();
-  end;
-
-end;
-
-function TfrmExplorerOptions.GetSelectedLanguage: TLanguageTranslation;
-begin
-  Result := GetLanguage(cbLanguage.ItemIndex);
-end;
 
 end.

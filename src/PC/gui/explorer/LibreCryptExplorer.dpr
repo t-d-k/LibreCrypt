@@ -130,10 +130,8 @@ uses
   SDPartitionImage in '..\common\Filesystem\SDPartitionImage.pas',
   SDPartitionImage_File in '..\common\Filesystem\SDPartitionImage_File.pas',
   fmeLUKSKeyOrKeyfileEntry in '..\common\OTFE\OTFEFreeOTFE\fmeLUKSKeyOrKeyfileEntry.pas' {frmeLUKSKeyOrKeyfileEntry: TFrame},
-  lcConsts in '..\common\lcConsts.pas',
-  fmeDiskPartitionsPanel in '..\common\OTFE\OTFEFreeOTFE\fmeDiskPartitionsPanel.pas',
+  lcConsts in '..\common\lcConsts.pas',  
   PartitionImageDLL in '..\common\OTFE\OTFEFreeOTFE\PartitionImageDLL.pas',
-  fmeAutorunOptions in '..\common\fmeAutorunOptions.pas' {fmeAutorunOptions: TFrame},
   OTFEConsts_U in '..\common\OTFE\OTFE\OTFEConsts_U.pas',
   Shredder in '..\common\SDeanSecurity\Shredder\Shredder.pas',
   FileList_U in '..\common\SDeanSecurity\Shredder\FileList_U.pas' {frmFileList},
@@ -141,7 +139,9 @@ uses
   OTFEFreeOTFE_DriverHashAPI in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_DriverHashAPI.pas',
   OTFEFreeOTFE_LUKSAPI in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSAPI.pas',
   AFSplitMerge in '..\common\OTFE\AFSplitMerge.pas',
-  frmSelectVolumeType in '..\common\OTFE\OTFEFreeOTFE\frmSelectVolumeType.pas' {frmSelectVolumeType};
+  frmSelectVolumeType in '..\common\OTFE\OTFEFreeOTFE\frmSelectVolumeType.pas' {frmSelectVolumeType},
+  frmCreateLUKSVolumeWizard in '..\main\frmCreateLUKSVolumeWizard.pas' {frmCreateLUKSVolumeWizard},
+  gnugettext in 'P:\tools\gnugettext.pas';
 
 {$R *.res}
 {$R FreeOTFEExplorerCursors.res}
@@ -165,6 +165,7 @@ begin
 {$ENDIF}
   Application.Title := 'LibreCrypt Explorer';
   Application.CreateForm(TfrmExplorerMain, GfrmExplorerMain);
+  GfrmExplorerMain.Visible := True;;
   GfrmExplorerMain.InitApp();
   Application.Run;
 end.

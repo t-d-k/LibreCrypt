@@ -52,61 +52,131 @@ resourcestring
 
 const
   MoveDeletionMethodTitlePtr: array [TMoveDeletionMethod] of Pointer =
-    (@MOVE_DELETION_METHOD_PROMPT, @MOVE_DELETION_METHOD_DELETE,
-    @MOVE_DELETION_METHOD_OVERWRITE
+    (@MOVE_DELETION_METHOD_PROMPT, @MOVE_DELETION_METHOD_DELETE, @MOVE_DELETION_METHOD_OVERWRITE
     );
 
 type
   TExplorerBarType = (ebNone, ebFolders);
 
   TExplorerSettings = class (TCommonSettings)
-  PROTECTED
-    procedure _Load(iniFile: TCustomINIFile); OVERRIDE;
-    function _Save(iniFile: TCustomINIFile): Boolean; OVERRIDE;
+  private
+    fOptOverwriteWebDAVCacheOnDismount: Boolean;
+    fOptOverwriteMethod: TShredMethod;
 
-  PUBLIC
+
+    fOptMoveDeletionMethod: TMoveDeletionMethod;
+    fOptDefaultStoreOp:     TDefaultStoreOp;
+    fOptWebDavShareName:    String;
+    ftreeViewWidth:         Integer;
+
+    fWebDavLogAccessFile: String;
+
+    fOptShowHiddenItems: Boolean;
+    //    fOptShowStatusBar:      Boolean;
+    fOptWebDAVPort:      Integer;
+    fOptPreserveTimestampsOnStoreExtract: Boolean;
+    fenableWebDAVServer: Boolean;
+
+    fOptShowAddressBar:     Boolean;
+    //    fFlagClearLayoutOnSave: Boolean;
+    fOptHideKnownFileExtns: Boolean;
+    fOptOverwritePasses:    Integer;
+    fshowExplorerFolders:   Boolean;
+
+
+    fListViewLayout: String;
+
+    fWebDavLogDebugFile: String;
+
+  protected
+    procedure _LoadOld(iniFile: TCustomINIFile); override;
+    procedure _SetDefaults; override;
+
+  public
+    //todo: make private (are used as var params)
+    //    fshowVolumeToolbar:       Boolean;
+    // 'volume' toolbar settings are 'toolbar' from common settings
+    fOptShowToolbarExplorer:      Boolean;
+    //    fOptToolbarVolumeLarge:      Boolean;
+    fshowLargerExplorerToolbar:   Boolean;
+    //    fOptToolbarVolumeCaptions:   Boolean;
+    fshowExplorerToolbarCaptions: Boolean;
+
+
+    function RegistryKey(): String; override;
+
+    //set layout to default
+    procedure ClearLayout; override;
+
+
+    //    function _Save(iniFile: TCustomINIFile): Boolean; override;
+
+  published
+
+    // Layout...
+    //    // i.e. All items *not* configured via the "Options" dialog, but by
+    //    //      controls on the main window
+    //    property FlagClearLayoutOnSave: Boolean Read FFlagClearLayoutOnSave
+    //      Write fFlagClearLayoutOnSave; // If set, and not storing layout, any
+    //    // existing layout will be deleted -
+    //    // resulting in a reset to default after
+    //    // restarting
+
     // General...
-    OptShowHiddenItems:                  Boolean;
-    OptHideKnownFileExtns:               Boolean;
-    OptDefaultStoreOp:                   TDefaultStoreOp;
-    OptMoveDeletionMethod:               TMoveDeletionMethod;
-    OptOverwriteMethod:                  TShredMethod;
-    OptOverwritePasses:                  Integer;
-    OptPreserveTimestampsOnStoreExtract: Boolean;
+    property ShowHiddenItems: Boolean
+      Read FOptShowHiddenItems Write fOptShowHiddenItems default False;
+    property OptHideKnownFileExtns: Boolean
+      Read FOptHideKnownFileExtns Write fOptHideKnownFileExtns default True;
+    property OptDefaultStoreOp: TDefaultStoreOp
+      Read FOptDefaultStoreOp Write fOptDefaultStoreOp default dsoPrompt;
+    property OptMoveDeletionMethod: TMoveDeletionMethod
+      Read FOptMoveDeletionMethod Write fOptMoveDeletionMethod default mdmDelete;
+    property OptOverwriteMethod: TShredMethod
+      Read FOptOverwriteMethod Write fOptOverwriteMethod default smPseudorandom;
+    property OptOverwritePasses: Integer
+      Read FOptOverwritePasses Write fOptOverwritePasses default 1;
+    property OptPreserveTimestampsOnStoreExtract: Boolean
+      Read FOptPreserveTimestampsOnStoreExtract Write fOptPreserveTimestampsOnStoreExtract default
+      True;
 
-                                         // Layout...
-                                         // i.e. All items *not* configured via the "Options" dialog, but by
-                                         //      controls on the main window
-    FlagClearLayoutOnSave:      Boolean; // If set, and not storing layout, any
-                                         // existing layout will be deleted -
-                                         // resulting in a reset to default after
-                                         // restarting
-    OptStoreLayout:             Boolean;
-    OptShowToolbarVolume:       Boolean;
-    OptShowToolbarExplorer:     Boolean;
-    OptToolbarVolumeLarge:      Boolean;
-    OptToolbarVolumeCaptions:   Boolean;
-    OptToolbarExplorerCaptions: Boolean;
-    OptToolbarExplorerLarge:    Boolean;
-    OptShowAddressBar:          Boolean;
-    OptShowExplorerBar:         TExplorerBarType;
-    OptShowStatusBar:           Boolean;
-    OptMainWindowLayout:        String;
-    OptExplorerBarWidth:        Integer;  // Set to 0 to indicate hidden
-    OptListViewLayout:          String;
+    //    property ShowVolumeToolbar: Boolean Read fshowVolumeToolbar
+    //      Write fshowVolumeToolbar default True;
+    property ShowExplorerToolBar: Boolean Read FOptShowToolbarExplorer
+      Write fOptShowToolbarExplorer default True;
+    //    property OptToolbarVolumeLarge: Boolean Read FOptToolbarVolumeLarge
+    //      Write fOptToolbarVolumeLarge default True;
+    //    property OptToolbarVolumeCaptions: Boolean Read FOptToolbarVolumeCaptions
+    //      Write fOptToolbarVolumeCaptions default True;
+    property ShowExplorerToolbarCaptions: Boolean
+      Read fshowExplorerToolbarCaptions Write fshowExplorerToolbarCaptions default True;
+    property ShowLargerExplorerToolbar: Boolean Read fshowLargerExplorerToolbar
+      Write fshowLargerExplorerToolbar default True;
+    property ShowAddressBar: Boolean Read FOptShowAddressBar
+      Write fOptShowAddressBar default True;
+    property ShowExplorerFolders: Boolean
+      Read fshowExplorerFolders Write fshowExplorerFolders default True;
+    //    property OptShowStatusBar: Boolean Read FOptShowStatusBar
+    //      Write fOptShowStatusBar default True;
+
+    property TreeViewWidth: Integer Read ftreeViewWidth
+      Write ftreeViewWidth default 215;  // set to 0 to indicate hidden
+    property ListViewLayout: String Read fListViewLayout Write fListViewLayout;
+    //default '';
 
     // WebDAV related...
-    OptWebDAVEnableServer:             Boolean;
-    OptOverwriteWebDAVCacheOnDismount: Boolean;
-    OptWebDAVPort:                     Integer;
-    OptWebDavShareName:                String;
-    OptWebDavLogDebug:                 String;
-    OptWebDavLogAccess:                String;
-
-    constructor Create(); OVERRIDE;
-    destructor Destroy(); OVERRIDE;
-
-    function RegistryKey(): String; OVERRIDE;
+    property EnableWebDAVServer: Boolean
+      Read fenableWebDAVServer Write fenableWebDAVServer default False;
+    property OverwriteWebDAVCacheOnDismount: Boolean
+      Read FOptOverwriteWebDAVCacheOnDismount Write fOptOverwriteWebDAVCacheOnDismount default
+      True;
+    property WebDAVPort: Integer Read FOptWebDAVPort
+      Write fOptWebDAVPort default 8081;
+    property WebDavShareName: String
+      Read FOptWebDavShareName Write fOptWebDavShareName;//default 'LEXPL';
+    property WebDavLogDebugFile: String
+      Read fWebDavLogDebugFile Write fWebDavLogDebugFile;//default '';
+    property WebDavLogAccessFile: String
+      Read fWebDavLogAccessFile Write fWebDavLogAccessFile;// default  '';
 
   end;
 
@@ -115,9 +185,6 @@ function MoveDeletionMethodTitle(moveDeletionMethod: TMoveDeletionMethod): Strin
 
 {returns an instance of the only object, must be type TExplorerSettings. call SetSettingsType first}
 function GetExplorerSettings: TExplorerSettings;
-//var
-  // Global variable
-//  gSettings: TExplorerSettings;
 
 implementation
 
@@ -133,33 +200,26 @@ uses
   ShlObj;  // Required for CSIDL_PERSONAL
 
 const
-  SETTINGS_V1 = 1;
-  SETTINGS_V2 = 2;
-
   // -- General section --
-  OPT_SHOWHIDDENITEMS                       = 'ShowHiddenItems';
-  DFLT_OPT_SHOWHIDDENITEMS                  = False;
+  OPT_SHOWHIDDENITEMS                  = 'ShowHiddenItems';
+  DFLT_OPT_SHOWHIDDENITEMS             = False;
   // Default as per MS Windows Explorer default
-  OPT_HIDEKNOWNFILEEXTNS                    = 'HideKnownFileExtns';
-  DFLT_OPT_HIDEKNOWNFILEEXTNS               = True;
+  OPT_HIDEKNOWNFILEEXTNS               = 'HideKnownFileExtns';
+  DFLT_OPT_HIDEKNOWNFILEEXTNS          = True;
   // Default as per MS Windows Explorer default
-  OPT_DEFAULTSTOREOP                        = 'DefaultStoreOp';
-  DFLT_OPT_DEFAULTSTOREOP                   = dsoPrompt;
-  OPT_MOVEDELETIONMETHOD                    = 'MoveDeletionMethod';
-  DFLT_OPT_MOVEDELETIONMETHOD               = mdmDelete;
-  OPT_OVERWRITEMETHOD                       = 'OverwriteMethod';
-  DFLT_OPT_OVERWRITEMETHOD                  = smPseudorandom;
-  OPT_OVERWRITEPASSES                       = 'OverwritePasses';
-  DFLT_OPT_OVERWRITEPASSES                  = 1;
-  OPT_PRESERVETIMESTAMPSONSTOREEXTRACT      = 'PreserveTimestampsOnStoreExtract';
+  OPT_DEFAULTSTOREOP                   = 'DefaultStoreOp';
+  DFLT_OPT_DEFAULTSTOREOP              = dsoPrompt;
+  OPT_MOVEDELETIONMETHOD               = 'MoveDeletionMethod';
+  DFLT_OPT_MOVEDELETIONMETHOD          = mdmDelete;
+  OPT_OVERWRITEMETHOD                  = 'OverwriteMethod';
+  DFLT_OPT_OVERWRITEMETHOD             = smPseudorandom;
+  OPT_OVERWRITEPASSES                  = 'OverwritePasses';
+  DFLT_OPT_OVERWRITEPASSES             = 1;
+  OPT_PRESERVETIMESTAMPSONSTOREEXTRACT = 'PreserveTimestampsOnStoreExtract';
   DFLT_OPT_PRESERVETIMESTAMPSONSTOREEXTRACT = True;
 
   // -- Layout section --
-  SECTION_LAYOUT                   = 'Layout';
-  OPT_STORELAYOUT                  = 'StoreLayout';
-  DFLT_OPT_STORELAYOUT             = True;
-  OPT_MAINWINDOWLAYOUT             = 'MainWindowLayout';
-  DFLT_OPT_MAINWINDOWLAYOUT        = '';
+
   OPT_EXPLORERBARWIDTH             = 'ExplorerBarWidth';
   DFLT_OPT_EXPLORERBARWIDTH        = 215; // Set to 0 to hide
   OPT_SHOWTOOLBARVOLUME            = 'ShowToolbarVolume';
@@ -186,19 +246,19 @@ const
   DFLT_OPT_LISTVIEWLAYOUT          = '';
 
   // -- WebDAV section --
-  SECTION_WEBDAV                    = 'WedDAV';
-  OPT_ENABLESERVER                  = 'EnableServer';
-  DFLT_OPT_ENABLESERVER             = False;
-  OPT_OVERWRITECACHEONDISMOUNT      = 'OverwriteCacheOnDismount';
+  SECTION_WEBDAV     = 'WedDAV';
+  OPT_ENABLESERVER   = 'EnableServer';
+  DFLT_OPT_ENABLESERVER = False;
+  OPT_OVERWRITECACHEONDISMOUNT = 'OverwriteCacheOnDismount';
   DFLT_OPT_OVERWRITECACHEONDISMOUNT = True;
-  OPT_PORT                          = 'Port';
-  DFLT_OPT_PORT                     = 8081;
-  OPT_SHARENAME                     = 'ShareName';
-  DFLT_OPT_SHARENAME                = 'LEXPL';
-  OPT_LOGDEBUG                      = 'LogDebug';
-  DFLT_OPT_LOGDEBUG                 = '';
-  OPT_LOGACCESS                     = 'LogAccess';
-  DFLT_OPT_LOGACCESS                = '';
+  OPT_PORT           = 'Port';
+  DFLT_OPT_PORT      = 8081;
+  OPT_SHARENAME      = 'ShareName';
+  DFLT_OPT_SHARENAME = 'LEXPL';
+  OPT_LOGDEBUG       = 'LogDebug';
+  DFLT_OPT_LOGDEBUG  = '';
+  OPT_LOGACCESS      = 'LogAccess';
+  DFLT_OPT_LOGACCESS = '';
 
 
 function DefaultStoreOpTitle(defaultStoreOp: TDefaultStoreOp): String;
@@ -211,94 +271,127 @@ begin
   Result := LoadResString(MoveDeletionMethodTitlePtr[moveDeletionMethod]);
 end;
 
-constructor TExplorerSettings.Create();
+procedure TExplorerSettings.ClearLayout;
 begin
   inherited;
 
-  FlagClearLayoutOnSave := False;
+  ftreeViewWidth := 215;
 
-  Load();
+  fOptShowToolbarExplorer := True;
 
+  fshowLargerExplorerToolbar   := True;
+  fshowExplorerToolbarCaptions := True;
+  fOptShowAddressBar           := True;
+  fshowExplorerFolders         := True;
+  //  fOptShowStatusBar           := True;
+  fListViewLayout              := '';
 end;
 
-destructor TExplorerSettings.Destroy();
+procedure TExplorerSettings._LoadOld(iniFile: TCustomINIFile);
 begin
-
-  inherited;
-end;
-
-procedure TExplorerSettings._Load(iniFile: TCustomINIFile);
-begin
-  inherited _Load(iniFile);
+  inherited _LoadOld(iniFile);
 
   // General section...
-  OptShowHiddenItems                  :=
+  fOptShowHiddenItems                  :=
     iniFile.ReadBool(SECTION_GENERAL, OPT_SHOWHIDDENITEMS, DFLT_OPT_SHOWHIDDENITEMS);
-  OptHideKnownFileExtns               :=
+  fOptHideKnownFileExtns               :=
     iniFile.ReadBool(SECTION_GENERAL, OPT_HIDEKNOWNFILEEXTNS, DFLT_OPT_HIDEKNOWNFILEEXTNS);
-  OptDefaultStoreOp                   :=
+  fOptDefaultStoreOp                   :=
     TDefaultStoreOp(iniFile.ReadInteger(SECTION_GENERAL, OPT_DEFAULTSTOREOP,
     Ord(DFLT_OPT_DEFAULTSTOREOP)));
-  OptMoveDeletionMethod               :=
+  fOptMoveDeletionMethod               :=
     TMoveDeletionMethod(iniFile.ReadInteger(SECTION_GENERAL, OPT_MOVEDELETIONMETHOD,
     Ord(DFLT_OPT_MOVEDELETIONMETHOD)));
-  OptOverwriteMethod                  :=
+  fOptOverwriteMethod                  :=
     TShredMethod(iniFile.ReadInteger(SECTION_GENERAL, OPT_OVERWRITEMETHOD,
     Ord(DFLT_OPT_OVERWRITEMETHOD)));
-  OptOverwritePasses                  :=
+  fOptOverwritePasses                  :=
     iniFile.ReadInteger(SECTION_GENERAL, OPT_OVERWRITEPASSES, DFLT_OPT_OVERWRITEPASSES);
-  OptPreserveTimestampsOnStoreExtract :=
+  fOptPreserveTimestampsOnStoreExtract :=
     iniFile.ReadBool(SECTION_GENERAL, OPT_PRESERVETIMESTAMPSONSTOREEXTRACT,
     DFLT_OPT_PRESERVETIMESTAMPSONSTOREEXTRACT);
 
   // Layout section...
-  OptStoreLayout             :=
-    iniFile.ReadBool(SECTION_LAYOUT, OPT_STORELAYOUT, DFLT_OPT_STORELAYOUT);
-  OptMainWindowLayout        :=
-    iniFile.ReadString(SECTION_LAYOUT, OPT_MAINWINDOWLAYOUT, DFLT_OPT_MAINWINDOWLAYOUT);
-  OptShowToolbarVolume       :=
+  // volume is now main settings 'toolbar' - will reset n first run as new type
+  fshowToolbar            :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_SHOWTOOLBARVOLUME, DFLT_OPT_SHOWTOOLBARVOLUME);
-  OptShowToolbarExplorer     :=
+  fOptShowToolbarExplorer :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_SHOWTOOLBAREXPLORER, DFLT_OPT_SHOWTOOLBAREXPLORER);
-  OptToolbarVolumeLarge      :=
+  fshowToolbarLarge       :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_TOOLBARVOLUMELARGE, DFLT_OPT_TOOLBARVOLUMELARGE);
-  OptToolbarVolumeCaptions   :=
+  fshowToolbarCaptions    :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_TOOLBARVOLUMECAPTIONS, DFLT_OPT_TOOLBARVOLUMECAPTIONS);
-  OptToolbarExplorerLarge    :=
+
+  fshowLargerExplorerToolbar   :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_TOOLBAREXPLORERLARGE, DFLT_OPT_TOOLBAREXPLORERLARGE);
-  OptToolbarExplorerCaptions :=
+  fshowExplorerToolbarCaptions :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_TOOLBAREXPLORERCAPTIONS,
     DFLT_OPT_TOOLBAREXPLORERCAPTIONS);
-  OptExplorerBarWidth        :=
+  fTreeViewWidth               :=
     iniFile.ReadInteger(SECTION_LAYOUT, OPT_EXPLORERBARWIDTH, DFLT_OPT_EXPLORERBARWIDTH);
-  OptShowAddressBar          :=
+  fOptShowAddressBar           :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_SHOWADDRESSBAR, DFLT_OPT_SHOWADDRESSBAR);
-  OptShowExplorerBar         :=
+  fshowExplorerFolders         :=
     TExplorerBarType(iniFile.ReadInteger(SECTION_LAYOUT, OPT_SHOWEXPLORERBAR,
-    Ord(DFLT_OPT_SHOWEXPLORERBAR)));
-  OptShowStatusBar           :=
-    iniFile.ReadBool(SECTION_LAYOUT, OPT_SHOWSTATUSBAR, DFLT_OPT_SHOWSTATUSBAR);
-  OptListViewLayout          :=
+    Ord(DFLT_OPT_SHOWEXPLORERBAR))) = ebFolders;
+  //  OptShowStatusBar           :=
+  //    iniFile.ReadBool(SECTION_LAYOUT, OPT_SHOWSTATUSBAR, DFLT_OPT_SHOWSTATUSBAR);
+  fListViewLayout              :=
     iniFile.ReadString(SECTION_LAYOUT, OPT_LISTVIEWLAYOUT, DFLT_OPT_LISTVIEWLAYOUT);
 
   // WebDAV section...
-  OptWebDAVEnableServer             :=
+  fenableWebDAVServer                :=
     iniFile.ReadBool(SECTION_WEBDAV, OPT_ENABLESERVER, DFLT_OPT_ENABLESERVER);
-  OptOverwriteWebDAVCacheOnDismount :=
+  fOptOverwriteWebDAVCacheOnDismount :=
     iniFile.ReadBool(SECTION_WEBDAV, OPT_OVERWRITECACHEONDISMOUNT,
     DFLT_OPT_OVERWRITECACHEONDISMOUNT);
-  OptWebDAVPort                     :=
+  fOptWebDAVPort                     :=
     iniFile.ReadInteger(SECTION_WEBDAV, OPT_PORT, DFLT_OPT_PORT);
-  OptWebDavShareName                :=
+  fOptWebDavShareName                :=
     iniFile.ReadString(SECTION_WEBDAV, OPT_SHARENAME, DFLT_OPT_SHARENAME);
-  OptWebDavLogDebug                 :=
+  fWebDavLogDebugFile                 :=
     iniFile.ReadString(SECTION_WEBDAV, OPT_LOGDEBUG, DFLT_OPT_LOGDEBUG);
-  OptWebDavLogAccess                :=
+  fWebDavLogAccessFile               :=
     iniFile.ReadString(SECTION_WEBDAV, OPT_LOGACCESS, DFLT_OPT_LOGACCESS);
 
 end;
 
+ //function TExplorerSettings._Save(iniFile: TCustomINIFile): Boolean;
+ //begin
+ //  result := inherited(iniFile);
+ ////  if result and fFlagClearLayoutOnSave then begin
+ ////
+ ////        // Purge all layout related - next time the application is started,
+ ////        // it'll just assume the defaults
+ ////        iniFile.DeleteKey(SECTION_GENERAL, OPT_MAINWINDOWLAYOUT);
+ ////        iniFile.DeleteKey(SECTION_GENERAL, OPT_EXPLORERBARWIDTH);
+ ////        iniFile.DeleteKey(SECTION_GENERAL, OPT_SHOWTOOLBARVOLUME);
+ ////        iniFile.DeleteKey(SECTION_GENERAL, OPT_SHOWTOOLBAREXPLORER);
+ ////        iniFile.DeleteKey(SECTION_GENERAL, OPT_TOOLBARVOLUMELARGE);
+ ////        iniFile.DeleteKey(SECTION_GENERAL, OPT_TOOLBARVOLUMECAPTIONS);
+ ////        iniFile.DeleteKey(SECTION_GENERAL, OPT_TOOLBAREXPLORERLARGE);
+ ////        iniFile.DeleteKey(SECTION_GENERAL, OPT_TOOLBAREXPLORERCAPTIONS);
+ ////        iniFile.DeleteKey(SECTION_GENERAL, OPT_SHOWADDRESSBAR);
+ ////        iniFile.DeleteKey(SECTION_GENERAL, OPT_SHOWEXPLORERBAR);
+ ////        iniFile.DeleteKey(SECTION_GENERAL, OPT_SHOWSTATUSBAR);
+ ////        iniFile.DeleteKey(SECTION_GENERAL, OPT_LISTVIEWLAYOUT);
+ ////  end;
+ //
+ //end;
 
+procedure TExplorerSettings._SetDefaults;
+begin
+  inherited;
+
+
+  fListViewLayout      := '';
+  fOptWebDavShareName  := 'LEXPL';
+  fWebDavLogDebugFile   := '';
+  fWebDavLogAccessFile := '';
+
+end;
+
+(*
 function TExplorerSettings._Save(iniFile: TCustomINIFile): Boolean;
 var
   allOK: Boolean;
@@ -387,12 +480,13 @@ begin
   end;
 
   Result := allOK;
-end;
+end;   *)
 
 function TExplorerSettings.RegistryKey(): String;
 begin
   Result := FREEOTFE_REGISTRY_SETTINGS_LOCATION;
 end;
+
 
 {returns an instance of the only object, must be type TExplorerSettings. call SetSettingsType first}
 function GetExplorerSettings: TExplorerSettings;

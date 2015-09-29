@@ -46,7 +46,7 @@ begin
     Filesystem.ReadOnly := True;
     SDUMessageDlg(
       Format(_('Filesystem errors detected.' + SDUCRLF +
-      SDUCRLF + 'Please mount as a normal drive, and run chkdsk to correct.' +
+      SDUCRLF + 'Please open as a normal drive, and run chkdsk to correct.' +
       SDUCRLF + '%s will continue in readonly mode'), [Application.Title]),
       mtError
       );

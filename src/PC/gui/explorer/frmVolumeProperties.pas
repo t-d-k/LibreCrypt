@@ -118,11 +118,11 @@ begin
   spaceFree  := fFilesystem.FreeSpace;
   spaceUsed  := (spaceTotal - spaceFree);
 
-  edUsedSpace_Bytes.Caption := SDUFormatWithThousandsSeparator(spaceUsed) +
+  edUsedSpace_Bytes.Caption := IntToStrWithCommas(spaceUsed) +
     ' ' + UNITS_STORAGE_BYTES;
-  edFreeSpace_Bytes.Caption := SDUFormatWithThousandsSeparator(spaceFree) +
+  edFreeSpace_Bytes.Caption := IntToStrWithCommas(spaceFree) +
     ' ' + UNITS_STORAGE_BYTES;
-  edCapacity_Bytes.Caption  := SDUFormatWithThousandsSeparator(spaceTotal) +
+  edCapacity_Bytes.Caption  := IntToStrWithCommas(spaceTotal) +
     ' ' + UNITS_STORAGE_BYTES;
   edUsedSpace_Bytes.left    := (chtSpaceChart.left + chtSpaceChart.Width) - edUsedSpace_Bytes.Width;
   edFreeSpace_Bytes.left    := (chtSpaceChart.left + chtSpaceChart.Width) - edFreeSpace_Bytes.Width;
