@@ -5,7 +5,7 @@
 <meta name="description" content="LibreCrypt: An Open-Source 'on-the-fly' transparent disk encryption program for PCs. With this software, you can create one or more &quot;virtual disks&quot; on your PC - anything written to these disks is automatically encrypted before being stored on your computers hard drive.">
 
 <meta name="author" content="Sarah Dean">
-<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean 2015 tdk">
 
 
 <TITLE>Appendix C: Licence</TITLE>

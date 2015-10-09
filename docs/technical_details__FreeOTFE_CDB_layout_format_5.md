@@ -5,7 +5,7 @@
 <meta name="description" content="LibreCrypt: An Open-Source transparent encryption program for PCs. With this software, you can create one or more &quot;containers&quot; on your PC - which appear as disks, anything written to these disks is automatically encrypted before being stored on your hard drive.">
 
 <meta name="author" content="Sarah Dean">
-<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean">
+<meta name="copyright" content="Copyright 2004, 2005, 2006, 2007, 2008 Sarah Dean 2015 tdk">
 
 
 <TITLE>Technical Details: LibreCrypt Critical Data Block (CDB) Layout (CDB Format ID 5)</TITLE>
@@ -23,7 +23,8 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
-### Technical Details: LibreCrypt Critical Data Block (CDB) Layout (CDB Format ID 5)
+### Technical Details: FreeOTFE Header ( Critical Data Block / CDB) Layout (CDB Format ID 5)
+
 
 <A NAME="level_4_heading_1">
 #### Overview
@@ -31,10 +32,12 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 
 A LibreCrypt container critical data block consists of **CDL** bits of data. The following table describes the high-level layout of a container CDB:
 
+*This format is used by FreeOTFE v6.0, but not by LibreCrypt. LibreCrypt supports only CDB Format ID 4*
+
 <TABLE>
 
 	<TBODY>	<TR> 
-                <TD style="background-color: rgb(255, 204, 204);">Critical data block:
+    <TD style="background-color: rgb(255, 204, 204);">Critical data block:
 		<TABLE>
 			<TBODY><TR>
 			<TD>Password salt</TD>
