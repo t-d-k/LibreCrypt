@@ -118,13 +118,14 @@ type
 
     FLastIntShredResult: TShredResult;
 
+    fProgressDlg: TdlgProgress; // created in OverwriteDriveFreeSpace & OverwriteAllFileSlacks only
+
     function  ShredDir(dirname: string; silent: boolean): TShredResult;
     function  InternalShredFile(
                                 filename : string;
                                 quickShred: boolean;
                                 silent: boolean;
-                                silentProgressDlg: TdlgProgress;
-                                leaveFile: boolean = FALSE
+                                              leaveFile: boolean = FALSE
                                ): TShredResult;
     function  DeleteFileOrDir(itemname: string): TShredResult;
 
@@ -140,9 +141,9 @@ type
     procedure GetBlockGutmann(passNum: integer; var outputBlock: TShredBlock);
     function  GetGutmannChars(passNum: integer): TShredDetails;
     function  SetGutmannDetails(nOne: integer; nTwo: integer; nThree: integer): TShredDetails;
-    function  CreateEmptyFile(filename: string; size: int64; blankArray: TShredFreeSpaceBlockObj; progressDlg: TdlgProgress): TShredResult;
+    function  CreateEmptyFile(filename: string; size: int64; blankArray: TShredFreeSpaceBlockObj): TShredResult;
     function  GetTempFilename(driveDir: string; serialNo: integer): string;
-    function  WipeFileSlacksInDir(dirName: string; progressDlg: TdlgProgress; problemFiles: TStringList): TShredResult;
+    function  WipeFileSlacksInDir(dirName: string; problemFiles: TStringList): TShredResult;
     function  CountFiles(dirName: string): integer;
     function  GenerateRndDotFilename(path: string; origFilename: string): string;
 
@@ -152,6 +153,10 @@ type
       var generatedOK: Boolean;
       var outputBlock: TShredBlock
       );
+      //raises EShredderErrorUserCancel
+    procedure DoCheckForUserCancel();
+          //raises EShredderErrorUserCancel
+    procedure CheckProgressCancel;
 
   protected
     function IsDevice(filename: string): boolean;
@@ -169,7 +174,7 @@ type
     // Call this to a specific file's slack space
     function  OverwriteFileSlack(filename: string): boolean;
 
-    // Call this to wipe all file slack on the specified drive
+    // Call this to wipe all file slack on the specified drive - raises EShredderErrorUserCancel
     function  OverwriteAllFileSlacks(driveLetter: Ansichar; silent: boolean = FALSE): TShredResult;
 
 function DestroyPart(itemname: string; quickShred: boolean;   {partInfo:TPartitionInformationEx; }silent: boolean = FALSE): TShredResult;
@@ -355,11 +360,9 @@ var
   i: integer;
   tmpByte: byte;
 begin
-  if (x <> nil) then
-    begin
+  if (x <> nil) then    begin
     x.Position := 0;
-    for i:=0 to (x.Size - 1) do
-      begin
+    for i:=0 to (x.Size - 1) do      begin
       tmpByte := random(256);
       x.Write(tmpByte, sizeof(tmpByte));
       end;
@@ -370,13 +373,11 @@ procedure Overwrite(var x: TStringList);
 var
   i: integer;
 begin
-  if (x <> nil) then
-    begin
-    for i:=0 to (x.count - 1) do
-      begin
+  if (x <> nil) then     begin
+    for i:=0 to (x.count - 1) do      begin
       x[i] := StringOfChar(#0, length(x[i]));
-      end;
     end;
+  end;
 
 end;
 
@@ -451,7 +452,6 @@ end;
 function TShredder.IsDevice(filename: string): boolean;
 begin
   Result := (Pos('\\.\', filename) > 0);
-
 end;
 
 
@@ -471,14 +471,14 @@ function TShredder.DestroyDevice(itemname: string; quickShred: boolean; silent: 
 begin
   result := srError;
   if IsDevice(itemname) then     begin
-    result := InternalShredFile(itemname, quickShred, silent, nil, TRUE);
+    result := InternalShredFile(itemname, quickShred, silent,  TRUE);
     end;
 end;
 
 
 function TShredder.DestroyPart(itemname: string; quickShred: boolean;   {partInfo:TPartitionInformationEx; }silent: boolean = FALSE): TShredResult;
 begin
-    result := InternalShredFile(itemname, quickShred, silent, nil, TRUE);
+    result := InternalShredFile(itemname, quickShred, silent,  TRUE);
 end;
 
 
@@ -499,7 +499,6 @@ var
   fileAttributes : integer;
 {$ENDIF}
   shredderCommandLine : AnsiString;
-  retval: TShredResult;
 begin
   // Remove any hidden, system or readonly file attrib
 {$IFDEF MSWINDOWS}
@@ -518,20 +517,19 @@ begin
     ftempCypherEncBlockNo := 0;
 
   if (fileAttributes AND faDirectory)<>0 then      begin
-    retval := ShredDir(itemname, silent);
+    result := ShredDir(itemname, silent);
     end    else    begin
     itemname := SDUConvertLFNToSFN(itemname);
     if FFileDirUseInt then      begin
-      retval := InternalShredFile(itemname, quickShred, silent, nil, leaveFile);
+      result := InternalShredFile(itemname, quickShred, silent,  leaveFile);
     end    else      begin
       shredderCommandLine := format(FExtFileExe, [itemname]); { TODO 1 -otdk -cinvestigate : what happens if unicode filename? }
       WinExec(PAnsiChar(shredderCommandLine), SW_MINIMIZE);
       // Assume success
-      retval := srSuccess;
+      result := srSuccess;
       end;
     end;
 
-  Result := retval;
 end;
 
 
@@ -542,19 +540,18 @@ end;
 function TShredder.BytesPerCluster(filename: string): DWORD;
 var
   driveColon: string;
-  retVal: DWORD;
+
   dwSectorsPerCluster: DWORD;
   dwBytesPerSector: DWORD;
   dwNumberOfFreeClusters: DWORD;
   dwTotalNumberOfClusters: DWORD;
 begin
   // Attempt to get the number of bytes/sector
-  retVal := 1;
+  result := 1;
   if (
       (Pos(':\', filename) = 2) or
       (Pos(':/', filename) = 2)
-     ) then
-    begin
+     ) then     begin
     driveColon := filename[1]+':\';
     if GetDiskFreeSpace(
                         PChar(driveColon),       // address of root path
@@ -562,14 +559,12 @@ begin
                         dwBytesPerSector,        // address of bytes per sector
                         dwNumberOfFreeClusters,  // address of number of free clusters
                         dwTotalNumberOfClusters  // address of total number of clusters
-                       ) then
-      begin
-      retVal := (dwBytesPerSector * dwSectorsPerCluster);
+                       ) then      begin
+      result := (dwBytesPerSector * dwSectorsPerCluster);
       end;
 
     end;
 
-  Result := retVal;
 end;
 
 
@@ -585,7 +580,6 @@ function TShredder.InternalShredFile(
                                      filename: string;
                                      quickShred: boolean;
                                      silent: boolean;
-                                     silentProgressDlg: TdlgProgress;
                                      leaveFile: boolean = FALSE
                                     ): TShredResult;
 var
@@ -596,14 +590,13 @@ var
   bytesToShredHi: DWORD;
   bytesWritten: DWORD;
   numPasses: integer;
-  progressDlg: TdlgProgress;
+  progressDlg: TdlgProgress; // two progress dialogs used
   bpc: DWORD;
   bpcMod: DWORD;
   tmpDWORD: DWORD;
   bytesLeftToWrite: int64;
   failure: boolean;
   userCancel: boolean;
-  retVal: TShredResult;
   bytesToWriteNow: DWORD;
   gotSize: boolean;
   drive: char;
@@ -611,15 +604,15 @@ var
   tmpUint64: ULONGLONG;
   useShredMethodTitle: string;
   tmpInt64: int64;
-  eventUserCancel: boolean;
-  startOffsetLo: DWORD;
+ startOffsetLo: DWORD;
   startOffsetHi: DWORD;
 begin
   failure := FALSE;
   userCancel := FALSE;
-  eventUserCancel := FALSE;
-       // Initilize zeroed IV for encryption
-        ftempCypherEncBlockNo := 0;
+
+
+  // Initilize zeroed IV for encryption
+  ftempCypherEncBlockNo := 0;
 
   bpc:= BytesPerCluster(filename);
 
@@ -699,7 +692,7 @@ begin
             tmpInt64 := bytesToShredHi;
             bytesLeftToWrite := (tmpInt64 shl 32) + bytesToShredLo;
             if (bytesLeftToWrite < 0) then                begin
-              // Do nothing - retVal defaults to error
+              // Do nothing - result defaults to error
               end            else              begin
               startOffsetLo := 0;
               startOffsetHi := 0;
@@ -739,17 +732,9 @@ begin
                 if progressDlg.Cancel then                               begin
                   raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                   end;
-                if (silentProgressDlg <> nil) then                       begin
-                  if silentProgressDlg.Cancel then                         begin
-                    raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-                    end;
-                  end;
-                if assigned(FOnCheckForUserCancel) then                  begin
-                  FOnCheckForUserCancel(self, eventUserCancel);
-                  if eventUserCancel then                    begin
-                    raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-                    end;
-                  end;
+          CheckProgressCancel;
+
+          DoCheckForUserCancel();
 
                 // Reset the file ptr
                 SetFilePointer(
@@ -783,17 +768,8 @@ begin
                   if progressDlg.Cancel then                    begin
                     raise EShredderErrorUserCancel.Create(USER_CANCELLED);
                     end;
-                  if (silentProgressDlg <> nil) then                      begin
-                    if silentProgressDlg.Cancel then                             begin
-                      raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-                      end;
-                    end;
-                  if assigned(FOnCheckForUserCancel) then                      begin
-                    FOnCheckForUserCancel(self, eventUserCancel);
-                    if eventUserCancel then                                      begin
-                      raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-                      end;
-                    end;
+                  CheckProgressCancel;
+                  DoCheckForUserCancel;
 
                   // Generate new data if user supplied routine...
                   if (assigned(FOnTweakEncryptDataEvent)) then
@@ -814,8 +790,7 @@ begin
                   end;
 
 
-                if (failure) then
-                  begin
+                if (failure) then                   begin
                   // Get out of loop...
                   break;
                   end;
@@ -849,22 +824,20 @@ begin
   // Clean up file?
   if not(leaveFile) then    begin
     DeleteFileOrDir(filename);
-    end;
+  end;
 
 
   // Determine return value...
   if (failure) then    begin
-    retVal := srError;
+    result := srError;
   end  else if (userCancel) then    begin
-    retVal := srUserCancel;
-    end   else    begin
+    result := srUserCancel;
+  end   else    begin
     // Everything OK...
-    retVal := srSuccess;
-    end;
+    result := srSuccess;
+  end;
 
-
-  FLastIntShredResult := retval;
-  Result := retVal;
+  FLastIntShredResult := result;
 end;
 
 // Simple rename a file/dir and then delete it.
@@ -883,9 +856,8 @@ var
   zero: DWORD;
   fileIterator: TSDUFileIterator;
   currFile: string;
-  retval: TShredResult;
 begin
-  retval := srError;
+  result := srError;
 
   zero := 0; // Obviously!
   try
@@ -900,13 +872,10 @@ begin
       end;
 
     deleteFilename := itemname;
-    if (Win32Platform=VER_PLATFORM_WIN32_NT) then
-      begin
-      for j:=ord('a') to ord('z') do
-        begin
+    if (Win32Platform=VER_PLATFORM_WIN32_NT) then      begin
+      for j:=ord('a') to ord('z') do        begin
         testRenameFilename := ExtractFilePath(itemname) + chr(j)+'.';
-        if not(fileexists(testRenameFilename)) then
-          begin
+        if not(fileexists(testRenameFilename)) then          begin
           deleteFilename := testRenameFilename;
           break;
           end;
@@ -921,15 +890,15 @@ begin
       if RenameFile(itemname, largeFilename) then        begin
         if not(RenameFile(largeFilename, deleteFilename)) then          begin
           deleteFilename := largeFilename;
-          end;
-        end      else        begin
+        end;
+      end      else        begin
         deleteFilename := itemname;
-        end;;
+      end;
 
       end;
 
 {$IFDEF MSWINDOWS}
-{$WARN SYMBOL_PLATFORM OFF}  // Useless warning about platform - we're already 
+{$WARN SYMBOL_PLATFORM OFF}  // Useless warning about platform - we're already
                              // protecting against that!
     fileAttributes := FileGetAttr(deleteFilename);
     if (fileAttributes AND faDirectory)=0 then
@@ -954,14 +923,11 @@ begin
 
       CloseHandle(fileHandle);
 
-      if DeleteFile(deleteFilename) then
-        begin
-        retval := srSuccess;
+      if DeleteFile(deleteFilename) then        begin
+        result := srSuccess;
         end;
 
-      end
-    else
-      begin
+      end    else      begin
       // Delete all files and dirs beneath the directory
       fileIterator := TSDUFileIterator.Create(nil);
       try
@@ -972,13 +938,11 @@ begin
         fileIterator.Reset();
 
         currFile := fileIterator.Next();
-        retval := srSuccess;
-        while (currFile<>'') do
-          begin
-          retval := DeleteFileOrDir(currFile);
-          
-          if (retval <> srSuccess) then
-            begin
+        result := srSuccess;
+        while (currFile<>'') do          begin
+          result := DeleteFileOrDir(currFile);
+
+          if (result <> srSuccess) then            begin
             break;
             end;
 
@@ -989,12 +953,10 @@ begin
         fileIterator.Free();
       end;
 
-      if (retval = srSuccess) then
-        begin
+      if (result = srSuccess) then        begin
         // Finally, remove the dir itsself...
-        if RemoveDir(deleteFilename) then
-          begin
-          retval := srSuccess;
+        if RemoveDir(deleteFilename) then          begin
+          result := srSuccess;
           end;
         end;
 
@@ -1002,11 +964,11 @@ begin
   except
     begin
     // Nothing (i.e. ignore all exceptions, e.g. can't open file)
-    retval := srError;
+    result := srError;
     end;
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -1105,39 +1067,25 @@ begin
    end  else    begin
     case IntMethod of
       smZeros:
-        begin
         GetBlockZeros(outputBlock);
-        end;
 
       smOnes:
-        begin
         GetBlockOnes(outputBlock);
-        end;
 
       smPseudorandom:
-        begin
         GetBlockPRNG(outputBlock);
-        end;
 
       smRCMP:
-        begin
         GetBlockRCMP(passNum, outputBlock);
-        end;
 
       smUSDOD_E:
-        begin
         GetBlockDOD(passNum, outputBlock);
-        end;
 
       smUSDOD_ECE:
-        begin
         GetBlockDOD(passNum, outputBlock);
-        end;
 
       smGutmann:
-        begin
         GetBlockGutmann(passNum, outputBlock);
-        end;
 
     end;
 
@@ -1151,8 +1099,7 @@ procedure TShredder.GetBlockZeros(var outputBlock: TShredBlock);
 var
   i: integer;
 begin
-  for i:=low(outputBlock) to high(outputBlock) do
-    begin
+  for i:=low(outputBlock) to high(outputBlock) do    begin
     outputBlock[i] := 0;
     end;
 end;
@@ -1161,8 +1108,7 @@ procedure TShredder.GetBlockOnes(var outputBlock: TShredBlock);
 var
   i: integer;
 begin
-  for i:=low(outputBlock) to high(outputBlock) do
-    begin
+  for i:=low(outputBlock) to high(outputBlock) do    begin
     outputBlock[i] := $FF;
     end;
 end;
@@ -1171,8 +1117,7 @@ procedure TShredder.GetBlockPRNG(var outputBlock: TShredBlock);
 var
   i: integer;
 begin
-  for i:=low(outputBlock) to high(outputBlock) do
-    begin
+  for i:=low(outputBlock) to high(outputBlock) do    begin
     outputBlock[i] := random(256);
     end;
 end;
@@ -1192,24 +1137,19 @@ var
   sec: WORD;
   msec: WORD;
 begin
-  if (passNum = 1) then
-    begin
+  if (passNum = 1) then    begin
     // 0x00
-    for i:=low(outputBlock) to high(outputBlock) do
-      begin
+    for i:=low(outputBlock) to high(outputBlock) do      begin
       outputBlock[i] := $00;
       end;
     end
-  else if (passNum = 2) then
-    begin
+  else if (passNum = 2) then    begin
     // 0xFF
-    for i:=low(outputBlock) to high(outputBlock) do
-      begin
+    for i:=low(outputBlock) to high(outputBlock) do      begin
       outputBlock[i] := $FF;
       end;
     end
-  else if (passNum = 3) then
-    begin
+  else if (passNum = 3) then    begin
     // Text with version ID and date/timestamp
     timeStamp := now;
     DecodeDate(timeStamp, year, month, day);
@@ -1227,8 +1167,7 @@ begin
                         sec
                        ]
                       );
-    for i:=low(outputBlock) to high(outputBlock) do
-      begin
+    for i:=low(outputBlock) to high(outputBlock) do      begin
       outputBlock[i] := ord(strBlock[ ((i mod length(strBlock)) + 1) ]);
       end;
 
@@ -1247,8 +1186,7 @@ begin
      ) then
     begin
     // Any character...
-    for i:=low(outputBlock) to high(outputBlock) do
-      begin
+    for i:=low(outputBlock) to high(outputBlock) do      begin
       outputBlock[i] := $00;
       end;
     end
@@ -1258,24 +1196,20 @@ begin
      ) then
     begin
     // Character's complement...
-    for i:=low(outputBlock) to high(outputBlock) do
-      begin
+    for i:=low(outputBlock) to high(outputBlock) do      begin
       outputBlock[i] := $FF;
       end;
     end
   else if (
       (passNum = 3) or
       (passNum = 7)
-     ) then
-    begin
+     ) then    begin
     // Random...
     GetBlockPRNG(outputBlock);
     end
-  else if (passNum = 4) then
-    begin
+  else if (passNum = 4) then    begin
     // Single character...
-    for i:=low(outputBlock) to high(outputBlock) do
-      begin
+    for i:=low(outputBlock) to high(outputBlock) do      begin
       outputBlock[i] := $7F;
       end;
     end;
@@ -1287,15 +1221,11 @@ var
   i: integer;
   passDetails: TShredDetails;
 begin
-  if (passNum<5) OR (passNum>31) then
-    begin
+  if (passNum<5) OR (passNum>31) then    begin
     GetBlockPRNG(outputBlock);
-    end
-  else
-    begin
+    end  else    begin
     passDetails := GetGutmannChars(passNum);
-    for i:=low(outputBlock) to high(outputBlock) do
-      begin
+    for i:=low(outputBlock) to high(outputBlock) do      begin
       outputBlock[i] := passDetails[i mod 3];
       end;
     end;
@@ -1358,46 +1288,36 @@ var
   i: integer;
   lastFilename: string;
   shredderCommandLine: Ansistring;
-  progressDlg: TdlgProgress;
+
   diskNumber: integer;
-  userCancel: boolean;
-  failure: boolean;
-  retVal: TShredResult;
-  createOK: TShredResult;
   internalShredOK: TShredResult;
-  useTmpFileSize: int64;
+  useTmpFileSize,curTempFileSize: int64;
   prevCursor: TCursor;
-  eventUserCancel: boolean;
+  free_space_left: boolean;
 begin
-  userCancel := FALSE;
-  failure := FALSE;
-  eventUserCancel := FALSE;
+       result := srSuccess;
+
        // Initilize zeroed IV for encryption
         ftempCypherEncBlockNo := 0;
 
-  if not(FFreeUseInt) then
-    begin
+  if not(FFreeUseInt) then    begin
     shredderCommandLine := format(FExtFreeSpaceExe, [driveLetter]);  // no data loss in converting to ansi - as driveLetter  is ansichar
-    if (WinExec(PAnsiChar(shredderCommandLine), SW_RESTORE))<31 then
-      begin
-      failure := TRUE;
+    if (WinExec(PAnsiChar(shredderCommandLine), SW_RESTORE))<31 then      begin
+       result := srError;
       SDUMessageDlg(_('Error running external (3rd party) free space shredder'),
                  mtError,
                  [mbOK],
                  0);
       end;
 
-    end
-  else
-    begin
-    progressDlg := TdlgProgress.Create(nil);
+    end  else    begin
+    fProgressDlg := TdlgProgress.Create(nil);
     try
-      progressDlg.ShowTimeRemaining := TRUE;
+      fProgressDlg.ShowTimeRemaining := TRUE;
       blankArray := TShredFreeSpaceBlockObj.Create();
       try
         SetLength(blankArray.BLANK_FREESPACE_BLOCK, FIntFreeSpcFileCreationBlkSize);
-        for i:=0 to FIntFreeSpcFileCreationBlkSize-1 do
-          begin
+        for i:=0 to FIntFreeSpcFileCreationBlkSize-1 do          begin
           blankArray.BLANK_FREESPACE_BLOCK[i] := 0;
           end;
 
@@ -1407,201 +1327,126 @@ begin
         tempDriveDir := driveLetter + ':\'+OVERWRITE_FREESPACE_TMP_DIR+inttostr(random(10000))+'.tmp';
         diskNumber := ord(drive[1])-ord('A')+1;
 
-        CreateDir(tempDriveDir);
+        if not CreateDir(tempDriveDir) then begin
+           result := srError;
+        end;
         fileNumber := 0;
 
         // While there is FIntFreeSpcFileSize (or smart) bytes diskspace
         // left, create a file FIntFreeSpcFileSize (or smart) big
         freeSpace := DiskFree(diskNumber);
-        progressDlg.Caption := Format(_('Shredding free space on drive %s:'), [driveLetter]);
-        progressDlg.i64Max := freeSpace;
-        progressDlg.i64Min := 0;
-        progressDlg.i64Position := 0;
+        if freeSpace <0 then begin
+                             result := srError;
+                             exit;
+        end;
+
+        fProgressDlg.Caption := Format(_('Shredding free space on drive %s:'), [driveLetter]);
+        fProgressDlg.i64Max := freeSpace;
+        fProgressDlg.i64Min := 0;
+        fProgressDlg.i64Position := 0;
         prevCursor := Screen.Cursor;
         if not(silent) then            begin
           Screen.Cursor := crAppStart;
-
-          progressDlg.Show();
-          end;
+          fProgressDlg.Show();
+        end;
 
         try  // Finally (mouse cursor revert)
 
-          try  // Except (EShredderErrorUserCancel)
-
+           try
             try  // Finally
 
-              if FIntFreeSpcSmartFileSize then                 begin
+              if FIntFreeSpcSmartFileSize then begin
                 useTmpFileSize:= max((freeSpace div 10), FIVE_MB);
-                if (useTmpFileSize >= int64(FIntFreeSpcFileSize)) then                  begin
+                if (useTmpFileSize >= int64(FIntFreeSpcFileSize)) then begin
                   useTmpFileSize := FIntFreeSpcFileSize;
-                  end;
-                end              else                begin
-                useTmpFileSize:= FIntFreeSpcFileSize;
                 end;
-
-
+              end else begin
+                useTmpFileSize:= FIntFreeSpcFileSize;
+              end;
 
               // This is > and not >= so that the last file to be created (outside this
               // loop) isn't zero bytes long
-              while (freeSpace>useTmpFileSize) do                begin
+              free_space_left := freeSpace>0;
+              while free_space_left do begin
+
+                if freeSpace>useTmpFileSize then begin
+                  curTempFileSize :=  useTmpFileSize;
+                end else begin
+                 // Create a file with the remaining disk bytes
+                  curTempFileSize :=  freeSpace;
+                  free_space_left  := false;
+                end;
+
                 inc(fileNumber);
                 currFilename := GetTempFilename(tempDriveDir, fileNumber);
 
-                createOK := CreateEmptyFile(currFilename, useTmpFileSize, blankArray, progressDlg);
-                if (createOK = srUserCancel) then                  begin
-                  raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-                  end
-                else if (createOK = srError) then
-                  begin
-                  failure := TRUE;
+                result := CreateEmptyFile(currFilename, curTempFileSize, blankArray);
+
+                if (result = srUserCancel) then                  begin
+break;
+                end;
+
+                if (result = srError) then                   begin
                   // Quit loop...
                   break;
-                  end;
+                end;
 
-                if assigned(FOnCheckForUserCancel) then                  begin
-                  FOnCheckForUserCancel(self, eventUserCancel);
-                  if eventUserCancel then                                  begin
-                    raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-                    end;
-                  end;
+                                DoCheckForUserCancel();
 
 
                 // Shred the file, but _don't_ _delete_ _it_
                 // Note that this will overwrite any slack space at the end of the file
-                internalShredOK := InternalShredFile(currFilename, FALSE, TRUE, progressDlg, TRUE);
-                if (internalShredOK = srUserCancel) then                  begin
-                  raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-                  end
-                else if (internalShredOK = srError) then                  begin
-                  failure := TRUE;
+                result := InternalShredFile(currFilename, FALSE, TRUE,  TRUE);
+                if (result = srUserCancel) then begin
+  break;
+                end;
+                if (result = srError) then begin
                   // Quit loop...
-                  break;
-                  end;
+                 break;
+                end;
 
-                if assigned(FOnCheckForUserCancel) then                   begin
-                  FOnCheckForUserCancel(self, eventUserCancel);
-                  if eventUserCancel then                                   begin
-                    raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-                    end;
-                  end;
+                         DoCheckForUserCancel();
 
 
                 freeSpace := DiskFree(diskNumber);
-                progressDlg.i64InversePosition := freeSpace;
+                assert(freeSpace>=0,'can''t get free space');
+                fprogressDlg.i64InversePosition := freeSpace;
 
                 // Check for user cancel...
                 Application.ProcessMessages();
-                if progressDlg.Cancel then                  begin
-                  raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-                  end;
-                if assigned(FOnCheckForUserCancel) then                  begin
-                  FOnCheckForUserCancel(self, eventUserCancel);
-                  if eventUserCancel then                    begin
-                    raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-                    end;
-                  end;
+                CheckProgressCancel;
+                DoCheckForUserCancel();
 
-                end;  // while (freeSpace>useTmpFileSize) do
-
-
-              // Create a file with the remaining disk bytes
-              if not(failure) then                begin
-                lastFilename := GetTempFilename(tempDriveDir, fileNumber+1);
-                createOK := CreateEmptyFile(lastFilename, freeSpace, blankArray, progressDlg);
-                if (createOK = srUserCancel) then                  begin
-                  raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-                  end
-                else if (createOK = srError) then                  begin
-                  failure := TRUE;
-                  end;
-
-                if assigned(FOnCheckForUserCancel) then                  begin
-                  FOnCheckForUserCancel(self, eventUserCancel);
-                  if eventUserCancel then                    begin
-                    raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-                    end;
-                  end;
-
-                end;  // if not(failure) then
-
-
-              // Shred the last file
-              if not(failure) then                begin
-                internalShredOK := InternalShredFile(lastFilename, FALSE, TRUE, progressDlg, TRUE);
-                // Note that this will overwrite any slack space at the end of the file
-                if (internalShredOK = srUserCancel) then                  begin
-                  raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-                  end
-                else if (internalShredOK = srError) then
-                  begin
-                  failure := TRUE;
-                  end;
-
-                if assigned(FOnCheckForUserCancel) then
-                  begin
-                  FOnCheckForUserCancel(self, eventUserCancel);
-                  if eventUserCancel then
-                    begin
-                    raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-                    end;
-                  end;
-                  
-                end;  // if not(failure) then
+                end;  // while ... do
+             except
+                // can be raised by InternalShredFile , DoCheckForUserCancel
+               on EShredderErrorUserCancel do begin
+                 result := srUserCancel;
+               end;
+            end;
 
 
             finally
               // Remove any files that were created, together with the dir
               DeleteFileOrDir(tempDriveDir);
             end;
-
-          except
-            on EShredderErrorUserCancel do
-              begin
-              // Ensure flag set
-              userCancel := TRUE;
-              end;
-
-          end;
-
-
         finally
           // Revert the mouse pointer, if we were showing overwrite
           // progress...
-          if not(silent) then
-            begin
-            Screen.Cursor := prevCursor;
-            end;
+          if not(silent) then Screen.Cursor := prevCursor;
         end;
 
-        
+
       finally
         blankArray.Free();
       end;
 
     finally
-      progressDlg.Free();
+      freeandnil(fProgressDlg);
     end;
 
   end; // use internal free space shredder
 
-
-  // Determine return value...
-  if (failure) then
-    begin
-    retVal := srError;
-    end
-  else if (userCancel) then
-    begin
-    retVal := srUserCancel;
-    end
-  else
-    begin
-    // Everything OK...
-    retVal := srSuccess;
-    end;
-
-
-  Result := retVal;
 end;
 
 
@@ -1609,20 +1454,17 @@ end;
 //               set to a progress dialog. This progress dialog will
 //               *only* be used for checking to see if the user's
 //               cancelled the operation
-function TShredder.CreateEmptyFile(filename: string; size: int64; blankArray: TShredFreeSpaceBlockObj; progressDlg: TdlgProgress): TShredResult;
+function TShredder.CreateEmptyFile(filename: string; size: int64; blankArray: TShredFreeSpaceBlockObj): TShredResult;
 var
-  retVal: TShredResult;
-  userCancel: boolean;
-  failure: boolean;
+
   fileHandle : THandle;
   bytesWritten: DWORD;
   bytesInBlock: DWORD;
   totalBytesWritten: int64;
-  eventUserCancel: boolean;
+
 begin
-  failure := FALSE;
-  userCancel := FALSE;
-  eventUserCancel := FALSE;
+result := srSuccess;
+
 
   fileHandle := CreateFile(PChar(filename),
                            GENERIC_READ or GENERIC_WRITE,
@@ -1632,40 +1474,23 @@ begin
                            FILE_ATTRIBUTE_NORMAL or FILE_FLAG_WRITE_THROUGH,
                            0);
 
-  if (fileHandle = INVALID_HANDLE_VALUE) then
-    begin
-    failure := TRUE;
-    end
-  else
-    begin
+  if (fileHandle = INVALID_HANDLE_VALUE) then    begin
+    result := srError;
+    end  else    begin
     try
       // Fill out the file to the required size
       totalBytesWritten := 0;
       // Set bytesWritten to bootstrap loop
       bytesWritten := 1;
-      while ( (totalBytesWritten<size) and (bytesWritten>0) )do
-        begin
+      while ( (totalBytesWritten<size) and (bytesWritten>0) )do        begin
         bytesInBlock := min((size-totalBytesWritten), FIntFreeSpcFileCreationBlkSize);
         WriteFile(fileHandle, blankArray.BLANK_FREESPACE_BLOCK[0], bytesInBlock, bytesWritten, nil);
         inc(totalBytesWritten, bytesWritten);
 
         // Has user cancelled?
         Application.ProcessMessages();
-        if (progressDlg <> nil) then
-          begin
-          if progressDlg.Cancel then
-            begin
-            raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-            end;
-          end;
-        if assigned(FOnCheckForUserCancel) then
-          begin
-          FOnCheckForUserCancel(self, eventUserCancel);
-          if eventUserCancel then
-            begin
-            raise EShredderErrorUserCancel.Create(USER_CANCELLED);
-            end;
-          end;
+        CheckProgressCancel;
+       DoCheckForUserCancel;
 
         end;
 
@@ -1682,23 +1507,16 @@ begin
     end;  // ELSE PART -  if (fileHandle = INVALID_HANDLE_VALUE) then
 
 
-  // Determine return value...
-  if (failure) then
-    begin
-    retVal := srError;
-    end
-  else if (userCancel) then
-    begin
-    retVal := srUserCancel;
-    end
-  else
-    begin
-    // Everything OK...
-    retVal := srSuccess;
-    end;
-
-
-  Result := retVal;
+//  // Determine return value...
+//  if (failure) then    begin
+//    result := srError;
+//    end
+//  else if (userCancel) then    begin
+//    result := srUserCancel;
+//    end  else    begin
+//    // Everything OK...
+//    result := srSuccess;
+//    end;
 end;
 
 
@@ -1710,7 +1528,7 @@ end;
 
 function TShredder.OverwriteAllFileSlacks(driveLetter: Ansichar; silent: boolean): TShredResult;
 var
-  progressDlg: TdlgProgress;
+//  progressDlg: TdlgProgress;
   rootDir: string;
   problemFiles: TStringList;
   reportDlg: TfrmFileList;
@@ -1718,25 +1536,23 @@ var
 begin
   drive := uppercase(driveLetter);
   driveLetter := drive[1];
-  progressDlg := TdlgProgress.Create(nil);
+  fprogressDlg := TdlgProgress.Create(nil);
   problemFiles:= TStringList.create();
   try
     rootDir:= driveLetter+':\';
 
-    progressDlg.ShowTimeRemaining := TRUE;
-    progressDlg.Caption := Format(_('Shredding file slack on drive %s:'), [driveLetter]);
-    progressDlg.i64Max := CountFiles(rootDir);
-    progressDlg.i64Min := 0;
-    progressDlg.i64Position := 0;
-    if not(silent) then
-      begin
-      progressDlg.Show();
+    fProgressDlg.ShowTimeRemaining := TRUE;
+    fProgressDlg.Caption := Format(_('Shredding file slack on drive %s:'), [driveLetter]);
+    fProgressDlg.i64Max := CountFiles(rootDir);
+    fProgressDlg.i64Min := 0;
+    fProgressDlg.i64Position := 0;
+    if not(silent) then      begin
+      fProgressDlg.Show();
       end;
 
-    Result := WipeFileSlacksInDir(rootDir, progressDlg, problemFiles);
+    Result := WipeFileSlacksInDir(rootDir,  problemFiles);
 
-    if not(silent) AND (problemFiles.count>0) then
-      begin
+    if not(silent) AND (problemFiles.count>0) then      begin
       reportDlg := TfrmFileList.Create(nil);
       try
         reportDlg.lbFiles.visible := TRUE;
@@ -1749,23 +1565,22 @@ begin
       end;
   finally
     problemFiles.Free();
-    progressDlg.Free();
+freeandnil(fprogressDlg);
   end;
 
 end;
 
 
 // Perform file slack shredding on all files in specified dir
-function TShredder.WipeFileSlacksInDir(dirName: string; progressDlg: TdlgProgress; problemFiles: TStringList): TShredResult;
+function TShredder.WipeFileSlacksInDir(dirName: string;  problemFiles: TStringList): TShredResult;
 var
   slackFile: string;
   fileIterator: TSDUFileIterator;
   currFile: string;
-  retval: TShredResult;
-  eventUserCancel: boolean;
+//  eventUserCancel: boolean;
 begin
-  retval := srSuccess;
-  eventUserCancel := FALSE;
+  result := srSuccess;
+//  eventUserCancel := FALSE;
 
   fileIterator := TSDUFileIterator.Create(nil);
   try
@@ -1785,21 +1600,12 @@ begin
         problemFiles.add(slackFile);
         end;
 
-      progressDlg.i64IncPosition();
-      if ProgressDlg.Cancel then
-        begin
-        retval := srUserCancel;
+      fProgressDlg.i64IncPosition();
+      if fProgressDlg.Cancel then        begin
+        result := srUserCancel;
         break;
         end;
-      if assigned(FOnCheckForUserCancel) then
-        begin
-        FOnCheckForUserCancel(self, eventUserCancel);
-        if eventUserCancel then
-          begin
-          retval := srUserCancel;
-          break;
-          end;
-        end;
+     DoCheckForUserCancel;
 
       currFile := fileIterator.Next();
       end;
@@ -1808,7 +1614,7 @@ begin
     fileIterator.Free();
   end;
 
-  Result := retval;
+
 end;
 
 
@@ -1823,7 +1629,6 @@ var
   bytesWritten: DWORD;
   fileDateStamps: integer;
   fileAttributes : integer;
-  retVal: boolean;
   slackSize: DWORD;
   writeFailed: boolean;
   bpc: DWORD;
@@ -1832,11 +1637,11 @@ begin
   // Record any file attributes and remove any hidden, system or readonly file
   // attribs in order to put them back later
 {$IFDEF MSWINDOWS}
-{$WARN SYMBOL_PLATFORM OFF}  // Useless warning about platform - we're already 
+{$WARN SYMBOL_PLATFORM OFF}  // Useless warning about platform - we're already
                              // protecting against that!
   fileAttributes := FileGetAttr(filename);
   // If got attributes OK, continue...
-  retVal := (fileAttributes <> -1);
+  result := (fileAttributes <> -1);
   if (fileAttributes <> -1) then
 {$WARN SYMBOL_PLATFORM ON}
 {$ENDIF}
@@ -1845,7 +1650,7 @@ begin
 {$ENDIF}
     begin
 {$IFDEF MSWINDOWS}
-{$WARN SYMBOL_PLATFORM OFF}  // Useless warning about platform - we're already 
+{$WARN SYMBOL_PLATFORM OFF}  // Useless warning about platform - we're already
                              // protecting against that!
     if (FileSetAttr(filename, faArchive) = 0) then
 {$WARN SYMBOL_PLATFORM ON}
@@ -1861,8 +1666,7 @@ begin
                                OPEN_EXISTING,
                                FILE_ATTRIBUTE_NORMAL or FILE_FLAG_WRITE_THROUGH,
                                0);
-      if (fileHandle<>INVALID_HANDLE_VALUE) then
-        begin
+      if (fileHandle<>INVALID_HANDLE_VALUE) then        begin
         // Get the date/timestamps before we start changing the file...
         fileDateStamps := FileGetDate(fileHandle);
 
@@ -1873,8 +1677,7 @@ begin
           bpc := BytesPerCluster(filename);
           // If the bytes per sector was reported as "1", as assume that it
           // couldn't be determined, and assume a much larger sector size
-          if (bpc=1) then
-            begin
+          if (bpc=1) then            begin
             bpc := (128 * BYTES_IN_KILOBYTE);  // 128K - In practice, it's likely to be much less than this
             end;
 
@@ -1889,25 +1692,21 @@ begin
           //       calculation
           slackSize := 0;
           bpcMod := (fileLengthLo mod bpc);
-          if (bpcMod>0) then
-            begin
+          if (bpcMod>0) then            begin
             slackSize := (bpc - bpcMod);
             end;
 
           // Determine the number of passes...
           numPasses := TShredMethodPasses[IntMethod];
-          if (numPasses < 0) then
-            begin
+          if (numPasses < 0) then            begin
             numPasses := FIntPasses;
             end;
 
           // ...and finally, perform the slack space wipe
           writeFailed := FALSE;
-          for i:=1 to numPasses do
-            begin
+          for i:=1 to numPasses do            begin
             // Fill a block with random garbage
-            if not(GetRandomDataBlock(i, blankingBytes)) then
-              begin
+            if not(GetRandomDataBlock(i, blankingBytes)) then              begin
               writeFailed := TRUE;
               break;
               end;
@@ -1917,8 +1716,7 @@ begin
 
             // Write from there, pass data (e.g. a block of pseudorandom data)
             WriteFile(fileHandle, blankingBytes[0], slackSize, bytesWritten, nil);
-            if (bytesWritten<>slackSize) then
-              begin
+            if (bytesWritten<>slackSize) then              begin
               writeFailed := TRUE;
               break;
               end;
@@ -1934,7 +1732,7 @@ begin
           SetFilePointer(fileHandle, fileLengthLo, @fileLengthHi, FILE_BEGIN);
           SetEndOfFile(fileHandle);
 
-          retVal := not(writeFailed);
+          result := not(writeFailed);
           end;
 
 
@@ -1953,7 +1751,7 @@ begin
 
       // Reset the file attributes
 {$IFDEF MSWINDOWS}
-{$WARN SYMBOL_PLATFORM OFF}  // Useless warning about platform - we're already 
+{$WARN SYMBOL_PLATFORM OFF}  // Useless warning about platform - we're already
                              // protecting against that!
       FileSetAttr(filename, fileAttributes);
 {$WARN SYMBOL_PLATFORM ON}
@@ -1965,7 +1763,7 @@ begin
 
     end;  // if (fileAttributes <> -1) then
 
-  Result := retVal;
+
 end;
 
 
@@ -1979,9 +1777,8 @@ var
   dirIterator: TSDUDirIterator;
   currFile: string;
   currDir: string;
-  retval: TShredResult;
 begin
-  retval := srSuccess;
+  result := srSuccess;
 
   if (not(FFileDirUseInt))         AND
      (not(FExtShredFilesThenDir))  AND
@@ -2007,13 +1804,13 @@ begin
       currFile := fileIterator.Next();
       while (currFile<>'') do
         begin
-        retval := DestroyFileOrDir(
+        result := DestroyFileOrDir(
                                    currFile,
                                    FALSE,
                                    silent
                                   );
 
-        if (retval <> srSuccess) then
+        if (result <> srSuccess) then
           begin
           break;
           end;
@@ -2024,8 +1821,7 @@ begin
       fileIterator.Free();
     end;
 
-    if (retval = srSuccess) then
-      begin
+    if (result = srSuccess) then      begin
       dirIterator := TSDUDirIterator.Create(nil);
       try
         dirIterator.Directory := dirName;
@@ -2035,8 +1831,7 @@ begin
 
         // Now do the dir structure
         currDir := dirIterator.Next();
-        while currDir<>'' do
-          begin
+        while currDir<>'' do          begin
           // And finally, remove the current dir...
           //   if external shredder handles dirs, use it
           //   else pass the dirname to the internal shredder for shredding
@@ -2052,7 +1847,7 @@ begin
           else
             begin
             // Fallback to simply removing the dir using internal method
-            retval := DeleteFileOrDir(currDir);
+            result := DeleteFileOrDir(currDir);
             end;
 
           currDir := dirIterator.Next();
@@ -2064,8 +1859,6 @@ begin
       end;
 
     end; // External shredder not being used/needs files deleted first
-
-  Result := retval;
 end;
 
 procedure TShredder.DestroyRegKey(key: string);
@@ -2192,6 +1985,31 @@ begin
     registry.Free();
   end;
 
+end;
+
+procedure TShredder.CheckProgressCancel;
+begin
+  if (fProgressDlg <> nil) then
+  begin
+    if fProgressDlg.Cancel then
+    begin
+      raise EShredderErrorUserCancel.Create(USER_CANCELLED);
+    end;
+  end;
+end;
+
+procedure TShredder.DoCheckForUserCancel();
+var
+  eventUserCancel: Boolean  ;
+begin
+  if assigned(FOnCheckForUserCancel) then
+  begin
+    FOnCheckForUserCancel(self, eventUserCancel);
+    if eventUserCancel then
+    begin
+      raise EShredderErrorUserCancel.Create(USER_CANCELLED);
+    end;
+  end;
 end;
 
 // Generate a random filename of the same length as the one supplied, but
