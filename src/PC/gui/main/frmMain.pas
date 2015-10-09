@@ -488,8 +488,8 @@ begin
   // actTestExecute(nil);
   // DoLuksTests;
   if GetCmdLine.isEnableDevMenu then
-    _DoLuksTests;
-  // DoFullTests;
+//    _DoLuksTests;
+ //  _DoFullTests;
   // DoAdHocTests  ;
   // ;
   // Format_Drive('G', self);
@@ -3561,9 +3561,7 @@ function TfrmMain._InstallAllDrivers(driverControlObj: TDriverControl;
 var
   driverFilenames: TStringList;
 begin
-
   try
-
     Result := ceUNKNOWN_ERROR;
 
     if not _IsTestModeOn then begin

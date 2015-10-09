@@ -8,6 +8,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
   Constraints.MinHeight = 456
   Font.Name = 'MS Sans Serif'
   Position = poScreenCenter
+  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   ExplicitWidth = 553
@@ -29,17 +30,13 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
       Tag = 1
       Width = 535
       Height = 358
-      ActivePage = tsFileOrPartition
+      ActivePage = tsSize
       ExplicitWidth = 535
       ExplicitHeight = 358
       object tsFileOrPartition: TTabSheet
         Caption = 'Container File or Partition'
         ImageIndex = 14
         Constraints.MinHeight = 150
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -157,14 +154,10 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         Caption = 'Container filename'
         ImageIndex = 1
         Constraints.MinHeight = 139
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object lblInstructFilenameNotHidden: TLabel
           Left = 0
           Top = 0
-          Width = 375
+          Width = 527
           Height = 13
           Align = alTop
           Caption = 
@@ -177,11 +170,12 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 375
         end
         object lblInstructFilenameHidden: TLabel
           Left = 0
           Top = 13
-          Width = 275
+          Width = 527
           Height = 13
           Align = alTop
           Caption = 'Please specify your existing outer container file to be used.'
@@ -192,6 +186,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 275
         end
         object GroupBox1: TGroupBox
           Left = 0
@@ -228,7 +223,6 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
             Caption = '&Browse...'
             TabOrder = 0
             OnClick = pbBrowseFilenameClick
-            ExplicitTop = 22
           end
           object lblFilename: TEdit
             Left = 16
@@ -239,21 +233,16 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
             TabOrder = 1
             Text = 'lblFilename'
             OnChange = lblFilenameChange
-            ExplicitTop = 24
           end
         end
       end
       object tsPartitionWarning: TTabSheet
         Caption = 'Partition Warning'
         ImageIndex = 16
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object Label15: TLabel
           Left = 0
           Top = 304
-          Width = 526
+          Width = 527
           Height = 26
           Align = alBottom
           Alignment = taCenter
@@ -269,11 +258,12 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           ParentColor = False
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 526
         end
         object lblWarningPartition: TLabel
           Left = 0
           Top = 0
-          Width = 61
+          Width = 527
           Height = 13
           Align = alTop
           Alignment = taCenter
@@ -286,11 +276,12 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = [fsBold, fsUnderline]
           ParentColor = False
           ParentFont = False
+          ExplicitWidth = 61
         end
         object reInstructPartitionWarning1: TLabel
           Left = 0
           Top = 13
-          Width = 314
+          Width = 527
           Height = 13
           Align = alTop
           Caption = '1) Creating encrypted partitions is POTENTIALLY DESTRUCTIVE.'
@@ -301,11 +292,12 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 314
         end
         object reInstructPartitionWarning2: TLabel
           Left = 0
           Top = 26
-          Width = 492
+          Width = 527
           Height = 13
           Align = alTop
           Caption = 
@@ -318,11 +310,12 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 492
         end
         object reInstructPartitionWarning3: TLabel
           Left = 0
           Top = 39
-          Width = 402
+          Width = 527
           Height = 13
           Align = alTop
           Caption = 
@@ -335,6 +328,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 402
         end
       end
       object tsPartitionSelect: TTabSheet
@@ -446,7 +440,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
             Left = 368
             Top = 65533
             Bitmap = {
-              494C010103000400280210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400500210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -738,10 +732,6 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         Caption = 'Drive Letter'
         ImageIndex = 17
         Constraints.MinHeight = 166
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -798,10 +788,6 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         Caption = 'Offset'
         ImageIndex = 7
         Constraints.MinHeight = 330
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -987,10 +973,6 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         Caption = 'Hash, cypher and IV'
         ImageIndex = 2
         Constraints.MinHeight = 202
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object Label4: TLabel
           Left = 9
           Top = 34
@@ -1018,7 +1000,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         object reInstructHashCypherIV: TLabel
           Left = 0
           Top = 0
-          Width = 390
+          Width = 527
           Height = 13
           Align = alTop
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -1032,6 +1014,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 390
         end
         object cbHash: TComboBox
           Left = 145
@@ -1091,10 +1074,6 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         Caption = 'Chaff'
         ImageIndex = 20
         Constraints.MinHeight = 200
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1112,7 +1091,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         end
         object lblInstructChaff4: TLabel
           Left = 0
-          Top = 39
+          Top = 65
           Width = 527
           Height = 26
           Align = alTop
@@ -1125,7 +1104,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         end
         object lblInstructChaff3: TLabel
           Left = 0
-          Top = 65
+          Top = 39
           Width = 527
           Height = 26
           Align = alTop
@@ -1165,10 +1144,6 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         Caption = 'Master Key Length'
         ImageIndex = 11
         Constraints.MinHeight = 77
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object Label2: TLabel
           Left = 9
           Top = 46
@@ -1186,7 +1161,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         object reInstructMasterKeyLen: TLabel
           Left = 0
           Top = 0
-          Width = 525
+          Width = 527
           Height = 26
           Align = alTop
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -1202,6 +1177,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 525
         end
         object seMasterKeyLength: TSpinEdit64
           Left = 129
@@ -1220,14 +1196,10 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
       object tsRNGSelect: TTabSheet
         Caption = 'RNG Select'
         ImageIndex = 4
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object reInstructRNGSelect1: TLabel
           Left = 0
           Top = 0
-          Width = 525
+          Width = 527
           Height = 26
           Align = alTop
           Caption = 
@@ -1240,11 +1212,12 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 525
         end
         object reInstructRNGSelect2: TLabel
           Left = 0
           Top = 26
-          Width = 91
+          Width = 527
           Height = 13
           Align = alTop
           Caption = '1) Password salting'
@@ -1255,11 +1228,12 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 91
         end
         object reInstructRNGSelect4: TLabel
           Left = 0
           Top = 52
-          Width = 183
+          Width = 527
           Height = 13
           Align = alTop
           Caption = '3) To seed pseudorandom '#39#39'chaff'#39#39' data'
@@ -1270,11 +1244,12 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 183
         end
         object reInstructRNGSelect3: TLabel
           Left = 0
           Top = 39
-          Width = 162
+          Width = 527
           Height = 13
           Align = alTop
           Caption = '2) The new container'#39's master key'
@@ -1285,11 +1260,12 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 162
         end
         object reInstructRNGSelect5: TLabel
           Left = 0
           Top = 65
-          Width = 521
+          Width = 527
           Height = 26
           Align = alTop
           Caption = 
@@ -1302,6 +1278,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 521
         end
         object gbRNG: TGroupBox
           Left = 0
@@ -1365,15 +1342,11 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         Caption = 'RNG Mouse movement'
         ImageIndex = 8
         Constraints.MinHeight = 236
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object lblMouseRNGBits: TLabel
           AlignWithMargins = True
           Left = 10
           Top = 307
-          Width = 169
+          Width = 507
           Height = 13
           Margins.Left = 10
           Margins.Top = 10
@@ -1382,11 +1355,12 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Align = alBottom
           Alignment = taCenter
           Caption = 'Random bits generated: 9999/9999'
+          ExplicitWidth = 169
         end
         object reInstructRNGMouseMovement1: TLabel
           Left = 0
           Top = 0
-          Width = 297
+          Width = 527
           Height = 13
           Align = alTop
           Caption = 'You have selected mouse movement to generate random data.'
@@ -1397,11 +1371,12 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 297
         end
         object reInstructRNGMouseMovement2: TLabel
           Left = 0
           Top = 13
-          Width = 461
+          Width = 527
           Height = 13
           Align = alTop
           Caption = 
@@ -1414,6 +1389,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 461
         end
         object MouseRNG: TMouseRNG
           Left = 0
@@ -1434,10 +1410,6 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         Caption = 'RNG PKCS token'
         ImageIndex = 17
         Constraints.MinHeight = 133
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1492,15 +1464,11 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
       object tsRNGGPG: TTabSheet
         Caption = 'RNG GPG'
         ImageIndex = 10
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object reInstructRNGGPG: TLabel
           Left = 0
           Top = 0
-          Width = 518
-          Height = 42
+          Width = 527
+          Height = 257
           Align = alClient
           Caption = 
             'In order to use GPG to generate random data, please specify the ' +
@@ -1513,6 +1481,8 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
+          ExplicitWidth = 518
+          ExplicitHeight = 42
         end
         object GroupBox2: TGroupBox
           Left = 0
@@ -1552,10 +1522,6 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         ImageIndex = 15
         Constraints.MinHeight = 168
         Constraints.MinWidth = 266
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1582,11 +1548,11 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
-          Font.Name = 'Tahoma'
+          Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 489
+          ExplicitWidth = 526
         end
         object reInstructKeyIterations3: TLabel
           Left = 0
@@ -1602,11 +1568,10 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
-          Font.Name = 'Tahoma'
+          Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 510
         end
         object reInstructKeyIterations2: TLabel
           Left = 0
@@ -1620,11 +1585,11 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
-          Font.Name = 'Tahoma'
+          Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 509
+          ExplicitWidth = 525
         end
         object seKeyIterations: TSpinEdit64
           Left = 353
@@ -1642,10 +1607,6 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         Caption = 'Salt'
         ImageIndex = 16
         Constraints.MinHeight = 156
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1701,10 +1662,10 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Height = 13
           Align = alTop
           Caption = 
-            'The value entered must be a multiple of both 8 and the cypher'#39#39's' +
-            ' blocksize.'
+            'The value entered must be a multiple of both 8 and the cypher'#39's ' +
+            'blocksize.'
           WordWrap = True
-          ExplicitWidth = 352
+          ExplicitWidth = 350
         end
         object lblInstructSalt2: TLabel
           Left = 0
@@ -1734,10 +1695,6 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         Caption = 'CDB Location'
         ImageIndex = 18
         Constraints.MinHeight = 301
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1748,25 +1705,25 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Height = 142
           Align = alTop
           Caption = 
-            'Please specify if you would like your container'#39's critical data ' +
-            'block (CDB) to be written at the start of the new container, or ' +
-            'stored in a separate keyfile.'#10#13'The CDB is where metadata about y' +
-            'our container is stored, together with the master key used to ca' +
-            'rry out the actual encryption/decryption of your data.'#10#13'For most' +
-            ' users, including the CDB as part of the container file is proba' +
-            'bly the best option.'#10#13'If you store this information in a keyfile' +
-            ', you will need both your container file AND a keyfile in order ' +
-            'to open your container.'#10#13'Note: Storing the CDB as part of the co' +
-            'ntainer file will increase your container'#39#39's size by 512 bytes.'
+            'Please specify if you would like your container'#39's FreeOTFE heade' +
+            'r to be written at the start of the new container, or stored in ' +
+            'a separate keyfile.'#10#13'The header is where metadata about your con' +
+            'tainer is stored, together with the master key used to carry out' +
+            ' the actual encryption/decryption of your data.'#10#13'For most users,' +
+            ' including the header as part of the container file is probably ' +
+            'the best option.'#10#13'If you store this information in a keyfile, yo' +
+            'u will need both your container file AND a keyfile in order to o' +
+            'pen your container.'#10#13'Note: Storing the header as part of the con' +
+            'tainer file will increase your container'#39's size by 512 bytes.'
           Constraints.MinHeight = 142
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
-          Font.Name = 'Tahoma'
+          Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 524
+          ExplicitWidth = 526
         end
         object rbCDBInVolFile: TRadioButton
           Left = 17
@@ -1824,10 +1781,6 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         Caption = 'Padding'
         ImageIndex = 19
         Constraints.MinHeight = 188
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -1853,7 +1806,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Left = 0
           Top = 0
           Width = 527
-          Height = 130
+          Height = 129
           Align = alTop
           Caption = 
             '"Padding" is additional random data added to the end of a contai' +
@@ -1862,19 +1815,16 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
             ' the container.'#10#13#10#13'Encrypted containers typically have a file si' +
             'ze that is a multiple of 512 bytes, or a "signature size" beyond' +
             ' the last 1MB boundary.'#10#13'To prevent this, you may wish to append' +
-            ' random "padding" data to the new container.'#10#13'Padding also reduc' +
-            'es the amount of information available to an attacker with respe' +
-            'ct to the maximum amount of the encrypted that may actually be h' +
-            'eld within the container.'
+            ' random "padding" data to the new container.'#10#13
           Constraints.MinHeight = 129
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
-          Font.Name = 'Tahoma'
+          Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 526
+          ExplicitWidth = 525
         end
         object se64Padding: TSpinEdit64
           Left = 399
@@ -1890,10 +1840,6 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         Caption = 'Summary'
         ImageIndex = 9
         Constraints.MinHeight = 238
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)

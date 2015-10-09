@@ -63,7 +63,6 @@ type
     property VolumeFilename: String Read GetVolumeFilename Write SetVolumeFilename;
     property DumpFilename: String Read GetDumpFilename Write SetDumpFilename;
 
-//    property silent: Boolean Read fsilent Write fsilent;
     property password: String Write SetPassword;
   end;
 

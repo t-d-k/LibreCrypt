@@ -122,6 +122,8 @@ function SDUDeviceNameForDrive(driveLetter: ansichar): String;
 // Get device name for partition
 function SDUDeviceNameForPartition(DiskNo: Integer; PartitionNo: Integer): String;
 
+function SDUPartitionDiscFromDeviceName(out DiskNo, PartitionNo: Integer;device_name  : string)   : Boolean;
+
 { TODO -otdk -crefactor : move TSDUPartitionInfo and fns into separate unit }
  // Get size of partition
  // Returns file size, or -1 on error
@@ -147,6 +149,9 @@ function SDUMbrPartitionType(PartitionTypeID: Byte; LongDesc: Boolean): String;
 // Return text representation of partition type
 function SDUGptPartitionType(PartitionType: TGuid; LongDesc: Boolean): String;
 
+// does it  start with '\device\...'?
+function IsPartitionPath(path  : string                               ) : Boolean;
+
 const
                                             //\Device\Harddisk1\Partition0
                                             // \\.\PHYSICALDRIVE
@@ -160,7 +165,7 @@ implementation
 
  uses
  //DELPHI
- System.SysUtils,
+ System.SysUtils,  System.StrUtils,
  //sdu, lcutils
  lcCOnsts;
 const
@@ -215,11 +220,31 @@ begin
   Result := Format(FMT_DEVICENAME_DRIVE_DEVICE, [upcase(driveLetter)]);
 end;
 
- // ----------------------------------------------------------------------------
- // PartitionNo - Set to zero for entire disk, otherwise partition number
+
+// PartitionNo - Set to zero for entire disk, otherwise partition number
 function SDUDeviceNameForPartition(DiskNo: Integer; PartitionNo: Integer): String;
 begin
   Result := Format(FMT_DEVICENAME_PARTITION_DEVICE, [DiskNo, PartitionNo]);
+end;
+
+function SDUPartitionDiscFromDeviceName(out DiskNo, PartitionNo: Integer;device_name  : string)   : Boolean;
+var
+  psn   : Integer;
+begin
+  result := false;
+  if AnsiStartsStr('\Device\Harddisk', device_name) and (length(device_name)>= length('\Device\Harddisk0\Partition0'))  then begin
+    delete(device_name,1, 16);
+    psn  := Pos('\',device_name);
+    if psn > 1 then begin
+      if TryStrToInt(AnsiMidStr(device_name,1,psn-1) ,DiskNo) then begin
+        delete(device_name,1, psn);
+        if AnsiStartsStr('Partition', device_name) and (length(device_name)>= length('Partition0'))  then begin
+          delete(device_name,1, 9);
+          result := TryStrToInt(device_name,PartitionNo);
+        end;
+      end;
+    end;
+  end;
 end;
 
 // ----------------------------------------------------------------------------
@@ -880,6 +905,12 @@ begin
     CloseHandle(fileHandle);
   end;
 
+end;
+
+// does it  start with '\device\...'?
+function IsPartitionPath(path  : string                               ) : Boolean;
+begin
+  result := (AnsiPos ('\Device\',path) = 1) or (AnsiPos('\\.\PHYSICALDRIVE',path)= 1);
 end;
 
 end.

@@ -7,7 +7,7 @@ unit frmWizardCreateVolume;
  // -----------------------------------------------------------------------------
  //
 
-
+ { TODO 1 -otdk -ccleanup : rename unit }
 interface
 
 uses
@@ -188,12 +188,12 @@ type
     procedure pbBrowseKeyfileClick(Sender: TObject);
     procedure cbDriveLetterChange(Sender: TObject);
     procedure lblFilenameChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
 
   published
     procedure fmeSelectPartitionChanged(Sender: TObject);
   private
     // Advanced options...
-    //    fkeyIterations:        Integer;
     //    fsaltLength:           Integer;  // Length in *bits*
     //    frequestedDriveLetter: ansichar;
     //    fCDBFilename:          String;
@@ -294,11 +294,14 @@ type
     //    function getIsHidden(): Boolean;
     function getCDBInVolFile(): Boolean;
 
-    function getAutoMountAfterCreate(): Boolean;
+//    function getAutoMountAfterCreate(): Boolean;
     procedure getCDBFileAndOffset(out cdbFile: String; out cdbOffset: ULONGLONG);
 
 
   protected
+      fsilent:       Boolean;
+    fsilentResult: TModalResult;
+
 
     procedure _EnableDisableControls(); override;
 
@@ -341,6 +344,8 @@ uses
   OTFEFreeOTFEDLL_U,
   PKCS11Lib,
   PartitionImageDLL,
+  lcCommandLine,
+  PartitionTools,//for IsPartitionPath
   //LibreCrypt forms
 
   frmKeyEntryFreeOTFE // for MountFreeOTFE
@@ -468,6 +473,27 @@ begin
   // tsFileOrPartition
   rgFileOrPartition.ItemIndex := FILEORPART_OPT_VOLUME_FILE_INDEX;
 
+  // tsFilename
+
+   if GetCmdLine.VolumeArg<>'' then
+      if IsPartitionPath(GetCmdLine.VolumeArg) then begin
+
+      fmeSelectPartition.Initialize();
+      fmeSelectPartition.Tag := 0;
+
+         fmeSelectPartition.SelectedDevice := GetCmdLine.VolumeArg;
+          rgFileOrPartition.ItemIndex := FILEORPART_OPT_PARTITION_INDEX;
+                // if no size set - use entre partition
+      fmeContainerSize1.SetIsSizeEntirePartitionDisk(true);
+
+      end else begin
+         lblFilename.Text := GetCmdLine.VolumeArg;
+         //todo: set size
+      end;
+
+
+    frmeNewPassword.SetKeyPhrase( GetCmdLine.PasswordArg);
+
   // tsPartitionSelect
   // Setup and make sure nothing is selected
   fmeSelectPartition.AllowCDROM := False;
@@ -475,8 +501,6 @@ begin
   //  fmeSelectPartition.Initialize();
   fmeSelectPartition.Tag        := 1;
 
-  // tsFilename
-  lblFilename.Text := '';
 
   // tsOffset
   se64UnitByteOffset.Value := 0;
@@ -577,6 +601,19 @@ begin
     SaveDialog.Options := SaveDialog.Options + [ofOverwritePrompt];
 
   _UpdateUIAfterChangeOnCurrentTab();
+
+    if fSilent then begin
+    pbFinishClick(self) ; //sets  ModalResult
+//      ModalResult := mrOk;
+//    end else begin
+//      ModalResult := mrCancel;
+//    end;
+
+    FSilentResult := ModalResult;
+
+    PostMessage(Handle, WM_CLOSE, 0, 0);
+  end;
+
 end;
 
 //all non-skipped tabs that are required to be completed return true
@@ -1361,10 +1398,21 @@ begin
   end;
 end;
 
+procedure TfrmCreateFreeOTFEVolume.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  inherited;
+  // Posting WM_CLOSE causes Delphi to reset ModalResult to mrCancel.
+  // As a result, we reset ModalResult here, note will only close automatically if mr = mrok anyway
+  if fsilent then
+    ModalResult := FSilentResult;
+end;
+
 procedure TfrmCreateFreeOTFEVolume.FormCreate(Sender: TObject);
 var
   dl: ansichar;
 begin
+  fsilent := GetCmdLine.isSilent;
 
   fHashKernelModeDriverNames   := TStringList.Create();
   fHashGUIDs                   := TStringList.Create();
@@ -1408,6 +1456,8 @@ begin
   lblKeyFilename.Caption     := '';
   frmeNewPassword.OnChange   := ControlChanged;
   fmeContainerSize1.OnChange := ControlChanged;
+
+
 end;
 
 procedure TfrmCreateFreeOTFEVolume.FormDestroy(Sender: TObject);
@@ -1868,7 +1918,8 @@ var
   VolFilename:    tfilename;
 begin
   Result := True;
-  if GetAutoMountAfterCreate() then begin
+  { TODO 2 -otdk -csecurity : if not automount - not wiped }
+  if ckAutoMountAfterCreate.Checked then begin
     VolFilename := GetVolFilename();
 
     Result := False;
@@ -1909,6 +1960,7 @@ begin
       if (GetFreeOTFEBase() is TOTFEFreeOTFEDLL) then begin
         Result := PostMount_Format_using_dll(fnewVolumeMountedAs);
       end else begin
+        Application.ProcessMessages;
         Result := Format_Drive(FNewVolumeMountedAs);
         if not Result then
           // Volumes couldn't be mounted for some reason...
@@ -2121,13 +2173,13 @@ end;
 
 function TfrmCreateFreeOTFEVolume.GetCDBInVolFile(): Boolean;
 begin
-  Result := (Trim(GetCDBFilename()) = '');
+  Result := GetCDBFilename() = '';
 end;
 
-function TfrmCreateFreeOTFEVolume.GetAutoMountAfterCreate(): Boolean;
-begin
-  Result := ckAutoMountAfterCreate.Checked;
-end;
+//function TfrmCreateFreeOTFEVolume.GetAutoMountAfterCreate(): Boolean;
+//begin
+//  Result := ckAutoMountAfterCreate.Checked;
+//end;
 
 
 {overwrites volume with 'chaff' from 'Offset' -
@@ -2216,7 +2268,7 @@ begin
         // Do nothing...
       end else
       if (overwriteOK = srError) then begin
-        failMsg := _('Overwrite of data FAILED.');
+        failMsg := _('Overwrite of data FAILED. You should manually overwrite the drive to ensure security');
         SDUMessageDlg(failMsg, mtError);
         Result := False;
       end else
@@ -2361,7 +2413,6 @@ begin
   SDUOpenSaveDialogSetup(keySaveDialog, GetCDBFilename());
   if keySaveDialog.Execute then
     SetCDBFilename(keySaveDialog.Filename);
-
 end;
 
 function TfrmCreateFreeOTFEVolume.GetPaddingLength(): Int64;
@@ -2384,8 +2435,6 @@ begin
   rgOverwriteType.ItemIndex := Ifthen(secChaff, 0, 1);
 end;
 
-
-
 function CreateFreeOTFEVolume(isHidden: Boolean): TMountResult;
 var
   frmWizard: TfrmCreateFreeOTFEVolume;
@@ -2399,7 +2448,8 @@ begin
   if GetFreeOTFEBase().WarnIfNoHashOrCypherDrivers() then begin
     frmWizard := TfrmCreateFreeOTFEVolume.Create(nil);
     try
-      frmWizard.isHidden := isHidden;
+      frmWizard.isHidden := isHidden; // other cmd line values set in formcreate
+
       mr                 := frmWizard.ShowModal();
 
       if mr = mrOk then begin

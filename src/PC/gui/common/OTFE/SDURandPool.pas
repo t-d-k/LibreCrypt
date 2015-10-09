@@ -505,7 +505,6 @@ begin
 end;
 
 
-
 // Initialize MouseRNG random data store
 procedure InitMouseRNGData();
 begin

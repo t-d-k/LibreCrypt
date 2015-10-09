@@ -34,11 +34,12 @@ type
     fis_hidden: Boolean;
   published
     property OnChange: TNotifyEvent Read FOnChange Write FOnChange;
-    property IsHidden: Boolean Write fis_hidden;
+    property IsHidden: Boolean read fis_hidden Write fis_hidden;
 
   public
     procedure EnableDisableControls(IsPartition, IsHiddenInPartition, SyntheticDriveLayout: Boolean);
     function GetIsSizeEntirePartitionDisk: Boolean;
+        procedure SetIsSizeEntirePartitionDisk(val: Boolean);
     function GetSize(): ULONGLONG;
     procedure SetPartitionSize(new_size: ULONGLONG);
     procedure Initialise();
@@ -97,6 +98,11 @@ begin
   Result := ckSizeEntirePartitionDisk.Checked;
 end;
 
+procedure TTfmeContainerSize.SetIsSizeEntirePartitionDisk(val: Boolean);
+begin
+    ckSizeEntirePartitionDisk.Checked  := val;
+end;
+
 function TTfmeContainerSize.GetSize: ULONGLONG;
 begin
   // Calculate the number of bytes...
@@ -120,6 +126,8 @@ begin
   if Assigned(FOnChange) then
     FOnChange(self);
 end;
+
+
 
 procedure TTfmeContainerSize.SetPartitionSize(new_size: ULONGLONG);
 begin

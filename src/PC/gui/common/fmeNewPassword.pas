@@ -46,7 +46,8 @@ type
     procedure DoChange();
   public
     constructor Create(AOwner: TComponent); override;
-    procedure SetKeyPhrase(Value: TSDUBytes);
+    procedure SetKeyPhrase(Value: TSDUBytes);  overload;
+        procedure SetKeyPhrase(Value  : string   );   overload;
     function IsPasswordValid: Boolean;
     function GetKeyPhrase: TSDUBytes;
     procedure ClearKeyPhrase();
@@ -247,13 +248,17 @@ begin
   Result := SDUStringToSDUBytes(preUserKeyFirst.Text);
 end;
 
-procedure TfrmeNewPassword.SetKeyPhrase(Value: TSDUBytes);
-begin
-  { TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
-  preUserKeyFirst.Text   := SDUBytesToString(Value);
+ procedure TfrmeNewPassword.SetKeyPhrase(Value  : string   );
+ begin
+   { TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
+  preUserKeyFirst.Text   := Value;
   preUserKeyConfirm.Text := preUserKeyFirst.Text;
   fKeyPhraseSet          := True;
+ end;
 
+procedure TfrmeNewPassword.SetKeyPhrase(Value: TSDUBytes);
+begin
+  SetKeyPhrase(SDUBytesToString(Value));
 end;
 
 end.

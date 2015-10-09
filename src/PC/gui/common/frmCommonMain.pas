@@ -1698,7 +1698,7 @@ begin
 
         // Convert any relative path to absolute, based on CWD - but not if a
         // device passed through!
-        if (Pos(uppercase(DEVICE_PREFIX), volume) <= 0) then begin
+        if (Pos(uppercase(DEVICE_PREFIX), uppercase(volume)) <= 0) then begin
           volume := SDURelativePathToAbsolute(volume);
           if not (FileExists(volume)) then begin
             Result := ceFILE_NOT_FOUND;

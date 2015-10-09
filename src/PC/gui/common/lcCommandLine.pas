@@ -221,21 +221,54 @@ const
 //taken from SDUGeneral
 
 
-function SDUCommandLineParameter(parameter: String; var Value: String): Boolean; overload;
+
+
+function SDUCommandLineSwitchNumber(parameter: String): Integer;
+var
+  i: Integer;
+  par  : string;
+begin
+  Result    := -1;
+  parameter := uppercase(parameter);
+  for i := 1 to ParamCount do begin
+  par := uppercase(ParamStr(i)) ;
+    if (par = ('-' + parameter)) or (par = ('/' + parameter)) then begin
+      Result := i;
+      break;
+    end;
+  end;
+end;
+
+function SDUCommandLineSwitch(parameter: String): Boolean;
+begin
+  Result    := SDUCommandLineSwitchNumber(parameter)<>-1;
+end;
+
+//set caseSens to false to covert to uppercase
+function SDUCommandLineParameter(parameter: String; var Value: String;caseSens  : Boolean = true): Boolean; overload;
 var
   i:         Integer;
   testParam: String;
 begin
   Result    := False;
-  parameter := uppercase(parameter);
-  for i := 1 to (ParamCount - 1) do begin
-    testParam := uppercase(ParamStr(i));
-    if ((testParam = ('-' + parameter)) or (testParam = ('/' + parameter))) then begin
-      Value  := Uppercase(ParamStr(i + 1));
+i:= SDUCommandLineSwitchNumber(parameter);
+  if (i> -1) and (i < ParamCount) then begin
+    Value  := ParamStr(i + 1);
       Result := True;
-      break;
-    end;
   end;
+  if not caseSens then
+   Value := UpperCase(Value);
+
+
+//  parameter := uppercase(parameter);
+//  for i := 1 to (ParamCount - 1) do begin
+//    testParam := uppercase(ParamStr(i));
+//    if ((testParam = ('-' + parameter)) or (testParam = ('/' + parameter))) then begin
+//      Value  := ParamStr(i + 1);
+//      Result := True;
+//      break;
+//    end;
+//  end;
 
 end;
 
@@ -247,41 +280,6 @@ begin
   if Result then
     Result := TryStrToInt(strValue, Value);
 end;
-
-
-function SDUCommandLineSwitch(parameter: String): Boolean;
-var
-  i: Integer;
-begin
-  Result    := False;
-  parameter := uppercase(parameter);
-  for i := 1 to ParamCount do begin
-    if (uppercase(ParamStr(i)) = ('-' + parameter)) or (uppercase(ParamStr(i)) = ('/' + parameter))
-    then begin
-      Result := True;
-      break;
-    end;
-  end;
-
-end;
-
-function SDUCommandLineSwitchNumber(parameter: String): Integer;
-var
-  i: Integer;
-begin
-  Result    := -1;
-  parameter := uppercase(parameter);
-  for i := 1 to ParamCount do begin
-    if (uppercase(ParamStr(i)) = ('-' + parameter)) or (uppercase(ParamStr(i)) = ('/' + parameter))
-    then begin
-      Result := i;
-      break;
-    end;
-  end;
-
-end;
-
-
 
 { factory fn creates an instance
 returns an instance of type set in SetFreeOTFEType}
@@ -344,8 +342,9 @@ end;
 
 function TCommandLine.getDismountArg: String;
 begin
-  if not SDUCommandLineParameter(CMDLINE_DISMOUNT, Result) then
+  if not SDUCommandLineParameter(CMDLINE_DISMOUNT, Result,false) then
     Result := '';
+
 end;
 
 
@@ -358,7 +357,7 @@ end;
 function TCommandLine.getdriverControlArg: String;
 begin
 
-  if not SDUCommandLineParameter(CMDLINE_DRIVERCONTROL, Result) then
+  if not SDUCommandLineParameter(CMDLINE_DRIVERCONTROL, Result,false) then
     Result := '';
 end;
 
@@ -453,8 +452,6 @@ begin
   fis_silent := SDUCommandLineSwitch(CMDLINE_SILENT);
 end;
 
-
-
 function TCommandLine.getKeyfileArg: String;
 begin
   if not SDUCommandLineParameter(CMDLINE_KEYFILE, Result) then
@@ -463,7 +460,7 @@ end;
 
 function TCommandLine.getKeyfilenewlineArg: String;
 begin
-  if not SDUCommandLineParameter(CMDLINE_KEYFILENEWLINE, Result) then
+  if not SDUCommandLineParameter(CMDLINE_KEYFILENEWLINE, Result,false) then
     Result := '';
 end;
 
@@ -493,8 +490,9 @@ end;
 
 function TCommandLine.GetPortableArg: String;
 begin
-  if not SDUCommandLineParameter(CMDLINE_PORTABLE, Result) then
+  if not SDUCommandLineParameter(CMDLINE_PORTABLE, Result,false) then
     Result := '';
+
 end;
 
 
@@ -507,9 +505,9 @@ end;
 
 function TCommandLine.getSetTestmodeArg: String;
 begin
-
-  if not SDUCommandLineParameter(CMDLINE_SET_TESTMODE, Result) then
+  if not SDUCommandLineParameter(CMDLINE_SET_TESTMODE, Result,false) then
     Result := '';
+
 end;
 
 function TCommandLine.getSettingsFileArg: String;
@@ -521,7 +519,7 @@ end;
 
 function TCommandLine.getTypeArg: String;
 begin
-  if not SDUCommandLineParameter(CMDLINE_TYPE, Result) then
+  if not SDUCommandLineParameter(CMDLINE_TYPE, Result,false) then
     Result := '';
 end;
 
@@ -529,6 +527,7 @@ function TCommandLine.getVolumeArg: String;
 begin
   if not SDUCommandLineParameter(CMDLINE_VOLUME, Result) then
     Result := '';
+//     result := UpperCase(result);
 end;
 
 

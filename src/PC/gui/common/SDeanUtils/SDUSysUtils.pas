@@ -81,18 +81,16 @@ end;
 {$ELSE}
 var
   age: integer;
-  retval: boolean;
 begin
-  retval := FALSE;
+  result := FALSE;
 
   age := FileAge(filename);
-  if (age <> -1) then
-    begin
+  if (age <> -1) then    begin
     dateTime := FileDateToDateTime(age);
-    retval := TRUE;
+    result := TRUE;
     end;
 
-  Result := retval;
+
 end;
 {$IFEND}
 
@@ -104,20 +102,18 @@ function SDUFileTimestamps(
   var LastWriteTime: TFileTime): Boolean;
 var
   searchRec: TSearchRec;
-  retval:    Boolean;
 begin
-  retval := False;
+  result := False;
 {$WARN SYMBOL_PLATFORM OFF}
   if (SysUtils.FindFirst(filename, faAnyFile, searchRec) = 0) then begin
     CreationTime   := searchRec.FindData.ftCreationTime;
     LastAccessTime := searchRec.FindData.ftLastAccessTime;
     LastWriteTime  := searchRec.FindData.ftLastWriteTime;
     SysUtils.FindClose(searchRec);
-    retval := True;
+    result := True;
   end;
 {$WARN SYMBOL_PLATFORM ON}
 
-  Result := retval;
 end;
 
 // ----------------------------------------------------------------------------
@@ -169,6 +165,8 @@ const
 var
   cwd:    String;
   retVal: HINST;
+ ShExecInfo :  SHELLEXECUTEINFO  ;
+lpExitCode: DWORD;
 begin
   // Only applicable in Windows Vista; simply warn user they can't continue on
   // earlier OSs
@@ -179,12 +177,36 @@ begin
       errMsg := TEXT_NEED_ADMIN;
   end else begin
     cwd    := ExtractFilePath(filenameAndPath);
-    retVal := ShellExecute(Application.Handle, VERB_RUNAS,
-      PChar(filenameAndPath), PChar(cmdLineParams), PChar(cwd), SW_SHOW);
-    Result := retVal > 32;
+
+
+ShExecInfo.cbSize := sizeof(SHELLEXECUTEINFO);
+ShExecInfo.fMask := SEE_MASK_NOCLOSEPROCESS;
+ShExecInfo.Wnd := Application.Handle;
+ShExecInfo.lpVerb := VERB_RUNAS;
+ShExecInfo.lpFile := PChar(filenameAndPath);
+ShExecInfo.lpParameters := PChar(cmdLineParams);
+ShExecInfo.lpDirectory := PChar(cwd);
+ShExecInfo.nShow := SW_SHOW;
+ShExecInfo.hInstApp := 0;
+ShellExecuteEx(@ShExecInfo);
+WaitForSingleObject(ShExecInfo.hProcess,INFINITE);
+
+ if GetExitCodeProcess(ShExecInfo.hProcess,lpExitCode)  then begin
+
+    Result := lpExitCode  = 0;
+ end else begin
+//   Result := retVal > 32;
+     result := false;
+ end;
+
+//    retVal := ShellExecute(Application.Handle, VERB_RUNAS,
+//      PChar(filenameAndPath), PChar(cmdLineParams), PChar(cwd), SW_SHOW);
+
+
+
     if not Result then
-      errMsg := Format('Command %s(%s) failed with error: %d',
-        [filenameAndPath, cmdLineParams, retVal]);
+      errMsg := Format('Command %s(%s) failed with error: %d %s',
+        [filenameAndPath, cmdLineParams, lpExitCode,SysErrorMessage(GetLastError)]);
   end;
 end;
 
@@ -214,13 +236,20 @@ begin
     {$ENDIF}
     newlinePath := newlinePath + 'tools\newline.txt';  // contains newlines
     newlinePath := SDUGetFinalPath(newlinePath);       // resolve any mapped drives, as will run as admin
-    cmd         := format('/c format %s: /fs:fat /q /v:LibreCrypt < %s', [driveToFormat, newlinePath]);
+    cmd         := format('/c format %s: /fs:fat /q /v:LibreCrypt < %s > c:\format_output.txt', [driveToFormat, newlinePath]);
 //    formatRet   := False;
     if not silent then
       Result := SDUConfirmOK(format('Format drive %s?', [driveToFormat]));
     if Result then begin
+    application.ProcessMessages;
       Result := UACRun('cmd', cmd, False, True, errMsg); //causes hang?
-//        formatRet := SHFormatDrive(Application.handle, Ord(currDrive) - Ord('A'), SHFMT_ID_DEFAULT, SHFMT_OPT_FULL);
+//      Result := UACRun('','cmd '+ cmd, False, True, errMsg); //causes hang?
+
+//        Result := SHFormatDrive(Application.handle, Ord(Uppercase(driveToFormat)) - Ord('A'), SHFMT_ID_DEFAULT, SHFMT_OPT_FULL);
+
+application.ProcessMessages;
+// check formatted
+     if not  DirectoryExists(driveToFormat+':\') then Result := false;
 
       if (not Result) and (not silent) then begin
         SDUMessageDlg(errMsg, TMsgDlgType.mtError);

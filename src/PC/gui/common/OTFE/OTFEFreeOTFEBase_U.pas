@@ -2853,10 +2853,10 @@ DebugMsg('Cypher impl: '+cypherDetails.Title+' ('+GUIDToString(CDBMetaData.Cyphe
 
     if GetSpecificHashDetails(CDBMetaData.HashDriver, CDBMetaData.hashGUID, hashDetails) then begin
       DebugMsg('Hash driver: ' + CDBMetaData.HashDriver);
-{$IFDEF FREEOTFE_DEBUG}
+
 
 DebugMsg('Hash impl: '+hashDetails.Title+' ('+GUIDToString(CDBMetaData.HashGUID)+')');
-{$ENDIF}
+
     end else begin
       LastErrorCode := OTFE_ERR_DRIVER_FAILURE;
       Result        := False;
