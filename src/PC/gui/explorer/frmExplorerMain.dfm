@@ -395,8 +395,8 @@ inherited frmExplorerMain: TfrmExplorerMain
       object mnuMainStore: TMenuItem
         Caption = '&Store'
         Hint = 
-          'Contains commands for copying files and folders to the opened ' +
-          'container.'
+          'Contains commands for copying files and folders to the opened co' +
+          'ntainer.'
         ImageIndex = 14
         object File2: TMenuItem
           Action = actStoreFile
@@ -763,7 +763,7 @@ inherited frmExplorerMain: TfrmExplorerMain
     Left = 52
     Top = 348
     Bitmap = {
-      494C010111002001D40110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010111002001D80110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1438,7 +1438,7 @@ inherited frmExplorerMain: TfrmExplorerMain
     Left = 44
     Top = 296
     Bitmap = {
-      494C010112000801BC0118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010112000801C00118001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000078000000010020000000000000B4
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2980,8 +2980,8 @@ inherited frmExplorerMain: TfrmExplorerMain
     object mnuTreeViewStore: TMenuItem
       Caption = '&Store'
       Hint = 
-        'Contains commands for copying files and folders to the opened ' +
-        'container.'
+        'Contains commands for copying files and folders to the opened co' +
+        'ntainer.'
       ImageIndex = 14
       object mnuTreeViewStoreFile: TMenuItem
         Action = actStoreFile
@@ -3036,8 +3036,8 @@ inherited frmExplorerMain: TfrmExplorerMain
     object mnuListViewStore: TMenuItem
       Caption = '&Store'
       Hint = 
-        'Contains commands for copying files and folders to the opened ' +
-        'container.'
+        'Contains commands for copying files and folders to the opened co' +
+        'ntainer.'
       ImageIndex = 14
       object mnuListViewStoreFile: TMenuItem
         Action = actStoreFile
@@ -3089,7 +3089,7 @@ inherited frmExplorerMain: TfrmExplorerMain
     Left = 354
     Top = 378
     Bitmap = {
-      494C010101000400800110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000400840110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000262626003E3E3E002626260000000000000000000000

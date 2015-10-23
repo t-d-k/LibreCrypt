@@ -25,8 +25,6 @@ uses
   fmeSDUBlocks,
   fmeNewPassword, fmeContainerSize;
 
- 
-
 type
 
   TfrmCreateLUKSVolumeWizard = class (TfrmWizard)
@@ -67,6 +65,9 @@ type
     tsSize: TTabSheet;
     fmeContainerSize1: TTfmeContainerSize;
     lblFileInstruct: TLabel;
+    lblInstruct2: TLabel;
+    lblInstruct3: TLabel;
+    lblFileExistsWarning: TLabel;
 
     procedure FormShow(Sender: TObject);
     procedure seSaltLengthChange(Sender: TObject);
@@ -82,6 +83,7 @@ type
 
     procedure feVolFilenameChange(Sender: TObject);
         procedure ControlChanged(Sender: TObject);
+    procedure feVolFilenameedFilenameChange(Sender: TObject);
   private
 
     fDeviceList:  TStringList;
@@ -234,6 +236,8 @@ procedure TfrmCreateLUKSVolumeWizard._EnableDisableControls();
 begin
   inherited;
   fmeContainerSize1.EnableDisableControls(GetIsPartition(),false,fmeSelectPartition.SyntheticDriveLayout);
+
+  feVolFilename.Visible := not GetIsPartition();
 end;
 
 function TfrmCreateLUKSVolumeWizard.GetIsPartition(): Boolean;
@@ -265,6 +269,7 @@ begin
   Result := False;
 
   if (checkTab = tsVolFile) then begin
+
     // Ensure one option has been selected
     Result := (rgFileOrPartition.ItemIndex >= 0);
     if Result then begin
@@ -272,6 +277,7 @@ begin
       if (GetIsPartition()) then begin
         Result := True;
       end else begin
+        lblFileExistsWarning.Visible := FileExists(GetVolFilename);
         Result := (GetVolFilename()<>'') and not FileExists(GetVolFilename());
       end;
     end;
@@ -470,6 +476,8 @@ end;
 
 procedure TfrmCreateLUKSVolumeWizard.ControlChanged(Sender: TObject);
 begin
+
+
   _UpdateUIAfterChangeOnCurrentTab();
 end;
 
@@ -669,6 +677,14 @@ procedure TfrmCreateLUKSVolumeWizard.feVolFilenameChange(Sender: TObject);
 begin
   inherited;
   _UpdateUIAfterChangeOnCurrentTab();
+end;
+
+procedure TfrmCreateLUKSVolumeWizard.feVolFilenameedFilenameChange(
+  Sender: TObject);
+begin
+  inherited;
+  feVolFilename.edFilenameChange(Sender);
+
 end;
 
 procedure TfrmCreateLUKSVolumeWizard.fmeSelectPartitionChanged(Sender: TObject);

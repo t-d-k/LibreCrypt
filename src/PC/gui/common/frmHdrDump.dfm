@@ -3,8 +3,8 @@ object frmHdrDump: TfrmHdrDump
   Top = 263
   BorderStyle = bsDialog
   Caption = 'Dump LUKS Details'
-  ClientHeight = 342
-  ClientWidth = 483
+  ClientHeight = 353
+  ClientWidth = 537
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,46 +15,50 @@ object frmHdrDump: TfrmHdrDump
   Position = poScreenCenter
   OnCreate = FormCreate
   OnShow = FormShow
+  DesignSize = (
+    537
+    353)
   PixelsPerInch = 96
   TextHeight = 13
   object pbOK: TButton
-    Left = 160
-    Top = 304
+    Left = 360
+    Top = 320
     Width = 75
     Height = 25
+    Anchors = [akRight, akBottom]
     Caption = 'OK'
     Default = True
     TabOrder = 2
   end
   object pbCancel: TButton
-    Left = 248
-    Top = 304
+    Left = 454
+    Top = 320
     Width = 75
     Height = 25
+    Anchors = [akRight, akBottom]
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 3
   end
   object GroupBox1: TGroupBox
-    Left = 8
-    Top = 8
-    Width = 465
+    AlignWithMargins = True
+    Left = 3
+    Top = 3
+    Width = 531
     Height = 213
+    Align = alTop
     Caption = 'Container/keyfile details'
     TabOrder = 0
-    object Label1: TLabel
-      Left = 8
-      Top = 24
-      Width = 83
-      Height = 13
-      Caption = '&Container/keyfile:'
-    end
+    ExplicitLeft = 8
+    ExplicitTop = 8
+    ExplicitWidth = 465
     inline OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect
-      Left = 116
-      Top = 20
-      Width = 342
-      Height = 21
+      Left = 2
+      Top = 15
+      Width = 527
+      Height = 196
+      Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -62,18 +66,43 @@ object frmHdrDump: TfrmHdrDump
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitLeft = 116
+      ExplicitLeft = 3
       ExplicitTop = 20
-      ExplicitWidth = 342
-      ExplicitHeight = 21
+      ExplicitWidth = 455
+      ExplicitHeight = 45
+      DesignSize = (
+        527
+        196)
+      inherited bbBrowsePartition: TBitBtn
+        Left = 503
+        Top = 3
+        ExplicitLeft = 431
+        ExplicitTop = 3
+      end
+      inherited bbBrowseFile: TBitBtn
+        Left = 476
+        Top = 3
+        ExplicitLeft = 404
+        ExplicitTop = 3
+      end
+      inherited edFilename: TEdit
+        Left = 3
+        Top = 3
+        Width = 467
+        ExplicitLeft = 3
+        ExplicitTop = 3
+        ExplicitWidth = 395
+      end
     end
   end
   object GroupBox2: TGroupBox
-    Left = 8
-    Top = 241
-    Width = 465
-    Height = 57
-    Caption = 'Dump file'
+    AlignWithMargins = True
+    Left = 3
+    Top = 222
+    Width = 531
+    Height = 70
+    Align = alTop
+    Caption = 'Dump to file'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -81,36 +110,38 @@ object frmHdrDump: TfrmHdrDump
     Font.Style = []
     ParentFont = False
     TabOrder = 1
-    object Label3: TLabel
-      Left = 8
-      Top = 24
-      Width = 59
-      Height = 13
-      Caption = '&Dump to file:'
-      FocusControl = feDumpFilename
-    end
+    ExplicitLeft = 0
+    ExplicitTop = 219
+    ExplicitWidth = 516
     inline feDumpFilename: TSDUFilenameEdit
-      Left = 88
-      Top = 20
-      Width = 365
-      Height = 34
+      Left = 2
+      Top = 15
+      Width = 527
+      Height = 53
+      Align = alClient
       TabOrder = 0
       ExplicitLeft = 88
       ExplicitTop = 20
-      ExplicitWidth = 365
+      ExplicitWidth = 401
       ExplicitHeight = 34
       DesignSize = (
-        365
-        34)
+        527
+        53)
       inherited edFilename: TEdit
-        Width = 257
-        ExplicitWidth = 257
+        Left = 3
+        Width = 451
+        Height = 22
+        ExplicitLeft = 3
+        ExplicitWidth = 430
+        ExplicitHeight = 22
       end
       inherited pbBrowse: TButton
-        Left = 287
-        Top = 6
-        ExplicitLeft = 287
-        ExplicitTop = 6
+        Left = 469
+        Width = 55
+        Height = 22
+        ExplicitLeft = 448
+        ExplicitWidth = 55
+        ExplicitHeight = 22
       end
     end
   end

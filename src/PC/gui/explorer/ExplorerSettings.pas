@@ -48,7 +48,7 @@ type
 resourcestring
   MOVE_DELETION_METHOD_PROMPT    = 'Prompt user';
   MOVE_DELETION_METHOD_DELETE    = 'Delete original';
-  MOVE_DELETION_METHOD_OVERWRITE = 'Overwrite original';
+  MOVE_DELETION_METHOD_OVERWRITE = 'Wipe original';
 
 const
   MoveDeletionMethodTitlePtr: array [TMoveDeletionMethod] of Pointer =

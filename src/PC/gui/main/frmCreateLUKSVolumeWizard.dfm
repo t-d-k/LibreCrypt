@@ -37,20 +37,70 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
           600
           345)
         object lblFileInstruct: TLabel
+          AlignWithMargins = True
           Left = 3
           Top = 3
-          Width = 417
-          Height = 156
-          Anchors = [akLeft, akTop, akRight, akBottom]
+          Width = 594
+          Height = 39
+          Align = alTop
           Caption = 
             'LUKS container creation is a beta feature.'#13#10'Some values that wil' +
-            'l be configurable later are fixed in this version to ease bug di' +
-            'agnosis.'#13#10'The values that will be used for the container are:'#13#10'c' +
-            'ypher: aes 256 '#13#10'hash: SHA256'#13#10'number of AF stripes    = 2'#13#10'ciph' +
-            'er mode = '#39'xts-plain64'#39#13#10'master key digest iterations = 1000'#13#10'se' +
-            'ctor IV Gen Method         = 32 bit sector ID'#13#10'base IV Cypher On' +
-            ' Hash Length =  True'#13#10'key Slot = 0 '#13#10'The container is NOT overwr' +
-            'itten with chaff before use'
+            'l be configurable later are constant in this version to ease tro' +
+            'uble shooting.'#13#10'The values that will be used for the container a' +
+            're:'
+          ExplicitWidth = 446
+        end
+        object lblInstruct2: TLabel
+          AlignWithMargins = True
+          Left = 3
+          Top = 48
+          Width = 594
+          Height = 104
+          Align = alTop
+          Caption = 
+            'Cypher:                        aes 256 '#13#10'Hash:                  ' +
+            '        SHA256'#13#10'Number of AF Stripes:          2'#13#10'Cypher Mode:  ' +
+            '                 xts-plain64'#13#10'Master Key Digest Iterations:  100' +
+            '0'#13#10'Sector IV Gen Method:          32 bit sector ID'#13#10'Base IV Cyph' +
+            'er on Hash Length: True'#13#10'Key Slot:                      0 '
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Consolas'
+          Font.Style = []
+          ParentFont = False
+          ExplicitWidth = 282
+        end
+        object lblInstruct3: TLabel
+          AlignWithMargins = True
+          Left = 3
+          Top = 158
+          Width = 594
+          Height = 13
+          Align = alTop
+          Caption = 'The container is NOT wiped with chaff before use'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ExplicitWidth = 235
+        end
+        object lblFileExistsWarning: TLabel
+          Left = 3
+          Top = 259
+          Width = 204
+          Height = 13
+          Anchors = [akLeft, akBottom]
+          Caption = 'This file cannot be used as it already exists.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clRed
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          Visible = False
         end
         object GroupBox1: TGroupBox
           Left = 0
@@ -77,6 +127,7 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
               Left = 3
               Top = 11
               Width = 498
+              OnChange = feVolFilenameedFilenameChange
               ExplicitLeft = 3
               ExplicitTop = 11
               ExplicitWidth = 498
@@ -101,7 +152,7 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
           Caption = 'File or Partition'
           Items.Strings = (
             'File'
-            'Partition')
+            'Partition or Whole Disk')
           TabOrder = 1
           OnClick = ControlChanged
         end
@@ -186,7 +237,7 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
           end
           inherited ilErrorWarning: TImageList
             Bitmap = {
-              494C0101030004003C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400580110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000

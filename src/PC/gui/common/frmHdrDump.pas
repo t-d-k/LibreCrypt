@@ -29,9 +29,7 @@ type
     pbOK:           TButton;
     pbCancel:       TButton;
     GroupBox1:      TGroupBox;
-    Label1:         TLabel;
     GroupBox2:      TGroupBox;
-    Label3:         TLabel;
     feDumpFilename: TSDUFilenameEdit;
     OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect;
     procedure FormCreate(Sender: TObject);

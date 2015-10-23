@@ -355,8 +355,8 @@
 				<DesignClass>TFrame</DesignClass>
 			</DCCReference>
 			<DCCReference Include="..\common\lcConsts.pas"/>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmWizardCreateVolume.pas">
-				<Form>frmWizardCreateVolume</Form>
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmCreateFreeOTFEVolume.pas">
+				<Form>frmCreateFreeOTFEVolume</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmWizardChangePasswordCreateKeyfile.pas">
 				<Form>frmWizardChangePasswordCreateKeyfile</Form>
@@ -370,7 +370,7 @@
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFEDLL_U.pas"/>
 			<DCCReference Include="..\common\lcDebugLog.pas"/>
 			<DCCReference Include="..\common\SDeanSecurity\Shredder\Shredder.pas"/>
-			<DCCReference Include="..\common\SDeanSecurity\Shredder\FileList_U.pas">
+			<DCCReference Include="..\common\SDeanSecurity\Shredder\frmFileList.pas">
 				<Form>FileList_F</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\fmePassword.pas">

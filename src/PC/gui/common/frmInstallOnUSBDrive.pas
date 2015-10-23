@@ -50,7 +50,6 @@ uses
 {$WARN UNIT_PLATFORM ON}
 //sdu lcutils
 lcConsts,
-
   lcDialogs,
   SDUGeneral, SDUi18n;
 

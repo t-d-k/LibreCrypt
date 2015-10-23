@@ -17,7 +17,8 @@ uses
   ExtCtrls, Forms, Graphics, Grids, ImgList, Menus, Messages, Spin64, StdCtrls,
   SysUtils, ToolWin, Windows, XPMan,
   // sdu & LibreCrypt utils
-  SDUSystemTrayIcon, Shredder,
+  SDUSystemTrayIcon,
+//  Shredder,
   lcTypes, OTFE_U, MainSettings, CommonSettings,
   DriverControl,
   OTFEFreeOTFE_U, OTFEFreeOTFEBase_U,
@@ -218,8 +219,8 @@ type
     procedure _ResizeWindow();
 
     function GetSelectedDrives(): DriveLetterString;
-    procedure _OverwriteDrives(drives: DriveLetterString;
-      overwriteEntireDrive: Boolean);
+//    procedure _OverwriteDrives(drives: DriveLetterString;
+//      overwriteEntireDrive: Boolean);
 
     procedure _MountFile(mountAsSystem: TVolumeType; filename: String;
       ReadOnly, isHidden, createVol: Boolean { only applicable for dmcrypt });
@@ -316,7 +317,9 @@ uses
   sdusysutils, // for format drive
   SDUGraphics,
   PKCS11Lib,
-  LUKSTools, MouseRNGDialog_U, lcConsts, OTFEConsts_U,
+  LUKSTools,
+//  MouseRNGDialog_U,
+  lcConsts, OTFEConsts_U,
   DriverAPI, lcCommandLine,
   // SDUObjectManager,//testing
   // LibreCrypt forms
@@ -325,7 +328,7 @@ uses
   frmOptions,
   frmSelectOverwriteMethod,
   frmVolProperties,
-  frmWizardCreateVolume, frmCreateLUKSVolumeWizard,
+  frmCreateFreeOTFEVolume, frmCreateLUKSVolumeWizard,
   frmKeyEntryFreeOTFE // for MountFreeOTFE
   , frmKeyEntryLinux, frmSelectVolumeType,
   frmWizardChangePasswordCreateKeyfile,
@@ -1046,11 +1049,11 @@ end;
   to test
   LUKS keyfile
   LUKS at offset (ever used?)
-  creating vol
+  creating vol     T
   creating keyfile
   creating .les file
   partition operations
-  overwrite ops
+  overwrite ops  T
   pkcs11 ops
   cdb at offset
   salt <> default value
@@ -1855,7 +1858,7 @@ begin
   AddToMRUList(filename);
 
   // if is LUKS volume - prompt to open as luks - dont force as maybe hidden
-  if mountAsSystem <> vtLUKS then
+  if (mountAsSystem <> vtLUKS) and (not createVol) then
     if IsLUKSVolume(filename) then
       if SDUConfirmYN(Format(_('%s is a LUKS container. Open as LUKS?'), [filename])) then
         mountAsSystem := vtLUKS;
@@ -2463,83 +2466,6 @@ begin
   DragAcceptFiles(self.handle, GetFreeOTFE().Active);
 
 end;
-
-(*
-  // The array passed in is zero-indexed; populate elements zero to "bytesRequired"
-  procedure TfrmMain.GenerateOverwriteData(Sender: TObject; passNumber: Integer;
-  bytesRequired: Cardinal; var generatedOK: Boolean; var outputBlock: TShredBlock);
-  var
-  i:              Integer;
-  tempArraySize:  Cardinal;
-  blocksizeBytes: Cardinal;
-  plaintext:      Ansistring;
-  cyphertext:     Ansistring;
-  IV:             Ansistring;
-  localIV:        Int64;
-  sectorID:       LARGE_INTEGER;
-  begin
-  // Generate an array of random data containing "bytesRequired" bytes of data,
-  // plus additional random data to pad out to the nearest multiple of the
-  // cypher's blocksize bits
-  // Cater for if the blocksize was -ve or zero
-  if (ftempCypherDetails.BlockSize < 1) then begin
-  blocksizeBytes := 1;
-  end else begin
-  blocksizeBytes := (ftempCypherDetails.BlockSize div 8);
-  end;
-  tempArraySize := bytesRequired + (blocksizeBytes - (bytesRequired mod blocksizeBytes));
-
-  // SDUInitAndZeroBuffer(tempArraySize, plaintext);
-  plaintext := '';
-  for i := 1 to tempArraySize do begin
-  plaintext := plaintext + Ansichar(random(256));
-  { DONE 2 -otdk -csecurity : This is not secure PRNG - but key is random, so result is CSPRNG -see faq }
-  end;
-
-
-  Inc(ftempCypherEncBlockNo);
-
-  // Adjust the IV so that this block of encrypted pseudorandom data should be
-  // reasonably unique
-  IV := '';
-  // SDUInitAndZeroBuffer(0, IV);
-  if (ftempCypherDetails.BlockSize > 0) then begin
-  // SDUInitAndZeroBuffer((ftempCypherDetails.BlockSize div 8), IV);
-  IV := StringOfChar(AnsiChar(#0), (ftempCypherDetails.BlockSize div 8));
-
-  localIV := ftempCypherEncBlockNo;
-
-  for i := 1 to min(sizeof(localIV), length(IV)) do begin
-  IV[i]   := Ansichar((localIV and $FF));
-  localIV := localIV shr 8;
-  end;
-
-  end;
-
-  // Adjust the sectorID so that this block of encrypted pseudorandom data
-  // should be reasonably unique
-  sectorID.QuadPart := ftempCypherEncBlockNo;
-
-  // Encrypt the pseudorandom data generated
-  if not (GetFreeOTFE().EncryptSectorData(ftempCypherDriver, ftempCypherGUID,
-  sectorID, FREEOTFE_v1_DUMMY_SECTOR_SIZE, ftempCypherKey, IV, plaintext, cyphertext))   then begin
-  SDUMessageDlg(
-  _('Unable to encrypt pseudorandom data before using for overwrite buffer?!') +
-  SDUCRLF + SDUCRLF + Format(_('Error #: %d'), [GetFreeOTFE().LastErrorCode]),
-  mtError
-  );
-
-  generatedOK := False;
-  end else begin
-  // Copy the encrypted data into the outputBlock
-  for i := 0 to (bytesRequired - 1) do
-  outputBlock[i] := Byte(cyphertext[i + 1]);
-
-  generatedOK := True;
-  end;
-  end;
-*)
-
 function TfrmMain._PortableModeSet(setTo: TPortableModeAction;
   suppressMsgs: Boolean): Boolean;
 begin
@@ -3277,7 +3203,7 @@ var
 begin
   selDrives := GetSelectedDrives();
 
-  for i := 0 to length(selDrives) - 1 do begin
+  for i := 1 to length(selDrives) do begin
 
     if not Format_drive(selDrives[i]) then begin
       // error already reported
@@ -3310,25 +3236,27 @@ end;
 
 procedure TfrmMain.actOverwriteEntireDriveExecute(Sender: TObject);
 var
-  selectedDrive: DriveLetterString;
+  selectedDrive: DriveLetterChar;
   selDrives:     DriveLetterString;
 begin
   selDrives := GetSelectedDrives();
   if (length(selDrives) > 1) then begin
     SDUMessageDlg(
-      _('Due to the destructive nature of overwriting entire drives, only one drive may be selected when this option is chosen.') + SDUCRLF + SDUCRLF + _('Please ensure that only one mounted drive is selected, and retry.')
+      _('Due to the destructive nature of wiping entire drives, only one drive may be wiped at a time.')
+      + SDUCRLF + SDUCRLF + _('Please ensure that only one open drive is selected, and retry.')
       );
   end else begin
+   assert(length(selDrives) =1);
     selectedDrive := selDrives[1];
 
     if SDUWarnYN(_('WARNING!') + SDUCRLF + SDUCRLF + Format(
-      _('You are attempting to overwrite drive: %s:'), [selectedDrive]) +
+      _('You are attempting to wipe drive: %s:'), [selectedDrive]) +
       SDUCRLF + SDUCRLF + Format(
       _('THIS WILL DESTROY ALL INFORMATION STORED ON DRIVE %s:, and require it to be reformatted'),
       [selectedDrive]) + SDUCRLF + SDUCRLF +
       _('Are you ABSOLUTELY SURE you want to do this?'))
     then begin
-      _OverwriteDrives(selectedDrive, True);
+      frmSelectOverwriteMethod.OverwriteDrive(selectedDrive, True,self);
     end;
   end;
 end;
@@ -3339,174 +3267,15 @@ var
   selDrives: DriveLetterString;
 begin
   selDrives := GetSelectedDrives();
-  _OverwriteDrives(selDrives, False);
-end;
-
- // overwriteEntireDrive - Set to TRUE to overwrite the entire drive; this will
- // destroy all data on the drive, and requiring it to be
- // reformatted. Set to FALSE to simply overwrite the
- // free space on the drive
-procedure TfrmMain._OverwriteDrives(drives: DriveLetterString;
-  overwriteEntireDrive: Boolean);
-var
-  Shredder:             TShredder;
-  i:                    Integer;
-  currDrive:            DriveLetterChar;
-  frmOverWriteMethod:   TfrmSelectOverwriteMethod;
-  overwriteWithEncryptedData: Boolean;
-  allOK:                Boolean;
-  getRandomBits:        Integer;
-  randomBuffer:         array of Byte;
-  overwriteOK:          TShredResult;
-  currDriveDevice:      String;
-  failMsg:              String;
-  MouseRNGDialog1:      TMouseRNGDialog;
-  chaff_cypher_key:     TSDUBytes;
-  chaff_cypher_driver:  Ansistring;
-  chaff_cypher_GUID:    TGUID;
-  chaff_cypher_details: TFreeOTFECypher_v3;
-begin
-  overwriteOK := srSuccess;
-  allOK       := False;
-  overwriteWithEncryptedData := False;
-  Shredder    := TShredder.Create();
-  try
-
-    frmOverWriteMethod := TfrmSelectOverwriteMethod.Create(self);
-    try
-      frmOverWriteMethod.OTFEFreeOTFEObj := GetFreeOTFE();
-      if (frmOverWriteMethod.ShowModal() = mrOk) then begin
-        allOK := True;
-
-        overwriteWithEncryptedData :=
-          frmOverWriteMethod.overwriteWithEncryptedData;
-        if (overwriteWithEncryptedData) then begin
-          chaff_cypher_driver := frmOverWriteMethod.CypherDriver;
-          chaff_cypher_GUID   := frmOverWriteMethod.CypherGUID;
-
-          GetFreeOTFE().GetSpecificCypherDetails(chaff_cypher_driver,
-            chaff_cypher_GUID,
-            chaff_cypher_details);
-
-          // Initilize zeroed IV for encryption
-          // ftempCypherEncBlockNo := 0;
-
-          // Get *real* random data for encryption key
-          getRandomBits := 0;
-          if (chaff_cypher_details.KeySizeRequired < 0) then begin
-            // -ve keysize = arbitary keysize supported - just use 512 bits
-            getRandomBits := 512;
-          end else
-          if (chaff_cypher_details.KeySizeRequired > 0) then begin
-            // +ve keysize = specific keysize - get sufficient bits
-            getRandomBits := chaff_cypher_details.KeySizeRequired;
-          end;
-
-          MouseRNGDialog1 := TMouseRNGDialog.Create();
-          try
-
-
-            { TODO 1 -otdk -cenhance : use cryptoapi etc if avail }
-            if (getRandomBits > 0) then begin
-              MouseRNGDialog1.RequiredBits := getRandomBits;
-              allOK := MouseRNGDialog1.Execute();
-            end;
-
-            if (allOK) then begin
-              setlength(randomBuffer, (getRandomBits div 8));
-              MouseRNGDialog1.RandomData(getRandomBits, randomBuffer);
-
-              for i := low(randomBuffer) to high(randomBuffer) do begin
-                SDUAddByte(chaff_cypher_key, randomBuffer[i]);
-                // Overwrite the temp buffer...
-                randomBuffer[i] := Random(256);
-              end;
-              setlength(randomBuffer, 0);
-            end;
-
-          finally
-            MouseRNGDialog1.Free;
-          end;
-        end;
-
-      end;
-
-    finally
-      frmOverWriteMethod.Free();
-    end;
-
-
-    if (allOK) then begin
-      if SDUConfirmYN(_('Overwriting on a large container may take a while.') +
-        SDUCRLF + SDUCRLF + _('Are you sure you wish to proceed?')) then begin
-
-        Shredder.IntMethod := smPseudorandom;
-        Shredder.IntPasses := 1;
-
-        if overwriteWithEncryptedData then begin
-          // Note: Setting this event overrides shredder.IntMethod
-          Shredder.OnTweakEncryptDataEvent  := GetFreeOtfeBase().EncryptSectorData;
-          Shredder.OverwriteCypherBlockSize := chaff_cypher_details.BlockSize;
-          Shredder.TempCypherKey            := chaff_cypher_key;
-          Shredder.TempCypherDriver         := chaff_cypher_driver;
-          Shredder.tempCypherGUID           := chaff_cypher_GUID;
-
-          // shredder.OnOverwriteDataReq := GenerateOverwriteData;
-        end else begin
-          Shredder.OnTweakEncryptDataEvent := nil;
-        end;
-
-        for i := 1 to length(drives) do begin
-          currDrive := drives[i];
-
-          if overwriteEntireDrive then begin
-            currDriveDevice := '\\.\' + currDrive + ':';
-            Shredder.DestroyDevice(currDriveDevice, False, False);
-            overwriteOK := Shredder.LastIntShredResult;
-          end else begin
-            overwriteOK := Shredder.OverwriteDriveFreeSpace(currDrive, False);
-          end;
-
-        end;
-
-        if (overwriteOK = srSuccess) then begin
-          SDUMessageDlg(_('Overwrite operation complete.'), mtInformation);
-          if overwriteEntireDrive then begin
-            SDUMessageDlg(_(
-              'Please reformat the drive just overwritten before attempting to use it.'),
-              mtInformation);
-          end;
-        end else
-        if (overwriteOK = srError) then begin
-          failMsg := _('Overwrite operation FAILED.');
-          if not (overwriteEntireDrive) then begin
-            failMsg := failMsg + SDUCRLF + SDUCRLF +
-              _('Did you remember to format this drive first?');
-          end;
-
-          SDUMessageDlg(failMsg, mtError);
-        end else
-        if (overwriteOK = srUserCancel) then begin
-          SDUMessageDlg(_('Overwrite operation cancelled by user.'),
-            mtInformation);
-        end else begin
-          SDUMessageDlg(_('No drives selected to overwrite?'),
-            mtInformation);
-        end;
-
-      end; // if (SDUMessageDlg(
-    end;   // if (allOK) then
-  finally
-    Shredder.Free();
+    if (length(selDrives) > 1) then begin
+    SDUMessageDlg(
+      _('Only one drive may be wiped at a time.') + SDUCRLF + SDUCRLF + _('Please ensure that only one open drive is selected, and retry.')
+      );
+  end else begin
+  assert(length(selDrives) =1);
+  frmSelectOverwriteMethod.OverwriteDrive(selDrives[1], False,self);
   end;
-  // ftempCypherDriver := '';
-  chaff_cypher_GUID := StringToGUID('{00000000-0000-0000-0000-000000000000}');
-  SDUZeroBuffer(chaff_cypher_key);
-  // ftempCypherKey        := '';
-  // ftempCypherEncBlockNo := 0;
-
 end;
-
 procedure TfrmMain.tbbTogglePortableModeMouseUp(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
@@ -3519,7 +3288,6 @@ end;
  // Handle "/portable" command line
  // Returns: Exit code
 function TfrmMain._ProcessCommandLine_Portable(): eCmdLine_Exit;
-
 begin
   Result := ceSUCCESS;
   if GetCmdLine.PortableArg <> '' then begin
@@ -3542,10 +3310,8 @@ begin
         end;
       end;
     end;
-
   end;
 end;
-
 
  // install all drivers
  //

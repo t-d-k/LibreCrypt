@@ -558,7 +558,7 @@ uses
   frmSelectCopyOrMove,
   frmSelectDirectory,
   frmNewVolumeSize,
-  frmWizardCreateVolume,
+  frmCreateFreeOTFEVolume,
   frmKeyEntryFreeOTFE
   // frmWebDAVStatus { TODO 1 -otdk -cenhance : implement webdav }
     , frmKeyEntryLinux, frmSelectVolumeType,frmVersionCheck;
@@ -2694,10 +2694,10 @@ begin
   if SDUOpenDialog_Overwrite.Execute then begin
     overwriteItem                 := SDUOpenDialog_Overwrite.filename;
 
-    if SDUWarnYN(Format(_('This will overwrite:' + SDUCRLF + SDUCRLF + '%s' + SDUCRLF + SDUCRLF +
+    if SDUWarnYN(Format(_('This will wipe:' + SDUCRLF + SDUCRLF + '%s' + SDUCRLF + SDUCRLF +
       'Are you sure you want to do this?'), [overwriteItem])) then begin
       if (fShredderObj.DestroyFileOrDir(overwriteItem, False, False, False) = srError) then begin
-        SDUMessageDlg(_('Overwrite failed'), mtError);
+        SDUMessageDlg(_('Wipe failed'), mtError);
       end;
     end;
   end;
@@ -2710,12 +2710,12 @@ var
 begin
   inherited;
 
-  if SDUSelectDirectory(self.handle, _('Folder to overwrite:'), '', overwriteItem) then begin
-    if SDUWarnYN(Format(_('This will overwrite:' + SDUCRLF + SDUCRLF + '%s' + SDUCRLF + SDUCRLF +
+  if SDUSelectDirectory(self.handle, _('Folder to wipe:'), '', overwriteItem) then begin
+    if SDUWarnYN(Format(_('This will wipe:' + SDUCRLF + SDUCRLF + '%s' + SDUCRLF + SDUCRLF +
       'and everything contained within it.' + SDUCRLF + SDUCRLF + 'Are you sure you want to do this?'), [overwriteItem]))
     then begin
       if (fShredderObj.DestroyFileOrDir(overwriteItem, False, False, False) = srError) then begin
-        SDUMessageDlg(_('Overwrite failed'), mtError);
+        SDUMessageDlg(_('Wipe failed'), mtError);
       end;
     end;
   end;
@@ -4702,7 +4702,7 @@ begin
       promptMsg := _('Deletion of %s failed');
     end
     else if (moveDeletionMethod = mdmOverwrite) then begin
-      promptMsg := _('Overwrite of %s failed');
+      promptMsg := _('Wipe of %s failed');
     end;
 
     userPrompt := SDUMessageDlg(Format(promptMsg, [ExtractFilename(Item)]), mtWarning, [mbAbort, mbRetry, mbIgnore], 0);
