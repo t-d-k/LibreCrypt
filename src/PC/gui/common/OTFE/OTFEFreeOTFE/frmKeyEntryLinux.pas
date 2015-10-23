@@ -8,26 +8,26 @@ unit frmKeyEntryLinux;
  //
 
 //this is for new and existing dmcrypt volumes - not LUKS
-
+{ TODO 1 -crefactor : rename unit }
 
 interface
 
 uses
-     //delphi & libs
-      Classes, ComCtrls, Controls, Dialogs,
+  //delphi & libs
+  Classes, ComCtrls, Controls, Dialogs,
   ExtCtrls, Forms, Graphics, Messages,
   PasswordRichEdit,
   StdCtrls, SysUtils, Windows,
   Spin64,
   //sdu & LibreCrypt utils
-        lcDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
-lcTypes,   // Required for TFreeOTFEMountAs
+  lcDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
+  lcTypes,   // Required for TFreeOTFEMountAs
   DriverAPI, OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U,
   SDUSpin64Units, SDUStdCtrls, SDUDialogs,
 
-   // LibreCrypt forms
-   fmeNewPassword, fmePassword;
+  // LibreCrypt forms
+  fmeNewPassword, fmePassword, fmeVolumeSelect;
 
 type
   TfrmKeyEntryPlainLinux = class (TSDUForm)
@@ -49,8 +49,8 @@ type
     cbMainCypher:   TComboBox;
     pbMainCypherInfo: TButton;
     GroupBox4:      TGroupBox;
-    lblOffset: TLabel;
-    lblOffsetO: TLabel;
+    lblOffset:      TLabel;
+    lblOffsetO:     TLabel;
     Label10:        TLabel;
     Label11:        TLabel;
     GroupBox2:      TGroupBox;
@@ -81,26 +81,29 @@ type
     se64UnitSizeLimit: TSDUSpin64Unit_Storage;
     feGPGExecutable: TSDUFilenameEdit;
     feGPGKeyfile:   TSDUFilenameEdit;
-    tsKeyOptions: TTabSheet;
-    tsNewKey: TTabSheet;
-    GroupBox5: TGroupBox;
-    Label2: TLabel;
-    Label6: TLabel;
-    Label13: TLabel;
-    Label20: TLabel;
-    Label3: TLabel;
-    Label7: TLabel;
-    Label18: TLabel;
-    Label19: TLabel;
-    cbKeyProcHash: TComboBox;
+    tsKeyOptions:   TTabSheet;
+    tsNewKey:       TTabSheet;
+    GroupBox5:      TGroupBox;
+    Label2:         TLabel;
+    Label6:         TLabel;
+    Label13:        TLabel;
+    Label20:        TLabel;
+    Label3:         TLabel;
+    Label7:         TLabel;
+    Label18:        TLabel;
+    Label19:        TLabel;
+    cbKeyProcHash:  TComboBox;
     seKeyProcCypherIterations: TSpinEdit64;
     pbKeyProcHashInfo: TButton;
     pbKeyProcCypherInfo: TButton;
     cbKeyProcCypher: TComboBox;
-    edKeySeed: TEdit;
-    ckHashWithAs: TSDUCheckBox;
+    edKeySeed:      TEdit;
+    ckHashWithAs:   TSDUCheckBox;
     frmeNewPassword1: TfrmeNewPassword;
-    frmePassword1: TfrmePassword;
+    frmePassword1:  TfrmePassword;
+    tsChooseContainer: TTabSheet;
+    GroupBox7: TGroupBox;
+    OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect;
     procedure FormCreate(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
     procedure SelectionChange(Sender: TObject);
@@ -117,6 +120,7 @@ type
     procedure pbSaveClick(Sender: TObject);
     procedure pbIVCypherInfoClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormActivate(Sender: TObject);
   private
     function _MountVolume(): Boolean;
     function _SilencableMessageDlg(Content: String; DlgType: TMsgDlgType;
@@ -134,8 +138,8 @@ type
     fsilent_result:   TModalResult;
     fsilent_password: PasswordString;
     // some bug whereby password is reset in silent mode { TODO 1 -otdk -crefactor : investigate }
-    fcreate_vol :         Boolean;   //dialog is creating volume?
-    fis_hidden :         Boolean;   //dialog is creating/ opening hidden volume?
+    fcreate_vol:      Boolean;   //dialog is creating volume?
+    fis_hidden:       Boolean;   //dialog is creating/ opening hidden volume?
 
     procedure _PopulateHashes();
     procedure _PopulateCyphers();
@@ -148,7 +152,7 @@ type
 
   public
     // Key...
-function GetKey( ):Ansistring;
+    function GetKey(): Ansistring;
     procedure SetKey(userKey: PasswordString);
 
     // Key processing...
@@ -213,22 +217,24 @@ function GetKey( ):Ansistring;
       userKey, seed: Ansistring; hashWithAs: Boolean;
       targetKeylengthBits: Integer; var volumeKey: TSDUBytes): Boolean;
 
-    property  fileName: String write ffile_name;
-    property  createVol: boolean write fcreate_vol;
-//    property silent: boolean write fsilent;
-    property isHidden : boolean write fis_hidden;
+    property fileName: String Write ffile_name;
+    property createVol: Boolean Write fcreate_vol;
+    //    property silent: boolean write fsilent;
+    property isHidden: Boolean Write fis_hidden;
   end;
 
-function MountPlainLinux(volumeFilename: String;var mountedAs: DriveLetterChar;ReadOnly: Boolean = False; lesFile: String = '';password: TSDUBytes = nil;
-offset: ULONGLONG = 0; createVol: Boolean = False;isHidden: Boolean = False ):TMountresult;
+function MountPlainLinux(volumeFilename: String;
+  var mountedAs: DriveLetterChar; ReadOnly: Boolean = False;
+  lesFile: String = ''; password: TSDUBytes = nil;
+  offset: ULONGLONG = 0; createVol: Boolean = False; isHidden: Boolean = False): TMountresult;
 
 //function CreatePlainLinuxVolumeWizard(out fileName: String): Boolean;
-function CreateFileWithPrompt(var fileName: String;out user_cancelled: Boolean): Boolean;
+function CreateFileWithPrompt(var fileName: String; out user_cancelled: Boolean): Boolean;
 
 
 
-   // ---------
-    // See function comment in body of function
+ // ---------
+ // See function comment in body of function
 {$IFDEF LINUX_DETECT}
     function  DetectLinux(
       volumeFilename: string;
@@ -243,22 +249,22 @@ function CreateFileWithPrompt(var fileName: String;out user_cancelled: Boolean):
       ): string;
 {$ENDIF}
 
-    // Mount file(s) assuming specific volume type
-    // Note: The volumeFilename(s) passed in can EITHER by files on the local
-    //       filesystem (e.g. "C:\myfile.dat"), OR partitions
-    //       (e.g. "\Device\Harddisk1\Partition3")
-    // Note: "keyfile" is only supported for LUKS volumes atm
-    // Note: If "keyfile" is supplied, the contents of this file will be used
-    //       and "password" will be ignored
-    //    function MountLinux(volumeFilename: String; ReadOnly: Boolean = False;
-    //      lesFile: String = ''; password: TSDUBytes = nil; keyfile: String = '';
-    //      keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
-    //      keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
-    //      offset: ULONGLONG = 0; silent: Boolean = False;
-    //      forceHidden: Boolean = False): DriveLetterChar;
-    //      overload;
+ // Mount file(s) assuming specific volume type
+ // Note: The volumeFilename(s) passed in can EITHER by files on the local
+ //       filesystem (e.g. "C:\myfile.dat"), OR partitions
+ //       (e.g. "\Device\Harddisk1\Partition3")
+ // Note: "keyfile" is only supported for LUKS volumes atm
+ // Note: If "keyfile" is supplied, the contents of this file will be used
+ //       and "password" will be ignored
+ //    function MountLinux(volumeFilename: String; ReadOnly: Boolean = False;
+ //      lesFile: String = ''; password: TSDUBytes = nil; keyfile: String = '';
+ //      keyfileIsASCII: Boolean = LINUX_KEYFILE_DEFAULT_IS_ASCII;
+ //      keyfileNewlineType: TSDUNewline = LINUX_KEYFILE_DEFAULT_NEWLINE;
+ //      offset: ULONGLONG = 0; silent: Boolean = False;
+ //      forceHidden: Boolean = False): DriveLetterChar;
+ //      overload;
 
-    { done 1 -otdk -crefaactor : split into mountLUKS and mountplainlinux fns }
+{ done 1 -otdk -crefaactor : split into mountLUKS and mountplainlinux fns }
     {
 function MountLinux(volumeFilename: String; var mountedAs: DriveLetterChar;
       ReadOnly: Boolean = False; lesFile: String = ''; password: TSDUBytes = nil;
@@ -282,20 +288,20 @@ implementation
 
 
 uses
-     //delphi & libs
-         ComObj,                      // Required for StringToGUID
+  //delphi & libs
+  ComObj,                      // Required for StringToGUID
   VolumeFileAPI,               // Required for SCTRIVGEN_USES_SECTOR_ID and SCTRIVGEN_USES_HASH
   INIFiles, Math,
 
   //sdu & LibreCrypt utils
-      SDUi18n, Pkcs11Lib,  lcConsts,  sduGeneral, OTFEFreeOTFEDLL_U,
-      LUKSTools,
+  SDUi18n, Pkcs11Lib, lcConsts, sduGeneral, OTFEFreeOTFEDLL_U,
+  LUKSTools,
   OTFEConsts_U,
   CommonSettings,
   MainSettings, lcCommandLine,
-   // LibreCrypt forms
+  // LibreCrypt forms
   frmNewVolumeSize,
-   frmCypherInfo, frmHashInfo;
+  frmCypherInfo, frmHashInfo;
 
 const
 
@@ -349,6 +355,16 @@ resourcestring
   FILTER_GPG_FILES = 'GPG files|*.gpg|All files|*.*';
   FILTER_GPG_EXE   = 'GPG Executable|GPG.exe|All files|*.*';
 
+procedure TfrmKeyEntryPlainLinux.FormActivate(Sender: TObject);
+begin
+  inherited;
+//   frmeNewPassword1.Show;
+//   frmeNewPassword1.SetFocus;
+//   frmeNewPassword1.preUserKeyFirst.SetFocus;
+
+
+end;
+
 procedure TfrmKeyEntryPlainLinux.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
@@ -359,23 +375,24 @@ end;
 
 procedure TfrmKeyEntryPlainLinux.FormCreate(Sender: TObject);
 begin
-  fHashKernelModeDriverNames := TStringList.Create();
-  fHashGUIDs := TStringList.Create();
+  fHashKernelModeDriverNames   := TStringList.Create();
+  fHashGUIDs                   := TStringList.Create();
   fCypherKernelModeDriverNames := TStringList.Create();
-  fCypherGUIDs := TStringList.Create();
-  pcEntry.ActivePage := tsKey;
+  fCypherGUIDs                 := TStringList.Create();
+  pcEntry.ActivePage           := tsKey;
 
 
   frmePassword1.ClearPassword;
+  frmeNewPassword1.ClearKeyPhrase;
   // Linux volumes CAN NOT have newlines in the user's password
 
-  feGPGExecutable. TabStop := False ;
-   feGPGExecutable.       FilterIndex := 0      ;
+  feGPGExecutable.TabStop     := False;
+  feGPGExecutable.FilterIndex := 0;
 
-   feGPGKeyfile.  TabStop := False         ;
-   feGPGKeyfile.       FilterIndex := 0   ;
+  feGPGKeyfile.TabStop     := False;
+  feGPGKeyfile.FilterIndex := 0;
 
-    OpenSettingsFileDlg.Filter     := FILE_FILTER_FLT_LINUX_SETTINGS;
+  OpenSettingsFileDlg.Filter     := FILE_FILTER_FLT_LINUX_SETTINGS;
   OpenSettingsFileDlg.DefaultExt := FILE_FILTER_DFLT_LINUX_SETTINGS;
   OpenSettingsFileDlg.Options    := OpenSettingsFileDlg.Options + [ofDontAddToRecent];
   SaveSettingsFileDlg.Filter     := FILE_FILTER_FLT_LINUX_SETTINGS;
@@ -390,6 +407,10 @@ begin
 
   _DefaultOptions();
 
+     frmeNewPassword1.OnChange:= SelectionChange;
+//
+//      frmeNewPassword1.SetFocus;
+//   frmeNewPassword1.preUserKeyFirst.SetFocus;
 end;
 
 
@@ -645,14 +666,14 @@ begin
   // Key...
   //      GetKeyProcSeed();
   keyProcSeed := edKeySeed.Text;
-  fmounted_as  := #0;
+  fmounted_as := #0;
   GetKeyProcHashGUID(keyProcHashGUID);
   //      GetKeyProcHashWithAs();
   keyProcHashWithAs := ckHashWithAs.Checked;
   //  keyProcIterations := seKeyProcCypherIterations.Value * 1000;
   fileOptOffset     := se64UnitOffset.Value;
- userKey:= GetKey();
-  fileOptSize := se64UnitSizeLimit.Value;
+  userKey           := GetKey();
+  fileOptSize       := se64UnitSizeLimit.Value;
 
   GetDriveLetter(mountDriveLetter);
   mountReadonly  := ckMountReadonly.Checked;
@@ -724,7 +745,7 @@ begin
         fmounted_as := currDriveLetter;
       end else begin
         fmounted_as := #0;
-        Result     := False;
+        Result      := False;
       end;
     end;  // if Result then
 
@@ -734,11 +755,15 @@ end;
 
 procedure TfrmKeyEntryPlainLinux.pbOKClick(Sender: TObject);
 var
-  tmpKey: Ansistring;
+  tmpKey:         Ansistring;
   user_cancelled: Boolean;
 begin
   ModalResult := mrCancel;
-tmpKey  :=GetKey();
+
+
+  if fcreate_vol then assert(frmeNewPassword1.IsPasswordValid);
+  tmpKey      := GetKey();
+
   if (Length(tmpKey) = 0) then begin
     if (_SilencableMessageDlg(_('You have not entered a Keyphrase.') + SDUCRLF +
       SDUCRLF + _('Are you sure you wish to proceed?'), mtConfirmation, [mbYes, mbNo]) =
@@ -747,7 +772,8 @@ tmpKey  :=GetKey();
     end;
   end else begin
     if (Length(tmpKey) < 20) then begin
-      if (_SilencableMessageDlg(_('The Keyphrase you entered has less than 20 characters, and may not be compatible with some Linux volumes.'),
+      if (_SilencableMessageDlg(_(
+        'The Keyphrase you entered has less than 20 characters, and may not be compatible with some Linux volumes.'),
         mtWarning, [mbIgnore, mbAbort]) = mrIgnore) then begin
         ModalResult := mrOk;
       end;
@@ -762,10 +788,11 @@ tmpKey  :=GetKey();
   if ModalResult = mrOk then begin
     if (not fis_hidden) and FileExists(ffile_name) and (not fcreate_vol) then begin
       if IsLUKSVolume(ffile_name) then begin
-        if (_SilencableMessageDlg(_('This container is a LUKS container, opening it as a dm-crypt container may corrupt it.')
-        , mtWarning, [mbIgnore, mbAbort]) <>        mrIgnore) then begin
-        ModalResult := mrAbort;
-      end;
+        if (_SilencableMessageDlg(
+          _('This container is a LUKS container, opening it as a dm-crypt container may corrupt it.')
+          , mtWarning, [mbIgnore, mbAbort]) <> mrIgnore) then begin
+          ModalResult := mrAbort;
+        end;
       end;
 
     end;
@@ -773,35 +800,35 @@ tmpKey  :=GetKey();
   if ModalResult = mrOk then
     if fcreate_vol and (not fis_hidden) then begin
       if FileExists(ffile_name) then begin
-        _SilencableMessageDlg(_('This file already exists, a new container cannot be created.'),mtError,[mbAbort]);
+        _SilencableMessageDlg(_('This file already exists, a new container cannot be created.'),
+          mtError, [mbAbort]);
         ModalResult := mrCancel;
       end else begin
 
-         // create empty file
-  if CreateFileWithPrompt(ffile_name,user_cancelled) then begin
-    SDUMessageDlg(
-      _('dm-crypt container created successfully.') + SDUCRLF + SDUCRLF +
-      _('Now this container will be mounted and formated before use.'),
-      mtInformation);
-    { TODO 1 -otdk -cenhance : wipe volume first }
+        // create empty file
+        if CreateFileWithPrompt(ffile_name, user_cancelled) then begin
+          SDUMessageDlg(
+            _('dm-crypt container created successfully.') + SDUCRLF + SDUCRLF +
+            _('Now this container will be mounted and formated before use.'),
+            mtInformation);
+          { TODO 1 -otdk -cenhance : wipe volume first }
 
-  end else begin
-      if user_cancelled then
-         ModalResult := mrCancel
-      else
-        SDUMessageDlg(_('The dm-crypt container could not be created'), mtError);
-  end;
+        end else begin
+          if user_cancelled then
+            ModalResult := mrCancel
+          else
+            SDUMessageDlg(_('The dm-crypt container could not be created'), mtError);
+        end;
 
       end;
-        { TODO 1 -otdk -csecurity : overwrite with 'chaff' - need to set up cyphers etc. }
+      { TODO 1 -otdk -csecurity : overwrite with 'chaff' - need to set up cyphers etc. }
     end;
 
 
   if ModalResult = mrOk then
     if _MountVolume() then begin
 
-    { TODO 2 -otdk -csecurity : ensure is overritten and formated if created }
-
+      { TODO 2 -otdk -csecurity : ensure is overritten and formated if created }
 
     end else begin
       ModalResult := mrAbort;
@@ -902,6 +929,7 @@ begin
     (cbMainCypher.ItemIndex >= 0) and (sectorIVGenMethod <> foivgUnknown) and
     IVStartSectorOK and IVHashOK and IVCypherOK and mountAsOK);
 
+    if fcreate_vol and not frmeNewPassword1.IsPasswordValid then  pbOK.Enabled := false;
 
 
 
@@ -912,8 +940,6 @@ begin
   SDUEnableControl(cbKeyProcCypher, False);
   SDUEnableControl(pbKeyProcCypherInfo, False);
   SDUEnableControl(seKeyProcCypherIterations, False);
-
-
 
 end;
 
@@ -993,22 +1019,28 @@ begin
     lblReadOnlySwitch.top := ckMountReadonly.top;
   end;
 
-  //show exisitng or new password tab, depending on if creating new vol.
-  tsKey.Visible := not  fcreate_vol;
-  tsNewKey.Visible :=  fcreate_vol;
+  //show existing or new password tab, depending on if creating new vol.
+  tsKey.TabVisible    := not fcreate_vol;
+  tsNewKey.TabVisible := fcreate_vol;
+  if fcreate_vol then begin
+    { TODO 1 : no idea why but edits don't show unless the tab is shown twice }
+  pcEntry.ActivePage           := tsNewKey;
+      pcEntry.ActivePage           := tsKeyOptions;
+pcEntry.ActivePage           := tsNewKey;
+  end;
 
   { done 1 -otdk -ccomplete : hide offset unless hidden }
-      { TODO 1 -otdk -ccomplete : hide filename if hidden }
+  { TODO 1 -otdk -ccomplete : hide filename if hidden }
 
- lblOffset.Visible:=  fis_hidden;
- se64UnitOffset.Visible:=  fis_hidden;
- lblOffsetO.Visible:=  fis_hidden;
+  lblOffset.Visible      := fis_hidden;
+  se64UnitOffset.Visible := fis_hidden;
+  lblOffsetO.Visible     := fis_hidden;
 
   _EnableDisableControls();
 
 
   if GetCmdLine.isSilent then begin
-    frmePassword1.SetKeyPhrase( fsilent_password);
+    frmePassword1.SetKeyPhrase(fsilent_password);
     //    LoadSettings(OpenSettingsFileDlg.Filename);?
     if _MountVolume() then begin
       ModalResult := mrOk;
@@ -1020,6 +1052,7 @@ begin
 
     PostMessage(Handle, WM_CLOSE, 0, 0);
   end;
+
 
 end;
 
@@ -1048,15 +1081,21 @@ begin
   ModalResult := mrCancel;
 end;
 
-function TfrmKeyEntryPlainLinux.GetKey( ):Ansistring;
+function TfrmKeyEntryPlainLinux.GetKey(): Ansistring;
 begin
   { TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
-  result := SDUBytesToString(frmePassword1.GetKeyPhrase);
+  if fcreate_vol then
+    Result := SDUBytesToString(frmeNewPassword1.GetKeyPhrase)
+  else
+Result := SDUBytesToString(frmePassword1.GetKeyPhrase) ;
 end;
 
 procedure TfrmKeyEntryPlainLinux.SetKey(userKey: PasswordString);
 begin
-  frmePassword1.SetKeyPhrase( userKey);
+if fcreate_vol then
+ frmeNewPassword1.SetKeyPhrase(userKey)
+  else
+  frmePassword1.SetKeyPhrase(userKey);
   fsilent_password := userKey;
 end;
 
@@ -2036,17 +2075,18 @@ end;
 
 
 function MountPlainLinux(volumeFilename: String; var mountedAs: DriveLetterChar;
-ReadOnly: Boolean = False; lesFile: String = '';password: TSDUBytes = nil;
-offset: ULONGLONG = 0;{silent: Boolean = False;} createVol: Boolean = False;isHidden: Boolean = False):TMountresult;
+  ReadOnly: Boolean = False; lesFile: String = ''; password: TSDUBytes = nil;
+  offset: ULONGLONG = 0;{silent: Boolean = False;} createVol: Boolean = False;
+  isHidden: Boolean = False): TMountresult;
 var
   keyEntryDlg: TfrmKeyEntryPlainLinux;
   mr:          Integer;
 begin
-   Result        := morOK;
+  Result := morOK;
 
-     GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS;
-//  Result        := True;
-  mountedAs     := #0;
+  GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS;
+  //  Result        := True;
+  mountedAs := #0;
   GetFreeOTFEBase().CheckActive();
 
 
@@ -2060,13 +2100,13 @@ begin
     keyEntryDlg.fileName := volumeFilename;
 
     keyEntryDlg.createVol := createVol;
-    keyEntryDlg.isHidden := isHidden;
-    mr := keyEntryDlg.ShowModal();
+    keyEntryDlg.isHidden  := isHidden;
+    mr                    := keyEntryDlg.ShowModal();
 
     // Get user password, drive letter to use, etc
     if (mr = mrCancel) then begin
-//          GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
-      Result        := morCancel;
+      //          GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
+      Result := morCancel;
     end else begin
       if (mr = mrOk) then begin
         mountedAs := keyEntryDlg.GetmountedAs();
@@ -2451,19 +2491,19 @@ begin
 
 end;
  *)
-function CreateFileWithPrompt(var fileName: String; out user_cancelled: Boolean ): Boolean;
+function CreateFileWithPrompt(var fileName: String; out user_cancelled: Boolean): Boolean;
 var
   volSizeDlg: TfrmNewVolumeSize;
   mr:         Integer;
 begin
-  Result := False;
-  user_cancelled := False;
-  volSizeDlg := TfrmNewVolumeSize.Create(nil);
-   volSizeDlg.Filename := fileName;
+  Result              := False;
+  user_cancelled      := False;
+  volSizeDlg          := TfrmNewVolumeSize.Create(nil);
+  volSizeDlg.Filename := fileName;
   try
     mr := volSizeDlg.ShowModal;
     if mr = mrCancel then begin
-      user_cancelled := true;
+      user_cancelled := True;
     end else begin
       if mr = mrOk then begin
         fileName := volSizeDlg.Filename;
@@ -2475,7 +2515,6 @@ begin
   finally
     volSizeDlg.Free();
   end;
-
 
 end;
 

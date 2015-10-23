@@ -61,7 +61,7 @@ object TfmeContainerSize: TTfmeContainerSize
     Width = 341
     Height = 13
     Align = alTop
-    Caption = 'The actual file created will be slightly larger than this.'
+    Caption = 'The actual container created will be slightly larger than this.'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -69,7 +69,7 @@ object TfmeContainerSize: TTfmeContainerSize
     Font.Style = []
     ParentFont = False
     WordWrap = True
-    ExplicitWidth = 247
+    ExplicitWidth = 278
   end
   object ckSizeEntirePartitionDisk: TCheckBox
     Left = 0

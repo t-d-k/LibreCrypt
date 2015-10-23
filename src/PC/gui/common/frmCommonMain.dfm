@@ -215,7 +215,7 @@ object frmCommonMain: TfrmCommonMain
     Left = 116
     Top = 36
     object actFreeOTFENewNotHidden: TAction
-      Caption = '&New ...'
+      Caption = '&New...'
       Hint = 'New FreeOTFE container'
       ImageIndex = 18
       OnExecute = actFreeOTFENewNotHiddenExecute
@@ -259,7 +259,7 @@ object frmCommonMain: TfrmCommonMain
       OnExecute = actNewHiddenDmcryptExecute
     end
     object actMountDmcryptHidden: TAction
-      Caption = '&Open hidden dm-crypt ...'
+      Caption = '&Open hidden dm-crypt...'
       Hint = 'Open hidden Plain dm-crypt file container'
       ImageIndex = 19
       OnExecute = actMountDmcryptHiddenExecute
@@ -366,7 +366,7 @@ object frmCommonMain: TfrmCommonMain
     Left = 68
     Top = 52
     Bitmap = {
-      494C0101150010018C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010115001001980210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000000A0704000000000000000000312E2B004B48
@@ -1175,7 +1175,7 @@ object frmCommonMain: TfrmCommonMain
     Left = 28
     Top = 96
     Bitmap = {
-      494C010114001001800218001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101140010018C0218001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000090000000010020000000000000D8
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

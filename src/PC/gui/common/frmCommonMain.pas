@@ -1204,14 +1204,7 @@ begin
   finally
     dlg.Free();
   end;
-
 end;
-
-
-
-
-
-
 
 procedure TfrmCommonMain.actMountDmcryptNotHiddenExecute(Sender: TObject);
 begin
