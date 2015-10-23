@@ -1,4 +1,4 @@
-unit frmWizardCreateVolume;
+unit frmCreateFreeOTFEVolume;
  // Description:
  // By Sarah Dean
  // Email: sdean12@sdean12.org
@@ -7,7 +7,7 @@ unit frmWizardCreateVolume;
  // -----------------------------------------------------------------------------
  //
 
- { TODO 1 -otdk -ccleanup : rename unit }
+{ TODO 1 -otdk -ccleanup : rename unit }
 interface
 
 uses
@@ -45,14 +45,14 @@ type
     lblInstructFilenameNotHidden: TLabel;
     reInstructOffset: TLabel;
     reInstructHashCypherIV: TLabel;
-    reInstructRNGSelect1: TLabel;
+    lblInstructRNGSelect1: TLabel;
     Label13:         TLabel;
     GroupBox1:       TGroupBox;
     pbBrowseFilename: TButton;
     Label7:          TLabel;
     SaveDialog:      TSDUSaveDialog;
     tsRNGMouseMovement: TTabSheet;
-    reInstructRNGMouseMovement1: TLabel;
+    lblInstructRNGMouseMovement1: TLabel;
     tsSummary:       TTabSheet;
     reSummary:       TRichEdit;
     tsRNGGPG:        TTabSheet;
@@ -63,7 +63,7 @@ type
     GPGOpenDialog:   TSDUOpenDialog;
     MouseRNG:        TMouseRNG;
     tsMasterKeyLength: TTabSheet;
-    reInstructMasterKeyLen: TLabel;
+    lblInstructMasterKeyLen: TLabel;
     Label2:          TLabel;
     seMasterKeyLength: TSpinEdit64;
     Label9:          TLabel;
@@ -121,9 +121,9 @@ type
     tsChaff:         TTabSheet;
     lblInstructChaff1: TLabel;
     ckRNGGPG:        TCheckBox;
-    lblFilename:     TEdit;
+    edtFilename:     TEdit;
     Label15:         TLabel;
-    reInstructPartitionWarning1: TLabel;
+    lblInstructPartitionWarning1: TLabel;
     lblWarningPartition: TLabel;
     rgOverwriteType: TRadioGroup;
     se64Padding:     TSpinEdit64;
@@ -133,9 +133,9 @@ type
     lblInstructSalt1: TLabel;
     lblInstructFileNotHidden1: TLabel;
     lblInstructDriveLetter2: TLabel;
-    reInstructRNGSelect2: TLabel;
-    reInstructPartitionWarning2: TLabel;
-    reInstructPartitionWarning3: TLabel;
+    lblInstructRNGSelect2: TLabel;
+    lblInstructPartitionWarning2: TLabel;
+    lblInstructPartitionWarning3: TLabel;
     reInstructWarningOffset2: TLabel;
     reInstructWarningOffset4: TLabel;
     reInstructWarningOffset3: TLabel;
@@ -145,7 +145,7 @@ type
     reInstructRNGSelect4: TLabel;
     reInstructRNGSelect3: TLabel;
     reInstructRNGSelect5: TLabel;
-    reInstructRNGMouseMovement2: TLabel;
+    lblInstructRNGMouseMovement2: TLabel;
     reInstructKeyIterations3: TLabel;
     reInstructKeyIterations2: TLabel;
     lblInstructSalt4: TLabel;
@@ -160,6 +160,7 @@ type
     lblInstructFileNotHidden2: TLabel;
     lblInstructPartitionSelectHidden: TLabel;
     lblFileExistsWarning: TLabel;
+    cbOverwrite: TCheckBox;
     procedure pbBrowseFilenameClick(Sender: TObject);
     procedure ckRNGClick(Sender: TObject);
     procedure ControlChanged(Sender: TObject);
@@ -187,7 +188,7 @@ type
     procedure rbCDBLocationClick2(Sender: TObject);
     procedure pbBrowseKeyfileClick(Sender: TObject);
     procedure cbDriveLetterChange(Sender: TObject);
-    procedure lblFilenameChange(Sender: TObject);
+    procedure edtFilenameChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
 
   published
@@ -261,7 +262,7 @@ type
     function getUsePerVolumeIV(): Boolean;
     function getMasterKeyLength(): Integer;  // Returns length in *bits*
     // function GetRandomData_CDB(): Ansistring;
-    function getRandomData_PaddingKey(): TSDUBytes;
+    function getRandomData_ChaffKey(): TSDUBytes;
 
 
 
@@ -294,12 +295,12 @@ type
     //    function getIsHidden(): Boolean;
     function getCDBInVolFile(): Boolean;
 
-//    function getAutoMountAfterCreate(): Boolean;
+    //    function getAutoMountAfterCreate(): Boolean;
     procedure getCDBFileAndOffset(out cdbFile: String; out cdbOffset: ULONGLONG);
 
 
   protected
-      fsilent:       Boolean;
+    fsilent:       Boolean;
     fsilentResult: TModalResult;
 
 
@@ -346,7 +347,7 @@ uses
   PartitionImageDLL,
   lcCommandLine,
   PartitionTools,//for IsPartitionPath
-  //LibreCrypt forms
+                 //LibreCrypt forms
 
   frmKeyEntryFreeOTFE // for MountFreeOTFE
   , frmCypherInfo, frmHashInfo;
@@ -401,9 +402,9 @@ begin
   SDUTranslateComp(lblInstructPartitionSelectNotHidden);
   SDUTranslateComp(lblInstructPartitionSelectHidden);
 
-  SDUTranslateComp(reInstructPartitionWarning1);
-  SDUTranslateComp(reInstructPartitionWarning2);
-  SDUTranslateComp(reInstructPartitionWarning3);
+  SDUTranslateComp(lblInstructPartitionWarning1);
+  SDUTranslateComp(lblInstructPartitionWarning2);
+  SDUTranslateComp(lblInstructPartitionWarning3);
   SDUTranslateComp(lblInstructFileNotHidden1);
   SDUTranslateComp(lblInstructFileNotHidden2);
   SDUTranslateComp(lblInstructFileHidden1);
@@ -430,14 +431,14 @@ begin
 
   { TODO 1 -otdk -ceasify : why mutiple of 512? simplify text }
   SDUTranslateComp(reInstructHashCypherIV);
-  SDUTranslateComp(reInstructMasterKeyLen);
-  SDUTranslateComp(reInstructRNGSelect1);
-  SDUTranslateComp(reInstructRNGSelect2);
+  SDUTranslateComp(lblInstructMasterKeyLen);
+  SDUTranslateComp(lblInstructRNGSelect1);
+  SDUTranslateComp(lblInstructRNGSelect2);
   SDUTranslateComp(reInstructRNGSelect3);
   SDUTranslateComp(reInstructRNGSelect4);
   SDUTranslateComp(reInstructRNGSelect5);
-  SDUTranslateComp(reInstructRNGMouseMovement1);
-  SDUTranslateComp(reInstructRNGMouseMovement2);
+  SDUTranslateComp(lblInstructRNGMouseMovement1);
+  SDUTranslateComp(lblInstructRNGMouseMovement2);
   SDUTranslateComp(reInstructRNGPKCS11);
   SDUTranslateComp(reInstructRNGGPG);
 
@@ -475,24 +476,24 @@ begin
 
   // tsFilename
 
-   if GetCmdLine.VolumeArg<>'' then
-      if IsPartitionPath(GetCmdLine.VolumeArg) then begin
+  if GetCmdLine.VolumeArg <> '' then
+    if IsPartitionPath(GetCmdLine.VolumeArg) then begin
 
       fmeSelectPartition.Initialize();
       fmeSelectPartition.Tag := 0;
 
-         fmeSelectPartition.SelectedDevice := GetCmdLine.VolumeArg;
-          rgFileOrPartition.ItemIndex := FILEORPART_OPT_PARTITION_INDEX;
-                // if no size set - use entre partition
-      fmeContainerSize1.SetIsSizeEntirePartitionDisk(true);
+      fmeSelectPartition.SelectedDevice := GetCmdLine.VolumeArg;
+      rgFileOrPartition.ItemIndex       := FILEORPART_OPT_PARTITION_INDEX;
+      // if no size set - use entre partition
+      fmeContainerSize1.SetIsSizeEntirePartitionDisk(True);
 
-      end else begin
-         lblFilename.Text := GetCmdLine.VolumeArg;
-         //todo: set size
-      end;
+    end else begin
+      edtFilename.Text := GetCmdLine.VolumeArg;
+      //todo: set size
+    end;
 
 
-    frmeNewPassword.SetKeyPhrase( GetCmdLine.PasswordArg);
+  frmeNewPassword.SetKeyPhrase(GetCmdLine.PasswordArg);
 
   // tsPartitionSelect
   // Setup and make sure nothing is selected
@@ -601,13 +602,14 @@ begin
     SaveDialog.Options := SaveDialog.Options + [ofOverwritePrompt];
 
   _UpdateUIAfterChangeOnCurrentTab();
+//  pcWizard.ActivePage := tsFileOrPartition;
 
-    if fSilent then begin
-    pbFinishClick(self) ; //sets  ModalResult
-//      ModalResult := mrOk;
-//    end else begin
-//      ModalResult := mrCancel;
-//    end;
+  if fSilent then begin
+    pbFinishClick(self); //sets  ModalResult
+    //      ModalResult := mrOk;
+    //    end else begin
+    //      ModalResult := mrCancel;
+    //    end;
 
     FSilentResult := ModalResult;
 
@@ -764,7 +766,7 @@ begin
 
   SDUOpenSaveDialogSetup(SaveDialog, GetVolFilename);
   if SaveDialog.Execute then begin
-    lblFilename.Text := SaveDialog.Filename;
+    edtFilename.Text := SaveDialog.Filename;
     // warning label updated, and  _UpdateUIAfterChangeOnCurrentTab() called in edit change event
   end;
 
@@ -1079,11 +1081,11 @@ begin
   if GetIsPartition() then begin
     Result := fmeSelectPartition.SelectedDevice;
   end else begin
-    Result := lblFilename.Text;
+    Result := edtFilename.Text;
   end;
 end;
 
-procedure TfrmCreateFreeOTFEVolume.lblFilenameChange(Sender: TObject);
+procedure TfrmCreateFreeOTFEVolume.edtFilenameChange(Sender: TObject);
 begin
   inherited;
   // update ui
@@ -1208,7 +1210,7 @@ begin
   Result := ckUsePerVolumeIV.Checked;
 end;
 
-function TfrmCreateFreeOTFEVolume.GetRandomData_PaddingKey(): TSDUBytes;
+function TfrmCreateFreeOTFEVolume.getRandomData_ChaffKey(): TSDUBytes;
 var
   len: Integer;
 begin
@@ -1456,6 +1458,7 @@ begin
   lblKeyFilename.Caption     := '';
   frmeNewPassword.OnChange   := ControlChanged;
   fmeContainerSize1.OnChange := ControlChanged;
+
 
 
 end;
@@ -1916,6 +1919,8 @@ var
   cdbFile:        String;
   cdbOffset:      ULONGLONG;
   VolFilename:    tfilename;
+  failMsg  : string;
+
 begin
   Result := True;
   { TODO 2 -otdk -csecurity : if not automount - not wiped }
@@ -1969,6 +1974,14 @@ begin
       if Result and getIsPartition then begin
         _OverwriteVolWithChaff(fnewVolumeMountedAs);
       end;
+    end;
+
+  end else begin
+    // if partitin not wiped if not mounted
+    if getIsPartition() then begin
+    failMsg :=
+        _('Wiping of data not possible for a partition until it is opened. You should manually wipe the drive to ensure security');
+      SDUMessageDlg(failMsg, mtError);
     end;
 
   end;
@@ -2176,10 +2189,10 @@ begin
   Result := GetCDBFilename() = '';
 end;
 
-//function TfrmCreateFreeOTFEVolume.GetAutoMountAfterCreate(): Boolean;
-//begin
-//  Result := ckAutoMountAfterCreate.Checked;
-//end;
+ //function TfrmCreateFreeOTFEVolume.GetAutoMountAfterCreate(): Boolean;
+ //begin
+ //  Result := ckAutoMountAfterCreate.Checked;
+ //end;
 
 
 {overwrites volume with 'chaff' from 'Offset' -
@@ -2207,85 +2220,77 @@ begin
     Result := TRUE;
     exit;
     end;}
-{
-  if IsPartition then
-    begin
-    Result := TRUE;
-    exit;
-    end;
-     }
-  if GetOverwriteWithChaff() then begin
-    // Initilize zeroed IV for encryption
-    //    ftempCypherEncBlockNo := 0;
 
-    // Get *real* random data for encryption key
-    chaffCypherKey := GetRandomData_PaddingKey();
+  if cbOverwrite.Checked then begin
 
-    shredder := TShredder.Create();
-    try
-      shredder.FileDirUseInt    := True;
-      shredder.IntMethod        := smPseudorandom;
-      shredder.IntPasses        := 1;
-      shredder.IntSegmentOffset := GetOffset;
-      // cdb is written after so can overwrite. if hidden dont overwrite main data
-      // will be 0 for non hidden vols
+  shredder := TShredder.Create();
+  try
+    shredder.FileDirUseInt := True;
+    if GetOverwriteWithChaff() then begin
+      // Initilize zeroed IV for encryption
+      //    ftempCypherEncBlockNo := 0;
 
-      //      shredder.IntSegmentLength := todo; ignored as quickshred = false
-
-      // if PadWithEncryptedData then
-      //        begin
+      // Get *real* random data for encryption key
+      chaffCypherKey                    := getRandomData_ChaffKey();
+      shredder.IntMethod                := smPseudorandom;
       // Note: Setting this event overrides shredder.IntMethod
       shredder.OnTweakEncryptDataEvent  := GetFreeOTFEBase().EncryptSectorData;
-      shredder.OverwriteCypherBlockSize := fchaffCypherDetails.BlockSize;
-      shredder.TempCypherKey            := chaffCypherKey;
-      shredder.TempCypherDriver         := GetCypherDriver();
-      shredder.tempCypherGUID           := GetCypherGUID();
-      //   end
-      //      else
-      //        begin
-      //        shredder.OnOverwriteDataReq := nil;
-      //        end;
-      { TODO 2 -otdk -ctest : this has not been tested for devices }
-      if GetIsPartition() then begin
-        //       partInfo := fmeselectpartition.SDUDiskPartitionsPanel1.PartitionInfo[fmeselectpartition.SDUDiskPartitionsPanel1.Selected];
-        { TODO 2 -otdk -cfix : this doesnt work for partitions - need mounted drive filename }
-        // think need to use WriteRawVolumeData - as otherwise cant get low level access to drive.
-        // for now create vol first then shred opened volume (slower)
-        //        overwriteOK := shredder.DestroyPart(GetVolFilename(), False, False);
-        assert(drive <> #0);
-        overwriteOK := shredder.OverwriteDriveFreeSpace(drive);
-
-      end else begin
-        overwriteOK := shredder.DestroyFileOrDir(GetVolFilename(),
-                   { TODO 1 -otdk -ccheck : check use of quickshred here }
-          False,   // quickShred - do all
-          False,   // silent
-          True     // leaveFile
-          );
-      end;
-
-      if (overwriteOK = srSuccess) then begin
-        // Do nothing...
-      end else
-      if (overwriteOK = srError) then begin
-        failMsg := _('Overwrite of data FAILED. You should manually overwrite the drive to ensure security');
-        SDUMessageDlg(failMsg, mtError);
-        Result := False;
-      end else
-      if (overwriteOK = srUserCancel) then begin
-        SDUMessageDlg(_('Overwrite of data cancelled.'), mtInformation);
-        Result := False;
-      end;
-
-
-    finally
-      shredder.Free();
+      shredder.WipeCypherBlockSize := fchaffCypherDetails.BlockSize;
+      shredder.WipeCypherKey            := chaffCypherKey;
+      shredder.wipeCypherDriver         := GetCypherDriver();
+      shredder.WipeCypherGUID           := GetCypherGUID();
+    end else begin
+      shredder.IntMethod := smZeros;
     end;
 
-  end;  // if (Result) then
-        //  SDUInitAndZeroBuffer(0, chaffCypherKey);
+    shredder.IntPasses        := 1;
+    shredder.IntSegmentOffset := GetOffset;
+    // cdb is written after so can overwrite. if hidden dont overwrite main data
+    // will be 0 for non hidden vols
+
+    //      shredder.IntSegmentLength := todo; ignored as quickshred = false
+
+
+    { done 2 -otdk -ctest : this has not been tested for devices }
+    if GetIsPartition() then begin
+      //       partInfo := fmeselectpartition.SDUDiskPartitionsPanel1.PartitionInfo[fmeselectpartition.SDUDiskPartitionsPanel1.Selected];
+      { TODO 2 -otdk -cfix : this doesnt work for partitions - need mounted drive filename }
+      // think need to use WriteRawVolumeData - as otherwise cant get low level access to drive.
+      // for now create vol first then shred opened volume (slower)
+      //        overwriteOK := shredder.DestroyPart(GetVolFilename(), False, False);
+      assert(drive <> #0);
+      overwriteOK := shredder.WipeDriveFreeSpace(drive);
+
+    end else begin
+      overwriteOK := shredder.DestroyFileOrDir(GetVolFilename(),
+                 { TODO 1 -otdk -ccheck : check use of quickshred here }
+        False,   // quickShred - do all
+        False,   // silent
+        True     // leaveFile
+        );
+    end;
+
+
+    if (overwriteOK = srError) then begin
+      failMsg :=
+        _('Wipe of data FAILED. You should manually wipe the drive to ensure security');
+      SDUMessageDlg(failMsg, mtError);
+      Result := False;
+    end else begin
+      if (overwriteOK = srUserCancel) then begin
+        SDUMessageDlg(_('Wipe of data cancelled. You should manually wipe the drive to ensure security'), mtInformation);
+        Result := False;
+      end;
+    end;
+
+
+  finally
+    shredder.Free();
+  end;
+  end;
 
 end;//
+
     //
     //// The array passed in is zero-indexed; populate elements zero to "bytesRequired"
     //procedure TfrmCreateFreeOTFEVolume._GenerateOverwriteData(
@@ -2450,7 +2455,7 @@ begin
     try
       frmWizard.isHidden := isHidden; // other cmd line values set in formcreate
 
-      mr                 := frmWizard.ShowModal();
+      mr := frmWizard.ShowModal();
 
       if mr = mrOk then begin
         GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS;

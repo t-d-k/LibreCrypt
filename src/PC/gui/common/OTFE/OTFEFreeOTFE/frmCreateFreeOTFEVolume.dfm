@@ -30,7 +30,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
       Tag = 1
       Width = 535
       Height = 358
-      ActivePage = tsSize
+      ActivePage = tsFileOrPartition
       ExplicitWidth = 535
       ExplicitHeight = 358
       object tsFileOrPartition: TTabSheet
@@ -77,9 +77,10 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           ExplicitWidth = 160
         end
         object lblInstructFileNotHidden1: TLabel
-          Left = 0
-          Top = 53
-          Width = 527
+          AlignWithMargins = True
+          Left = 3
+          Top = 62
+          Width = 521
           Height = 13
           Align = alTop
           Caption = 
@@ -89,9 +90,10 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           ExplicitWidth = 460
         end
         object lblInstructFileOrPartition3: TLabel
-          Left = 0
-          Top = 92
-          Width = 527
+          AlignWithMargins = True
+          Left = 3
+          Top = 119
+          Width = 521
           Height = 13
           Align = alTop
           Caption = 
@@ -101,21 +103,23 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           ExplicitWidth = 314
         end
         object lblInstructFileHidden2: TLabel
-          Left = 0
-          Top = 79
-          Width = 527
+          AlignWithMargins = True
+          Left = 3
+          Top = 100
+          Width = 521
           Height = 13
           Align = alTop
           Caption = 
-            'Firstly, please say if the outer container is a file stored on y' +
-            'our disk, or on a disk partition.'
+            'Firstly, choose if the outer container is a file, or on a disk p' +
+            'artition.'
           WordWrap = True
-          ExplicitWidth = 413
+          ExplicitWidth = 306
         end
         object lblInstructFileHidden1: TLabel
-          Left = 0
-          Top = 40
-          Width = 527
+          AlignWithMargins = True
+          Left = 3
+          Top = 43
+          Width = 521
           Height = 13
           Align = alTop
           Caption = 
@@ -125,16 +129,17 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           ExplicitWidth = 493
         end
         object lblInstructFileNotHidden2: TLabel
-          Left = 0
-          Top = 66
-          Width = 527
+          AlignWithMargins = True
+          Left = 3
+          Top = 81
+          Width = 521
           Height = 13
           Align = alTop
           Caption = 
-            'Firstly, please say if the new container is to be created as a f' +
-            'ile stored on your disk, or on a disk partition.'
+            'Firstly, choose if the new container is to be created as a file,' +
+            ' or on a disk partition.'
           WordWrap = True
-          ExplicitWidth = 489
+          ExplicitWidth = 382
         end
         object rgFileOrPartition: TRadioGroup
           Left = 10
@@ -142,10 +147,10 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Width = 514
           Height = 87
           Anchors = [akLeft, akRight, akBottom]
-          Caption = 'File or Partition/Entire Disk'
+          Caption = 'File or Partition'
           Items.Strings = (
-            'Container file'
-            'Partition/entire disk')
+            'File'
+            'Partition or Whole Disk')
           TabOrder = 0
           OnClick = rgFileOrPartitionClick
         end
@@ -224,15 +229,14 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
             TabOrder = 0
             OnClick = pbBrowseFilenameClick
           end
-          object lblFilename: TEdit
+          object edtFilename: TEdit
             Left = 16
             Top = 47
             Width = 414
             Height = 21
             Anchors = [akLeft, akRight, akBottom]
             TabOrder = 1
-            Text = 'lblFilename'
-            OnChange = lblFilenameChange
+            OnChange = edtFilenameChange
           end
         end
       end
@@ -278,13 +282,13 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           ParentFont = False
           ExplicitWidth = 61
         end
-        object reInstructPartitionWarning1: TLabel
+        object lblInstructPartitionWarning1: TLabel
           Left = 0
           Top = 13
           Width = 527
           Height = 13
           Align = alTop
-          Caption = '1) Creating encrypted partitions is POTENTIALLY DESTRUCTIVE.'
+          Caption = 'Creating encrypted partitions is POTENTIALLY DESTRUCTIVE.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -292,17 +296,17 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 314
+          ExplicitWidth = 302
         end
-        object reInstructPartitionWarning2: TLabel
+        object lblInstructPartitionWarning2: TLabel
           Left = 0
           Top = 26
           Width = 527
           Height = 13
           Align = alTop
           Caption = 
-            '2) Data stored on the partition you select in the next stage may' +
-            ' be OVERWRITTEN with encrypted data.'
+            'Data previously stored on the partition you select in the next s' +
+            'tage will be OVERWRITTEN.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -310,17 +314,15 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 492
+          ExplicitWidth = 429
         end
-        object reInstructPartitionWarning3: TLabel
+        object lblInstructPartitionWarning3: TLabel
           Left = 0
           Top = 39
           Width = 527
           Height = 13
           Align = alTop
-          Caption = 
-            '3) It is RECOMMENDED that you backup your data as appropriate be' +
-            'fore continuing.'
+          Caption = 'It is recommended that you backup your data before continuing.'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -328,7 +330,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Font.Style = []
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 402
+          ExplicitWidth = 301
         end
       end
       object tsPartitionSelect: TTabSheet
@@ -440,7 +442,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
             Left = 368
             Top = 65533
             Bitmap = {
-              494C010103000400500210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400740210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -1139,6 +1141,16 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
             'Zeros')
           TabOrder = 0
         end
+        object cbOverwrite: TCheckBox
+          Left = 3
+          Top = 200
+          Width = 334
+          Height = 17
+          Caption = 'Overwrite new container before use'
+          Checked = True
+          State = cbChecked
+          TabOrder = 1
+        end
       end
       object tsMasterKeyLength: TTabSheet
         Caption = 'Master Key Length'
@@ -1158,7 +1170,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Height = 13
           Caption = 'bits'
         end
-        object reInstructMasterKeyLen: TLabel
+        object lblInstructMasterKeyLen: TLabel
           Left = 0
           Top = 0
           Width = 527
@@ -1196,7 +1208,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
       object tsRNGSelect: TTabSheet
         Caption = 'RNG Select'
         ImageIndex = 4
-        object reInstructRNGSelect1: TLabel
+        object lblInstructRNGSelect1: TLabel
           Left = 0
           Top = 0
           Width = 527
@@ -1214,7 +1226,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           WordWrap = True
           ExplicitWidth = 525
         end
-        object reInstructRNGSelect2: TLabel
+        object lblInstructRNGSelect2: TLabel
           Left = 0
           Top = 26
           Width = 527
@@ -1357,7 +1369,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           Caption = 'Random bits generated: 9999/9999'
           ExplicitWidth = 169
         end
-        object reInstructRNGMouseMovement1: TLabel
+        object lblInstructRNGMouseMovement1: TLabel
           Left = 0
           Top = 0
           Width = 527
@@ -1373,7 +1385,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
           WordWrap = True
           ExplicitWidth = 297
         end
-        object reInstructRNGMouseMovement2: TLabel
+        object lblInstructRNGMouseMovement2: TLabel
           Left = 0
           Top = 13
           Width = 527

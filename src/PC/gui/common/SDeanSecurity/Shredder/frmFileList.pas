@@ -1,4 +1,4 @@
-unit FileList_U;
+unit frmFileList;
 // Description: Main Unit, Dialog
 // By Sarah Dean
 // Email: sdean12@sdean12.org
