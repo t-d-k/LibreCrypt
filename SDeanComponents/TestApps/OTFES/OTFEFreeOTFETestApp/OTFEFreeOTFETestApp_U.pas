@@ -699,7 +699,7 @@ begin
   tmpData := edHashData.text;
   RichEdit1.lines.Add('Hashing using:');
   RichEdit1.lines.Add('Device:'+edHashDriver.text);
-  RichEdit1.lines.Add('Hash:'+GUIDToString(StringToGUID(edHashGUID.text)));
+  RichEdit1.lines.Add('Hash:'+GUIDToString(Str  ingToGUID(edHashGUID.text)));
 
   if OTFEFreeOTFE1.HashData(edHashDriver.text, StringToGUID(edHashGUID.text), tmpData, hashValue) then
     begin

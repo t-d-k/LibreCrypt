@@ -53,10 +53,23 @@ type
     Next:  PPointList;
   end;
 
+  TControlFriend = class(TControl);
+
   {gathers data = pass in form or component}
    TMouseRNGEngine = class (TObject)
-  private
-   end;
+   private
+    fSavedMouseMoveEvent: TMouseMoveEvent;
+
+
+
+   public
+
+    procedure DoMouseMove(Sender: TObject; Shift: TShiftState;
+    X, Y: Integer);//  TMouseMoveEvent
+     constructor Create;
+    procedure RegisterControlForMouseCapture(actrl:TControl);
+     procedure DeRegisterControlForMouseCapture(actrl: TControl);
+    end;
 
   TMouseRNG = class (TCustomControl)
   private
@@ -131,8 +144,6 @@ type
     property TrailLines: Cardinal Read FTrailLines Write FTrailLines;
     property LineWidth: Cardinal Read FLineWidth Write SetLineWidth;
     property LineColor: TColor Read FLineColor Write SetLineColor;
-
-
 
     property Align;
     property Anchors;
@@ -611,5 +622,33 @@ begin
 end;
 
 
+
+{ TMouseRNGEngine }
+
+ // register controls to capture mouse move events and use for randomness
+constructor TMouseRNGEngine.Create;
+begin
+  fSavedMouseMoveEvent := nil;
+end;
+
+procedure TMouseRNGEngine.DoMouseMove(Sender: TObject; Shift: TShiftState; X,
+  Y: Integer);
+begin
+  if assigned(fSavedMouseMoveEvent) then  fSavedMouseMoveEvent(Sender,Shift,X,Y);
+  // todo: process mouse event ...
+end;
+
+procedure TMouseRNGEngine.RegisterControlForMouseCapture(actrl: TControl);
+begin
+ assert(not assigned(fSavedMouseMoveEvent), 'only one control supported so far');
+ fSavedMouseMoveEvent := TControlFriend(actrl).OnMouseMove;
+ TControlFriend(actrl).OnMouseMove := DoMouseMove;
+end;
+
+procedure TMouseRNGEngine.DeRegisterControlForMouseCapture(actrl: TControl);
+begin
+TControlFriend(actrl).OnMouseMove := fSavedMouseMoveEvent;
+ fSavedMouseMoveEvent := nil;
+end;
 
 end.

@@ -196,6 +196,12 @@ object OTFEFreeOTFETestApp_F: TOTFEFreeOTFETestApp_F
     Width = 454
     Height = 199
     Anchors = [akLeft, akTop, akBottom]
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 19
     WordWrap = False
@@ -373,8 +379,14 @@ object OTFEFreeOTFETestApp_F: TOTFEFreeOTFETestApp_F
       Width = 209
       Height = 45
       Color = clBtnFace
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
       Lines.Strings = (
         'reMetaData')
+      ParentFont = False
       ReadOnly = True
       ScrollBars = ssBoth
       TabOrder = 0
@@ -616,6 +628,10 @@ object OTFEFreeOTFETestApp_F: TOTFEFreeOTFETestApp_F
     object tsHash: TTabSheet
       Caption = 'Hash'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox1: TGroupBox
         Left = 4
         Top = 4
@@ -682,6 +698,10 @@ object OTFEFreeOTFETestApp_F: TOTFEFreeOTFETestApp_F
     object tsMAC: TTabSheet
       Caption = 'MAC'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox3: TGroupBox
         Left = 4
         Top = 4
@@ -785,6 +805,11 @@ object OTFEFreeOTFETestApp_F: TOTFEFreeOTFETestApp_F
           Top = 56
           Width = 237
           Height = 45
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             '50515253 54555657 58595a5b 5c5d5e5f'
             '60616263 64656667 68696a6b 6c6d6e6f'
@@ -793,6 +818,7 @@ object OTFEFreeOTFETestApp_F: TOTFEFreeOTFETestApp_F
             '90919293 94959697 98999a9b 9c9d9e9f'
             'a0a1a2a3 a4a5a6a7 a8a9aaab acadaeaf'
             'b0b1b2b3')
+          ParentFont = False
           ScrollBars = ssBoth
           TabOrder = 2
         end
@@ -802,7 +828,6 @@ object OTFEFreeOTFETestApp_F: TOTFEFreeOTFETestApp_F
           Width = 145
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
           TabOrder = 6
         end
       end
@@ -810,6 +835,10 @@ object OTFEFreeOTFETestApp_F: TOTFEFreeOTFETestApp_F
     object tsKDF: TTabSheet
       Caption = 'KDF'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 4
         Top = 4
@@ -920,8 +949,14 @@ object OTFEFreeOTFETestApp_F: TOTFEFreeOTFETestApp_F
           Top = 56
           Width = 237
           Height = 45
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
           Lines.Strings = (
             '70 61 73 73 77 6F 72 64')
+          ParentFont = False
           ScrollBars = ssBoth
           TabOrder = 2
         end
@@ -960,7 +995,6 @@ object OTFEFreeOTFETestApp_F: TOTFEFreeOTFETestApp_F
           Width = 165
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
           TabOrder = 9
         end
       end
@@ -1069,15 +1103,5 @@ object OTFEFreeOTFETestApp_F: TOTFEFreeOTFETestApp_F
     Filter = 'FreeOTFE volume files (*.vol)|*.vol|All files (*.*)|*.*'
     Left = 84
     Top = 292
-  end
-  object OTFEFreeOTFE_PC_DRIVER: TOTFEFreeOTFE
-    Active = False
-    Left = 116
-    Top = 48
-  end
-  object OTFEFreeOTFE_PC_DLL: TOTFEFreeOTFEDLL
-    Active = False
-    Left = 116
-    Top = 20
   end
 end

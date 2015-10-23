@@ -44,7 +44,7 @@ contains
   KeyboardDialog_U in 'KeyboardDialog\KeyboardDialog_U.pas',
   KeyboardEntryDlg_U in 'KeyboardDialog\KeyboardEntryDlg_U.pas' {KeyboardEntryDlg},
   Shredder in 'Shredder\Shredder.pas',
-  FileList_U in 'Shredder\FileList_U.pas' {FileList_F},
+  frmFileList in 'Shredder\frmFileList.pas' {FileList_F},
   MouseRNG in 'MouseRNG\MouseRNG.pas',
   MSCryptoAPI in 'MSCryptoAPI\MSCryptoAPI.pas',
   MouseRNGCaptureDlg_U in 'MouseRNGDialog\MouseRNGCaptureDlg_U.pas' {MouseRNGCaptureDlg},

@@ -43,7 +43,7 @@ contains
   OTFEFreeOTFE_U in 'OTFEFreeOTFE_U.pas',
   OTFEFreeOTFE_DriverAPI in 'OTFEFreeOTFE_DriverAPI.pas',
   OTFEFreeOTFE_DriverCommon in 'OTFEFreeOTFE_DriverCommon.pas',
-  OTFEFreeOTFE_DriverHashAPI in 'OTFEFreeOTFE_DriverHashAPI.pas',
+  FreeOTFEHashDriverAPI in 'FreeOTFEHashDriverAPI.pas',
   OTFEFreeOTFE_frmKeyEntryFreeOTFE in 'OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas' {frmKeyEntryFreeOTFE},
   OTFEFreeOTFE_frmCypherInfo in 'OTFEFreeOTFE_frmCypherInfo.pas' {frmCypherInfo},
   OTFEFreeOTFE_frmHashInfo in 'OTFEFreeOTFE_frmHashInfo.pas' {frmHashInfo},

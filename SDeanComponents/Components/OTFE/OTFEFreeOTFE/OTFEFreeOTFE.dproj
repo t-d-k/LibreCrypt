@@ -146,7 +146,7 @@
 			<DCCReference Include="OTFEFreeOTFE_U.pas"/>
 			<DCCReference Include="OTFEFreeOTFE_DriverAPI.pas"/>
 			<DCCReference Include="OTFEFreeOTFE_DriverCommon.pas"/>
-			<DCCReference Include="OTFEFreeOTFE_DriverHashAPI.pas"/>
+			<DCCReference Include="FreeOTFEHashDriverAPI.pas"/>
 			<DCCReference Include="OTFEFreeOTFE_frmKeyEntryFreeOTFE.pas">
 				<Form>frmKeyEntryFreeOTFE</Form>
 			</DCCReference>

@@ -1,64 +1,197 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ProjectGuid>{9b93da58-5792-4f34-a859-79abff43de22}</ProjectGuid>
-    <MainSource>OTFEFreeOTFETestProject.dpr</MainSource>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
-    <DCC_DependencyCheckOutputName>OTFEFreeOTFETestProject.exe</DCC_DependencyCheckOutputName>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Version>7.0</Version>
-    <DCC_DebugInformation>False</DCC_DebugInformation>
-    <DCC_WriteableConstants>True</DCC_WriteableConstants>
-    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
-    <DCC_Optimize>False</DCC_Optimize>
-    <DCC_GenerateStackFrames>True</DCC_GenerateStackFrames>
-    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
-    <DCC_DebugInfoInExe>True</DCC_DebugInfoInExe>
-    <DCC_DebugVN>True</DCC_DebugVN>
-    <DCC_UnitSearchPath>$(DELPHI)\Lib\Debug</DCC_UnitSearchPath>
-    <DCC_ResourcePath>$(DELPHI)\Lib\Debug</DCC_ResourcePath>
-    <DCC_ObjPath>$(DELPHI)\Lib\Debug</DCC_ObjPath>
-    <DCC_IncludePath>$(DELPHI)\Lib\Debug</DCC_IncludePath>
-    <DCC_Define>RELEASE</DCC_Define>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <Version>7.0</Version>
-    <DCC_WriteableConstants>True</DCC_WriteableConstants>
-    <DCC_Optimize>False</DCC_Optimize>
-    <DCC_GenerateStackFrames>True</DCC_GenerateStackFrames>
-    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
-    <DCC_DebugInfoInExe>True</DCC_DebugInfoInExe>
-    <DCC_DebugVN>True</DCC_DebugVN>
-    <DCC_UnitSearchPath>$(DELPHI)\Lib\Debug</DCC_UnitSearchPath>
-    <DCC_ResourcePath>$(DELPHI)\Lib\Debug</DCC_ResourcePath>
-    <DCC_ObjPath>$(DELPHI)\Lib\Debug</DCC_ObjPath>
-    <DCC_IncludePath>$(DELPHI)\Lib\Debug</DCC_IncludePath>
-    <DCC_Define>DEBUG</DCC_Define>
-  </PropertyGroup>
-  <ProjectExtensions>
-    <Borland.Personality>Delphi.Personality</Borland.Personality>
-    <Borland.ProjectType>VCLApplication</Borland.ProjectType>
-    <BorlandProject>
-<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><Language><Language Name="ProjectLang">$00000809</Language></Language><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">0</VersionInfo><VersionInfo Name="MinorVer">1</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">806</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">1033</VersionInfo><VersionInfo Name="CodePage">1252</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName">Sarah Dean</VersionInfoKeys><VersionInfoKeys Name="FileDescription">FreeOTFE Delphi Component Demo</VersionInfoKeys><VersionInfoKeys Name="FileVersion">0.1.0.806</VersionInfoKeys><VersionInfoKeys Name="InternalName">FreeOTFE Delphi Component Demo</VersionInfoKeys><VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename">OTFEFreeOTFETestApp.exe</VersionInfoKeys><VersionInfoKeys Name="ProductName"></VersionInfoKeys><VersionInfoKeys Name="ProductVersion">0.01.00</VersionInfoKeys><VersionInfoKeys Name="Comments">http://www.FreeOTFE.org/</VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">OTFEFreeOTFETestProject.dpr</Source></Source></Delphi.Personality></BorlandProject></BorlandProject>
-  </ProjectExtensions>
-  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
-  <ItemGroup>
-    <DelphiCompile Include="OTFEFreeOTFETestProject.dpr">
-      <MainSource>MainSource</MainSource>
-    </DelphiCompile>
-    <DCCReference Include="CriticalBlockTest_U.pas">
-      <Form>CriticalBlockTest_F</Form>
-    </DCCReference>
-    <DCCReference Include="cryptlibAPITest_U.pas">
-      <Form>cryptlibAPITest</Form>
-    </DCCReference>
-    <DCCReference Include="OTFEFreeOTFETestApp_U.pas">
-      <Form>OTFEFreeOTFETestApp_F</Form>
-    </DCCReference>
-    <DCCReference Include="RNGTest_U.pas">
-      <Form>RNGTest</Form>
-    </DCCReference>
-  </ItemGroup>
-</Project>
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{9b93da58-5792-4f34-a859-79abff43de22}</ProjectGuid>
+			<MainSource>OTFEFreeOTFETestProject.dpr</MainSource>
+			<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+			<DCC_DependencyCheckOutputName>OTFEFreeOTFETestProject.exe</DCC_DependencyCheckOutputName>
+			<FrameworkType>VCL</FrameworkType>
+			<ProjectVersion>13.4</ProjectVersion>
+			<Base>True</Base>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+			<TargetedPlatforms>1</TargetedPlatforms>
+			<AppType>Application</AppType>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+			<Base_Win64>true</Base_Win64>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+			<Base_Win32>true</Base_Win32>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<VerInfo_MinorVer>1</VerInfo_MinorVer>
+			<VerInfo_MajorVer>0</VerInfo_MajorVer>
+			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<VerInfo_Keys>CompanyName=Sarah Dean;FileDescription=FreeOTFE Delphi Component Demo;FileVersion=0.1.0.806;InternalName=FreeOTFE Delphi Component Demo;LegalCopyright=;LegalTrademarks=;OriginalFilename=OTFEFreeOTFETestApp.exe;ProductName=;ProductVersion=0.01.00;Comments=http://www.FreeOTFE.org/</VerInfo_Keys>
+			<VerInfo_Build>806</VerInfo_Build>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win64)'!=''">
+			<Icon_MainIcon>OTFEFreeOTFETestProject_Icon1.ico</Icon_MainIcon>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base_Win32)'!=''">
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<Icon_MainIcon>OTFEFreeOTFETestProject_Icon1.ico</Icon_MainIcon>
+			<DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<Version>7.0</Version>
+			<DCC_DebugInformation>False</DCC_DebugInformation>
+			<DCC_WriteableConstants>True</DCC_WriteableConstants>
+			<DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+			<DCC_Optimize>False</DCC_Optimize>
+			<DCC_GenerateStackFrames>True</DCC_GenerateStackFrames>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInfoInExe>True</DCC_DebugInfoInExe>
+			<DCC_DebugVN>True</DCC_DebugVN>
+			<DCC_UnitSearchPath>$(DELPHI)\Lib\Debug;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_ResourcePath>$(DELPHI)\Lib\Debug;$(DCC_ResourcePath)</DCC_ResourcePath>
+			<DCC_ObjPath>$(DELPHI)\Lib\Debug;$(DCC_ObjPath)</DCC_ObjPath>
+			<DCC_IncludePath>$(DELPHI)\Lib\Debug;$(DCC_IncludePath)</DCC_IncludePath>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<Version>7.0</Version>
+			<DCC_WriteableConstants>True</DCC_WriteableConstants>
+			<DCC_Optimize>False</DCC_Optimize>
+			<DCC_GenerateStackFrames>True</DCC_GenerateStackFrames>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInfoInExe>True</DCC_DebugInfoInExe>
+			<DCC_DebugVN>True</DCC_DebugVN>
+			<DCC_UnitSearchPath>$(DELPHI)\Lib\Debug;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_ResourcePath>$(DELPHI)\Lib\Debug;$(DCC_ResourcePath)</DCC_ResourcePath>
+			<DCC_ObjPath>$(DELPHI)\Lib\Debug;$(DCC_ObjPath)</DCC_ObjPath>
+			<DCC_IncludePath>$(DELPHI)\Lib\Debug;$(DCC_IncludePath)</DCC_IncludePath>
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>VCLApplication</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Parameters>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+					</Parameters>
+					<Language>
+						<Language Name="ProjectLang">$00000809</Language>
+					</Language>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">0</VersionInfo>
+						<VersionInfo Name="MinorVer">1</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">806</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1033</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName">Sarah Dean</VersionInfoKeys>
+						<VersionInfoKeys Name="FileDescription">FreeOTFE Delphi Component Demo</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">0.1.0.806</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName">FreeOTFE Delphi Component Demo</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalCopyright"/>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename">OTFEFreeOTFETestApp.exe</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductName"/>
+						<VersionInfoKeys Name="ProductVersion">0.01.00</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments">http://www.FreeOTFE.org/</VersionInfoKeys>
+					</VersionInfoKeys>
+					<Source>
+						<Source Name="MainSource">OTFEFreeOTFETestProject.dpr</Source>
+					</Source>
+				</Delphi.Personality>
+				<Platforms>
+					<Platform value="Win64">False</Platform>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
+				<ModelSupport>False</ModelSupport>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+		<ItemGroup>
+			<DelphiCompile Include="$(MainSource)">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="OTFEFreeOTFETestApp_U.pas">
+				<Form>OTFEFreeOTFETestApp_F</Form>
+			</DCCReference>
+			<DCCReference Include="CriticalBlockTest_U.pas">
+				<Form>CriticalBlockTest_F</Form>
+			</DCCReference>
+			<DCCReference Include="cryptlibAPITest_U.pas">
+				<Form>cryptlibAPITest</Form>
+			</DCCReference>
+			<DCCReference Include="RNGTest_U.pas">
+				<Form>RNGTest</Form>
+			</DCCReference>
+			<DCCReference Include="P:\src\PC\gui\common\OTFE\OTFE\OTFE_U.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_U.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\lcDebugLog.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFECypherDriverAPI.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\OTFE\OTFEFreeOTFE\FreeOTFEHashDriverAPI.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_LUKSAPI.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\OTFE\OTFEFreeOTFEBase_U.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\PKCS#11\pkcs11_library.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\PKCS#11\pkcs11_object.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\PKCS#11\pkcs11_session.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\PKCS#11\pkcs11_api.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\PKCS#11\pkcs11_slot.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\PKCS#11\pkcs11_slot_event_thread.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\PKCS#11\pkcs11f.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\PKCS#11\PKCS11LibrarySelectDlg.pas">
+				<Form>PKCS11LibrarySelectDialog</Form>
+			</DCCReference>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\PKCS#11\pkcs11t.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\PKCS#11\pkcs11_token.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\PKCS#11\pkcs11_mechanism.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\PKCS#11\pkcs11_attribute.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\Shredder\Shredder.pas"/>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\Shredder\frmFileList.pas">
+				<Form>frmFileList</Form>
+			</DCCReference>
+			<DCCReference Include="P:\src\PC\gui\common\SDeanSecurity\PKCS#11\PKCS11KnownLibs.pas"/>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+	</Project>
