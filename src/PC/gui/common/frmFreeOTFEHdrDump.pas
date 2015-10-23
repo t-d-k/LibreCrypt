@@ -52,11 +52,7 @@ type
     function _DumpHdrDataToFile(): Boolean; override;
     procedure SetPassword(const Value: String); override;
   public
-    //    property UserKey: TSDUBytes Read GetUserKey;
-    //
-    //    property Offset: Int64 Read GetOffset;
-    //    property SaltLength: Integer Read GetSaltLength;
-    //    property KeyIterations: Integer Read GetKeyIterations;
+
   end;
 
 //add header to stringlist

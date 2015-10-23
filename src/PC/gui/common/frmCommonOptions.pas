@@ -1031,9 +1031,10 @@ end;
 
 
 procedure TfrmCommonOptions._ChangeLanguage(langCode: String);
+  {$IFDEF _DXGETTEXT}
 var
   cur_lang  : string;
-
+ {$ENDIF}
 //  tmpConfig: TCommonSettings;
 begin
 // was saving and loading so edits and combos were updated
@@ -1046,8 +1047,9 @@ begin
 {some meu items etc arent updated on a change only reload - it's rare to change this and complex to
  fix - so prompt to reboot instead
 }
-cur_lang := GetCurrentLanguage ;
-
+  {$IFDEF _DXGETTEXT}
+cur_lang := gnugettext.GetCurrentLanguage ;
+      {$ENDIF}
     SDUSetLanguage(langCode);
     try
 
@@ -1061,8 +1063,9 @@ cur_lang := GetCurrentLanguage ;
         SDUTranslateComponent(self);
       end;
     end;
+      {$IFDEF _DXGETTEXT}
    if cur_lang <> GetCurrentLanguage then SDUMessageDlg(_('The language has changed. Some text will not update until the application is restarted'));
-
+        {$ENDIF}
 //    _InitAndReadSettings(tmpConfig);
 
 //  finally

@@ -3,10 +3,14 @@ unit frmCypherReport;
 interface
 
 uses
-  ActnList, Buttons, Classes, ComCtrls, frmGridReport, Controls, Dialogs, ExtCtrls,
-  Forms,
-  Graphics, Grids, Menus, Messages, lcDialogs, SDUStringGrid, StdCtrls,
-  SysUtils, Variants, Windows, SDUDialogs;
+    //delphi & libs (0)
+    ActnList, Buttons, Classes, ComCtrls, Controls, Dialogs, ExtCtrls,
+  Forms,   Graphics, Grids, Menus, Messages, StdCtrls,  SysUtils, Variants, Windows,
+  //sdu & LibreCrypt utils (1)
+     lcDialogs,SDUStringGrid,SDUDialogs ,
+   // LibreCrypt forms and frames (2)
+   frmGridReport
+   ;
 
 type
   // IMPORTANT: If this is updated, GetColumnTitle() MUST ALSO BE UPDATED
@@ -53,11 +57,15 @@ implementation
 {$R *.dfm}
 
 uses
-//sdu lcutils
-lcConsts,
+     //delphi & libs (0)
+
+  //sdu & LibreCrypt utils (1)
+     lcConsts,
   OTFEFreeOTFE_U, OTFEFreeOTFEBase_U,
   SDUGeneral,
-  SDUi18n;
+  SDUi18n
+   // LibreCrypt forms and frames (2)
+;
 
 {$IFDEF _NEVER_DEFINED}
 // This is just a dummy const to fool dxGetText when extracting message
