@@ -13,11 +13,81 @@ object frmSelectOverwriteMethod: TfrmSelectOverwriteMethod
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
-  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
+  object lblInstructOverwriteType1: TLabel
+    AlignWithMargins = True
+    Left = 5
+    Top = 5
+    Width = 261
+    Height = 26
+    Margins.Left = 5
+    Margins.Top = 5
+    Margins.Right = 5
+    Margins.Bottom = 5
+    Align = alTop
+    Caption = 
+      'Please select the type of data that should be used to overwrite ' +
+      'the free space:'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    WordWrap = True
+    ExplicitWidth = 251
+  end
+  object lblInstructOverwriteType2: TLabel
+    AlignWithMargins = True
+    Left = 5
+    Top = 41
+    Width = 261
+    Height = 39
+    Margins.Left = 5
+    Margins.Top = 5
+    Margins.Right = 5
+    Margins.Bottom = 5
+    Align = alTop
+    Caption = 
+      'Pseudorandom data - This is faster, but less secure if you wish ' +
+      'to create a hidden container within this container later.'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    WordWrap = True
+    ExplicitWidth = 251
+  end
+  object lblInstructOverwriteType3: TLabel
+    AlignWithMargins = True
+    Left = 5
+    Top = 90
+    Width = 261
+    Height = 39
+    Margins.Left = 5
+    Margins.Top = 5
+    Margins.Right = 5
+    Margins.Bottom = 5
+    Align = alTop
+    Caption = 
+      'Encrypted data - This is more secure, but slower. Pseudorandom d' +
+      'ata will be encrypted with your choice of cypher before being wr' +
+      'itten to the drive.'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    WordWrap = True
+    ExplicitWidth = 260
+  end
   object pbOK: TButton
     Left = 56
     Top = 268
@@ -39,10 +109,10 @@ object frmSelectOverwriteMethod: TfrmSelectOverwriteMethod
     TabOrder = 1
   end
   object GroupBox1: TGroupBox
-    Left = 29
-    Top = 156
-    Width = 213
-    Height = 97
+    Left = 8
+    Top = 144
+    Width = 255
+    Height = 109
     Caption = 'Type of overwrite data'
     TabOrder = 2
     object rbDataEncrypted: TRadioButton
@@ -56,51 +126,32 @@ object frmSelectOverwriteMethod: TfrmSelectOverwriteMethod
     end
     object rbDataPseudorandom: TRadioButton
       Left = 12
-      Top = 20
+      Top = 17
       Width = 193
       Height = 17
       Caption = 'Pseudorandom data'
+      Checked = True
       TabOrder = 1
+      TabStop = True
       OnClick = ControlChanged
     end
     object cbCypher: TComboBox
-      Left = 32
-      Top = 60
-      Width = 145
+      Left = 12
+      Top = 63
+      Width = 193
       Height = 21
       Style = csDropDownList
       TabOrder = 2
       OnChange = ControlChanged
     end
     object pbCypherDetails: TButton
-      Left = 176
-      Top = 60
+      Left = 211
+      Top = 63
       Width = 21
       Height = 21
       Caption = '?'
       TabOrder = 3
       OnClick = pbCypherDetailsClick
     end
-  end
-  object reInstructOverwriteType: TRichEdit
-    Left = 12
-    Top = 12
-    Width = 245
-    Height = 137
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    Lines.Strings = (
-      'Please select the type of data that should be used '
-      'to overwrite the free space:Pseudorandom data - '
-      'This is faster, but less secure if you wish to create '
-      'a hidden container within this container later.'
-      'Encrypted data - This is more secure, but slower. '
-      'Pseudorandom data will be encrypted with your '
-      'choice of cypher before being written to the drive.')
-    ParentFont = False
-    TabOrder = 3
   end
 end
