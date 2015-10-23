@@ -1,4 +1,4 @@
-unit OTFEFreeOTFE_DriverHashAPI;
+unit FreeOTFEHashDriverAPI;
 // Description: 
 // By Sarah Dean
 // Email: sdean12@sdean12.org

@@ -1,4 +1,4 @@
-unit OTFEFreeOTFE_DriverCypherAPI;
+unit FreeOTFECypherDriverAPI;
 // Description: 
 // By Sarah Dean
 // Email: sdean12@sdean12.org
@@ -14,7 +14,7 @@ uses
   Windows,  // Required for DWORD
   FreeOTFEDriverConsts,
   DriverAPI,  // Required for DEVICE_FREEOTFE_ROOT
-  OTFEFreeOTFE_DriverHashAPI;  // Required for MAX_HASH_LENGTH
+  FreeOTFEHashDriverAPI;  // Required for MAX_HASH_LENGTH
 
 // ENCRYPTION DRIVER RELATED
 const
