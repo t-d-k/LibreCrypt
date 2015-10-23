@@ -17,8 +17,6 @@ uses
   Spin64,
   StdCtrls, SysUtils, Windows,
 
-
-
   //lc utils
   DriverAPI, OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFEBase_U, OTFEFreeOTFE_U,
   PasswordRichEdit, SDUForms,

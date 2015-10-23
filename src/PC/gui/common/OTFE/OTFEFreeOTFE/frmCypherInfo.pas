@@ -82,7 +82,7 @@ uses
       SDUi18n,
 
   SDUGeneral,
-  OTFEFreeOTFE_DriverCypherAPI,
+  FreeOTFECypherDriverAPI,
   OTFEFreeOTFEDLL_U
    // LibreCrypt forms
 

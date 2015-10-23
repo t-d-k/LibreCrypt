@@ -1,10 +1,12 @@
 inherited fmeVolumeSelect: TfmeVolumeSelect
+  Width = 356
   ParentFont = False
+  ExplicitWidth = 356
   DesignSize = (
-    320
+    356
     240)
   object bbBrowsePartition: TBitBtn
-    Left = 316
+    Left = 332
     Top = 0
     Width = 21
     Height = 21
@@ -25,7 +27,7 @@ inherited fmeVolumeSelect: TfmeVolumeSelect
     OnClick = bbBrowsePartitionClick
   end
   object bbBrowseFile: TBitBtn
-    Left = 292
+    Left = 305
     Top = 0
     Width = 21
     Height = 21
@@ -48,7 +50,7 @@ inherited fmeVolumeSelect: TfmeVolumeSelect
   object edFilename: TEdit
     Left = 0
     Top = 0
-    Width = 289
+    Width = 299
     Height = 21
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0

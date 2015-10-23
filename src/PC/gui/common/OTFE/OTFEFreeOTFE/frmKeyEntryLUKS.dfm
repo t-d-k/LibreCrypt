@@ -57,7 +57,7 @@ object frmKeyEntryLUKS: TfrmKeyEntryLUKS
     object lblMountAs: TLabel
       Left = 12
       Top = 52
-      Width = 47
+      Width = 43
       Height = 13
       Caption = '&Open as:'
       FocusControl = cbMediaType

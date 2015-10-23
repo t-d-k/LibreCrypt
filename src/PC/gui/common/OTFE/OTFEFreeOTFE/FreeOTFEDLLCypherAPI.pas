@@ -5,7 +5,7 @@ unit FreeOTFEDLLCypherAPI;
 interface
 
 uses
-  OTFEFreeOTFE_DriverCypherAPI, Windows;
+  FreeOTFECypherDriverAPI, Windows;
 
 
  //#define DLLEXPORT_CYPHER_IDENTIFYDRIVER TEXT("CypherIdentifyDriver")

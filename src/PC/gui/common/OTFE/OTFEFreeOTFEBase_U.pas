@@ -30,8 +30,8 @@ uses
   OTFEConsts_U,
   DriverAPI,
   FreeOTFEDriverConsts,
-  OTFEFreeOTFE_DriverCypherAPI,
-  OTFEFreeOTFE_DriverHashAPI,
+  FreeOTFECypherDriverAPI,
+  FreeOTFEHashDriverAPI,
   OTFEFreeOTFE_LUKSAPI,
   PKCS11Lib,
   VolumeFileAPI
@@ -131,7 +131,7 @@ type
 
 
 type
-  // This definition is stored here, and not in OTFEFreeOTFE_DriverCypherAPI, so
+  // This definition is stored here, and not in FreeOTFECypherDriverAPI, so
   // that only this unit need be "used" by user applications
   TFreeOTFECypherMode = (focmNone, focmECB, focmCBC, focmLRW, focmXTS, focmUnknown);
 
@@ -203,14 +203,14 @@ const
     mtUnknown
     );
 
-  // This definition is stored here, and not in OTFEFreeOTFE_DriverCypherAPI, so
+  // This definition is stored here, and not in FreeOTFECypherDriverAPI, so
   // that only this unit need be "used" by user applications
   FreeOTFECypherModeTitlePtr: array [TFreeOTFECypherMode] of Pointer =
     (@CYPHER_MODE_TITLE_NONE, @CYPHER_MODE_TITLE_ECB, @CYPHER_MODE_TITLE_CBC,
     @CYPHER_MODE_TITLE_LRW, @CYPHER_MODE_TITLE_XTS, @RS_UNKNOWN
     );
 
-  // This definition is stored here, and not in OTFEFreeOTFE_DriverCypherAPI, so
+  // This definition is stored here, and not in FreeOTFECypherDriverAPI, so
   // that only this unit need be "used" by user applications
   // These are the numerical IDs that are to be passed to/from the FreeOTFE
   // encryption drivers
@@ -223,13 +223,13 @@ const
     9999   // CYPHER_MODE_UNKNOWN
     );
 
-  // This definition is stored here, and not in OTFEFreeOTFE_DriverCypherAPI, so
+  // This definition is stored here, and not in FreeOTFECypherDriverAPI, so
   // that only this unit need be "used" by user applications
   FreeOTFEMACTitlePtr: array [TFreeOTFEMACAlgorithm] of Pointer =
     (@MAC_TITLE_HASH, @MAC_TITLE_HMAC, @RS_UNKNOWN
     );
 
-  // This definition is stored here, and not in OTFEFreeOTFE_DriverCypherAPI, so
+  // This definition is stored here, and not in FreeOTFECypherDriverAPI, so
   // that only this unit need be "used" by user applications
   // These are the numerical IDs that are to be passed to/from the FreeOTFE
   // encryption drivers
@@ -239,13 +239,13 @@ const
     9999   // MAC_UNKNOWN
     );
 
-  // This definition is stored here, and not in OTFEFreeOTFE_DriverCypherAPI, so
+  // This definition is stored here, and not in FreeOTFECypherDriverAPI, so
   // that only this unit need be "used" by user applications
   FreeOTFEKDFTitlePtr: array [TFreeOTFEKDFAlgorithm] of Pointer =
     (@KDF_HASH_WITH_SALT, @KDF_PKCS5PBKDF2, @RS_UNKNOWN
     );
 
-  // This definition is stored here, and not in OTFEFreeOTFE_DriverCypherAPI, so
+  // This definition is stored here, and not in FreeOTFECypherDriverAPI, so
   // that only this unit need be "used" by user applications
   // These are the numerical IDs that are to be passed to/from the FreeOTFE
   // encryption drivers
@@ -983,19 +983,8 @@ lcConsts,
   MainSettings,
   LUKSTools,
    // LibreCrypt forms
-
-//  frmKeyEntryFreeOTFE,
-//  frmKeyEntryLinux,
-//  frmNewVolumeSize,
-//  frmPKCS11Management,
-//  frmPKCS11Session,
   frmSelectHashCypher//used by ChooseFromValid
   { TODO 1 -otdk -crefactor : remove calls to frmSelectHashCypher by ChooseFromValid- perhaps use callback? }
-
-//  frmSelectVolumeType,
-//  frmWizardChangePasswordCreateKeyfile,
-//  frmWizardCreateVolume,
-// , frmSelectPartition
   ;
 
 

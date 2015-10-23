@@ -25,8 +25,8 @@ uses
   FreeOTFEDLLCypherAPI,
   DriverAPI,
   lcDebugLog,  PartitionTools,
-  OTFEFreeOTFE_DriverHashAPI,
-  OTFEFreeOTFE_DriverCypherAPI
+  FreeOTFEHashDriverAPI,
+  FreeOTFECypherDriverAPI
    // LibreCrypt forms
 
 

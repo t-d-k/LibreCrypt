@@ -5,7 +5,7 @@ unit FreeOTFEDLLHashAPI;
 interface
 
 uses
-  OTFEFreeOTFE_DriverHashAPI, Windows;
+  FreeOTFEHashDriverAPI, Windows;
 
 
  //#define DLLEXPORT_HASH_IDENTIFYDRIVER  TEXT("HashIdentifyDriver")

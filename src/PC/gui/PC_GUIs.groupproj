@@ -3,7 +3,7 @@
 			<ProjectGuid>{71A86DE5-0972-46AA-81E0-29EE1A3E3ABD}</ProjectGuid>
 		</PropertyGroup>
 		<ItemGroup>
-			<Projects Include="main\LibreCrypt.dproj">
+			<Projects Include="main\LCTest.dproj">
 				<Dependencies/>
 			</Projects>
 			<Projects Include="explorer\LibreCryptExplorer.dproj">
@@ -17,14 +17,14 @@
 				<Default.Personality/>
 			</BorlandProject>
 		</ProjectExtensions>
-		<Target Name="LibreCrypt">
-			<MSBuild Projects="main\LibreCrypt.dproj"/>
+		<Target Name="LCTest">
+			<MSBuild Projects="main\LCTest.dproj"/>
 		</Target>
-		<Target Name="LibreCrypt:Clean">
-			<MSBuild Projects="main\LibreCrypt.dproj" Targets="Clean"/>
+		<Target Name="LCTest:Clean">
+			<MSBuild Projects="main\LCTest.dproj" Targets="Clean"/>
 		</Target>
-		<Target Name="LibreCrypt:Make">
-			<MSBuild Projects="main\LibreCrypt.dproj" Targets="Make"/>
+		<Target Name="LCTest:Make">
+			<MSBuild Projects="main\LCTest.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="LibreCryptExplorer">
 			<MSBuild Projects="explorer\LibreCryptExplorer.dproj"/>
@@ -36,13 +36,13 @@
 			<MSBuild Projects="explorer\LibreCryptExplorer.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="LibreCrypt;LibreCryptExplorer"/>
+			<CallTarget Targets="LCTest;LibreCryptExplorer"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="LibreCrypt:Clean;LibreCryptExplorer:Clean"/>
+			<CallTarget Targets="LCTest:Clean;LibreCryptExplorer:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="LibreCrypt:Make;LibreCryptExplorer:Make"/>
+			<CallTarget Targets="LCTest:Make;LibreCryptExplorer:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>

@@ -661,7 +661,6 @@ begin
   end;
 
   _UpdateUIAfterChangeOnCurrentTab();
-
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.pbBrowseGPGClick(Sender: TObject);
