@@ -19,7 +19,7 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 <a href="https://github.com/t-d-k/doxbox/releases/download/v6.2-beta/LibreCryptExplorer_v6.2.zip">Download LibreCrypt Portable</a>
 </BUTTON>
 </DIV>
-
+<!--
 ## Please donate the recommended amount of $15 or £10
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 				<input type="hidden" name="cmd" value="_s-xclick">
@@ -27,9 +27,7 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 				<input type="image" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
 				<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
 			</form>
-			
-## Please take the survey on [LibreCrypt](https://www.surveymonkey.com/r/PFC8VJ6) 
-
+		--!>	
 ##	Features
 
 * Full transparent encryption, containers appear as removable disks in Windows Explorer.
