@@ -161,7 +161,7 @@
 				<Form>frmSelectHashCypher</Form>
 			</DCCReference>
 			<DCCReference Include="OTFEFreeOTFE_frmKeyEntryLinux.pas">
-				<Form>frmKeyEntryLinux</Form>
+				<Form>frmKeyEntryPlainLinux</Form>
 			</DCCReference>
 			<DCCReference Include="OTFEFreeOTFE_frmVolumeType.pas">
 				<Form>frmSelectVolumeType</Form>

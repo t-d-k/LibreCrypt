@@ -49,7 +49,7 @@ contains
   OTFEFreeOTFE_frmHashInfo in 'OTFEFreeOTFE_frmHashInfo.pas' {frmHashInfo},
   OTFEFreeOTFE_VolumeFileAPI in 'OTFEFreeOTFE_VolumeFileAPI.pas',
   OTFEFreeOTFE_frmSelectHashCypher in 'OTFEFreeOTFE_frmSelectHashCypher.pas' {frmSelectHashCypher},
-  OTFEFreeOTFE_frmKeyEntryLinux in 'OTFEFreeOTFE_frmKeyEntryLinux.pas' {frmKeyEntryLinux},
+  OTFEFreeOTFE_frmKeyEntryLinux in 'OTFEFreeOTFE_frmKeyEntryLinux.pas' {frmKeyEntryPlainLinux},
   OTFEFreeOTFE_frmVolumeType in 'OTFEFreeOTFE_frmVolumeType.pas' {frmSelectVolumeType},
   OTFEFreeOTFE_frmNewVolumeSize in 'OTFEFreeOTFE_frmNewVolumeSize.pas' {frmNewVolumeSize},
   OTFEFreeOTFE_frmDriverControl in 'OTFEFreeOTFE_frmDriverControl.pas' {frmDriverControl},
