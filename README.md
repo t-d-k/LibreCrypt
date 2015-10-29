@@ -25,6 +25,9 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 [![PayPal – The safer, easier way to pay online.](src/Common/Common/images/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LCU9BEH4GM92N)
 </a>
 
+
+[Where your donation goes](https://github.com/t-d-k/LibreCrypt/blob/master/docs/donations.md)
+
 <!---form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 				<input type="hidden" name="cmd" value="_s-xclick">
 				<input type="hidden" name="hosted_button_id" value="46ZWWMACF42MG">
