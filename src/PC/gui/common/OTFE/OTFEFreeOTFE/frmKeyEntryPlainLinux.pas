@@ -1,4 +1,4 @@
-unit frmKeyEntryLinux;
+unit frmKeyEntryPlainLinux;
  // Description:
  // By Sarah Dean
  // Email: sdean12@sdean12.org
@@ -7,8 +7,8 @@ unit frmKeyEntryLinux;
  // -----------------------------------------------------------------------------
  //
 
-//this is for new and existing dmcrypt volumes - not LUKS
-{ TODO 1 -crefactor : rename unit }
+ //this is for new and existing dmcrypt volumes - not LUKS
+ { TODO 1 -crefactor : rename unit }
 
 interface
 
@@ -102,7 +102,7 @@ type
     frmeNewPassword1: TfrmeNewPassword;
     frmePassword1:  TfrmePassword;
     tsChooseContainer: TTabSheet;
-    GroupBox7: TGroupBox;
+    GroupBox7:      TGroupBox;
     OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect;
     procedure FormCreate(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
@@ -313,8 +313,8 @@ const
   DEFAULT_KEYPROC_HASH_TITLE   = 'SHA-512';
   DEFAULT_KEYPROC_CYPHER_TITLE = 'AES (256 bit CBC)';
   DEFAULT_MAIN_CYPHER_TITLE    = 'AES (256 bit CBC)';
-  DEFAULT_MAIN_IV_HASH_TITLE   = 'SHA-256';     //tdk change - make consistent with linux scripts
-  DEFAULT_MAIN_IV_GEN_METHOD   = 'ESSIV';       //tdk change - make consistent with linux scripts
+  DEFAULT_MAIN_IV_HASH_TITLE   = 'SHA-256';     //change from FreeOTFE - make consistent with linux scripts
+  DEFAULT_MAIN_IV_GEN_METHOD   = 'ESSIV';       //change from FreeOTFE - make consistent with linux scripts
 
   // Settings file sections and values
   SETTINGS_SECTION_KEY               = 'Key';
@@ -358,10 +358,9 @@ resourcestring
 procedure TfrmKeyEntryPlainLinux.FormActivate(Sender: TObject);
 begin
   inherited;
-//   frmeNewPassword1.Show;
-//   frmeNewPassword1.SetFocus;
-//   frmeNewPassword1.preUserKeyFirst.SetFocus;
-
+  //   frmeNewPassword1.Show;
+  //   frmeNewPassword1.SetFocus;
+  //   frmeNewPassword1.preUserKeyFirst.SetFocus;
 
 end;
 
@@ -407,10 +406,10 @@ begin
 
   _DefaultOptions();
 
-     frmeNewPassword1.OnChange:= SelectionChange;
-//
-//      frmeNewPassword1.SetFocus;
-//   frmeNewPassword1.preUserKeyFirst.SetFocus;
+  frmeNewPassword1.OnChange := SelectionChange;
+  //
+  //      frmeNewPassword1.SetFocus;
+  //   frmeNewPassword1.preUserKeyFirst.SetFocus;
 end;
 
 
@@ -761,8 +760,9 @@ begin
   ModalResult := mrCancel;
 
 
-  if fcreate_vol then assert(frmeNewPassword1.IsPasswordValid);
-  tmpKey      := GetKey();
+  if fcreate_vol then
+    assert(frmeNewPassword1.IsPasswordValid);
+  tmpKey := GetKey();
 
   if (Length(tmpKey) = 0) then begin
     if (_SilencableMessageDlg(_('You have not entered a Keyphrase.') + SDUCRLF +
@@ -789,8 +789,7 @@ begin
     if (not fis_hidden) and FileExists(ffile_name) and (not fcreate_vol) then begin
       if IsLUKSVolume(ffile_name) then begin
         if (_SilencableMessageDlg(
-          _('This container is a LUKS container, opening it as a dm-crypt container may corrupt it.')
-          , mtWarning, [mbIgnore, mbAbort]) <> mrIgnore) then begin
+          _('This container is a LUKS container, opening it as a dm-crypt container may corrupt it.'), mtWarning, [mbIgnore, mbAbort]) <> mrIgnore) then begin
           ModalResult := mrAbort;
         end;
       end;
@@ -929,7 +928,8 @@ begin
     (cbMainCypher.ItemIndex >= 0) and (sectorIVGenMethod <> foivgUnknown) and
     IVStartSectorOK and IVHashOK and IVCypherOK and mountAsOK);
 
-    if fcreate_vol and not frmeNewPassword1.IsPasswordValid then  pbOK.Enabled := false;
+  if fcreate_vol and not frmeNewPassword1.IsPasswordValid then
+    pbOK.Enabled := False;
 
 
 
@@ -1024,9 +1024,9 @@ begin
   tsNewKey.TabVisible := fcreate_vol;
   if fcreate_vol then begin
     { TODO 1 : no idea why but edits don't show unless the tab is shown twice }
-  pcEntry.ActivePage           := tsNewKey;
-      pcEntry.ActivePage           := tsKeyOptions;
-pcEntry.ActivePage           := tsNewKey;
+    pcEntry.ActivePage := tsNewKey;
+    pcEntry.ActivePage := tsKeyOptions;
+    pcEntry.ActivePage := tsNewKey;
   end;
 
   { done 1 -otdk -ccomplete : hide offset unless hidden }
@@ -1052,7 +1052,6 @@ pcEntry.ActivePage           := tsNewKey;
 
     PostMessage(Handle, WM_CLOSE, 0, 0);
   end;
-
 
 end;
 
@@ -1087,15 +1086,15 @@ begin
   if fcreate_vol then
     Result := SDUBytesToString(frmeNewPassword1.GetKeyPhrase)
   else
-Result := SDUBytesToString(frmePassword1.GetKeyPhrase) ;
+    Result := SDUBytesToString(frmePassword1.GetKeyPhrase);
 end;
 
 procedure TfrmKeyEntryPlainLinux.SetKey(userKey: PasswordString);
 begin
-if fcreate_vol then
- frmeNewPassword1.SetKeyPhrase(userKey)
+  if fcreate_vol then
+    frmeNewPassword1.SetKeyPhrase(userKey)
   else
-  frmePassword1.SetKeyPhrase(userKey);
+    frmePassword1.SetKeyPhrase(userKey);
   fsilent_password := userKey;
 end;
 

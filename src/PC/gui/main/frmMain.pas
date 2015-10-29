@@ -330,7 +330,7 @@ uses
   frmVolProperties,
   frmCreateFreeOTFEVolume, frmCreateLUKSVolumeWizard,
   frmKeyEntryFreeOTFE // for MountFreeOTFE
-  , frmKeyEntryLinux, frmSelectVolumeType,
+  , frmKeyEntryPlainLinux, frmSelectVolumeType,
   frmWizardChangePasswordCreateKeyfile,
   frmSelectPartition, frmDriverControl;
 
@@ -1428,7 +1428,7 @@ begin
 
     end else begin
       if (LES_FILES[vl] <> '') then begin
-        if frmKeyEntryLinux.MountPlainLinux(mountFile, mountedAs, True,
+        if frmKeyEntryPlainLinux.MountPlainLinux(mountFile, mountedAs, True,
           les_file, SDUStringToSDUBytes(PASSWORDS[vl]), 0)<> morOK then
           res := False;
 
@@ -1866,7 +1866,7 @@ begin
   case mountAsSystem of
     vtFreeOTFE: mountRes   := MountFreeOTFE(filename, mountedAs, ReadOnly);
 
-    vtPlainLinux: mountRes := frmKeyEntryLinux.MountPlainLinux(filename,
+    vtPlainLinux: mountRes := frmKeyEntryPlainLinux.MountPlainLinux(filename,
         mountedAs, ReadOnly, '', nil, 0, createVol, isHidden);
 
     vtLUKS:

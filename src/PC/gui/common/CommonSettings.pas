@@ -121,25 +121,25 @@ type
   TCommonSettings = class
   private
     //    fCustomLocation:  String;
-    fOptPostMountExe: String;
+    fPostMountExe: String;
     fisAppRunning:    eAppRunning;
     flanguageCode: String;
     fshowPasswords:       Boolean;
     fshowAdvancedMountDialog: Boolean;
     finformIfMountedOK:   Boolean;
     fsettingsVersion:     Integer;
-    fOptPostDismountExe:      String;
+    fPostDismountExe:      String;
     fallowTabsInPasswords: Boolean;
     ffreezeVolTimestamps:     Boolean;
     fdefaultDriveChar:        DriveLetterChar;
     fdefaultVolType:          TVolumeType;
     fmountPathOnPKCS11: String;
-    fOptPreDismountExe: String;
+    fPreDismountExe: String;
     fshowStatusBar:     Boolean;
     fwarnAutoRunExeErr:  Boolean;
     fPKCS11AutoMount: Boolean;
     fenablePKCS11: Boolean;
-    fOptPKCS11Library:         String;
+    fPKCS11Library:         String;
     fallowNewlinesInPasswords: Boolean;
     fexploreAfterMount:     Boolean;
     fdismountOnPKCS11Remove:   Boolean;
@@ -260,7 +260,7 @@ type
 
     // PKCS11...
     property EnablePKCS11: Boolean Read fenablePKCS11 Write fenablePKCS11 default False;
-    property PKCS11LibraryPath: String Read FOptPKCS11Library Write FOptPKCS11Library;//default '';
+    property PKCS11LibraryPath: String Read fPKCS11Library Write fPKCS11Library;//default '';
     property PKCS11AutoMount: Boolean Read fPKCS11AutoMount
       Write fPKCS11AutoMount default False;
     property MountPathOnPKCS11: String Read fmountPathOnPKCS11
@@ -269,10 +269,10 @@ type
       Write fdismountOnPKCS11Remove default False;
 
     // Autorun...
-    property PostMountExe: String Read FOptPostMountExe Write FOptPostMountExe;//default '';
-    property PreDismountExe: String Read FOptPreDismountExe Write FOptPreDismountExe;
+    property PostMountExe: String Read fPostMountExe Write fPostMountExe;//default '';
+    property PreDismountExe: String Read fPreDismountExe Write fPreDismountExe;
     // default '';
-    property PostDismountExe: String Read FOptPostDismountExe Write FOptPostDismountExe;
+    property PostDismountExe: String Read fPostDismountExe Write fPostDismountExe;
     // default '';
     property WarnAutoRunExeErr: Boolean Read fwarnAutoRunExeErr
       Write fwarnAutoRunExeErr default True;

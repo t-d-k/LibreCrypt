@@ -60,8 +60,6 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
     object tsNewKey: TTabSheet
       Caption = 'New Key'
       ImageIndex = 5
-      ExplicitWidth = 447
-      ExplicitHeight = 287
       inline frmeNewPassword1: TfrmeNewPassword
         Left = 0
         Top = 0
@@ -71,18 +69,12 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
         Constraints.MinHeight = 223
         Constraints.MinWidth = 223
         TabOrder = 0
-        ExplicitWidth = 447
-        ExplicitHeight = 287
+        ExplicitWidth = 477
+        ExplicitHeight = 289
         inherited lblInstructPassword: TLabel
           Width = 477
           ExplicitLeft = 0
-          ExplicitWidth = 445
-        end
-        inherited lblKeyphrase: TLabel
-          Width = 141
-        end
-        inherited lblConfirm: TLabel
-          Width = 141
+          ExplicitWidth = 475
         end
         inherited lblStrength: TLabel
           Top = 264
@@ -100,20 +92,18 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
         end
         inherited preUserKeyFirst: TOTFEFreeOTFE_PasswordRichEdit
           Width = 341
-          ExplicitWidth = 311
+          ExplicitWidth = 341
         end
         inherited preUserKeyConfirm: TOTFEFreeOTFE_PasswordRichEdit
           Width = 341
           Height = 70
-          ExplicitWidth = 311
-          ExplicitHeight = 68
+          ExplicitWidth = 341
+          ExplicitHeight = 70
         end
       end
     end
     object tsKey: TTabSheet
       Caption = 'Key'
-      ExplicitWidth = 447
-      ExplicitHeight = 287
       object GroupBox1: TGroupBox
         Left = 0
         Top = 0
@@ -122,8 +112,6 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
         Align = alClient
         Caption = 'Key'
         TabOrder = 0
-        ExplicitWidth = 447
-        ExplicitHeight = 287
         object Label16: TLabel
           Left = 375
           Top = 256
@@ -231,6 +219,8 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
     object tsKeyOptions: TTabSheet
       Caption = 'Key Options'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 447
       ExplicitHeight = 287
       object GroupBox5: TGroupBox
@@ -387,7 +377,6 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           Enabled = False
           TabOrder = 4
           OnChange = SelectionChange
-          ExplicitLeft = 147
         end
         object edKeySeed: TEdit
           Left = 108
@@ -414,6 +403,8 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
     object tsEncryption: TTabSheet
       Caption = 'Encryption'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 447
       ExplicitHeight = 287
       object GroupBox3: TGroupBox
@@ -461,7 +452,6 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 0
           OnChange = SelectionChange
-          ExplicitWidth = 312
         end
         object pbMainCypherInfo: TButton
           Left = 412
@@ -585,6 +575,8 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
     object tsFileOptions: TTabSheet
       Caption = 'File options'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 447
       ExplicitHeight = 287
       object GroupBox4: TGroupBox
@@ -692,6 +684,8 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
     object tsMountOptions: TTabSheet
       Caption = 'Open options'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 447
       ExplicitHeight = 287
       object GroupBox2: TGroupBox
@@ -777,8 +771,6 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
     object tsChooseContainer: TTabSheet
       Caption = 'tsChooseContainer'
       ImageIndex = 6
-      ExplicitWidth = 447
-      ExplicitHeight = 287
       object GroupBox7: TGroupBox
         Left = 0
         Top = 0
@@ -787,10 +779,6 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
         Align = alClient
         Caption = 'Choose Container'
         TabOrder = 0
-        ExplicitLeft = 9
-        ExplicitTop = 16
-        ExplicitWidth = 403
-        ExplicitHeight = 213
         inline OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect
           AlignWithMargins = True
           Left = 5
@@ -805,10 +793,10 @@ object frmKeyEntryPlainLinux: TfrmKeyEntryPlainLinux
           Font.Style = []
           ParentFont = False
           TabOrder = 0
-          ExplicitLeft = 9
-          ExplicitTop = 20
-          ExplicitWidth = 434
-          ExplicitHeight = 85
+          ExplicitLeft = 5
+          ExplicitTop = 18
+          ExplicitWidth = 467
+          ExplicitHeight = 266
           DesignSize = (
             467
             266)

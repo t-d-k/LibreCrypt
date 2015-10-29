@@ -2,7 +2,6 @@ inherited frmExplorerOptions: TfrmExplorerOptions
   PixelsPerInch = 96
   TextHeight = 13
   inherited pcOptions: TPageControl
-    ActivePage = tsGeneral
     inherited tsGeneral: TTabSheet
       inherited gbGeneralMain: TGroupBox
         inherited ckStoreLayout: TSDUCheckBox
@@ -14,10 +13,6 @@ inherited frmExplorerOptions: TfrmExplorerOptions
     object tsExplorer: TTabSheet [2]
       Caption = 'Explorer'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gbAdvanced: TGroupBox
         Left = 0
         Top = 0
@@ -26,8 +21,6 @@ inherited frmExplorerOptions: TfrmExplorerOptions
         Align = alClient
         Caption = 'Advanced'
         TabOrder = 0
-        ExplicitLeft = 3
-        ExplicitTop = 3
         object lblOverwritePasses: TLabel
           Left = 20
           Top = 137
@@ -47,8 +40,8 @@ inherited frmExplorerOptions: TfrmExplorerOptions
         object lblMoveDeletionMethod: TLabel
           Left = 20
           Top = 60
-          Width = 238
-          Height = 13
+          Width = 192
+          Height = 26
           Caption = 'When &moving files/folders to an opened container:'
           FocusControl = cbMoveDeletionMethod
           WordWrap = True

@@ -351,7 +351,7 @@ uses
   frmCypherReport,
   frmHashReport,
   frmInstallOnUSBDrive,
-  frmVersionCheck, frmKeyEntryLinux,frmKeyEntryFreeOTFE, frmSelectVolumeType,frmPKCS11Management,
+  frmVersionCheck, frmKeyEntryPlainLinux,frmKeyEntryFreeOTFE, frmSelectVolumeType,frmPKCS11Management,
   frmWizardChangePasswordCreateKeyfile,frmCreateLUKSVolumeWizard;
 
 {$IFDEF _NEVER_DEFINED}
@@ -1165,7 +1165,7 @@ procedure TfrmCommonMain.actNewHiddenDmcryptExecute(Sender: TObject);
 //  filename: String;
 begin
   // create empty file
-//  if frmKeyEntryLinux.CreatePlainLinuxVolumeWizard(filename) then begin
+//  if frmKeyEntryPlainLinux.CreatePlainLinuxVolumeWizard(filename) then begin
 
 //    SDUMessageDlg(
 //      _('Linux container created successfully.') + SDUCRLF + SDUCRLF +
@@ -1721,7 +1721,7 @@ begin
 
            case useType of
               vtPlainLinux:
-                frmKeyEntryLinux.MountPlainLinux(volume, mountAs, ReadOnly,
+                frmKeyEntryPlainLinux.MountPlainLinux(volume, mountAs, ReadOnly,
                   useLESFile,
                   usePassword, useOffset);
               vtLUKS:

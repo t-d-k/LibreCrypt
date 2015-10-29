@@ -284,7 +284,7 @@
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmKeyEntryFreeOTFE.pas">
 				<Form>frmKeyEntryFreeOTFE</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmKeyEntryLinux.pas">
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmKeyEntryPlainLinux.pas">
 				<Form>frmKeyEntryPlainLinux</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmKeyEntryLUKS.pas">

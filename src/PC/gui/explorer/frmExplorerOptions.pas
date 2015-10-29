@@ -145,36 +145,34 @@ procedure TfrmExplorerOptions._WriteSettingsGeneral(config: TExplorerSettings);
 var
 
   dso:     TDefaultStoreOp;
-  showTemp   : Boolean;
 begin
 
-   GetGreyedCheckbox(
-    ckDisplayToolbar,
-    showTemp,
-    config.fOptShowToolbarExplorer
-    );
-   config.showToolbar :=showTemp;
-  GetGreyedCheckbox(
-    ckDisplayToolbarLarge,
-     showTemp,
-    config.fshowLargerExplorerToolbar
-    );
-    config.ShowLargeToolbar :=   showTemp ;
-  GetGreyedCheckbox(
-    ckDisplayToolbarCaptions,
-    showTemp,
-    config.fshowExplorerToolbarCaptions
-    );
-    config.ShowToolbarCaptions :=   showTemp ;
+
+   if ckDisplayToolbar.State <> cbGrayed then begin
+     config.showToolbar :=  ckDisplayToolbar.Checked;
+     config.ShowExplorerToolBar  :=  ckDisplayToolbar.Checked;
+   end;
+
+   if ckDisplayToolbarLarge.State <> cbGrayed then begin
+     config.ShowLargeToolbar :=  ckDisplayToolbarLarge.Checked;
+     config.showLargerExplorerToolbar  :=  ckDisplayToolbarLarge.Checked;
+   end;
+
+
+
+   if ckDisplayToolbarCaptions.State <> cbGrayed then begin
+     config.ShowToolbarCaptions :=  ckDisplayToolbarCaptions.Checked;
+     config.showExplorerToolbarCaptions  :=  ckDisplayToolbarCaptions.Checked;
+   end;
 
   config.ShowHiddenItems    := ckShowHiddenItems.Checked;
-  config.OptHideKnownFileExtns := ckHideKnownFileExtns.Checked;
+  config.hideKnownFileExtns := ckHideKnownFileExtns.Checked;
 
   // Decode default store op
-  config.OptDefaultStoreOp := dsoPrompt;
+  config.DefaultStoreOp := dsoPrompt;
   for dso := low(dso) to high(dso) do begin
     if (DefaultStoreOpTitle(dso) = cbDefaultStoreOp.Items[cbDefaultStoreOp.ItemIndex]) then begin
-      config.OptDefaultStoreOp := dso;
+      config.DefaultStoreOp := dso;
       break;
     end;
   end;
@@ -190,23 +188,23 @@ var
 begin
   // Advanced...
 
-  config.OptPreserveTimestampsOnStoreExtract := ckPreserveTimestampsOnStoreExtract.Checked;
+  config.keepTimestampsOnStoreExtract := ckPreserveTimestampsOnStoreExtract.Checked;
 
 
 
 
   // Decode move deletion method
-  config.OptMoveDeletionMethod := mdmPrompt;
+  config.MoveDeletionMethod := mdmPrompt;
   for mdm := low(mdm) to high(mdm) do begin
     if (MoveDeletionMethodTitle(mdm) = cbMoveDeletionMethod.Items[cbMoveDeletionMethod.ItemIndex])
     then begin
-      config.OptMoveDeletionMethod := mdm;
+      config.MoveDeletionMethod := mdm;
       break;
     end;
   end;
 
-  config.OptOverwriteMethod := GetOverwriteMethod();
-  config.OptOverwritePasses := seOverwritePasses.Value;
+  config.OverwriteMethod := GetOverwriteMethod();
+  config.overwritePasses := seOverwritePasses.Value;
 
 end;
 
@@ -219,7 +217,7 @@ begin
   // Advanced...
 
 
-  ckPreserveTimestampsOnStoreExtract.Checked := config.OptPreserveTimestampsOnStoreExtract;
+  ckPreserveTimestampsOnStoreExtract.Checked := config.keepTimestampsOnStoreExtract;
 
   // Populate and set move deletion method
   cbMoveDeletionMethod.Items.Clear();
@@ -228,14 +226,14 @@ begin
   for mdm := low(mdm) to high(mdm) do begin
     Inc(idx);
     cbMoveDeletionMethod.Items.Add(MoveDeletionMethodTitle(mdm));
-    if (config.OptMoveDeletionMethod = mdm) then begin
+    if (config.MoveDeletionMethod = mdm) then begin
       useIdx := idx;
     end;
   end;
   cbMoveDeletionMethod.ItemIndex := useIdx;
 
-  SetOverwriteMethod(config.OptOverwriteMethod);
-  seOverwritePasses.Value := config.OptOverwritePasses;
+  SetOverwriteMethod(config.OverwriteMethod);
+  seOverwritePasses.Value := config.overwritePasses;
 
 end;
 
@@ -729,7 +727,7 @@ begin
 
 
   ckShowHiddenItems.Checked    := config.ShowHiddenItems;
-  ckHideKnownFileExtns.Checked := config.OptHideKnownFileExtns;
+  ckHideKnownFileExtns.Checked := config.hideKnownFileExtns;
 
   // Populate and set default store op dropdown
   cbDefaultStoreOp.Items.Clear();
@@ -738,7 +736,7 @@ begin
   for dso := low(dso) to high(dso) do begin
     Inc(idx);
     cbDefaultStoreOp.Items.Add(DefaultStoreOpTitle(dso));
-    if (config.OptDefaultStoreOp = dso) then begin
+    if (config.DefaultStoreOp = dso) then begin
       useIdx := idx;
     end;
   end;

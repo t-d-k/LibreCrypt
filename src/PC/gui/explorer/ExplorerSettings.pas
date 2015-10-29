@@ -60,54 +60,53 @@ type
 
   TExplorerSettings = class (TCommonSettings)
   private
-    fOptOverwriteWebDAVCacheOnDismount: Boolean;
-    fOptOverwriteMethod: TShredMethod;
+    fOverwriteWebDAVCacheOnDismount: Boolean;
+    fOverwriteMethod: TShredMethod;
 
 
-    fOptMoveDeletionMethod: TMoveDeletionMethod;
-    fOptDefaultStoreOp:     TDefaultStoreOp;
-    fOptWebDavShareName:    String;
-    ftreeViewWidth:         Integer;
+    fMoveDeletionMethod: TMoveDeletionMethod;
+    fDefaultStoreOp:     TDefaultStoreOp;
+    fwebDavShareName:    String;
+    ftreeViewWidth:      Integer;
 
     fWebDavLogAccessFile: String;
 
-    fOptShowHiddenItems: Boolean;
+    fshowHiddenItems:    Boolean;
     //    fOptShowStatusBar:      Boolean;
-    fOptWebDAVPort:      Integer;
-    fOptPreserveTimestampsOnStoreExtract: Boolean;
+    fwebDAVPort:         Integer;
+    fkeepTimestampsOnStoreExtract: Boolean;
     fenableWebDAVServer: Boolean;
 
-    fOptShowAddressBar:     Boolean;
+    fshowAddressBar:      Boolean;
     //    fFlagClearLayoutOnSave: Boolean;
-    fOptHideKnownFileExtns: Boolean;
-    fOptOverwritePasses:    Integer;
-    fshowExplorerFolders:   Boolean;
+    fhideKnownFileExtns:  Boolean;
+    foverwritePasses:     Integer;
+    fshowExplorerFolders: Boolean;
 
 
     fListViewLayout: String;
 
-    fWebDavLogDebugFile: String;
-
-  protected
-    procedure _LoadOld(iniFile: TCustomINIFile); override;
-    procedure _SetDefaults; override;
-
-  public
+    fWebDavLogDebugFile:          String;
     //todo: make private (are used as var params)
     //    fshowVolumeToolbar:       Boolean;
     // 'volume' toolbar settings are 'toolbar' from common settings
-    fOptShowToolbarExplorer:      Boolean;
+    fshowExplorerToolBar:         Boolean;
     //    fOptToolbarVolumeLarge:      Boolean;
     fshowLargerExplorerToolbar:   Boolean;
     //    fOptToolbarVolumeCaptions:   Boolean;
     fshowExplorerToolbarCaptions: Boolean;
 
 
+  protected
+    procedure _LoadOld(iniFile: TCustomINIFile); override;
+    procedure _SetDefaults; override;
+
+  public
+
     function RegistryKey(): String; override;
 
     //set layout to default
     procedure ClearLayout; override;
-
 
     //    function _Save(iniFile: TCustomINIFile): Boolean; override;
 
@@ -124,25 +123,24 @@ type
 
     // General...
     property ShowHiddenItems: Boolean
-      Read FOptShowHiddenItems Write fOptShowHiddenItems default False;
-    property OptHideKnownFileExtns: Boolean
-      Read FOptHideKnownFileExtns Write fOptHideKnownFileExtns default True;
-    property OptDefaultStoreOp: TDefaultStoreOp
-      Read FOptDefaultStoreOp Write fOptDefaultStoreOp default dsoPrompt;
-    property OptMoveDeletionMethod: TMoveDeletionMethod
-      Read FOptMoveDeletionMethod Write fOptMoveDeletionMethod default mdmDelete;
-    property OptOverwriteMethod: TShredMethod
-      Read FOptOverwriteMethod Write fOptOverwriteMethod default smPseudorandom;
-    property OptOverwritePasses: Integer
-      Read FOptOverwritePasses Write fOptOverwritePasses default 1;
-    property OptPreserveTimestampsOnStoreExtract: Boolean
-      Read FOptPreserveTimestampsOnStoreExtract Write fOptPreserveTimestampsOnStoreExtract default
-      True;
+      Read fshowHiddenItems Write fshowHiddenItems default False;
+    property hideKnownFileExtns: Boolean
+      Read fhideKnownFileExtns Write fhideKnownFileExtns default True;
+    property DefaultStoreOp: TDefaultStoreOp
+      Read fDefaultStoreOp Write fDefaultStoreOp default dsoPrompt;
+    property MoveDeletionMethod: TMoveDeletionMethod
+      Read fMoveDeletionMethod Write fMoveDeletionMethod default mdmDelete;
+    property OverwriteMethod: TShredMethod
+      Read fOverwriteMethod Write fOverwriteMethod default smPseudorandom;
+    property overwritePasses: Integer
+      Read foverwritePasses Write foverwritePasses default 1;
+    property keepTimestampsOnStoreExtract: Boolean
+      Read fkeepTimestampsOnStoreExtract Write fkeepTimestampsOnStoreExtract default True;
 
     //    property ShowVolumeToolbar: Boolean Read fshowVolumeToolbar
     //      Write fshowVolumeToolbar default True;
-    property ShowExplorerToolBar: Boolean Read FOptShowToolbarExplorer
-      Write fOptShowToolbarExplorer default True;
+    property ShowExplorerToolBar: Boolean Read fshowExplorerToolBar
+      Write fshowExplorerToolBar default True;
     //    property OptToolbarVolumeLarge: Boolean Read FOptToolbarVolumeLarge
     //      Write fOptToolbarVolumeLarge default True;
     //    property OptToolbarVolumeCaptions: Boolean Read FOptToolbarVolumeCaptions
@@ -151,8 +149,8 @@ type
       Read fshowExplorerToolbarCaptions Write fshowExplorerToolbarCaptions default True;
     property ShowLargerExplorerToolbar: Boolean Read fshowLargerExplorerToolbar
       Write fshowLargerExplorerToolbar default True;
-    property ShowAddressBar: Boolean Read FOptShowAddressBar
-      Write fOptShowAddressBar default True;
+    property ShowAddressBar: Boolean Read fshowAddressBar
+      Write fshowAddressBar default True;
     property ShowExplorerFolders: Boolean
       Read fshowExplorerFolders Write fshowExplorerFolders default True;
     //    property OptShowStatusBar: Boolean Read FOptShowStatusBar
@@ -167,12 +165,11 @@ type
     property EnableWebDAVServer: Boolean
       Read fenableWebDAVServer Write fenableWebDAVServer default False;
     property OverwriteWebDAVCacheOnDismount: Boolean
-      Read FOptOverwriteWebDAVCacheOnDismount Write fOptOverwriteWebDAVCacheOnDismount default
-      True;
-    property WebDAVPort: Integer Read FOptWebDAVPort
-      Write fOptWebDAVPort default 8081;
+      Read fOverwriteWebDAVCacheOnDismount Write fOverwriteWebDAVCacheOnDismount default True;
+    property WebDAVPort: Integer Read fwebDAVPort
+      Write fwebDAVPort default 8081;
     property WebDavShareName: String
-      Read FOptWebDavShareName Write fOptWebDavShareName;//default 'LEXPL';
+      Read fwebDavShareName Write fwebDavShareName;//default 'LEXPL';
     property WebDavLogDebugFile: String
       Read fWebDavLogDebugFile Write fWebDavLogDebugFile;//default '';
     property WebDavLogAccessFile: String
@@ -277,11 +274,11 @@ begin
 
   ftreeViewWidth := 215;
 
-  fOptShowToolbarExplorer := True;
+  fshowExplorerToolBar := True;
 
   fshowLargerExplorerToolbar   := True;
   fshowExplorerToolbarCaptions := True;
-  fOptShowAddressBar           := True;
+  fshowAddressBar              := True;
   fshowExplorerFolders         := True;
   //  fOptShowStatusBar           := True;
   fListViewLayout              := '';
@@ -292,34 +289,34 @@ begin
   inherited _LoadOld(iniFile);
 
   // General section...
-  fOptShowHiddenItems                  :=
+  fshowHiddenItems              :=
     iniFile.ReadBool(SECTION_GENERAL, OPT_SHOWHIDDENITEMS, DFLT_OPT_SHOWHIDDENITEMS);
-  fOptHideKnownFileExtns               :=
+  fhideKnownFileExtns           :=
     iniFile.ReadBool(SECTION_GENERAL, OPT_HIDEKNOWNFILEEXTNS, DFLT_OPT_HIDEKNOWNFILEEXTNS);
-  fOptDefaultStoreOp                   :=
+  fDefaultStoreOp               :=
     TDefaultStoreOp(iniFile.ReadInteger(SECTION_GENERAL, OPT_DEFAULTSTOREOP,
     Ord(DFLT_OPT_DEFAULTSTOREOP)));
-  fOptMoveDeletionMethod               :=
+  fMoveDeletionMethod           :=
     TMoveDeletionMethod(iniFile.ReadInteger(SECTION_GENERAL, OPT_MOVEDELETIONMETHOD,
     Ord(DFLT_OPT_MOVEDELETIONMETHOD)));
-  fOptOverwriteMethod                  :=
+  fOverwriteMethod              :=
     TShredMethod(iniFile.ReadInteger(SECTION_GENERAL, OPT_OVERWRITEMETHOD,
     Ord(DFLT_OPT_OVERWRITEMETHOD)));
-  fOptOverwritePasses                  :=
+  foverwritePasses              :=
     iniFile.ReadInteger(SECTION_GENERAL, OPT_OVERWRITEPASSES, DFLT_OPT_OVERWRITEPASSES);
-  fOptPreserveTimestampsOnStoreExtract :=
+  fkeepTimestampsOnStoreExtract :=
     iniFile.ReadBool(SECTION_GENERAL, OPT_PRESERVETIMESTAMPSONSTOREEXTRACT,
     DFLT_OPT_PRESERVETIMESTAMPSONSTOREEXTRACT);
 
   // Layout section...
   // volume is now main settings 'toolbar' - will reset n first run as new type
-  fshowToolbar            :=
+  fshowToolbar         :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_SHOWTOOLBARVOLUME, DFLT_OPT_SHOWTOOLBARVOLUME);
-  fOptShowToolbarExplorer :=
+  fshowExplorerToolBar :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_SHOWTOOLBAREXPLORER, DFLT_OPT_SHOWTOOLBAREXPLORER);
-  fshowToolbarLarge       :=
+  fshowToolbarLarge    :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_TOOLBARVOLUMELARGE, DFLT_OPT_TOOLBARVOLUMELARGE);
-  fshowToolbarCaptions    :=
+  fshowToolbarCaptions :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_TOOLBARVOLUMECAPTIONS, DFLT_OPT_TOOLBARVOLUMECAPTIONS);
 
   fshowLargerExplorerToolbar   :=
@@ -329,7 +326,7 @@ begin
     DFLT_OPT_TOOLBAREXPLORERCAPTIONS);
   fTreeViewWidth               :=
     iniFile.ReadInteger(SECTION_LAYOUT, OPT_EXPLORERBARWIDTH, DFLT_OPT_EXPLORERBARWIDTH);
-  fOptShowAddressBar           :=
+  fshowAddressBar              :=
     iniFile.ReadBool(SECTION_LAYOUT, OPT_SHOWADDRESSBAR, DFLT_OPT_SHOWADDRESSBAR);
   fshowExplorerFolders         :=
     TExplorerBarType(iniFile.ReadInteger(SECTION_LAYOUT, OPT_SHOWEXPLORERBAR,
@@ -340,18 +337,18 @@ begin
     iniFile.ReadString(SECTION_LAYOUT, OPT_LISTVIEWLAYOUT, DFLT_OPT_LISTVIEWLAYOUT);
 
   // WebDAV section...
-  fenableWebDAVServer                :=
+  fenableWebDAVServer             :=
     iniFile.ReadBool(SECTION_WEBDAV, OPT_ENABLESERVER, DFLT_OPT_ENABLESERVER);
-  fOptOverwriteWebDAVCacheOnDismount :=
+  fOverwriteWebDAVCacheOnDismount :=
     iniFile.ReadBool(SECTION_WEBDAV, OPT_OVERWRITECACHEONDISMOUNT,
     DFLT_OPT_OVERWRITECACHEONDISMOUNT);
-  fOptWebDAVPort                     :=
+  fwebDAVPort                     :=
     iniFile.ReadInteger(SECTION_WEBDAV, OPT_PORT, DFLT_OPT_PORT);
-  fOptWebDavShareName                :=
+  fwebDavShareName                :=
     iniFile.ReadString(SECTION_WEBDAV, OPT_SHARENAME, DFLT_OPT_SHARENAME);
-  fWebDavLogDebugFile                 :=
+  fWebDavLogDebugFile             :=
     iniFile.ReadString(SECTION_WEBDAV, OPT_LOGDEBUG, DFLT_OPT_LOGDEBUG);
-  fWebDavLogAccessFile               :=
+  fWebDavLogAccessFile            :=
     iniFile.ReadString(SECTION_WEBDAV, OPT_LOGACCESS, DFLT_OPT_LOGACCESS);
 
 end;
@@ -385,8 +382,8 @@ begin
 
 
   fListViewLayout      := '';
-  fOptWebDavShareName  := 'LEXPL';
-  fWebDavLogDebugFile   := '';
+  fwebDavShareName     := 'LEXPL';
+  fWebDavLogDebugFile  := '';
   fWebDavLogAccessFile := '';
 
 end;

@@ -561,7 +561,7 @@ uses
   frmCreateFreeOTFEVolume,
   frmKeyEntryFreeOTFE
   // frmWebDAVStatus { TODO 1 -otdk -cenhance : implement webdav }
-    , frmKeyEntryLinux, frmSelectVolumeType,frmVersionCheck;
+    , frmKeyEntryPlainLinux, frmSelectVolumeType,frmVersionCheck;
 
 {$IFDEF _NEVER_DEFINED}
 
@@ -780,17 +780,17 @@ begin
   SDFilesystemTreeView1.ShowHiddenItems    := GetExplorerSettings().ShowHiddenItems;
   // Listview...
   SDFilesystemListView1.ShowHiddenItems    := GetExplorerSettings().ShowHiddenItems;
-  SDFilesystemListView1.HideKnownFileExtns := GetExplorerSettings().OptHideKnownFileExtns;
+  SDFilesystemListView1.HideKnownFileExtns := GetExplorerSettings().hideKnownFileExtns;
 
   fShredderObj.FileDirUseInt               := True;
   fShredderObj.OnStartingFileOverwritePass := OverwritePassStarted;
   fShredderObj.OnCheckForUserCancel        := OverwriteCheckForUserCancel;
-  fShredderObj.IntMethod                   := GetExplorerSettings().OptOverwriteMethod;
-  fShredderObj.IntPasses                   := GetExplorerSettings().OptOverwritePasses;
+  fShredderObj.IntMethod                   := GetExplorerSettings().OverwriteMethod;
+  fShredderObj.IntPasses                   := GetExplorerSettings().overwritePasses;
 
   if (fFilesystem <> nil) then
     if (fFilesystem is TSDFilesystem_FAT) then
-      fFilesystem.PreserveTimeDateStamps := GetExplorerSettings().OptPreserveTimestampsOnStoreExtract;
+      fFilesystem.PreserveTimeDateStamps := GetExplorerSettings().keepTimestampsOnStoreExtract;
 
 
   if GetExplorerSettings().ShowLargeToolbar then begin
@@ -876,7 +876,7 @@ begin
     mountedOK   := MountFreeOTFE(filename, mountedAs, readonly);
   end else begin
     if (mountAsSystem = vtPlainLinux) then begin
-      mountedOK := frmKeyEntryLinux.MountPlainLinux(filename, mountedAs, readonly, '', nil, 0, createVol, isHidden);
+      mountedOK := frmKeyEntryPlainLinux.MountPlainLinux(filename, mountedAs, readonly, '', nil, 0, createVol, isHidden);
     end else begin
       if (mountAsSystem = vtLUKS) then begin
         assert(not isHidden);
@@ -940,7 +940,7 @@ begin
 
   if (fPartitionImage <> nil) then begin
     fFilesystem                        := TSDFilesystem_FAT.Create();
-    fFilesystem.PreserveTimeDateStamps := GetExplorerSettings().OptPreserveTimestampsOnStoreExtract;
+    fFilesystem.PreserveTimeDateStamps := GetExplorerSettings().keepTimestampsOnStoreExtract;
 
     fFilesystem.PartitionImage         := fPartitionImage;
     try
@@ -1943,7 +1943,7 @@ begin
 
   if (fPartitionImage <> nil) then begin
     fFilesystem                        := TSDFilesystem_FAT.Create();
-    fFilesystem.PreserveTimeDateStamps := GetExplorerSettings().OptPreserveTimestampsOnStoreExtract;
+    fFilesystem.PreserveTimeDateStamps := GetExplorerSettings().keepTimestampsOnStoreExtract;
 
     fFilesystem.PartitionImage         := fPartitionImage;
     try
@@ -3937,10 +3937,10 @@ var
 begin
   allOK             := True;
 
-  if (GetExplorerSettings().OptDefaultStoreOp = dsoCopy) then begin
+  if (GetExplorerSettings().DefaultStoreOp = dsoCopy) then begin
     opType          := cmCopy;
   end
-  else if (GetExplorerSettings().OptDefaultStoreOp = dsoMove) then begin
+  else if (GetExplorerSettings().DefaultStoreOp = dsoMove) then begin
     opType          := cmMove;
   end else begin
     opType          := cmCopy; // Get rid of compiler warning
@@ -4100,7 +4100,7 @@ begin
   end;
 
 
-  useMoveDeletionMethod         := GetExplorerSettings().OptMoveDeletionMethod;
+  useMoveDeletionMethod         := GetExplorerSettings().MoveDeletionMethod;
   if ((opType = cmMove) and not(srcIsMountedFSNotLocalFS)) then begin
     if (useMoveDeletionMethod = mdmPrompt) then begin
       dlgOverwritePrompt        := TfrmOverwritePrompt.Create(self);
@@ -5141,7 +5141,7 @@ begin
         res := False;
     end else begin
       if (LES_FILES[vl] <> '') then begin
-        if frmKeyEntryLinux.MountPlainLinux(mountFile, mountedAs, True, les_file,
+        if frmKeyEntryPlainLinux.MountPlainLinux(mountFile, mountedAs, True, les_file,
           SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], False, OFFSET[vl] <> 0) <> morOK  then
           res := False;
       end else begin

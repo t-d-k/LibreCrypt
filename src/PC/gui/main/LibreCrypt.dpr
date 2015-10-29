@@ -61,7 +61,7 @@ uses
   FreeOTFEDLLHashAPI in '..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLHashAPI.pas',
   FreeOTFEDLLMainAPI in '..\common\OTFE\OTFEFreeOTFE\FreeOTFEDLLMainAPI.pas',
   frmKeyEntryFreeOTFE in '..\common\OTFE\OTFEFreeOTFE\frmKeyEntryFreeOTFE.pas' {frmKeyEntryFreeOTFE},
-  frmKeyEntryLinux in '..\common\OTFE\OTFEFreeOTFE\frmKeyEntryLinux.pas' {frmKeyEntryPlainLinux},
+  frmKeyEntryPlainLinux in '..\common\OTFE\OTFEFreeOTFE\frmKeyEntryPlainLinux.pas' {frmKeyEntryPlainLinux},
   frmKeyEntryLUKS in '..\common\OTFE\OTFEFreeOTFE\frmKeyEntryLUKS.pas' {frmKeyEntryLUKS},
   frmWizard in '..\common\OTFE\OTFEFreeOTFE\frmWizard.pas' {frmWizard},
   SDURandPool in '..\common\OTFE\SDURandPool.pas',

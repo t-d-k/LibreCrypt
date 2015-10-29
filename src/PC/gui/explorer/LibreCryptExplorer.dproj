@@ -311,7 +311,7 @@
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmKeyEntryLUKS.pas">
 				<Form>frmKeyEntryLUKS</Form>
 			</DCCReference>
-			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmKeyEntryLinux.pas">
+			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmKeyEntryPlainLinux.pas">
 				<Form>frmKeyEntryPlainLinux</Form>
 			</DCCReference>
 			<DCCReference Include="..\common\OTFE\OTFEFreeOTFE\frmNewVolumeSize.pas">

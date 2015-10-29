@@ -80,7 +80,7 @@ uses
   //sdu & LibreCrypt utils
     OTFEFreeOTFEBase_U ,OTFEConsts_U,LUKSTools,
    // LibreCrypt forms
- frmKeyEntryFreeOTFE, frmKeyEntryLinux,frmSelectPartition;
+ frmKeyEntryFreeOTFE, frmKeyEntryPlainLinux,frmSelectPartition;
 
 // Returns TRUE only if the user selected FreeOTFE
 function TfrmSelectVolumeType.IsFreeOTFEVolume(): boolean;
@@ -120,7 +120,7 @@ begin
       if frmSelectVolumeType.IsFreeOTFEVolume then begin
         Result := frmKeyEntryFreeOTFE.MountFreeOTFE(volumeFilename, mountedAs, ReadOnly);
       end else begin
-        Result := frmKeyEntryLinux.MountPlainLinux(volumeFilename, mountedAs, ReadOnly);
+        Result := frmKeyEntryPlainLinux.MountPlainLinux(volumeFilename, mountedAs, ReadOnly);
       end;
 
     end;
@@ -178,7 +178,7 @@ begin
             if LUKSTools.IsLUKSVolume(selectedPartition) then begin
                LUKSTools.MountLUKS(selectedPartition, Result)
             end else begin
-              if frmKeyEntryLinux.MountPlainLinux(selectedPartition, Result)<> morOK then
+              if frmKeyEntryPlainLinux.MountPlainLinux(selectedPartition, Result)<> morOK then
                 Result := #0;
             end;
           end;

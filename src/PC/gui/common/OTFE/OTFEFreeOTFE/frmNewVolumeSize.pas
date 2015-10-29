@@ -11,9 +11,13 @@ unit frmNewVolumeSize;
 interface
 
 uses
-  Classes, Controls, Dialogs,
-  Forms, Graphics, Messages, OTFEFreeOTFEBase_U, SDUFilenameEdit_U,
-  SDUForms, SDUFrames, SDUSpin64Units, Spin64, StdCtrls, SysUtils, Windows;
+     //delphi & libs
+      Classes, Controls, Dialogs,
+  Forms, Graphics, Messages,  Spin64, StdCtrls, SysUtils, Windows,
+  //sdu & LibreCrypt utils
+      OTFEFreeOTFEBase_U, SDUFilenameEdit_U, SDUFrames, SDUSpin64Units,
+   // LibreCrypt forms
+  SDUForms;
 
 type
   TfrmNewVolumeSize = class (TSDUForm)

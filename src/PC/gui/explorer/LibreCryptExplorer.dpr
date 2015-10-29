@@ -66,7 +66,7 @@ uses
   SDUHTTPServer in '..\common\SDeanUtils\SDUHTTPServer.pas',
   frmKeyEntryFreeOTFE in '..\common\OTFE\OTFEFreeOTFE\frmKeyEntryFreeOTFE.pas' {frmKeyEntryFreeOTFE},
   frmKeyEntryLUKS in '..\common\OTFE\OTFEFreeOTFE\frmKeyEntryLUKS.pas' {frmKeyEntryLUKS},
-  frmKeyEntryLinux in '..\common\OTFE\OTFEFreeOTFE\frmKeyEntryLinux.pas' {frmKeyEntryPlainLinux},
+  frmKeyEntryPlainLinux in '..\common\OTFE\OTFEFreeOTFE\frmKeyEntryPlainLinux.pas' {frmKeyEntryPlainLinux},
   frmNewVolumeSize in '..\common\OTFE\OTFEFreeOTFE\frmNewVolumeSize.pas' {frmNewVolumeSize},
   OTFEFreeOTFE_U in '..\common\OTFE\OTFEFreeOTFE\OTFEFreeOTFE_U.pas',
   OTFEFreeOTFEBase_U in '..\common\OTFE\OTFEFreeOTFEBase_U.pas',

@@ -7,7 +7,7 @@ unit frmCreateFreeOTFEVolume;
  // -----------------------------------------------------------------------------
  //
 
-{ TODO 1 -otdk -ccleanup : rename unit }
+{ DONE 1 -otdk -ccleanup : rename unit }
 interface
 
 uses
