@@ -25,11 +25,9 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 
 This section gives a series of examples of how to create Linux dm-crypt containers, and then open them using LibreCrypt.
 
-These examples have been
-tested using Fedora Core 3, with a v2.6.11.7 kernel installed; though
-they should work for all compatible Linux distributions.
+These examples have been tested using Fedora Core 3, with a v2.6.11.7 kernel installed; though they should work for all compatible Linux distributions.
 
-<UL>
+
   * [Initial Setup](#level_3_heading_1)
   * [Defaults](#level_3_heading_2)
   * [Example #1: Opening a dm-crypt Container Encrypted Using dm-crypt's Default Encryption](#level_3_heading_3)
@@ -40,7 +38,7 @@ they should work for all compatible Linux distributions.
   * [Example #6: Opening a dm-crypt Container Encrypted Using 256 bit AES with MD5 Password Hashing](#level_3_heading_8)
   * [Example #7: Opening a dm-crypt Container Encrypted Using 448 bit Blowfish, MD5 Password Hashing and SHA-256 ESSIV](#level_3_heading_9)
   * [Example #8: Opening a dm-crypt Container Encrypted Using AES-256 in XTS Mode (aka XTS-AES-256)](#level_3_heading_10)
-</UL>
+
 
 * * * 
 <A NAME="level_3_heading_1">
@@ -150,49 +148,44 @@ Creating the container file under Linux:
 
 Opening the container under LibreCrypt:
 
-<OL>
 
-  * Select "Linux | Open..."
 
-  * Select the container file
+1. Select "Linux | Open..."
+1. Select the container file
+1. "Key" tab:
 
-  * "Key" tab:
 
-  <UL>
-* Enter "password1234567890ABC" as the key
-* Leave GPG executable blank
-* Leave GPG keyfile  blank
-* Leave seed blank
-* Select the "RIPEMD-160 (160/512)" hash
-* Ensure "Hash with "A"s, if hash output is too short" is checked.
-* Leave iteration count at 0
+	* Enter "password1234567890ABC" as the key
+	* Leave GPG executable blank
+	* Leave GPG keyfile  blank
+	* Leave seed blank
+	* Select the "RIPEMD-160 (160/512)" hash
+	* Ensure "Hash with "A"s, if hash output is too short" is checked.
+	* Leave iteration count at 0
 
-  </UL>
-  * "Encryption" tab:
-  <UL>
-* Select the "AES (CBC; 256/128)" cypher
-* Select "32 bit sector ID" as the IV generation method* Set "Sector zero location" to "Start of encrypted data"
+1. "Encryption" tab:
 
-  </UL>
-  * "File options" tab:
+		* Select the "AES (CBC; 256/128)" cypher
+		* Select "32 bit sector ID" as the IV generation method* Set "Sector zero location" to "Start of encrypted data"
 
-  <UL>
-* Leave offset at 0
-* Leave sizelimit at 0
+2. "File options" tab:
 
-  </UL>
-  * "Open options" tab:
 
-  <UL>
-* Select any unused drive letter
-* Leave readonly unchecked
+		* Leave offset at 0
+		* Leave sizelimit at 0
 
-  </UL>
-  * Click the "OK" button
 
-</OL>
+3. "Open options" tab:
 
-* * * 
+	
+	* Select any unused drive letter
+	* Leave readonly unchecked
+
+4. Click the "OK" button
+
+
+* * *
+
 <A NAME="level_3_heading_4">
 ### Example #2: Opening a dm-crypt Container Encrypted Using 128 bit AES
 </A>
@@ -289,43 +282,42 @@ rm -rf ./test_mountpoint
 
 Opening the container under LibreCrypt:
 
-<OL>
 
-* Select "Linux | Open..."
-* Select the container file
-* "Key" tab:
-<UL>
+
+1. Select "Linux | Open..."
+1. Select the container file
+1. "Key" tab:
+
 	* Enter "password1234567890ABC" as the key
 	* Leave GPG executable blank
 	* Leave GPG keyfile  blank
 	* Leave seed blank
 	* Select the "RIPEMD-160 (160/512)" hash
-	
+
 			* Ensure "Hash with "A"s, if hash output is too short" is checked.
 	* Leave iteration count at 0
-</UL>
-* "Encryption" tab:
-<UL>
+
+1. "Encryption" tab:
+
 	* Select the "AES (CBC; 256/128)" cypher	
 	* Select "ESSIV" as the IV generation method
 	* Set "Sector zero location" to "Start of encrypted data"	
 	* Select "SHA-256 (256/512)" as the IV hash
 	* Select "AES (CBC; 256/128)" as the IV cypher
 
-</UL>
-* "File options" tab:
-<UL>
+
+1. "File options" tab:
+
 	* Leave offset at 0
 	* Leave sizelimit at 0
-</UL>
-* "Open options" tab:
-<UL>
+
+1. "Open options" tab:
+
 	* Select any unused drive letter
 	* Leave readonly unchecked
-</UL>
-* Click the "OK" button
 
-</OL>
+1. Click the "OK" button
+
 
 * * * 
 <A NAME="level_3_heading_6">
@@ -362,15 +354,10 @@ rm -rf ./test_mountpoint
 
 Opening the container under LibreCrypt:
 
-<OL>
+1. Select "Linux | Open..."
+1. Select the container file
+1. "Key" tab:
 
-* Select "Linux | Open..."
-
-* Select the container file
-
-* "Key" tab:
-
-<UL>
 	* Enter "password1234567890ABC" as the key
 	* Leave GPG executable blank
 	* Leave GPG keyfile  blank
@@ -379,31 +366,23 @@ Opening the container under LibreCrypt:
 	* Ensure "Hash with "A"s, if hash output is too short" is checked.
 	* Leave iteration count at 0
 
-</UL>
-* "Encryption" tab:
+1. "Encryption" tab:
 
-<UL>
 	* Select the "Blowfish (CBC; 448/64)" cypher
 	* Select "32 bit sector ID" as the IV generation method* Set "Sector zero location" to "Start of encrypted data"
 
-</UL>
-* "File options" tab:
+1. "File options" tab:
 
-<UL>
 	* Leave offset at 0
 	* Leave sizelimit at 0
 
-</UL>
-* "Open options" tab:
+1. "Open options" tab:
 
-<UL>
 	* Select any unused drive letter
 	* Leave readonly unchecked
 
-</UL>
-* Click the "OK" button
+1. Click the "OK" button
 
-</OL>
 
 * * * 
 <A NAME="level_3_heading_7">
@@ -442,39 +421,36 @@ rm -rf ./test_mountpoint
 
 Opening the container under LibreCrypt:
 
-<OL>
-
-* Select "Linux | Open..."
-* Select the container file
-* "Key" tab:
-<UL>
-* Enter "password1234567890ABC" as the key
-* Leave GPG executable blank
-* Leave GPG keyfile  blank
-* Leave seed blank
-* Select the "RIPEMD-160 (160/512)" hash
+1. Select "Linux | Open..."
+1. Select the container file
+1. "Key" tab:
+	
+	* Enter "password1234567890ABC" as the key
+	* Leave GPG executable blank
+	* Leave GPG keyfile  blank
+	* Leave seed blank
+	* Select the "RIPEMD-160 (160/512)" hash
 
     * Ensure "Hash with "A"s, if hash output is too short" is checked.
 
-* Leave iteration count at 0
-</UL>
-* "Encryption" tab:
-<UL>
-* Select the "Twofish (CBC; 256/128)" cypher
-* Select "32 bit sector ID" as the IV generation method* Set "Sector zero location" to "Start of encrypted data"
-</UL>
-* "File options" tab:
-<UL>
-* Set offset to 1536 bytes (i.e. 3 sectors, each of 512 bytes)* Leave sizelimit at 0
-</UL>
-* "Open options" tab:
-<UL>
-* Select any unused drive letter
-* Leave readonly unchecked
-</UL>
-* Click the "OK" button
+  * Leave iteration count at 0
 
-</OL>
+1. "Encryption" tab:
+
+	* Select the "Twofish (CBC; 256/128)" cypher
+	* Select "32 bit sector ID" as the IV generation method* Set "Sector zero location" to "Start of encrypted data"
+
+1. "File options" tab:
+
+	* Set offset to 1536 bytes (i.e. 3 sectors, each of 512 bytes)* Leave sizelimit at 0
+
+1. "Open options" tab:
+
+	* Select any unused drive letter
+	* Leave readonly unchecked
+
+1. Click the "OK" button
+
 
 * * * 
 <A NAME="level_3_heading_8">
@@ -512,12 +488,11 @@ rm -rf ./test_mountpoint
 
 Opening the container under LibreCrypt:
 
-<OL>
 
-* Select "Linux | Open..."
-* Select the container file
-* "Key" tab:
-<UL>
+1. Select "Linux | Open..."
+1. Select the container file
+1. "Key" tab:
+
 	* Enter "password1234567890ABC" as the key
 	* Leave GPG executable blank
 	* Leave GPG keyfile blank
@@ -526,30 +501,26 @@ Opening the container under LibreCrypt:
 	* Ensure "Hash with "A"s, if hash output is too short" is checked.
 	
 	* Leave iteration count at 0
-</UL>
-* "Encryption" tab:
-<UL>
-* Select the "AES (CBC; 256/128)" cypher
 
-* Select "32 bit sector ID" as the IV generation method
-* Set "Sector zero location" to "Start of encrypted data"
+1. "Encryption" tab:
 
-</UL>
-* "File options" tab:
-<UL>
-* Leave offset at 0
+	* Select the "AES (CBC; 256/128)" cypher		
+	* Select "32 bit sector ID" as the IV generation method
+	* Set "Sector zero location" to "Start of encrypted data"
 
+
+1. "File options" tab:
+
+		* Leave offset at 0
     * Leave sizelimit at 0
 
-</UL>
-* "Open options" tab:
-<UL>
-* Select any unused drive letter
-* Leave readonly unchecked
-</UL>
-* Click the "OK" button
 
-</OL>
+1. "Open options" tab:
+
+	* Select any unused drive letter
+	* Leave readonly unchecked
+
+1. Click the "OK" button
 
 * * * 
 <A NAME="level_3_heading_9">
@@ -589,48 +560,43 @@ rm -rf ./test_mountpoint
 
 Opening the container under LibreCrypt:
 
-<OL>
 
-* Select "Linux | Open..."
-* Select the container file
-* "Key" tab:
-<UL>
-* Enter "password1234567890ABC" as the key
-* Leave GPG executable blank
-* Leave GPG keyfile blank
-* Leave seed blank
-* Select the "MD5 (128/512)" hash
-* Ensure "Hash with "A"s, if hash output is too short" is checked.
+1. Select "Linux | Open..."
+1. Select the container file
+1. "Key" tab:
 
-* Leave iteration count at 0
-</UL>
-* "Encryption" tab:
-<UL>
-* Select the "Blowfish (CBC; 448/64)" cypher
+	* Enter "password1234567890ABC" as the key
+	* Leave GPG executable blank
+	* Leave GPG keyfile blank
+	* Leave seed blank
+	* Select the "MD5 (128/512)" hash
+	* Ensure "Hash with "A"s, if hash output is too short" is checked.
+	
+	* Leave iteration count at 0
 
+1. "Encryption" tab:
+
+		* Select the "Blowfish (CBC; 448/64)" cypher
     * Select "ESSIV" as the IV generation method
     * Set "Sector zero location" to "Start of encrypted data"
-
     * Select "SHA-256 (256/512)" as the IV hash
-
     * Select "Blowfish (CBC; 256/64)" as the IV cypher
 
-</UL>
-* "File options" tab:
-<UL>
-* Leave offset at 0
+
+1. "File options" tab:
+
+1. Leave offset at 0
 
     * Leave sizelimit at 0
 
-</UL>
-* "Open options" tab:
-<UL>
-* Select any unused drive letter
-* Leave readonly unchecked
-</UL>
-* Click the "OK" button
 
-</OL>
+1. "Open options" tab:
+
+		* Select any unused drive letter
+		* Leave readonly unchecked
+
+1. Click the "OK" button
+
 
 * * * 
 <A NAME="level_3_heading_10">
@@ -667,36 +633,36 @@ rm -rf ./test_mountpoint
 
 Opening the container under LibreCrypt:
 
-<OL>
-* Select "Linux | Open..."
-* Select the container file
-* "Key" tab:
-<UL>
-* Enter "password1234567890ABC" as the key
-* Leave GPG executable blank
-* Leave GPG keyfile  blank
-* Leave seed blank
-* Select the "SHA-512 (512/1024)" hash
-* Ensure "Hash with "A"s, if hash output is too short" is checked.
-* Leave iteration count at 0
-</UL>
-* "Encryption" tab:
-<UL>
-* Select the "AES (256 bit XTS)" cypher
-* Select "Null IV" as the IV generation method
-</UL>
-* "File options" tab:
-<UL>
-* Leave offset at 0
-* Leave sizelimit at 0
-</UL>
-* "Open options" tab:
-<UL>
-* Select any unused drive letter
-* Leave readonly unchecked
-</UL>
-* Click the "OK" button
-</OL>
+
+1. Select "Linux | Open..."
+1. Select the container file
+1. "Key" tab:
+
+		* Enter "password1234567890ABC" as the key
+		* Leave GPG executable blank
+		* Leave GPG keyfile  blank
+		* Leave seed blank
+		* Select the "SHA-512 (512/1024)" hash
+		* Ensure "Hash with "A"s, if hash output is too short" is checked.
+		* Leave iteration count at 0
+
+1. "Encryption" tab:
+
+		* Select the "AES (256 bit XTS)" cypher
+		* Select "Null IV" as the IV generation method
+
+1. "File options" tab:
+
+		* Leave offset at 0
+		* Leave sizelimit at 0
+
+1. "Open options" tab:
+
+		* Select any unused drive letter
+		* Leave readonly unchecked
+
+1. Click the "OK" button
+
 
 
 
