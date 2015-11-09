@@ -2,7 +2,7 @@
 <LINK rel="shortcut icon" href="src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![LibreCrypt logo](src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
+[![LibreCrypt logo](https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
 </SPAN>
 <SPAN CLASS="master_title">
 _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
