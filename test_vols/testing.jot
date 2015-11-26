@@ -21,5 +21,6 @@ freeotfe 		dmcrypt_dx_6								    dmcrypt_hid   MARS 128but CBC         ripemd-
 
 keyfiles
 a.cdb   salt 256 iterations 2048 (default) for a.box p:secret
+keyfile for LUKS.box
 
 
