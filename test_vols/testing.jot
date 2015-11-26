@@ -10,13 +10,13 @@ created by	name						size		format 	label				cyph											hash						sector IVs	
 6.1					e.box						4mb			fat			E_FILE			Serpent (256 bit XTS) 		MD5																									key iterations 10240 offset 0 (default offset is 2097152)
 6.1					e.box						2Mb		  fat			EH_FILE			aes 256 cbc,essiv	not xor	tiger																								at offset 2097152 (default offset)	p:5ekr1t
 6.1					f.box														F_FILE			blowfish 128bit cbc				RIPEMD-160 (Linux; Twice, with A) 									null IV, additionally xor ...
-cryptsetup  luks.box				4Mb  		fat     luks 				aes-xts-plain64																																keysize: 256 bits
+cryptsetup  luks.box				4Mb  		fat     luks 				aes-xts-plain64																																keysize: 256 bits, 2nd keyslot uses keyfile 'keyfile'
 cryptsetup 	luks_essiv.box	4Mb			-				luks				AES (256 bit CBC) 				SHA-256																							essiv																																																									
 freeotfe    a.box				as above																																																			using keyfile a.cdb p:secret 
 6.1         b.box				as above																																																			using keyfile b.cdb p:secret
 freeotfe		dmcrypt_dx     4MB							dmcrypt_dx	des 64bit cbc							SHA-512 with 'A's checked 										  		plain dm-crypt vol created with doxbox	, empty seed .essiv  IVhash=md5 IVcipher=des, saved as dmcrypt_dx.les default hidden offset is  2097152
 freeotfe 		dmcrypt_dx									    dmcrypt_hid   MARS 128but CBC         ripemd-128 with 'A's not checked  Null IV           offset=2097152,p=5ekr1t saved as dmcrypt_hid.les 2mb fat **CAUSES BSOD IF UNMOUNTED AS FIXED DRIVE**
-doxbox 6.1		dmcrypt_dx_6  6MB							dmcrypt_dx	des 64bit cbc							SHA-512 with 'A's checked 										  		plain dm-crypt vol created with doxbox	, empty seed .essiv  IVhash=md5 IVcipher=des, saved as dmcrypt_dx.les default hidden offset is  2097152 
+doxbox 6.1		dmcrypt_dx_6  6MB							dmcrypt_dx	des 64bit cbc							SHA-512 with 'A's checked 										  		plain dm-crypt vol created with doxbox	, empty seed .essiv  IVhash=md5 IVcipher=des, saved as dmcrypt_dx.les default hidden offset is  2097152 (deleted?)
 freeotfe 		dmcrypt_dx_6								    dmcrypt_hid   MARS 128but CBC         ripemd-128 with 'A's not checked  Null IV           offset=2097152,p=5ekr1t saved as dmcrypt_hid.les 4mb fat
 
 keyfiles
