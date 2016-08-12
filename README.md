@@ -48,7 +48,7 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 * Supports many hash (including SHA-512, RIPEMD-320, Tiger) and encryption algorithms (Including AES, Twofish, and Serpent) in several modes (CBC, LRW, and XTS).
 * Optional 'key files' let you use a thumb-drive as a key.
 * Portable mode doesn't need to be installed and leaves little trace on 3rd party PCs (administrator rights needed).
-* Deniable encryption in case of 'rubber hose cryptography'.
+* Deniable encryption in case of 'rubber hose cryptanalysis'.
 * Considered the most easy to use encryption program for Windows.
 
 **Please note this is a Beta version with some known limitations. Particularly on 64 bit Windows the text 'Test Mode' is shown on the desktop.**
