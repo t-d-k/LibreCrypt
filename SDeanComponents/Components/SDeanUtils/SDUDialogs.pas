@@ -917,10 +917,9 @@ begin
 
   Result := inherited Execute();
 
-  if PreserveCWD then
-    begin
+  if fPreserveCWD then
     SDUSetCWD(oldCWD);
-    end;
+
 
 end;
 
@@ -934,10 +933,8 @@ begin
 
   Result := inherited Execute();
 
-  if PreserveCWD then
-    begin
-    SDUSetCWD(oldCWD);
-    end;
+  if fPreserveCWD then    SDUSetCWD(oldCWD);
+
 
 end;
 

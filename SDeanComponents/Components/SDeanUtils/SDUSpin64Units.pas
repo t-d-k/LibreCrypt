@@ -15,9 +15,10 @@ type
     procedure cbUnitsChange(Sender: TObject);
   private
     FOnChange: TNotifyEvent;
-    FMultiplier: integer;
+
     FReadOnly: boolean;
   protected
+      FMultiplier: integer;//default 1000
     procedure DoShow(); override;
     procedure DoChange();
 
@@ -35,17 +36,14 @@ type
     procedure SetMinValue(val: int64);
     function  GetSelectedUnits: string;
     procedure SetSelectedUnits(selUnits: string);
-    function  GetMultiplier(): integer;
-    procedure SetMultiplier(mult: integer);
-
     procedure SetReadOnly(ro: boolean);
 
   public
     constructor Create(AOwner: TComponent); override;
+    function IsValid : Boolean;
 
   published
     property Units: TStrings read GetUnits write SetUnits;
-    property Multiplier: integer read GetMultiplier write SetMultiplier default 1000;
 
     property SelectedUnits: string read GetSelectedUnits write SetSelectedUnits;
     property MaxLength: integer read GetMaxLength write SetMaxLength;
@@ -65,7 +63,6 @@ type
   public
     constructor Create(AOwner: TComponent); override;
   published
-    property Multiplier: integer read GetMultiplier write SetMultiplier default 1024;
   end;
 
 procedure Register;
@@ -73,7 +70,9 @@ procedure Register;
 implementation
 
 {$R *.dfm}
-
+//
+//const
+// U_MULTIPLIER: integer = 1000;
 procedure Register;
 begin
   RegisterComponents('SDeanUtils', [TSDUSpin64Unit]);
@@ -83,8 +82,8 @@ end;
 constructor TSDUSpin64Unit.Create(AOwner: TComponent);
 begin
   inherited;
-  Multiplier := 1000;
-  ReadOnly := FALSE;
+  fMultiplier := 1000;
+  SetReadOnly(FALSE);
 end;
 
 function TSDUSpin64Unit.GetUnits(): TStrings;
@@ -150,6 +149,11 @@ begin
   for i:=1 to cbUnits.ItemIndex do
     Result := Result * i64Multiplier;
 
+end;
+
+function TSDUSpin64Unit.IsValid: Boolean;
+begin
+  result := (se64Value.Value >0) and (cbUnits.ItemIndex>-1);
 end;
 
 procedure TSDUSpin64Unit.SetValue(val: int64);
@@ -223,19 +227,19 @@ begin
   cbUnits.ItemIndex := cbUnits.items.IndexOf(selUnits);
 end;
 
-function TSDUSpin64Unit.GetMultiplier(): integer;
-begin
-  Result := FMultiplier;
-end;
-
-procedure TSDUSpin64Unit.SetMultiplier(mult: integer);
-begin
-  FMultiplier := mult;
-end;
+//function TSDUSpin64Unit.GetMultiplier(): integer;
+//begin
+//  Result := FMultiplier;
+//end;
+//
+//procedure TSDUSpin64Unit.SetMultiplier(mult: integer);
+//begin
+//  FMultiplier := mult;
+//end;
 
 function TSDUSpin64Unit.GetPrettyValue(): string;
 begin
-  Result := inttostr(se64Value.Value) + ' ' + SelectedUnits;
+  Result := inttostr(se64Value.Value) + ' ' + GetSelectedUnits;
 end;
 
 procedure TSDUSpin64Unit.SetReadOnly(ro: boolean);
@@ -256,25 +260,20 @@ var
 begin
   inherited;
 
-  Multiplier := UNITS_BYTES_MULTIPLIER;
+  fMultiplier := UNITS_BYTES_MULTIPLIER;
 
   stlTmp:= TStringList.Create();
   try
     for i:=low(i) to high(i) do
-      begin
       stlTmp.Add(SDUUnitsStorageToText(i));
-      end;
 
-    Units := stlTmp;
+    SetUnits(stlTmp);
   finally
     stlTmp.Free();
   end;
 
 end;
 
-// ============================================================================
-// ============================================================================
-// ============================================================================
 
 END.
 
