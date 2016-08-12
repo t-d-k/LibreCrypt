@@ -20,11 +20,17 @@ uses
   StdCtrls, SysUtils, Windows,
   Spin64,
   //sdu & LibreCrypt utils
-  lcDialogs, SDUFilenameEdit_U, SDUForms, SDUFrames,
+  lcDialogs,
+  SDUFilenameEdit_U,
+  SDUForms,
+  SDUFrames,
   lcTypes,   // Required for TFreeOTFEMountAs
-  DriverAPI, OTFEFreeOTFE_PasswordRichEdit, OTFEFreeOTFE_U,
+  DriverAPI,
+  OTFEFreeOTFE_U,
   OTFEFreeOTFEBase_U,
-  SDUSpin64Units, SDUStdCtrls, SDUDialogs,
+  SDUSpin64Units,
+  SDUStdCtrls,
+  SDUDialogs,
 
   // LibreCrypt forms
   fmeNewPassword, fmePassword, fmeVolumeSelect;
@@ -103,7 +109,10 @@ type
     frmePassword1:  TfrmePassword;
     tsChooseContainer: TTabSheet;
     GroupBox7:      TGroupBox;
-    OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect;
+    VolumeSelect:   TfmeVolumeSelect;
+    gbContainerSize: TGroupBox;
+    se64UnitSize:   TSDUSpin64Unit_Storage;
+    cbOverwrite:    TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure pbOKClick(Sender: TObject);
     procedure SelectionChange(Sender: TObject);
@@ -121,10 +130,16 @@ type
     procedure pbIVCypherInfoClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
+
   private
     function _MountVolume(): Boolean;
     function _SilencableMessageDlg(Content: String; DlgType: TMsgDlgType;
       Buttons: TMsgDlgButtons): Integer;
+    procedure VolumeSelectSelectionChange(Sender: TObject);
+    function GetCypherKeyLength: Integer;
+    function GetCypherBlockSize: Integer;
+    function GetOffset: Int64;
+    procedure Setfile_name(const Value: String);  // In *bits*
   protected
     // These are ordered lists corresponding to the items shown in the combobox
     fHashKernelModeDriverNames: TStringList;
@@ -166,7 +181,7 @@ type
     //    procedure GetKeyProcHashWithAs(var hashWithAs: Boolean);
     procedure SetKeyProcHashWithAs(hashWithAs: Boolean);
     { done 1 -otdk -crefactor : remove all getters only used in this class }
-    function GetKeyProcCypherKernelDeviceName(var keyProcCypherDriver: String): Boolean;
+    function GetKeyProcCypherDriver(): String;
     function GetKeyProcCypherGUID(var keyProcCypherGUID: TGUID): Boolean;
     function SetKeyProcCypher(keyProcCypherDriver: String; keyProcCypherGUID: TGUID): Boolean;
     // Note: GetKeyProcCypherIterationCount returns the number of iterations
@@ -182,8 +197,8 @@ type
     procedure SetSizeLimit(fileOptSizeLimit: Int64);
 
     // Encryption options...
-    function GetMainCypherKernelDeviceName(var mainCypherDriver: String): Boolean;
-    function GetMainCypherGUID(var mainCypherGUID: TGUID): Boolean;
+    function GetMainCypherDriver(): String;
+    function GetMainCypherGUID(): TGUID;
     function SetMainCypher(mainCypherDriver: String; mainCypherGUID: TGUID): Boolean;
     //    procedure GetMainIVSectorZeroPos(out startOfVolFile: Boolean; out startOfEndData: Boolean);
     // Note: At most *one* of the parameters passed to SetMainIVSectorZeroPos(...) can be set to TRUE
@@ -198,12 +213,12 @@ type
     function SetMainIVCypher(mainIVCypherDriver: String; mainIVCypherGUID: TGUID): Boolean;
 
     // Mount options...
-    procedure GetDriveLetter(out mountDriveLetter: DriveLetterChar);
+    function GetDriveLetter(): DriveLetterChar;
     function SetDriveLetter(mountDriveLetter: DriveLetterChar): Boolean;
     //    procedure GetReadonly(var mountReadonly: Boolean);
     procedure SetReadonly(mountReadonly: Boolean);
-    function GetMountAs(var mountAs: TMountDiskType): Boolean;
-    function SetMountAs(mountAs: TMountDiskType): Boolean;
+    function GetMountAs(): TMountDiskType;
+    procedure SetMountAs(mountAs: TMountDiskType);
     //    function GetMountForAllUsers(): Boolean;
     procedure SetMountForAllUsers(allUsers: Boolean);
 
@@ -217,10 +232,10 @@ type
       userKey, seed: Ansistring; hashWithAs: Boolean;
       targetKeylengthBits: Integer; var volumeKey: TSDUBytes): Boolean;
 
-    property fileName: String Write ffile_name;
-    property createVol: Boolean Write fcreate_vol;
+    property fileName: String Read ffile_name Write Setfile_name;
+    property createVol: Boolean Read fcreate_vol Write fcreate_vol;
     //    property silent: boolean write fsilent;
-    property isHidden: Boolean Write fis_hidden;
+    property isHidden: Boolean Read fis_hidden Write fis_hidden;
   end;
 
 function MountPlainLinux(volumeFilename: String;
@@ -228,25 +243,25 @@ function MountPlainLinux(volumeFilename: String;
   lesFile: String = ''; password: TSDUBytes = nil;
   offset: ULONGLONG = 0; createVol: Boolean = False; isHidden: Boolean = False): TMountresult;
 
-//function CreatePlainLinuxVolumeWizard(out fileName: String): Boolean;
-function CreateFileWithPrompt(var fileName: String; out user_cancelled: Boolean): Boolean;
+ //function CreatePlainLinuxVolumeWizard(out fileName: String): Boolean;
+ //function CreateFileWithPrompt(var fileName: String; out user_cancelled: Boolean): Boolean;
 
 
 
  // ---------
  // See function comment in body of function
-{$IFDEF LINUX_DETECT}
-    function  DetectLinux(
-      volumeFilename: string;
-      userKey: string;
-      keyProcSeed: string;
-      keyProcIterations: integer;
-      fileOptOffset: int64;
-      fileOptSize: int64;
-      mountDriveLetter: char;
-      mountMountAs: TFreeOTFEMountAs;
-      testFilename: string
-      ): string;
+  {$IFNDEF NOT_LINUX_DETECT}
+function DetectLinux(
+  volumeFilename: String;
+  userKey: Ansistring;
+  keyProcSeed: Ansistring;
+  keyProcIterations: Integer;
+  fileOptOffset: Int64;
+  fileOptSize: Int64;
+  mountDriveLetter: Char;
+  mountMountAs: TMountDiskType;
+  testFilename: String
+  ): String;
 {$ENDIF}
 
  // Mount file(s) assuming specific volume type
@@ -294,14 +309,22 @@ uses
   INIFiles, Math,
 
   //sdu & LibreCrypt utils
-  SDUi18n, Pkcs11Lib, lcConsts, sduGeneral, OTFEFreeOTFEDLL_U,
+  SDUi18n,
+  Pkcs11Lib,
+  lcConsts,
+  sduGeneral,
+  //   OTFEFreeOTFEDLL_U,
   LUKSTools,
   OTFEConsts_U,
   CommonSettings,
-  MainSettings, lcCommandLine,
+  MainSettings,
+  lcCommandLine, shredder, SDURandPool,
+  SDUSysUtils,
+  {$IFNDEF NOT_LINUX_DETECT}
+  DbugIntf,  // GExperts
+{$ENDIF}
   // LibreCrypt forms
-  frmNewVolumeSize,
-  frmCypherInfo, frmHashInfo;
+  frmCypherInfo, frmHashInfo, PartitionTools;
 
 const
 
@@ -313,8 +336,10 @@ const
   DEFAULT_KEYPROC_HASH_TITLE   = 'SHA-512';
   DEFAULT_KEYPROC_CYPHER_TITLE = 'AES (256 bit CBC)';
   DEFAULT_MAIN_CYPHER_TITLE    = 'AES (256 bit CBC)';
-  DEFAULT_MAIN_IV_HASH_TITLE   = 'SHA-256';     //change from FreeOTFE - make consistent with linux scripts
-  DEFAULT_MAIN_IV_GEN_METHOD   = 'ESSIV';       //change from FreeOTFE - make consistent with linux scripts
+  DEFAULT_MAIN_IV_HASH_TITLE   = 'SHA-256';
+  //change from FreeOTFE - make consistent with linux scripts
+  DEFAULT_MAIN_IV_GEN_METHOD   = 'ESSIV';
+  //change from FreeOTFE - make consistent with linux scripts
 
   // Settings file sections and values
   SETTINGS_SECTION_KEY               = 'Key';
@@ -404,12 +429,15 @@ begin
   _PopulateDrives();
   _PopulateMountAs();
 
-  _DefaultOptions();
+
 
   frmeNewPassword1.OnChange := SelectionChange;
+  VolumeSelect.OnChange     := VolumeSelectSelectionChange;
+  //  VolumeSelect.FileSelectFilter := '*.vol|LC container file';
   //
   //      frmeNewPassword1.SetFocus;
   //   frmeNewPassword1.preUserKeyFirst.SetFocus;
+
 end;
 
 
@@ -517,8 +545,12 @@ begin
   cbMediaType.Items.Clear();
   for currMountAs := low(TMountDiskType) to high(TMountDiskType) do
     // do not allow dm-crypt vols as 'fixed discs' - work-around BSoD issue
-    if not (currMountAs in [fomaUnknown, fomaFixedDisk]) then
+    if not (currMountAs = fomaUnknown{, fomaFixedDisk}) then
       cbMediaType.Items.Add(FreeOTFEMountAsTitle(currMountAs));
+
+  assert(cbMediaType.Items.Count > 0);
+  cbMediaType.ItemIndex := 0; // should always have value
+
 end;
 
 
@@ -608,11 +640,10 @@ begin
     end;
   end;
 
-  if (GetSettings() is TMainSettings) then begin
-    SetMountAs(GetMainSettings().DefaultMountDiskType);
-  end else begin
+  if (GetSettings() is TMainSettings) then
+    SetMountAs(GetMainSettings().DefaultMountDiskType)
+  else
     SetMountAs(fomaRemovableDisk);
-  end;
 
   feGPGExecutable.Filename := '';
   feGPGKeyfile.Filename    := '';
@@ -625,39 +656,38 @@ begin
 
   // Default to TRUE to allow formatting under Windows Vista
   ckMountForAllUsers.Checked := True;
-
 end;
 
 function TfrmKeyEntryPlainLinux._MountVolume(): Boolean;
 var
   keyProcSeed: Ansistring;
 
-  keyProcHashDriver:   String;
-  keyProcHashGUID:     TGUID;
-  keyProcHashWithAs:   Boolean;
-  keyProcCypherDriver: String;
-  keyProcCypherGUID:   TGUID;
+  keyProcHashDriver:  String;
+  keyProcHashGUID:    TGUID;
+  keyProcHashWithAs:  Boolean;
+  //  keyProcCypherDriver: String;
+  keyProcCypherGUID:  TGUID;
   //  keyProcIterations:   Integer;
-  fileOptOffset:       Int64;
-  fileOptSize:         Int64;
-  mountDriveLetter:    DriveLetterChar;
-  mountReadonly:       Boolean;
-  mainCypherDriver:    String;
-  mainCypherGUID:      TGUID;
-  mainIVHashDriver:    String;
-  mainIVHashGUID:      TGUID;
-  mainIVCypherDriver:  Ansistring;
-  mainIVCypherGUID:    TGUID;
-  currDriveLetter:     DriveLetterChar;
-  sectorIVGenMethod:   TFreeOTFESectorIVGenMethod;
-  startOfVolFile:      Boolean;
+  //  fileOptOffset:       Int64;
+  fileOptSize:        Int64;
+  mountDriveLetter:   DriveLetterChar;
+  mountReadonly:      Boolean;
+  mainCypherDriver:   String;
+  mainCypherGUID:     TGUID;
+  mainIVHashDriver:   String;
+  mainIVHashGUID:     TGUID;
+  mainIVCypherDriver: Ansistring;
+  mainIVCypherGUID:   TGUID;
+  currDriveLetter:    DriveLetterChar;
+  sectorIVGenMethod:  TFreeOTFESectorIVGenMethod;
+  startOfVolFile:     Boolean;
   //  startOfEndData:      Boolean;
-  mountMountAs:        TMountDiskType;
-  VolumeFlags:         DWORD;
-  mainCypherDetails:   TFreeOTFECypher_v3;
-  mountForAllUsers:    Boolean;
-  userKey:             Ansistring;
-  volumeKey:           TSDUBytes;
+  mountMountAs:       TMountDiskType;
+  VolumeFlags:        DWORD;
+  mainCypherDetails:  TFreeOTFECypher_v3;
+  mountForAllUsers:   Boolean;
+  userKey:            Ansistring;
+  volumeKey:          TSDUBytes;
 
 begin
   { done -otdk -cclean : ugly - move CreateMountDiskDevice to dialog, or have record 'mountoptions' }
@@ -670,28 +700,34 @@ begin
   //      GetKeyProcHashWithAs();
   keyProcHashWithAs := ckHashWithAs.Checked;
   //  keyProcIterations := seKeyProcCypherIterations.Value * 1000;
-  fileOptOffset     := se64UnitOffset.Value;
-  userKey           := GetKey();
-  fileOptSize       := se64UnitSizeLimit.Value;
 
-  GetDriveLetter(mountDriveLetter);
-  mountReadonly  := ckMountReadonly.Checked;
+  //  fileOptOffset := se64UnitOffset.Value;
+
+  userKey := GetKey();
+
+  if fcreate_vol then
+    fileOptSize := se64UnitSize.Value
+  else
+    fileOptSize := se64UnitSizeLimit.Value;
+
+  mountDriveLetter := GetDriveLetter();
+  mountReadonly    := ckMountReadonly.Checked;
   // Encryption options...
-  startOfVolFile := (rgSectorIVSectorZeroPos.ItemIndex = 0);
+  startOfVolFile   := (rgSectorIVSectorZeroPos.ItemIndex = 0);
   //  startOfEndData := (rgSectorIVSectorZeroPos.ItemIndex = 1);
-
+  mainCypherDriver := GetMainCypherDriver();
+  mainCypherGUID   := GetMainCypherGUID();
+  // Mount options...
+  mountMountAs     := GetMountAs();
   if (
     // Key processing...
     // File options...
     GetKeyProcHashKernelDeviceName(keyProcHashDriver) and
-    GetKeyProcCypherKernelDeviceName(keyProcCypherDriver) and
+    //    GetKeyProcCypherKernelDeviceName(keyProcCypherDriver) and
     GetKeyProcCypherGUID(keyProcCypherGUID) and
-
-    // Mount options...
-    (GetMountAs(mountMountAs)) and
     // Encryption options...
-    (GetMainCypherKernelDeviceName(mainCypherDriver)) and
-    (GetMainCypherGUID(mainCypherGUID)) and (GetMainSectorIVGenMethod(sectorIVGenMethod)) and
+
+    (GetMainSectorIVGenMethod(sectorIVGenMethod)) and
     (GetMainIVHashKernelDeviceName(mainIVHashDriver)) and
     (GetMainIVHashGUID(mainIVHashGUID)) and
     (GetMainIVCypherKernelDeviceName(mainIVCypherDriver)) and
@@ -737,7 +773,7 @@ begin
         sectorIVGenMethod, nil,  // Linux volumes don't have per-volume IVs
         mountReadonly, mainIVHashDriver, mainIVHashGUID, mainIVCypherDriver,
         mainIVCypherGUID, mainCypherDriver, mainCypherGUID, VolumeFlags,
-        currDriveLetter, fileOptOffset, fileOptSize, True,
+        currDriveLetter, GetOffset(), fileOptSize, True,
                             // Linux volume
         PKCS11_NO_SLOT_ID,  // PKCS11 SlotID
         mountMountAs, mountForAllUsers) then begin
@@ -752,16 +788,71 @@ begin
 end;
 
 
+
+function TfrmKeyEntryPlainLinux.GetCypherKeyLength: Integer;  // In *bits*
+var
+  chaffCypherDetails: TFreeOTFECypher_v3;
+begin
+  // If overwriting with encrypted data (chaff), find the size of the key required
+  // use same as for main cypher
+  //  result := 0;
+
+  GetFreeOTFEBase().GetSpecificCypherDetails(GetMainCypherDriver(), GetMainCypherGUID(),
+    chaffCypherDetails);
+
+  // Get *real* random data for encryption key
+  if (chaffCypherDetails.KeySizeRequired < 0) then begin
+    // -ve keysize = arbitary keysize supported - just use 512 bits
+    Result := 512;
+  end else begin
+    // +ve keysize = specific keysize - get sufficient bits
+    Result := chaffCypherDetails.KeySizeRequired;
+  end;
+
+end;
+
+function TfrmKeyEntryPlainLinux.GetCypherBlockSize: Integer;  // In *bits*
+var
+  chaffCypherDetails: TFreeOTFECypher_v3;
+begin
+  // If overwriting with encrypted data (chaff), find the size of the key required
+  // use same as for main cypher
+  //  result := 0;
+
+  GetFreeOTFEBase().GetSpecificCypherDetails(GetMainCypherDriver(), GetMainCypherGUID(),
+    chaffCypherDetails);
+
+  // Get *real* random data for encryption key
+  if (chaffCypherDetails.BlockSize < 0) then begin
+    // -ve keysize = arbitary keysize supported - just use 512 bits
+    Result := 512;
+  end else begin
+    // +ve keysize = specific keysize - get sufficient bits
+    Result := chaffCypherDetails.BlockSize;
+  end;
+
+end;
+
+
 procedure TfrmKeyEntryPlainLinux.pbOKClick(Sender: TObject);
 var
-  tmpKey:         Ansistring;
-  user_cancelled: Boolean;
+  tmpKey:            Ansistring;
+  user_cancelled:    Boolean;
+  overwriteOK:       TShredResult;
+  failMsg:           String;
+  chaffCypherKeyLen: Integer;  // In *bits*
 begin
   ModalResult := mrCancel;
 
 
-  if fcreate_vol then
+  if fcreate_vol then begin
     assert(frmeNewPassword1.IsPasswordValid);
+    GetRandPool.SetUpRandPool([rngCryptoAPI],
+      PKCS11_NO_SLOT_ID,
+      '');
+
+  end;
+
   tmpKey := GetKey();
 
   if (Length(tmpKey) = 0) then begin
@@ -786,17 +877,31 @@ begin
   end;
 
   if ModalResult = mrOk then begin
-    if (not fis_hidden) and FileExists(ffile_name) and (not fcreate_vol) then begin
-      if IsLUKSVolume(ffile_name) then begin
-        if (_SilencableMessageDlg(
-          _('This container is a LUKS container, opening it as a dm-crypt container may corrupt it.'), mtWarning, [mbIgnore, mbAbort]) <> mrIgnore) then begin
+    if FileExists(ffile_name) and (not fcreate_vol) then begin
+
+      if not fis_hidden then begin
+        if IsLUKSVolume(ffile_name) then begin
+          if (_SilencableMessageDlg(
+            _('This container is a LUKS container, opening it as a dm-crypt container may corrupt it.'), mtWarning, [mbIgnore, mbAbort]) <> mrIgnore) then begin
+            ModalResult := mrAbort;
+          end;
+        end;
+      end;
+      // fails if sizelimit is larger than filesize
+      if se64UnitSizeLimit.Value > 0 then begin
+        if se64UnitSizeLimit.Value >= SDUGetFileSize(ffile_name) then begin
+          _SilencableMessageDlg(_('The ''size limit'' cannot be greater than the file size'),
+            mtError, [mbAbort]);
           ModalResult := mrAbort;
         end;
       end;
 
     end;
   end;
-  if ModalResult = mrOk then
+
+
+  if ModalResult = mrOk then begin
+    // don't wipe hidden vol because a) should be wiped already b) if wrong offset will minimise data loss
     if fcreate_vol and (not fis_hidden) then begin
       if FileExists(ffile_name) then begin
         _SilencableMessageDlg(_('This file already exists, a new container cannot be created.'),
@@ -804,32 +909,69 @@ begin
         ModalResult := mrCancel;
       end else begin
 
-        // create empty file
-        if CreateFileWithPrompt(ffile_name, user_cancelled) then begin
-          SDUMessageDlg(
-            _('dm-crypt container created successfully.') + SDUCRLF + SDUCRLF +
-            _('Now this container will be mounted and formated before use.'),
-            mtInformation);
-          { TODO 1 -otdk -cenhance : wipe volume first }
-
+        if PartitionTools.IsPartitionPath(ffile_name) then begin
+          // don't overwrite here - after created
         end else begin
-          if user_cancelled then
-            ModalResult := mrCancel
-          else
-            SDUMessageDlg(_('The dm-crypt container could not be created'), mtError);
+
+          // create empty file
+          if SDUCreateLargeFile(ffile_name, se64UnitSize.Value, True, user_cancelled) then begin
+
+            { DONE 1 -otdk -csecurity : overwrite with 'chaff' - need to set up cyphers etc. }
+            chaffCypherKeyLen := GetCypherKeyLength;
+            overwriteOK       := OverwriteVolWithChaff(GetDriveLetter(),
+              cbOverwrite.Checked, chaffCypherKeyLen, GetCypherBlockSize,
+              GetMainCypherDriver, GetMainCypherGUID, GetOffset(), ffile_name);
+            if (overwriteOK = srError) then begin
+              failMsg :=
+                _('Wipe of data FAILED. You should manually wipe the drive to ensure security');
+              SDUMessageDlg(failMsg, mtError);
+              ModalResult := mrAbort;
+            end else begin
+              if (overwriteOK = srUserCancel) then begin
+                SDUMessageDlg(_(
+                  'Wipe of data cancelled. You should manually wipe the drive to ensure security'),
+                  mtInformation);
+                ModalResult := mrCancel;
+              end;
+
+            end;
+
+          end else begin
+            if user_cancelled then
+              ModalResult := mrCancel
+            else
+              SDUMessageDlg(_('The dm-crypt container could not be created'), mtError);
+          end;
         end;
 
       end;
-      { TODO 1 -otdk -csecurity : overwrite with 'chaff' - need to set up cyphers etc. }
     end;
-
+  end;
 
   if ModalResult = mrOk then
     if _MountVolume() then begin
 
-      { TODO 2 -otdk -csecurity : ensure is overritten and formated if created }
+      { DONE 2 -otdk -csecurity : ensure is overritten and formatted if created }
+      Application.ProcessMessages;
+      if fcreate_vol then begin
 
+        if not Format_Drive(fmounted_as) then begin
+          ModalResult := mrAbort;
+          SDUMessageDlg(_(FORMAT_ERR), mtError);
+        end else begin
+          if fis_hidden then
+            SDUMessageDlg(
+              _('The dm-crypt container was created, wiped and formatted successfully.'),
+              mtInformation)
+          else
+            SDUMessageDlg(
+              _('The dm-crypt container was created and formatted successfully.'),
+              mtInformation);
+        end;
+
+      end;
     end else begin
+      SDUMessageDlg(_('The dm-crypt container could not be opened'), mtError);
       ModalResult := mrAbort;
     end;
 end;
@@ -837,15 +979,13 @@ end;
 
 procedure TfrmKeyEntryPlainLinux._EnableDisableControls();
 var
-  //  junkInt64:             Int64;
+
   filePresentGPGExe:     Boolean;
   filePresentGPGKeyfile: Boolean;
   iterationCypherOK:     Boolean;
   IVStartSectorOK:       Boolean;
-  junkChar:              DriveLetterChar;
-  IVHashOK:              Boolean;
-  IVCypherOK:            Boolean;
-  mountAsOK:             Boolean;
+  IVHashOK,
+  IVCypherOK, file_OK:   Boolean;
   sectorIVGenMethod:     TFreeOTFESectorIVGenMethod;
   tmpMountAs:            TMountDiskType;
 begin
@@ -909,29 +1049,55 @@ begin
 
 
   // Ensure we know what to mount as
-  mountAsOK               := GetMountAs(tmpMountAs);
+  tmpMountAs := GetMountAs();
+  assert(tmpMountAs <> fomaUnknown);
+
   ckMountReadonly.Enabled := False;
-  if (mountAsOK) then begin
-    if not (FreeOTFEMountAsCanWrite[tmpMountAs]) then begin
+
+  // only allow drives can write to when creating
+  if not fcreate_vol then begin
+    if not (CAN_WRITE_TO_MOUNT_TYPE[tmpMountAs]) then begin
       ckMountReadonly.Checked := True;
     end;
-    SDUEnableControl(ckMountReadonly, FreeOTFEMountAsCanWrite[tmpMountAs]);
+    SDUEnableControl(ckMountReadonly, CAN_WRITE_TO_MOUNT_TYPE[tmpMountAs]);
   end;
-  mountAsOK := mountAsOK and (tmpMountAs <> fomaUnknown);
+
+  //  is file OK?
+  if IsPartitionPath(ffile_name) then begin
+    file_OK := True; // assume partition ok
+  end else begin
+    if ffile_name = '' then begin
+      file_OK := False;
+    end else begin
+      if fcreate_vol and (not fis_hidden) then begin
+        // size must be set if creating non hidden
+        // but not for partitions, where 0 = whole partition
+        file_OK := (not FileExists(ffile_name)) and se64UnitSize.IsValid;
+      end else begin
+        // else for opening or creating hidden must exist
+        file_OK := FileExists(ffile_name);
+      end;
+    end;
+  end;
+
 
 
   //  junkInt64 := se64UnitOffset.Value;
   //  junkInt64 := se64UnitSizeLimit.Value;
-  GetDriveLetter(junkChar);
-  pbOK.Enabled := ((filePresentGPGExe) and (filePresentGPGKeyfile) and
+  //  junkChar     := GetDriveLetter(); usually OK - mount returns false if no drives available
+  pbOK.Enabled := (file_OK and filePresentGPGExe and filePresentGPGKeyfile and
     (cbKeyProcHash.ItemIndex >= 0) and iterationCypherOK and
     (cbMainCypher.ItemIndex >= 0) and (sectorIVGenMethod <> foivgUnknown) and
-    IVStartSectorOK and IVHashOK and IVCypherOK and mountAsOK);
+    IVStartSectorOK and IVHashOK and IVCypherOK);
+
 
   if fcreate_vol and not frmeNewPassword1.IsPasswordValid then
     pbOK.Enabled := False;
 
-
+  if fcreate_vol and (not fis_hidden) then
+    VolumeSelect.SelectFor := osSave
+  else
+    VolumeSelect.SelectFor := osOpen;
 
   // Items NOT YET IMPLEMENTED
   //  - after implementing; DON'T FORGET TO ENABLE THE ASSOCIATED LABELS!
@@ -940,12 +1106,18 @@ begin
   SDUEnableControl(cbKeyProcCypher, False);
   SDUEnableControl(pbKeyProcCypherInfo, False);
   SDUEnableControl(seKeyProcCypherIterations, False);
-
 end;
 
 procedure TfrmKeyEntryPlainLinux.SelectionChange(Sender: TObject);
 begin
   _EnableDisableControls();
+end;
+
+procedure TfrmKeyEntryPlainLinux.VolumeSelectSelectionChange(Sender: TObject);
+begin
+  ffile_name := VolumeSelect.Filename;
+  _EnableDisableControls();
+  { TODO 1 -otdk -cUI : show warning label if file exists }
 end;
 
 procedure TfrmKeyEntryPlainLinux.pbKeyProcHashInfoClick(Sender: TObject);
@@ -974,7 +1146,7 @@ var
   deviceName: String;
   GUID:       TGUID;
 begin
-  GetKeyProcCypherKernelDeviceName(deviceName);
+  deviceName := GetKeyProcCypherDriver();
   GetKeyProcCypherGUID(GUID);
   frmCypherInfo.ShowCypherDetailsDlg(deviceName, GUID);
 
@@ -985,8 +1157,8 @@ var
   deviceName: String;
   GUID:       TGUID;
 begin
-  GetMainCypherKernelDeviceName(deviceName);
-  GetMainCypherGUID(GUID);
+  deviceName := GetMainCypherDriver();
+  GUID       := GetMainCypherGUID();
   frmCypherInfo.ShowCypherDetailsDlg(deviceName, GUID);
 
 end;
@@ -1001,8 +1173,6 @@ begin
   feGPGExecutable.SaveDialog.Options := feGPGExecutable.SaveDialog.Options + [ofDontAddToRecent];
   feGPGKeyfile.OpenDialog.Options    := feGPGKeyfile.OpenDialog.Options + [ofDontAddToRecent];
   feGPGKeyfile.SaveDialog.Options    := feGPGKeyfile.SaveDialog.Options + [ofDontAddToRecent];
-
-
 
   // Certain controls only visble if used in conjunction with drive mounting
   lblDrive.Visible           := GetFreeOTFEBase() is TOTFEFreeOTFE;
@@ -1029,6 +1199,22 @@ begin
     pcEntry.ActivePage := tsNewKey;
   end;
 
+  if fcreate_vol then begin
+
+    // don't allow readonly types when creating
+    SetMountAs(fomaRemovableDisk);
+    cbMediaType.Enabled     := False;
+    ckMountReadonly.Checked := False;
+    ckMountReadonly.Enabled := False;
+  end else begin
+    self.Caption            := _('Open a dm-crypt container');
+    gbContainerSize.Visible := False;
+    cbOverwrite.Visible     := False;
+  end;
+
+  // hide sizelimit+offset tab if creating - creation uses size on container tab
+  tsFileOptions.TabVisible := not fcreate_vol;
+
   { done 1 -otdk -ccomplete : hide offset unless hidden }
   { TODO 1 -otdk -ccomplete : hide filename if hidden }
 
@@ -1036,17 +1222,37 @@ begin
   se64UnitOffset.Visible := fis_hidden;
   lblOffsetO.Visible     := fis_hidden;
 
+  { TODO 1 -otdk -cenhance : deal with partitions - see TfrmCreateFreeOTFEVolume.FormShow }
+
+  if fcreate_vol then
+    se64UnitSize.Value      := GetCmdLine.size
+  else
+    se64UnitSizeLimit.Value := GetCmdLine.size;
+
+  // something resets cbs after create (translate?) so set defaults (from settings) as late as possible here
+  if not GetCmdLine.isSilent then _DefaultOptions();
+
   _EnableDisableControls();
+
 
 
   if GetCmdLine.isSilent then begin
     frmePassword1.SetKeyPhrase(fsilent_password);
+    frmeNewPassword1.SetKeyPhrase(fsilent_password);
     //    LoadSettings(OpenSettingsFileDlg.Filename);?
-    if _MountVolume() then begin
-      ModalResult := mrOk;
-    end else begin
-      ModalResult := mrCancel;
-    end;
+    //    if _MountVolume() then begin
+    //      ModalResult := mrOk;
+    //    end else begin
+    //      ModalResult := mrCancel;
+    //    end;
+
+    pbOKClick(self); //sets  ModalResult
+                     //      ModalResult := mrOk;
+                     //    end else begin
+                     //      ModalResult := mrCancel;
+                     //    end;
+
+    //    FSilentResult := ModalResult;
 
     fsilent_result := ModalResult;
 
@@ -1165,23 +1371,17 @@ begin
 end;
 
 
- // This returns TRUE if a cypher is selected, or if no cypher is needed (in
- // which case, an empty string is returned)
- // Returns FALSE is a cypher is required, but one is not selected
-function TfrmKeyEntryPlainLinux.GetKeyProcCypherKernelDeviceName(
-  var keyProcCypherDriver: String): Boolean;
+ // This returns kernel mode device name, or if no cypher is needed, an empty string is returned)
+ // also Returns '' if a cypher is required, but one is not selected
+function TfrmKeyEntryPlainLinux.GetKeyProcCypherDriver(): String;
 begin
-  Result := True;
+  Result := '';
 
   if (seKeyProcCypherIterations.Value > 0) then begin
-    Result := cbKeyProcCypher.ItemIndex >= 0;
-    if Result then begin
-      keyProcCypherDriver := fCypherKernelModeDriverNames[cbKeyProcCypher.ItemIndex];
+    if cbKeyProcCypher.ItemIndex >= 0 then begin
+      Result := fCypherKernelModeDriverNames[cbKeyProcCypher.ItemIndex];
     end;
-  end else begin
-    // No cypher selected, but none needed
-    keyProcCypherDriver := '';
-  end;
+  end; // else no cypher selected, but none needed
 
 end;
 
@@ -1204,6 +1404,26 @@ begin
   end;
 
 end;
+
+ //function TfrmCreateFreeOTFEVolume.GetCypherGUID(): TGUID;
+ //var
+ //  strGUID: String;
+ //begin
+ // if (seKeyProcCypherIterations.Value > 0) then begin
+ //  // Just some dummy GUID in case none selected
+ //  strGUID := NULL_GUID;
+ //
+ //  if (cbKeyProcCypher.ItemIndex >= 0) then
+ //    strGUID := fCypherGUIDs[cbKeyProcCypher.ItemIndex];
+ //
+ //
+ //  Result := StringToGUID(strGUID);
+ //   end else begin
+ //    // No cypher selected, but none needed
+ //    Result := StringToGUID(NULL_GUID);
+ //  end;
+ //end;
+
 
 function TfrmKeyEntryPlainLinux.SetKeyProcCypher(keyProcCypherDriver: String;
   keyProcCypherGUID: TGUID): Boolean;
@@ -1241,10 +1461,10 @@ begin
 
 end;
 
- //procedure TfrmKeyEntryPlainLinux.GetOffset(out fileOptoffset: Int64);
- //begin
- //  fileOptoffset := se64UnitOffset.Value;
- //end;
+function TfrmKeyEntryPlainLinux.GetOffset(): Int64;
+begin
+  Result := se64UnitOffset.Value;
+end;
 
 procedure TfrmKeyEntryPlainLinux.SetOffset(fileOptoffset: Int64);
 begin
@@ -1257,14 +1477,12 @@ begin
 end;
 
 // Note: This may return #0 as mountDriveLetter to indicate "any"
-procedure TfrmKeyEntryPlainLinux.GetDriveLetter(out mountDriveLetter: DriveLetterChar);
+function TfrmKeyEntryPlainLinux.GetDriveLetter(): DriveLetterChar;
 begin
-  mountDriveLetter := #0;
+  Result := #0;
   // Note: The item at index zero is "Use default"; #0 is returned for this
-  if (cbDrive.ItemIndex > 0) then begin
-    mountDriveLetter := cbDrive.Items[cbDrive.ItemIndex][1];
-  end;
-
+  if (cbDrive.ItemIndex > 0) then
+    Result := cbDrive.Items[cbDrive.ItemIndex][1];
 end;
 
 // mountDriveLetter - Set to #0 to indicate "Use default"
@@ -1290,6 +1508,12 @@ begin
 end;
 
 
+procedure TfrmKeyEntryPlainLinux.Setfile_name(const Value: String);
+begin
+  ffile_name            := Value;
+  VolumeSelect.Filename := ffile_name;
+end;
+
  //procedure TfrmKeyEntryPlainLinux.GetReadonly(var mountReadonly: Boolean);
  //begin
  //  mountReadonly := ckMountReadonly.Checked;
@@ -1302,16 +1526,16 @@ end;
 
 
 
-function TfrmKeyEntryPlainLinux.GetMountAs(var mountAs: TMountDiskType): Boolean;
+function TfrmKeyEntryPlainLinux.GetMountAs(): TMountDiskType;
 var
   currMountAs: TMountDiskType;
 begin
-  Result := False;
-
+  Result := fomaRemovableDisk; // safest
+  if cbMediaType.ItemIndex < 0 then
+    cbMediaType.ItemIndex := 0;
   for currMountAs := low(TMountDiskType) to high(TMountDiskType) do begin
     if (cbMediaType.Items[cbMediaType.ItemIndex] = FreeOTFEMountAsTitle(currMountAs)) then begin
-      mountAs := currMountAs;
-      Result  := True;
+      Result := currMountAs;
       break;
     end;
   end;
@@ -1323,11 +1547,15 @@ begin
   Result := fmounted_as;
 end;
 
-function TfrmKeyEntryPlainLinux.SetMountAs(mountAs: TMountDiskType): Boolean;
+procedure TfrmKeyEntryPlainLinux.SetMountAs(mountAs: TMountDiskType);
 begin
+  //  do not allow fixed disk as mount type for dm-crypt vols,  pending BSoD fix
+
+  //  if mountAs = fomaFixedDisk then mountAs := fomaRemovableDisk;
   cbMediaType.ItemIndex :=
     cbMediaType.Items.IndexOf(FreeOTFEMountAsTitle(mountAs));
-  Result                := cbMediaType.ItemIndex >= 0;
+  // should always have result
+  assert(cbMediaType.ItemIndex >= 0);
 end;
 
 
@@ -1342,29 +1570,30 @@ end;
  //end;
 
 
-function TfrmKeyEntryPlainLinux.GetMainCypherKernelDeviceName(
-  var mainCypherDriver: String): Boolean;
+function TfrmKeyEntryPlainLinux.GetMainCypherDriver(): String;
 begin
-  Result := False;
+  Result := '';
 
   if (cbMainCypher.ItemIndex >= 0) then begin
-    mainCypherDriver := fCypherKernelModeDriverNames[cbMainCypher.ItemIndex];
+    Result := fCypherKernelModeDriverNames[cbMainCypher.ItemIndex];
     // unicode->ansi not a data loss because only ansistring stored
-    Result           := True;
   end;
 
 end;
 
-function TfrmKeyEntryPlainLinux.GetMainCypherGUID(var mainCypherGUID: TGUID): Boolean;
+function TfrmKeyEntryPlainLinux.GetMainCypherGUID(): TGUID;
+var
+  strGUID: String;
 begin
-  Result := False;
+  strGUID := NULL_GUID;
 
-  if (cbMainCypher.ItemIndex >= 0) then begin
-    mainCypherGUID := StringToGUID(fCypherGUIDs[cbMainCypher.ItemIndex]);
-    Result         := True;
-  end;
+  if (cbMainCypher.ItemIndex >= 0) then
+    strGUID := fCypherGUIDs[cbMainCypher.ItemIndex];
+  Result := StringToGUID(strGUID);
 
 end;
+
+
 
 function TfrmKeyEntryPlainLinux.SetMainCypher(mainCypherDriver: String;
   mainCypherGUID: TGUID): Boolean;
@@ -1708,16 +1937,19 @@ begin
         ignoreIfCantSet := False;
       end;
     end;
+
     tmpString      := settingsFile.ReadString(SETTINGS_SECTION_ENCRYPTION,
       SETTINGS_VALUE_MainIVSectorZeroPos, IV_SECTOR_ID_START_UNSET);
     startOfVolFile := False;
     startOfEndData := False;
     if (tmpString = IV_SECTOR_ID_START_ENCRYPTED_DATA) then begin
       startOfEndData := True;
-    end else
-    if (tmpString = IV_SECTOR_ID_START_ENCRYPTED_VOLUME) then begin
-      startOfVolFile := True;
+    end else begin
+      if (tmpString = IV_SECTOR_ID_START_ENCRYPTED_VOLUME) then begin
+        startOfVolFile := True;
+      end;
     end;
+
     if not SetMainIVSectorZeroPos(startOfVolFile, startOfEndData) and (not ignoreIfCantSet) then
       Ok := False;
 
@@ -1769,24 +2001,30 @@ begin
     tmpString := settingsFile.ReadString(SETTINGS_SECTION_MOUNT_OPTIONS,
       SETTINGS_VALUE_DriveLetter, '-');
     // Just in case we attempt to get the 1st char from an empty string...
-    if (tmpString = '') then begin
+    if (tmpString = '') then begin     // Decode a stored "Use default"
       tmpString := #0;
-    end // Decode a stored "Use default"
-    else
-    if (tmpString = '-') then begin
-      tmpString := #0;
+    end else begin
+
+      if (tmpString = '-') then begin
+        tmpString := #0;
+      end;
     end;
+
     if not SetDriveLetter(tmpString[1]) then
       Ok := False;
 
-    tmpBoolean := settingsFile.ReadBool(SETTINGS_SECTION_MOUNT_OPTIONS,
-      SETTINGS_VALUE_Readonly, False);
-    SetReadonly(tmpBoolean);
+    if ckMountReadonly.Enabled then begin
+      tmpBoolean := settingsFile.ReadBool(SETTINGS_SECTION_MOUNT_OPTIONS,
+        SETTINGS_VALUE_Readonly, False);
+      SetReadonly(tmpBoolean);
+    end;
 
-    tmpInteger := settingsFile.ReadInteger(SETTINGS_SECTION_MOUNT_OPTIONS,
-      SETTINGS_VALUE_MountAs, Ord(fomaRemovableDisk));
-    if not SetMountAs(TMountDiskType(tmpInteger)) then
-      Ok := False;
+    if cbMediaType.Enabled then begin
+
+      tmpInteger := settingsFile.ReadInteger(SETTINGS_SECTION_MOUNT_OPTIONS,
+        SETTINGS_VALUE_MountAs, Ord(fomaRemovableDisk));
+      SetMountAs(TMountDiskType(tmpInteger));
+    end;
 
 
   finally
@@ -1850,10 +2088,10 @@ begin
       // with > 0 iterations of the cypher
       tmpInteger := seKeyProcCypherIterations.Value * 1000;
       if (tmpInteger > 0) then begin
-        if (GetKeyProcCypherKernelDeviceName(tmpString)) then begin
-          settingsFile.WriteString(SETTINGS_SECTION_KEY,
-            SETTINGS_VALUE_KeyProcCypherKernelDeviceName, tmpString);
-        end;
+
+        settingsFile.WriteString(SETTINGS_SECTION_KEY,
+          SETTINGS_VALUE_KeyProcCypherKernelDeviceName, GetKeyProcCypherDriver());
+
 
         if (GetKeyProcCypherGUID(tmpGUID)) then begin
           settingsFile.WriteString(SETTINGS_SECTION_KEY, SETTINGS_VALUE_KeyProcCypherGUID,
@@ -1863,15 +2101,15 @@ begin
 
       // -------
       // Encryption options...
-      if (GetMainCypherKernelDeviceName(tmpString)) then begin
-        settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION,
-          SETTINGS_VALUE_MainCypherKernelDeviceName, tmpString);
-      end;
 
-      if (GetMainCypherGUID(tmpGUID)) then begin
-        settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION, SETTINGS_VALUE_MainCypherGUID,
-          GUIDToString(tmpGUID));
-      end;
+      settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION,
+        SETTINGS_VALUE_MainCypherKernelDeviceName, GetMainCypherDriver());
+
+      tmpGUID := GetMainCypherGUID();
+
+      settingsFile.WriteString(SETTINGS_SECTION_ENCRYPTION, SETTINGS_VALUE_MainCypherGUID,
+        GUIDToString(tmpGUID));
+
 
       if (GetMainSectorIVGenMethod(tmpSectorIVGenMethod)) then begin
         settingsFile.WriteInteger(SETTINGS_SECTION_ENCRYPTION,
@@ -1933,9 +2171,9 @@ begin
 
       // -------
       // File options...
-      tmpInt64 := se64UnitOffset.Value;
+      //      tmpInt64 := se64UnitOffset.Value;
       settingsFile.WriteString(SETTINGS_SECTION_FILE_OPTIONS, SETTINGS_VALUE_Offset,
-        IntToStr(tmpInt64));
+        IntToStr(GetOffset()));
 
 
       tmpInt64 := se64UnitSizeLimit.Value;
@@ -1945,12 +2183,12 @@ begin
 
       // -------
       // Mount options...
-      GetDriveLetter(tmpChar);
+      tmpChar := GetDriveLetter();
       // If the user selected "Use default", we encode the #0 to something
       // we can store
-      if (tmpChar = #0) then begin
+      if (tmpChar = #0) then
         tmpChar := '-';
-      end;
+
       settingsFile.WriteString(SETTINGS_SECTION_MOUNT_OPTIONS,
         SETTINGS_VALUE_DriveLetter, tmpChar);
 
@@ -1960,10 +2198,10 @@ begin
         tmpBoolean);
 
 
-      if (GetMountAs(tmpMountAs)) then begin
-        settingsFile.WriteInteger(SETTINGS_SECTION_MOUNT_OPTIONS,
-          SETTINGS_VALUE_MountAs, Ord(tmpMountAs));
-      end;
+      tmpMountAs := GetMountAs();
+      settingsFile.WriteInteger(SETTINGS_SECTION_MOUNT_OPTIONS,
+        SETTINGS_VALUE_MountAs, Ord(tmpMountAs));
+
 
 
     finally
@@ -2068,6 +2306,9 @@ function TfrmKeyEntryPlainLinux._SilencableMessageDlg(Content: String;
   DlgType: TMsgDlgType; Buttons: TMsgDlgButtons): Integer;
 begin
   Result := mrOk;
+  if mbIgnore in Buttons then
+    Result := mrIgnore;
+
   if not GetCmdLine.isSilent then
     Result := SDUMessageDlg(Content, DlgType, Buttons, 0);
 end;
@@ -2084,7 +2325,6 @@ begin
   Result := morOK;
 
   GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS;
-  //  Result        := True;
   mountedAs := #0;
   GetFreeOTFEBase().CheckActive();
 
@@ -2092,24 +2332,25 @@ begin
   keyEntryDlg := TfrmKeyEntryPlainLinux.Create(nil);
   try
     keyEntryDlg.SetOffset(offset); // do before keyfile as that has offset in
+    keyEntryDlg._DefaultOptions();
     if (lesFile <> '') then
       keyEntryDlg.LoadSettings(lesFile);
     keyEntryDlg.SetReadonly(ReadOnly);
     keyEntryDlg.SetKey(SDUBytesToString(password));
-    keyEntryDlg.fileName := volumeFilename;
-
+    keyEntryDlg.fileName  := volumeFilename;
+    { TODO -otdk -cbug : fails on cmd line if 'size' is not set }
     keyEntryDlg.createVol := createVol;
     keyEntryDlg.isHidden  := isHidden;
     mr                    := keyEntryDlg.ShowModal();
 
     // Get user password, drive letter to use, etc
     if (mr = mrCancel) then begin
-      //          GetFreeOTFEBase().LastErrorCode := OTFE_ERR_USER_CANCEL;
       Result := morCancel;
     end else begin
-      if (mr = mrOk) then begin
-        mountedAs := keyEntryDlg.GetmountedAs();
-      end;
+      if (mr = mrOk) then
+        mountedAs := keyEntryDlg.GetmountedAs()
+      else
+        Result    := morFail;
     end;
 
   finally
@@ -2118,267 +2359,263 @@ begin
 end;
 
 
-
-// ----------------------------------------------------------------------------
-{$IFDEF LINUX_DETECT}
-// This function was included to allow the detection of Linux encrypted
-// volume's settings
-// This function is *not* normally built, and it's inclusion is only for
-// development/diagnostic purposes; not for general use
-// It operates by being given the volume's password, and the filename of a file
-// stored on the encrypted volume.
-// This function cycles through all possible combinations of Linux settings for
-// that password, attempting to mount the volume using the given password.
-// It does not terminate on a successful mount, as there may be more than one
-// set of settings which mount correctly
-// IMPORTANT: The encrypted volume *must* be formatted with a filesystem
-//            MS Windows understands (e.g. FAT)
-// WARNING: This procedure can take some time to complete(!)
-// WARNING: Some parts of this function may be commented out in order to
-//          increase it's speed, but at a cost of not checking all combinations
-// NOTE: Makes use of GExpert's (3rd party) debugging tool to pump out details
-//       of successful mounts before this function returns
-function TOTFEFreeOTFE.DetectLinux(
-  volumeFilename: string;
-  userKey: string;
-  keyProcSeed: string;
-  keyProcIterations: integer;
-  fileOptOffset: int64;
-  fileOptSize: int64;
-  mountDriveLetter: char;
-  mountMountAs: TFreeOTFEMountAs;
-  testFilename: string
-  ): string;
+  {$IFNDEF NOT_LINUX_DETECT}
+ // This function was included to allow the detection of Linux encrypted
+ // volume's settings
+ // This function is *not* normally built, and it's inclusion is only for
+ // development/diagnostic purposes; not for general use
+ // It operates by being given the volume's password, and the filename of a file
+ // stored on the encrypted volume.
+ // This function cycles through all possible combinations of Linux settings for
+ // that password, attempting to mount the volume using the given password.
+ // It does not terminate on a successful mount, as there may be more than one
+ // set of settings which mount correctly
+ // IMPORTANT: The encrypted volume *must* be formatted with a filesystem
+ //            MS Windows understands (e.g. FAT)
+ // WARNING: This procedure can take some time to complete(!)
+ // WARNING: Some parts of this function may be commented out in order to
+ //          increase it's speed, but at a cost of not checking all combinations
+ // NOTE: Makes use of GExpert's (3rd party) debugging tool to pump out details
+ //       of successful mounts before this function returns
+function DetectLinux(
+  volumeFilename: String;
+  userKey: Ansistring;
+  keyProcSeed: Ansistring;
+  keyProcIterations: Integer;
+  fileOptOffset: Int64;
+  fileOptSize: Int64;
+  mountDriveLetter: Char;
+  mountMountAs: TMountDiskType;
+  testFilename: String
+  ): String;
 var
-  deviceName: string;
-  i: integer;
-  volumeKey: string;
+  deviceName: String;
+  i:          Integer;
+  volumeKey:  TSDUBytes;
 
-  keyProcHashDriver: string;
-  keyProcHashGUID: TGUID;
-  keyProcHashWithAs: boolean;
-  keyProcCypherDriver: string;
-  keyProcCypherGUID: TGUID;
-  mainCypherDriver: string;
-  mainCypherGUID: TGUID;
-  mainIVHashDriver: string;
-  mainIVHashGUID: TGUID;
-  mainIVCypherDriver: string;
-  mainIVCypherGUID: TGUID;
-  currDriveLetter: Ansichar;
-  startOfVolFile: boolean;
-  startOfEndData: boolean;
-  VolumeFlags: DWORD;
-  mr: integer;
-  mainCypherDetails: TFreeOTFECypher;
+  keyProcHashDriver:   Ansistring;
+  keyProcHashGUID:     TGUID;
+  keyProcHashWithAs:   Boolean;
+  keyProcCypherDriver: String;
+  keyProcCypherGUID:   TGUID;
+  mainCypherDriver:    String;
+  mainCypherGUID:      TGUID;
+  mainIVHashDriver:    String;
+  mainIVHashGUID:      TGUID;
+  mainIVCypherDriver:  String;
+  mainIVCypherGUID:    TGUID;
+  currDriveLetter:     DriveLetterChar;
+  startOfVolFile:      Boolean;
+  //  startOfEndData:      Boolean;
+  VolumeFlags:         DWORD;
+  mr:                  Integer;
+  mainCypherDetails:   TFreeOTFECypher_v3;
 
-  hashDrivers: array of TFreeOTFEHashDriver;
+  hashDrivers:   array of TFreeOTFEHashDriver;
   cypherDrivers: array of TFreeOTFECypherDriver;
 
-  kph_i, kph_j: integer;
-  kpc_i, kpc_j: integer;
-  mc_i, mc_j: integer;
-  hashWithAsInt: integer;
-  ivh_i, ivh_j: integer;
-  ivc_i, ivc_j: integer;
+  kph_i, kph_j:      Integer;
+  kpc_i, kpc_j:      Integer;
+  mc_i, mc_j:        Integer;
+  hashWithAsInt:     Integer;
+  ivh_i, ivh_j:      Integer;
+  ivc_i, ivc_j:      Integer;
   sectorIVGenMethod: TFreeOTFESectorIVGenMethod;
-  ivStartSectorInt: integer;
+  ivStartSectorInt:  Integer;
 
   kph_currDriver: TFreeOTFEHashDriver;
-  kph_currImpl: TFreeOTFEHash;
+  kph_currImpl:   TFreeOTFEHash;
   kpc_currDriver: TFreeOTFECypherDriver;
-  kpc_currImpl: TFreeOTFECypher;
-  mc_currDriver: TFreeOTFECypherDriver;
-  mc_currImpl: TFreeOTFECypher;
+  kpc_currImpl:   TFreeOTFECypher_v3;
+  mc_currDriver:  TFreeOTFECypherDriver;
+  mc_currImpl:    TFreeOTFECypher_v3;
   ivh_currDriver: TFreeOTFEHashDriver;
-  ivh_currImpl: TFreeOTFEHash;
+  ivh_currImpl:   TFreeOTFEHash;
   ivc_currDriver: TFreeOTFECypherDriver;
-  ivc_currImpl: TFreeOTFECypher;
+  ivc_currImpl:   TFreeOTFECypher_v3;
 
 begin
-  LastErrorCode := OTFE_ERR_SUCCESS;
+  GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS;
   Result := '';
 
-  CheckActive();
+  GetFreeOTFEBase().CheckActive();
 
   // Sanity checking
   // Is the user attempting to mount Linux LUKS volumes?
   // Mount as LUKS if they are...
-  if (IsLUKSVolume(volumeFilename)) then     begin
+  if (IsLUKSVolume(volumeFilename)) then begin
     Result := Result + 'LUKS container; no need to do exhaustive search';
     exit;
-    end;
+  end;
 
 
-  if (Result = '') then
-    begin
-    // Obtain details of all hashes...
-    SetLength(hashDrivers, 0);
-    if not(GetHashDrivers(TFreeOTFEHashDriverArray(hashDrivers))) then      begin
-      Result := Result + 'Unable to get list of hash drivers.';
-      end;
-    end;
 
-  if (Result = '') then
-    begin
-    // Obtain details of all cyphers...
-    SetLength(cypherDrivers, 0);
-    if not(GetCypherDrivers(TFreeOTFECypherDriverArray(cypherDrivers))) then       begin
-      Result := Result + 'Unable to get list of cypher drivers.';
-      end;
-    end;
+  // Obtain details of all hashes...
+  SetLength(hashDrivers, 0);
+  if not (GetFreeOTFEBase().GetHashDrivers(TFreeOTFEHashDriverArray(hashDrivers))) then begin
+    Result := Result + 'Unable to get list of hash drivers.';
+    exit;
+  end;
 
 
-  if (Result = '') then
-    begin
-    currDriveLetter := GetNextDriveLetter(mountDriveLetter, #0);
-    if (currDriveLetter = #0) then
-      begin
-      // No more drive letters following the user's specified drive
-      // letter - don't mount further drives
-      Result := Result + 'Out of drive letters.';
-      end;
-    end;
+
+  // Obtain details of all cyphers...
+  SetLength(cypherDrivers, 0);
+  if not (GetFreeOTFEBase().GetCypherDrivers(TFreeOTFECypherDriverArray(cypherDrivers))) then
+  begin
+    Result := Result + 'Unable to get list of cypher drivers.';
+    exit;
+  end;
 
 
-  if (Result = '') then
-    begin
-    // KEY PROCESSING
-    // FOR ALL HASH DRIVERS...
-    SendDateTime('START', now);
-    for kph_i:=low(hashDrivers) to high(hashDrivers) do
-      begin
-      SendDebug('-kph_i: '+inttostr(kph_i)+'/'+inttostr(high(hashDrivers) - low(hashDrivers)));
-      kph_currDriver := hashDrivers[kph_i];
-      // FOR ALL HASHES SUPPORTED BY THE CURRENT DRIVER...
-      for kph_j:=low(kph_currDriver.Hashes) to high(kph_currDriver.Hashes) do
-        begin
-        SendDebug('--kph_j: '+inttostr(kph_j)+'/'+inttostr(high(kph_currDriver.Hashes) - low(kph_currDriver.Hashes)));
-        kph_currImpl := kph_currDriver.Hashes[kph_j];
 
-        keyProcHashDriver := kph_currDriver.DeviceKernelModeName;
-        keyProcHashGUID := kph_currImpl.HashGUID;
-
-        // KEY PROCESSING
-        // FOR ALL CYPHER DRIVERS...
-        for kpc_i:=low(cypherDrivers) to high(cypherDrivers) do
-          begin
-          SendDebug('---kpc_i: '+inttostr(kpc_i)+'/'+inttostr(high(cypherDrivers) - low(cypherDrivers)));
-          kpc_currDriver := cypherDrivers[kpc_i];
-          // FOR ALL CYPHERS SUPPORTED BY THE CURRENT DRIVER...
-          for kpc_j:=low(kpc_currDriver.Cyphers) to high(kpc_currDriver.Cyphers) do
-            begin
-            SendDebug('----kpc_j: '+inttostr(kpc_j)+'/'+inttostr(high(kpc_currDriver.Cyphers) - low(kpc_currDriver.Cyphers)));
-            kpc_currImpl := kpc_currDriver.Cyphers[kpc_j];
-
-            keyProcCypherDriver := kpc_currDriver.DeviceKernelModeName;
-            keyProcCypherGUID := kpc_currImpl.CypherGUID;
-
-//            // MAIN CYPHER
-//            // FOR ALL CYPHER DRIVERS...
-//            for mc_i:=low(cypherDrivers) to high(cypherDrivers) do
-//              begin
-//              mc_currDriver := cypherDrivers[mc_i];
-//              // FOR ALL CYPHERS SUPPORTED BY THE CURRENT DRIVER...
-//              for mc_j:=low(mc_currDriver.Cyphers) to high(mc_currDriver.Cyphers) do
-//                begin
-//                mc_currImpl := kpc_currDriver.Cyphers[mc_j];
-
-// xxx
-// xxx
-mc_currDriver := kpc_currDriver;
-mc_currImpl := kpc_currImpl;
-
-                mainCypherDriver := mc_currDriver.DeviceKernelModeName;
-                mainCypherGUID := mc_currImpl.CypherGUID;
-                mainCypherDetails := mc_currImpl;
+  currDriveLetter := GetFreeOTFEBase().GetNextDriveLetter(mountDriveLetter, #0);
+  if (currDriveLetter = #0) then begin
+    // No more drive letters following the user's specified drive
+    // letter - don't mount further drives
+    Result := Result + 'Out of drive letters.';
+    exit;
+  end;
 
 
-                for hashWithAsInt:=0 to 1 do
+
+  // KEY PROCESSING
+  // FOR ALL HASH DRIVERS...
+  SendDateTime('START', now);
+  for kph_i := low(hashDrivers) to high(hashDrivers) do begin
+    SendDebug('-kph_i: ' + IntToStr(kph_i) + '/' + IntToStr(high(hashDrivers) -
+      low(hashDrivers)));
+    kph_currDriver := hashDrivers[kph_i];
+    // FOR ALL HASHES SUPPORTED BY THE CURRENT DRIVER...
+    for kph_j := low(kph_currDriver.Hashes) to high(kph_currDriver.Hashes) do begin
+      SendDebug('--kph_j: ' + IntToStr(kph_j) + '/' +
+        IntToStr(high(kph_currDriver.Hashes) - low(kph_currDriver.Hashes)));
+      kph_currImpl := kph_currDriver.Hashes[kph_j];
+
+      keyProcHashDriver := kph_currDriver.DeviceName;
+      keyProcHashGUID   := kph_currImpl.HashGUID;
+
+      // KEY PROCESSING
+      // FOR ALL CYPHER DRIVERS...
+      for kpc_i := low(cypherDrivers) to high(cypherDrivers) do begin
+        SendDebug('---kpc_i: ' + IntToStr(kpc_i) + '/' +
+          IntToStr(high(cypherDrivers) - low(cypherDrivers)));
+        kpc_currDriver := cypherDrivers[kpc_i];
+        // FOR ALL CYPHERS SUPPORTED BY THE CURRENT DRIVER...
+        for kpc_j := low(kpc_currDriver.Cyphers) to high(kpc_currDriver.Cyphers) do begin
+          SendDebug('----kpc_j: ' + IntToStr(kpc_j) + '/' +
+            IntToStr(high(kpc_currDriver.Cyphers) - low(kpc_currDriver.Cyphers)));
+          kpc_currImpl := kpc_currDriver.Cyphers[kpc_j];
+
+          keyProcCypherDriver := kpc_currDriver.DeviceName;
+          keyProcCypherGUID   := kpc_currImpl.CypherGUID;
+
+          //            // MAIN CYPHER
+          //            // FOR ALL CYPHER DRIVERS...
+          //            for mc_i:=low(cypherDrivers) to high(cypherDrivers) do
+          //              begin
+          //              mc_currDriver := cypherDrivers[mc_i];
+          //              // FOR ALL CYPHERS SUPPORTED BY THE CURRENT DRIVER...
+          //              for mc_j:=low(mc_currDriver.Cyphers) to high(mc_currDriver.Cyphers) do
+          //                begin
+          //                mc_currImpl := kpc_currDriver.Cyphers[mc_j];
+
+          // xxx
+          // xxx
+          mc_currDriver := kpc_currDriver;
+          mc_currImpl   := kpc_currImpl;
+
+          mainCypherDriver  := mc_currDriver.DeviceName;
+          mainCypherGUID    := mc_currImpl.CypherGUID;
+          mainCypherDetails := mc_currImpl;
+
+
+          for hashWithAsInt := 0 to 1 do begin
+            SendDebug('-----hashWithAsInt: ' + IntToStr(hashWithAsInt) + '/(0-1)');
+
+            // Generate volume key for encryption/decryption
+            if not (TfrmKeyEntryPlainLinux.GenerateLinuxVolumeKey(
+              keyProcHashDriver, keyProcHashGUID, userKey,
+              keyProcSeed, (hashWithAsInt = 1), mainCypherDetails.KeySizeRequired,
+              volumeKey)) then begin
+              Result := Result + 'HASH FAILURE: ' + keyProcHashDriver + ':' +
+                GUIDToString(keyProcHashGUID);
+              continue;
+            end;
+
+
+            // IV GENERATION
+            // FOR ALL HASH DRIVERS...
+            for ivh_i := low(hashDrivers) to high(hashDrivers) do begin
+              SendDebug('------ivh_i: ' + IntToStr(ivh_i) + '/' + IntToStr(
+                high(hashDrivers) - low(hashDrivers)));
+              ivh_currDriver := hashDrivers[ivh_i];
+              // FOR ALL HASHES SUPPORTED BY THE CURRENT DRIVER...
+              for ivh_j := low(ivh_currDriver.Hashes) to high(ivh_currDriver.Hashes) do begin
+                SendDebug('-------ivh_j: ' + IntToStr(ivh_j) + '/' + IntToStr(
+                  high(ivh_currDriver.Hashes) - low(ivh_currDriver.Hashes)));
+                ivh_currImpl := ivh_currDriver.Hashes[ivh_j];
+
+                mainIVHashDriver := ivh_currDriver.DeviceName;
+                mainIVHashGUID   := ivh_currImpl.HashGUID;
+
+                //                      // IV GENERATION
+                //                      // FOR ALL CYPHER DRIVERS...
+                //                      for ivc_i:=low(cypherDrivers) to high(cypherDrivers) do
+                //                        begin
+                //                        ivc_currDriver := cypherDrivers[ivc_i];
+                //                        // FOR ALL CYPHERS SUPPORTED BY THE CURRENT DRIVER...
+                //                        for ivc_j:=low(ivc_currDriver.Cyphers) to high(ivc_currDriver.Cyphers) do
+                //                          begin
+                //                          ivc_currImpl := ivc_currDriver.Cyphers[ivc_j];
+
+                // xxx
+                ivc_currDriver := kpc_currDriver;
+                ivc_currImpl   := kpc_currImpl;
+
+                mainIVCypherDriver := ivc_currDriver.DeviceName;
+                mainIVCypherGUID   := ivc_currImpl.CypherGUID;
+
+                // IV GENERATION
+                //                          for sectorIVGenMethod := low(sectorIVGenMethod) to high(sectorIVGenMethod) do
+                sectorIVGenMethod := foivg32BitSectorID;
+                begin
+                  //                            SendDebug('--------sectorIVGenMethod: '+inttostr(ord(sectorIVGenMethod))+'/'+inttostr(ord(high(sectorIVGenMethod)) - loword((sectorIVGenMethod))));
+
+                  //                            for ivStartSectorInt:=0 to 1 do
                   begin
-                  SendDebug('-----hashWithAsInt: '+inttostr(hashWithAsInt)+'/(0-1)');
+                    ivStartSectorInt := 1;
+                    //                              SendDebug('---------ivStartSectorInt: '+inttostr(ivStartSectorInt)+'/(0-1)');
 
-                  // Generate volume key for encryption/decryption
-                  if not(GenerateLinuxVolumeKey(
-                                                keyProcHashDriver,
-                                                keyProcHashGUID,
-                                                userKey,
-                                                keyProcSeed,
-                                                (hashWithAsInt = 1),
-                                                mainCypherDetails.KeySize,
-                                                volumeKey
-                                               )) then
-                    begin
-                    Result := Result + 'HASH FAILURE: '+keyProcHashDriver+':'+GUIDToString(keyProcHashGUID);
-                    continue;
+                    startOfVolFile := (ivStartSectorInt = 0);
+                    //                      startOfEndData := (ivStartSectorInt = 1);
+
+                    // Encode IV generation method to flags...
+                    VolumeFlags := 0;
+                    if (startOfVolFile) then begin
+                      VolumeFlags := VolumeFlags or VOL_FLAGS_SECTOR_ID_ZERO_VOLSTART;
                     end;
 
 
-                  // IV GENERATION
-                  // FOR ALL HASH DRIVERS...
-                  for ivh_i:=low(hashDrivers) to high(hashDrivers) do
-                    begin
-                    SendDebug('------ivh_i: '+inttostr(ivh_i)+'/'+inttostr(high(hashDrivers) - low(hashDrivers)));
-                    ivh_currDriver := hashDrivers[ivh_i];
-                    // FOR ALL HASHES SUPPORTED BY THE CURRENT DRIVER...
-                    for ivh_j:=low(ivh_currDriver.Hashes) to high(ivh_currDriver.Hashes) do
-                      begin
-                      SendDebug('-------ivh_j: '+inttostr(ivh_j)+'/'+inttostr(high(ivh_currDriver.Hashes) - low(ivh_currDriver.Hashes)));
-                      ivh_currImpl := ivh_currDriver.Hashes[ivh_j];
+                    // Attempt to create a new device to be used
+                    if GetFreeOTFE().CreateMountDiskDevice(
+                      volumeFilename, volumeKey, sectorIVGenMethod,
+                      SDUStringToSDUBytes(''), True, mainIVHashDriver,
+                      mainIVHashGUID, mainIVCypherDriver, mainIVCypherGUID,
+                      mainIVCypherDriver, mainIVCypherGUID,
+                      VolumeFlags, #0, fileOptOffset,
+                      fileOptSize, True, PKCS11_NO_SLOT_ID,
+                      mountMountAs, False) then begin
 
-                      mainIVHashDriver := ivh_currDriver.DeviceKernelModeName;
-                      mainIVHashGUID := ivh_currImpl.HashGUID;
-
-//                      // IV GENERATION
-//                      // FOR ALL CYPHER DRIVERS...
-//                      for ivc_i:=low(cypherDrivers) to high(cypherDrivers) do
-//                        begin
-//                        ivc_currDriver := cypherDrivers[ivc_i];
-//                        // FOR ALL CYPHERS SUPPORTED BY THE CURRENT DRIVER...
-//                        for ivc_j:=low(ivc_currDriver.Cyphers) to high(ivc_currDriver.Cyphers) do
-//                          begin
-//                          ivc_currImpl := ivc_currDriver.Cyphers[ivc_j];
-
-// xxx
-ivc_currDriver := kpc_currDriver;
-ivc_currImpl := kpc_currImpl;
-
-                          mainIVCypherDriver := ivc_currDriver.DeviceKernelModeName;
-                          mainIVCypherGUID := ivc_currImpl.CypherGUID;
-
-                          // IV GENERATION
-//                          for sectorIVGenMethod := low(sectorIVGenMethod) to high(sectorIVGenMethod) do
-sectorIVGenMethod := foivg32BitSectorID;
-                            begin
-//                            SendDebug('--------sectorIVGenMethod: '+inttostr(ord(sectorIVGenMethod))+'/'+inttostr(ord(high(sectorIVGenMethod)) - loword((sectorIVGenMethod))));
-
-//                            for ivStartSectorInt:=0 to 1 do
-                              begin
-ivStartSectorInt := 1;
-//                              SendDebug('---------ivStartSectorInt: '+inttostr(ivStartSectorInt)+'/(0-1)');
-
-                              startOfVolFile := (ivStartSectorInt = 0);
-                              startOfEndData := (ivStartSectorInt = 1);
-
-                              // Encode IV generation method to flags...
-                              VolumeFlags := 0;
-                              if (startOfVolFile) then
-                                begin
-                                VolumeFlags := VolumeFlags OR VOL_FLAGS_SECTOR_ID_ZERO_VOLSTART;
-                                end;
-
-
-                              // Attempt to create a new device to be used
-                              deviceName := CreateDiskDevice(FreeOTFEMountAsDeviceType[mountMountAs]);
-                              if (deviceName <> '') then
-                                begin
+                             { deviceName := GetFreeOTFE().CreateDiskDevice(FreeOTFEMountAsDeviceType[mountMountAs]);
+                              if (deviceName <> '') then                                begin
                                 // Attempt to mount the device
-                                if MountDiskDevice(
+                                if GetFreeOTFE()._MountDiskDevice(
                                                    deviceName,
                                                    volumeFilename,
                                                    volumeKey,
                                                    sectorIVGenMethod,
-                                                   '',  // Linux volumes don't have per-volume IVs
+                                                   SDUStringToSDUBytes(''),  // Linux volumes don't have per-volume IVs
                                                    TRUE,
                                                    mainIVHashDriver,
                                                    mainIVHashGUID,
@@ -2390,77 +2627,88 @@ ivStartSectorInt := 1;
                                                    '',
                                                    fileOptOffset,
                                                    fileOptSize,
-                                                   FreeOTFEMountAsStorageMediaType[mountMountAs]
-                                                  ) then
-                                  begin
-                                  if DosDeviceSymlink(
+                                                   mountMountAs
+                                                  ) then                                  begin
+                                  if GetFreeOTFE().DosDeviceSymlink(
                                                       TRUE,
                                                       deviceName,
                                                       currDriveLetter,
                                                       TRUE
-                                                     ) then
-                                    begin
-                                    // Test if mounted OK
-                                    if FileExists(currDriveLetter+':'+testFilename) then
-                                      begin
-                                      Result := Result + '---------------------------------------------------------------';
-                                      Result := Result + 'OK!';
-                                      Result := Result + 'mountedAs: '+currDriveLetter;
-                                      Result := Result + 'kph: '+keyProcHashDriver +':'+GUIDToString(keyProcHashGUID );
-                                      Result := Result + 'kpc: '+keyProcCypherDriver +':'+GUIDToString(keyProcCypherGUID );
-                                      Result := Result + 'mc: '+mainCypherDriver +':'+GUIDToString(mainCypherGUID);
-                                      Result := Result + 'hashWithAsInt: '+inttostr(hashWithAsInt);
-                                      Result := Result + 'ivh: '+mainIVHashDriver +':'+GUIDToString(mainIVHashGUID );
-                                      Result := Result + 'ivc: '+mainIVCypherDriver +':'+GUIDToString(mainIVCypherGUID );
-                                      Result := Result + 'sectorIVGenMethod: '+inttostr(ord(sectorIVGenMethod));
-                                      Result := Result + 'ivStartSectorInt: '+inttostr(ivStartSectorInt);
-                                      Result := Result + '---------------------------------------------------------------';
-SendDateTime('HIT', now);
-SendDebug('Result: '+Result);
-                                      end;
+                                                     ) then                                    begin
+                                                     }
+                      // Test if mounted OK
+                      if FileExists(currDriveLetter + ':' + testFilename) then begin
+                        Result :=
+                          Result +
+                          '---------------------------------------------------------------';
+                        Result := Result + 'OK!';
+                        Result := Result + 'mountedAs: ' + currDriveLetter;
+                        Result :=
+                          Result + 'kph: ' + keyProcHashDriver + ':' +
+                          GUIDToString(keyProcHashGUID);
+                        Result :=
+                          Result + 'kpc: ' + keyProcCypherDriver + ':' +
+                          GUIDToString(keyProcCypherGUID);
+                        Result :=
+                          Result + 'mc: ' + mainCypherDriver + ':' +
+                          GUIDToString(mainCypherGUID);
+                        Result := Result + 'hashWithAsInt: ' + IntToStr(hashWithAsInt);
+                        Result :=
+                          Result + 'ivh: ' + mainIVHashDriver + ':' +
+                          GUIDToString(mainIVHashGUID);
+                        Result :=
+                          Result + 'ivc: ' + mainIVCypherDriver + ':' +
+                          GUIDToString(mainIVCypherGUID);
+                        Result :=
+                          Result + 'sectorIVGenMethod: ' + IntToStr(Ord(sectorIVGenMethod));
+                        Result :=
+                          Result + 'ivStartSectorInt: ' + IntToStr(ivStartSectorInt);
+                        Result :=
+                          Result +
+                          '---------------------------------------------------------------';
+                        SendDateTime('HIT', now);
+                        SendDebug('Result: ' + Result);
+                      end;
 
-                                    Dismount(currDriveLetter);
-                                    end
-                                  else
-                                    begin
-                                    // Cleardown
-                                    DismountDiskDevice(deviceName, TRUE);
-                                    DestroyDiskDevice(deviceName);
-                                    end;  // ELSE PART - if DefineDosDevice(
+                      GetFreeOTFEBase().Dismount(currDriveLetter);
+                      //                                    end                                  else                                    begin
+                      // Cleardown
+                      //           GetFreeOTFEBase().DismountDiskDevice(deviceName, TRUE);
+                      //                                      GetFreeOTFEBase().DestroyDiskDevice(deviceName);
+                      //                                    end;  // ELSE PART - if DefineDosDevice(
 
-                                  end
-                                else
-                                  begin
-                                  // Cleardown
-                                  DestroyDiskDevice(deviceName);
-                                  end;  // ELSE PART - if MountDiskDevice(
+                      //                                  end                                else                                  begin
+                      // Cleardown
+                      //                                    GetFreeOTFEBase().DestroyDiskDevice(deviceName);
+                      //                                  end;  // ELSE PART - if MountDiskDevice(
 
-                                end;  // ELSE PART - if (deviceName <> '') then
+                    end;  // ELSE PART - if (deviceName <> '') then
+
+                  end;  // for ivStartSectorInt:=0 to 1 do
+                end;
+                // for sectorIVGenMethod := low(sectorIVGenMethod) to high(sectorIVGenMethod) do
+                //                          end;  // for ivc_j:=low(ivc_currDriver.Cyphers) to high(ivc_currDriver.Cyphers) do
+                //                        end;  // for ivc_i:=low(cypherDrivers) to high(cypherDrivers) do
+              end;
+              // for ivh_j:=low(ivh_currDriver.Hashes) to high(ivh_currDriver.Hashes) do
+            end;  // for ivh_i:=low(hashDrivers) to high(hashDrivers) do
+          end;  // for hashWithAsInt:=0 to 1 do
+          //                end;  // for mc_j:=low(mc_currDriver.Cyphers) to high(mc_currDriver.Cyphers) do
+          //              end;  // for mc_i:=low(cypherDrivers) to high(cypherDrivers) do
+        end;  // for kpc_j:=low(kpc_currDriver.Cyphers) to high(kpc_currDriver.Cyphers) do
+      end;  // for kpc_i:=low(cypherDrivers) to high(cypherDrivers) do
+    end;  // for kph_j:=low(kph_currDriver.Hashes) to high(kph_currDriver.Hashes) do
+  end;  // for kph_i:=low(hashDrivers) to high(hashDrivers) do
 
 
-                              end;  // for ivStartSectorInt:=0 to 1 do
-                            end;  // for sectorIVGenMethod := low(sectorIVGenMethod) to high(sectorIVGenMethod) do
-//                          end;  // for ivc_j:=low(ivc_currDriver.Cyphers) to high(ivc_currDriver.Cyphers) do
-//                        end;  // for ivc_i:=low(cypherDrivers) to high(cypherDrivers) do
-                      end;  // for ivh_j:=low(ivh_currDriver.Hashes) to high(ivh_currDriver.Hashes) do
-                    end;  // for ivh_i:=low(hashDrivers) to high(hashDrivers) do
-                  end;  // for hashWithAsInt:=0 to 1 do
-//                end;  // for mc_j:=low(mc_currDriver.Cyphers) to high(mc_currDriver.Cyphers) do
-//              end;  // for mc_i:=low(cypherDrivers) to high(cypherDrivers) do
-            end;  // for kpc_j:=low(kpc_currDriver.Cyphers) to high(kpc_currDriver.Cyphers) do
-          end;  // for kpc_i:=low(cypherDrivers) to high(cypherDrivers) do
-        end;  // for kph_j:=low(kph_currDriver.Hashes) to high(kph_currDriver.Hashes) do
-      end;  // for kph_i:=low(hashDrivers) to high(hashDrivers) do
-    end;  //  if (Result = '') then
-
-SendDateTime('FINISHED', now);
-
+  SendDateTime('FINISHED', now);
 
 end;
+
 {$ENDIF}
 
 
-{done: afaict only ever 1 filename passed in, also dsn work if > 1}
+  {done: afaict only ever 1 filename passed in, also dsn work if > 1}
 (*
 function MountLinux(volumeFilename: String;
   var mountedAs: DriveLetterChar; ReadOnly: Boolean = False; lesFile: String = '';
@@ -2489,32 +2737,32 @@ begin
     Result  := MountPlainLinux(volumeFilename,mountedAs,ReadOnly,lesFile,password,offset,silent,createVol);
 
 end;
- *)
-function CreateFileWithPrompt(var fileName: String; out user_cancelled: Boolean): Boolean;
-var
-  volSizeDlg: TfrmNewVolumeSize;
-  mr:         Integer;
-begin
-  Result              := False;
-  user_cancelled      := False;
-  volSizeDlg          := TfrmNewVolumeSize.Create(nil);
-  volSizeDlg.Filename := fileName;
-  try
-    mr := volSizeDlg.ShowModal;
-    if mr = mrCancel then begin
-      user_cancelled := True;
-    end else begin
-      if mr = mrOk then begin
-        fileName := volSizeDlg.Filename;
-        if SDUCreateLargeFile(fileName, volSizeDlg.VolumeSize, True, user_cancelled) then begin
-          Result := True;
-        end;
-      end;
-    end;
-  finally
-    volSizeDlg.Free();
-  end;
-
-end;
+ *)//
+  //function CreateFileWithPrompt(var fileName: String; out user_cancelled: Boolean): Boolean;
+  //var
+  //  volSizeDlg: TfrmNewVolumeSize;
+  //  mr:         Integer;
+  //begin
+  //  Result              := False;
+  //  user_cancelled      := False;
+  //  volSizeDlg          := TfrmNewVolumeSize.Create(nil);
+  //  volSizeDlg.Filename := fileName;
+  //  try
+  //    mr := volSizeDlg.ShowModal;
+  //    if mr = mrCancel then begin
+  //      user_cancelled := True;
+  //    end else begin
+  //      if mr = mrOk then begin
+  //        fileName := volSizeDlg.Filename;
+  //        if SDUCreateLargeFile(fileName, volSizeDlg.VolumeSize, True, user_cancelled) then begin
+  //          Result := True;
+  //        end;
+  //      end;
+  //    end;
+  //  finally
+  //    volSizeDlg.Free();
+  //  end;
+  //
+  //end;
 
 end.

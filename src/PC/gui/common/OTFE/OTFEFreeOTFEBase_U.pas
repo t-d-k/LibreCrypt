@@ -66,7 +66,7 @@ const
   FREEOTFE_URL = 'http://LibreCrypt.eu/';
 
   LINUX_KEYFILE_DEFAULT_IS_ASCII = False;
-  LINUX_KEYFILE_DEFAULT_NEWLINE  = nlLF;
+
 
 resourcestring
   // Open/Save file filters...
@@ -102,11 +102,7 @@ const
   ASSUMED_HOST_SECTOR_SIZE = 512;
 
 const
-  // Only used by the GUI
-  DEFAULT_SALT_LENGTH = 256;  // In bits
 
-  DEFAULT_KEY_ITERATIONS           = 2048;
-  DEFAULT_KEY_ITERATIONS_INCREMENT = 512;
 
   // Default key length - only used if user's selected encryption algorithm
   // doesn't have a set keylength
@@ -146,7 +142,7 @@ const
   DEFAULT_MOUNTAS = fomaRemovableDisk;
 
 resourcestring
-  MOUNT_AS_FIXED_DISK = 'Fixed disk';
+//  MOUNT_AS_FIXED_DISK = 'Fixed disk';
   MOUNT_AS_REMOVABLE_DISK = 'Removable disk';
   MOUNT_AS_CD  = 'CD';
   MOUNT_AS_DVD = 'DVD';
@@ -172,36 +168,11 @@ resourcestring
   RS_UNKNOWN = '<Unknown>';
 
 const
-  FreeOTFEMountAsTitlePtr: array [TMountDiskType] of Pointer =
-    (@MOUNT_AS_FIXED_DISK, @MOUNT_AS_REMOVABLE_DISK, @MOUNT_AS_CD, @MOUNT_AS_DVD, @RS_UNKNOWN
-    );
 
-  // Indicate which of the above emulated devices are writable
-  FreeOTFEMountAsCanWrite: array [TMountDiskType] of Boolean = (
-    True,
-    True,
-    False,
-    False,
-    False
-    );
 
-  // Decode the above into device types/media types
-  FreeOTFEMountAsDeviceType: array [TMountDiskType] of DWORD = (
-    FILE_DEVICE_DISK,
-    FILE_DEVICE_DISK,
-    FILE_DEVICE_CD_ROM,
-    FILE_DEVICE_DVD,
-    FILE_DEVICE_UNKNOWN
-    );
 
-  // Decode the above into device types/media types
-  FreeOTFEMountAsStorageMediaType: array [TMountDiskType] of TFreeOTFEStorageMediaType = (
-    mtFixedMedia,
-    mtRemovableMedia,
-    mtCD_ROM,
-    mtDVD_ROM,
-    mtUnknown
-    );
+
+
 
   // This definition is stored here, and not in FreeOTFECypherDriverAPI, so
   // that only this unit need be "used" by user applications
@@ -436,8 +407,7 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
       IVCypherDriver: Ansistring; IVCypherGUID: TGUID; mainCypherDriver: Ansistring;
       mainCypherGUID: TGUID; VolumeFlags: Integer; metaData: TOTFEFreeOTFEVolumeMetaData;
       offset: Int64 = 0; size: Int64 = 0;
-      storageMediaType: TFreeOTFEStorageMediaType =
-      mtFixedMedia  // PC kernel drivers *only* - ignored otherwise
+       MountMountAs: TMountDiskType = fomaRemovableDisk // PC kernel drivers *only* - ignored otherwise
       ): Boolean; virtual; abstract;
 
 
@@ -461,7 +431,7 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
     // Note: Will probably not work when reading directly from partitions;
     //       they typically need read/writes carried out in sector sized blocks
     //        - see ReadRawVolumeDataBounded for this.
-    function ReadRawVolumeDataSimple(filename: String; offsetWithinFile: Int64;
+    function _ReadRawVolumeDataSimple(filename: String; offsetWithinFile: Int64;
       dataLength: DWORD;
     // In bytes
       var Data: Ansistring): Boolean; virtual;
@@ -476,7 +446,7 @@ set up instance by calling SetFreeOTFEType then get instance by calling GetFreeO
     // In bytes
       var Data: Ansistring): Boolean;
 
-    function WriteRawVolumeDataSimple(filename: String; offsetWithinFile: Int64;
+    function _WriteRawVolumeDataSimple(filename: String; offsetWithinFile: Int64;
       data: Ansistring): Boolean; virtual;
 
     function WriteRawVolumeDataBounded(filename: String; offsetWithinFile: Int64;
@@ -1027,32 +997,16 @@ const
   // Version ID for arbitary metadata passed to, and returned from, driver
   METADATA_VERSION = 1;
 
- //////////////////////////////////////////////
- // was in OTFEFreeOTFE_mntLUKS_AFS_Impl.pas
- //////////////////////////////////////////////
 
-
-
- //////////////////////////////////////////////
- // end of OTFEFreeOTFE_mntLUKS_AFS_Impl.pas
- //////////////////////////////////////////////
-
-
-// ----------------------------------------------------------------------------
-
-
-
-// ----------------------------------------------------------------------------
-
- // ----------------------------------------------------------------------------
- // ----------------------------------------------------------------------------
-
-
-
-// ----------------------------------------------------------------------------
 function FreeOTFEMountAsTitle(mountAs: TMountDiskType): String;
+const
+  MOUNT_TYPE_TITLE_PTR: array [TMountDiskType] of Pointer =
+    (
+//    @MOUNT_AS_FIXED_DISK,
+    @MOUNT_AS_REMOVABLE_DISK, @MOUNT_AS_CD, @MOUNT_AS_DVD, @RS_UNKNOWN
+    );
 begin
-  Result := LoadResString(FreeOTFEMountAsTitlePtr[mountAs]);
+  Result := LoadResString(MOUNT_TYPE_TITLE_PTR[mountAs]);
 end;
 
 function FreeOTFECypherModeTitle(cypherMode: TFreeOTFECypherMode): String;
@@ -1602,7 +1556,7 @@ begin
   if (volumeDetailsBlock.CDBFormatID < 2) then begin
     volumeDetailsBlock.VolumeIVLength := 0;
     //    volumeDetailsBlock.VolumeIV       := '';
-    SDUZeroBuffer(volumeDetailsBlock.VolumeIV);
+    SDUInitAndZeroBuffer(volumeDetailsBlock.VolumeIV);
   end else begin
     // 32 bits: Volume IV length...
     tmpDWORD := 0;
@@ -2960,7 +2914,7 @@ DebugMsg(
       if (randomPaddingTwoLength_bits > 0) then begin
         GetRandPool().GetRandomData(randomPaddingTwoLength_bits div 8, randomPadData);
         volumeDetailsBlock := volumeDetailsBlockNoPadding + SDUBytesToString(randomPadData);
-        SDUZeroBuffer(randomPadData);
+        SDUInitAndZeroBuffer(randomPadData);
 {
         volumeDetailsBlock := volumeDetailsBlockNoPadding + Copy(
           randomPadData, 1, (randomPaddingTwoLength_bits div 8));
@@ -3020,7 +2974,7 @@ DebugMsg(
 
       GetRandPool().GetRandomData(randomPaddingThreeLength_bits div 8, randomPadData);
       paddedCheckMAC := checkMAC + SDUBytesToString(randomPadData);
-      SDUZeroBuffer(randomPadData);
+      SDUInitAndZeroBuffer(randomPadData);
 
     end else
     if ((Length(checkMAC) * 8) > CDB_MAX_MAC_LENGTH) then begin
@@ -3104,7 +3058,7 @@ DebugMsgBinary(plaintextEncryptedBlock);
     GetRandPool().GetRandomData(randomPaddingOneLength_bits div 8, randomPadData);
     criticalDataBlock := SDUBytesToString(salt) + encryptedBlock +
       SDUBytesToString(randomPadData);
-    SDUZeroBuffer(randomPadData);
+    SDUInitAndZeroBuffer(randomPadData);
 
   end;
 
@@ -3528,7 +3482,7 @@ function TOTFEFreeOTFEBase.ReadRawVolumeData(filename: String; offsetWithinFile:
   // In bytes
   var Data: Ansistring): Boolean;
 begin
-  Result := ReadRawVolumeDataSimple(filename, offsetWithinFile, dataLength, data);
+  Result := _ReadRawVolumeDataSimple(filename, offsetWithinFile, dataLength, data);
   if not (Result) then begin
     Result := ReadRawVolumeDataBounded(filename, offsetWithinFile, dataLength, data);
   end;
@@ -3552,7 +3506,7 @@ begin
   // and then do the mod
   postData := ASSUMED_HOST_SECTOR_SIZE - ((preData + dataLength) mod ASSUMED_HOST_SECTOR_SIZE);
 
-  Result := ReadRawVolumeDataSimple(filename, (offsetWithinFile - preData),
+  Result := _ReadRawVolumeDataSimple(filename, (offsetWithinFile - preData),
     (preData + dataLength + postData), tmpData);
   if Result then begin
     // Trim off the pre/post data garbage
@@ -3566,7 +3520,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFEBase.ReadRawVolumeDataSimple(filename: String;
+function TOTFEFreeOTFEBase._ReadRawVolumeDataSimple(filename: String;
   offsetWithinFile: Int64; dataLength: DWORD;
   // In bytes
   var Data: Ansistring): Boolean;
@@ -3662,7 +3616,7 @@ function TOTFEFreeOTFEBase.WriteRawVolumeCriticalData(filename: String;
   offsetWithinFile: Int64; criticalData: Ansistring): Boolean;
 begin
   if (length(criticalData) <> (CRITICAL_DATA_LENGTH div 8)) then
-    EFreeOTFEInvalidParameter.Create('Invalid FreeOTFE header passed in for raw writing');
+    raise EFreeOTFEInvalidParameter.Create('Invalid FreeOTFE header passed in for raw writing');
 
   Result := WriteRawVolumeData(filename, offsetWithinFile, criticalData);
 end;
@@ -3675,7 +3629,7 @@ end;
 function TOTFEFreeOTFEBase.WriteRawVolumeData(filename: String; offsetWithinFile: Int64;
   data: Ansistring): Boolean;
 begin
-  Result := WriteRawVolumeDataSimple(filename, offsetWithinFile, data);
+  Result := _WriteRawVolumeDataSimple(filename, offsetWithinFile, data);
   if not (Result) then begin
     Result := WriteRawVolumeDataBounded(filename, offsetWithinFile, data);
   end;
@@ -3688,7 +3642,7 @@ end;
  // starting from the specified offset
  // criticalData - This should be set to the string representation of a raw
  //                (encrypted) critical data block
-function TOTFEFreeOTFEBase.WriteRawVolumeDataSimple(filename: String;
+function TOTFEFreeOTFEBase._WriteRawVolumeDataSimple(filename: String;
   offsetWithinFile: Int64; data: Ansistring): Boolean;
 var
   fStream:      TFileStream;
@@ -3720,7 +3674,7 @@ function TOTFEFreeOTFEBase.WriteRawVolumeDataBounded(filename: String;
 begin
   // Bounded asjust not yet implemented - MORE COMPLEX THAN FIRST LOOKS
   //  - NEED TO ***READ*** THE PRE/POST DATA, THEN REWRITE IT BACK AGAIN
-  Result := WriteRawVolumeDataSimple(filename, offsetWithinFile, data);
+  Result := _WriteRawVolumeDataSimple(filename, offsetWithinFile, data);
 end;
 
 

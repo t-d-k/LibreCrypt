@@ -9,33 +9,6 @@ unit frmKeyEntryFreeOTFE;
 
 { TODO 1 -otdk -crefactor : shares many fields with frmWizardChangePasswordCreateKeyfile - extract to frames}
 
- // Panels layout on this form:
- //
- //   +--------------------------------------------------+
- //   |                                                  |
- //   | +----------------------------------------------+ |
- //   | | pnlBasic (alTop)                             | |
- //   | |                                              | |
- //   | |                                              | |
- //   | +----------------------------------------------+ |
- //   |                                                  |
- //   | +----------------------------------------------+ |
- //   | | pnlLower (alClient)                          | |
- //   | | +------------------------------------------+ | |
- //   | | | pnlAdvanced (alTop)                      | | |
- //   | | |                                          | | |
- //   | | |                                          | | |
- //   | | +------------------------------------------+ | |
- //   | |                                              | |
- //   | | +------------------------------------------+ | |
- //   | | | pnlButtons (alClient)                    | | |
- //   | | |                                          | | |
- //   | | +------------------------------------------+ | |
- //   | |                                              | |
- //   | +----------------------------------------------+ |
- //   |                                                  |
- //   +--------------------------------------------------+
-
 
 interface
 
@@ -50,46 +23,45 @@ uses
   OTFEFreeOTFEBase_U, pkcs11_library, pkcs11_session,
   SDUDropFiles, SDUFilenameEdit_U, SDUForms, SDUFrames,
 lcTypes,
-  SDUSpin64Units, Spin64,
+  SDUSpin64Units, Spin64, lcConsts,
   //lc  forms
   fmePassword;
 
 type
   TfrmKeyEntryFreeOTFE = class (TSDUForm)
-    pnlBasic:       TPanel;
-    GroupBox1:      TGroupBox;
-    Label6:         TLabel;
-    lblDrive:       TLabel;
-    cbDrive:        TComboBox;
-    ckMountReadonly: TCheckBox;
-    pnlLower:       TPanel;
-    pnlButtons:     TPanel;
-    pbCancel:       TButton;
-    pbOK:           TButton;
-    pbAdvanced:     TButton;
-    pnlAdvanced:    TPanel;
-    gbVolumeOptions: TGroupBox;
-    Label8:         TLabel;
-    ckOffsetPointsToCDB: TCheckBox;
-    gbMountAs:      TGroupBox;
-    Label9:         TLabel;
-    cbMediaType:    TComboBox;
-    ckMountForAllUsers: TCheckBox;
-    GroupBox3:      TGroupBox;
-    Label2:         TLabel;
-    Label5:         TLabel;
-    Label7:         TLabel;
-    seSaltLength:   TSpinEdit64;
-    seKeyIterations: TSpinEdit64;
-    cbPKCS11CDB:    TComboBox;
-    rbKeyfileFile:  TRadioButton;
-    rbKeyfilePKCS11: TRadioButton;
-    cbPKCS11SecretKey: TComboBox;
-    Label10:        TLabel;
-    se64UnitOffset: TSDUSpin64Unit_Storage;
-    feKeyfile:      TSDUFilenameEdit;
     SDUDropFiles_Keyfile: TSDUDropFiles;
-    frmePassword1:  TfrmePassword;
+    pnlButtons: TPanel;
+    pbOK: TButton;
+    pbCancel: TButton;
+    pcKey: TPageControl;
+    tsKey: TTabSheet;
+    Label6: TLabel;
+    lblDrive: TLabel;
+    frmePassword1: TfrmePassword;
+    feKeyfile: TSDUFilenameEdit;
+    rbKeyfileFile: TRadioButton;
+    cbPKCS11CDB: TComboBox;
+    rbKeyfilePKCS11: TRadioButton;
+    cbDrive: TComboBox;
+    tsAdvanced: TTabSheet;
+    gbAdvanced: TGroupBox;
+    Label2: TLabel;
+    Label5: TLabel;
+    Label7: TLabel;
+    Label10: TLabel;
+    seSaltLength: TSpinEdit64;
+    seKeyIterations: TSpinEdit64;
+    cbPKCS11SecretKey: TComboBox;
+    pnlLower: TPanel;
+    gbMountAs: TGroupBox;
+    Label9: TLabel;
+    cbMediaType: TComboBox;
+    ckMountForAllUsers: TCheckBox;
+    gbOffsetOptions: TGroupBox;
+    Label8: TLabel;
+    ckOffsetPointsToCDB: TCheckBox;
+    se64UnitOffset: TSDUSpin64Unit_Storage;
+    ckMountReadonly: TCheckBox;
     procedure pbOKClick(Sender: TObject);
     procedure preUserkeyKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure pbCancelClick(Sender: TObject);
@@ -99,7 +71,7 @@ type
     procedure seKeyIterationsChange(Sender: TObject);
     procedure cbMediaTypeChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure pbAdvancedClick(Sender: TObject);
+//    procedure pbAdvancedClick(Sender: TObject);
     procedure rbKeyfileFileClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure cbPKCS11CDBChange(Sender: TObject);
@@ -142,7 +114,7 @@ type
 
     // only show if not silent
     function _SilencableMessageDlg(Content: String; DlgType: TMsgDlgType): Integer;
-    procedure _DisplayAdvanced(displayAdvanced: Boolean);
+//    procedure _DisplayAdvanced(displayAdvanced: Boolean);
 
   public
 
@@ -210,7 +182,7 @@ uses
   DriverAPI,
   pkcs11_object, lcDialogs,
   SDUi18n,
-  lcConsts, sdugeneral, CommonSettings,  MainSettings, Shredder, VolumeFileAPI,
+   sdugeneral, CommonSettings,  MainSettings, Shredder, VolumeFileAPI,
   lcCommandLine
   // lc forms
  ,
@@ -404,9 +376,9 @@ begin
 
 
   // Populate combobox...
-  for i := low(FTokenSecretKey) to high(FTokenSecretKey) do begin
+  for i := low(FTokenSecretKey) to high(FTokenSecretKey) do
     cbPKCS11SecretKey.items.AddObject(FTokenSecretKey[i].XLabel, TObject(FTokenSecretKey[i]));
-  end;
+
 
 
   if (cbPKCS11SecretKey.items.Count > 0) then begin
@@ -439,9 +411,9 @@ begin
     usedSlotID := PKCS11_NO_SLOT_ID;
 
     useKeyfilename := '';
-    if rbKeyfileFile.Checked then begin
+    if rbKeyfileFile.Checked then
       useKeyfilename := feKeyfile.Filename;
-    end;
+
 
     usePKCS11CDB := '';
     if rbKeyfilePKCS11.Checked then begin
@@ -689,25 +661,26 @@ begin
 end;
 
 procedure TfrmKeyEntryFreeOTFE.FormCreate(Sender: TObject);
-var
-  advancedMountDlg   : Boolean;
+//var
+//  advancedMountDlg   : Boolean;
 begin
+  inherited;
   //  fVolumeFiles := TStringList.Create;
   fVolumeFile := '';
   fsilent     := GetCmdLine.isSilent;
 
-  pnlLower.BevelOuter    := bvNone;
-  pnlLower.BevelInner    := bvNone;
-  pnlLower.Caption       := '';
-  pnlBasic.BevelOuter    := bvNone;
-  pnlBasic.BevelInner    := bvNone;
-  pnlBasic.Caption       := '';
-  pnlAdvanced.BevelOuter := bvNone;
-  pnlAdvanced.BevelInner := bvNone;
-  pnlAdvanced.Caption    := '';
-  pnlButtons.BevelOuter  := bvNone;
-  pnlButtons.BevelInner  := bvNone;
-  pnlButtons.Caption     := '';
+//  pnlLower.BevelOuter    := bvNone;
+//  pnlLower.BevelInner    := bvNone;
+//  pnlLower.Caption       := '';
+//  pnlBasic.BevelOuter    := bvNone;
+//  pnlBasic.BevelInner    := bvNone;
+//  pnlBasic.Caption       := '';
+//  pnlAdvanced.BevelOuter := bvNone;
+//  pnlAdvanced.BevelInner := bvNone;
+//  pnlAdvanced.Caption    := '';
+//  pnlButtons.BevelOuter  := bvNone;
+//  pnlButtons.BevelInner  := bvNone;
+//  pnlButtons.Caption     := '';
 
   rbKeyfileFile.Checked := True;
   feKeyfile.Filename    := '';
@@ -736,8 +709,8 @@ begin
   seKeyIterations.Increment := DEFAULT_KEY_ITERATIONS_INCREMENT;
   seKeyIterations.Value     := DEFAULT_KEY_ITERATIONS;
 
-  advancedMountDlg   := GetSettings().ShowAdvancedMountDialog;
-  _DisplayAdvanced(advancedMountDlg);
+//  advancedMountDlg   := GetSettings().ShowAdvancedMountDialog;
+//  _DisplayAdvanced(advancedMountDlg);
 
 
   feKeyfile.TabStop     := False;
@@ -807,14 +780,15 @@ begin
   // If the mount options groupbox isn't visible, widen the volume options
   // groupbox so that there's no blank space to its left
   if not (gbMountAs.Visible) then begin
-    gbVolumeOptions.Width := gbVolumeOptions.Width + (gbVolumeOptions.left - gbMountAs.left);
-    gbVolumeOptions.left  := gbMountAs.left;
+ //   gbVolumeOptions.Width := gbVolumeOptions.Width + (gbVolumeOptions.left - gbMountAs.left);
+//    gbVolumeOptions.left  := gbMountAs.left;
   end;
 
   // Default to TRUE to allow formatting under Windows Vista
   ckMountForAllUsers.Checked := True;
 
   _EnableDisableControls();
+  _PopulatePKCS11SecretKey();
 
   if fSilent then begin
     if _AttemptMount() then begin
@@ -828,7 +802,15 @@ begin
     PostMessage(Handle, WM_CLOSE, 0, 0);
   end;
 
+
   SDUDropFiles_Keyfile.Active := True;
+
+  // work around bug whereby password not shown.
+  pcKey.TabIndex:= 1;
+    pcKey.TabIndex:= 0;
+
+
+
 end;
 
 procedure TfrmKeyEntryFreeOTFE._EnableDisableControls();
@@ -838,10 +820,10 @@ begin
   // Ensure we know what to mount as
   ckMountReadonly.Enabled := False;
   tmpMountAs              := GetMountAs();
-  if not (FreeOTFEMountAsCanWrite[tmpMountAs]) then begin
+  if not (CAN_WRITE_TO_MOUNT_TYPE[tmpMountAs]) then begin
     ckMountReadonly.Checked := True;
   end;
-  SDUEnableControl(ckMountReadonly, FreeOTFEMountAsCanWrite[tmpMountAs]);
+  SDUEnableControl(ckMountReadonly, CAN_WRITE_TO_MOUNT_TYPE[tmpMountAs]);
 
   _EnableDisableControls_Keyfile();
   _EnableDisableControls_SecretKey();
@@ -897,10 +879,10 @@ begin
 
 end;
 
-procedure TfrmKeyEntryFreeOTFE.pbAdvancedClick(Sender: TObject);
-begin
-  _DisplayAdvanced(not (pnlAdvanced.Visible));
-end;
+//procedure TfrmKeyEntryFreeOTFE.pbAdvancedClick(Sender: TObject);
+//begin
+//  _DisplayAdvanced(not (gbAdvanced.Visible));
+//end;
 
 procedure TfrmKeyEntryFreeOTFE.feKeyfileChange(Sender: TObject);
 begin
@@ -929,33 +911,34 @@ procedure TfrmKeyEntryFreeOTFE.cbPKCS11CDBChange(Sender: TObject);
 begin
   _EnableDisableControls();
 end;
-
-procedure TfrmKeyEntryFreeOTFE._DisplayAdvanced(displayAdvanced: Boolean);
-var
-  displayChanged: Boolean;
-begin
-  displayChanged      := (pnlAdvanced.Visible <> displayAdvanced);
-  pnlAdvanced.Visible := displayAdvanced;
-
-  if displayChanged then begin
-    if pnlAdvanced.Visible then begin
-      self.Height := self.Height + pnlAdvanced.Height;
-
-      _PopulatePKCS11SecretKey();
-      _EnableDisableControls_SecretKey();
-    end else begin
-      self.Height := self.Height - pnlAdvanced.Height;
-    end;
-
-  end;
-
-  if pnlAdvanced.Visible then begin
-    pbAdvanced.Caption := '<< ' + RS_BUTTON_ADVANCED;
-  end else begin
-    pbAdvanced.Caption := RS_BUTTON_ADVANCED + ' >>';
-  end;
-
-end;
+//
+//procedure TfrmKeyEntryFreeOTFE._DisplayAdvanced(displayAdvanced: Boolean);
+//var
+//  displayChanged: Boolean;
+//begin
+//  displayChanged      := (gbAdvanced.Visible <> displayAdvanced);
+//  gbAdvanced.Visible := displayAdvanced;
+//  pnlLower.Visible := displayAdvanced;
+//
+//  if displayChanged then begin
+//    if displayAdvanced then begin
+//      self.Height := self.Height + gbAdvanced.Height + pnlLower.Height ;
+//
+//      _PopulatePKCS11SecretKey();
+//      _EnableDisableControls_SecretKey();
+//    end else begin
+//      self.Height := self.Height - gbAdvanced.Height - pnlLower.Height;
+//    end;
+//
+//  end;
+//
+//  if displayAdvanced then begin
+//    pbAdvanced.Caption := '<< ' + RS_BUTTON_ADVANCED;
+//  end else begin
+//    pbAdvanced.Caption := RS_BUTTON_ADVANCED + ' >>';
+//  end;
+//
+//end;
 
 procedure TfrmKeyEntryFreeOTFE.SetPassword(password: TSDUBytes);
 begin
@@ -979,7 +962,6 @@ function MountFreeOTFE(volumeFilename: String;
 var
   keyEntryDlg:      TfrmKeyEntryFreeOTFE;
   mr:               Integer;
-
 begin
   GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS;
   Result    := morFail;
@@ -1133,10 +1115,11 @@ begin
       end;
 
       // Mount the volume
-      if (volumeDetails.RequestedDriveLetter = #0) then begin
+      if (volumeDetails.RequestedDriveLetter = #0) then
         // Nudge on to prevent getting drive A: or B:
         volumeDetails.RequestedDriveLetter := 'C';
-      end;
+
+
       mountDriveLetter := GetFreeOTFEBase().GetNextDriveLetter(UserDriveLetter,
         volumeDetails.RequestedDriveLetter);
       if (mountDriveLetter = #0) then begin
@@ -1150,9 +1133,9 @@ begin
       // Locate where the actual encrypted partition starts within the
       // volume file
       useFileOffset := Offset;
-      if OffsetPointsToCDB then begin
+      if OffsetPointsToCDB then
         useFileOffset := useFileOffset + Int64((CRITICAL_DATA_LENGTH div 8));
-      end;
+
 
       if GetFreeOTFEBase().CreateMountDiskDevice(currMountFilename,
         volumeDetails.MasterKey, volumeDetails.SectorIVGenMethod,

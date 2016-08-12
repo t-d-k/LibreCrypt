@@ -217,11 +217,11 @@ begin
     end;
   end;
 
-  if (GetSettings() is TMainSettings) then begin
-    SetMountAs(GetMainSettings().DefaultMountDiskType);
-  end else begin
+  if (GetSettings() is TMainSettings) then
+    SetMountAs(GetMainSettings().DefaultMountDiskType)
+  else
     SetMountAs(fomaRemovableDisk);
-  end;
+
   frmeLUKSKeyOrKeyfileEntry.baseIVCypherOnHashLength := True;
 
   se64UnitSizeLimit.Value := 0;
@@ -275,10 +275,10 @@ begin
   mountAsOK               := GetMountAs(tmpMountAs);
   ckMountReadonly.Enabled := False;
   if mountAsOK then begin
-    if not (FreeOTFEMountAsCanWrite[tmpMountAs]) then begin
+    if not (CAN_WRITE_TO_MOUNT_TYPE[tmpMountAs]) then begin
       ckMountReadonly.Checked := True;
     end;
-    SDUEnableControl(ckMountReadonly, FreeOTFEMountAsCanWrite[tmpMountAs]);
+    SDUEnableControl(ckMountReadonly, CAN_WRITE_TO_MOUNT_TYPE[tmpMountAs]);
   end;
   mountAsOK := mountAsOK and (tmpMountAs <> fomaUnknown);
 

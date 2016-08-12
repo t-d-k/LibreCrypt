@@ -231,6 +231,7 @@ type
     fcachedCypherMode: TFreeOTFECypherMode;
     fis_hidden: Boolean; // are we ceating hidden volume
 
+
     // Returns the keysize for the user's selected cypher, as returned by the
     // driver
     function _selectedCypherKeySize(): Integer;
@@ -262,7 +263,7 @@ type
     function getUsePerVolumeIV(): Boolean;
     function getMasterKeyLength(): Integer;  // Returns length in *bits*
     // function GetRandomData_CDB(): Ansistring;
-    function getRandomData_ChaffKey(): TSDUBytes;
+//    function getRandomData_ChaffKey(): TSDUBytes;
 
 
 
@@ -368,7 +369,7 @@ const
 
   DEFAULT_SECTOR_IV_GEN_METHOD = foivg64BitSectorID;
 
-  DUMMY_GUID = '{00000000-0000-0000-0000-000000000000}';
+//  DUMMY_GUID = '{00000000-0000-0000-0000-000000000000}';
 
   CYPHER_KEYSIZE_NOT_CACHED_FLAG_KEYSIZE     = -9999;
   CYPHER_BLOCKSIZE_NOT_CACHED_FLAG_BLOCKSIZE = -9999;
@@ -390,6 +391,7 @@ var
   i: Integer;
 begin
   inherited;
+
   SDUTranslateComp(reInstructKeyIterations1);
   SDUTranslateComp(reInstructKeyIterations2);
   SDUTranslateComp(reInstructKeyIterations3);
@@ -476,24 +478,26 @@ begin
 
   // tsFilename
 
-  if GetCmdLine.VolumeArg <> '' then
-    if IsPartitionPath(GetCmdLine.VolumeArg) then begin
+  if GetCmdLine.volume <> '' then
+    if IsPartitionPath(GetCmdLine.volume) then begin
 
       fmeSelectPartition.Initialize();
       fmeSelectPartition.Tag := 0;
 
-      fmeSelectPartition.SelectedDevice := GetCmdLine.VolumeArg;
+      fmeSelectPartition.SelectedDevice := GetCmdLine.volume;
       rgFileOrPartition.ItemIndex       := FILEORPART_OPT_PARTITION_INDEX;
       // if no size set - use entre partition
+
       fmeContainerSize1.SetIsSizeEntirePartitionDisk(True);
 
     end else begin
-      edtFilename.Text := GetCmdLine.VolumeArg;
-      //todo: set size
+      edtFilename.Text := GetCmdLine.volume;
+      fmeContainerSize1.setSize(GetCmdLine.size);
+
     end;
 
 
-  frmeNewPassword.SetKeyPhrase(GetCmdLine.PasswordArg);
+  frmeNewPassword.SetKeyPhrase(GetCmdLine.password);
 
   // tsPartitionSelect
   // Setup and make sure nothing is selected
@@ -685,9 +689,11 @@ begin
 end;
 
 
+{ TODO 1 -otdk -crefactor : why not use GetMasterKeyLength here? }
 procedure TfrmCreateFreeOTFEVolume._UpdateChaffCypherKeyLength;
 begin
   // If overwriting with encrypted data (chaff), find the size of the key required
+  // use same as for main cypher
   fchaffCypherUseKeyLength := 0;
   if GetOverwriteWithChaff() then begin
     GetFreeOTFEBase().GetSpecificCypherDetails(GetCypherDriver(), GetCypherGUID(),
@@ -713,10 +719,10 @@ begin
   inherited;
 
   pbHashInfo.Enabled := ((GetHashDriver <> '') and
-    (not (IsEqualGUID(GetHashGUID(), StringToGUID(DUMMY_GUID)))));
+    (not (IsEqualGUID(GetHashGUID(), StringToGUID(NULL_GUID)))));
 
   pbCypherInfo.Enabled := ((GetCypherDriver <> '') and
-    (not (IsEqualGUID(GetCypherGUID(), StringToGUID(DUMMY_GUID)))));
+    (not (IsEqualGUID(GetCypherGUID(), StringToGUID(NULL_GUID)))));
 
 
   // If:
@@ -1055,6 +1061,8 @@ end;
 
 procedure TfrmCreateFreeOTFEVolume.ControlChanged(Sender: TObject);
 begin
+if not fcreating then
+
   _UpdateUIAfterChangeOnCurrentTab();
 end;
 
@@ -1143,7 +1151,7 @@ var
   strGUID: String;
 begin
   // Just some dummy GUID in case none selected
-  strGUID := DUMMY_GUID;
+  strGUID := NULL_GUID;
 
   if (cbHash.ItemIndex >= 0) then begin
     strGUID := fHashGUIDs[cbHash.ItemIndex];
@@ -1166,7 +1174,7 @@ var
   strGUID: String;
 begin
   // Just some dummy GUID in case none selected
-  strGUID := DUMMY_GUID;
+  strGUID := NULL_GUID;
 
   if (cbCypher.ItemIndex >= 0) then begin
     strGUID := fCypherGUIDs[cbCypher.ItemIndex];
@@ -1210,6 +1218,7 @@ begin
   Result := ckUsePerVolumeIV.Checked;
 end;
 
+(*
 function TfrmCreateFreeOTFEVolume.getRandomData_ChaffKey(): TSDUBytes;
 var
   len: Integer;
@@ -1221,7 +1230,7 @@ begin
   { DONE 2 -otdk -crefactor : use randpool object that asserts if data isnt available - for now check not empty }
   GetRandPool().GetRandomData(len, Result);
 
-end;
+end;  *)
 
 
 
@@ -1263,9 +1272,8 @@ end;
 procedure TfrmCreateFreeOTFEVolume.MouseRNGByteGenerated(Sender: TObject; random: Byte);
 begin
   // Note: This is correct; if it's *less than* CRITICAL_DATA_LEN, then store it
-  if (CountMouseRNGData() < _RNG_requiredBits()) then begin
+  if (CountMouseRNGData() < _RNG_requiredBits()) then
     AddToMouseRNGData(random);
-  end;
 
   _UpdateUIAfterChangeOnCurrentTab();
 
@@ -1414,6 +1422,7 @@ procedure TfrmCreateFreeOTFEVolume.FormCreate(Sender: TObject);
 var
   dl: ansichar;
 begin
+  inherited;
   fsilent := GetCmdLine.isSilent;
 
   fHashKernelModeDriverNames   := TStringList.Create();
@@ -1887,9 +1896,9 @@ begin
   end;  // if result then
 
   //wipe sesitive data allocated
-  SDUZeroBuffer(volumeDetails.MasterKey);
-  SDUZeroBuffer(volumeDetails.VolumeIV);
-  SDUZeroBuffer(saltBytes);
+  SDUInitAndZeroBuffer(volumeDetails.MasterKey);
+  SDUInitAndZeroBuffer(volumeDetails.VolumeIV);
+  SDUInitAndZeroBuffer(saltBytes);
 
 end;
 
@@ -1923,6 +1932,7 @@ var
 
 begin
   Result := True;
+
   { TODO 2 -otdk -csecurity : if not automount - not wiped }
   if ckAutoMountAfterCreate.Checked then begin
     VolFilename := GetVolFilename();
@@ -1969,7 +1979,7 @@ begin
         Result := Format_Drive(FNewVolumeMountedAs);
         if not Result then
           // Volumes couldn't be mounted for some reason...
-          errMsg := FORMAT_ERR;
+          errMsg := _(FORMAT_ERR);
       end;
       if Result and getIsPartition then begin
         _OverwriteVolWithChaff(fnewVolumeMountedAs);
@@ -1995,6 +2005,8 @@ end;
 
 procedure TfrmCreateFreeOTFEVolume.seMasterKeyLengthExit(Sender: TObject);
 begin
+  if fcreating then exit;
+  
   // Ensure master key length is a multiple of 8 bits
   if ((seMasterKeyLength.Value mod 8) <> 0) then begin
     SDUMessageDlg(_('The master key length must be a multiple of 8'), mtWarning);
@@ -2202,13 +2214,13 @@ uses selected cypher and options as for enxn
 
 function TfrmCreateFreeOTFEVolume._OverwriteVolWithChaff(drive: DriveLetterChar = #0): Boolean;
 var
-  shredder: TShredder;
+//  shredder: TShredder;
 
   overwriteOK:    TShredResult;
   failMsg:        String;
   //  tmpZero: ULONGLONG;
   //  partInfo:TPartitionInformationEx;
-  chaffCypherKey: TSDUBytes;
+//  chaffCypherKey: TSDUBytes;
 begin
   Result := True;
 
@@ -2222,7 +2234,7 @@ begin
     end;}
 
   if cbOverwrite.Checked then begin
-
+(*
   shredder := TShredder.Create();
   try
     shredder.FileDirUseInt := True;
@@ -2271,7 +2283,16 @@ begin
     end;
 
 
-    if (overwriteOK = srError) then begin
+   
+
+
+  finally
+    shredder.Free();
+  end;
+ *)
+  overwriteOK := OverwriteVolWithChaff(drive,GetOverwriteWithChaff(),fchaffCypherUseKeyLength,
+  fchaffCypherDetails.BlockSize,GetCypherDriver,GetCypherGUID,GetOffset,GetVolFilename);
+   if (overwriteOK = srError) then begin
       failMsg :=
         _('Wipe of data FAILED. You should manually wipe the drive to ensure security');
       SDUMessageDlg(failMsg, mtError);
@@ -2283,10 +2304,6 @@ begin
       end;
     end;
 
-
-  finally
-    shredder.Free();
-  end;
   end;
 
 end;//

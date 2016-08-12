@@ -452,10 +452,13 @@ begin
             //    FMT_DEVICENAME_HDD_PHYSICAL_DISK  or   FMT_DEVICENAME_HDD_DEVICE        ?
           end else begin
             if (SDUDiskPartitionsPanel1.Selected > NO_PARTITION) then begin
+              // can have disk with no partitions  (no partition table)
+              if SDUDiskPartitionsPanel1.IsValidPartition(SDUDiskPartitionsPanel1.Selected) then begin
               partInfo := SDUDiskPartitionsPanel1.PartitionInfo[SDUDiskPartitionsPanel1.Selected];
               // Sanity...
-              if (partInfo.PartitionNumber <> 0) then begin
+              if (partInfo.PartitionNumber <> 0) then
                 partitionNo := partInfo.PartitionNumber;
+
               end;
             end;
           end;

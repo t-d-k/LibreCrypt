@@ -6,7 +6,7 @@ unit SDUGeneral;
  //
  // -----------------------------------------------------------------------------
  //
-
+//tdk authored functions start with 'lc' - for conversion to gpl
 
 interface
 
@@ -380,8 +380,7 @@ function SDUWideStringOfWideChar(Ch: Widechar; Count: Integer): WideString;
 function SDUUnitsStorageToText(units: TUnits_Storage): String;
 // Return an array containing the (translated) units
 function SDUUnitsStorageToTextArr(): TSDUArrayString;
-// Previously this was a const, now just returns the same as SDUUnitsStorageToTextArr(...)
-function UNITS_BYTES_DENOMINATINON(): TSDUArrayString; deprecated;
+
 // Return TRUE/FALSE, depending on whether the value passed in is odd or even
 function SDUIsOddNumber(Value: Integer): Boolean;
 function SDUIsEvenNumber(Value: Integer): Boolean;
@@ -407,8 +406,7 @@ function SDUGetFileType_Icon(filename: String; out iconFilename: String;
 function SDUGetFileType_Description(const filename: String): String; overload;
 function SDUGetFileType_Description(const filename: String; out knownFiletype: Boolean): String;
   overload;
-// CopyFile(...), but using Windows API to display "flying files" dialog while copying
-function SDUFileCopy(srcFilename: String; destFilename: String): Boolean;
+
  // Populate the specified TComboBox with a list of removable drives
  // Note: This will clear any existing items in the TComboBox
 procedure SDUPopulateRemovableDrives(cbDrive: TComboBox);
@@ -487,37 +485,12 @@ function SDUFormatAsBytesUnits(Value: Int64; accuracy: Integer = 2): String; ove
 {$IF CompilerVersion >= 18.5}// See comment on ULONGLONG definition
 function SDUFormatAsBytesUnits(Value: ULONGLONG; accuracy: Integer = 2): String; overload;
 {$IFEND}
+
  // As SDUFormatAsBytesUnits, but return as:
  //   <bytes value> bytes (<units value> <units>)
  // with the <units value> part skipped if it's in bytes
-function SDUFormatAsBytesAndBytesUnits(Value: ULONGLONG; accuracy: Integer = 2): String;
- // Convert the string representation of a value into it's numerical
- // representation
- // Spaces are ignored
- // e.g.
- //      "10 GB" or "10GB"       -> 1073741824
- //      "10 bytes" or "10bytes" -> 10
- //      "10"                    -> 10
- // Note: This function can't handle values with a decimal point atm
-function SDUParseUnits(prettyValue: String; denominations: array of String;
-  out Value: Uint64; multiplier: Integer = 1000): Boolean; overload;
-{$IFDEF VER185}  // See comment on ULONGLONG definition
-// As SDUParseUnits, but assume units are bytes, KB, MB, GB, etc
-function SDUParseUnits(
-                       prettyValue: string;
-                       denominations: array of string;
-                       out value: ULONGLONG;
-                       multiplier: integer = 1000
-                     ): boolean; overload;
-{$ENDIF}
-// As SDUParseUnits, but assume units are bytes, KB, MB, GB, etc
-function SDUParseUnitsAsBytesUnits(prettyValue: String; out Value: uint64): Boolean; overload;
-{$IFDEF VER185}   // See comment on ULONGLONG definition
-function SDUParseUnitsAsBytesUnits(
-                       prettyValue: string;
-                       out value: ULONGLONG
-                     ): boolean; overload;
-{$ENDIF}
+//function SDUFormatAsBytesAndBytesUnits(Value: ULONGLONG; accuracy: Integer = 2): String;
+
 // Convert boolean value to string/char
 function SDUBoolToStr(Value: Boolean; strTrue: String = 'True';
   strFalse: String = 'False'): String;
@@ -630,10 +603,12 @@ procedure SDUParseDataToASCII(data: String; var ASCIIrep: String);
  // Returns FALSE if "aSheet" appears *before* bSheet
  // Returns FALSE if "aSheet" *is* "bSheet"
 function SDUIsTabSheetAfter(pageCtl: TPageControl; aSheet, bSheet: TTabSheet): Boolean;
+
+
  // Get size of file
  // This is just a slightly easier to use version of GetFileSize
  // Returns file size, or -1 on error
-function SDUGetFileSize(const filename: String): ULONGLONG;
+function SDUGetFileSize(const filename: String): Int64;
 
 // Returns installed OS
 function SDUInstalledOS(): TInstalledOS;
@@ -823,10 +798,14 @@ function SDUGetSystemDirectory(): String;
  //encodes as ascii for now
 function SDUStringToSDUBytes(const rhs: Ansistring): TSDUBytes;
 function SDUBytesToString(const Value: TSDUBytes): Ansistring;
-//sets bytes to all zeros and sets length to 0
-procedure SDUInitAndZeroBuffer(len: Cardinal; var val: TSDUBytes);
+//sets bytes to all zeros and sets length to len
+procedure SDUInitAndZeroBuffer(len: Cardinal; var val: TSDUBytes); overload;
+// sets bytes to all zeros and sets length to 0
+procedure SDUInitAndZeroBuffer( var val: TSDUBytes);  overload;
 //sets bytes to all zeros
 procedure SDUZeroBuffer(var buf: array of Byte);
+//procedure SDUZeroDelBuffer(var buf: array of Byte);
+
 procedure SDUZeroString(var buf: Ansistring);
 
 //adds byte to array
@@ -2233,12 +2212,9 @@ begin
   Result := '';
 
   usedDriveLetters := SDUGetUsedDriveLetters();
-  for x := 'A' to 'Z' do begin
-    if (pos(x, usedDriveLetters) = 0) then begin
+  for x := 'A' to 'Z' do
+    if (pos(x, usedDriveLetters) = 0) then
       Result := Result + x;
-    end;
-  end;
-
 end;
 
 
@@ -2678,6 +2654,7 @@ end;
  // Get size of file
  // This is just a slightly easier to use version of GetFileSize
  // Returns file size, or -1 on error
+ (*
 function SDUGetFileSize(const filename: String): ULONGLONG;
 var
   fileHandle:        THandle;
@@ -2707,6 +2684,21 @@ begin
 
     CloseHandle(fileHandle);
   end;
+end;
+ *)
+function lcGetFileSize(const filename: String): Int64;
+  var
+    info: TWin32FileAttributeData;
+  begin
+    result := -1;
+
+    if  GetFileAttributesEx(PWideChar(filename), GetFileExInfoStandard, @info) then
+      result := Int64(info.nFileSizeLow) or Int64(info.nFileSizeHigh shl 32);
+  end;
+
+function SDUGetFileSize(const filename: String): Int64;
+begin
+  result := lcGetFileSize(filename);
 end;
 
  // On a TPageControl, determine if the one tabsheet appears *after* another
@@ -3468,183 +3460,19 @@ end;
 {$IFEND}
 
 // ----------------------------------------------------------------------------
-function SDUFormatAsBytesAndBytesUnits(Value: ULONGLONG; accuracy: Integer = 2): String;
-var
-  sizeAsUnits: String;
-begin
-  Result      := IntToStr(Value) + ' ' + SDUUnitsStorageToText(usBytes);
-  sizeAsUnits := SDUFormatAsBytesUnits(Value);
-  if (Pos(SDUUnitsStorageToText(usBytes), sizeAsUnits) <= 0) then begin
-    Result := Result + ' (' + sizeAsUnits + ')';
-  end;
-end;
+//function SDUFormatAsBytesAndBytesUnits(Value: ULONGLONG; accuracy: Integer = 2): String;
+//var
+//  sizeAsUnits: String;
+//begin
+//  Result      := IntToStr(Value) + ' ' + SDUUnitsStorageToText(usBytes);
+//  sizeAsUnits := SDUFormatAsBytesUnits(Value);
+//  if (Pos(SDUUnitsStorageToText(usBytes), sizeAsUnits) <= 0) then begin
+//    Result := Result + ' (' + sizeAsUnits + ')';
+//  end;
+//end;
 
 
-// ----------------------------------------------------------------------------
-function SDUParseUnits(prettyValue: String; denominations: array of String;
-  out Value: uint64; multiplier: Integer = 1000): Boolean;
-var
-  i:               Integer;
-  strNumber:       String;
-  strUnits:        String;
-  unitsMultiplier: Int64;
-  foundMultiplier: Boolean;
-begin
-  Result := True;
 
-  Value := 0;
-
-  // Split on space, or detect boundry
-  strNumber   := '';
-  strUnits    := '';
-  prettyValue := trim(prettyValue);
-  if (Pos(' ', prettyValue) > 0) then begin
-    SDUSplitString(prettyValue, strNumber, strUnits, ' ');
-  end else begin
-    for i := 1 to length(prettyValue) do begin
-      if (((prettyValue[i] < '0') or (prettyValue[i] > '9')) and
-        (prettyValue[i] <> '-')  // Allow -ve values
-        ) then begin
-        strUnits := Copy(prettyValue, i, (length(prettyValue) - i + 1));
-        break;
-      end;
-
-      strNumber := strNumber + prettyValue[i];
-    end;
-  end;
-
-  strNumber := trim(strNumber);
-  strUnits  := trim(strUnits);
-
-  unitsMultiplier := 1;
-  if (strUnits <> '') then begin
-    strUnits        := uppercase(strUnits);
-    foundMultiplier := False;
-    for i := low(denominations) to high(denominations) do begin
-      if (strUnits = uppercase(denominations[i])) then begin
-        foundMultiplier := True;
-        break;
-      end;
-
-      unitsMultiplier := unitsMultiplier * multiplier;
-    end;
-
-    Result := Result and foundMultiplier;
-  end;
-
-  if Result then begin
-    Result := SDUTryStrToInt(strNumber, Value);
-  end;
-
-  if Result then begin
-    Value := Value * unitsMultiplier;
-  end;
-
-end;
-
-// ----------------------------------------------------------------------------
-{$IFDEF VER185}   // See comment on ULONGLONG definition
-function SDUParseUnits(
-                       prettyValue: string;
-                       denominations: array of string;
-                       out value: ULONGLONG;
-                       multiplier: integer = 1000
-                     ): boolean;
-var
-  i: integer;
-  strNumber: string;
-  strUnits: string;
-  unitsMultiplier: ULONGLONG;
-  foundMultiplier: boolean;
-begin
-  Result := TRUE;
-
-  value := 0;
-
-  // Split on space, or detect boundry
-  strNumber := '';
-  strUnits := '';
-  prettyValue := trim(prettyValue);
-  if (Pos(' ', prettyValue) > 0) then
-    begin
-    SDUSplitString(prettyValue, strNumber, strUnits, ' ');
-    end
-  else
-    begin
-    for i:=1 to length(prettyValue) do
-      begin
-      if (
-          (prettyValue[i] < '0') or
-          (prettyValue[i] > '9')
-         ) then
-        begin
-        strUnits := Copy(prettyValue, i, (length(prettyValue) - i + 1));
-        break;
-        end;
-
-      strNumber := strNumber + prettyValue[i];
-      end;
-    end;
-
-  strNumber := trim(strNumber);
-  strUnits := trim(strUnits);
-
-  unitsMultiplier := 1;
-  if (strUnits <> '') then
-    begin
-    strUnits := uppercase(strUnits);
-    foundMultiplier := FALSE;
-    for i:=low(denominations) to high(denominations) do
-      begin
-      if (strUnits = uppercase(denominations[i])) then
-        begin
-        foundMultiplier := TRUE;
-        break;
-        end;
-
-      unitsMultiplier := unitsMultiplier * multiplier;
-      end;
-
-      Result := Result and foundMultiplier;
-    end;
-
-  if Result then
-    begin
-    Result := SDUTryStrToInt(strNumber, value);
-
-    end;
-
-  if Result then
-    begin
-    value := value * unitsMultiplier;
-    end;
-
-
-end;
-{$ENDIF}
-
-// ----------------------------------------------------------------------------
-function SDUParseUnitsAsBytesUnits(prettyValue: String; out Value: uint64): Boolean;
-begin
-  Result := SDUParseUnits(prettyValue, SDUUnitsStorageToTextArr(), Value,
-    UNITS_BYTES_MULTIPLIER);
-end;
-
-
-{$IFDEF VER185}  // See comment on ULONGLONG definition
-function SDUParseUnitsAsBytesUnits(
-                       prettyValue: string;
-                       out value: ULONGLONG
-                     ): boolean;
-begin
-  Result := SDUParseUnits(
-                          prettyValue,
-                          SDUUnitsStorageToTextArr(),
-                          value,
-                          UNITS_BYTES_MULTIPLIER
-                         );
-end;
-{$ENDIF}
 
 // ----------------------------------------------------------------------------
 procedure SDUCenterControl(control: TControl; align: TCenterControl);
@@ -4474,31 +4302,6 @@ begin
 
 end;
 
- // ----------------------------------------------------------------------------
- // CopyFile(...), but using Windows API to display "flying files" dialog while copying
-function SDUFileCopy(srcFilename: String; destFilename: String): Boolean;
-var
-  fileOpStruct: TSHFileOpStruct;
-begin
-  Result                     := False;
-  // srcFilename and destFilename *MUST* end in a double NULL for
-  // SHFileOperation to operate correctly
-  srcFilename                := srcFilename + #0 + #0;
-  destFilename               := destFilename + #0 + #0;
-  fileOpStruct.Wnd           := 0;
-  fileOpStruct.wFunc         := FO_COPY;
-  fileOpStruct.pFrom         := PChar(srcFilename);
-  fileOpStruct.pTo           := PChar(destFilename);
-  fileOpStruct.fFlags        := (FOF_NOCONFIRMATION or FOF_NOCONFIRMMKDIR);
-  fileOpStruct.fAnyOperationsAborted := False;
-  fileOpStruct.hNameMappings := nil;
-  fileOpStruct.lpszProgressTitle := nil;
-
-  if (SHFileOperation(fileOpStruct) = 0) then begin
-    Result := not (fileOpStruct.fAnyOperationsAborted);
-  end;
-
-end;
 
  // ----------------------------------------------------------------------------
  // Get a description of the type of file passed in
@@ -4744,12 +4547,7 @@ begin
 
 end;
 
-function UNITS_BYTES_DENOMINATINON(): TSDUArrayString;
-begin
-  Result := SDUUnitsStorageToTextArr();
-end;
 
-// ----------------------------------------------------------------------------
 function SDUWideStringOfWideChar(Ch: Widechar; Count: Integer): WideString;
 var
   i: Integer;
@@ -5340,6 +5138,11 @@ begin
   SDUZeroBuffer(val);
 end;
 
+procedure SDUInitAndZeroBuffer( var val: TSDUBytes);
+begin
+  SafeSetLength(val, 0);
+end;
+
 //adds byte to array
 procedure SDUAddByte(var Value: TSDUBytes; byt: Byte);
 var
@@ -5473,7 +5276,5 @@ begin
   SDUWinExecNoWait32('net', Format('use %s: "%s"', [useDriveLetter, networkShare]), SW_RESTORE);
 end;
 
- // ----------------------------------------------------------------------------
- // ----------------------------------------------------------------------------
 
 end.

@@ -7,7 +7,7 @@ interface
 uses
   SysUtils, Windows, Forms,
   //sdu
-lcTypes {for DriveLetterString};
+  lcTypes {for DriveLetterString};
 
  // Identical to FileAge(filename, datetime) in Delphi 2007
  // This function included to allow same API call to be used in Delphi 7
@@ -36,24 +36,23 @@ function SHFormatDrive(Handle: HWND; Drive, ID, Options: Word): Longint;
 function UACRun(filenameAndPath, cmdLineParams: String;
   suppressMsgs: Boolean; allowUACEscalation: Boolean; out errMsg: String): Boolean;
 
-function Format_drive(driveToFormat: DriveLetterChar;silent:Boolean  =false): Boolean;
+function Format_drive(driveToFormat: DriveLetterChar; silent: Boolean = False): Boolean;
 
 resourcestring
-  FORMAT_ERR = 'Your encrypted drive could not be formatted.'#10#13#10#13 +
-    'Please lock this container and re-open it with the "Open for all users" option checked, before trying again.';
+  FORMAT_ERR = 'The drive could not be formatted.'#10#13#10#13 +
+    'Please lock this container and re-open it with the "Open for all users" option, and without the "read-only" option and try again.';
 
 implementation
 
 uses
-   System.UITypes, ShellApi,
+  System.UITypes, ShellApi,
 {$IF CompilerVersion >= 18.5}
   WideStrUtils,
 {$IFEND}
   lcDialogs,
 
   //sdu,lcutils
-  sdugeneral
-  ;
+  sdugeneral;
 
 const
   // for shformat
@@ -103,14 +102,14 @@ function SDUFileTimestamps(
 var
   searchRec: TSearchRec;
 begin
-  result := False;
+  Result := False;
 {$WARN SYMBOL_PLATFORM OFF}
   if (SysUtils.FindFirst(filename, faAnyFile, searchRec) = 0) then begin
     CreationTime   := searchRec.FindData.ftCreationTime;
     LastAccessTime := searchRec.FindData.ftLastAccessTime;
     LastWriteTime  := searchRec.FindData.ftLastWriteTime;
     SysUtils.FindClose(searchRec);
-    result := True;
+    Result := True;
   end;
 {$WARN SYMBOL_PLATFORM ON}
 
@@ -163,10 +162,10 @@ function UACRun(filenameAndPath, cmdLineParams: String;
 const
   VERB_RUNAS = 'runas';
 var
-  cwd:    String;
-  retVal: HINST;
- ShExecInfo :  SHELLEXECUTEINFO  ;
-lpExitCode: DWORD;
+  cwd:        String;
+  //  retVal: HINST;
+  ShExecInfo: SHELLEXECUTEINFO;
+  lpExitCode: DWORD;
 begin
   // Only applicable in Windows Vista; simply warn user they can't continue on
   // earlier OSs
@@ -176,86 +175,89 @@ begin
     if not suppressMsgs then
       errMsg := TEXT_NEED_ADMIN;
   end else begin
-    cwd    := ExtractFilePath(filenameAndPath);
+    cwd := ExtractFilePath(filenameAndPath);
 
 
-ShExecInfo.cbSize := sizeof(SHELLEXECUTEINFO);
-ShExecInfo.fMask := SEE_MASK_NOCLOSEPROCESS;
-ShExecInfo.Wnd := Application.Handle;
-ShExecInfo.lpVerb := VERB_RUNAS;
-ShExecInfo.lpFile := PChar(filenameAndPath);
-ShExecInfo.lpParameters := PChar(cmdLineParams);
-ShExecInfo.lpDirectory := PChar(cwd);
-ShExecInfo.nShow := SW_SHOW;
-ShExecInfo.hInstApp := 0;
-ShellExecuteEx(@ShExecInfo);
-WaitForSingleObject(ShExecInfo.hProcess,INFINITE);
+    ShExecInfo.cbSize       := sizeof(SHELLEXECUTEINFO);
+    ShExecInfo.fMask        := SEE_MASK_NOCLOSEPROCESS;
+    ShExecInfo.Wnd          := Application.Handle;
+    ShExecInfo.lpVerb       := VERB_RUNAS;
+    ShExecInfo.lpFile       := PChar(filenameAndPath);
+    ShExecInfo.lpParameters := PChar(cmdLineParams);
+    ShExecInfo.lpDirectory  := PChar(cwd);
+    ShExecInfo.nShow        := SW_SHOW;
+    ShExecInfo.hInstApp     := 0;
+    ShellExecuteEx(@ShExecInfo);
+    WaitForSingleObject(ShExecInfo.hProcess, INFINITE);
 
- if GetExitCodeProcess(ShExecInfo.hProcess,lpExitCode)  then begin
+    if GetExitCodeProcess(ShExecInfo.hProcess, lpExitCode) then begin
 
-    Result := lpExitCode  = 0;
- end else begin
-//   Result := retVal > 32;
-     result := false;
- end;
+      Result := lpExitCode = 0;
+    end else begin
+      //   Result := retVal > 32;
+      Result := False;
+    end;
 
-//    retVal := ShellExecute(Application.Handle, VERB_RUNAS,
-//      PChar(filenameAndPath), PChar(cmdLineParams), PChar(cwd), SW_SHOW);
+    //    retVal := ShellExecute(Application.Handle, VERB_RUNAS,
+    //      PChar(filenameAndPath), PChar(cmdLineParams), PChar(cwd), SW_SHOW);
 
 
 
     if not Result then
       errMsg := Format('Command %s(%s) failed with error: %d %s',
-        [filenameAndPath, cmdLineParams, lpExitCode,SysErrorMessage(GetLastError)]);
+        [filenameAndPath, cmdLineParams, lpExitCode, SysErrorMessage(GetLastError)]);
   end;
 end;
 
 
-function Format_drive(driveToFormat: DriveLetterChar;silent:Boolean  =false): Boolean;
-//resourcestring
-//  FORMAT_CAPTION = 'Format';
+function Format_drive(driveToFormat: DriveLetterChar; silent: Boolean = False): Boolean;
+  //resourcestring
+  //  FORMAT_CAPTION = 'Format';
 var
-//  i:         Integer;
-//  currDrive: DriveLetterChar;
+  //  i:         Integer;
+  //  currDrive: DriveLetterChar;
   //  driveNum:  Word;
-//  formatRet: Boolean;
-//cont :boolean;
+  //  formatRet: Boolean;
+  //cont :boolean;
   cmd, errMsg, newlinePath: String;
 begin
-  Result := True;
-//    currDrive   := drivesToFormat[i];
-    //    driveNum  := Ord(currDrive) - Ord('A');
-    {DONE: use cmd line - see below}
-    //http://stackoverflow.com/questions/2648305/format-drive-by-c
-    // >format g: /fs:fat /q /v:librecrypt - as admin, pipe in newlines
-    // get path to 'tools' dir
-    newlinePath := ExtractFilePath(ParamStr(0));
+  Result      := True;
+  //    currDrive   := drivesToFormat[i];
+  //    driveNum  := Ord(currDrive) - Ord('A');
+  {DONE: use cmd line - see below}
+  //http://stackoverflow.com/questions/2648305/format-drive-by-c
+  // >format g: /fs:fat /q /v:librecrypt - as admin, pipe in newlines
+  // get path to 'tools' dir
+  newlinePath := ExtractFilePath(ParamStr(0));
     {$IFDEF DEBUG}
       // debug\win32
       newlinePath := newlinePath+'..\..\';
     {$ENDIF}
-    newlinePath := newlinePath + 'tools\newline.txt';  // contains newlines
-    newlinePath := SDUGetFinalPath(newlinePath);       // resolve any mapped drives, as will run as admin
-    cmd         := format('/c format %s: /fs:fat /q /v:LibreCrypt < %s > c:\format_output.txt', [driveToFormat, newlinePath]);
-//    formatRet   := False;
-    if not silent then
-      Result := SDUConfirmOK(format('Format drive %s?', [driveToFormat]));
-    if Result then begin
+  newlinePath := newlinePath + 'tools\newline.txt';  // contains newlines
+  newlinePath := SDUGetFinalPath(newlinePath);
+  // resolve any mapped drives, as will run as admin
+  cmd         := format('/c format %s: /fs:fat /q /v:LibreCrypt < %s > c:\format_output.txt',
+    [driveToFormat, newlinePath]);
+  //    formatRet   := False;
+  if not silent then
+    Result := SDUConfirmOK(format('Format drive %s?', [driveToFormat]));
+  if Result then begin
     application.ProcessMessages;
-      Result := UACRun('cmd', cmd, False, True, errMsg); //causes hang?
-//      Result := UACRun('','cmd '+ cmd, False, True, errMsg); //causes hang?
+    Result := UACRun('cmd', cmd, False, True, errMsg); //causes hang?
+    //      Result := UACRun('','cmd '+ cmd, False, True, errMsg); //causes hang?
 
-//        Result := SHFormatDrive(Application.handle, Ord(Uppercase(driveToFormat)) - Ord('A'), SHFMT_ID_DEFAULT, SHFMT_OPT_FULL);
+    //        Result := SHFormatDrive(Application.handle, Ord(Uppercase(driveToFormat)) - Ord('A'), SHFMT_ID_DEFAULT, SHFMT_OPT_FULL);
 
-application.ProcessMessages;
-// check formatted
-     if not  DirectoryExists(driveToFormat+':\') then Result := false;
+    application.ProcessMessages;
+    // check formatted
+    if not DirectoryExists(driveToFormat + ':\') then
+      Result := False;
 
-      if (not Result) and (not silent) then begin
-        SDUMessageDlg(errMsg, TMsgDlgType.mtError);
+    if (not Result) and (not silent) then begin
+      SDUMessageDlg(errMsg, TMsgDlgType.mtError);
     end;
-//      break;
-//    end else begin
+    //      break;
+    //    end else begin
     {  dialog only returns when done - use cmd line as above
       // close format dlg
       // see also http://stackoverflow.com/questions/15469657/why-is-findwindow-not-100-reliable
@@ -264,8 +266,8 @@ application.ProcessMessages;
       PostMessage(hndle, WM_CLOSE, 0, 0);
       end;
       }
-    end;
-//  end;
+  end;
+  //  end;
 
   // This is *BIZARRE*.
   // If you are running under Windows Vista, and you mount a volume for

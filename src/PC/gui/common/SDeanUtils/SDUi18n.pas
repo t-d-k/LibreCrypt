@@ -122,8 +122,10 @@ end;
 
 //translate combo without changing selection
 procedure SDURetranslateCombo(Combo: TComboBox);
+{$IFDEF _DXGETTEXT}
 var
   useIdx    : Integer;
+  {$ENDIF}
 begin
 {$IFDEF _DXGETTEXT}
    useIdx := Combo.ItemIndex;

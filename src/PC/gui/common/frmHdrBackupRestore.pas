@@ -168,8 +168,8 @@ end;
 
 procedure TfrmHdrBackupRestore.FormCreate(Sender: TObject);
 begin
-  SelectSrcFile.SelectFor  := fndOpen;
-  SelectDestFile.SelectFor := fndSave;
+  SelectSrcFile.SelectFor  := osOpen;
+  SelectDestFile.SelectFor := osSave;
 
   SelectDestFile.OnChange := ControlChange;
   SelectSrcFile.OnChange  := ControlChange;
@@ -361,15 +361,15 @@ begin
   SelectDestFile.AllowPartitionSelect := (FOpType <> opBackup);
 
   if (FOpType = opBackup) then begin
-    SelectSrcFile.FileSelectFilter      := FILE_FILTER_FLT_VOLUMESANDKEYFILES;
-    SelectSrcFile.FileSelectDefaultExt  := FILE_FILTER_DFLT_VOLUMESANDKEYFILES;
-    SelectDestFile.FileSelectFilter     := FILE_FILTER_FLT_CDBBACKUPS;
-    SelectDestFile.FileSelectDefaultExt := FILE_FILTER_DFLT_CDBBACKUPS;
+    SelectSrcFile.SetFileSelectFilter( FILE_FILTER_FLT_VOLUMESANDKEYFILES);
+    SelectSrcFile.SetFileSelectDefaultExt  (FILE_FILTER_DFLT_VOLUMESANDKEYFILES);
+    SelectDestFile.SetFileSelectFilter( FILE_FILTER_FLT_CDBBACKUPS);
+    SelectDestFile.SetFileSelectDefaultExt (FILE_FILTER_DFLT_CDBBACKUPS);
   end else begin
-    SelectSrcFile.FileSelectFilter      := FILE_FILTER_FLT_CDBBACKUPS;
-    SelectSrcFile.FileSelectDefaultExt  := FILE_FILTER_DFLT_CDBBACKUPS;
-    SelectDestFile.FileSelectFilter     := FILE_FILTER_FLT_VOLUMESANDKEYFILES;
-    SelectDestFile.FileSelectDefaultExt := FILE_FILTER_DFLT_VOLUMESANDKEYFILES;
+    SelectSrcFile.SetFileSelectFilter      (FILE_FILTER_FLT_CDBBACKUPS);
+    SelectSrcFile.SetFileSelectDefaultExt  ( FILE_FILTER_DFLT_CDBBACKUPS);
+    SelectDestFile.SetFileSelectFilter( FILE_FILTER_FLT_VOLUMESANDKEYFILES);
+    SelectDestFile.SetFileSelectDefaultExt ( FILE_FILTER_DFLT_VOLUMESANDKEYFILES);
   end;
 
 end;

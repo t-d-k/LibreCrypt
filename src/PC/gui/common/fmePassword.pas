@@ -10,11 +10,10 @@ description
   new kephrase, get KeyPhrase from KeyPhrase property
   IsValid true if is not empty
 
-  tmemo doesnt expose it's password property.
-  tpasswordrichedit doesn't seem to show if passwordchar set after created (and why is it a richedit not a memo?)
-  need to use memo not edit so can get newlines (true?)
-  so uses shadow hidden 'real' memo that gets all same keypresses (for home, end, up , down etc)
-  and shown memo that shows password char
+  tmemo doesnt expose it's password property, also doesn't allow drop onto, so use
+  tpasswordrichedit doesn't seem to show if passwordchar set after created
+
+
 
 }
 
@@ -25,27 +24,24 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, SDUFrames, Vcl.StdCtrls, Vcl.ComCtrls,  Vcl.Samples.Gauges,
   //sdu
-    lcTypes,  SDUComCtrls
+    lcTypes,  SDUComCtrls, PasswordRichEdit
   //librecrypt
   ;
 
 type
   TfrmePassword = class (TSDUFrame)
     lblKeyPhrase: TLabel;
-    mmShown: TMemo;
-    mmReal: TMemo;
+    preUserKey: TPasswordRichEdit;
+    procedure preUserKeyChange(Sender: TObject);
 
-    procedure mmShownKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure mmShownKeyPress(Sender: TObject; var Key: Char);
-    procedure mmShownChange(Sender: TObject);
-    procedure mmShownKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+
   private
     FOnChange:     TNotifyEvent;
     fkey_phrase_set: Boolean;     // has keyphrase been set manually ('silent' mode)
   protected
     procedure DoShow(); override;
     procedure DoChange();
+
   public
     constructor Create(AOwner: TComponent); override;
     procedure SetKeyPhrase(Value: TSDUBytes);  overload;
@@ -65,6 +61,7 @@ implementation
 {$R *.dfm}
 
 uses
+ShellAPI,
   strutils,{CommCtrl,uxTheme,}
 //sdu
   SDUi18n,
@@ -93,8 +90,7 @@ uses
 
 procedure TfrmePassword.ClearPassword;
 begin
-  mmShown.Lines.Clear;
-  mmReal.Lines.Clear;
+  preUserKey.Lines.Clear;
 end;
 
 constructor TfrmePassword.Create(AOwner: TComponent);
@@ -102,6 +98,7 @@ begin
   inherited;
   fkey_phrase_set := False;
 end;
+
 
 procedure TfrmePassword.DoChange;
 begin
@@ -116,82 +113,51 @@ begin
 //   FreeOTFE volumes CAN have newlines in the user's password
 { done -otdk -csecurity : implement password char in keypress event }
 
-{ in order to make sure that arrow keys act identically in 'real' and 'shown'
-memos when word wrap is on. widths have to be identical
-}
-  mmReal.width := mmshown.Width;
-  mmReal.Height := mmshown.Height;
-  mmReal.left:=  mmshown.left;
-  mmReal.top:=  mmshown.top;
-//   mmReal.Visible := true;//debugging
+  preUserKey.WordWrap    := True;
+  preUserKey.WantReturns  := GetSettings().AllowNewlinesInPasswords;
+  preUserKey.WantTabs     := GetSettings().AllowTabsInPasswords;
 
-  mmShown.WordWrap    := True;
-  mmShown.WantReturns  := GetSettings().AllowNewlinesInPasswords;
-  mmShown.WantTabs     := GetSettings().AllowTabsInPasswords;
-
-  mmReal.WordWrap    := mmShown.WordWrap;
-  mmReal.WantReturns  := mmShown.WantReturns;
-  mmReal.WantTabs     := mmShown.WantTabs;
-
+  if GetSettings().ShowPasswords then preUserKey.PasswordChar := #0
+  else preUserKey.PasswordChar := '*';
 
   // if manually set ('silent' mode) don't clear
   if not fkey_phrase_set then begin
-    mmShown.Lines.Clear();
-    mmReal.Lines.Clear();
+    preUserKey.Lines.Clear();
   end;
 
     // Position cursor to the *end* of any password
-  mmShown.SelStart := length(mmShown.Text);
-  mmShown.SetFocus;
-
-  mmReal.SelStart := mmShown.SelStart;
+  preUserKey.SelStart := length(preUserKey.Text);
+  preUserKey.SetFocus;
 end;
 
 function TfrmePassword.IsPasswordValid(): Boolean;
 begin
-  Result := mmReal.Text <> '';
+  Result := preUserKey.Text <> '';
 end;
 
-
-procedure TfrmePassword.mmShownChange(Sender: TObject);
+procedure TfrmePassword.preUserKeyChange(Sender: TObject);
 begin
   inherited;
-  DoChange();
+DoChange();
 end;
 
-procedure TfrmePassword.mmShownKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  inherited;
-  //echo to 'real' memo - keeps key
-    // keep cursor movements, and selections in sync as well.
-  mmReal.Perform(WM_KEYDOWN, Key, 0);
-//  mmShown.Perform(wm_keydown, key, 0);
-end;
-procedure TfrmePassword.mmShownKeyUp(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  inherited;
-    mmReal.Perform(WM_KEYUP, Key, 0);
-end;
-
-procedure TfrmePassword.mmShownKeyPress(Sender: TObject; var Key: Char);
-begin
-  inherited;
-
-
-  // doesnt work perfectly if user moves cursor up and down a lot, but ok for most, eg BS select all, etc.
-   mmReal.SelStart := mmShown.SelStart;
-   mmReal.SelLength := mmShown.SelLength;
-
-
-  mmReal.Perform(wm_char, Byte(Key), 0);
-  // allow backspace, CR and LF thru, others replace
-//  if not (Key in [#10, #13, #8]) then
-  if Key >= #32 then
-    if not GetSettings().ShowPasswords then
-        Key := '*';
-end;
+//procedure TfrmePassword.mmShown2KeyPress(Sender: TObject; var Key: Char);
+//begin
+//  inherited;
+//
+//
+//  // doesnt work perfectly if user moves cursor up and down a lot, but ok for most, eg BS select all, etc.
+//   mmReal2.SelStart := mmShown2.SelStart;
+//   mmReal2.SelLength := mmShown2.SelLength;
+//
+//
+//  mmReal2.Perform(wm_char, Byte(Key), 0);
+//  // allow backspace, CR and LF thru, others replace
+////  if not (Key in [#10, #13, #8]) then
+//  if Key >= #32 then
+//    if not GetSettings().ShowPasswords then
+//        Key := '*';
+//end;
 
 
 
@@ -200,6 +166,7 @@ procedure TfrmePassword.SetKeyPhrase(Value: string);
 begin
   SetKeyPhrase(SDUStringToSDUBytes(Value));
 end;
+
 
 function TfrmePassword.GetKeyPhrase(): TSDUBytes;
 begin
@@ -213,17 +180,13 @@ begin
 //  if GetSettings().OptShowPasswords then
 //  result :=  mmShown.Text
 //  else
-result :=  mmReal.Text;
+result :=  preUserKey.Text;
 end;
 
 procedure TfrmePassword.SetKeyPhrase(Value: TSDUBytes);
 begin
   { TODO 1 -otdk -cbug : handle non ascii user keys - at least warn user }
-  mmReal.Text   := SDUBytesToString(Value);
-  if GetSettings().ShowPasswords then
-    mmShown.Text := mmReal.Text
-  else
-    mmShown.Text := StringOfChar('*',length(mmReal.Text));
+  preUserKey.Text   := SDUBytesToString(Value);
 
   fkey_phrase_set          := True;
 end;

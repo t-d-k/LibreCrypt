@@ -6,7 +6,7 @@
 			<Projects Include="main\LCTest.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="explorer\LibreCryptExplorer.dproj">
+			<Projects Include="explorer\LCExp_Test.dproj">
 				<Dependencies/>
 			</Projects>
 		</ItemGroup>
@@ -26,23 +26,23 @@
 		<Target Name="LCTest:Make">
 			<MSBuild Projects="main\LCTest.dproj" Targets="Make"/>
 		</Target>
-		<Target Name="LibreCryptExplorer">
-			<MSBuild Projects="explorer\LibreCryptExplorer.dproj"/>
+		<Target Name="LCExp_Test">
+			<MSBuild Projects="explorer\LCExp_Test.dproj"/>
 		</Target>
-		<Target Name="LibreCryptExplorer:Clean">
-			<MSBuild Projects="explorer\LibreCryptExplorer.dproj" Targets="Clean"/>
+		<Target Name="LCExp_Test:Clean">
+			<MSBuild Projects="explorer\LCExp_Test.dproj" Targets="Clean"/>
 		</Target>
-		<Target Name="LibreCryptExplorer:Make">
-			<MSBuild Projects="explorer\LibreCryptExplorer.dproj" Targets="Make"/>
+		<Target Name="LCExp_Test:Make">
+			<MSBuild Projects="explorer\LCExp_Test.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="LCTest;LibreCryptExplorer"/>
+			<CallTarget Targets="LCTest;LCExp_Test"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="LCTest:Clean;LibreCryptExplorer:Clean"/>
+			<CallTarget Targets="LCTest:Clean;LCExp_Test:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="LCTest:Make;LibreCryptExplorer:Make"/>
+			<CallTarget Targets="LCTest:Make;LCExp_Test:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>

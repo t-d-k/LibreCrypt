@@ -10,11 +10,11 @@ uses
   //delphi
   //3rd party
   //SDU ,lclibs
-lcTypes,
+  lcTypes,
   lcDebugLog,
   //librecrypt
   OTFEFreeOTFE_LUKSAPI,
-  OTFEFreeOTFEBase_U, DriverAPI;
+  OTFEFreeOTFEBase_U, DriverAPI,lcConsts;
 
 {creates, mounts and formats }
 function CreateNewLUKS(fileName: String;
@@ -67,8 +67,7 @@ uses
   //SDU ,lclibs
   SDUSysUtils, SDUi18n,
   PKCS11Lib, SDUEndianIntegers,
- lcConsts,
-sduGeneral,
+  sduGeneral,
   SDURandPool,
   OTFEFreeOTFE_U,
   OTFEConsts_U,
@@ -77,8 +76,9 @@ sduGeneral,
   frmKeyEntryLUKS, frmSelectHashCypher,
   frmVersionCheck // for  SDUGetVersionInfoString
   ;
+
 const
-  SDUNEWLINE_STRING: array [TSDUNewline] of String = (SDUCRLF, SDUCR, SDULF);
+  SDUNEWLINE_STRING: array [TSDUNewline] of AnsiString = (SDUCRLF, SDUCR, SDULF);
 
 {
 creates luks volume with given parameters
@@ -92,13 +92,13 @@ function CreateNewLUKS(fileName: String;
   out refreshDrives: Boolean): Boolean;
 var
   prevMounted: DriveLetterString;
-  mres :TMountResult;
+  mres:        TMountResult;
 begin
   refreshDrives := False;
 
   prevMounted := GetFreeOTFEBase().DrivesMounted;
-  mres      := CreateLUKS(fileName, password, contSizeBytes, hash, msg, drive) ;
-     Result := false;
+  mres        := CreateLUKS(fileName, password, contSizeBytes, hash, msg, drive);
+  Result      := False;
   if mres = morOK then begin
     Result := Format_Drive(drive, True);
     if not Result then
@@ -862,7 +862,7 @@ end;
 
 {creates and mounts but doesn't format }
 function CreateLUKS(
-volumeFilename: String;
+  volumeFilename: String;
   password: TSDUBytes;
   contSizeBytes: Uint64;
   hash: String;
@@ -870,8 +870,8 @@ volumeFilename: String;
   out drive: DriveLetterChar): TMountResult;
 
 var
-  volumeKey: TSDUBytes;
-  isPartition   : Boolean;
+  volumeKey:   TSDUBytes;
+  isPartition: Boolean;
 
   //  userKey:          TSDUBytes;
   //  fileOptSize:      Int64;
@@ -888,25 +888,27 @@ var
   //  mountForAllUsers:         Boolean;
 
 begin
-Result := morOK;
+  Result := morOK;
   if FileExists(volumeFilename, True) then begin
     Result := morFail;
     exit;
   end;
-  isPartition := (AnsiPos ('\Device\',volumeFilename) = 1) or (AnsiPos('\\.\PHYSICALDRIVE',volumeFilename)= 1);
+  isPartition := (AnsiPos('\Device\', volumeFilename) = 1) or
+    (AnsiPos('\\.\PHYSICALDRIVE', volumeFilename) = 1);
 
-  if  not isPartition then begin
-     if  not (SDUCreateLargeFile(volumeFilename, contSizeBytes{bytes}, True, userCancel)) then begin
-    if not userCancel then
-      errMsg := _('An error occurred while trying to create your LUKS container');
-    Result := morFail;
-     end;
+  if not isPartition then begin
+    if not (SDUCreateLargeFile(volumeFilename, contSizeBytes{bytes}, True, userCancel)) then
+    begin
+      if not userCancel then
+        errMsg := _('An error occurred while trying to create your LUKS container');
+      Result := morFail;
+    end;
   end;
-  if userCancel then result := morCancel;
+  if userCancel then
+    Result := morCancel;
 
 
-  if (Result = morOK ) then begin
-
+  if (Result = morOK) then begin
 
     GetRandPool.SetUpRandPool([rngcryptlib], PKCS11_NO_SLOT_ID, '');
     GetFreeOTFEBase().CheckActive();
@@ -1001,7 +1003,7 @@ end;
  //  =====  ==================
  //    48   total keyslot size
  //  =====  ==================
-function _ParseLUKSHeader(rawData: Ansistring;   var LUKSheader: TLUKSHeader): Boolean;
+function _ParseLUKSHeader(rawData: Ansistring; var LUKSheader: TLUKSHeader): Boolean;
 var
   rawLUKSheader: TLUKSHeaderRaw;
   strGUID:       Ansistring;
@@ -1047,14 +1049,14 @@ begin
         strGUID                   := '{' + strGUID + '}';
         LUKSheader.uuid           := StringToGUID(strGUID);
 
-        result := true;
+        Result := True;
         for i := 0 to (LUKS_NUMKEYS - 1) do begin
           keySlotActive := SDUBigEndian32ToDWORD(rawLUKSheader.keySlot[i].active);
 
           // Sanity check
           if ((keySlotActive <> LUKS_KEY_ENABLED) and (keySlotActive <>
             LUKS_KEY_DISABLED)) then begin
-            result := false;
+            Result := False;
             break;
           end;
 
@@ -1149,7 +1151,7 @@ begin
 
   // read overall salt
   if Result then begin
-    SDUZeroBuffer(masterkeySalt);
+    SDUInitAndZeroBuffer(masterkeySalt);
     for j := low(LUKSHeader.mk_digest_salt) to high(LUKSHeader.mk_digest_salt) do
       SDUAddByte(masterkeySalt, LUKSHeader.mk_digest_salt[j]);
   end;
@@ -1158,7 +1160,7 @@ begin
     // For each keyslot...
     for i := low(LUKSHeader.keySlot) to high(LUKSHeader.keySlot) do begin
       if (LUKSHeader.keySlot[i].Active) then begin
-        SDUZeroBuffer(keySlotSalt);
+        SDUInitAndZeroBuffer(keySlotSalt);  // ensure size set to 0 as added to below
         for j := low(LUKSHeader.keySlot[i].salt) to high(LUKSHeader.keySlot[i].salt) do
           SDUAddByte(keySlotSalt, LUKSHeader.keySlot[i].salt[j]);
 
@@ -1252,7 +1254,7 @@ begin
     end;
 
   end;
-  SDUZeroBuffer(masterkeySalt);
+  SDUInitAndZeroBuffer(masterkeySalt);
   Result := Result and (keySlot <> -1);
   DebugFlush();
 end;
@@ -1543,14 +1545,14 @@ begin
   GetFreeOTFEBase().CheckActive();
   GetFreeOTFEBase().LastErrorCode := OTFE_ERR_SUCCESS;
 
-  mountedAs     := #0;
+  mountedAs := #0;
 
 
   keyEntryDlg := TfrmKeyEntryLUKS.Create(nil);
   try
     keyEntryDlg.Initialize();
     keyEntryDlg.SetReadonly(ReadOnly);
-//    keyEntryDlg.silent := silent;
+    //    keyEntryDlg.silent := silent;
     keyEntryDlg.SetKey(SDUBytesToString(password));
     keyEntryDlg.SetKeyfile(keyfile);
     keyEntryDlg.SetKeyfileIsASCII(keyfileIsASCII);

@@ -37,10 +37,6 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
         Caption = 'Container File or Partition'
         ImageIndex = 14
         Constraints.MinHeight = 150
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           527
           330)
@@ -447,7 +443,7 @@ inherited frmCreateFreeOTFEVolume: TfrmCreateFreeOTFEVolume
             Left = 368
             Top = 65533
             Bitmap = {
-              494C010103000400780210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C0101030004009C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000

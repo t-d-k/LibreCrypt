@@ -31,10 +31,12 @@ type
     procedure pbNextClick(Sender: TObject);
     procedure pbFinishClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     fOnWizardStepChanged: TNotifyEvent;
 
   protected
+      fcreating   : Boolean;  // if form is being created
     procedure _SetupInstructions(); virtual;
 
     procedure _EnableDisableControls(); virtual;
@@ -64,6 +66,12 @@ uses
   //sdu, lc utils
   SDUGeneral, SDUi18n
  ;
+
+procedure TfrmWizard.FormCreate(Sender: TObject);
+begin
+  inherited;
+fcreating :=  true;
+end;
 
 procedure TfrmWizard.FormShow(Sender: TObject);
 var
@@ -112,7 +120,7 @@ false
   // Select the first tab
   // Yes, this is required; get an access violation if this isn't done
   pcWizard.ActivePageIndex := 0;
-
+fcreating :=  false;
 end;
 
 procedure TfrmWizard.pbBackClick(Sender: TObject);
@@ -204,6 +212,7 @@ procedure TfrmWizard._UpdateUIAfterChangeOnCurrentTab;
 var
   allOK: Boolean;
 begin
+if fcreating then exit;
   //is tab complete?
   allOK                   := _IsTabComplete(pcWizard.ActivePage);
   pcWizard.ActivePage.Tag := 0;

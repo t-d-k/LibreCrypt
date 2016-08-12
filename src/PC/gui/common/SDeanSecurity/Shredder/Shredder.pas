@@ -298,6 +298,11 @@ procedure OverwriteAndFree(var x: TStream); overload;
 procedure OverwriteAndFree(var x: TSDUMemoryStream); overload;
 procedure OverwriteAndFree(var x: TStringList); overload;
 
+function OverwriteVolWithChaff(drive: DriveLetterChar;overwriteWithChaff  : Boolean;
+chaffCypherUseKeyLength: Integer  (* In *bits* *);
+BlockSize: Integer;CypherDriver: Ansistring;CypherGUID: TGUID;Offset: ULONGLONG;
+VolFilename: String): TShredResult;
+
 
  // procedure Register;
 
@@ -310,7 +315,9 @@ uses
   SDUi18n,
   SDUFileIterator_U, SDUDirIterator_U,
   lcDialogs,
-  PartitionTools;
+  PartitionTools,
+  SDURandPool,
+  OTFEFreeOTFEBase_U;
 //forms
 
 type
@@ -2032,6 +2039,81 @@ begin
   Result := cnt;
 
 end;
+
+
+function OverwriteVolWithChaff(drive: DriveLetterChar ;overwriteWithChaff  : Boolean;chaffCypherUseKeyLength: Integer  (* In *bits* *);
+BlockSize: Integer;CypherDriver: Ansistring;CypherGUID: TGUID;Offset: ULONGLONG;
+VolFilename: String): TShredResult;
+var
+  shredder: TShredder;
+
+  //  partInfo:TPartitionInformationEx;
+  chaffCypherKey: TSDUBytes;
+  len: Integer;
+  IsPartition: Boolean;
+begin
+  IsPartition := IsPartitionPath(VolFilename);
+  shredder := TShredder.Create();
+  try
+    shredder.FileDirUseInt := True;
+    if overwriteWithChaff then begin
+      // Initilize zeroed IV for encryption
+      //    ftempCypherEncBlockNo := 0;
+
+      // Get *real* random data for encryption key
+        len := (chaffCypherUseKeyLength div 8);
+      { DONE 2 -otdk -crefactor : use randpool object that asserts if data isnt available - for now check not empty }
+      GetRandPool().GetRandomData(len, chaffCypherKey);
+
+//      chaffCypherKey                    := getRandomData_ChaffKey();
+      shredder.IntMethod                := smPseudorandom;
+      // Note: Setting this event overrides shredder.IntMethod
+      shredder.OnTweakEncryptDataEvent  := GetFreeOTFEBase().EncryptSectorData;
+      shredder.WipeCypherBlockSize := BlockSize;
+      shredder.WipeCypherKey            := chaffCypherKey;
+      shredder.wipeCypherDriver         := CypherDriver;
+      shredder.WipeCypherGUID           := CypherGUID;
+    end else begin
+      shredder.IntMethod := smZeros;
+    end;
+
+    shredder.IntPasses        := 1;
+    shredder.IntSegmentOffset := Offset;
+    // cdb is written after so can overwrite. if hidden dont overwrite main data
+    // will be 0 for non hidden vols
+
+    //      shredder.IntSegmentLength := todo; ignored as quickshred = false
+
+
+    { done 2 -otdk -ctest : this has not been tested for devices }
+    if IsPartition then begin
+      //       partInfo := fmeselectpartition.SDUDiskPartitionsPanel1.PartitionInfo[fmeselectpartition.SDUDiskPartitionsPanel1.Selected];
+      { TODO 2 -otdk -cfix : this doesnt work for partitions - need mounted drive filename }
+      // think need to use WriteRawVolumeData - as otherwise cant get low level access to drive.
+      // for now create vol first then shred opened volume (slower)
+      //        overwriteOK := shredder.DestroyPart(GetVolFilename(), False, False);
+      assert(drive <> #0);
+      result := shredder.WipeDriveFreeSpace(drive);
+
+    end else begin
+      result := shredder.DestroyFileOrDir(VolFilename,
+                 { TODO 1 -otdk -ccheck : check use of quickshred here }
+        False,   // quickShred - do all
+        False,   // silent
+        True     // leaveFile
+        );
+    end;
+
+
+
+
+
+  finally
+    shredder.Free();
+  end;
+
+
+end;//
 
 
 END.

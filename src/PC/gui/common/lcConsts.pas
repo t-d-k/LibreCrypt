@@ -51,6 +51,25 @@ const
   BYTES_IN_MEGABYTE = 1024 * BYTES_IN_KILOBYTE;
   BYTES_IN_GIGABYTE = 1024 * BYTES_IN_MEGABYTE;
 
+
+  DEFAULT_KEY_ITERATIONS           = 2048;
+  DEFAULT_KEY_ITERATIONS_INCREMENT = 512;
+
+  LINUX_KEYFILE_DEFAULT_NEWLINE  = nlLF;
+
+  // Only used by the GUI
+  DEFAULT_SALT_LENGTH = 256;  // In bits
+
+  // Indicate which of the emulated devices are writable
+  CAN_WRITE_TO_MOUNT_TYPE: array [TMountDiskType] of Boolean = (
+//    True,
+    True,
+    False,
+    False,
+    False
+    );
+
+
 resourcestring
   RS_DRIVEMAPPING_NOT_SUPPORTED_UNDER_VISTA_AND_7 =
     'For security reasons, drive mapping is not currently supported under Windows Vista and above';

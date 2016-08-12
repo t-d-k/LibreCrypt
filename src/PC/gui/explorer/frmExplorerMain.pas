@@ -875,7 +875,7 @@ begin
   if (mountAsSystem = vtFreeOTFE) then begin
     mountedOK   := MountFreeOTFE(filename, mountedAs, readonly);
   end else begin
-    if (mountAsSystem = vtPlainLinux) then begin
+    if (mountAsSystem = vtPlainDmCrypt) then begin
       mountedOK := frmKeyEntryPlainLinux.MountPlainLinux(filename, mountedAs, readonly, '', nil, 0, createVol, isHidden);
     end else begin
       if (mountAsSystem = vtLUKS) then begin
@@ -1121,14 +1121,13 @@ begin
   Result              := #0;
 
   searchDriveLetter   := userDriveLetter;
-  if (searchDriveLetter = #0) then begin
+  if (searchDriveLetter = #0) then
     searchDriveLetter := requiredDriveLetter;
-  end;
+
 
   // If still #0, just get the next one after C:
-  if (searchDriveLetter = #0) then begin
+  if (searchDriveLetter = #0) then
     searchDriveLetter := 'C';
-  end;
 
 
   freeDriveLetters  := DriveLetterString(uppercase(SDUGetUnusedDriveLetters()));
@@ -1141,9 +1140,8 @@ begin
     Delete(freeDriveLetters, 1, 1);
   end;
 
-  if (freeDriveLetters <> '') then begin
+  if (freeDriveLetters <> '') then
     Result := freeDriveLetters[1];
-  end;
 
 end;
 

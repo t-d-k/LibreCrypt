@@ -133,6 +133,7 @@ object frmCommonMain: TfrmCommonMain
       Hint = 'Contains tools commands.'
       object CopyFreeOTFEtoUSBdrive1: TMenuItem
         Action = actInstallOnUSBDrive
+        Caption = 'Installs the software on a USB (or other removable) drive'
       end
       object N16: TMenuItem
         Caption = '-'
@@ -154,8 +155,8 @@ object frmCommonMain: TfrmCommonMain
         Caption = '-'
       end
       object miCDB: TMenuItem
-        Caption = 'Critical data &block'
-        Hint = 'Contains commands relating to Critical Data Blocks (CDBs)'
+        Caption = 'FreeOTFE header '
+        Hint = 'Contains commands relating to FreeOTFE format headers'
         object miCDBBackup: TMenuItem
           Action = actCDBBackup
         end
@@ -164,6 +165,7 @@ object frmCommonMain: TfrmCommonMain
         end
         object miCDBPlaintextDump: TMenuItem
           Action = actCDBPlaintextDump
+          Hint = 'Dump a header to a readable text file'
         end
       end
     end
@@ -216,26 +218,26 @@ object frmCommonMain: TfrmCommonMain
     Top = 36
     object actFreeOTFENewNotHidden: TAction
       Caption = '&New...'
-      Hint = 'New FreeOTFE container'
+      Hint = 'Create a FreeOTFE container'
       ImageIndex = 18
       OnExecute = actFreeOTFENewNotHiddenExecute
     end
     object actFreeOTFENewHidden: TAction
-      Caption = '&New Hidden...'
-      Hint = 'New hidden FreeOTFE container'
+      Caption = '&New hidden...'
+      Hint = 'Create a hidden FreeOTFE container'
       ImageIndex = 20
       OnExecute = actFreeOTFENewHiddenExecute
     end
     object actFreeOTFEMountFileNotHidden: TAction
       Caption = '&Open file...'
-      Hint = 'Mount a file based FreeOTFE container'
+      Hint = 'Open a file-based FreeOTFE container'
       ImageIndex = 4
       ShortCut = 16461
       OnExecute = actFreeOTFEMountFileNotHiddenExecute
     end
     object actFreeOTFEMountFileHidden: TAction
-      Caption = '&Open Hidden file...'
-      Hint = 'Mount a file based hidden FreeOTFE container'
+      Caption = '&Open hidden file...'
+      Hint = 'Open a file-based hidden FreeOTFE container'
       ImageIndex = 19
       ShortCut = 16461
       OnExecute = actFreeOTFEMountFileHiddenExecute
@@ -248,31 +250,31 @@ object frmCommonMain: TfrmCommonMain
     end
     object actNewDmCryptNotHidden: TAction
       Caption = '&New dm-crypt file container...'
-      Hint = 'New Plain dm-crypt file based container'
+      Hint = 'Create a plain dm-crypt file based container'
       ImageIndex = 18
       OnExecute = actNewDmcryptNotHiddenExecute
     end
     object actNewDmCryptHidden: TAction
       Caption = '&New hidden dm-crypt file container...'
-      Hint = 'New hidden plain dm-crypt file based container'
+      Hint = 'Create a hidden plain dm-crypt file-based container'
       ImageIndex = 20
       OnExecute = actNewHiddenDmcryptExecute
     end
     object actMountDmcryptHidden: TAction
       Caption = '&Open hidden dm-crypt...'
-      Hint = 'Open hidden Plain dm-crypt file container'
+      Hint = 'Open a hidden plain dm-crypt file-based container'
       ImageIndex = 19
       OnExecute = actMountDmcryptHiddenExecute
     end
     object aMountLUKS: TAction
       Caption = '&Open LUKS container...'
-      Hint = 'Mount LUKS file or partition container'
+      Hint = 'Open a LUKS file or partition container'
       ImageIndex = 4
       OnExecute = aMountLUKSExecute
     end
     object actMountDmcryptNotHidden: TAction
-      Caption = '&Open Plain dm-crypt file...'
-      Hint = 'Open dm-crypt not hidden'
+      Caption = '&Open plain dm-crypt ...'
+      Hint = 'Open a plain dm-crypt not hidden container'
       ImageIndex = 4
       OnExecute = actMountDmcryptNotHiddenExecute
     end
@@ -300,7 +302,7 @@ object frmCommonMain: TfrmCommonMain
     end
     object actPKCS11TokenManagement: TAction
       Caption = '&PKCS#11 token management...'
-      Hint = 'Enables you to manage PKCS#11 tokens.'
+      Hint = 'Manage PKCS#11 tokens.'
       OnExecute = actPKCS11TokenManagementExecute
     end
     object actUserGuide: TAction
@@ -314,17 +316,19 @@ object frmCommonMain: TfrmCommonMain
       OnExecute = actInstallOnUSBDriveExecute
     end
     object actAbout: TAction
-      Caption = '"ABOUT APPLICATION" CAPTION SET AUTOMATICALLY'
-      Hint = 'Displays program inforamtion, version number and copyright.'
+      Caption = 'About... '
+      Hint = 'Shows the program information, version number and copyright'
     end
     object actOptions: TAction
       Caption = '&Options...'
-      Hint = 'Enables you to change settings'
+      Hint = 'Change program settings'
       ImageIndex = 17
     end
     object actCheckForUpdates: TAction
       Caption = 'Check for u&pdates...'
-      Hint = 'Checks to see if a later version of the software is available'
+      Hint = 
+        'Check to see if a more up-to-date version of the program is avai' +
+        'lable'
       OnExecute = actCheckForUpdatesExecute
     end
     object actCDBBackup: TAction
@@ -338,26 +342,28 @@ object frmCommonMain: TfrmCommonMain
       OnExecute = actCDBRestoreExecute
     end
     object actCDBPlaintextDump: TAction
-      Caption = '&Dump to human readable file...'
+      Caption = '&Dump to text file...'
       Hint = 'Dump a header to a human readable text file.'
       OnExecute = actCDBPlaintextDumpExecute
     end
     object actFullTest: TAction
-      Caption = 'Full Tests'
-      Hint = 'Do Full Tests (not create LUKS)'
+      Caption = 'Full tests'
+      Hint = 'Do full system Tests (not including LUKS)'
       OnExecute = actFullTestExecute
     end
     object actLUKSDump: TAction
-      Caption = '&Dump LUKS details to human readable file...'
-      Hint = 'Dump a LUKS volume'#39's header to a human readable text file.'
+      Caption = '&Dump LUKS details to text file...'
+      Hint = 'Dump a LUKS volume'#39's header to a readable text file.'
       OnExecute = actLUKSDumpExecute
     end
     object aLuksTest: TAction
-      Caption = 'Test Luks'
+      Caption = 'Test LUKS'
+      Hint = 'Test LUKS volumes'
       OnExecute = aLuksTestExecute
     end
     object actNewLuks: TAction
       Caption = 'New LUKS ...'
+      Hint = 'Create a new LUKS format container'
       ImageIndex = 18
       OnExecute = actLUKSNewExecute
     end
@@ -366,7 +372,7 @@ object frmCommonMain: TfrmCommonMain
     Left = 68
     Top = 52
     Bitmap = {
-      494C010115001001980210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010115001001C40210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000006000000001002000000000000060
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000000A0704000000000000000000312E2B004B48
@@ -1175,7 +1181,7 @@ object frmCommonMain: TfrmCommonMain
     Left = 28
     Top = 96
     Bitmap = {
-      494C0101140010018C0218001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010114001001B80218001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006000000090000000010020000000000000D8
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

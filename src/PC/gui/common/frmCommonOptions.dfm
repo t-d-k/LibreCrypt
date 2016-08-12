@@ -3,7 +3,7 @@ object frmCommonOptions: TfrmCommonOptions
   Top = 197
   BorderStyle = bsDialog
   Caption = 'Options'
-  ClientHeight = 488
+  ClientHeight = 451
   ClientWidth = 513
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,21 +15,31 @@ object frmCommonOptions: TfrmCommonOptions
   Position = poScreenCenter
   OnCreate = FormCreate
   OnShow = FormShow
+  DesignSize = (
+    513
+    451)
   PixelsPerInch = 96
   TextHeight = 13
   object lblSettingsLocation: TLabel
-    Left = 20
-    Top = 405
-    Width = 112
+    Left = 10
+    Top = 388
+    Width = 136
     Height = 13
+    Anchors = [akLeft, akBottom]
     Caption = '&Save above settings to:'
     FocusControl = cbSettingsLocation
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object imgNoSaveWarning: TImage
-    Left = 452
-    Top = 382
+    Left = 420
+    Top = 388
     Width = 16
-    Height = 16
+    Height = 18
     Picture.Data = {
       055449636F6E0000010001001010100000000000280100001600000028000000
       10000000200000000100040000000000C0000000000000000000000000000000
@@ -44,42 +54,38 @@ object frmCommonOptions: TfrmCommonOptions
       FE7F0000}
   end
   object pbOK: TButton
-    Left = 175
-    Top = 452
+    Left = 339
+    Top = 415
     Width = 75
     Height = 25
+    Anchors = [akRight, akBottom]
     Caption = 'OK'
     Default = True
-    TabOrder = 3
+    TabOrder = 2
     OnClick = pbOKClick
+    ExplicitTop = 452
   end
   object pbCancel: TButton
-    Left = 263
-    Top = 452
+    Left = 420
+    Top = 415
     Width = 75
     Height = 25
+    Anchors = [akRight, akBottom]
     Cancel = True
     Caption = 'Cancel'
-    TabOrder = 4
+    TabOrder = 3
     OnClick = pbCancelClick
+    ExplicitTop = 452
   end
   object cbSettingsLocation: TComboBox
-    Left = 169
-    Top = 406
-    Width = 169
+    Left = 161
+    Top = 385
+    Width = 253
     Height = 21
     Style = csDropDownList
+    Anchors = [akLeft, akBottom]
     TabOrder = 1
     OnChange = ControlChanged
-  end
-  object ckAssociateFiles: TSDUCheckBox
-    Left = 20
-    Top = 433
-    Width = 158
-    Height = 13
-    Caption = 'Associate %s with ".vol" &files'
-    TabOrder = 2
-    AutoSize = True
   end
   object pcOptions: TPageControl
     Left = 0
@@ -92,10 +98,6 @@ object frmCommonOptions: TfrmCommonOptions
     object tsGeneral: TTabSheet
       Caption = 'General'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gbGeneralMain: TGroupBox
         Left = 0
         Top = 0
@@ -143,7 +145,7 @@ object frmCommonOptions: TfrmCommonOptions
         end
         object ckDisplayStatusbar: TSDUCheckBox
           Left = 16
-          Top = 120
+          Top = 121
           Width = 221
           Height = 17
           Caption = 'Show &statusbar'
@@ -197,7 +199,7 @@ object frmCommonOptions: TfrmCommonOptions
         object ckPromptMountSuccessful: TSDUCheckBox
           Left = 16
           Top = 167
-          Width = 197
+          Width = 230
           Height = 13
           Caption = 'Show &message on successful open'
           TabOrder = 9
@@ -232,12 +234,21 @@ object frmCommonOptions: TfrmCommonOptions
         end
         object ckStoreLayout: TSDUCheckBox
           Left = 16
-          Top = 191
-          Width = 155
+          Top = 186
+          Width = 230
           Height = 13
           Caption = 'Save &window layout on exit'
           TabOrder = 11
           OnClick = ckStoreLayoutClick
+          AutoSize = True
+        end
+        object ckAssociateFiles: TSDUCheckBox
+          Left = 16
+          Top = 205
+          Width = 249
+          Height = 13
+          Caption = 'Associate %s with ".vol" &files'
+          TabOrder = 12
           AutoSize = True
         end
       end
@@ -365,9 +376,7 @@ object frmCommonOptions: TfrmCommonOptions
             369
             35)
           inherited edFilename: TEdit
-            Left = 3
             Width = 302
-            ExplicitLeft = 3
             ExplicitWidth = 302
           end
           inherited pbBrowse: TButton
@@ -392,29 +401,25 @@ object frmCommonOptions: TfrmCommonOptions
     object tsAdvanced: TTabSheet
       Caption = 'Advanced'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblMRUMaxItemCount: TLabel
         Left = 16
-        Top = 136
-        Width = 270
-        Height = 26
+        Top = 104
+        Width = 285
+        Height = 13
         Caption = '&Max. number of containers to show in most recently used list:'
         FocusControl = seMRUMaxItemCount
         WordWrap = True
       end
       object lblMRUMaxItemCountInst: TLabel
         Left = 167
-        Top = 171
+        Top = 139
         Width = 134
         Height = 13
         Caption = '(Set to 0 to disable MRU list)'
       end
       object ckRevertVolTimestamps: TSDUCheckBox
         Left = 16
-        Top = 43
+        Top = 11
         Width = 221
         Height = 17
         Caption = '&Reset container timestamps on lock'
@@ -424,7 +429,7 @@ object frmCommonOptions: TfrmCommonOptions
       end
       object ckAllowNewlinesInPasswords: TSDUCheckBox
         Left = 16
-        Top = 72
+        Top = 40
         Width = 157
         Height = 13
         Caption = 'Allow &newlines in passwords'
@@ -434,7 +439,7 @@ object frmCommonOptions: TfrmCommonOptions
       end
       object ckAllowTabsInPasswords: TSDUCheckBox
         Left = 16
-        Top = 104
+        Top = 72
         Width = 137
         Height = 13
         Caption = 'Allow ta&bs in passwords'
@@ -444,31 +449,17 @@ object frmCommonOptions: TfrmCommonOptions
       end
       object seMRUMaxItemCount: TSpinEdit64
         Left = 16
-        Top = 168
+        Top = 136
         Width = 145
         Height = 22
         Increment = 1
         MaxValue = 10
         TabOrder = 3
       end
-      object ckAdvancedMountDlg: TSDUCheckBox
-        Left = 16
-        Top = 20
-        Width = 221
-        Height = 17
-        Caption = 'Show advanced &options when opening'
-        TabOrder = 4
-        WordWrap = True
-        AutoSize = True
-      end
     end
     object tsAutorun: TTabSheet
       Caption = 'Autorun'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object gbAutorun: TGroupBox
         Left = 0
         Top = 0
@@ -502,19 +493,22 @@ object frmCommonOptions: TfrmCommonOptions
           FocusControl = edPostDismountExe
         end
         object lblInstructions: TLabel
-          Left = 2
-          Top = 15
-          Width = 407
+          AlignWithMargins = True
+          Left = 5
+          Top = 18
+          Width = 495
           Height = 78
           Align = alTop
           Caption = 
             'LibreCrypt can be configured here to automatically run programs ' +
-            #10#13'after opening, before locking, and after locking.'#10#13'Any post-op' +
-            'en and pre-lock executables specified must use a relative path t' +
-            'o the '#10#13'executable within the opened container.'#10#13'Executables wit' +
-            'h spaces in their paths/names must be surrounded with double quo' +
-            'tes.'#10#13'"%DRIVE" will be substituted with the drive letter of the ' +
-            'opened drive'
+            'after opening, before locking, and after locking.'#10#13'Any post-open' +
+            ' and pre-lock executables specified must use a relative path to ' +
+            'the executable within the opened container.'#10#13'Executables with sp' +
+            'aces in their paths/names must be surrounded with double quotes.' +
+            #10#13'"%DRIVE" will be substituted with the drive letter of the open' +
+            'ed drive'
+          WordWrap = True
+          ExplicitWidth = 489
         end
         object edPostMountExe: TEdit
           Left = 98

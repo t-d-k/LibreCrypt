@@ -35,7 +35,6 @@ type
     pbCancel:       TButton;
     cbSettingsLocation: TComboBox;
     lblSettingsLocation: TLabel;
-    ckAssociateFiles: TSDUCheckBox;
     pcOptions:      TPageControl;
     imgNoSaveWarning: TImage;
     tsPKCS11:       TTabSheet;
@@ -74,7 +73,6 @@ type
     lblMRUMaxItemCount: TLabel;
     seMRUMaxItemCount: TSpinEdit64;
     lblMRUMaxItemCountInst: TLabel;
-    ckAdvancedMountDlg: TSDUCheckBox;
     tsAutorun:      TTabSheet;
     gbAutorun:      TGroupBox;
     Label33:        TLabel;
@@ -89,6 +87,7 @@ type
     edPostDismountExe: TEdit;
     ckPrePostExeWarn: TSDUCheckBox;
     OpenDialog:     TSDUOpenDialog;
+    ckAssociateFiles: TSDUCheckBox;
 
     procedure pbOKClick(Sender: TObject);
     procedure pbCancelClick(Sender: TObject);
@@ -188,8 +187,7 @@ var
 begin
   Result := GSettingsSaveLocation;
   for sl := low(sl) to high(sl) do begin
-    if (_SettingsLocationDisplay(sl) = cbSettingsLocation.Items[cbSettingsLocation.ItemIndex]) then
-    begin
+    if (_SettingsLocationDisplay(sl) = cbSettingsLocation.Items[cbSettingsLocation.ItemIndex]) then begin
       Result := sl;
       break;
     end;
@@ -548,8 +546,8 @@ end;
 
 procedure TfrmCommonOptions._InitializePkcs11Options();
 begin
-  SDUCenterControl(gbPKCS11, ccHorizontal);
-  SDUCenterControl(gbPKCS11, ccVertical, 25);
+//  SDUCenterControl(gbPKCS11, ccHorizontal);
+//  SDUCenterControl(gbPKCS11, ccVertical, 25);
 
   feLibFilename.DefaultExt         := 'dll';
   feLibFilename.OpenDialog.Options :=
@@ -559,8 +557,8 @@ begin
   feLibFilename.FilterIndex        := 0;
 
   //  OTFEFreeOTFEVolumeSelect1.OTFEFreeOTFE         := OTFEFreeOTFE;
-  OTFEFreeOTFEVolumeSelect1.FileSelectFilter     := FILE_FILTER_FLT_VOLUMES;
-  OTFEFreeOTFEVolumeSelect1.FileSelectDefaultExt := FILE_FILTER_DFLT_VOLUMES;
+  OTFEFreeOTFEVolumeSelect1.SetFileSelectFilter     ( FILE_FILTER_FLT_VOLUMES);
+  OTFEFreeOTFEVolumeSelect1.SetFileSelectDefaultExt( FILE_FILTER_DFLT_VOLUMES);
 
   // Disallow partition selection if running under DLL version
   OTFEFreeOTFEVolumeSelect1.AllowPartitionSelect := not (GetFreeOTFEBase() is TOTFEFreeOTFEDLL);
@@ -584,15 +582,16 @@ var
   //  i:            Integer;
   //  j:            Integer;
   //  currTabSheet: TTabSheet;
-  maxWidth: Integer;
-  idx:      Integer;
-  useIdx:   Integer;
+//  maxWidth,
+  idx,
+  useIdx, i:   Integer;
   uf:       TUpdateFrequency;
+  driveLetters  : string;
 begin
   FFlagClearLayoutOnSave := False;
 
   ckExploreAfterMount.Checked        := config.ExploreAfterMount;
-  ckAdvancedMountDlg.Checked         := config.ShowAdvancedMountDialog;
+//  ckAdvancedMountDlg.Checked         := config.ShowAdvancedMountDialog;
   ckRevertVolTimestamps.Checked      := config.FreezeVolTimestamps;
   ckAllowNewlinesInPasswords.Checked := config.AllowNewlinesInPasswords;
   ckAllowTabsInPasswords.Checked     := config.AllowTabsInPasswords;
@@ -641,27 +640,31 @@ begin
 
   // Center "assocate with .vol files" checkbox
   ckAssociateFiles.Caption := Format(_('Associate %s with ".vol" &files'), [Application.Title]);
-  SDUCenterControl(ckAssociateFiles, ccHorizontal);
+//  SDUCenterControl(ckAssociateFiles, ccHorizontal);
 
   // Reposition the "Settings location" controls, bearing in mind the label
   // can change width depending on the language used and whether it's in bold
   // or not
 
-  // Setup for worst case scenario - the label is in bold (widest)
-  lblSettingsLocation.font.style := [fsBold];
-
   // Determine full width of label, combobox and warning image
-  maxWidth := (cbSettingsLocation.Width + CONTROL_MARGIN + lblSettingsLocation.Width +
-    CONTROL_MARGIN + imgNoSaveWarning.Width);
-
-  lblSettingsLocation.left := (self.Width - maxWidth) div 2;
-  cbSettingsLocation.left  := (lblSettingsLocation.left + lblSettingsLocation.Width +
-    CONTROL_MARGIN);
-  imgNoSaveWarning.left    := (cbSettingsLocation.left + cbSettingsLocation.Width +
-    CONTROL_MARGIN);
+//  maxWidth := (cbSettingsLocation.Width + CONTROL_MARGIN + lblSettingsLocation.Width +
+//    CONTROL_MARGIN + imgNoSaveWarning.Width);
+//
+//  lblSettingsLocation.left := (self.Width - maxWidth) div 2;
+//  cbSettingsLocation.left  := (lblSettingsLocation.left + lblSettingsLocation.Width +
+//    CONTROL_MARGIN);
+//  imgNoSaveWarning.left    := (cbSettingsLocation.left + cbSettingsLocation.Width +
+//    CONTROL_MARGIN);
 
 
   _ReadAutoRunSettings(config);
+
+
+  cbDrive.Items.Clear();
+  cbDrive.Items.Add(USE_DEFAULT);
+  driveLetters := SDUGetUnusedDriveLetters();
+  for i := 1 to length(driveLetters) do
+    cbDrive.Items.Add(driveLetters[i] + ':');
 
   // Call enable/disable controls to put the label in bold/clear the bold
   _EnableDisableControls();
@@ -697,7 +700,7 @@ begin
 
   config.ShowPasswords        := ckShowPasswords.Checked;
   config.StoreLayout             := ckStoreLayout.Checked;
-  config.ShowAdvancedMountDialog := ckAdvancedMountDlg.Checked;
+//  config.ShowAdvancedMountDialog := ckAdvancedMountDlg.Checked;
   config.FreezeVolTimestamps  := ckRevertVolTimestamps.Checked;
 
 
@@ -760,7 +763,7 @@ end;
 procedure TfrmCommonOptions.FormCreate(Sender: TObject);
 begin
   inherited;
-  OTFEFreeOTFEVolumeSelect1.SelectFor            := fndOpen;
+  OTFEFreeOTFEVolumeSelect1.SelectFor            := osOpen;
   OTFEFreeOTFEVolumeSelect1.AllowPartitionSelect := True;
     {$IFDEF _DXGETTEXT}
     // dont translate edits - includes paths
@@ -831,8 +834,8 @@ begin
   end;
 
   // Adjust "Save settings to:" label
-  lblSettingsLocation.Left := (cbSettingsLocation.left - lblSettingsLocation.Width -
-    CONTROL_MARGIN);
+//  lblSettingsLocation.Left := (cbSettingsLocation.left - lblSettingsLocation.Width -
+//    CONTROL_MARGIN);
 
 end;
 

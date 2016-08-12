@@ -79,7 +79,7 @@ begin
   // height is to great as to obscure the "Container/keyfile" label below it
   lblInstructions.Width := (Self.Width - (lblInstructions.left * 2));
   OTFEFreeOTFEVolumeSelect1.OnChange := OTFEFreeOTFEVolumeSelect1Change;
-   OTFEFreeOTFEVolumeSelect1.SelectFor := fndOpen;
+   OTFEFreeOTFEVolumeSelect1.SelectFor := osOpen;
     OTFEFreeOTFEVolumeSelect1.AllowPartitionSelect := True;
 
 end;
@@ -89,10 +89,9 @@ end;
 procedure TfrmSelectVolumeFileAndOffset.FormShow(Sender: TObject);
 begin
   OTFEFreeOTFEVolumeSelect1.Filename := '';
-//  OTFEFreeOTFEVolumeSelect1.OTFEFreeOTFE := OTFEFreeOTFE;
-  OTFEFreeOTFEVolumeSelect1.SelectFor := fndOpen;
-  OTFEFreeOTFEVolumeSelect1.FileSelectFilter     := FILE_FILTER_FLT_VOLUMESANDKEYFILES;
-  OTFEFreeOTFEVolumeSelect1.FileSelectDefaultExt := FILE_FILTER_DFLT_VOLUMESANDKEYFILES;
+  OTFEFreeOTFEVolumeSelect1.SelectFor := osOpen;
+  OTFEFreeOTFEVolumeSelect1.SetFileSelectFilter     ( FILE_FILTER_FLT_VOLUMESANDKEYFILES);
+  OTFEFreeOTFEVolumeSelect1.SetFileSelectDefaultExt ( FILE_FILTER_DFLT_VOLUMESANDKEYFILES);
 
   se64UnitOffset.Value := 0;
 

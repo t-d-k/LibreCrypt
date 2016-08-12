@@ -7,7 +7,6 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
   Font.Name = 'MS Sans Serif'
   Position = poScreenCenter
   OnClose = FormClose
-  OnCreate = FormCreate
   OnDestroy = FormDestroy
   ExplicitWidth = 616
   ExplicitHeight = 465
@@ -28,6 +27,8 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
       Width = 608
       Height = 373
       ActivePage = tsVolFile
+      ExplicitLeft = 1
+      ExplicitTop = 1
       ExplicitWidth = 608
       ExplicitHeight = 373
       object tsVolFile: TTabSheet
@@ -124,11 +125,9 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
               594
               48)
             inherited edFilename: TEdit
-              Left = 3
               Top = 11
               Width = 498
               OnChange = feVolFilenameedFilenameChange
-              ExplicitLeft = 3
               ExplicitTop = 11
               ExplicitWidth = 498
             end
@@ -137,9 +136,6 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
               Top = 11
               ExplicitLeft = 515
               ExplicitTop = 11
-            end
-            inherited SaveDialog1: TSDUSaveDialog
-              Left = 108
             end
           end
         end
@@ -237,7 +233,7 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
           end
           inherited ilErrorWarning: TImageList
             Bitmap = {
-              494C010103000400580110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C010103000400640110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -545,10 +541,6 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
       object tsRNGSelect: TTabSheet
         Caption = 'RNG Select'
         ImageIndex = 6
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object reInstructRNGSelect1: TLabel
           Left = 3
           Top = 12
@@ -668,10 +660,6 @@ inherited frmCreateLUKSVolumeWizard: TfrmCreateLUKSVolumeWizard
       object tsRNGPKCS11: TTabSheet
         Caption = 'RNG PKCS#11 token'
         ImageIndex = 9
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object lblToken: TLabel
           Left = 11
           Top = 51

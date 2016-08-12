@@ -58,12 +58,13 @@ inherited fmeVolumeSelect: TfmeVolumeSelect
     OnChange = edFilenameChange
   end
   object OpenDialog: TSDUOpenDialog
-    Options = [ofEnableSizing]
+    Options = [ofFileMustExist, ofEnableSizing]
     PreserveCWD = False
     Left = 108
   end
   object SaveDialog: TSDUSaveDialog
+    Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing, ofDontAddToRecent]
     PreserveCWD = False
-    Left = 140
+    Left = 164
   end
 end

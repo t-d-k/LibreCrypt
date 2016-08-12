@@ -118,11 +118,11 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure frmeNewPasswordChange(Sender: TObject);
     procedure preSrcUserKeyChange(Sender: TObject);
+
   private
 
     fdeviceList:  TStringList;
     fdeviceTitle: TStringList;
-
     FPKCS11TokensAvailable: Boolean;
 
     function GetRNGSet(): TRNGSet;
@@ -144,30 +144,25 @@ type
     function GetDestRequestedDriveLetter(): DriveLetterChar;
     procedure SetDestUserKey(const Value: TSDUBytes);
 
-    procedure PopulatePKCS11Tokens();
-
-    procedure SetupInstructionsCreateKeyfile();
-
+    procedure _PopulatePKCS11Tokens();
+    procedure _SetupInstructionsCreateKeyfile();
     procedure SetIsPartition(const Value: Boolean);
-
 
   protected
     fsilent:       Boolean;
     fsilentResult: TModalResult;
-        fChangePasswordCreateKeyfile: TChangePasswordCreateKeyfile;
+    fChangePasswordCreateKeyfile: TChangePasswordCreateKeyfile;
+
     procedure _SetupInstructions(); override;
-
-
     function _IsTabSkipped(tabSheet: TTabSheet): Boolean; override;
-
-    procedure FormWizardStepChanged(Sender: TObject);
+    procedure _FormWizardStepChanged(Sender: TObject);
     function _IsTabComplete(checkTab: TTabSheet): Boolean; override;
+
   public
 
     procedure fmeSelectPartitionChanged(Sender: TObject);
 
   published
-    property silent: Boolean Read fsilent Write fsilent;
     property IsPartition: Boolean Read GetIsPartition Write SetIsPartition;
     property SrcFilename: String Read GetSrcFilename Write SetSrcFilename;
     {    property Offset: Int64 Read GetOffset;}
@@ -184,8 +179,8 @@ type
   end;
 
       function WizardChangePassword(SrcFilename: String = ''; OrigKeyPhrase: Ansistring = '';
-      NewKeyPhrase: Ansistring = ''; silent: Boolean = False): Boolean;
-    function WizardCreateKeyfile(silent: Boolean = False): Boolean;
+      NewKeyPhrase: Ansistring = ''): Boolean;
+    function WizardCreateKeyfile(): Boolean;
 
 
 implementation
@@ -196,7 +191,7 @@ uses
   //delphi & libs (0)
    MSCryptoAPI,
   //sdu & LibreCrypt utils (1)
-    lcConsts, sduGeneral,
+    lcConsts, sduGeneral,lcCommandLine,
   OTFEFreeOTFEDLL_U,
   PKCS11Lib, SDUi18n,
   pkcs11_library
@@ -527,7 +522,7 @@ begin
   InitMouseRNGData();
 
   // tsRNGPKCS11
-  PopulatePKCS11Tokens();
+  _PopulatePKCS11Tokens();
 
   // tsRNGGPG
   lblGPGFilename.Caption := '';
@@ -765,7 +760,7 @@ begin
 end;
 
 
-procedure TfrmWizardChangePasswordCreateKeyfile.SetupInstructionsCreateKeyfile();
+procedure TfrmWizardChangePasswordCreateKeyfile._SetupInstructionsCreateKeyfile();
 begin
   self.Caption := _('Create Keyphrase for container');
 
@@ -805,7 +800,7 @@ begin
   inherited;
 
   if not (fChangePasswordCreateKeyfile = opChangePassword) then
-    SetupInstructionsCreateKeyfile();
+    _SetupInstructionsCreateKeyfile();
 end;
 
 
@@ -834,7 +829,6 @@ begin
   end;
 
   _UpdateUIAfterChangeOnCurrentTab();
-
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.pbBrowseSrcClick(Sender: TObject);
@@ -850,15 +844,12 @@ begin
   end;
 
   _UpdateUIAfterChangeOnCurrentTab();
-
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.rgFileOrPartitionClick(Sender: TObject);
 begin
   _UpdateUIAfterChangeOnCurrentTab();
-
 end;
-
 
 function TfrmWizardChangePasswordCreateKeyfile.GetIsPartition(): Boolean;
 begin
@@ -873,7 +864,7 @@ begin
     rgFileOrPartition.ItemIndex := FILEORPART_OPT_VOLUME_FILE_INDEX;
 end;
 
-procedure TfrmWizardChangePasswordCreateKeyfile.FormWizardStepChanged(Sender: TObject);
+procedure TfrmWizardChangePasswordCreateKeyfile._FormWizardStepChanged(Sender: TObject);
 begin
   inherited;
 
@@ -906,12 +897,13 @@ begin
   fdeviceTitle                := TStringList.Create();
   fmeSelectPartition.OnChange := fmeSelectPartitionChanged;
 
-  OnWizardStepChanged := FormWizardStepChanged;
+  OnWizardStepChanged := _FormWizardStepChanged;
   { done -otdk -crefactor : populate in designer }
 
   // tsFileOrPartition
   rgFileOrPartition.ItemIndex := FILEORPART_OPT_VOLUME_FILE_INDEX;
   frmeNewPassword.OnChange    := frmeNewPasswordChange;
+  fsilent := GetCmdLine.isSilent;
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.FormDestroy(Sender: TObject);
@@ -922,7 +914,7 @@ begin
   PurgeMouseRNGData();
 end;
 
-procedure TfrmWizardChangePasswordCreateKeyfile.PopulatePKCS11Tokens();
+procedure TfrmWizardChangePasswordCreateKeyfile._PopulatePKCS11Tokens();
 begin
   FPKCS11TokensAvailable := (PKCS11PopulateTokenList(GPKCS11Library,
     cbToken) > 0);
@@ -937,7 +929,7 @@ end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.pbRefreshClick(Sender: TObject);
 begin
-  PopulatePKCS11Tokens();
+  _PopulatePKCS11Tokens();
 end;
 
 procedure TfrmWizardChangePasswordCreateKeyfile.fmeSelectPartitionChanged(Sender: TObject);
@@ -945,10 +937,8 @@ begin
   _UpdateUIAfterChangeOnCurrentTab();
 end;
 
-
-// ----------------------------------------------------------------------------
 function WizardChangePassword(SrcFilename: String = '';
-  OrigKeyPhrase: Ansistring = ''; NewKeyPhrase: Ansistring = ''; silent: Boolean = False): Boolean;
+  OrigKeyPhrase: Ansistring = ''; NewKeyPhrase: Ansistring = ''): Boolean;
 var
   dlg: TfrmWizardChangePasswordCreateKeyfile;
 begin
@@ -962,7 +952,6 @@ begin
       dlg.SrcFileName := SrcFilename;
       dlg.SrcUserKey := SDUStringToSDUBytes(OrigKeyPhrase);
       dlg.DestUserKey := SDUStringToSDUBytes(NewKeyPhrase);
-      dlg.silent := silent;
       Result     := (dlg.ShowModal() = mrOk);
     finally
       dlg.Free();
@@ -970,8 +959,7 @@ begin
   end;
 end;
 
-// ----------------------------------------------------------------------------
-function WizardCreateKeyfile(silent: Boolean = False): Boolean;
+function WizardCreateKeyfile(): Boolean;
 var
   dlg: TfrmWizardChangePasswordCreateKeyfile;
 begin
@@ -981,17 +969,7 @@ begin
     dlg := TfrmWizardChangePasswordCreateKeyfile.Create(nil);
     try
       dlg.fChangePasswordCreateKeyfile := opCreateKeyfile;
-      dlg.silent := silent;
-      //thinks this not needed:
-{
-      if silent then begin
-        dlg.pbFinishClick(self);
-        Result := True;
-      end else begin
-
-      end;    }
       Result     := (dlg.ShowModal() = mrOk);
-
     finally
       dlg.Free();
     end;

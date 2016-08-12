@@ -48,6 +48,7 @@ uses
 {$WARN UNIT_PLATFORM OFF}
   FileCtrl,
 {$WARN UNIT_PLATFORM ON}
+Winapi.ShellApi,
 //sdu lcutils
 lcConsts,
   lcDialogs,
@@ -61,6 +62,9 @@ lcConsts,
 const
   SDUCRLF = ''#13#10;
 {$ENDIF}
+
+// CopyFile(...), but using Windows API to display "flying files" dialog while copying
+function SDUFileCopy(srcFilename: String; destFilename: String): Boolean; forward;
 
 procedure TfrmInstallOnUSBDrive.FormShow(Sender: TObject);
 begin
@@ -308,6 +312,36 @@ begin
     Result := '\' + Result;
   end;
 
+
+end;
+
+
+ // ----------------------------------------------------------------------------
+ // CopyFile(...), but using Windows API to display "flying files" dialog while copying
+function SDUFileCopy(srcFilename: String; destFilename: String): Boolean;
+var
+  fileOpStruct: TSHFileOpStruct;
+begin
+
+  Result                     := False;
+  // srcFilename and destFilename *MUST* end in a double NULL for
+  // SHFileOperation to operate correctly
+  srcFilename                := srcFilename + #0 + #0;
+  destFilename               := destFilename + #0 + #0;
+  fileOpStruct.Wnd           := 0;
+  fileOpStruct.wFunc         := FO_COPY;
+  fileOpStruct.pFrom         := PChar(srcFilename);
+  fileOpStruct.pTo           := PChar(destFilename);
+  fileOpStruct.fFlags        := (FOF_NOCONFIRMATION or FOF_NOCONFIRMMKDIR);
+  fileOpStruct.fAnyOperationsAborted := False;
+  fileOpStruct.hNameMappings := nil;
+  fileOpStruct.lpszProgressTitle := nil;
+
+  if (SHFileOperation(fileOpStruct) = 0) then begin
+    Result := not (fileOpStruct.fAnyOperationsAborted);
+  end;
+
+//  Tfile.Copy(srcFilename, destFilename);
 
 end;
 

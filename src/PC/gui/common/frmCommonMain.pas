@@ -35,7 +35,7 @@ type
     ceSUCCESS = 0,
     ceINVALID_CMDLINE = 100,
     ceUNABLE_TO_MOUNT = 102,
-    ceFILE_NOT_FOUND = 106,
+    ceFILE_NOT_FOUND = 109,
 
     // main specific
     ceUNABLE_TO_CONNECT = 101,
@@ -254,21 +254,21 @@ type
     procedure WMSyscommand(var Message: TWmSysCommand); message WM_SYSCOMMAND;
     {$ENDIF}
     {$ENDIF}
-    procedure AddStdIcons();
-    procedure AddUACShieldIcons();
+    procedure _AddStdIcons();
+    procedure _AddUACShieldIcons();
 //    procedure SetupToolbarAndMenuIcons(); virtual;
 //    procedure RecaptionToolbarAndMenuIcons(); virtual;
 //    procedure SetIconListsAndIndexes(); virtual;
 //    procedure SetupToolbarFromSettings(); virtual; abstract;
 
-    procedure StartupUpdateCheck();
+    procedure _StartupUpdateCheck();
 
-    procedure BackupRestore(dlgType: TCDBOperationType;
+    procedure _BackupRestore(dlgType: TCDBOperationType;
       volPath: TFilename = ''; hdrPath: TFilename = '';
       silent: Boolean = False);
 
     procedure SetStatusBarToHint(Sender: TObject);
-    function EnsureOTFEComponentActive: Boolean;
+    function _EnsureOTFEComponentActive: Boolean;
 
     procedure _DoFullTests; virtual; abstract;
     procedure _DoLuksTests; virtual; abstract;
@@ -343,6 +343,7 @@ uses
   SDUGraphics,
   SDUi18n, LUKSTools,
     lcCommandLine,
+    PartitionTools,
   // lc forms
    frmAbout,
   frmHdrDump,
@@ -389,7 +390,7 @@ end;
 
 
 // Add standard Windows icons
-procedure TfrmCommonMain.AddStdIcons();
+procedure TfrmCommonMain._AddStdIcons();
 
   procedure LoadSystemImagesIntoImageList(imageSet: Integer;
     ImgList: TImageList);
@@ -460,7 +461,7 @@ begin
 end;
 
 // Add an standard Windows Vista UAC shield icon
-procedure TfrmCommonMain.AddUACShieldIcons();
+procedure TfrmCommonMain._AddUACShieldIcons();
 var
   anIcon:     TIcon;
   iconHandle: HICON;
@@ -563,7 +564,7 @@ begin
   // Load system icons...
   if SDUOSVistaOrLater() then
     // Mark as appropriate with UAC "shield" icons
-    AddUACShieldIcons();
+    _AddUACShieldIcons();
 
 
   // Reload settings to ensure any any components are setup, etc
@@ -833,15 +834,15 @@ end;
 
 procedure TfrmCommonMain.actCDBBackupExecute(Sender: TObject);
 begin
-  BackupRestore(opBackup);
+  _BackupRestore(opBackup);
 end;
 
 procedure TfrmCommonMain.actCDBRestoreExecute(Sender: TObject);
 begin
-  BackupRestore(opRestore);
+  _BackupRestore(opRestore);
 end;
 
-procedure TfrmCommonMain.BackupRestore(dlgType: TCDBOperationType;
+procedure TfrmCommonMain._BackupRestore(dlgType: TCDBOperationType;
   volPath: TFilename = ''; hdrPath: TFilename = ''; silent: Boolean = False);
 var
   dlg: TfrmHdrBackupRestore;
@@ -1156,7 +1157,7 @@ end;
 // creates plain dmcrypt vol
 procedure TfrmCommonMain.actNewDmcryptNotHiddenExecute(Sender: TObject);
 begin   // create enc vol
-    _MountFile(vtPlainLinux, '', False, false, True);
+    _MountFile(vtPlainDmCrypt, '', False, false, True);
 end;
 
 // creates hidden dmcrypt vol
@@ -1173,7 +1174,7 @@ begin
 //      mtInformation);
     { TODO 1 -otdk -cenhance : wipe volume first }
     // create enc vol
-    _MountFile(vtPlainLinux, '', False, true, True);
+    _MountFile(vtPlainDmCrypt, '', False, true, True);
 //  end else begin
 //    if (GetFreeOTFEBase().LastErrorCode <> OTFE_ERR_USER_CANCEL) then begin
 //      SDUMessageDlg(_('Linux container could not be created'), mtError);
@@ -1208,12 +1209,15 @@ end;
 
 procedure TfrmCommonMain.actMountDmcryptNotHiddenExecute(Sender: TObject);
 begin
-  _PromptAndMountFile(vtPlainLinux,False);
+//  _PromptAndMountFile(vtPlainDmCrypt,False);
+
+  // don't prompt for file as may be partition
+  _MountFile(vtPlainDmCrypt, '', false, false);
 end;
 
 procedure TfrmCommonMain.actMountDmcryptHiddenExecute(Sender: TObject);
 begin
-  _PromptAndMountFile(vtPlainLinux,True);
+  _PromptAndMountFile(vtPlainDmCrypt,True);
 end;
 
 procedure TfrmCommonMain.actPKCS11TokenManagementExecute(Sender: TObject);
@@ -1444,7 +1448,7 @@ begin
   end;
 end;
 
-procedure TfrmCommonMain.StartupUpdateCheck();
+procedure TfrmCommonMain._StartupUpdateCheck();
 var
   nextCheck: TDate;
   doCheck:   Boolean;
@@ -1508,7 +1512,7 @@ end;
 procedure TfrmCommonMain.WMUserPostShow(var msg: TWMEndSession);
 begin
   if not fwmUserPostShowCalledAlready then
-    StartupUpdateCheck();
+    _StartupUpdateCheck();
 
   fwmUserPostShowCalledAlready := True;
 end;
@@ -1520,7 +1524,7 @@ begin
   SDUSetFormLayout(self, GetSettings().MainWindowLayout);
 end;
 
-function TfrmCommonMain.EnsureOTFEComponentActive(): Boolean;
+function TfrmCommonMain._EnsureOTFEComponentActive(): Boolean;
 begin
   Result := True;
   if not GetFreeOTFEBase().Active then
@@ -1548,9 +1552,9 @@ function TfrmCommonMain._ProcessCommandLine_DumpLUKSHdr(): eCmdLine_Exit;
     Result := ceSUCCESS;
 
   if GetCmdLine.isDump then begin
-        if GetCmdLine.VolumeArg<> '' then begin
-        if GetCmdLine.filenameArg<>'' then begin
-      if not (EnsureOTFEComponentActive) then begin
+        if GetCmdLine.volume<> '' then begin
+        if GetCmdLine.filename<>'' then begin
+      if not (_EnsureOTFEComponentActive) then begin
         Result := ceUNABLE_TO_CONNECT;
       end else begin
          _DumpDetailsToFile(true);
@@ -1579,15 +1583,11 @@ var
   useKeyfileNewlineType: TSDUNewline;
   useLESFile:            FilenameString;
   usePassword:           TSDUBytes;
-//  strUsePassword:        String;
-//  useSilent:             Boolean;
-  strTemp:               String;
   useOffset:             ULONGLONG;
   useNoCDBAtOffset:      Boolean;
   useSaltLength:         Integer;
   useKeyIterations:      Integer;
-  tmpNewlineType:        TSDUNewline;
-  currParamOK:           Boolean;
+
   useType:TVolumeType;
 begin
   Result := ceSUCCESS;
@@ -1595,42 +1595,26 @@ begin
   if GetCmdLine.isMount then begin
     Result := ceINVALID_CMDLINE;
 
-    volume  :=  GetCmdLine.VolumeArg;
+    volume  :=  GetCmdLine.volume;
     if volume <> '' then begin
-      if not (EnsureOTFEComponentActive) then begin
+      if not (_EnsureOTFEComponentActive) then begin
         Result := ceUNABLE_TO_CONNECT;
       end else begin
         Result := ceINVALID_CMDLINE;
         fileOK := True;
 
         ReadOnly := getCmdLine.isReadonly;
-        { TODO 1 -otdk -cbug : warn user if not ansi password }
-//        if not (SDUCommandLineParameter(CMDLINE_PASSWORD, strUsePassword)) then
-//          strUsePassword := '';
 
-        usePassword := SDUStringToSDUBytes(GetCmdLine.PasswordArg);
-//        useSilent   := SDUCommandLineSwitch(CMDLINE_SILENT);
 
-        useOffset := 0;
-        strTemp:= GetCmdLine.OffsetArg;
-        if strTemp<>'' then
-          fileOK := SDUParseUnitsAsBytesUnits(strTemp, useOffset);
+        usePassword := SDUStringToSDUBytes(GetCmdLine.password);
+        useOffset:= GetCmdLine.offset;
 
         useNoCDBAtOffset := GetCmdLine.isNocdbatoffset;
-
-        useSaltLength := DEFAULT_SALT_LENGTH;
-        strTemp:= GetCmdLine.SaltlengthArg;
-        if strTemp<>'' then
-          fileOK := TryStrToInt(strTemp, useSaltLength);
-
-        useKeyIterations := DEFAULT_KEY_ITERATIONS;
-        strTemp:= GetCmdLine.KeyiterationsArg;
-        if strTemp<>'' then
-          fileOK := TryStrToInt(strTemp, useKeyIterations);
-
+        useSaltLength :=  GetCmdLine.saltlength;
+        useKeyIterations := GetCmdLine.keyiterations;
 
         {$IFDEF FREEOTFE_MAIN}
-         useDriveLetter := GetCmdLine.DriveArg;
+         useDriveLetter := GetCmdLine.drive;
         if useDriveLetter<>'' then begin
           if (length(useDriveLetter) = 0) then
             fileOK                           := False
@@ -1639,65 +1623,32 @@ begin
 
         end;
         {$ENDIF}
-        useKeyfile := GetCmdLine.KeyfileArg;
-        if useKeyfile<>'' then begin
-          if (length(useKeyfile) = 0) then begin
-            fileOK := False;
-          end else begin
-            useKeyfile := SDURelativePathToAbsolute(useKeyfile);
-            if not (FileExists(useKeyfile)) then begin
-              Result := ceFILE_NOT_FOUND;
-              fileOK := False;
-            end;
-          end;
-        end;
+        useKeyfile := GetCmdLine.keyFile;
+
 
         // Flag for Linux keyfiles containing ASCII passwords
 //        useKeyfileIsASCII := SDUCommandLineSwitch(CMDLINE_KEYFILEISASCII);
 
         // Setting for newlines where Linux keyfiles contain ASCII passwords
-        useKeyfileNewlineType := LINUX_KEYFILE_DEFAULT_NEWLINE;
-        strTemp := GetCmdLine.KeyfilenewlineArg;
-        if strTemp<>'' then begin
-          currParamOK := False;
-          for tmpNewlineType := low(tmpNewlineType) to high(tmpNewlineType) do begin
-            if (strTemp = uppercase(SDUNEWLINE_TITLE[tmpNewlineType]))
-            then begin
-              useKeyfileNewlineType := tmpNewlineType;
-              currParamOK           := True;
-              break;
-            end;
-          end;
+        useKeyfileNewlineType := GetCmdLine.keyFilenewline;
+        useLESFile := GetCmdLine.lesFile;
 
-          if not (currParamOK) then begin
-            Result := ceINVALID_CMDLINE;
-            fileOK := False;
-          end;
-        end;
-
-
-        useLESFile := GetCmdLine.LesfileArg;
-        if useLESFile<>'' then begin
-          if (length(useLESFile) = 0) then begin
-            fileOK := False;
-          end else begin
-            useLESFile := SDURelativePathToAbsolute(useLESFile);
-            if not (FileExists(useLESFile)) then begin
-              Result := ceFILE_NOT_FOUND;
-              fileOK := False;
-            end;
-          end;
-        end;
 
         // Convert any relative path to absolute, based on CWD - but not if a
         // device passed through!
-        if (Pos(uppercase(DEVICE_PREFIX), uppercase(volume)) <= 0) then begin
+        if (not AnsiStartsText(DEVICE_PREFIX,volume))
+         and (not AnsiStartsText('\\.\PHYSICALDRIVE',volume) )
+         then begin
           volume := SDURelativePathToAbsolute(volume);
           if not (FileExists(volume)) then begin
             Result := ceFILE_NOT_FOUND;
             fileOK := False;
           end;
+          if FileIsReadOnly(volume) then begin
+            if not ReadOnly then raise ECmdLine.Create('Read-only files must be opened as read-only containers');
+          end;
         end;
+
 
         if fileOK then begin
            //determine type to open as
@@ -1705,7 +1656,7 @@ begin
 
 
            // use user cmd line as top priority, do in inverse order of safety in case user specified > 1
-           if GetCmdLine.isDmcrypt or (useLESFile <> '') then  useType := vtPlainLinux;
+           if GetCmdLine.isDmcrypt or (useLESFile <> '') then  useType := vtPlainDmCrypt;
            if GetCmdLine.isFreeotfe then  useType := vtFreeOTFE;
            // if still unknown test for luks, else dont as use reads from disk
            if useType = vtUnknown then
@@ -1720,18 +1671,18 @@ begin
               useType := GetSettings().DefaultVolType;
 
            case useType of
-              vtPlainLinux:
+              vtPlainDmCrypt:
                 frmKeyEntryPlainLinux.MountPlainLinux(volume, mountAs, ReadOnly,
                   useLESFile,
                   usePassword, useOffset);
               vtLUKS:
                 MountLUKS(volume,mountAs, ReadOnly,
-               usePassword,useKeyfile ,GetCmdLine.isKeyfileisascii,useKeyfileNewlineType,
+               usePassword,useKeyfile ,GetCmdLine.isKeyfileisascii,useKeyfileNewlineType
               );
               vtFreeOTFE:
-                   mountAs := MountFreeOTFE(volume, ReadOnly,
-              useKeyfile, usePassword, useOffset, useNoCDBAtOffset,
-              useSaltLength, useKeyIterations);
+                mountAs := MountFreeOTFE(volume, ReadOnly,
+                      useKeyfile, usePassword, useOffset, useNoCDBAtOffset,
+                      useSaltLength, useKeyIterations);
               else
                 //still unknown - prompt
                 mountAs := frmSelectVolumeType.Mount(volume, ReadOnly);

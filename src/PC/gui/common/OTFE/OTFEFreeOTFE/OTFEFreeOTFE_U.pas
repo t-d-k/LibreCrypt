@@ -53,14 +53,12 @@ type
     procedure _Disconnect(); override;
 
 
-    // ---------
+
     // FreeOTFE *disk* *device* management functions
     // These talk directly to the disk devices to carrry out operations
     // deviceType - Set to FILE_DEVICE_DISK, etc
-
-    function CreateDiskDevice(deviceType: DWORD = FILE_DEVICE_DISK): String;
-    function DestroyDiskDevice(deviceName: Ansistring): Boolean;
-
+     function _CreateDiskDevice(MountMountAs:TMountDiskType = fomaRemovableDisk): String;
+    function _DestroyDiskDevice(deviceName: Ansistring): Boolean;
     function _MountDiskDevice(
       deviceName: String;
     // PC kernel drivers: disk device to mount. PC DLL: "Drive letter"
@@ -79,9 +77,16 @@ type
       metaData: TOTFEFreeOTFEVolumeMetaData;
       offset: Int64 = 0;
       size: Int64 = 0;
-      storageMediaType: TFreeOTFEStorageMediaType =
-      mtFixedMedia  // PC kernel drivers *only* - ignored otherwise
+       MountMountAs: TMountDiskType = fomaRemovableDisk  // PC kernel drivers *only* - ignored otherwise
       ): Boolean; override;
+         // Create/delete DosDevices symlink; effectivly wraps DefineDosDevice(...) with
+    // additional support required for Vista changes
+    function _DosDeviceSymlink(
+      CreateNotDelete: Boolean;
+      DeviceName: Ansistring;
+      DriveLetter: DriveLetterChar;
+      Global: Boolean
+      ): Boolean;
 
 
     function _DismountDiskDevice(
@@ -141,14 +146,14 @@ instead use windows standard file fns (as in base class) - will need admin privs
     // Note: Will probably not work when reading directly from partitions;
     //       they typically need read/writes carried out in sector sized blocks
     //        - see ReadRawVolumeDataBounded for this.
-    function ReadRawVolumeDataSimple(
+    function _ReadRawVolumeDataSimple(
       filename: String;
       offsetWithinFile: Int64;
       dataLength: DWORD;  // In bytes
       var Data: Ansistring
       ): Boolean; override;
 
-    function WriteRawVolumeDataSimple(
+    function _WriteRawVolumeDataSimple(
       filename: String;
       offsetWithinFile: Int64;
       data: Ansistring
@@ -158,27 +163,20 @@ instead use windows standard file fns (as in base class) - will need admin privs
     // Misc functions
 
     // Call QueryDosDevice, and return it's output
-    function DoQueryDosDevice(deviceName: Ansistring; queryResults: TStringList): Boolean;
+    function _DoQueryDosDevice(deviceName: Ansistring; queryResults: TStringList): Boolean;
     // Given an MSDOS device name, return the device name of that device
     // (Uses DoQueryDosDevice)
     function GetDeviceName(MSDOSKernelModeDeviceName: String): Ansistring;
 
-    // Create/delete DosDevices symlink; effectivly wraps DefineDosDevice(...) with
-    // additional support required for Vista changes
-    function DosDeviceSymlink(
-      CreateNotDelete: Boolean;
-      DeviceName: Ansistring;
-      DriveLetter: DriveLetterChar;
-      Global: Boolean
-      ): Boolean;
+
 
     // Delete both local and global DosDevices symlinks, as possible
-    function DeleteDosDeviceSymlink(DeviceName: String; DriveLetter: Char): Boolean;
+    function _DeleteDosDeviceSymlink(DeviceName: String; DriveLetter: Char): Boolean;
 
     // Connect to the specified user mode named device
-    function ConnectDevice(devicename: String): THandle;
+    function _ConnectDevice(devicename: String): THandle;
     // Disconnect to the specified device
-    function DisconnectDevice(deviceHandle: THandle): Boolean;
+    function _DisconnectDevice(deviceHandle: THandle): Boolean;
 
     // Convert kernel mode device name to user mode device name
     function GetHashDeviceUserModeDeviceName(hashKernelModeDeviceName: String): String;
@@ -208,6 +206,11 @@ instead use windows standard file fns (as in base class) - will need admin privs
       var cypherDriverDetails: TFreeOTFECypherDriver): Boolean; override;
 
   public
+
+
+
+
+
       function GetDriverType(): String; override;
 
       // Convert a user-space volume filename to a format the kernel mode driver
@@ -382,9 +385,7 @@ uses
 
 
  // 3rd party
-{$IFDEF LINUX_DETECT}
-  DbugIntf,  // GExperts
-{$ENDIF}
+
 {$IFDEF FREEOTFE_DEBUG}
   DbugIntf,  // GExperts
 {$ENDIF}
@@ -470,7 +471,7 @@ function TOTFEFreeOTFE._Connect(): Boolean;
 begin
   Result := False;
 
-  fdriver_handle := ConnectDevice(DEVICE_SYMLINK_MAIN_NAME);
+  fdriver_handle := _ConnectDevice(DEVICE_SYMLINK_MAIN_NAME);
 
   if (fdriver_handle <> 0) then begin
     Result := True;
@@ -484,20 +485,31 @@ end;
 // ----------------------------------------------------------------------------
 procedure TOTFEFreeOTFE._Disconnect();
 begin
-  DisconnectDevice(fdriver_handle);
+  _DisconnectDevice(fdriver_handle);
 end;
 
 
  // ----------------------------------------------------------------------------
  // Attempt to create a new device to be used
                        { TODO -otdk -crefactor : return driveLetterchar }
- function TOTFEFreeOTFE.CreateDiskDevice(deviceType: DWORD): String;
+ function TOTFEFreeOTFE._CreateDiskDevice(MountMountAs:TMountDiskType): String;
 var
   DIOCBufferIn:  TDIOC_DISK_DEVICE_CREATE;
   DIOCBufferOut: TDIOC_DEVICE_NAME;
   bytesReturned: DWORD;
+   deviceType: DWORD;
+const
+  // Decode the above into device types/media types
+  MOUNT_AS_TO_DEVICE_TYPE: array [TMountDiskType] of DWORD = (
+//    FILE_DEVICE_DISK,
+    FILE_DEVICE_DISK,
+    FILE_DEVICE_CD_ROM,
+    FILE_DEVICE_DVD,
+    FILE_DEVICE_UNKNOWN
+    );
 begin
   Result := '';
+  deviceType := MOUNT_AS_TO_DEVICE_TYPE[MountMountAs] ;
 
   CheckActive();
 
@@ -539,7 +551,7 @@ function TOTFEFreeOTFE._MountDiskDevice(
   metaData: TOTFEFreeOTFEVolumeMetaData;
   offset: Int64 = 0;
   size: Int64 = 0;
-  storageMediaType: TFreeOTFEStorageMediaType = mtFixedMedia
+ MountMountAs: TMountDiskType = fomaRemovableDisk
   ): Boolean;
 var
   ptrDIOCBuffer:     PDIOC_MOUNT_PC_DRIVER;
@@ -550,8 +562,21 @@ var
   useVolumeFlags:    Integer;
   strMetaData:       Ansistring;
   volumeKeyStr:      Ansistring;
+  storageMediaType: TFreeOTFEStorageMediaType ;
+CONST
+  // Decode the above into device types/media types
+  { TODO 1 -otdk -crefactor : replace FreeOTFEMountAsStorageMediaType with TMountDiskType}
+  MOUNT_TYPE_TO_MEDIA_TYPE: array [TMountDiskType] of TFreeOTFEStorageMediaType = (
+//    mtFixedMedia,
+    mtRemovableMedia,
+    mtCD_ROM,
+    mtDVD_ROM,
+    mtUnknown
+    );
 begin
   Result := False;
+
+storageMediaType :=  MOUNT_TYPE_TO_MEDIA_TYPE[MountMountAs];
 
   DebugMsg('In MountDiskDevice');
 
@@ -743,7 +768,7 @@ begin
   Result := False;
 
   // Attempt to create a new device to be used
-  deviceName := CreateDiskDevice(FreeOTFEMountAsDeviceType[MountMountAs]);
+  deviceName := _CreateDiskDevice(MountMountAs);
   if (deviceName <> '') then begin
     PopulateVolumeMetadataStruct(
       MetaData_LinuxVolume,
@@ -755,18 +780,18 @@ begin
     if _MountDiskDevice(deviceName, volFilename, volumeKey, sectorIVGenMethod,
       volumeIV, ReadOnly, IVHashDriver, IVHashGUID, IVCypherDriver, IVCypherGUID,
       mainCypherDriver, mainCypherGUID, VolumeFlags, mountMetadata, offset,
-      size, FreeOTFEMountAsStorageMediaType[MountMountAs]) then begin
-      if DosDeviceSymlink(True, deviceName, DriveLetter, mountForAllUsers) then begin
+      size, MountMountAs) then begin
+      if _DosDeviceSymlink(True, deviceName, DriveLetter, mountForAllUsers) then begin
         Result := True;
       end else begin
         // Cleardown
         _DismountDiskDevice(deviceName, True);
-        DestroyDiskDevice(deviceName);
+        _DestroyDiskDevice(deviceName);
       end;
 
     end else begin
       // Cleardown
-      DestroyDiskDevice(deviceName);
+      _DestroyDiskDevice(deviceName);
     end;
 
   end;
@@ -978,7 +1003,7 @@ end;
 
  // ----------------------------------------------------------------------------
  // Attempt to destroy a device
-function TOTFEFreeOTFE.DestroyDiskDevice(deviceName: Ansistring): Boolean;
+function TOTFEFreeOTFE._DestroyDiskDevice(deviceName: Ansistring): Boolean;
 var
   DIOCBuffer:    TDIOC_DEVICE_NAME;
   bytesReturned: DWORD;
@@ -1060,7 +1085,7 @@ begin
 
     DebugMsg('remove definition');
 
-    Result := DeleteDosDeviceSymlink(volumeInfo.deviceName, driveLetter);
+    Result := _DeleteDosDeviceSymlink(volumeInfo.deviceName, driveLetter);
   end;
 
 
@@ -1069,7 +1094,7 @@ begin
 
     DebugMsg('destroy device');
 
-    Result := DestroyDiskDevice(volumeInfo.deviceName);
+    Result := _DestroyDiskDevice(volumeInfo.deviceName);
   end;
 end;
 
@@ -1283,7 +1308,7 @@ begin
 
         queryResults := TStringList.Create();
         try
-          if (DoQueryDosDevice(driveColon, queryResults)) then begin
+          if (_DoQueryDosDevice(driveColon, queryResults)) then begin
             if (queryResults.Count >= 1) then begin
               if (queryResults[0] = currDeviceName) then begin
                 foundDriveLetter := True;
@@ -1522,7 +1547,7 @@ end;
 
  // ----------------------------------------------------------------------------
  // Connects to the named device, returns a device handle, or 0 on error
-function TOTFEFreeOTFE.ConnectDevice(devicename: String): THandle;
+function TOTFEFreeOTFE._ConnectDevice(devicename: String): THandle;
 var
   deviceHandle: THandle;
 begin
@@ -1538,7 +1563,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFE.DisconnectDevice(deviceHandle: THandle): Boolean;
+function TOTFEFreeOTFE._DisconnectDevice(deviceHandle: THandle): Boolean;
 begin
   CloseHandle(deviceHandle);
   Result := True;
@@ -1549,7 +1574,7 @@ end;
  // Create/delete DosDevices symlink; effectivly wraps DefineDosDevice(...) with
  // additional support required for Vista changes
  // createNotDelete - Set to TRUE to create, FALSE to delete
-function TOTFEFreeOTFE.DosDeviceSymlink(
+function TOTFEFreeOTFE._DosDeviceSymlink(
   CreateNotDelete: Boolean;
   DeviceName: Ansistring;
   DriveLetter: DriveLetterChar;
@@ -1605,7 +1630,7 @@ end;
 
  // ----------------------------------------------------------------------------
  // Delete both local and global DosDevices symlinks, as possible
-function TOTFEFreeOTFE.DeleteDosDeviceSymlink(DeviceName: String; DriveLetter: Char): Boolean;
+function TOTFEFreeOTFE._DeleteDosDeviceSymlink(DeviceName: String; DriveLetter: Char): Boolean;
 begin
   Result := False;
 
@@ -1616,18 +1641,18 @@ begin
   //                   );
   //       here, as lazy evaluation will prevent one or the other from being
   //       evaluated - we want *both* to always be executed!
-  if DosDeviceSymlink(False, DeviceName, DriveLetter, True) then begin
+  if _DosDeviceSymlink(False, DeviceName, DriveLetter, True) then begin
     Result := True;
   end;
 
-  if DosDeviceSymlink(False, DeviceName, DriveLetter, False) then begin
+  if _DosDeviceSymlink(False, DeviceName, DriveLetter, False) then begin
     Result := True;
   end;
 end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFE.DoQueryDosDevice(deviceName: Ansistring;
+function TOTFEFreeOTFE._DoQueryDosDevice(deviceName: Ansistring;
   queryResults: TStringList): Boolean;
 const
   buffSizeIncrement: Integer = 1024;
@@ -1725,12 +1750,12 @@ begin
 
   deviceNames := TStringList.Create();
   try
-    if DoQueryDosDevice('', deviceNames) then begin
+    if _DoQueryDosDevice('', deviceNames) then begin
       for i := 0 to (deviceNames.Count - 1) do begin
         deviceNameMapping := TStringList.Create();
         try
 
-          if DoQueryDosDevice(deviceNames[i], deviceNameMapping) then begin
+          if _DoQueryDosDevice(deviceNames[i], deviceNameMapping) then begin
             for j := 0 to (deviceNameMapping.Count - 1) do begin
               if (deviceNameMapping[j] = MSDOSKernelModeDeviceName) then begin
                 Result := deviceNames[i];
@@ -1773,12 +1798,12 @@ begin
 
   deviceNames := TStringList.Create();
   try
-    if DoQueryDosDevice('', deviceNames) then begin
+    if _DoQueryDosDevice('', deviceNames) then begin
       for i := 0 to (deviceNames.Count - 1) do begin
         DebugMsg('Device name: ' + deviceNames[i],0);
         deviceNameMapping := TStringList.Create();
         try
-          if DoQueryDosDevice(deviceNames[i], deviceNameMapping) then begin
+          if _DoQueryDosDevice(deviceNames[i], deviceNameMapping) then begin
             for j := 0 to (deviceNameMapping.Count - 1) do begin
               if pos(DEVICE_CYPHER_DIR_NAME, deviceNameMapping[j]) > 0 then begin
                 // Get the details for the device
@@ -1988,7 +2013,7 @@ begin
 
     DebugMsg('Connecting to: ' + deviceUserModeName);
 
-    cypherHandle := ConnectDevice(deviceUserModeName);
+    cypherHandle := _ConnectDevice(deviceUserModeName);
     if (cypherHandle = 0) then begin
 
       DebugMsg('Couldn''t connect to: ' + deviceUserModeName);
@@ -2081,7 +2106,7 @@ begin
 
       end;
 
-      DisconnectDevice(cypherHandle);
+      _DisconnectDevice(cypherHandle);
     end;
 
   end;  // if CachesGetCypherDriver(cypherKernelModeDeviceName, cypherDriverDetails) then
@@ -2107,11 +2132,11 @@ begin
 
   deviceNames := TStringList.Create();
   try
-    if DoQueryDosDevice('', deviceNames) then begin
+    if _DoQueryDosDevice('', deviceNames) then begin
       for i := 0 to (deviceNames.Count - 1) do begin
         deviceNameMapping := TStringList.Create();
         try
-          if DoQueryDosDevice(deviceNames[i], deviceNameMapping) then begin
+          if _DoQueryDosDevice(deviceNames[i], deviceNameMapping) then begin
             for j := 0 to (deviceNameMapping.Count - 1) do begin
               if pos(DEVICE_HASH_DIR_NAME, deviceNameMapping[j]) > 0 then begin
                 // Get the details for the device
@@ -2185,7 +2210,7 @@ begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('Connecting to: '+deviceUserModeName);
 {$ENDIF}
-    hashHandle := ConnectDevice(deviceUserModeName);
+    hashHandle := _ConnectDevice(deviceUserModeName);
     if (hashHandle = 0) then begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('Couldn''t connect to: '+deviceUserModeName);
@@ -2261,7 +2286,7 @@ DebugMsg('gethashdrivers DIOC 2 FAIL');
 
       end;
 
-      DisconnectDevice(hashHandle);
+      _DisconnectDevice(hashHandle);
     end;
 
   end;  // if CachesGetHashDriver(driver, hashDriverDetails) then
@@ -2337,7 +2362,7 @@ begin
   deviceUserModeName := GetHashDeviceUserModeDeviceName(hashDriver);
 
   if GetSpecificHashDetails(hashDriver, hashGUID, hashDetails) then begin
-    hashHandle := ConnectDevice(deviceUserModeName);
+    hashHandle := _ConnectDevice(deviceUserModeName);
     if (hashHandle = 0) then begin
 {$IFDEF FREEOTFE_DEBUG}
 DebugMsg('couldn''t connect to: '+deviceUserModeName);
@@ -2407,7 +2432,7 @@ DebugMsg('hash DIOC 2 FAIL');
         FreeMem(ptrDIOCBufferIn);
       end;
 
-      DisconnectDevice(hashHandle);
+      _DisconnectDevice(hashHandle);
     end;
 
   end else begin
@@ -2694,7 +2719,7 @@ begin
   deviceUserModeName := GetCypherDeviceUserModeDeviceName(cypherDriver);
 
   if GetSpecificCypherDetails(cypherDriver, cypherGUID, cypherDetails) then begin
-    cypherHandle := ConnectDevice(deviceUserModeName);
+    cypherHandle := _ConnectDevice(deviceUserModeName);
     if (cypherHandle = 0) then begin
       LastErrorCode := OTFE_ERR_DRIVER_FAILURE;
 
@@ -2773,7 +2798,7 @@ DebugMsg('cypher DIOC 2 FAIL');
       end;
 
 
-      DisconnectDevice(cypherHandle);
+      _DisconnectDevice(cypherHandle);
     end;
 
   end else begin
@@ -2819,7 +2844,7 @@ begin
   deviceUserModeName := GetCypherDeviceUserModeDeviceName(cypherDriver);
 
   if GetSpecificCypherDetails(cypherDriver, cypherGUID, cypherDetails) then begin
-    cypherHandle := ConnectDevice(deviceUserModeName);
+    cypherHandle := _ConnectDevice(deviceUserModeName);
     if (cypherHandle = 0) then begin
       LastErrorCode := OTFE_ERR_DRIVER_FAILURE;
 {$IFDEF FREEOTFE_DEBUG}
@@ -2900,7 +2925,7 @@ DebugMsg('cypher DIOC 2 FAIL');
       end;
 
 
-      DisconnectDevice(cypherHandle);
+      _DisconnectDevice(cypherHandle);
     end;
 
     // If there was a problem, fallback to using v1 cypher API
@@ -2937,14 +2962,12 @@ begin
   Result := #0;
 
   searchDriveLetter := userDriveLetter;
-  if (searchDriveLetter = #0) then begin
+  if (searchDriveLetter = #0) then
     searchDriveLetter := requiredDriveLetter;
-  end;
 
   // If still #0, just get the next one after C:
-  if (searchDriveLetter = #0) then begin
+  if (searchDriveLetter = #0) then
     searchDriveLetter := 'C';
-  end;
 
 
   freeDriveLetters  := uppercase(SDUGetUnusedDriveLetters());
@@ -2957,9 +2980,8 @@ begin
     Delete(freeDriveLetters, 1, 1);
   end;
 
-  if (freeDriveLetters <> '') then begin
+  if (freeDriveLetters <> '') then
     Result := freeDriveLetters[1];
-  end;
 end;
 
 
@@ -3144,7 +3166,7 @@ end;
 
 
 // ----------------------------------------------------------------------------
-function TOTFEFreeOTFE.ReadRawVolumeDataSimple(
+function TOTFEFreeOTFE._ReadRawVolumeDataSimple(
   filename: String;
   offsetWithinFile: Int64;
   dataLength: DWORD;  // In bytes
@@ -3205,7 +3227,7 @@ end;
  // starting from the specified offset
  // criticalData - This should be set to the string representation of a raw
  //                (encrypted) critical data block
-function TOTFEFreeOTFE.WriteRawVolumeDataSimple(
+function TOTFEFreeOTFE._WriteRawVolumeDataSimple(
   filename: String;
   offsetWithinFile: Int64;
   data: Ansistring
@@ -3310,7 +3332,7 @@ begin
   DebugMsg('END  ReadWritePlaintextToVolume');
 
   // Attempt to create a new device to be used
-  deviceName := CreateDiskDevice(FreeOTFEMountAsDeviceType[mountMountAs]);
+  deviceName := _CreateDiskDevice(mountMountAs);
   Result     := (deviceName <> '');
   if Result then begin
     try
@@ -3329,7 +3351,7 @@ begin
         mainCypherDriver,            // Main cypher
         mainCypherGUID,              // Main cypher
         VolumeFlags, dummyMetadata, offset, size,
-        FreeOTFEMountAsStorageMediaType[mountMountAs]);
+        mountMountAs);
       if Result then begin
         try
           // Read decrypted data from mounted device
@@ -3351,7 +3373,7 @@ begin
 
     finally
       // Destroy device
-      DestroyDiskDevice(deviceName);
+      _DestroyDiskDevice(deviceName);
     end;
 
   end;  // if (Result) then

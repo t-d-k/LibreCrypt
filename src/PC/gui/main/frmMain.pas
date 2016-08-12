@@ -310,6 +310,8 @@ uses
   ComObj,   // Required for StringToGUID
   Math,     // Required for min
   strutils,
+  system.IOUtils,
+
   // sdu & LibreCrypt utils
   pkcs11_slot,
   SDUFileIterator_U,
@@ -492,7 +494,7 @@ begin
   // DoLuksTests;
   if GetCmdLine.isEnableDevMenu then
 //    _DoLuksTests;
- //  _DoFullTests;
+   _DoFullTests;
   // DoAdHocTests  ;
   // ;
   // Format_Drive('G', self);
@@ -1066,44 +1068,43 @@ var
   vl:              Integer;
   arr, arrB, arrC: TSDUBytes;
   parr:            PByteArray;
-  i:               Integer;
   buf:             Ansistring;
   mountFile:       String;
   // val64:           Int64;
   res:             Boolean;
 const
 
-  MAX_TEST_VOL = 12;
+  MAX_TEST_VOL = 13;
 
   { can cause BSoD - if force umounted }
   TEST_VOLS: array [0 .. MAX_TEST_VOL] of String =
-    ('a.box', 'b.box', 'c.box', 'd.box', 'e.box', 'e.box', 'f.box', 'luks.box',
+    ('luks.box','luks.box', 'a.box', 'b.box', 'c.box', 'd.box', 'e.box', 'e.box', 'f.box',
     'luks_essiv.box', 'a.box', 'b.box', 'dmcrypt_dx.box', 'dmcrypt_dx.box');
   PASSWORDS: array [0 .. MAX_TEST_VOL] of Ansistring =
-    ('password', 'password', '!"£$%^&*()', 'password', 'password', '5ekr1t',
-    'password', 'password', 'password', 'secret', 'secret', 'password',
+    ('', 'password','password', 'password', '!"£$%^&*()', 'password', 'password', '5ekr1t',
+    'password',  'password', 'secret', 'secret', 'password',
     '5ekr1t');
   ITERATIONS: array [0 .. MAX_TEST_VOL] of Integer =
-    (2048, 2048, 2048, 2048, 10240, 2048, 2048, 2048, 2048, 2048, 2048,
+    (0, 2048, 2048, 2048, 2048, 2048, 10240, 2048, 2048,  2048, 2048, 2048,
     2048, 2048);
   OFFSET: array [0 .. MAX_TEST_VOL] of Integer =
-    (0, 0, 0, 0, 0, 2097152, 0, 0, 0, 0, 0, 0, 0);
+    (0,0, 0, 0, 0, 0, 0, 2097152, 0,  0, 0, 0, 0, 0);
   KEY_FILES: array [0 .. MAX_TEST_VOL] of String =
-    ('', '', '', '', '', '', '', '', '', 'a.cdb', 'b.cdb', '', '');
+    ('keyfile', '', '', '', '', '', '', '', '', '', 'a.cdb', 'b.cdb', '', '');
   LES_FILES: array [0 .. MAX_TEST_VOL] of String =
-    ('', '', '', '', '', '', '', '', '', '', '', 'dmcrypt_dx.les',
+    ('', '', '', '', '', '', '', '', '', '', '', '', 'dmcrypt_dx.les',
     'dmcrypt_hid.les');
 
-  (*
+ (*
 
     MAX_TEST_VOL = 0;
     TEST_VOLS: array[0..MAX_TEST_VOL] of String =   ('dmcrypt_dx.box');
-    PASSWORDS: array[0..MAX_TEST_VOL] of String =   ( 'password');
+    PASSWORDS: array[0..MAX_TEST_VOL] of String =   ( '5ekr1t');
     ITERATIONS: array[0..MAX_TEST_VOL] of Integer = ( 2048);
     OFFSET: array[0..MAX_TEST_VOL] of Integer =     (0);
     KEY_FILES: array[0..MAX_TEST_VOL] of String =   ('');
-    LES_FILES: array[0..MAX_TEST_VOL] of String =   ('dmcrypt_dx.les');
-  *)
+    LES_FILES: array[0..MAX_TEST_VOL] of String =   ('dmcrypt_hid.les');
+   *)
   procedure CheckMountedOK;
   begin
     _RefreshDrives();
@@ -1135,16 +1136,11 @@ const
     end;
   end;
 
-begin
-  inherited;
-  // force isSilent in test
-  GetCmdLine.isSilent := True;
-
-  res := True;
-
-  Visible := False; // hide gui during test
-
-  // test inttostr support 64 bit vals
+  procedure TeztMemoryWiping;
+  var
+  j   : Integer;
+  begin
+   // test inttostr support 64 bit vals
   (* was tested - only uncomment if compiler changes
     val64 := 1;
     s     := IntToStr(val64);
@@ -1182,22 +1178,22 @@ begin
   {$ENDIF}
   {$ENDIF}
   SafeSetLength(arr, 100);
-  for i := low(arr) to high(arr) do
-    arr[i] := i;
+  for j := low(arr) to high(arr) do
+    arr[j] := j;
   parr := @arr[0];
   { setlength(arr,10);
     AlwaysClearFreedMemory doesnt clear this mem - make sure cleared in sduutils for TSDUBytes using SafeSetLength
-    for i := 10 to 99 do if parr[i] <> 0 then result := false;
+    for j := 10 to 99 do if parr[j] <> 0 then result := false;
     -
   }
   SafeSetLength(arr, 0);
-  for i := 0 to 99 do
-    if parr[i] <> 0 then
+  for j := 0 to 99 do
+    if parr[j] <> 0 then
       res := False;
   // memory can be reallocated - but unlikely to be same values
   SafeSetLength(arr, 100);
-  for i := low(arr) to high(arr) do
-    arr[i] := i;
+  for j := low(arr) to high(arr) do
+    arr[j] := j;
   parr := @arr[0];
   // increasing size can reallocate
   // resize more till get new address
@@ -1205,8 +1201,8 @@ begin
   while parr = @arr[0] do
     SafeSetLength(arr, length(arr) * 2);
 
-  for i := 0 to 99 do
-    if parr[i] <> 0 then
+  for j := 0 to 99 do
+    if parr[j] <> 0 then
       res := False;
 
   // this will fail if AlwaysClearFreedMemory not set
@@ -1219,87 +1215,87 @@ begin
   SafeSetLength(arr, 0);
   SafeSetLength(arr, 90);
   // this should zero any new data (done by delphi runtime)
-  for i := low(arr) to high(arr) do
-    if arr[i] <> 0 then
+  for j := low(arr) to high(arr) do
+    if arr[j] <> 0 then
       res := False;
   // and test if increasing size
   SafeSetLength(arr, 100);
-  for i := 90 to high(arr) do
-    if arr[i] <> 0 then
+  for j := 90 to high(arr) do
+    if arr[j] <> 0 then
       res := False;
 
-  for i := low(arr) to high(arr) do
-    arr[i] := i;
+  for j := low(arr) to high(arr) do
+    arr[j] := j;
   SDUZeroBuffer(arr); // zeroises
-  for i := 0 to 99 do
-    if arr[i] <> 0 then
+  for j := 0 to 99 do
+    if arr[j] <> 0 then
       res := False;
 
   SafeSetLength(arr, 100);
-  for i := low(arr) to high(arr) do
-    arr[i] := i;
+  for j := low(arr) to high(arr) do
+    arr[j] := j;
   parr := @arr[0];
   SDUInitAndZeroBuffer(1, arr); // sets length and zeroises
-  for i := 1 to 99 do
-    if parr[i] <> 0 then
+  for j := 1 to 99 do
+    if parr[j] <> 0 then
       res := False;
 
   SafeSetLength(arr, 100);
-  for i := low(arr) to high(arr) do
-    arr[i] := i;
+  for j := low(arr) to high(arr) do
+    arr[j] := j;
   parr := @arr[0];
   SafeSetLength(arr, 10); // changes len - what fastmm doesnt do
-  for i := 10 to 99 do
-    if parr[i] <> 0 then
+  for j := 10 to 99 do
+    if parr[j] <> 0 then
       res := False;
 
   setlength(buf, 100);
-  for i := 1 to length(buf) do
-    buf[i] := AnsiChar(i - 1);
+  for j := 1 to length(buf) do
+    buf[j] := AnsiChar(j - 1);
   parr := @buf[1];
   SDUZeroString(buf);
-  for i := 0 to 99 do
-    if parr[i] <> 0 then
+  for j := 0 to 99 do
+    if parr[j] <> 0 then
       res := False;
 
   setlength(arr, 100);
-  for i := low(arr) to high(arr) do
-    arr[i] := i;
+  for j := low(arr) to high(arr) do
+    arr[j] := j;
   parr := @arr[0];
 
-  i := 100;
+  j := 100;
   // resize more till get new address
   while parr = @arr[0] do begin
-    SDUAddByte(arr, i);
-    Inc(i);
+    SDUAddByte(arr, j);
+    Inc(j);
   end;
   // check old data zero
-  for i := 0 to 99 do
-    if parr[i] <> 0 then
+  for j := 0 to 99 do
+    if parr[j] <> 0 then
       res := False;
   // check added ok
-  for i := low(arr) to high(arr) do
-    if arr[i] <> i then
+  for j := low(arr) to high(arr) do
+    if arr[j] <> j then
       res := False;
 
   // test SDUAddArrays
   setlength(arr, 100);
   parr := @arr[0];
   setlength(arrB, 50);
-  for i := low(arrB) to high(arrB) do
-    arrB[i] := i + 100;
+  for j := low(arrB) to high(arrB) do
+    arrB[j] := j + 100;
   SDUAddArrays(arr, arrB);
   // if reallocated - test zerod old array
   if parr <> @arr[0] then
-    for i := 0 to 99 do
-      if parr[i] <> 0 then
+    for j := 0 to 99 do
+      if parr[j] <> 0 then
         res := False;
 
   // check added ok
   if length(arr) <> 150 then
     res := False;
-  for i := low(arr) to high(arr) do
-    if arr[i] <> i then
+  for j := low(arr) to high(arr) do
+    if arr[j] <> j then
       res := False;
 
   // test SDUAddLimit
@@ -1308,14 +1304,14 @@ begin
   SDUAddLimit(arr, arrB, 10);
   // if reallocated - test zerod old array
   if parr <> @arr[0] then
-    for i := 0 to 99 do
-      if parr[i] <> 0 then
+    for j := 0 to 99 do
+      if parr[j] <> 0 then
         res := False;
   // check added ok
   if length(arr) <> 110 then
     res := False;
-  for i := low(arr) to high(arr) do
-    if arr[i] <> i then
+  for j := low(arr) to high(arr) do
+    if arr[j] <> j then
       res := False;
 
   // test SDUDeleteFromStart
@@ -1323,15 +1319,15 @@ begin
   SDUDeleteFromStart(arr, 5);
   // if reallocated - test zerod old array
   if parr <> @arr[0] then
-    for i := 0 to 109 do
-      if parr[i] <> 0 { = i+5 } then
+    for j := 0 to 109 do
+      if parr[j] <> 0 { = j+5 } then
         res := False;
 
   // check deleted
   if length(arr) <> 105 then
     res := False;
-  for i := low(arr) to high(arr) do
-    if arr[i] <> i + 5 then
+  for j := low(arr) to high(arr) do
+    if arr[j] <> j + 5 then
       res := False;
 
   // SDUCopy
@@ -1342,33 +1338,33 @@ begin
 
   SDUCopy(arr, arrB);
   if parr <> @arr[0] then
-    for i := 0 to 9 do
-      if parr[i] <> 0 { i+100 } then
+    for j := 0 to 9 do
+      if parr[j] <> 0 { j+100 } then
         res := False;
   // check worked
   if length(arr) <> length(arrB) then
     res := False;
-  for i := low(arr) to high(arr) do
-    if arr[i] <> arrB[i] then
+  for j := low(arr) to high(arr) do
+    if arr[j] <> arrB[j] then
       res := False;
 
   // check length decreasing, zeros unallocated bytes
   SafeSetLength(arr, 100);
   parr := @arr[0];
   setlength(arrB, 10);
-  for i := low(arr) to high(arr) do
-    arr[i] := i;
+  for j := low(arr) to high(arr) do
+    arr[j] := j;
   SDUCopy(arr, arrB);
 
   // sets newly unused bytes to $80
-  for i := 10 to 99 do
-    if (parr[i] = i + 100) and (parr[i] <> $80) then
+  for j := 10 to 99 do
+    if (parr[j] = j + 100) and (parr[j] <> $80) then
       res := False;
   // check worked
   if length(arr) <> length(arrB) then
     res := False;
-  for i := low(arr) to high(arr) do
-    if arr[i] <> arrB[i] then
+  for j := low(arr) to high(arr) do
+    if arr[j] <> arrB[j] then
       res := False;
 
   // SDUCopyLimit is called from SDUCopy so no need to test directly
@@ -1376,16 +1372,16 @@ begin
   if not res then
     SDUMessageDlg('Freed memory wiping with TSDUBytes failed');
 
-  if not res then
+      if not res then
     exit;
 
-  // test SDUXOR using diverse implementation SDUXORStr
+// test SDUXOR using diverse implementation SDUXORStr
   Randomize;
   setlength(arr, 100);
   setlength(arrB, 100);
-  for i := low(arr) to high(arr) do begin
-    arr[i]  := Random(high(Byte) + 1);
-    arrB[i] := Random(high(Byte) + 1);
+  for j := low(arr) to high(arr) do begin
+    arr[j]  := Random(high(Byte) + 1);
+    arrB[j] := Random(high(Byte) + 1);
   end;
 
   arrC := SDUXOR(arr, arrB);
@@ -1400,6 +1396,22 @@ begin
   // test byte array fns
   assert('1234' = SDUBytesToString(SDUStringToSDUBytes('1234')));
 
+  end;
+
+
+begin
+  inherited;
+  // force isSilent in test
+  GetCmdLine.isSilent := True;
+
+  res := True;
+
+  Visible := False; // hide gui during test
+
+  TeztMemoryWiping;
+
+  if not res then
+    exit;
 
   // for loop is optimised into reverse order, but want to process forwards
   vl       := 0;
@@ -1409,6 +1421,8 @@ begin
   {$ELSE}
   vol_path := ExpandFileName(ExtractFileDir(Application.ExeName) + '\..\..\test_vols\');
   {$ENDIF}
+
+
   while vl <= high(TEST_VOLS) do begin
 
     // test one at a time as this is normal use
@@ -1435,7 +1449,7 @@ begin
       end else begin
         // call silently
         if MountFreeOTFE(mountFile, mountedAs, True, key_file,
-          SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], True, 256, ITERATIONS[vl])<> morOK then
+          SDUStringToSDUBytes(PASSWORDS[vl]), OFFSET[vl], false, 256, ITERATIONS[vl])<> morOK then
           res := False;
       end;
     end;
@@ -1450,27 +1464,30 @@ begin
     Inc(vl);
   end;
 
-  { test changing password
-    backup freeotfe header ('cdb')
-    change password
-    open with new password
-    restore header
-    open with old password -tested on next test run
+  { test changing password:
+      copy file and work off copy
+      backup freeotfe header ('cdb')
+      change password
+      open with new password
+      restore header
+      open with old password
+      delete copy
+      delete hdr file
     this tests most of code for creating volume as well
   }
 
-  // don't fail if doesn't exist
+  // delete any old backup so doesn't fail if doesn't exist
   SysUtils.DeleteFile(vol_path + 'a_test.cdbBackup');
-  copy_file := vol_path + TEST_VOLS[0] + '.copy';
-  SDUFileCopy(vol_path + TEST_VOLS[0], copy_file);
+  copy_file := vol_path + TEST_VOLS[2] + '.copy'; // a.box
+  Tfile.Copy(vol_path + TEST_VOLS[2], copy_file);
 
   // SET RW
   res := res and FileSetReadOnly(copy_file, False);
 
   if res then
-    BackupRestore(opBackup, copy_file, vol_path + 'a_test.cdbBackup', True);
+    _BackupRestore(opBackup, copy_file, vol_path + 'a_test.cdbBackup', True);
   res := res and frmWizardChangePasswordCreateKeyfile.WizardChangePassword(
-    copy_file, PASSWORDS[0], 'secret4', True);
+    copy_file, PASSWORDS[2], 'secret4');
 
   if res then begin
     if MountFreeOTFE(copy_file, mountedAs, True, '', SDUStringToSDUBytes('secret4'),
@@ -1481,9 +1498,9 @@ begin
     CheckMountedOK;
   UnMountAndCheck;
   if res then
-    BackupRestore(opRestore, copy_file, vol_path + 'a_test.cdbBackup', True);
+    _BackupRestore(opRestore, copy_file, vol_path + 'a_test.cdbBackup', True);
   if res then begin
-    if  MountFreeOTFE(copy_file, mountedAs, True, '', SDUStringToSDUBytes(PASSWORDS[0]),
+    if  MountFreeOTFE(copy_file, mountedAs, True, '', SDUStringToSDUBytes(PASSWORDS[2]),
       0, False, 256, 2048)<> morOK then
       res := False;
   end;
@@ -1619,7 +1636,7 @@ begin
   end;
   Application.ProcessMessages;
   // copy readme to disc
-  SDUFileCopy(vol_dir + 'readme.txt', drive + ':\');
+  Tfile.Copy(vol_dir + 'readme.txt', drive + ':\');
   Application.ProcessMessages;
   if not FileExists(drive + ':\README.txt') then begin
     SDUMessageDlg(Format('File: %s:\README.txt not found', [drive]));
@@ -1671,10 +1688,15 @@ end;
 
 
 procedure TfrmMain.FormCreate(Sender: TObject);
+type
+ TRawDataArray = array of Byte;
+ var
+ a: TRawDataArray ;
 begin
-
+ a:= nil;
+ length(a);
   // Prevent endless loops of UAC escalation...
-  fallowUACEscalation := False;
+ fallowUACEscalation := False;
 
   inherited;
 
@@ -1866,7 +1888,7 @@ begin
   case mountAsSystem of
     vtFreeOTFE: mountRes   := MountFreeOTFE(filename, mountedAs, ReadOnly);
 
-    vtPlainLinux: mountRes := frmKeyEntryPlainLinux.MountPlainLinux(filename,
+    vtPlainDmCrypt: mountRes := frmKeyEntryPlainLinux.MountPlainLinux(filename,
         mountedAs, ReadOnly, '', nil, 0, createVol, isHidden);
 
     vtLUKS:
@@ -1885,11 +1907,14 @@ begin
   end;
 
   case mountRes of
-    morFail:  SDUMessageDlg(
+    morFail: begin
+       SDUMessageDlg(
         _('Unable to open container.') + SDUCRLF + SDUCRLF +
         _('Please check your keyphrase and settings, and try again.'),
         mtError
         );
+        _RefreshDrives(); // may fail because of foramtting - still refresh
+        end;
     morOK:  begin
     // Mount successful
     prettyMountedAs := PrettyPrintDriveLetters(mountedAs);
@@ -3290,19 +3315,19 @@ end;
 function TfrmMain._ProcessCommandLine_Portable(): eCmdLine_Exit;
 begin
   Result := ceSUCCESS;
-  if GetCmdLine.PortableArg <> '' then begin
+  if GetCmdLine.portable <> '' then begin
 
-    if (GetCmdLine.PortableArg = CMDLINE_TOGGLE) then begin
+    if (GetCmdLine.portable = CMDLINE_TOGGLE) then begin
       if not _PortableModeSet(pmaToggle, GetCmdLine.isSilent) then
         Result := ceUNABLE_TO_START_PORTABLE_MODE;
     end else begin
-      if ((GetCmdLine.PortableArg = CMDLINE_START) or
-        (GetCmdLine.PortableArg = CMDLINE_ON) or (GetCmdLine.PortableArg = '1')) then begin
+      if ((GetCmdLine.portable = CMDLINE_START) or
+        (GetCmdLine.portable = CMDLINE_ON) or (GetCmdLine.portable = '1')) then begin
         if not _PortableModeSet(pmaStart, GetCmdLine.isSilent) then
           Result := ceUNABLE_TO_START_PORTABLE_MODE;
       end else begin
-        if ((GetCmdLine.PortableArg = CMDLINE_STOP) or
-          (GetCmdLine.PortableArg = CMDLINE_OFF) or (GetCmdLine.PortableArg = '0')) then begin
+        if ((GetCmdLine.portable = CMDLINE_STOP) or
+          (GetCmdLine.portable = CMDLINE_OFF) or (GetCmdLine.portable = '0')) then begin
           if not _PortableModeSet(pmaStop, GetCmdLine.isSilent) then
             Result := ceUNABLE_TO_STOP_PORTABLE_MODE;
         end else begin
@@ -3407,14 +3432,14 @@ var
 begin
   Result := ceINVALID_CMDLINE;
 
-  if GetCmdLine.FilenameArg <> '' then begin
+  if GetCmdLine.filename <> '' then begin
     silent := GetCmdLine.isSilent;
 
-    if GetCmdLine.FilenameArg = CMDLINE_ALL then begin
+    if GetCmdLine.filename = CMDLINE_ALL then begin
       Result := _InstallAllDrivers(driverControlObj, silent);
     end else begin
       // Convert any relative path to absolute
-      driverPathAndFilename := SDURelativePathToAbsolute(GetCmdLine.FilenameArg);
+      driverPathAndFilename := SDURelativePathToAbsolute(GetCmdLine.filename);
 
       // Ensure driver file actually exists(!)
       if not (FileExists(driverPathAndFilename)) then begin
@@ -3422,7 +3447,7 @@ begin
       end else begin
         Result := ceUNKNOWN_ERROR;
         if driverControlObj.InstallSetAutoStartAndStartDriver(
-          GetCmdLine.FilenameArg) then
+          GetCmdLine.filename) then
         begin
           Result := ceSUCCESS;
         end;
@@ -3451,9 +3476,9 @@ var
 begin
   Result := ceINVALID_CMDLINE;
 
-  if GetCmdLine.driverNameArg <> '' then begin
+  if GetCmdLine.driverName <> '' then begin
     Result := ceUNKNOWN_ERROR;
-    if GetCmdLine.driverNameArg = CMDLINE_ALL then begin
+    if GetCmdLine.driverName = CMDLINE_ALL then begin
       Result := ceSUCCESS;
       // vista64Bit := (SDUOSVistaOrLater() and SDUOS64bit());
       // set test mode off
@@ -3463,7 +3488,7 @@ begin
         Result := ceUNKNOWN_ERROR;
       end;
     end else begin
-      driveUninstallResult := driverControlObj.UninstallDriver(GetCmdLine.driverNameArg);
+      driveUninstallResult := driverControlObj.UninstallDriver(GetCmdLine.driverName);
 
       if ((driveUninstallResult and DRIVER_BIT_SUCCESS) = DRIVER_BIT_SUCCESS) then begin
         Result := ceSUCCESS;
@@ -3489,10 +3514,10 @@ var
 begin
   Result := ceSUCCESS;
   try
-    if GetCmdLine.driverControlArg <> '' then begin
+    if GetCmdLine.driverControl <> '' then begin
       Result := ceINVALID_CMDLINE;
       // Special case; this one can UAC escalate
-      if GetCmdLine.driverControlArg = CMDLINE_GUI then begin
+      if GetCmdLine.driverControl = CMDLINE_GUI then begin
         Result := _ProcessCommandLine_DriverControl_GUI();
       end else begin
         // Creating this object needs admin privs; if the user doesn't have
@@ -3501,14 +3526,14 @@ begin
         try
           driverControlObj.silent := GetCmdLine.isSilent;
 
-          if GetCmdLine.driverControlArg = CMDLINE_COUNT then begin
+          if GetCmdLine.driverControl = CMDLINE_COUNT then begin
             Result := eCmdLine_Exit(_ProcessCommandLine_DriverControl_Count
               (driverControlObj));
           end else
-          if GetCmdLine.driverControlArg = CMDLINE_INSTALL then begin
+          if GetCmdLine.driverControl = CMDLINE_INSTALL then begin
             Result := _ProcessCommandLine_DriverControl_Install(driverControlObj);
           end else
-          if GetCmdLine.driverControlArg = CMDLINE_UNINSTALL then begin
+          if GetCmdLine.driverControl = CMDLINE_UNINSTALL then begin
             Result := _ProcessCommandLine_DriverControl_Uninstall(
               driverControlObj);
           end;
@@ -3558,7 +3583,7 @@ begin
   Result := ceSUCCESS;
 
   if GetCmdLine.IsCount then begin
-    if not (EnsureOTFEComponentActive) then
+    if not (_EnsureOTFEComponentActive) then
       Result := ceUNABLE_TO_CONNECT
     else
       Result := eCmdLine_Exit(GetFreeOTFE().CountDrivesMounted());
@@ -3576,13 +3601,13 @@ var
   // paramValue:        String;
 begin
   Result := ceSUCCESS;
-  if GetCmdLine.setTestmodeArg <> '' then begin
+  if GetCmdLine.setTestmode <> '' then begin
 
     SetOn := False;
-    if GetCmdLine.setTestmodeArg = CMDLINE_ON then
+    if GetCmdLine.setTestmode = CMDLINE_ON then
       SetOn := True
     else
-    if GetCmdLine.setTestmodeArg <> CMDLINE_OFF then
+    if GetCmdLine.setTestmode <> CMDLINE_OFF then
       Result := ceINVALID_CMDLINE;
 
     if Result <> ceINVALID_CMDLINE then begin
@@ -3621,15 +3646,28 @@ end;
  // Handle "/create" command line
  // Returns: Exit code
 function TfrmMain._ProcessCommandLine_Create(): eCmdLine_Exit;
+ var mountedAs: DriveLetterChar;
 begin
   Result := ceSUCCESS;
 
   if GetCmdLine.IsCreate then begin
-    if not (EnsureOTFEComponentActive) then
+    if not (_EnsureOTFEComponentActive) then begin
       Result := ceUNABLE_TO_CONNECT
-    else
-    if CreateFreeOTFEVolume(False)<> morOK then
+    end else begin
+    if GetCmdLine.isDmcrypt then begin
+      if MountPlainLinux(GetCmdLine.volume,mountedAs,GetCmdLine.isReadonly,
+      GetCmdLine.lesFile,SDUStringToSDUBytes(GetCmdLine.password),GetCmdLine.offset,
+      true,false // hidden can't be created on cmd line
+      ) <> morOK  then begin
       Result := ceUNKNOWN_ERROR;
+    end;
+    end else begin
+    { TODO 1 -otdk -cenhance : or create LUKS }
+    if CreateFreeOTFEVolume(False)<> morOK then begin
+      Result := ceUNKNOWN_ERROR;
+    end;
+    end;
+  end;
   end;
 end;
 
@@ -3645,17 +3683,17 @@ var
 begin
   Result := ceSUCCESS;
 
-  if GetCmdLine.dismountArg <> '' then begin
-    if not (EnsureOTFEComponentActive) then
+  if GetCmdLine.dismount <> '' then begin
+    if not (_EnsureOTFEComponentActive) then
       Result := ceUNABLE_TO_CONNECT
     else begin
       force := GetCmdLine.IsForce;
 
-      if GetCmdLine.dismountArg = CMDLINE_ALL then begin
+      if GetCmdLine.dismount = CMDLINE_ALL then begin
         dismountOK := (GetFreeOTFE().DismountAll(force) = '');
       end else begin
         // Only use the 1st char...
-        drive := GetCmdLine.dismountArg[1];
+        drive := GetCmdLine.dismount[1];
 
         dismountOK := GetFreeOTFE().Dismount(drive, force);
       end;

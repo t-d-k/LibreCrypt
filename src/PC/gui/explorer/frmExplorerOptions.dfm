@@ -1,12 +1,25 @@
 inherited frmExplorerOptions: TfrmExplorerOptions
   PixelsPerInch = 96
   TextHeight = 13
+  inherited pbOK: TButton
+    ExplicitTop = 415
+  end
+  inherited pbCancel: TButton
+    ExplicitTop = 415
+  end
+  inherited cbSettingsLocation: TComboBox
+    ExplicitTop = 385
+  end
   inherited pcOptions: TPageControl
     inherited tsGeneral: TTabSheet
       inherited gbGeneralMain: TGroupBox
         inherited ckStoreLayout: TSDUCheckBox
           Top = 190
           ExplicitTop = 190
+        end
+        inherited ckAssociateFiles: TSDUCheckBox
+          Top = 221
+          ExplicitTop = 221
         end
       end
     end
@@ -252,7 +265,6 @@ inherited frmExplorerOptions: TfrmExplorerOptions
     end
     inherited tsAutorun: TTabSheet
       inherited gbAutorun: TGroupBox
-        ExplicitLeft = 3
         inherited Label34: TLabel
           Top = 116
           ExplicitTop = 116
@@ -260,6 +272,9 @@ inherited frmExplorerOptions: TfrmExplorerOptions
         inherited Label35: TLabel
           Top = 160
           ExplicitTop = 160
+        end
+        inherited lblInstructions: TLabel
+          ExplicitWidth = 407
         end
         inherited pbPreDismountBrowse: TButton
           Top = 112

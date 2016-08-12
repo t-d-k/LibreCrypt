@@ -32,8 +32,6 @@ type
     tsHotkeys:        TTabSheet;
     tcSystemTray:     TTabSheet;
     tsMain: TTabSheet;
-    ckLaunchAtStartup: TSDUCheckBox;
-    ckLaunchMinimisedAtStartup: TSDUCheckBox;
     gbHotkeys:        TGroupBox;
     Label1:           TLabel;
     Label2:           TLabel;
@@ -59,13 +57,14 @@ type
     ckUseSystemTrayIcon: TSDUCheckBox;
     ckMinToIcon: TSDUCheckBox;
     ckCloseToIcon: TSDUCheckBox;
-    gbClickActions: TGroupBox;
+    ckLaunchAtStartup: TSDUCheckBox;
+    ckLaunchMinimisedAtStartup: TSDUCheckBox;
     Label3: TLabel;
     Label4: TLabel;
     cbSingleClickAction: TComboBox;
+    cbDbleClickAction: TComboBox;
     Label5: TLabel;
     Label6: TLabel;
-    cbDbleClickAction: TComboBox;
     Label7: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -300,9 +299,9 @@ begin
 
   SDUEnableControl(ckMinToIcon, ckUseSystemTrayIcon.Checked);
   SDUEnableControl(ckCloseToIcon, ckUseSystemTrayIcon.Checked);
-  SDUEnableControl(gbClickActions, ckUseSystemTrayIcon.Checked);
+  SDUEnableControl(cbSingleClickAction, ckUseSystemTrayIcon.Checked);
+  SDUEnableControl(cbDbleClickAction, ckUseSystemTrayIcon.Checked);
 end;
-
 
 
 procedure TfrmOptions._EnableDisableControlsGeneral();
@@ -422,25 +421,25 @@ const
 //    lbl.Width := maxWidth;
 //  end;
 
-var
+//var
 //  stlChkBoxOrder: TStringList;
 //  YPos:           Integer;
 //  i:              Integer;
 //  currChkBox:     TCheckBox;
-  groupboxMargin: Integer;
+//  groupboxMargin: Integer;
 begin
   inherited;
 
-  SDUCenterControl(gbAdvanced, ccHorizontal);
-  SDUCenterControl(gbAdvanced, ccVertical, 25);
+//  SDUCenterControl(gbAdvanced, ccHorizontal);
+//  SDUCenterControl(gbAdvanced, ccVertical, 25);
 
   // Re-jig label size to take cater for differences in translation lengths
   // Size so the max. right is flush with the max right of pbLangDetails
   //  lblDragDrop.width        := (pbLangDetails.left + pbLangDetails.width) - lblDragDrop.left;
   //  lblMRUMaxItemCount.width := (pbLangDetails.left + pbLangDetails.width) - lblMRUMaxItemCount.left;
-  groupboxMargin           := ckAutoStartPortable.left;
-  lblDragDrop.Width        := (gbAdvanced.Width - groupboxMargin) - lblDragDrop.left;
-  lblMRUMaxItemCount.Width := (gbAdvanced.Width - groupboxMargin) - lblMRUMaxItemCount.left;
+//  groupboxMargin           := ckAutoStartPortable.left;
+//  lblDragDrop.Width        := (gbAdvanced.Width - groupboxMargin) - lblDragDrop.left;
+//  lblMRUMaxItemCount.Width := (gbAdvanced.Width - groupboxMargin) - lblMRUMaxItemCount.left;
 
 //  pnlVertSplit.Caption    := '';
 //  pnlVertSplit.bevelouter := bvLowered;
@@ -516,40 +515,40 @@ begin
 end;
 
 procedure TfrmOptions._InitializeHotKeys();
-var
-  maxCkBoxWidth: Integer;
+//var
+//  maxCkBoxWidth: Integer;
 begin
   // ckHotkeyDismount and ckHotkeyDismountEmerg have AutoSize := TRUE
   // Use the autosized controls to determine how big the groupbox needs to be
-  maxCkBoxWidth   := max(ckHotkeyDismount.Width, ckHotkeyDismountEmerg.Width);
-  gbHotkeys.Width := max(((ckHotkeyDismount.left * 2) + maxCkBoxWidth), max(
-    (hkDismount.left + hkDismount.Width + ckHotkeyDismount.left),
-    (hkDismountEmerg.left + hkDismountEmerg.Width + ckHotkeyDismount.left)));
+//  maxCkBoxWidth   := max(ckHotkeyDismount.Width, ckHotkeyDismountEmerg.Width);
+//  gbHotkeys.Width := max(((ckHotkeyDismount.left * 2) + maxCkBoxWidth), max(
+//    (hkDismount.left + hkDismount.Width + ckHotkeyDismount.left),
+//    (hkDismountEmerg.left + hkDismountEmerg.Width + ckHotkeyDismount.left)));
 
-  SDUCenterControl(gbHotkeys, ccHorizontal);
-  SDUCenterControl(gbHotkeys, ccVertical, 25);
+//  SDUCenterControl(gbHotkeys, ccHorizontal);
+//  SDUCenterControl(gbHotkeys, ccVertical, 25);
 end;
 
 
 procedure TfrmOptions._InitializeSystemTrayOptions();
-var
-  maxToIconCkBoxWidth: Integer;
-  maxgbWidth:          Integer;
+//var
+//  maxToIconCkBoxWidth: Integer;
+//  maxgbWidth:          Integer;
 begin
   // ckHotkeyDismount and ckHotkeyDismountEmerg have AutoSize := TRUE
   // Use the autosized controls to determine how big the groupbox needs to be
-  maxToIconCkBoxWidth    := max(ckMinToIcon.Width, ckCloseToIcon.Width);
-  maxgbWidth             := 0;
-  maxgbWidth             := max(maxgbWidth, (ckUseSystemTrayIcon.left * 2) +
-    ckUseSystemTrayIcon.Width);
-  maxgbWidth             := max(maxgbWidth, (ckMinToIcon.left + maxToIconCkBoxWidth +
-    ckUseSystemTrayIcon.left));
-  maxgbWidth             := max(maxgbWidth, (gbClickActions.left +
-    gbClickActions.Width + ckUseSystemTrayIcon.left));
-  gbSystemTrayIcon.Width := maxgbWidth;
+//  maxToIconCkBoxWidth    := max(ckMinToIcon.Width, ckCloseToIcon.Width);
+//  maxgbWidth             := 0;
+//  maxgbWidth             := max(maxgbWidth, (ckUseSystemTrayIcon.left * 2) +
+//    ckUseSystemTrayIcon.Width);
+//  maxgbWidth             := max(maxgbWidth, (ckMinToIcon.left + maxToIconCkBoxWidth +
+//    ckUseSystemTrayIcon.left));
+//  maxgbWidth             := max(maxgbWidth, (gbClickActions.left +
+//    gbClickActions.Width + ckUseSystemTrayIcon.left));
+//  gbSystemTrayIcon.Width := maxgbWidth;
 
-  SDUCenterControl(gbSystemTrayIcon, ccHorizontal);
-  SDUCenterControl(gbSystemTrayIcon, ccVertical, 25);
+//  SDUCenterControl(gbSystemTrayIcon, ccHorizontal);
+//  SDUCenterControl(gbSystemTrayIcon, ccVertical, 25);
 
 end;
 
@@ -602,8 +601,7 @@ const
 //
 //  end;
 
-var
-  driveLetter:    Char;
+//var
 //  stlChkBoxOrder: TStringList;
 //  YPos:           Integer;
 //  i:              Integer;//
@@ -620,12 +618,6 @@ begin
 
 
 
-  cbDrive.Items.Clear();
-  cbDrive.Items.Add(USE_DEFAULT);
-  //  for driveLetter:='C' to 'Z' do
-  for driveLetter := 'A' to 'Z' do begin
-    cbDrive.Items.Add(driveLetter + ':');
-  end;
 
 
   // Here we re-jig the checkboxes so that they are nicely spaced vertically.
@@ -795,15 +787,15 @@ begin
   idx    := -1;
   useIdx := -1;
   for ma := low(ma) to high(ma) do begin
-    if (ma = fomaUnknown) then begin
+
+    if ma = fomaUnknown then
       continue;
-    end;
+
 
     Inc(idx);
     cbDefaultMountAs.Items.Add(FreeOTFEMountAsTitle(ma));
-    if (config.DefaultMountDiskType = ma) then begin
+    if (config.DefaultMountDiskType = ma) then
       useIdx := idx;
-    end;
   end;
   cbDefaultMountAs.ItemIndex := useIdx;
 

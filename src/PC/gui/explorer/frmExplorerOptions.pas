@@ -18,9 +18,9 @@ type
 
 
   TfrmExplorerOptions = class (TfrmCommonOptions)
-    tsExplorer: TTabSheet;
-    tsWebDAV:      TTabSheet;
-    gbAdvanced:    TGroupBox;
+    tsExplorer:       TTabSheet;
+    tsWebDAV:         TTabSheet;
+    gbAdvanced:       TGroupBox;
     lblOverwritePasses: TLabel;
     lblOverwriteMethod: TLabel;
     lblMoveDeletionMethod: TLabel;
@@ -28,17 +28,17 @@ type
     cbOverwriteMethod: TComboBox;
     cbMoveDeletionMethod: TComboBox;
     ckPreserveTimestampsOnStoreExtract: TSDUCheckBox;
-    gbWebDAV:      TGroupBox;
-    ckWebDAV:      TSDUCheckBox;
+    gbWebDAV:         TGroupBox;
+    ckWebDAV:         TSDUCheckBox;
     gbWebDAVAdvanced: TGroupBox;
-    Label6:        TLabel;
+    Label6:           TLabel;
     fedWebDAVLogDebug: TSDUFilenameEdit;
     fedWebDAVLogAccess: TSDUFilenameEdit;
     edWebDAVShareName: TEdit;
     ckOverwriteCacheOnDismount: TSDUCheckBox;
     ckWebDAVLogAccess: TSDUCheckBox;
     ckWebDAVLogDebug: TSDUCheckBox;
-    Label1: TLabel;
+    Label1:           TLabel;
     cbDefaultStoreOp: TComboBox;
     ckShowHiddenItems: TSDUCheckBox;
     ckHideKnownFileExtns: TSDUCheckBox;
@@ -56,7 +56,7 @@ type
     function GetOverwriteMethod: TShredMethod;
     procedure SetOverwriteMethod(useMethod: TShredMethod);
 
-//    procedure _NudgeCheckbox(chkBox: TCheckBox);
+    //    procedure _NudgeCheckbox(chkBox: TCheckBox);
     procedure _PopulateOverwriteMethods;
     //procs to set up/read/write tabs
     procedure _EnableDisableControlsAdvancedExplorer;
@@ -134,7 +134,7 @@ end;
 
 procedure TfrmExplorerOptions._WriteSettingsGeneral(config: TExplorerSettings);
 
-      procedure GetGreyedCheckbox(chkBox: TCheckbox; out stateOne: Boolean; out stateTwo: Boolean);
+  procedure GetGreyedCheckbox(chkBox: TCheckbox; out stateOne: Boolean; out stateTwo: Boolean);
   begin
     if (chkBox.State <> cbGrayed) then begin
       stateOne := chkBox.Checked;
@@ -144,26 +144,25 @@ procedure TfrmExplorerOptions._WriteSettingsGeneral(config: TExplorerSettings);
 
 var
 
-  dso:     TDefaultStoreOp;
+  dso: TDefaultStoreOp;
 begin
 
+  if ckDisplayToolbar.State <> cbGrayed then begin
+    config.showToolbar         := ckDisplayToolbar.Checked;
+    config.ShowExplorerToolBar := ckDisplayToolbar.Checked;
+  end;
 
-   if ckDisplayToolbar.State <> cbGrayed then begin
-     config.showToolbar :=  ckDisplayToolbar.Checked;
-     config.ShowExplorerToolBar  :=  ckDisplayToolbar.Checked;
-   end;
-
-   if ckDisplayToolbarLarge.State <> cbGrayed then begin
-     config.ShowLargeToolbar :=  ckDisplayToolbarLarge.Checked;
-     config.showLargerExplorerToolbar  :=  ckDisplayToolbarLarge.Checked;
-   end;
-
+  if ckDisplayToolbarLarge.State <> cbGrayed then begin
+    config.ShowLargeToolbar          := ckDisplayToolbarLarge.Checked;
+    config.showLargerExplorerToolbar := ckDisplayToolbarLarge.Checked;
+  end;
 
 
-   if ckDisplayToolbarCaptions.State <> cbGrayed then begin
-     config.ShowToolbarCaptions :=  ckDisplayToolbarCaptions.Checked;
-     config.showExplorerToolbarCaptions  :=  ckDisplayToolbarCaptions.Checked;
-   end;
+
+  if ckDisplayToolbarCaptions.State <> cbGrayed then begin
+    config.ShowToolbarCaptions         := ckDisplayToolbarCaptions.Checked;
+    config.showExplorerToolbarCaptions := ckDisplayToolbarCaptions.Checked;
+  end;
 
   config.ShowHiddenItems    := ckShowHiddenItems.Checked;
   config.hideKnownFileExtns := ckHideKnownFileExtns.Checked;
@@ -177,8 +176,6 @@ begin
     end;
   end;
 
-
-
 end;
 
 
@@ -189,7 +186,6 @@ begin
   // Advanced...
 
   config.keepTimestampsOnStoreExtract := ckPreserveTimestampsOnStoreExtract.Checked;
-
 
 
 
@@ -289,11 +285,6 @@ end;
 
 
 
-
-
-
-
-
 procedure TfrmExplorerOptions.ckWebDAVClick(Sender: TObject);
 begin
   inherited;
@@ -322,34 +313,34 @@ end;
  // This adjusts the width of a checkbox, and resets it caption so it
  // autosizes. If it autosizes such that it's too wide, it'll drop the width
  // and repeat
-//procedure TfrmExplorerOptions._NudgeCheckbox(chkBox: TCheckBox);
-//var
-//  tmpCaption:     String;
-//  maxWidth:       Integer;
-//  useWidth:       Integer;
-//  lastTriedWidth: Integer;
-//begin
-//  tmpCaption := chkBox.Caption;
-//
-//  maxWidth := (pnlVertSplit.left - CHKBOX_CONTROL_MARGIN) - chkBox.Left;
-//  useWidth := maxWidth;
-//
-//  chkBox.Caption := 'X';
-//  chkBox.Width   := useWidth;
-//  lastTriedWidth := useWidth;
-//  chkBox.Caption := tmpCaption;
-//  while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0)) do begin
-//    // 5 used here; just needs to be something sensible to reduce the
-//    // width by; 1 would do pretty much just as well
-//    useWidth := useWidth - 5;
-//
-//    chkBox.Caption := 'X';
-//    chkBox.Width   := useWidth;
-//    lastTriedWidth := useWidth;
-//    chkBox.Caption := tmpCaption;
-//  end;
-//
-//end;
+ //procedure TfrmExplorerOptions._NudgeCheckbox(chkBox: TCheckBox);
+ //var
+ //  tmpCaption:     String;
+ //  maxWidth:       Integer;
+ //  useWidth:       Integer;
+ //  lastTriedWidth: Integer;
+ //begin
+ //  tmpCaption := chkBox.Caption;
+ //
+ //  maxWidth := (pnlVertSplit.left - CHKBOX_CONTROL_MARGIN) - chkBox.Left;
+ //  useWidth := maxWidth;
+ //
+ //  chkBox.Caption := 'X';
+ //  chkBox.Width   := useWidth;
+ //  lastTriedWidth := useWidth;
+ //  chkBox.Caption := tmpCaption;
+ //  while ((chkBox.Width > maxWidth) and (lastTriedWidth > 0)) do begin
+ //    // 5 used here; just needs to be something sensible to reduce the
+ //    // width by; 1 would do pretty much just as well
+ //    useWidth := useWidth - 5;
+ //
+ //    chkBox.Caption := 'X';
+ //    chkBox.Width   := useWidth;
+ //    lastTriedWidth := useWidth;
+ //    chkBox.Caption := tmpCaption;
+ //  end;
+ //
+ //end;
 
 procedure TfrmExplorerOptions._InitializeAdvancedExplorer();
 const
@@ -364,25 +355,25 @@ const
   //
   //  end;
 
-//  procedure NudgeLabel(lbl: TLabel);
-//  var
-//    maxWidth: Integer;
-//  begin
-//    if (pnlVertSplit.left > lbl.left) then begin
-//      maxWidth := (pnlVertSplit.left - LABEL_CONTROL_MARGIN) - lbl.left;
-//    end else begin
-//      maxWidth := (lbl.Parent.Width - LABEL_CONTROL_MARGIN) - lbl.left;
-//    end;
-//
-//    lbl.Width := maxWidth;
-//  end;
+  //  procedure NudgeLabel(lbl: TLabel);
+  //  var
+  //    maxWidth: Integer;
+  //  begin
+  //    if (pnlVertSplit.left > lbl.left) then begin
+  //      maxWidth := (pnlVertSplit.left - LABEL_CONTROL_MARGIN) - lbl.left;
+  //    end else begin
+  //      maxWidth := (lbl.Parent.Width - LABEL_CONTROL_MARGIN) - lbl.left;
+  //    end;
+  //
+  //    lbl.Width := maxWidth;
+  //  end;
 
-var
-//  stlChkBoxOrder: TStringList;
-//  YPos:           Integer;
-//  i:              Integer;
-//  currChkBox:     TCheckBox;
-  groupboxMargin: Integer;
+//var
+  //  stlChkBoxOrder: TStringList;
+  //  YPos:           Integer;
+  //  i:              Integer;
+  //  currChkBox:     TCheckBox;
+//  groupboxMargin: Integer;
 begin
   inherited;
 
@@ -392,15 +383,15 @@ begin
   // Re-jig label size to take cater for differences in translation lengths
   // Size so the max. right is flush with the max right of pbLangDetails
   //  lblMRUMaxItemCount.width := (pbLangDetails.left + pbLangDetails.width) - lblMRUMaxItemCount.left;
-  groupboxMargin              := ckAdvancedMountDlg.left;
-  lblMRUMaxItemCount.Width    := (gbAdvanced.Width - groupboxMargin) - lblMRUMaxItemCount.left;
-  lblMoveDeletionMethod.Width := (gbAdvanced.Width - groupboxMargin) - lblMoveDeletionMethod.left;
-  lblOverwriteMethod.Width    := (gbAdvanced.Width - groupboxMargin) - lblOverwriteMethod.left;
-  lblOverwritePasses.Width    := (gbAdvanced.Width - groupboxMargin) - lblOverwritePasses.left;
+//  groupboxMargin              := ckAdvancedMountDlg.left;
+//  lblMRUMaxItemCount.Width    := (gbAdvanced.Width - groupboxMargin) - lblMRUMaxItemCount.left;
+//  lblMoveDeletionMethod.Width := (gbAdvanced.Width - groupboxMargin) - lblMoveDeletionMethod.left;
+//  lblOverwriteMethod.Width    := (gbAdvanced.Width - groupboxMargin) - lblOverwriteMethod.left;
+//  lblOverwritePasses.Width    := (gbAdvanced.Width - groupboxMargin) - lblOverwritePasses.left;
 
-//  pnlVertSplit.Caption    := '';
-//  pnlVertSplit.bevelouter := bvLowered;
-//  pnlVertSplit.Width      := 3;
+  //  pnlVertSplit.Caption    := '';
+  //  pnlVertSplit.bevelouter := bvLowered;
+  //  pnlVertSplit.Width      := 3;
 
   // Here we re-jig the checkboxes so that they are nicely spaced vertically.
   // This is needed as some language translation require the checkboxes to have
@@ -414,48 +405,48 @@ begin
   //      TCheckBox
   //   3) Make sure it's autosize property is TRUE
   //
-//  stlChkBoxOrder := TStringList.Create();
-//  try
-//    // stlChkBoxOrder is used to order the checkboxes in their vertical order;
-//    // this allows checkboxes to be added into the list below in *any* order,
-//    // and it'll still work
-//    stlChkBoxOrder.Sorted := True;
-//
-//    stlChkBoxOrder.AddObject(Format('%.5d', [ckAdvancedMountDlg.Top]), ckAdvancedMountDlg);
-//    stlChkBoxOrder.AddObject(Format('%.5d', [ckRevertVolTimestamps.Top]),
-//      ckRevertVolTimestamps);
-//    stlChkBoxOrder.AddObject(Format('%.5d', [ckPreserveTimestampsOnStoreExtract.Top]),
-//      ckPreserveTimestampsOnStoreExtract);
-//    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowNewlinesInPasswords.Top]),
-//      ckAllowNewlinesInPasswords);
-//    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowTabsInPasswords.Top]),
-//      ckAllowTabsInPasswords);
-//
-//    currChkBox := TCheckBox(stlChkBoxOrder.Objects[0]);
-//    YPos       := currChkBox.Top;
-//    YPos       := YPos + currChkBox.Height;
-//    for i := 1 to (stlChkBoxOrder.Count - 1) do begin
-//      currChkBox := TCheckBox(stlChkBoxOrder.Objects[i]);
-//
-//      currChkBox.Top := YPos + CHKBOX_CONTROL_MARGIN;
-//
-//      // Sort out the checkbox's height
-//      _NudgeCheckbox(currChkBox);
-//
-//      YPos := currChkBox.Top;
-//      YPos := YPos + currChkBox.Height;
-//    end;
-//
-//  finally
-//    stlChkBoxOrder.Free();
-//  end;
+  //  stlChkBoxOrder := TStringList.Create();
+  //  try
+  //    // stlChkBoxOrder is used to order the checkboxes in their vertical order;
+  //    // this allows checkboxes to be added into the list below in *any* order,
+  //    // and it'll still work
+  //    stlChkBoxOrder.Sorted := True;
+  //
+  //    stlChkBoxOrder.AddObject(Format('%.5d', [ckAdvancedMountDlg.Top]), ckAdvancedMountDlg);
+  //    stlChkBoxOrder.AddObject(Format('%.5d', [ckRevertVolTimestamps.Top]),
+  //      ckRevertVolTimestamps);
+  //    stlChkBoxOrder.AddObject(Format('%.5d', [ckPreserveTimestampsOnStoreExtract.Top]),
+  //      ckPreserveTimestampsOnStoreExtract);
+  //    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowNewlinesInPasswords.Top]),
+  //      ckAllowNewlinesInPasswords);
+  //    stlChkBoxOrder.AddObject(Format('%.5d', [ckAllowTabsInPasswords.Top]),
+  //      ckAllowTabsInPasswords);
+  //
+  //    currChkBox := TCheckBox(stlChkBoxOrder.Objects[0]);
+  //    YPos       := currChkBox.Top;
+  //    YPos       := YPos + currChkBox.Height;
+  //    for i := 1 to (stlChkBoxOrder.Count - 1) do begin
+  //      currChkBox := TCheckBox(stlChkBoxOrder.Objects[i]);
+  //
+  //      currChkBox.Top := YPos + CHKBOX_CONTROL_MARGIN;
+  //
+  //      // Sort out the checkbox's height
+  //      _NudgeCheckbox(currChkBox);
+  //
+  //      YPos := currChkBox.Top;
+  //      YPos := YPos + currChkBox.Height;
+  //    end;
+  //
+  //  finally
+  //    stlChkBoxOrder.Free();
+  //  end;
 
   // Nudge labels so they're as wide as can be allowed
-//  NudgeLabel(lblMoveDeletionMethod);
-//  NudgeLabel(lblOverwriteMethod);
-//  NudgeLabel(lblOverwritePasses);
-//  NudgeLabel(lblMRUMaxItemCount);
-//  NudgeLabel(lblMRUMaxItemCountInst);
+  //  NudgeLabel(lblMoveDeletionMethod);
+  //  NudgeLabel(lblOverwriteMethod);
+  //  NudgeLabel(lblOverwritePasses);
+  //  NudgeLabel(lblMRUMaxItemCount);
+  //  NudgeLabel(lblMRUMaxItemCountInst);
 
   // Here we move controls associated with labels, such that they appear
   // underneath the label
@@ -561,12 +552,6 @@ begin
 
   SDUCenterControl(gbWebDAV, ccHorizontal);
   SDUCenterControl(gbWebDAV, ccVertical, 25);
-
-  cbDrive.Items.Clear();
-  cbDrive.Items.Add(USE_DEFAULT);
-  //  for driveLetter:='C' to 'Z' do
-  for driveLetter := 'A' to 'Z' do
-    cbDrive.Items.Add(driveLetter + ':');
 end;
 
 procedure TfrmExplorerOptions._InitializeGeneral();
@@ -579,23 +564,22 @@ procedure TfrmExplorerOptions._InitializeGeneral();
  //
  //  end;
 
-//var
-//  stlChkBoxOrder: TStringList;
-//  YPos:           Integer;
-//  i:              Integer;
-//  currChkBox:     TCheckBox;
+ //var
+ //  stlChkBoxOrder: TStringList;
+ //  YPos:           Integer;
+ //  i:              Integer;
+ //  currChkBox:     TCheckBox;
 begin
   inherited;
 
 
-//
-//  SDUCenterControl(gbGeneral, ccHorizontal);
-//  SDUCenterControl(gbGeneral, ccVertical, 25);
+  //
+  //  SDUCenterControl(gbGeneral, ccHorizontal);
+  //  SDUCenterControl(gbGeneral, ccVertical, 25);
 
-//  pnlVertSplit.Caption    := '';
-//  pnlVertSplit.bevelouter := bvLowered;
-//  pnlVertSplit.Width      := 3;
-
+  //  pnlVertSplit.Caption    := '';
+  //  pnlVertSplit.bevelouter := bvLowered;
+  //  pnlVertSplit.Width      := 3;
 
 
 
@@ -611,43 +595,43 @@ begin
   //      TCheckBox
   //   3) Make sure it's autosize property is TRUE
   //
- // stlChkBoxOrder := TStringList.Create();
-//  try
-//    // stlChkBoxOrder is used to order the checkboxes in their vertical order;
-//    // this allows checkboxes to be added into the list below in *any* order,
-//    // and it'll still work
-//    stlChkBoxOrder.Sorted := True;
-//
-//    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbar.Top]), ckDisplayToolbar);
-//    stlChkBoxOrder.AddObject(Format('%.5d', [ckShowPasswords.Top]), ckShowPasswords);
-//    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbarLarge.Top]),
-//      ckDisplayToolbarLarge);
-//    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbarCaptions.Top]),
-//      ckDisplayToolbarCaptions);
-//    stlChkBoxOrder.AddObject(Format('%.5d', [ckShowHiddenItems.Top]), ckShowHiddenItems);
-//    stlChkBoxOrder.AddObject(Format('%.5d', [ckHideKnownFileExtns.Top]), ckHideKnownFileExtns);
-//    stlChkBoxOrder.AddObject(Format('%.5d', [ckStoreLayout.Top]), ckStoreLayout);
+  // stlChkBoxOrder := TStringList.Create();
+  //  try
+  //    // stlChkBoxOrder is used to order the checkboxes in their vertical order;
+  //    // this allows checkboxes to be added into the list below in *any* order,
+  //    // and it'll still work
+  //    stlChkBoxOrder.Sorted := True;
+  //
+  //    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbar.Top]), ckDisplayToolbar);
+  //    stlChkBoxOrder.AddObject(Format('%.5d', [ckShowPasswords.Top]), ckShowPasswords);
+  //    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbarLarge.Top]),
+  //      ckDisplayToolbarLarge);
+  //    stlChkBoxOrder.AddObject(Format('%.5d', [ckDisplayToolbarCaptions.Top]),
+  //      ckDisplayToolbarCaptions);
+  //    stlChkBoxOrder.AddObject(Format('%.5d', [ckShowHiddenItems.Top]), ckShowHiddenItems);
+  //    stlChkBoxOrder.AddObject(Format('%.5d', [ckHideKnownFileExtns.Top]), ckHideKnownFileExtns);
+  //    stlChkBoxOrder.AddObject(Format('%.5d', [ckStoreLayout.Top]), ckStoreLayout);
 
   //  currChkBox := TCheckBox(stlChkBoxOrder.Objects[0]);
-//    YPos       := currChkBox.Top;
-//    YPos       := YPos + currChkBox.Height;
-//    for i := 1 to (stlChkBoxOrder.Count - 1) do begin
-//      currChkBox := TCheckBox(stlChkBoxOrder.Objects[i]);
-//
-//      if currChkBox.Visible then begin
-//        currChkBox.Top := YPos + CHKBOX_CONTROL_MARGIN;
-//
-//        // Sort out the checkbox's height
-//        _NudgeCheckbox(currChkBox);
-//
-//        YPos := currChkBox.Top;
-//        YPos := YPos + currChkBox.Height;
-//      end;
-//    end;
-//
-//  finally
-//    stlChkBoxOrder.Free();
-//  end;
+  //    YPos       := currChkBox.Top;
+  //    YPos       := YPos + currChkBox.Height;
+  //    for i := 1 to (stlChkBoxOrder.Count - 1) do begin
+  //      currChkBox := TCheckBox(stlChkBoxOrder.Objects[i]);
+  //
+  //      if currChkBox.Visible then begin
+  //        currChkBox.Top := YPos + CHKBOX_CONTROL_MARGIN;
+  //
+  //        // Sort out the checkbox's height
+  //        _NudgeCheckbox(currChkBox);
+  //
+  //        YPos := currChkBox.Top;
+  //        YPos := YPos + currChkBox.Height;
+  //      end;
+  //    end;
+  //
+  //  finally
+  //    stlChkBoxOrder.Free();
+  //  end;
 
   // Here we move controls associated with labels, such that they appear
   // underneath the label
@@ -683,7 +667,6 @@ begin
 
   ckWebDAVLogAccess.Checked := (trim(fedWebDAVLogAccess.Filename) <> '');
   ckWebDAVLogDebug.Checked  := (trim(fedWebDAVLogDebug.Filename) <> '');
-
 end;
 
 
@@ -703,7 +686,7 @@ var
   dso:    TDefaultStoreOp;
   idx:    Integer;
   useIdx: Integer;
-  showTemp   : Boolean;
+  //  showTemp   : Boolean;
 begin
   // General...
 
@@ -721,7 +704,7 @@ begin
 
   SetupGreyedCheckbox(
     ckDisplayToolbarCaptions,
-    config.ShowToolbarCaptions ,
+    config.ShowToolbarCaptions,
     config.ShowExplorerToolbarCaptions
     );
 
@@ -745,14 +728,13 @@ end;
 
 procedure TfrmExplorerOptions._WriteSettingsWebDAV(config: TExplorerSettings);
 begin
-  config.EnableWebDAVServer := ckWebDAV.Checked;
+  config.EnableWebDAVServer             := ckWebDAV.Checked;
   config.OverwriteWebDAVCacheOnDismount := ckOverwriteCacheOnDismount.Checked;
   config.WebDavShareName                := edWebDAVShareName.Text;
-  config.WebDavLogDebugFile                 := fedWebDAVLogDebug.Filename;
-  config.WebDavLogAccessFile                := fedWebDAVLogAccess.Filename;
+  config.WebDavLogDebugFile             := fedWebDAVLogDebug.Filename;
+  config.WebDavLogAccessFile            := fedWebDAVLogAccess.Filename;
 
 end;
-
 
 
 

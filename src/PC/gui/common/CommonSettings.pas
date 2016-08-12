@@ -59,17 +59,17 @@ type
   //type to mount a file as if it has no header
   //  TDragDropFileType = (ftPrompt, ftFreeOTFE, ftPlainLinux);
 
-  //type of volume - but can also be hidden if 1st two
-  TVolumeType    = (vtUnknown, vtFreeOTFE, vtPlainLinux, vtLUKS);
+  //type of volume - but can also be hidden if 2nd two
+  TVolumeType    = (vtUnknown, vtFreeOTFE, vtPlainDmCrypt, vtLUKS);
   TVolumeTypeSet = set of TVolumeType;
 
 const
   //these cant be detected
-  sDragDropFileType: TVolumeTypeSet = [vtUnknown, vtFreeOTFE, vtPlainLinux];
+  sDragDropFileType: TVolumeTypeSet = [vtUnknown, vtFreeOTFE, vtPlainDmCrypt];
 
 
 resourcestring
-  DRAGDROPFILETYPE_PROMPT   = '<prompt user>';
+  DRAGDROPFILETYPE_PROMPT   = 'Prompt user';
   DRAGDROPFILETYPE_FREEOTFE = 'FreeOTFE';
   DRAGDROPFILETYPE_LINUX    = 'dm-crypt';
   DRAGDROPFILETYPE_LUKS     = 'LUKS';
@@ -121,32 +121,32 @@ type
   TCommonSettings = class
   private
     //    fCustomLocation:  String;
-    fPostMountExe: String;
-    fisAppRunning:    eAppRunning;
-    flanguageCode: String;
-    fshowPasswords:       Boolean;
-    fshowAdvancedMountDialog: Boolean;
-    finformIfMountedOK:   Boolean;
-    fsettingsVersion:     Integer;
-    fPostDismountExe:      String;
+    fPostMountExe:     String;
+    fisAppRunning:     eAppRunning;
+    flanguageCode:     String;
+    fshowPasswords:    Boolean;
+    //    fshowAdvancedMountDialog: Boolean;
+    finformIfMountedOK: Boolean;
+    fsettingsVersion:  Integer;
+    fPostDismountExe:  String;
     fallowTabsInPasswords: Boolean;
-    ffreezeVolTimestamps:     Boolean;
-    fdefaultDriveChar:        DriveLetterChar;
-    fdefaultVolType:          TVolumeType;
+    ffreezeVolTimestamps: Boolean;
+    fdefaultDriveChar: DriveLetterChar;
+    fdefaultVolType:   TVolumeType;
     fmountPathOnPKCS11: String;
-    fPreDismountExe: String;
-    fshowStatusBar:     Boolean;
-    fwarnAutoRunExeErr:  Boolean;
-    fPKCS11AutoMount: Boolean;
-    fenablePKCS11: Boolean;
-    fPKCS11Library:         String;
+    fPreDismountExe:   String;
+    fshowStatusBar:    Boolean;
+    fwarnAutoRunExeErr: Boolean;
+    fPKCS11AutoMount:  Boolean;
+    fenablePKCS11:     Boolean;
+    fPKCS11Library:    String;
     fallowNewlinesInPasswords: Boolean;
-    fexploreAfterMount:     Boolean;
-    fdismountOnPKCS11Remove:   Boolean;
+    fexploreAfterMount: Boolean;
+    fdismountOnPKCS11Remove: Boolean;
     fMruList:          TSDUMRUList;
     fSavedDlgs:        TStringList;
     fMainWindowLayout: String;
-    fstoreLayout:   Boolean;
+    fstoreLayout:      Boolean;
     fupdateChkDontNotifyMinorVer: Integer;
     fupdateChkDontNotifyMajorVer: Integer;
 
@@ -216,15 +216,14 @@ type
       Write FshowToolbarCaptions default True;
 
     property ExploreAfterMount: Boolean Read fexploreAfterMount
-      Write fexploreAfterMount default False;
-    property ShowAdvancedMountDialog: Boolean Read fshowAdvancedMountDialog
-      Write fshowAdvancedMountDialog default False;
+      Write fexploreAfterMount default true;
+
     property FreezeVolTimestamps: Boolean Read ffreezeVolTimestamps
       Write ffreezeVolTimestamps default True;
     property ShowPasswords: Boolean Read fshowPasswords
       Write fshowPasswords default False;
     property AllowNewlinesInPasswords: Boolean
-      Read fallowNewlinesInPasswords Write fallowNewlinesInPasswords default True;
+      Read fallowNewlinesInPasswords Write fallowNewlinesInPasswords default False;
     property AllowTabsInPasswords: Boolean Read fallowTabsInPasswords
       Write fallowTabsInPasswords default False;
     property LanguageCode: String Read flanguageCode Write flanguageCode;
@@ -345,8 +344,8 @@ var
   _SettingsObj: TCommonSettings;
 
 const
-//  SETTINGS_V1 = 1;
-//  SETTINGS_V2 = 2;
+  //  SETTINGS_V1 = 1;
+  //  SETTINGS_V2 = 2;
 
   CURR_SETTINGS_VER = 3;
 
@@ -359,7 +358,7 @@ const
   DFLT_OPT_DISPLAYTOOLBARCAPTIONS = True;
 
   OPT_SETTINGSVERSION           = 'SettingsVersion';
-//  DFLT_OPT_SETTINGSVERSION      = SETTINGS_V2;
+  //  DFLT_OPT_SETTINGSVERSION      = SETTINGS_V2;
   OPT_SAVESETTINGS              = 'SaveSettings';
   DFLT_OPT_SAVESETTINGS         = slProfile;
   OPT_EXPLOREAFTERMOUNT         = 'ExploreAfterMount';
@@ -522,10 +521,10 @@ begin
   fSavedDlgs := TStringList.Create;
 
   //testing//
-//  fSavedDlgs.Add('foo=bar');
-//  fSavedDlgs.Add('splock=splunge');
+  //  fSavedDlgs.Add('foo=bar');
+  //  fSavedDlgs.Add('splock=splunge');
 
-  settingsFilename := GetCmdLine.settingsFileArg;
+  settingsFilename := GetCmdLine.settingsFile;
   if settingsFilename <> '' then
     GCustomSettingsLocation := SDURelativePathToAbsolute(settingsFilename);
 
@@ -578,12 +577,12 @@ begin
   FshowToolbarCaptions := iniFile.ReadBool(SECTION_GENERAL, OPT_DISPLAYTOOLBARCAPTIONS,
     DFLT_OPT_DISPLAYTOOLBARCAPTIONS);
 
-//  fsettingsVersion := iniFile.ReadInteger(SECTION_GENERAL, OPT_SETTINGSVERSION, SETTINGS_V1);
+  //  fsettingsVersion := iniFile.ReadInteger(SECTION_GENERAL, OPT_SETTINGSVERSION, SETTINGS_V1);
 
-  fexploreAfterMount     :=
+  fexploreAfterMount        :=
     iniFile.ReadBool(SECTION_GENERAL, OPT_EXPLOREAFTERMOUNT, DFLT_OPT_EXPLOREAFTERMOUNT);
-  fshowAdvancedMountDialog      :=
-    iniFile.ReadBool(SECTION_GENERAL, OPT_ADVANCEDMOUNTDLG, DFLT_OPT_ADVANCEDMOUNTDLG);
+  //  fshowAdvancedMountDialog      :=
+  //    iniFile.ReadBool(SECTION_GENERAL, OPT_ADVANCEDMOUNTDLG, DFLT_OPT_ADVANCEDMOUNTDLG);
   ffreezeVolTimestamps      :=
     iniFile.ReadBool(SECTION_GENERAL, OPT_REVERTVOLTIMESTAMPS, DFLT_OPT_REVERTVOLTIMESTAMPS);
   fshowPasswords            :=
@@ -591,9 +590,9 @@ begin
   fallowNewlinesInPasswords :=
     iniFile.ReadBool(SECTION_GENERAL, OPT_ALLOWNEWLINESINPASSWORDS,
     DFLT_OPT_ALLOWNEWLINESINPASSWORDS);
-  fallowTabsInPasswords  :=
+  fallowTabsInPasswords     :=
     iniFile.ReadBool(SECTION_GENERAL, OPT_ALLOWTABSINPASSWORDS, DFLT_OPT_ALLOWTABSINPASSWORDS);
-  flanguageCode          :=
+  flanguageCode             :=
     iniFile.ReadString(SECTION_GENERAL, OPT_LANGUAGECODE, DFLT_OPT_LANGUAGECODE);
   fdefaultVolType           :=
     TVolumeType(iniFile.ReadInteger(SECTION_GENERAL, OPT_DRAGDROP, DFLT_OPT_DRAGDROP));
@@ -630,13 +629,13 @@ begin
     iniFile.ReadInteger(SECTION_CHKUPDATE, OPT_CHKUPDATE_SUPPRESSNOTIFYVERMINOR,
     DFLT_OPT_CHKUPDATE_SUPPRESSNOTIFYVERMINOR);
 
-  EnablePKCS11           := iniFile.ReadBool(SECTION_PKCS11, OPT_PKCS11ENABLE,
+  EnablePKCS11            := iniFile.ReadBool(SECTION_PKCS11, OPT_PKCS11ENABLE,
     DFLT_OPT_PKCS11ENABLE);
-  PKCS11LibraryPath      := iniFile.ReadString(SECTION_PKCS11, OPT_PKCS11LIBRARY,
+  PKCS11LibraryPath       := iniFile.ReadString(SECTION_PKCS11, OPT_PKCS11LIBRARY,
     DFLT_OPT_PKCS11LIBRARY);
   fPKCS11AutoMount        := iniFile.ReadBool(SECTION_PKCS11, OPT_PKCS11AUTOMOUNT,
     DFLT_OPT_PKCS11AUTOMOUNT);
-  fMountPathOnPKCS11     := iniFile.ReadString(SECTION_PKCS11, OPT_PKCS11AUTOMOUNTVOLUME,
+  fMountPathOnPKCS11      := iniFile.ReadString(SECTION_PKCS11, OPT_PKCS11AUTOMOUNTVOLUME,
     DFLT_OPT_PKCS11AUTOMOUNTVOLUME);
   fDismountOnPKCS11Remove := iniFile.ReadBool(SECTION_PKCS11, OPT_PKCS11AUTODISMOUNT,
     DFLT_OPT_PKCS11AUTODISMOUNT);
@@ -644,11 +643,11 @@ begin
   fMruList.MaxItems := DFLT_OPT_MRUMAXITEMS;
   fMruList.Load(iniFile, SECTION_MRULIST);
 
-  PostMountExe      := iniFile.ReadString(SECTION_AUTORUN, OPT_POSTMOUNTEXE,
+  PostMountExe       := iniFile.ReadString(SECTION_AUTORUN, OPT_POSTMOUNTEXE,
     DFLT_OPT_POSTMOUNTEXE);
-  PreDismountExe    := iniFile.ReadString(SECTION_AUTORUN, OPT_PREDISMOUNTEXE,
+  PreDismountExe     := iniFile.ReadString(SECTION_AUTORUN, OPT_PREDISMOUNTEXE,
     DFLT_OPT_PREDISMOUNTEXE);
-  PostDismountExe   := iniFile.ReadString(SECTION_AUTORUN, OPT_POSTDISMOUNTEXE,
+  PostDismountExe    := iniFile.ReadString(SECTION_AUTORUN, OPT_POSTDISMOUNTEXE,
     DFLT_OPT_POSTDISMOUNTEXE);
   fWarnAutoRunExeErr := iniFile.ReadBool(SECTION_AUTORUN, OPT_PREPOSTEXEWARN,
     DFLT_OPT_PREPOSTEXEWARN);
@@ -666,6 +665,7 @@ begin
     _LoadOld(iniFile)
   else
     _LoadNew(iniFile);
+  ;
 end;
 
 procedure TCommonSettings._LoadNew(iniFile: TCustomINIFile);
@@ -817,13 +817,48 @@ begin
   Result           := _UpdateNew(iniFile, True);
 end;
 
-//set properties defaults that do not have a 'default' value (typ. strings and classes)
+{
+  set properties defaults based on 'default' value
+  delphi 'default' does not initialise value.
+  manually set any that do not support 'default' (typ. strings and classes)
+}
 procedure TCommonSettings._SetDefaults;
+var
+  Value: TValue;
+  ctx:   TRttiContext;
+  rt:    TRttiType;
+  prop:  TRttiProperty;
+  i:     Integer;
 begin
+  // initialise any properties with a 'default' to default value
+  ctx := TRttiContext.Create();
+  try
+    rt := ctx.GetType(self.ClassType);
+
+    for prop in rt.GetProperties() do begin
+      Value := prop.GetValue(self);
+      // only these types can have default values
+      if Value.TypeInfo.Kind in [tkInteger, tkEnumeration] then begin
+//        assert(prop.IsReadable);
+
+        if prop is TRttiInstanceProperty then begin
+          assert(prop.IsWritable);
+          // get default
+          i := TRttiInstanceProperty(prop).Default;
+          TValue.Make(i, Value.TypeInfo, Value);
+          // and set it
+          prop.SetValue(self, Value);
+        end;
+      end;
+    end;
+  finally
+    ctx.Free();
+  end;
+
   flastCheckedForUpdate :=
     SDUISO8601ToTDate(DFLT_OPT_CHKUPDATE_LASTCHECKED);
 
-  flanguageCode  := DFLT_OPT_LANGUAGECODE;
+  flanguageCode     := DFLT_OPT_LANGUAGECODE;
   fMainWindowLayout := '';
 end;
 

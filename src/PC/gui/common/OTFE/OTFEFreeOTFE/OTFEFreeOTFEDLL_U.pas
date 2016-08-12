@@ -163,8 +163,7 @@ type
       metaData: TOTFEFreeOTFEVolumeMetaData;
       offset: Int64 = 0;
       size: Int64 = 0;
-      storageMediaType: TFreeOTFEStorageMediaType =
-      mtFixedMedia  // PC kernel drivers *only* - ignored otherwise
+      MountMountAs: TMountDiskType = fomaRemovableDisk  // PC kernel drivers *only* - ignored otherwise
       ): Boolean; override;
 
     function _DismountDiskDevice(
@@ -586,7 +585,7 @@ begin
     mainCypherGUID,    // Main cypher
     VolumeFlags, dummyMetadata,
     offset, size,
-    FreeOTFEMountAsStorageMediaType[mountMountAs]);
+    mountMountAs);
   if Result then begin
     try
       stm := TSDUMemoryStream.Create();
@@ -1962,7 +1961,7 @@ function TOTFEFreeOTFEDLL._MountDiskDevice(
   metaData: TOTFEFreeOTFEVolumeMetaData;
   offset: Int64 = 0;
   size: Int64 = 0;
-  storageMediaType: TFreeOTFEStorageMediaType = mtFixedMedia
+   MountMountAs: TMountDiskType = fomaRemovableDisk
   ): Boolean;
 var
   ptrDIOCBuffer:     PDIOC_MOUNT_PC_DLL;
@@ -1978,6 +1977,7 @@ var
   volumeKeyStr:      Ansistring;
 begin
   Result := False;
+
 
   // Sanity check
   Assert(
@@ -2209,7 +2209,7 @@ begin
     IVCypherGUID, mainCypherDriver,
     mainCypherGUID, VolumeFlags,
     mountMetadata, offset, size,
-    FreeOTFEMountAsStorageMediaType[MountMountAs]) then begin
+    MountMountAs) then begin
     Result := True;
   end;
 

@@ -50,9 +50,6 @@ object frmHdrDump: TfrmHdrDump
     Align = alTop
     Caption = 'Container/keyfile details'
     TabOrder = 0
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    ExplicitWidth = 465
     inline OTFEFreeOTFEVolumeSelect1: TfmeVolumeSelect
       Left = 2
       Top = 15
@@ -66,10 +63,10 @@ object frmHdrDump: TfrmHdrDump
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitLeft = 3
-      ExplicitTop = 20
-      ExplicitWidth = 455
-      ExplicitHeight = 45
+      ExplicitLeft = 2
+      ExplicitTop = 15
+      ExplicitWidth = 527
+      ExplicitHeight = 196
       DesignSize = (
         527
         196)
@@ -110,9 +107,6 @@ object frmHdrDump: TfrmHdrDump
     Font.Style = []
     ParentFont = False
     TabOrder = 1
-    ExplicitLeft = 0
-    ExplicitTop = 219
-    ExplicitWidth = 516
     inline feDumpFilename: TSDUFilenameEdit
       Left = 2
       Top = 15
@@ -120,18 +114,16 @@ object frmHdrDump: TfrmHdrDump
       Height = 53
       Align = alClient
       TabOrder = 0
-      ExplicitLeft = 88
-      ExplicitTop = 20
-      ExplicitWidth = 401
-      ExplicitHeight = 34
+      ExplicitLeft = 2
+      ExplicitTop = 15
+      ExplicitWidth = 527
+      ExplicitHeight = 53
       DesignSize = (
         527
         53)
       inherited edFilename: TEdit
-        Left = 3
         Width = 451
         Height = 22
-        ExplicitLeft = 3
         ExplicitWidth = 430
         ExplicitHeight = 22
       end

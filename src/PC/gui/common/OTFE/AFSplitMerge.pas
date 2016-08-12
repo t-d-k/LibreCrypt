@@ -245,7 +245,7 @@ begin
     );
 
   // XOR last hash output with input
-  SDUZeroBuffer(calcStripe);
+  SDUInitAndZeroBuffer(calcStripe);
   for j := 0 to blockLength - 1 do
     SDUAddByte(calcStripe, Ord(processedStripes[j]) xor input[j]);
   //    calcStripe := calcStripe + Ansichar();

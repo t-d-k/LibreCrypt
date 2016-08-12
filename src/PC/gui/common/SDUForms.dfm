@@ -1,9 +1,9 @@
 object SDUForm: TSDUForm
   Left = 192
   Top = 103
-  Width = 870
-  Height = 640
   Caption = 'SDUForm'
+  ClientHeight = 602
+  ClientWidth = 854
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

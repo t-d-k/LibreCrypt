@@ -1,52 +1,57 @@
 inherited frmOptions: TfrmOptions
-  ClientHeight = 540
-  ExplicitWidth = 519
-  ExplicitHeight = 568
+  ClientHeight = 482
+  ClientWidth = 508
+  ExplicitWidth = 514
+  ExplicitHeight = 510
   PixelsPerInch = 96
   TextHeight = 13
   inherited lblSettingsLocation: TLabel
-    Left = 26
-    Top = 422
-    ExplicitLeft = 26
-    ExplicitTop = 422
+    Left = 8
+    Top = 412
+    ExplicitLeft = 8
+    ExplicitTop = 412
   end
   inherited imgNoSaveWarning: TImage
-    Top = 414
-    ExplicitTop = 414
+    Left = 417
+    Top = 411
+    Height = 19
+    ExplicitLeft = 417
+    ExplicitTop = 411
+    ExplicitHeight = 19
   end
   inherited pbOK: TButton
-    Top = 508
+    Left = 334
+    Top = 450
+    ExplicitLeft = 334
     ExplicitTop = 508
   end
   inherited pbCancel: TButton
-    Top = 508
+    Left = 415
+    Top = 450
+    ExplicitLeft = 415
     ExplicitTop = 508
   end
   inherited cbSettingsLocation: TComboBox
-    Left = 144
-    Top = 419
-    Width = 273
-    ExplicitLeft = 144
-    ExplicitTop = 419
-    ExplicitWidth = 273
-  end
-  inherited ckAssociateFiles: TSDUCheckBox
-    Left = 22
-    Top = 451
-    Width = 395
-    OnClick = ControlChanged
-    ExplicitLeft = 22
-    ExplicitTop = 451
-    ExplicitWidth = 395
+    Left = 150
+    Top = 409
+    Width = 259
+    ExplicitLeft = 150
+    ExplicitTop = 409
+    ExplicitWidth = 259
   end
   inherited pcOptions: TPageControl
+    Width = 508
     Height = 396
-    ActivePage = tsAutorun
+    ActivePage = tcSystemTray
+    ExplicitWidth = 508
     ExplicitHeight = 396
     inherited tsGeneral: TTabSheet
+      ExplicitWidth = 500
       ExplicitHeight = 368
       inherited gbGeneralMain: TGroupBox
+        Width = 500
         Height = 368
+        ExplicitWidth = 500
         ExplicitHeight = 368
         inherited ckExploreAfterMount: TSDUCheckBox
           Width = 109
@@ -54,18 +59,47 @@ inherited frmOptions: TfrmOptions
           ExplicitWidth = 109
           ExplicitHeight = 13
         end
+        inherited ckShowPasswords: TSDUCheckBox
+          Top = 150
+          ExplicitTop = 150
+        end
+        inherited ckPromptMountSuccessful: TSDUCheckBox
+          Top = 179
+          ExplicitTop = 179
+        end
+        inherited ckDisplayToolbarLarge: TSDUCheckBox
+          Left = 16
+          ExplicitLeft = 16
+        end
+        inherited ckDisplayToolbarCaptions: TSDUCheckBox
+          Left = 16
+          ExplicitLeft = 16
+        end
+        inherited ckStoreLayout: TSDUCheckBox
+          Top = 208
+          ExplicitTop = 208
+        end
+        inherited ckAssociateFiles: TSDUCheckBox
+          Top = 237
+          ExplicitTop = 237
+        end
       end
     end
     object tsHotkeys: TTabSheet [1]
       Caption = 'Hotkeys'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 505
+      ExplicitHeight = 0
       object gbHotkeys: TGroupBox
         Left = 0
         Top = 0
-        Width = 505
+        Width = 500
         Height = 368
         Align = alClient
         Caption = 'Hotkeys'
         TabOrder = 0
+        ExplicitWidth = 505
         object Label1: TLabel
           Left = 12
           Top = 47
@@ -124,113 +158,116 @@ inherited frmOptions: TfrmOptions
     end
     object tcSystemTray: TTabSheet [2]
       Caption = 'System Tray'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 505
+      ExplicitHeight = 0
       object gbSystemTrayIcon: TGroupBox
         Left = 0
         Top = 0
-        Width = 505
+        Width = 500
         Height = 368
         Align = alClient
         Caption = 'System Tray Icon'
         TabOrder = 0
+        ExplicitLeft = 3
+        ExplicitTop = 3
+        object Label3: TLabel
+          Left = 13
+          Top = 115
+          Width = 251
+          Height = 13
+          Caption = 'Carry out the following action when the system tray is:'
+        end
+        object Label4: TLabel
+          Left = 13
+          Top = 145
+          Width = 69
+          Height = 13
+          Caption = 'Single clicked:'
+        end
+        object Label5: TLabel
+          Left = 13
+          Top = 174
+          Width = 74
+          Height = 13
+          Caption = 'Double clicked:'
+        end
+        object Label6: TLabel
+          Left = 13
+          Top = 203
+          Width = 121
+          Height = 13
+          Caption = 'with the left mousebutton:'
+        end
+        object Label7: TLabel
+          Left = 13
+          Top = 233
+          Width = 249
+          Height = 13
+          Caption = 'A double click will also perform the single click action'
+        end
         object ckUseSystemTrayIcon: TSDUCheckBox
-          Left = 12
-          Top = 20
+          Left = 13
+          Top = 28
           Width = 245
           Height = 17
           Caption = '&Show system tray icon'
-          TabOrder = 3
+          TabOrder = 2
           OnClick = ControlChanged
           AutoSize = True
         end
         object ckMinToIcon: TSDUCheckBox
-          Left = 28
-          Top = 43
+          Left = 13
+          Top = 57
           Width = 137
           Height = 13
           Caption = '&Mimimise to system tray'
-          TabOrder = 1
+          TabOrder = 0
           AutoSize = True
         end
         object ckCloseToIcon: TSDUCheckBox
-          Left = 28
-          Top = 72
+          Left = 13
+          Top = 86
           Width = 122
           Height = 13
           Caption = '&Close to system tray'
-          TabOrder = 2
+          TabOrder = 1
           AutoSize = True
         end
-        object gbClickActions: TGroupBox
-          Left = 22
-          Top = 108
-          Width = 469
-          Height = 157
-          Caption = 'Click actions'
-          TabOrder = 0
-          object Label3: TLabel
-            Left = 12
-            Top = 24
-            Width = 251
-            Height = 13
-            Caption = 'Carry out the following action when the system tray is:'
-          end
-          object Label4: TLabel
-            Left = 12
-            Top = 47
-            Width = 69
-            Height = 13
-            Caption = 'Single clicked:'
-          end
-          object Label5: TLabel
-            Left = 12
-            Top = 90
-            Width = 74
-            Height = 13
-            Caption = 'Double clicked:'
-          end
-          object Label6: TLabel
-            Left = 12
-            Top = 118
-            Width = 121
-            Height = 13
-            Caption = 'with the left mousebutton:'
-          end
-          object Label7: TLabel
-            Left = 14
-            Top = 137
-            Width = 249
-            Height = 13
-            Caption = 'A double click will also perform the single click action'
-          end
-          object cbSingleClickAction: TComboBox
-            Left = 251
-            Top = 43
-            Width = 185
-            Height = 21
-            Style = csDropDownList
-            TabOrder = 0
-          end
-          object cbDbleClickAction: TComboBox
-            Left = 251
-            Top = 86
-            Width = 185
-            Height = 21
-            Style = csDropDownList
-            TabOrder = 1
-          end
+        object cbSingleClickAction: TComboBox
+          Left = 192
+          Top = 144
+          Width = 294
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 3
+        end
+        object cbDbleClickAction: TComboBox
+          Left = 192
+          Top = 171
+          Width = 294
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 4
         end
       end
     end
     object tsMain: TTabSheet [3]
       Caption = 'Main'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 505
+      ExplicitHeight = 0
       object gbAdvanced: TGroupBox
         Left = 0
         Top = 0
-        Width = 505
+        Width = 500
         Height = 368
         Align = alClient
         Caption = 'Advanced'
         TabOrder = 0
+        ExplicitWidth = 505
         object lblDragDrop: TLabel
           Left = 12
           Top = 231
@@ -261,8 +298,8 @@ inherited frmOptions: TfrmOptions
         object lblOnExitWhenMounted: TLabel
           Left = 12
           Top = 116
-          Width = 129
-          Height = 26
+          Width = 162
+          Height = 13
           Caption = 'If containers &opened when exiting:'
           FocusControl = cbOnExitWhenMounted
           WordWrap = True
@@ -361,131 +398,96 @@ inherited frmOptions: TfrmOptions
       end
     end
     inherited tsPKCS11: TTabSheet
+      ExplicitWidth = 500
       ExplicitHeight = 368
       inherited gbPKCS11: TGroupBox
+        Width = 500
         Height = 368
+        ExplicitWidth = 500
         ExplicitHeight = 368
       end
     end
     inherited tsAdvanced: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 505
       ExplicitHeight = 368
+      inherited lblMRUMaxItemCount: TLabel
+        Left = 18
+        Top = 106
+        ExplicitLeft = 18
+        ExplicitTop = 106
+      end
       inherited lblMRUMaxItemCountInst: TLabel
-        Top = 165
-        ExplicitTop = 165
+        Top = 128
+        ExplicitTop = 128
       end
       inherited ckRevertVolTimestamps: TSDUCheckBox
-        Top = 49
-        ExplicitTop = 49
+        Left = 18
+        Top = 17
+        ExplicitLeft = 18
+        ExplicitTop = 17
       end
       inherited ckAllowNewlinesInPasswords: TSDUCheckBox
-        Top = 78
-        ExplicitTop = 78
+        Left = 18
+        Top = 44
+        ExplicitLeft = 18
+        ExplicitTop = 44
       end
       inherited ckAllowTabsInPasswords: TSDUCheckBox
-        Top = 107
-        ExplicitTop = 107
+        Left = 18
+        Top = 71
+        ExplicitLeft = 18
+        ExplicitTop = 71
       end
       inherited seMRUMaxItemCount: TSpinEdit64
-        Top = 162
-        ExplicitTop = 162
+        Top = 125
+        ExplicitTop = 125
+      end
+      object ckLaunchAtStartup: TSDUCheckBox
+        Left = 18
+        Top = 168
+        Width = 395
+        Height = 13
+        Caption = 'Start %s at system startup'
+        TabOrder = 4
+        OnClick = ckLaunchAtStartupClick
+        AutoSize = True
+      end
+      object ckLaunchMinimisedAtStartup: TSDUCheckBox
+        Left = 18
+        Top = 195
+        Width = 377
+        Height = 13
+        Caption = 'Start minimised at system startup'
+        TabOrder = 5
+        OnClick = ControlChanged
+        AutoSize = True
       end
     end
     inherited tsAutorun: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
-      ExplicitWidth = 505
       ExplicitHeight = 368
       inherited gbAutorun: TGroupBox
+        Width = 500
         Height = 368
+        ExplicitWidth = 500
         ExplicitHeight = 368
         inherited Label33: TLabel
           Left = 3
-          Top = 135
           ExplicitLeft = 3
-          ExplicitTop = 135
         end
         inherited Label34: TLabel
           Left = 5
-          Top = 175
           ExplicitLeft = 5
-          ExplicitTop = 175
-        end
-        inherited Label35: TLabel
-          Left = 6
-          Top = 216
-          ExplicitLeft = 6
-          ExplicitTop = 216
-        end
-        inherited edPostMountExe: TEdit
-          Left = 98
-          Top = 132
-          ExplicitLeft = 98
-          ExplicitTop = 132
         end
         inherited pbPostMountBrowse: TButton
-          Left = 470
-          Top = 132
           OnClick = nil
-          ExplicitLeft = 470
-          ExplicitTop = 132
         end
         inherited pbPreDismountBrowse: TButton
-          Left = 470
-          Top = 172
           OnClick = nil
-          ExplicitLeft = 470
-          ExplicitTop = 172
-        end
-        inherited edPreDismountExe: TEdit
-          Left = 98
-          Top = 172
-          ExplicitLeft = 98
-          ExplicitTop = 172
         end
         inherited pbPostDismountBrowse: TButton
-          Left = 470
-          Top = 212
           OnClick = nil
-          ExplicitLeft = 470
-          ExplicitTop = 212
-        end
-        inherited edPostDismountExe: TEdit
-          Left = 98
-          Top = 212
-          ExplicitLeft = 98
-          ExplicitTop = 212
-        end
-        inherited ckPrePostExeWarn: TSDUCheckBox
-          Left = 5
-          Top = 255
-          ExplicitLeft = 5
-          ExplicitTop = 255
         end
       end
     end
-  end
-  object ckLaunchAtStartup: TSDUCheckBox [7]
-    Left = 22
-    Top = 470
-    Width = 395
-    Height = 13
-    Caption = 'Start %s at system startup'
-    TabOrder = 5
-    OnClick = ckLaunchAtStartupClick
-    AutoSize = True
-  end
-  object ckLaunchMinimisedAtStartup: TSDUCheckBox [8]
-    Left = 40
-    Top = 489
-    Width = 377
-    Height = 13
-    Caption = 'Start minimised at system startup'
-    TabOrder = 6
-    OnClick = ControlChanged
-    AutoSize = True
   end
   inherited OpenDialog: TSDUOpenDialog
     Left = 440

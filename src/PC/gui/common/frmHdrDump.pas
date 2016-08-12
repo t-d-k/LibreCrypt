@@ -138,16 +138,16 @@ procedure TfrmHdrDump.FormCreate(Sender: TObject);
 begin
   // se64UnitOffset set in OnShow event (otherwise units not shown correctly)
   fsilent := GetCmdLine.isSilent;
-  SetVolumeFilename(GetCmdLine.VolumeArg);
-  SetPassword(GetCmdLine.PasswordArg);
-  SetDumpFilename(GetCmdLine.filenameArg);
+  SetVolumeFilename(GetCmdLine.volume);
+  SetPassword(GetCmdLine.password);
+  SetDumpFilename(GetCmdLine.filename);
 
 
   OTFEFreeOTFEVolumeSelect1.Filename             := '';
   OTFEFreeOTFEVolumeSelect1.AllowPartitionSelect := True;
-  OTFEFreeOTFEVolumeSelect1.FileSelectFilter     := FILE_FILTER_FLT_VOLUMESANDKEYFILES;
-  OTFEFreeOTFEVolumeSelect1.FileSelectDefaultExt := FILE_FILTER_DFLT_VOLUMESANDKEYFILES;
-  OTFEFreeOTFEVolumeSelect1.SelectFor            := fndOpen;
+  OTFEFreeOTFEVolumeSelect1.SetFileSelectFilter   (  FILE_FILTER_FLT_VOLUMESANDKEYFILES);
+  OTFEFreeOTFEVolumeSelect1.SetFileSelectDefaultExt (FILE_FILTER_DFLT_VOLUMESANDKEYFILES);
+  OTFEFreeOTFEVolumeSelect1.SelectFor            := osOpen;
   OTFEFreeOTFEVolumeSelect1.OnChange             := OTFEFreeOTFEVolumeSelect1Change;
 
   feDumpFilename.Filename := '';

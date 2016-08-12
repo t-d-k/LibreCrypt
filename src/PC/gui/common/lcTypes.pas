@@ -12,8 +12,12 @@ type
   DriveLetterChar   = Char;
   DriveLetterString = String;
   TSDUBytes         = array of Byte;
-  TMountDiskType  = (fomaFixedDisk, fomaRemovableDisk, fomaCD, fomaDVD, fomaUnknown);
-  TSDUNewline_Enum  = (nlCRLF, nlCR, nlLF);
+// don't allow fixed disks to be used as can cause BSoD
+{ TODO 2 -otdk -cbug : fix BsOD for fixed disks }
+  TMountDiskType  = (
+//  fomaFixedDisk,
+   fomaRemovableDisk, fomaCD, fomaDVD, fomaUnknown);
+  TSDUNewline  = (nlCRLF, nlCR, nlLF);
   TMountResult = (morFail,morOK,morCancel);//result of prompted mount operation (ie dialog)
 
   // Note: FWIW:
@@ -21,7 +25,7 @@ type
   //   Linux   normally uses LF
   //   MacOSX  normally uses CR
 
-  TSDUNewline = TSDUNewline_Enum;
+//  TSDUNewline = TSDUNewline_Enum;
 
 
   TSDUArrayInteger = array of Integer;

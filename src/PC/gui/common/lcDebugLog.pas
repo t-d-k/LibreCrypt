@@ -27,6 +27,7 @@ implementation
 uses
   //delphi
   system.Classes, vcl.Dialogs, system.Win.comobj, system.SysUtils, vcl.Forms,
+  system.IOUtils,
   //sdu
   sdugeneral
   ;
@@ -41,14 +42,35 @@ var
   _debugLevel : integer = 1; // set debug level to conrol amount. the smaller th more
 /////////////////// private fns ////////////////////////////
 
+//function GetTempDir : String;
+//var
+//  szBuffer : array [0 .. MAX_PATH] of Char;
+//begin
+//  GetTempPath(Length(szBuffer), szBuffer);
+//  result := szBuffer;
+//end;
+
+//function GetUniqueTempFileName(prefix  : string ) : TFileName;
+//var
+//  aFileName : array [0 .. MAX_PATH] of Char;
+////const
+////aPrefix = 'lc';
+//begin
+//  if Tpath.GetTempFileName() = 0 then
+//    raise Exception.Create('GetTempFileName error: ' + SysErrorMessage(GetLastError));
+//  result := aFileName;
+//end;
+
 procedure _MakeLogFileName;
 begin
-
+  (*
   _debugLogfile :=  ExtractFilePath(Application.ExeName) +'..\..\';
  {$IFDEF DEBUG}
      _debugLogfile :=  _debugLogfile +'..\..\';
    {$ENDIF}
    _debugLogfile :=  _debugLogfile +'logs\debug'+ '_'+IntToStr(random(1000))+'.log'
+   *)
+   _debugLogfile := Tpath.GetTempPath()+'lc_debug_'+IntToStr(random(1000))+'.log';
 {  dlg:= TSaveDialog.Create(nil);
   try
     dlg.Options := dlg.Options + [ofDontAddToRecent];

@@ -12,6 +12,7 @@ object frmWizard: TfrmWizard
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -38,6 +39,8 @@ object frmWizard: TfrmWizard
       Height = 346
       Align = alClient
       TabOrder = 0
+      ExplicitLeft = -31
+      ExplicitTop = 24
     end
     object pnlButtons: TPanel
       Left = 1

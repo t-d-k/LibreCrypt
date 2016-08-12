@@ -202,9 +202,6 @@ inherited frmMain: TfrmMain
       object N7: TMenuItem [7]
         Caption = '-'
       end
-      inherited miCDB: TMenuItem
-        Caption = 'LibreCrypt Container Header'
-      end
       object InstallDoxBox1: TMenuItem
         Action = actInstall
         Caption = 'Install LibreCrypt Drivers'
@@ -217,7 +214,6 @@ inherited frmMain: TfrmMain
       end
     end
     inherited miDev: TMenuItem
-      Caption = 'Development'
       object estLuks1: TMenuItem
         Action = aLuksTest
       end
@@ -229,19 +225,15 @@ inherited frmMain: TfrmMain
   end
   inherited ActionList1: TActionList
     inherited actFreeOTFENewNotHidden: TAction
-      Hint = 'Create a new container using the FreeOTFE format'
       ImageIndex = 0
     end
     inherited actFreeOTFENewHidden: TAction
-      Hint = 'Create a new hidden container using the FreeOTFE format'
       ImageIndex = 10
     end
     inherited actFreeOTFEMountFileNotHidden: TAction
-      Hint = 'Open a file based FreeOTFE container'
       ImageIndex = 1
     end
     inherited actFreeOTFEMountFileHidden: TAction
-      Hint = 'Open a file based hidden FreeOTFE container'
       ImageIndex = 9
     end
     inherited actDismount: TAction
@@ -250,38 +242,19 @@ inherited frmMain: TfrmMain
       OnExecute = actDismountExecute
     end
     inherited actNewDmCryptNotHidden: TAction
-      Caption = '&New dm-crypt container...'
-      Hint = 
-        'Create a new container file using the Linux compatible dm-crypt ' +
-        'format'
       ImageIndex = 0
     end
     inherited actNewDmCryptHidden: TAction
-      Hint = 
-        'Create a new hidden container using the Linux compatible dm-cryp' +
-        't format'
       ImageIndex = 10
     end
     inherited actMountDmcryptHidden: TAction
-      Caption = '&Open hidden dm-crypt file...'
-      Hint = 
-        'Open Linux file based container - disable LUKS detection for hid' +
-        'den containers'
       ImageIndex = 1
     end
-    inherited aMountLUKS: TAction
-      Hint = 'Open a LUKS container  in a file or partition'
-    end
     inherited actMountDmcryptNotHidden: TAction
-      Caption = '&Open plain dm-crypt Container...'
-      Hint = '&Open a container using plain dm-crypt format'
       ImageIndex = 1
     end
     inherited actExit: TAction
       ImageIndex = -1
-    end
-    inherited actPKCS11TokenManagement: TAction
-      Hint = 'Manage PKCS#11 tokens.'
     end
     object actDismountAll: TAction [15]
       Caption = 'Lock &all'
@@ -310,12 +283,12 @@ inherited frmMain: TfrmMain
       OnExecute = actFormatExecute
     end
     object actOverwriteFreeSpace: TAction [19]
-      Caption = '&Overwrite free space...'
+      Caption = '&Wipe free space...'
       Hint = 'Overwrite (wipe) free space on container'
       OnExecute = actOverwriteFreeSpaceExecute
     end
     object actOverwriteEntireDrive: TAction [20]
-      Caption = 'Overwrite entire drive...'
+      Caption = 'Wipe entire drive...'
       Hint = 'Overwrite (wipe) entire drive'
       OnExecute = actOverwriteEntireDriveExecute
     end
@@ -349,15 +322,10 @@ inherited frmMain: TfrmMain
       Hint = 'Hide the main window'
       OnExecute = actConsoleHideExecute
     end
-    inherited actUserGuide: TAction
-      Hint = 'Shows the user guide'
-    end
     inherited actAbout: TAction
-      Hint = 'Shows program information, version number and copyright.'
       OnExecute = actAboutExecute
     end
     inherited actOptions: TAction
-      Hint = 'Change program settings and defaults'
       ImageIndex = 6
       OnExecute = actOptionsExecute
     end
@@ -375,23 +343,18 @@ inherited frmMain: TfrmMain
       Caption = 'Install LibreCrypt'
       OnExecute = actInstallExecute
     end
-    inherited aLuksTest: TAction
-      Hint = 'Test LUKS specific features'
-    end
     object actShowHiddenOffset: TAction [40]
       Category = 'drive'
       Caption = 'Show Hidden Offset'
       OnExecute = actShowHiddenOffsetExecute
     end
     inherited actNewLuks: TAction
-      Caption = 'New LUKS...'
-      Hint = 'Create a new container compatible with Linux LUKS format'
       ImageIndex = 0
     end
   end
   inherited ilToolbarIcons_Small: TImageList
     Bitmap = {
-      494C01010B007401700510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B007401D00510001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       00000000000000000000000000000000000000000000255F92003FA5CE003A9F
       C8003A9EC8003A9EC8003B9EC8003B9EC7003B9EC7003B9EC7003B9EC7003B9E
@@ -804,7 +767,7 @@ inherited frmMain: TfrmMain
     Width = 32
     Left = 92
     Bitmap = {
-      494C01010B00C401F40520002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B00C401540620002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000008000000060000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2485,7 +2448,7 @@ inherited frmMain: TfrmMain
     Left = 372
     Top = 124
     Bitmap = {
-      494C010102000400840420002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400E40420002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000002000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

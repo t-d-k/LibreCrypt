@@ -14,7 +14,7 @@ uses
  SDUFrames;
 
 type
-  TOpenSave = (fndOpen, fndSave);
+  TOpenSave = (osOpen, osSave);
 
   TfmeVolumeSelect = class (TSDUFrame)
     bbBrowsePartition: TBitBtn;
@@ -29,8 +29,8 @@ type
   PRIVATE
     FFileButtonAdjust:     Integer;
     FSelectFor:            TOpenSave;
-    FFileSelectFilter:     String;
-    FFileSelectDefaultExt: String;
+//    FFileSelectFilter:     String;
+//    FFileSelectDefaultExt: String;
     FOnChange:             TNotifyEvent;
     FFileGlyph:            Vcl.Graphics.TBitmap;
 
@@ -38,12 +38,16 @@ type
     procedure SetFilename(filename: String);
     function GetAllowPartitionSelect(): Boolean;
     procedure SetAllowPartitionSelect(allow: Boolean);
+    procedure SetSelectFor(const Value: TOpenSave);
+    
 
   PROTECTED
     function GetEnabled(): Boolean; OVERRIDE;
     procedure SetEnabled(setValue: Boolean); OVERRIDE;
 
   PUBLIC
+    procedure SetFileSelectDefaultExt(const Value: String);
+    procedure SetFileSelectFilter(const Value: String);
 
     constructor Create(AOwner: TComponent); OVERRIDE;
     destructor Destroy(); OVERRIDE;
@@ -52,12 +56,12 @@ type
     property OnChange: TNotifyEvent Read FOnChange Write FOnChange;
 
     property Filename: String Read GetFilename Write SetFilename;
-    property SelectFor: TOpenSave Read FSelectFor Write FSelectFor;
+    property SelectFor: TOpenSave Read FSelectFor Write SetSelectFor;
     property AllowPartitionSelect: Boolean Read GetAllowPartitionSelect
       Write SetAllowPartitionSelect;
 
-    property FileSelectFilter: String Read FFileSelectFilter Write FFileSelectFilter;
-    property FileSelectDefaultExt: String Read FFileSelectDefaultExt Write FFileSelectDefaultExt;
+//    property FileSelectFilter: String  Write SetFileSelectFilter;
+//    property FileSelectDefaultExt: String  Write SetFileSelectDefaultExt;
 
   end;
 
@@ -73,8 +77,6 @@ uses
   //sdu & LibreCrypt utils
      SDUGeneral,
    // LibreCrypt forms
-
-
   frmSelectPartition;
 
 // procedure Register;
@@ -87,12 +89,11 @@ var
   dlg: TOpenDialog; // Note: Save dialog inherits from this. Don't use TSDUOpenDialog here
 begin
   dlg := SaveDialog;
-  if (SelectFor = fndOpen) then begin
-    dlg := OpenDialog;
-  end;
+  if (fSelectFor = osOpen) then    dlg := OpenDialog;
 
-  dlg.Filter     := FileSelectFilter;
-  dlg.DefaultExt := FileSelectDefaultExt;
+
+//  dlg.Filter     := fFileSelectFilter;
+//  dlg.DefaultExt := fFileSelectDefaultExt;
   dlg.Options    := dlg.Options + [ofDontAddToRecent];
 
   SDUOpenSaveDialogSetup(dlg, edFilename.Text);
@@ -152,6 +153,39 @@ end;
 procedure TfmeVolumeSelect.SetFilename(filename: String);
 begin
   edFilename.Text := filename;
+end;
+
+procedure TfmeVolumeSelect.SetFileSelectDefaultExt(const Value: String);
+var
+  dlg: TOpenDialog;
+begin
+dlg := SaveDialog;
+  if (fSelectFor = osOpen) then    dlg := OpenDialog;
+
+
+  dlg.DefaultExt := Value;
+end;
+
+procedure TfmeVolumeSelect.SetFileSelectFilter(const Value: String);
+var
+  dlg: TOpenDialog;
+begin
+  dlg := SaveDialog;
+  if (fSelectFor = osOpen) then    dlg := OpenDialog;
+
+
+  dlg.Filter     := Value;
+end;
+
+procedure TfmeVolumeSelect.SetSelectFor(const Value: TOpenSave);
+begin
+  FSelectFor := Value;
+  // set optinos based on if opening or creating/saving
+//  case FSelectFor of
+//   fndOpen :  OpenDialog.Options := OpenDialog.Options + [ofFileMustExist];
+//  end;
+
+
 end;
 
 function TfmeVolumeSelect.GetAllowPartitionSelect(): Boolean;

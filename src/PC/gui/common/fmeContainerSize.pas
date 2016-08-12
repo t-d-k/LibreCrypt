@@ -40,7 +40,8 @@ type
     procedure EnableDisableControls(IsPartition, IsHiddenInPartition, SyntheticDriveLayout: Boolean);
     function GetIsSizeEntirePartitionDisk: Boolean;
         procedure SetIsSizeEntirePartitionDisk(val: Boolean);
-    function GetSize(): ULONGLONG;
+    function getSize(): ULONGLONG;
+    procedure SetSize(val:ULONGLONG) ;
     procedure SetPartitionSize(new_size: ULONGLONG);
     procedure Initialise();
 
@@ -103,12 +104,17 @@ begin
     ckSizeEntirePartitionDisk.Checked  := val;
 end;
 
-function TTfmeContainerSize.GetSize: ULONGLONG;
+function TTfmeContainerSize.getSize: ULONGLONG;
 begin
   // Calculate the number of bytes...
   // Note: The in64(...) cast is REQUIRED, otherwise Delphi will calculate the
   //       value in 32 bits, and assign it to the 64 bit VolumeSize
   Result := ULONGLONG(se64UnitSize.Value);
+end;
+
+procedure TTfmeContainerSize.SetSize(val: ULONGLONG);
+begin
+  se64UnitSize.Value := val;
 end;
 
 procedure TTfmeContainerSize.Initialise;
@@ -134,6 +140,8 @@ begin
   lblPartitionDiskSize.Caption :=
     Format(_('(Approx: %s)'), [SDUFormatAsBytesUnits(new_size)]);
 end;
+
+
 
 
 

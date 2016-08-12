@@ -7,7 +7,6 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
   Font.Name = 'MS Sans Serif'
   Position = poScreenCenter
   OnClose = FormClose
-  OnCreate = FormCreate
   OnDestroy = FormDestroy
   ExplicitWidth = 616
   ExplicitHeight = 465
@@ -27,7 +26,9 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
     inherited pcWizard: TPageControl
       Width = 608
       Height = 373
-      ActivePage = tsPartitionSelect
+      ActivePage = tsDestDetails
+      ExplicitLeft = 1
+      ExplicitTop = 1
       ExplicitWidth = 608
       ExplicitHeight = 373
       object tsFileOrPartition: TTabSheet
@@ -219,7 +220,7 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           end
           inherited ilErrorWarning: TImageList
             Bitmap = {
-              494C010103000400140110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+              494C0101030004001C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
               0000000000003600000028000000400000001000000001002000000000000010
               0000000000000000000000000000000000000000000000000000000000000000
               0000000000000000000000000000000000000000000000000000000000000000
@@ -461,6 +462,11 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
           Top = 44
           Width = 587
           Height = 195
+          DoubleBuffered = False
+          Color = clWindow
+          ParentBackground = False
+          ParentColor = False
+          ParentDoubleBuffered = False
           TabOrder = 3
           ExplicitLeft = 3
           ExplicitTop = 44
@@ -473,21 +479,20 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
             ExplicitLeft = 3
             ExplicitWidth = 56
           end
-          inherited mmShown: TMemo
-            Width = 505
-            Height = 174
-            ExplicitWidth = 505
-            ExplicitHeight = 174
+          inherited preUserKey: TPasswordRichEdit
+            Left = 80
+            Width = 502
+            Height = 185
+            ExplicitLeft = 80
+            ExplicitTop = 5
+            ExplicitWidth = 502
+            ExplicitHeight = 185
           end
         end
       end
       object tsDestFile: TTabSheet
         Caption = 'Destination file'
         ImageIndex = 4
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           600
           345)
@@ -651,10 +656,6 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsRNGSelect: TTabSheet
         Caption = 'RNG Select'
         ImageIndex = 6
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object reInstructRNGSelect1: TLabel
           Left = 3
           Top = 12
@@ -774,10 +775,6 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsRNGMouseMovement: TTabSheet
         Caption = 'RNG Mouse movement'
         ImageIndex = 4
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           600
           345)
@@ -825,10 +822,6 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsRNGPKCS11: TTabSheet
         Caption = 'RNG PKCS#11 token'
         ImageIndex = 9
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object lblToken: TLabel
           Left = 11
           Top = 51
@@ -874,10 +867,6 @@ inherited frmWizardChangePasswordCreateKeyfile: TfrmWizardChangePasswordCreateKe
       object tsRNGGPG: TTabSheet
         Caption = 'RNG GPG'
         ImageIndex = 5
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           600
           345)

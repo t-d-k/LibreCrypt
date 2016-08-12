@@ -115,17 +115,17 @@ type
     fcloseToSysTray:           Boolean;
     fexitWhenPortableModeAction: eOnExitWhenPortableMode;
     fdismountHotKey:       TShortCut;
-    fOptAutoStartPortable:     Boolean;
+    fAutoStartPortableMode:     Boolean;
     femergencyDismountHotKey:  TShortCut;
     fshowSysTrayIcon:          Boolean;
-    fOptOnExitWhenMounted:     eOnExitWhenMounted;
+    fExitWhenMountedAction:     eOnExitWhenMounted;
     fdefaultMountDiskType:     TMountDiskType;
-    fOptAllowMultipleInstances: Boolean;
+    fAllowMultipleInstances: Boolean;
     fsysTraySingleClickAction: TSystemTrayClickAction;
     fminimiseToSysTray:        Boolean;
-    fOptWarnBeforeForcedDismount: Boolean;
+    fWarnBeforeForceDismount: Boolean;
     fdismountHotKeyEnabled:    Boolean;
-    fOptOnNormalDismountFail:  eOnNormalDismountFail;
+    fNormalDismountFailAction:  eOnNormalDismountFail;
 
   protected
     procedure _LoadOld(iniFile: TCustomINIFile); override;
@@ -133,9 +133,6 @@ type
     procedure _SetDefaults; override;
 
   public
-
-
-
     function RegistryKey(): String; override;
 
   published
@@ -146,24 +143,24 @@ type
     // settings need to be properties and published in order to be picked up by rtti and saved to ini file
 
     // General...
-    property AllowMultipleInstances: Boolean Read FOptAllowMultipleInstances
-      Write FOptAllowMultipleInstances default False;
-    property AutoStartPortableMode: Boolean Read FOptAutoStartPortable
-      Write FOptAutoStartPortable default False;
+    property AllowMultipleInstances: Boolean Read fAllowMultipleInstances
+      Write fAllowMultipleInstances default False;
+    property AutoStartPortableMode: Boolean Read fAutoStartPortableMode
+      Write fAutoStartPortableMode default False;
     //    OptInstalled:              Boolean;// has installer been run?
 
     property DefaultMountDiskType: TMountDiskType
       Read fdefaultMountDiskType Write fdefaultMountDiskType default fomaRemovableDisk;
 
     // Prompts and messages
-    property WarnBeforeForceDismount: Boolean Read FOptWarnBeforeForcedDismount
-      Write fOptWarnBeforeForcedDismount default True;
+    property WarnBeforeForceDismount: Boolean Read fWarnBeforeForceDismount
+      Write fWarnBeforeForceDismount default True;
     property ExitWhenMountedAction: eOnExitWhenMounted
-      Read FOptOnExitWhenMounted Write fOptOnExitWhenMounted default oewmPromptUser;
+      Read fExitWhenMountedAction Write fExitWhenMountedAction default oewmPromptUser;
     property ExitWhenPortableModeAction: eOnExitWhenPortableMode
       Read fexitWhenPortableModeAction Write fexitWhenPortableModeAction default oewpPromptUser;
     property NormalDismountFailAction: eOnNormalDismountFail
-      Read FOptOnNormalDismountFail Write fOptOnNormalDismountFail default ondfPromptUser;
+      Read fNormalDismountFailAction Write fNormalDismountFailAction default ondfPromptUser;
 
     // System tray icon...
     property ShowSysTrayIcon: Boolean Read fshowSysTrayIcon
@@ -173,7 +170,7 @@ type
     property CloseToSysTray: Boolean
       Read fcloseToSysTray Write fcloseToSysTray default True;
     property SysTraySingleClickAction: TSystemTrayClickAction
-      Read fsysTraySingleClickAction Write fsysTraySingleClickAction default stcaDisplayConsole;
+      Read fsysTraySingleClickAction Write fsysTraySingleClickAction default stcaDoNothing;
     property SysTrayDoubleClickAction: TSystemTrayClickAction
       Read fsysTrayDoubleClickAction Write fsysTrayDoubleClickAction default stcaDisplayConsole;
 
@@ -297,24 +294,24 @@ begin
   inherited _LoadOld(iniFile);
 
 
-  AllowMultipleInstances := iniFile.ReadBool(SECTION_GENERAL, OPT_ALLOWMULTIPLEINSTANCES,
+  fAllowMultipleInstances := iniFile.ReadBool(SECTION_GENERAL, OPT_ALLOWMULTIPLEINSTANCES,
     DFLT_OPT_ALLOWMULTIPLEINSTANCES);
-  AutoStartPortableMode  := iniFile.ReadBool(SECTION_GENERAL, OPT_AUTOSTARTPORTABLE,
+  fAutoStartPortableMode  := iniFile.ReadBool(SECTION_GENERAL, OPT_AUTOSTARTPORTABLE,
     DFLT_OPT_AUTOSTARTPORTABLE);
-  DefaultMountDiskType   :=
+  fDefaultMountDiskType   :=
     TMountDiskType(iniFile.ReadInteger(SECTION_GENERAL, OPT_DEFAULTMOUNTAS,
     Ord(DFLT_OPT_DEFAULTMOUNTAS)));
 
 
-  WarnBeforeForceDismount    := iniFile.ReadBool(SECTION_CONFIRMATION,
+  fWarnBeforeForceDismount    := iniFile.ReadBool(SECTION_CONFIRMATION,
     OPT_WARNBEFOREFORCEDISMOUNT, DFLT_OPT_WARNBEFOREFORCEDISMOUNT);
-  ExitWhenMountedAction      :=
+  fExitWhenMountedAction      :=
     eOnExitWhenMounted(iniFile.ReadInteger(SECTION_CONFIRMATION, OPT_ONEXITWHENMOUNTED,
     Ord(DFLT_OPT_ONEXITWHENMOUNTED)));
-  ExitWhenPortableModeAction :=
+  fExitWhenPortableModeAction :=
     eOnExitWhenPortableMode(iniFile.ReadInteger(SECTION_CONFIRMATION,
     OPT_ONEXITWHENPORTABLEMODE, Ord(DFLT_OPT_ONEXITWHENPORTABLEMODE)));
-  NormalDismountFailAction   :=
+  fNormalDismountFailAction   :=
     eOnNormalDismountFail(iniFile.ReadInteger(SECTION_CONFIRMATION,
     OPT_ONNORMALDISMOUNTFAIL, Ord(DFLT_OPT_ONNORMALDISMOUNTFAIL)));
 
@@ -336,12 +333,12 @@ begin
 
   fDismountHotKeyEnabled         := iniFile.ReadBool(SECTION_HOTKEY,
     OPT_HOTKEYENABLEDISMOUNT, DFLT_OPT_HOTKEYENABLEDISMOUNT);
-  DismountHotKey                 := TextToShortCut(iniFile.ReadString(SECTION_HOTKEY,
+  fDismountHotKey                 := TextToShortCut(iniFile.ReadString(SECTION_HOTKEY,
     OPT_HOTKEYKEYDISMOUNT, DFLT_OPT_HOTKEYKEYDISMOUNT));
-  EmergencyDismountHotKeyEnabled :=
+  fEmergencyDismountHotKeyEnabled :=
     iniFile.ReadBool(SECTION_HOTKEY, OPT_HOTKEYENABLEDISMOUNTEMERG,
     DFLT_OPT_HOTKEYENABLEDISMOUNTEMERG);
-  EmergencyDismountHotKey        := TextToShortCut(iniFile.ReadString(SECTION_HOTKEY,
+  fEmergencyDismountHotKey        := TextToShortCut(iniFile.ReadString(SECTION_HOTKEY,
     OPT_HOTKEYKEYDISMOUNTEMERG, DFLT_OPT_HOTKEYKEYDISMOUNTEMERG));
 
 end;

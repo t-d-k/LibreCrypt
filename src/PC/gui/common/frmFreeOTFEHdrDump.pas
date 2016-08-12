@@ -388,7 +388,7 @@ begin
         Result := True;
       finally
         GetFreeOTFE().fdumpFlag := False;
-        SDUZeroBuffer(GetFreeOTFE().fdumpCriticalDataKey);
+        SDUInitAndZeroBuffer(GetFreeOTFE().fdumpCriticalDataKey);
         GetFreeOTFE().fdumpCheckMAC                := '';
         GetFreeOTFE().fdumpPlaintextEncryptedBlock := '';
         GetFreeOTFE().fdumpVolumeDetailsBlock      := '';
