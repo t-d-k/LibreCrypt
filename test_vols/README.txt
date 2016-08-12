@@ -1,2 +1,2 @@
 Congratulations! 
-You have opened a DoxBox.
+You have opened an encrypted container.

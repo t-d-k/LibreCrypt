@@ -1,0 +1,17 @@
+[Key]
+KeyProcSeed=
+KeyProcHashKernelDeviceName=\Device\FreeOTFE\Hash\{00000000-0000-0000-0000-0000000C0001}
+KeyProcHashGUID={00000000-0000-0000-0000-0000000C0002}
+KeyProcHashWithAs=0
+KeyProcCypherIterationCount=0
+[Encryption]
+MainCypherKernelDeviceName=\Device\FreeOTFE\Cypher\{00000000-0000-0000-0000-0000000E0001}
+MainCypherGUID={00000000-0000-0000-0000-00000E000002}
+MainIVGenMethod=0
+[FileOptions]
+Offset=2097152
+Size=0
+[MountOptions]
+DriveLetter=-
+Readonly=1
+MountAsEnum=0
