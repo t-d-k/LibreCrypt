@@ -32,6 +32,7 @@ _[LibreCrypt](http://LibreCrypt.tdksoft.co.uk/): Open-Source disk encryption for
 	* Japanese
 	* Russian
 	* Spanish
+	* Traditional Chinese
 
 ### To translate into a new language:
 
