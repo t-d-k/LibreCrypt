@@ -32,6 +32,7 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 	* Japanese
 	* Russian
 	* Spanish
+	* Traditional Chinese
 
 ### To translate into a new language:
 
