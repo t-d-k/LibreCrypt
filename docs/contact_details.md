@@ -18,17 +18,17 @@ The latest version of this document can be found at the [LibreCrypt project site
 <link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.tdksoft.co.uk/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.tdksoft.co.uk/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
 ## Appendix H: Contact Details
 
 *	The preferred way to report bugs, leave comments and requests is by using the issue tracker at [github](https://github.com/t-d-k/librecrypt)
-*	Comments may also be left on the [forums](http://LibreCrypt.eu/) (registration is not required to leave comments, only for new threads)
+*	Comments may also be left on the [forums](http://LibreCrypt.tdksoft.co.uk/) (registration is not required to leave comments, only for new threads)
 *	If both these methods are unavailable comments can also be emailed to: doxbox at squte.com
 
 

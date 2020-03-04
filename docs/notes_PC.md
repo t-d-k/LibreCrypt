@@ -16,10 +16,10 @@
 <link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.tdksoft.co.uk/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.tdksoft.co.uk/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
@@ -68,7 +68,7 @@ relate to installing or changing LibreCrypt's drivers, starting/stopping portabl
 
 Whenever you attempt to use functionality which is marked with one of these icons, Windows will display a dialog (the "consent/credential" dialog), asking for your permission to allow LibreCrypt to continue. **This is for your protection**, and is perfectly normal. You will be shown this dialog even if you are logged on as an Administrator
 
-Although the LibreCrypt binaries are digitally signed using the Microsoft standard, Windows refuses to identify LibreCrypt, and as such this dialog will state that "An unidentified program wants access to your computer". Again, this is perfectly normal; if you would like to check that your copy of LibreCrypt is an unmodified, original copy, you may do so by checking the hashes/signatures available from the [LibreCrypt web site](http://LibreCrypt.eu/).
+Although the LibreCrypt binaries are digitally signed using the Microsoft standard, Windows refuses to identify LibreCrypt, and as such this dialog will state that "An unidentified program wants access to your computer". Again, this is perfectly normal; if you would like to check that your copy of LibreCrypt is an unmodified, original copy, you may do so by checking the hashes/signatures available from the [LibreCrypt web site](http://LibreCrypt.tdksoft.co.uk/).
 
 If you are logged on as a "standard" (i.e. non-Administrator) user, the prompt you are shown will also ask for an Administrator's password. It should be emphasised that it is Windows Vista itself which is generating these prompts, and not LibreCrypt, which will have no access to the password you type in. The same type of warning dialogs will  appear when you attempt to (for example) change the system time or dete by going to Window's Control Panel, selecting "Date and Time", and then changing the computer's time/date.
 

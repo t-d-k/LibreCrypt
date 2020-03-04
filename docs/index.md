@@ -13,11 +13,11 @@
 <link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.tdksoft.co.uk/)
 </SPAN>
 
 <SPAN CLASS="master_title">
-_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.tdksoft.co.uk/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 

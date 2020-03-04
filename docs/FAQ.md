@@ -13,10 +13,10 @@
 <link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.tdksoft.co.uk/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.tdksoft.co.uk/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
@@ -385,14 +385,14 @@ In order to remember a keyphrase long enough, there are three techniques that wo
 *Q: What are the differences between LibreCrypt and LibreCrypt Explorer?*
 
 *A:*
-Please see the [LibreCrypt v. LibreCrypt Explorer Comparison](http://LibreCrypt.eu/main_explorer_differences.html)
+Please see the [LibreCrypt v. LibreCrypt Explorer Comparison](http://LibreCrypt.tdksoft.co.uk/main_explorer_differences.html)
 
 * * *
 
 <a name="el"></a>
 *Q: How can I help the LibreCrypt project?*
 
-*A:* If you are a native speaker of a language other than English, please take a look at [translating LibreCrypt](http://LibreCrypt.eu/translations.html) page. The user interface has support for translations into different languages, though at present the actual number of translations into other languages is fairly limited.
+*A:* If you are a native speaker of a language other than English, please take a look at [translating LibreCrypt](http://LibreCrypt.tdksoft.co.uk/translations.html) page. The user interface has support for translations into different languages, though at present the actual number of translations into other languages is fairly limited.
 
 Alternatively, **FEEDBACK!** If you have any comments or suggestions for how LibreCrypt can be improved - get in touch!
 
@@ -1260,14 +1260,14 @@ Containers nested in this manner must be closed in the **reverse** order to whic
 <a name="eq"></a>
 *Q: LibreCrypt supports different languages, but why isn't mine listed?*
 
-*A:* Please see LibreCrypt's [translations page](http://LibreCrypt.eu/translations.html) for up-to-date information on language translations.
+*A:* Please see LibreCrypt's [translations page](http://LibreCrypt.tdksoft.co.uk/translations.html) for up-to-date information on language translations.
 
 * * *
 
 <a name="eq"></a>
 *Q: How do I translate LibreCrypt into a different language?*
 
-*A:* Please see LibreCrypt's [translations page](http://LibreCrypt.eu/translations.html) for up-to-date information on language translations.
+*A:* Please see LibreCrypt's [translations page](http://LibreCrypt.tdksoft.co.uk/translations.html) for up-to-date information on language translations.
 
 * * *
 
@@ -1404,7 +1404,7 @@ LibreCrypt and LibreCrypt Explorer will **only ever** try to connect to the inte
 
 * They have been configured to check for updates (by default this is on)
 	In this case, they will only try to connect to the GitHub web site to retrieve version information.
-* There has been an error in installation, or the documents have been removed, in which case LibreCrypt will open the HTML file from the LibreCrypt website (LibreCrypt.eu - which currently redirects to LibreCrypt.eu)
+* There has been an error in installation, or the documents have been removed, in which case LibreCrypt will open the HTML file from the LibreCrypt website (LibreCrypt.eu - which redirects to LibreCrypt.tdksoft.co.uk)
 In both cases they will prompt before connecting to the Internet - simply click 'cancel' to prevent this.
 By default, both LibreCrypt and LibreCrypt Explorer are configured such that they will automatically check for updates once per month - this can be disabled in the 'settings' dialog.
 
@@ -1660,7 +1660,7 @@ Whenever you attempt to use any part of LibreCrypt's functionality which Windows
 
 The same type of dialog will appear when you attempt to (for example) go to Window's Control Panel, selecting "Date and Time", and then attempting to change the computer's time or date.
 
-Because the LibreCrypt executable does not have a digital signature that Windows recognises, this dialog claims that "An unidentified program wants access to your computer". This is perfectly normal, and part of Vista's system to help protect you. If you would like to check that your copy of LibreCrypt is an original, you may do so by checking the hashes/signatures available from the [LibreCrypt web site](http://LibreCrypt.eu/).
+Because the LibreCrypt executable does not have a digital signature that Windows recognises, this dialog claims that "An unidentified program wants access to your computer". This is perfectly normal, and part of Vista's system to help protect you. If you would like to check that your copy of LibreCrypt is an original, you may do so by checking the hashes/signatures available from the [LibreCrypt web site](http://LibreCrypt.tdksoft.co.uk/).
 
 These prompts form part of Windows Vista's "User Access Control" (UAC) system, which you can find out more about from the [Microsoft web site](http://technet.microsoft.com/en-us/windowsvista/aa906022.aspx).
 

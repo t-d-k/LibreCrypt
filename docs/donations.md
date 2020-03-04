@@ -2,10 +2,10 @@
 <LINK rel="shortcut icon" href="src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![LibreCrypt logo](https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
+[![LibreCrypt logo](https://raw.githubusercontent.com/t-d-k/LibreCrypt/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.tdksoft.co.uk/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.tdksoft.co.uk/): Open-Source disk encryption for Windows_
 </SPAN>
 
 ## How to donate
@@ -29,7 +29,7 @@ Your PayPal name will be used, unless you specify a different name in the 'speci
 
 The donations will first go towards a signing certificate, which will mean the drivers can be signed.
 
-Once that is done then any donations remaining will go towards paying for the domain registration for LibreCrypt.eu.
+Once that is done then any donations remaining will go towards paying for the domain registration for LibreCrypt.tdksoft.co.uk.
 
 Any left over from that will go towards paying for a programmer (possibly me) to fix the outstanding bugs.
 

@@ -16,10 +16,10 @@
 <link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.tdksoft.co.uk/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.tdksoft.co.uk/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
@@ -45,7 +45,7 @@ No files are copied to your hard drive when starting/stopping portable mode.
 
  
 <SPAN class="tip">
-Administrator rights are required in order to start and stop portable mode. You _can_ still use LibreCrypt on a computer which you do not have Administrator rights on, but will need to ask an Administrator to install it for you first; see the [installation section](installation_and_upgrading__PC.md) for further details. Alternatively, use [LibreCrypt Explorer](http://LibreCrypt.eu/) instead - which doesn't need drivers at all    
+Administrator rights are required in order to start and stop portable mode. You _can_ still use LibreCrypt on a computer which you do not have Administrator rights on, but will need to ask an Administrator to install it for you first; see the [installation section](installation_and_upgrading__PC.md) for further details. Alternatively, use [LibreCrypt Explorer](http://LibreCrypt.tdksoft.co.uk/) instead - which doesn't need drivers at all    
 </SPAN>
 
  

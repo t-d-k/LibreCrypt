@@ -2,10 +2,10 @@
 <LINK rel="shortcut icon" href="src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![LibreCrypt logo](src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
+[![LibreCrypt logo](src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.tdksoft.co.uk/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.tdksoft.co.uk/): Open-Source disk encryption for Windows_
 </SPAN>
 
 
@@ -35,7 +35,23 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 				<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
 			</form 
 			--->
+## 	Project          Status
+**An update on the project**  
+_Firstly I'd like to thank those who have donated. This has been enough to get an OV code signing certificate; so in the next release the installer and UI should be signed (perhaps not the drivers - see below)._  
+*I understand bugs have not been fixed and not much progress made recently, and the many users deserve an explanation.*  
 
+*There are fundamental issues in the drivers that mean that it is possible to get 'root' access on any machine that LibreCrypt is installed on from a user application - see  [Issue 38](https://github.com/t-d-k/doxbox/issues/38) and  [Issue 39](https://github.com/t-d-k/doxbox/issues/39) (if secure boot is off). I cannot recommend using LibreCrypt with these bugs.    
+Fixing these issues would involve re-architecturing the drivers, basically rewriting the main DLLs from scratch.  
+This is compounded by the fact that there is no driver signing certificate (EV cert), MS wants to review the code to issue an EV cert - and the drivers would not pass with the current vulnerabilites (you would hope).  
+In addition the encryption code in the drivers is old and is slow compared to modern implementations.*  
+
+*OTOH, LibreCrypt is the only way to read LUKS volumes on Windows that I know of, and the user interface is the most friendly of the open-source OTFE applications (imho), so it would be a shame if it became obsolete.*  
+*I believe the best way forward is to adopt the drivers from another open-source project with signed drivers like VeraCrypt or Diskcryptor, and modify them to support LUKS as well. This would mean two executables, one that would work with LUKS volumes, but would need a hack to run (as the current LibreCrypt), and another that would run out-of-the-box, but would not open LUKS volumes.*   
+*I would of course review the new drivers for any obvious security issues.*  
+*Meanwhile I'll fix the bugs relating to the UI, documentation etc. and mark the driver bugs as 'pending'.* 
+
+*regards*  
+*tdk (tom kelsey)*  
 ##	Features
 
 * Full transparent encryption, containers appear as removable disks in Windows Explorer.
@@ -113,5 +129,5 @@ _[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
 *	The handling of keyphrases containing non-ASCII characters will change in a future version. This change will not be backwards compatible. So in this version it is recommended to use only ASCII characters in keyphrases.
 *	There are possible bugs in opening volumes created with FreeOTFE with non-ASCII characters. If you experience problems, please use the legacy app to change the password to an ASCII one and retry. Alternatively move the files to a native container.
 
-For more details, please see the [getting started guide](http://LibreCrypt.eu/doxbox/getting_started.html) and [FAQ](http://LibreCrypt.eu/doxbox/FAQ.html).
+For more details, please see the [getting started guide](http://LibreCrypt.tdksoft.co.uk/getting_started.html) and [FAQ](http://LibreCrypt.tdksoft.co.uk/FAQ.html).
  

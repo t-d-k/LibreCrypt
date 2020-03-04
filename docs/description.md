@@ -17,10 +17,10 @@
 <link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.tdksoft.co.uk/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.tdksoft.co.uk/): Open-Source disk encryption for Windows_
 </SPAN>
 ***  
 <SPAN class="tip">
@@ -61,7 +61,7 @@ This software can create "virtual disks" on your computer - anything written to 
 * Container file timestamps and attributes are reset after closing, increasing "plausible deniability"
 * containers up to 8,388,608 TB 
 
-Screenshots of LibreCrypt are [here](http://LibreCrypt.eu/screenshots_pc_main.html)
+Screenshots of LibreCrypt are [here](http://LibreCrypt.tdksoft.co.uk/screenshots_pc_main.html)
 
 Cyphers included:
 

@@ -14,10 +14,10 @@
 <link rel="shortcut icon" href="https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox.ico" type="image/x-icon">
 
 <SPAN CLASS="master_link">
-[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.eu/)
+[![LibreCrypt logo](https://github.com/t-d-k/librecrypt/raw/master/src/Common/Common/images/DoxBox128.png)](http://LibreCrypt.tdksoft.co.uk/)
 </SPAN>
 <SPAN CLASS="master_title">
-_[LibreCrypt](http://LibreCrypt.eu/): Open-Source disk encryption for Windows_
+_[LibreCrypt](http://LibreCrypt.tdksoft.co.uk/): Open-Source disk encryption for Windows_
 </SPAN>
 ***
 
@@ -40,7 +40,7 @@ Thanks go to:
 * [David Saunders](mailto:dsaunders@gawab.com)) for setting up the www.FreeOTFE.org domain registration and web site.
 * Gianluca Varenni for his USENET post **way** back in August 2002 relating to the "_alldvrm" driver problem under MS Windows 2000, and the solution he used!
 * [Dr. Brian R. Gladman](mailto:gladman@seven77.demon.co.uk)) for his implementation of the 2nd round AES candidates
-* [Lars B. Dybdahl](mailto:Lars@dybdahl.dk) and [Peter Thörnqvist](mailto:peter3@peter3.com) for dxgettext, an Delphi port of GNU's gettext 
+* [Lars B. Dybdahl](mailto:Lars@dybdahl.dk) and [Peter Thornqvist](mailto:peter3@peter3.com) for dxgettext, an Delphi port of GNU's gettext 
 * [Alexander Okorokov](mailto:oraclex@mail.ru)) for feedback and code improvements
 * [Brian Smith](mailto:bsmith@ringcube.com) for identifying, tracking down and debugging an intermittent driver issue which could cause crashing when dismounting
 
